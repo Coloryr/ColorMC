@@ -30,7 +30,6 @@ using ColorMC.Gui.UI.Controls.ServerPack;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
-using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -116,7 +115,6 @@ public partial class App : Application
         {
             StartLock();
         }
-
     }
 
     public static string GetLanguage(string input)

@@ -1,12 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using System;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -19,8 +16,6 @@ public partial class HeadControl : UserControl
     public HeadControl()
     {
         InitializeComponent();
-
-        DataContext = this;
 
         Border1.PointerPressed += HeadControl_PointerPressed;
         TitleShow.PointerPressed += HeadControl_PointerPressed;

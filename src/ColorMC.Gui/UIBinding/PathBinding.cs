@@ -12,7 +12,6 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.GameExport;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;

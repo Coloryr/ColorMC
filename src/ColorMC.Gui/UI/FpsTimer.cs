@@ -16,7 +16,7 @@ public class FpsTimer
 
     public int Fps { get; set; } = 60;
     public Action<int>? FpsTick { private get; init; }
-    public bool Pause 
+    public bool Pause
     {
         get
         {
@@ -36,7 +36,7 @@ public class FpsTimer
                 _pause = true;
                 _timer.Stop();
             }
-        } 
+        }
     }
     public int NowFps { get; private set; }
 

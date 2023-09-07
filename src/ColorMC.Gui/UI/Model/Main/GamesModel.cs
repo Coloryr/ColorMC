@@ -1,7 +1,6 @@
 ﻿using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;

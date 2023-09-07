@@ -24,7 +24,7 @@ public class ColorSel : INotifyPropertyChanged
     public const string MainColorStr = "#FF5ABED6";
 
     public const string BackLigthColorStr = "#FFF4F4F5";
-    public const string Back1LigthColorStr = "#62FFFFFF";
+    public const string Back1LigthColorStr = "#99FFFFFF";
     public const string ButtonLightFontStr = "#FFFFFFFF";
     public const string FontLigthColorStr = "#FF000000";
 

@@ -1,7 +1,6 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Main;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;

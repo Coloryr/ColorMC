@@ -8,7 +8,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -101,7 +100,7 @@ public partial class GameConfigEditModel : GameModel
 
     private ChunkData? _chunkData;
 
-    public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world) 
+    public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world)
         : base(model, obj)
     {
         World = world;

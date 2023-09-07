@@ -112,8 +112,11 @@ public partial class SkinControl : UserControl, IUserControl
         {
             FpsTick = (fps) =>
             {
-                var model = (DataContext as SkinModel)!;
-                Dispatcher.UIThread.Post(() => model.Fps = fps);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    var model = (DataContext as SkinModel)!;
+                    model.Fps = fps;
+                });
             }
         };
     }

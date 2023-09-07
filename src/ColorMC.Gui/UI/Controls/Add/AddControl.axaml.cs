@@ -20,7 +20,7 @@ public partial class AddControl : UserControl, IUserControl
 
     public string Title => string.Format(App.GetLanguage("AddWindow.Title"), Obj.Name);
 
-    public AddControl() 
+    public AddControl()
     {
         InitializeComponent();
     }

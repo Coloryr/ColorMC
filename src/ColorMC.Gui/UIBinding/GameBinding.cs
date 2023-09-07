@@ -1,4 +1,3 @@
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using ColorMC.Core.Chunk;
@@ -17,8 +16,6 @@ using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Model.Main;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using SixLabors.ImageSharp;

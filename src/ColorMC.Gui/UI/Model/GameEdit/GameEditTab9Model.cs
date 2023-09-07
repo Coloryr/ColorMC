@@ -1,6 +1,5 @@
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;

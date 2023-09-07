@@ -9,7 +9,6 @@ using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using ShimSkiaSharp;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;

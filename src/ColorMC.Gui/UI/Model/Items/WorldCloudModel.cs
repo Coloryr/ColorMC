@@ -1,5 +1,4 @@
 ﻿using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

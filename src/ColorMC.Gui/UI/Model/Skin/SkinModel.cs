@@ -1,10 +1,8 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -345,6 +343,6 @@ public partial class SkinModel : TopModel
 
     protected override void Close()
     {
-        
+
     }
 }

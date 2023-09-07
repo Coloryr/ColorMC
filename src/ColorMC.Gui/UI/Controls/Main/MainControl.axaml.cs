@@ -240,7 +240,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public void LoadDone()
     {
-        Dispatcher.UIThread.Post(() => 
+        Dispatcher.UIThread.Post(() =>
         {
             (DataContext as MainModel)!.LoadDone();
         });
@@ -248,7 +248,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public void LoadMain()
     {
-        Dispatcher.UIThread.Post(()=>
+        Dispatcher.UIThread.Post(() =>
         {
             (DataContext as MainModel)!.Load();
         });
@@ -256,7 +256,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public void MotdLoad()
     {
-        Dispatcher.UIThread.Post(()=>
+        Dispatcher.UIThread.Post(() =>
         {
             (DataContext as MainModel)!.MotdLoad();
         });
@@ -264,7 +264,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public void IsDelete()
     {
-        Dispatcher.UIThread.Post(() => 
+        Dispatcher.UIThread.Post(() =>
         {
             (DataContext as MainModel)!.IsDelete();
         });

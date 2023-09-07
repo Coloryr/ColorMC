@@ -1,10 +1,7 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using ColorMC.Gui.UI.Model;
 using System;
 using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls;
 

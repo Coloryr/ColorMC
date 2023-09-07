@@ -1,9 +1,7 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
-using Esprima.Ast;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;

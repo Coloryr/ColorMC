@@ -1,10 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
-using ColorMC.Gui.Skin;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.ServerPack;
 using ColorMC.Gui.Utils;
-using System;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
 

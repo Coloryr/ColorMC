@@ -1,8 +1,6 @@
-﻿using ICSharpCode.SharpZipLib.Checksum;
-using ICSharpCode.SharpZipLib.GZip;
+﻿using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
-using SharpCompress.Common;
 using SharpCompress.Compressors.Xz;
 using System.Text;
 using Crc32 = ICSharpCode.SharpZipLib.Checksum.Crc32;

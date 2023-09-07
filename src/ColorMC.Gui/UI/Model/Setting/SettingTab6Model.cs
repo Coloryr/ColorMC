@@ -1,7 +1,6 @@
 ﻿using Avalonia.Media;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;

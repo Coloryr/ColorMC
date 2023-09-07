@@ -7,7 +7,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;

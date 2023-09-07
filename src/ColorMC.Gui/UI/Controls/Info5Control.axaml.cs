@@ -1,11 +1,7 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using ColorMC.Gui.UI.Model;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -28,7 +24,7 @@ public partial class Info5Control : UserControl
         }
     }
 
-    private void Model_PropertyChanged(object? sender,  PropertyChangedEventArgs e)
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "Info5Show")
         {

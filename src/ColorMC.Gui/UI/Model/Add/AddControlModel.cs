@@ -97,7 +97,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     public AddControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
-        
+
     }
     partial void OnTypeChanged(int value)
     {
@@ -290,7 +290,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     ///////////////////////////////////////////////////
-    
+
     [RelayCommand]
     public void ShowFilter()
     {

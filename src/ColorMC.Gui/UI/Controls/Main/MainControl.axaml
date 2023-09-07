@@ -31,7 +31,7 @@
                         <StackPanel VerticalAlignment="Center">
                             <Button
                                 Width="25"
-                                Height="35"
+                                Height="25"
                                 Command="{Binding ShowUser}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text4}"
                                 ToolTip.VerticalOffset="-30">
@@ -40,7 +40,7 @@
 
                             <Button
                                 Width="25"
-                                Height="35"
+                                Height="25"
                                 Margin="0,5,0,0"
                                 Command="{Binding ShowSkin}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text9}"
@@ -50,7 +50,7 @@
 
                             <Button
                                 Width="25"
-                                Height="35"
+                                Height="25"
                                 Margin="0,5,0,0"
                                 Command="{Binding AddGame}"
                                 IsVisible="{Binding !IsOneGame}"
@@ -61,7 +61,7 @@
 
                             <Button
                                 Width="25"
-                                Height="35"
+                                Height="25"
                                 Margin="0,5,0,0"
                                 Command="{Binding Launch}"
                                 IsEnabled="{Binding EnableButton1}"
@@ -82,8 +82,8 @@
 
                             <Button
                                 Width="25"
-                                Height="35"
-                                Margin="0,5,0,20"
+                                Height="25"
+                                Margin="0,5,0,0"
                                 Command="{Binding ShowSetting}"
                                 Content="S"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text13}"
@@ -94,8 +94,8 @@
                     </Panel>
                     <Border
                         Name="Grid1"
-                        Background="{DynamicResource SystemAltMediumHighColor}"
-                        CornerRadius="{setting:Style ButtonCornerRadius}">
+                        Margin="0,0,10,0"
+                        Background="{setting:Colors TopBottom}">
                         <StackPanel Margin="6,0,6,0" VerticalAlignment="Center">
                             <Panel Margin="0,20,0,0">
                                 <Border
@@ -178,7 +178,7 @@
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="0,5,0,20"
+                                Margin="0,5,0,0"
                                 Command="{Binding ShowSetting}"
                                 Content="{setting:Localize MainWindow.Control.Text5}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text13}"

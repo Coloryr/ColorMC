@@ -1,12 +1,12 @@
 ﻿using Avalonia.Media.Imaging;
+using AvaloniaEdit.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using AvaloniaEdit.Utils;
 
 namespace ColorMC.Gui.UI.Model;
 
@@ -82,7 +82,7 @@ public partial class BaseModel : ObservableObject
     public ObservableCollection<string> Info5Items { get; init; } = new();
 
     [ObservableProperty]
-    private Bitmap _icon;
+    private Bitmap _icon = App.GameIcon;
     [ObservableProperty]
     private string? _title;
     [ObservableProperty]
@@ -191,7 +191,7 @@ public partial class BaseModel : ObservableObject
         _info1Call = null;
         Progress();
     }
-    
+
     /// <summary>
     /// 更新进度条信息
     /// </summary>

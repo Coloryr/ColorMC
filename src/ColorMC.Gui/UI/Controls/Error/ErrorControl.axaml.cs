@@ -35,7 +35,7 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Closed()
     {
-        if ((DataContext as ErrorModel)!.NeedClose 
+        if ((DataContext as ErrorModel)!.NeedClose
             || (App.IsHide && !BaseBinding.IsGameRuning()))
         {
             App.Close();
@@ -44,6 +44,6 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void SetBaseModel(BaseModel model)
     {
-        
+
     }
 }
