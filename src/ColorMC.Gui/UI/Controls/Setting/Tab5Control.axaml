@@ -11,77 +11,90 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,0,5,5">
-        <StackPanel DockPanel.Dock="Top">
-            <Label Content="{setting:Localize SettingWindow.Tab5.Text1}" />
-            <TextBox
-                Classes="input1"
-                Text="{Binding JavaName}"
-                Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
-            <DockPanel Margin="0,5,0,5">
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    Command="{Binding SelectJava}"
-                    Content="{setting:Localize Button.Select}"
-                    DockPanel.Dock="Right" />
+    <DockPanel Margin="5,3,5,5">
+        <Border
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
+            <StackPanel>
+                <Label Content="{setting:Localize SettingWindow.Tab5.Text1}" />
                 <TextBox
                     Classes="input1"
-                    Text="{Binding JavaLocal}"
-                    Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
-            </DockPanel>
-            <WrapPanel>
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding ShowAddJava}"
-                    Content="{setting:Localize SettingWindow.Tab5.Text4}"
-                    DockPanel.Dock="Left" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding OpenJavaPath}"
-                    Content="{setting:Localize SettingWindow.Tab5.Text6}"
-                    DockPanel.Dock="Left" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding OpenJavaFile}"
-                    Content="{setting:Localize SettingWindow.Tab5.Text7}"
-                    DockPanel.Dock="Left" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding DeleteJava}"
-                    Content="{setting:Localize SettingWindow.Tab5.Text5}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding LoadJava}"
-                    Content="{setting:Localize Button.Refash}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding AddJavaZip}"
-                    Content="{setting:Localize SettingWindow.Tab5.Text8}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding AddJava}"
-                    Content="{setting:Localize Button.Add}"
-                    DockPanel.Dock="Right" />
-            </WrapPanel>
-        </StackPanel>
+                    Text="{Binding JavaName}"
+                    Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
+                <DockPanel Margin="0,5,0,5">
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Command="{Binding SelectJava}"
+                        Content="{setting:Localize Button.Select}"
+                        DockPanel.Dock="Right" />
+                    <TextBox
+                        Classes="input1"
+                        Text="{Binding JavaLocal}"
+                        Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
+                </DockPanel>
+                <WrapPanel>
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding ShowAddJava}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text4}"
+                        DockPanel.Dock="Left" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding OpenJavaPath}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text6}"
+                        DockPanel.Dock="Left" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding OpenJavaFile}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text7}"
+                        DockPanel.Dock="Left" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding DeleteJava}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text5}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding LoadJava}"
+                        Content="{setting:Localize Button.Refash}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding AddJavaZip}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text8}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding AddJava}"
+                        Content="{setting:Localize Button.Add}"
+                        DockPanel.Dock="Right" />
+                </WrapPanel>
+            </StackPanel>
+        </Border>
 
-        <Panel Margin="0,3,0,0">
+        <Border
+            Margin="0,3,0,0"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
@@ -116,6 +129,6 @@
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-        </Panel>
+        </Border>
     </DockPanel>
 </UserControl>

@@ -414,7 +414,9 @@ public partial class App : Application
                 }
             }
             if (temp != null)
+            {
                 new SelfBaseWindow(con).ShowDialog(temp);
+            }
         }
     }
 

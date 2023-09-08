@@ -67,8 +67,6 @@ public partial class SettingModel : TopModel
     [ObservableProperty]
     private bool _coreInstall;
     [ObservableProperty]
-    private bool _mainWindowStateSave;
-    [ObservableProperty]
     private bool _mainWindowMirror;
     [ObservableProperty]
     private bool _amFade;
@@ -138,14 +136,6 @@ public partial class SettingModel : TopModel
             return;
 
         ConfigBinding.SetStyle(ButtonCornerRadius);
-    }
-
-    partial void OnMainWindowStateSaveChanged(bool value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetWindowStateSave(MainWindowStateSave);
     }
 
     partial void OnMainWindowMirrorChanged(bool value)
@@ -520,7 +510,6 @@ public partial class SettingModel : TopModel
             EnableWindowTran = con.WindowTran;
 
             MainWindowMirror = con.Gui.WindowMirror;
-            MainWindowStateSave = con.Gui.WindowStateSave;
 
             ButtonCornerRadius = con.Style.ButtonCornerRadius;
             AmTime = con.Style.AmTime;

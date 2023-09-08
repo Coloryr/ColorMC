@@ -544,20 +544,6 @@ public static class ConfigBinding
         App.MainWindow?.ChangeLive2DSize();
     }
 
-    public static void SetMainHide(bool sideDisplay)
-    {
-        GuiConfigUtils.Config.Gui ??= new();
-        GuiConfigUtils.Config.Gui.MainDisplay = sideDisplay;
-        GuiConfigUtils.Save();
-    }
-
-    public static void SetWindowStateSave(bool v1)
-    {
-        GuiConfigUtils.Config.Gui ??= new();
-        GuiConfigUtils.Config.Gui.WindowStateSave = v1;
-        GuiConfigUtils.Save();
-    }
-
     public static void SetMainWindow(bool v1)
     {
         GuiConfigUtils.Config.Gui ??= new();

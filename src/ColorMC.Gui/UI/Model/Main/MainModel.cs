@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
@@ -11,6 +12,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -44,8 +46,6 @@ public partial class MainModel : TopModel, IMainTop
     [ObservableProperty]
     private string? _groupItem;
     [ObservableProperty]
-    private string _sideButton = "→";
-    [ObservableProperty]
     private string _userName;
     [ObservableProperty]
     private string _authType;
@@ -62,8 +62,6 @@ public partial class MainModel : TopModel, IMainTop
     private bool _isGameError;
     [ObservableProperty]
     private bool _isOneGame;
-    [ObservableProperty]
-    private bool _sideDisplay = true;
     [ObservableProperty]
     private bool _enableButton1;
     [ObservableProperty]
@@ -87,6 +85,8 @@ public partial class MainModel : TopModel, IMainTop
     private HorizontalAlignment _mirror2 = HorizontalAlignment.Left;
     [ObservableProperty]
     private HorizontalAlignment _mirror3 = HorizontalAlignment.Right;
+    [ObservableProperty]
+    private Thickness _mirror4 = new(0,5,5,5);
 
     [ObservableProperty]
     private bool _render;
@@ -104,25 +104,9 @@ public partial class MainModel : TopModel, IMainTop
     }
 
     [RelayCommand]
-    public void SideChange()
+    public void SideOpen()
     {
-        var config = ConfigBinding.GetAllConfig();
-
-        if (SideDisplay)
-        {
-            SideDisplay = false;
-        }
-        else
-        {
-            SideDisplay = true;
-        }
-
-        SideButtonChange(SideDisplay);
-
-        if (config.Item2.Gui.WindowStateSave)
-        {
-            ConfigBinding.SetMainHide(SideDisplay);
-        }
+        OnPropertyChanged("SideOpen");
     }
 
     [RelayCommand]
@@ -358,11 +342,6 @@ public partial class MainModel : TopModel, IMainTop
             MusicDisplay = false;
         }
 
-        if (config.Item2.Gui.WindowStateSave)
-        {
-            SideDisplay = config.Item2.Gui.MainDisplay;
-        }
-
         Mirror();
 
         if (config.Item2.ServerCustom?.LockGame == true)
@@ -554,6 +533,11 @@ public partial class MainModel : TopModel, IMainTop
         OnPropertyChanged("ModelText");
     }
 
+    public void SideClose()
+    {
+        OnPropertyChanged("SideClose");
+    }
+
     public void Mirror()
     {
         var config = ConfigBinding.GetAllConfig();
@@ -562,26 +546,14 @@ public partial class MainModel : TopModel, IMainTop
             Mirror1 = Dock.Right;
             Mirror2 = HorizontalAlignment.Right;
             Mirror3 = HorizontalAlignment.Left;
+            Mirror4 = new(5, 5, 0, 5);
         }
         else
         {
             Mirror1 = Dock.Left;
             Mirror2 = HorizontalAlignment.Left;
             Mirror3 = HorizontalAlignment.Right;
-        }
-        SideButtonChange(SideDisplay);
-    }
-
-    private void SideButtonChange(bool open)
-    {
-        var config = ConfigBinding.GetAllConfig();
-        if (open)
-        {
-            SideButton = config.Item2.Gui.WindowMirror ? "→" : "←";
-        }
-        else
-        {
-            SideButton = config.Item2.Gui.WindowMirror ? "←" : "→";
+            Mirror4 = new(0, 5, 5, 5);
         }
     }
 

@@ -10,39 +10,54 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,0,5,5">
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Label VerticalAlignment="Center" Content="{setting:Localize ServerPackWindow.Tab3.Text1}" />
-            <Button
-                Width="80"
-                Height="25"
-                Command="{Binding SelectAllConfig}"
-                Content="{setting:Localize ServerPackWindow.Tab2.Text2}" />
-            <Button
-                Width="80"
-                Height="25"
-                Margin="5,0,0,0"
-                Command="{Binding UnSelectAllConfig}"
-                Content="{setting:Localize ServerPackWindow.Tab2.Text3}" />
-        </StackPanel>
-        <DataGrid
-            Name="DataGrid1"
-            AutoGenerateColumns="False"
-            CanUserResizeColumns="True"
-            CanUserSortColumns="False"
-            ItemsSource="{Binding ConfigList}">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text1}" />
-                <DataGridTextColumn
-                    Binding="{Binding FileName}"
-                    Header="{setting:Localize Text.FileName}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text3}" />
-                <DataGridTextColumn
-                    Binding="{Binding Sha1}"
-                    Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text4}"
-                    IsReadOnly="True" />
-            </DataGrid.Columns>
-        </DataGrid>
+    <DockPanel Margin="5,3,5,0">
+        <Border
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Width="80"
+                    Height="25"
+                    Command="{Binding SelectAllConfig}"
+                    Content="{setting:Localize ServerPackWindow.Tab2.Text2}" />
+                <Button
+                    Width="80"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding UnSelectAllConfig}"
+                    Content="{setting:Localize ServerPackWindow.Tab2.Text3}" />
+            </StackPanel>
+        </Border>
+        <Border
+            Margin="0,3,0,0"
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <DataGrid
+                Name="DataGrid1"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                ItemsSource="{Binding ConfigList}">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text1}" />
+                    <DataGridTextColumn
+                        Binding="{Binding FileName}"
+                        Header="{setting:Localize Text.FileName}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text3}" />
+                    <DataGridTextColumn
+                        Binding="{Binding Sha1}"
+                        Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text4}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </DockPanel>
 </UserControl>

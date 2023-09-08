@@ -2,16 +2,18 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Model.ServerPack;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using System.ComponentModel;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
 
 public partial class ServerPackControl : UserControl, IUserControl
 {
-    private GameSettingObj _obj;
+    private readonly GameSettingObj _obj;
 
     private readonly Tab1Control _tab1 = new();
     private readonly Tab2Control _tab2 = new();
@@ -37,11 +39,21 @@ public partial class ServerPackControl : UserControl, IUserControl
     public ServerPackControl(GameSettingObj obj) : this()
     {
         _obj = obj;
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
-        Tabs.SelectionChanged += Tabs_SelectionChanged;
+        StackPanel1.PointerPressed += StackPanel1_PointerPressed;
+        StackPanel2.PointerPressed += StackPanel2_PointerPressed;
 
         Content1.Content = _tab1;
+    }
+
+    private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        (DataContext as ServerPackModel)!.OpenSide();
+    }
+
+    private void StackPanel1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        (DataContext as ServerPackModel)!.CloseSide();
     }
 
     public void Opened()
@@ -53,44 +65,6 @@ public partial class ServerPackControl : UserControl, IUserControl
         _tab4.Opened();
     }
 
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (e.Delta.Y > 0)
-        {
-            ScrollViewer1.LineLeft();
-        }
-        else if (e.Delta.Y < 0)
-        {
-            ScrollViewer1.LineRight();
-        }
-    }
-
-    private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        var model = (DataContext as ServerPackModel)!;
-        switch (Tabs.SelectedIndex)
-        {
-            case 0:
-                Go(_tab1);
-                model.LoadConfig();
-                break;
-            case 1:
-                Go(_tab2);
-                model.LoadMod();
-                break;
-            case 2:
-                Go(_tab3);
-                model.LoadConfigList();
-                break;
-            case 3:
-                Go(_tab4);
-                model.LoadFile();
-                break;
-        }
-
-        _now = Tabs.SelectedIndex;
-    }
-
     private void Go(UserControl to)
     {
         _cancel.Cancel();
@@ -98,21 +72,20 @@ public partial class ServerPackControl : UserControl, IUserControl
 
         _cancel = new();
 
-        Tabs.IsEnabled = false;
+        var model = (DataContext as ServerPackModel)!;
 
         if (!_switch1)
         {
             Content2.Content = to;
-            _ = App.PageSlide500.Start(Content1, Content2, _now < Tabs.SelectedIndex, _cancel.Token);
+            _ = App.PageSlide500.Start(Content1, Content2, _now < model.NowView, _cancel.Token);
         }
         else
         {
             Content1.Content = to;
-            _ = App.PageSlide500.Start(Content2, Content1, _now < Tabs.SelectedIndex, _cancel.Token);
+            _ = App.PageSlide500.Start(Content2, Content1, _now < model.NowView, _cancel.Token);
         }
 
         _switch1 = !_switch1;
-        Tabs.IsEnabled = true;
     }
 
     public void Closed()
@@ -137,6 +110,44 @@ public partial class ServerPackControl : UserControl, IUserControl
         }
 
         var amodel = new ServerPackModel(model, pack);
+        amodel.PropertyChanged += Amodel_PropertyChanged;
         DataContext = amodel;
+    }
+
+    private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "NowView")
+        {
+            var model = (DataContext as ServerPackModel)!;
+            switch (model.NowView)
+            {
+                case 0:
+                    Go(_tab1);
+                    model.LoadConfig();
+                    break;
+                case 1:
+                    Go(_tab2);
+                    model.LoadMod();
+                    break;
+                case 2:
+                    Go(_tab3);
+                    model.LoadConfigList();
+                    break;
+                case 3:
+                    Go(_tab4);
+                    model.LoadFile();
+                    break;
+            }
+
+            _now = model.NowView;
+        }
+        else if (e.PropertyName == "SideOpen")
+        {
+            App.CrossFade100.Start(null, StackPanel1);
+        }
+        else if (e.PropertyName == "SideClose")
+        {
+            StackPanel1.IsVisible = false;
+        }
     }
 }

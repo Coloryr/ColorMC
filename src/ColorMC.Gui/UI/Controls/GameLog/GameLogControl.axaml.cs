@@ -50,7 +50,7 @@ public partial class GameLogControl : UserControl, IUserControl
 
     public void Update()
     {
-        (DataContext as GameLogModel)!.Load();
+        (DataContext as GameLogModel)?.Load();
     }
 
     public void Opened()
@@ -62,6 +62,8 @@ public partial class GameLogControl : UserControl, IUserControl
         {
             Window.SetIcon(new(icon));
         }
+
+        (DataContext as GameLogModel)!.Load();
     }
 
     public void Closed()

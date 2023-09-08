@@ -6,202 +6,224 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="850"
+    d:DesignHeight="1000"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="5,0,5,5">
-            <!--  运行前检查  -->
-
-            <Label Content="{setting:Localize SettingWindow.Tab4.Text13}" />
-
-            <StackPanel Orientation="Horizontal">
+        <StackPanel Margin="5,3,5,5">
+            <Border
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <CheckBox
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text14}"
-                        IsChecked="{Binding CheckCore}" />
-                    <CheckBox
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                        IsChecked="{Binding CheckCoreSha1}" />
-                </StackPanel>
+                    <!--  运行前检查  -->
+                    <Label Content="{setting:Localize SettingWindow.Tab4.Text13}" />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <CheckBox
+                                Margin="0,0,5,0"
+                                Content="{setting:Localize SettingWindow.Tab4.Text14}"
+                                IsChecked="{Binding CheckCore}" />
+                            <CheckBox
+                                Margin="0,0,5,0"
+                                Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                                IsChecked="{Binding CheckCoreSha1}" />
+                        </StackPanel>
 
+                        <StackPanel>
+                            <CheckBox
+                                Margin="0,0,5,0"
+                                Content="{setting:Localize SettingWindow.Tab4.Text15}"
+                                IsChecked="{Binding CheckAssets}" />
+                            <CheckBox
+                                Margin="0,0,5,0"
+                                Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                                IsChecked="{Binding CheckAssetsSha1}" />
+                        </StackPanel>
+                        <StackPanel>
+                            <CheckBox
+                                Margin="0,0,5,0"
+                                Content="{setting:Localize SettingWindow.Tab4.Text16}"
+                                IsChecked="{Binding CheckLib}" />
+                            <CheckBox
+                                Margin="0,0,5,0"
+                                Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                                IsChecked="{Binding CheckLibSha1}" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <CheckBox
+                                Margin="0,0,5,0"
+                                Content="{setting:Localize SettingWindow.Tab4.Text17}"
+                                IsChecked="{Binding CheckMod}" />
+                            <CheckBox
+                                Margin="0,0,5,0"
+                                Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                                IsChecked="{Binding CheckModSha1}" />
+                        </StackPanel>
+                        <CheckBox
+                            Margin="0,0,5,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text20}"
+                            IsChecked="{Binding PreRun}" />
+                    </StackPanel>
+                    <TextBox
+                        Height="100"
+                        Margin="0,5,0,0"
+                        AcceptsReturn="True"
+                        Classes="input2"
+                        IsEnabled="{Binding PreRun}"
+                        Text="{Binding PreCmd}"
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <CheckBox
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text15}"
-                        IsChecked="{Binding CheckAssets}" />
-                    <CheckBox
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                        IsChecked="{Binding CheckAssetsSha1}" />
-                </StackPanel>
+                    <!--  运行后  -->
+                    <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />
 
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox
+                            Margin="0,0,5,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text18}"
+                            IsChecked="{Binding CloseBefore}" />
+                        <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PostRun}" />
+                    </StackPanel>
+                    <TextBox
+                        Height="100"
+                        Margin="0,5,0,0"
+                        AcceptsReturn="True"
+                        Classes="input2"
+                        IsEnabled="{Binding PostRun}"
+                        Text="{Binding PostCmd}"
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <CheckBox
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text16}"
-                        IsChecked="{Binding CheckLib}" />
-                    <CheckBox
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                        IsChecked="{Binding CheckLibSha1}" />
+                    <Label Content="{setting:Localize SettingWindow.Tab4.Text1}" />
+                    <StackPanel Orientation="Horizontal">
+                        <!--  Jvm内存  -->
+                        <Label
+                            Width="140"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text4}" />
+                        <NumericUpDown
+                            Width="150"
+                            Height="30"
+                            FormatString="N0"
+                            Minimum="1"
+                            Value="{Binding MinMemory}" />
+                        <Label
+                            Width="140"
+                            Margin="20,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text5}" />
+                        <NumericUpDown
+                            Width="150"
+                            Height="30"
+                            FormatString="N0"
+                            Minimum="1"
+                            Value="{Binding MaxMemory}" />
+                    </StackPanel>
+                    <!--  Jvm参数  -->
+                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                        <Label
+                            Width="140"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text2}" />
+                        <ComboBox
+                            Width="300"
+                            ItemsSource="{Binding GCTypeList}"
+                            SelectedIndex="{Binding GC}" />
+                    </StackPanel>
+                    <TextBox
+                        Margin="0,5,0,5"
+                        Classes="input1"
+                        IsEnabled="False"
+                        Text="{Binding GCArg}"
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text3}" />
+                    <!--  Jvm附加参数  -->
+                    <TextBox
+                        Margin="0,5,0,0"
+                        Classes="input1"
+                        Text="{Binding JavaAgent}"
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text6}" />
+                    <TextBox
+                        Height="100"
+                        Margin="0,5,0,0"
+                        AcceptsReturn="True"
+                        Classes="input"
+                        Text="{Binding JvmArg}"
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text7}" />
+                    <TextBox
+                        Height="100"
+                        Margin="0,5,0,0"
+                        AcceptsReturn="True"
+                        Classes="input"
+                        Text="{Binding GameArg}"
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
+                    <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
                 </StackPanel>
-
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <CheckBox
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text17}"
-                        IsChecked="{Binding CheckMod}" />
-                    <CheckBox
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                        IsChecked="{Binding CheckModSha1}" />
+                    <!--  分辨率  -->
+                    <Label Content="{setting:Localize SettingWindow.Tab4.Text9}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="140"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text10}" />
+                        <NumericUpDown
+                            Width="150"
+                            Height="30"
+                            FormatString="N0"
+                            IsEnabled="{Binding !FullScreen}"
+                            Minimum="1"
+                            Value="{Binding Width}" />
+
+                        <Label
+                            Width="140"
+                            Margin="20,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text11}" />
+                        <NumericUpDown
+                            Width="150"
+                            Height="30"
+                            FormatString="N0"
+                            IsEnabled="{Binding !FullScreen}"
+                            Minimum="1"
+                            Value="{Binding Height}" />
+
+                        <CheckBox
+                            Margin="20,0,0,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text12}"
+                            IsChecked="{Binding FullScreen}" />
+                    </StackPanel>
                 </StackPanel>
-
-                <CheckBox
-                    Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text20}"
-                    IsChecked="{Binding PreRun}" />
-            </StackPanel>
-
-            <TextBox
-                Height="100"
-                Margin="0,5,0,0"
-                AcceptsReturn="True"
-                Classes="input2"
-                IsEnabled="{Binding PreRun}"
-                Text="{Binding PreCmd}"
-                Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
-
-            <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />
-
-            <StackPanel Orientation="Horizontal">
-                <CheckBox
-                    Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text18}"
-                    IsChecked="{Binding CloseBefore}" />
-                <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PostRun}" />
-            </StackPanel>
-            <TextBox
-                Height="100"
-                Margin="0,5,0,0"
-                AcceptsReturn="True"
-                Classes="input2"
-                IsEnabled="{Binding PostRun}"
-                Text="{Binding PostCmd}"
-                Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
-
-            <!--  Jvm参数  -->
-
-            <Label Content="{setting:Localize SettingWindow.Tab4.Text1}" />
-            <StackPanel Orientation="Horizontal">
-                <Label
-                    Width="140"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab4.Text2}" />
-                <ComboBox
-                    Width="300"
-                    ItemsSource="{Binding GCTypeList}"
-                    SelectedIndex="{Binding GC}" />
-
-            </StackPanel>
-
-            <TextBox
-                Margin="0,5,0,5"
-                Classes="input1"
-                IsEnabled="False"
-                Text="{Binding GCArg}"
-                Watermark="{setting:Localize SettingWindow.Tab4.Text3}" />
-
-            <StackPanel Orientation="Horizontal">
-                <!--  Jvm内存  -->
-
-                <Label
-                    Width="140"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab4.Text4}" />
-                <NumericUpDown
-                    Width="150"
-                    Height="30"
-                    FormatString="N0"
-                    Minimum="1"
-                    Value="{Binding MinMemory}" />
-
-                <Label
-                    Width="140"
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab4.Text5}" />
-                <NumericUpDown
-                    Width="150"
-                    Height="30"
-                    FormatString="N0"
-                    Minimum="1"
-                    Value="{Binding MaxMemory}" />
-            </StackPanel>
-
-            <!--  Jvm附加参数  -->
-
-            <TextBox
-                Margin="0,5,0,0"
-                Classes="input1"
-                Text="{Binding JavaAgent}"
-                Watermark="{setting:Localize SettingWindow.Tab4.Text6}" />
-            <TextBox
-                Height="100"
-                Margin="0,5,0,0"
-                AcceptsReturn="True"
-                Classes="input"
-                Text="{Binding JvmArg}"
-                Watermark="{setting:Localize SettingWindow.Tab4.Text7}" />
-            <TextBox
-                Height="100"
-                Margin="0,5,0,0"
-                AcceptsReturn="True"
-                Classes="input"
-                Text="{Binding GameArg}"
-                Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
-
-            <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
-
-            <!--  分辨率  -->
-
-            <Label Content="{setting:Localize SettingWindow.Tab4.Text9}" />
-            <StackPanel Orientation="Horizontal">
-                <Label
-                    Width="140"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab4.Text10}" />
-                <NumericUpDown
-                    Width="150"
-                    Height="30"
-                    FormatString="N0"
-                    IsEnabled="{Binding !FullScreen}"
-                    Minimum="1"
-                    Value="{Binding Width}" />
-
-                <Label
-                    Width="140"
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab4.Text11}" />
-                <NumericUpDown
-                    Width="150"
-                    Height="30"
-                    FormatString="N0"
-                    IsEnabled="{Binding !FullScreen}"
-                    Minimum="1"
-                    Value="{Binding Height}" />
-
-                <CheckBox
-                    Margin="20,0,0,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text12}"
-                    IsChecked="{Binding FullScreen}" />
-            </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

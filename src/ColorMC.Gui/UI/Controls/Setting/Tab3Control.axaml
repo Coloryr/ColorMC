@@ -10,109 +10,43 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-            <Button
-                Width="160"
-                Height="25"
-                Margin="5"
-                Command="{Binding OpenDownloadPath}"
-                Content="{setting:Localize SettingWindow.Tab3.Text13}" />
-            <Button
-                Width="160"
-                Height="25"
-                Margin="0,5,5,5"
-                Command="{Binding OpenPicPath}"
-                Content="{setting:Localize SettingWindow.Tab3.Text18}" />
-        </StackPanel>
-        <StackPanel Margin="5,0,5,5">
-            <StackPanel Orientation="Horizontal">
-                <Label
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab3.Text1}" />
-                <ComboBox
-                    Width="200"
-                    Margin="5,0,0,0"
-                    IsEnabled="{Binding !IsDownload}"
-                    ItemsSource="{Binding SourceList}"
-                    SelectedIndex="{Binding Source}" />
+    <ScrollViewer>
+        <StackPanel Margin="5,3,5,5">
+            <Border
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <WrapPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab3.Text1}" />
+                        <ComboBox
+                            Width="120"
+                            Margin="5,0,0,0"
+                            IsEnabled="{Binding !IsDownload}"
+                            ItemsSource="{Binding SourceList}"
+                            SelectedIndex="{Binding Source}" />
+                    </StackPanel>
 
-                <Label
-                    Margin="5,0,5,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab3.Text2}" />
-                <NumericUpDown
-                    Width="150"
-                    Height="30"
-                    FormatString="N0"
-                    IsEnabled="{Binding !IsDownload}"
-                    Minimum="1"
-                    Value="{Binding Thread}" />
-            </StackPanel>
-
-            <StackPanel>
-                <Label Content="{setting:Localize SettingWindow.Tab3.Text3}" />
-                <Grid ColumnDefinitions="1.6*,1*,1.6*,1.6*,1*">
-                    <TextBox
-                        Grid.Column="0"
-                        Margin="0,0,5,0"
-                        Classes="input1"
-                        IsEnabled="{Binding !IsDownload}"
-                        Text="{Binding IP}"
-                        Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
-                    <TextBox
-                        Grid.Column="1"
-                        Margin="0,0,5,0"
-                        Classes="input1"
-                        IsEnabled="{Binding !IsDownload}"
-                        MaxLength="5"
-                        Text="{Binding Port}"
-                        Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
-                    <TextBox
-                        Grid.Column="2"
-                        Margin="0,0,5,0"
-                        Classes="input1"
-                        IsEnabled="{Binding !IsDownload}"
-                        Text="{Binding User}"
-                        Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
-                    <TextBox
-                        Grid.Column="3"
-                        Margin="0,0,5,0"
-                        Classes="input1"
-                        IsEnabled="{Binding !IsDownload}"
-                        PasswordChar="*"
-                        Text="{Binding Password}"
-                        Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
-                    <Button
-                        Grid.Column="4"
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Center"
-                        Command="{Binding SetProxy}"
-                        Content="{setting:Localize Button.Set}" />
-                </Grid>
-                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <CheckBox
-                        Width="160"
-                        Content="{setting:Localize SettingWindow.Tab3.Text8}"
-                        IsChecked="{Binding LoginProxy}"
-                        IsEnabled="{Binding !IsDownload}" />
-                    <CheckBox
-                        Width="160"
-                        Content="{setting:Localize SettingWindow.Tab3.Text9}"
-                        IsChecked="{Binding DownloadProxy}"
-                        IsEnabled="{Binding !IsDownload}" />
-                    <CheckBox
-                        Width="160"
-                        Content="{setting:Localize SettingWindow.Tab3.Text10}"
-                        IsChecked="{Binding GameProxy}"
-                        IsEnabled="{Binding !IsDownload}" />
-
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab3.Text2}" />
+                        <NumericUpDown
+                            Width="120"
+                            Height="30"
+                            Margin="0,0,10,0"
+                            FormatString="N0"
+                            IsEnabled="{Binding !IsDownload}"
+                            Minimum="1"
+                            Value="{Binding Thread}" />
+                    </StackPanel>
                     <CheckBox
                         Width="160"
                         Content="{setting:Localize SettingWindow.Tab3.Text11}"
@@ -122,49 +56,153 @@
                         Content="{setting:Localize SettingWindow.Tab3.Text19}"
                         IsChecked="{Binding AutoDownload}"
                         IsEnabled="{Binding !IsDownload}" />
+                </WrapPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label Content="{setting:Localize SettingWindow.Tab3.Text3}" />
+                    <WrapPanel>
+                        <TextBox
+                            Width="100"
+                            Margin="0,0,5,0"
+                            Classes="input1"
+                            IsEnabled="{Binding !IsDownload}"
+                            Text="{Binding IP}"
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
+                        <TextBox
+                            Width="100"
+                            Margin="0,0,5,0"
+                            Classes="input1"
+                            IsEnabled="{Binding !IsDownload}"
+                            MaxLength="5"
+                            Text="{Binding Port}"
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
+                        <TextBox
+                            Width="100"
+                            Margin="0,0,5,0"
+                            Classes="input1"
+                            IsEnabled="{Binding !IsDownload}"
+                            Text="{Binding User}"
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
+                        <TextBox
+                            Width="100"
+                            Margin="0,0,5,0"
+                            Classes="input1"
+                            IsEnabled="{Binding !IsDownload}"
+                            PasswordChar="*"
+                            Text="{Binding Password}"
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding SetProxy}"
+                            Content="{setting:Localize Button.Set}" />
+                        <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                            <CheckBox
+                                Width="130"
+                                Content="{setting:Localize SettingWindow.Tab3.Text8}"
+                                IsChecked="{Binding LoginProxy}"
+                                IsEnabled="{Binding !IsDownload}" />
+                            <CheckBox
+                                Width="130"
+                                Content="{setting:Localize SettingWindow.Tab3.Text9}"
+                                IsChecked="{Binding DownloadProxy}"
+                                IsEnabled="{Binding !IsDownload}" />
+                            <CheckBox
+                                Width="130"
+                                Content="{setting:Localize SettingWindow.Tab3.Text10}"
+                                IsChecked="{Binding GameProxy}"
+                                IsEnabled="{Binding !IsDownload}" />
+                        </StackPanel>
+
+                    </WrapPanel>
+                    <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab3.Text12}" />
                 </StackPanel>
-
-            </StackPanel>
-
-            <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab3.Text12}" />
-
-            <Label Content="{setting:Localize SettingWindow.Tab3.Text14}" />
-
-            <StackPanel Orientation="Horizontal">
-                <CheckBox Content="{setting:Localize SettingWindow.Tab3.Text15}" IsChecked="{Binding CheckUpdate}" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="5"
-                    Command="{Binding StartCheck}"
-                    Content="{setting:Localize SettingWindow.Tab3.Text16}" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="0,5,5,5"
-                    Command="{Binding StartUpdate}"
-                    Content="{setting:Localize SettingWindow.Tab3.Text17}" />
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Label Content="{setting:Localize SettingWindow.Tab3.Text20}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    Command="{Binding GameCloudConnect}"
-                    Content="{setting:Localize SettingWindow.Tab3.Text22}" />
-                <Label Margin="5,0,0,0" Content="{Binding ServerInfo}" />
-            </StackPanel>
-            <TextBox
-                Height="100"
-                Margin="0,5,0,0"
-                AcceptsReturn="True"
-                Classes="input2"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                Text="{Binding ServerKey}"
-                TextWrapping="Wrap"
-                Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label Content="{setting:Localize SettingWindow.Tab3.Text14}" />
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox Content="{setting:Localize SettingWindow.Tab3.Text15}" IsChecked="{Binding CheckUpdate}" />
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Margin="5"
+                            Command="{Binding StartCheck}"
+                            Content="{setting:Localize SettingWindow.Tab3.Text16}" />
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Margin="0,5,5,5"
+                            Command="{Binding StartUpdate}"
+                            Content="{setting:Localize SettingWindow.Tab3.Text17}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{setting:Localize SettingWindow.Tab3.Text20}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,0,0,0"
+                            Command="{Binding GameCloudConnect}"
+                            Content="{setting:Localize SettingWindow.Tab3.Text22}" />
+                        <Label Margin="5,0,0,0" Content="{Binding ServerInfo}" />
+                    </StackPanel>
+                    <TextBox
+                        Height="100"
+                        Margin="0,5,0,0"
+                        AcceptsReturn="True"
+                        Classes="input2"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        Text="{Binding ServerKey}"
+                        TextWrapping="Wrap"
+                        Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="160"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding OpenDownloadPath}"
+                        Content="{setting:Localize SettingWindow.Tab3.Text13}" />
+                    <Button
+                        Width="160"
+                        Height="25"
+                        Command="{Binding OpenPicPath}"
+                        Content="{setting:Localize SettingWindow.Tab3.Text18}" />
+                </StackPanel>
+            </Border>
         </StackPanel>
-    </DockPanel>
+    </ScrollViewer>
 </UserControl>

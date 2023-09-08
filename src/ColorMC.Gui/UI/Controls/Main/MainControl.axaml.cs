@@ -36,8 +36,14 @@ public partial class MainControl : UserControl, IUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         KeyDown += MainControl_KeyDown;
+        Grid1.PointerPressed += Grid1_PointerPressed;
 
         SizeChanged += MainControl_SizeChanged;
+    }
+
+    private void Grid1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        (DataContext as MainModel)!.SideClose();
     }
 
     private void MainControl_SizeChanged(object? sender, SizeChangedEventArgs e)
@@ -82,18 +88,18 @@ public partial class MainControl : UserControl, IUserControl
                 }
             });
         }
-        else if (e.PropertyName == "SideDisplay")
+        else if (e.PropertyName == "SideOpen")
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if ((DataContext as MainModel)!.SideDisplay)
-                {
-                    App.CrossFade100.Start(null, Grid1);
-                }
-                else
-                {
-                    App.CrossFade100.Start(Grid1, null);
-                }
+                App.CrossFade100.Start(null, Grid1);
+            });
+        }
+        else if (e.PropertyName == "SideClose")
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                Grid1.IsVisible = false;
             });
         }
     }

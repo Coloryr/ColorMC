@@ -22,10 +22,11 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 DockPanel.Dock="Top">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <WrapPanel Orientation="Horizontal">
                         <Button
                             Width="100"
                             Height="25"
+                            Margin="0,0,5,0"
                             VerticalAlignment="Center"
                             Command="{Binding Open}"
                             Content="{setting:Localize Button.OpFile}"
@@ -34,7 +35,7 @@
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,0,0,0"
+                            Margin="0,0,5,0"
                             VerticalAlignment="Center"
                             Command="{Binding Save}"
                             Content="{setting:Localize ConfigEditWindow.Text2}"
@@ -43,7 +44,7 @@
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,0,0,0"
+                            Margin="0,0,5,0"
                             VerticalAlignment="Center"
                             Command="{Binding Load}"
                             Content="{setting:Localize ConfigEditWindow.Text3}"
@@ -52,7 +53,7 @@
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,0,0,0"
+                            Margin="0,0,5,0"
                             VerticalAlignment="Center"
                             Command="{Binding FindBlock}"
                             Content="{setting:Localize ConfigEditWindow.Text5}"
@@ -60,20 +61,19 @@
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,0,0,0"
                             VerticalAlignment="Center"
                             Command="{Binding FindEntity}"
                             Content="{setting:Localize ConfigEditWindow.Text6}"
                             IsVisible="{Binding IsWorld}" />
-                    </StackPanel>
+                    </WrapPanel>
                     <DockPanel Margin="0,3,0,0">
                         <ComboBox
-                            Width="250"
+                            Width="200"
+                            Margin="0,0,5,0"
                             ItemsSource="{Binding FileList}"
                             SelectedIndex="{Binding Select}"
                             SelectedItem="{Binding File}" />
                         <TextBox
-                            Margin="5,0,0,0"
                             VerticalAlignment="Center"
                             Classes="input1"
                             Text="{Binding Name}"
@@ -90,7 +90,6 @@
                 <Panel>
                     <ae:TextEditor
                         Name="TextEditor1"
-                        Background="{setting:Colors TranBack}"
                         Document="{Binding Text}"
                         FontSize="14"
                         FontWeight="Normal"

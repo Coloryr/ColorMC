@@ -10,48 +10,52 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <Panel Margin="5,0,5,5">
+    <Panel Margin="5,3,5,5">
         <ScrollViewer>
-            <StackPanel Margin="0,0,0,30">
-                <Label Content="{setting:Localize ServerPackWindow.Tab1.Text1}" />
-                <TextBox
-                    Name="TextBox1"
-                    Margin="0,0,0,5"
-                    Classes="input1"
-                    Text="{Binding Url}"
-                    Watermark="{setting:Localize ServerPackWindow.Tab1.Text2}" />
-                <Label Content="{setting:Localize ServerPackWindow.Tab1.Text3}" />
-                <TextBox
-                    Margin="0,0,0,5"
-                    Classes="input1"
-                    Text="{Binding Version}"
-                    Watermark="{setting:Localize ServerPackWindow.Tab1.Text4}" />
-                <Label Content="{setting:Localize ServerPackWindow.Tab1.Text5}" />
-                <TextBox
-                    Height="60"
-                    Margin="0,0,0,5"
-                    AcceptsReturn="True"
-                    Classes="input2"
-                    Text="{Binding Text}"
-                    Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
-                <Label Content="{setting:Localize ServerPackWindow.Tab1.Text7}" />
-
-                <DockPanel>
-                    <Button
-                        Width="80"
-                        Height="25"
-                        Margin="5,0,0,0"
-                        Command="{Binding OpenUI}"
-                        Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right" />
+            <Border
+                Padding="8"
+                VerticalAlignment="Top"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
                     <TextBox
+                        Name="TextBox1"
+                        Margin="0,0,0,5"
                         Classes="input1"
-                        Text="{Binding UI}"
-                        Watermark="{setting:Localize ServerPackWindow.Tab1.Text8}" />
+                        Text="{Binding Url}"
+                        Watermark="{setting:Localize ServerPackWindow.Tab1.Text2}" />
+                    <TextBox
+                        Margin="0,0,0,5"
+                        Classes="input1"
+                        Text="{Binding Version}"
+                        Watermark="{setting:Localize ServerPackWindow.Tab1.Text4}" />
+                    <TextBox
+                        Height="60"
+                        Margin="0,0,0,5"
+                        AcceptsReturn="True"
+                        Classes="input2"
+                        Text="{Binding Text}"
+                        Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
 
-                </DockPanel>
-                <CheckBox Content="{setting:Localize ServerPackWindow.Tab1.Text9}" IsChecked="{Binding ForceUpdate}" />
-            </StackPanel>
+                    <DockPanel>
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="5,0,0,0"
+                            Command="{Binding OpenUI}"
+                            Content="{setting:Localize Button.Select}"
+                            DockPanel.Dock="Right" />
+                        <TextBox
+                            Classes="input1"
+                            Text="{Binding UI}"
+                            Watermark="{setting:Localize ServerPackWindow.Tab1.Text8}" />
+
+                    </DockPanel>
+                    <CheckBox Content="{setting:Localize ServerPackWindow.Tab1.Text9}" IsChecked="{Binding ForceUpdate}" />
+                </StackPanel>
+            </Border>
         </ScrollViewer>
     </Panel>
 </UserControl>

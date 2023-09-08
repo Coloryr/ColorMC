@@ -10,59 +10,75 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,0,5,5">
-        <DockPanel DockPanel.Dock="Top">
-            <Label
-                VerticalAlignment="Center"
-                Content="{setting:Localize ServerPackWindow.Tab4.Text1}"
-                DockPanel.Dock="Left" />
-            <Button
-                Width="80"
-                Height="25"
-                Margin="5"
-                Command="{Binding AddFile}"
-                Content="{setting:Localize Button.Add}"
-                DockPanel.Dock="Right" />
+    <DockPanel Margin="5,3,5,0">
+        <Border
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
+            <StackPanel>
+                <DockPanel>
+                    <Label
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize ServerPackWindow.Tab4.Text1}"
+                        DockPanel.Dock="Left" />
+                    <Button
+                        Width="80"
+                        Height="25"
+                        Command="{Binding AddFile}"
+                        Content="{setting:Localize Button.Add}"
+                        DockPanel.Dock="Right" />
 
-            <ComboBox
-                Name="ComboBox2"
-                Width="120"
-                HorizontalAlignment="Stretch"
-                DockPanel.Dock="Right"
-                ItemsSource="{Binding FuntionList}"
-                SelectedIndex="{Binding Funtion}" />
-            <Label
-                VerticalAlignment="Center"
-                Content=""
-                DockPanel.Dock="Right" />
+                    <ComboBox
+                        Name="ComboBox2"
+                        Width="120"
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Stretch"
+                        DockPanel.Dock="Right"
+                        ItemsSource="{Binding FuntionList}"
+                        SelectedIndex="{Binding Funtion}" />
+                    <Label
+                        VerticalAlignment="Center"
+                        Content=""
+                        DockPanel.Dock="Right" />
 
-            <ComboBox
-                Name="ComboBox1"
-                HorizontalAlignment="Stretch"
-                ItemsSource="{Binding NameList}"
-                SelectedItem="{Binding Group}" />
-        </DockPanel>
-
-        <Label Content="{setting:Localize ServerPackWindow.Tab4.Text3}" DockPanel.Dock="Bottom" />
-
-        <DataGrid
-            Name="DataGrid1"
-            AutoGenerateColumns="False"
-            CanUserResizeColumns="True"
-            CanUserSortColumns="False"
-            ItemsSource="{Binding FileList}"
-            SelectedItem="{Binding FileItem}">
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Binding="{Binding Group}"
-                    Header="{setting:Localize Text.Name}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Type}"
-                    Header="{setting:Localize ServerPackWindow.Tab4.DataGrid.Text2}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab4.DataGrid.Text3}" />
-            </DataGrid.Columns>
-        </DataGrid>
+                    <ComboBox
+                        Name="ComboBox1"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding NameList}"
+                        SelectedItem="{Binding Group}" />
+                </DockPanel>
+                <Label Content="{setting:Localize ServerPackWindow.Tab4.Text3}" DockPanel.Dock="Bottom" />
+            </StackPanel>
+        </Border>
+        <Border
+            Margin="0,3,0,0"
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <DataGrid
+                Name="DataGrid1"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                ItemsSource="{Binding FileList}"
+                SelectedItem="{Binding FileItem}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Group}"
+                        Header="{setting:Localize Text.Name}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Type}"
+                        Header="{setting:Localize ServerPackWindow.Tab4.DataGrid.Text2}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab4.DataGrid.Text3}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </DockPanel>
 </UserControl>

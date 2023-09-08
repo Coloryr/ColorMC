@@ -22,14 +22,6 @@ public record StyleSetting
 public record MainWindowSetting
 {
     /// <summary>
-    /// 菜单栏状态
-    /// </summary>
-    public bool MainDisplay { get; set; }
-    /// <summary>
-    /// 菜单栏状态保存
-    /// </summary>
-    public bool WindowStateSave { get; set; }
-    /// <summary>
     /// 主界面镜像
     /// </summary>
     public bool WindowMirror { get; set; }

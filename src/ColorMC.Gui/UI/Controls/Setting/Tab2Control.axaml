@@ -7,529 +7,573 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:view="clr-namespace:ColorMC.Gui.Objs"
-    d:DesignHeight="850"
+    d:DesignHeight="1000"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="5,0,5,5">
-            <StackPanel Name="PhoneSetting" />
-            <StackPanel Orientation="Horizontal">
-                <CheckBox
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text22}"
-                    IsChecked="{Binding WindowMode}"
-                    IsEnabled="{Binding EnableWindowMode}" />
-                <TextBlock
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="{setting:Localize SettingWindow.Tab2.Text23}"
-                    TextWrapping="Wrap" />
-            </StackPanel>
-
-            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text36}" />
-
-            <StackPanel Orientation="Horizontal">
-                <CheckBox
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text37}"
-                    IsChecked="{Binding MainWindowMirror}" />
-                <CheckBox
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text38}"
-                    IsChecked="{Binding MainWindowStateSave}" />
-            </StackPanel>
-
-            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text39}" />
-
-            <StackPanel Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text40}" />
-                <Slider
-                    Width="200"
-                    Height="40"
-                    Margin="5,-8,0,0"
-                    HorizontalAlignment="Left"
-                    Foreground="{setting:Colors Main}"
-                    IsSnapToTickEnabled="True"
-                    LargeChange="1"
-                    Maximum="20"
-                    Minimum="0"
-                    SmallChange="1"
-                    TickFrequency="1"
-                    Value="{Binding ButtonCornerRadius}" />
-                <Label
-                    Width="40"
-                    VerticalAlignment="Center"
-                    Content="{Binding ButtonCornerRadius, StringFormat='{}{0}'}" />
-            </StackPanel>
-
-            <WrapPanel Orientation="Horizontal">
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text41}" />
-                    <Slider
-                        Width="200"
-                        Height="40"
-                        Margin="5,-8,0,0"
-                        HorizontalAlignment="Left"
-                        Foreground="{setting:Colors Main}"
-                        IsSnapToTickEnabled="True"
-                        LargeChange="1"
-                        Maximum="2000"
-                        Minimum="0"
-                        SmallChange="1"
-                        TickFrequency="1"
-                        Value="{Binding AmTime}" />
-                    <Label
-                        Width="40"
-                        Margin="0,0,5,0"
+        <StackPanel Margin="5,3,5,5">
+            <Border
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <StackPanel Name="PhoneSetting" />
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text22}"
+                            IsChecked="{Binding WindowMode}"
+                            IsEnabled="{Binding EnableWindowMode}" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="{setting:Localize SettingWindow.Tab2.Text23}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                    <CheckBox
                         VerticalAlignment="Center"
-                        Content="{Binding AmTime, StringFormat='{}{0}'}" />
+                        Content="{setting:Localize SettingWindow.Tab2.Text37}"
+                        IsChecked="{Binding MainWindowMirror}" />
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text9}"
+                            IsChecked="{Binding EnableWindowTran}" />
+                        <ComboBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding EnableWindowTran}"
+                            ItemsSource="{Binding TranTypeList}"
+                            SelectedIndex="{Binding WindowTranType}" />
+                    </StackPanel>
+                    <Label Margin="5,0,0,0">
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text6}" TextWrapping="Wrap" />
+                    </Label>
                 </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <!--  语言  -->
 
-                <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text42}" IsChecked="{Binding AmFade}" />
-            </WrapPanel>
+                    <WrapPanel Orientation="Horizontal">
+                        <Label
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text1}" />
+                        <ComboBox
+                            Width="200"
+                            Margin="0,0,5,0"
+                            ItemsSource="{Binding LanguageList}"
+                            SelectedIndex="{Binding Language}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab2.Text19}" />
+                            <DropDownButton
+                                Name="DropDownButton1"
+                                Width="200"
+                                Margin="0,0,5,0"
+                                Content="{Binding FontItem}"
+                                IsEnabled="{Binding EnableFontList}">
+                                <DropDownButton.DataTemplates>
+                                    <DataTemplate DataType="view:FontDisplayObj">
+                                        <TextBlock Text="{Binding FontName}" />
+                                    </DataTemplate>
+                                </DropDownButton.DataTemplates>
+                                <DropDownButton.Flyout>
+                                    <Flyout Placement="BottomEdgeAlignedLeft">
+                                        <ListBox
+                                            MinWidth="200"
+                                            Margin="-10,-5,-5,-10"
+                                            ItemsSource="{Binding FontList}"
+                                            SelectedItem="{Binding FontItem}">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding FontName}" />
+                                                        <TextBlock FontFamily="{Binding FontFamily}" Text="{setting:Localize SettingWindow.Tab2.Text25}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </Flyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </StackPanel>
 
-            <!--  语言  -->
+                        <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text20}" IsChecked="{Binding IsDefaultFont}" />
+                    </WrapPanel>
 
-            <WrapPanel Orientation="Horizontal">
-                <Label
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text1}" />
-                <ComboBox
-                    Width="200"
-                    Margin="0,0,5,0"
-                    ItemsSource="{Binding LanguageList}"
-                    SelectedIndex="{Binding Language}" />
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Margin="0,0,5,0"
+                    <Label Margin="10,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text39}" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text40}" />
+                        <Slider
+                            Width="200"
+                            Height="40"
+                            Margin="5,-8,0,0"
+                            HorizontalAlignment="Left"
+                            Foreground="{setting:Colors Main}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="20"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding ButtonCornerRadius}" />
+                        <Label
+                            Width="40"
+                            VerticalAlignment="Center"
+                            Content="{Binding ButtonCornerRadius, StringFormat='{}{0}'}" />
+                    </StackPanel>
+
+                    <WrapPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text41}" />
+                            <Slider
+                                Width="200"
+                                Height="40"
+                                Margin="5,-8,0,0"
+                                HorizontalAlignment="Left"
+                                Foreground="{setting:Colors Main}"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="1"
+                                Maximum="2000"
+                                Minimum="0"
+                                SmallChange="1"
+                                TickFrequency="1"
+                                Value="{Binding AmTime}" />
+                            <Label
+                                Width="40"
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{Binding AmTime, StringFormat='{}{0}'}" />
+                        </StackPanel>
+
+                        <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text42}" IsChecked="{Binding AmFade}" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <!--  背景图  -->
+
+                    <Label Content="{setting:Localize SettingWindow.Tab2.Text2}" />
+                    <CheckBox
                         VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text19}" />
-                    <DropDownButton
-                        Name="DropDownButton1"
-                        Width="200"
-                        Margin="0,0,5,0"
-                        Content="{Binding FontItem}"
-                        IsEnabled="{Binding EnableFontList}">
-                        <DropDownButton.DataTemplates>
-                            <DataTemplate DataType="view:FontDisplayObj">
-                                <TextBlock Text="{Binding FontName}" />
-                            </DataTemplate>
-                        </DropDownButton.DataTemplates>
-                        <DropDownButton.Flyout>
-                            <Flyout Placement="BottomEdgeAlignedLeft">
-                                <ListBox
-                                    MinWidth="200"
-                                    Margin="-10,-5,-5,-10"
-                                    ItemsSource="{Binding FontList}"
-                                    SelectedItem="{Binding FontItem}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel>
-                                                <TextBlock Text="{Binding FontName}" />
-                                                <TextBlock FontFamily="{Binding FontFamily}" Text="{setting:Localize SettingWindow.Tab2.Text25}" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Flyout>
-                        </DropDownButton.Flyout>
-                    </DropDownButton>
+                        Content="{setting:Localize SettingWindow.Tab2.Text44}"
+                        IsChecked="{Binding EnableBG}" />
+                    <WrapPanel>
+                        <TextBox
+                            MinWidth="300"
+                            Margin="0,0,5,0"
+                            Classes="input1"
+                            IsEnabled="{Binding EnableBG}"
+                            Text="{Binding Pic}"
+                            Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding DeletePic}"
+                            Content="{setting:Localize Button.Delete}"
+                            DockPanel.Dock="Right"
+                            IsEnabled="{Binding EnableBG}" />
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding OpenPic}"
+                            Content="{setting:Localize Button.Select}"
+                            DockPanel.Dock="Right"
+                            IsEnabled="{Binding EnableBG}" />
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding SetPic}"
+                            Content="{setting:Localize Button.Use}"
+                            DockPanel.Dock="Right"
+                            IsEnabled="{Binding EnableBG}" />
+                    </WrapPanel>
+                    <WrapPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text4}" />
+                            <Slider
+                                Width="200"
+                                Height="40"
+                                Margin="5,-8,0,0"
+                                HorizontalAlignment="Left"
+                                Foreground="{setting:Colors Main}"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="1"
+                                Maximum="100"
+                                Minimum="0"
+                                SmallChange="1"
+                                TickFrequency="1"
+                                Value="{Binding PicEffect}" />
+                            <Label
+                                Width="40"
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{Binding PicEffect, StringFormat='{}{0}%'}" />
+                        </StackPanel>
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding SetPic}"
+                            Content="{setting:Localize Button.Set}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text5}" />
+                            <Slider
+                                Width="200"
+                                Height="40"
+                                Margin="5,-8,0,0"
+                                HorizontalAlignment="Left"
+                                Foreground="{setting:Colors Main}"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="1"
+                                Maximum="100"
+                                Minimum="0"
+                                SmallChange="1"
+                                TickFrequency="1"
+                                Value="{Binding PicTran}" />
+                            <Label
+                                Width="40"
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{Binding PicTran, StringFormat='{}{0}%'}" />
+                        </StackPanel>
+                        <Button
+                            Width="80"
+                            Height="25"
+                            VerticalAlignment="Center"
+                            Command="{Binding SetPicTran}"
+                            Content="{setting:Localize Button.Set}" />
+                    </WrapPanel>
+                    <WrapPanel Orientation="Horizontal">
+                        <CheckBox
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text24}"
+                            IsChecked="{Binding EnablePicResize}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Slider
+                                Width="200"
+                                Height="40"
+                                Margin="5,-8,0,0"
+                                HorizontalAlignment="Left"
+                                Foreground="{setting:Colors Main}"
+                                IsEnabled="{Binding EnablePicResize}"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="1"
+                                Maximum="100"
+                                Minimum="0"
+                                SmallChange="1"
+                                TickFrequency="1"
+                                Value="{Binding PicResize}" />
+                            <Label
+                                Width="40"
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{Binding PicResize, StringFormat='{}{0}%'}" />
+                        </StackPanel>
+                        <Button
+                            Width="80"
+                            Height="25"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize Button.Set}"
+                            IsEnabled="{Binding EnablePicResize}" />
+                    </WrapPanel>
                 </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text18}" />
 
-                <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text20}" IsChecked="{Binding IsDefaultFont}" />
-            </WrapPanel>
+                    <!--  颜色设置  -->
+                    <Label Content="{setting:Localize SettingWindow.Tab2.Text7}" />
 
-            <Label Margin="10,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <RadioButton
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text26}"
+                            GroupName="Group1"
+                            IsChecked="{Binding IsAutoColor}" />
+                        <RadioButton
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text27}"
+                            GroupName="Group1"
+                            IsChecked="{Binding IsLightColor}" />
+                        <RadioButton
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text28}"
+                            GroupName="Group1"
+                            IsChecked="{Binding IsDarkColor}" />
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text8}" />
+                        <ColorPicker Color="{Binding MainColor}" />
+                    </StackPanel>
 
-            <!--  背景图  -->
+                    <WrapPanel Margin="0,0,0,5">
+                        <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text27}" />
+                        <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
+                        <ColorPicker Color="{Binding LightBackColor}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text11}" />
+                            <ColorPicker Color="{Binding LightTranColor}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text16}" />
+                            <ColorPicker Color="{Binding LightFont1Color}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text17}" />
+                            <ColorPicker Color="{Binding LightFont2Color}" />
+                        </StackPanel>
+                    </WrapPanel>
 
-            <Label Content="{setting:Localize SettingWindow.Tab2.Text2}" />
-            <CheckBox
-                VerticalAlignment="Center"
-                Content="{setting:Localize SettingWindow.Tab2.Text44}"
-                IsChecked="{Binding EnableBG}" />
-            <WrapPanel>
-                <TextBox
-                    MinWidth="300"
-                    Margin="0,0,5,0"
-                    Classes="input1"
-                    IsEnabled="{Binding EnableBG}"
-                    Text="{Binding Pic}"
-                    Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
-                <Button
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding DeletePic}"
-                    Content="{setting:Localize Button.Delete}"
-                    DockPanel.Dock="Right"
-                    IsEnabled="{Binding EnableBG}" />
-                <Button
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding OpenPic}"
-                    Content="{setting:Localize Button.Select}"
-                    DockPanel.Dock="Right"
-                    IsEnabled="{Binding EnableBG}" />
-                <Button
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding SetPic}"
-                    Content="{setting:Localize Button.Use}"
-                    DockPanel.Dock="Right"
-                    IsEnabled="{Binding EnableBG}" />
-            </WrapPanel>
-            <WrapPanel Orientation="Horizontal">
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text4}" />
-                    <Slider
-                        Width="200"
-                        Height="40"
-                        Margin="5,-8,0,0"
-                        HorizontalAlignment="Left"
-                        Foreground="{setting:Colors Main}"
-                        IsSnapToTickEnabled="True"
-                        LargeChange="1"
-                        Maximum="100"
-                        Minimum="0"
-                        SmallChange="1"
-                        TickFrequency="1"
-                        Value="{Binding PicEffect}" />
-                    <Label
-                        Width="40"
-                        Margin="0,0,5,0"
+                    <WrapPanel Orientation="Horizontal">
+                        <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text28}" />
+                        <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
+                        <ColorPicker Color="{Binding DarkBackColor}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text11}" />
+                            <ColorPicker Color="{Binding DarkTranColor}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text16}" />
+                            <ColorPicker Color="{Binding DarkFont1Color}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text17}" />
+                            <ColorPicker Color="{Binding DarkFont2Color}" />
+                        </StackPanel>
+
+                    </WrapPanel>
+
+                    <Button
+                        Width="80"
+                        Height="25"
+                        Margin="0,5,0,0"
                         VerticalAlignment="Center"
-                        Content="{Binding PicEffect, StringFormat='{}{0}%'}" />
+                        Command="{Binding ColorReset}"
+                        Content="{setting:Localize SettingWindow.Tab2.Text12}" />
                 </StackPanel>
-                <Button
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding SetPic}"
-                    Content="{setting:Localize Button.Set}" />
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text5}" />
-                    <Slider
-                        Width="200"
-                        Height="40"
-                        Margin="5,-8,0,0"
-                        HorizontalAlignment="Left"
-                        Foreground="{setting:Colors Main}"
-                        IsSnapToTickEnabled="True"
-                        LargeChange="1"
-                        Maximum="100"
-                        Minimum="0"
-                        SmallChange="1"
-                        TickFrequency="1"
-                        Value="{Binding PicTran}" />
-                    <Label
-                        Width="40"
-                        Margin="0,0,5,0"
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <!--  Live2D人物  -->
+
+                    <Label Content="{setting:Localize SettingWindow.Tab2.Text29}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{setting:Localize SettingWindow.Tab2.Text30}" />
+                        <Label Margin="5,0,0,0" Content="{Binding Live2DCoreState}" />
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding DownloadCore}"
+                            Content="{setting:Localize SettingWindow.Tab2.Text31}" />
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding OpenRunDir}"
+                            Content="{setting:Localize Button.OpFile}" />
+                    </StackPanel>
+
+                    <Label Content="{setting:Localize SettingWindow.Tab2.Text32}" />
+
+                    <WrapPanel>
+                        <TextBox
+                            MinWidth="300"
+                            Margin="0,0,5,0"
+                            Classes="input1"
+                            IsEnabled="{Binding CoreInstall}"
+                            Text="{Binding Live2DModel}"
+                            Watermark="{setting:Localize SettingWindow.Tab2.Text33}" />
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding DeleteLive2D}"
+                            Content="{setting:Localize Button.Delete}"
+                            DockPanel.Dock="Right"
+                            IsEnabled="{Binding CoreInstall}" />
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding OpenLive2D}"
+                            Content="{setting:Localize Button.Select}"
+                            DockPanel.Dock="Right"
+                            IsEnabled="{Binding CoreInstall}" />
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding SetLive2D}"
+                            Content="{setting:Localize Button.Use}"
+                            DockPanel.Dock="Right"
+                            IsEnabled="{Binding CoreInstall}" />
+                    </WrapPanel>
+
+                    <WrapPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text34}" />
+                            <Slider
+                                Width="200"
+                                Height="40"
+                                Margin="5,-8,0,0"
+                                HorizontalAlignment="Left"
+                                Foreground="{setting:Colors Main}"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="1"
+                                Maximum="100"
+                                Minimum="0"
+                                SmallChange="1"
+                                TickFrequency="1"
+                                Value="{Binding L2dWidth}" />
+                            <Label
+                                Width="40"
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{Binding L2dWidth, StringFormat='{}{0}%'}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text35}" />
+                            <Slider
+                                Width="200"
+                                Height="40"
+                                Margin="5,-8,0,0"
+                                HorizontalAlignment="Left"
+                                Foreground="{setting:Colors Main}"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="1"
+                                Maximum="100"
+                                Minimum="0"
+                                SmallChange="1"
+                                TickFrequency="1"
+                                Value="{Binding Height}" />
+                            <Label
+                                Width="40"
+                                VerticalAlignment="Center"
+                                Content="{Binding Height, StringFormat='{}{0}%'}" />
+                        </StackPanel>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <WrapPanel>
+                    <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text13}" IsChecked="{Binding EnableRGB}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text14}" />
+                        <Slider
+                            Width="200"
+                            Height="40"
+                            Margin="5,-8,0,0"
+                            HorizontalAlignment="Left"
+                            Foreground="{setting:Colors Main}"
+                            IsEnabled="{Binding EnableRGB}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="100"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding RgbV1}" />
+                        <Label
+                            Width="40"
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Content="{Binding RgbV1, StringFormat='{}{0}%'}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text15}" />
+                        <Slider
+                            Width="200"
+                            Height="40"
+                            Margin="5,-8,0,0"
+                            HorizontalAlignment="Left"
+                            Foreground="{setting:Colors Main}"
+                            IsEnabled="{Binding EnableRGB}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="100"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding RgbV2}" />
+                        <Label
+                            Width="40"
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Content="{Binding RgbV2, StringFormat='{}{0}%'}" />
+                    </StackPanel>
+                    <Button
+                        Width="80"
+                        Height="25"
                         VerticalAlignment="Center"
-                        Content="{Binding PicTran, StringFormat='{}{0}%'}" />
-                </StackPanel>
-                <Button
-                    Width="80"
-                    Height="25"
-                    VerticalAlignment="Center"
-                    Command="{Binding SetPicTran}"
-                    Content="{setting:Localize Button.Set}" />
-            </WrapPanel>
-
-            <WrapPanel Orientation="Horizontal">
-                <CheckBox
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text24}"
-                    IsChecked="{Binding EnablePicResize}" />
-                <StackPanel Orientation="Horizontal">
-                    <Slider
-                        Width="200"
-                        Height="40"
-                        Margin="5,-8,0,0"
-                        HorizontalAlignment="Left"
-                        Foreground="{setting:Colors Main}"
-                        IsEnabled="{Binding EnablePicResize}"
-                        IsSnapToTickEnabled="True"
-                        LargeChange="1"
-                        Maximum="100"
-                        Minimum="0"
-                        SmallChange="1"
-                        TickFrequency="1"
-                        Value="{Binding PicResize}" />
-                    <Label
-                        Width="40"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Center"
-                        Content="{Binding PicResize, StringFormat='{}{0}%'}" />
-                </StackPanel>
-                <Button
-                    Width="80"
-                    Height="25"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize Button.Set}"
-                    IsEnabled="{Binding EnablePicResize}" />
-            </WrapPanel>
-
-            <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text18}" />
-
-            <!--  颜色设置  -->
-            <Label Content="{setting:Localize SettingWindow.Tab2.Text7}" />
-
-            <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                <RadioButton
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text26}"
-                    GroupName="Group1"
-                    IsChecked="{Binding IsAutoColor}" />
-                <RadioButton
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text27}"
-                    GroupName="Group1"
-                    IsChecked="{Binding IsLightColor}" />
-                <RadioButton
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text28}"
-                    GroupName="Group1"
-                    IsChecked="{Binding IsDarkColor}" />
-                <Label
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text8}" />
-                <ColorPicker Color="{Binding MainColor}" />
-            </StackPanel>
-
-            <WrapPanel Margin="0,0,0,5">
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text27}" />
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
-                <ColorPicker Color="{Binding LightBackColor}" />
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text11}" />
-                    <ColorPicker Color="{Binding LightTranColor}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text16}" />
-                    <ColorPicker Color="{Binding LightFont1Color}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text17}" />
-                    <ColorPicker Color="{Binding LightFont2Color}" />
-                </StackPanel>
-            </WrapPanel>
-
-            <WrapPanel Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text28}" />
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
-                <ColorPicker Color="{Binding DarkBackColor}" />
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text11}" />
-                    <ColorPicker Color="{Binding DarkTranColor}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text16}" />
-                    <ColorPicker Color="{Binding DarkFont1Color}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text17}" />
-                    <ColorPicker Color="{Binding DarkFont2Color}" />
-                </StackPanel>
-
-            </WrapPanel>
-
-            <StackPanel
-                Margin="5"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
-                <Button
-                    Width="80"
-                    Height="25"
-                    VerticalAlignment="Center"
-                    Command="{Binding ColorReset}"
-                    Content="{setting:Localize SettingWindow.Tab2.Text12}" />
-            </StackPanel>
-
-            <!--  Live2D人物  -->
-
-            <Label Content="{setting:Localize SettingWindow.Tab2.Text29}" />
-            <StackPanel Orientation="Horizontal">
-                <Label Content="{setting:Localize SettingWindow.Tab2.Text30}" />
-                <Label Margin="5,0,0,0" Content="{Binding Live2DCoreState}" />
-                <Button
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    HorizontalAlignment="Right"
-                    Command="{Binding DownloadCore}"
-                    Content="{setting:Localize SettingWindow.Tab2.Text31}" />
-                <Button
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    HorizontalAlignment="Right"
-                    Command="{Binding OpenRunDir}"
-                    Content="{setting:Localize Button.OpFile}" />
-            </StackPanel>
-
-            <Label Content="{setting:Localize SettingWindow.Tab2.Text32}" />
-
-            <WrapPanel>
-                <TextBox
-                    MinWidth="300"
-                    Margin="0,0,5,0"
-                    Classes="input1"
-                    IsEnabled="{Binding CoreInstall}"
-                    Text="{Binding Live2DModel}"
-                    Watermark="{setting:Localize SettingWindow.Tab2.Text33}" />
-                <Button
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding DeleteLive2D}"
-                    Content="{setting:Localize Button.Delete}"
-                    DockPanel.Dock="Right"
-                    IsEnabled="{Binding CoreInstall}" />
-                <Button
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding OpenLive2D}"
-                    Content="{setting:Localize Button.Select}"
-                    DockPanel.Dock="Right"
-                    IsEnabled="{Binding CoreInstall}" />
-                <Button
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding SetLive2D}"
-                    Content="{setting:Localize Button.Use}"
-                    DockPanel.Dock="Right"
-                    IsEnabled="{Binding CoreInstall}" />
-            </WrapPanel>
-
-            <WrapPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text34}" />
-                    <Slider
-                        Width="200"
-                        Height="40"
-                        Margin="5,-8,0,0"
-                        HorizontalAlignment="Left"
-                        Foreground="{setting:Colors Main}"
-                        IsSnapToTickEnabled="True"
-                        LargeChange="1"
-                        Maximum="100"
-                        Minimum="0"
-                        SmallChange="1"
-                        TickFrequency="1"
-                        Value="{Binding L2dWidth}" />
-                    <Label
-                        Width="40"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Center"
-                        Content="{Binding L2dWidth, StringFormat='{}{0}%'}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text35}" />
-                    <Slider
-                        Width="200"
-                        Height="40"
-                        Margin="5,-8,0,0"
-                        HorizontalAlignment="Left"
-                        Foreground="{setting:Colors Main}"
-                        IsSnapToTickEnabled="True"
-                        LargeChange="1"
-                        Maximum="100"
-                        Minimum="0"
-                        SmallChange="1"
-                        TickFrequency="1"
-                        Value="{Binding Height}" />
-                    <Label
-                        Width="40"
-                        VerticalAlignment="Center"
-                        Content="{Binding Height, StringFormat='{}{0}%'}" />
-                </StackPanel>
-            </WrapPanel>
-
-            <WrapPanel>
-                <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text13}" IsChecked="{Binding EnableRGB}" />
-
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text14}" />
-                    <Slider
-                        Width="200"
-                        Height="40"
-                        Margin="5,-8,0,0"
-                        HorizontalAlignment="Left"
-                        Foreground="{setting:Colors Main}"
-                        IsEnabled="{Binding EnableRGB}"
-                        IsSnapToTickEnabled="True"
-                        LargeChange="1"
-                        Maximum="100"
-                        Minimum="0"
-                        SmallChange="1"
-                        TickFrequency="1"
-                        Value="{Binding RgbV1}" />
-                    <Label
-                        Width="40"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Center"
-                        Content="{Binding RgbV1, StringFormat='{}{0}%'}" />
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text15}" />
-                    <Slider
-                        Width="200"
-                        Height="40"
-                        Margin="5,-8,0,0"
-                        HorizontalAlignment="Left"
-                        Foreground="{setting:Colors Main}"
-                        IsEnabled="{Binding EnableRGB}"
-                        IsSnapToTickEnabled="True"
-                        LargeChange="1"
-                        Maximum="100"
-                        Minimum="0"
-                        SmallChange="1"
-                        TickFrequency="1"
-                        Value="{Binding RgbV2}" />
-                    <Label
-                        Width="40"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Center"
-                        Content="{Binding RgbV2, StringFormat='{}{0}%'}" />
-                </StackPanel>
-                <Button
-                    Width="80"
-                    Height="25"
-                    VerticalAlignment="Center"
-                    Command="{Binding SetRgb}"
-                    Content="{setting:Localize Button.Set}" />
-            </WrapPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <CheckBox
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text9}"
-                    IsChecked="{Binding EnableWindowTran}" />
-                <ComboBox
-                    Width="200"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    IsEnabled="{Binding EnableWindowTran}"
-                    ItemsSource="{Binding TranTypeList}"
-                    SelectedIndex="{Binding WindowTranType}" />
-            </StackPanel>
-            <Label Margin="5,0,0,0">
-                <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text6}" TextWrapping="Wrap" />
-            </Label>
+                        Command="{Binding SetRgb}"
+                        Content="{setting:Localize Button.Set}" />
+                </WrapPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
