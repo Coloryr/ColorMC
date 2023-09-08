@@ -10,80 +10,77 @@
     d:DesignWidth="800"
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,0,5,5">
-        <DockPanel DockPanel.Dock="Top">
-            <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
+    <DockPanel Margin="5,3,5,5">
+        <Border
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
+            <DockPanel>
                 <Button
-                    Name="Button_R"
-                    Width="25"
-                    Height="25"
-                    Command="{Binding LoadMod}"
-                    Content="R" />
-                <Button
-                    Name="Button_R1"
                     Width="100"
                     Height="25"
                     Command="{Binding LoadMod}"
                     Content="{setting:Localize Button.Refash}"
-                    IsVisible="False"
+                    DockPanel.Dock="Right"
                     ToolTip.Tip="{setting:Localize ToolTip.Text55}"
                     ToolTip.VerticalOffset="-30" />
-            </Panel>
-            <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
                 <Button
-                    Name="Button_O"
-                    Width="25"
-                    Height="25"
-                    Command="{Binding OpenMod}"
-                    Content="O" />
-                <Button
-                    Name="Button_O1"
                     Width="100"
                     Height="25"
+                    Margin="0,0,5,0"
                     Command="{Binding OpenMod}"
                     Content="{setting:Localize Button.OpFile}"
-                    IsVisible="False"
+                    DockPanel.Dock="Right"
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />
-            </Panel>
-            <TextBox
-                Margin="5,0,0,0"
-                Classes="input1"
-                Text="{Binding Text}"
-                Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
-        </DockPanel>
-
-        <DataGrid
-            Name="DataGrid1"
+                <TextBox
+                    Margin="0,0,5,0"
+                    Classes="input1"
+                    Text="{Binding Text}"
+                    Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
+            </DockPanel>
+        </Border>
+        <Border
             Margin="0,3,0,0"
-            AutoGenerateColumns="False"
-            Background="{setting:Colors TranBack}"
-            CanUserResizeColumns="True"
-            CanUserSortColumns="False"
-            HorizontalScrollBarVisibility="Visible"
-            ItemsSource="{Binding Mods}"
-            SelectedItem="{Binding SelectMod}"
-            VerticalScrollBarVisibility="Visible">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn
-                    Binding="{Binding Export}"
-                    Header="{setting:Localize GameExportWindow.Tab2.DataGrid.Text1}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Name}"
-                    Header="{setting:Localize Text.Name}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Modid}"
-                    Header="modid"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Source}"
-                    Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text8}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}" />
-                <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}" />
-            </DataGrid.Columns>
-        </DataGrid>
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <DataGrid
+                Name="DataGrid1"
+                Margin="0,3,0,0"
+                AutoGenerateColumns="False"
+                Background="{setting:Colors TranBack}"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                HorizontalScrollBarVisibility="Visible"
+                ItemsSource="{Binding Mods}"
+                SelectedItem="{Binding SelectMod}"
+                VerticalScrollBarVisibility="Visible">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn
+                        Binding="{Binding Export}"
+                        Header="{setting:Localize GameExportWindow.Tab2.DataGrid.Text1}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="{setting:Localize Text.Name}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Modid}"
+                        Header="modid"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Source}"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text8}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}" />
+                    <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </DockPanel>
 </UserControl>

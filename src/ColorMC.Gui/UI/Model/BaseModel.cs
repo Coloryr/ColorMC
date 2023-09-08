@@ -16,7 +16,6 @@ public partial class BaseModel : ObservableObject
 
     public string NotifyText;
 
-    private Action? _info1Call;
     private Action? _info3Call;
     private Action<bool>? _info4Call;
 
@@ -28,8 +27,6 @@ public partial class BaseModel : ObservableObject
     private readonly Semaphore _info5Semaphore = new(0, 2);
     private readonly Semaphore _info6Semaphore = new(0, 2);
 
-    [ObservableProperty]
-    private bool _info1CancelEnable;
     [ObservableProperty]
     private string _info1Text;
     [ObservableProperty]
@@ -87,14 +84,6 @@ public partial class BaseModel : ObservableObject
     private string? _title;
     [ObservableProperty]
     private string? _title1;
-
-    [RelayCommand]
-    public void Info1Cancel()
-    {
-        Info1CancelEnable = false;
-
-        _info1Call?.Invoke();
-    }
 
     [RelayCommand]
     public void Info3Cancel()
@@ -186,9 +175,8 @@ public partial class BaseModel : ObservableObject
     /// <param name="data">信息</param>
     public void Progress(string data)
     {
+        Info1Indeterminate = true;
         Info1Text = data;
-        Info1CancelEnable = false;
-        _info1Call = null;
         Progress();
     }
 

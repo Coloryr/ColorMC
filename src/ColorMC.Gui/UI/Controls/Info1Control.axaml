@@ -27,12 +27,6 @@
                     IsIndeterminate="{Binding Info1Indeterminate}"
                     ShowProgressText="{Binding !Info1Indeterminate}"
                     Value="{Binding Info1Value}" />
-                <Button
-                    Width="100"
-                    Height="30"
-                    HorizontalAlignment="Center"
-                    Content="{setting:Localize Button.Cancel}"
-                    IsEnabled="{Binding Info1CancelEnable}" />
             </StackPanel>
         </StackPanel>
     </Panel>

@@ -12,7 +12,12 @@
     d:DesignWidth="800"
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
-    <Panel Margin="5,0,5,5">
+    <Border
+        Margin="5"
+        Background="{setting:Colors GroupBack}"
+        BorderBrush="{setting:Colors GroupColor}"
+        BorderThickness="2"
+        CornerRadius="{setting:Style ButtonCornerRadius}">
         <TreeDataGrid Margin="3" Source="{Binding Source}">
             <TreeDataGrid.Resources>
                 <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
@@ -36,5 +41,5 @@
                 </DataTemplate>
             </TreeDataGrid.Resources>
         </TreeDataGrid>
-    </Panel>
+    </Border>
 </UserControl>

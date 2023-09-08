@@ -16,7 +16,7 @@ public partial class GameEditModel : GameModel
     public ObservableCollection<string> JvmList { get; init; } = new();
 
     [ObservableProperty]
-    private string _title;
+    private string _titleText;
     [ObservableProperty]
     private string? _jvmLocal;
     [ObservableProperty]

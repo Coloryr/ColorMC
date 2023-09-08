@@ -4,34 +4,70 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:DataType="model:GameEditModel"
     mc:Ignorable="d">
-    <DockPanel Background="{setting:Colors TranBack}">
-        <ScrollViewer
-            Name="ScrollViewer1"
-            VerticalAlignment="Top"
-            AllowAutoHide="True"
-            DockPanel.Dock="Top"
-            HorizontalScrollBarVisibility="Auto"
-            VerticalScrollBarVisibility="Disabled">
-            <TabControl Name="Tabs" Margin="0,-5,0,3">
-                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text1}" />
-                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text2}" />
-                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text4}" />
-                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text5}" />
-                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text6}" />
-                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text7}" />
-                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text10}" />
-                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text11}" />
-                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text12}" />
-            </TabControl>
-        </ScrollViewer>
+    <Panel>
+        <DockPanel>
+            <Border
+                Margin="5,5,5,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                DockPanel.Dock="Top">
+                <StackPanel
+                    Name="StackPanel2"
+                    Background="Transparent"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="25"
+                        Height="25"
+                        Command="{Binding OpenSide}">
+                        <Svg Path="/Resource/Icon/menu.svg" />
+                    </Button>
+                    <Label
+                        Margin="20,0,0,0"
+                        Content="{Binding Title}"
+                        FontSize="18" />
+                </StackPanel>
+            </Border>
 
-        <Panel ClipToBounds="True">
-            <ContentControl Name="Content1" />
-            <ContentControl Name="Content2" />
+            <Panel ClipToBounds="True">
+                <ContentControl Name="Content1" />
+                <ContentControl Name="Content2" />
+            </Panel>
+        </DockPanel>
+
+        <Panel
+            Name="StackPanel1"
+            Background="Transparent"
+            IsVisible="False">
+            <DockPanel HorizontalAlignment="Left" Background="#f3f3f3">
+                <ListBox
+                    Margin="0,5,0,0"
+                    ItemsSource="{Binding TabItems}"
+                    SelectedIndex="{Binding NowView}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Svg
+                                    Width="24"
+                                    Height="24"
+                                    Path="{Binding Icon}" />
+                                <TextBlock
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Text}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
         </Panel>
-    </DockPanel>
+    </Panel>
 </UserControl>

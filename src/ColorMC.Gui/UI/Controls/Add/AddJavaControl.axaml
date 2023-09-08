@@ -11,102 +11,124 @@
     x:DataType="model:AddJavaControlModel"
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
-    <DockPanel Margin="3">
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Label
-                Margin="5"
-                VerticalAlignment="Center"
-                Content="{setting:Localize AddJavaWindow.Text1}" />
-            <ComboBox
-                Width="120"
-                ItemsSource="{Binding JavaTypeList}"
-                SelectedIndex="{Binding TypeIndex}"
-                SelectedItem="{Binding JavaType}" />
-
-            <Label
-                Margin="5"
-                VerticalAlignment="Center"
-                Content="{setting:Localize AddJavaWindow.Text2}" />
-            <ComboBox
-                Width="120"
-                ItemsSource="{Binding SystemList}"
-                SelectedItem="{Binding System}" />
-
-            <Label
-                Margin="5"
-                VerticalAlignment="Center"
-                Content="{setting:Localize AddJavaWindow.Text3}" />
-            <ComboBox
-                Width="70"
-                ItemsSource="{Binding VersionList}"
-                SelectedItem="{Binding Version}" />
-
-            <Label
-                Margin="5"
-                VerticalAlignment="Center"
-                Content="{setting:Localize AddJavaWindow.Text4}" />
-            <ComboBox
-                Width="100"
-                ItemsSource="{Binding ArchList}"
-                SelectedIndex="{Binding ArchIndex}"
-                SelectedItem="{Binding Arch}" />
-
-            <Button
-                Width="100"
-                Height="30"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                Command="{Binding Load}"
-                Content="{setting:Localize Button.Refash}" />
-        </StackPanel>
-
-        <Label
-            Margin="2,0,0,0"
-            VerticalAlignment="Bottom"
-            Content="{setting:Localize AddJavaWindow.Text5}"
-            DockPanel.Dock="Bottom" />
-
-        <Panel>
-            <DataGrid
-                Name="DataGrid1"
-                AutoGenerateColumns="False"
-                CanUserResizeColumns="True"
-                CanUserSortColumns="False"
-                ItemsSource="{Binding JavaList}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="{setting:Localize Text.Name}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Arch}"
-                        Header="{setting:Localize AddJavaWindow.DataGrid.Text2}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Os}"
-                        Header="{setting:Localize AddJavaWindow.DataGrid.Text3}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding MainVersion}"
-                        Header="{setting:Localize AddJavaWindow.DataGrid.Text4}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Version}"
-                        Header="{setting:Localize AddJavaWindow.DataGrid.Text5}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Size}"
-                        Header="{setting:Localize AddJavaWindow.DataGrid.Text6}"
-                        IsReadOnly="True" />
-                </DataGrid.Columns>
-            </DataGrid>
-
-            <Panel Background="{setting:Colors TopBottom}" IsVisible="{Binding Display}">
+    <DockPanel Margin="5">
+        <Border
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
                 <Label
-                    HorizontalAlignment="Center"
+                    Margin="5"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddJavaWindow.Text6}" />
+                    Content="{setting:Localize AddJavaWindow.Text1}" />
+                <ComboBox
+                    Width="120"
+                    ItemsSource="{Binding JavaTypeList}"
+                    SelectedIndex="{Binding TypeIndex}"
+                    SelectedItem="{Binding JavaType}" />
+
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddJavaWindow.Text2}" />
+                <ComboBox
+                    Width="120"
+                    ItemsSource="{Binding SystemList}"
+                    SelectedItem="{Binding System}" />
+
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddJavaWindow.Text3}" />
+                <ComboBox
+                    Width="70"
+                    ItemsSource="{Binding VersionList}"
+                    SelectedItem="{Binding Version}" />
+
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddJavaWindow.Text4}" />
+                <ComboBox
+                    Width="100"
+                    ItemsSource="{Binding ArchList}"
+                    SelectedIndex="{Binding ArchIndex}"
+                    SelectedItem="{Binding Arch}" />
+
+                <Button
+                    Width="100"
+                    Height="30"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Command="{Binding Load}"
+                    Content="{setting:Localize Button.Refash}" />
+            </StackPanel>
+        </Border>
+
+        <Border
+            Margin="0,3,0,0"
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Bottom">
+            <Label
+                Margin="2,0,0,0"
+                VerticalAlignment="Bottom"
+                Content="{setting:Localize AddJavaWindow.Text5}" />
+        </Border>
+        <Border
+            Margin="0,3,0,0"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Panel>
+                <DataGrid
+                    Name="DataGrid1"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    ItemsSource="{Binding JavaList}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize Text.Name}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Arch}"
+                            Header="{setting:Localize AddJavaWindow.DataGrid.Text2}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Os}"
+                            Header="{setting:Localize AddJavaWindow.DataGrid.Text3}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding MainVersion}"
+                            Header="{setting:Localize AddJavaWindow.DataGrid.Text4}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Version}"
+                            Header="{setting:Localize AddJavaWindow.DataGrid.Text5}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Size}"
+                            Header="{setting:Localize AddJavaWindow.DataGrid.Text6}"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Panel Background="{setting:Colors TopBottom}" IsVisible="{Binding Display}">
+                    <Label
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize AddJavaWindow.Text6}" />
+                </Panel>
             </Panel>
-        </Panel>
+        </Border>
     </DockPanel>
 </UserControl>

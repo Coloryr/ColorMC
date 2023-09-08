@@ -11,160 +11,139 @@
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
     <ScrollViewer>
-        <DockPanel>
-            <WrapPanel
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                DockPanel.Dock="Bottom"
-                Orientation="Horizontal">
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="5,5,0,5"
-                    Command="{Binding Delete}"
-                    Content="{setting:Localize Button.Delete}"
-                    IsEnabled="{Binding !GameRun}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text36}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="5,5,0,5"
-                    Command="{Binding OpenServerPack}"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text5}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text47}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="5,5,0,5"
-                    Command="{Binding ExportGame}"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text11}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text66}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="5,5,0,5"
-                    Command="{Binding OpenGameLog}"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text7}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text65}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="5,5,0,5"
-                    Command="{Binding OpenConfigEdit}"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text6}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text50}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="5,5,0,5"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Command="{Binding OpenJava}"
-                    Content="{setting:Localize Button.OpFile}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                    ToolTip.VerticalOffset="-30" />
-            </WrapPanel>
-            <StackPanel Margin="5,0,5,5">
-                <Label Content="{setting:Localize Text.GameVersion}" />
-                <WrapPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
-                        <ComboBox
-                            Width="200"
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding VersionTypeList}"
-                            SelectedIndex="{Binding VersionType}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
-                        <ComboBox
-                            Width="200"
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding GameVersionList}"
-                            SelectedItem="{Binding GameVersion}" />
-                    </StackPanel>
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="5,2,0,2"
-                        Command="{Binding GameVersionReload}"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text2}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text33}"
-                        ToolTip.VerticalOffset="-30" />
-                </WrapPanel>
-                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
-                <WrapPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
-                        <ComboBox
-                            Width="200"
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding LoaderTypeList}"
-                            SelectedIndex="{Binding LoaderType}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
-                        <ComboBox
-                            Width="200"
-                            Margin="5,0,0,0"
-                            IsEnabled="{Binding EnableLoader}"
-                            ItemsSource="{Binding LoaderVersionList}"
-                            SelectedItem="{Binding LoaderVersion}" />
-                    </StackPanel>
+        <StackPanel Margin="5,3,5,5">
+            <Border
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label Content="{setting:Localize Text.GameVersion}" />
+                    <WrapPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <ComboBox
+                                Width="200"
+                                Margin="5,0,0,0"
+                                ItemsSource="{Binding VersionTypeList}"
+                                SelectedIndex="{Binding VersionType}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                            <ComboBox
+                                Width="200"
+                                Margin="5,0,0,0"
+                                ItemsSource="{Binding GameVersionList}"
+                                SelectedItem="{Binding GameVersion}" />
+                        </StackPanel>
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,2,0,2"
+                            Command="{Binding GameVersionReload}"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text2}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text33}"
+                            ToolTip.VerticalOffset="-30" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
+                    <WrapPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <ComboBox
+                                Width="200"
+                                Margin="5,0,0,0"
+                                ItemsSource="{Binding LoaderTypeList}"
+                                SelectedIndex="{Binding LoaderType}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                            <ComboBox
+                                Width="200"
+                                Margin="5,0,0,0"
+                                IsEnabled="{Binding EnableLoader}"
+                                ItemsSource="{Binding LoaderVersionList}"
+                                SelectedItem="{Binding LoaderVersion}" />
+                        </StackPanel>
 
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,2,0,2"
+                            Command="{Binding LoaderReload}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text11}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text34}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,2,0,2"
+                            Command="{Binding LoaderVersionLoad}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text12}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text35}"
+                            ToolTip.VerticalOffset="-30" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                    <WrapPanel Orientation="Horizontal">
+                        <ComboBox
+                            Name="ComboBox3"
+                            Width="200"
+                            Margin="8,0,0,0"
+                            ItemsSource="{Binding GroupList}"
+                            SelectedItem="{Binding Group}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,2,0,2"
+                            Command="{Binding AddGroup}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text9}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text37}"
+                            ToolTip.VerticalOffset="-30" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <WrapPanel>
                     <Button
-                        Width="100"
-                        Height="25"
-                        Margin="5,2,0,2"
-                        Command="{Binding LoaderReload}"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text11}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text34}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="5,2,0,2"
-                        Command="{Binding LoaderVersionLoad}"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text12}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text35}"
-                        ToolTip.VerticalOffset="-30" />
-                </WrapPanel>
-                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
-                <WrapPanel Orientation="Horizontal">
-                    <ComboBox
-                        Name="ComboBox3"
-                        Width="200"
-                        ItemsSource="{Binding GroupList}"
-                        SelectedItem="{Binding Group}" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="5,2,0,2"
-                        Command="{Binding AddGroup}"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text9}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text37}"
-                        ToolTip.VerticalOffset="-30" />
-                </WrapPanel>
-                <WrapPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <Button
-                        Width="150"
+                        Width="120"
                         Height="25"
                         Command="{Binding OpenOptifine}"
                         Content="{setting:Localize AddWindow.Text10}"
@@ -175,47 +154,120 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab1.Text4}" />
                 </WrapPanel>
-                <CheckBox
-                    Name="CheckBox1"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text3}"
-                    IsChecked="{Binding ModPack}" />
-                <WrapPanel Orientation="Horizontal">
-                    <Label
-                        Width="110"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text8}" />
-                    <TextBox
-                        Grid.Column="0"
-                        Width="200"
-                        Margin="5,2,0,2"
-                        Classes="input1"
-                        IsEnabled="{Binding ModPack}"
-                        Text="{Binding PID}"
-                        Watermark="{setting:Localize GameEditWindow.Tab1.Text8}" />
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <WrapPanel>
+                        <CheckBox
+                            Name="CheckBox1"
+                            Margin="0,0,5,0"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text3}"
+                            IsChecked="{Binding ModPack}" />
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Command="{Binding CheckModPackUpdate}"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text10}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text51}"
+                            ToolTip.VerticalOffset="-30" />
+                    </WrapPanel>
+                    <WrapPanel Orientation="Horizontal">
+                        <Label
+                            Width="110"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text8}" />
+                        <TextBox
+                            Grid.Column="0"
+                            Width="200"
+                            Margin="5,2,0,2"
+                            Classes="input1"
+                            IsEnabled="{Binding ModPack}"
+                            Text="{Binding PID}"
+                            Watermark="{setting:Localize GameEditWindow.Tab1.Text8}" />
+                    </WrapPanel>
+                    <WrapPanel Margin="0,5,0,0" Orientation="Horizontal">
+                        <Label
+                            Width="110"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text9}" />
+                        <TextBox
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="5,2,0,2"
+                            Classes="input1"
+                            IsEnabled="{Binding ModPack}"
+                            Text="{Binding FID}"
+                            Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <WrapPanel>
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Margin="5,5,0,5"
+                        Command="{Binding Delete}"
+                        Content="{setting:Localize Button.Delete}"
+                        IsEnabled="{Binding !GameRun}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text36}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Margin="5,5,0,5"
+                        Command="{Binding OpenServerPack}"
+                        Content="{setting:Localize GameEditWindow.Tab1.Text5}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Margin="5,5,0,5"
+                        Command="{Binding ExportGame}"
+                        Content="{setting:Localize GameEditWindow.Tab1.Text11}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text66}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Margin="5,5,0,5"
+                        Command="{Binding OpenGameLog}"
+                        Content="{setting:Localize GameEditWindow.Tab1.Text7}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text65}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Margin="5,5,0,5"
+                        Command="{Binding OpenConfigEdit}"
+                        Content="{setting:Localize GameEditWindow.Tab1.Text6}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text50}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Margin="5,5,0,5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding OpenJava}"
+                        Content="{setting:Localize Button.OpFile}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                        ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
-                <WrapPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <Label
-                        Width="110"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text9}" />
-                    <TextBox
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="5,2,0,2"
-                        Classes="input1"
-                        IsEnabled="{Binding ModPack}"
-                        Text="{Binding FID}"
-                        Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
-                </WrapPanel>
-                <Button
-                    Width="150"
-                    Height="25"
-                    Margin="0,5,0,0"
-                    Command="{Binding CheckModPackUpdate}"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text10}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text51}"
-                    ToolTip.VerticalOffset="-30" />
-            </StackPanel>
-        </DockPanel>
+            </Border>
+        </StackPanel>
     </ScrollViewer>
 </UserControl>

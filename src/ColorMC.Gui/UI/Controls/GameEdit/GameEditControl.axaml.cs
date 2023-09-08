@@ -5,7 +5,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
+using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.UI.Windows;
+using System.ComponentModel;
 using System.IO;
 using System.Threading;
 
@@ -13,7 +15,7 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class GameEditControl : UserControl, IUserControl
 {
-    private GameSettingObj _obj;
+    private readonly GameSettingObj _obj;
 
     private bool _switch1 = false;
 
@@ -49,11 +51,20 @@ public partial class GameEditControl : UserControl, IUserControl
     {
         _obj = obj;
 
-        Tabs.SelectionChanged += Tabs_SelectionChanged;
-
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+        StackPanel1.PointerPressed += StackPanel1_PointerPressed;
+        StackPanel2.PointerPressed += StackPanel2_PointerPressed;
 
         Content1.Content = _tab1;
+    }
+
+    private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        (DataContext as GameEditModel)!.OpenSide();
+    }
+
+    private void StackPanel1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        (DataContext as GameEditModel)!.CloseSide();
     }
 
     public async void OnKeyDown(object? sender, KeyEventArgs e)
@@ -61,7 +72,7 @@ public partial class GameEditControl : UserControl, IUserControl
         if (e.Key == Key.F5)
         {
             var model = (DataContext as GameEditModel)!;
-            switch (Tabs.SelectedIndex)
+            switch (model.NowView)
             {
                 case 2:
                     await model.LoadMod();
@@ -87,27 +98,6 @@ public partial class GameEditControl : UserControl, IUserControl
             }
         }
     }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (e.Delta.Y > 0)
-        {
-            ScrollViewer1.LineLeft();
-            ScrollViewer1.LineLeft();
-            ScrollViewer1.LineLeft();
-            ScrollViewer1.LineLeft();
-            ScrollViewer1.LineLeft();
-        }
-        else if (e.Delta.Y < 0)
-        {
-            ScrollViewer1.LineRight();
-            ScrollViewer1.LineRight();
-            ScrollViewer1.LineRight();
-            ScrollViewer1.LineRight();
-            ScrollViewer1.LineRight();
-        }
-    }
-
     public void Opened()
     {
         Window.SetTitle(Title);
@@ -126,61 +116,16 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void SetType(GameEditWindowType type)
     {
+        var model = (DataContext as GameEditModel)!;
         switch (type)
         {
             case GameEditWindowType.Mod:
-                Tabs.SelectedIndex = 2;
+                model.NowView = 2;
                 break;
             case GameEditWindowType.World:
-                Tabs.SelectedIndex = 3;
+                model.NowView = 3;
                 break;
         }
-    }
-
-    private async void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        var model = (DataContext as GameEditModel)!;
-        switch (Tabs.SelectedIndex)
-        {
-            case 0:
-                Go(_tab1);
-                model.GameLoad();
-                break;
-            case 1:
-                Go(_tab2);
-                model.ConfigLoad();
-                break;
-            case 2:
-                Go(_tab4);
-                await model.LoadMod();
-                break;
-            case 3:
-                Go(_tab5);
-                await model.LoadWorld();
-                break;
-            case 4:
-                Go(_tab8);
-                await model.LoadResource();
-                break;
-            case 5:
-                Go(_tab9);
-                model.LoadScreenshot();
-                break;
-            case 6:
-                Go(_tab10);
-                await model.LoadServer();
-                break;
-            case 7:
-                Go(_tab11);
-                await model.LoadShaderpack();
-                break;
-            case 8:
-                Go(_tab12);
-                await model.LoadSchematic();
-                break;
-        }
-
-        _now = Tabs.SelectedIndex;
     }
 
     private void Go(UserControl to)
@@ -189,21 +134,21 @@ public partial class GameEditControl : UserControl, IUserControl
         _cancel.Dispose();
 
         _cancel = new();
-        Tabs.IsEnabled = false;
+
+        var model = (DataContext as GameEditModel)!;
 
         if (!_switch1)
         {
             Content2.Content = to;
-            _ = App.PageSlide500.Start(Content1, Content2, _now < Tabs.SelectedIndex, _cancel.Token);
+            _ = App.PageSlide500.Start(Content1, Content2, _now < model.NowView, _cancel.Token);
         }
         else
         {
             Content1.Content = to;
-            _ = App.PageSlide500.Start(Content2, Content1, _now < Tabs.SelectedIndex, _cancel.Token);
+            _ = App.PageSlide500.Start(Content2, Content1, _now < model.NowView, _cancel.Token);
         }
 
         _switch1 = !_switch1;
-        Tabs.IsEnabled = true;
     }
 
     public void Closed()
@@ -219,6 +164,64 @@ public partial class GameEditControl : UserControl, IUserControl
     public void SetBaseModel(BaseModel model)
     {
         var amodel = new GameEditModel(model, _obj);
+        amodel.PropertyChanged += Amodel_PropertyChanged;
         DataContext = amodel;
+    }
+
+    private async void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "NowView")
+        {
+            var model = (DataContext as GameEditModel)!;
+            switch (model.NowView)
+            {
+                case 0:
+                    Go(_tab1);
+                    model.GameLoad();
+                    break;
+                case 1:
+                    Go(_tab2);
+                    model.ConfigLoad();
+                    break;
+                case 2:
+                    Go(_tab4);
+                    await model.LoadMod();
+                    break;
+                case 3:
+                    Go(_tab5);
+                    await model.LoadWorld();
+                    break;
+                case 4:
+                    Go(_tab8);
+                    await model.LoadResource();
+                    break;
+                case 5:
+                    Go(_tab9);
+                    model.LoadScreenshot();
+                    break;
+                case 6:
+                    Go(_tab10);
+                    await model.LoadServer();
+                    break;
+                case 7:
+                    Go(_tab11);
+                    await model.LoadShaderpack();
+                    break;
+                case 8:
+                    Go(_tab12);
+                    await model.LoadSchematic();
+                    break;
+            }
+
+            _now = model.NowView;
+        }
+        else if (e.PropertyName == "SideOpen")
+        {
+            App.CrossFade100.Start(null, StackPanel1);
+        }
+        else if (e.PropertyName == "SideClose")
+        {
+            StackPanel1.IsVisible = false;
+        }
     }
 }

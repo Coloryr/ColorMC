@@ -12,13 +12,15 @@
     x:DataType="model:CountModel"
     mc:Ignorable="d">
     <ScrollViewer>
-        <StackPanel>
-            <Expander
-                Name="Expander1"
-                HorizontalAlignment="Stretch"
-                Header="{setting:Localize CountWindow.Text1}"
-                IsExpanded="True">
+        <StackPanel Margin="5">
+            <Border
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
+                    <Label Content="{setting:Localize CountWindow.Text1}" />
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="{setting:Localize CountWindow.Text2}" />
@@ -51,13 +53,16 @@
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
-            </Expander>
-            <Expander
-                Name="Expander2"
-                HorizontalAlignment="Stretch"
-                Header="{setting:Localize CountWindow.Text8}"
-                IsExpanded="True">
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
+                    <Label Content="{setting:Localize CountWindow.Text8}" />
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="{setting:Localize CountWindow.Text9}" />
@@ -82,13 +87,16 @@
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
-            </Expander>
-            <Expander
-                Name="Expander3"
-                HorizontalAlignment="Stretch"
-                Header="{setting:Localize CountWindow.Text12}"
-                IsExpanded="True">
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
+                    <Label Content="{setting:Localize CountWindow.Text12}" />
                     <WrapPanel Margin="0,3,0,0" Orientation="Horizontal">
                         <Label VerticalAlignment="Center" Content="{setting:Localize CountWindow.Text13}" />
                         <ComboBox
@@ -125,7 +133,7 @@
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
-            </Expander>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

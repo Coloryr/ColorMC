@@ -10,54 +10,65 @@
     d:DesignWidth="800"
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,0,5,5" IsEnabled="{Binding MoEx}">
-        <DockPanel DockPanel.Dock="Top">
-            <Button
-                Width="100"
-                Height="25"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                Command="{Binding AddFile}"
-                Content="{setting:Localize Button.Add}"
-                DockPanel.Dock="Right" />
-            <ComboBox
-                HorizontalAlignment="Stretch"
-                ItemsSource="{Binding FileList}"
-                SelectedItem="{Binding FileName}" />
-        </DockPanel>
-
-        <DataGrid
-            Name="DataGrid1"
+    <DockPanel Margin="5,3,5,5" IsEnabled="{Binding MoEx}">
+        <Border
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
+            <DockPanel>
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Command="{Binding AddFile}"
+                    Content="{setting:Localize Button.Add}"
+                    DockPanel.Dock="Right" />
+                <ComboBox
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding FileList}"
+                    SelectedItem="{Binding FileName}" />
+            </DockPanel>
+        </Border>
+        <Border
             Margin="0,3,0,0"
-            AutoGenerateColumns="False"
-            Background="{setting:Colors TranBack}"
-            CanUserResizeColumns="True"
-            CanUserSortColumns="False"
-            HorizontalScrollBarVisibility="Visible"
-            ItemsSource="{Binding OtherFiles}"
-            SelectedItem="{Binding SelectFile}"
-            VerticalScrollBarVisibility="Visible">
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Binding="{Binding Path}"
-                    Header="{setting:Localize GameExportWindow.Tab4.Text1}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding FileSize}"
-                    Header="{setting:Localize GameExportWindow.Tab4.Text3}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize GameExportWindow.Tab4.Text2}" />
-                <DataGridTextColumn
-                    Binding="{Binding Sha1}"
-                    Header="Sha1"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Sha512}"
-                    Header="Sha512"
-                    IsReadOnly="True" />
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <DataGrid
+                Name="DataGrid1"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                HorizontalScrollBarVisibility="Visible"
+                ItemsSource="{Binding OtherFiles}"
+                SelectedItem="{Binding SelectFile}"
+                VerticalScrollBarVisibility="Visible">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Path}"
+                        Header="{setting:Localize GameExportWindow.Tab4.Text1}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding FileSize}"
+                        Header="{setting:Localize GameExportWindow.Tab4.Text3}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize GameExportWindow.Tab4.Text2}" />
+                    <DataGridTextColumn
+                        Binding="{Binding Sha1}"
+                        Header="Sha1"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Sha512}"
+                        Header="Sha512"
+                        IsReadOnly="True" />
 
-            </DataGrid.Columns>
-        </DataGrid>
-
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </DockPanel>
 </UserControl>

@@ -11,54 +11,67 @@
     x:DataType="model:DownloadModel"
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
-    <DockPanel Margin="3">
-        <WrapPanel DockPanel.Dock="Top">
-            <Label Content="{setting:Localize DownloadWindow.Text3}" />
-            <ProgressBar
-                Height="20"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                BorderBrush="White"
-                BorderThickness="1"
-                Foreground="#FF5EBDD3"
-                Maximum="100"
-                ShowProgressText="True"
-                Value="{Binding Value}" />
-            <StackPanel Orientation="Horizontal">
-                <Label
+    <DockPanel Margin="5">
+        <Border
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
+            <WrapPanel>
+                <Label Content="{setting:Localize DownloadWindow.Text3}" />
+                <ProgressBar
+                    Height="20"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    HorizontalContentAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    Content="{Binding Speed}"
-                    DockPanel.Dock="Right" />
-                <Label
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    HorizontalContentAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    Content="{Binding Now}"
-                    DockPanel.Dock="Right" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,2,0,2"
-                    Command="{Binding Pause}"
-                    Content="{Binding Button1}"
-                    DockPanel.Dock="Right" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,2,0,2"
-                    Command="{Binding Stop}"
-                    Content="{setting:Localize DownloadWindow.Text2}"
-                    DockPanel.Dock="Right" />
-            </StackPanel>
-        </WrapPanel>
-
-        <Panel>
+                    BorderBrush="White"
+                    BorderThickness="1"
+                    Foreground="#FF5EBDD3"
+                    Maximum="100"
+                    ShowProgressText="True"
+                    Value="{Binding Value}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Right"
+                        VerticalContentAlignment="Center"
+                        Content="{Binding Speed}"
+                        DockPanel.Dock="Right" />
+                    <Label
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Right"
+                        VerticalContentAlignment="Center"
+                        Content="{Binding Now}"
+                        DockPanel.Dock="Right" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,2,0,2"
+                        Command="{Binding Pause}"
+                        Content="{Binding Button1}"
+                        DockPanel.Dock="Right" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,2,0,2"
+                        Command="{Binding Stop}"
+                        Content="{setting:Localize DownloadWindow.Text2}"
+                        DockPanel.Dock="Right" />
+                </StackPanel>
+            </WrapPanel>
+        </Border>
+        <Border
+            Margin="0,3,0,0"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
@@ -87,6 +100,6 @@
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-        </Panel>
+        </Border>
     </DockPanel>
 </UserControl>

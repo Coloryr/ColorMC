@@ -13,61 +13,74 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Margin="5,0,5,5">
-            <StackPanel
+        <DockPanel Margin="5,3,5,5">
+            <Border
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                DockPanel.Dock="Top">
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Command="{Binding OpenShaderpack}"
+                        Content="{setting:Localize Button.OpFile}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Command="{Binding ImportShaderpack}"
+                        Content="{setting:Localize Button.Input}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text60}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Command="{Binding AddShaderpack}"
+                        Content="{setting:Localize Button.Add}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text61}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Command="{Binding LoadShaderpack}"
+                        Content="{setting:Localize Button.Refash}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text62}"
+                        ToolTip.VerticalOffset="-30" />
+                </StackPanel>
+            </Border>
+            <Border
                 Margin="0,3,0,0"
-                DockPanel.Dock="Top"
-                Orientation="Horizontal">
-                <Button
-                    Width="100"
-                    Height="25"
-                    Command="{Binding OpenShaderpack}"
-                    Content="{setting:Localize Button.OpFile}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    Command="{Binding ImportShaderpack}"
-                    Content="{setting:Localize Button.Input}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text60}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    Command="{Binding AddShaderpack}"
-                    Content="{setting:Localize Button.Add}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text61}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    Command="{Binding LoadShaderpack}"
-                    Content="{setting:Localize Button.Refash}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text62}"
-                    ToolTip.VerticalOffset="-30" />
-            </StackPanel>
-            <DataGrid
-                Name="DataGrid1"
-                AutoGenerateColumns="False"
-                CanUserResizeColumns="True"
-                CanUserSortColumns="False"
-                ItemsSource="{Binding ShaderpackList}"
-                SelectedItem="{Binding ShaderpackItem}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="{setting:Localize Text.FileName}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Local}"
-                        Header="{setting:Localize Text.Path}"
-                        IsReadOnly="True" />
-                </DataGrid.Columns>
-            </DataGrid>
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <DataGrid
+                    Name="DataGrid1"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    ItemsSource="{Binding ShaderpackList}"
+                    SelectedItem="{Binding ShaderpackItem}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize Text.FileName}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Local}"
+                            Header="{setting:Localize Text.Path}"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
         </DockPanel>
         <Panel
             Name="Grid2"

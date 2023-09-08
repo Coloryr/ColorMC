@@ -11,45 +11,57 @@
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,0,5,5">
-        <WrapPanel VerticalAlignment="Top" DockPanel.Dock="Top">
-            <Button
-                Width="100"
-                Height="25"
-                Margin="0,0,5,0"
-                Command="{Binding OpenScreenshot}"
-                Content="{setting:Localize Button.OpFile}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                ToolTip.VerticalOffset="-30" />
-            <Button
-                Width="100"
-                Height="25"
-                Margin="0,0,5,0"
-                Command="{Binding LoadScreenshot}"
-                Content="{setting:Localize Button.Refash}" />
-            <Button
-                Width="100"
-                Height="25"
-                Command="{Binding ClearScreenshot}"
-                Content="{setting:Localize GameEditWindow.Flyouts4.Text1}" />
-        </WrapPanel>
-
-        <ScrollViewer
+    <DockPanel Margin="5,3,5,5">
+        <Border
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
+            <WrapPanel>
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding OpenScreenshot}"
+                    Content="{setting:Localize Button.OpFile}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding LoadScreenshot}"
+                    Content="{setting:Localize Button.Refash}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Command="{Binding ClearScreenshot}"
+                    Content="{setting:Localize GameEditWindow.Flyouts4.Text1}" />
+            </WrapPanel>
+        </Border>
+        <Border
             Margin="0,3,0,0"
-            HorizontalScrollBarVisibility="Disabled"
-            VerticalScrollBarVisibility="Visible">
-            <ItemsControl ItemsSource="{Binding ScreenshotList}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <item:ScreenshotControl DataContext="{Binding}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </ScrollViewer>
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                <ItemsControl ItemsSource="{Binding ScreenshotList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <item:ScreenshotControl DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
     </DockPanel>
 </UserControl>

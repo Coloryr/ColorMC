@@ -35,11 +35,9 @@ public partial class AddGameModel : TopModel
     [ObservableProperty]
     private int _nowView;
 
-    private bool _side;
-
     public AddGameModel(BaseModel model) : base(model)
     {
-        Title = TabItems[0].Text;
+        _title = TabItems[0].Text;
 
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
@@ -54,7 +52,7 @@ public partial class AddGameModel : TopModel
     {
         CloseSide();
 
-        Title = App.GetLanguage($"AddGameWindow.Tabs.Text{NowView + 1}");
+        Title = TabItems[NowView].Text;
     }
 
     [RelayCommand]
@@ -88,14 +86,12 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public void OpenSide()
     {
-        _side = true;
         OnPropertyChanged("SideOpen");
     }
 
     [RelayCommand]
     public void CloseSide()
     {
-        _side = false;
         OnPropertyChanged("SideClose");
     }
 

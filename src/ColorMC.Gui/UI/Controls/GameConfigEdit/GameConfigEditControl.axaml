@@ -12,110 +12,120 @@
     d:DesignWidth="800"
     x:DataType="model:GameConfigEditModel"
     mc:Ignorable="d">
-    <Panel>
-        <DockPanel Margin="5">
-            <StackPanel
-                Margin="0,0,0,5"
-                DockPanel.Dock="Top"
-                Orientation="Horizontal">
-                <Button
-                    Width="100"
-                    Height="25"
-                    VerticalAlignment="Center"
-                    Command="{Binding Open}"
-                    Content="{setting:Localize Button.OpFile}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding Save}"
-                    Content="{setting:Localize ConfigEditWindow.Text2}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text40}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding Load}"
-                    Content="{setting:Localize ConfigEditWindow.Text3}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text41}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding FindBlock}"
-                    Content="{setting:Localize ConfigEditWindow.Text5}"
-                    IsVisible="{Binding IsWorld}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding FindEntity}"
-                    Content="{setting:Localize ConfigEditWindow.Text6}"
-                    IsVisible="{Binding IsWorld}" />
-            </StackPanel>
-            <DockPanel DockPanel.Dock="Top">
-                <ComboBox
-                    Width="250"
-                    ItemsSource="{Binding FileList}"
-                    SelectedIndex="{Binding Select}"
-                    SelectedItem="{Binding File}" />
-
-                <TextBox
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Classes="input1"
-                    Text="{Binding Name}"
-                    Watermark="{setting:Localize ConfigEditWindow.Text1}" />
-
-            </DockPanel>
-            <Panel>
-                <ae:TextEditor
-                    Name="TextEditor1"
-                    Margin="0,3,0,0"
-                    Background="{setting:Colors TranBack}"
-                    Document="{Binding Text}"
-                    FontSize="14"
-                    FontWeight="Normal"
-                    Foreground="{setting:Colors Font}"
-                    HorizontalScrollBarVisibility="Auto"
-                    IsVisible="{Binding !NbtEnable}"
-                    ShowLineNumbers="True"
-                    VerticalScrollBarVisibility="Visible"
-                    WordWrap="True" />
-                <TreeDataGrid
-                    Name="NbtViewer"
-                    Margin="3"
-                    IsVisible="{Binding NbtEnable}"
-                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                    ScrollViewer.VerticalScrollBarVisibility="Visible"
-                    Source="{Binding Source}">
-                    <TreeDataGrid.Resources>
-                        <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
-                            <StackPanel Orientation="Horizontal">
-                                <Label
-                                    Width="30"
-                                    VerticalAlignment="Center"
-                                    HorizontalContentAlignment="Center">
-                                    <Label.Content>
-                                        <MultiBinding Converter="{x:Static setting:IconConverter.NbtIconConverter}">
-                                            <Binding Path="NbtType" />
-                                        </MultiBinding>
-                                    </Label.Content>
-                                </Label>
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </TreeDataGrid.Resources>
-                </TreeDataGrid>
-            </Panel>
+    <Panel Margin="5">
+        <DockPanel>
+            <Border
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                DockPanel.Dock="Top">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            Width="100"
+                            Height="25"
+                            VerticalAlignment="Center"
+                            Command="{Binding Open}"
+                            Content="{setting:Localize Button.OpFile}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding Save}"
+                            Content="{setting:Localize ConfigEditWindow.Text2}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text40}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding Load}"
+                            Content="{setting:Localize ConfigEditWindow.Text3}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text41}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding FindBlock}"
+                            Content="{setting:Localize ConfigEditWindow.Text5}"
+                            IsVisible="{Binding IsWorld}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding FindEntity}"
+                            Content="{setting:Localize ConfigEditWindow.Text6}"
+                            IsVisible="{Binding IsWorld}" />
+                    </StackPanel>
+                    <DockPanel Margin="0,3,0,0">
+                        <ComboBox
+                            Width="250"
+                            ItemsSource="{Binding FileList}"
+                            SelectedIndex="{Binding Select}"
+                            SelectedItem="{Binding File}" />
+                        <TextBox
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Classes="input1"
+                            Text="{Binding Name}"
+                            Watermark="{setting:Localize ConfigEditWindow.Text1}" />
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <Panel>
+                    <ae:TextEditor
+                        Name="TextEditor1"
+                        Background="{setting:Colors TranBack}"
+                        Document="{Binding Text}"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Foreground="{setting:Colors Font}"
+                        HorizontalScrollBarVisibility="Auto"
+                        IsVisible="{Binding !NbtEnable}"
+                        ShowLineNumbers="True"
+                        VerticalScrollBarVisibility="Visible"
+                        WordWrap="True" />
+                    <TreeDataGrid
+                        Name="NbtViewer"
+                        IsVisible="{Binding NbtEnable}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        Source="{Binding Source}">
+                        <TreeDataGrid.Resources>
+                            <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label
+                                        Width="30"
+                                        VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Center">
+                                        <Label.Content>
+                                            <MultiBinding Converter="{x:Static setting:IconConverter.NbtIconConverter}">
+                                                <Binding Path="NbtType" />
+                                            </MultiBinding>
+                                        </Label.Content>
+                                    </Label>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </TreeDataGrid.Resources>
+                    </TreeDataGrid>
+                </Panel>
+            </Border>
         </DockPanel>
 
         <Panel IsVisible="{Binding DisplayAdd, FallbackValue=false}">

@@ -25,10 +25,6 @@ public partial class CountControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
-
-        Expander1.MakeTran();
-        Expander2.MakeTran();
-        Expander3.MakeTran();
     }
 
     public void SetBaseModel(BaseModel model)

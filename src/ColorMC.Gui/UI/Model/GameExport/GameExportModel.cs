@@ -4,6 +4,7 @@ using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,6 +12,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,6 +30,18 @@ public partial class GameExportModel : GameModel
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
 
     public List<string> ExportTypes { get; init; } = LanguageBinding.GetExportName();
+
+    public List<MenuObj> TabItems { get; init; } = new()
+    {
+        new() { Icon = "/Resource/Icon/GameExport/item1.svg",
+            Text = App.GetLanguage("GameExportWindow.Tabs.Text1") },
+        new() { Icon = "/Resource/Icon/GameExport/item2.svg",
+            Text = App.GetLanguage("GameExportWindow.Tabs.Text2") },
+        new() { Icon = "/Resource/Icon/GameExport/item3.svg",
+            Text = App.GetLanguage("GameExportWindow.Tabs.Text3") },
+        new() { Icon = "/Resource/Icon/GameExport/item4.svg",
+            Text = App.GetLanguage("GameExportWindow.Tabs.Text4") },
+    };
 
     /// <summary>
     /// 在线下载的Mod列表
@@ -76,11 +90,17 @@ public partial class GameExportModel : GameModel
     [ObservableProperty]
     private bool _enableInput3;
 
+    [ObservableProperty]
+    private int _nowView;
+
+    [ObservableProperty]
+    private string _title;
+
     public readonly List<ModExportModel> Items = new();
 
     public GameExportModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
-
+        _title = TabItems[0].Text;
     }
 
     async partial void OnTypeChanged(PackType value)
@@ -112,6 +132,25 @@ public partial class GameExportModel : GameModel
         Load1();
     }
 
+    partial void OnNowViewChanged(int value)
+    {
+        CloseSide();
+
+        Title = TabItems[NowView].Text;
+    }
+
+    [RelayCommand]
+    public void OpenSide()
+    {
+        OnPropertyChanged("SideOpen");
+    }
+
+    [RelayCommand]
+    public void CloseSide()
+    {
+        OnPropertyChanged("SideClose");
+    }
+
     [RelayCommand]
     public void OpenMod()
     {
@@ -119,6 +158,8 @@ public partial class GameExportModel : GameModel
         {
             return;
         }
+
+        PathBinding.OpFile(SelectMod.Obj.Local);
     }
 
     [RelayCommand]
@@ -131,19 +172,17 @@ public partial class GameExportModel : GameModel
         {
             return;
         }
-        foreach (var item in list)
+        
+        await Parallel.ForEachAsync(list, async (item, cancel) =>
         {
             ModExportModel obj1;
             if (item.ReadFail)
             {
-                continue;
+                return;
             }
-
             var info = new FileInfo(item.Local);
             using var stream = File.OpenRead(item.Local);
-
             var sha512 = await FuntionUtils.GenSha512Async(stream);
-
             var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
             if (item1 != null)
             {
@@ -169,8 +208,8 @@ public partial class GameExportModel : GameModel
                 };
                 Items.Add(obj1);
             }
-        }
-
+        });
+        
         Load1();
     }
 

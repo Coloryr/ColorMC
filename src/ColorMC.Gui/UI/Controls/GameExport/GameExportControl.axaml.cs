@@ -5,6 +5,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.UI.Windows;
+using System.ComponentModel;
 using System.IO;
 using System.Threading;
 
@@ -39,31 +40,20 @@ public partial class GameExportControl : UserControl, IUserControl
     {
         _obj = obj;
 
-        Tabs.SelectionChanged += Tabs_SelectionChanged;
-
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+        StackPanel1.PointerPressed += StackPanel1_PointerPressed;
+        StackPanel2.PointerPressed += StackPanel2_PointerPressed;
 
         Content1.Content = _tab1;
     }
 
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (e.Delta.Y > 0)
-        {
-            ScrollViewer1.LineLeft();
-            ScrollViewer1.LineLeft();
-            ScrollViewer1.LineLeft();
-            ScrollViewer1.LineLeft();
-            ScrollViewer1.LineLeft();
-        }
-        else if (e.Delta.Y < 0)
-        {
-            ScrollViewer1.LineRight();
-            ScrollViewer1.LineRight();
-            ScrollViewer1.LineRight();
-            ScrollViewer1.LineRight();
-            ScrollViewer1.LineRight();
-        }
+        (DataContext as GameExportModel)!.OpenSide();
+    }
+
+    private void StackPanel1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        (DataContext as GameExportModel)!.CloseSide();
     }
 
     public async void Opened()
@@ -74,6 +64,7 @@ public partial class GameExportControl : UserControl, IUserControl
         _tab4.Opened();
 
         var model = (DataContext as GameExportModel)!;
+        model.Model.Progress(App.GetLanguage("GameExportWindow.Info7"));
         await model.LoadMod();
         model.LoadFile();
 
@@ -82,27 +73,7 @@ public partial class GameExportControl : UserControl, IUserControl
         {
             Window.SetIcon(new(icon));
         }
-    }
-
-    private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        switch (Tabs.SelectedIndex)
-        {
-            case 0:
-                Go(_tab1);
-                break;
-            case 1:
-                Go(_tab2);
-                break;
-            case 2:
-                Go(_tab3);
-                break;
-            case 3:
-                Go(_tab4);
-                break;
-        }
-
-        _now = Tabs.SelectedIndex;
+        model.Model.ProgressClose();
     }
 
     private void Go(UserControl to)
@@ -111,21 +82,21 @@ public partial class GameExportControl : UserControl, IUserControl
         _cancel.Dispose();
 
         _cancel = new();
-        Tabs.IsEnabled = false;
+
+        var model = (DataContext as GameExportModel)!;
 
         if (!_switch1)
         {
             Content2.Content = to;
-            _ = App.PageSlide500.Start(Content1, Content2, _now < Tabs.SelectedIndex, _cancel.Token);
+            _ = App.PageSlide500.Start(Content1, Content2, _now < model.NowView, _cancel.Token);
         }
         else
         {
             Content1.Content = to;
-            _ = App.PageSlide500.Start(Content2, Content1, _now < Tabs.SelectedIndex, _cancel.Token);
+            _ = App.PageSlide500.Start(Content2, Content1, _now < model.NowView, _cancel.Token);
         }
 
         _switch1 = !_switch1;
-        Tabs.IsEnabled = true;
     }
 
     public void Closed()
@@ -136,6 +107,40 @@ public partial class GameExportControl : UserControl, IUserControl
     public void SetBaseModel(BaseModel model)
     {
         var amodel = new GameExportModel(model, _obj);
+        amodel.PropertyChanged += Amodel_PropertyChanged;
         DataContext = amodel;
+    }
+
+    private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName == "NowView")
+        {
+            var model = (DataContext as GameExportModel)!;
+            switch (model.NowView)
+            {
+                case 0:
+                    Go(_tab1);
+                    break;
+                case 1:
+                    Go(_tab2);
+                    break;
+                case 2:
+                    Go(_tab3);
+                    break;
+                case 3:
+                    Go(_tab4);
+                    break;
+            }
+
+            _now = model.NowView;
+        }
+        else if (e.PropertyName == "SideOpen")
+        {
+            App.CrossFade100.Start(null, StackPanel1);
+        }
+        else if (e.PropertyName == "SideClose")
+        {
+            StackPanel1.IsVisible = false;
+        }
     }
 }

@@ -14,81 +14,86 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Margin="5,0,5,5">
-            <WrapPanel
-                VerticalAlignment="Top"
-                DockPanel.Dock="Top"
-                IsVisible="{Binding DisplayFilter}">
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding EditWorld}"
-                    Content="{setting:Localize GameEditWindow.Tab5.Text3}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding BackupWorld}"
-                    Content="{setting:Localize GameEditWindow.Tab5.Text2}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text42}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding OpenBackupWorld}"
-                    Content="{setting:Localize GameEditWindow.Tab5.Text1}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding OpenWorld}"
-                    Content="{setting:Localize Button.OpFile}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding ImportWorld}"
-                    Content="{setting:Localize Button.Input}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding AddWorld}"
-                    Content="{setting:Localize Button.Add}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Command="{Binding LoadWorld}"
-                    Content="{setting:Localize Button.Refash}" />
-            </WrapPanel>
-            <ScrollViewer Margin="0,3,0,0" VerticalScrollBarVisibility="Visible">
-                <ItemsControl
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    ItemsSource="{Binding WorldList}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <item:WorldControl DataContext="{Binding}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+        <DockPanel Margin="5,2,5,5">
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                DockPanel.Dock="Top">
+                <WrapPanel>
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding EditWorld}"
+                        Content="{setting:Localize GameEditWindow.Tab5.Text3}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding BackupWorld}"
+                        Content="{setting:Localize GameEditWindow.Tab5.Text2}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text42}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding OpenBackupWorld}"
+                        Content="{setting:Localize GameEditWindow.Tab5.Text1}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding OpenWorld}"
+                        Content="{setting:Localize Button.OpFile}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding ImportWorld}"
+                        Content="{setting:Localize Button.Input}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding AddWorld}"
+                        Content="{setting:Localize Button.Add}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Command="{Binding LoadWorld}"
+                        Content="{setting:Localize Button.Refash}" />
+                </WrapPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <ItemsControl
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{Binding WorldList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <item:WorldControl DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
         </DockPanel>
-
-        <Button
-            Height="25"
-            Margin="0,0,5,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Command="{Binding ShowFilter}">
-            <Svg Path="/Resource/Icon/filter.svg" />
-        </Button>
 
         <Panel
             Name="Grid2"
