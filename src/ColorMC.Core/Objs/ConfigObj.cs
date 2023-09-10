@@ -110,4 +110,5 @@ public record ConfigObj
     public JvmArgObj DefaultJvmArg { get; set; }
     public WindowSettingObj Window { get; set; }
     public GameCheckObj GameCheck { get; set; }
+    public bool SafeLog4j { get; set; }
 }

@@ -46,6 +46,8 @@ public partial class SettingModel : TopModel
     private bool _fullScreen;
     [ObservableProperty]
     private bool _closeBefore;
+    [ObservableProperty]
+    private bool _safeLog4j;
 
     [ObservableProperty]
     private GCType _gC;
@@ -60,6 +62,16 @@ public partial class SettingModel : TopModel
     private uint _height;
 
     private bool _argLoad = false;
+
+    partial void OnSafeLog4jChanged(bool value)
+    {
+        if (_argLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetSafeLog4j(value);
+    }
 
     partial void OnMaxMemoryChanged(uint value)
     {
@@ -202,6 +214,7 @@ public partial class SettingModel : TopModel
             CheckModSha1 = con.GameCheck.CheckModSha1;
             PostRun = con.DefaultJvmArg.LaunchPost;
             PreRun = con.DefaultJvmArg.LaunchPre;
+            SafeLog4j = con.SafeLog4j;
         }
 
         if (config.Item2 is { } con1)

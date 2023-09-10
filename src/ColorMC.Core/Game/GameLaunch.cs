@@ -396,10 +396,10 @@ public static class Launch
 
         //log4j2-xml
         var game = VersionPath.GetGame(obj.Version)!;
-        if (game.logging != null)
+        if (game.logging != null && ConfigUtils.Config.SafeLog4j)
         {
             var obj1 = DownloadItemHelper.BuildLog4jItem(game);
-            //jvmHead.Add(game.logging.client.argument.Replace("${path}", obj1.Local));
+            jvmHead.Add(game.logging.client.argument.Replace("${path}", obj1.Local));
         }
 
         return jvmHead;
