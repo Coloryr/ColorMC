@@ -100,7 +100,11 @@ public static class Launch
         var arg = MakeV2GameArg(obj);
 
         jvmHead.Add("io.github.zekerzhayard.forgewrapper.installer.Main");
-        jvmHead.Add("");
+        var forge1 = obj.Loader == Loaders.NeoForge
+                ? obj.GetNeoForgeObj()!
+                : obj.GetForgeObj()!;
+
+        jvmHead.AddRange(forge1.arguments.game);
 
         return jvmHead;
     }
@@ -1125,6 +1129,20 @@ public static class Launch
 
         if (SystemInfo.Os == OsType.Android)
         {
+            var version = VersionPath.GetGame(obj.Version)!;
+            var v2 = CheckHelpers.GameLaunchVersion(version);
+            if (v2 && obj.Loader is Loaders.Forge or Loaders.NeoForge)
+            {
+                var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
+                        LanguageHelper.Get("Core.Launch.Error9"));
+                var res1 = ColorMCCore.PhoneJvmRun?.Invoke(jvm1!.Path, obj.MakeInstallForgeArg());
+                if (res1 != true)
+                {
+                    throw new LaunchException(LaunchState.JavaError,
+                        LanguageHelper.Get("Core.Launch.Error10"));
+                }
+            }
+
             var arglist = new List<string>
             {
                 obj.GetGamePath(),
