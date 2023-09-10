@@ -1,5 +1,7 @@
 ﻿using Avalonia.Media.Imaging;
+using ColorMC.Core;
 using ColorMC.Core.Net;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -121,6 +123,10 @@ public static class ImageUtils
                 {
                     var assm = Assembly.GetExecutingAssembly();
                     stream1 = assm.GetManifestResourceStream(file)!;
+                }
+                else if (SystemInfo.Os == OsType.Android)
+                {
+                    stream1 = ColorMCCore.PhoneReadFile?.Invoke(file)!;
                 }
                 else if (!File.Exists(file))
                 {
