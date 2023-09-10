@@ -244,22 +244,7 @@ public static class DownloadItemHelper
                     BuildNeoForgeUniversal(mc, version) :
                     BuildForgeUniversal(mc, version);
                 item1.SHA1 = item.downloads.artifact.sha1;
-                if (!File.Exists(item1.Local))
-                {
-                    list.Add(item1);
-                    continue;
-                }
-                if (!string.IsNullOrWhiteSpace(item1.SHA1))
-                {
-                    using var stream1 = new FileStream(item1.Local, FileMode.Open, FileAccess.ReadWrite,
-                   FileShare.ReadWrite);
-                    var sha11 = FuntionUtils.GenSha1(stream1);
-                    if (sha11 != item1.SHA1)
-                    {
-                        list.Add(item1);
-                    }
-                }
-
+                list.Add(item1);
                 continue;
             }
 
@@ -267,38 +252,18 @@ public static class DownloadItemHelper
                 continue;
 
             string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}");
-            if (!File.Exists(file))
+
+            list.Add(new()
             {
-                list.Add(new()
-                {
-                    Local = file,
-                    Name = item.name,
-                    SHA1 = item.downloads.artifact.sha1,
-                    Url = neo ?
+                Local = file,
+                Name = item.name,
+                SHA1 = item.downloads.artifact.sha1,
+                Url = neo ?
                     UrlHelper.DownloadNeoForgeLib(item.downloads.artifact.url,
                          BaseClient.Source) :
                     UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
                          BaseClient.Source)
-                });
-                continue;
-            }
-            using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
-                FileShare.ReadWrite);
-            var sha1 = FuntionUtils.GenSha1(stream);
-            if (item.downloads.artifact.sha1 != sha1)
-            {
-                list.Add(new()
-                {
-                    Local = file,
-                    Name = item.name,
-                    SHA1 = item.downloads.artifact.sha1,
-                    Url = neo ?
-                    UrlHelper.DownloadNeoForgeLib(item.downloads.artifact.url,
-                         BaseClient.Source) :
-                    UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
-                         BaseClient.Source)
-                });
-            }
+            });
         }
 
         return list;

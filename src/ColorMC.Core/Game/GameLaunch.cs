@@ -8,6 +8,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
@@ -40,6 +41,68 @@ public static class Launch
         }
 
         return data.ToString();
+    }
+
+    public static List<string> MakeInstallForgeArg(this GameSettingObj obj)
+    {
+        var jvmHead = new List<string>
+        {
+            $"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}",
+            $"-Dforgewrapper.installer={(obj.Loader == Loaders.NeoForge ?
+            DownloadItemHelper.BuildNeoForgeInster(obj.Version, obj.LoaderVersion!).Local :
+            DownloadItemHelper.BuildForgeInster(obj.Version, obj.LoaderVersion!).Local)}",
+            $"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}",
+            "-Dforgewrapper.justInstall=true"
+        };
+
+        Dictionary<LibVersionObj, string> list = new();
+
+        var forge = obj.Loader == Loaders.NeoForge
+                ? VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!)! 
+                : VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!)!;
+        var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
+            obj.Loader == Loaders.NeoForge);
+        list2.ForEach(a => list.AddOrUpdate(PathCUtils.MakeVersionObj(a.Name), a.Local));
+
+        GameHelper.ReadyForgeWrapper();
+        list.AddOrUpdate(new(), GameHelper.ForgeWrapper);
+
+        var libraries = new List<string>(list.Values);
+        StringBuilder classpath = new();
+        string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
+        ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.Get("Core.Launch.Info2"));
+
+        //去除重复的classpath
+        if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.ClassPath))
+        {
+            var list1 = obj.AdvanceJvm.ClassPath.Split(";");
+            foreach (var item1 in list1)
+            {
+                var path = Path.GetFullPath(item1);
+                if (File.Exists(path))
+                {
+                    libraries.Add(item1);
+                }
+            }
+        }
+
+        //添加lib路径到classpath
+        foreach (var item in libraries)
+        {
+            classpath.Append($"{item}{sep}");
+        }
+        classpath.Remove(classpath.Length - 1, 1);
+
+        string cp = classpath.ToString().Trim();
+        jvmHead.Add("-cp");
+        jvmHead.Add(cp);
+
+        var arg = MakeV2GameArg(obj);
+
+        jvmHead.Add("io.github.zekerzhayard.forgewrapper.installer.Main");
+        jvmHead.Add("");
+
+        return jvmHead;
     }
 
     /// <summary>

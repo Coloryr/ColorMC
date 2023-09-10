@@ -8,6 +8,8 @@ using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using Esprima;
+using System;
 using System.Diagnostics;
 using System.IO.Compression;
 
@@ -514,5 +516,20 @@ public static class TestItem
     {
         string temp = "H:\\jre17-arm64-20230721-release.tar.xz";
         new ZipUtils().Unzip("H:\\jre17", temp, File.OpenRead(temp));
+    }
+
+    public static void Item31()
+    {
+        VersionPath.GetFromWeb().Wait();
+        var game = new GameSettingObj()
+        {
+            DirName = "test1",
+            Name = "test1",
+            Loader = Loaders.Forge
+        };
+        game.Version = "1.20.1";
+        game.Loader = Loaders.NeoForge;
+        game.LoaderVersion = "47.1.76";
+        game.MakeInstallForgeArg();
     }
 }

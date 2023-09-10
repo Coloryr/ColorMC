@@ -420,7 +420,6 @@ public partial class SettingModel : TopModel
         {
             await PathBinding.CopyBG(Pic!);
         }
-       
         await ConfigBinding.SetBackPic(EnableBG, Pic, PicEffect);
         Model.ProgressClose();
 

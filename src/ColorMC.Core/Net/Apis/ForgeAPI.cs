@@ -85,7 +85,7 @@ public static class ForgeAPI
                 || local == SourceLocal.MCBBS)
             {
                 string url = neo
-                    ? UrlHelper.NeoForgeVersions(mc, SourceLocal.Offical)
+                    ? UrlHelper.NeoForgeVersions(mc, local)
                     : UrlHelper.ForgeVersions(mc, local);
                 var data = await BaseClient.GetString(url);
                 if (data.Item1 == false)
