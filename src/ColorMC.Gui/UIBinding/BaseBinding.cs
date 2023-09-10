@@ -218,6 +218,9 @@ public static class BaseBinding
                     case LaunchState.LaunchPost:
                         s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info32"));
                         break;
+                    case LaunchState.InstallForge:
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info38"));
+                        break;
                     case LaunchState.End:
                         s_window.ProgressClose();
                         break;
@@ -256,6 +259,15 @@ public static class BaseBinding
                         break;
                     case LaunchState.JvmPrepare:
                         s_window.Title1 = App.GetLanguage("MainWindow.Info16");
+                        break;
+                    case LaunchState.LaunchPre:
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info31");
+                        break;
+                    case LaunchState.LaunchPost:
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info32");
+                        break;
+                    case LaunchState.InstallForge:
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info38");
                         break;
                     case LaunchState.End:
                         s_window.Title1 = "";

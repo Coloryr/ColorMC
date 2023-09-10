@@ -243,7 +243,11 @@ public enum LaunchState
     /// <summary>
     /// 取消
     /// </summary>
-    Cancel
+    Cancel,
+    /// <summary>
+    /// 安装Forge
+    /// </summary>
+    InstallForge
 }
 
 /// <summary>
