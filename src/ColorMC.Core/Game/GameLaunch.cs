@@ -1135,7 +1135,7 @@ public static class Launch
             {
                 var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
                         LanguageHelper.Get("Core.Launch.Error9"));
-                var res1 = ColorMCCore.PhoneJvmRun?.Invoke(jvm1!.Path, obj.MakeInstallForgeArg());
+                var res1 = await ColorMCCore.PhoneJvmRun.Invoke(jvm1!.Path, obj.MakeInstallForgeArg());
                 if (res1 != true)
                 {
                     throw new LaunchException(LaunchState.JavaError,
