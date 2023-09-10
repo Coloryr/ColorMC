@@ -187,8 +187,7 @@ public partial class App : Application
                 AllWindow.WinHead.Display(false);
                 AllWindow.Opened();
             }
-
-            else if (SystemInfo.Os != OsType.Android)
+            else
             {
                 var win = new SingleWindow();
                 AllWindow = win.Win;
@@ -199,6 +198,13 @@ public partial class App : Application
         ShowCustom();
         Task.Run(ColorMCCore.Init1);
         Dispatcher.UIThread.Post(() => _ = LoadImage());
+        if (SystemInfo.Os == OsType.Android)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                TopLevel ??= TopLevel.GetTopLevel(AllWindow);
+            });
+        }
     }
 
     public static void StartLock()
@@ -370,20 +376,13 @@ public partial class App : Application
     {
         if (ConfigBinding.WindowMode())
         {
-            if (TopLevel == null)
-            {
-                TopLevel = TopLevel.GetTopLevel(AllWindow);
-            }
             con.SetBaseModel(AllWindow!.Model);
             AllWindow.Add(con);
         }
         else
         {
             var win = new SelfBaseWindow(con);
-            if (TopLevel == null)
-            {
-                TopLevel = win;
-            }
+            TopLevel ??= win;
             con.SetBaseModel(win.Model);
             win.Show();
         }
