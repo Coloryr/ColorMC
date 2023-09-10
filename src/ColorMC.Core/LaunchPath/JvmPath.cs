@@ -152,7 +152,7 @@ public static class JvmPath
         {
             await Task.Run(() =>
             {
-                ColorMCCore.PhoneJvmIntasll?.Invoke(path, file);
+                ColorMCCore.PhoneJvmInstall?.Invoke(path, file);
             });
         }
         else
