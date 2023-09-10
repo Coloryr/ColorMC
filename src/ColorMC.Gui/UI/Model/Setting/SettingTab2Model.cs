@@ -1,5 +1,6 @@
 ﻿using Avalonia.Media;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -414,6 +415,10 @@ public partial class SettingModel : TopModel
         //    Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
         //    return;
         //}
+        if (SystemInfo.Os == OsType.Android)
+        {
+            await PathBinding.CopyBG(Pic!);
+        }
         Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackPic(EnableBG, Pic, PicEffect);
         Model.ProgressClose();

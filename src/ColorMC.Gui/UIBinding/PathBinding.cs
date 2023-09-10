@@ -871,4 +871,22 @@ public static class PathBinding
         }
         return true;
     }
+
+    public static async Task CopyBG(string pic)
+    {
+        try
+        {
+            using var stream = ColorMCCore.PhoneReadFile?.Invoke(pic);
+            if (stream == null)
+                return;
+            string file = ColorMCGui.RunDir + "BG";
+            File.Delete(file);
+            using var temp = File.Create(file);
+            await stream.CopyToAsync(temp);
+        }
+        catch (Exception e)
+        {
+            Logs.Error("pic copy error", e);
+        }
+    }
 }

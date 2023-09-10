@@ -113,7 +113,7 @@ public static class ImageUtils
         {
             try
             {
-                Stream stream1;
+                Stream? stream1 = null;
                 if (file.StartsWith("https://") || file.StartsWith("http://"))
                 {
                     var res = await BaseClient.DownloadClient.GetAsync(file);
@@ -126,9 +126,9 @@ public static class ImageUtils
                 }
                 else if (SystemInfo.Os == OsType.Android)
                 {
-                    stream1 = ColorMCCore.PhoneReadFile?.Invoke(file)!;
+                    file = ColorMCGui.RunDir + "BG";
                 }
-                else if (!File.Exists(file))
+                if (stream1 == null && !File.Exists(file))
                 {
                     return null;
                 }
