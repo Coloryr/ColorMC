@@ -1067,7 +1067,7 @@ public static class Launch
                 obj.GetGamePath(),
                 jvm!.Path,
                 obj.Version,
-                game.javaVersion.majorVersion.ToString(),
+                jvm.MajorVersion.ToString(),
                 game.time,
                 CheckHelpers.GameLaunchVersion(game) ? "true" : "false"
             };
