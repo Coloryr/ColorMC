@@ -15,7 +15,9 @@ using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
+using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
@@ -40,6 +42,8 @@ public static class BaseBinding
 
     private static BaseModel? s_window;
     private static CancellationTokenSource s_launchCancel = new();
+
+    private static string s_launch;
 
     /// <summary>
     /// 初始化
@@ -90,6 +94,38 @@ public static class BaseBinding
         App.CustomWindow?.Load1();
 
         await GameCloudUtils.StartConnect();
+
+        if (s_launch != null)
+        {
+            Dispatcher.UIThread.Post(async () =>
+            {
+                var game = InstancesPath.GetGame(s_launch);
+                var window = App.GetMainWindow();
+                if (window == null)
+                {
+                    return;
+                }
+                if (game == null)
+                {
+                    window?.Model.Show(App.GetLanguage("Gui.Error28"));
+                }
+                else if (window?.Model is BaseModel model)
+                {
+                    window.Model.Progress(string.Format(App.GetLanguage("Gui.Info28"), game.Name));
+                    var res = await GameBinding.Launch(model, game, wait:true);
+                    if (!res.Item1)
+                    {
+                        window.Show();
+                        window.Model.Show(res.Item2!);
+                    }
+                    else
+                    {
+                        window.Model.ProgressClose();
+                        window.Hide();
+                    }
+                }
+            });
+        }
     }
 
     public static void LoadStyle()
@@ -327,7 +363,7 @@ public static class BaseBinding
     /// <param name="obj1">保存的账户</param>
     /// <returns>结果</returns>
     public static async Task<(bool, string?)> Launch(BaseModel window,
-        GameSettingObj obj, LoginObj obj1, WorldObj? world = null)
+        GameSettingObj obj, LoginObj obj1, WorldObj? world = null, bool wait = false)
     {
         s_window = window;
         s_launchCancel = new();
@@ -392,9 +428,54 @@ public static class BaseBinding
         {
             obj.LaunchData.LastTime = DateTime.Now;
             obj.SaveLaunchData();
-            if (GuiConfigUtils.Config.CloseBeforeLaunch)
+
+            if (GuiConfigUtils.Config.ServerCustom.RunPause)
             {
-                _ = Task.Run(() =>
+                Media.Pause();
+            }
+
+            App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text2"));
+
+            pr.Exited += (a, b) =>
+            {
+                GameCountUtils.GameClose(obj.UUID);
+                RunGames.Remove(obj.UUID);
+                UserBinding.UnLockUser(obj1);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (s_launch != null)
+                    {
+                        App.Close();
+                        return;
+                    }
+                    App.MainWindow?.GameClose(obj.UUID);
+                });
+                Games.Remove(pr);
+                if (a is Process p1 && p1.ExitCode != 0)
+                {
+                    App.ShowGameLog(obj);
+                    GameLogs.Remove(obj.UUID);
+                    App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text3"));
+                }
+                else
+                {
+                    if (App.IsHide && !IsGameRuning())
+                    {
+                        App.Close();
+                    }
+                }
+                pr.Dispose();
+                GameBinding.GameStateUpdate(obj);
+            };
+
+            Games.Add(pr, obj);
+            RunGames.Add(obj.UUID, pr);
+            GameCountUtils.LaunchDone(obj.UUID);
+            GameBinding.GameStateUpdate(obj);
+
+            if (wait)
+            {
+                await Task.Run(() =>
                 {
                     Task.Delay(1000);
                     try
@@ -417,45 +498,6 @@ public static class BaseBinding
                     }
                 });
             }
-
-            if (GuiConfigUtils.Config.ServerCustom.RunPause)
-            {
-                Media.Pause();
-            }
-
-            App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text2"));
-
-            pr.Exited += (a, b) =>
-            {
-                GameCountUtils.GameClose(obj.UUID);
-                RunGames.Remove(obj.UUID);
-                UserBinding.UnLockUser(obj1);
-                App.MainWindow?.GameClose(obj.UUID);
-                Games.Remove(pr);
-                if (a is Process p1 && p1.ExitCode != 0)
-                {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        App.ShowGameLog(obj);
-                        GameLogs.Remove(obj.UUID);
-                    });
-                    App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text3"));
-                }
-                else
-                {
-                    if (App.IsHide && !IsGameRuning())
-                    {
-                        App.Close();
-                    }
-                }
-                pr.Dispose();
-                GameBinding.GameStateUpdate(obj);
-            };
-
-            Games.Add(pr, obj);
-            RunGames.Add(obj.UUID, pr);
-            GameCountUtils.LaunchDone(obj.UUID);
-            GameBinding.GameStateUpdate(obj);
         }
         else
         {
@@ -903,5 +945,24 @@ public static class BaseBinding
     public static void OpenPhoneSetting()
     {
         ColorMCGui.PhoneOpenSetting?.Invoke();
+    }
+
+    public static void CreateLaunch(GameSettingObj obj)
+    {
+        var shellType = Type.GetTypeFromProgID("WScript.Shell");
+        dynamic shell = Activator.CreateInstance(shellType);
+        var file = $"{ColorMCGui.RunDir}{obj.Name}.lnk";
+        var shortcut = shell.CreateShortcut(file);
+        var path = Process.GetCurrentProcess().MainModule.FileName;
+        shortcut.TargetPath = path;
+        shortcut.Arguments = "-game " + obj.UUID;
+        shortcut.WorkingDirectory = ColorMCGui.RunDir;
+        shortcut.Save();
+        PathBinding.OpFile(file);
+    }
+
+    public static void SetLaunch(string uuid)
+    {
+        s_launch = uuid;
     }
 }

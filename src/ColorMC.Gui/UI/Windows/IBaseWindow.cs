@@ -48,4 +48,16 @@ public interface IBaseWindow
             window.Activate();
         }
     }
+
+    virtual public void Hide()
+    {
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Hide();
+        }
+        else if (this is Window window)
+        {
+            window.Hide();
+        }
+    }
 }

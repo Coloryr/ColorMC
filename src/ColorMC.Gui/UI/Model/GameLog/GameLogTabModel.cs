@@ -3,6 +3,7 @@ using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -106,7 +107,7 @@ public partial class GameLogModel : GameModel
 
         IsGameRun = true;
 
-        var res = await GameBinding.Launch(Model, Obj);
+        var res = await GameBinding.Launch(Model, Obj, wait: GuiConfigUtils.Config.CloseBeforeLaunch);
         if (!res.Item1)
         {
             Model.Show(res.Item2!);

@@ -14,7 +14,7 @@
         <views:HeadControl Name="WinHead" DockPanel.Dock="Top" />
         <Grid Name="Grid3">
             <Image Name="Image_Back" Stretch="UniformToFill" />
-            <Grid Name="MainControl" />
+            <Grid Name="Controls" />
 
             <Button
                 Name="Button1"

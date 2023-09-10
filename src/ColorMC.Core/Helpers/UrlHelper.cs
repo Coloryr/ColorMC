@@ -245,8 +245,8 @@ public static class UrlHelper
     {
         string? url = local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}fabric-meta/v2/versions",
-            SourceLocal.MCBBS => $"{MCBBS}fabric-meta/v2/versions",
+            //SourceLocal.BMCLAPI => $"{BMCLAPI}fabric-meta/v2/versions",
+            //SourceLocal.MCBBS => $"{MCBBS}fabric-meta/v2/versions",
             _ => $"{FabricMeta}v2/versions"
         };
 
@@ -391,7 +391,7 @@ public static class UrlHelper
         return local switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
-            //SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
+            SourceLocal.MCBBS => $"{MCBBS}neoforge/list/{mc}",
             _ => $"{NeoForge}releases/net/neoforged/forge/maven-metadata.xml"
         };
     }

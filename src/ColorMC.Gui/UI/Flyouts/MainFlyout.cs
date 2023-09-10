@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -26,6 +27,7 @@ public class MainFlyout
             (App.GetLanguage("Button.OpFile"), true, Button7_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text7"), true, Button5_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text8"), true, Button9_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text15"), SystemInfo.Os == OsType.Windows, Button15_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text14"), GameCloudUtils.Connect, Button14_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text10"), !run, Button12_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text9"), !run, Button8_Click),
@@ -36,6 +38,10 @@ public class MainFlyout
         }, con);
     }
 
+    private void Button15_Click()
+    {
+        BaseBinding.CreateLaunch(_obj.Obj);
+    }
     private void Button14_Click()
     {
         App.ShowGameCloud(_obj.Obj);

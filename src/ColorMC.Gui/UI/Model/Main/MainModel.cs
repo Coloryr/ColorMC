@@ -462,7 +462,7 @@ public partial class MainModel : TopModel, IMainTop
         item.IsLaunch = false;
         item.IsLoad = true;
         Model.Notify(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
-        var res = await GameBinding.Launch(Model, game);
+        var res = await GameBinding.Launch(Model, game, wait: GuiConfigUtils.Config.CloseBeforeLaunch);
         Model.Title1 = null;
         item.IsLoad = false;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)

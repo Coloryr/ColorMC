@@ -313,4 +313,8 @@ public record GuiConfigObj
     /// 服务器云同步密钥
     /// </summary>
     public string ServerKey { get; set; }
+    /// <summary>
+    /// 控件堆叠模式
+    /// </summary>
+    public bool ControlMode { get; set; }
 }

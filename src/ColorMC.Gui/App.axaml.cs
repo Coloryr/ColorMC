@@ -180,10 +180,9 @@ public partial class App : Application
 
         if (ConfigBinding.WindowMode())
         {
-            AllWindow = new();
-
             if (SystemInfo.Os == OsType.Android)
             {
+                AllWindow = new();
                 (Life as ISingleViewApplicationLifetime)!.MainView = AllWindow;
                 AllWindow.WinHead.Display(false);
                 AllWindow.Opened();
@@ -192,6 +191,7 @@ public partial class App : Application
             else if (SystemInfo.Os != OsType.Android)
             {
                 var win = new SingleWindow();
+                AllWindow = win.Win;
                 win.Show();
             }
         }

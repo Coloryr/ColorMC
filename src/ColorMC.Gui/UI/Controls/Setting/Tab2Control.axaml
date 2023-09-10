@@ -21,18 +21,21 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Name="PhoneSetting" />
-                    <StackPanel Orientation="Horizontal">
+                    <WrapPanel Orientation="Horizontal">
                         <CheckBox
+                            Margin="0,0,5,0"
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab2.Text22}"
                             IsChecked="{Binding WindowMode}"
                             IsEnabled="{Binding EnableWindowMode}" />
-                        <TextBlock
-                            Margin="5,0,0,0"
+                        <CheckBox
+                            Margin="0,0,5,0"
                             VerticalAlignment="Center"
-                            Text="{setting:Localize SettingWindow.Tab2.Text23}"
-                            TextWrapping="Wrap" />
-                    </StackPanel>
+                            Content="{setting:Localize SettingWindow.Tab2.Text45}"
+                            IsChecked="{Binding ControlMode}"
+                            IsEnabled="{Binding EnableWindowMode}" />
+                        <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text23}" />
+                    </WrapPanel>
                     <CheckBox
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text37}"

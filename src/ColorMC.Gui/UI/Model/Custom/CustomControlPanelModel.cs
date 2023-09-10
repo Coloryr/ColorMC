@@ -6,6 +6,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -82,7 +83,7 @@ public partial class CustomControlPanelModel : TopModel
         item.IsLaunch = false;
         item.IsLoad = true;
         Model.Notify(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
-        var res = await GameBinding.Launch(Model, game);
+        var res = await GameBinding.Launch(Model, game, wait: GuiConfigUtils.Config.CloseBeforeLaunch);
         Model.Title1 = null;
         item.IsLoad = false;
         await Model.ProgressCloseAsync();

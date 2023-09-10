@@ -27,16 +27,18 @@ public partial class AllControl : UserControl, IBaseWindow
     private readonly AllFlyout _allFlyout;
     private bool _isDialog;
 
-    private readonly Dictionary<IUserControl, Grid> _cons = new();
-    private readonly Dictionary<Grid, IUserControl> _cons1 = new();
-    private readonly Dictionary<Grid, Button> _switchs = new();
+    //mode true
+    private readonly Dictionary<IUserControl, Control> _cons = new();
+    private readonly Dictionary<Control, IUserControl> _cons1 = new();
+    private readonly Dictionary<Control, Button> _switchs = new();
     private readonly List<Button> _buttonList = new();
+
+    //mode false
+    private readonly List<Control> controls = new();
 
     public IBaseWindow Window => this;
 
     public IUserControl ICon => _nowControl;
-
-    public string Title => _nowControl.Title;
 
     public BaseModel Model => (DataContext as BaseModel)!;
 
@@ -66,7 +68,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
     public void Closed()
     {
-        MainControl.Children.Clear();
+        Controls.Children.Clear();
     }
 
     public void Opened()
@@ -145,7 +147,8 @@ public partial class AllControl : UserControl, IBaseWindow
         if (_baseControl == null)
         {
             _baseControl = con;
-            MainControl.Children.Add((_baseControl as Control)!);
+            var con1 = (_baseControl as Control)!;
+            Controls.Children.Add(con1);
             Dispatcher.UIThread.Post(() =>
             {
                 _baseControl.Opened();
@@ -153,79 +156,125 @@ public partial class AllControl : UserControl, IBaseWindow
         }
         else
         {
-            var button = new Button
+            if (GuiConfigUtils.Config.ControlMode)
             {
-                Content = GetName(con),
-                Height = 25,
-                Width = 150
-            };
-            button.Click += (a, e) =>
+                var button = new Button
+                {
+                    Content = con.Title,
+                    Height = 25,
+                    Width = 150
+                };
+                button.Click += (a, e) =>
+                {
+                    _allFlyout.Hide();
+                    Active(con);
+                };
+                var grid = new Border
+                {
+                    IsVisible = false,
+                    Background = ColorSel.TopBottomColor
+                };
+                _buttonList.Add(button);
+                grid.Child = (con as Control)!;
+                _switchs.Add(grid, button);
+                _cons.Add(con, grid);
+                _cons1.Add(grid, con);
+
+                Controls.Children.Add(grid);
+                App.CrossFade300.Start(null, grid);
+            }
+            else
             {
-                _allFlyout.Hide();
-                Active(con);
-            };
-            var grid = new Grid
-            {
-                IsVisible = false,
-                Background = ColorSel.TopBottomColor
-            };
-            _buttonList.Add(button);
-            grid.Children.Add((con as Control)!);
-            _switchs.Add(grid, button);
-            _cons.Add(con, grid);
-            _cons1.Add(grid, con);
-            MainControl.Children.Add(grid);
-            App.CrossFade300.Start(null, grid);
+                var con1 = Controls.Children[0];
+                var con2 = (con as Control)!;
+                Controls.Children.Remove(con1);
+                if (con1 is not (MainControl or CustomControl))
+                {
+                    controls.Add(con1);
+                }
+                Controls.Children.Add(con2);
+                App.CrossFade300.Start(null, con2);
+            }
+            
             con.Opened();
         }
 
-        Up();
-
         _nowControl = con;
+        SetTitle(_nowControl.Title);
+
+        ButtonUp();
     }
 
-    private static string GetName(IUserControl con)
+    private void ButtonUp()
     {
-        return con.Title;
-    }
-
-    private void Up()
-    {
-        if (_cons.Count > 0)
+        if (GuiConfigUtils.Config.ControlMode)
         {
-            Button2.IsVisible = true;
-            if (_cons.Count > 1)
+            if (_switchs.Count > 0)
             {
-                Button1.IsVisible = true;
+                Button2.IsVisible = true;
+                if (_switchs.Count > 1)
+                {
+                    Button1.IsVisible = true;
+                }
+                else
+                {
+                    Button1.IsVisible = false;
+                }
             }
             else
             {
                 Button1.IsVisible = false;
+                Button2.IsVisible = false;
             }
         }
         else
         {
             Button1.IsVisible = false;
-            Button2.IsVisible = false;
+            if (controls.Count > 0 || _nowControl is not (MainControl or CustomControl))
+            {
+                Button2.IsVisible = true;
+            }
+            else
+            {
+                Button2.IsVisible = false;
+            }
         }
     }
 
     public void Active(IUserControl con)
     {
-        foreach (Control item1 in MainControl.Children)
+        if (GuiConfigUtils.Config.ControlMode)
         {
-            if (item1 == _baseControl)
-                continue;
+            foreach (Control item1 in Controls.Children)
+            {
+                if (item1 == _baseControl)
+                    continue;
 
-            item1.ZIndex = 0;
+                item1.ZIndex = 0;
+            }
+
+            if (_cons.TryGetValue(con, out var item))
+            {
+                item.ZIndex = 1;
+            }
         }
-
-        if (_cons.TryGetValue(con, out var item))
+        else
         {
-            item.ZIndex = 1;
+            var con1 = (con as Control)!;
+            if (Controls.Children.Contains(con1))
+                return;
+            
+            controls.Remove(con1);
+            var con2 = Controls.Children[0];
+            Controls.Children.Clear();
+            controls.Add(con2);
+            Controls.Children.Add(con1);
         }
 
         _nowControl = con;
+        SetTitle(_nowControl.Title);
+
+        ButtonUp();
     }
 
     public async void Close(IUserControl con)
@@ -236,30 +285,60 @@ public partial class AllControl : UserControl, IBaseWindow
             return;
         }
 
-        if (_cons.Remove(con, out var item))
+        if (GuiConfigUtils.Config.ControlMode)
         {
-            _cons1.Remove(item);
-            MainControl.Children.Remove(item);
-            if (_switchs.Remove(item, out var item1))
+            if (_cons.Remove(con, out var item))
             {
-                _buttonList.Remove(item1);
+                _cons1.Remove(item);
+                Controls.Children.Remove(item);
+                if (_switchs.Remove(item, out var item1))
+                {
+                    _buttonList.Remove(item1);
+                }
             }
-        }
 
-        var item2 = MainControl.Children.Last();
-        if (item2 is Grid grid)
-        {
-            _nowControl = _cons1[grid];
+            var item2 = Controls.Children.Last();
+            if (item2 is Border grid)
+            {
+                _nowControl = _cons1[grid];
+            }
+            else
+            {
+                _nowControl = _baseControl;
+            }
         }
         else
         {
-            _nowControl = _baseControl;
+            var con1 = Controls.Children[0];
+            var con2 = (con as Control)!;
+            if (con1 == con2)
+            {
+                Controls.Children.Remove(con1);
+            }
+            controls.Remove(con2);
+            if (Controls.Children.Count == 0)
+            {
+                if (controls.Count > 0)
+                {
+                    con1 = controls.Last();
+                    controls.Remove(con1);
+                    _nowControl = (con1 as IUserControl)!;
+                }
+                else
+                {
+                    con1 = (_baseControl as Control)!;
+                    _nowControl = _baseControl;
+                }
+                Controls.Children.Add(con1);
+            }
         }
-
-        Up();
 
         ((con as UserControl)?.DataContext as TopModel)?.TopClose();
         con.Closed();
+
+        SetTitle(_nowControl.Title);
+
+        ButtonUp();
     }
 
     public void ShowDialog(UserControl con)
@@ -306,5 +385,10 @@ public partial class AllControl : UserControl, IBaseWindow
     public void SetIcon(Bitmap icon)
     {
         Model.SetIcon(icon);
+    }
+
+    public void Hide()
+    {
+        (VisualRoot as Window)?.Hide();
     }
 }

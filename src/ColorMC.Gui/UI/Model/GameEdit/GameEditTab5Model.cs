@@ -3,6 +3,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -185,7 +186,7 @@ public partial class GameEditModel : GameModel
             return;
         }
 
-        var res = await GameBinding.Launch(Model, world.World.Game, world.World);
+        var res = await GameBinding.Launch(Model, world.World.Game, world.World, GuiConfigUtils.Config.CloseBeforeLaunch);
         if (!res.Item1)
         {
             Model.Show(res.Item2!);

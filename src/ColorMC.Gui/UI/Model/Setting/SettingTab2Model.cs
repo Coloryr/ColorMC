@@ -72,6 +72,8 @@ public partial class SettingModel : TopModel
     private bool _amFade;
     [ObservableProperty]
     private bool _enableBG;
+    [ObservableProperty]
+    private bool _controlMode;
 
     [ObservableProperty]
     private LanguageType _language;
@@ -105,6 +107,14 @@ public partial class SettingModel : TopModel
     private string _live2DCoreState;
 
     private bool _load = false;
+
+    partial void OnControlModeChanged(bool value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetWindowMode(WindowMode, value);
+    }
 
     async partial void OnEnableBGChanged(bool value)
     {
@@ -235,7 +245,7 @@ public partial class SettingModel : TopModel
         if (_load)
             return;
 
-        ConfigBinding.SetWindowMode(value);
+        ConfigBinding.SetWindowMode(value, ControlMode);
     }
 
     partial void OnIsAutoColorChanged(bool value)
@@ -506,6 +516,7 @@ public partial class SettingModel : TopModel
             IsDefaultFont = con.FontDefault;
             EnableFontList = !IsDefaultFont;
             WindowMode = con.WindowMode;
+            ControlMode = con.ControlMode;
             EnablePicResize = con.BackLimit;
             EnableWindowTran = con.WindowTran;
 

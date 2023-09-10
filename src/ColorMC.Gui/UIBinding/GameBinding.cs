@@ -23,6 +23,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -303,7 +304,7 @@ public static class GameBinding
         return (login, null);
     }
 
-    public static async Task<(bool, string?)> Launch(BaseModel model, GameSettingObj? obj, WorldObj? world = null)
+    public static async Task<(bool, string?)> Launch(BaseModel model, GameSettingObj? obj, WorldObj? world = null, bool wait = false)
     {
         if (obj == null)
         {
@@ -321,7 +322,7 @@ public static class GameBinding
             return (false, user.Item2);
         }
 
-        var res1 = await BaseBinding.Launch(model, obj, user.Item1, world);
+        var res1 = await BaseBinding.Launch(model, obj, user.Item1, world, wait);
         if (res1.Item1)
         {
             ConfigBinding.SetLastLaunch(obj.UUID);
