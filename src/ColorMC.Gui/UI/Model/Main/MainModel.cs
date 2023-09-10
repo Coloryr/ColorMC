@@ -4,6 +4,7 @@ using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -86,7 +87,7 @@ public partial class MainModel : TopModel, IMainTop
     [ObservableProperty]
     private HorizontalAlignment _mirror3 = HorizontalAlignment.Right;
     [ObservableProperty]
-    private Thickness _mirror4 = new(0,5,5,5);
+    private Thickness _mirror4 = new(0, 5, 5, 5);
 
     [ObservableProperty]
     private bool _render;
@@ -476,10 +477,10 @@ public partial class MainModel : TopModel, IMainTop
         else
         {
             Model.Notify(App.GetLanguage("MainWindow.Info2"));
-            Launchs.Add(game.UUID, item);
-            if (SystemInfo.Os != Core.Objs.OsType.Android)
+            if (SystemInfo.Os != OsType.Android)
             {
                 item.IsLaunch = true;
+                Launchs.Add(game.UUID, item);
             }
 
             if (GuiConfigUtils.Config.CloseBeforeLaunch)

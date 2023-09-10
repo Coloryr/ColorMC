@@ -58,7 +58,7 @@ public static class Launch
         Dictionary<LibVersionObj, string> list = new();
 
         var forge = obj.Loader == Loaders.NeoForge
-                ? VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!)! 
+                ? VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!)!
                 : VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!)!;
         var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
             obj.Loader == Loaders.NeoForge);
@@ -423,6 +423,10 @@ public static class Launch
                 DownloadItemHelper.BuildNeoForgeInster(obj.Version, obj.LoaderVersion!).Local :
                 DownloadItemHelper.BuildForgeInster(obj.Version, obj.LoaderVersion!).Local)}");
             jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
+            if (SystemInfo.Os == OsType.Android)
+            {
+                jvmHead.Add("-Dforgewrapper.justLaunch=true");
+            }
         }
 
         //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");
@@ -653,6 +657,12 @@ public static class Launch
         {
             if (item.Later == null)
             {
+                if (SystemInfo.Os == OsType.Android
+                    && (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
+                    && item.Name.Contains("lwjgl"))
+                {
+                    continue;
+                }
                 list.AddOrUpdate(PathCUtils.MakeVersionObj(item.Name), item.Local);
             }
         }
@@ -1136,7 +1146,7 @@ public static class Launch
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.InstallForge);
                 var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
                         LanguageHelper.Get("Core.Launch.Error9"));
-                var res1 = await ColorMCCore.PhoneJvmRun.Invoke(jvm1!.Path, obj.MakeInstallForgeArg());
+                var res1 = await ColorMCCore.PhoneJvmRun.Invoke(jvm1!.Path, obj.GetGamePath(), obj.MakeInstallForgeArg());
                 if (res1 != true)
                 {
                     throw new LaunchException(LaunchState.JavaError,
