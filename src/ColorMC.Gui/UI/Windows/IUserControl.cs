@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media.Imaging;
 using ColorMC.Gui.UI.Model;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ public interface IUserControl
 {
     public IBaseWindow Window { get; }
     public string Title { get; }
+    virtual public Bitmap GetIcon() { return App.GameIcon; }
     public void SetBaseModel(BaseModel model);
     virtual public void WindowStateChange(WindowState state) { }
     virtual public void OnKeyDown(object? sender, KeyEventArgs e) { }

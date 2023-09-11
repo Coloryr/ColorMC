@@ -1,4 +1,5 @@
-﻿using AvaloniaEdit.Utils;
+﻿using Avalonia.Threading;
+using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -278,7 +279,10 @@ public partial class AddGameModel : TopModel
             var model = (App.MainWindow?.DataContext as MainModel);
             model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
             App.MainWindow?.LoadMain();
-            WindowClose();
+            Dispatcher.UIThread.Post(() =>
+            {
+                WindowClose();
+            });
         }
     }
 

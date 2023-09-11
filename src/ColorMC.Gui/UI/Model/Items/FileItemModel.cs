@@ -82,6 +82,9 @@ public partial class FileItemModel : ObservableObject
 
     public void Close()
     {
-        _img?.Dispose();
+        if (_img != App.GameIcon)
+        {
+            _img?.Dispose();
+        }
     }
 }

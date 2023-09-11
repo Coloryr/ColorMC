@@ -201,6 +201,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
         _nowControl = con;
         SetTitle(_nowControl.Title);
+        SetIcon(_nowControl.GetIcon());
 
         ButtonUp();
     }
@@ -243,6 +244,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
     public void Active(IUserControl con)
     {
+        
         if (GuiConfigUtils.Config.ControlMode)
         {
             foreach (Control item1 in Controls.Children)
@@ -273,6 +275,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
         _nowControl = con;
         SetTitle(_nowControl.Title);
+        SetIcon(_nowControl.GetIcon());
 
         ButtonUp();
     }
@@ -333,10 +336,11 @@ public partial class AllControl : UserControl, IBaseWindow
             }
         }
 
+        SetTitle(_nowControl.Title);
+        SetIcon(_nowControl.GetIcon());
+
         ((con as UserControl)?.DataContext as TopModel)?.TopClose();
         con.Closed();
-
-        SetTitle(_nowControl.Title);
 
         ButtonUp();
     }

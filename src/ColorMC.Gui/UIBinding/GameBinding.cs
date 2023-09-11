@@ -1,5 +1,6 @@
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Game;
@@ -730,10 +731,15 @@ public static class GameBinding
 
     public static async Task<bool> DeleteGame(GameSettingObj obj)
     {
-        App.CloseGameWindow(obj);
         var res = await obj.Remove();
-
         App.MainWindow?.LoadMain();
+        if (res)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                App.CloseGameWindow(obj);
+            });
+        }
 
         return res;
     }

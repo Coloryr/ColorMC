@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media.Imaging;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
@@ -32,6 +33,9 @@ public partial class GameEditControl : UserControl, IUserControl
     private CancellationTokenSource _cancel = new();
 
     private int _now;
+
+    private Bitmap _icon;
+    public Bitmap GetIcon() => _icon;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -110,7 +114,8 @@ public partial class GameEditControl : UserControl, IUserControl
         var icon = _obj.GetIconFile();
         if (File.Exists(icon))
         {
-            Window.SetIcon(new(icon));
+            _icon = new(icon);
+            Window.SetIcon(_icon);
         }
     }
 
@@ -153,6 +158,8 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Closed()
     {
+        _icon?.Dispose();
+
         App.GameEditWindows.Remove(_obj.UUID);
     }
 

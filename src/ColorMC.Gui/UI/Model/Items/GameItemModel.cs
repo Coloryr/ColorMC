@@ -6,6 +6,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -75,12 +76,14 @@ public partial class GameItemModel : GameModel
         dragData.Set(BaseBinding.DrapType, this);
         IsDrop = true;
 
-        List<IStorageFolder> files = new();
-        var item = await App.TopLevel!.StorageProvider
-               .TryGetFolderFromPathAsync(Obj.GetBasePath());
-        files.Add(item!);
-        dragData.Set(DataFormats.Files, files);
-
+        if (SystemInfo.Os != OsType.Android)
+        {
+            List<IStorageFolder> files = new();
+            var item = await App.TopLevel!.StorageProvider
+                   .TryGetFolderFromPathAsync(Obj.GetBasePath());
+            files.Add(item!);
+            dragData.Set(DataFormats.Files, files);
+        }
         Dispatcher.UIThread.Post(() =>
         {
             DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
@@ -185,6 +188,9 @@ public partial class GameItemModel : GameModel
 
     protected override void Close()
     {
-        Pic.Dispose();
+        if (Pic != App.GameIcon)
+        {
+            Pic.Dispose();
+        }
     }
 }

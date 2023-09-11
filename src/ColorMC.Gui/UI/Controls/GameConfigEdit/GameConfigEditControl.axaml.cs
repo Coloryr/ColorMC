@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using AvaloniaEdit.Indentation.CSharp;
 using ColorMC.Core.LaunchPath;
@@ -21,6 +22,9 @@ public partial class GameConfigEditControl : UserControl, IUserControl
     private readonly GameSettingObj _obj;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
+
+    private Bitmap _icon;
+    public Bitmap GetIcon() => _icon;
 
     public string Title
     {
@@ -125,12 +129,15 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         var icon = model.Obj.GetIconFile();
         if (File.Exists(icon))
         {
-            model.Model.SetIcon(new(icon));
+            _icon = new(icon);
+            Window.SetIcon(_icon);
         }
     }
 
     public void Closed()
     {
+        _icon?.Dispose();
+
         string key;
         var model = (DataContext as GameConfigEditModel)!;
         if (model.World != null)

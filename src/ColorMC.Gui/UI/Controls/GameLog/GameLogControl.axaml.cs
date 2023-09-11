@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -20,6 +21,9 @@ public partial class GameLogControl : UserControl, IUserControl
 
     public string Title => string.Format(App.GetLanguage("GameLogWindow.Title"),
             _obj.Name);
+
+    private Bitmap _icon;
+    public Bitmap GetIcon() => _icon;
 
     public GameLogControl()
     {
@@ -60,7 +64,8 @@ public partial class GameLogControl : UserControl, IUserControl
         var icon = _obj.GetIconFile();
         if (File.Exists(icon))
         {
-            Window.SetIcon(new(icon));
+            _icon = new(icon);
+            Window.SetIcon(_icon);
         }
 
         (DataContext as GameLogModel)!.Load();
@@ -68,6 +73,8 @@ public partial class GameLogControl : UserControl, IUserControl
 
     public void Closed()
     {
+        _icon?.Dispose();
+
         App.GameLogWindows.Remove(_obj.UUID);
     }
 

@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
@@ -7,6 +8,8 @@ using ColorMC.Gui.UI.Model.ServerPack;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.ComponentModel;
+using System.IO;
+using ColorMC.Core.LaunchPath;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
@@ -27,6 +30,9 @@ public partial class ServerPackControl : UserControl, IUserControl
     private int _now;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
+
+    private Bitmap _icon;
+    public Bitmap GetIcon() => _icon;
 
     public string Title => string.Format(App.GetLanguage("ServerPackWindow.Title"),
            _obj.Name);
@@ -63,6 +69,13 @@ public partial class ServerPackControl : UserControl, IUserControl
         _tab2.Opened();
         _tab3.Opened();
         _tab4.Opened();
+
+        var icon = _obj.GetIconFile();
+        if (File.Exists(icon))
+        {
+            _icon = new(icon);
+            Window.SetIcon(_icon);
+        }
     }
 
     private void Go(UserControl to)
@@ -90,6 +103,8 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public void Closed()
     {
+        _icon?.Dispose();
+
         App.ServerPackWindows.Remove(_obj.UUID);
     }
 

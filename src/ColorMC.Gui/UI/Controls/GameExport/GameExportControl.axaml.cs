@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media.Imaging;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
@@ -25,6 +26,9 @@ public partial class GameExportControl : UserControl, IUserControl
     private int _now;
 
     private GameSettingObj _obj;
+
+    private Bitmap _icon;
+    public Bitmap GetIcon() => _icon;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
     public UserControl Con => this;
@@ -71,7 +75,8 @@ public partial class GameExportControl : UserControl, IUserControl
         var icon = model.Obj.GetIconFile();
         if (File.Exists(icon))
         {
-            Window.SetIcon(new(icon));
+            _icon = new(icon);
+            Window.SetIcon(_icon);
         }
         model.Model.ProgressClose();
     }
@@ -101,6 +106,8 @@ public partial class GameExportControl : UserControl, IUserControl
 
     public void Closed()
     {
+        _icon?.Dispose();
+
         App.GameExportWindows.Remove(_obj.UUID);
     }
 
