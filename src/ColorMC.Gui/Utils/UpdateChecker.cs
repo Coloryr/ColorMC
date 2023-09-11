@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -39,8 +40,8 @@ public static class UpdateChecker
         {
             if (File.Exists(LocalPath[a]))
             {
-                using var file = File.OpenRead(LocalPath[a]);
-                Sha1s[a] = FuntionUtils.GenSha1(file);
+                using var file = PathHelper.OpenRead(LocalPath[a])!;
+                Sha1s[a] = HashHelper.GenSha1(file);
             }
             else
             {

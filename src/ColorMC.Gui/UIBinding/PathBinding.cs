@@ -264,7 +264,7 @@ public static class PathBinding
                         File.Delete(name);
                     }
 
-                    File.WriteAllBytes(name, PathUtils.GetFile("ColorMC.Gui.Resource.UI.UI.axaml"));
+                    File.WriteAllBytes(name, Utils.PathUtils.GetFile("ColorMC.Gui.Resource.UI.UI.axaml"));
                     return true;
                 }
                 catch (Exception e)

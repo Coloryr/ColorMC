@@ -1,5 +1,6 @@
 ﻿using Avalonia.Media.Imaging;
 using ColorMC.Core;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -30,7 +31,7 @@ public static class ImageUtils
         {
             Directory.CreateDirectory(Local);
         }
-        var sha1 = FuntionUtils.GenSha256(url);
+        var sha1 = HashHelper.GenSha256(url);
         if (File.Exists(Local + sha1))
         {
             return new Bitmap(Local + sha1);
@@ -127,14 +128,16 @@ public static class ImageUtils
                 else if (SystemInfo.Os == OsType.Android)
                 {
                     file = ColorMCGui.RunDir + "BG";
-                }
-                if (stream1 == null && !File.Exists(file))
-                {
-                    return null;
+                    stream1 = PathHelper.OpenRead(file);
                 }
                 else
                 {
-                    stream1 = File.OpenRead(file);
+                    stream1 = PathHelper.OpenRead(file);
+                }
+
+                if (stream1 == null)
+                {
+                    return null;
                 }
                 if (value > 0 || lim != 100)
                 {

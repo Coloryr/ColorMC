@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Nbt;
+﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Nbt;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Chunk;
@@ -99,8 +100,7 @@ public static class ChunkMca
 
     public static async Task<ChunkData> Read(string file)
     {
-        return await Read(File.Open(file, FileMode.Open,
-            FileAccess.Read, FileShare.ReadWrite));
+        return await Read(PathHelper.OpenRead(file)!);
     }
 
     public static async Task<ChunkData> Read(Stream stream)

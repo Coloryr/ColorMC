@@ -99,7 +99,7 @@ public partial class GameEditModel : GameModel
             item.Close();
         }
         ScreenshotList.Clear();
-        _lastScreenshot = null;
+        _lastScreenshot = null!;
         ServerList.Clear();
         ShaderpackList.Clear();
         SchematicList.Clear();

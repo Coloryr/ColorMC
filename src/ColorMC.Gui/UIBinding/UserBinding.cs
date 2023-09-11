@@ -76,7 +76,7 @@ public static class UserBinding
             {
                 UserName = input1!,
                 ClientToken = FuntionUtils.NewUUID(),
-                UUID = FuntionUtils.GenMd5(Encoding.UTF8.GetBytes(input1!.ToLower())),
+                UUID = HashHelper.GenMd5(Encoding.UTF8.GetBytes(input1!.ToLower())),
                 AuthType = AuthType.Offline
             });
             return (true, null);

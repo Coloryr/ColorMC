@@ -253,15 +253,16 @@ public static class VersionPath
         if (data != null)
         {
             var file = $"{BaseDir}/{version}.json";
-            if (File.Exists(file))
+            var temp = PathHelper.OpenRead(file);
+            if (temp == null)
             {
-                var temp = File.OpenRead(file);
-                var sha1 = await FuntionUtils.GenSha1Async(temp);
-                temp.Close();
-                if (sha1 != data.sha1)
-                {
-                    return await AddGame(data);
-                }
+                return null;
+            }
+            var sha1 = await HashHelper.GenSha1Async(temp);
+            temp.Close();
+            if (sha1 != data.sha1)
+            {
+                return await AddGame(data);
             }
 
             return GetGame(version);

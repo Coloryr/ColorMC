@@ -76,8 +76,8 @@ public static class AuthlibHelper
 
             if (!string.IsNullOrWhiteSpace(sha1))
             {
-                using var stream = File.OpenRead(NowNide8Injector);
-                var sha11 = FuntionUtils.GenSha1(stream);
+                using var stream = PathHelper.OpenRead(NowNide8Injector);
+                var sha11 = HashHelper.GenSha1(stream);
                 if (sha11 != sha1)
                 {
                     return item;
@@ -149,8 +149,8 @@ public static class AuthlibHelper
                 var sha256 = obj1.checksums?.sha256;
                 if (!string.IsNullOrWhiteSpace(sha256))
                 {
-                    using var stream = File.OpenRead(NowAuthlibInjector);
-                    var sha2561 = FuntionUtils.GenSha256(stream);
+                    using var stream = PathHelper.OpenRead(NowAuthlibInjector)!;
+                    var sha2561 = await HashHelper.GenSha256Async(stream);
                     if (sha256 != sha2561)
                     {
                         return item1;
@@ -169,8 +169,8 @@ public static class AuthlibHelper
             var item = LocalMaven.GetItem("moe.yushi:authlibinjector");
             if (item != null && !string.IsNullOrWhiteSpace(item.SHA256))
             {
-                using var stream = File.OpenRead(NowAuthlibInjector);
-                var sha2561 = FuntionUtils.GenSha256(stream);
+                using var stream = PathHelper.OpenRead(NowAuthlibInjector)!;
+                var sha2561 = await HashHelper.GenSha256Async(stream);
                 if (item.SHA256 != sha2561)
                 {
                     var obj1 = await GetAuthlibInjectorObj();

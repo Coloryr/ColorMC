@@ -136,6 +136,6 @@ public partial class CustomControlPanelModel : TopModel
 
     protected override void Close()
     {
-        _game = null;
+        _game = null!;
     }
 }

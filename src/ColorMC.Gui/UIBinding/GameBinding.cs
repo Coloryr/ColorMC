@@ -509,7 +509,7 @@ public static class GameBinding
         list.Add(obj.GetOptionsFile()[dir..]);
         string con = obj.GetConfigPath();
 
-        var list1 = Core.Utils.PathCUtils.GetAllFile(con);
+        var list1 = PathHelper.GetAllFile(con);
         foreach (var item in list1)
         {
             list.Add(item.FullName[dir..].Replace("\\", "/"));
@@ -523,7 +523,7 @@ public static class GameBinding
         var list = new List<string>();
         var dir = obj.Local.Length + 1;
 
-        var list1 = Core.Utils.PathCUtils.GetAllFile(obj.Local);
+        var list1 = PathHelper.GetAllFile(obj.Local);
         foreach (var item in list1)
         {
             if (item.Extension is ".png" or ".lock")
@@ -1068,10 +1068,22 @@ public static class GameBinding
 
             if (!lost.IsEmpty)
             {
+                static string GetString(List<string> list)
+                {
+                    var str = new StringBuilder();
+                    foreach (var item in list)
+                    {
+                        str.Append(item).Append(',');
+                    }
+
+                    return str.ToString()[..^1];
+                }
+
                 var str = new StringBuilder();
                 foreach (var item in lost)
                 {
-                    str.Append(string.Format(App.GetLanguage("Gui.Info25"), item.Item1, item.Item2.GetString())).Append(Environment.NewLine);
+                    str.Append(string.Format(App.GetLanguage("Gui.Info25"), item.Item1,
+                        GetString(item.Item2))).Append(Environment.NewLine);
                 }
 
                 App.ShowError(App.GetLanguage("Gui.Info26"), str.ToString());
@@ -1270,20 +1282,11 @@ public static class GameBinding
 
     public static PackType CheckType(string local)
     {
-        Stream stream;
+        Stream? stream = PathHelper.OpenRead(local);
 
-        if (SystemInfo.Os == OsType.Android)
+        if (stream == null)
         {
-            stream = ColorMCCore.PhoneReadFile!(local)!;
-        }
-        else
-        {
-            if (!File.Exists(local))
-            {
-                return PackType.ColorMC;
-            }
-
-            stream = File.OpenRead(local);
+            return PackType.ColorMC;
         }
 
         try

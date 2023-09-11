@@ -117,8 +117,8 @@ public static class CheckHelpers
 
         if (sha1)
         {
-            using var data = File.OpenRead(obj.Local);
-            return FuntionUtils.GenSha1(data) != obj.SHA1;
+            using var data = PathHelper.OpenRead(obj.Local)!;
+            return HashHelper.GenSha1(data) != obj.SHA1;
         }
 
         return false;
@@ -455,8 +455,8 @@ public static class CheckHelpers
         {
             return true;
         }
-        using var stream = File.OpenRead(file);
-        string sha1 = await FuntionUtils.GenSha1Async(stream);
+        using var stream = PathHelper.OpenRead(file)!;
+        string sha1 = await HashHelper.GenSha1Async(stream);
 
         if (sha1 != obj.data.MC_SLIM_SHA.client)
         {
@@ -472,8 +472,8 @@ public static class CheckHelpers
             return true;
         }
 
-        using var stream1 = File.OpenRead(file);
-        sha1 = await FuntionUtils.GenSha1Async(stream1);
+        using var stream1 = PathHelper.OpenRead(file)!;
+        sha1 = await HashHelper.GenSha1Async(stream1);
 
         return sha1 != obj.data.MC_EXTRA_SHA.client;
     }

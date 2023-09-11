@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -54,7 +55,7 @@ public static class GameLogs
             }
             else if (path.EndsWith(".log.gz"))
             {
-                using FileStream compressedFileStream = File.Open(path, FileMode.Open);
+                using var compressedFileStream = PathHelper.OpenRead(path)!;
                 using var decompressor = new GZipStream(compressedFileStream, CompressionMode.Decompress);
                 using var output = new MemoryStream();
                 decompressor.CopyTo(output);

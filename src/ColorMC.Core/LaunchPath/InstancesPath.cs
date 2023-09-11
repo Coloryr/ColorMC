@@ -612,7 +612,7 @@ public static class InstancesPath
         obj1 = await CreateGame(obj1);
         if (obj1 != null)
         {
-            await PathCUtils.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
+            await PathHelper.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
             string file = obj.GetIconFile();
             if (File.Exists(file))
             {
@@ -700,7 +700,7 @@ public static class InstancesPath
                 return;
             }
 
-            var list = PathCUtils.GetAllFile(obj.GetModsPath());
+            var list = PathHelper.GetAllFile(obj.GetModsPath());
             var remove = new List<string>();
             foreach (var item in obj.Mods)
             {
@@ -774,7 +774,7 @@ public static class InstancesPath
     public static Task<bool> Remove(this GameSettingObj obj)
     {
         obj.RemoveFromGroup();
-        return PathCUtils.DeleteFiles(obj.GetBasePath());
+        return PathHelper.DeleteFiles(obj.GetBasePath());
     }
 
     /// <summary>
@@ -786,10 +786,10 @@ public static class InstancesPath
     {
         GameSettingObj? game = null;
         bool import = false;
-        Stream stream4 = null!;
+        Stream? stream4 = null;
         try
         {
-            stream4 = SystemInfo.Os == OsType.Android ? ColorMCCore.PhoneReadFile!(dir)! : File.OpenRead(dir);
+            stream4 = PathHelper.OpenRead(dir);
             switch (type)
             {
                 //ColorMC格式
@@ -1184,7 +1184,7 @@ public static class InstancesPath
         try
         {
             local = Path.GetFullPath(local);
-            var list = PathCUtils.GetAllFile(local);
+            var list = PathHelper.GetAllFile(local);
             list.RemoveAll(item => unselect.Contains(item.FullName));
             int basel = local.Length;
             var local1 = obj.GetGamePath();

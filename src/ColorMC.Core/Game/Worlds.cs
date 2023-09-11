@@ -221,7 +221,7 @@ public static class Worlds
             .ToString("yyyy_MM_dd_HH_mm_ss") + ".zip");
 
         await new ZipUtils().ZipFile(world.Local, file);
-        using var s = new ZipFile(File.Open(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite));
+        using var s = new ZipFile(PathHelper.OpenWrite(file));
         var info = new { name = world.LevelName };
         var data = JsonConvert.SerializeObject(info);
         var data1 = Encoding.UTF8.GetBytes(data);
@@ -252,7 +252,7 @@ public static class Worlds
         ZipEntry theEntry;
         bool res = false;
 
-        using ZipInputStream s = new(File.OpenRead(item1.FullName));
+        using var s = new ZipInputStream(PathHelper.OpenRead(item1.FullName));
         using var stream1 = new MemoryStream();
         while ((theEntry = s.GetNextEntry()) != null)
         {
@@ -282,7 +282,7 @@ public static class Worlds
         if (item != null)
         {
             local = item.Local;
-            await PathCUtils.DeleteFiles(item.Local);
+            await PathHelper.DeleteFiles(item.Local);
         }
         else
         {
@@ -291,7 +291,8 @@ public static class Worlds
 
         try
         {
-            new ZipUtils().Unzip(local, item1.FullName, File.OpenRead(item1.FullName));
+            new ZipUtils().Unzip(local, item1.FullName, 
+                PathHelper.OpenRead(item1.FullName)!);
             return true;
         }
         catch (Exception e)

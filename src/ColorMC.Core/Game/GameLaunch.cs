@@ -32,17 +32,6 @@ public static class Launch
     /// </summary>
     private static CancellationToken s_cancel;
 
-    private static string GetString(this List<string> arg)
-    {
-        var data = new StringBuilder();
-        foreach (var item in arg)
-        {
-            data.AppendLine(item);
-        }
-
-        return data.ToString();
-    }
-
     public static List<string> MakeInstallForgeArg(this GameSettingObj obj)
     {
         var jvmHead = new List<string>
@@ -62,7 +51,7 @@ public static class Launch
                 : VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!)!;
         var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
             obj.Loader == Loaders.NeoForge);
-        list2.ForEach(a => list.AddOrUpdate(PathCUtils.MakeVersionObj(a.Name), a.Local));
+        list2.ForEach(a => list.AddOrUpdate(PathHelper.MakeVersionObj(a.Name), a.Local));
 
         GameHelper.ReadyForgeWrapper();
         list.AddOrUpdate(new(), GameHelper.ForgeWrapper);
@@ -119,6 +108,17 @@ public static class Launch
     /// <returns></returns>
     public static string ReplaceArg(this GameSettingObj obj, string jvm, List<string> arg, string item)
     {
+        static string GetString(List<string> arg)
+        {
+            var data = new StringBuilder();
+            foreach (var item in arg)
+            {
+                data.AppendLine(item);
+            }
+
+            return data.ToString();
+        }
+
         return item
                 .Replace(GAME_NAME, obj.Name)
                 .Replace(GAME_UUID, obj.UUID)
@@ -126,7 +126,7 @@ public static class Launch
                 .Replace(GAME_BASE_DIR, obj.GetBasePath())
                 .Replace(LAUNCH_DIR, ColorMCCore.BaseDir)
                 .Replace(JAVA_LOCAL, jvm)
-                .Replace(JAVA_ARG, arg.GetString());
+                .Replace(JAVA_ARG, GetString(arg));
     }
 
     /// <summary>
@@ -450,19 +450,19 @@ public static class Launch
         {
             var res = await BaseClient.GetString(login.Text1);
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
-            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={FuntionUtils.GenBase64(res.Item2!)}");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Item2!)}");
         }
         else if (login.AuthType == AuthType.LittleSkin)
         {
             var res = await BaseClient.GetString($"{UrlHelper.LittleSkin}api/yggdrasil");
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
-            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={FuntionUtils.GenBase64(res.Item2!)}");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Item2!)}");
         }
         else if (login.AuthType == AuthType.SelfLittleSkin)
         {
             var res = await BaseClient.GetString($"{login.Text1}/api/yggdrasil");
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
-            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={FuntionUtils.GenBase64(res.Item2!)}");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Item2!)}");
         }
 
         //log4j2-xml
@@ -663,7 +663,7 @@ public static class Launch
                 {
                     continue;
                 }
-                list.AddOrUpdate(PathCUtils.MakeVersionObj(item.Name), item.Local);
+                list.AddOrUpdate(PathHelper.MakeVersionObj(item.Name), item.Local);
             }
         }
 
@@ -676,7 +676,7 @@ public static class Launch
             var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
                 obj.Loader == Loaders.NeoForge);
 
-            list2.ForEach(a => list.AddOrUpdate(PathCUtils.MakeVersionObj(a.Name), a.Local));
+            list2.ForEach(a => list.AddOrUpdate(PathHelper.MakeVersionObj(a.Name), a.Local));
 
             if (v2)
             {
@@ -688,8 +688,8 @@ public static class Launch
             var fabric = obj.GetFabricObj()!;
             foreach (var item in fabric.libraries)
             {
-                var name = PathCUtils.ToName(item.name);
-                list.AddOrUpdate(PathCUtils.MakeVersionObj(name.Name),
+                var name = PathHelper.ToName(item.name);
+                list.AddOrUpdate(PathHelper.MakeVersionObj(name.Name),
                     Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
             }
         }
@@ -698,8 +698,8 @@ public static class Launch
             var quilt = obj.GetQuiltObj()!;
             foreach (var item in quilt.libraries)
             {
-                var name = PathCUtils.ToName(item.name);
-                list.AddOrUpdate(PathCUtils.MakeVersionObj(name.Name),
+                var name = PathHelper.ToName(item.name);
+                list.AddOrUpdate(PathHelper.MakeVersionObj(name.Name),
                     Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
             }
         }

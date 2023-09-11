@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -149,7 +150,7 @@ public partial class GameCloudModel : GameModel
         data.Config.Clear();
         await Task.Run(() =>
         {
-            using ZipInputStream s = new(File.OpenRead(name));
+            using var s = new ZipInputStream(PathHelper.OpenRead(name));
             ZipEntry theEntry;
             while ((theEntry = s.GetNextEntry()) != null)
             {

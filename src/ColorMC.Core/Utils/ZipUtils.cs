@@ -1,4 +1,5 @@
-﻿using ICSharpCode.SharpZipLib.GZip;
+﻿using ColorMC.Core.Helpers;
+using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
 using SharpCompress.Compressors.Xz;
@@ -11,54 +12,6 @@ public class ZipUtils
 {
     private int Size = 0;
     private int Now = 0;
-    /// <summary>
-    /// 压缩文件
-    /// </summary>
-    /// <param name="strFile">路径</param>
-    /// <param name="strZip">文件名</param>
-    public async Task ZipFile(string strFile, string strZip)
-    {
-        if (strFile[^1] != Path.DirectorySeparatorChar)
-            strFile += Path.DirectorySeparatorChar;
-        using var s = new ZipOutputStream(File.Create(strZip));
-        s.SetLevel(9); // 0 - store only to 9 - means best compression
-        await Zip(strFile, s, strFile);
-        await s.FinishAsync(CancellationToken.None);
-        s.Close();
-    }
-
-    private async Task Zip(string strFile, ZipOutputStream s, string staticFile)
-    {
-        if (strFile[^1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
-        var crc = new Crc32();
-        string[] filenames = Directory.GetFileSystemEntries(strFile);
-        foreach (string file in filenames)
-        {
-            if (Directory.Exists(file))
-            {
-                await Zip(file, s, staticFile);
-            }
-
-            else
-            {
-                using var fs = File.OpenRead(file);
-
-                byte[] buffer = new byte[fs.Length];
-                await fs.ReadAsync(buffer);
-                string tempfile = file[(staticFile.LastIndexOf("\\") + 1)..];
-                var entry = new ZipEntry(tempfile)
-                {
-                    DateTime = DateTime.Now,
-                    Size = fs.Length
-                };
-                crc.Reset();
-                crc.Update(buffer);
-                entry.Crc = crc.Value;
-                await s.PutNextEntryAsync(entry);
-                await s.WriteAsync(buffer);
-            }
-        }
-    }
 
     /// <summary>
     /// 压缩文件
@@ -67,36 +20,40 @@ public class ZipUtils
     /// <param name="strZip">文件名</param>
     /// <param name="filter">过滤</param>
     /// <returns></returns>
-    public async Task ZipFile(string strFile, string strZip, List<string> filter)
+    public async Task ZipFile(string strFile, string strZip, List<string>? filter = null)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar)
             strFile += Path.DirectorySeparatorChar;
         using var s = new ZipOutputStream(File.Create(strZip));
         s.SetLevel(9);
+        Size = PathHelper.GetAllFile(strFile).Count;
+        Now = 0;
         await Zip(strFile, s, strFile, filter);
         await s.FinishAsync(CancellationToken.None);
         s.Close();
     }
 
     private async Task Zip(string strFile, ZipOutputStream s,
-        string staticFile, List<string> filter)
+        string staticFile, List<string>? filter)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
         var crc = new Crc32();
         string[] filenames = Directory.GetFileSystemEntries(strFile);
         foreach (string file in filenames)
         {
-            if (filter.Contains(file))
+            if (filter != null && filter.Contains(file))
             {
                 continue;
             }
             if (Directory.Exists(file))
             {
-                await Zip(file, s, staticFile);
+                await Zip(file, s, staticFile, filter);
             }
             else
             {
-                using var fs = File.OpenRead(file);
+                Now++;
+                ColorMCCore.UnZipItem?.Invoke(Path.GetFileName(file), Now, Size);
+                using var fs = PathHelper.OpenRead(file)!;
 
                 byte[] buffer = new byte[fs.Length];
                 await fs.ReadAsync(buffer);
@@ -119,6 +76,8 @@ public class ZipUtils
     {
         using var s = new ZipOutputStream(File.Create(strZip));
         s.SetLevel(9);
+        Size = list.Count;
+        Now = 0;
         var crc = new Crc32();
 
         foreach (var item in list)
@@ -134,7 +93,9 @@ public class ZipUtils
             }
             else
             {
-                using var fs = File.OpenRead(item);
+                Now++;
+                ColorMCCore.UnZipItem?.Invoke(item, Now, Size);
+                using var fs = PathHelper.OpenRead(item)!;
 
                 byte[] buffer = new byte[fs.Length];
                 await fs.ReadAsync(buffer);
@@ -213,48 +174,6 @@ public class ZipUtils
         {
             Now++;
             ColorMCCore.UnZipItem?.Invoke(entry.Name, Now, Size);
-        }
-    }
-
-    /// <summary>
-    /// 解压Zip
-    /// </summary>
-    /// <param name="path"></param>
-    /// <param name="stream"></param>
-    /// <param name="tar"></param>
-    public void Unzip(string path, Stream stream, bool tar)
-    {
-        if (tar)
-        {
-            using var gzipStream = new GZipInputStream(stream);
-            var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
-            tarArchive.ExtractContents(path);
-            tarArchive.Close();
-        }
-        else
-        {
-            using ZipInputStream s = new(stream);
-            ZipEntry theEntry;
-            while ((theEntry = s.GetNextEntry()) != null)
-            {
-                string filename = $"{path}/{theEntry.Name}";
-
-                var directoryName = Path.GetDirectoryName(filename);
-                string fileName = Path.GetFileName(theEntry.Name);
-
-                // create directory
-                if (directoryName?.Length > 0)
-                {
-                    Directory.CreateDirectory(directoryName);
-                }
-
-                if (fileName != string.Empty)
-                {
-                    using FileStream streamWriter = File.Create(filename);
-
-                    s.CopyTo(streamWriter);
-                }
-            }
         }
     }
 }

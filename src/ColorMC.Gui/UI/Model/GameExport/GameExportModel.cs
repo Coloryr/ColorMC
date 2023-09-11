@@ -1,9 +1,9 @@
 ﻿using Avalonia.Controls;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -181,8 +181,8 @@ public partial class GameExportModel : GameModel
                 return;
             }
             var info = new FileInfo(item.Local);
-            using var stream = File.OpenRead(item.Local);
-            var sha512 = await FuntionUtils.GenSha512Async(stream);
+            using var stream = PathHelper.OpenRead(item.Local);
+            var sha512 = await HashHelper.GenSha512Async(stream);
             var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
             if (item1 != null)
             {
@@ -252,16 +252,16 @@ public partial class GameExportModel : GameModel
         }
 
         var info = new FileInfo(Obj.GetGamePath() + "/" + FileName);
-        using var stream = File.OpenRead(info.FullName);
+        using var stream = PathHelper.OpenRead(info.FullName);
 
-        var sha1 = await FuntionUtils.GenSha1Async(stream);
+        var sha1 = await HashHelper.GenSha1Async(stream)!;
         stream.Seek(0, SeekOrigin.Begin);
         var obj1 = new ModExport1Model()
         {
             Path = FileName,
             Type = Type,
             Sha1 = sha1,
-            Sha512 = await FuntionUtils.GenSha512Async(stream),
+            Sha512 = await HashHelper.GenSha512Async(stream),
             Url = "",
             FileSize = info.Length
         };
@@ -294,7 +294,7 @@ public partial class GameExportModel : GameModel
 
         var path = Obj.GetGamePath();
 
-        var list = PathCUtils.GetAllFile(path);
+        var list = PathHelper.GetAllFile(path);
         foreach (var item in list)
         {
             var path1 = item.FullName[(path.Length + 1)..].Replace("\\", "/");
@@ -303,9 +303,9 @@ public partial class GameExportModel : GameModel
                 continue;
             }
 
-            using var stream = File.OpenRead(item.FullName);
+            using var stream = PathHelper.OpenRead(item.FullName)!;
 
-            var sha1 = await FuntionUtils.GenSha1Async(stream);
+            var sha1 = await HashHelper.GenSha1Async(stream);
             stream.Seek(0, SeekOrigin.Begin);
             var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == sha1);
             if (item1 != null)
@@ -315,7 +315,7 @@ public partial class GameExportModel : GameModel
                     Path = path1,
                     Type = Type,
                     Sha1 = item1.SHA1!,
-                    Sha512 = await FuntionUtils.GenSha512Async(stream),
+                    Sha512 = await HashHelper.GenSha512Async(stream),
                     Url = item1.Url,
                     FileSize = item.Length
                 };

@@ -223,7 +223,7 @@ public abstract class NbtBase
     /// <returns></returns>
     public static async Task<NbtBase> Read(string file)
     {
-        using var stream = File.OpenRead(file);
+        using var stream = PathHelper.OpenRead(file)!;
         return await Read(stream);
     }
 

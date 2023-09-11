@@ -1,9 +1,9 @@
-﻿using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Core.Helpers;
 
-public static class PathCUtils
+public static class PathHelper
 {
     /// <summary>
     /// 获取名字
@@ -160,5 +160,29 @@ public static class PathCUtils
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// 读文件
+    /// </summary>
+    /// <param name="path">路径</param>
+    /// <returns>流</returns>
+    public static Stream? OpenRead(string path)
+    {
+        if (SystemInfo.Os == OsType.Android && path.StartsWith("content://"))
+        {
+            return ColorMCCore.PhoneReadFile?.Invoke(path);
+        }
+        if (File.Exists(path))
+        {
+            return File.OpenRead(path);
+        }
+
+        return null;
+    }
+
+    public static Stream OpenWrite(string path)
+    {
+        return File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
     }
 }

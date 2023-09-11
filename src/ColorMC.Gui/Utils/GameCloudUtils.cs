@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -296,7 +297,7 @@ public static class GameCloudUtils
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
             requ.Headers.Add("uuid", uuid);
-            using var stream = File.OpenRead(path);
+            using var stream = PathHelper.OpenRead(path);
             requ.Content = new StreamContent(stream);
 
             var res = await BaseClient.LoginClient.SendAsync(requ);
@@ -340,7 +341,7 @@ public static class GameCloudUtils
             if (res.IsSuccessStatusCode)
             {
                 using var data = res.Content.ReadAsStream();
-                using var stream = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                using var stream = PathHelper.OpenWrite(name);
                 await data.CopyToAsync(stream);
                 return true;
             }

@@ -310,8 +310,8 @@ public static class Mods
             bool add = false;
             try
             {
-                using var filestream = File.OpenRead(item.FullName);
-                sha1 = FuntionUtils.GenSha1(filestream);
+                using var filestream = PathHelper.OpenRead(item.FullName)!;
+                sha1 = HashHelper.GenSha1(filestream);
                 filestream.Seek(0, SeekOrigin.Begin);
 
                 //Mod 资源包

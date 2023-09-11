@@ -367,7 +367,7 @@ public static class GameHelper
         }
         if (list.TryGetValue("PreLaunchCommand", out item1))
         {
-            var temp = FuntionUtils.ArgParse(item1);
+            var temp = StringHelper.ArgParse(item1);
             game.JvmArg ??= new();
             game.JvmArg.LaunchPre = true;
             var data = new StringBuilder();

@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Utils;
+﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
@@ -82,15 +83,15 @@ public partial class NbtDataItemModel : ObservableObject
         {
             if (_valueSave is byte a)
             {
-                Value = FuntionUtils.ToHex(a);
+                Value = StringHelper.ToHex(a);
             }
             else if (_valueSave is int b)
             {
-                Value = FuntionUtils.ToHex(b);
+                Value = StringHelper.ToHex(b);
             }
             else if (_valueSave is long c)
             {
-                Value = FuntionUtils.ToHex(c);
+                Value = StringHelper.ToHex(c);
             }
         }
         else

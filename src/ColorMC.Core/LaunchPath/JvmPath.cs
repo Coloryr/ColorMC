@@ -130,10 +130,10 @@ public static class JvmPath
     {
         return SystemInfo.Os switch
         {
-            OsType.Windows => PathCUtils.GetFile(path, "javaw.exe"),
-            OsType.Linux => PathCUtils.GetFile(path, "java"),
-            OsType.Android => PathCUtils.GetFile(path, "java"),
-            OsType.MacOS => PathCUtils.GetFile(path, "java"),
+            OsType.Windows => PathHelper.GetFile(path, "javaw.exe"),
+            OsType.Linux => PathHelper.GetFile(path, "java"),
+            OsType.Android => PathHelper.GetFile(path, "java"),
+            OsType.MacOS => PathHelper.GetFile(path, "java"),
             _ => null,
         };
     }
@@ -160,13 +160,12 @@ public static class JvmPath
             Stream? stream;
             try
             {
-
                 file = Path.GetFullPath(file);
-                if (!File.Exists(file))
+                stream = PathHelper.OpenRead(file);
+                if (stream == null)
                 {
                     return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
                 }
-                stream = File.OpenRead(file);
             }
             catch (Exception e)
             {
@@ -180,7 +179,7 @@ public static class JvmPath
                 try
                 {
                     new ZipUtils().Unzip(path, file, stream);
-                    return (true, null);
+                    return (true, null!);
                 }
                 catch (Exception e)
                 {

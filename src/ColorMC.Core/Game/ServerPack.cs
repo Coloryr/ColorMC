@@ -152,7 +152,7 @@ public static class ServerPack
                     {
                         if (item.Dir)
                         {
-                            new ZipUtils().Unzip(Path.GetFullPath(path + "/" + item.Group), stream, false);
+                            new ZipUtils().Unzip(Path.GetFullPath(path + "/" + item.Group), "", stream);
                         }
                     }
                 });
@@ -287,6 +287,7 @@ public static class ServerPack
 
         var task1 = Task.Run(() =>
         {
+            //Mods
             try
             {
                 var local1 = local + "mods/";
@@ -318,6 +319,7 @@ public static class ServerPack
 
         var task2 = Task.Run(() =>
         {
+            //资源包
             try
             {
                 var local1 = local + "resourcepacks/";
@@ -346,6 +348,7 @@ public static class ServerPack
 
         var task3 = Task.Run(async () =>
         {
+            //配置文件
             try
             {
                 var local1 = local + "config/";
@@ -360,15 +363,16 @@ public static class ServerPack
                     {
                         if (item.Zip)
                         {
+                            //打包进压缩包
                             var file = new FileInfo(path2[..^1] + ".zip");
                             await new ZipUtils().ZipFile(path1, file.FullName);
-                            using var stream = File.OpenRead(file.FullName);
+                            using var stream = PathHelper.OpenRead(file.FullName)!;
 
                             var item1 = new ConfigPackObj()
                             {
                                 FileName = file.Name,
                                 Group = item.Group,
-                                Sha1 = FuntionUtils.GenSha1(stream),
+                                Sha1 = HashHelper.GenSha1(stream),
                                 Zip = item.Zip,
                                 Url = item.Url,
                                 Dir = true
@@ -378,7 +382,8 @@ public static class ServerPack
                         }
                         else
                         {
-                            var files = PathCUtils.GetAllFile(path1);
+                            //复制文件
+                            var files = PathHelper.GetAllFile(path1);
                             foreach (var item1 in files)
                             {
                                 var name = item1.FullName.Replace(path1, "").Replace("\\", "/");
@@ -389,13 +394,13 @@ public static class ServerPack
                                     File.Delete(file1.FullName);
                                 }
                                 File.Copy(item1.FullName, file1.FullName);
-                                using var stream = File.OpenRead(file1.FullName);
+                                using var stream = PathHelper.OpenRead(file1.FullName)!;
 
                                 var item2 = new ConfigPackObj()
                                 {
                                     Group = item.Group,
                                     FileName = name,
-                                    Sha1 = FuntionUtils.GenSha1(stream),
+                                    Sha1 = HashHelper.GenSha1(stream),
                                     Url = item.Url + name,
                                     Zip = false,
                                     Dir = false
@@ -407,18 +412,19 @@ public static class ServerPack
                     }
                     else
                     {
+                        //复制文件
                         if (File.Exists(path2))
                         {
                             File.Delete(path2);
                         }
                         File.Copy(path1, path2);
-                        using var stream = File.OpenRead(path2);
+                        using var stream = PathHelper.OpenRead(path2)!;
 
                         var item2 = new ConfigPackObj()
                         {
                             Group = "",
                             FileName = item.Group,
-                            Sha1 = FuntionUtils.GenSha1(stream),
+                            Sha1 = HashHelper.GenSha1(stream),
                             Url = item.Url,
                             Zip = item.Zip,
                             Dir = false
