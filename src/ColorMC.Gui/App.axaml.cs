@@ -865,6 +865,10 @@ public partial class App : Application
 
     public static IBaseWindow? GetMainWindow()
     {
+        if (ConfigBinding.WindowMode())
+        {
+            return AllWindow;
+        }
         if (MainWindow == null)
         {
             if (CustomWindow == null)

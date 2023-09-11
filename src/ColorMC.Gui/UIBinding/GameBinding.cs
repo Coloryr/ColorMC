@@ -1,5 +1,6 @@
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
+using ColorMC.Core;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -1269,7 +1270,23 @@ public static class GameBinding
 
     public static PackType CheckType(string local)
     {
-        if (File.Exists(local))
+        Stream stream;
+
+        if (SystemInfo.Os == OsType.Android)
+        {
+            stream = ColorMCCore.PhoneReadFile!(local)!;
+        }
+        else
+        {
+            if (!File.Exists(local))
+            {
+                return PackType.ColorMC;
+            }
+
+            stream = File.OpenRead(local);
+        }
+
+        try
         {
             if (local.EndsWith(".mrpack"))
             {
@@ -1277,7 +1294,7 @@ public static class GameBinding
             }
             if (local.EndsWith(".zip"))
             {
-                using ZipFile zFile = new(local);
+                using ZipFile zFile = new(stream);
                 if (zFile.GetEntry("game.json") != null)
                 {
                     return PackType.ColorMC;
@@ -1295,6 +1312,11 @@ public static class GameBinding
                     return PackType.CurseForge;
                 }
             }
+        }
+        finally
+        {
+            stream.Close();
+            stream.Dispose();
         }
 
         return PackType.ColorMC;

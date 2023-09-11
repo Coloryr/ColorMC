@@ -469,9 +469,12 @@ public static class GameHelper
                 MinMemory = obj.launchInfo.minMemory
             };
             string data = "";
-            foreach (var item in obj.launchInfo.launchArgument)
+            if (obj.launchInfo.launchArgument != null)
             {
-                data += item + " ";
+                foreach (var item in obj.launchInfo.launchArgument)
+                {
+                    data += item + " ";
+                }
             }
             if (!string.IsNullOrWhiteSpace(data))
             {
@@ -483,9 +486,12 @@ public static class GameHelper
             }
 
             data = "";
-            foreach (var item in obj.launchInfo.javaArgument)
+            if (obj.launchInfo.javaArgument != null)
             {
-                data += item + " ";
+                foreach (var item in obj.launchInfo.javaArgument)
+                {
+                    data += item + " ";
+                }
             }
             if (!string.IsNullOrWhiteSpace(data))
             {

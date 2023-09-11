@@ -467,7 +467,10 @@ public static class BaseBinding
                 {
                     App.ShowGameLog(obj);
                     GameLogs.Remove(obj.UUID);
-                    App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text3"));
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text3"));
+                    });
                 }
                 else
                 {

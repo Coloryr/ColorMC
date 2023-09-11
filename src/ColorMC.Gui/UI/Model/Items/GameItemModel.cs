@@ -171,6 +171,7 @@ public partial class GameItemModel : GameModel
         }
 
         res = await GameBinding.DeleteGame(Obj);
+        Model.InputClose();
         if (!res)
         {
             Model.Show(App.GetLanguage("MainWindow.Info37"));

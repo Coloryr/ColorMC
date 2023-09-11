@@ -8,6 +8,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
@@ -187,6 +188,18 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         {
             App.LastWindow = null;
         }
+        if (App.TopLevel == this)
+        {
+            if (ConfigBinding.WindowMode())
+            {
+                App.TopLevel = GetTopLevel(App.AllWindow);
+            }
+            else 
+            {
+                var win = App.GetMainWindow();
+                App.TopLevel = win as Window;
+            }
+        }
 
         FuntionUtils.RunGC();
     }
@@ -194,6 +207,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     private void Window_Activated(object? sender, EventArgs e)
     {
         App.LastWindow = this;
+        App.TopLevel = this;
     }
 
     private void Update()

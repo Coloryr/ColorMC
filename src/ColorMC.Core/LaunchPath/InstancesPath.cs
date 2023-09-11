@@ -7,6 +7,7 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System.IO;
 using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
@@ -785,15 +786,17 @@ public static class InstancesPath
     {
         GameSettingObj? game = null;
         bool import = false;
+        Stream stream4 = null!;
         try
         {
+            stream4 = SystemInfo.Os == OsType.Android ? ColorMCCore.PhoneReadFile!(dir)! : File.OpenRead(dir);
             switch (type)
             {
                 //ColorMC格式
                 case PackType.ColorMC:
                     {
                         ColorMCCore.PackState?.Invoke(CoreRunState.Read);
-                        using ZipFile zFile = new(dir);
+                        using ZipFile zFile = new(stream4);
                         using var stream1 = new MemoryStream();
                         bool find = false;
                         foreach (ZipEntry e in zFile)
@@ -858,7 +861,7 @@ public static class InstancesPath
                 case PackType.MMC:
                     {
                         ColorMCCore.PackState?.Invoke(CoreRunState.Read);
-                        using ZipFile zFile = new(dir);
+                        using ZipFile zFile = new(stream4);
                         using var stream1 = new MemoryStream();
                         using var stream2 = new MemoryStream();
                         bool find = false;
@@ -941,7 +944,7 @@ public static class InstancesPath
                 case PackType.HMCL:
                     {
                         ColorMCCore.PackState?.Invoke(CoreRunState.Read);
-                        using ZipFile zFile = new(dir);
+                        using ZipFile zFile = new(stream4);
                         using var stream1 = new MemoryStream();
                         using var stream2 = new MemoryStream();
                         bool find = false;
@@ -1000,15 +1003,14 @@ public static class InstancesPath
                             {
                                 overrides = obj1.overrides;
                             }
-
                         }
 
                         foreach (ZipEntry e in zFile)
                         {
-                            if (e.IsFile)
+                            if (e.IsFile && e.Name.StartsWith(overrides))
                             {
                                 using var stream = zFile.GetInputStream(e);
-                                string file = Path.GetFullPath(string.Concat(game.GetGamePath(), overrides.AsSpan(game.Name.Length)));
+                                string file = Path.GetFullPath(string.Concat(game.GetGamePath(), e.Name.AsSpan(overrides.Length)));
                                 FileInfo info2 = new(file);
                                 info2.Directory?.Create();
                                 using FileStream stream3 = new(file, FileMode.Create,
@@ -1027,6 +1029,10 @@ public static class InstancesPath
         {
             ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Pack.Error2"), e, false);
             Logs.Error(LanguageHelper.Get("Core.Pack.Error2"), e);
+        }
+        finally
+        {
+            stream4?.Dispose();
         }
         if (!import && game != null)
         {
