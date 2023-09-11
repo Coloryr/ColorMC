@@ -1009,8 +1009,13 @@ public static class InstancesPath
                         {
                             if (e.IsFile && e.Name.StartsWith(overrides))
                             {
-                                using var stream = zFile.GetInputStream(e);
                                 string file = Path.GetFullPath(string.Concat(game.GetGamePath(), e.Name.AsSpan(overrides.Length)));
+                                if (e.Name.EndsWith("icon.png"))
+                                {
+                                    file = game.GetIconFile();
+                                }
+                                using var stream = zFile.GetInputStream(e);
+                                
                                 FileInfo info2 = new(file);
                                 info2.Directory?.Create();
                                 using FileStream stream3 = new(file, FileMode.Create,
