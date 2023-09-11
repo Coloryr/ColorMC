@@ -33,7 +33,6 @@
                 <StackPanel>
                     <Label VerticalAlignment="Center" Content="{setting:Localize Text.GameVersion}" />
                     <WrapPanel>
-
                         <StackPanel Orientation="Horizontal">
                             <Label
                                 Margin="5,0,0,0"

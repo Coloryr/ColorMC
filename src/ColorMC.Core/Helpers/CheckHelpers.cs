@@ -2,6 +2,7 @@
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -443,5 +444,38 @@ public static class CheckHelpers
         return list;
     }
 
+    public static async Task<bool> CheckForgeInstall(ForgeInstallObj obj)
+    {
+        var sha = obj.data.MCP_VERSION.client[1..^1];
+        string file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
+            $"{obj.minecraft}-{sha}/" +
+            $"client-{obj.minecraft}-{sha}-slim.jar";
+        file = Path.GetFullPath(file);
+        if (!File.Exists(file))
+        {
+            return true;
+        }
+        using var stream = File.OpenRead(file);
+        string sha1 = await FuntionUtils.GenSha1Async(stream);
+
+        if (sha1 != obj.data.MC_SLIM_SHA.client)
+        {
+            return true;
+        }
+
+        file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
+            $"{obj.minecraft}-{sha}/" +
+            $"client-{obj.minecraft}-{sha}-extra.jar";
+        file = Path.GetFullPath(file);
+        if (!File.Exists(file))
+        {
+            return true;
+        }
+
+        using var stream1 = File.OpenRead(file);
+        sha1 = await FuntionUtils.GenSha1Async(stream1);
+
+        return sha1 != obj.data.MC_EXTRA_SHA.client;
+    }
 }
 

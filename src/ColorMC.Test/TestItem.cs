@@ -532,4 +532,10 @@ public static class TestItem
         game.LoaderVersion = "47.1.76";
         game.MakeInstallForgeArg();
     }
+
+    public static void Item32()
+    {
+        var obj = VersionPath.GetNeoForgeInstallObj("1.20.1", "47.1.76")!;
+        var res = CheckHelpers.CheckForgeInstall(obj).Result;
+    }
 }

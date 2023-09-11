@@ -100,28 +100,24 @@
                     PasswordChar="*"
                     Text="{Binding Password}"
                     Watermark="{setting:Localize UserWindow.Text2}" />
+                <DockPanel HorizontalAlignment="Stretch">
+                    <Button
+                        Width="80"
+                        Height="25"
+                        Margin="5"
+                        Command="{Binding Add}"
+                        Content="{setting:Localize Button.Add}"
+                        DockPanel.Dock="Right"
+                        IsEnabled="{Binding !IsAdding}" />
+                    <Button
+                        Width="80"
+                        Height="25"
+                        Margin="5"
+                        Command="{Binding Cancel}"
+                        Content="{setting:Localize Button.Cancel}" />
+                </DockPanel>
             </StackPanel>
-
-            <Button
-                Width="80"
-                Height="25"
-                Margin="7"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Command="{Binding Cancel}"
-                Content="{setting:Localize Button.Cancel}" />
-
-            <Button
-                Width="80"
-                Height="25"
-                Margin="7"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Command="{Binding Add}"
-                Content="{setting:Localize Button.Add}"
-                IsEnabled="{Binding !IsAdding}" />
         </Panel>
-
         <Panel
             Name="Grid2"
             Background="{setting:Colors TopBottom}"

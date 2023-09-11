@@ -1093,32 +1093,51 @@ public static class Launch
         if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
             || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
         {
-            var start = obj.JvmArg?.LaunchPreData;
-            if (string.IsNullOrWhiteSpace(start))
+            var cmd1 = obj.JvmArg?.LaunchPreData;
+            var cmd2 = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
+            var start = string.IsNullOrWhiteSpace(cmd1) ? cmd2 : cmd1;
+            if (!string.IsNullOrWhiteSpace(start) && await ColorMCCore.LaunchP.Invoke(true))
             {
-                start = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
-            }
-            if (!string.IsNullOrWhiteSpace(start))
-            {
-                var res1 = await ColorMCCore.LaunchP.Invoke(true);
-                if (res1)
+                if (SystemInfo.Os == OsType.Android && start.StartsWith(JAVA_LOCAL))
                 {
-                    if (SystemInfo.Os == OsType.Android)
-                    {
-
-                    }
-                    else
+                    if (JvmPath.FindJava(8) is { } jvm1)
                     {
                         stopwatch.Start();
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
                         start = ReplaceArg(obj, path!, arg, start);
-                        CmdRun(obj, start);
+
+                        var args = start.Split('\n');
+                        var file = args[0].Trim();
+                        if (file.StartsWith("./") || file.StartsWith("../"))
+                        {
+                            file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
+                        }
+                        var arglist = new List<string>();
+                        for (int a = 1; a < args.Length; a++)
+                        {
+                            arglist.Add(args[a].Trim());
+                        }
+
+                        await ColorMCCore.PhoneJvmRun.Invoke(jvm1.Path, obj.GetGamePath(), arglist);
+
                         stopwatch.Stop();
                         string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                             obj.Name, stopwatch.Elapsed.ToString());
                         ColorMCCore.GameLog?.Invoke(obj, temp1);
                         Logs.Info(temp1);
                     }
+                }
+                else
+                {
+                    stopwatch.Start();
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
+                    start = ReplaceArg(obj, path!, arg, start);
+                    CmdRun(obj, start);
+                    stopwatch.Stop();
+                    string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
+                        obj.Name, stopwatch.Elapsed.ToString());
+                    ColorMCCore.GameLog?.Invoke(obj, temp1);
+                    Logs.Info(temp1);
                 }
             }
             else
@@ -1143,14 +1162,21 @@ public static class Launch
             var v2 = CheckHelpers.GameLaunchVersion(version);
             if (v2 && obj.Loader is Loaders.Forge or Loaders.NeoForge)
             {
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.InstallForge);
-                var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
-                        LanguageHelper.Get("Core.Launch.Error9"));
-                var res1 = await ColorMCCore.PhoneJvmRun.Invoke(jvm1!.Path, obj.GetGamePath(), obj.MakeInstallForgeArg());
-                if (res1 != true)
+                var obj1 = obj.Loader is Loaders.Forge
+                    ? VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!)!
+                    : VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!)!;
+                var install = await CheckHelpers.CheckForgeInstall(obj1);
+                if (install)
                 {
-                    throw new LaunchException(LaunchState.JavaError,
-                        LanguageHelper.Get("Core.Launch.Error10"));
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.InstallForge);
+                    var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
+                            LanguageHelper.Get("Core.Launch.Error9"));
+                    var res1 = await ColorMCCore.PhoneJvmRun.Invoke(jvm1!.Path, obj.GetGamePath(), obj.MakeInstallForgeArg());
+                    if (res1 != true)
+                    {
+                        throw new LaunchException(LaunchState.JavaError,
+                            LanguageHelper.Get("Core.Launch.Error10"));
+                    }
                 }
             }
 

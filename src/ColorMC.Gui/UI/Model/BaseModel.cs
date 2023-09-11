@@ -368,7 +368,8 @@ public partial class BaseModel : ObservableObject
         Info3Watermark1 = "";
         Info3Watermark2 = "";
 
-        Info3ConfirmEnable = true;
+        Info3Text2Visable = true;
+        Info3ConfirmEnable = false;
 
         _info3Call = cancel;
 
@@ -376,6 +377,8 @@ public partial class BaseModel : ObservableObject
         Info3CancelVisible = true;
 
         Info3Password = '\0';
+
+        OnPropertyChanged("Info3Show");
     }
 
     public async Task<bool> ShowWait(string data)

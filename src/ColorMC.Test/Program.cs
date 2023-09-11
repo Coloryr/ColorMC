@@ -14,7 +14,7 @@ internal class Program
     public static async void Run()
     {
         using HttpClient client = new HttpClient();
-        var data = await client.GetStringAsync("http://www.baidu.com");
+        //var data = await client.GetStringAsync("http://www.baidu.com");
         Console.WriteLine("Task");
     }
 
@@ -45,7 +45,7 @@ internal class Program
         ColorMCCore.AuthStateUpdate = AuthStateUpdate;
         ColorMCCore.GameLog = Log;
 
-        TestItem.Item31();
+        TestItem.Item32();
 
         //GetSha1();
 
