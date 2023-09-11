@@ -704,6 +704,9 @@ public static class BaseBinding
                 Process.Start("open", "-a Safari " +
                     '"' + url + '"');
                 break;
+            case OsType.Android:
+                ColorMCCore.PhoneOpenUrl(url);
+                break;
         }
     }
 
