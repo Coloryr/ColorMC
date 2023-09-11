@@ -7,6 +7,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 public partial class GameEditModel : GameModel
 {
     public ObservableCollection<string> GameVersionList { get; init; } = new();
-    public ObservableCollection<string> LoaderVersionList { get; init; } = new();
+    public ObservableCollection<Version> LoaderVersionList { get; init; } = new();
     public ObservableCollection<string> GroupList { get; init; } = new();
     public List<string> VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
     public ObservableCollection<string> LoaderTypeList { get; init; } = new();
@@ -28,7 +29,7 @@ public partial class GameEditModel : GameModel
     [ObservableProperty]
     private string _gameVersion;
     [ObservableProperty]
-    private string? _loaderVersion;
+    private Version? _loaderVersion;
     [ObservableProperty]
     private string? _group;
     [ObservableProperty]
@@ -112,12 +113,12 @@ public partial class GameEditModel : GameModel
         Obj.Save();
     }
 
-    partial void OnLoaderVersionChanged(string? value)
+    partial void OnLoaderVersionChanged(Version? value)
     {
         if (_gameLoad)
             return;
 
-        Obj.LoaderVersion = value;
+        Obj.LoaderVersion = value?.ToString();
         Obj.Save();
     }
 
@@ -522,7 +523,7 @@ public partial class GameEditModel : GameModel
             LoaderVersionList.Clear();
             if (Obj.LoaderVersion != null)
             {
-                LoaderVersionList.Add(Obj.LoaderVersion);
+                LoaderVersionList.Add(new(Obj.LoaderVersion));
             }
         }
         else
@@ -533,7 +534,10 @@ public partial class GameEditModel : GameModel
         GameVersionLoad();
         GroupLoad();
 
-        LoaderVersion = Obj.LoaderVersion;
+        if (Obj.LoaderVersion != null)
+        {
+            LoaderVersion = new(Obj.LoaderVersion);
+        }
         ModPack = Obj.ModPack;
         GameVersion = Obj.Version;
         Group = Obj.GroupName;

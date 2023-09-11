@@ -86,7 +86,7 @@ public static class CheckHelpers
     /// <summary>
     /// 是否V2版本
     /// </summary>
-    public static bool GameLaunchVersion(GameArgObj version)
+    public static bool GameLaunchVersionV2(GameArgObj version)
     {
         return version.minimumLauncherVersion > 18;
     }

@@ -656,7 +656,7 @@ public static class Launch
         {
             if (item.Later == null)
             {
-                if (SystemInfo.Os == OsType.Android
+                if (SystemInfo.Os == OsType.Android && CheckHelpers.GameLaunchVersionV2(version)
                     && (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
                     && item.Name.Contains("lwjgl"))
                 {
@@ -816,7 +816,7 @@ public static class Launch
     {
         var list = new List<string>();
         var version = VersionPath.GetGame(obj.Version)!;
-        var v2 = CheckHelpers.GameLaunchVersion(version);
+        var v2 = CheckHelpers.GameLaunchVersionV2(version);
         var classpath = await MakeClassPath(obj, v2);
         var jvmarg = await JvmArg(obj, v2, login);
         var gamearg = GameArg(obj, v2, world);
@@ -1158,7 +1158,7 @@ public static class Launch
         if (SystemInfo.Os == OsType.Android)
         {
             var version = VersionPath.GetGame(obj.Version)!;
-            var v2 = CheckHelpers.GameLaunchVersion(version);
+            var v2 = CheckHelpers.GameLaunchVersionV2(version);
             if (v2 && obj.Loader is Loaders.Forge or Loaders.NeoForge)
             {
                 var obj1 = obj.Loader is Loaders.Forge
@@ -1186,7 +1186,7 @@ public static class Launch
                 obj.Version,
                 jvm.MajorVersion.ToString(),
                 game.time,
-                CheckHelpers.GameLaunchVersion(game) ? "true" : "false"
+                CheckHelpers.GameLaunchVersionV2(game) ? "true" : "false"
             };
             arglist.AddRange(arg);
 

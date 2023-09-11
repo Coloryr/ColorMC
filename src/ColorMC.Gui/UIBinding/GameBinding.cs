@@ -640,17 +640,17 @@ public static class GameBinding
         data.Save(Path.GetFullPath(dir + "/" + file));
     }
 
-    public static Task<List<string>?> GetForgeVersion(string version)
+    public static Task<List<Version>?> GetForgeVersion(string version)
     {
         return ForgeAPI.GetVersionList(false, version, BaseClient.Source);
     }
 
-    public static Task<List<string>?> GetFabricVersion(string version)
+    public static Task<List<Version>?> GetFabricVersion(string version)
     {
         return FabricAPI.GetLoaders(version, BaseClient.Source);
     }
 
-    public static Task<List<string>?> GetQuiltVersion(string version)
+    public static Task<List<Version>?> GetQuiltVersion(string version)
     {
         return QuiltAPI.GetLoaders(version, BaseClient.Source);
     }
@@ -1175,7 +1175,7 @@ public static class GameBinding
         return list;
     }
 
-    public static Task<List<string>?> GetNeoForgeVersion(string version)
+    public static Task<List<Version>?> GetNeoForgeVersion(string version)
     {
         return ForgeAPI.GetVersionList(true, version, BaseClient.Source);
     }

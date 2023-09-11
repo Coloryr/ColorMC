@@ -13,10 +13,10 @@ namespace ColorMC.Core.Net.Apis;
 public static class ForgeAPI
 {
     private static List<string>? s_supportVersion;
-    private static readonly Dictionary<string, List<string>> s_forgeVersion = new();
+    private static readonly Dictionary<string, List<Version>> s_forgeVersion = new();
 
     private static List<string>? s_neoSupportVersion;
-    private static readonly Dictionary<string, List<string>> s_neoForgeVersion = new();
+    private static readonly Dictionary<string, List<Version>> s_neoForgeVersion = new();
 
     /// <summary>
     /// 获取支持的版本
@@ -76,7 +76,7 @@ public static class ForgeAPI
     /// <param name="mc">游戏版本</param>
     /// <param name="local">下载源</param>
     /// <returns>版本列表</returns>
-    public static async Task<List<string>?> GetVersionList(bool neo, string mc, SourceLocal? local = null)
+    public static async Task<List<Version>?> GetVersionList(bool neo, string mc, SourceLocal? local = null)
     {
         try
         {
@@ -104,7 +104,7 @@ public static class ForgeAPI
 
                     foreach (var item in obj)
                     {
-                        list1.Add(new Version(item.version));
+                        list1.Add(new(item.version));
                     }
                 }
                 else
@@ -115,18 +115,14 @@ public static class ForgeAPI
 
                     foreach (var item in obj)
                     {
-                        list1.Add(new Version(item.version));
+                        list1.Add(new(item.version));
                     }
                 }
 
                 list1.Sort();
                 list1.Reverse();
 
-                foreach (var item in list1)
-                {
-                    list.Add(item.ToString());
-                }
-                return list;
+                return list1;
             }
             else
             {
@@ -145,7 +141,6 @@ public static class ForgeAPI
                 {
                     if (s_neoForgeVersion.TryGetValue(mc, out var list4))
                     {
-                        list4.Reverse();
                         return list4;
                     }
                 }
@@ -153,7 +148,6 @@ public static class ForgeAPI
                 {
                     if (s_forgeVersion.TryGetValue(mc, out var list4))
                     {
-                        list4.Reverse();
                         return list4;
                     }
                 }
@@ -199,9 +193,9 @@ public static class ForgeAPI
             foreach (XmlNode item in node)
             {
                 var str = item.InnerText;
-                var index = str.IndexOf('-');
-                var mc1 = str[..index++];
-                var version = str[index..];
+                var args = str.Split('-');
+                var mc1 = args[0];
+                var version = args[1];
 
                 if (!list.Contains(mc1))
                 {
@@ -212,11 +206,11 @@ public static class ForgeAPI
                 {
                     if (s_neoForgeVersion.TryGetValue(mc1, out var list2))
                     {
-                        list2.Add(version);
+                        list2.Add(new(version));
                     }
                     else
                     {
-                        var list3 = new List<string>() { version };
+                        var list3 = new List<Version>() { new(version) };
                         s_neoForgeVersion.Add(mc1, list3);
                     }
                 }
@@ -224,14 +218,25 @@ public static class ForgeAPI
                 {
                     if (s_forgeVersion.TryGetValue(mc1, out var list2))
                     {
-                        list2.Add(version);
+                        list2.Add(new(version));
                     }
                     else
                     {
-                        var list3 = new List<string>() { version };
+                        var list3 = new List<Version>() { new(version) };
                         s_forgeVersion.Add(mc1, list3);
                     }
                 }
+            }
+
+            foreach (var item in s_neoForgeVersion.Values)
+            {
+                item.Sort();
+                item.Reverse();
+            }
+            foreach (var item in s_forgeVersion.Values)
+            {
+                item.Sort();
+                item.Reverse();
             }
 
             if (neo)

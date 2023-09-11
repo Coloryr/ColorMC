@@ -9,6 +9,7 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace ColorMC.Gui.UI.Model.Add.AddGame;
 public partial class AddGameModel : TopModel
 {
     public ObservableCollection<string> GameVersionList { get; init; } = new();
-    public ObservableCollection<string> LoaderVersionList { get; init; } = new();
+    public ObservableCollection<Version> LoaderVersionList { get; init; } = new();
 
     public List<string> VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
     public ObservableCollection<string> LoaderTypeList { get; init; } = new();
@@ -28,7 +29,7 @@ public partial class AddGameModel : TopModel
     [ObservableProperty]
     private string _version;
     [ObservableProperty]
-    private string _loaderVersion;
+    private Version? _loaderVersion;
 
     [ObservableProperty]
     private bool _enableLoader;
@@ -168,7 +169,7 @@ public partial class AddGameModel : TopModel
         }
 
         var loader = _loaderTypeList[LoaderType];
-        var res = await GameBinding.AddGame(name, version, loader, LoaderVersion, Group);
+        var res = await GameBinding.AddGame(name, version, loader, LoaderVersion?.ToString(), Group);
         if (!res)
         {
             Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error5"));

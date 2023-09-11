@@ -87,7 +87,7 @@ public static class LibrariesPath
     public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLib(this GameSettingObj obj, bool neo, CancellationToken cancel)
     {
         var version1 = VersionPath.GetGame(obj.Version)!;
-        var v2 = CheckHelpers.GameLaunchVersion(version1);
+        var v2 = CheckHelpers.GameLaunchVersionV2(version1);
         if (v2)
         {
             GameHelper.ReadyForgeWrapper();

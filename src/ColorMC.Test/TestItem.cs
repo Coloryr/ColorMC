@@ -173,34 +173,34 @@ public static class TestItem
         //process = game.StartGame(login).Result;
         //process?.WaitForExit();
 
-        //game.Version = "1.7.10";
-        //game.LoaderVersion = "10.13.4.1614";
-        //process = game.StartGame(login, null, token).Result;
-        //process?.WaitForExit();
+        game.Version = "1.7.10";
+        game.LoaderVersion = "10.13.4.1614";
+        process = game.StartGame(login, null, token).Result;
+        process?.WaitForExit();
 
         //game.Version = "1.8";
         //game.LoaderVersion = "11.14.4.1577";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.8.8";
         //game.LoaderVersion = "11.15.0.1655";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.8.9";
         //game.LoaderVersion = "11.15.1.2318";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.9";
         //game.LoaderVersion = "12.16.1.1938";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.9.4";
         //game.LoaderVersion = "12.17.0.2317";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.10";
@@ -210,17 +210,17 @@ public static class TestItem
 
         //game.Version = "1.10.2";
         //game.LoaderVersion = "12.18.3.2511";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.11";
         //game.LoaderVersion = "13.19.1.2199";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.11.2";
         //game.LoaderVersion = "13.20.1.2588";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.12.2";
@@ -235,27 +235,27 @@ public static class TestItem
 
         //game.Version = "1.13.2";
         //game.LoaderVersion = "25.0.223";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.14.4";
         //game.LoaderVersion = "28.2.26";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.15.2";
         //game.LoaderVersion = "31.2.57";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.16.5";
         //game.LoaderVersion = "36.2.39";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.17.1";
         //game.LoaderVersion = "37.1.1";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.18.2";
@@ -268,11 +268,11 @@ public static class TestItem
         //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
-        game.Version = "1.20.1";
-        game.Loader = Loaders.NeoForge;
-        game.LoaderVersion = "47.1.71";
-        process = game.StartGame(login, null, token).Result;
-        process?.WaitForExit();
+        //game.Version = "1.20.1";
+        //game.Loader = Loaders.NeoForge;
+        //game.LoaderVersion = "47.1.71";
+        //process = game.StartGame(login, null, token).Result;
+        //process?.WaitForExit();
 
         //game.Version = "1.20.1";
         //game.Loader = Loaders.Fabric;

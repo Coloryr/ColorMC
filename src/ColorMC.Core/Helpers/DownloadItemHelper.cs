@@ -170,7 +170,7 @@ public static class DownloadItemHelper
     public static List<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
-        var v2 = CheckHelpers.GameLaunchVersion(version1);
+        var v2 = CheckHelpers.GameLaunchVersionV2(version1);
         var list = new List<DownloadItemObj>();
 
         if (v2)
@@ -470,7 +470,7 @@ public static class DownloadItemHelper
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildForge(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
-        bool v2 = CheckHelpers.GameLaunchVersion(version1);
+        bool v2 = CheckHelpers.GameLaunchVersionV2(version1);
 
         var down = neo ?
             BuildNeoForgeInster(mc, version) :
