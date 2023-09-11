@@ -7,7 +7,6 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System.IO;
 using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
@@ -1015,7 +1014,7 @@ public static class InstancesPath
                                     file = game.GetIconFile();
                                 }
                                 using var stream = zFile.GetInputStream(e);
-                                
+
                                 FileInfo info2 = new(file);
                                 info2.Directory?.Create();
                                 using FileStream stream3 = new(file, FileMode.Create,

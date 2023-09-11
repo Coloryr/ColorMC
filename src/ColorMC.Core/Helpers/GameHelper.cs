@@ -5,7 +5,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OtherLaunch;
-using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Text;
 

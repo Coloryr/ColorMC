@@ -120,7 +120,7 @@ public partial class GameExportControl : UserControl, IUserControl
 
     private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if(e.PropertyName == "NowView")
+        if (e.PropertyName == "NowView")
         {
             var model = (DataContext as GameExportModel)!;
             switch (model.NowView)

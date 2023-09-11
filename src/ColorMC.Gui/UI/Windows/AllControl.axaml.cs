@@ -195,7 +195,7 @@ public partial class AllControl : UserControl, IBaseWindow
                 Controls.Children.Add(con2);
                 App.CrossFade300.Start(null, con2);
             }
-            
+
             con.Opened();
         }
 
@@ -244,7 +244,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
     public void Active(IUserControl con)
     {
-        
+
         if (GuiConfigUtils.Config.ControlMode)
         {
             foreach (Control item1 in Controls.Children)
@@ -265,7 +265,7 @@ public partial class AllControl : UserControl, IBaseWindow
             var con1 = (con as Control)!;
             if (Controls.Children.Contains(con1))
                 return;
-            
+
             controls.Remove(con1);
             var con2 = Controls.Children[0];
             Controls.Children.Clear();

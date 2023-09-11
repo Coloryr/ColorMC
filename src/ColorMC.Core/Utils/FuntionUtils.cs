@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ColorMC.Core.Utils;
@@ -50,7 +48,7 @@ public static partial class FuntionUtils
     {
         return Guid.NewGuid().ToString().ToLower();
     }
-    
+
     /// <summary>
     /// 执行内存回收
     /// </summary>

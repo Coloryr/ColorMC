@@ -5,7 +5,6 @@ using ColorMC.Core.Utils;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
-using static ColorMC.Core.Objs.CurseForge.CurseForgeObjList.Data;
 
 namespace ColorMC.Test;
 

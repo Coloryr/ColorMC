@@ -1,5 +1,4 @@
 ﻿using Avalonia.Media.Imaging;
-using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;

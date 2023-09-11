@@ -15,9 +15,7 @@ using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
-using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
@@ -112,7 +110,7 @@ public static class BaseBinding
                 else if (window?.Model is BaseModel model)
                 {
                     window.Model.Progress(string.Format(App.GetLanguage("Gui.Info28"), game.Name));
-                    var res = await GameBinding.Launch(model, game, wait:true);
+                    var res = await GameBinding.Launch(model, game, wait: true);
                     if (!res.Item1)
                     {
                         window.Show();

@@ -12,7 +12,6 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -172,7 +171,7 @@ public partial class GameExportModel : GameModel
         {
             return;
         }
-        
+
         await Parallel.ForEachAsync(list, async (item, cancel) =>
         {
             ModExportModel obj1;
@@ -209,7 +208,7 @@ public partial class GameExportModel : GameModel
                 Items.Add(obj1);
             }
         });
-        
+
         Load1();
     }
 

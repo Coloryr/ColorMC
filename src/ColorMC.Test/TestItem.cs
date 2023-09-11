@@ -8,8 +8,6 @@ using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using Esprima;
-using System;
 using System.Diagnostics;
 using System.IO.Compression;
 

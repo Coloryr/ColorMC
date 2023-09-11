@@ -1,7 +1,6 @@
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using ColorMC.Core;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -25,7 +24,6 @@ using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;

@@ -194,7 +194,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             {
                 App.TopLevel = GetTopLevel(App.AllWindow);
             }
-            else 
+            else
             {
                 var win = App.GetMainWindow();
                 App.TopLevel = win as Window;
