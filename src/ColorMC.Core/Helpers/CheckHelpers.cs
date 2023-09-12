@@ -446,10 +446,10 @@ public static class CheckHelpers
 
     public static async Task<bool> CheckForgeInstall(ForgeInstallObj obj)
     {
-        var sha = obj.data.MCP_VERSION.client[1..^1];
+        var version = obj.data.MCP_VERSION.client[1..^1];
         string file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
-            $"{obj.minecraft}-{sha}/" +
-            $"client-{obj.minecraft}-{sha}-slim.jar";
+            $"{obj.minecraft}-{version}/" +
+            $"client-{obj.minecraft}-{version}-slim.jar";
         file = Path.GetFullPath(file);
         if (!File.Exists(file))
         {
@@ -458,14 +458,14 @@ public static class CheckHelpers
         using var stream = PathHelper.OpenRead(file)!;
         string sha1 = await HashHelper.GenSha1Async(stream);
 
-        if (sha1 != obj.data.MC_SLIM_SHA.client)
+        if (sha1 != obj.data.MC_SLIM_SHA.client[1..^1])
         {
             return true;
         }
 
         file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
-            $"{obj.minecraft}-{sha}/" +
-            $"client-{obj.minecraft}-{sha}-extra.jar";
+            $"{obj.minecraft}-{version}/" +
+            $"client-{obj.minecraft}-{version}-extra.jar";
         file = Path.GetFullPath(file);
         if (!File.Exists(file))
         {
@@ -475,7 +475,7 @@ public static class CheckHelpers
         using var stream1 = PathHelper.OpenRead(file)!;
         sha1 = await HashHelper.GenSha1Async(stream1);
 
-        return sha1 != obj.data.MC_EXTRA_SHA.client;
+        return sha1 != obj.data.MC_EXTRA_SHA.client[1..^1];
     }
 }
 
