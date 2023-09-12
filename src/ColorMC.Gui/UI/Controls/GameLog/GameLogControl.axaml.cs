@@ -49,7 +49,10 @@ public partial class GameLogControl : UserControl, IUserControl
         if (data == null)
             return;
 
-        (DataContext as GameLogModel)!.Log(data);
+        Dispatcher.UIThread.Post(() =>
+        {
+            (DataContext as GameLogModel)!.Log(data);
+        });
     }
 
     public void Update()

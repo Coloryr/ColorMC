@@ -107,6 +107,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     public void SetTitle(string temp)
     {
         Model.Title = temp;
+        Title = temp;
     }
 
     private void FindGoodPos()
