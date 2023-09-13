@@ -1,3 +1,4 @@
+using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -12,7 +13,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A20";
-    public const string DateVersion = "20230908";
+    public const string DateVersion = "20230913";
 
     public const string Version = $"{TopVersion}.{DateVersion}";
 

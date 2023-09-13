@@ -1,21 +1,17 @@
 ﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs.Config;
+using ColorMC.Core.Utils;
+using ICSharpCode.SharpZipLib.Core;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Core.Config;
 
 /// <summary>
 /// 配置文件保存
 /// </summary>
 public static class ConfigSave
 {
-    public record ConfigSaveObj
-    {
-        public string Name;
-        public object Obj;
-        public string Local;
-    }
-
     private static readonly ConcurrentBag<ConfigSaveObj> s_saveQue = new();
 
     private static Thread t_thread;
@@ -62,7 +58,7 @@ public static class ConfigSave
             }
 
             count = 0;
-            if (!s_saveQue.Any())
+            if (s_saveQue.IsEmpty)
             {
                 continue;
             }
@@ -78,13 +74,9 @@ public static class ConfigSave
         {
             while (s_saveQue.TryTake(out var item))
             {
-                if (list.ContainsKey(item.Name))
+                if (!list.TryAdd(item.Name, item))
                 {
                     list[item.Name] = item;
-                }
-                else
-                {
-                    list.Add(item.Name, item);
                 }
             }
             s_saveQue.Clear();
@@ -92,11 +84,9 @@ public static class ConfigSave
 
         foreach (var item in list.Values)
         {
-            var info = new FileInfo(item.Local);
-            info.Directory?.Create();
             try
             {
-                File.WriteAllText(item.Local,
+                PathHelper.WriteText(item.Local,
                     JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
             }
             catch (Exception e)

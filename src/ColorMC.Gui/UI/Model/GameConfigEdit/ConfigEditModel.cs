@@ -5,6 +5,7 @@ using ColorMC.Core.Chunk;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
@@ -98,7 +99,7 @@ public partial class GameConfigEditModel : GameModel
 
     public int TurnTo;
 
-    private ChunkData? _chunkData;
+    private ChunkDataObj? _chunkData;
 
     public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world)
         : base(model, obj)

@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using Newtonsoft.Json;
@@ -51,7 +52,7 @@ public static class AssetsPath
     public static void AddIndex(this GameArgObj game, string data)
     {
         string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.assets}.json");
-        File.WriteAllText(file, data);
+        PathHelper.WriteText(file, data);
     }
 
     /// <summary>
@@ -71,7 +72,7 @@ public static class AssetsPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<AssetsObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<AssetsObj>(PathHelper.ReadText(file)!)!;
         s_assets.Add(game.assets, obj);
         return obj;
     }
@@ -88,10 +89,10 @@ public static class AssetsPath
         var path = obj.GetSkinFile();
 
         if (File.Exists(path))
-            File.Delete(path);
+            PathHelper.Delete(path);
         var info = new FileInfo(path);
         info.Directory?.Create();
-        File.Copy(file, path);
+        PathHelper.CopyFile(file, path);
     }
 
     /// <summary>

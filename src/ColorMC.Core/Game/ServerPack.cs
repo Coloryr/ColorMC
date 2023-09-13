@@ -1,3 +1,4 @@
+using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -23,12 +24,7 @@ public static class ServerPack
         var file1 = obj.Game.GetServerPackOldFile();
         var file2 = obj.Game.GetServerPackFile();
 
-        if (File.Exists(file1))
-        {
-            File.Delete(file1);
-        }
-
-        File.Move(file2, file1);
+        PathHelper.MoveFile(file2, file1);
     }
 
     /// <summary>
@@ -38,7 +34,7 @@ public static class ServerPack
     /// <returns>结果</returns>
     public static async Task<bool> Update(this ServerPackObj obj)
     {
-        File.Delete(obj.Game.GetServerPackFile());
+        PathHelper.Delete(obj.Game.GetServerPackFile());
         var old = obj.Game.GetOldServerPack();
 
         var list5 = new List<DownloadItemObj>();
@@ -203,7 +199,7 @@ public static class ServerPack
         ServerPackObj? obj1 = null;
         if (File.Exists(file))
         {
-            var data = File.ReadAllText(file);
+            var data = PathHelper.ReadText(file)!;
             obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
         }
 
@@ -226,7 +222,7 @@ public static class ServerPack
         ServerPackObj? obj1 = null;
         if (File.Exists(file))
         {
-            var data = File.ReadAllText(file);
+            var data = PathHelper.ReadText(file)!;
             obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
         }
 
@@ -302,9 +298,9 @@ public static class ServerPack
                         var name1 = Path.GetFullPath(local2 + item.File);
                         if (File.Exists(name))
                         {
-                            File.Delete(name);
+                            PathHelper.Delete(name);
                         }
-                        File.Copy(name1, name);
+                        PathHelper.CopyFile(name1, name);
                     }
 
                     obj1.Mod.Add(item);
@@ -332,9 +328,9 @@ public static class ServerPack
                     var name1 = Path.GetFullPath(local2 + item.File);
                     if (File.Exists(name))
                     {
-                        File.Delete(name);
+                        PathHelper.Delete(name);
                     }
-                    File.Copy(name1, name);
+                    PathHelper.CopyFile(name1, name);
 
                     obj1.Resourcepack.Add(item);
                 }
@@ -393,7 +389,7 @@ public static class ServerPack
                                 {
                                     File.Delete(file1.FullName);
                                 }
-                                File.Copy(item1.FullName, file1.FullName);
+                                PathHelper.CopyFile(item1.FullName, file1.FullName);
                                 using var stream = PathHelper.OpenRead(file1.FullName)!;
 
                                 var item2 = new ConfigPackObj()
@@ -415,9 +411,9 @@ public static class ServerPack
                         //复制文件
                         if (File.Exists(path2))
                         {
-                            File.Delete(path2);
+                            PathHelper.Delete(path2);
                         }
-                        File.Copy(path1, path2);
+                        PathHelper.CopyFile(path1, path2);
                         using var stream = PathHelper.OpenRead(path2)!;
 
                         var item2 = new ConfigPackObj()
@@ -449,12 +445,12 @@ public static class ServerPack
             var file = local + obj1.UI;
             if (File.Exists(file))
             {
-                File.Delete(file);
+                PathHelper.Delete(file);
             }
-            File.Copy(obj.UI, file);
+            PathHelper.CopyFile(obj.UI, file);
         }
 
-        File.WriteAllText(Path.GetFullPath(local + "server.json"),
+        PathHelper.WriteText(Path.GetFullPath(local + "server.json"),
             JsonConvert.SerializeObject(obj1));
 
         return !fail;

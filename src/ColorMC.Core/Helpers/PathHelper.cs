@@ -1,5 +1,7 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using System.IO;
+using System.Text;
 
 namespace ColorMC.Core.Helpers;
 
@@ -8,7 +10,7 @@ public static class PathHelper
     /// <summary>
     /// 获取名字
     /// </summary>
-    public static (string Path, string Name) ToName(string input)
+    public static (string Path, string Name) ToPathAndName(string input)
     {
         var arg = input.Split(':');
         var arg1 = arg[0].Split('.');
@@ -56,38 +58,6 @@ public static class PathHelper
     }
 
     /// <summary>
-    /// 版本名
-    /// </summary>
-    public static LibVersionObj MakeVersionObj(string name)
-    {
-        var arg = name.Split(":");
-        if (arg.Length < 3)
-        {
-            return new()
-            {
-                Name = name
-            };
-        }
-        if (arg.Length > 3)
-        {
-            return new()
-            {
-                Pack = arg[0],
-                Name = arg[1],
-                Verison = arg[2],
-                Extr = arg[3]
-            };
-        }
-
-        return new()
-        {
-            Pack = arg[0],
-            Name = arg[1],
-            Verison = arg[2]
-        };
-    }
-
-    /// <summary>
     /// 复制文件夹
     /// </summary>
     private static void Copys(string dir, string dir1)
@@ -104,15 +74,32 @@ public static class PathHelper
             }
             else
             {
-                File.Copy(file, Path.GetFullPath(dir1 + "/" + Path.GetFileName(file)), true);
+                CopyFile(file, Path.GetFullPath(dir1 + "/" + Path.GetFileName(file)));
             }
         }
+    }
+
+    public static void CopyFile(string file1, string file2)
+    {
+        using var stream = OpenRead(file1);
+        using var stream1 = OpenWrite(file2);
+        if (stream == null)
+        {
+            return;
+        }
+        stream.CopyTo(stream1);
+    }
+
+    public static void MoveFile(string file1, string file2)
+    {
+        CopyFile(file1, file2);
+        Delete(file1);
     }
 
     /// <summary>
     /// 复制文件夹
     /// </summary>
-    public static Task CopyFiles(string dir, string dir1)
+    public static Task CopyDir(string dir, string dir1)
     {
         return Task.Run(() =>
         {
@@ -184,5 +171,40 @@ public static class PathHelper
     public static Stream OpenWrite(string path)
     {
         return File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+    }
+
+    public static void WriteText(string local, string str)
+    {
+        var data = Encoding.UTF8.GetBytes(str);
+        WriteBytes(local, data);
+    }
+
+    public static string? ReadText(string local)
+    {
+        using var stream = OpenRead(local);
+        if (stream == null)
+        {
+            return null;
+        }
+        using var stream1 = new MemoryStream();
+        stream.CopyTo(stream1);
+        return Encoding.UTF8.GetString(stream1.ToArray());
+    }
+
+    public static void Delete(string local)
+    {
+        if (SystemInfo.Os == OsType.Android && local.StartsWith("content://"))
+        {
+            return;
+        }
+        File.Delete(local);
+    }
+
+    public static void WriteBytes(string local, byte[] data)
+    {
+        var info = new FileInfo(local);
+        info.Directory?.Create();
+        using var stream = OpenWrite(local);
+        stream.Write(data, 0, data.Length);
     }
 }

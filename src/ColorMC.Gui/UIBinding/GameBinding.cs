@@ -9,6 +9,7 @@ using ColorMC.Core.Nbt;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
@@ -556,14 +557,14 @@ public static class GameBinding
         return list;
     }
 
-    public static async Task<ChunkData> ReadMca(WorldObj obj, string name)
+    public static async Task<ChunkDataObj> ReadMca(WorldObj obj, string name)
     {
         var dir = obj.Local;
 
         return await ChunkMca.Read(Path.GetFullPath(dir + "/" + name));
     }
 
-    public static async Task<ChunkData> ReadMca(GameSettingObj obj, string name)
+    public static async Task<ChunkDataObj> ReadMca(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
 
@@ -626,31 +627,31 @@ public static class GameBinding
         nbt.Save(Path.GetFullPath(dir + "/" + file));
     }
 
-    public static void SaveMcaFile(WorldObj obj, string file, ChunkData data)
+    public static void SaveMcaFile(WorldObj obj, string file, ChunkDataObj data)
     {
         var dir = obj.Local;
 
         data.Save(Path.GetFullPath(dir + "/" + file));
     }
 
-    public static void SaveMcaFile(GameSettingObj obj, string file, ChunkData data)
+    public static void SaveMcaFile(GameSettingObj obj, string file, ChunkDataObj data)
     {
         var dir = obj.GetGamePath();
 
         data.Save(Path.GetFullPath(dir + "/" + file));
     }
 
-    public static Task<List<Version>?> GetForgeVersion(string version)
+    public static Task<List<string>?> GetForgeVersion(string version)
     {
         return ForgeAPI.GetVersionList(false, version, BaseClient.Source);
     }
 
-    public static Task<List<Version>?> GetFabricVersion(string version)
+    public static Task<List<string>?> GetFabricVersion(string version)
     {
         return FabricAPI.GetLoaders(version, BaseClient.Source);
     }
 
-    public static Task<List<Version>?> GetQuiltVersion(string version)
+    public static Task<List<string>?> GetQuiltVersion(string version)
     {
         return QuiltAPI.GetLoaders(version, BaseClient.Source);
     }
@@ -1175,7 +1176,7 @@ public static class GameBinding
         return list;
     }
 
-    public static Task<List<Version>?> GetNeoForgeVersion(string version)
+    public static Task<List<string>?> GetNeoForgeVersion(string version)
     {
         return ForgeAPI.GetVersionList(true, version, BaseClient.Source);
     }

@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Game;
+﻿using ColorMC.Core.Config;
+using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;

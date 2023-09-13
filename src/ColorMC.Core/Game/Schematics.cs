@@ -55,7 +55,7 @@ public static class Schematic
     /// <param name="obj">结构文件</param>
     public static void Delete(this SchematicObj obj)
     {
-        File.Delete(obj.Local);
+        PathHelper.Delete(obj.Local);
     }
 
     /// <summary>
@@ -81,7 +81,7 @@ public static class Schematic
 
             try
             {
-                File.Copy(item, path1);
+                PathHelper.CopyFile(item, path1);
             }
             catch (Exception e)
             {

@@ -17,7 +17,7 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 public partial class GameEditModel : GameModel
 {
     public ObservableCollection<string> GameVersionList { get; init; } = new();
-    public ObservableCollection<Version> LoaderVersionList { get; init; } = new();
+    public ObservableCollection<string> LoaderVersionList { get; init; } = new();
     public ObservableCollection<string> GroupList { get; init; } = new();
     public List<string> VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
     public ObservableCollection<string> LoaderTypeList { get; init; } = new();
@@ -29,7 +29,7 @@ public partial class GameEditModel : GameModel
     [ObservableProperty]
     private string _gameVersion;
     [ObservableProperty]
-    private Version? _loaderVersion;
+    private string? _loaderVersion;
     [ObservableProperty]
     private string? _group;
     [ObservableProperty]
@@ -113,12 +113,12 @@ public partial class GameEditModel : GameModel
         Obj.Save();
     }
 
-    partial void OnLoaderVersionChanged(Version? value)
+    partial void OnLoaderVersionChanged(string? value)
     {
         if (_gameLoad)
             return;
 
-        Obj.LoaderVersion = value?.ToString();
+        Obj.LoaderVersion = value;
         Obj.Save();
     }
 

@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Custom;
@@ -72,7 +73,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
             return;
         }
 
-        _ui1 = AvaloniaRuntimeXamlLoader.Parse<CustomPanelControl>(File.ReadAllText(_ui));
+        _ui1 = AvaloniaRuntimeXamlLoader.Parse<CustomPanelControl>(PathHelper.ReadText(_ui)!);
 
         Title = _ui1.Title;
         Window.SetTitle(Title);

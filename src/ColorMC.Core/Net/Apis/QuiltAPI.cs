@@ -81,7 +81,7 @@ public static class QuiltAPI
     /// 获取加载器版本
     /// </summary>
     /// <param name="mc">游戏版本</param>
-    public static async Task<List<Version>?> GetLoaders(string mc, SourceLocal? local = null)
+    public static async Task<List<string>?> GetLoaders(string mc, SourceLocal? local = null)
     {
         try
         {
@@ -98,10 +98,10 @@ public static class QuiltAPI
             if (list == null)
                 return null;
 
-            var list1 = new List<Version>();
+            var list1 = new List<string>();
             foreach (var item in list)
             {
-                list1.Add(new(item.loader.version));
+                list1.Add(item.loader.version);
             }
             return list1;
         }

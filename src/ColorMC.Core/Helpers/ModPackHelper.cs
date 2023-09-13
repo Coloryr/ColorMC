@@ -92,7 +92,7 @@ public static class ModPackHelper
             }
         }
 
-        File.WriteAllBytes(obj.GetModJsonFile(), array1);
+        PathHelper.WriteBytes(obj.GetModJsonFile(), array1);
 
         var obj1 = obj.CopyObj();
         obj1.Mods.Clear();
@@ -144,7 +144,7 @@ public static class ModPackHelper
             var local = Path.GetFullPath($"{obj.GetGamePath()}/{item.Path}/{item.File}");
             if (File.Exists(local))
             {
-                File.Delete(local);
+                PathHelper.Delete(local);
             }
             obj.Mods.Remove(item.ModId);
         }
@@ -176,7 +176,7 @@ public static class ModPackHelper
     public static async Task<(bool Res, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip, string? name, string? group)
     {
         ColorMCCore.PackState?.Invoke(CoreRunState.Read);
-        using ZipFile zFile = new(zip);
+        using ZipFile zFile = new(PathHelper.OpenRead(zip));
         using MemoryStream stream1 = new();
         bool find = false;
         //获取主信息
@@ -276,7 +276,7 @@ public static class ModPackHelper
             }
         }
 
-        File.WriteAllBytes(game.GetModJsonFile(), array1);
+        PathHelper.WriteBytes(game.GetModJsonFile(), array1);
 
         ColorMCCore.PackState?.Invoke(CoreRunState.GetInfo);
 
@@ -368,7 +368,7 @@ public static class ModPackHelper
     /// <returns>升级结果</returns>
     public static async Task<bool> UpdateModrinthModPack(GameSettingObj obj, string zip)
     {
-        using ZipFile zFile = new(zip);
+        using ZipFile zFile = new(PathHelper.OpenRead(zip));
         using MemoryStream stream1 = new();
         bool find = false;
         //获取主信息
@@ -442,7 +442,7 @@ public static class ModPackHelper
             }
         }
 
-        File.WriteAllBytes(obj.GetModJsonFile(), array1);
+        PathHelper.WriteBytes(obj.GetModJsonFile(), array1);
 
         var obj1 = obj.CopyObj();
         obj1.Mods.Clear();
@@ -494,7 +494,7 @@ public static class ModPackHelper
             string local = Path.GetFullPath(path + "/" + item.File);
             if (File.Exists(local))
             {
-                File.Delete(local);
+                PathHelper.Delete(local);
             }
             obj.Mods.Remove(item.ModId);
         }
@@ -525,7 +525,7 @@ public static class ModPackHelper
     public static async Task<(bool Res, GameSettingObj? Game)> DownloadModrinthModPack(string zip, string? name, string? group)
     {
         ColorMCCore.PackState?.Invoke(CoreRunState.Read);
-        using ZipFile zFile = new(zip);
+        using ZipFile zFile = new(PathHelper.OpenRead(zip));
         using MemoryStream stream1 = new();
         bool find = false;
         //获取主信息
@@ -621,7 +621,7 @@ public static class ModPackHelper
             }
         }
 
-        File.WriteAllBytes(game.GetModJsonFile(), array1);
+        PathHelper.WriteBytes(game.GetModJsonFile(), array1);
 
         ColorMCCore.PackState?.Invoke(CoreRunState.GetInfo);
 

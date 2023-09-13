@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Helpers;
+﻿using ColorMC.Core.Config;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -28,7 +29,7 @@ public static class LocalMaven
         {
             try
             {
-                var data = File.ReadAllText(s_local);
+                var data = PathHelper.ReadText(s_local)!;
                 var list = JsonConvert.DeserializeObject<Dictionary<string, MavenItemObj>>(data);
 
                 if (list != null)

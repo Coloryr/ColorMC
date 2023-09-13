@@ -223,7 +223,7 @@ public static class GameHelper
             {
                 Directory.CreateDirectory(file.DirectoryName!);
             }
-            File.WriteAllBytes(file.FullName, Resource1.ForgeWrapper_colormc_1_5_7);
+            PathHelper.WriteBytes(file.FullName, Resource1.ForgeWrapper_colormc_1_5_7);
         }
     }
 
@@ -262,7 +262,7 @@ public static class GameHelper
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <param name="stream">文件流</param>
-    public static void UnpackNative(string version, FileStream stream)
+    public static void UnpackNative(string version, Stream stream)
     {
         using ZipFile zFile = new(stream);
         foreach (ZipEntry e in zFile)
@@ -275,8 +275,7 @@ public static class GameHelper
                 if (File.Exists(file))
                     continue;
 
-                using var stream1 = new FileStream(file,
-                    FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                using var stream1 = PathHelper.OpenWrite(file);
                 using var stream2 = zFile.GetInputStream(e);
                 stream2.CopyTo(stream1);
             }

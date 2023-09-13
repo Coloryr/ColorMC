@@ -1,10 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UI.Windows;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
@@ -91,7 +93,7 @@ public partial class SettingControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
-
+        
         (DataContext as SettingModel)!.LoadUISetting();
     }
 

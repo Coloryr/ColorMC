@@ -23,10 +23,7 @@ public static class Options
                 continue;
             }
             var temp = item.Trim().Split(sp);
-            if (options.ContainsKey(temp[0]))
-            {
-                options.Remove(temp[0]);
-            }
+            options.Remove(temp[0]);
             if (temp.Length == 1)
             {
                 options.Add(temp[0], "");

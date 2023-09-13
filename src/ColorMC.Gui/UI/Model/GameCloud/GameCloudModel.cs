@@ -124,7 +124,7 @@ public partial class GameCloudModel : GameModel
         await new ZipUtils().ZipFile(name, files, dir);
         Model.ProgressUpdate("上传中");
         await GameCloudUtils.UploadConfig(Obj.UUID, name);
-        File.Delete(name);
+        PathHelper.Delete(name);
         await LoadCloud();
         data.ConfigTime = DateTime.Parse(ConfigTime);
         LocalConfigTime = ConfigTime;
@@ -167,7 +167,7 @@ public partial class GameCloudModel : GameModel
 
                 if (fileName != string.Empty)
                 {
-                    using var streamWriter = File.Create(filename);
+                    using var streamWriter = PathHelper.OpenWrite(filename);
 
                     s.CopyTo(streamWriter);
                 }

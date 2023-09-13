@@ -1,3 +1,4 @@
+using ColorMC.Core.Objs;
 using System.Text.RegularExpressions;
 
 namespace ColorMC.Core.Utils;
@@ -47,6 +48,38 @@ public static partial class FuntionUtils
     public static string NewUUID()
     {
         return Guid.NewGuid().ToString().ToLower();
+    }
+
+    /// <summary>
+    /// 版本名
+    /// </summary>
+    public static LibVersionObj MakeVersionObj(string name)
+    {
+        var arg = name.Split(":");
+        if (arg.Length < 3)
+        {
+            return new()
+            {
+                Name = name
+            };
+        }
+        if (arg.Length > 3)
+        {
+            return new()
+            {
+                Pack = arg[0],
+                Name = arg[1],
+                Verison = arg[2],
+                Extr = arg[3]
+            };
+        }
+
+        return new()
+        {
+            Pack = arg[0],
+            Name = arg[1],
+            Verison = arg[2]
+        };
     }
 
     /// <summary>

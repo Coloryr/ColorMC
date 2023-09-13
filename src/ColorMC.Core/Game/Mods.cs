@@ -385,7 +385,7 @@ public static class Mods
         mod.Disable = true;
         mod.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name
             .Replace(".jar", ".disable")}");
-        File.Move(file.FullName, mod.Local);
+        PathHelper.MoveFile(file.FullName, mod.Local);
     }
 
     /// <summary>
@@ -403,7 +403,7 @@ public static class Mods
         mod.Disable = false;
         mod.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name
             .Replace(".disable", ".jar")}");
-        File.Move(file.FullName, mod.Local);
+        PathHelper.MoveFile(file.FullName, mod.Local);
     }
 
     /// <summary>
@@ -412,7 +412,7 @@ public static class Mods
     /// <param name="mod">游戏Mod</param>
     public static void Delete(this ModObj mod)
     {
-        File.Delete(mod.Local);
+        PathHelper.Delete(mod.Local);
     }
 
     /// <summary>
@@ -429,30 +429,23 @@ public static class Mods
         }
         string path = obj.GetModsPath();
         bool ok = true;
-        await Task.Run(() => Parallel.ForEach(file, (item) =>
+        await Task.Run(() => Parallel.ForEach(file, async (item) =>
         {
-            var info = new FileInfo(item);
-            if (!info.Exists)
-            {
-                return;
-            }
+            var name = Path.GetFileName(item);
+            var local = Path.GetFullPath(path + "/" + name);
 
-            var info1 = new FileInfo(Path.GetFullPath(path + "/" + info.Name));
-            if (info1.Exists)
+            await Task.Run(() =>
             {
-                info1.Delete();
-            }
-
-            try
-            {
-                File.Copy(info.FullName, info1.FullName);
-            }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
-                ok = false;
-                return;
-            }
+                try
+                {
+                    PathHelper.CopyFile(item, local);
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
+                    ok = false;
+                }
+            });
         }));
         if (!ok)
         {

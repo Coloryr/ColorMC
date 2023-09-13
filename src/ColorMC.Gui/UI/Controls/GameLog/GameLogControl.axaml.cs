@@ -41,7 +41,10 @@ public partial class GameLogControl : UserControl, IUserControl
     }
     public void ClearLog()
     {
-        (DataContext as GameLogModel)!.Clear();
+        Dispatcher.UIThread.Post(() =>
+        {
+            (DataContext as GameLogModel)!.Clear();
+        });
     }
 
     public void Log(string? data)
@@ -57,7 +60,10 @@ public partial class GameLogControl : UserControl, IUserControl
 
     public void Update()
     {
-        (DataContext as GameLogModel)?.Load();
+        Dispatcher.UIThread.Post(() =>
+        {
+            (DataContext as GameLogModel)?.Load();
+        });
     }
 
     public void Opened()

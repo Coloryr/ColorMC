@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 
@@ -38,7 +39,7 @@ public static class Screenshots
         {
             foreach (var item in Directory.GetFiles(dir))
             {
-                File.Delete(item);
+                PathHelper.Delete(item);
             }
         }
     }

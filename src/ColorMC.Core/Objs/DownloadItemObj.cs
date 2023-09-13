@@ -39,7 +39,7 @@ public record DownloadItemObj
     /// <summary>
     /// 下载后执行
     /// </summary>
-    public Action<FileStream> Later { get; set; }
+    public Action<Stream> Later { get; set; }
     /// <summary>
     /// 错误次数
     /// </summary>

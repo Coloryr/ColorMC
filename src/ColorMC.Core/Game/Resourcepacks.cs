@@ -5,7 +5,9 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Text;
+using System.Threading.Channels;
 
 namespace ColorMC.Core.Game;
 
@@ -14,6 +16,55 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Resourcepacks
 {
+    private static async Task<ResourcepackObj?> ReadResourcepack(Stream file, CancellationToken cancel)
+    {
+        using ZipFile zFile = new(file);
+        var item1 = zFile.GetEntry("pack.mcmeta");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream = new MemoryStream();
+            await stream1.CopyToAsync(stream, cancel);
+            var data = Encoding.UTF8.GetString(stream.ToArray());
+            var obj1 = JObject.Parse(data);
+            if (obj1 != null)
+            {
+                var obj = new ResourcepackObj();
+                if (obj1.ContainsKey("pack"))
+                {
+                    var obj2 = obj1["pack"] as JObject;
+                    if (obj2!["pack_format"] is { } item2)
+                    {
+                        obj.pack_format = (int)item2;
+                    }
+                    if (obj2.ContainsKey("description"))
+                    {
+                        var obj3 = obj2["description"]!;
+                        if (obj3.Type == JTokenType.String)
+                        {
+                            obj.description = obj3.ToString();
+                        }
+                        else if (obj3.Type == JTokenType.Object)
+                        {
+                            obj.description = obj3["fallback"]?.ToString() ?? "";
+                        }
+                    }
+                }
+                item1 = zFile.GetEntry("pack.png");
+                if (item1 != null)
+                {
+                    using var stream2 = zFile.GetInputStream(item1);
+                    using var stream3 = new MemoryStream();
+                    await stream2.CopyToAsync(stream3, cancel);
+                    obj.Icon = stream3.ToArray();
+                }
+                return obj;
+            }
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// 获取材质包列表
     /// </summary>
@@ -33,80 +84,35 @@ public static class Resourcepacks
 
         await Parallel.ForEachAsync(info.GetFiles(), async (item, cancel) =>
         {
-            string sha1;
-            {
-                using var stream = PathHelper.OpenRead(item.FullName)!;
-                sha1 = HashHelper.GenSha1(stream);
-            }
-            bool find = false;
+            using var stream = PathHelper.OpenRead(item.FullName)!;
+            string sha1 = HashHelper.GenSha1(stream);
             if (item.Extension is not (".zip" or ".disable"))
             {
                 return;
             }
             try
             {
-                using ZipFile zFile = new(item.FullName);
-                var item1 = zFile.GetEntry("pack.mcmeta");
-                if (item1 != null)
+                stream.Seek(0, SeekOrigin.Begin);
+                var obj = await ReadResourcepack(stream, cancel);
+                if (obj != null)
                 {
-                    using var stream1 = zFile.GetInputStream(item1);
-                    using var stream = new MemoryStream();
-                    await stream1.CopyToAsync(stream, cancel);
-                    var data = Encoding.UTF8.GetString(stream.ToArray());
-                    var obj1 = JObject.Parse(data);
-                    if (obj1 != null)
+                    obj.Local = Path.GetFullPath(item.FullName);
+                    obj.Sha1 = sha1;
+                    list.Add(obj);
+                }
+                else
+                {
+                    list.Add(new()
                     {
-                        ResourcepackObj obj = new()
-                        {
-                            Local = Path.GetFullPath(item.FullName),
-                            Sha1 = sha1,
-                        };
-                        if (obj1.ContainsKey("pack"))
-                        {
-                            var obj2 = obj1["pack"] as JObject;
-                            if (obj2!["pack_format"] is { } item2)
-                            {
-                                obj.pack_format = (int)item2;
-                            }
-                            if (obj2.ContainsKey("description"))
-                            {
-                                var obj3 = obj2["description"]!;
-                                if (obj3.Type == JTokenType.String)
-                                {
-                                    obj.description = obj3.ToString();
-                                }
-                                else if (obj3.Type == JTokenType.Object)
-                                {
-                                    obj.description = obj3["fallback"]?.ToString() ?? "";
-                                }
-                            }
-                        }
-                        item1 = zFile.GetEntry("pack.png");
-                        if (item1 != null)
-                        {
-                            using var stream2 = zFile.GetInputStream(item1);
-                            using var stream3 = new MemoryStream();
-                            await stream2.CopyToAsync(stream3, cancel);
-                            obj.Icon = stream3.ToArray();
-                        }
-                        list.Add(obj);
-                        find = true;
-                    }
+                        Sha1 = sha1,
+                        Local = Path.GetFullPath(item.FullName),
+                        Broken = true
+                    });
                 }
             }
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.Get("Core.Game.Error2"), e);
-            }
-
-            if (!find)
-            {
-                list.Add(new()
-                {
-                    Sha1 = sha1,
-                    Local = Path.GetFullPath(item.FullName),
-                    Broken = true
-                });
             }
         });
 
@@ -123,20 +129,16 @@ public static class Resourcepacks
     {
         var path = obj.GetResourcepacksPath();
         bool ok = true;
-        foreach (var item in file)
+        await Parallel.ForEachAsync(file, async (item, cancel) =>
         {
             var name = Path.GetFileName(item);
             var local = Path.GetFullPath(path + "/" + name);
-            if (File.Exists(local))
-            {
-                return false;
-            }
 
             await Task.Run(() =>
             {
                 try
                 {
-                    File.Copy(item, local);
+                    PathHelper.CopyFile(item, local);
                 }
                 catch (Exception e)
                 {
@@ -144,11 +146,7 @@ public static class Resourcepacks
                     ok = false;
                 }
             });
-            if (!ok)
-            {
-                return false;
-            }
-        };
+        });
         return ok;
     }
 }

@@ -137,7 +137,7 @@ public static class Logs
         var file = $"{s_local}{date.Year}_{date.Month}_{date.Day}_" +
             $"{date.Hour}_{date.Minute}_{date.Second}_crash.log";
 
-        File.WriteAllText(file, text);
+        PathHelper.WriteText(file, text);
 
         return file;
     }

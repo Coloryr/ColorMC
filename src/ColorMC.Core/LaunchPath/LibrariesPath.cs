@@ -1,3 +1,4 @@
+using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -163,7 +164,7 @@ public static class LibrariesPath
             if (cancel.IsCancellationRequested)
                 break;
 
-            var name = PathHelper.ToName(item.name);
+            var name = PathHelper.ToPathAndName(item.name);
             string file = $"{BaseDir}/{name.Path}";
             if (!File.Exists(file))
             {
@@ -198,7 +199,7 @@ public static class LibrariesPath
             if (cancel.IsCancellationRequested)
                 return null;
 
-            var name = PathHelper.ToName(item.name);
+            var name = PathHelper.ToPathAndName(item.name);
             string file = $"{BaseDir}/{name.Path}";
             if (!File.Exists(file))
             {

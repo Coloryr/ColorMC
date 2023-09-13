@@ -19,7 +19,7 @@ namespace ColorMC.Gui.UI.Model.Add.AddGame;
 public partial class AddGameModel : TopModel
 {
     public ObservableCollection<string> GameVersionList { get; init; } = new();
-    public ObservableCollection<Version> LoaderVersionList { get; init; } = new();
+    public ObservableCollection<string> LoaderVersionList { get; init; } = new();
 
     public List<string> VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
     public ObservableCollection<string> LoaderTypeList { get; init; } = new();
@@ -29,7 +29,7 @@ public partial class AddGameModel : TopModel
     [ObservableProperty]
     private string _version;
     [ObservableProperty]
-    private Version? _loaderVersion;
+    private string? _loaderVersion;
 
     [ObservableProperty]
     private bool _enableLoader;
@@ -57,14 +57,6 @@ public partial class AddGameModel : TopModel
     partial void OnVersionTypeChanged(int value)
     {
         GameVersionUpdate();
-    }
-
-    private async Task<bool> Tab1GameOverwirte(GameSettingObj obj)
-    {
-        Model.ProgressClose();
-        var test = await Model.ShowWait(
-            string.Format(App.GetLanguage("AddGameWindow.Info2"), obj.Name));
-        return test;
     }
 
 
@@ -197,6 +189,7 @@ public partial class AddGameModel : TopModel
 
         EnableLoader = false;
         _loaderTypeList.Clear();
+        LoaderTypeList.Clear();
         LoaderVersionList.Clear();
 
         _loaderTypeList.Add(Loaders.Normal);
@@ -328,5 +321,13 @@ public partial class AddGameModel : TopModel
                 GameVersionList.AddRange(await GameBinding.GetGameVersion(true, true, true));
                 break;
         }
+    }
+
+    private async Task<bool> Tab1GameOverwirte(GameSettingObj obj)
+    {
+        Model.ProgressClose();
+        var test = await Model.ShowWait(
+            string.Format(App.GetLanguage("AddGameWindow.Info2"), obj.Name));
+        return test;
     }
 }

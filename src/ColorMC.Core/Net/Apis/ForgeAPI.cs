@@ -76,7 +76,7 @@ public static class ForgeAPI
     /// <param name="mc">游戏版本</param>
     /// <param name="local">下载源</param>
     /// <returns>版本列表</returns>
-    public static async Task<List<Version>?> GetVersionList(bool neo, string mc, SourceLocal? local = null)
+    public static async Task<List<string>?> GetVersionList(bool neo, string mc, SourceLocal? local = null)
     {
         try
         {
@@ -122,17 +122,33 @@ public static class ForgeAPI
                 list1.Sort();
                 list1.Reverse();
 
-                return list1;
+                var list2 = new List<string>();
+                foreach (var item in list1)
+                {
+                    list2.Add(item.ToString());
+                }
+
+                return list2;
             }
             else
             {
                 if (!neo && s_forgeVersion.TryGetValue(mc, out var list1))
                 {
-                    return list1;
+                    var list2 = new List<string>();
+                    foreach (var item in list1)
+                    {
+                        list2.Add(item.ToString());
+                    }
+                    return list2;
                 }
                 else if (neo && s_neoForgeVersion.TryGetValue(mc, out list1))
                 {
-                    return list1;
+                    var list2 = new List<string>();
+                    foreach (var item in list1)
+                    {
+                        list2.Add(item.ToString());
+                    }
+                    return list2;
                 }
 
                 await LoadFromSource(neo);
@@ -141,14 +157,24 @@ public static class ForgeAPI
                 {
                     if (s_neoForgeVersion.TryGetValue(mc, out var list4))
                     {
-                        return list4;
+                        var list2 = new List<string>();
+                        foreach (var item in list4)
+                        {
+                            list2.Add(item.ToString());
+                        }
+                        return list2;
                     }
                 }
                 else
                 {
                     if (s_forgeVersion.TryGetValue(mc, out var list4))
                     {
-                        return list4;
+                        var list2 = new List<string>();
+                        foreach (var item in list4)
+                        {
+                            list2.Add(item.ToString());
+                        }
+                        return list2;
                     }
                 }
                 return null;

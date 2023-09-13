@@ -1,8 +1,9 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Core.Config;
 
 /// <summary>
 /// 配置文件
@@ -27,14 +28,17 @@ public static class ConfigUtils
     /// <summary>
     /// 加载
     /// </summary>
-    public static bool Load(string name, bool quit = false)
+    public static bool Load(string local, bool quit = false)
     {
         Logs.Info(LanguageHelper.Get("Core.Config.Info1"));
-        if (File.Exists(name))
+
+        var data = PathHelper.ReadText(local);
+        ConfigObj? obj = null;
+        if (data != null)
         {
             try
             {
-                Config = JsonConvert.DeserializeObject<ConfigObj>(File.ReadAllText(name))!;
+                obj = JsonConvert.DeserializeObject<ConfigObj>(data)!;
             }
             catch (Exception e)
             {
@@ -43,12 +47,16 @@ public static class ConfigUtils
                 Logs.Error(text, e);
             }
         }
-        else
+        else if (!quit)
         {
             ColorMCCore.NewStart = true;
         }
+        else
+        {
+            return false;
+        }
 
-        if (Config == null)
+        if (obj == null)
         {
             if (quit)
             {
@@ -57,50 +65,16 @@ public static class ConfigUtils
             Logs.Warn(LanguageHelper.Get("Core.Config.Warn1"));
 
             Config = MakeDefaultConfig();
-            Save();
         }
         else
         {
-            if (Config.JavaList == null)
-            {
-                if (quit)
-                {
-                    return false;
-                }
-                Config.JavaList = new();
-            }
-            if (Config.Http == null)
-            {
-                if (quit)
-                {
-                    return false;
-                }
-                Config.Http = MakeHttpConfig();
-            }
-            if (Config.DefaultJvmArg == null)
-            {
-                if (quit)
-                {
-                    return false;
-                }
-                Config.DefaultJvmArg = MakeJvmArgConfig();
-            }
-            if (Config.Window == null)
-            {
-                if (quit)
-                {
-                    return false;
-                }
-                Config.Window = MakeWindowSettingConfig();
-            }
-            if (Config.GameCheck == null)
-            {
-                if (quit)
-                {
-                    return false;
-                }
-                Config.GameCheck = MakeGameCheckConfig();
-            }
+            obj.JavaList ??= new();
+            obj.Http ??= MakeHttpConfig();
+            obj.DefaultJvmArg ??= MakeJvmArgConfig();
+            obj.Window ??= MakeWindowSettingConfig();
+            obj.GameCheck ??= MakeGameCheckConfig();
+
+            Config = obj;
         }
 
         LanguageHelper.Change(Config.Language);
@@ -147,7 +121,7 @@ public static class ConfigUtils
             ProxyPort = 1080,
             CheckFile = true,
             CheckUpdate = true,
-            AutoDownload = true
+            AutoDownload = true,
         };
     }
 
@@ -155,10 +129,7 @@ public static class ConfigUtils
     {
         return new()
         {
-            JvmArgs = null,
             GC = GCType.G1GC,
-            GCArgument = null,
-            JavaAgent = null,
             MaxMemory = 4096,
             MinMemory = 512,
         };
@@ -169,8 +140,7 @@ public static class ConfigUtils
         return new()
         {
             Height = 720,
-            Width = 1280,
-            FullScreen = false
+            Width = 1280
         };
     }
 

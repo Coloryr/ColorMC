@@ -24,7 +24,7 @@ public class ZipUtils
     {
         if (strFile[^1] != Path.DirectorySeparatorChar)
             strFile += Path.DirectorySeparatorChar;
-        using var s = new ZipOutputStream(File.Create(strZip));
+        using var s = new ZipOutputStream(PathHelper.OpenWrite(strZip));
         s.SetLevel(9);
         Size = PathHelper.GetAllFile(strFile).Count;
         Now = 0;
@@ -74,7 +74,7 @@ public class ZipUtils
 
     public async Task ZipFile(string strZip, List<string> list, string basepath)
     {
-        using var s = new ZipOutputStream(File.Create(strZip));
+        using var s = new ZipOutputStream(PathHelper.OpenWrite(strZip));
         s.SetLevel(9);
         Size = list.Count;
         Now = 0;
@@ -160,7 +160,7 @@ public class ZipUtils
 
                 if (fileName != string.Empty)
                 {
-                    using var stream1 = File.Create(filename);
+                    using var stream1 = PathHelper.OpenWrite(filename);
                     using var stream2 = s.GetInputStream(theEntry);
                     stream2.CopyTo(stream1);
                 }

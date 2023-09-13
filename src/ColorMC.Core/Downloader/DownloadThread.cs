@@ -1,7 +1,7 @@
+using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using System.Buffers;
 
 namespace ColorMC.Core.Downloader;
@@ -144,15 +144,13 @@ public class DownloadThread
                     //检查文件
                     if (item.Overwrite)
                     {
-                        File.Delete(item.Local);
+                        PathHelper.Delete(item.Local);
                     }
                     else if (ConfigUtils.Config.Http.CheckFile)
                     {
                         if (!string.IsNullOrWhiteSpace(item.SHA1))
                         {
-                            using FileStream stream2 = new(item.Local, FileMode.Open,
-                                FileAccess.Read, FileShare.Read);
-                            stream2.Seek(0, SeekOrigin.Begin);
+                            using var stream2 = PathHelper.OpenRead(item.Local)!;
                             string sha1 = HashHelper.GenSha1(stream2);
                             if (sha1 == item.SHA1)
                             {
@@ -169,9 +167,7 @@ public class DownloadThread
                         }
                         if (!string.IsNullOrWhiteSpace(item.SHA256))
                         {
-                            using FileStream stream2 = new(item.Local, FileMode.Open,
-                                FileAccess.Read, FileShare.Read);
-                            stream2.Seek(0, SeekOrigin.Begin);
+                            using var stream2 = PathHelper.OpenRead(item.Local)!;
                             string sha1 = HashHelper.GenSha256(stream2);
                             if (sha1 == item.SHA256)
                             {
@@ -230,7 +226,7 @@ public class DownloadThread
 
                     string file = Path.GetFullPath(DownloadManager.DownloadDir + '/' + Guid.NewGuid().ToString());
 
-                    using FileStream stream = new(file, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
+                    using var stream = PathHelper.OpenWrite(file);
 
                     int bytesRead;
                     while ((bytesRead = stream1.ReadAsync(new Memory<byte>(buffer),
@@ -304,10 +300,10 @@ public class DownloadThread
                     stream.Dispose();
                     if (File.Exists(item.Local))
                     {
-                        File.Delete(item.Local);
+                        PathHelper.Delete(item.Local);
                     }
                     info.Directory?.Create();
-                    File.Move(file, item.Local);
+                    PathHelper.MoveFile(file, item.Local);
 
                     item.State = DownloadItemState.Done;
                     item.Update?.Invoke(_index);

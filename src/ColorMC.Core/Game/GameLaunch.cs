@@ -1,3 +1,4 @@
+using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -50,7 +51,7 @@ public static class Launch
                 : VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!)!;
         var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
             obj.Loader == Loaders.NeoForge);
-        list2.ForEach(a => list.AddOrUpdate(PathHelper.MakeVersionObj(a.Name), a.Local));
+        list2.ForEach(a => list.AddOrUpdate(FuntionUtils.MakeVersionObj(a.Name), a.Local));
 
         GameHelper.ReadyForgeWrapper();
         list.AddOrUpdate(new(), GameHelper.ForgeWrapper);
@@ -662,7 +663,7 @@ public static class Launch
                 {
                     continue;
                 }
-                list.AddOrUpdate(PathHelper.MakeVersionObj(item.Name), item.Local);
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), item.Local);
             }
         }
 
@@ -675,7 +676,7 @@ public static class Launch
             var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
                 obj.Loader == Loaders.NeoForge);
 
-            list2.ForEach(a => list.AddOrUpdate(PathHelper.MakeVersionObj(a.Name), a.Local));
+            list2.ForEach(a => list.AddOrUpdate(FuntionUtils.MakeVersionObj(a.Name), a.Local));
 
             if (v2)
             {
@@ -687,8 +688,8 @@ public static class Launch
             var fabric = obj.GetFabricObj()!;
             foreach (var item in fabric.libraries)
             {
-                var name = PathHelper.ToName(item.name);
-                list.AddOrUpdate(PathHelper.MakeVersionObj(name.Name),
+                var name = PathHelper.ToPathAndName(item.name);
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(name.Name),
                     Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
             }
         }
@@ -697,8 +698,8 @@ public static class Launch
             var quilt = obj.GetQuiltObj()!;
             foreach (var item in quilt.libraries)
             {
-                var name = PathHelper.ToName(item.name);
-                list.AddOrUpdate(PathHelper.MakeVersionObj(name.Name),
+                var name = PathHelper.ToPathAndName(item.name);
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(name.Name),
                     Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
             }
         }
@@ -882,15 +883,10 @@ public static class Launch
             var dir = obj.GetConfigPath();
             Directory.CreateDirectory(dir);
             var file = dir + "splash.properties";
-            string data = "enabled=true";
-            if (File.Exists(file))
-            {
-                data = File.ReadAllText(file);
-            }
-
+            string data = PathHelper.ReadText(file) ?? "enabled=true";
             if (data.Contains("enabled=true"))
             {
-                File.WriteAllText(file, data.Replace("enabled=true", "enabled=false"));
+                PathHelper.WriteText(file, data.Replace("enabled=true", "enabled=false"));
             }
         }
     }

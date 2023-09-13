@@ -1,3 +1,4 @@
+using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -43,7 +44,7 @@ public static class AuthDatabase
             string file1 = AppContext.BaseDirectory + Name;
             if (File.Exists(file1))
             {
-                File.Move(file1, s_local);
+                PathHelper.MoveFile(file1, s_local);
             }
             else
             {
@@ -59,7 +60,7 @@ public static class AuthDatabase
     {
         try
         {
-            var data = File.ReadAllText(s_local);
+            var data = PathHelper.ReadText(s_local)!;
             var list = JsonConvert.DeserializeObject<List<LoginObj>>(data);
             if (list == null)
                 return;

@@ -111,7 +111,7 @@ public static class VersionPath
         string file = BaseDir + "/version.json";
         if (File.Exists(file))
         {
-            string data = File.ReadAllText(file);
+            string data = PathHelper.ReadText(file)!;
             _version = JsonConvert.DeserializeObject<VersionObj>(data);
         }
         else
@@ -141,7 +141,7 @@ public static class VersionPath
         {
             return null;
         }
-        File.WriteAllBytes($"{BaseDir}/{obj.id}.json", data!);
+        PathHelper.WriteBytes($"{BaseDir}/{obj.id}.json", data!);
         return obj1;
     }
 
@@ -153,7 +153,7 @@ public static class VersionPath
     /// <param name="version">加载器版本</param>
     public static void AddGame(FabricLoaderObj obj, string array, string mc, string version)
     {
-        File.WriteAllText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"), array);
+        PathHelper.WriteText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"), array);
 
         var key = $"{mc}-{version}";
         s_fabricLoaders.Add(key, obj);
@@ -170,7 +170,7 @@ public static class VersionPath
     public static void AddGame(ForgeLaunchObj obj, byte[] array, string mc, string version, bool neo)
     {
         string name = $"forge-{mc}-{version}";
-        File.WriteAllBytes($"{(neo ? NeoForgeDir : ForgeDir)}/{name}.json", array);
+        PathHelper.WriteBytes($"{(neo ? NeoForgeDir : ForgeDir)}/{name}.json", array);
 
         var key = $"{mc}-{version}";
         if (neo)
@@ -194,7 +194,7 @@ public static class VersionPath
     public static void AddGame(ForgeInstallObj obj, byte[] array, string mc, string version, bool neo)
     {
         string name = $"forge-{mc}-{version}-install";
-        File.WriteAllBytes($"{(neo ? NeoForgeDir : ForgeDir)}/{name}.json", array);
+        PathHelper.WriteBytes($"{(neo ? NeoForgeDir : ForgeDir)}/{name}.json", array);
 
         var key = $"{mc}-{version}";
         if (neo)
@@ -209,7 +209,7 @@ public static class VersionPath
 
     public static void AddGame(QuiltLoaderObj obj, string data, string mc, string version)
     {
-        File.WriteAllText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"), data);
+        PathHelper.WriteText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"), data);
 
         var key = $"{mc}-{version}";
         s_quiltLoaders.Add(key, obj);
@@ -233,7 +233,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<GameArgObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<GameArgObj>(PathHelper.ReadText(file))!;
         s_gameArgs.Add(version, obj);
         return obj;
     }
@@ -292,7 +292,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(PathHelper.ReadText(file)!)!;
         s_forgeInstalls.Add(key, obj);
         return obj;
     }
@@ -328,7 +328,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(PathHelper.ReadText(file)!)!;
         s_neoForgeLaunchs.Add(key, obj);
         return obj;
     }
@@ -353,7 +353,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(PathHelper.ReadText(file)!)!;
         s_neoForgeInstalls.Add(key, obj);
         return obj;
     }
@@ -388,7 +388,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(PathHelper.ReadText(file)!)!;
         s_forgeLaunchs.Add(key, obj);
         return obj;
     }
@@ -423,7 +423,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<FabricLoaderObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<FabricLoaderObj>(PathHelper.ReadText(file)!)!;
         s_fabricLoaders.Add(key, obj);
         return obj;
     }
@@ -458,7 +458,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<QuiltLoaderObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<QuiltLoaderObj>(PathHelper.ReadText(file)!)!;
         s_quiltLoaders.Add(key, obj);
         return obj;
     }

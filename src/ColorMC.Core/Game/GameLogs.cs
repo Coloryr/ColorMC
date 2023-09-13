@@ -51,7 +51,7 @@ public static class GameLogs
 
             if (path.EndsWith(".log"))
             {
-                return File.ReadAllText(path);
+                return PathHelper.ReadText(path);
             }
             else if (path.EndsWith(".log.gz"))
             {

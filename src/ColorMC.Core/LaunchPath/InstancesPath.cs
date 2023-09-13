@@ -1,3 +1,4 @@
+using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -156,18 +157,18 @@ public static class InstancesPath
                 var file2 = Path.GetFullPath(item + "/" + "instance.cfg");
                 if (File.Exists(file1) && File.Exists(file2))
                 {
-                    var mmc = JsonConvert.DeserializeObject<MMCObj>(File.ReadAllText(file1));
+                    var mmc = JsonConvert.DeserializeObject<MMCObj>(PathHelper.ReadText(file1)!);
                     if (mmc == null)
                         break;
 
-                    var mmc1 = File.ReadAllText(file2);
+                    var mmc1 = PathHelper.ReadText(file2)!;
                     game = GameHelper.ToColorMC(mmc, mmc1, out var icon);
                     game.Icon = icon + ".png";
                 }
             }
             else
             {
-                var data1 = File.ReadAllText(file);
+                var data1 = PathHelper.ReadText(file)!;
                 game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
             }
             if (game != null)
@@ -611,21 +612,21 @@ public static class InstancesPath
         obj1 = await CreateGame(obj1);
         if (obj1 != null)
         {
-            await PathHelper.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
+            await PathHelper.CopyDir(GetGamePath(obj), GetGamePath(obj1));
             string file = obj.GetIconFile();
             if (File.Exists(file))
             {
-                File.Copy(file, obj1.GetIconFile(), true);
+                PathHelper.CopyFile(file, obj1.GetIconFile());
             }
             file = obj.GetModJsonFile();
             if (File.Exists(file))
             {
-                File.Copy(file, obj1.GetModJsonFile(), true);
+                PathHelper.CopyFile(file, obj1.GetModJsonFile());
             }
             file = obj.GetModInfoJsonFile();
             if (File.Exists(file))
             {
-                File.Copy(file, obj1.GetModInfoJsonFile(), true);
+                PathHelper.CopyFile(file, obj1.GetModInfoJsonFile());
             }
 
             return obj1;
@@ -683,7 +684,7 @@ public static class InstancesPath
 
         try
         {
-            var temp = File.ReadAllText(file);
+            var temp = PathHelper.ReadText(file)!;
             var res = JsonConvert.DeserializeObject<Dictionary<string, ModInfoObj>>(temp);
             if (res == null)
             {
@@ -752,7 +753,7 @@ public static class InstancesPath
         try
         {
             var res = JsonConvert.DeserializeObject<LaunchDataObj>(
-            File.ReadAllText(file))!;
+            PathHelper.ReadText(file)!)!;
             obj.LaunchData = res;
         }
         catch (Exception e)
@@ -1194,7 +1195,7 @@ public static class InstancesPath
                     var path = item.FullName[basel..];
                     var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
                     info.Directory?.Create();
-                    File.Copy(item.FullName, info.FullName);
+                    PathHelper.CopyFile(item.FullName, info.FullName);
                 }
             });
             return (true, null);

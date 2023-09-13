@@ -1,20 +1,36 @@
 ﻿using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
+using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Chunk;
 
+/// <summary>
+/// 区块Mca文件处理
+/// </summary>
 public static class ChunkMca
 {
-    public static void Save(this ChunkData data, string file)
+    /// <summary>
+    /// 保存区块文件
+    /// </summary>
+    /// <param name="data">数据</param>
+    /// <param name="file">文件</param>
+    public static void Save(this ChunkDataObj data, string file)
     {
         using var stream = new MemoryStream();
         WriteChunk(data, stream);
         WriteHead(data, stream);
-        File.WriteAllBytes(file, stream.ToArray());
+        using var stream1 = PathHelper.OpenWrite(file);
+        stream.Seek(0, SeekOrigin.Begin);
+        stream.CopyTo(stream1);
     }
 
-    private static void WriteChunk(ChunkData data, Stream stream)
+    /// <summary>
+    /// 写区块数据到流中
+    /// </summary>
+    /// <param name="data">数据</param>
+    /// <param name="stream">保存用的流</param>
+    private static void WriteChunk(ChunkDataObj data, Stream stream)
     {
         if (data.Nbt.Count == 0)
             return;
@@ -59,7 +75,12 @@ public static class ChunkMca
         }
     }
 
-    private static void WriteHead(ChunkData data, Stream stream)
+    /// <summary>
+    /// 写区块头到流中
+    /// </summary>
+    /// <param name="data">区块数据</param>
+    /// <param name="stream">保存用的流</param>
+    private static void WriteHead(ChunkDataObj data, Stream stream)
     {
         stream.Seek(0, SeekOrigin.Begin);
         foreach (var item in data.Pos)
@@ -98,21 +119,36 @@ public static class ChunkMca
         }
     }
 
-    public static async Task<ChunkData> Read(string file)
+    /// <summary>
+    /// 读区块数据
+    /// </summary>
+    /// <param name="file">文件</param>
+    /// <returns>区块数据</returns>
+    public static async Task<ChunkDataObj> Read(string file)
     {
         return await Read(PathHelper.OpenRead(file)!);
     }
 
-    public static async Task<ChunkData> Read(Stream stream)
+    /// <summary>
+    /// 从流中读区块文件
+    /// </summary>
+    /// <param name="stream">流</param>
+    /// <returns>区块数据</returns>
+    private static async Task<ChunkDataObj> Read(Stream stream)
     {
-        var data = new ChunkData();
+        var data = new ChunkDataObj();
         await ReadHead(data, stream);
         await ReadChunk(data, stream);
 
         return data;
     }
 
-    private static async Task ReadChunk(ChunkData data, Stream stream)
+    /// <summary>
+    /// 从流中读区块数据
+    /// </summary>
+    /// <param name="data">区块数据</param>
+    /// <param name="stream">流</param>
+    private static async Task ReadChunk(ChunkDataObj data, Stream stream)
     {
         var list = new NbtList()
         {
@@ -152,7 +188,12 @@ public static class ChunkMca
         data.Nbt = list;
     }
 
-    private static async Task ReadHead(ChunkData data, Stream stream)
+    /// <summary>
+    /// 从流中读区块头
+    /// </summary>
+    /// <param name="data">区块数据</param>
+    /// <param name="stream">流</param>
+    private static async Task ReadHead(ChunkDataObj data, Stream stream)
     {
         if (stream.Length < 8192)
         {
@@ -168,7 +209,7 @@ public static class ChunkMca
             int time = temp[(a * 4) + 4096] << 24 | temp[(a * 4) + 4097] << 16
                 | temp[(a * 4) + 4098] << 8 | temp[(a * 4) + 4099];
 
-            data.Pos[a] = new ChunkPos(po * 4096, temp[(a * 4) + 3], time, a);
+            data.Pos[a] = new ChunkPosObj(po * 4096, temp[(a * 4) + 3], time, a);
         }
     }
 }

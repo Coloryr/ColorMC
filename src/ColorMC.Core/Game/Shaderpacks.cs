@@ -54,7 +54,7 @@ public static class Shaderpacks
     /// <param name="pack"></param>
     public static void Delete(this ShaderpackObj pack)
     {
-        File.Delete(pack.Local);
+        PathHelper.Delete(pack.Local);
     }
 
     /// <summary>
@@ -74,16 +74,11 @@ public static class Shaderpacks
             var name = Path.GetFileName(item);
             var name1 = Path.GetFullPath(dir + "/" + name);
 
-            if (File.Exists(name1))
-            {
-                return false;
-            }
-
             await Task.Run(() =>
             {
                 try
                 {
-                    File.Copy(item, name1);
+                    PathHelper.CopyFile(item, name1);
                 }
                 catch (Exception e)
                 {

@@ -1,3 +1,4 @@
+using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -576,7 +577,7 @@ public static class DownloadItemHelper
                     }
                     else if (!string.IsNullOrWhiteSpace(item.url))
                     {
-                        var path = PathHelper.ToName(item.name);
+                        var path = PathHelper.ToPathAndName(item.name);
                         info.libraries.Add(new()
                         {
                             name = item.name,
@@ -666,7 +667,7 @@ public static class DownloadItemHelper
 
         foreach (var item in meta1.libraries)
         {
-            var name = PathHelper.ToName(item.name);
+            var name = PathHelper.ToPathAndName(item.name);
             list.Add(new()
             {
                 Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),
@@ -738,7 +739,7 @@ public static class DownloadItemHelper
 
         foreach (var item in meta1.libraries)
         {
-            var name = PathHelper.ToName(item.name);
+            var name = PathHelper.ToPathAndName(item.name);
             list.Add(new()
             {
                 Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),

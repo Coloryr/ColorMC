@@ -46,7 +46,7 @@ public static class PlayerSkinAPI
                 var data2 = await BaseClient.GetBytes(url.textures.SKIN.url);
                 if (data2.Item1)
                 {
-                    File.WriteAllBytes(file, data2.Item2!);
+                    PathHelper.WriteBytes(file, data2.Item2!);
                     skin = true;
                 }
             }
@@ -66,7 +66,7 @@ public static class PlayerSkinAPI
                 var data2 = await BaseClient.GetBytes(url.textures.CAPE.url);
                 if (data2.Item1)
                 {
-                    File.WriteAllBytes(file, data2.Item2!);
+                    PathHelper.WriteBytes(file, data2.Item2!);
                     cape = true;
                 }
             }
