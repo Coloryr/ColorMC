@@ -51,7 +51,24 @@ public static class LoginOld
 
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
 
-        if (obj2 == null || obj2.selectedProfile == null)
+        if (obj2 == null)
+        {
+            return (LoginState.JsonError, null, LanguageHelper.Get("Core.Login.Error22"));
+        }
+
+        if (obj2.selectedProfile == null && obj2.availableProfiles.Count != 0)
+        {
+            foreach (var item in obj2.availableProfiles)
+            {
+                if (item.name.ToLower() == user.ToLower())
+                {
+                    obj2.selectedProfile = item;
+                    break;
+                }
+            }
+        }
+
+        if (obj2.selectedProfile == null)
         {
             var obj1 = JsonNode.Parse(data)?.AsObject();
             if (obj1?["errorMessage"]?.ToString() is { } msg)

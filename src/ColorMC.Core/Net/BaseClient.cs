@@ -41,7 +41,8 @@ public static class BaseClient
         LoginClient?.CancelPendingRequests();
         LoginClient?.Dispose();
 
-        if (ConfigUtils.Config.Http.DownloadProxy)
+        if (ConfigUtils.Config.Http.DownloadProxy 
+            && !string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
         {
             DownloadClient = new(new HttpClientHandler()
             {
@@ -53,7 +54,8 @@ public static class BaseClient
             DownloadClient = new();
         }
 
-        if (ConfigUtils.Config.Http.LoginProxy)
+        if (ConfigUtils.Config.Http.LoginProxy
+             && !string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
         {
             LoginClient = new(new HttpClientHandler()
             {
