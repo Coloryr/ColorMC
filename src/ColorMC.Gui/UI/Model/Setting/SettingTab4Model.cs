@@ -57,9 +57,9 @@ public partial class SettingModel : TopModel
     [ObservableProperty]
     private uint _maxMemory;
     [ObservableProperty]
-    private uint _width;
+    private uint? _width;
     [ObservableProperty]
-    private uint _height;
+    private uint? _height;
 
     private bool _argLoad = false;
 
@@ -83,12 +83,12 @@ public partial class SettingModel : TopModel
         SetMemory();
     }
 
-    partial void OnHeightChanged(uint value)
+    partial void OnHeightChanged(uint? value)
     {
         SetWindow();
     }
 
-    partial void OnWidthChanged(uint value)
+    partial void OnWidthChanged(uint? value)
     {
         SetWindow();
     }
@@ -245,7 +245,7 @@ public partial class SettingModel : TopModel
         if (_argLoad)
             return;
 
-        ConfigBinding.SetGc((GCType)GC, GCArg);
+        ConfigBinding.SetGc(GC, GCArg);
     }
 
     private void SetArg()

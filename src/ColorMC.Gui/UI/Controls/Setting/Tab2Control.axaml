@@ -506,11 +506,11 @@
                                 Minimum="0"
                                 SmallChange="1"
                                 TickFrequency="1"
-                                Value="{Binding Height}" />
+                                Value="{Binding L2dHeight}" />
                             <Label
                                 Width="40"
                                 VerticalAlignment="Center"
-                                Content="{Binding Height, StringFormat='{}{0}%'}" />
+                                Content="{Binding L2dHeight, StringFormat='{}{0}%'}" />
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>

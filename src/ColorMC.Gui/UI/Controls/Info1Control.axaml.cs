@@ -25,13 +25,14 @@ public partial class Info1Control : UserControl
         }
     }
 
-    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private async void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "Info1Show")
         {
             if (!_display)
             {
                 _display = true;
+                ProgressBar_Value.IsVisible = true;
                 App.CrossFade300.Start(null, this);
             }
         }
@@ -40,7 +41,8 @@ public partial class Info1Control : UserControl
             if (_display)
             {
                 _display = false;
-                App.CrossFade300.Start(this, null);
+                ProgressBar_Value.IsVisible = false;
+                await App.CrossFade300.Start(this, null, CancellationToken.None);
             }
         }
         else if (e.PropertyName == "Info1CloseAsync")
@@ -48,6 +50,7 @@ public partial class Info1Control : UserControl
             if (_display)
             {
                 _display = false;
+                ProgressBar_Value.IsVisible = false;
                 (DataContext as BaseModel)!.Info1Task
                     = App.CrossFade300.Start(this, null, CancellationToken.None);
             }

@@ -208,11 +208,13 @@ public partial class BaseModel : ObservableObject
 
     public void ProgressClose()
     {
+        Info1Indeterminate = false;
         OnPropertyChanged("Info1Close");
     }
 
     public Task ProgressCloseAsync()
     {
+        Info1Indeterminate = false;
         OnPropertyChanged("Info1CloseAsync");
         return Info1Task;
     }

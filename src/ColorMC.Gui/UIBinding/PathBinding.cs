@@ -324,7 +324,7 @@ public static class PathBinding
     /// <param name="storage">首选路径</param>
     /// <returns></returns>
     private static async Task<IReadOnlyList<IStorageFile>?> SelectFile(TopLevel? window, string title,
-        string[] ext, string name, bool multiple = false, DirectoryInfo? storage = null)
+        string[]? ext, string name, bool multiple = false, DirectoryInfo? storage = null)
     {
         if (window == null)
             return null;
@@ -336,7 +336,7 @@ public static class PathBinding
             Title = title,
             AllowMultiple = multiple,
             SuggestedStartLocation = defaultFolder,
-            FileTypeFilter = new List<FilePickerFileType>()
+            FileTypeFilter = ext == null ? null : new List<FilePickerFileType>()
             {
                 new(name)
                 {
@@ -345,6 +345,16 @@ public static class PathBinding
             }
         });
     }
+
+    private static readonly string[] EXE = new string[] { "*.exe" };
+    private static readonly string[] ZIP = new string[] { "*.zip", "*.tar.xz", "*.tar.gz" };
+    private static readonly string[] JSON = new string[] { "*.json" };
+    private static readonly string[] MODPACK = new string[] { "*.zip", "*.mrpack" };
+    private static readonly string[] PICFILE = new string[] { "*.png", "*.jpg", "*.bmp" };
+    private static readonly string[] UIFILE = new string[] { "*.axaml" };
+    private static readonly string[] AUDIO = new string[] { "*.mp3", "*.wav" };
+    private static readonly string[] MODEL = new string[] { "*.model3.json" };
+    private static readonly string[] HEADFILE = new string[] { "*.png" };
 
     /// <summary>
     /// 打开文件
@@ -365,7 +375,7 @@ public static class PathBinding
             case FileType.Java:
                 var res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab5.Info2"),
-                    new string[] { SystemInfo.Os == OsType.Windows ? "*.exe" : "" },
+                    SystemInfo.Os == OsType.Windows ? EXE : null,
                     App.GetLanguage("SettingWindow.Tab5.Info2"),
                     storage: JavaBinding.GetSuggestedStartLocation());
                 if (res?.Any() == true)
@@ -386,7 +396,7 @@ public static class PathBinding
             case FileType.JavaZip:
                 res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab5.Info5"),
-                    new string[] { "*.zip", "*.tar.xz", "*.tar.gz" },
+                    ZIP,
                     App.GetLanguage("SettingWindow.Tab5.Info5"));
                 if (res?.Any() == true)
                 {
@@ -406,7 +416,7 @@ public static class PathBinding
             case FileType.Config:
                 res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab1.Info7"),
-                    new string[] { "*.json" },
+                    JSON,
                     App.GetLanguage("SettingWindow.Tab1.Info11"));
                 if (res?.Any() == true)
                 {
@@ -416,7 +426,7 @@ public static class PathBinding
             case FileType.AuthConfig:
                 res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab1.Info10"),
-                    new string[] { "*.json" },
+                    JSON,
                     App.GetLanguage("SettingWindow.Tab1.Info12"));
                 if (res?.Any() == true)
                 {
@@ -426,7 +436,7 @@ public static class PathBinding
             case FileType.ModPack:
                 res = await SelectFile(top,
                     App.GetLanguage("Gui.Info22"),
-                    new string[] { "*.zip", "*.mrpack" },
+                    MODPACK,
                     App.GetLanguage("Gui.Info23"));
                 if (res?.Any() == true)
                 {
@@ -436,7 +446,7 @@ public static class PathBinding
             case FileType.Pic:
                 res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab2.Info3"),
-                    new string[] { "*.png", "*.jpg", "*.bmp" },
+                    PICFILE,
                     App.GetLanguage("SettingWindow.Tab2.Info6"));
                 if (res?.Any() == true)
                 {
@@ -446,7 +456,7 @@ public static class PathBinding
             case FileType.UI:
                 res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab6.Info2"),
-                    new string[] { "*.axaml" },
+                    UIFILE,
                     App.GetLanguage("SettingWindow.Tab6.Info3"));
                 if (res?.Any() == true)
                 {
@@ -456,7 +466,7 @@ public static class PathBinding
             case FileType.Music:
                 res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab6.Info5"),
-                    new string[] { "*.mp3", "*.wav" },
+                    AUDIO,
                     App.GetLanguage("SettingWindow.Tab6.Info6"));
                 if (res?.Any() == true)
                 {
@@ -466,7 +476,7 @@ public static class PathBinding
             case FileType.Live2D:
                 res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab2.Info7"),
-                    new string[] { "*.model3.json" },
+                    MODEL,
                     App.GetLanguage("SettingWindow.Tab2.Info8"));
                 if (res?.Any() == true)
                 {
@@ -476,7 +486,7 @@ public static class PathBinding
             case FileType.Icon:
                 res = await SelectFile(top,
                     App.GetLanguage("GameBinding.Info2"),
-                    new string[] { "*.png", "*.jpg", "*.bmp" },
+                    PICFILE,
                     App.GetLanguage("GameBinding.Info3"));
                 if (res?.Any() == true)
                 {
@@ -486,7 +496,7 @@ public static class PathBinding
             case FileType.Head:
                 res = await SelectFile(top,
                     App.GetLanguage("UserBinding.Info1"),
-                    new string[] { "*.png" },
+                    HEADFILE,
                     App.GetLanguage("UserBinding.Info2"));
                 if (res?.Any() == true)
                 {
