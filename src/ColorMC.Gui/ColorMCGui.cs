@@ -7,6 +7,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Text;
@@ -145,6 +146,10 @@ public static class ColorMCGui
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();
+        if (SystemInfo.IsArm)
+        {
+            opt.RenderingMode = new List<Win32RenderingMode>() { Win32RenderingMode.Wgl };
+        }
         if (config.ShouldRenderOnUIThread != null)
         {
             opt.ShouldRenderOnUIThread = config.ShouldRenderOnUIThread == true;

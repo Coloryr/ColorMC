@@ -115,6 +115,7 @@ public partial class BaseModel : ObservableObject
     public void Info4Cancel()
     {
         Info4Enable = false;
+
         OnPropertyChanged("Info4Close");
 
         _info4Call?.Invoke(false);
@@ -232,6 +233,7 @@ public partial class BaseModel : ObservableObject
 
     public void InputClose()
     {
+        Info3ValueVisable = false;
         OnPropertyChanged("Info3Close");
     }
 
@@ -369,6 +371,8 @@ public partial class BaseModel : ObservableObject
 
         Info3Watermark1 = "";
         Info3Watermark2 = "";
+
+        Info3ValueVisable = true;
 
         Info3Text2Visable = true;
         Info3ConfirmEnable = false;

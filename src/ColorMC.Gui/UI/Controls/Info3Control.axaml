@@ -42,7 +42,7 @@
                 <ProgressBar
                     Height="20"
                     Margin="20,0,20,20"
-                    IsIndeterminate="True"
+                    IsIndeterminate="{Binding Info3ValueVisable}"
                     IsVisible="{Binding Info3ValueVisable}" />
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <Button

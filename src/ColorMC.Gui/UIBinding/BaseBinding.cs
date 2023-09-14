@@ -463,7 +463,10 @@ public static class BaseBinding
                 Games.Remove(pr);
                 if (a is Process p1 && p1.ExitCode != 0)
                 {
-                    App.ShowGameLog(obj);
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        App.ShowGameLog(obj);
+                    });
                     GameLogs.Remove(obj.UUID);
                     Dispatcher.UIThread.Post(() =>
                     {
