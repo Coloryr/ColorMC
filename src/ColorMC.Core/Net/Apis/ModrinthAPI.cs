@@ -159,6 +159,28 @@ public static class ModrinthAPI
         }
     }
 
+    /// <summary>
+    /// 获取指定项目的内容
+    /// </summary>
+    /// <param name="id">项目ID</param>
+    /// <param name="version">版本ID</param>
+    public static async Task<ModrinthVersionObj?> GetProject(string id)
+    {
+        try
+        {
+            var res = await BaseClient.GetString($"{UrlHelper.Modrinth}project/{id}");
+            if (res.Item1 == false)
+            {
+                return null;
+            }
+            return JsonConvert.DeserializeObject<ModrinthVersionObj>(res.Item2!);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.Modrinth.Error2"), e);
+            return null;
+        }
+    }
 
     /// <summary>
     /// 获取文件列表
@@ -276,7 +298,17 @@ public static class ModrinthAPI
         }
         await Parallel.ForEachAsync(data.dependencies, async (item, cancel) =>
         {
-            var res = await GetVersion(item.project_id, item.version_id);
+            ModrinthVersionObj? res = null;
+            if (item.version_id == null)
+            {
+                var res1 = await GetFileVersions(item.project_id, mc, loader);
+                res = res1?[0];
+            }
+            else
+            {
+                res = await GetVersion(item.project_id, item.version_id);
+            }
+
             if (res == null)
                 return;
 
