@@ -179,7 +179,7 @@
             Name="Grid1"
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
-            <StackPanel
+            <WrapPanel
                 Margin="0,3,0,3"
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
@@ -232,7 +232,7 @@
                     VerticalAlignment="Top"
                     Command="{Binding VersionClose}"
                     Content="{setting:Localize Button.Cancel}" />
-            </StackPanel>
+            </WrapPanel>
 
             <DataGrid
                 Name="DataGridFiles"
@@ -269,7 +269,7 @@
             Name="Grid2"
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
-            <StackPanel
+            <WrapPanel
                 Margin="0,3,0,3"
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
@@ -307,7 +307,7 @@
                     Margin="5,0,0,0"
                     Command="{Binding OptifineClose}"
                     Content="{setting:Localize Button.Cancel}" />
-            </StackPanel>
+            </WrapPanel>
 
             <DataGrid
                 Name="DataGrid1"
@@ -340,7 +340,7 @@
             Name="Grid4"
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
-            <StackPanel
+            <WrapPanel
                 Margin="0,3,0,3"
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
@@ -372,7 +372,7 @@
                     Margin="5,0,0,0"
                     Command="{Binding DownloadModCancel}"
                     Content="{setting:Localize Button.Cancel}" />
-            </StackPanel>
+            </WrapPanel>
 
             <DataGrid
                 Name="DataGrid2"
