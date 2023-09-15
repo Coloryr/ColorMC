@@ -14,7 +14,7 @@
 
     <Style Selector="ListBox">
         <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
-        <Setter Property="Background" Value="#f3f3f3" />
+        <Setter Property="Background" Value="{setting:Colors Bottom}" />
     </Style>
 
     <Style Selector="ListBoxItem">
@@ -25,6 +25,6 @@
     </Style>
 
     <Style Selector="ListBoxItem:selected /template/ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#CCCCCC" />
+        <Setter Property="Background" Value="{setting:Colors Bottom2}" />
     </Style>
 </Styles>

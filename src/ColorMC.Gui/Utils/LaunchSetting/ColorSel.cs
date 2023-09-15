@@ -15,11 +15,15 @@ public class ColorSel : INotifyPropertyChanged
     public static readonly IBrush AppLightBackColor1 = Brush.Parse("#EEEEEEEE");
     public static readonly IBrush AppLightBackColor2 = Brush.Parse("#11FFFFFF");
     public static readonly IBrush AppLightBackColor3 = Brush.Parse("#EEEEEE");
+    public static readonly IBrush AppLightBackColor4 = Brush.Parse("#CCCCCC");
+    public static readonly IBrush AppLightBackColor5 = Brush.Parse("#22FFFFFF");
 
     public static readonly IBrush AppDarkBackColor = Brush.Parse("#FF202020");
     public static readonly IBrush AppDarkBackColor1 = Brush.Parse("#EE202020");
     public static readonly IBrush AppDarkBackColor2 = Brush.Parse("#11202020");
     public static readonly IBrush AppDarkBackColor3 = Brush.Parse("#222222");
+    public static readonly IBrush AppDarkBackColor4 = Brush.Parse("#888888");
+    public static readonly IBrush AppDarkBackColor5 = Brush.Parse("#AA000000");
 
     public const string MainColorStr = "#FF5ABED6";
 
@@ -37,6 +41,7 @@ public class ColorSel : INotifyPropertyChanged
     public const string GroupDarkColorStr = "#CC000000";
 
     public const string GroupLightColor1Str = "#FFe5e5e5";
+    public const string GroupDarkColor1Str = "#FF1d1d1d";
 
     public static IBrush MainColor { get; private set; } = Brush.Parse(MainColorStr);
     public static IBrush BackColor { get; private set; } = Brush.Parse(BackLigthColorStr);
@@ -49,6 +54,8 @@ public class ColorSel : INotifyPropertyChanged
     public static IBrush TopBottomColor { get; private set; } = AppLightBackColor1;
     public static IBrush BottomTranColor { get; private set; } = AppLightBackColor2;
     public static IBrush BottomColor1 { get; private set; } = AppLightBackColor3;
+    public static IBrush BottomColor2 { get; private set; } = AppLightBackColor4;
+    public static IBrush BGColor { get; private set; } = AppLightBackColor5;
     public static IBrush GroupBackColor { get; private set; } = Brush.Parse(GroupLightColorStr);
     public static IBrush GroupBackColor1 { get; private set; } = Brush.Parse(GroupLightColor1Str);
 
@@ -103,11 +110,27 @@ public class ColorSel : INotifyPropertyChanged
             BottomColor1 = App.NowTheme == PlatformThemeVariant.Light
                 ? AppLightBackColor3 : AppDarkBackColor3;
 
+            BottomColor2 = App.NowTheme == PlatformThemeVariant.Light
+                ? AppLightBackColor4 : AppDarkBackColor4;
+
+            BGColor = App.NowTheme == PlatformThemeVariant.Light
+                ? AppLightBackColor5 : AppDarkBackColor5;
+
             GroupBackColor = App.NowTheme == PlatformThemeVariant.Light
                 ? Brush.Parse(GroupLightColorStr) : Brush.Parse(GroupDarkColorStr);
 
-            GroupBackColor1 = App.BackBitmap == null ? Brush.Parse(GroupLightColor1Str)
-                : Brushes.Transparent;
+            if (App.BackBitmap == null)
+            {
+                GroupBackColor1 = Brushes.Transparent;
+            }
+            else if (App.NowTheme == PlatformThemeVariant.Light)
+            {
+                GroupBackColor1 = Brush.Parse(GroupLightColor1Str);
+            }
+            else
+            {
+                GroupBackColor1 = Brush.Parse(GroupDarkColor1Str);
+            }
 
             Reload();
         }
@@ -218,6 +241,8 @@ public class ColorSel : INotifyPropertyChanged
                 return BottomColor;
             else if (key == "Bottom1")
                 return BottomColor1;
+            else if (key == "Bottom2")
+                return BottomColor2;
             else if (key == "TopBottom")
                 return TopBottomColor;
             else if (key == "BottomTran")
@@ -228,6 +253,8 @@ public class ColorSel : INotifyPropertyChanged
                 return GroupBackColor;
             else if (key == "GroupColor")
                 return GroupBackColor1;
+            else if (key == "BG")
+                return BGColor;
 
             return Brushes.White;
         }
