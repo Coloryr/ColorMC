@@ -14,7 +14,7 @@
 
     <Style Selector="ListBox">
         <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
-        <Setter Property="Background" Value="{setting:Colors Bottom}" />
+        <Setter Property="Background" Value="Transparent" />
     </Style>
 
     <Style Selector="ListBoxItem">

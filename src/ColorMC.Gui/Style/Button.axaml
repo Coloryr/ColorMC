@@ -33,7 +33,7 @@
     </Style>
 
     <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#FFDDDDDD" />
+        <Setter Property="Background" Value="{setting:Colors Back1}" />
         <Setter Property="Foreground" Value="{setting:Colors Font}" />
     </Style>
 

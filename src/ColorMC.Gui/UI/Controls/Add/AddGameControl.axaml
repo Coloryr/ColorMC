@@ -46,9 +46,9 @@
 
         <Panel
             Name="StackPanel1"
-            Background="Transparent"
+            Background="{setting:Colors BottomTran}"
             IsVisible="False">
-            <DockPanel HorizontalAlignment="Left" Background="#f3f3f3">
+            <DockPanel HorizontalAlignment="Left" Background="{setting:Colors Bottom}">
                 <ListBox
                     Margin="0,5,0,0"
                     ItemsSource="{Binding TabItems}"

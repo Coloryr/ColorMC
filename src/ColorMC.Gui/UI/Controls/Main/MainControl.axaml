@@ -162,9 +162,9 @@
 
         <Panel
             Name="Grid1"
-            Background="Transparent"
+            Background="{setting:Colors TopBottom}"
             IsVisible="False">
-            <Border HorizontalAlignment="{Binding Mirror2}" Background="{setting:Colors Bottom2}">
+            <Border HorizontalAlignment="{Binding Mirror2}" Background="{setting:Colors Bottom}">
                 <StackPanel Margin="6,0,6,0" VerticalAlignment="Center">
                     <Panel Margin="0,20,0,0">
                         <Border

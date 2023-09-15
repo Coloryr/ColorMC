@@ -12,18 +12,20 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 public class ColorSel : INotifyPropertyChanged
 {
     public static readonly IBrush AppLightBackColor = Brush.Parse("#FFF3F3F3");
-    public static readonly IBrush AppLightBackColor1 = Brush.Parse("#EEEEEEEE");
+    public static readonly IBrush AppLightBackColor1 = Brush.Parse("#EE989898");
     public static readonly IBrush AppLightBackColor2 = Brush.Parse("#11FFFFFF");
     public static readonly IBrush AppLightBackColor3 = Brush.Parse("#EEEEEE");
     public static readonly IBrush AppLightBackColor4 = Brush.Parse("#CCCCCC");
     public static readonly IBrush AppLightBackColor5 = Brush.Parse("#22FFFFFF");
+    public static readonly IBrush AppLightBackColor6 = Brush.Parse("#FFDDDDDD");
 
     public static readonly IBrush AppDarkBackColor = Brush.Parse("#FF202020");
-    public static readonly IBrush AppDarkBackColor1 = Brush.Parse("#EE202020");
+    public static readonly IBrush AppDarkBackColor1 = Brush.Parse("#EE3A3A3A");
     public static readonly IBrush AppDarkBackColor2 = Brush.Parse("#11202020");
     public static readonly IBrush AppDarkBackColor3 = Brush.Parse("#222222");
     public static readonly IBrush AppDarkBackColor4 = Brush.Parse("#888888");
     public static readonly IBrush AppDarkBackColor5 = Brush.Parse("#AA000000");
+    public static readonly IBrush AppDarkBackColor6 = Brush.Parse("#FF444444");
 
     public const string MainColorStr = "#FF5ABED6";
 
@@ -46,6 +48,7 @@ public class ColorSel : INotifyPropertyChanged
     public static IBrush MainColor { get; private set; } = Brush.Parse(MainColorStr);
     public static IBrush BackColor { get; private set; } = Brush.Parse(BackLigthColorStr);
     public static IBrush Back1Color { get; private set; } = Brush.Parse(Back1LigthColorStr);
+    public static IBrush Back2Color { get; private set; } = AppLightBackColor6;
     public static IBrush ButtonFont { get; private set; } = Brush.Parse(ButtonLightFontStr);
     public static IBrush FontColor { get; private set; } = Brush.Parse(FontLigthColorStr);
     public static IBrush MotdColor { get; private set; } = Brush.Parse("#FFFFFFFF");
@@ -112,6 +115,9 @@ public class ColorSel : INotifyPropertyChanged
 
             BottomColor2 = App.NowTheme == PlatformThemeVariant.Light
                 ? AppLightBackColor4 : AppDarkBackColor4;
+
+            Back2Color = App.NowTheme == PlatformThemeVariant.Light
+                ? AppLightBackColor6 : AppDarkBackColor6;
 
             BGColor = App.NowTheme == PlatformThemeVariant.Light
                 ? AppLightBackColor5 : AppDarkBackColor5;
@@ -255,6 +261,8 @@ public class ColorSel : INotifyPropertyChanged
                 return GroupBackColor1;
             else if (key == "BG")
                 return BGColor;
+            else if (key == "Back1")
+                return Back2Color;
 
             return Brushes.White;
         }
