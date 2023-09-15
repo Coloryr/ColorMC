@@ -164,6 +164,12 @@ public static class ServerMotd
                         {
                             info = info1;
                         }
+
+                        if (!string.IsNullOrEmpty(info.Description.Text)
+                        && info.Description.Extra == null && info.Description.Text.Contains('§'))
+                        {
+                            info.Description = ServerDescriptionJsonConverter.StringToChar(info.Description.Text);
+                        }
                     }
                 }
 
