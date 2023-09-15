@@ -56,8 +56,6 @@ public partial class GameEditControl : UserControl, IUserControl
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;
         StackPanel2.PointerPressed += StackPanel2_PointerPressed;
-
-        Content1.Content = _tab1;
     }
 
     private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -104,6 +102,8 @@ public partial class GameEditControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+
+        Content1.Content = _tab1;
 
         _tab4.Opened();
         _tab10.Opened();

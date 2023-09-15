@@ -39,7 +39,6 @@ public partial class GameCloudControl : UserControl, IUserControl
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-        Content1.Content = _tab1;
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -66,6 +65,7 @@ public partial class GameCloudControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
+        Content1.Content = _tab1;
         (DataContext as GameCloudModel)!.Load();
     }
 

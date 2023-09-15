@@ -32,7 +32,6 @@ public partial class Info1Control : UserControl
             if (!_display)
             {
                 _display = true;
-                ProgressBar_Value.IsVisible = true;
                 App.CrossFade300.Start(null, this);
             }
         }
@@ -41,7 +40,6 @@ public partial class Info1Control : UserControl
             if (_display)
             {
                 _display = false;
-                ProgressBar_Value.IsVisible = false;
                 await App.CrossFade300.Start(this, null, CancellationToken.None);
             }
         }
@@ -50,7 +48,6 @@ public partial class Info1Control : UserControl
             if (_display)
             {
                 _display = false;
-                ProgressBar_Value.IsVisible = false;
                 (DataContext as BaseModel)!.Info1Task
                     = App.CrossFade300.Start(this, null, CancellationToken.None);
             }

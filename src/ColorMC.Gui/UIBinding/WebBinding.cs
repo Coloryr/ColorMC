@@ -104,7 +104,7 @@ public static class WebBinding
     {
         if (type == SourceType.CurseForge)
         {
-            var list = await CurseForgeAPI.GetCurseForgeFiles(id, mc, page, loader);
+            var list = await CurseForgeAPI.GetCurseForgeFiles(id, mc, page, type1 == FileType.Mod ? loader : Loaders.Normal);
             if (list == null)
                 return null;
 

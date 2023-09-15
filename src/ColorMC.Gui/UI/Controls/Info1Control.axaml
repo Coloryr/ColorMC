@@ -21,7 +21,6 @@
                 TextWrapping="Wrap" />
             <StackPanel Margin="0,50,0,0">
                 <ProgressBar
-                    Name="ProgressBar_Value"
                     Height="20"
                     Margin="20,0,20,20"
                     IsIndeterminate="{Binding Info1Indeterminate}"

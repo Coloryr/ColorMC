@@ -7,6 +7,7 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Timers;
@@ -30,6 +31,7 @@ public partial class GameLogModel : GameModel
     private string? _file;
 
     public string Temp { get; private set; } = "";
+    public ConcurrentQueue<string> _queue = new();
 
     private readonly Timer _timer;
 
@@ -133,10 +135,7 @@ public partial class GameLogModel : GameModel
         }
         if (string.IsNullOrWhiteSpace(File))
         {
-            lock (Temp)
-            {
-                Temp += data + Environment.NewLine;
-            }
+            _queue.Enqueue(data + Environment.NewLine);
         }
     }
 
@@ -150,16 +149,14 @@ public partial class GameLogModel : GameModel
 
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
-        lock (Temp)
+        if (_queue.TryDequeue(out var temp) && !string.IsNullOrWhiteSpace(temp))
         {
-            if (!string.IsNullOrWhiteSpace(Temp))
+            Temp = temp;
+            Dispatcher.UIThread.Invoke(() =>
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    OnPropertyChanged("Insert");
-                });
-                Temp = "";
-            }
+                OnPropertyChanged("Insert");
+            });
+            Temp = "";
         }
 
         if (IsAuto)

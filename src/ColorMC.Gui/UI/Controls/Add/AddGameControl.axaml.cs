@@ -42,7 +42,6 @@ public partial class AddGameControl : UserControl, IUserControl
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;
         StackPanel2.PointerPressed += StackPanel2_PointerPressed;
-        Content1.Content = _tab1;
     }
 
     private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -161,6 +160,8 @@ public partial class AddGameControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+
+        Content1.Content = _tab1;
     }
 
     public void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)

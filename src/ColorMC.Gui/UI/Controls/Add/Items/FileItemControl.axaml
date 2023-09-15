@@ -92,7 +92,7 @@
                 <ProgressBar
                     Height="20"
                     Margin="10"
-                    IsIndeterminate="True" />
+                    IsIndeterminate="{Binding NowDownload}" />
             </StackPanel>
         </Panel>
         <Label

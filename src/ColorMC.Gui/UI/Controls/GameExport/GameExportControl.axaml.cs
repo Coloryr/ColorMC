@@ -46,8 +46,6 @@ public partial class GameExportControl : UserControl, IUserControl
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;
         StackPanel2.PointerPressed += StackPanel2_PointerPressed;
-
-        Content1.Content = _tab1;
     }
 
     private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -64,11 +62,13 @@ public partial class GameExportControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
+        var model = (DataContext as GameExportModel)!;
+        model.Model.Progress(App.GetLanguage("GameExportWindow.Info7"));
+        Content1.Content = _tab1;
+
         _tab2.Opened();
         _tab4.Opened();
 
-        var model = (DataContext as GameExportModel)!;
-        model.Model.Progress(App.GetLanguage("GameExportWindow.Info7"));
         await model.LoadMod();
         model.LoadFile();
 

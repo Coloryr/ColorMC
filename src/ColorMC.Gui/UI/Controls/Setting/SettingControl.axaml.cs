@@ -37,8 +37,6 @@ public partial class SettingControl : UserControl, IUserControl
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;
         StackPanel2.PointerPressed += StackPanel2_PointerPressed;
-
-        Content1.Content = _tab2;
     }
 
     private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -93,7 +91,8 @@ public partial class SettingControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
-        
+
+        Content1.Content = _tab2;
         (DataContext as SettingModel)!.LoadUISetting();
     }
 
