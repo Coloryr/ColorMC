@@ -124,6 +124,7 @@ public class Live2dRender : OpenGlControlBase
         }
         catch (Exception e)
         {
+            (DataContext as MainModel)!.ChangeModelDone();
             Logs.Error("live2d error", e);
         }
     }
