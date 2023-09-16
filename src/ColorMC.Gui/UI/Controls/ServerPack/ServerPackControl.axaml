@@ -60,7 +60,7 @@
         </DockPanel>
         <Panel
             Name="StackPanel1"
-            Background="{setting:Colors BottomTran}"
+            Background="{setting:Colors TopBottom}"
             IsVisible="False">
             <DockPanel HorizontalAlignment="Left" Background="{setting:Colors Bottom}">
                 <ListBox

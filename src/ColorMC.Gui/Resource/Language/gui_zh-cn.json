@@ -204,6 +204,7 @@
 	"SettingWindow.Tab3.Text20": "云同步设置",
 	"SettingWindow.Tab3.Text21": "服务器密钥",
 	"SettingWindow.Tab3.Text22": "验证密钥",
+	"SettingWindow.Tab3.Text23": "下载同步",
 	"SettingWindow.Tab3.Info1": "正在进行更新检查",
 	"SettingWindow.Tab3.Info2": "检测到新版本，是否要更新",
 	"SettingWindow.Tab3.Info3": "已经是最新版了",

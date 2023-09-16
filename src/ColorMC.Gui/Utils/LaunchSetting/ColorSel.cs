@@ -12,7 +12,7 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 public class ColorSel : INotifyPropertyChanged
 {
     public static readonly IBrush AppLightBackColor = Brush.Parse("#FFF3F3F3");
-    public static readonly IBrush AppLightBackColor1 = Brush.Parse("#EE989898");
+    public static readonly IBrush AppLightBackColor1 = Brush.Parse("#AA989898");
     public static readonly IBrush AppLightBackColor2 = Brush.Parse("#11FFFFFF");
     public static readonly IBrush AppLightBackColor3 = Brush.Parse("#EEEEEE");
     public static readonly IBrush AppLightBackColor4 = Brush.Parse("#CCCCCC");
@@ -21,7 +21,7 @@ public class ColorSel : INotifyPropertyChanged
     public static readonly IBrush AppLightBackColor7 = Brush.Parse("#DDFEFEFE");
 
     public static readonly IBrush AppDarkBackColor = Brush.Parse("#FF202020");
-    public static readonly IBrush AppDarkBackColor1 = Brush.Parse("#EE3A3A3A");
+    public static readonly IBrush AppDarkBackColor1 = Brush.Parse("#CC3A3A3A");
     public static readonly IBrush AppDarkBackColor2 = Brush.Parse("#11202020");
     public static readonly IBrush AppDarkBackColor3 = Brush.Parse("#222222");
     public static readonly IBrush AppDarkBackColor4 = Brush.Parse("#888888");

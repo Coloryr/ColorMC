@@ -20,6 +20,25 @@ namespace ColorMC.Gui.UI.Model.GameCloud;
 
 public partial class GameCloudModel : GameModel
 {
+    public List<MenuObj> TabItems { get; init; } = new()
+    {
+        new() { Icon = "/Resource/Icon/GameExport/item1.svg",
+            Text = App.GetLanguage("GameCloudWindow.Tabs.Text1") },
+        new() { Icon = "/Resource/Icon/GameExport/item2.svg",
+            Text = App.GetLanguage("GameCloudWindow.Tabs.Text2") },
+        new() { Icon = "/Resource/Icon/GameExport/item4.svg",
+            Text = App.GetLanguage("GameCloudWindow.Tabs.Text3") }
+    };
+
+    [ObservableProperty]
+    private bool _displayFilter = true;
+
+    [ObservableProperty]
+    private int _nowView;
+
+    [ObservableProperty]
+    private string _title;
+
     /// <summary>
     /// 导出的文件列表
     /// </summary>
@@ -41,7 +60,26 @@ public partial class GameCloudModel : GameModel
 
     public GameCloudModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
+        _title = TabItems[0].Text;
+    }
 
+    partial void OnNowViewChanged(int value)
+    {
+        CloseSide();
+
+        Title = TabItems[NowView].Text;
+    }
+
+    [RelayCommand]
+    public void OpenSide()
+    {
+        OnPropertyChanged("SideOpen");
+    }
+
+    [RelayCommand]
+    public void CloseSide()
+    {
+        OnPropertyChanged("SideClose");
     }
 
     [RelayCommand]
