@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -33,7 +34,8 @@ public partial class GameLogModel : GameModel
     public string Temp { get; private set; } = "";
     public ConcurrentQueue<string> _queue = new();
 
-    private readonly Timer _timer;
+    private readonly Thread _timer;
+    private bool _run;
 
     public GameLogModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
@@ -41,10 +43,16 @@ public partial class GameLogModel : GameModel
 
         _text = new();
 
-        _timer = new(TimeSpan.FromMilliseconds(100));
-        _timer.BeginInit();
-        _timer.Elapsed += Timer_Elapsed;
-        _timer.EndInit();
+        _timer = new(() => 
+        {
+            while (_run)
+            {
+                Run();
+                Thread.Sleep(100);
+            }
+        });
+        _run = true;
+        _timer.Start();
 
         if (!obj.Empty)
         {
@@ -129,10 +137,6 @@ public partial class GameLogModel : GameModel
 
     public void Log(string data)
     {
-        if (!_timer.Enabled)
-        {
-            _timer.Start();
-        }
         if (string.IsNullOrWhiteSpace(File))
         {
             _queue.Enqueue(data + Environment.NewLine);
@@ -147,9 +151,17 @@ public partial class GameLogModel : GameModel
         }
     }
 
-    private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
+    private void Run()
     {
-        if (_queue.TryDequeue(out var temp) && !string.IsNullOrWhiteSpace(temp))
+        string temp = null;
+        while (_queue.Count != 0)
+        {
+            if (_queue.TryDequeue(out var temp1) && !string.IsNullOrWhiteSpace(temp1))
+            {
+                temp += temp1;
+            }
+        }
+        if (temp != null)
         {
             Temp = temp;
             Dispatcher.UIThread.Invoke(() =>
@@ -168,6 +180,6 @@ public partial class GameLogModel : GameModel
     protected override void Close()
     {
         FileList.Clear();
-        _timer.Dispose();
+        _run = false;
     }
 }

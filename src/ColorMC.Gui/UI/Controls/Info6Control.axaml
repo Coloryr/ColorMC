@@ -11,7 +11,7 @@
     x:DataType="model:BaseModel"
     mc:Ignorable="d">
     <Panel>
-        <Border Background="{setting:Colors TopBottom}" />
+        <Border Background="{setting:Colors BG1}" />
         <DockPanel
             Margin="20"
             HorizontalAlignment="Stretch"

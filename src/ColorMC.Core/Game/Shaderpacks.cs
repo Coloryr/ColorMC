@@ -65,7 +65,7 @@ public static class Shaderpacks
     /// <returns>结果</returns>
     public static async Task<bool> AddShaderpack(this GameSettingObj obj, List<string> file)
     {
-        var dir = obj.GetResourcepacksPath();
+        var dir = obj.GetShaderpacksPath();
         Directory.CreateDirectory(dir);
         bool ok = true;
 

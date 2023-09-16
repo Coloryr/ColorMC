@@ -11,7 +11,7 @@
     x:DataType="model:BaseModel"
     mc:Ignorable="d">
     <Panel>
-        <Border Name="Border1" Background="{setting:Colors TopBottom}" />
+        <Border Name="Border1" Background="{setting:Colors BG1}" />
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBox
                 Name="TextBox1"
