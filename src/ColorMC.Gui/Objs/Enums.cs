@@ -69,10 +69,3 @@ public enum MoveType
     Left, Right,
     LeftDown, Down, RightDown
 }
-
-public enum AddSaveState
-{
-    Error = 0,
-    Exist,
-    OK
-}
