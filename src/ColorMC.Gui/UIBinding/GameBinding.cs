@@ -1448,4 +1448,16 @@ public static class GameBinding
     {
         return InstancesPath.GetGameByName(name);
     }
+
+    public static async void CheckCloudAndOpen(GameSettingObj obj)
+    {
+        var res = await GameCloudUtils.HaveCloud(obj);
+        if (res.Item1 == 100 && res.Item2)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                App.ShowGameCloud(obj, true);
+            });
+        }
+    }
 }
