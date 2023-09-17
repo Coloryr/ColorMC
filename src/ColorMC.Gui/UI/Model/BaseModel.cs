@@ -220,6 +220,10 @@ public partial class BaseModel : ObservableObject
         return Info1Task;
     }
 
+    /// <summary>
+    /// 显示一条提示信息
+    /// </summary>
+    /// <param name="data">信息</param>
     public void Notify(string data)
     {
         NotifyText = data;
@@ -422,6 +426,10 @@ public partial class BaseModel : ObservableObject
         return reut;
     }
 
+    /// <summary>
+    /// 打开一个对话框，显示内容
+    /// </summary>
+    /// <param name="data">内容</param>
     public void Show(string data)
     {
         Info4Enable = true;

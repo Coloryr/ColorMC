@@ -1333,35 +1333,57 @@ public static class GameBinding
         return PackType.ColorMC;
     }
 
-    public static async Task UnZipCloudConfig(GameSettingObj obj, CloudDataObj data, string local)
+    /// <summary>
+    /// 解压云配置文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="data">云配置储存</param>
+    /// <param name="local">配置压缩包</param>
+    /// <returns></returns>
+    public static async Task<bool> UnZipCloudConfig(GameSettingObj obj, CloudDataObj data, string local)
     {
         data.Config.Clear();
-        await Task.Run(() =>
+        return await Task.Run(() =>
         {
-            using var s = new ZipInputStream(PathHelper.OpenRead(local));
-            ZipEntry theEntry;
-            while ((theEntry = s.GetNextEntry()) != null)
+            try
             {
-                string filename = $"{obj.GetBasePath()}/{theEntry.Name}";
-                data.Config.Add(theEntry.Name);
-                var directoryName = Path.GetDirectoryName(filename);
-                string fileName = Path.GetFileName(theEntry.Name);
-
-                if (directoryName?.Length > 0)
+                using var s = new ZipInputStream(PathHelper.OpenRead(local));
+                ZipEntry theEntry;
+                while ((theEntry = s.GetNextEntry()) != null)
                 {
-                    Directory.CreateDirectory(directoryName);
-                }
+                    string filename = $"{obj.GetBasePath()}/{theEntry.Name}";
+                    data.Config.Add(theEntry.Name);
+                    var directoryName = Path.GetDirectoryName(filename);
+                    string fileName = Path.GetFileName(theEntry.Name);
 
-                if (fileName != string.Empty)
-                {
-                    using var streamWriter = PathHelper.OpenWrite(filename);
+                    if (directoryName?.Length > 0)
+                    {
+                        Directory.CreateDirectory(directoryName);
+                    }
 
-                    s.CopyTo(streamWriter);
+                    if (fileName != string.Empty)
+                    {
+                        using var streamWriter = PathHelper.OpenWrite(filename);
+
+                        s.CopyTo(streamWriter);
+                    }
                 }
+                return true;
             }
+            catch (Exception e)
+            {
+                Logs.Error("unzip error", e);
+            }
+            return false;
         });
     }
 
+    /// <summary>
+    /// 下载云实例
+    /// </summary>
+    /// <param name="obj">云实例信息</param>
+    /// <param name="group">添加到的组</param>
+    /// <returns></returns>
     public static async Task<(bool, string?)> DownloadCloud(CloundListObj obj, string? group)
     {
         var game = await InstancesPath.CreateGame(new()
@@ -1383,13 +1405,13 @@ public static class GameBinding
         GameCloudUtils.SetCloudData(game, cloud);
         string local = Path.GetFullPath(game.GetBasePath() + "/config.zip");
         var res = await GameCloudUtils.DownloadConfig(obj.UUID, local);
-        if (res != true)
+        if (res != 100)
         {
             return (false, App.GetLanguage("AddGameWindow.Tab1.Error11"));
         }
         await UnZipCloudConfig(game, cloud, local);
         var temp = await GameCloudUtils.HaveCloud(game);
-        cloud.ConfigTime = DateTime.Parse(temp.Item2!);
+        cloud.ConfigTime = DateTime.Parse(temp.Item3!);
         GameCloudUtils.SetCloudData(game, cloud);
 
         game = game.Reload();

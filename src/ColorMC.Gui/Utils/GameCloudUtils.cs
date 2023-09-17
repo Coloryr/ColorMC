@@ -12,8 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
@@ -103,6 +105,9 @@ public static class GameCloudUtils
         Save();
     }
 
+    /// <summary>
+    /// 开始链接云服务器
+    /// </summary>
     public static async Task StartConnect()
     {
         Connect = false;
@@ -149,6 +154,9 @@ public static class GameCloudUtils
         }
     }
 
+    /// <summary>
+    /// 检查云服务器是否在线
+    /// </summary>
     private static async Task Check()
     {
         var requ = new HttpRequestMessage(HttpMethod.Post,
@@ -162,31 +170,39 @@ public static class GameCloudUtils
         {
             var data = await res.Content.ReadAsStringAsync();
             var obj = JObject.Parse(data);
-            if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+            if (!obj.TryGetValue("res", out var res1))
             {
-                Info = App.GetLanguage("GameCloud.Error1");
-                return;
+                var value = (int)res1!;
+                if (value == 300)
+                {
+                    Info = App.GetLanguage("GameCloud.Error3");
+                    return;
+                }
+                else if(value != 100)
+                {
+                    Info = App.GetLanguage("GameCloud.Error1");
+                    return;
+                }
             }
-            _ = GetState();
+            await GetState();
             Connect = true;
         }
     }
 
     /// <summary>
-    /// 游戏实例是否启用了云同步
+    /// 检查游戏实例是否启用了云同步
     /// </summary>
-    /// <returns></returns>
-    public static async Task<(bool?, string?)> HaveCloud(GameSettingObj obj)
+    public static async Task<(int, bool, string?)> HaveCloud(GameSettingObj obj)
     {
         try
         {
             if (!Connect)
             {
-                return (null, null);
+                return (-1, false, null);
             }
 
             var requ = new HttpRequestMessage(HttpMethod.Post,
-            new Uri(s_server + "/haveuuid"));
+                new Uri(s_server + "/haveuuid"));
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
@@ -197,36 +213,42 @@ public static class GameCloudUtils
             {
                 var data = await res.Content.ReadAsStringAsync();
                 var obj1 = JObject.Parse(data);
-                if (obj1.TryGetValue("res", out var res1) && (int)res1 == 100)
+                if (obj1.TryGetValue("res", out var res1))
                 {
-                    return ((bool?)obj1["data"], (string?)obj1["time"]);
+                    if ((int)res1 == 100)
+                    {
+                        return (100, (bool)obj1["have"]!, (string?)obj1["time"]);
+                    }
+                    else
+                    {
+                        return ((int)res1, false, null);
+                    }
                 }
             }
-
-            return (null, null);
         }
         catch (Exception e)
         {
             Logs.Error("cloud error", e);
             App.ShowError("cloud error", e);
-            return (null, null);
         }
+
+        return (-1, false, null);
     }
 
     /// <summary>
     /// 实例开启云同步
     /// </summary>
-    public static async Task<AddSaveState?> StartCloud(GameSettingObj obj)
+    public static async Task<int> StartCloud(GameSettingObj obj)
     {
         if (!Connect)
         {
-            return null;
+            return -1;
         }
 
         try
         {
             var requ = new HttpRequestMessage(HttpMethod.Post,
-            new Uri(s_server + "/startuuid"));
+                new Uri(s_server + "/startuuid"));
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
@@ -238,33 +260,37 @@ public static class GameCloudUtils
             {
                 var data = await res.Content.ReadAsStringAsync();
                 var obj1 = JObject.Parse(data);
-                if (obj1.TryGetValue("res", out var res1) && (int)res1 == 100)
+                if (obj1.TryGetValue("res", out var res1))
                 {
-                    return (AddSaveState)(int)obj1["data"]!;
+                    return (int)res1;
                 }
             }
-
-            return null;
         }
         catch (Exception e)
         {
             Logs.Error("cloud error", e);
             App.ShowError("cloud error", e);
-            return null;
         }
+
+        return -1;
     }
 
-    public static async Task<bool?> StopCloud(GameSettingObj obj)
+    /// <summary>
+    /// 关闭游戏实例的云同步
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static async Task<int> StopCloud(GameSettingObj obj)
     {
         if (!Connect)
         {
-            return null;
+            return -1;
         }
 
         try
         {
             var requ = new HttpRequestMessage(HttpMethod.Post,
-            new Uri(s_server + "/stopuuid"));
+                new Uri(s_server + "/stopuuid"));
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
@@ -275,37 +301,42 @@ public static class GameCloudUtils
             {
                 var data = await res.Content.ReadAsStringAsync();
                 var obj1 = JObject.Parse(data);
-                if (obj1.TryGetValue("res", out var res1) && (int)res1 == 100)
+                if (obj1.TryGetValue("res", out var res1))
                 {
-                    return (bool?)obj1["data"];
+                    return (int)res1;
                 }
             }
 
-            return null;
         }
         catch (Exception e)
         {
             Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
-            return null;
+            App.ShowError("cloud error", e); 
         }
+        return -1;
     }
 
-    public static async Task<bool?> UploadConfig(string uuid, string path)
+    /// <summary>
+    /// 上传游戏实例的配置文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="path">配置文件路径</param>
+    /// <returns></returns>
+    public static async Task<int> UploadConfig(GameSettingObj obj, string path)
     {
         if (!Connect)
         {
-            return null;
+            return -1;
         }
 
         try
         {
             var requ = new HttpRequestMessage(HttpMethod.Post,
-            new Uri(s_server + "/uploadconfig"));
+                new Uri(s_server + "/putconfig"));
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
-            requ.Headers.Add("uuid", uuid);
+            requ.Headers.Add("uuid", obj.UUID);
             using var stream = PathHelper.OpenRead(path)!;
             requ.Content = new StreamContent(stream);
 
@@ -313,34 +344,35 @@ public static class GameCloudUtils
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-                if (obj.TryGetValue("res", out var res1) && (int)res1 == 100)
+                var obj1 = JObject.Parse(data);
+
+                if (obj1.TryGetValue("res", out var res1))
                 {
-                    return true;
+                    return (int)res1;
                 }
             }
-
-            return null;
         }
         catch (Exception e)
         {
             Logs.Error("cloud error", e);
             App.ShowError("cloud error", e);
-            return null;
+
         }
+
+        return -1;
     }
 
-    public static async Task<bool?> DownloadConfig(string uuid, string local)
+    public static async Task<int> DownloadConfig(string uuid, string local)
     {
         if (!Connect)
         {
-            return null;
+            return -1;
         }
 
         try
         {
             var requ = new HttpRequestMessage(HttpMethod.Post,
-            new Uri(s_server + "/downloadconfig"));
+                new Uri(s_server + "/pullconfig"));
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
@@ -352,110 +384,262 @@ public static class GameCloudUtils
                 using var data = res.Content.ReadAsStream();
                 using var stream = PathHelper.OpenWrite(local);
                 await data.CopyToAsync(stream);
-                return true;
+                return 100;
             }
+            else if (res.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var data = await res.Content.ReadAsStringAsync();
+                var obj1 = JObject.Parse(data);
 
-            return null;
+                if (obj1.TryGetValue("res", out var res1))
+                {
+                    return (int)res1;
+                }
+            }
         }
         catch (Exception e)
         {
             Logs.Error("cloud error", e);
             App.ShowError("cloud error", e);
-            return null;
         }
+
+        return -1;
     }
 
+    /// <summary>
+    /// 获取云储存状态
+    /// </summary>
+    /// <returns></returns>
     public static async Task GetState()
     {
-        var requ = new HttpRequestMessage(HttpMethod.Post,
-           new Uri(s_server + "/getstate"));
-        requ.Headers.Add("ColorMC", ColorMCCore.Version);
-        requ.Headers.Add("serverkey", s_serverkey);
-        requ.Headers.Add("clientkey", s_clientkey);
-
-        var res = await BaseClient.LoginClient.SendAsync(requ);
-        if (res.IsSuccessStatusCode)
+        if (!Connect)
         {
-            var data = await res.Content.ReadAsStringAsync();
-            var obj = JObject.Parse(data);
-            if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+            return;
+        }
+
+        try
+        {
+            var requ = new HttpRequestMessage(HttpMethod.Post,
+                 new Uri(s_server + "/getstate"));
+            requ.Headers.Add("ColorMC", ColorMCCore.Version);
+            requ.Headers.Add("serverkey", s_serverkey);
+            requ.Headers.Add("clientkey", s_clientkey);
+
+            var res = await BaseClient.LoginClient.SendAsync(requ);
+            if (res.IsSuccessStatusCode)
             {
-                Info = App.GetLanguage("GameCloud.Error1");
-                return;
+                var data = await res.Content.ReadAsStringAsync();
+                var obj = JObject.Parse(data);
+                if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+                {
+                    Info = App.GetLanguage("GameCloud.Error1");
+                    return;
+                }
+                Info = string.Format(App.GetLanguage("GameCloud.Info1"), obj["use"], obj["size"]);
+                Connect = true;
             }
-            Info = string.Format(App.GetLanguage("GameCloud.Info1"), obj["use"], obj["size"]);
-            Connect = true;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("cloud error", e);
+            App.ShowError("cloud error", e);
         }
     }
 
+    /// <summary>
+    /// 获取云端游戏实例
+    /// </summary>
+    /// <returns>云游戏实例列表</returns>
     public static async Task<List<CloundListObj>?> GetList()
     {
-        var requ = new HttpRequestMessage(HttpMethod.Post,
-           new Uri(s_server + "/getlist"));
-        requ.Headers.Add("ColorMC", ColorMCCore.Version);
-        requ.Headers.Add("serverkey", s_serverkey);
-        requ.Headers.Add("clientkey", s_clientkey);
-
-        var res = await BaseClient.LoginClient.SendAsync(requ);
-        if (res.IsSuccessStatusCode)
+        if (!Connect)
         {
-            var data = await res.Content.ReadAsStringAsync();
-            var obj = JObject.Parse(data);
-            if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
-            {
-                return null;
-            }
-            return obj["list"]?.ToObject<List<CloundListObj>>();
+            return null;
         }
 
+        try
+        {
+            var requ = new HttpRequestMessage(HttpMethod.Post,
+                new Uri(s_server + "/getlist"));
+            requ.Headers.Add("ColorMC", ColorMCCore.Version);
+            requ.Headers.Add("serverkey", s_serverkey);
+            requ.Headers.Add("clientkey", s_clientkey);
+
+            var res = await BaseClient.LoginClient.SendAsync(requ);
+            if (res.IsSuccessStatusCode)
+            {
+                var data = await res.Content.ReadAsStringAsync();
+                var obj = JObject.Parse(data);
+                if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+                {
+                    return null;
+                }
+                return obj["list"]?.ToObject<List<CloundListObj>>();
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error("cloud error", e);
+            App.ShowError("cloud error", e);
+        }
         return null;
     }
 
-    public static async Task<List<CloudWorldObj>?> GetWorldList()
+    public static async Task<List<CloudWorldObj>?> GetWorldList(string uuid)
     {
-        var requ = new HttpRequestMessage(HttpMethod.Post,
-           new Uri(s_server + "/getworldlist"));
-        requ.Headers.Add("ColorMC", ColorMCCore.Version);
-        requ.Headers.Add("serverkey", s_serverkey);
-        requ.Headers.Add("clientkey", s_clientkey);
-
-        var res = await BaseClient.LoginClient.SendAsync(requ);
-        if (res.IsSuccessStatusCode)
+        if (!Connect)
         {
-            var data = await res.Content.ReadAsStringAsync();
-            var obj = JObject.Parse(data);
-            if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
-            {
-                return null;
-            }
-            return obj["list"]?.ToObject<List<CloudWorldObj>>();
+            return null;
         }
+        try
+        {
+            var requ = new HttpRequestMessage(HttpMethod.Post,
+                new Uri(s_server + "/getworldlist"));
+            requ.Headers.Add("ColorMC", ColorMCCore.Version);
+            requ.Headers.Add("serverkey", s_serverkey);
+            requ.Headers.Add("clientkey", s_clientkey);
+            requ.Headers.Add("uuid", uuid);
 
+            var res = await BaseClient.LoginClient.SendAsync(requ);
+            if (res.IsSuccessStatusCode)
+            {
+                var data = await res.Content.ReadAsStringAsync();
+                var obj = JObject.Parse(data);
+                if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+                {
+                    return null;
+                }
+                return obj["list"]?.ToObject<List<CloudWorldObj>>();
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error("cloud error", e);
+            App.ShowError("cloud error", e);
+        }
         return null;
     }
 
-    public static async Task<bool> UploadWorld(string uuid, string local)
+    public static async Task<int> UploadWorld(string uuid, string name, string local)
     {
-        var requ = new HttpRequestMessage(HttpMethod.Post,
-           new Uri(s_server + "/putworld"));
-        requ.Headers.Add("ColorMC", ColorMCCore.Version);
-        requ.Headers.Add("serverkey", s_serverkey);
-        requ.Headers.Add("clientkey", s_clientkey);
-        requ.Headers.Add("uuid", uuid);
-        requ.Headers.Add("name", local);
-
-        var res = await BaseClient.LoginClient.SendAsync(requ);
-        if (res.IsSuccessStatusCode)
+        if (!Connect)
         {
-            var data = await res.Content.ReadAsStringAsync();
-            var obj = JObject.Parse(data);
-            if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+            return -1;
+        }
+        try
+        {
+            var requ = new HttpRequestMessage(HttpMethod.Post,
+                new Uri(s_server + "/putworld"));
+            requ.Headers.Add("ColorMC", ColorMCCore.Version);
+            requ.Headers.Add("serverkey", s_serverkey);
+            requ.Headers.Add("clientkey", s_clientkey);
+            requ.Headers.Add("uuid", uuid);
+            requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
+            using var stream = PathHelper.OpenRead(local)!;
+            requ.Content = new StreamContent(stream);
+
+            var res = await BaseClient.LoginClient.SendAsync(requ);
+            if (res.IsSuccessStatusCode)
             {
-                return false;
+                var data = await res.Content.ReadAsStringAsync();
+                var obj = JObject.Parse(data);
+
+                if (obj.TryGetValue("res", out var res1))
+                {
+                    return (int)res1;
+                }
             }
-            return true;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("cloud error", e);
+            App.ShowError("cloud error", e);
+        }
+        return -1;
+    }
+
+    public static async Task<Dictionary<string, string>?> GetWorldFiles(string uuid, string name)
+    {
+        if (!Connect)
+        {
+            return null;
+        }
+        try
+        {
+            var requ = new HttpRequestMessage(HttpMethod.Post,
+                new Uri(s_server + "/getworldfiles"));
+            requ.Headers.Add("ColorMC", ColorMCCore.Version);
+            requ.Headers.Add("serverkey", s_serverkey);
+            requ.Headers.Add("clientkey", s_clientkey);
+            requ.Headers.Add("uuid", uuid);
+            requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
+
+            var res = await BaseClient.LoginClient.SendAsync(requ);
+            if (res.IsSuccessStatusCode)
+            {
+                var data = await res.Content.ReadAsStringAsync();
+                var obj = JObject.Parse(data);
+
+                if (obj.TryGetValue("res", out var res1) && (int)res1 != 100)
+                {
+                    return null;
+                }
+
+                return obj["list"]?.ToObject<Dictionary<string, string>>();
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error("cloud error", e);
+            App.ShowError("cloud error", e);
+        }
+        return null;
+    }
+
+    public static async Task<int> DownloadWorld(string uuid, string name, string local, Dictionary<string, string> list)
+    {
+        if (!Connect)
+        {
+            return -1;
         }
 
-        return false;
+        try
+        {
+            var requ = new HttpRequestMessage(HttpMethod.Post,
+                new Uri(s_server + "/pullworld"));
+            requ.Headers.Add("ColorMC", ColorMCCore.Version);
+            requ.Headers.Add("serverkey", s_serverkey);
+            requ.Headers.Add("clientkey", s_clientkey);
+            requ.Headers.Add("uuid", uuid);
+            requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
+            requ.Content = new StringContent(JsonConvert.SerializeObject(list));
+
+            var res = await BaseClient.LoginClient.SendAsync(requ);
+            if (res.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var data = await res.Content.ReadAsStringAsync();
+                var obj = JObject.Parse(data);
+
+                if (obj.TryGetValue("res", out var res1))
+                {
+                    return (int)res1;
+                }
+            }
+            else if (res.IsSuccessStatusCode)
+            {
+                using var data = res.Content.ReadAsStream();
+                using var stream = PathHelper.OpenWrite(local);
+                await data.CopyToAsync(stream);
+                return 100;
+            }
+
+            return -1;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("cloud error", e);
+            App.ShowError("cloud error", e);
+            return -1;
+        }
     }
 }

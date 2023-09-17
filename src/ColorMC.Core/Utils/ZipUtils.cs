@@ -16,19 +16,19 @@ public class ZipUtils
     /// <summary>
     /// 压缩文件
     /// </summary>
-    /// <param name="strFile">路径</param>
-    /// <param name="strZip">文件名</param>
+    /// <param name="zipDir">路径</param>
+    /// <param name="zipFile">文件名</param>
     /// <param name="filter">过滤</param>
     /// <returns></returns>
-    public async Task ZipFile(string strFile, string strZip, List<string>? filter = null)
+    public async Task ZipFile(string zipDir, string zipFile, List<string>? filter = null)
     {
-        if (strFile[^1] != Path.DirectorySeparatorChar)
-            strFile += Path.DirectorySeparatorChar;
-        using var s = new ZipOutputStream(PathHelper.OpenWrite(strZip));
+        if (zipDir[^1] != Path.DirectorySeparatorChar)
+            zipDir += Path.DirectorySeparatorChar;
+        using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile));
         s.SetLevel(9);
-        Size = PathHelper.GetAllFile(strFile).Count;
+        Size = PathHelper.GetAllFile(zipDir).Count;
         Now = 0;
-        await Zip(strFile, s, strFile, filter);
+        await Zip(zipDir, s, zipDir, filter);
         await s.FinishAsync(CancellationToken.None);
         s.Close();
     }
@@ -72,17 +72,24 @@ public class ZipUtils
         }
     }
 
-    public async Task ZipFile(string strZip, List<string> list, string basepath)
+    /// <summary>
+    /// 压缩文件
+    /// </summary>
+    /// <param name="zipFile">压缩包路径</param>
+    /// <param name="zipList">压缩的文件</param>
+    /// <param name="path">替换的前置路径</param>
+    /// <returns></returns>
+    public async Task ZipFile(string zipFile, List<string> zipList, string path)
     {
-        using var s = new ZipOutputStream(PathHelper.OpenWrite(strZip));
+        using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile));
         s.SetLevel(9);
-        Size = list.Count;
+        Size = zipList.Count;
         Now = 0;
         var crc = new Crc32();
 
-        foreach (var item in list)
+        foreach (var item in zipList)
         {
-            string tempfile = item[(basepath.Length + 1)..];
+            string tempfile = item[(path.Length + 1)..];
             if (Directory.Exists(item))
             {
                 var entry = new ZipEntry(tempfile + "/")
