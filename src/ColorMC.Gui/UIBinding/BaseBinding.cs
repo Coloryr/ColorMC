@@ -482,6 +482,13 @@ public static class BaseBinding
                 }
                 pr.Dispose();
                 GameBinding.GameStateUpdate(obj);
+                if (GameCloudUtils.Connect)
+                {
+                    Task.Run(() =>
+                    {
+                        GameBinding.CheckCloudAndOpen(obj);
+                    });
+                }
             };
 
             Games.Add(pr, obj);

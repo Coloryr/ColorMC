@@ -681,18 +681,26 @@ public partial class App : Application
         }
     }
 
-    public static void ShowGameCloud(GameSettingObj obj)
+    public static void ShowGameCloud(GameSettingObj obj, bool world = false)
     {
         string key = obj.UUID;
         if (GameCloudWindows.TryGetValue(key, out var win1))
         {
             win1.Window.Activate();
+            if(world)
+            {
+                win1.GoWorld();  
+            }
         }
         else
         {
             var con = new GameCloudControl(obj);
             GameCloudWindows.Add(key, con);
             AWindow(con);
+            if (world)
+            {
+                con.GoWorld();
+            }
         }
     }
 

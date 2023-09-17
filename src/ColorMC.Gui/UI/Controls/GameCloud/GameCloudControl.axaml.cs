@@ -1,10 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameCloud;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Windows;
+using System;
 using System.ComponentModel;
 using System.Threading;
 
@@ -127,5 +129,14 @@ public partial class GameCloudControl : UserControl, IUserControl
 
             _now = model.NowView;
         }
+    }
+
+    public void GoWorld()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as GameCloudModel)!;
+            model.NowView = 2;
+        });
     }
 }
