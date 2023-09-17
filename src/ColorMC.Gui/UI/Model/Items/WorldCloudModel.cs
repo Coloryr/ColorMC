@@ -94,4 +94,9 @@ public partial class WorldCloudModel : ObservableObject
     {
         _model.DownloadWorld(this);
     }
+
+    public void DeleteCloud()
+    {
+        _model.DeleteCloud(this);
+    }
 }

@@ -642,4 +642,49 @@ public static class GameCloudUtils
             return -1;
         }
     }
+
+    /// <summary>
+    /// 删除云端的存档
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="name">存档</param>
+    /// <returns></returns>
+    public static async Task<int> DeleteWorld(GameSettingObj game, string name)
+    {
+        if (!Connect)
+        {
+            return -1;
+        }
+
+        try
+        {
+            var requ = new HttpRequestMessage(HttpMethod.Post,
+                new Uri(s_server + "/deleteworld"));
+            requ.Headers.Add("ColorMC", ColorMCCore.Version);
+            requ.Headers.Add("serverkey", s_serverkey);
+            requ.Headers.Add("clientkey", s_clientkey);
+            requ.Headers.Add("uuid", game.UUID);
+            requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
+
+            var res = await BaseClient.LoginClient.SendAsync(requ);
+            if (res.IsSuccessStatusCode)
+            {
+                var data = await res.Content.ReadAsStringAsync();
+                var obj = JObject.Parse(data);
+
+                if (obj.TryGetValue("res", out var res1))
+                {
+                    return (int)res1;
+                }
+            }
+
+            return -1;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("cloud error", e);
+            App.ShowError("cloud error", e);
+            return -1;
+        }
+    }
 }
