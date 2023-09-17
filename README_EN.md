@@ -3,6 +3,10 @@
 [简体中文](./README.md)
 
 A new Minecraft Launcher  
+
+Notie: Translations from other languages are not yet ready. If possible, welcome to do the translation together
+https://crowdin.com/project/colormc
+
 ![](/image/pic.png)
 
 ## Support Platform
