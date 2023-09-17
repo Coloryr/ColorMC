@@ -508,4 +508,38 @@ public partial class GameCloudModel : GameModel
         PathHelper.Delete(local);
         LoadWorld();
     }
+
+    public async void DeleteCloud(WorldCloudModel world)
+    {
+        var res = await Model.ShowWait(App.GetLanguage("GameCloudWindow.Info16"));
+        if (!res)
+        {
+            return;
+        }
+
+        Model.Progress(App.GetLanguage("GameCloudWindow.Info18"));
+        var res1 =  await GameCloudUtils.DeleteWorld(Obj, world.Cloud.Name);
+        Model.ProgressClose();
+        if (res1 == 101)
+        {
+            Model.Show(App.GetLanguage("GameCloudWindow.Error2"));
+            return;
+        }
+        else if (res1 == 102)
+        {
+           
+            Model.Show(App.GetLanguage("GameCloudWindow.Error8"));
+            return;
+        }
+        else if (res1 != 100)
+        {
+            Model.Show(App.GetLanguage("GameCloudWindow.Error3"));
+            return;
+        }
+        else
+        {
+            Model.Notify(App.GetLanguage("GameCloudWindow.Info17"));
+        }
+        LoadWorld();
+    }
 }
