@@ -396,7 +396,7 @@ public static class CheckHelpers
                     var item = array[a];
                     foreach (var item1 in mods)
                     {
-                        if (item == null)
+                        if (item == null || item.Path != "mods")
                             continue;
                         if (!ConfigUtils.Config.GameCheck.CheckModSha1)
                             continue;

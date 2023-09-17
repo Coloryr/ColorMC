@@ -7,6 +7,7 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -33,6 +34,8 @@ public partial class AddGameModel : TopModel
 
     [ObservableProperty]
     private bool _enableLoader;
+    [ObservableProperty]
+    private bool _cloudEnable;
 
     [ObservableProperty]
     private int versionType;
@@ -59,6 +62,68 @@ public partial class AddGameModel : TopModel
         GameVersionUpdate();
     }
 
+    [RelayCommand]
+    public async Task GameCloudDownload()
+    {
+        Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info9"));
+        var list = await GameCloudUtils.GetList();
+        Model.ProgressClose();
+        if (list == null)
+        {
+            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error9"));
+            return;
+        }
+        var list1 = new List<string>();
+        list.ForEach(item =>
+        {
+            if (!string.IsNullOrEmpty(item.Name) && GameBinding.GetGame(item.UUID) == null)
+            {
+                list1.Add(item.Name);
+            }
+        });
+        var res = await Model.ShowCombo(App.GetLanguage("AddGameWindow.Tab1.Info10"), list1);
+        if (res.Cancel)
+        {
+            return;
+        }
+
+        Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info11"));
+        var obj = list[res.Index];
+        while (true)
+        {
+            if (GameBinding.GetGameByName(obj.Name) != null)
+            {
+                var res1 = await Model.ShowWait(App.GetLanguage("AddGameWindow.Tab1.Info12"));
+                if (!res1)
+                {
+                    Model.ProgressClose();
+                    return;
+                }
+                var res2 = await Model.ShowEdit(App.GetLanguage("AddGameWindow.Tab1.Text2"), obj.Name);
+                if (res2.Cancel)
+                {
+                    return;
+                }
+
+                obj.Name = res2.Text1;
+            }
+            else
+            {
+                break;
+            }
+        }
+        var res3 = await GameBinding.DownloadCloud(obj, Group);
+        Model.ProgressClose();
+        if (!res3.Item1)
+        {
+            Model.Show(res3.Item2!);
+            return;
+        }
+
+        App.ShowGameCloud(GameBinding.GetGame(obj.UUID!)!);
+
+        Done();
+    }
 
     [RelayCommand]
     public async Task GetLoader()
@@ -168,11 +233,7 @@ public partial class AddGameModel : TopModel
         }
         else
         {
-            var model = (App.MainWindow?.DataContext as MainModel);
-            model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
-            App.MainWindow?.LoadMain();
-
-            WindowClose();
+            Done();
         }
     }
 
@@ -270,13 +331,7 @@ public partial class AddGameModel : TopModel
         }
         else
         {
-            var model = (App.MainWindow?.DataContext as MainModel);
-            model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
-            App.MainWindow?.LoadMain();
-            Dispatcher.UIThread.Post(() =>
-            {
-                WindowClose();
-            });
+            Done();
         }
     }
 
@@ -297,10 +352,7 @@ public partial class AddGameModel : TopModel
         }
         else
         {
-            var model = (App.MainWindow?.DataContext as MainModel);
-            model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
-            App.MainWindow?.LoadMain();
-            WindowClose();
+            Done();
         }
     }
     private async void GameVersionUpdate()
@@ -329,5 +381,16 @@ public partial class AddGameModel : TopModel
         var test = await Model.ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info2"), obj.Name));
         return test;
+    }
+
+    private void Done()
+    {
+        var model = (App.MainWindow?.DataContext as MainModel);
+        model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
+        App.MainWindow?.LoadMain();
+        Dispatcher.UIThread.Post(() =>
+        {
+            WindowClose();
+        });
     }
 }

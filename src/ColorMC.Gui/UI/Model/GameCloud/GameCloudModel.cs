@@ -1,4 +1,6 @@
 ﻿using Avalonia.Controls;
+using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -14,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameCloud;
@@ -54,6 +57,10 @@ public partial class GameCloudModel : GameModel
     [ObservableProperty]
     private string _localConfigTime;
 
+    private bool _configHave;
+
+    private WorldCloudModel? _selectWorld;
+
     public ObservableCollection<WorldCloudModel> WorldCloudList { get; } = new();
 
     public string UUID => Obj.UUID;
@@ -61,6 +68,8 @@ public partial class GameCloudModel : GameModel
     public GameCloudModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
         _title = TabItems[0].Text;
+
+        LoadWorld();
     }
 
     partial void OnNowViewChanged(int value)
@@ -152,6 +161,7 @@ public partial class GameCloudModel : GameModel
         var files = _files.GetSelectItems();
         var data = GameCloudUtils.GetCloudData(Obj);
         string dir = Obj.GetBasePath();
+        data.Config ??= new();
         data.Config.Clear();
         foreach (var item in files)
         {
@@ -164,7 +174,10 @@ public partial class GameCloudModel : GameModel
         await GameCloudUtils.UploadConfig(Obj.UUID, name);
         PathHelper.Delete(name);
         await LoadCloud();
-        data.ConfigTime = DateTime.Parse(ConfigTime);
+        if (_configHave)
+        {
+            data.ConfigTime = DateTime.Parse(ConfigTime);
+        }
         LocalConfigTime = ConfigTime;
         GameCloudUtils.Save();
         Model.ProgressClose();
@@ -175,9 +188,8 @@ public partial class GameCloudModel : GameModel
     {
         Model.Progress("正在下载");
         var data = GameCloudUtils.GetCloudData(Obj);
-        string dir = Obj.GetBasePath();
-        string name = Path.GetFullPath(dir + "/config.zip");
-        var res = await GameCloudUtils.DownloadConfig(Obj.UUID, name);
+        string local = Path.GetFullPath(Obj.GetBasePath() + "/config.zip");
+        var res = await GameCloudUtils.DownloadConfig(Obj.UUID, local);
         if (res != true)
         {
             Model.ProgressClose();
@@ -185,34 +197,12 @@ public partial class GameCloudModel : GameModel
             return;
         }
         Model.ProgressUpdate("解压中");
-        data.Config.Clear();
-        await Task.Run(() =>
-        {
-            using var s = new ZipInputStream(PathHelper.OpenRead(name));
-            ZipEntry theEntry;
-            while ((theEntry = s.GetNextEntry()) != null)
-            {
-                string filename = $"{dir}/{theEntry.Name}";
-                data.Config.Add(theEntry.Name);
-
-                var directoryName = Path.GetDirectoryName(filename);
-                string fileName = Path.GetFileName(theEntry.Name);
-
-                if (directoryName?.Length > 0)
-                {
-                    Directory.CreateDirectory(directoryName);
-                }
-
-                if (fileName != string.Empty)
-                {
-                    using var streamWriter = PathHelper.OpenWrite(filename);
-
-                    s.CopyTo(streamWriter);
-                }
-            }
-        });
+        await GameBinding.UnZipCloudConfig(Obj, data, local);
         await LoadCloud();
-        data.ConfigTime = DateTime.Parse(ConfigTime);
+        if (_configHave)
+        {
+            data.ConfigTime = DateTime.Parse(ConfigTime);
+        }
         LocalConfigTime = ConfigTime;
         GameCloudUtils.Save();
         Model.ProgressClose();
@@ -229,6 +219,7 @@ public partial class GameCloudModel : GameModel
             return;
         }
         Enable = (bool)res.Item1;
+        _configHave = res.Item2 != null;
         ConfigTime = res.Item2 ?? "没有同步";
     }
 
@@ -243,18 +234,80 @@ public partial class GameCloudModel : GameModel
 
         string dir = Obj.GetBasePath();
         _files = new FilesPage(dir, false);
-
         var data = GameCloudUtils.GetCloudData(Obj);
         LocalConfigTime = data.ConfigTime.ToString();
 
-        var list = new List<string>();
-        foreach (var item in data.Config)
+        var list = new List<string>()
         {
-            list.Add(Path.GetFullPath(dir + "/" + item));
+            Obj.GetGameJsonFile(),
+            Obj.GetModInfoJsonFile(),
+            Obj.GetIconFile(),
+            Obj.GetLaunchFile(),
+            Obj.GetModJsonFile(),
+            Obj.GetModPackJsonFile()
+        };
+        _files.SetSelectItems(list);
+
+        list.Clear();
+        if (data.Config != null)
+        {
+            foreach (var item in data.Config)
+            {
+                list.Add(Path.GetFullPath(dir + "/" + item));
+            }
+        }
+        else
+        {
+            list.Add(Obj.GetConfigPath());
+            list.Add(Obj.GetOptionsFile());
+            foreach (var mod in await GameBinding.GetGameMods(Obj))
+            {
+                if (mod.Obj1 == null)
+                {
+                    list.Add(mod.Local);
+                }
+            }
         }
         _files.SetSelectItems(list);
 
         Source = _files.Source;
+    }
+
+    public void SetSelectWorld(WorldCloudModel item)
+    {
+        if (_selectWorld != null)
+        {
+            _selectWorld.IsSelect = false;
+        }
+        _selectWorld = item;
+        _selectWorld.IsSelect = true;
+    }
+
+    public async void LoadWorld()
+    {
+        WorldCloudList.Clear();
+        var res = await GameCloudUtils.GetWorldList();
+        var worlds = await GameBinding.GetWorlds(Obj);
+        if (res != null)
+        {
+            foreach (var item in res)
+            {
+                var obj = worlds.First(a => a.LevelName == item.Name);
+                if (obj != null)
+                {
+                    worlds.Remove(obj);
+                    WorldCloudList.Add(new(this, item, obj));
+                }
+                else
+                {
+                    WorldCloudList.Add(new(this, item));
+                }
+            }
+        }
+        foreach (var item in worlds)
+        {
+            WorldCloudList.Add(new(this, item));
+        }
     }
 
     public void WindowClose()
@@ -267,5 +320,29 @@ public partial class GameCloudModel : GameModel
         _files = null!;
         WorldCloudList.Clear();
         Source = null!;
+    }
+
+    public async void UploadWorld(WorldCloudModel world)
+    {
+        if (!world.HaveCloud)
+        {
+            Model.Progress("正在打包");
+            string dir = world.World.Local;
+            string local = Path.GetFullPath(dir + "/" + world.World.LevelName + ".zip");
+            await new ZipUtils().ZipFile(local, dir);
+            Model.ProgressUpdate("上传中");
+            await GameCloudUtils.UploadWorld(Obj.UUID, local);
+            PathHelper.Delete(local);
+            Model.ProgressClose();
+        }
+        else
+        { 
+            
+        }
+    }
+
+    public void DownloadWorld(WorldCloudModel world)
+    {
+        
     }
 }

@@ -240,6 +240,10 @@ public partial class BaseModel : ObservableObject
     public async Task<(bool Cancel, string? Text1)>
         ShowEdit(string title, string data)
     {
+        Info3CancelEnable = true;
+        Info3CancelVisible = true;
+        Info3ConfirmEnable = true;
+
         Info3Text2Visable = false;
         Info3TextReadonly = false;
         Info3ValueVisable = false;
@@ -387,6 +391,11 @@ public partial class BaseModel : ObservableObject
         OnPropertyChanged("Info3Show");
     }
 
+    /// <summary>
+    /// 打开一个对话框，选择确定还是取消
+    /// </summary>
+    /// <param name="data">要显示的内容</param>
+    /// <returns>结果</returns>
     public async Task<bool> ShowWait(string data)
     {
         bool reut = false;

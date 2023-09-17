@@ -2,6 +2,7 @@
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
@@ -46,6 +47,8 @@ public partial class AddGameModel : TopModel
 
         ColorMCCore.PackState = PackState;
         ColorMCCore.PackUpdate = PackUpdate;
+
+        CloudEnable = GameCloudUtils.Connect;
     }
 
     partial void OnNowViewChanged(int value)

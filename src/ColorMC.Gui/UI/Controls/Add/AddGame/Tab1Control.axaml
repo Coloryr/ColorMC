@@ -155,14 +155,27 @@
                     <Button
                         Width="100"
                         Height="25"
+                        Margin="0,0,5,0"
                         Command="{Binding AddOnlinePack}"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text10}" />
+                        Content="{setting:Localize AddGameWindow.Tab1.Text10}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text67}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Command="{Binding GameCloudDownload}"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text13}"
+                        IsEnabled="{Binding CloudEnable}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text68}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
                         Height="25"
                         HorizontalAlignment="Right"
                         Command="{Binding AddGame}"
-                        Content="{setting:Localize Button.Add}" />
+                        Content="{setting:Localize Button.Add}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text69}"
+                        ToolTip.VerticalOffset="-30" />
                 </DockPanel>
             </Border>
         </StackPanel>

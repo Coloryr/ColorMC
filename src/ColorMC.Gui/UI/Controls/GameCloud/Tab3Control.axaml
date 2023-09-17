@@ -11,18 +11,43 @@
     d:DesignWidth="800"
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
-    <Panel Margin="5,0,5,5">
-        <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
-            <ItemsControl
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                ItemsSource="{Binding WorldCloudList}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <item:WorldCloudControl DataContext="{Binding}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-    </Panel>
+    <DockPanel Margin="5,2,5,5" IsEnabled="{Binding Enable}">
+        <Border
+            Margin="0,3,0,0"
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
+            <WrapPanel>
+                <Button
+                    Width="100"
+                    Height="25"
+                    Command="{Binding LoadWorld}"
+                    Content="{setting:Localize Button.Refash}" />
+            </WrapPanel>
+        </Border>
+        <Border
+            Margin="0,3,0,0"
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
+                <ItemsControl
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    ItemsSource="{Binding WorldCloudList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <item:WorldCloudControl DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+    </DockPanel>
+
 </UserControl>

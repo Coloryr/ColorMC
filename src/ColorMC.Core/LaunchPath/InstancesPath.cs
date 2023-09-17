@@ -511,6 +511,29 @@ public static class InstancesPath
     }
 
     /// <summary>
+    /// 重读配置
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns>重载后的实例</returns>
+    public static GameSettingObj Reload(this GameSettingObj game)
+    {
+        var data1 = PathHelper.ReadText(game.GetGameJsonFile())!;
+        var obj = JsonConvert.DeserializeObject<GameSettingObj>(data1);
+        if (obj != null)
+        {
+            game.RemoveFromGroup();
+            obj.Name = game.Name;
+            obj.UUID = game.UUID;
+            obj.DirName = game.DirName;
+            obj.ReadModInfo(false);
+            obj.ReadLaunchData();
+            obj.AddToGroup();
+            obj.Save();
+        }
+        return obj ?? game;
+    }
+
+    /// <summary>
     /// 新建游戏组
     /// </summary>
     /// <param name="name">组名字</param>
@@ -673,7 +696,7 @@ public static class InstancesPath
     /// 读取游戏实例mod数据
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static void ReadModInfo(this GameSettingObj obj)
+    public static void ReadModInfo(this GameSettingObj obj, bool delete = true)
     {
         string file = obj.GetModInfoJsonFile();
         if (!File.Exists(file))
@@ -695,7 +718,7 @@ public static class InstancesPath
                 obj.Mods = res;
             }
 
-            if (obj.ModPack)
+            if (obj.ModPack || !delete)
             {
                 return;
             }

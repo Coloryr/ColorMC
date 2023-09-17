@@ -102,12 +102,6 @@ public partial class SettingModel : TopModel
     }
 
     [RelayCommand]
-    public void GameCloudDownload()
-    { 
-        
-    }
-
-    [RelayCommand]
     public async Task GameCloudConnect()
     {
         await GameCloudUtils.StartConnect();

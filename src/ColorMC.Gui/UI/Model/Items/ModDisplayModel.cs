@@ -37,7 +37,13 @@ public partial class ModDisplayModel : ObservableObject
     public string? FID => Obj1?.FileId;
 
     public bool IsNew;
+    /// <summary>
+    /// Mod信息
+    /// </summary>
     public ModInfoObj? Obj1;
+    /// <summary>
+    /// Mod内容
+    /// </summary>
     public ModObj Obj;
 
     public void LocalChange()

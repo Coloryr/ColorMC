@@ -25,7 +25,6 @@ public static class GameCloudUtils
     private static string s_server;
     private static string s_serverkey;
     private static string s_clientkey;
-    private static string s_publicKey;
 
     private static Dictionary<string, CloudDataObj> s_datas;
     private static string s_file;
@@ -97,6 +96,13 @@ public static class GameCloudUtils
         return obj1;
     }
 
+    public static void SetCloudData(GameSettingObj obj, CloudDataObj obj1)
+    {
+        s_datas.Remove(obj.UUID);
+        s_datas.Add(obj.UUID, obj1);
+        Save();
+    }
+
     public static async Task StartConnect()
     {
         Connect = false;
@@ -127,19 +133,13 @@ public static class GameCloudUtils
             {
                 s_clientkey = clientkey.ToString();
             }
-            if (obj.TryGetValue("publickey", out var publickey) && publickey != null)
-            {
-                s_publicKey = publickey.ToString();
-            }
 
             if (string.IsNullOrWhiteSpace(s_server)
                 || string.IsNullOrWhiteSpace(s_serverkey)
-                || string.IsNullOrWhiteSpace(s_clientkey)
-                || string.IsNullOrWhiteSpace(s_publicKey))
+                || string.IsNullOrWhiteSpace(s_clientkey))
             {
                 return;
             }
-
 
             await Check();
         }
@@ -167,12 +167,16 @@ public static class GameCloudUtils
                 Info = App.GetLanguage("GameCloud.Error1");
                 return;
             }
-            Info = string.Format(App.GetLanguage("GameCloud.Info1"), obj["use"], obj["size"]);
+            _ = GetState();
             Connect = true;
         }
     }
 
-    public static async Task<(bool?, string?)> HaveCloud(string uuid)
+    /// <summary>
+    /// 游戏实例是否启用了云同步
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<(bool?, string?)> HaveCloud(GameSettingObj obj)
     {
         try
         {
@@ -186,16 +190,16 @@ public static class GameCloudUtils
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
-            requ.Headers.Add("uuid", uuid);
+            requ.Headers.Add("uuid", obj.UUID);
 
             var res = await BaseClient.LoginClient.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-                if (obj.TryGetValue("res", out var res1) && (int)res1 == 100)
+                var obj1 = JObject.Parse(data);
+                if (obj1.TryGetValue("res", out var res1) && (int)res1 == 100)
                 {
-                    return ((bool?)obj["data"], (string?)obj["time"]);
+                    return ((bool?)obj1["data"], (string?)obj1["time"]);
                 }
             }
 
@@ -209,7 +213,10 @@ public static class GameCloudUtils
         }
     }
 
-    public static async Task<AddSaveState?> StartCloud(string uuid)
+    /// <summary>
+    /// 实例开启云同步
+    /// </summary>
+    public static async Task<AddSaveState?> StartCloud(GameSettingObj obj)
     {
         if (!Connect)
         {
@@ -223,16 +230,17 @@ public static class GameCloudUtils
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
-            requ.Headers.Add("uuid", uuid);
+            requ.Headers.Add("uuid", obj.UUID);
+            requ.Headers.Add("name", obj.Name);
 
             var res = await BaseClient.LoginClient.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-                if (obj.TryGetValue("res", out var res1) && (int)res1 == 100)
+                var obj1 = JObject.Parse(data);
+                if (obj1.TryGetValue("res", out var res1) && (int)res1 == 100)
                 {
-                    return (AddSaveState)(int)obj["data"]!;
+                    return (AddSaveState)(int)obj1["data"]!;
                 }
             }
 
@@ -246,7 +254,7 @@ public static class GameCloudUtils
         }
     }
 
-    public static async Task<bool?> StopCloud(string uuid)
+    public static async Task<bool?> StopCloud(GameSettingObj obj)
     {
         if (!Connect)
         {
@@ -260,16 +268,16 @@ public static class GameCloudUtils
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
-            requ.Headers.Add("uuid", uuid);
+            requ.Headers.Add("uuid", obj.UUID);
 
             var res = await BaseClient.LoginClient.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-                if (obj.TryGetValue("res", out var res1) && (int)res1 == 100)
+                var obj1 = JObject.Parse(data);
+                if (obj1.TryGetValue("res", out var res1) && (int)res1 == 100)
                 {
-                    return (bool?)obj["data"];
+                    return (bool?)obj1["data"];
                 }
             }
 
@@ -298,7 +306,7 @@ public static class GameCloudUtils
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
             requ.Headers.Add("uuid", uuid);
-            using var stream = PathHelper.OpenRead(path);
+            using var stream = PathHelper.OpenRead(path)!;
             requ.Content = new StreamContent(stream);
 
             var res = await BaseClient.LoginClient.SendAsync(requ);
@@ -322,7 +330,7 @@ public static class GameCloudUtils
         }
     }
 
-    public static async Task<bool?> DownloadConfig(string uuid, string name)
+    public static async Task<bool?> DownloadConfig(string uuid, string local)
     {
         if (!Connect)
         {
@@ -342,7 +350,7 @@ public static class GameCloudUtils
             if (res.IsSuccessStatusCode)
             {
                 using var data = res.Content.ReadAsStream();
-                using var stream = PathHelper.OpenWrite(name);
+                using var stream = PathHelper.OpenWrite(local);
                 await data.CopyToAsync(stream);
                 return true;
             }
@@ -355,5 +363,99 @@ public static class GameCloudUtils
             App.ShowError("cloud error", e);
             return null;
         }
+    }
+
+    public static async Task GetState()
+    {
+        var requ = new HttpRequestMessage(HttpMethod.Post,
+           new Uri(s_server + "/getstate"));
+        requ.Headers.Add("ColorMC", ColorMCCore.Version);
+        requ.Headers.Add("serverkey", s_serverkey);
+        requ.Headers.Add("clientkey", s_clientkey);
+
+        var res = await BaseClient.LoginClient.SendAsync(requ);
+        if (res.IsSuccessStatusCode)
+        {
+            var data = await res.Content.ReadAsStringAsync();
+            var obj = JObject.Parse(data);
+            if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+            {
+                Info = App.GetLanguage("GameCloud.Error1");
+                return;
+            }
+            Info = string.Format(App.GetLanguage("GameCloud.Info1"), obj["use"], obj["size"]);
+            Connect = true;
+        }
+    }
+
+    public static async Task<List<CloundListObj>?> GetList()
+    {
+        var requ = new HttpRequestMessage(HttpMethod.Post,
+           new Uri(s_server + "/getlist"));
+        requ.Headers.Add("ColorMC", ColorMCCore.Version);
+        requ.Headers.Add("serverkey", s_serverkey);
+        requ.Headers.Add("clientkey", s_clientkey);
+
+        var res = await BaseClient.LoginClient.SendAsync(requ);
+        if (res.IsSuccessStatusCode)
+        {
+            var data = await res.Content.ReadAsStringAsync();
+            var obj = JObject.Parse(data);
+            if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+            {
+                return null;
+            }
+            return obj["list"]?.ToObject<List<CloundListObj>>();
+        }
+
+        return null;
+    }
+
+    public static async Task<List<CloudWorldObj>?> GetWorldList()
+    {
+        var requ = new HttpRequestMessage(HttpMethod.Post,
+           new Uri(s_server + "/getworldlist"));
+        requ.Headers.Add("ColorMC", ColorMCCore.Version);
+        requ.Headers.Add("serverkey", s_serverkey);
+        requ.Headers.Add("clientkey", s_clientkey);
+
+        var res = await BaseClient.LoginClient.SendAsync(requ);
+        if (res.IsSuccessStatusCode)
+        {
+            var data = await res.Content.ReadAsStringAsync();
+            var obj = JObject.Parse(data);
+            if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+            {
+                return null;
+            }
+            return obj["list"]?.ToObject<List<CloudWorldObj>>();
+        }
+
+        return null;
+    }
+
+    public static async Task<bool> UploadWorld(string uuid, string local)
+    {
+        var requ = new HttpRequestMessage(HttpMethod.Post,
+           new Uri(s_server + "/putworld"));
+        requ.Headers.Add("ColorMC", ColorMCCore.Version);
+        requ.Headers.Add("serverkey", s_serverkey);
+        requ.Headers.Add("clientkey", s_clientkey);
+        requ.Headers.Add("uuid", uuid);
+        requ.Headers.Add("name", local);
+
+        var res = await BaseClient.LoginClient.SendAsync(requ);
+        if (res.IsSuccessStatusCode)
+        {
+            var data = await res.Content.ReadAsStringAsync();
+            var obj = JObject.Parse(data);
+            if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        return false;
     }
 }

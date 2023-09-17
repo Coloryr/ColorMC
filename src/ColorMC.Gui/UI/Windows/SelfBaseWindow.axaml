@@ -28,11 +28,11 @@
 
             <Grid Name="MainControl" />
 
-            <views:Info3Control IsVisible="False" />
             <views:Info1Control IsVisible="False" />
             <views:Info4Control IsVisible="False" />
             <views:Info6Control IsVisible="False" />
             <views:Info5Control IsVisible="False" />
+            <views:Info3Control IsVisible="False" />
             <views:Info2Control />
 
             <Grid

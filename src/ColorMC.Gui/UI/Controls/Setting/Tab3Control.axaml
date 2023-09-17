@@ -170,12 +170,6 @@
                             Command="{Binding GameCloudConnect}"
                             Content="{setting:Localize SettingWindow.Tab3.Text22}" />
                         <Label Margin="5,0,0,0" Content="{Binding ServerInfo}" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="5,0,0,0"
-                            Command="{Binding GameCloudDownload}"
-                            Content="{setting:Localize SettingWindow.Tab3.Text23}" />
                     </StackPanel>
                     <TextBox
                         Height="100"

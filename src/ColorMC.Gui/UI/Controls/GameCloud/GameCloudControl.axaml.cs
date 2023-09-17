@@ -44,12 +44,12 @@ public partial class GameCloudControl : UserControl, IUserControl
 
     private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        (DataContext as GameEditModel)!.OpenSide();
+        (DataContext as GameCloudModel)!.OpenSide();
     }
 
     private void StackPanel1_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        (DataContext as GameEditModel)!.CloseSide();
+        (DataContext as GameCloudModel)!.CloseSide();
     }
 
     public void Opened()

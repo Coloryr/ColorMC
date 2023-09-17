@@ -27,7 +27,7 @@ public class ColorSel : INotifyPropertyChanged
     public static readonly IBrush AppDarkBackColor4 = Brush.Parse("#888888");
     public static readonly IBrush AppDarkBackColor5 = Brush.Parse("#AA000000");
     public static readonly IBrush AppDarkBackColor6 = Brush.Parse("#FF444444");
-    public static readonly IBrush AppDarkBackColor7 = Brush.Parse("#DD202020");
+    public static readonly IBrush AppDarkBackColor7 = Brush.Parse("#EE202020");
 
     public const string MainColorStr = "#FF5ABED6";
 

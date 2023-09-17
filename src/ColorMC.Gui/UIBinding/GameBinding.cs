@@ -2,6 +2,7 @@ using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core.Chunk;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -16,6 +17,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
@@ -23,6 +25,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -1328,5 +1331,99 @@ public static class GameBinding
         }
 
         return PackType.ColorMC;
+    }
+
+    public static async Task UnZipCloudConfig(GameSettingObj obj, CloudDataObj data, string local)
+    {
+        data.Config.Clear();
+        await Task.Run(() =>
+        {
+            using var s = new ZipInputStream(PathHelper.OpenRead(local));
+            ZipEntry theEntry;
+            while ((theEntry = s.GetNextEntry()) != null)
+            {
+                string filename = $"{obj.GetBasePath()}/{theEntry.Name}";
+                data.Config.Add(theEntry.Name);
+                var directoryName = Path.GetDirectoryName(filename);
+                string fileName = Path.GetFileName(theEntry.Name);
+
+                if (directoryName?.Length > 0)
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
+
+                if (fileName != string.Empty)
+                {
+                    using var streamWriter = PathHelper.OpenWrite(filename);
+
+                    s.CopyTo(streamWriter);
+                }
+            }
+        });
+    }
+
+    public static async Task<(bool, string?)> DownloadCloud(CloundListObj obj, string? group)
+    {
+        var game = await InstancesPath.CreateGame(new()
+        {
+            Name = obj.Name,
+            UUID = obj.UUID,
+            GroupName = group
+        });
+        if (game == null)
+        {
+            return (false, App.GetLanguage("AddGameWindow.Tab1.Error10"));
+        }
+
+        var cloud = new CloudDataObj()
+        {
+            Config = new()
+        };
+
+        GameCloudUtils.SetCloudData(game, cloud);
+        string local = Path.GetFullPath(game.GetBasePath() + "/config.zip");
+        var res = await GameCloudUtils.DownloadConfig(obj.UUID, local);
+        if (res != true)
+        {
+            return (false, App.GetLanguage("AddGameWindow.Tab1.Error11"));
+        }
+        await UnZipCloudConfig(game, cloud, local);
+        var temp = await GameCloudUtils.HaveCloud(game);
+        cloud.ConfigTime = DateTime.Parse(temp.Item2!);
+        GameCloudUtils.SetCloudData(game, cloud);
+
+        game = game.Reload();
+
+        //ÏÂÔØÈ±Ê§µÄmod
+        if (game.Mods != null)
+        {
+            var list = new List<DownloadItemObj>();
+            foreach (var item in game.Mods.Values)
+            {
+                list.Add(new()
+                {
+                    Url = item.Url,
+                    Name = item.File,
+                    Local = game.GetGamePath() + "/" + item.Path + "/" + item.File,
+                    SHA1 = item.SHA1
+                });
+            }
+
+            if (list.Count > 0)
+            {
+                var res1 = await DownloadManager.Start(list);
+                if (!res1)
+                {
+                    return (false, App.GetLanguage("AddGameWindow.Tab1.Error12"));
+                }
+            }
+        }
+
+        return (true, null);
+    }
+
+    public static GameSettingObj? GetGameByName(string name)
+    {
+        return InstancesPath.GetGameByName(name);
     }
 }
