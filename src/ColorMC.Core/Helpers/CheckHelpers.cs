@@ -445,7 +445,7 @@ public static class CheckHelpers
         return list;
     }
 
-    public static async Task<bool> CheckForgeInstall(ForgeInstallObj obj)
+    public static async Task<bool> CheckForgeInstall(ForgeInstallObj obj, bool neo)
     {
         var version = obj.data.MCP_VERSION.client[1..^1];
         string file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
@@ -463,6 +463,24 @@ public static class CheckHelpers
         {
             return true;
         }
+
+        //net\neoforged\forge\1.20.1-47.1.76\forge-1.20.1-47.1.76-client.jar
+        file = $"{LibrariesPath.BaseDir}/net/{(neo ? "neoforged" : "minecraftforge")}/forge/" +
+            $"{obj.minecraft}-{version}/" +
+            $"forge-{obj.minecraft}-{version}-client.jar";
+        file = Path.GetFullPath(file);
+        if (!File.Exists(file))
+        {
+            return true;
+        }
+        using var stream2 = PathHelper.OpenRead(file)!;
+        sha1 = await HashHelper.GenSha1Async(stream2);
+
+        if (sha1 != obj.data.PATCHED_SHA.client[1..^1])
+        {
+            return true;
+        }
+
 
         file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
             $"{obj.minecraft}-{version}/" +
