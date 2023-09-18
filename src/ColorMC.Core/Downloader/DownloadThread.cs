@@ -27,8 +27,17 @@ public class DownloadThread
     /// 暂停信号量
     /// </summary>
     private readonly Semaphore _semaphore1 = new(0, 2);
+    /// <summary>
+    /// 是否在暂停
+    /// </summary>
     private bool _pause = false;
+    /// <summary>
+    /// 是否在运行
+    /// </summary>
     private bool _run = false;
+    /// <summary>
+    /// 是否被取消
+    /// </summary>
     private CancellationToken _token;
 
     /// <summary>
@@ -229,12 +238,9 @@ public class DownloadThread
                     using var stream = PathHelper.OpenWrite(file);
 
                     int bytesRead;
-                    while ((bytesRead = stream1.ReadAsync(new Memory<byte>(buffer),
-                        _token).Result) != 0)
+                    while ((bytesRead = stream1.ReadAsync(buffer,  _token).Result) != 0)
                     {
-                        stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0,
-                            bytesRead), _token)
-                            .AsTask().Wait(_token);
+                        stream.WriteAsync(buffer, 0, bytesRead, _token).Wait();
 
                         ChckPause(item);
 
@@ -291,7 +297,9 @@ public class DownloadThread
                     ChckPause(item);
 
                     if (_token.IsCancellationRequested)
+                    {
                         break;
+                    }
 
                     //后续操作
                     stream.Seek(0, SeekOrigin.Begin);

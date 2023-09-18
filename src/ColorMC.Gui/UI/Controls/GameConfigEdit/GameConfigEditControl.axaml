@@ -128,7 +128,7 @@
         </DockPanel>
 
         <Panel IsVisible="{Binding DisplayAdd, FallbackValue=false}">
-            <Border Background="{setting:Colors TopBottom}" />
+            <Border Background="{setting:Colors BG1}" />
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label
                     HorizontalAlignment="Center"
@@ -167,8 +167,8 @@
             </StackPanel>
         </Panel>
 
-        <Panel IsVisible="{Binding DisplayEdit, FallbackValue=t rue}">
-            <Border Background="{setting:Colors TopBottom}" />
+        <Panel IsVisible="{Binding DisplayEdit, FallbackValue=false}">
+            <Border Background="{setting:Colors BG1}" />
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top">
                     <Button
@@ -215,7 +215,7 @@
             </DockPanel>
         </Panel>
         <Panel IsVisible="{Binding DisplayFind, FallbackValue=false}">
-            <Border Background="{setting:Colors TopBottom}" />
+            <Border Background="{setting:Colors BG1}" />
             <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel DockPanel.Dock="Top">
                     <Label

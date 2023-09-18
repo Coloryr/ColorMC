@@ -42,7 +42,7 @@ public static class DownloadManager
     /// </summary>
     private readonly static List<DownloadThread> s_threads = new();
     /// <summary>
-    /// 信号量
+    /// 处理完成信号量
     /// </summary>
     private static Semaphore s_semaphore;
 

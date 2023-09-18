@@ -12,9 +12,18 @@ namespace ColorMC.Core.Config;
 /// </summary>
 public static class ConfigSave
 {
+    /// <summary>
+    /// 保存队列
+    /// </summary>
     private static readonly ConcurrentBag<ConfigSaveObj> s_saveQue = new();
 
+    /// <summary>
+    /// 保存线程
+    /// </summary>
     private static Thread t_thread;
+    /// <summary>
+    /// 是否在运行
+    /// </summary>
     private static bool s_run;
 
     /// <summary>
@@ -67,6 +76,9 @@ public static class ConfigSave
         }
     }
 
+    /// <summary>
+    /// 保存所有文件
+    /// </summary>
     private static void Save()
     {
         Dictionary<string, ConfigSaveObj> list = new();
