@@ -1165,7 +1165,7 @@ public static class Launch
                 var obj1 = obj.Loader is Loaders.Forge
                     ? VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!)!
                     : VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!)!;
-                var install = await CheckHelpers.CheckForgeInstall(obj1);
+                var install = await CheckHelpers.CheckForgeInstall(obj1, obj.Loader is Loaders.NeoForge);
                 if (install)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.InstallForge);
