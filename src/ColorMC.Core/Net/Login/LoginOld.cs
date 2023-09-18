@@ -56,7 +56,7 @@ public static class LoginOld
             return (LoginState.JsonError, null, LanguageHelper.Get("Core.Login.Error22"));
         }
 
-        if (obj2.selectedProfile == null && obj2.availableProfiles.Count != 0)
+        if (obj2.selectedProfile == null && obj2.availableProfiles?.Count > 0)
         {
             foreach (var item in obj2.availableProfiles)
             {
