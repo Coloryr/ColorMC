@@ -65,7 +65,7 @@
 
         <Panel
             Name="Grid1"
-            Background="{setting:Colors TopBottom}"
+            Background="{setting:Colors BG1}"
             IsVisible="False">
             <StackPanel Margin="5">
                 <Label Content="{setting:Localize UserWindow.Text5}" />
