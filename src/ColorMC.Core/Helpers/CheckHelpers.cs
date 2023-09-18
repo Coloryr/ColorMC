@@ -481,7 +481,6 @@ public static class CheckHelpers
             return true;
         }
 
-
         file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
             $"{obj.minecraft}-{version}/" +
             $"client-{obj.minecraft}-{version}-extra.jar";
