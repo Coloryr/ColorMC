@@ -11,7 +11,7 @@
     x:DataType="model:UsersControlModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel Background="{setting:Colors TranBack}">
+    <Panel Margin="3" Background="{setting:Colors TranBack}">
         <Label
             Margin="3"
             VerticalAlignment="Bottom"
@@ -120,7 +120,7 @@
         </Panel>
         <Panel
             Name="Grid2"
-            Background="{setting:Colors TopBottom}"
+            Background="{setting:Colors BG1}"
             IsVisible="False">
             <Label
                 HorizontalAlignment="Center"

@@ -10,8 +10,13 @@ namespace ColorMC.Core.Config;
 /// </summary>
 public static class ConfigUtils
 {
+    /// <summary>
+    /// 配置文件
+    /// </summary>
     public static ConfigObj Config { get; set; }
-
+    /// <summary>
+    /// 配置文件路径
+    /// </summary>
     private static string s_local;
 
     /// <summary>

@@ -38,8 +38,6 @@ public class Live2dRender : OpenGlControlBase
 
     public Live2dRender()
     {
-        PointerPressed += Live2dRender_PointerPressed;
-
         DataContextChanged += Live2dRender_DataContextChanged;
     }
 
@@ -89,15 +87,15 @@ public class Live2dRender : OpenGlControlBase
         }
     }
 
-    private void Live2dRender_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        var pro = e.GetCurrentPoint(this);
-        if (pro.Properties.IsLeftButtonPressed)
-        {
-            Pressed();
-            Moved((float)pro.Position.X, (float)pro.Position.Y);
-        }
-    }
+    //private void Live2dRender_PointerPressed(object? sender, PointerPressedEventArgs e)
+    //{
+    //    var pro = e.GetCurrentPoint(this);
+    //    if (pro.Properties.IsLeftButtonPressed)
+    //    {
+    //        Pressed();
+    //        Moved((float)pro.Position.X, (float)pro.Position.Y);
+    //    }
+    //}
 
     private static void CheckError(GlInterface gl)
     {

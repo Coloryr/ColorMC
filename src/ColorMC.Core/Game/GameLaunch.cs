@@ -32,6 +32,11 @@ public static class Launch
     /// </summary>
     private static CancellationToken s_cancel;
 
+    /// <summary>
+    /// 获取Forge安装参数
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>参数</returns>
     public static List<string> MakeInstallForgeArg(this GameSettingObj obj)
     {
         var jvmHead = new List<string>
@@ -105,7 +110,7 @@ public static class Launch
     /// <param name="jvm">JAVA位置</param>
     /// <param name="arg">JVM参数</param>
     /// <param name="item">命令</param>
-    /// <returns></returns>
+    /// <returns>参数</returns>
     public static string ReplaceArg(this GameSettingObj obj, string jvm, List<string> arg, string item)
     {
         static string GetString(List<string> arg)
@@ -187,7 +192,7 @@ public static class Launch
     /// 创建V2版Jvm参数
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns></returns>
+    /// <returns>参数</returns>
     private static List<string> MakeV2JvmArg(GameSettingObj obj)
     {
         var game = VersionPath.GetGame(obj.Version)!;

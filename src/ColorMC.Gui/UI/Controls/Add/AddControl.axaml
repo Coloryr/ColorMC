@@ -177,7 +177,7 @@
 
         <DockPanel
             Name="Grid1"
-            Background="{setting:Colors TopBottom}"
+            Background="{setting:Colors BG1}"
             IsVisible="False">
             <WrapPanel
                 Margin="0,3,0,3"
@@ -267,7 +267,7 @@
 
         <DockPanel
             Name="Grid2"
-            Background="{setting:Colors TopBottom}"
+            Background="{setting:Colors BG1}"
             IsVisible="False">
             <WrapPanel
                 Margin="0,3,0,3"
@@ -338,7 +338,7 @@
 
         <DockPanel
             Name="Grid4"
-            Background="{setting:Colors TopBottom}"
+            Background="{setting:Colors BG1}"
             IsVisible="False">
             <WrapPanel
                 Margin="0,3,0,3"
@@ -401,7 +401,7 @@
             </DataGrid>
         </DockPanel>
 
-        <Panel Background="{setting:Colors TopBottom}" IsVisible="False">
+        <Panel Background="{setting:Colors BG1}" IsVisible="False">
             <Label
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"

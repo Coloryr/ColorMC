@@ -11,7 +11,11 @@
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
 
-  <ItemGroup>
+  <PropertyGroup>
+	<ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+	<ItemGroup>
     <EmbeddedResource Include="Mp3\sfd.temp" />
     <EmbeddedResource Include="Resources\MiSans-Normal.ttf" />
   </ItemGroup>

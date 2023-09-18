@@ -96,7 +96,7 @@
         </DockPanel>
         <Panel
             Name="Grid2"
-            Background="{setting:Colors TopBottom}"
+            Background="{setting:Colors BG1}"
             IsVisible="False">
             <Label
                 HorizontalAlignment="Center"
