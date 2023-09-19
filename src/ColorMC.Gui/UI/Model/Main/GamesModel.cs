@@ -40,7 +40,7 @@ public partial class GamesModel : TopModel
     public bool DropIn(IDataObject data)
     {
         return data.Get(BaseBinding.DrapType) is not GameItemModel c
-            || _items.ContainsValue(c);
+            || !_items.ContainsValue(c);
     }
 
     public void Drop(IDataObject data)

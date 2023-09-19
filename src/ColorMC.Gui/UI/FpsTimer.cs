@@ -24,6 +24,11 @@ public class FpsTimer
         }
         set
         {
+            //不改变
+            if (_pause == value)
+            {
+                return;
+            }
             //暂停 -> 继续
             if (_pause && value == false)
             {
