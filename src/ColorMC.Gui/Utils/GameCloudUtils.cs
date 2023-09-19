@@ -178,7 +178,7 @@ public static class GameCloudUtils
                     Info = App.GetLanguage("GameCloud.Error3");
                     return;
                 }
-                else if(value != 100)
+                else if (value != 100)
                 {
                     Info = App.GetLanguage("GameCloud.Error1");
                     return;
@@ -311,7 +311,7 @@ public static class GameCloudUtils
         catch (Exception e)
         {
             Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e); 
+            App.ShowError("cloud error", e);
         }
         return -1;
     }

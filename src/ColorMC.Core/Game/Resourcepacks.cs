@@ -5,9 +5,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using System.Text;
-using System.Threading.Channels;
 
 namespace ColorMC.Core.Game;
 

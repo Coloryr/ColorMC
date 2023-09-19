@@ -16,7 +16,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Animations;
-using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.ConfigEdit;
 using ColorMC.Gui.UI.Controls.Count;
@@ -39,7 +38,6 @@ using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -688,9 +686,9 @@ public partial class App : Application
         if (GameCloudWindows.TryGetValue(key, out var win1))
         {
             win1.Window.Activate();
-            if(world)
+            if (world)
             {
-                win1.GoWorld();  
+                win1.GoWorld();
             }
         }
         else

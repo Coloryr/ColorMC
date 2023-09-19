@@ -126,7 +126,7 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         var model = (DataContext as GameConfigEditModel)!;
         model.Load();
 
-        var icon = model.Obj == null ? 
+        var icon = model.Obj == null ?
             model.World!.Game.GetIconFile() : model.Obj.GetIconFile();
         if (File.Exists(icon))
         {

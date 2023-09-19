@@ -11,7 +11,6 @@ using ColorMC.Gui.UI.Model.Custom;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Custom;

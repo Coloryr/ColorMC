@@ -4,9 +4,7 @@ using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameCloud;
-using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Windows;
-using System;
 using System.ComponentModel;
 using System.Threading;
 

@@ -1,5 +1,4 @@
-﻿using Avalonia.Input;
-using Avalonia.OpenGL;
+﻿using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Avalonia.Threading;
 using ColorMC.Core.Utils;

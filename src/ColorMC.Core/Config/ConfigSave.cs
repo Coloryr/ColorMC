@@ -1,7 +1,6 @@
 ﻿using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.Core;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 

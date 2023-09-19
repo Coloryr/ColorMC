@@ -11,7 +11,6 @@ using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 
 namespace ColorMC.Gui.UI.Model.GameLog;
 
@@ -43,7 +42,7 @@ public partial class GameLogModel : GameModel
 
         _text = new();
 
-        _timer = new(() => 
+        _timer = new(() =>
         {
             while (_run)
             {

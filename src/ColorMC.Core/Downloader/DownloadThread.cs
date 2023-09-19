@@ -238,7 +238,7 @@ public class DownloadThread
                     using var stream = PathHelper.OpenWrite(file);
 
                     int bytesRead;
-                    while ((bytesRead = stream1.ReadAsync(buffer,  _token).Result) != 0)
+                    while ((bytesRead = stream1.ReadAsync(buffer, _token).Result) != 0)
                     {
                         stream.WriteAsync(buffer, 0, bytesRead, _token).Wait();
 
