@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="450"
+    d:DesignHeight="600"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -105,26 +105,27 @@
                             VerticalAlignment="Center"
                             Command="{Binding SetProxy}"
                             Content="{setting:Localize Button.Set}" />
-                        <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                            <CheckBox
-                                Width="130"
-                                Content="{setting:Localize SettingWindow.Tab3.Text8}"
-                                IsChecked="{Binding LoginProxy}"
-                                IsEnabled="{Binding !IsDownload}" />
-                            <CheckBox
-                                Width="130"
-                                Content="{setting:Localize SettingWindow.Tab3.Text9}"
-                                IsChecked="{Binding DownloadProxy}"
-                                IsEnabled="{Binding !IsDownload}" />
-                            <CheckBox
-                                Width="130"
-                                Content="{setting:Localize SettingWindow.Tab3.Text10}"
-                                IsChecked="{Binding GameProxy}"
-                                IsEnabled="{Binding !IsDownload}" />
-                        </StackPanel>
-
                     </WrapPanel>
-                    <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab3.Text12}" />
+                    <WrapPanel Margin="0,5,0,0">
+                        <CheckBox
+                            Width="130"
+                            Content="{setting:Localize SettingWindow.Tab3.Text8}"
+                            IsChecked="{Binding LoginProxy}"
+                            IsEnabled="{Binding !IsDownload}" />
+                        <CheckBox
+                            Width="130"
+                            Content="{setting:Localize SettingWindow.Tab3.Text9}"
+                            IsChecked="{Binding DownloadProxy}"
+                            IsEnabled="{Binding !IsDownload}" />
+                        <CheckBox
+                            Width="130"
+                            Content="{setting:Localize SettingWindow.Tab3.Text10}"
+                            IsChecked="{Binding GameProxy}"
+                            IsEnabled="{Binding !IsDownload}" />
+                    </WrapPanel>
+                    <Label Margin="5,0,0,0">
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
+                    </Label>
                 </StackPanel>
             </Border>
             <Border
@@ -136,7 +137,7 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <Label Content="{setting:Localize SettingWindow.Tab3.Text14}" />
-                    <StackPanel Orientation="Horizontal">
+                    <WrapPanel>
                         <CheckBox Content="{setting:Localize SettingWindow.Tab3.Text15}" IsChecked="{Binding CheckUpdate}" />
                         <Button
                             Width="120"
@@ -149,8 +150,9 @@
                             Height="25"
                             Margin="0,5,5,5"
                             Command="{Binding StartUpdate}"
-                            Content="{setting:Localize SettingWindow.Tab3.Text17}" />
-                    </StackPanel>
+                            Content="{setting:Localize SettingWindow.Tab3.Text17}"
+                            IsEnabled="{Binding !Phone}" />
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border
@@ -188,7 +190,8 @@
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsEnabled="{Binding !Phone}">
                 <StackPanel Orientation="Horizontal">
                     <Button
                         Width="160"
