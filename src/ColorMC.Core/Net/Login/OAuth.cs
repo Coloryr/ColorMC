@@ -5,7 +5,6 @@ using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
-using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Net.Login;
 
@@ -62,13 +61,13 @@ public static class OAuthAPI
     /// <param name="url">网址</param>
     /// <param name="arg">参数</param>
     /// <returns>数据</returns>
-    private static async Task<JsonNode?> PostObj(string url, object arg)
+    private static async Task<JObject?> PostObj(string url, object arg)
     {
         var data1 = JsonConvert.SerializeObject(arg);
         StringContent content = new(data1, MediaTypeHeaderValue.Parse("application/json"));
         using var message = await BaseClient.LoginClient.PostAsync(url, content);
-        using var data = await message.Content.ReadAsStreamAsync();
-        return JsonNode.Parse(data);
+        var data = await message.Content.ReadAsStringAsync();
+        return JObject.Parse(data);
     }
     /// <summary>
     /// 请求数据
@@ -133,7 +132,7 @@ public static class OAuthAPI
                 return (LoginState.TimeOut, null);
             }
             var data = await PostString(OAuthToken, Arg2);
-            var obj3 = JsonNode.Parse(data)?.AsObject();
+            var obj3 = JObject.Parse(data);
             if (obj3 == null)
             {
                 return (LoginState.JsonError, null);
@@ -207,8 +206,8 @@ public static class OAuthAPI
             TokenType = "JWT"
         });
         var xblToken = json?["Token"]?.ToString();
-        var list = json?["DisplayClaims"]?["xui"]?.AsArray();
-        var xblUhs = (list?[0] as JsonObject)?["uhs"]?.ToString();
+        var list = json?["DisplayClaims"]?["xui"] as JArray;
+        var xblUhs = (list?[0] as JObject)?["uhs"]?.ToString();
 
         if (string.IsNullOrWhiteSpace(xblToken) ||
             string.IsNullOrWhiteSpace(xblUhs))
@@ -237,8 +236,8 @@ public static class OAuthAPI
             TokenType = "JWT"
         });
         var xstsToken = json?["Token"]?.ToString();
-        var list = json?["DisplayClaims"]?["xui"]?.AsArray();
-        var xstsUhs = (list?[0] as JsonObject)?["uhs"]?.ToString();
+        var list = json?["DisplayClaims"]?["xui"] as JArray;
+        var xstsUhs = (list?[0] as JObject)?["uhs"]?.ToString();
 
         if (string.IsNullOrWhiteSpace(xstsToken) ||
             string.IsNullOrWhiteSpace(xstsUhs))
