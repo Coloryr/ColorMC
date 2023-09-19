@@ -281,8 +281,8 @@ public partial class App : Application
             _ => "ColorMC.Gui.Resource.Language.gui_zh-cn.json"
         };
         using var item = assm.GetManifestResourceStream(name)!;
-
-        s_language.Load(item);
+        var reader = new StreamReader(item);
+        s_language.Load(reader.ReadToEnd());
     }
 
     public static void RemoveImage()

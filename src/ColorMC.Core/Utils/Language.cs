@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Nodes;
+﻿
+
+using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Utils;
 
@@ -13,10 +15,10 @@ public class Language
     /// 加载语言
     /// </summary>
     /// <param name="item"></param>
-    public void Load(Stream item)
+    public void Load(string item)
     {
         _languageList.Clear();
-        if (JsonNode.Parse(item)?.AsObject() is { } json)
+        if (JObject.Parse(item) is JObject json)
         {
             foreach (var item1 in json)
             {

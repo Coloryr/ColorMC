@@ -2,9 +2,9 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Net.Login;
 
@@ -70,7 +70,7 @@ public static class LoginOld
 
         if (obj2.selectedProfile == null)
         {
-            var obj1 = JsonNode.Parse(data)?.AsObject();
+            var obj1 = JObject.Parse(data);
             if (obj1?["errorMessage"]?.ToString() is { } msg)
             {
                 return (LoginState.JsonError, null, msg);
@@ -116,7 +116,7 @@ public static class LoginOld
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
         if (obj2 == null || obj2.selectedProfile == null)
         {
-            var jobj = JsonNode.Parse(data)?.AsObject();
+            var jobj = JObject.Parse(data);
             if (jobj?["errorMessage"]?.ToString() is { } msg)
             {
                 return (LoginState.JsonError, null, msg);
