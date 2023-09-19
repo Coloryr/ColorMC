@@ -21,7 +21,7 @@
                 <StackPanel>
                     <!--  运行前检查  -->
                     <Label Content="{setting:Localize SettingWindow.Tab4.Text13}" />
-                    <StackPanel Orientation="Horizontal">
+                    <WrapPanel>
                         <StackPanel>
                             <CheckBox
                                 Margin="0,0,5,0"
@@ -72,7 +72,7 @@
                             Margin="0,0,5,0"
                             Content="{setting:Localize SettingWindow.Tab4.Text23}"
                             IsChecked="{Binding SafeLog4j}" />
-                    </StackPanel>
+                    </WrapPanel>
                     <TextBox
                         Height="100"
                         Margin="0,5,0,0"
@@ -89,7 +89,8 @@
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <!--  运行后  -->
                     <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />
@@ -123,7 +124,7 @@
                     <StackPanel Orientation="Horizontal">
                         <!--  Jvm内存  -->
                         <Label
-                            Width="140"
+                            Width="120"
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab4.Text4}" />
                         <NumericUpDown
@@ -133,7 +134,7 @@
                             Minimum="1"
                             Value="{Binding MinMemory}" />
                         <Label
-                            Width="140"
+                            Width="120"
                             Margin="20,0,0,0"
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab4.Text5}" />
@@ -147,12 +148,12 @@
                     <!--  Jvm参数  -->
                     <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                         <Label
-                            Width="140"
+                            Width="120"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab4.Text2}" />
                         <ComboBox
-                            Width="300"
+                            Width="150"
                             ItemsSource="{Binding GCTypeList}"
                             SelectedIndex="{Binding GC}" />
                     </StackPanel>
@@ -191,41 +192,44 @@
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <!--  分辨率  -->
                     <Label Content="{setting:Localize SettingWindow.Tab4.Text9}" />
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            Width="140"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text10}" />
-                        <NumericUpDown
-                            Width="150"
-                            Height="30"
-                            FormatString="N0"
-                            IsEnabled="{Binding !FullScreen}"
-                            Minimum="1"
-                            Value="{Binding Width}" />
-
-                        <Label
-                            Width="140"
-                            Margin="20,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text11}" />
-                        <NumericUpDown
-                            Width="150"
-                            Height="30"
-                            FormatString="N0"
-                            IsEnabled="{Binding !FullScreen}"
-                            Minimum="1"
-                            Value="{Binding Height}" />
-
+                    <WrapPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Width="120"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab4.Text10}" />
+                            <NumericUpDown
+                                Width="150"
+                                Height="30"
+                                FormatString="N0"
+                                IsEnabled="{Binding !FullScreen}"
+                                Minimum="1"
+                                Value="{Binding Width}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Width="120"
+                                Margin="20,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab4.Text11}" />
+                            <NumericUpDown
+                                Width="150"
+                                Height="30"
+                                FormatString="N0"
+                                IsEnabled="{Binding !FullScreen}"
+                                Minimum="1"
+                                Value="{Binding Height}" />
+                        </StackPanel>
                         <CheckBox
                             Margin="20,0,0,0"
                             Content="{setting:Localize SettingWindow.Tab4.Text12}"
                             IsChecked="{Binding FullScreen}" />
-                    </StackPanel>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
         </StackPanel>

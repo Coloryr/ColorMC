@@ -23,9 +23,10 @@
                 <Label Content="{setting:Localize SettingWindow.Tab5.Text1}" />
                 <TextBox
                     Classes="input1"
+                    IsEnabled="{Binding !Phone}"
                     Text="{Binding JavaName}"
                     Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
-                <DockPanel Margin="0,5,0,5">
+                <DockPanel Margin="0,5,0,5" IsEnabled="{Binding !Phone}">
                     <Button
                         Width="100"
                         Height="25"
@@ -45,21 +46,24 @@
                         Margin="0,0,5,0"
                         Command="{Binding ShowAddJava}"
                         Content="{setting:Localize SettingWindow.Tab5.Text4}"
-                        DockPanel.Dock="Left" />
+                        DockPanel.Dock="Left"
+                        IsEnabled="{Binding !Phone}" />
                     <Button
                         Width="100"
                         Height="25"
                         Margin="0,0,5,0"
                         Command="{Binding OpenJavaPath}"
                         Content="{setting:Localize SettingWindow.Tab5.Text6}"
-                        DockPanel.Dock="Left" />
+                        DockPanel.Dock="Left"
+                        IsEnabled="{Binding !Phone}" />
                     <Button
                         Width="100"
                         Height="25"
                         Margin="0,0,5,0"
                         Command="{Binding OpenJavaFile}"
                         Content="{setting:Localize SettingWindow.Tab5.Text7}"
-                        DockPanel.Dock="Left" />
+                        DockPanel.Dock="Left"
+                        IsEnabled="{Binding !Phone}" />
                     <Button
                         Width="100"
                         Height="25"
@@ -84,7 +88,8 @@
                         Margin="0,0,5,0"
                         Command="{Binding AddJava}"
                         Content="{setting:Localize Button.Add}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        IsEnabled="{Binding !Phone}" />
                 </WrapPanel>
             </StackPanel>
         </Border>

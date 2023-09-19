@@ -33,10 +33,17 @@ public partial class SettingModel : TopModel
     [ObservableProperty]
     private string _title;
 
+    public bool Phone { get; } = false;
+
     public SettingModel(BaseModel model) : base(model)
     {
         if (SystemInfo.Os == OsType.Linux)
         {
+            _enableWindowMode = false;
+        }
+        else if (SystemInfo.Os == OsType.Android)
+        {
+            Phone = true;
             _enableWindowMode = false;
         }
 

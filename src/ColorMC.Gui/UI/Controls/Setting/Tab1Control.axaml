@@ -114,22 +114,23 @@
             CornerRadius="{setting:Style ButtonCornerRadius}">
             <StackPanel Orientation="Horizontal">
                 <Button
-                    Width="120"
+                    Width="100"
                     Height="25"
                     Margin="0,0,5,0"
                     Command="{Binding Reset}"
                     Content="{setting:Localize SettingWindow.Tab1.Text1}" />
                 <Button
-                    Width="120"
+                    Width="100"
                     Height="25"
                     Margin="0,0,5,0"
                     Command="{Binding ClearUser}"
                     Content="{setting:Localize SettingWindow.Tab1.Text2}" />
                 <Button
-                    Width="120"
+                    Width="100"
                     Height="25"
                     Command="{Binding Open}"
-                    Content="{setting:Localize SettingWindow.Tab1.Text3}" />
+                    Content="{setting:Localize SettingWindow.Tab1.Text3}"
+                    IsEnabled="{Binding !Phone}" />
             </StackPanel>
         </Border>
     </StackPanel>
