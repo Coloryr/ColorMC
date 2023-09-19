@@ -480,7 +480,7 @@
                     <!--  Live2D人物  -->
 
                     <Label Content="{setting:Localize SettingWindow.Tab2.Text29}" />
-                    <WrapPanel IsEnabled="{Binding !Phone}" Orientation="Horizontal">
+                    <WrapPanel IsEnabled="{Binding !Phone}">
                         <Label Content="{setting:Localize SettingWindow.Tab2.Text30}" />
                         <Label Margin="5,0,0,0" Content="{Binding Live2DCoreState}" />
                         <Button

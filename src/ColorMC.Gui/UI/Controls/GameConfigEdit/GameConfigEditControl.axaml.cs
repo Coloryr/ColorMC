@@ -39,7 +39,7 @@ public partial class GameConfigEditControl : UserControl, IUserControl
             else
             {
                 return string.Format(App.GetLanguage("ConfigEditWindow.Title1"),
-                    model.Obj?.Name, model.World?.LevelName);
+                    model.World?.Game.Name, model.World?.LevelName);
             }
         }
     }
@@ -126,7 +126,8 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         var model = (DataContext as GameConfigEditModel)!;
         model.Load();
 
-        var icon = model.Obj.GetIconFile();
+        var icon = model.Obj == null ? 
+            model.World!.Game.GetIconFile() : model.Obj.GetIconFile();
         if (File.Exists(icon))
         {
             _icon = new(icon);

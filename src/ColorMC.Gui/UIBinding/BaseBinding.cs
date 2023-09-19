@@ -978,6 +978,7 @@ public static class BaseBinding
         try
         {
             App.ShowCustom(file);
+            App.CustomWindow?.Load1();
         }
         catch (Exception ex)
         {

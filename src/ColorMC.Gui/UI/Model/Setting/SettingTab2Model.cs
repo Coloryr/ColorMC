@@ -549,7 +549,7 @@ public partial class SettingModel : TopModel
             uint patch = version & 0x0000FFFF;
             uint vesionNumber = version;
 
-            Live2DCoreState = $"version: {major:##}.{minor:#}.{patch:####} ({vesionNumber})";
+            Live2DCoreState = $"version: {major:0}.{minor:0}.{patch:0000} ({vesionNumber})";
             CoreInstall = true;
         }
         catch

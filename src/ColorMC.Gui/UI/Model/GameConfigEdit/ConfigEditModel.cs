@@ -365,9 +365,6 @@ public partial class GameConfigEditModel : GameModel
     [RelayCommand]
     public void Load()
     {
-        if (Obj == null)
-            return;
-
         _items.Clear();
         if (World != null)
         {
