@@ -22,7 +22,7 @@ public record CloudDataObj
 /// 云游戏实例
 /// </summary>
 public record CloundListObj
-{ 
+{
     /// <summary>
     /// 游戏实例UUID
     /// </summary>

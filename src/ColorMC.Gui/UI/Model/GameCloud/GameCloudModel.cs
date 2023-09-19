@@ -1,6 +1,4 @@
 ﻿using Avalonia.Controls;
-using AvaloniaEdit.Utils;
-using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -11,13 +9,11 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameCloud;
@@ -234,7 +230,7 @@ public partial class GameCloudModel : GameModel
         }
         LocalConfigTime = ConfigTime;
         GameCloudUtils.Save();
-       
+
     }
 
     /// <summary>
@@ -518,7 +514,7 @@ public partial class GameCloudModel : GameModel
         }
 
         Model.Progress(App.GetLanguage("GameCloudWindow.Info18"));
-        var res1 =  await GameCloudUtils.DeleteWorld(Obj, world.Cloud.Name);
+        var res1 = await GameCloudUtils.DeleteWorld(Obj, world.Cloud.Name);
         Model.ProgressClose();
         if (res1 == 101)
         {
@@ -527,7 +523,7 @@ public partial class GameCloudModel : GameModel
         }
         else if (res1 == 102)
         {
-           
+
             Model.Show(App.GetLanguage("GameCloudWindow.Error8"));
             return;
         }
