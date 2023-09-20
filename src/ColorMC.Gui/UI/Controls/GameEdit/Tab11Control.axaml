@@ -21,10 +21,11 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 DockPanel.Dock="Top">
-                <StackPanel Orientation="Horizontal">
+                <WrapPanel>
                     <Button
                         Width="100"
                         Height="25"
+                        Margin="0,0,5,0"
                         Command="{Binding OpenShaderpack}"
                         Content="{setting:Localize Button.OpFile}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text39}"
@@ -32,7 +33,7 @@
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         Command="{Binding ImportShaderpack}"
                         Content="{setting:Localize Button.Input}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text60}"
@@ -40,7 +41,7 @@
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         Command="{Binding AddShaderpack}"
                         Content="{setting:Localize Button.Add}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text61}"
@@ -48,12 +49,11 @@
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="5,0,0,0"
                         Command="{Binding LoadShaderpack}"
                         Content="{setting:Localize Button.Refash}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text62}"
                         ToolTip.VerticalOffset="-30" />
-                </StackPanel>
+                </WrapPanel>
             </Border>
             <Border
                 Margin="0,3,0,0"

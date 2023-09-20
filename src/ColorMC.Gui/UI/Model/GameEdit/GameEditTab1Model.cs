@@ -97,7 +97,7 @@ public partial class GameEditModel : GameModel
 
     }
 
-    partial void OnGameVersionChanged(string value)
+    async partial void OnGameVersionChanged(string value)
     {
         if (_gameLoad)
             return;
@@ -110,6 +110,8 @@ public partial class GameEditModel : GameModel
         Obj.Loader = Loaders.Normal;
         Obj.LoaderVersion = null;
         Obj.Save();
+
+        await LoaderReload();
     }
 
     partial void OnLoaderVersionChanged(string? value)

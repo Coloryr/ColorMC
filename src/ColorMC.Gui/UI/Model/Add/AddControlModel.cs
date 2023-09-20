@@ -99,14 +99,20 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
 
     }
-    partial void OnTypeChanged(int value)
+
+    partial void OnGameVersionOptifineChanged(string? value)
+    {
+        LoadOptifineVersion();
+    }
+
+    async partial void OnTypeChanged(int value)
     {
         if (!Display)
             return;
 
         if (Type == 5)
         {
-            OptifineOpen();
+            await OptifineOpen();
             return;
         }
 
@@ -377,18 +383,7 @@ public partial class AddControlModel : GameModel, IAddWindow
                                  group item2 by item2.MCVersion into newgroup
                                  select newgroup.Key);
 
-        DownloadOptifineList.Clear();
-        var item = GameVersionOptifine;
-        if (string.IsNullOrWhiteSpace(item))
-        {
-            DownloadOptifineList.AddRange(OptifineList);
-        }
-        else
-        {
-            DownloadOptifineList.AddRange(from item1 in OptifineList
-                                          where item1.MCVersion == item
-                                          select item1);
-        }
+        LoadOptifineVersion();
     }
 
     [RelayCommand]
@@ -826,17 +821,21 @@ public partial class AddControlModel : GameModel, IAddWindow
         Model.ProgressClose();
     }
 
-    public async void OptifineOpen()
+    public async Task OptifineOpen()
     {
         OptifineDisplay = true;
         await LoadOptifineList();
     }
 
-    public void GoTo(FileType file)
+    public async void GoTo(FileType file)
     {
         if (file == FileType.Optifne)
         {
-            OptifineOpen();
+            await OptifineOpen();
+            if (GameVersionList.Contains(Obj.Version))
+            {
+                GameVersionOptifine = Obj.Version;
+            }
         }
         else
         {
@@ -897,6 +896,22 @@ public partial class AddControlModel : GameModel, IAddWindow
     public void WindowClose()
     {
         OnPropertyChanged("WindowClose");
+    }
+
+    public void LoadOptifineVersion()
+    {
+        DownloadOptifineList.Clear();
+        var item = GameVersionOptifine;
+        if (string.IsNullOrWhiteSpace(item))
+        {
+            DownloadOptifineList.AddRange(OptifineList);
+        }
+        else
+        {
+            DownloadOptifineList.AddRange(from item1 in OptifineList
+                                          where item1.MCVersion == item
+                                          select item1);
+        }
     }
 
     protected override void Close()

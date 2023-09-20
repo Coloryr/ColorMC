@@ -262,7 +262,7 @@
                         Margin="5,5,0,5"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
-                        Command="{Binding OpenJava}"
+                        Command="{Binding Open}"
                         Content="{setting:Localize Button.OpFile}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                         ToolTip.VerticalOffset="-30" />
