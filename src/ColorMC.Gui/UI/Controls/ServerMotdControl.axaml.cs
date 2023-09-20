@@ -94,11 +94,9 @@ public partial class ServerMotdControl : UserControl
         if (motd.State == StateType.GOOD)
         {
             Grid2.IsVisible = false;
-            using var stream = new MemoryStream();
-            await stream.WriteAsync(motd.FaviconByteArray);
-            stream.Seek(0, SeekOrigin.Begin);
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
+                using var stream = new MemoryStream(motd.FaviconByteArray);
                 Image1.Source = new Bitmap(stream);
 
                 Label2.Content = motd.Players.Online;

@@ -1305,21 +1305,24 @@ public static class GameBinding
             if (local.EndsWith(".zip"))
             {
                 using ZipFile zFile = new(stream);
-                if (zFile.GetEntry("game.json") != null)
+                foreach (ZipEntry item in zFile)
                 {
-                    return PackType.ColorMC;
-                }
-                else if (zFile.GetEntry("mcbbs.packmeta") != null)
-                {
-                    return PackType.HMCL;
-                }
-                else if (zFile.GetEntry("instance.cfg") != null)
-                {
-                    return PackType.MMC;
-                }
-                else if (zFile.GetEntry("manifest.json") != null)
-                {
-                    return PackType.CurseForge;
+                    if (item.Name.EndsWith("game.json"))
+                    {
+                        return PackType.ColorMC;
+                    }
+                    else if (item.Name.EndsWith("mcbbs.packmeta"))
+                    {
+                        return PackType.HMCL;
+                    }
+                    else if (item.Name.EndsWith("instance.cfg"))
+                    {
+                        return PackType.MMC;
+                    }
+                    else if (item.Name.EndsWith("manifest.json"))
+                    {
+                        return PackType.CurseForge;
+                    }
                 }
             }
         }
