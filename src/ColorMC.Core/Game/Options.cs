@@ -28,6 +28,10 @@ public static class Options
             {
                 options.Add(temp[0], "");
             }
+            else if (temp.Length > 2)
+            {
+                options.Add(temp[0], MakeString(temp, 1, sp));
+            }
             else
             {
                 options.Add(temp[0], temp[1]);
@@ -35,5 +39,16 @@ public static class Options
         }
 
         return options;
+    }
+
+    private static string MakeString(string[] input, int index, string sp)
+    {
+        string temp = "";
+        for (int i = index; i < input.Length; i++)
+        {
+            temp += input[i] + sp;
+        }
+
+        return temp[0..^(sp.Length)];
     }
 }
