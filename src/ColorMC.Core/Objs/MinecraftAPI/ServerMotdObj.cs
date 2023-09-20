@@ -137,7 +137,20 @@ public class ServerMotdObj
     public ModInfo ModInfo { get; set; }
 
     [JsonIgnore]
-    public byte[] FaviconByteArray { get { return Convert.FromBase64String(Favicon.Replace("data:image/png;base64,", "")); } }
+    public byte[] FaviconByteArray 
+    { 
+        get 
+        {
+            if (string.IsNullOrWhiteSpace(Favicon))
+            {
+                return Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+            }
+            else
+            { 
+                return Convert.FromBase64String(Favicon.Replace("data:image/png;base64,", ""));
+            }
+        } 
+    }
 
     /// <summary>
     /// The ping delay time.(ms)
@@ -169,6 +182,5 @@ public class ServerMotdObj
     {
         ServerAddress = ip;
         ServerPort = port;
-        Favicon = "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     }
 }
