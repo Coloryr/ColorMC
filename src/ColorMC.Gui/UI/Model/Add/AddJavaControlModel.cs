@@ -2,6 +2,7 @@
 using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -154,6 +155,7 @@ public partial class AddJavaControlModel : TopModel
         }
 
         Model.Notify(App.GetLanguage("AddJavaWindow.Info3"));
+        (App.SettingWindow?.DataContext as SettingModel)?.LoadJava();
     }
 
     private void Switch()

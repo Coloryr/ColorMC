@@ -49,8 +49,8 @@ public partial class SettingModel : TopModel
         else
         {
             Model.Notify(App.GetLanguage("SettingWindow.Tab5.Info6"));
-            LoadJava();
         }
+        LoadJava();
     }
 
     [RelayCommand]
@@ -74,27 +74,20 @@ public partial class SettingModel : TopModel
             return;
         }
 
-        try
+        Model.Progress(App.GetLanguage("SettingWindow.Tab5.Info1"));
+
+        var res = JavaBinding.AddJava(JavaName, JavaLocal);
+        Model.ProgressClose();
+        if (res.Item1 == null)
         {
-            Model.Progress(App.GetLanguage("SettingWindow.Tab5.Info1"));
-
-            var res = JavaBinding.AddJava(JavaName, JavaLocal);
-            Model.ProgressClose();
-            if (res.Item1 == null)
-            {
-                Model.Show(res.Item2!);
-                return;
-            }
-
-            JavaName = "";
-            JavaLocal = "";
-
-            LoadJava();
+            Model.Show(res.Item2!);
+            return;
         }
-        finally
-        {
 
-        }
+        JavaName = "";
+        JavaLocal = "";
+
+        LoadJava();
     }
 
     [RelayCommand]
