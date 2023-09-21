@@ -129,6 +129,7 @@ public static class JvmPath
     /// <returns>结果</returns>
     private static string? Find(string path)
     {
+        path += "/bin/";
         return SystemInfo.Os switch
         {
             OsType.Windows => PathHelper.GetFile(path, "javaw.exe"),
