@@ -253,6 +253,18 @@ public static class GameHelper
                 ? $"{UrlHelper.MavenUrl[0]}com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar"
                 : $"{UrlHelper.MavenUrl[1]}com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar";
         }
+        else if (item.name.StartsWith("org.ow2.asm:asm-all:"))
+        {
+            string[] version = item.name.Split(":")[2].Split(".");
+            if (int.Parse(version[0]) >= 5 && int.Parse(version[1]) >= 13) return item;
+            item.name = "org.ow2.asm:asm-all:5.0.4";
+            item.downloads.artifact.path = "org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
+            item.downloads.artifact.sha1 = "e6244859997b3d4237a552669279780876228909";
+            item.downloads.artifact.url =
+                BaseClient.Source == SourceLocal.Offical
+                ? $"{UrlHelper.MavenUrl[0]}org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar"
+                : $"{UrlHelper.MavenUrl[1]}org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
+        }
 
         return item;
     }
