@@ -280,7 +280,7 @@ mcaselector的下载与启动 okl
 检测是否使用了modloader okl
 
 2023.8.31(A20)
-存档云同步
+存档云同步 okl
 
 2023.9.3
 Log4J安全开关 okl
@@ -291,5 +291,10 @@ Log4J安全开关 okl
 
 2023.9.10
 添加快捷启动 okl
+
+2023.9.20
+修复压缩包导入Bug okl
+调整UI okl
+修复Linux与Macos下的Java权限问题 okl
 
 添加McMod搜索源 不做了

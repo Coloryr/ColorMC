@@ -27,7 +27,11 @@ public static class JavaHelper
             p.StartInfo.CreateNoWindow = true;
             p.Start();
 
-            p.StandardInput.WriteLine("chmod -R 777 " + path);
+            var info = new FileInfo(path);
+            p.StandardInput.WriteLine("chmod a+x " + info.Directory!.FullName + "/");
+            string path1 = info.Directory.Parent.FullName + "/lib/";
+            p.StandardInput.WriteLine("chmod a+x " + path1);
+            //p.StandardInput.WriteLine("chmod -R 777 " + path);
             p.StandardInput.WriteLine("exit");
             p.WaitForExit();
 
