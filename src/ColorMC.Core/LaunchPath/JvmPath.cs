@@ -129,7 +129,6 @@ public static class JvmPath
     /// <returns>结果</returns>
     private static string? Find(string path)
     {
-        path += "/bin/";
         return SystemInfo.Os switch
         {
             OsType.Windows => PathHelper.GetFile(path, "javaw.exe"),
@@ -205,10 +204,17 @@ public static class JvmPath
             return (false, LanguageHelper.Get("Core.Jvm.Error6"));
         else
         {
+            if (java.Contains("jre"))
+            {
+                var info = new FileInfo(java);
+                var tpath = info.Directory!.Parent!.Parent!.FullName + "/bin/" + info.Name;
+                if (File.Exists(tpath))
+                {
+                    java = tpath;
+                }
+            }
             Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info3"), java));
         }
-
-        var info = new FileInfo(java);
 
         if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
         {
