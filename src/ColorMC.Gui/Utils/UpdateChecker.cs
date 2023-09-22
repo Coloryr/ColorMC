@@ -52,13 +52,16 @@ public static class UpdateChecker
 
     public static async void Check()
     {
+        if (ColorMCGui.BaseSha1 == null)
+            return;
+
         try
         {
             var data = await BaseClient.DownloadClient.GetStringAsync(_baseUrl + "index.json");
             var obj = JObject.Parse(data);
             if (obj == null)
             {
-                App.ShowError(App.GetLanguage("Gui.Error21"), "Json Error");
+                App.UpdateCheckFail();
                 return;
             }
 
@@ -84,12 +87,16 @@ public static class UpdateChecker
         }
         catch (Exception e)
         {
-            App.ShowError(App.GetLanguage("Gui.Error21"), e);
+            App.UpdateCheckFail();
+            Logs.Error(App.GetLanguage("Gui.Error21"), e);
         }
     }
 
     public static async void StartUpdate()
     {
+        if (ColorMCGui.BaseSha1 == null)
+            return;
+
         var list = new List<DownloadItemObj>()
         {
             new DownloadItemObj()

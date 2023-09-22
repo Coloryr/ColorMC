@@ -872,6 +872,16 @@ public partial class App : Application
         return window.Model.TextInfo(GetLanguage("Gui.Info5"), data);
     }
 
+    public static void UpdateCheckFail()
+    {
+        var window = GetMainWindow();
+        if (window == null)
+        {
+            return;
+        }
+        window.Model.Show(GetLanguage("Gui.Error21"));
+    }
+
     public static IBaseWindow? GetMainWindow()
     {
         if (ConfigBinding.WindowMode())
