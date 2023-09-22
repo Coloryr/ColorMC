@@ -30,10 +30,10 @@ public static class Program
 
     public static readonly string[] BaseSha1 = new[]
     {
-        "9bac8ae2d35ceeeaf57a00811bc2d7dbe66114fd",
-        "c1a2c5d3827a3adbcf9230bc5ce0993bdfe7b72e",
-        "1fb82efaa3d8320f30efeaea229662bf39c07c9c",
-        "303458d28a47c7c4ae55cb29c8f5e4d2d22bb0f6"
+        "24fc9eeac09b44e62651badb2cb1481def1ff1a7",
+        "b8bee4b5d46fcd84f106efd8f4547e5e39ea7622",
+        "2e7de71cdfca4457f76f992607db872a41199c95",
+        "f614cd7289ce14706e6f8df050a820a7db243d4f"
     };
     /// <summary>
     /// 加载路径

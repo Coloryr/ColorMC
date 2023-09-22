@@ -303,12 +303,6 @@ public partial class MainModel : TopModel, IMainTop
     {
         Load();
         Load1();
-#if !DEBUG
-        if (ConfigBinding.GetAllConfig().Item1?.Http?.CheckUpdate == true)
-        {
-            UpdateChecker.Check();
-        }
-#endif
 
         MotdLoad();
 
@@ -324,6 +318,13 @@ public partial class MainModel : TopModel, IMainTop
                 BaseBinding.ServerPackCheck(Model, game);
             }
         }
+
+#if !DEBUG
+        if (ConfigBinding.GetAllConfig().Item1?.Http?.CheckUpdate == true)
+        {
+            UpdateChecker.Check();
+        }
+#endif
     }
 
     public void Load()
