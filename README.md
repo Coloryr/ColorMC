@@ -6,7 +6,7 @@
 
 使用dotnet7作为运行环境，XAML作为前端语言，C#作为后端语言
 
-[用户手册](./guide/Main.md)
+[用户手册](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md)
 
 ![](/image/run.png)  
 ![](/image/GIF.gif)  
@@ -16,6 +16,11 @@
 - Linux
 - Windows
 - macOs
+
+注意：ARM64平台不能保证其兼容性
+Windows ARM64 可以运行，渲染有问题
+Linux ARM64 在xx派上可以运行，运行缓慢
+Mac ARM64 不能运行，可以运行x64版本
 
 Linux由于发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以尝试修改`/home/{user}/ColorMC/gui.json`
 
@@ -62,7 +67,6 @@ $ dotnet run
 ```
 
 ## 项目说明
-- ColorMC.Android 安卓程序
 - ColorMC.Core 启动器底层核心
 - ColorMC.Cmd CLI模式 (已放弃)
 - ColorMC.Gui Gui模式
@@ -83,6 +87,8 @@ $ dotnet run
 [SixLabors](https://sixlabors.com/) 图片处理  
 [Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
 [ForgeWrapper](https://github.com/ZekerZhayard/ForgeWrapper) Forge启动器  
+[SharpCompress](https://github.com/adamhathcock/sharpcompress) XZ解压支持  
+[Live2DCSharpSDK](https://github.com/coloryr/Live2DCSharpSDK) Live2d渲染
 
 ## 使用的IDE
 
