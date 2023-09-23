@@ -1,6 +1,5 @@
 ﻿using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs;
 using System.Diagnostics;
 
 namespace ColorMC.Core.LaunchPath;
@@ -27,7 +26,7 @@ public static class ToolPath
 
         Directory.CreateDirectory(BaseDir);
     }
-    
+
     /// <summary>
     /// 打开地图编辑器
     /// </summary>

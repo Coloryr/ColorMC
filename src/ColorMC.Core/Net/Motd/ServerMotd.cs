@@ -1,7 +1,6 @@
 using ColorMC.Core.Objs.Minecraft;
 using Heijden.Dns.Portable;
 using Heijden.DNS;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Net.Sockets;

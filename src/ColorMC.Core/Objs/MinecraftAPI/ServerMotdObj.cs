@@ -137,19 +137,19 @@ public class ServerMotdObj
     public ModInfo ModInfo { get; set; }
 
     [JsonIgnore]
-    public byte[] FaviconByteArray 
-    { 
-        get 
+    public byte[] FaviconByteArray
+    {
+        get
         {
             if (string.IsNullOrWhiteSpace(Favicon))
             {
                 return Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
             }
             else
-            { 
+            {
                 return Convert.FromBase64String(Favicon.Replace("data:image/png;base64,", ""));
             }
-        } 
+        }
     }
 
     /// <summary>

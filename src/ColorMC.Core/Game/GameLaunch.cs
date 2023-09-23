@@ -782,7 +782,7 @@ public static class Launch
 
         var sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
 
-        var argDic = new Dictionary<string, string>() 
+        var argDic = new Dictionary<string, string>()
         {
             {"${auth_player_name}", login.UserName },
             {"${version_name}",version_name },

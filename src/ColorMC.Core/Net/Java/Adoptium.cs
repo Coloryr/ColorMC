@@ -1,4 +1,3 @@
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Java;
 using Newtonsoft.Json;
 
@@ -10,7 +9,7 @@ namespace ColorMC.Core.Net.Java;
 public static class Adoptium
 {
     public const string AdoptiumUrl = "https://api.adoptium.net/";
-    
+
     public readonly static List<string> JavaVersion = new()
     {
         "8", "11", "16", "17", "18", "19", "20"
