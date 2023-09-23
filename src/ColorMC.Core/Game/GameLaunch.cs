@@ -197,9 +197,12 @@ public static class Launch
     {
         var game = VersionPath.GetGame(obj.Version)!;
         if (game.arguments == null)
+        {
             return V1JvmArg;
+        }
 
-        List<string> arg = new();
+        var arg = new List<string>();
+        //添加原版参数
         foreach (object item in game.arguments.jvm)
         {
             if (item is string str)
@@ -229,6 +232,7 @@ public static class Launch
             }
         }
 
+        //添加Mod加载器的参数
         if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
             var forge = obj.Loader == Loaders.NeoForge ?
@@ -280,7 +284,9 @@ public static class Launch
     {
         var game = VersionPath.GetGame(obj.Version)!;
         if (game.arguments == null)
+        {
             return MakeV1GameArg(obj);
+        }
 
         List<string> arg = new();
         foreach (object item in game.arguments.game)
@@ -662,6 +668,7 @@ public static class Launch
         {
             if (item.Later == null)
             {
+                //不添加lwjgl
                 if (SystemInfo.Os == OsType.Android && CheckHelpers.GameLaunchVersionV2(version)
                     && (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
                     && item.Name.Contains("lwjgl"))
@@ -756,24 +763,16 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="login">登录的账户</param>
-    /// <param name="all_arg">参数</param>
+    /// <param name="args">所有参数参数</param>
     /// <param name="v2">V2模式</param>
-    private static void ReplaceAll(GameSettingObj obj, LoginObj login, List<string> all_arg, string classpath)
+    private static void ReplaceAll(GameSettingObj obj, LoginObj login, List<string> args, string classpath)
     {
         var version = VersionPath.GetGame(obj.Version)!;
-        string assetsPath = AssetsPath.BaseDir;
-        string gameDir = InstancesPath.GetGamePath(obj);
-        string assetsIndexName;
-        if (version.assets != null)
-        {
-            assetsIndexName = version.assets;
-        }
-        else
-        {
-            assetsIndexName = "legacy";
-        }
+        var assetsPath = AssetsPath.BaseDir;
+        var gameDir = InstancesPath.GetGamePath(obj);
+        var assetsIndexName = version.assets != null ? version.assets : "legacy";
 
-        string version_name = obj.Loader switch
+        var version_name = obj.Loader switch
         {
             Loaders.Forge => $"forge-{obj.Version}-{obj.LoaderVersion}",
             Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderVersion}",
@@ -781,9 +780,9 @@ public static class Launch
             _ => obj.Version
         };
 
-        string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
+        var sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
 
-        Dictionary<string, string> argDic = new()
+        var argDic = new Dictionary<string, string>() 
         {
             {"${auth_player_name}", login.UserName },
             {"${version_name}",version_name },
@@ -806,9 +805,9 @@ public static class Launch
                 ? "%classpath%" : classpath },
         };
 
-        for (int a = 0; a < all_arg.Count; a++)
+        for (int a = 0; a < args.Count; a++)
         {
-            all_arg[a] = argDic.Aggregate(all_arg[a], (a, b) => a.Replace(b.Key, b.Value));
+            args[a] = argDic.Aggregate(args[a], (a, b) => a.Replace(b.Key, b.Value));
         }
     }
 
@@ -832,12 +831,14 @@ public static class Launch
         {
             list.Add(jvmarg.Count.ToString());
         }
+        //jvm
         list.AddRange(jvmarg);
         if (SystemInfo.Os == OsType.Android)
         {
             list.Add(classpath);
         }
 
+        //mainclass
         if (string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
         {
             if (obj.Loader == Loaders.Normal)
@@ -876,23 +877,25 @@ public static class Launch
         {
             list.Add(gamearg.Count.ToString());
         }
+        //gamearg
         list.AddRange(gamearg);
 
         return list;
     }
 
+    /// <summary>
+    /// 保持splash不开启
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     private static void ConfigSet(GameSettingObj obj)
     {
-        if (SystemInfo.Os == OsType.Android)
+        var dir = obj.GetConfigPath();
+        Directory.CreateDirectory(dir);
+        var file = dir + "splash.properties";
+        string data = PathHelper.ReadText(file) ?? "enabled=true";
+        if (data.Contains("enabled=true"))
         {
-            var dir = obj.GetConfigPath();
-            Directory.CreateDirectory(dir);
-            var file = dir + "splash.properties";
-            string data = PathHelper.ReadText(file) ?? "enabled=true";
-            if (data.Contains("enabled=true"))
-            {
-                PathHelper.WriteText(file, data.Replace("enabled=true", "enabled=false"));
-            }
+            PathHelper.WriteText(file, data.Replace("enabled=true", "enabled=false"));
         }
     }
 
@@ -923,8 +926,9 @@ public static class Launch
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, WorldObj? world, CancellationToken token)
     {
         s_cancel = token;
-        Stopwatch stopwatch = new();
+        var stopwatch = new Stopwatch();
 
+        //版本号检测
         if (string.IsNullOrWhiteSpace(obj.Version) ||
             (obj.Loader != Loaders.Normal && string.IsNullOrWhiteSpace(obj.LoaderVersion)))
         {
@@ -976,9 +980,9 @@ public static class Launch
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
 
+        //检查游戏文件
         stopwatch.Restart();
         stopwatch.Start();
-        //检查游戏文件
         var res = await CheckHelpers.CheckGameFile(obj, login, s_cancel);
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
@@ -1032,9 +1036,9 @@ public static class Launch
             }
         }
 
+        //查找合适的JAVA
         stopwatch.Restart();
         stopwatch.Start();
-
         var path = obj.JvmLocal;
         JavaInfo? jvm = null;
         var game = VersionPath.GetGame(obj.Version)!;
@@ -1059,7 +1063,6 @@ public static class Launch
 
         //准备Jvm参数
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
-
         var arg = await MakeArg(obj, login, world);
         ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.Get("Core.Launch.Info1"));
         bool hidenext = false;
@@ -1154,10 +1157,11 @@ public static class Launch
             return null;
         }
 
-        ConfigSet(obj);
-
         if (SystemInfo.Os == OsType.Android)
         {
+            ConfigSet(obj);
+
+            //安装Forge
             var version = VersionPath.GetGame(obj.Version)!;
             var v2 = CheckHelpers.GameLaunchVersionV2(version);
             if (v2 && obj.Loader is Loaders.Forge or Loaders.NeoForge)

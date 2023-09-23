@@ -55,6 +55,7 @@ public static class GameLogs
             }
             else if (path.EndsWith(".log.gz"))
             {
+                //解压日志
                 using var compressedFileStream = PathHelper.OpenRead(path)!;
                 using var decompressor = new GZipStream(compressedFileStream, CompressionMode.Decompress);
                 using var output = new MemoryStream();

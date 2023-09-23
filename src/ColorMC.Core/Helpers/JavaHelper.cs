@@ -45,6 +45,11 @@ public static class JavaHelper
         }
     }
 
+    /// <summary>
+    /// 获取主版本
+    /// </summary>
+    /// <param name="version">版本号</param>
+    /// <returns>主版本</returns>
     private static int GetMajorVersion(string version)
     {
         if (version == JvmPath.Unknow)

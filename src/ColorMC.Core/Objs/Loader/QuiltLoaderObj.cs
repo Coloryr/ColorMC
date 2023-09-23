@@ -1,5 +1,8 @@
 ﻿namespace ColorMC.Core.Objs.Loader;
 
+/// <summary>
+/// 加载器数据
+/// </summary>
 public record QuiltLoaderObj
 {
     public record Arguments

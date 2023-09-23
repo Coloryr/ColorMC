@@ -227,6 +227,11 @@ public static class GameHelper
         }
     }
 
+    /// <summary>
+    /// 手机替换运行库
+    /// </summary>
+    /// <param name="item">运行库</param>
+    /// <returns>运行库</returns>
     public static GameArgObj.Libraries ReplaceLib(GameArgObj.Libraries item)
     {
         if (item.name.StartsWith("net.java.dev.jna:jna:"))

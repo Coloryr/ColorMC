@@ -31,7 +31,7 @@ public static class Mods
             using var stream1 = zFile.GetInputStream(item1);
             using var stream2 = new MemoryStream();
             await stream1.CopyToAsync(stream2);
-            string data = Encoding.UTF8.GetString(stream2.ToArray());
+            var data = Encoding.UTF8.GetString(stream2.ToArray());
             var obj1 = JToken.Parse(data);
             JObject obj3;
             if (obj1 is JArray array)
@@ -60,13 +60,15 @@ public static class Mods
             using var stream1 = zFile.GetInputStream(item1);
             using var stream2 = new MemoryStream();
             await stream1.CopyToAsync(stream2);
-            string data = Encoding.UTF8.GetString(stream2.ToArray());
+            var data = Encoding.UTF8.GetString(stream2.ToArray());
             var obj1 = JObject.Parse(data);
             var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
             if (obj2 == null)
+            {
                 return null;
+            }
 
-            ModObj obj3 = new()
+            var obj3 = new ModObj
             {
                 V2 = true,
                 Loader = Loaders.Forge,
@@ -92,11 +94,15 @@ public static class Mods
             await stream1.CopyToAsync(stream);
             var model = Toml.Parse(stream.ToArray()).ToModel();
             if (model["mods"] is not TomlTableArray model1)
+            {
                 return null;
+            }
             var model2 = model1[0];
             if (model2 == null)
+            {
                 return null;
-            ModObj obj3 = new()
+            }
+            var obj3 = new ModObj
             {
                 V2 = true,
                 Loader = Loaders.Forge,
@@ -137,12 +143,13 @@ public static class Mods
 
             obj3.name ??= "";
 
-            if (model["dependencies"] is TomlTable model3)
+            //依赖项
+            if (model.TryGetValue("dependencies", out var model3) && model3 is TomlTable model4)
             {
                 obj3.requiredMods = new();
-                if (model3.FirstOrDefault().Value is TomlTableArray model4)
+                if (model4.FirstOrDefault().Value is TomlTableArray model5)
                 {
-                    foreach (var item3 in model4)
+                    foreach (var item3 in model5)
                     {
                         if (item3.TryGetValue("modId", out item2)
                         && item3.TryGetValue("mandatory", out var item4)
@@ -151,6 +158,24 @@ public static class Mods
                         {
                             obj3.requiredMods.Add(str);
                         }
+                    }
+                }
+            }
+
+            obj3.InJar = new();
+            foreach (ZipEntry item3 in zFile)
+            {
+                if (item3.Name.EndsWith(".jar") && item3.Name.StartsWith("META-INF/jarjar/"))
+                {
+                    using var filestream = zFile.GetInputStream(item3);
+                    using var stream2 = new MemoryStream();
+                    await filestream.CopyToAsync(stream2);
+                    stream2.Seek(0, SeekOrigin.Begin);
+                    using var zFile1 = new ZipFile(stream2);
+                    var inmod = await ReadMod(zFile1);
+                    if (inmod != null)
+                    {
+                        obj3.InJar.Add(inmod);
                     }
                 }
             }
@@ -193,6 +218,7 @@ public static class Mods
                 }
             }
 
+            //JarInJar
             obj3.InJar = new();
 
             foreach (ZipEntry item2 in zFile)
@@ -203,7 +229,7 @@ public static class Mods
                     using var stream2 = new MemoryStream();
                     await filestream.CopyToAsync(stream2);
                     stream2.Seek(0, SeekOrigin.Begin);
-                    using ZipFile zFile1 = new(stream2);
+                    using var zFile1 = new ZipFile(stream2);
                     var inmod = await ReadMod(zFile1);
                     if (inmod != null)
                     {
@@ -254,6 +280,7 @@ public static class Mods
                 }
             }
 
+            //JarInJar
             obj3.InJar = new();
 
             foreach (ZipEntry item2 in zFile)
@@ -261,7 +288,7 @@ public static class Mods
                 if (item2.Name.EndsWith(".jar") && item2.Name.StartsWith("META-INF/jars/"))
                 {
                     using var filestream = zFile.GetInputStream(item2);
-                    using ZipFile zFile1 = new(filestream);
+                    using var zFile1 = new ZipFile(filestream);
                     var inmod = await ReadMod(zFile1);
                     if (inmod != null)
                     {
@@ -284,9 +311,9 @@ public static class Mods
     public static async Task<List<ModObj>> GetMods(this GameSettingObj obj)
     {
         var list = new ConcurrentBag<ModObj>();
-        string dir = obj.GetModsPath();
+        var dir = obj.GetModsPath();
 
-        DirectoryInfo info = new(dir);
+        var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
             info.Create();
@@ -306,7 +333,7 @@ public static class Mods
                 return;
             }
 
-            string sha1 = "";
+            var sha1 = "";
             bool add = false;
             try
             {
@@ -331,7 +358,7 @@ public static class Mods
                     return;
                 }
 
-                using ZipFile zFile = new(filestream);
+                using var zFile = new ZipFile(filestream);
                 var mod = await ReadMod(zFile);
                 if (mod != null)
                 {
@@ -364,6 +391,7 @@ public static class Mods
             }
         });
 
+        //排序
         var list1 = list.ToList();
         list1.Sort(ModComparer.Instance);
 
@@ -427,8 +455,8 @@ public static class Mods
         {
             return false;
         }
-        string path = obj.GetModsPath();
-        bool ok = true;
+        var path = obj.GetModsPath();
+        var ok = true;
         await Task.Run(() => Parallel.ForEach(file, async (item) =>
         {
             var name = Path.GetFileName(item);
@@ -473,11 +501,16 @@ public static class Mods
         obj.SaveModInfo();
     }
 
+    /// <summary>
+    /// 检查有无mod存在
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static bool GetModeFast(this GameSettingObj obj)
     {
         string dir = obj.GetModsPath();
 
-        DirectoryInfo info = new(dir);
+        var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
             info.Create();

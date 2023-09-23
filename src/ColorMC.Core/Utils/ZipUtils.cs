@@ -8,6 +8,9 @@ using Crc32 = ICSharpCode.SharpZipLib.Checksum.Crc32;
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// 压缩包处理
+/// </summary>
 public class ZipUtils
 {
     private int Size = 0;
@@ -33,6 +36,14 @@ public class ZipUtils
         s.Close();
     }
 
+    /// <summary>
+    /// 打包Zip
+    /// </summary>
+    /// <param name="strFile"></param>
+    /// <param name="s"></param>
+    /// <param name="staticFile"></param>
+    /// <param name="filter"></param>
+    /// <returns></returns>
     private async Task Zip(string strFile, ZipOutputStream s,
         string staticFile, List<string>? filter)
     {
@@ -175,6 +186,12 @@ public class ZipUtils
         }
     }
 
+    /// <summary>
+    /// 进度事件回调
+    /// </summary>
+    /// <param name="archive"></param>
+    /// <param name="entry"></param>
+    /// <param name="message"></param>
     private void TarArchive_ProgressMessageEvent(TarArchive archive, TarEntry entry, string message)
     {
         if (entry != null && message == null)

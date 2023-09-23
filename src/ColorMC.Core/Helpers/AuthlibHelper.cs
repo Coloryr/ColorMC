@@ -26,13 +26,13 @@ public static class AuthlibHelper
     /// 创建Nide8Injector下载实例
     /// </summary>
     /// <returns>下载实例</returns>
-    private static DownloadItemObj BuildNide8Item()
+    private static DownloadItemObj BuildNide8Item(string version)
     {
         return new()
         {
             Url = UrlHelper.Nide8Jar,
-            Name = "com.nide8.login2:nide8auth:2.4",
-            Local = $"{LibrariesPath.BaseDir}/com/nide8/login2/nide8auth/2.4/nide8auth.2.4.jar",
+            Name = $"com.nide8.login2:nide8auth:{version}",
+            Local = $"{LibrariesPath.BaseDir}/com/nide8/login2/nide8auth/{version}/nide8auth-{version}.jar",
         };
     }
     /// <summary>
@@ -56,40 +56,42 @@ public static class AuthlibHelper
     /// 初始化Nide8Injector，存在不下载
     /// </summary>
     /// <returns>Nide8Injector下载实例</returns>
-    public static async Task<DownloadItemObj?> ReadyNide8()
+    public static async Task<(bool, DownloadItemObj?)> ReadyNide8()
     {
-        var item = BuildNide8Item();
-        NowNide8Injector = item.Local;
-
         var data = await BaseClient.GetString($"{UrlHelper.Nide8}00000000000000000000000000000000/");
         if (data.Item1 == false)
-            return null;
+        {
+            return (false, null);
+        }
         try
         {
             var obj = JObject.Parse(data.Item2!);
             var sha1 = obj?["jarHash"]!.ToString().ToLower();
+            var item = BuildNide8Item(obj!["jarVersion"]!.ToString());
+            NowNide8Injector = item.Local;
+
             item.SHA1 = sha1;
             if (!File.Exists(NowNide8Injector))
             {
-                return item;
+                return (true, item);
             }
 
             if (!string.IsNullOrWhiteSpace(sha1))
             {
-                using var stream = PathHelper.OpenRead(NowNide8Injector);
+                using var stream = PathHelper.OpenRead(NowNide8Injector)!;
                 var sha11 = HashHelper.GenSha1(stream);
                 if (sha11 != sha1)
                 {
-                    return item;
+                    return (true, item);
                 }
             }
 
-            return null;
+            return (true, null);
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.Error8"), e);
-            return null;
+            return (false, null);
         }
     }
 
@@ -126,59 +128,67 @@ public static class AuthlibHelper
     /// 初始化AuthlibInjector，存在不下载
     /// </summary>
     /// <returns>AuthlibInjector下载实例</returns>
-    public static async Task<DownloadItemObj?> ReadyAuthlibInjector()
+    public static async Task<(bool, DownloadItemObj?)> ReadyAuthlibInjector()
     {
-        if (string.IsNullOrWhiteSpace(NowAuthlibInjector))
+        try
         {
-            var obj1 = await GetAuthlibInjectorObj();
-            var item1 = BuildAuthlibInjectorItem(obj1);
-
-            LocalMaven.AddItem(new MavenItemObj()
+            if (string.IsNullOrWhiteSpace(NowAuthlibInjector))
             {
-                Name = $"moe.yushi:authlibinjector",
-                Url = item1.Url,
-                Have = true,
-                Local = "/moe/yushi/authlibinjector/" +
-                $"{obj1.version}/authlib-injector-{obj1.version}.jar",
-                SHA256 = obj1.checksums.sha256
-            });
+                var obj1 = await GetAuthlibInjectorObj();
+                var item1 = BuildAuthlibInjectorItem(obj1);
 
-            NowAuthlibInjector = item1.Local;
-            if (File.Exists(NowAuthlibInjector))
+                LocalMaven.AddItem(new()
+                {
+                    Name = $"moe.yushi:authlibinjector",
+                    Url = item1.Url,
+                    Have = true,
+                    Local = "/moe/yushi/authlibinjector/" +
+                    $"{obj1.version}/authlib-injector-{obj1.version}.jar",
+                    SHA256 = obj1.checksums.sha256
+                });
+
+                NowAuthlibInjector = item1.Local;
+                if (File.Exists(NowAuthlibInjector))
+                {
+                    var sha256 = obj1.checksums?.sha256;
+                    if (!string.IsNullOrWhiteSpace(sha256))
+                    {
+                        using var stream = PathHelper.OpenRead(NowAuthlibInjector)!;
+                        var sha2561 = await HashHelper.GenSha256Async(stream);
+                        if (sha256 != sha2561)
+                        {
+                            return (true, item1);
+                        }
+                    }
+                }
+                else
+                {
+                    return (true, item1);
+                }
+
+                return (true, null);
+            }
+            else if (File.Exists(NowAuthlibInjector))
             {
-                var sha256 = obj1.checksums?.sha256;
-                if (!string.IsNullOrWhiteSpace(sha256))
+                var item = LocalMaven.GetItem("moe.yushi:authlibinjector");
+                if (item != null && !string.IsNullOrWhiteSpace(item.SHA256))
                 {
                     using var stream = PathHelper.OpenRead(NowAuthlibInjector)!;
                     var sha2561 = await HashHelper.GenSha256Async(stream);
-                    if (sha256 != sha2561)
+                    if (item.SHA256 != sha2561)
                     {
-                        return item1;
+                        var obj1 = await GetAuthlibInjectorObj();
+                        return (true, BuildAuthlibInjectorItem(obj1));
                     }
                 }
             }
-            else
-            {
-                return item1;
-            }
 
-            return null;
+            return (true, null);
         }
-        else if (File.Exists(NowAuthlibInjector))
+        catch (Exception e)
         {
-            var item = LocalMaven.GetItem("moe.yushi:authlibinjector");
-            if (item != null && !string.IsNullOrWhiteSpace(item.SHA256))
-            {
-                using var stream = PathHelper.OpenRead(NowAuthlibInjector)!;
-                var sha2561 = await HashHelper.GenSha256Async(stream);
-                if (item.SHA256 != sha2561)
-                {
-                    var obj1 = await GetAuthlibInjectorObj();
-                    return BuildAuthlibInjectorItem(obj1);
-                }
-            }
+            Logs.Error(LanguageHelper.Get("Core.Http.Error11"), e);
+            return (false, null);
         }
-
-        return null;
     }
 }

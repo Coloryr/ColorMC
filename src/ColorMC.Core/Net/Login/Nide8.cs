@@ -35,7 +35,7 @@ public static class Nide8
     public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(LoginObj obj)
     {
         string server = UrlHelper.Nide8 + obj.Text1;
-        if (await LoginOld.Validate(server, obj))
+        if (await LoginOld.Validate(server + "/authserver/validate", obj))
         {
             return (LoginState.Done, obj, null);
         }

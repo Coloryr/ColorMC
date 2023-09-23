@@ -1,10 +1,16 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Java;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Java;
 
+/// <summary>
+/// Adoptium下载源
+/// </summary>
 public static class Adoptium
 {
+    public const string AdoptiumUrl = "https://api.adoptium.net/";
+    
     public readonly static List<string> JavaVersion = new()
     {
         "8", "11", "16", "17", "18", "19", "20"
@@ -44,11 +50,11 @@ public static class Adoptium
         string url;
         if (os == 0)
         {
-            url = $"https://api.adoptium.net/v3/assets/latest/{version}/hotspot";
+            url = $"{AdoptiumUrl}v3/assets/latest/{version}/hotspot";
         }
         else
         {
-            url = $"https://api.adoptium.net/v3/assets/latest/{version}/hotspot?os={GetOs(os)}";
+            url = $"{AdoptiumUrl}v3/assets/latest/{version}/hotspot?os={GetOs(os)}";
         }
         var data = await BaseClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
         if (data == null)

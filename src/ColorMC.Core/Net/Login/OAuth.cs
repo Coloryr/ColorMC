@@ -8,6 +8,9 @@ using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net.Login;
 
+/// <summary>
+/// OAuth登录
+/// </summary>
 public static class OAuthAPI
 {
     public const string OAuthCode = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";

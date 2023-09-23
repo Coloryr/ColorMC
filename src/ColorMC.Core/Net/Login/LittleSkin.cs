@@ -76,7 +76,7 @@ public static class LittleSkin
 
         server += "api/yggdrasil";
 
-        if (await LoginOld.Validate(server, obj))
+        if (await LoginOld.Validate(server + "/authserver/validate", obj))
         {
             return (LoginState.Done, obj, null);
         }

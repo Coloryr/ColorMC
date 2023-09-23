@@ -247,7 +247,11 @@ public enum LaunchState
     /// <summary>
     /// 安装Forge
     /// </summary>
-    InstallForge
+    InstallForge,
+    /// <summary>
+    /// 外置登陆器错误
+    /// </summary>
+    LoginCoreError,
 }
 
 /// <summary>

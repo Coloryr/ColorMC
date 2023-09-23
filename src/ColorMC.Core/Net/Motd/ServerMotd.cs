@@ -2,6 +2,7 @@ using ColorMC.Core.Objs.Minecraft;
 using Heijden.Dns.Portable;
 using Heijden.DNS;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
@@ -159,16 +160,24 @@ public static class ServerMotd
                     if (ProtocolHandler.ReadNextVarInt(packetData) == 0x00) //Read Packet ID
                     {
                         string result = ProtocolHandler.ReadNextString(packetData); //Get the Json data
-                        var info1 = JsonConvert.DeserializeObject<ServerMotdObj>(result);
-                        if (info1 != null)
+                        var obj2 = JObject.Parse(result);
+                        if (obj2.Count == 1 && obj2["text"]?.ToString() is string text)
                         {
-                            info = info1;
+                            info.Description = ServerDescriptionJsonConverter.StringToChar(text);
                         }
-
-                        if (!string.IsNullOrEmpty(info.Description.Text)
-                        && info.Description.Extra == null && info.Description.Text.Contains('§'))
+                        else
                         {
-                            info.Description = ServerDescriptionJsonConverter.StringToChar(info.Description.Text);
+                            var info1 = obj2.ToObject<ServerMotdObj>();
+                            if (info1 != null)
+                            {
+                                info = info1;
+                            }
+
+                            if (!string.IsNullOrEmpty(info.Description.Text)
+                            && info.Description.Extra == null && info.Description.Text.Contains('§'))
+                            {
+                                info.Description = ServerDescriptionJsonConverter.StringToChar(info.Description.Text);
+                            }
                         }
                     }
                 }

@@ -5,7 +5,10 @@ using System.Diagnostics;
 
 namespace ColorMC.Core.LaunchPath;
 
-public class ToolPath
+/// <summary>
+/// 工具路径
+/// </summary>
+public static class ToolPath
 {
     public const string Name = "tools";
 
@@ -24,20 +27,14 @@ public class ToolPath
 
         Directory.CreateDirectory(BaseDir);
     }
-
-    public static DownloadItemObj GetMcaselectorDownloadItem()
-    {
-        return new()
-        {
-            Name = "mcaselector-2.2.2",
-            Local = $"{BaseDir}/mcaselector-2.2.2.jar",
-            Url = "https://github.com/Querz/mcaselector/releases/download/2.2.2/mcaselector-2.2.2.jar"
-        };
-    }
-
+    
+    /// <summary>
+    /// 打开地图编辑器
+    /// </summary>
+    /// <returns></returns>
     public static async Task<(bool, string?)> OpenMapEdit()
     {
-        var item = GetMcaselectorDownloadItem();
+        var item = DownloadItemHelper.BuildMcaselectorItem();
         if (!File.Exists(item.Local))
         {
             var res = await DownloadManager.Start(new() { item });

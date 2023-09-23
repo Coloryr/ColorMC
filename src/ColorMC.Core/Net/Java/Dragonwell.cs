@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Java;
 
+/// <summary>
+/// Dragonwell下载源
+/// </summary>
 public static class Dragonwell
 {
     /// <summary>

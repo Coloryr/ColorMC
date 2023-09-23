@@ -231,14 +231,18 @@ public class DownloadThread
                     item.NowSize = 0;
                     item.Update?.Invoke(_index);
                     using Stream stream1 = data.Content.ReadAsStream(_token);
+
+                    //获取buffer
                     buffer = ArrayPool<byte>.Shared.Rent(DownloadManager.GetCopyBufferSize(stream1));
 
+                    //创建临时文件
                     string file = Path.GetFullPath(DownloadManager.DownloadDir + '/' + Guid.NewGuid().ToString());
 
                     using var stream = PathHelper.OpenWrite(file);
 
                     int bytesRead;
-                    while ((bytesRead = stream1.ReadAsync(buffer, _token).Result) != 0)
+                    //写文件
+                    while ((bytesRead = stream1.ReadAsync(buffer, _token).AsTask().Result) != 0)
                     {
                         stream.WriteAsync(buffer, 0, bytesRead, _token).Wait();
 
@@ -320,6 +324,7 @@ public class DownloadThread
                 }
                 catch (Exception e)
                 {
+                    //下载发生异常
                     if (_token.IsCancellationRequested)
                     {
                         break;

@@ -32,7 +32,7 @@ public static class AuthlibInjector
     /// <param name="obj">保存的账户</param>
     public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(LoginObj obj)
     {
-        if (await LoginOld.Validate(obj.Text1, obj))
+        if (await LoginOld.Validate(obj.Text1 + "/authserver/validate", obj))
         {
             return (LoginState.Done, obj, null);
         }

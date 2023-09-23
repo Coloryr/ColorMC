@@ -67,8 +67,11 @@ public static class Schematic
     public static bool AddSchematic(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetSchematicsPath();
-        Directory.CreateDirectory(path);
-        bool ok = true;
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+        var ok = true;
 
         Parallel.ForEach(file, (item) =>
         {

@@ -13,6 +13,8 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class CurseForgeAPI
 {
+    private static List<string>? s_supportVersion;
+
     private const string CurseForgeKEY = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m";
 
     public const int GameID = 432;
@@ -367,17 +369,15 @@ public static class CurseForgeAPI
         }
     }
 
-    private static List<string>? CurseForgeGameVersions;
-
     /// <summary>
     /// 获取CurseForge支持的游戏版本
     /// </summary>
     /// <returns>游戏版本</returns>
     public static async Task<List<string>?> GetGameVersions()
     {
-        if (CurseForgeGameVersions != null)
+        if (s_supportVersion != null)
         {
-            return CurseForgeGameVersions;
+            return s_supportVersion;
         }
         var list = await GetCurseForgeVersionType();
         if (list == null)
@@ -422,7 +422,7 @@ public static class CurseForgeAPI
             }
         }
 
-        CurseForgeGameVersions = list3;
+        s_supportVersion = list3;
 
         return list3;
     }

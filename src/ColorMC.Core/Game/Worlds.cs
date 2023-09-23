@@ -26,10 +26,10 @@ public static class Worlds
     /// <returns>世界列表</returns>
     public static async Task<List<WorldObj>> GetWorlds(this GameSettingObj game)
     {
-        List<WorldObj> list = new();
-        string dir = game.GetSavesPath();
+        var list = new List<WorldObj>();
+        var dir = game.GetSavesPath();
 
-        DirectoryInfo info = new(dir);
+        var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
             info.Create();
@@ -38,7 +38,7 @@ public static class Worlds
 
         await Parallel.ForEachAsync(info.GetDirectories(), async (item, cacenl) =>
         {
-            bool find = false;
+            var find = false;
             foreach (var item1 in item.GetFiles())
             {
                 if (item1.Name != "level.dat")
@@ -48,13 +48,15 @@ public static class Worlds
 
                 try
                 {
-                    WorldObj obj = new();
+                    var obj = new WorldObj();
 
+                    //读NBT
                     if (await NbtBase.Read(item1.FullName) is not NbtCompound tag)
                     {
                         break;
                     }
 
+                    //读数据
                     var tag1 = (tag["Data"] as NbtCompound)!;
                     obj.LastPlayed = (tag1["LastPlayed"] as NbtLong)!.Value;
                     obj.GameType = (tag1["GameType"] as NbtInt)!.Value;
@@ -122,8 +124,8 @@ public static class Worlds
         {
             using ZipFile zFile = new(file);
             using var stream1 = new MemoryStream();
-            string dir1 = "";
-            bool find = false;
+            var dir1 = "";
+            var find = false;
             foreach (ZipEntry e in zFile)
             {
                 if (e.IsFile && e.Name.EndsWith("level.dat"))
@@ -144,8 +146,8 @@ public static class Worlds
                 if (e.IsFile)
                 {
                     using var stream = zFile.GetInputStream(e);
-                    string file1 = Path.GetFullPath(dir + e.Name[dir1.Length..]);
-                    FileInfo info2 = new(file1);
+                    var file1 = Path.GetFullPath(dir + e.Name[dir1.Length..]);
+                    var info2 = new FileInfo(file1);
                     info2.Directory?.Create();
                     using FileStream stream3 = new(file1, FileMode.Create,
                         FileAccess.ReadWrite, FileShare.ReadWrite);
@@ -249,11 +251,12 @@ public static class Worlds
     /// <returns>还原结果</returns>
     public static async Task<bool> UnzipBackupWorld(this GameSettingObj obj, FileInfo item1)
     {
-        ZipEntry theEntry;
-        bool res = false;
+       
+        var res = false;
 
         using var s = new ZipInputStream(PathHelper.OpenRead(item1.FullName));
         using var stream1 = new MemoryStream();
+        ZipEntry theEntry;
         while ((theEntry = s.GetNextEntry()) != null)
         {
             if (theEntry.Name == "info.json")

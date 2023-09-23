@@ -15,13 +15,31 @@ using System.Text;
 namespace ColorMC.Core.Helpers;
 
 /// <summary>
-/// 游戏下载
+/// 游戏下载项目
 /// </summary>
 public static class DownloadItemHelper
 {
+    /// <summary>
+    /// 地图编辑器下载项目
+    /// </summary>
+    /// <returns></returns>
+    public static DownloadItemObj BuildMcaselectorItem()
+    {
+        return new()
+        {
+            Name = "mcaselector-2.2.2",
+            Local = $"{ToolPath.BaseDir}/mcaselector-2.2.2.jar",
+            Url = "https://github.com/Querz/mcaselector/releases/download/2.2.2/mcaselector-2.2.2.jar"
+        };
+    }
+    /// <summary>
+    /// 安全Log4j文件
+    /// </summary>
+    /// <param name="obj">游戏数据</param>
+    /// <returns>下载项目</returns>
     public static DownloadItemObj BuildLog4jItem(GameArgObj obj)
     {
-        return new DownloadItemObj()
+        return new DownloadItemObj
         {
             Name = "log4j2-xml",
             Url = obj.logging.client.file.url,
@@ -30,17 +48,28 @@ public static class DownloadItemHelper
         };
     }
 
-    public static DownloadItemObj BuildAssetsItem(string key, string hash)
+    /// <summary>
+    /// 游戏资源文件
+    /// </summary>
+    /// <param name="name">名字</param>
+    /// <param name="hash">SHA1值</param>
+    /// <returns>下载项目</returns>
+    public static DownloadItemObj BuildAssetsItem(string name, string hash)
     {
-        return new DownloadItemObj()
+        return new DownloadItemObj
         {
-            Name = key,
+            Name = name,
             Url = UrlHelper.DownloadAssets(hash, BaseClient.Source),
             Local = $"{AssetsPath.ObjectsDir}/{hash[..2]}/{hash}",
             SHA1 = hash
         };
     }
 
+    /// <summary>
+    /// 游戏本体
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <returns>下载项目</returns>
     public static DownloadItemObj BuildGameItem(string mc)
     {
         var game = VersionPath.GetGame(mc)!;
@@ -56,7 +85,7 @@ public static class DownloadItemHelper
     }
 
     /// <summary>
-    /// 创建下载项目
+    /// 创建Forge下载项目
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
@@ -65,8 +94,8 @@ public static class DownloadItemHelper
     private static DownloadItemObj BuildForgeItem(string mc, string version, string type)
     {
         version += UrlHelper.FixForgeUrl(mc);
-        string name = $"forge-{mc}-{version}-{type}";
-        string url = UrlHelper.DownloadForgeJar(mc, version, BaseClient.Source);
+        var name = $"forge-{mc}-{version}-{type}";
+        var url = UrlHelper.DownloadForgeJar(mc, version, BaseClient.Source);
 
         return new()
         {
@@ -77,7 +106,7 @@ public static class DownloadItemHelper
     }
 
     /// <summary>
-    /// 创建下载项目
+    /// 创建NeoForge下载项目
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
@@ -85,8 +114,8 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     private static DownloadItemObj BuildNeoForgeItem(string mc, string version, string type)
     {
-        string name = $"forge-{mc}-{version}-{type}";
-        string url = UrlHelper.DownloadNeoForgeJar(mc, version, BaseClient.Source);
+        var name = $"forge-{mc}-{version}-{type}";
+        var url = UrlHelper.DownloadNeoForgeJar(mc, version, BaseClient.Source);
 
         return new()
         {
@@ -191,6 +220,7 @@ public static class DownloadItemHelper
             }
         }
 
+        //运行库
         foreach (var item1 in info.libraries)
         {
             if (item1.name.StartsWith(neo ?
@@ -283,8 +313,11 @@ public static class DownloadItemHelper
         {
             bool download = CheckHelpers.CheckAllow(item1.rules);
             if (!download)
+            {
                 return;
+            }
 
+            //全系统
             if (item1.downloads.artifact != null)
             {
                 lock (list1)
@@ -325,6 +358,7 @@ public static class DownloadItemHelper
                 }
             }
 
+            //分系统
             if (item1.downloads.classifiers != null)
             {
                 var lib = SystemInfo.Os switch
@@ -372,6 +406,7 @@ public static class DownloadItemHelper
             }
         });
 
+        //Arm处理
         if (SystemInfo.IsArm)
         {
             foreach (var item in natives.Keys)
@@ -411,7 +446,7 @@ public static class DownloadItemHelper
     }
 
     /// <summary>
-    /// 下载游戏
+    /// 获取游戏下载项目
     /// </summary>
     /// <param name="obj">版本数据</param>
     /// <returns>State下载状态
@@ -471,7 +506,7 @@ public static class DownloadItemHelper
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildForge(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
-        bool v2 = CheckHelpers.GameLaunchVersionV2(version1);
+        var v2 = CheckHelpers.GameLaunchVersionV2(version1);
 
         var down = neo ?
             BuildNeoForgeInster(mc, version) :
@@ -490,11 +525,11 @@ public static class DownloadItemHelper
             return (GetDownloadState.Init, null);
         }
 
-        using ZipFile zFile = new(down.Local);
-        using MemoryStream stream1 = new();
-        using MemoryStream stream2 = new();
-        bool find1 = false;
-        bool find2 = false;
+        using var zFile = new ZipFile(down.Local);
+        using var stream1 = new MemoryStream();
+        using var stream2 = new MemoryStream();
+        var find1 = false;
+        var find2 = false;
         foreach (ZipEntry e in zFile)
         {
             if (e.IsFile && e.Name == "version.json")

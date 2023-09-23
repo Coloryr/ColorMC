@@ -4,6 +4,9 @@ using System.Text;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 文件与路径处理
+/// </summary>
 public static class PathHelper
 {
     /// <summary>
@@ -36,12 +39,12 @@ public static class PathHelper
     /// <summary>
     /// 获取所有文件
     /// </summary>
-    /// <param name="dir">路径</param>
+    /// <param name="local">路径</param>
     /// <returns>文件列表</returns>
-    public static List<FileInfo> GetAllFile(string dir)
+    public static List<FileInfo> GetAllFile(string local)
     {
         var list = new List<FileInfo>();
-        var info = new DirectoryInfo(dir);
+        var info = new DirectoryInfo(local);
         if (!info.Exists)
         {
             return list;
@@ -78,6 +81,11 @@ public static class PathHelper
         }
     }
 
+    /// <summary>
+    /// 复制文件
+    /// </summary>
+    /// <param name="file1">源</param>
+    /// <param name="file2">目的</param>
     public static void CopyFile(string file1, string file2)
     {
         using var stream = OpenRead(file1);
@@ -89,6 +97,11 @@ public static class PathHelper
         stream.CopyTo(stream1);
     }
 
+    /// <summary>
+    /// 搬运文件
+    /// </summary>
+    /// <param name="file1">源</param>
+    /// <param name="file2">目的</param>
     public static void MoveFile(string file1, string file2)
     {
         CopyFile(file1, file2);
@@ -109,15 +122,15 @@ public static class PathHelper
     /// <summary>
     /// 删除文件夹
     /// </summary>
-    public static Task<bool> DeleteFiles(string dir)
+    public static Task<bool> DeleteFiles(string local)
     {
         return Task.Run(() =>
         {
             try
             {
-                if (Directory.Exists(dir))
+                if (Directory.Exists(local))
                 {
-                    Directory.Delete(dir, true);
+                    Directory.Delete(local, true);
                 }
 
                 return true;
@@ -133,12 +146,12 @@ public static class PathHelper
     /// <summary>
     /// 查找文件
     /// </summary>
-    /// <param name="path">路径</param>
+    /// <param name="local">路径</param>
     /// <param name="name">文件名</param>
     /// <returns>文件名</returns>
-    public static string? GetFile(string path, string name)
+    public static string? GetFile(string local, string name)
     {
-        var list = GetAllFile(path);
+        var list = GetAllFile(local);
         foreach (var item in list)
         {
             if (item.Name == name)
@@ -151,33 +164,48 @@ public static class PathHelper
     /// <summary>
     /// 读文件
     /// </summary>
-    /// <param name="path">路径</param>
+    /// <param name="local">路径</param>
     /// <returns>流</returns>
-    public static Stream? OpenRead(string path)
+    public static Stream? OpenRead(string local)
     {
-        if (SystemInfo.Os == OsType.Android && path.StartsWith("content://"))
+        if (SystemInfo.Os == OsType.Android && local.StartsWith("content://"))
         {
-            return ColorMCCore.PhoneReadFile?.Invoke(path);
+            return ColorMCCore.PhoneReadFile?.Invoke(local);
         }
-        if (File.Exists(path))
+        if (File.Exists(local))
         {
-            return File.OpenRead(path);
+            return File.OpenRead(local);
         }
 
         return null;
     }
 
-    public static Stream OpenWrite(string path)
+    /// <summary>
+    /// 写文件
+    /// </summary>
+    /// <param name="local">路径</param>
+    /// <returns>流</returns>
+    public static Stream OpenWrite(string local)
     {
-        return File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        return File.Open(local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
     }
 
+    /// <summary>
+    /// 写文本
+    /// </summary>
+    /// <param name="local">路径</param>
+    /// <param name="str">数据</param>
     public static void WriteText(string local, string str)
     {
         var data = Encoding.UTF8.GetBytes(str);
         WriteBytes(local, data);
     }
 
+    /// <summary>
+    /// 读文本
+    /// </summary>
+    /// <param name="local">路径</param>
+    /// <returns>文本</returns>
     public static string? ReadText(string local)
     {
         using var stream = OpenRead(local);
@@ -190,6 +218,10 @@ public static class PathHelper
         return Encoding.UTF8.GetString(stream1.ToArray());
     }
 
+    /// <summary>
+    /// 删除文件
+    /// </summary>
+    /// <param name="local">路径</param>
     public static void Delete(string local)
     {
         if (SystemInfo.Os == OsType.Android && local.StartsWith("content://"))
@@ -199,6 +231,11 @@ public static class PathHelper
         File.Delete(local);
     }
 
+    /// <summary>
+    /// 写文件
+    /// </summary>
+    /// <param name="local">路径</param>
+    /// <param name="data">数据</param>
     public static void WriteBytes(string local, byte[] data)
     {
         var info = new FileInfo(local);

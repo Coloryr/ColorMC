@@ -559,14 +559,14 @@ public static class GameBinding
         return list;
     }
 
-    public static async Task<ChunkDataObj> ReadMca(WorldObj obj, string name)
+    public static async Task<ChunkDataObj?> ReadMca(WorldObj obj, string name)
     {
         var dir = obj.Local;
 
         return await ChunkMca.Read(Path.GetFullPath(dir + "/" + name));
     }
 
-    public static async Task<ChunkDataObj> ReadMca(GameSettingObj obj, string name)
+    public static async Task<ChunkDataObj?> ReadMca(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
 

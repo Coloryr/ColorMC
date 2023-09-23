@@ -127,6 +127,12 @@ public static class UrlHelper
         return url;
     }
 
+    /// <summary>
+    /// 游戏下载
+    /// </summary>
+    /// <param name="mc"></param>
+    /// <param name="local"></param>
+    /// <returns></returns>
     public static string DownloadGame(string mc, SourceLocal? local)
     {
         return $"{(local == SourceLocal.BMCLAPI ? BMCLAPI : MCBBS)}version/{mc}/client";
@@ -506,6 +512,12 @@ public static class UrlHelper
         }
     }
 
+    /// <summary>
+    /// 游戏版本数据
+    /// </summary>
+    /// <param name="local">下载源</param>
+    /// <param name="obj">版本</param>
+    /// <returns></returns>
     public static string DownloadIndex(SourceLocal? local, VersionObj.Versions obj)
     {
         return local switch

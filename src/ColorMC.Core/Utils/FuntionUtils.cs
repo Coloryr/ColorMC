@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// 其他函数
+/// </summary>
 public static partial class FuntionUtils
 {
     [GeneratedRegex("[^0-9]+")]

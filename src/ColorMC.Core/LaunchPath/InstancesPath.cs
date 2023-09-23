@@ -456,6 +456,11 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name21}");
     }
 
+    /// <summary>
+    /// 获取安全Log4j文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
     public static string GetLog4jFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name22}");
@@ -696,6 +701,7 @@ public static class InstancesPath
     /// 读取游戏实例mod数据
     /// </summary>
     /// <param name="obj">游戏实例</param>
+    /// <param name="delete">是否删除不存在的mod数据</param>
     public static void ReadModInfo(this GameSettingObj obj, bool delete = true)
     {
         string file = obj.GetModInfoJsonFile();
@@ -805,6 +811,8 @@ public static class InstancesPath
     /// </summary>
     /// <param name="dir">压缩包路径</param>
     /// <param name="type">类型</param>
+    /// <param name="type">名字</param>
+    /// <param name="type">群组</param>
     public static async Task<(bool, GameSettingObj?)> InstallFromZip(string dir, PackType type, string? name, string? group)
     {
         GameSettingObj? game = null;
@@ -1202,6 +1210,13 @@ public static class InstancesPath
         return res;
     }
 
+    /// <summary>
+    /// 复制文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="local">目标地址</param>
+    /// <param name="unselect">未选择的文件</param>
+    /// <returns></returns>
     public static async Task<(bool, Exception?)> CopyFile(this GameSettingObj obj, string local, List<string> unselect)
     {
         try

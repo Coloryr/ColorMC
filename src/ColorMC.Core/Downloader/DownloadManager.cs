@@ -129,12 +129,16 @@ public static class DownloadManager
     public static async Task<bool> Start(List<DownloadItemObj> list)
     {
         List<string> names = new();
+        //下载器是否在运行
         if (State != CoreRunState.End)
+        {
             return false;
+        }
 
         Clear();
         Logs.Info(LanguageHelper.Get("Core.Http.Info4"));
         ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
+        //装填下载内容
         foreach (var item in list)
         {
             if (names.Contains(item.Name) || string.IsNullOrWhiteSpace(item.Url))
@@ -211,13 +215,12 @@ public static class DownloadManager
     /// <param name="e">错误内容</param>
     public static void Error(int index, DownloadItemObj item, Exception e)
     {
-        Logs.Error(string.Format(LanguageHelper.Get("Core.Http.Error1"),
-            item.Name), e);
+        Logs.Error(string.Format(LanguageHelper.Get("Core.Http.Error1"), item.Name), e);
         ColorMCCore.DownloadItemError?.Invoke(index, item, e);
     }
 
     /// <summary>
-    /// buffer大小
+    /// 计算buffer大小
     /// </summary>
     /// <param name="stream">流</param>
     /// <returns>大小</returns>
