@@ -954,7 +954,7 @@ public static class InstancesPath
 
                         foreach (ZipEntry e in zFile)
                         {
-                            if (e.IsFile && e.Name.StartsWith(path)) 
+                            if (e.IsFile && e.Name.StartsWith(path))
                             {
                                 using var stream = zFile.GetInputStream(e);
                                 string file = Path.GetFullPath(game.GetBasePath() + "/" +

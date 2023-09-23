@@ -143,7 +143,7 @@ public static class ChunkMca
     private static async Task<ChunkDataObj?> Read(Stream stream)
     {
         var data = await ReadHead(stream);
-        if(data == null)
+        if (data == null)
         {
             return null;
         }
