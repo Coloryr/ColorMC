@@ -3,13 +3,16 @@ using System.Text;
 
 namespace ColorMC.Core.Net.Motd;
 
+/// <summary>
+/// Motd¿Í»§¶Ë
+/// </summary>
 public class ProtocolHandler
 {
-    private TcpClient s_tcp;
+    private TcpClient _tcp;
 
     public ProtocolHandler(TcpClient tcp)
     {
-        s_tcp = tcp;
+        _tcp = tcp;
     }
 
     private void Receive(byte[] buffer, int start, int offset, SocketFlags f)
@@ -17,7 +20,7 @@ public class ProtocolHandler
         int read = 0;
         while (read < offset)
         {
-            read += s_tcp.Client.Receive(buffer, start + read, offset - read, f);
+            read += _tcp.Client.Receive(buffer, start + read, offset - read, f);
         }
     }
 

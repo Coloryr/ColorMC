@@ -129,6 +129,12 @@ public static class Logs
         AddText(text);
     }
 
+    /// <summary>
+    /// 保存崩溃日志
+    /// </summary>
+    /// <param name="data">消息</param>
+    /// <param name="e">错误内容</param>
+    /// <returns></returns>
     public static string SaveCrash(string data, Exception e)
     {
         var date = DateTime.Now;

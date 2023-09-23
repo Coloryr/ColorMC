@@ -21,6 +21,7 @@ public static class VersionPath
     public const string Name3 = "quilt";
     public const string Name4 = "neoforged";
 
+    //版本缓存
     private readonly static Dictionary<string, GameArgObj> s_gameArgs = new();
     private readonly static Dictionary<string, ForgeInstallObj> s_forgeInstalls = new();
     private readonly static Dictionary<string, ForgeInstallObj> s_neoForgeInstalls = new();
@@ -31,6 +32,15 @@ public static class VersionPath
 
     private static VersionObj? _version;
 
+    private static string ForgeDir => BaseDir + "/" + Name1;
+    private static string FabricDir => BaseDir + "/" + Name2;
+    private static string QuiltDir => BaseDir + "/" + Name3;
+    private static string NeoForgeDir => BaseDir + "/" + Name4;
+
+    /// <summary>
+    /// 获取游戏版本列表
+    /// </summary>
+    /// <returns></returns>
     public static async Task<VersionObj?> GetVersions()
     {
         try
@@ -47,11 +57,6 @@ public static class VersionPath
             return null;
         }
     }
-
-    private static string ForgeDir => BaseDir + "/" + Name1;
-    private static string FabricDir => BaseDir + "/" + Name2;
-    private static string QuiltDir => BaseDir + "/" + Name3;
-    private static string NeoForgeDir => BaseDir + "/" + Name4;
 
     public static string BaseDir { get; private set; }
 
@@ -207,9 +212,16 @@ public static class VersionPath
         }
     }
 
+    /// <summary>
+    /// 添加Quilt信息
+    /// </summary>
+    /// <param name="obj">Quilt加载器数据</param>
+    /// <param name="data">数据内容</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">加载器版本</param>
     public static void AddGame(QuiltLoaderObj obj, string data, string mc, string version)
     {
-        PathHelper.WriteText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"), data);
+        PathHelper.WriteText(Path.GetFullPath($"{QuiltDir}/{obj.id}.json"), data);
 
         var key = $"{mc}-{version}";
         s_quiltLoaders.Add(key, obj);
@@ -233,7 +245,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<GameArgObj>(PathHelper.ReadText(file))!;
+        var obj = JsonConvert.DeserializeObject<GameArgObj>(PathHelper.ReadText(file)!)!;
         s_gameArgs.Add(version, obj);
         return obj;
     }

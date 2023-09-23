@@ -11,6 +11,9 @@ using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 文件检查
+/// </summary>
 public static class CheckHelpers
 {
     /// <summary>
@@ -103,12 +106,23 @@ public static class CheckHelpers
         return version1.Minor >= 17;
     }
 
+    /// <summary>
+    /// 是否是1.20以上版本
+    /// </summary>
+    /// <param name="version"></param>
+    /// <returns></returns>
     public static bool IsGameLaunchVersion120(string version)
     {
         Version version1 = new(version);
         return version1.Minor >= 20;
     }
 
+    /// <summary>
+    /// 是否添加任务
+    /// </summary>
+    /// <param name="obj">下载项目</param>
+    /// <param name="sha1">比较SHA1值</param>
+    /// <returns></returns>
     public static bool CheckToAdd(DownloadItemObj obj, bool sha1)
     {
         if (!File.Exists(obj.Local))
@@ -287,7 +301,7 @@ public static class CheckHelpers
                         var list4 = await DownloadItemHelper.BuildForge(obj, neo);
                         if (list4.State != GetDownloadState.End)
                             throw new LaunchException(LaunchState.LostLoader,
-                            LanguageHelper.Get("Core.Launch.Error3"));
+                                LanguageHelper.Get("Core.Launch.Error3"));
 
                         list4.List!.ForEach(list.Add);
                     }
@@ -355,22 +369,22 @@ public static class CheckHelpers
                 //检查外置登录器
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoginCore);
 
-                if (login.AuthType == AuthType.Nide8)
+                var item1 = login.AuthType switch
                 {
-                    var item = await AuthlibHelper.ReadyNide8();
-                    if (item != null)
-                    {
-                        list.Add(item);
-                    }
+                    AuthType.Nide8 => await AuthlibHelper.ReadyNide8(),
+                    AuthType.AuthlibInjector => await AuthlibHelper.ReadyAuthlibInjector(),
+                    AuthType.LittleSkin => await AuthlibHelper.ReadyAuthlibInjector(),
+                    AuthType.SelfLittleSkin => await AuthlibHelper.ReadyAuthlibInjector(),
+                    _ => (true, null)
+                };
+                if (!item1.Item1)
+                {
+                    throw new LaunchException(LaunchState.LoginCoreError,
+                        LanguageHelper.Get("Core.Launch.Error11"));
                 }
-                else if (login.AuthType is AuthType.AuthlibInjector
-                    or AuthType.LittleSkin or AuthType.SelfLittleSkin)
+                else if (item1.Item2 != null)
                 {
-                    var item = await AuthlibHelper.ReadyAuthlibInjector();
-                    if (item != null)
-                    {
-                        list.Add(item);
-                    }
+                    list.Add(item1.Item2);
                 }
             }, cancel));
         }
@@ -445,8 +459,16 @@ public static class CheckHelpers
         return list;
     }
 
+    /// <summary>
+    /// 检查是否需要安装Forge
+    /// </summary>
+    /// <param name="obj">Forge安装数据</param>
+    /// <param name="fgversion">Forge版本</param>
+    /// <param name="neo">是否为NeoForge</param>
+    /// <returns>结果</returns>
     public static async Task<bool> CheckForgeInstall(ForgeInstallObj obj, string fgversion, bool neo)
     {
+        //silm
         var version = obj.data.MCP_VERSION.client[1..^1];
         string file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
             $"{obj.minecraft}-{version}/" +
@@ -464,6 +486,7 @@ public static class CheckHelpers
             return true;
         }
 
+        //clint
         //net\neoforged\forge\1.20.1-47.1.76\forge-1.20.1-47.1.76-client.jar
         file = $"{LibrariesPath.BaseDir}/net/{(neo ? "neoforged" : "minecraftforge")}/forge/" +
             $"{obj.minecraft}-{fgversion}/" +
@@ -481,6 +504,7 @@ public static class CheckHelpers
             return true;
         }
 
+        //extra
         file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
             $"{obj.minecraft}-{version}/" +
             $"client-{obj.minecraft}-{version}-extra.jar";

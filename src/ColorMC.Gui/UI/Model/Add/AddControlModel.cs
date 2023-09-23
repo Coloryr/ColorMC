@@ -31,6 +31,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     private FileItemModel? _last;
     private (DownloadItemObj, ModInfoObj) _modsave;
     private bool _load = false;
+    private bool _close = false;
 
     public bool Display { get; set; }
 
@@ -515,7 +516,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         DownloadSource = (int)type;
         await Task.Run(() =>
         {
-            while ((!Display || _load) && !App.IsClose)
+            while ((!Display || _load) && !_close)
                 Thread.Sleep(100);
         });
 
@@ -550,7 +551,6 @@ public partial class AddControlModel : GameModel, IAddWindow
                 GameBinding.SetModInfo(Obj,
                     data.Data as ModrinthVersionObj);
             }
-            WindowClose();
             return;
         }
 
@@ -882,7 +882,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         DownloadSource = 0;
         await Task.Run(() =>
         {
-            while (Set && !App.IsClose)
+            while (!_close)
                 Thread.Sleep(100);
         });
     }
@@ -916,6 +916,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     protected override void Close()
     {
+        _close = true;
         _load = true;
         ModList.Clear();
         OptifineList.Clear();

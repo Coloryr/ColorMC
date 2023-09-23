@@ -34,7 +34,10 @@ public static class ForgeAPI
             {
                 if (neo)
                 {
-                    s_neoSupportVersion = new() { "1.20.1" };
+                    if (s_neoSupportVersion == null)
+                    {
+                        await LoadFromSource(true);
+                    }
                     return s_neoSupportVersion;
                 }
                 string url = UrlHelper.ForgeVersion(local);
@@ -187,10 +190,14 @@ public static class ForgeAPI
         }
     }
 
+    /// <summary>
+    /// 从xml获取信息
+    /// </summary>
+    /// <param name="neo">是否为NeoForge</param>
+    /// <returns></returns>
     public static async Task LoadFromSource(bool neo)
     {
-        string url = neo ?
-                    UrlHelper.NeoForgeVersion(SourceLocal.Offical) :
+        var url = neo ? UrlHelper.NeoForgeVersion(SourceLocal.Offical) :
                     UrlHelper.ForgeVersion(SourceLocal.Offical);
         var html = await BaseClient.GetString(url);
         if (html.Item1 == false)
@@ -203,7 +210,7 @@ public static class ForgeAPI
         var xml = new XmlDocument();
         xml.LoadXml(html.Item2!);
 
-        List<string> list = new();
+        var list = new List<string>();
 
         var node = xml.SelectNodes("//metadata/versioning/versions/version");
         if (node?.Count > 0)

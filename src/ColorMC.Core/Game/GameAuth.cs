@@ -111,6 +111,11 @@ public static class GameAuth
         AuthState now = AuthState.OAuth;
         try
         {
+            if (await LoginOld.Validate("https://authserver.mojang.com/validate", obj))
+            {
+                return (AuthState.Profile, LoginState.Done, obj, null, null);
+            }
+
             ColorMCCore.AuthStateUpdate?.Invoke(AuthState.OAuth);
             var (done, auth) = await OAuthAPI.RefreshTokenAsync(obj.Text1);
             if (done != LoginState.Done)

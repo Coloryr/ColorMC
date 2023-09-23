@@ -5,6 +5,9 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Java;
 
+/// <summary>
+/// OpenJ9下载源
+/// </summary>
 public static class OpenJ9
 {
     /// <summary>

@@ -16,7 +16,7 @@ public static class Resourcepacks
 {
     private static async Task<ResourcepackObj?> ReadResourcepack(Stream file, CancellationToken cancel)
     {
-        using ZipFile zFile = new(file);
+        using var zFile = new ZipFile(file);
         var item1 = zFile.GetEntry("pack.mcmeta");
         if (item1 != null)
         {
@@ -73,7 +73,7 @@ public static class Resourcepacks
         var list = new List<ResourcepackObj>();
         var dir = game.GetResourcepacksPath();
 
-        DirectoryInfo info = new(dir);
+        var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
             info.Create();
@@ -126,7 +126,11 @@ public static class Resourcepacks
     public static async Task<bool> AddResourcepack(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetResourcepacksPath();
-        bool ok = true;
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+        var ok = true;
         await Parallel.ForEachAsync(file, async (item, cancel) =>
         {
             var name = Path.GetFileName(item);
@@ -143,7 +147,7 @@ public static class Resourcepacks
                     Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
                     ok = false;
                 }
-            });
+            }, cancel);
         });
         return ok;
     }

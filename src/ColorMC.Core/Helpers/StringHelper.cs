@@ -2,6 +2,9 @@
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 文本处理
+/// </summary>
 public static class StringHelper
 {
     /// <summary>
@@ -27,6 +30,11 @@ public static class StringHelper
         return input[(temp + start.Length)..temp1];
     }
 
+    /// <summary>
+    /// 命令行参数解析
+    /// </summary>
+    /// <param name="input">命令行</param>
+    /// <returns>数组</returns>
     public static IEnumerable<string> ArgParse(string input)
     {
         char quoteChar = '"';
@@ -101,6 +109,11 @@ public static class StringHelper
             yield return currentArg.ToString();
     }
 
+    /// <summary>
+    /// 转为HEX格式文本
+    /// </summary>
+    /// <param name="temp"></param>
+    /// <returns></returns>
     public static string ToHex(byte temp)
     {
         var builder = new StringBuilder();
@@ -117,6 +130,11 @@ public static class StringHelper
         return builder.ToString();
     }
 
+    /// <summary>
+    /// 转为HEX格式文本
+    /// </summary>
+    /// <param name="temp"></param>
+    /// <returns></returns>
     public static string ToHex(short temp)
     {
         var builder = new StringBuilder();
@@ -133,6 +151,11 @@ public static class StringHelper
         return builder.ToString();
     }
 
+    /// <summary>
+    /// 转为HEX格式文本
+    /// </summary>
+    /// <param name="temp"></param>
+    /// <returns></returns>
     public static string ToHex(int temp)
     {
         var builder = new StringBuilder();
@@ -149,6 +172,11 @@ public static class StringHelper
         return builder.ToString();
     }
 
+    /// <summary>
+    /// 转为HEX格式文本
+    /// </summary>
+    /// <param name="temp"></param>
+    /// <returns></returns>
     public static string ToHex(long temp)
     {
         var builder = new StringBuilder();

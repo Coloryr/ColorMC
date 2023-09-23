@@ -139,13 +139,6 @@ public partial class AddControl : UserControl, IUserControl
     public void Closed()
     {
         App.AddWindows.Remove(Obj.UUID);
-
-        var model = (DataContext as AddControlModel)!;
-
-        if (model.Set)
-        {
-            model.Set = false;
-        }
     }
 
     public void GoFile(SourceType type, string pid)
@@ -164,9 +157,9 @@ public partial class AddControl : UserControl, IUserControl
         (DataContext as AddControlModel)!.Display = true;
     }
 
-    public Task GoSet()
+    public async Task GoSet()
     {
-        return (DataContext as AddControlModel)!.GoSet();
+        await (DataContext as AddControlModel)!.GoSet();
     }
 
     public void GoTo(FileType type)

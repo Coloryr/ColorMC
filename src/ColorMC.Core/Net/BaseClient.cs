@@ -41,6 +41,7 @@ public static class BaseClient
         LoginClient?.CancelPendingRequests();
         LoginClient?.Dispose();
 
+        //代理
         if (ConfigUtils.Config.Http.DownloadProxy
             && !string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
         {

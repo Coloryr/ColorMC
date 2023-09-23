@@ -165,6 +165,7 @@ public partial class GameConfigEditModel : GameModel
 
             if (nbt is not NbtCompound nbt1)
             {
+                Model.Show(App.GetLanguage("ConfigEditWindow.Error9"));
                 return;
             }
 
@@ -184,8 +185,9 @@ public partial class GameConfigEditModel : GameModel
                 _chunkData = await GameBinding.ReadMca(Obj, value);
             }
 
-            if (_chunkData.Nbt is not NbtList nbt1)
+            if (_chunkData?.Nbt is not NbtList nbt1)
             {
+                Model.Show(App.GetLanguage("ConfigEditWindow.Error10"));
                 return;
             }
 

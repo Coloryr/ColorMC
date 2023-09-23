@@ -4,8 +4,16 @@ using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Net.Motd;
 
+/// <summary>
+/// Chat解析
+/// </summary>
 public class ServerDescriptionJsonConverter : JsonConverter<Chat>
 {
+    /// <summary>
+    /// 字符串转Chat
+    /// </summary>
+    /// <param name="str1">输入字符串</param>
+    /// <returns></returns>
     public static Chat StringToChar(string? str1)
     {
         if (string.IsNullOrWhiteSpace(str1))

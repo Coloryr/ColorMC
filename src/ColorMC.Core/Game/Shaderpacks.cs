@@ -21,7 +21,7 @@ public static class Shaderpacks
         var list = new List<ShaderpackObj>();
         var dir = game.GetShaderpacksPath();
 
-        DirectoryInfo info = new(dir);
+        var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
             info.Create();

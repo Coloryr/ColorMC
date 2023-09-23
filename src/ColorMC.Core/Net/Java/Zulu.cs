@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Java;
 
+/// <summary>
+/// Zulu下载源
+/// </summary>
 public static class Zulu
 {
     /// <summary>

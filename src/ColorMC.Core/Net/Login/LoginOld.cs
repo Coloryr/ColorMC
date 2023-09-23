@@ -131,6 +131,12 @@ public static class LoginOld
         return (LoginState.Done, obj, null);
     }
 
+    /// <summary>
+    /// 检测Token可用性
+    /// </summary>
+    /// <param name="server">检测地址</param>
+    /// <param name="obj">保存的账户</param>
+    /// <returns>可用性</returns>
     public static async Task<bool> Validate(string server, LoginObj obj)
     {
         var obj1 = new RefreshObj
@@ -141,7 +147,7 @@ public static class LoginOld
         HttpRequestMessage message = new()
         {
             Method = HttpMethod.Post,
-            RequestUri = new(server + "/authserver/validate")
+            RequestUri = new(server)
         };
         message.Headers.UserAgent.Append(new("ColorMC", ColorMCCore.Version));
         message.Content = new StringContent(JsonConvert.SerializeObject(obj1),

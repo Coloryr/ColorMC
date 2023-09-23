@@ -80,17 +80,13 @@ public static class ConfigSave
     /// </summary>
     private static void Save()
     {
-        Dictionary<string, ConfigSaveObj> list = new();
-        lock (s_saveQue)
+        var list = new Dictionary<string, ConfigSaveObj>();
+        while (s_saveQue.TryTake(out var item))
         {
-            while (s_saveQue.TryTake(out var item))
+            if (!list.TryAdd(item.Name, item))
             {
-                if (!list.TryAdd(item.Name, item))
-                {
-                    list[item.Name] = item;
-                }
+                list[item.Name] = item;
             }
-            s_saveQue.Clear();
         }
 
         foreach (var item in list.Values)
@@ -113,9 +109,6 @@ public static class ConfigSave
     /// <param name="obj"></param>
     public static void AddItem(ConfigSaveObj obj)
     {
-        lock (s_saveQue)
-        {
-            s_saveQue.Add(obj);
-        }
+        s_saveQue.Add(obj);
     }
 }

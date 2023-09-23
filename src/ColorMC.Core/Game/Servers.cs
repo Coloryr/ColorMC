@@ -20,8 +20,8 @@ public static class Servers
     /// <returns>服务器列表</returns>
     public static async Task<ConcurrentBag<ServerInfoObj>> GetServerInfos(this GameSettingObj game)
     {
-        ConcurrentBag<ServerInfoObj> list = new();
-        string file = game.GetServersFile();
+        var list = new ConcurrentBag<ServerInfoObj>();
+        var file = game.GetServersFile();
         if (!File.Exists(file))
         {
             return list;
@@ -90,7 +90,7 @@ public static class Servers
     {
         var nbtTag = new NbtCompound();
 
-        NbtList list1 = new()
+        var list1 = new NbtList
         {
             InNbtType = NbtType.NbtCompound
         };
