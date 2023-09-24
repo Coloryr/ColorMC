@@ -205,8 +205,8 @@ public static class GameCloudUtils
                     return;
                 }
             }
-            await GetState();
             Connect = true;
+            await GetState();
         }
     }
 
@@ -485,7 +485,6 @@ public static class GameCloudUtils
                     return;
                 }
                 Info = string.Format(App.GetLanguage("GameCloud.Info1"), obj["use"], obj["size"]);
-                Connect = true;
             }
         }
         catch (Exception e)
