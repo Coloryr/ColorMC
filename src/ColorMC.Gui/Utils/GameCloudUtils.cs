@@ -17,6 +17,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
@@ -39,12 +40,18 @@ public static class GameCloudUtils
 
     public static bool Connect { get; private set; }
 
+    private static HttpClient _client;
+
     /// <summary>
     /// 初始化云同步
     /// </summary>
     /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
+        HttpClientHandler handler = new HttpClientHandler();
+        _client = new HttpClient(handler);
+        _client.Timeout = Timeout.InfiniteTimeSpan;
+
         s_file = Path.GetFullPath(dir + "/" + Name);
 
         if (File.Exists(s_file))
@@ -186,7 +193,7 @@ public static class GameCloudUtils
         requ.Headers.Add("serverkey", s_serverkey);
         requ.Headers.Add("clientkey", s_clientkey);
 
-        var res = await BaseClient.LoginClient.SendAsync(requ);
+        var res = await _client.SendAsync(requ);
         if (res.IsSuccessStatusCode)
         {
             var data = await res.Content.ReadAsStringAsync();
@@ -229,7 +236,7 @@ public static class GameCloudUtils
             requ.Headers.Add("clientkey", s_clientkey);
             requ.Headers.Add("uuid", obj.UUID);
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -276,7 +283,7 @@ public static class GameCloudUtils
             requ.Headers.Add("uuid", obj.UUID);
             requ.Headers.Add("name", obj.Name);
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -317,7 +324,7 @@ public static class GameCloudUtils
             requ.Headers.Add("clientkey", s_clientkey);
             requ.Headers.Add("uuid", obj.UUID);
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -361,7 +368,7 @@ public static class GameCloudUtils
             using var stream = PathHelper.OpenRead(path)!;
             requ.Content = new StreamContent(stream);
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -427,7 +434,7 @@ public static class GameCloudUtils
             requ.Headers.Add("clientkey", s_clientkey);
             requ.Headers.Add("uuid", uuid);
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 using var data = res.Content.ReadAsStream();
@@ -474,7 +481,7 @@ public static class GameCloudUtils
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -513,7 +520,7 @@ public static class GameCloudUtils
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -553,7 +560,7 @@ public static class GameCloudUtils
             requ.Headers.Add("clientkey", s_clientkey);
             requ.Headers.Add("uuid", game.UUID);
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -598,7 +605,7 @@ public static class GameCloudUtils
             using var stream = PathHelper.OpenRead(local)!;
             requ.Content = new StreamContent(stream);
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -640,7 +647,7 @@ public static class GameCloudUtils
             requ.Headers.Add("uuid", game.UUID);
             requ.Headers.Add("name", UrlEncoder.Default.Encode(world.LevelName));
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -689,7 +696,7 @@ public static class GameCloudUtils
             requ.Headers.Add("name", UrlEncoder.Default.Encode(world.Name));
             requ.Content = new StringContent(JsonConvert.SerializeObject(list));
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.StatusCode == HttpStatusCode.BadRequest)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -741,7 +748,7 @@ public static class GameCloudUtils
             requ.Headers.Add("uuid", game.UUID);
             requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
 
-            var res = await BaseClient.LoginClient.SendAsync(requ);
+            var res = await _client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
