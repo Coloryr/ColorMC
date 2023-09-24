@@ -10,12 +10,19 @@ using System.IO;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// GUI配置文件
+/// </summary>
 public static class GuiConfigUtils
 {
     public static GuiConfigObj Config { get; set; }
 
     private static string s_local;
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
         s_local = dir + "gui.json";
@@ -23,13 +30,19 @@ public static class GuiConfigUtils
         Load(s_local);
     }
 
-    public static bool Load(string name, bool quit = false)
+    /// <summary>
+    /// 加载配置文件
+    /// </summary>
+    /// <param name="local">路径</param>
+    /// <param name="quit">加载失败是否退出</param>
+    /// <returns>是否加载成功</returns>
+    public static bool Load(string local, bool quit = false)
     {
-        if (File.Exists(name))
+        if (File.Exists(local))
         {
             try
             {
-                Config = JsonConvert.DeserializeObject<GuiConfigObj>(File.ReadAllText(name))!;
+                Config = JsonConvert.DeserializeObject<GuiConfigObj>(File.ReadAllText(local))!;
             }
             catch (Exception e)
             {
@@ -108,11 +121,17 @@ public static class GuiConfigUtils
         return true;
     }
 
+    /// <summary>
+    /// 立即保存
+    /// </summary>
     public static void SaveNow()
     {
         File.WriteAllText(s_local, JsonConvert.SerializeObject(Config));
     }
 
+    /// <summary>
+    /// 保存配置文件
+    /// </summary>
     public static void Save()
     {
         Logs.Info(LanguageHelper.Get("Core.Config.Info2"));

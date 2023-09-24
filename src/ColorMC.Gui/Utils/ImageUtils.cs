@@ -13,10 +13,17 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// 图片处理
+/// </summary>
 public static class ImageUtils
 {
     public static string Local { get; private set; }
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir"></param>
     public static void Init(string dir)
     {
         Local = dir + "image/";
@@ -24,6 +31,11 @@ public static class ImageUtils
         Directory.CreateDirectory(Local);
     }
 
+    /// <summary>
+    /// 加载图片
+    /// </summary>
+    /// <param name="url">网址</param>
+    /// <returns>位图</returns>
     public static async Task<Bitmap?> Load(string url)
     {
         if (!Directory.Exists(Local))
@@ -59,6 +71,11 @@ public static class ImageUtils
         }
     }
 
+    /// <summary>
+    /// 创建头像图片
+    /// </summary>
+    /// <param name="file">图片</param>
+    /// <returns>图片数据</returns>
     public static async Task<MemoryStream> MakeHeadImage(string file)
     {
         using var image = await Image.LoadAsync<Rgba32>(file);
@@ -94,6 +111,12 @@ public static class ImageUtils
         return stream;
     }
 
+    /// <summary>
+    /// 混合像素
+    /// </summary>
+    /// <param name="rgba">源</param>
+    /// <param name="mix">目标</param>
+    /// <returns>结果</returns>
     private static Rgba32 Mix(Rgba32 rgba, Rgba32 mix)
     {
         double ap = mix.A / 255;
@@ -105,8 +128,14 @@ public static class ImageUtils
 
         return rgba;
     }
-
-
+    
+    /// <summary>
+    /// 获得背景图
+    /// </summary>
+    /// <param name="file">文件</param>
+    /// <param name="value">模糊度</param>
+    /// <param name="lim">分辨率限制</param>
+    /// <returns></returns>
     public static Task<Bitmap?> MakeBackImage(string file, int value, int lim)
     {
         return Task.Run(async () =>

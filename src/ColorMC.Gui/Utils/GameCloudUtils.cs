@@ -4,6 +4,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
@@ -20,6 +21,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// 游戏云同步
+/// </summary>
 public static class GameCloudUtils
 {
     public const string Name = "cloud.json";
@@ -35,6 +39,10 @@ public static class GameCloudUtils
 
     public static bool Connect { get; private set; }
 
+    /// <summary>
+    /// 初始化云同步
+    /// </summary>
+    /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
         s_file = Path.GetFullPath(dir + "/" + Name);
@@ -75,6 +83,9 @@ public static class GameCloudUtils
         }
     }
 
+    /// <summary>
+    /// 保存云同步储存
+    /// </summary>
     public static void Save()
     {
         ConfigSave.AddItem(new()
@@ -85,6 +96,11 @@ public static class GameCloudUtils
         });
     }
 
+    /// <summary>
+    /// 获取云同步数据
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>数据</returns>
     public static CloudDataObj GetCloudData(GameSettingObj obj)
     {
         if (s_datas.TryGetValue(obj.UUID, out var temp))
@@ -98,6 +114,11 @@ public static class GameCloudUtils
         return obj1;
     }
 
+    /// <summary>
+    /// 设置云同步数据
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="obj1">云同步数据</param>
     public static void SetCloudData(GameSettingObj obj, CloudDataObj obj1)
     {
         s_datas.Remove(obj.UUID);
@@ -362,7 +383,35 @@ public static class GameCloudUtils
         return -1;
     }
 
-    public static async Task<int> DownloadConfig(string uuid, string local)
+    /// <summary>
+    /// 下载配置压缩包
+    /// </summary>
+    /// <param name="game">云游戏实例</param>
+    /// <param name="local">压缩包位置</param>
+    /// <returns></returns>
+    public static Task<int> DownloadConfig(CloundListObj game, string local)
+    {
+        return DownloadConfig(game.UUID, local);
+    }
+
+    /// <summary>
+    /// 下载配置压缩包
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="local">压缩包位置</param>
+    /// <returns></returns>
+    public static Task<int> DownloadConfig(GameSettingObj game, string local)
+    {
+        return DownloadConfig(game.UUID, local);
+    }
+
+    /// <summary>
+    /// 下载配置压缩包
+    /// </summary>
+    /// <param name="uuid">游戏实例UUID</param>
+    /// <param name="local">压缩包位置</param>
+    /// <returns></returns>
+    private static async Task<int> DownloadConfig(string uuid, string local)
     {
         if (!Connect)
         {
@@ -485,7 +534,12 @@ public static class GameCloudUtils
         return null;
     }
 
-    public static async Task<List<CloudWorldObj>?> GetWorldList(string uuid)
+    /// <summary>
+    /// 获取世界列表
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns></returns>
+    public static async Task<List<CloudWorldObj>?> GetWorldList(GameSettingObj game)
     {
         if (!Connect)
         {
@@ -498,7 +552,7 @@ public static class GameCloudUtils
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
-            requ.Headers.Add("uuid", uuid);
+            requ.Headers.Add("uuid", game.UUID);
 
             var res = await BaseClient.LoginClient.SendAsync(requ);
             if (res.IsSuccessStatusCode)
@@ -520,7 +574,14 @@ public static class GameCloudUtils
         return null;
     }
 
-    public static async Task<int> UploadWorld(string uuid, string name, string local)
+    /// <summary>
+    /// 上传游戏实例
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="world">世界储存</param>
+    /// <param name="local">压缩包路径</param>
+    /// <returns></returns>
+    public static async Task<int> UploadWorld(GameSettingObj game, WorldObj world, string local)
     {
         if (!Connect)
         {
@@ -533,8 +594,8 @@ public static class GameCloudUtils
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
-            requ.Headers.Add("uuid", uuid);
-            requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
+            requ.Headers.Add("uuid", game.UUID);
+            requ.Headers.Add("name", UrlEncoder.Default.Encode(world.LevelName));
             using var stream = PathHelper.OpenRead(local)!;
             requ.Content = new StreamContent(stream);
 
@@ -558,7 +619,13 @@ public static class GameCloudUtils
         return -1;
     }
 
-    public static async Task<Dictionary<string, string>?> GetWorldFiles(string uuid, string name)
+    /// <summary>
+    /// 获取世界云端文件列表
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="name">世界储存</param>
+    /// <returns></returns>
+    public static async Task<Dictionary<string, string>?> GetWorldFiles(GameSettingObj game, WorldObj world)
     {
         if (!Connect)
         {
@@ -571,8 +638,8 @@ public static class GameCloudUtils
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
-            requ.Headers.Add("uuid", uuid);
-            requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
+            requ.Headers.Add("uuid", game.UUID);
+            requ.Headers.Add("name", UrlEncoder.Default.Encode(world.LevelName));
 
             var res = await BaseClient.LoginClient.SendAsync(requ);
             if (res.IsSuccessStatusCode)
@@ -596,7 +663,16 @@ public static class GameCloudUtils
         return null;
     }
 
-    public static async Task<int> DownloadWorld(string uuid, string name, string local, Dictionary<string, string> list)
+    /// <summary>
+    /// 下载云端世界文件
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="world">云存档</param>
+    /// <param name="local">压缩包路径</param>
+    /// <param name="list">文件列表</param>
+    /// <returns></returns>
+    public static async Task<int> DownloadWorld(GameSettingObj game, CloudWorldObj world, 
+        string local, Dictionary<string, string> list)
     {
         if (!Connect)
         {
@@ -610,8 +686,8 @@ public static class GameCloudUtils
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", s_serverkey);
             requ.Headers.Add("clientkey", s_clientkey);
-            requ.Headers.Add("uuid", uuid);
-            requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
+            requ.Headers.Add("uuid", game.UUID);
+            requ.Headers.Add("name", UrlEncoder.Default.Encode(world.Name));
             requ.Content = new StringContent(JsonConvert.SerializeObject(list));
 
             var res = await BaseClient.LoginClient.SendAsync(requ);

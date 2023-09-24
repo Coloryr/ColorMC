@@ -4,6 +4,9 @@ using System.Threading;
 
 namespace ColorMC.Gui.Player;
 
+/// <summary>
+/// OpenAl输出
+/// </summary>
 public class OpenalPlayer : IPlayer
 {
     private readonly int _alSource;

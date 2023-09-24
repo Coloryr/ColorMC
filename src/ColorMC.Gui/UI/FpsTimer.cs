@@ -7,6 +7,9 @@ using Timer = System.Timers.Timer;
 
 namespace ColorMC.Gui.UI;
 
+/// <summary>
+/// Fps限制器
+/// </summary>
 public class FpsTimer
 {
     private readonly OpenGlControlBase _render;

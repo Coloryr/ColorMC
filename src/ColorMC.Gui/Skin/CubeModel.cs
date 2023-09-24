@@ -2,7 +2,10 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.Skin;
 
-public class CubeC
+/// <summary>
+/// 方块模型
+/// </summary>
+public class CubeModel
 {
     public const float Value = 0.5f;
 
@@ -44,6 +47,17 @@ public class CubeC
        20, 21, 22, 20, 22, 23
     };
 
+    /// <summary>
+    /// 获得一个方块
+    /// </summary>
+    /// <param name="multiplyX"></param>
+    /// <param name="multiplyY"></param>
+    /// <param name="multiplyZ"></param>
+    /// <param name="addX"></param>
+    /// <param name="addY"></param>
+    /// <param name="addZ"></param>
+    /// <param name="enlarge"></param>
+    /// <returns></returns>
     public float[] GetSquare(float multiplyX = 1.0f, float multiplyY = 1.0f, float multiplyZ = 1.0f,
         float addX = 0.0f, float addY = 0.0f, float addZ = 0.0f, float enlarge = 1.0f)
     {
@@ -68,6 +82,11 @@ public class CubeC
         return temp;
     }
 
+    /// <summary>
+    /// 获得一个标准方块
+    /// </summary>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     public ushort[] GetSquareIndicies(int offset = 0)
     {
         var temp = new ushort[_cubeIndicies.Length];
@@ -79,14 +98,19 @@ public class CubeC
         return temp;
     }
 
-    public ushort[] GetCubeIndicies(int cubes = 1)
-    {
-        var cube = new List<ushort>();
-        for (int a = 0; a <= cubes; a++)
-        {
-            cube.AddRange(GetSquareIndicies(a * 24));
-        }
+    /// <summary>
+    /// 获得一些标准方块
+    /// </summary>
+    /// <param name="cubes"></param>
+    /// <returns></returns>
+    //public ushort[] GetCubeIndicies(int cubes = 1)
+    //{
+    //    var cube = new List<ushort>();
+    //    for (int a = 0; a <= cubes; a++)
+    //    {
+    //        cube.AddRange(GetSquareIndicies(a * 24));
+    //    }
 
-        return cube.ToArray();
-    }
+    //    return cube.ToArray();
+    //}
 }

@@ -349,7 +349,7 @@ public class SkinRender : OpenGlControlBase
         model.IsLoading = false;
     }
 
-    private unsafe void PutVAO(GlInterface gl, VAOItem vao, ModelItem model, float[] uv)
+    private unsafe void PutVAO(GlInterface gl, VAOItem vao, CubeModelItem model, float[] uv)
     {
         float[] vertices =
         {
@@ -563,10 +563,10 @@ public class SkinRender : OpenGlControlBase
 
             var modelLoc = gl.GetUniformLocationString(_shaderProgram, "self");
 
-            var mat = Matrix4x4.CreateTranslation(0, -2f * CubeC.Value, -CubeC.Value * 0.1f) *
+            var mat = Matrix4x4.CreateTranslation(0, -2f * CubeModel.Value, -CubeModel.Value * 0.1f) *
                Matrix4x4.CreateRotationX((float)(10.8 * Math.PI / 180)) *
-               Matrix4x4.CreateTranslation(0, 1.6f * CubeC.Value,
-               -CubeC.Value * 0.5f);
+               Matrix4x4.CreateTranslation(0, 1.6f * CubeModel.Value,
+               -CubeModel.Value * 0.5f);
             gl.UniformMatrix4fv(modelLoc, 1, false, &mat);
 
             gl.BindVertexArray(_normalVAO.Cape.VertexArrayObject);
@@ -592,11 +592,11 @@ public class SkinRender : OpenGlControlBase
         var model = (DataContext as SkinModel)!;
         bool enable = model.EnableAnimation;
 
-        modelMat = Matrix4x4.CreateTranslation(0, CubeC.Value, 0) *
+        modelMat = Matrix4x4.CreateTranslation(0, CubeModel.Value, 0) *
                Matrix4x4.CreateRotationZ((enable ? _skina.Head.X : model.HeadRotate.X) / 360) *
                Matrix4x4.CreateRotationX((enable ? _skina.Head.Y : model.HeadRotate.Y) / 360) *
                Matrix4x4.CreateRotationY((enable ? _skina.Head.Z : model.HeadRotate.Z) / 360) *
-               Matrix4x4.CreateTranslation(0, CubeC.Value * 1.5f, 0);
+               Matrix4x4.CreateTranslation(0, CubeModel.Value * 1.5f, 0);
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
         GL.BindVertexArray(_normalVAO.Head.VertexArrayObject);
@@ -605,19 +605,19 @@ public class SkinRender : OpenGlControlBase
 
         if (model.SteveModelType == SkinType.NewSlim)
         {
-            modelMat = Matrix4x4.CreateTranslation(CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
+            modelMat = Matrix4x4.CreateTranslation(CubeModel.Value / 2, -(1.375f * CubeModel.Value), 0) *
                 Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
                 Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
-                    (1.375f * CubeC.Value) - (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
+                    (1.375f * CubeModel.Value) - (CubeModel.Value / 2), 1.375f * CubeModel.Value, 0);
         }
         else
         {
-            modelMat = Matrix4x4.CreateTranslation(CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
+            modelMat = Matrix4x4.CreateTranslation(CubeModel.Value / 2, -(1.5f * CubeModel.Value), 0) *
                 Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
                 Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
-                    (1.5f * CubeC.Value) - (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
+                    (1.5f * CubeModel.Value) - (CubeModel.Value / 2), 1.5f * CubeModel.Value, 0);
         }
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
@@ -627,19 +627,19 @@ public class SkinRender : OpenGlControlBase
 
         if (model.SteveModelType == SkinType.NewSlim)
         {
-            modelMat = Matrix4x4.CreateTranslation(-CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
+            modelMat = Matrix4x4.CreateTranslation(-CubeModel.Value / 2, -(1.375f * CubeModel.Value), 0) *
                 Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
                 Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
-                    (-1.375f * CubeC.Value) + (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
+                    (-1.375f * CubeModel.Value) + (CubeModel.Value / 2), 1.375f * CubeModel.Value, 0);
         }
         else
         {
-            modelMat = Matrix4x4.CreateTranslation(-CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
+            modelMat = Matrix4x4.CreateTranslation(-CubeModel.Value / 2, -(1.5f * CubeModel.Value), 0) *
                 Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
                 Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
-                    (-1.5f * CubeC.Value) + (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
+                    (-1.5f * CubeModel.Value) + (CubeModel.Value / 2), 1.5f * CubeModel.Value, 0);
         }
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
@@ -647,20 +647,20 @@ public class SkinRender : OpenGlControlBase
         GL.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
+        modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeModel.Value, 0) *
                Matrix4x4.CreateRotationZ((enable ? _skina.Leg.X : model.LegRotate.X) / 360) *
                Matrix4x4.CreateRotationX((enable ? _skina.Leg.Y : model.LegRotate.Y) / 360) *
-               Matrix4x4.CreateTranslation(CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
+               Matrix4x4.CreateTranslation(CubeModel.Value * 0.5f, -CubeModel.Value * 1.5f, 0);
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
         GL.BindVertexArray(_normalVAO.LeftLeg.VertexArrayObject);
         GL.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                 GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
+        modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeModel.Value, 0) *
                Matrix4x4.CreateRotationZ((enable ? -_skina.Leg.X : -model.LegRotate.X) / 360) *
                Matrix4x4.CreateRotationX((enable ? -_skina.Leg.Y : -model.LegRotate.Y) / 360) *
-               Matrix4x4.CreateTranslation(-CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
+               Matrix4x4.CreateTranslation(-CubeModel.Value * 0.5f, -CubeModel.Value * 1.5f, 0);
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
         GL.BindVertexArray(_normalVAO.RightLeg.VertexArrayObject);
@@ -685,11 +685,11 @@ public class SkinRender : OpenGlControlBase
         var model = (DataContext as SkinModel)!;
         bool enable = model.EnableAnimation;
 
-        modelMat = Matrix4x4.CreateTranslation(0, CubeC.Value, 0) *
+        modelMat = Matrix4x4.CreateTranslation(0, CubeModel.Value, 0) *
                Matrix4x4.CreateRotationZ((enable ? _skina.Head.X : model.HeadRotate.X) / 360) *
                Matrix4x4.CreateRotationX((enable ? _skina.Head.Y : model.HeadRotate.Y) / 360) *
                Matrix4x4.CreateRotationY((enable ? _skina.Head.Z : model.HeadRotate.Z) / 360) *
-               Matrix4x4.CreateTranslation(0, CubeC.Value * 1.5f, 0);
+               Matrix4x4.CreateTranslation(0, CubeModel.Value * 1.5f, 0);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
         gl.BindVertexArray(_topVAO.Head.VertexArrayObject);
@@ -698,19 +698,19 @@ public class SkinRender : OpenGlControlBase
 
         if (model.SteveModelType == SkinType.NewSlim)
         {
-            modelMat = Matrix4x4.CreateTranslation(CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
+            modelMat = Matrix4x4.CreateTranslation(CubeModel.Value / 2, -(1.375f * CubeModel.Value), 0) *
                 Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
                 Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
-                    (1.375f * CubeC.Value) - (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
+                    (1.375f * CubeModel.Value) - (CubeModel.Value / 2), 1.375f * CubeModel.Value, 0);
         }
         else
         {
-            modelMat = Matrix4x4.CreateTranslation(CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
+            modelMat = Matrix4x4.CreateTranslation(CubeModel.Value / 2, -(1.5f * CubeModel.Value), 0) *
                 Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
                 Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
-                    (1.5f * CubeC.Value) - (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
+                    (1.5f * CubeModel.Value) - (CubeModel.Value / 2), 1.5f * CubeModel.Value, 0);
         }
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
@@ -720,19 +720,19 @@ public class SkinRender : OpenGlControlBase
 
         if (model.SteveModelType == SkinType.NewSlim)
         {
-            modelMat = Matrix4x4.CreateTranslation(-CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
+            modelMat = Matrix4x4.CreateTranslation(-CubeModel.Value / 2, -(1.375f * CubeModel.Value), 0) *
                 Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
                 Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
-                    (-1.375f * CubeC.Value) + (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
+                    (-1.375f * CubeModel.Value) + (CubeModel.Value / 2), 1.375f * CubeModel.Value, 0);
         }
         else
         {
-            modelMat = Matrix4x4.CreateTranslation(-CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
+            modelMat = Matrix4x4.CreateTranslation(-CubeModel.Value / 2, -(1.5f * CubeModel.Value), 0) *
                 Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
                 Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
-                    (-1.5f * CubeC.Value) + (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
+                    (-1.5f * CubeModel.Value) + (CubeModel.Value / 2), 1.5f * CubeModel.Value, 0);
         }
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
@@ -740,20 +740,20 @@ public class SkinRender : OpenGlControlBase
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                 GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
+        modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeModel.Value, 0) *
                Matrix4x4.CreateRotationZ((enable ? _skina.Leg.X : model.LegRotate.X) / 360) *
                Matrix4x4.CreateRotationX((enable ? _skina.Leg.Y : model.LegRotate.Y) / 360) *
-               Matrix4x4.CreateTranslation(CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
+               Matrix4x4.CreateTranslation(CubeModel.Value * 0.5f, -CubeModel.Value * 1.5f, 0);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
         gl.BindVertexArray(_topVAO.LeftLeg.VertexArrayObject);
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
+        modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeModel.Value, 0) *
                Matrix4x4.CreateRotationZ((enable ? -_skina.Leg.X : -model.LegRotate.X) / 360) *
                Matrix4x4.CreateRotationX((enable ? -_skina.Leg.Y : -model.LegRotate.Y) / 360) *
-               Matrix4x4.CreateTranslation(-CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
+               Matrix4x4.CreateTranslation(-CubeModel.Value * 0.5f, -CubeModel.Value * 1.5f, 0);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
         gl.BindVertexArray(_topVAO.RightLeg.VertexArrayObject);

@@ -3,6 +3,9 @@ using System.Threading;
 
 namespace ColorMC.Gui.Player;
 
+/// <summary>
+/// WaveOut输出
+/// </summary>
 public class NAudioPlayer : IPlayer
 {
     public float Volume { set => _waveOut.Volume = value; }

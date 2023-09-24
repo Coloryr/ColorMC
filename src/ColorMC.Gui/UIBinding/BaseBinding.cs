@@ -470,7 +470,7 @@ public static class BaseBinding
 
             pr.Exited += (a, b) =>
             {
-                GameCountUtils.GameClose(obj.UUID);
+                GameCountUtils.GameClose(obj);
                 RunGames.Remove(obj.UUID);
                 UserBinding.UnLockUser(obj1);
                 Dispatcher.UIThread.Post(() =>
@@ -515,7 +515,7 @@ public static class BaseBinding
 
             Games.Add(pr, obj);
             RunGames.Add(obj.UUID, pr);
-            GameCountUtils.LaunchDone(obj.UUID);
+            GameCountUtils.LaunchDone(obj);
             GameBinding.GameStateUpdate(obj);
 
             if (wait)
@@ -546,6 +546,7 @@ public static class BaseBinding
         }
         else
         {
+            GameCountUtils.LaunchError(obj);
             UserBinding.UnLockUser(obj1);
         }
 

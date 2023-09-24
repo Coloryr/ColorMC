@@ -10,8 +10,17 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.Utils;
 
-public static partial class UIUtils
+/// <summary>
+/// UI处理
+/// </summary>
+public static class UIUtils
 {
+    /// <summary>
+    /// 找到控件
+    /// </summary>
+    /// <typeparam name="T">类型</typeparam>
+    /// <param name="visual">查找</param>
+    /// <returns>控件</returns>
     public static T? FindToEnd<T>(this Visual visual)
     {
         foreach (var item in visual.GetVisualChildren())
@@ -34,6 +43,10 @@ public static partial class UIUtils
         return default;
     }
 
+    /// <summary>
+    /// 背景透明
+    /// </summary>
+    /// <param name="expander"></param>
     public static void MakeTran(this Expander expander)
     {
         try
@@ -51,6 +64,10 @@ public static partial class UIUtils
         }
     }
 
+    /// <summary>
+    /// 设置字体颜色
+    /// </summary>
+    /// <param name="grid"></param>
     public static void SetFontColor(this DataGrid grid)
     {
         try
@@ -75,24 +92,11 @@ public static partial class UIUtils
         }
     }
 
-    public static string MakeString(this List<string>? strings)
-    {
-        if (strings == null)
-            return "";
-        string temp = "";
-        foreach (var item in strings)
-        {
-            temp += item + ",";
-        }
-
-        if (temp.Length > 0)
-        {
-            return temp[..^1];
-        }
-
-        return temp;
-    }
-
+    /// <summary>
+    /// 转速度
+    /// </summary>
+    /// <param name="size"></param>
+    /// <returns></returns>
     public static string MakeSpeedSize(long size)
     {
         if (size > 1000000)
@@ -109,6 +113,11 @@ public static partial class UIUtils
         }
     }
 
+    /// <summary>
+    /// 转大小
+    /// </summary>
+    /// <param name="size"></param>
+    /// <returns></returns>
     public static string MakeFileSize1(long size)
     {
         if (size > 1000000)
@@ -125,6 +134,11 @@ public static partial class UIUtils
         }
     }
 
+    /// <summary>
+    /// 颜色转换
+    /// </summary>
+    /// <param name="brush"></param>
+    /// <returns></returns>
     public static Color ToColor(this IBrush brush)
     {
         if (brush is ImmutableSolidColorBrush brush1)
@@ -135,6 +149,11 @@ public static partial class UIUtils
         return new(255, 255, 255, 255);
     }
 
+    /// <summary>
+    /// 获得控件大小
+    /// </summary>
+    /// <param name="visual"></param>
+    /// <returns></returns>
     public static (double X, double Y) GetXY(this Visual? visual)
     {
         if (visual == null)
@@ -148,20 +167,5 @@ public static partial class UIUtils
         }
 
         return temp;
-    }
-
-    public static T? FindTop<T>(this Visual visual) where T : Visual
-    {
-        var pan = visual.GetVisualParent();
-        while (pan != null)
-        {
-            if (pan is T t)
-            {
-                return t;
-            }
-            pan = pan.GetVisualParent();
-        }
-
-        return default;
     }
 }

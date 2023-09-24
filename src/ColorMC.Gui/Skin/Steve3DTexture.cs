@@ -2,8 +2,16 @@ using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Skin;
 
+/// <summary>
+/// 生成史蒂夫贴图UV数据
+/// </summary>
 public class Steve3DTexture
 {
+    /// <summary>
+    /// 顶层数据
+    /// </summary>
+    /// <param name="type">类型</param>
+    /// <returns></returns>
     public SteveTexture GetSteveTextureTop(SkinType type)
     {
         SteveTexture tex = new()
@@ -23,6 +31,11 @@ public class Steve3DTexture
         return tex;
     }
 
+    /// <summary>
+    /// 本体数据
+    /// </summary>
+    /// <param name="type">类型</param>
+    /// <returns></returns>
     public SteveTexture GetSteveTexture(SkinType type)
     {
         SteveTexture tex = new()
@@ -130,6 +143,14 @@ public class Steve3DTexture
         21f, 0f, 21f, 1f, 11f, 1f, 11f, 0f,
     };
 
+    /// <summary>
+    /// 获取UV
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="type"></param>
+    /// <param name="offsetU"></param>
+    /// <param name="offsetV"></param>
+    /// <returns></returns>
     public static float[] GetTex(float[] input, SkinType type,
         float offsetU = 0f,
         float offsetV = 0f)
@@ -159,6 +180,11 @@ public class Steve3DTexture
         return temp;
     }
 
+    /// <summary>
+    /// 获取披风UV
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public static float[] GetCapTex(float[] input)
     {
         var temp = new float[input.Length];

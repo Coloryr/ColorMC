@@ -297,4 +297,8 @@ Log4J安全开关 okl
 调整UI okl
 修复Linux与Macos下的Java权限问题 okl
 
+2023.9.23
+切换游戏图标不刷新
+MOTD颜色不正确
+
 添加McMod搜索源 不做了

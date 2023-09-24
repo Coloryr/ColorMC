@@ -9,6 +9,9 @@ using System.Threading;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 
+/// <summary>
+/// 颜色设定
+/// </summary>
 public class ColorSel : INotifyPropertyChanged
 {
     public static readonly IBrush AppLightBackColor = Brush.Parse("#FFF3F3F3");
@@ -67,19 +70,9 @@ public class ColorSel : INotifyPropertyChanged
 
     public readonly static ColorSel Instance = new();
 
-    public static void LoadMotd()
-    {
-        try
-        {
-            MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
-            MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
-        }
-        catch (Exception e)
-        {
-            Logs.Error(App.GetLanguage("Gui.Error11"), e);
-        }
-    }
-
+    /// <summary>
+    /// 加载颜色
+    /// </summary>
     public void Load()
     {
         try
@@ -101,8 +94,6 @@ public class ColorSel : INotifyPropertyChanged
             Back1Color = Brush.Parse(config.ColorTranBack);
             ButtonFont = Brush.Parse(config.ColorFont1);
             FontColor = Brush.Parse(config.ColorFont2);
-
-            LoadMotd();
 
             BottomColor = App.NowTheme == PlatformThemeVariant.Light
                 ? AppLightBackColor : AppDarkBackColor;
@@ -144,6 +135,9 @@ public class ColorSel : INotifyPropertyChanged
                 GroupBackColor1 = Brush.Parse(GroupDarkColor1Str);
             }
 
+            MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
+            MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
+
             Reload();
         }
         catch (Exception e)
@@ -151,6 +145,11 @@ public class ColorSel : INotifyPropertyChanged
             Logs.Error(App.GetLanguage("Gui.Error11"), e);
         }
     }
+
+    private int now;
+    private IBrush _color = MainColor;
+    private IBrush _color1 = FontColor;
+    private Semaphore _semaphore = new(0, 2);
 
     private readonly Thread t_tick;
     private bool _rgb;
@@ -174,6 +173,9 @@ public class ColorSel : INotifyPropertyChanged
         _run = false;
     }
 
+    /// <summary>
+    /// 启用RGB模式
+    /// </summary>
     public void EnableRGB()
     {
         if (_rgb)
@@ -184,44 +186,42 @@ public class ColorSel : INotifyPropertyChanged
         _rgbS = (double)GuiConfigUtils.Config.RGBS / 100;
         _rgbV = (double)GuiConfigUtils.Config.RGBV / 100;
 
-        semaphore.Release();
+        _semaphore.Release();
     }
 
+    /// <summary>
+    /// 关闭RGB模式
+    /// </summary>
     public void DisableRGB()
     {
         _rgb = false;
     }
 
-    private int now;
-    private IBrush Color = MainColor;
-    private IBrush Color1 = FontColor;
-    private Semaphore semaphore = new(0, 2);
-
     private void Tick(object? obj)
     {
         while (_run)
         {
-            semaphore.WaitOne();
+            _semaphore.WaitOne();
             while (_rgb)
             {
                 now += 1;
                 now %= 360;
                 var temp = HsvColor.ToRgb(now, _rgbS, _rgbV);
-                Color = new ImmutableSolidColorBrush(temp);
+                _color = new ImmutableSolidColorBrush(temp);
                 if (_rgbV >= 0.8)
                 {
                     if (now == 190)
                     {
-                        Color1 = Brush.Parse("#FFFFFFFF");
+                        _color1 = Brush.Parse("#FFFFFFFF");
                     }
                     else if (now == 10)
                     {
-                        Color1 = Brush.Parse("#FF000000");
+                        _color1 = Brush.Parse("#FF000000");
                     }
                 }
                 else
                 {
-                    Color1 = Brush.Parse("#FFFFFFFF");
+                    _color1 = Brush.Parse("#FFFFFFFF");
                 }
 
                 Dispatcher.UIThread.InvokeAsync(Reload).Wait();
@@ -236,7 +236,7 @@ public class ColorSel : INotifyPropertyChanged
         get
         {
             if (key == "Main")
-                return _rgb ? Color : MainColor;
+                return _rgb ? _color : MainColor;
             else if (key == "Back")
                 return BackColor;
             else if (key == "TranBack")
@@ -244,7 +244,7 @@ public class ColorSel : INotifyPropertyChanged
             else if (key == "Font")
                 return FontColor;
             else if (key == "ButtonFont")
-                return _rgb ? Color1 : ButtonFont;
+                return _rgb ? _color1 : ButtonFont;
             else if (key == "Motd")
                 return MotdColor;
             else if (key == "MotdBack")
@@ -278,6 +278,9 @@ public class ColorSel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <summary>
+    /// 刷新UI
+    /// </summary>
     private void Reload()
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));

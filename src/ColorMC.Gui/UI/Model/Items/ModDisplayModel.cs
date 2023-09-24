@@ -4,6 +4,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -19,7 +20,7 @@ public partial class ModDisplayModel : ObservableObject
     public string Modid => Obj.modid;
     public string Version => Obj.version + (IsNew ? " " + App.GetLanguage("Gui.Info8") : "");
     public string Local => Obj.Local;
-    public string Author => Obj.authorList.MakeString();
+    public string Author => MakeString(Obj.authorList);
     public string? Url => Obj.url;
     public string Loader => Obj.Loader.GetName();
     public string Source
@@ -49,6 +50,24 @@ public partial class ModDisplayModel : ObservableObject
     public void LocalChange()
     {
         OnPropertyChanged(nameof(Local));
+    }
+
+    private string MakeString(List<string>? strings)
+    {
+        if (strings == null)
+            return "";
+        string temp = "";
+        foreach (var item in strings)
+        {
+            temp += item + ",";
+        }
+
+        if (temp.Length > 0)
+        {
+            return temp[..^1];
+        }
+
+        return temp;
     }
 }
 

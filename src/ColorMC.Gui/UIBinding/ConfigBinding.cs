@@ -458,7 +458,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         App.MainWindow?.MotdLoad();
-        ColorSel.LoadMotd();
+        ColorSel.Instance.Load();
     }
 
     public static void SetOneGame(bool v1, string? v2)

@@ -2,6 +2,9 @@
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 
+/// <summary>
+/// 文本获取
+/// </summary>
 public class Localizer : INotifyPropertyChanged
 {
     public readonly static Localizer Instance = new Localizer();

@@ -1406,7 +1406,7 @@ public static class GameBinding
 
         GameCloudUtils.SetCloudData(game, cloud);
         string local = Path.GetFullPath(game.GetBasePath() + "/config.zip");
-        var res = await GameCloudUtils.DownloadConfig(obj.UUID, local);
+        var res = await GameCloudUtils.DownloadConfig(obj, local);
         if (res != 100)
         {
             return (false, App.GetLanguage("AddGameWindow.Tab1.Error11"));

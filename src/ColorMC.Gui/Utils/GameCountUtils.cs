@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
@@ -12,9 +13,13 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// 游戏统计
+/// </summary>
 public static class GameCountUtils
 {
-    private const string Name = "count.dat";
+    public const string Name = "count.dat";
+
     private static string s_local;
     private static bool s_isSave;
 
@@ -22,11 +27,18 @@ public static class GameCountUtils
     private readonly static Dictionary<string, DateTime> s_timeList = new();
     private readonly static Dictionary<string, TimeSpan> s_spanTimeList = new();
 
+    /// <summary>
+    /// 统计数据
+    /// </summary>
     public static CountObj Count { get; private set; }
 
-    public static void Init(string local)
+    /// <summary>
+    /// 初始化游戏统计
+    /// </summary>
+    /// <param name="dir">运行路径</param>
+    public static void Init(string dir)
     {
-        s_local = Path.GetFullPath(local + Name);
+        s_local = Path.GetFullPath(dir + Name);
 
         new Thread(Run)
         {
@@ -36,6 +48,9 @@ public static class GameCountUtils
         Read();
     }
 
+    /// <summary>
+    /// 读统计数据
+    /// </summary>
     private static async void Read()
     {
         if (!File.Exists(s_local))
@@ -118,6 +133,9 @@ public static class GameCountUtils
         }
     }
 
+    /// <summary>
+    /// 统计线程
+    /// </summary>
     private static void Run()
     {
         int a = 0;
@@ -169,6 +187,9 @@ public static class GameCountUtils
         }
     }
 
+    /// <summary>
+    /// 保存统计数据
+    /// </summary>
     public static void Save()
     {
         lock (s_lock)
@@ -235,8 +256,13 @@ public static class GameCountUtils
         s_isSave = false;
     }
 
-    public static void LaunchDone(string uuid)
+    /// <summary>
+    /// 游戏实例启动完毕
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    public static void LaunchDone(GameSettingObj game)
     {
+        var uuid = game.UUID;
         var now = DateTime.Now;
         lock (s_timeList)
         {
@@ -296,8 +322,13 @@ public static class GameCountUtils
         }
     }
 
-    public static void LaunchError(string uuid)
+    /// <summary>
+    /// 启动失败
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    public static void LaunchError(GameSettingObj game)
     {
+        var uuid = game.UUID;
         lock (Count)
         {
             Count.LaunchCount++;
@@ -320,8 +351,13 @@ public static class GameCountUtils
         }
     }
 
-    public static void GameClose(string uuid)
+    /// <summary>
+    /// 游戏实例关闭
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    public static void GameClose(GameSettingObj game)
     {
+        var uuid = game.UUID;
         var time = DateTime.Now;
         lock (s_timeList)
         {
@@ -332,12 +368,8 @@ public static class GameCountUtils
         {
             if (s_spanTimeList.Remove(uuid, out var span))
             {
-                var game = InstancesPath.GetGame(uuid);
-                if (game != null)
-                {
-                    game.LaunchData.LastPlay = span;
-                    game.SaveLaunchData();
-                }
+                game.LaunchData.LastPlay = span;
+                game.SaveLaunchData();
             }
         }
 
