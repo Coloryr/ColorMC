@@ -16,6 +16,9 @@ public enum GameEditWindowType
     Normal, Mod, World
 }
 
+/// <summary>
+/// 皮肤类型
+/// </summary>
 public enum SkinType
 {
     /// <summary>
@@ -63,6 +66,9 @@ public enum RunType
     Program, AppBuilder, Phone
 }
 
+/// <summary>
+/// 移动方式
+/// </summary>
 public enum MoveType
 {
     LeftUp, Up, RightUp,

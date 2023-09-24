@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// 启动器更新器
+/// </summary>
 public static class UpdateChecker
 {
     //private const string url = $"http://localhost/colormc/{ColorMCCore.TopVersion}/";

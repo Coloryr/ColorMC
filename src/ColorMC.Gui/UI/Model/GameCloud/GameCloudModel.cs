@@ -203,7 +203,7 @@ public partial class GameCloudModel : GameModel
         Model.Progress(App.GetLanguage("GameCloudWindow.Info10"));
         var data = GameCloudUtils.GetCloudData(Obj);
         string local = Path.GetFullPath(Obj.GetBasePath() + "/config.zip");
-        var res = await GameCloudUtils.DownloadConfig(Obj.UUID, local);
+        var res = await GameCloudUtils.DownloadConfig(Obj, local);
         if (res == 101)
         {
             Model.Show(App.GetLanguage("GameCloudWindow.Error2"));
@@ -317,7 +317,7 @@ public partial class GameCloudModel : GameModel
     public async void LoadWorld()
     {
         WorldCloudList.Clear();
-        var res = await GameCloudUtils.GetWorldList(Obj.UUID);
+        var res = await GameCloudUtils.GetWorldList(Obj);
         var worlds = await GameBinding.GetWorlds(Obj);
         if (res != null)
         {
@@ -366,7 +366,7 @@ public partial class GameCloudModel : GameModel
         {
             Model.Progress(App.GetLanguage("GameCloudWindow.Info12"));
             //云端文件
-            var list = await GameCloudUtils.GetWorldFiles(Obj.UUID, world.World.LevelName);
+            var list = await GameCloudUtils.GetWorldFiles(Obj, world.World);
             if (list == null)
             {
                 Model.ProgressClose();
@@ -420,7 +420,7 @@ public partial class GameCloudModel : GameModel
         }
 
         Model.ProgressUpdate(App.GetLanguage("GameCloudWindow.Info9"));
-        var res = await GameCloudUtils.UploadWorld(Obj.UUID, world.World.LevelName, local);
+        var res = await GameCloudUtils.UploadWorld(Obj, world.World, local);
         PathHelper.Delete(local);
         Model.ProgressClose();
         if (res == 101)
@@ -464,7 +464,7 @@ public partial class GameCloudModel : GameModel
             }
         }
 
-        var res = await GameCloudUtils.DownloadWorld(Obj.UUID, world.Cloud.Name, local, list);
+        var res = await GameCloudUtils.DownloadWorld(Obj, world.Cloud, local, list);
         if (res == 101)
         {
             Model.Show(App.GetLanguage("GameCloudWindow.Error2"));

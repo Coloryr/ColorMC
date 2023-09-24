@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 
+/// <summary>
+/// 字体
+/// </summary>
 public class FontSel : INotifyPropertyChanged
 {
     public readonly static FontSel Instance = new FontSel();
@@ -20,17 +23,27 @@ public class FontSel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <summary>
+    /// 刷新UI
+    /// </summary>
     private void Reload()
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
     }
 
+    /// <summary>
+    /// 获取字体名字
+    /// </summary>
+    /// <returns></returns>
     public static string GetFont()
     {
         return s_font.Name;
     }
 
+    /// <summary>
+    /// 加载字体
+    /// </summary>
     public void Load()
     {
         if (!GuiConfigUtils.Config.FontDefault

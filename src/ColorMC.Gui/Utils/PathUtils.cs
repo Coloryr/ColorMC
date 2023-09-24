@@ -6,6 +6,9 @@ using System.Reflection;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// 路径处理
+/// </summary>
 public static class PathUtils
 {
     /// <summary>
@@ -34,6 +37,7 @@ public static class PathUtils
         }
         return file.Path.LocalPath;
     }
+
     /// <summary>
     /// 文件转字符串
     /// </summary>

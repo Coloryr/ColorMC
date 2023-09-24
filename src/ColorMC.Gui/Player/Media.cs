@@ -106,11 +106,15 @@ public static class Media
     /// <returns></returns>
     public static async Task<(bool, string?)> PlayWAV(string filePath)
     {
+        //没有音频输出
         if (s_player == null)
+        {
             return (false, null);
+        }
 
         Stop();
 
+        //等待解码器停止
         await Task.Run(() =>
         {
             while (Decoding)
