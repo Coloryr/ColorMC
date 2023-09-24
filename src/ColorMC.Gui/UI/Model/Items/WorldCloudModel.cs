@@ -20,7 +20,7 @@ public partial class WorldCloudModel : ObservableObject
     public WorldObj World { get; init; }
     public CloudWorldObj Cloud { get; init; }
 
-    private GameCloudModel _model;
+    private readonly GameCloudModel _model;
 
     [ObservableProperty]
     private bool _isSelect;
@@ -37,7 +37,10 @@ public partial class WorldCloudModel : ObservableObject
         World = world;
         Cloud = cloud;
 
-        _pic = new(world.Icon);
+        if (world.Icon != null && File.Exists(world.Icon))
+        {
+            _pic = new(world.Icon);
+        }
 
         HaveCloud = true;
         HaveLocal = true;
@@ -48,7 +51,10 @@ public partial class WorldCloudModel : ObservableObject
         _model = model;
         World = world;
 
-        _pic = new(world.Icon);
+        if (world.Icon != null && File.Exists(world.Icon))
+        {
+            _pic = new(world.Icon);
+        }
 
         HaveCloud = false;
         HaveLocal = true;
@@ -75,7 +81,7 @@ public partial class WorldCloudModel : ObservableObject
 
     public void Close()
     {
-        _pic?.Dispose();
+        Pic?.Dispose();
     }
 
     public void Reload()
