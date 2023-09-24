@@ -34,7 +34,7 @@ public partial class Info6Control : UserControl
                 App.CrossFade300.Start(null, this);
             }
         }
-        else if (e.PropertyName == "info6Close")
+        else if (e.PropertyName == "Info6Close")
         {
             if (_display)
             {
