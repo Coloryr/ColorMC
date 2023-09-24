@@ -479,6 +479,8 @@ public partial class BaseModel : ObservableObject
         Info6Text1 = data;
         Info6Text2 = data1;
 
+        OnPropertyChanged("Info6Show");
+
         await Task.Run(() =>
         {
             _info6Semaphore.WaitOne();
