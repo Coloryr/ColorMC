@@ -447,27 +447,27 @@ public static class BaseBinding
 
             App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text2"));
 
-            _ = Task.Run(() =>
-            {
-                nint ptr;
-                Task.Delay(1000);
-                pr.WaitForInputIdle();
-                while (true)
-                {
-                    Task.Delay(100);
-                    ptr = pr.MainWindowHandle;
-                    if (ptr != IntPtr.Zero)
-                    {
-                        break;
-                    }
-                }
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    EmbedSampleWin.WindowHandel = ptr;
-                    new GameWindow().Show();
-                    return;
-                });
-            });
+            //_ = Task.Run(() =>
+            //{
+            //    nint ptr;
+            //    Task.Delay(1000);
+            //    pr.WaitForInputIdle();
+            //    while (true)
+            //    {
+            //        Task.Delay(100);
+            //        ptr = pr.MainWindowHandle;
+            //        if (ptr != IntPtr.Zero)
+            //        {
+            //            break;
+            //        }
+            //    }
+            //    Dispatcher.UIThread.Invoke(() =>
+            //    {
+            //        EmbedSampleWin.WindowHandel = ptr;
+            //        new GameWindow().Show();
+            //        return;
+            //    });
+            //});
 
             pr.Exited += (a, b) =>
             {
