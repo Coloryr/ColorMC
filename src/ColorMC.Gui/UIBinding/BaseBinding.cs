@@ -15,6 +15,7 @@ using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -446,27 +447,27 @@ public static class BaseBinding
 
             App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text2"));
 
-            //_ = Task.Run(() =>
-            //{
-            //    nint ptr;
-            //    Task.Delay(1000);
-            //    pr.WaitForInputIdle();
-            //    while (true)
-            //    {
-            //        Task.Delay(100);
-            //        ptr = pr.MainWindowHandle;
-            //        if (ptr != IntPtr.Zero)
-            //        {
-            //            break;
-            //        }
-            //    }
-            //    Dispatcher.UIThread.Invoke(() =>
-            //    {
-            //        EmbedSampleWin.WindowHandel = ptr;
-            //        new GameWindow().Show();
-            //        return;
-            //    });
-            //});
+            _ = Task.Run(() =>
+            {
+                nint ptr;
+                Task.Delay(1000);
+                pr.WaitForInputIdle();
+                while (true)
+                {
+                    Task.Delay(100);
+                    ptr = pr.MainWindowHandle;
+                    if (ptr != IntPtr.Zero)
+                    {
+                        break;
+                    }
+                }
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    EmbedSampleWin.WindowHandel = ptr;
+                    new GameWindow().Show();
+                    return;
+                });
+            });
 
             pr.Exited += (a, b) =>
             {
@@ -483,7 +484,7 @@ public static class BaseBinding
                     App.MainWindow?.GameClose(obj.UUID);
                 });
                 Games.Remove(pr);
-                if (a is Process p1 && p1.ExitCode != 0)
+                if (a is Process p1 && p1.ExitCode != 0 && !App.IsClose)
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
@@ -504,7 +505,7 @@ public static class BaseBinding
                 }
                 pr.Dispose();
                 GameBinding.GameStateUpdate(obj);
-                if (GameCloudUtils.Connect)
+                if (GameCloudUtils.Connect && !App.IsClose)
                 {
                     Task.Run(() =>
                     {

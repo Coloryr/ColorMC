@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Controls;
+namespace ColorMC.Gui.UI.Controls.Info;
 
 public partial class Info2Control : UserControl
 {

@@ -1,11 +1,13 @@
 using Avalonia.Controls;
+using ColorMC.Gui.UI.Controls.Info;
 using ColorMC.Gui.UI.Model;
 using System;
 using System.ComponentModel;
+using System.Threading;
 
-namespace ColorMC.Gui.UI.Controls;
+namespace ColorMC.Gui.UI.Controls.Info;
 
-public partial class Info4Control : UserControl
+public partial class Info4Control : InfoControl
 {
     public Info4Control()
     {
@@ -26,11 +28,11 @@ public partial class Info4Control : UserControl
     {
         if (e.PropertyName == "Info4Show")
         {
-            App.CrossFade300.Start(null, this);
+            Display();
         }
         else if (e.PropertyName == "Info4Close")
         {
-            App.CrossFade300.Start(this, null);
+            Close();
         }
     }
 }

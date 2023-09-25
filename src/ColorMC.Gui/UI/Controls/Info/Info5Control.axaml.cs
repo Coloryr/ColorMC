@@ -2,13 +2,12 @@ using Avalonia.Controls;
 using ColorMC.Gui.UI.Model;
 using System;
 using System.ComponentModel;
+using System.Threading;
 
-namespace ColorMC.Gui.UI.Controls;
+namespace ColorMC.Gui.UI.Controls.Info;
 
-public partial class Info5Control : UserControl
+public partial class Info5Control : InfoControl
 {
-    private bool _display = false;
-
     public Info5Control()
     {
         InitializeComponent();
@@ -24,23 +23,15 @@ public partial class Info5Control : UserControl
         }
     }
 
-    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private async void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "Info5Show")
         {
-            if (!_display)
-            {
-                _display = true;
-                App.CrossFade300.Start(null, this);
-            }
+            Display();
         }
         else if (e.PropertyName == "Info5Close")
         {
-            if (_display)
-            {
-                _display = false;
-                App.CrossFade300.Start(this, null);
-            }
+            await Close();
         }
     }
 }

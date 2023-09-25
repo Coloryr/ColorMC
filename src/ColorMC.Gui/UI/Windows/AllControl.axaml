@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:info="clr-namespace:ColorMC.Gui.UI.Controls.Info"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
@@ -36,12 +37,12 @@
                 VerticalAlignment="Top"
                 Content="←" />
 
-            <views:Info1Control Name="Info1" IsVisible="False" />
-            <views:Info4Control Name="Info" IsVisible="False" />
-            <views:Info6Control Name="Info6" IsVisible="False" />
-            <views:Info5Control Name="Info5" IsVisible="False" />
-            <views:Info3Control Name="Info3" IsVisible="False" />
-            <views:Info2Control Name="Info2" />
+            <info:Info1Control IsVisible="False" />
+            <info:Info4Control IsVisible="False" />
+            <info:Info6Control IsVisible="False" />
+            <info:Info5Control IsVisible="False" />
+            <info:Info3Control IsVisible="False" />
+            <info:Info2Control />
 
             <Grid
                 Name="Grid2"

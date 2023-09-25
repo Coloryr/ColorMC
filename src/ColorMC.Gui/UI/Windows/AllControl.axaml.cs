@@ -76,6 +76,22 @@ public partial class AllControl : UserControl, IBaseWindow
         Update();
     }
 
+    public void Back()
+    {
+        if (_nowControl == null)
+            return;
+
+        if (_isDialog)
+        {
+            Grid1.Children.Clear();
+            _isDialog = false;
+        }
+        else
+        {
+            Close(_nowControl);
+        }
+    }
+
     public class AllFlyout : PopupFlyoutBase
     {
         private readonly List<Button> Obj;
@@ -128,18 +144,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        if (_nowControl == null)
-            return;
-
-        if (_isDialog)
-        {
-            Grid1.Children.Clear();
-            _isDialog = false;
-        }
-        else
-        {
-            Close(_nowControl);
-        }
+        Back();
     }
 
     public void Add(IUserControl con)
