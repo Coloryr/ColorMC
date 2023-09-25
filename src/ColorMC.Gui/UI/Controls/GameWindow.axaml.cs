@@ -62,6 +62,12 @@ public class EmbedSampleWin : INativeDemoControl
         //var text = RichText.Replace("<PREFIX>", isSecond ? "\\qr " : "");
         //var bytes = Encoding.UTF8.GetBytes(text);
         //WinApi.SendMessage(handle, 0x0400 + 97, ref st, bytes);
+
+        int wndStyle = WinApi.GetWindowLong(WindowHandel, WinApi.GWL_STYLE);
+        wndStyle &= ~WinApi.WS_BORDER;
+        wndStyle &= ~WinApi.WS_THICKFRAME;
+        WinApi.SetWindowLong(WindowHandel, WinApi.GWL_STYLE, wndStyle);
+
         return new Win32WindowControlHandle(WindowHandel, "HWND");
     }
 }
@@ -80,6 +86,10 @@ internal class Win32WindowControlHandle : PlatformHandle, INativeControlHostDest
 
 internal unsafe class WinApi
 {
+    public const int GWL_STYLE = -16;
+    public const int WS_THICKFRAME = 262144;
+    public const int WS_BORDER = 8388608;
+
     public enum CommonControls : uint
     {
         ICC_LISTVIEW_CLASSES = 0x00000001, // listview, header
@@ -107,6 +117,11 @@ internal unsafe class WinApi
         public int dwSize;
         public uint dwICC;
     }
+
+    [DllImport("user32.dll")]
+    public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+    [DllImport("user32.dll")]
+    public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
     [DllImport("Comctl32.dll")]
     public static extern void InitCommonControlsEx(ref INITCOMMONCONTROLSEX init);

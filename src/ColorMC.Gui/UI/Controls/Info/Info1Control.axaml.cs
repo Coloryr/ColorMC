@@ -4,12 +4,10 @@ using System;
 using System.ComponentModel;
 using System.Threading;
 
-namespace ColorMC.Gui.UI.Controls;
+namespace ColorMC.Gui.UI.Controls.Info;
 
-public partial class Info1Control : UserControl
+public partial class Info1Control : InfoControl
 {
-    private bool _display = false;
-
     public Info1Control()
     {
         InitializeComponent();
@@ -29,28 +27,15 @@ public partial class Info1Control : UserControl
     {
         if (e.PropertyName == "Info1Show")
         {
-            if (!_display)
-            {
-                _display = true;
-                App.CrossFade300.Start(null, this);
-            }
+            Display();
         }
         else if (e.PropertyName == "Info1Close")
         {
-            if (_display)
-            {
-                _display = false;
-                await App.CrossFade300.Start(this, null, CancellationToken.None);
-            }
+            await Close();
         }
         else if (e.PropertyName == "Info1CloseAsync")
         {
-            if (_display)
-            {
-                _display = false;
-                (DataContext as BaseModel)!.Info1Task
-                    = App.CrossFade300.Start(this, null, CancellationToken.None);
-            }
+            (DataContext as BaseModel)!.Info1Task = Close();
         }
     }
 }

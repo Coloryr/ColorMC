@@ -500,6 +500,7 @@ public partial class GameCloudModel : GameModel
                 Logs.Error("cloud error", e);
                 Model.Show(App.GetLanguage("GameCloudWindow.Error9"));
             }
+            Model.ProgressClose();
         }
         PathHelper.Delete(local);
         LoadWorld();
