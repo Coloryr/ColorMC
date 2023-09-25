@@ -119,7 +119,7 @@ public static class InstancesPath
     {
         s_installGames.Remove(obj.UUID);
 
-        if (string.IsNullOrEmpty(obj.GroupName))
+        if (string.IsNullOrEmpty(obj.GroupName) || obj.GroupName == " ")
         {
             s_gameGroups[" "].Remove(obj);
         }

@@ -396,8 +396,8 @@ public static class CheckHelpers
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckMods);
 
-                var mods = await obj.GetMods();
-                ModObj? mod = null;
+                var mods = PathHelper.GetAllFile(obj.GetModsPath());
+                FileInfo? mod = null;
                 int find = 0;
                 ModInfoObj?[] array = obj.Mods.Values.ToArray();
                 for (int a = 0; a < array.Length; a++)
@@ -414,8 +414,9 @@ public static class CheckHelpers
                             continue;
                         if (!ConfigUtils.Config.GameCheck.CheckModSha1)
                             continue;
-                        if (item1.Sha1 == item.SHA1 ||
-                            item1.Local.ToLower().EndsWith(item.File.ToLower()))
+                        using var file = PathHelper.OpenRead(item1.FullName)!;
+                        if (HashHelper.GenSha1(file) == item.SHA1 ||
+                            item1.FullName.ToLower().EndsWith(item.File.ToLower()))
                         {
                             mod = item1;
                             break;
