@@ -75,13 +75,17 @@ public partial class SettingControl : UserControl, IUserControl
         _switch1 = !_switch1;
     }
 
-    public void GoTo(SettingType type)
+    public async void GoTo(SettingType type)
     {
         var model = (DataContext as SettingModel)!;
         switch (type)
         {
             case SettingType.SetJava:
                 model.NowView = 3;
+                break;
+            case SettingType.Net:
+                model.NowView = 1;
+                await model.GameCloudConnect();
                 break;
         }
     }

@@ -146,9 +146,9 @@ public static class GameCloudUtils
             return;
         }
 
-        var data = Convert.FromBase64String(config);
         try
         {
+            var data = Convert.FromBase64String(config);
             var obj = JObject.Parse(Encoding.UTF8.GetString(data));
             if (obj == null)
             {

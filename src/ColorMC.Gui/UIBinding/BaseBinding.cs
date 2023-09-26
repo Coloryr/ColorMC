@@ -1016,4 +1016,10 @@ public static class BaseBinding
     {
         s_launch = uuid;
     }
+
+    public static void SetCloudKey(string str)
+    {
+        GuiConfigUtils.Config.ServerKey = str[9..];
+        App.ShowSetting(SettingType.Net);
+    }
 }

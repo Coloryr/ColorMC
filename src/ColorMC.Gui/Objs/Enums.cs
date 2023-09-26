@@ -5,7 +5,7 @@ namespace ColorMC.Gui.Objs;
 /// </summary>
 public enum SettingType
 {
-    Normal, SetJava
+    Normal, SetJava, Net
 }
 
 /// <summary>
