@@ -4,6 +4,7 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
@@ -158,9 +159,17 @@ public partial class MainControl : UserControl, IUserControl
         if (e.Data.Contains(DataFormats.Text))
         {
             var str = e.Data.GetText();
-            if (str?.StartsWith("authlib-injector:yggdrasil-server:") == true)
+            if (str == null)
+            {
+                return;
+            }
+            if (str.StartsWith("authlib-injector:yggdrasil-server:"))
             {
                 App.ShowUser(str);
+            }
+            else if (str.StartsWith("cloudkey:") || str.StartsWith("cloudKey:"))
+            {
+                BaseBinding.SetCloudKey(str);
             }
         }
         else if (e.Data.Contains(DataFormats.Files))
