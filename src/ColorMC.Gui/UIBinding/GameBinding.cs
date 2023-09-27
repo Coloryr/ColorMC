@@ -264,6 +264,7 @@ public static class GameBinding
             var file = await PathBinding.SelectFile(FileType.Icon);
             if (file != null)
             {
+                model.Progress(App.GetLanguage("Gui.Info30"));
                 var info = await Image.LoadAsync(PathHelper.OpenRead(file)!);
                 if (info.Width > 200 || info.Height > 200)
                 {
@@ -274,6 +275,7 @@ public static class GameBinding
                 }
                 await info.SaveAsPngAsync(obj.GetIconFile());
 
+                model.ProgressClose();
                 model.Notify(App.GetLanguage("Gui.Info29"));
             }
         }
