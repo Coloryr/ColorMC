@@ -298,7 +298,12 @@ Log4J安全开关 okl
 修复Linux与Macos下的Java权限问题 okl
 
 2023.9.23
-切换游戏图标不刷新
-MOTD颜色不正确
+切换游戏图标不刷新 okl
+MOTD颜色不正确 okl
+
+2023.9.27
+添加手机JAVA下载 okl
+添加云密钥拖入支持 okl
+添加长按检测 okl
 
 添加McMod搜索源 不做了

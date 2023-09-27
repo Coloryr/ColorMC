@@ -25,11 +25,18 @@ public partial class Tab5Control : UserControl
     {
         if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            var model = (DataContext as SettingModel)!;
-            Dispatcher.UIThread.Post(() =>
-            {
-                _ = new SettingFlyout1(this, model, DataGrid1.SelectedItems);
-            });
+            Flyout();
         }
+
+        LongPressed.Pressed(Flyout);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as SettingModel)!;
+            _ = new SettingFlyout1(this, model, DataGrid1.SelectedItems);
+        });
     }
 }

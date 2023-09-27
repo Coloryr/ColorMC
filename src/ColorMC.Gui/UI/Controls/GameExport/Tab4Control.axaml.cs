@@ -14,7 +14,7 @@ public partial class Tab4Control : UserControl
     {
         InitializeComponent();
 
-        DataGrid1.CellPointerPressed += DataGrid1_Pressed;
+        //DataGrid1.CellPointerPressed += DataGrid1_Pressed;
 
         DataContextChanged += Tab4Control_DataContextChanged;
     }
@@ -32,15 +32,12 @@ public partial class Tab4Control : UserControl
         }
     }
 
-    private void DataGrid1_Pressed(object? sender, DataGridCellPointerPressedEventArgs e)
-    {
-        var point = e.PointerPressedEventArgs.GetCurrentPoint(this);
-        if (point.Properties.IsRightButtonPressed)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                _model.CellPressd();
-            });
-        }
-    }
+    //private void DataGrid1_Pressed(object? sender, DataGridCellPointerPressedEventArgs e)
+    //{
+    //    var point = e.PointerPressedEventArgs.GetCurrentPoint(this);
+    //    if (point.Properties.IsRightButtonPressed)
+    //    {
+            
+    //    }
+    //}
 }

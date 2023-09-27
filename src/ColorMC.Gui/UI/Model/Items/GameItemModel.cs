@@ -37,12 +37,14 @@ public partial class GameItemModel : GameModel
     private readonly IMainTop _top;
 
     public string Name => Obj.Name;
-    public Bitmap Pic { get; }
+
+    [ObservableProperty]
+    private Bitmap _pic;
 
     public GameItemModel(BaseModel model, IMainTop top, GameSettingObj obj) : base(model, obj)
     {
         _top = top;
-        Pic = GetImage();
+        LoadIcon();
     }
 
     partial void OnIsSelectChanged(bool value)
@@ -52,6 +54,16 @@ public partial class GameItemModel : GameModel
         IsDrop = false;
     }
 
+    public void LoadIcon()
+    {
+        if (Pic != null && Pic != App.GameIcon)
+        {
+            Pic.Dispose();
+        }
+
+        Pic = GetImage();
+    }
+    
     public void Reload()
     {
         IsLaunch = BaseBinding.IsGameRun(Obj);

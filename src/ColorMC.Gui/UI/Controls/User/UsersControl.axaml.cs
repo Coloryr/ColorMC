@@ -110,18 +110,31 @@ public partial class UsersControl : UserControl, IUserControl
         {
             var model = (DataContext as UsersControlModel)!;
             if (model.Item == null)
+            {
                 return;
+            }
 
             var pro = e.PointerPressedEventArgs.GetCurrentPoint(this);
 
             if (pro.Properties.IsRightButtonPressed)
             {
-                _ = new UserFlyout(this, model);
+                Flyout();
             }
             else if (e.Column.DisplayIndex == 0 && pro.Properties.IsLeftButtonPressed)
             {
                 model.Select(model.Item);
             }
+
+            LongPressed.Pressed(Flyout);
+        });
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as UsersControlModel)!;
+            _ = new UserFlyout(this, model);
         });
     }
 

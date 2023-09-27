@@ -3,6 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using System;
 using System.ComponentModel;
@@ -84,6 +86,8 @@ public partial class GameControl : UserControl
     private void GameControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         GameModel.IsDrop = false;
+
+        LongPressed.Released();
     }
 
     private void GameControl_DoubleTapped(object? sender, TappedEventArgs e)
@@ -103,7 +107,17 @@ public partial class GameControl : UserControl
 
         if (pro.Properties.IsRightButtonPressed)
         {
-            GameModel.Flyout(this);
+            Flyout();
         }
+
+        LongPressed.Pressed(Flyout);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            GameModel.Flyout(this);
+        });
     }
 }

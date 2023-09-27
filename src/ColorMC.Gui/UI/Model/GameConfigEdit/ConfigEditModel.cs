@@ -401,15 +401,6 @@ public partial class GameConfigEditModel : GameModel
         _semaphore.Release();
     }
 
-    public void Pressed(Control con)
-    {
-        var item = Source.Selection;
-        if (item != null)
-        {
-            _ = new ConfigFlyout1(con, item, this);
-        }
-    }
-
     public async void AddItem(NbtNodeModel model)
     {
         if (model.NbtType == NbtType.NbtCompound)
@@ -661,14 +652,6 @@ public partial class GameConfigEditModel : GameModel
             {
                 DataList.Add(new(0, (long)0, HexEdit));
             }
-        }
-    }
-
-    public void Flyout(Control con)
-    {
-        if (DataItem != null)
-        {
-            _ = new ConfigFlyout2(con, this, DataItem);
         }
     }
 

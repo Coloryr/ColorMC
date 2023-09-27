@@ -22,14 +22,20 @@ public partial class Tab4Control : UserControl
 
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
     {
-        if (e.PointerPressedEventArgs.GetCurrentPoint(this)
-            .Properties.IsRightButtonPressed)
+        if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        {
+            Flyout();
+        }
+
+        LongPressed.Pressed(Flyout);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
         {
             var model = (DataContext as ServerPackModel)!;
-            Dispatcher.UIThread.Post(() =>
-            {
-                _ = new ServerPackFlyout1(this, model, model.FileItem);
-            });
-        }
+            _ = new ServerPackFlyout1(this, model, model.FileItem);
+        });
     }
 }

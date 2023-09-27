@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
 
@@ -12,9 +13,14 @@ public partial class ResourcePackControl : UserControl
         InitializeComponent();
 
         PointerPressed += ResourcePackControl_PointerPressed;
-
+        PointerReleased += ResourcePackControl_PointerReleased;
         PointerEntered += ResourcePackControl_PointerEntered;
         PointerExited += ResourcePackControl_PointerExited;
+    }
+
+    private void ResourcePackControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        
     }
 
     private void ResourcePackControl_PointerExited(object? sender, PointerEventArgs e)
@@ -29,13 +35,22 @@ public partial class ResourcePackControl : UserControl
 
     private void ResourcePackControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is ResourcePackModel model)
+        var model = (DataContext as ResourcePackModel)!;
+        model.Select();
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            model.Select();
-            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-            {
-                _ = new GameEditFlyout3(this, model);
-            }
+            Flyout();
         }
+
+        LongPressed.Pressed(Flyout);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as ResourcePackModel)!;
+            _ = new GameEditFlyout3(this, model);
+        });
     }
 }
