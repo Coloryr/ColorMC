@@ -20,6 +20,9 @@ public partial class AddGameModel : TopModel
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _files;
 
+    [ObservableProperty]
+    private bool _canInput;
+
     [RelayCommand]
     public async Task RefashFiles()
     {
@@ -38,9 +41,14 @@ public partial class AddGameModel : TopModel
             });
             Model.ProgressClose();
             Files = _fileModel.Source;
+
+            CanInput = true;
         }
         else
         {
+            CanInput = false;
+            Files = null;
+            _fileModel = null;
             Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), SelectPath));
         }
     }
@@ -82,6 +90,8 @@ public partial class AddGameModel : TopModel
         if (Directory.Exists(res))
         {
             SelectPath = res;
+
+            await RefashFiles();
         }
         else
         {

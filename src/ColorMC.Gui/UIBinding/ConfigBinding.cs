@@ -7,6 +7,9 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -389,6 +392,11 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ControlMode = value1;
 
         GuiConfigUtils.Save();
+
+        if (SystemInfo.Os != OsType.Android)
+        {
+            App.Reboot();
+        }
     }
 
     /// <summary>

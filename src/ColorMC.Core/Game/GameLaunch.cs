@@ -1049,9 +1049,9 @@ public static class Launch
             if (jvm == null)
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
-                ColorMCCore.NoJava?.Invoke();
+                ColorMCCore.NoJava?.Invoke(jv);
                 throw new LaunchException(LaunchState.JavaError,
-                        LanguageHelper.Get("Core.Launch.Error6"));
+                        string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv));
             }
 
             path = jvm.GetPath();

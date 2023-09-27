@@ -131,7 +131,7 @@
   "Core.Launch.Error3": "游戏Mod加载器信息读取错误",
   "Core.Launch.Error4": "缺失所需文件，且无法下载",
   "Core.Launch.Error5": "所需文件下载失败",
-  "Core.Launch.Error6": "找不到合适的Java",
+  "Core.Launch.Error6": "找不到合适的Java，需要版本 %d 的JAVA",
   "Core.Launch.Error7": "没有版本号信息",
   "Core.Launch.Error8": "已取消启动",
   "Core.Launch.Error9": "没有找到Java8，启动失败",

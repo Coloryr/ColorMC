@@ -94,7 +94,7 @@ public static class ColorMCCore
     /// <summary>
     /// 没有Java时
     /// </summary>
-    public static Action? NoJava { internal get; set; }
+    public static Action<int>? NoJava { internal get; set; }
     /// <summary>
     /// 需要更新时
     /// </summary>

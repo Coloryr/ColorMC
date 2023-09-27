@@ -336,7 +336,7 @@ public static class BaseBinding
     /// <summary>
     /// 找不到Java回调
     /// </summary>
-    public static void NoJava()
+    public static void NoJava(int version)
     {
         Dispatcher.UIThread.Post(() =>
         {

@@ -71,7 +71,8 @@
                         Height="25"
                         Margin="5,2,0,2"
                         Command="{Binding AddFiles}"
-                        Content="{setting:Localize Button.Input}" />
+                        Content="{setting:Localize Button.Input}"
+                        IsEnabled="{Binding CanInput}" />
                 </WrapPanel>
             </Border>
         </StackPanel>
