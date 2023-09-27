@@ -121,10 +121,10 @@ public partial class Live2dControl : UserControl
         }
         else if (pro.Properties.IsRightButtonPressed)
         {
-            Flyout();
+            Flyout((sender as Control)!);
         }
 
-        LongPressed.Pressed(Flyout);
+        LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
     private void Flyout()

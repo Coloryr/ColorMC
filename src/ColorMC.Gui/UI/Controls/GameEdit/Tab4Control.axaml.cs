@@ -53,10 +53,10 @@ public partial class Tab4Control : UserControl
     {
         if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            Flyout();
+            Flyout((sender as Control)!);
         }
 
-        LongPressed.Pressed(Flyout);
+        LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
     private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -64,12 +64,12 @@ public partial class Tab4Control : UserControl
         (DataContext as GameEditModel)!.DisEMod();
     }
 
-    private void Flyout()
+    private void Flyout(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
             var items = DataGrid1.SelectedItems;
-            _ = new GameEditFlyout1(this, items, (DataContext as GameEditModel)!);
+            _ = new GameEditFlyout1(control, items, (DataContext as GameEditModel)!);
         });
     }
 }

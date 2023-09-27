@@ -34,10 +34,10 @@ public partial class ScreenshotControl : UserControl
         model.Select();
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            Flyout();
+            Flyout((sender as Control)!);
         }
 
-        LongPressed.Pressed(Flyout);
+        LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
     private void Flyout()

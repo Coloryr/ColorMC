@@ -19,10 +19,10 @@ public partial class Tab10Control : UserControl
     {
         if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            Flyout();
+            Flyout((sender as Control)!);
         }
 
-        LongPressed.Pressed(Flyout);
+        LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
     private void Flyout()
