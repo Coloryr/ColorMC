@@ -50,7 +50,7 @@ public partial class ResourcePackControl : UserControl
         Dispatcher.UIThread.Post(() =>
         {
             var model = (DataContext as ResourcePackModel)!;
-            _ = new GameEditFlyout3(this, model);
+            _ = new GameEditFlyout3(control, model);
         });
     }
 }
