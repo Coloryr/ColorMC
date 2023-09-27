@@ -149,20 +149,27 @@ public static class JvmPath
     {
         string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
+        var stream = PathHelper.OpenRead(file)!;
         if (SystemInfo.Os == OsType.Android)
         {
             await Task.Run(() =>
             {
-                ColorMCCore.PhoneJvmInstall?.Invoke(path, file);
+                try
+                {
+                    ColorMCCore.PhoneJvmInstall?.Invoke(stream, file);
+                }
+                catch (Exception e)
+                {
+
+                }
             });
         }
         else
         {
-            Stream? stream;
             try
             {
                 file = Path.GetFullPath(file);
-                stream = PathHelper.OpenRead(file);
+
                 if (stream == null)
                 {
                     return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
