@@ -867,6 +867,7 @@
 	"Gui.Info27": "正在解压",
 	"Gui.Info28": "正在启动 {0}",
 	"Gui.Info29": "已设置游戏图标",
+	"Gui.Info30": "正在设置游戏图标",
 	"Gui.Error1": "背景图片加载失败",
 	"Gui.Error4": "登录发生异常",
 	"Gui.Error5": "找不到指定的Java",
