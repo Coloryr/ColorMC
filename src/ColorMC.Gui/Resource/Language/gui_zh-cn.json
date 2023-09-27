@@ -429,7 +429,7 @@
 	"GameEditWindow.Tab8.Info3": "正在加载资源包列表",
 	"GameEditWindow.Tab8.Info4": "损坏的资源包",
 	"GameEditWindow.Tab8.Info5": "资源包",
-	"GameEditWindow.Tab8.Error1": "资源包导入是被",
+	"GameEditWindow.Tab8.Error1": "资源包导入失败",
 	"GameEditWindow.Tab9.Text1": "删除截图",
 	"GameEditWindow.Tab9.Info1": "是否要删除截图 {0}",
 	"GameEditWindow.Tab9.Info2": "是否要清空实例 {0} 的截图",

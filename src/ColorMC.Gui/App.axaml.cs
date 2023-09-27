@@ -638,7 +638,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowGameLog(GameSettingObj obj)
+    public static void ShowGameLog(GameSettingObj obj, bool loadlast = false)
     {
         if (GameLogWindows.TryGetValue(obj.UUID, out var value))
         {
@@ -646,7 +646,7 @@ public partial class App : Application
         }
         else
         {
-            var con = new GameLogControl(obj);
+            var con = new GameLogControl(obj, loadlast);
             GameLogWindows.Add(obj.UUID, con);
             AWindow(con);
         }

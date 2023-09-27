@@ -181,4 +181,9 @@ public partial class GameLogModel : GameModel
         FileList.Clear();
         _run = false;
     }
+
+    public void LoadLast()
+    {
+        Text = new(BaseBinding.GameLogs[Obj.UUID].ToString());
+    }
 }
