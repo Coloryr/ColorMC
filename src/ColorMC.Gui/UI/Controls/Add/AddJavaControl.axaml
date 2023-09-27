@@ -7,7 +7,7 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="400"
     x:DataType="model:AddJavaControlModel"
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
@@ -19,44 +19,52 @@
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}"
             DockPanel.Dock="Top">
-            <StackPanel Orientation="Horizontal">
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize AddJavaWindow.Text1}" />
-                <ComboBox
-                    Width="120"
-                    ItemsSource="{Binding JavaTypeList}"
-                    SelectedIndex="{Binding TypeIndex}"
-                    SelectedItem="{Binding JavaType}" />
+            <WrapPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize AddJavaWindow.Text1}" />
+                    <ComboBox
+                        Width="120"
+                        ItemsSource="{Binding JavaTypeList}"
+                        SelectedIndex="{Binding TypeIndex}"
+                        SelectedItem="{Binding JavaType}" />
+                </StackPanel>
 
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize AddJavaWindow.Text2}" />
-                <ComboBox
-                    Width="120"
-                    ItemsSource="{Binding SystemList}"
-                    SelectedItem="{Binding System}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize AddJavaWindow.Text2}" />
+                    <ComboBox
+                        Width="120"
+                        ItemsSource="{Binding SystemList}"
+                        SelectedItem="{Binding System}" />
+                </StackPanel>
 
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize AddJavaWindow.Text3}" />
-                <ComboBox
-                    Width="70"
-                    ItemsSource="{Binding VersionList}"
-                    SelectedItem="{Binding Version}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize AddJavaWindow.Text3}" />
+                    <ComboBox
+                        Width="70"
+                        ItemsSource="{Binding VersionList}"
+                        SelectedItem="{Binding Version}" />
+                </StackPanel>
 
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize AddJavaWindow.Text4}" />
-                <ComboBox
-                    Width="100"
-                    ItemsSource="{Binding ArchList}"
-                    SelectedIndex="{Binding ArchIndex}"
-                    SelectedItem="{Binding Arch}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize AddJavaWindow.Text4}" />
+                    <ComboBox
+                        Width="100"
+                        ItemsSource="{Binding ArchList}"
+                        SelectedIndex="{Binding ArchIndex}"
+                        SelectedItem="{Binding Arch}" />
+                </StackPanel>
 
                 <Button
                     Width="100"
@@ -65,7 +73,7 @@
                     VerticalAlignment="Center"
                     Command="{Binding Load}"
                     Content="{setting:Localize Button.Refash}" />
-            </StackPanel>
+            </WrapPanel>
         </Border>
 
         <Border
