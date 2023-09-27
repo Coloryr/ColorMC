@@ -50,7 +50,7 @@ public partial class WorldCloudControl : UserControl
         Dispatcher.UIThread.Post(() =>
         {
             var model = (DataContext as WorldCloudModel)!;
-            _ = new GameCloudFlyout1(this, model);
+            _ = new GameCloudFlyout1(control, model);
         });
     }
 }
