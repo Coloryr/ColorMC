@@ -107,10 +107,10 @@ public partial class GameControl : UserControl
 
         if (pro.Properties.IsRightButtonPressed)
         {
-            Flyout();
+            Flyout((sender as Control)!);
         }
 
-        LongPressed.Pressed(Flyout);
+        LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
     private void Flyout()

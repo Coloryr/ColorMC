@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -118,23 +119,23 @@ public partial class UsersControl : UserControl, IUserControl
 
             if (pro.Properties.IsRightButtonPressed)
             {
-                Flyout();
+                Flyout((sender as Control)!);
             }
             else if (e.Column.DisplayIndex == 0 && pro.Properties.IsLeftButtonPressed)
             {
                 model.Select(model.Item);
             }
 
-            LongPressed.Pressed(Flyout);
+            LongPressed.Pressed(() => Flyout((sender as Control)!));
         });
     }
 
-    private void Flyout()
+    private void Flyout(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
             var model = (DataContext as UsersControlModel)!;
-            _ = new UserFlyout(this, model);
+            _ = new UserFlyout(control, model);
         });
     }
 

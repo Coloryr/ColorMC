@@ -84,10 +84,10 @@ public partial class GameConfigEditControl : UserControl, IUserControl
     {
         if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            Flyout2();
+            Flyout2((sender as Control)!);
         }
 
-        LongPressed.Pressed(Flyout2);
+        LongPressed.Pressed(() => Flyout2((sender as Control)!));
     }
 
     private void DataGrid1_CellEditEnded(object? sender, DataGridCellEditEndedEventArgs e)
@@ -110,13 +110,13 @@ public partial class GameConfigEditControl : UserControl, IUserControl
     {
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            Flyout1();
+            Flyout1((sender as Control)!);
         }
 
-        LongPressed.Pressed(Flyout1);
+        LongPressed.Pressed(() => Flyout1((sender as Control)!));
     }
 
-    private void Flyout1()
+    private void Flyout1(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
@@ -124,19 +124,19 @@ public partial class GameConfigEditControl : UserControl, IUserControl
             var item = model.Source.Selection;
             if (item != null)
             {
-                _ = new ConfigFlyout1(this, item, model);
+                _ = new ConfigFlyout1(control, item, model);
             }
         });
     }
 
-    private void Flyout2()
+    private void Flyout2(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
             var model = (DataContext as GameConfigEditModel)!;
             if (model.DataItem != null)
             {
-                _ = new ConfigFlyout2(this, model, model.DataItem);
+                _ = new ConfigFlyout2(control, model, model.DataItem);
             }
         });
     }

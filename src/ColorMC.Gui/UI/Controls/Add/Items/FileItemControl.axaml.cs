@@ -55,14 +55,14 @@ public partial class FileItemControl : UserControl
             if (url == null)
                 return;
 
-            _ = new UrlFlyout(this, url);
+            _ = new UrlFlyout((sender as Control)!, url);
             e.Handled = true;
         }
 
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsRightButtonPressed)
         {
-            OpenFlyout();
+            OpenFlyout((sender as Control)!);
         }
         else if (ev.Properties.IsXButton1Pressed)
         {
@@ -79,7 +79,7 @@ public partial class FileItemControl : UserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                OpenFlyout();
+                OpenFlyout((sender as Control)!);
             });
         });
     }

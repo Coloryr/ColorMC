@@ -1,5 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -41,7 +43,7 @@ public partial class FlyoutsControl : UserControl
             };
             StackPanel1.Children.Add(button);
         }
-        flyout.ShowAt(con!, true);
+        flyout.ShowAt(con!, SystemInfo.Os != OsType.Android);
     }
 
     public FlyoutsControl()
