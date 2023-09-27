@@ -10,6 +10,16 @@ namespace ColorMC.Core.Helpers;
 public static class PathHelper
 {
     /// <summary>
+    /// 检查非法名字
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static bool FilePathHasInvalidChars(string path)
+    {
+        return !string.IsNullOrEmpty(path) && path.IndexOfAny(Path.GetInvalidPathChars()) >= 0;
+    }
+
+    /// <summary>
     /// 获取名字
     /// </summary>
     public static (string Path, string Name) ToPathAndName(string input)

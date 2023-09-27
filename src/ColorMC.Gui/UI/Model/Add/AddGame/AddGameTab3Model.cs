@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
@@ -59,6 +60,12 @@ public partial class AddGameModel : TopModel
         if (string.IsNullOrWhiteSpace(Name))
         {
             Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), SelectPath));
+            return;
+        }
+
+        if (PathHelper.FilePathHasInvalidChars(Name))
+        {
+            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error13"));
             return;
         }
 
