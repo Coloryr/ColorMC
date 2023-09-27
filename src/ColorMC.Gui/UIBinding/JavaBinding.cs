@@ -183,15 +183,13 @@ public static class JavaBinding
     {
         if (SystemInfo.Os == OsType.Android)
         {
-            var list = new List<JavaDownloadObj>();
-
             var res = await GetPojavLauncherTeamList();
             if (res == null)
             {
                 return (false, null, null, null, null);
             }
 
-            return (true, new() { Arm64 }, new() { Android }, new() { "8", "17", "21" }, list);
+            return (true, new() { Arm64 }, new() { Android }, new() { "8", "17", "21" }, res);
         }
 
         if (mainversion == -1)
