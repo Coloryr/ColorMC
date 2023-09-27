@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 namespace ColorMC.Core.Helpers;
 
 /// <summary>
-/// 外置登陆器
+/// 外置登录器
 /// </summary>
 public static class AuthlibHelper
 {
