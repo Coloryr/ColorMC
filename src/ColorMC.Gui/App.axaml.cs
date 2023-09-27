@@ -38,6 +38,7 @@ using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -997,5 +998,15 @@ public partial class App : Application
         {
             (item.GetVisualRoot() as Window)?.Close();
         }
+    }
+
+    public static void Reboot()
+    {
+        IsClose = true;
+        Thread.Sleep(500);
+        Process.Start($"{(SystemInfo.Os == OsType.Windows ?
+                "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");
+        //Thread.Sleep(200);
+        Close();
     }
 }
