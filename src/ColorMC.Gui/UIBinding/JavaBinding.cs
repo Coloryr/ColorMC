@@ -189,7 +189,7 @@ public static class JavaBinding
                 return (false, null, null, null, null);
             }
 
-            return (true, new() { Arm64 }, new() { Android }, new() { "8", "17", "21" }, res);
+            return (true, new() { Arm64 }, new() { Android }, new() { "", "8", "17", "21" }, res);
         }
 
         if (mainversion == -1)
