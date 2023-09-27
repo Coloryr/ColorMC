@@ -48,11 +48,18 @@ public partial class Tab12Control : UserControl
     {
         if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                _ = new GameEditFlyout7(this, (DataContext as GameEditModel)!);
-            });
+            Flyout();
         }
+
+        LongPressed.Pressed(Flyout);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            _ = new GameEditFlyout7(this, (DataContext as GameEditModel)!);
+        });
     }
 }
 

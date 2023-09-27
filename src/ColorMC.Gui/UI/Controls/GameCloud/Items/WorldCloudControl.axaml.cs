@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
 
@@ -11,31 +12,45 @@ public partial class WorldCloudControl : UserControl
     {
         InitializeComponent();
 
-        PointerPressed += WorldControl_PointerPressed;
-
-        PointerEntered += WorldControl_PointerEntered;
-        PointerExited += WorldControl_PointerExited;
+        PointerPressed += WorldCloudControl_PointerPressed;
+        PointerReleased += WorldCloudControl_PointerReleased;
+        PointerEntered += WorldCloudControl_PointerEntered;
+        PointerExited += WorldCloudControl_PointerExited;
     }
 
-    private void WorldControl_PointerExited(object? sender, PointerEventArgs e)
+    private void WorldCloudControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        LongPressed.Released();
+    }
+
+    private void WorldCloudControl_PointerExited(object? sender, PointerEventArgs e)
     {
         Rectangle2.IsVisible = false;
     }
 
-    private void WorldControl_PointerEntered(object? sender, PointerEventArgs e)
+    private void WorldCloudControl_PointerEntered(object? sender, PointerEventArgs e)
     {
         Rectangle2.IsVisible = true;
     }
 
-    private void WorldControl_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private void WorldCloudControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is WorldCloudModel model)
+        var model = (DataContext as WorldCloudModel)!;
+        model.Select();
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            model.Select();
-            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-            {
-                _ = new GameCloudFlyout1(this, model);
-            }
+            Flyout();
         }
+
+        LongPressed.Pressed(Flyout);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as WorldCloudModel)!;
+            _ = new GameCloudFlyout1(this, model);
+        });
     }
 }

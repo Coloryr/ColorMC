@@ -7,6 +7,7 @@ using AvaloniaEdit.Indentation.CSharp;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
 using ColorMC.Gui.UI.Windows;
@@ -83,11 +84,10 @@ public partial class GameConfigEditControl : UserControl, IUserControl
     {
         if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                (DataContext as GameConfigEditModel)!.Flyout(this);
-            });
+            Flyout2();
         }
+
+        LongPressed.Pressed(Flyout2);
     }
 
     private void DataGrid1_CellEditEnded(object? sender, DataGridCellEditEndedEventArgs e)
@@ -110,11 +110,35 @@ public partial class GameConfigEditControl : UserControl, IUserControl
     {
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                (DataContext as GameConfigEditModel)!.Pressed(this);
-            });
+            Flyout1();
         }
+
+        LongPressed.Pressed(Flyout1);
+    }
+
+    private void Flyout1()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as GameConfigEditModel)!;
+            var item = model.Source.Selection;
+            if (item != null)
+            {
+                _ = new ConfigFlyout1(this, item, model);
+            }
+        });
+    }
+
+    private void Flyout2()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as GameConfigEditModel)!;
+            if (model.DataItem != null)
+            {
+                _ = new ConfigFlyout2(this, model, model.DataItem);
+            }
+        });
     }
 
     public void Opened()

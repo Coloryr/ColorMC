@@ -4,6 +4,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
@@ -205,5 +206,40 @@ public static class ImageUtils
                 return null;
             }
         });
+    }
+
+    public static Image Resize(Image image, int width, int height)
+    {
+        Point pos;
+        int newWidth;
+        int newHeight;
+
+        // 横屏图片
+        if (image.Width > image.Height)
+        {
+            newWidth = width;
+            newHeight = (int)(((float)image.Height / image.Width) * newWidth);
+
+            pos = new Point(0, (height - newHeight) / 2);
+        }
+        // 竖屏图片
+        else
+        {
+            newHeight = height;
+            newWidth = (int)(newHeight * ((float)image.Width / image.Height));
+
+            pos = new Point((width - newWidth) / 2, 0);
+        }
+
+        var image1 = new Image<Rgba32>(width, height);
+        image.Mutate(a => a.Resize(newWidth, newHeight));
+        image1.Mutate(a =>
+        {
+            a.Fill(Color.Transparent);
+            a.DrawImage(image, pos, 1);
+        });
+
+        image.Dispose();
+        return image1;
     }
 }

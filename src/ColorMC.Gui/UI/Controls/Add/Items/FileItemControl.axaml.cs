@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -14,9 +15,15 @@ public partial class FileItemControl : UserControl
         InitializeComponent();
 
         PointerPressed += FileItemControl_PointerPressed;
+        PointerReleased += FileItemControl_PointerReleased;
         DoubleTapped += FileItemControl_DoubleTapped;
         PointerEntered += FileItemControl_PointerEntered;
         PointerExited += FileItemControl_PointerExited;
+    }
+
+    private void FileItemControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        LongPressed.Released();
     }
 
     private void FileItemControl_PointerExited(object? sender, PointerEventArgs e)
@@ -42,8 +49,7 @@ public partial class FileItemControl : UserControl
         }
         model.SetSelect();
 
-        var ev = e.GetCurrentPoint(this);
-        if (ev.Properties.IsRightButtonPressed)
+        void OpenFlyout()
         {
             var url = model.Data?.GetUrl();
             if (url == null)
@@ -51,6 +57,12 @@ public partial class FileItemControl : UserControl
 
             _ = new UrlFlyout(this, url);
             e.Handled = true;
+        }
+
+        var ev = e.GetCurrentPoint(this);
+        if (ev.Properties.IsRightButtonPressed)
+        {
+            OpenFlyout();
         }
         else if (ev.Properties.IsXButton1Pressed)
         {
@@ -62,5 +74,15 @@ public partial class FileItemControl : UserControl
             model.Next();
             e.Handled = true;
         }
+
+        LongPressed.Pressed(() =>
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                OpenFlyout();
+            });
+        });
     }
+
+    
 }

@@ -341,11 +341,6 @@ public partial class GameExportModel : GameModel
         Source = Files.Source;
     }
 
-    public void CellPressd()
-    {
-
-    }
-
     protected override void Close()
     {
         Mods.Clear();

@@ -19,11 +19,18 @@ public partial class Tab10Control : UserControl
     {
         if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                _ = new GameEditFlyout5(this, (DataContext as GameEditModel)!);
-            });
+            Flyout();
         }
+
+        LongPressed.Pressed(Flyout);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            _ = new GameEditFlyout5(this, (DataContext as GameEditModel)!);
+        });
     }
 
     public void Opened()

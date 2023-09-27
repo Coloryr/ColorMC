@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
 
@@ -12,9 +13,14 @@ public partial class WorldControl : UserControl
         InitializeComponent();
 
         PointerPressed += WorldControl_PointerPressed;
-
+        PointerReleased += WorldControl_PointerReleased;
         PointerEntered += WorldControl_PointerEntered;
         PointerExited += WorldControl_PointerExited;
+    }
+
+    private void WorldControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        LongPressed.Released();
     }
 
     private void WorldControl_PointerExited(object? sender, PointerEventArgs e)
@@ -29,13 +35,22 @@ public partial class WorldControl : UserControl
 
     private void WorldControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is WorldModel model)
+        var model = (DataContext as WorldModel)!;
+        model.Select();
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            model.Select();
-            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-            {
-                _ = new GameEditFlyout2(this, model);
-            }
+            Flyout();
         }
+
+        LongPressed.Pressed(Flyout);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as WorldModel)!;
+            _ = new GameEditFlyout2(this, model);
+        });
     }
 }

@@ -24,6 +24,7 @@ using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -263,14 +264,17 @@ public static class GameBinding
             var file = await PathBinding.SelectFile(FileType.Icon);
             if (file != null)
             {
-                var info = await SixLabors.ImageSharp.Image.IdentifyAsync(file);
-                if (info.Width != info.Height || info.Width > 200 || info.Height > 200)
+                var info = await Image.LoadAsync(PathHelper.OpenRead(file)!);
+                if (info.Width > 200 || info.Height > 200)
                 {
-                    model.Show(App.GetLanguage("GameBinding.Error6"));
-                    return;
+                    await Task.Run(() =>
+                    {
+                        info = ImageUtils.Resize(info, 200, 200);
+                    });
                 }
-                var data = await File.ReadAllBytesAsync(file);
-                await File.WriteAllBytesAsync(obj.GetIconFile(), data);
+                await info.SaveAsPngAsync(obj.GetIconFile());
+
+                model.Notify(App.GetLanguage("Gui.Info29"));
             }
         }
         catch (Exception e)

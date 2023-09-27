@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.Utils;
 
@@ -50,20 +51,25 @@ public partial class Tab4Control : UserControl
 
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            var items = DataGrid1.SelectedItems;
-            var ev = e.PointerPressedEventArgs.GetCurrentPoint(this);
-            if (ev.Properties.IsRightButtonPressed
-            || (SystemInfo.Os == OsType.Android && ev.Properties.IsLeftButtonPressed))
-            {
-                _ = new GameEditFlyout1(this, items, (DataContext as GameEditModel)!);
-            }
-        });
+            Flyout();
+        }
+
+        LongPressed.Pressed(Flyout);
     }
 
     private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
     {
         (DataContext as GameEditModel)!.DisEMod();
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var items = DataGrid1.SelectedItems;
+            _ = new GameEditFlyout1(this, items, (DataContext as GameEditModel)!);
+        });
     }
 }

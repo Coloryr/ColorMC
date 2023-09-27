@@ -87,7 +87,9 @@ public partial class Live2dControl : UserControl
     private void Live2dTop_PointerMoved(object? sender, PointerEventArgs e)
     {
         if (!Live2d.HaveModel)
+        {
             return;
+        }
 
         var pro = e.GetCurrentPoint(this);
         if (pro.Properties.IsLeftButtonPressed)
@@ -97,7 +99,9 @@ public partial class Live2dControl : UserControl
     private void Live2dTop_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         if (!Live2d.HaveModel)
+        {
             return;
+        }
 
         Live2d.Release();
     }
@@ -105,7 +109,9 @@ public partial class Live2dControl : UserControl
     private void Live2dTop_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         if (!Live2d.HaveModel)
+        {
             return;
+        }
 
         var pro = e.GetCurrentPoint(this);
         if (pro.Properties.IsLeftButtonPressed)
@@ -115,8 +121,18 @@ public partial class Live2dControl : UserControl
         }
         else if (pro.Properties.IsRightButtonPressed)
         {
-            _ = new Live2DFlyout(this, Live2d);
+            Flyout();
         }
+
+        LongPressed.Pressed(Flyout);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            _ = new Live2DFlyout(this, Live2d);
+        });
     }
 
     private async void ShowMessage()

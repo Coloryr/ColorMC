@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
 
@@ -29,13 +30,22 @@ public partial class ScreenshotControl : UserControl
 
     private void ScreenshotControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is ScreenshotModel model)
+        var model = (DataContext as ScreenshotModel)!;
+        model.Select();
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            model.Select();
-            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-            {
-                _ = new GameEditFlyout4(this, model);
-            }
+            Flyout();
         }
+
+        LongPressed.Pressed(Flyout);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as ScreenshotModel)!;
+            _ = new GameEditFlyout4(this, model);
+        });
     }
 }
