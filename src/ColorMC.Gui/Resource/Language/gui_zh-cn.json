@@ -527,6 +527,7 @@
 	"AddGameWindow.Tab1.Error10": "实例创建失败",
 	"AddGameWindow.Tab1.Error11": "游戏实例配置下载失败",
 	"AddGameWindow.Tab1.Error12": "游戏文件下载失败",
+	"AddGameWindow.Tab1.Error13": "非法的实例名字",
 	"AddGameWindow.Tab2.Text1": "压缩包位置",
 	"AddGameWindow.Tab2.Text2": "压缩包类型",
 	"AddGameWindow.Tab2.Text3": "选择压缩包",

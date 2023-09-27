@@ -217,6 +217,12 @@ public partial class AddGameModel : TopModel
             return;
         }
 
+        if (PathHelper.FilePathHasInvalidChars(name))
+        {
+            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error13"));
+            return;
+        }
+
         string? version = Version;
         if (string.IsNullOrWhiteSpace(version))
         {
