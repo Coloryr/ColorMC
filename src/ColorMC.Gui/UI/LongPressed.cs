@@ -45,7 +45,10 @@ public static class LongPressed
 
     public static void Released()
     {
-        s_action = null;
-        t_timer.Stop();
+        if (s_init)
+        {
+            s_action = null;
+            t_timer.Stop();
+        }
     }
 }
