@@ -24,8 +24,14 @@ public record JavaInfoObj
 
 public static class JavaBinding
 {
-    private readonly static List<string> JavaType =
+    private readonly static List<string> PCJavaType =
         new() { "Adoptium", "Zulu", "Dragonwell", "OpenJ9" };
+
+    private readonly static List<string> PhoneJavaType =
+        new() { "PojavLauncherTeam" };
+
+    private const string Android = "Android";
+    private const string Arm64 = "Arm64";
 
     private static JavaInfoObj MakeInfo(string name, JavaInfo item)
     {
@@ -170,11 +176,24 @@ public static class JavaBinding
 
     public static List<string> GetJavaType()
     {
-        return JavaType;
+        return SystemInfo.Os == OsType.Android ? PhoneJavaType : PCJavaType;
     }
 
     public static async Task<(bool, List<string>? Arch, List<string>? Os, List<string>? MainVersion, List<JavaDownloadObj>?)> GetJavaList(int type, int os, int mainversion)
     {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            var list = new List<JavaDownloadObj>();
+
+            var res = await GetPojavLauncherTeamList();
+            if (res == null)
+            {
+                return (false, null, null, null, null);
+            }
+
+            return (true, new() { Arm64 }, new() { Android }, new() { "8", "17", "21" }, list);
+        }
+
         if (mainversion == -1)
             mainversion = 0;
         if (os == -1)
@@ -617,6 +636,55 @@ public static class JavaBinding
             App.ShowError(App.GetLanguage("JavaBinding.Error1"), e);
             return (false, null, null, null, null);
         }
+    }
+
+    private static async Task<List<JavaDownloadObj>?> GetPojavLauncherTeamList()
+    {
+        var list = new List<JavaDownloadObj>();
+        var res = await PojavLauncherTeamFake.GetJavaList();
+        if(res == null)
+        {
+            return null;
+        }
+
+        list.Add(new()
+        {
+            Name = res.Jre8.Name,
+            Os = Android,
+            Arch = Arm64,
+            MainVersion = "8",
+            Version = res.Jre8.Name.Split('-')[2],
+            Size = res.Jre8.Size,
+            Url = res.Jre8.Url,
+            Sha1 = res.Jre8.Sha1,
+            File = res.Jre8.Name
+        });
+        list.Add(new()
+        {
+            Name = res.Jre17.Name,
+            Os = Android,
+            Arch = Arm64,
+            MainVersion = "17",
+            Version = res.Jre17.Name.Split('-')[2],
+            Size = res.Jre17.Size,
+            Url = res.Jre17.Url,
+            Sha1 = res.Jre17.Sha1,
+            File = res.Jre17.Name
+        });
+        list.Add(new()
+        {
+            Name = res.Jre21.Name,
+            Os = Android,
+            Arch = Arm64,
+            MainVersion = "21",
+            Version = res.Jre21.Name.Split('-')[2],
+            Size = res.Jre21.Size,
+            Url = res.Jre21.Url,
+            Sha1 = res.Jre21.Sha1,
+            File = res.Jre21.Name
+        });
+
+        return list;
     }
 
     public static List<JavaInfo>? FindJava()

@@ -38,6 +38,7 @@ public record JavaDownloadObj
     /// 校验
     /// </summary>
     public string Sha256;
+    public string Sha1;
     /// <summary>
     /// 文件名
     /// </summary>
