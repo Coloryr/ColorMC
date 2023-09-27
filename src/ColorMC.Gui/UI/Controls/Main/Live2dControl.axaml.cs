@@ -127,11 +127,11 @@ public partial class Live2dControl : UserControl
         LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
-    private void Flyout()
+    private void Flyout(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
-            _ = new Live2DFlyout(this, Live2d);
+            _ = new Live2DFlyout(control, Live2d);
         });
     }
 

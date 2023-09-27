@@ -54,11 +54,11 @@ public partial class Tab12Control : UserControl
         LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
-    private void Flyout()
+    private void Flyout(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
-            _ = new GameEditFlyout7(this, (DataContext as GameEditModel)!);
+            _ = new GameEditFlyout7(control, (DataContext as GameEditModel)!);
         });
     }
 }

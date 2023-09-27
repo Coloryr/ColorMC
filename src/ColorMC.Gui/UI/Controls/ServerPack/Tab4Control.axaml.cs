@@ -30,12 +30,12 @@ public partial class Tab4Control : UserControl
         LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
-    private void Flyout()
+    private void Flyout(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
             var model = (DataContext as ServerPackModel)!;
-            _ = new ServerPackFlyout1(this, model, model.FileItem);
+            _ = new ServerPackFlyout1(control, model, model.FileItem);
         });
     }
 }

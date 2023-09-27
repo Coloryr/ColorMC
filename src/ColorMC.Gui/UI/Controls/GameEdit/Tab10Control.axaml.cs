@@ -25,11 +25,11 @@ public partial class Tab10Control : UserControl
         LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
-    private void Flyout()
+    private void Flyout(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
-            _ = new GameEditFlyout5(this, (DataContext as GameEditModel)!);
+            _ = new GameEditFlyout5(control, (DataContext as GameEditModel)!);
         });
     }
 

@@ -40,12 +40,12 @@ public partial class ScreenshotControl : UserControl
         LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
-    private void Flyout()
+    private void Flyout(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
             var model = (DataContext as ScreenshotModel)!;
-            _ = new GameEditFlyout4(this, model);
+            _ = new GameEditFlyout4(control, model);
         });
     }
 }
