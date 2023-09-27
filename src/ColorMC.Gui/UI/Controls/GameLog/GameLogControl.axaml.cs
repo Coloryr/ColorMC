@@ -23,6 +23,7 @@ public partial class GameLogControl : UserControl, IUserControl
             _obj.Name);
 
     private Bitmap _icon;
+    private bool _loadlast;
     public Bitmap GetIcon() => _icon;
 
     public GameLogControl()
@@ -30,9 +31,10 @@ public partial class GameLogControl : UserControl, IUserControl
         InitializeComponent();
     }
 
-    public GameLogControl(GameSettingObj obj) : this()
+    public GameLogControl(GameSettingObj obj, bool loadlast) : this()
     {
         _obj = obj;
+        _loadlast = loadlast;
 
         TextEditor1.TextArea.Background = Brushes.Transparent;
 
@@ -116,5 +118,10 @@ public partial class GameLogControl : UserControl, IUserControl
         var amodel = new GameLogModel(model, _obj);
         amodel.PropertyChanged += Model_PropertyChanged;
         DataContext = amodel;
+
+        if (_loadlast)
+        {
+            amodel.LoadLast();
+        }
     }
 }

@@ -495,11 +495,7 @@ public static class BaseBinding
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        App.ShowGameLog(obj);
-                    });
-                    GameLogs.Remove(obj.UUID);
-                    Dispatcher.UIThread.Post(() =>
-                    {
+                        App.ShowGameLog(obj, true);
                         App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text3"));
                     });
                 }
@@ -509,16 +505,16 @@ public static class BaseBinding
                     {
                         App.Close();
                     }
+                    if (GameCloudUtils.Connect && !App.IsClose)
+                    {
+                        Task.Run(() =>
+                        {
+                            GameBinding.CheckCloudAndOpen(obj);
+                        });
+                    }
                 }
                 pr.Dispose();
                 GameBinding.GameStateUpdate(obj);
-                if (GameCloudUtils.Connect && !App.IsClose)
-                {
-                    Task.Run(() =>
-                    {
-                        GameBinding.CheckCloudAndOpen(obj);
-                    });
-                }
             };
 
             Games.Add(pr, obj);
