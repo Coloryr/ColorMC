@@ -156,7 +156,7 @@ public static class JvmPath
             {
                 try
                 {
-                    ColorMCCore.PhoneJvmInstall?.Invoke(stream, file);
+                    ColorMCCore.PhoneJvmInstall?.Invoke(stream, path);
                 }
                 catch (Exception e)
                 {
