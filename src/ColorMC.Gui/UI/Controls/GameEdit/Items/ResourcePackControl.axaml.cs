@@ -45,7 +45,7 @@ public partial class ResourcePackControl : UserControl
         LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
-    private void Flyout()
+    private void Flyout(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {

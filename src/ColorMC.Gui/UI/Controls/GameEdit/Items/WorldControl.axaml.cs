@@ -45,12 +45,12 @@ public partial class WorldControl : UserControl
         LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
-    private void Flyout()
+    private void Flyout(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
             var model = (DataContext as WorldModel)!;
-            _ = new GameEditFlyout2(this, model);
+            _ = new GameEditFlyout2(control, model);
         });
     }
 }

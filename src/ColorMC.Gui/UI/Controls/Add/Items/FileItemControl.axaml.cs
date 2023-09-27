@@ -62,7 +62,7 @@ public partial class FileItemControl : UserControl
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsRightButtonPressed)
         {
-            OpenFlyout((sender as Control)!);
+            OpenFlyout();
         }
         else if (ev.Properties.IsXButton1Pressed)
         {
@@ -79,7 +79,7 @@ public partial class FileItemControl : UserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                OpenFlyout((sender as Control)!);
+                OpenFlyout();
             });
         });
     }

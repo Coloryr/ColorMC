@@ -113,11 +113,11 @@ public partial class GameControl : UserControl
         LongPressed.Pressed(() => Flyout((sender as Control)!));
     }
 
-    private void Flyout()
+    private void Flyout(Control control)
     {
         Dispatcher.UIThread.Post(() =>
         {
-            GameModel.Flyout(this);
+            GameModel.Flyout(control);
         });
     }
 }
