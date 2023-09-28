@@ -20,50 +20,62 @@
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}"
             DockPanel.Dock="Top">
-            <WrapPanel>
-                <CheckBox
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameLogWindow.Text1}"
-                    IsChecked="{Binding IsWordWrap}" />
-                <CheckBox
-                    Margin="5,0,0,0"
-                    Content="{setting:Localize GameLogWindow.Text2}"
-                    IsChecked="{Binding IsAuto}" />
-                <ComboBox
-                    Width="200"
-                    Margin="10,0,5,0"
-                    HorizontalAlignment="Stretch"
-                    ItemsSource="{Binding FileList}"
-                    SelectedItem="{Binding File}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding Launch}"
-                    Content="{setting:Localize GameLogWindow.Text4}"
-                    IsEnabled="{Binding !IsGameRun}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text44}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding Stop}"
-                    Content="{setting:Localize GameLogWindow.Text3}"
-                    IsEnabled="{Binding IsGameRun}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text44}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    VerticalAlignment="Center"
-                    Command="{Binding Load1}"
-                    Content="{setting:Localize GameLogWindow.Text6}"
-                    ToolTip.VerticalOffset="-30" />
-            </WrapPanel>
+            <StackPanel>
+                <WrapPanel>
+                    <CheckBox
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameLogWindow.Text1}"
+                        IsChecked="{Binding IsWordWrap}" />
+                    <CheckBox
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize GameLogWindow.Text2}"
+                        IsChecked="{Binding IsAuto}" />
+                    <ComboBox
+                        Width="200"
+                        Margin="10,0,5,0"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding FileList}"
+                        SelectedItem="{Binding File}" />
+                </WrapPanel>
+                <WrapPanel Margin="0,5,0,0">
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding Launch}"
+                        Content="{setting:Localize GameLogWindow.Text4}"
+                        IsEnabled="{Binding !IsGameRun}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text44}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding Stop}"
+                        Content="{setting:Localize GameLogWindow.Text3}"
+                        IsEnabled="{Binding IsGameRun}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text44}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding Load1}"
+                        Content="{setting:Localize GameLogWindow.Text6}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        VerticalAlignment="Center"
+                        Command="{Binding Search}"
+                        Content="{setting:Localize GameLogWindow.Text7}"
+                        ToolTip.VerticalOffset="-30" />
+                </WrapPanel>
+            </StackPanel>
         </Border>
         <Border
             Margin="0,3,0,0"

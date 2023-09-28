@@ -124,9 +124,24 @@ public partial class GameLogModel : GameModel
         Load();
     }
 
+    [RelayCommand]
+    public void Search()
+    {
+        OnPropertyChanged("Search");
+    }
+
     public void Load()
     {
         IsGameRun = BaseBinding.IsGameRun(Obj);
+
+        if (IsGameRun)
+        {
+            Model.Title1 = App.GetLanguage("GameLogWindow.Info3");
+        }
+        else
+        {
+            Model.Title1 = "";
+        }
     }
 
     public void SetNotAuto()

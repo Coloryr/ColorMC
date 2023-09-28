@@ -106,6 +106,10 @@ public partial class GameLogControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(TextEditor1.ScrollToHome);
         }
+        else if (e.PropertyName == "Search")
+        {
+            TextEditor1.SearchPanel.IsVisible = true;
+        }
     }
 
     private void TextEditor1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
