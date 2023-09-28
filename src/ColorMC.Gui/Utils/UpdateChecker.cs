@@ -19,8 +19,8 @@ namespace ColorMC.Gui.Utils;
 public static class UpdateChecker
 {
     //private const string url = $"http://localhost/colormc/{ColorMCCore.TopVersion}/";
-    private const string _baseUrl = $"https://colormc.coloryr.com/colormc/";
-    private const string url = $"https://colormc.coloryr.com/colormc/{ColorMCCore.TopVersion}/";
+    private const string s_baseUrl = $"https://colormc.coloryr.com/colormc/";
+    private const string s_checkUrl = $"{s_baseUrl}{ColorMCCore.TopVersion}/";
 
     public static readonly string[] WebSha1s = new string[4] { "", "", "", "" };
     public static readonly string[] Sha1s = new string[4] { "", "", "", "" };
@@ -57,7 +57,7 @@ public static class UpdateChecker
 
         try
         {
-            var data = await BaseClient.DownloadClient.GetStringAsync(_baseUrl + "index.json");
+            var data = await BaseClient.DownloadClient.GetStringAsync(s_baseUrl + "index.json");
             var obj = JObject.Parse(data);
             if (obj == null)
             {
@@ -103,7 +103,7 @@ public static class UpdateChecker
             {
                 Name = "ColorMC.Core.dll",
                 SHA1 = WebSha1s[0],
-                Url = $"{url}ColorMC.Core.dll",
+                Url = $"{s_checkUrl}ColorMC.Core.dll",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Core.dll",
                 Overwrite = true
             },
@@ -111,7 +111,7 @@ public static class UpdateChecker
             {
                 Name = "ColorMC.Core.pdb",
                 SHA1 = WebSha1s[1],
-                Url = $"{url}ColorMC.Core.pdb",
+                Url = $"{s_checkUrl}ColorMC.Core.pdb",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Core.pdb",
                 Overwrite = true
             },
@@ -119,7 +119,7 @@ public static class UpdateChecker
             {
                 Name = "ColorMC.Gui.dll",
                 SHA1 = WebSha1s[2],
-                Url = $"{url}ColorMC.Gui.dll",
+                Url = $"{s_checkUrl}ColorMC.Gui.dll",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Gui.dll",
                 Overwrite = true
             },
@@ -127,7 +127,7 @@ public static class UpdateChecker
             {
                 Name = "ColorMC.Gui.pdb",
                 SHA1 = WebSha1s[3],
-                Url = $"{url}ColorMC.Gui.pdb",
+                Url = $"{s_checkUrl}ColorMC.Gui.pdb",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Gui.pdb",
                 Overwrite = true
             }
@@ -151,7 +151,7 @@ public static class UpdateChecker
 
         try
         {
-            var data = await BaseClient.DownloadClient.GetStringAsync(url + "sha1.json");
+            var data = await BaseClient.DownloadClient.GetStringAsync(s_checkUrl + "sha1.json");
             var obj = JObject.Parse(data);
             if (obj == null)
             {
