@@ -1,8 +1,6 @@
-using Avalonia.Controls;
 using ColorMC.Gui.UI.Model;
 using System;
 using System.ComponentModel;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Info;
 

@@ -129,7 +129,7 @@ public static class ImageUtils
 
         return rgba;
     }
-    
+
     /// <summary>
     /// 获得背景图
     /// </summary>

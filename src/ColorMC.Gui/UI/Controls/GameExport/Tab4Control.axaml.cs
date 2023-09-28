@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Threading;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.Utils;
 using System;
@@ -37,7 +36,7 @@ public partial class Tab4Control : UserControl
     //    var point = e.PointerPressedEventArgs.GetCurrentPoint(this);
     //    if (point.Properties.IsRightButtonPressed)
     //    {
-            
+
     //    }
     //}
 }

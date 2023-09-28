@@ -63,7 +63,7 @@ public partial class GameItemModel : GameModel
 
         Pic = GetImage();
     }
-    
+
     public void Reload()
     {
         IsLaunch = BaseBinding.IsGameRun(Obj);

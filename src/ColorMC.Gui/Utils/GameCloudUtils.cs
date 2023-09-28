@@ -2,7 +2,6 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -677,7 +676,7 @@ public static class GameCloudUtils
     /// <param name="local">压缩包路径</param>
     /// <param name="list">文件列表</param>
     /// <returns></returns>
-    public static async Task<int> DownloadWorld(GameSettingObj game, CloudWorldObj world, 
+    public static async Task<int> DownloadWorld(GameSettingObj game, CloudWorldObj world,
         string local, Dictionary<string, string> list)
     {
         if (!Connect)
