@@ -412,7 +412,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             if (_last != null)
             {
                 _last.IsDownload = false;
-                _last.NowDownload = true;
+                _last.NowDownload = false;
             }
         }
         else
