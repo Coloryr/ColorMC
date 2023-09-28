@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -39,6 +40,8 @@ public partial class GameEditModel : GameModel
     [ObservableProperty]
     private string _title;
 
+    public bool Phone { get; } = false;
+
     [RelayCommand]
     public void ShowFilter()
     {
@@ -47,6 +50,11 @@ public partial class GameEditModel : GameModel
 
     public GameEditModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            Phone = true;
+        }
+
         _title = TabItems[0].Text;
         _titleText = string.Format(App.GetLanguage("GameEditWindow.Tab2.Text13"), Obj.Name);
         GameLoad();

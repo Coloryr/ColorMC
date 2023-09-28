@@ -176,7 +176,11 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeLauncher(string mc, string version)
     {
-        return BuildForgeItem(mc, version, "launcher");
+        var item = BuildForgeItem(mc, version, "launcher");
+        item.Url = UrlHelper.DownloadForgeJar(mc, version,  SourceLocal.Offical);
+
+
+        return item;
     }
     /// <summary>
     /// 创建NeoForge下载项目
