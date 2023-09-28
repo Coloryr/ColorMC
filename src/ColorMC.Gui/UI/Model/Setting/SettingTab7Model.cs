@@ -38,12 +38,12 @@ public partial class SettingTab7Model : ObservableObject
     [RelayCommand]
     public void Open5()
     {
-        BaseBinding.OpUrl("https://github.com/Coloryr/ColorMC/blob/master/guide/Main.md");
+        BaseBinding.OpUrl("https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md");
     }
 
     [RelayCommand]
     public void Open6()
     {
-        BaseBinding.OpUrl("https://github.com/Coloryr/ColorMC/blob/master/guide/Main.md");
+        BaseBinding.OpUrl("https://www.mcmod.cn/");
     }
 }
