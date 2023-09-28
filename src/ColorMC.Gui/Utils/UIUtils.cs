@@ -6,7 +6,6 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.Utils;
 
