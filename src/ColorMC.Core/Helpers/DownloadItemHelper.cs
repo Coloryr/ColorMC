@@ -179,7 +179,6 @@ public static class DownloadItemHelper
         var item = BuildForgeItem(mc, version, "launcher");
         item.Url = UrlHelper.DownloadForgeJar(mc, version,  SourceLocal.Offical);
 
-
         return item;
     }
     /// <summary>
