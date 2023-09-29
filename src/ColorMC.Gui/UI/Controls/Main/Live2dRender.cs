@@ -16,6 +16,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 public class Live2dRender : OpenGlControlBase
 {
     private LAppDelegate _lapp;
+    private LAppModel _model;
 
     private DateTime _time;
     private bool _change;
@@ -77,7 +78,7 @@ public class Live2dRender : OpenGlControlBase
         var info = new FileInfo(model);
         try
         {
-            _lapp.Live2dManager.LoadModel(info.DirectoryName! + "/", info.Name.Replace(".model3.json", ""));
+            _model =_lapp.Live2dManager.LoadModel(info.DirectoryName! + "/", info.Name.Replace(".model3.json", ""));
         }
         catch (Exception e)
         {
@@ -128,7 +129,7 @@ public class Live2dRender : OpenGlControlBase
 
     protected override void OnOpenGlDeinit(GlInterface GL)
     {
-
+        _lapp?.Dispose();
     }
 
     protected override void OnOpenGlRender(GlInterface gl, int fb)
@@ -182,21 +183,21 @@ public class Live2dRender : OpenGlControlBase
 
     public List<string> GetMotions()
     {
-        return _lapp.Live2dManager.GetModel(0).Motions;
+        return _model.Motions;
     }
 
     public List<string> GetExpressions()
     {
-        return _lapp.Live2dManager.GetModel(0).Expressions;
+        return _model.Expressions;
     }
 
     public void PlayMotion(string name)
     {
-        _lapp.Live2dManager.GetModel(0).StartMotion(name, MotionPriority.PriorityNormal);
+        _model.StartMotion(name, MotionPriority.PriorityForce);
     }
 
     public void PlayExpression(string name)
     {
-        _lapp.Live2dManager.GetModel(0).SetExpression(name);
+        _model.SetExpression(name);
     }
 }
