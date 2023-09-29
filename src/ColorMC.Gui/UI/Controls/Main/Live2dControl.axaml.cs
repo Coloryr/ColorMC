@@ -103,6 +103,7 @@ public partial class Live2dControl : UserControl
             return;
         }
 
+        LongPressed.Released();
         Live2d.Release();
     }
 
