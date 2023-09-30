@@ -404,23 +404,23 @@ public static class BaseBinding
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdateOnThread;
 
+        if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
+        {
+            win.ClearLog();
+        }
+
+        //清空日志
+        if (GameLogs.TryGetValue(obj.UUID, out StringBuilder? value))
+        {
+            value.Clear();
+        }
+        else
+        {
+            GameLogs.Add(obj.UUID, new());
+        }
+
         if (SystemInfo.Os != OsType.Android)
         {
-            if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
-            {
-                win.ClearLog();
-            }
-
-            //清空日志
-            if (GameLogs.TryGetValue(obj.UUID, out StringBuilder? value))
-            {
-                value.Clear();
-            }
-            else
-            {
-                GameLogs.Add(obj.UUID, new());
-            }
-
             //锁定账户
             UserBinding.AddLockUser(obj1);
         }
@@ -432,7 +432,6 @@ public static class BaseBinding
 
         if (SystemInfo.Os == OsType.Android && res.Item1 != null)
         {
-            //App.Close();
             return (true, null);
         }
 
