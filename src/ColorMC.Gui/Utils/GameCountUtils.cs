@@ -192,6 +192,11 @@ public static class GameCountUtils
     /// </summary>
     public static void Save()
     {
+        if (Count == null)
+        {
+            return;
+        }
+
         lock (s_lock)
         {
             if (s_isSave)
@@ -262,6 +267,10 @@ public static class GameCountUtils
     /// <param name="game">游戏实例</param>
     public static void LaunchDone(GameSettingObj game)
     {
+        if (Count == null)
+        {
+            return;
+        }
         var uuid = game.UUID;
         var now = DateTime.Now;
         lock (s_timeList)
@@ -328,6 +337,10 @@ public static class GameCountUtils
     /// <param name="game">游戏实例</param>
     public static void LaunchError(GameSettingObj game)
     {
+        if (Count == null)
+        {
+            return;
+        }
         var uuid = game.UUID;
         lock (Count)
         {
@@ -357,6 +370,10 @@ public static class GameCountUtils
     /// <param name="game">游戏实例</param>
     public static void GameClose(GameSettingObj game)
     {
+        if (Count == null)
+        {
+            return;
+        }
         var uuid = game.UUID;
         var time = DateTime.Now;
         lock (s_timeList)
