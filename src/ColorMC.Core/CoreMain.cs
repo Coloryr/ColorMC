@@ -121,7 +121,7 @@ public static class ColorMCCore
     public static Func<string, JavaInfo?>? PhoneReadJvm { internal get; set; }
     public static Func<string, Stream?>? PhoneReadFile { get; set; }
     public static Func<string>? PhoneGetDataDir { internal get; set; }
-    public static Func<string, string, List<string>, Task<bool>> PhoneJvmRun { internal get; set; }
+    public static Func<GameSettingObj, string, string, List<string>, Task<bool>> PhoneJvmRun { internal get; set; }
     public static Action<string> PhoneOpenUrl { get; set; }
 
     /// <summary>
