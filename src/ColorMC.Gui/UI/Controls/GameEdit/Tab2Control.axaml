@@ -103,7 +103,7 @@
                 <StackPanel>
                     <Label Content="{setting:Localize GameEditWindow.Tab2.Text1}" />
                     <!--  Jvm内存  -->
-                    <WrapPanel Orientation="Horizontal">
+                    <WrapPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <Label
                                 Width="140"
