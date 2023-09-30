@@ -1066,21 +1066,24 @@ public static class Launch
         var arg = await MakeArg(obj, login, world);
         ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.Get("Core.Launch.Info1"));
         bool hidenext = false;
-        foreach (var item in arg)
+        if (SystemInfo.Os != OsType.Android)
         {
-            if (hidenext)
+            foreach (var item in arg)
             {
-                hidenext = false;
-                ColorMCCore.GameLog?.Invoke(obj, "******");
-            }
-            else
-            {
-                ColorMCCore.GameLog?.Invoke(obj, item);
-            }
-            var low = item.ToLower();
-            if (low.StartsWith("--uuid") || low.StartsWith("--accesstoken"))
-            {
-                hidenext = true;
+                if (hidenext)
+                {
+                    hidenext = false;
+                    ColorMCCore.GameLog?.Invoke(obj, "******");
+                }
+                else
+                {
+                    ColorMCCore.GameLog?.Invoke(obj, item);
+                }
+                var low = item.ToLower();
+                if (low.StartsWith("--uuid") || low.StartsWith("--accesstoken"))
+                {
+                    hidenext = true;
+                }
             }
         }
 
