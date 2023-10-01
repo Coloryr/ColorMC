@@ -25,7 +25,7 @@ public partial class Tab2Control : UserControl
             {
                 Content = App.GetLanguage("SettingWindow.Tab2.Text43"),
                 Height = 25,
-                Width = 120
+                Width = 200
             };
             button.Click += Button_Click;
             PhoneSetting.Children.Add(button);
