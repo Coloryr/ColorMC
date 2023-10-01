@@ -249,7 +249,7 @@ public static class GameHelper
         else if (item.name.StartsWith("com.github.oshi:oshi-core:"))
         {
             string[] version = item.name.Split(":")[2].Split(".");
-            if (int.Parse(version[0]) >= 5 && int.Parse(version[1]) >= 13) return item;
+            if (int.Parse(version[0]) != 6 && int.Parse(version[1]) != 2) return item;
             item.name = "com.github.oshi:oshi-core:6.3.0";
             item.downloads.artifact.path = "com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar";
             item.downloads.artifact.sha1 = "9e98cf55be371cafdb9c70c35d04ec2a8c2b42ac";
@@ -261,7 +261,7 @@ public static class GameHelper
         else if (item.name.StartsWith("org.ow2.asm:asm-all:"))
         {
             string[] version = item.name.Split(":")[2].Split(".");
-            if (int.Parse(version[0]) >= 5 && int.Parse(version[1]) >= 13) return item;
+            if (int.Parse(version[0]) >= 5) return item;
             item.name = "org.ow2.asm:asm-all:5.0.4";
             item.downloads.artifact.path = "org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
             item.downloads.artifact.sha1 = "e6244859997b3d4237a552669279780876228909";
