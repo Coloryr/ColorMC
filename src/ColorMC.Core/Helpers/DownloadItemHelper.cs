@@ -9,6 +9,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.Text;
 
@@ -177,7 +178,8 @@ public static class DownloadItemHelper
     public static DownloadItemObj BuildForgeLauncher(string mc, string version)
     {
         var item = BuildForgeItem(mc, version, "launcher");
-        item.Url = UrlHelper.DownloadForgeJar(mc, version,  SourceLocal.Offical);
+        var name = $"forge-{mc}-{version}-launcher";
+        item.Url = UrlHelper.DownloadForgeJar(mc, version,  SourceLocal.Offical) + name + ".jar";
 
         return item;
     }
