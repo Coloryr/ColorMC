@@ -12,11 +12,12 @@ public static class PathHelper
     /// <summary>
     /// 检查非法名字
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="name"></param>
     /// <returns></returns>
-    public static bool FilePathHasInvalidChars(string path)
+    public static bool FilePathHasInvalidChars(string name)
     {
-        return !string.IsNullOrEmpty(path) && path.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0;
+        return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 
+            || name.All('.'.Equals) || name.Length > 50;
     }
 
     /// <summary>
