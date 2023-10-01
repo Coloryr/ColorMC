@@ -53,9 +53,9 @@ public partial class SettingModel : TopModel
     private GCType _gC;
 
     [ObservableProperty]
-    private uint _minMemory;
+    private uint? _minMemory;
     [ObservableProperty]
-    private uint _maxMemory;
+    private uint? _maxMemory;
     [ObservableProperty]
     private uint? _width;
     [ObservableProperty]
@@ -73,12 +73,12 @@ public partial class SettingModel : TopModel
         ConfigBinding.SetSafeLog4j(value);
     }
 
-    partial void OnMaxMemoryChanged(uint value)
+    partial void OnMaxMemoryChanged(uint? value)
     {
         SetMemory();
     }
 
-    partial void OnMinMemoryChanged(uint value)
+    partial void OnMinMemoryChanged(uint? value)
     {
         SetMemory();
     }
@@ -229,7 +229,7 @@ public partial class SettingModel : TopModel
         if (_argLoad)
             return;
 
-        ConfigBinding.SetMemory(MinMemory, MaxMemory);
+        ConfigBinding.SetMemory(MinMemory ?? 512, MaxMemory ?? 4096);
     }
 
     private void SetWindow()
@@ -237,7 +237,7 @@ public partial class SettingModel : TopModel
         if (_argLoad)
             return;
 
-        ConfigBinding.SetGameWindow(FullScreen, Width, Height);
+        ConfigBinding.SetGameWindow(FullScreen, Width ?? 1280, Height ?? 720);
     }
 
     private void SetGc()

@@ -38,14 +38,14 @@ public partial class SettingModel : TopModel
     private string? _loginUrl;
 
     [ObservableProperty]
-    private ushort _serverPort;
+    private ushort? _serverPort;
 
     [ObservableProperty]
     private bool _enableMotd;
     [ObservableProperty]
     private bool _enableJoin;
     [ObservableProperty]
-    private bool enableIP;
+    private bool _enableIP;
     [ObservableProperty]
     private bool _enableOneGame;
     [ObservableProperty]
@@ -157,7 +157,7 @@ public partial class SettingModel : TopModel
         SetOneGame();
     }
 
-    partial void OnPortChanged(ushort value)
+    partial void OnServerPortChanged(ushort? value)
     {
         SetIP();
     }
@@ -347,7 +347,7 @@ public partial class SettingModel : TopModel
         if (_serverLoad)
             return;
 
-        ConfigBinding.SetMotd(ServerIP, ServerPort, EnableMotd,
+        ConfigBinding.SetMotd(ServerIP, ServerPort ?? 0, EnableMotd,
             EnableJoin, Color1.ToString(), Color2.ToString());
     }
 

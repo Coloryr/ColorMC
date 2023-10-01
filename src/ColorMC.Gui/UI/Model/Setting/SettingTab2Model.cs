@@ -241,6 +241,22 @@ public partial class SettingModel : TopModel
         ConfigBinding.SetRgb(value);
     }
 
+    partial void OnRgbV1Changed(int value)
+    {
+        if (_load)
+            return;
+
+        SetRgb();
+    }
+
+    partial void OnRgbV2Changed(int value)
+    {
+        if (_load)
+            return;
+
+        SetRgb();
+    }
+
     partial void OnWindowModeChanged(bool value)
     {
         if (_load)
@@ -337,12 +353,6 @@ public partial class SettingModel : TopModel
     public void DownloadCore()
     {
         BaseBinding.OpenLive2DCore();
-    }
-
-    [RelayCommand]
-    public void SetRgb()
-    {
-        ConfigBinding.SetRgb(RgbV1, RgbV2);
     }
 
     [RelayCommand]
@@ -581,5 +591,10 @@ public partial class SettingModel : TopModel
         Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetWindowTran(EnableWindowTran, WindowTranType);
         Model.ProgressClose();
+    }
+
+    private void SetRgb()
+    {
+        ConfigBinding.SetRgb(RgbV1, RgbV2);
     }
 }

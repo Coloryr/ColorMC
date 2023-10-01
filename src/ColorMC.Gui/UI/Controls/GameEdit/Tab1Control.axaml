@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="450"
+    d:DesignHeight="600"
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
@@ -23,30 +23,30 @@
                     <WrapPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal">
                             <Label
-                                Margin="5,0,0,0"
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
-                                Width="200"
-                                Margin="5,0,0,0"
+                                Width="120"
+                                Margin="0,0,5,0"
                                 ItemsSource="{Binding VersionTypeList}"
                                 SelectedIndex="{Binding VersionType}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
-                                Margin="5,0,0,0"
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
                             <ComboBox
-                                Width="200"
-                                Margin="5,0,0,0"
+                                Width="150"
+                                Margin="0,0,5,0"
                                 ItemsSource="{Binding GameVersionList}"
                                 SelectedItem="{Binding GameVersion}" />
                         </StackPanel>
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,2,0,2"
+                            Margin="0,2,0,2"
                             Command="{Binding GameVersionReload}"
                             Content="{setting:Localize GameEditWindow.Tab1.Text2}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text33}"
@@ -66,23 +66,23 @@
                     <WrapPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal">
                             <Label
-                                Margin="5,0,0,0"
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
-                                Width="200"
-                                Margin="5,0,0,0"
+                                Width="120"
+                                Margin="0,0,5,0"
                                 ItemsSource="{Binding LoaderTypeList}"
                                 SelectedIndex="{Binding LoaderType}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
-                                Margin="5,0,0,0"
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
                             <ComboBox
-                                Width="200"
-                                Margin="5,0,0,0"
+                                Width="150"
+                                Margin="0,0,5,0"
                                 IsEnabled="{Binding EnableLoader}"
                                 ItemsSource="{Binding LoaderVersionList}"
                                 SelectedItem="{Binding LoaderVersion}" />
@@ -91,7 +91,7 @@
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,2,0,2"
+                            Margin="0,2,0,2"
                             Command="{Binding LoaderReload}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text11}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text34}"
@@ -218,7 +218,7 @@
                     <Button
                         Width="120"
                         Height="25"
-                        Margin="5,5,0,5"
+                        Margin="0,0,5,0"
                         Command="{Binding Delete}"
                         Content="{setting:Localize Button.Delete}"
                         IsEnabled="{Binding !GameRun}"
@@ -227,7 +227,7 @@
                     <Button
                         Width="120"
                         Height="25"
-                        Margin="5,5,0,5"
+                        Margin="0,0,5,0"
                         Command="{Binding OpenServerPack}"
                         Content="{setting:Localize GameEditWindow.Tab1.Text5}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text47}"
@@ -235,7 +235,7 @@
                     <Button
                         Width="120"
                         Height="25"
-                        Margin="5,5,0,5"
+                        Margin="0,0,5,0"
                         Command="{Binding ExportGame}"
                         Content="{setting:Localize GameEditWindow.Tab1.Text11}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text66}"
@@ -243,7 +243,7 @@
                     <Button
                         Width="120"
                         Height="25"
-                        Margin="5,5,0,5"
+                        Margin="0,0,5,0"
                         Command="{Binding OpenGameLog}"
                         Content="{setting:Localize GameEditWindow.Tab1.Text7}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text65}"
@@ -251,7 +251,7 @@
                     <Button
                         Width="120"
                         Height="25"
-                        Margin="5,5,0,5"
+                        Margin="0,0,5,0"
                         Command="{Binding OpenConfigEdit}"
                         Content="{setting:Localize GameEditWindow.Tab1.Text6}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text50}"
@@ -259,7 +259,7 @@
                     <Button
                         Width="120"
                         Height="25"
-                        Margin="5,5,0,5"
+                        Margin="0,0,5,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Command="{Binding Open}"

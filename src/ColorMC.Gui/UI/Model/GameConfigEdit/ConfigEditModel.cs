@@ -83,11 +83,11 @@ public partial class GameConfigEditModel : GameModel
     [ObservableProperty]
     private string _chunkFile;
     [ObservableProperty]
-    private int _posX;
+    private int? _posX = 0;
     [ObservableProperty]
-    private int _posY;
+    private int? _posY = 0;
     [ObservableProperty]
-    private int _posZ;
+    private int? _posZ = 0;
 
     [ObservableProperty]
     private string _findText1;
@@ -118,17 +118,17 @@ public partial class GameConfigEditModel : GameModel
         }
     }
 
-    partial void OnPosXChanged(int value)
+    partial void OnPosXChanged(int? value)
     {
         PosChange();
     }
 
-    partial void OnPosYChanged(int value)
+    partial void OnPosYChanged(int? value)
     {
         PosChange();
     }
 
-    partial void OnPosZChanged(int value)
+    partial void OnPosZChanged(int? value)
     {
         PosChange();
     }
@@ -247,7 +247,7 @@ public partial class GameConfigEditModel : GameModel
         if (FileList.Contains(chunkflie))
         {
             File = chunkflie;
-            var (X, Z) = ChunkUtils.PosToChunk(PosX, PosZ);
+            var (X, Z) = ChunkUtils.PosToChunk(PosX ?? 0, PosZ ?? 0);
             await Task.Run(() =>
             {
                 while (_chunkData == null)
@@ -720,7 +720,7 @@ public partial class GameConfigEditModel : GameModel
 
     private void PosChange()
     {
-        var (X, Z) = ChunkUtils.PosToChunk(PosX, PosZ);
+        var (X, Z) = ChunkUtils.PosToChunk(PosX ?? 0, PosZ ?? 0);
         Chunk = $"({X},{Z})";
         (X, Z) = ChunkUtils.ChunkToRegion(X, Z);
         ChunkFile = $"r.{X}.{Z}.mca";

@@ -35,23 +35,23 @@
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
-                                Margin="5,0,0,0"
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
-                                Width="200"
-                                Margin="5,5,0,0"
+                                Width="120"
+                                Margin="0,0,5,0"
                                 ItemsSource="{Binding VersionTypeList}"
                                 SelectedIndex="{Binding VersionType}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
-                                Margin="5,0,0,0"
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
                             <ComboBox
-                                Width="200"
-                                Margin="5,5,0,0"
+                                Width="150"
+                                Margin="0,0,5,0"
                                 VerticalContentAlignment="Center"
                                 ItemsSource="{Binding GameVersionList}"
                                 SelectedItem="{Binding Version}" />
@@ -60,7 +60,7 @@
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,5,0,0"
+                            Margin="0,2,0,0"
                             Command="{Binding LoadVersion}"
                             Content="{setting:Localize GameEditWindow.Tab1.Text2}" />
                     </WrapPanel>
@@ -79,24 +79,24 @@
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
-                                Margin="5,0,0,0"
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
-                                Width="200"
-                                Margin="5,5,0,0"
+                                Width="120"
+                                Margin="0,0,5,0"
                                 VerticalContentAlignment="Center"
                                 ItemsSource="{Binding LoaderTypeList}"
                                 SelectedIndex="{Binding LoaderType}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
-                                Margin="5,0,0,0"
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
                             <ComboBox
-                                Width="200"
-                                Margin="5,5,0,0"
+                                Width="150"
+                                Margin="0,0,5,0"
                                 VerticalContentAlignment="Center"
                                 IsEnabled="{Binding EnableLoader}"
                                 ItemsSource="{Binding LoaderVersionList}"
@@ -106,13 +106,13 @@
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,5,0,0"
+                            Margin="0,2,0,0"
                             Command="{Binding VersionSelect}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text11}" />
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,5,0,0"
+                            Margin="5,2,0,0"
                             Command="{Binding GetLoader}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text12}" />
                     </WrapPanel>

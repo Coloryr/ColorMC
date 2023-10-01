@@ -32,7 +32,6 @@
                                 Content="{setting:Localize SettingWindow.Tab4.Text22}"
                                 IsChecked="{Binding CheckCoreSha1}" />
                         </StackPanel>
-
                         <StackPanel>
                             <CheckBox
                                 Margin="0,0,5,0"
@@ -53,7 +52,6 @@
                                 Content="{setting:Localize SettingWindow.Tab4.Text22}"
                                 IsChecked="{Binding CheckLibSha1}" />
                         </StackPanel>
-
                         <StackPanel>
                             <CheckBox
                                 Margin="0,0,5,0"
@@ -64,15 +62,17 @@
                                 Content="{setting:Localize SettingWindow.Tab4.Text22}"
                                 IsChecked="{Binding CheckModSha1}" />
                         </StackPanel>
-                        <CheckBox
-                            Margin="0,0,5,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text20}"
-                            IsChecked="{Binding PreRun}" />
+                    </WrapPanel>
+                    <StackPanel Orientation="Horizontal">
                         <CheckBox
                             Margin="0,0,5,0"
                             Content="{setting:Localize SettingWindow.Tab4.Text23}"
                             IsChecked="{Binding SafeLog4j}" />
-                    </WrapPanel>
+                        <CheckBox
+                            Margin="0,0,5,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text20}"
+                            IsChecked="{Binding PreRun}" />
+                    </StackPanel>
                     <TextBox
                         Height="100"
                         Margin="0,5,0,0"
@@ -94,7 +94,6 @@
                 <StackPanel>
                     <!--  运行后  -->
                     <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />
-
                     <StackPanel Orientation="Horizontal">
                         <CheckBox
                             Margin="0,0,5,0"
@@ -121,30 +120,34 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <Label Content="{setting:Localize SettingWindow.Tab4.Text1}" />
-                    <StackPanel Orientation="Horizontal">
-                        <!--  Jvm内存  -->
-                        <Label
-                            Width="120"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text4}" />
-                        <NumericUpDown
-                            Width="150"
-                            Height="30"
-                            FormatString="N0"
-                            Minimum="1"
-                            Value="{Binding MinMemory}" />
-                        <Label
-                            Width="120"
-                            Margin="20,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text5}" />
-                        <NumericUpDown
-                            Width="150"
-                            Height="30"
-                            FormatString="N0"
-                            Minimum="1"
-                            Value="{Binding MaxMemory}" />
-                    </StackPanel>
+                    <!--  Jvm内存  -->
+                    <WrapPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Width="120"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab4.Text4}" />
+                            <NumericUpDown
+                                Width="150"
+                                Height="30"
+                                FormatString="N0"
+                                Minimum="1"
+                                Value="{Binding MinMemory}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Width="120"
+                                Margin="20,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab4.Text5}" />
+                            <NumericUpDown
+                                Width="150"
+                                Height="30"
+                                FormatString="N0"
+                                Minimum="1"
+                                Value="{Binding MaxMemory}" />
+                        </StackPanel>
+                    </WrapPanel>
                     <!--  Jvm参数  -->
                     <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                         <Label
@@ -153,7 +156,7 @@
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab4.Text2}" />
                         <ComboBox
-                            Width="150"
+                            Width="200"
                             ItemsSource="{Binding GCTypeList}"
                             SelectedIndex="{Binding GC}" />
                     </StackPanel>
@@ -183,7 +186,7 @@
                         Classes="input"
                         Text="{Binding GameArg}"
                         Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
-                    <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
+                    <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text25}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border

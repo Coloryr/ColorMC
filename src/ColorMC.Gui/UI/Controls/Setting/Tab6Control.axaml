@@ -108,12 +108,20 @@
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <Label Content="{setting:Localize SettingWindow.Tab6.Text8}" />
-                    <TextBox
-                        Margin="0,5,0,5"
-                        Classes="input1"
-                        Text="{Binding FileUI}"
-                        Watermark="{setting:Localize SettingWindow.Tab6.Text9}" />
-                    <WrapPanel>
+                    <DockPanel Margin="0,5,0,5">
+                        <Button
+                            Width="80"
+                            Height="25"
+                            Margin="5,0,0,0"
+                            Command="{Binding SelectUI}"
+                            Content="{setting:Localize Button.Select}"
+                            DockPanel.Dock="Right" />
+                        <TextBox
+                            Classes="input1"
+                            Text="{Binding FileUI}"
+                            Watermark="{setting:Localize SettingWindow.Tab6.Text9}" />
+                    </DockPanel>
+                    <WrapPanel HorizontalAlignment="Right">
                         <Button
                             Width="80"
                             Height="25"
@@ -121,13 +129,7 @@
                             Command="{Binding Save}"
                             Content="{setting:Localize SettingWindow.Tab6.Text10}"
                             DockPanel.Dock="Right" />
-                        <Button
-                            Width="80"
-                            Height="25"
-                            Margin="0,0,5,0"
-                            Command="{Binding SelectUI}"
-                            Content="{setting:Localize Button.Select}"
-                            DockPanel.Dock="Right" />
+
                         <Button
                             Width="80"
                             Height="25"
@@ -144,10 +146,10 @@
                             DockPanel.Dock="Right"
                             IsEnabled="{Binding FileUI, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                     </WrapPanel>
-                    <Label
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab6.Text12}" />
+                    <TextBlock
+                        Margin="0,5,0,0"
+                        Text="{setting:Localize SettingWindow.Tab6.Text12}"
+                        TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border
@@ -169,10 +171,10 @@
                         IsEnabled="{Binding EnableServerPack}"
                         Text="{Binding ServerUrl}"
                         Watermark="{setting:Localize SettingWindow.Tab6.Text14}" />
-                    <Label
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab6.Text15}" />
+                    <TextBlock
+                        Margin="0,5,0,0"
+                        Text="{setting:Localize SettingWindow.Tab6.Text15}"
+                        TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border
@@ -218,7 +220,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize SettingWindow.Tab6.Text18}" />
                             <Slider
-                                Width="200"
+                                Width="150"
                                 Height="40"
                                 Margin="5,-8,0,0"
                                 HorizontalAlignment="Left"
