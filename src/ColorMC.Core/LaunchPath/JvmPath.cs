@@ -71,15 +71,15 @@ public static class JvmPath
         {
             Remove(name);
             var res = await Download(file, sha256, url);
-            if (!res.Item1)
+            if (!res.Res)
             {
                 return (CoreRunState.Error, LanguageHelper.Get("Core.Jvm.Error5"));
             }
             ColorMCCore.JavaUnzip?.Invoke();
-            res = await UnzipJava(name, res.Item2!);
-            if (!res.Item1)
+            res = await UnzipJava(name, res.Local!);
+            if (!res.Res)
             {
-                return (CoreRunState.Error, res.Item2);
+                return (CoreRunState.Error, res.Local);
             }
         }
         catch (Exception e)

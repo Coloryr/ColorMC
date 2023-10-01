@@ -16,7 +16,7 @@ public static class PathHelper
     /// <returns></returns>
     public static bool FilePathHasInvalidChars(string path)
     {
-        return !string.IsNullOrEmpty(path) && path.IndexOfAny(Path.GetInvalidPathChars()) >= 0;
+        return !string.IsNullOrEmpty(path) && path.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0;
     }
 
     /// <summary>
