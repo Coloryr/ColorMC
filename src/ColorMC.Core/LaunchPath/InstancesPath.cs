@@ -491,6 +491,23 @@ public static class InstancesPath
             }
         }
 
+        var dir = game.GetBasePath();
+        if (Directory.Exists(dir))
+        {
+            Directory.Delete(dir, true);
+        }
+
+        try
+        {
+            Directory.CreateDirectory(dir);
+            Directory.CreateDirectory(game.GetGamePath());
+        }
+        catch (Exception e)
+        {
+            Logs.Error("create", e);
+            return null;
+        }
+
         game.DirName = game.Name;
         game.Mods ??= new();
         game.LaunchData ??= new()
@@ -498,15 +515,6 @@ public static class InstancesPath
             AddTime = DateTime.Now,
             LastPlay = new()
         };
-
-        var dir = game.GetBasePath();
-        if (Directory.Exists(dir))
-        {
-            Directory.Delete(dir, true);
-        }
-
-        Directory.CreateDirectory(dir);
-        Directory.CreateDirectory(game.GetGamePath());
 
         game.Save();
         game.SaveLaunchData();
