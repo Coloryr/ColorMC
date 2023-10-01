@@ -801,7 +801,7 @@ public static class Launch
             {"${assets_root}",assetsPath },
             {"${assets_index_name}",assetsIndexName },
             {"${auth_uuid}",login.UUID },
-            {"${auth_access_token}",login.AccessToken },
+            {"${auth_access_token}",string.IsNullOrWhiteSpace(login.AccessToken) ? "0" : login.AccessToken },
             {"${game_assets}",assetsPath },
             {"${user_properties}", "{}" },
             {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "legacy" },
