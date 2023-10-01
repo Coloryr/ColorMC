@@ -293,6 +293,17 @@ public static class Launch
         {
             if (item is string str)
             {
+                if (SystemInfo.Os == OsType.Android)
+                {
+                    if (str.StartsWith("-Djava.library.path")
+                        || str.StartsWith("-Djna.tmpdir")
+                        || str.StartsWith("-Dorg.lwjgl.system.SharedLibraryExtractPath")
+                        || str.StartsWith("-Dio.netty.native.workdir"))
+                    {
+                        continue;
+                    }
+                }
+
                 arg.Add(str);
             }
             //else if (item is JObject)
@@ -669,9 +680,9 @@ public static class Launch
             if (item.Later == null)
             {
                 //不添加lwjgl
-                if (SystemInfo.Os == OsType.Android && CheckHelpers.GameLaunchVersionV2(version)
-                    && (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
-                    && item.Name.Contains("lwjgl"))
+                if (item.Name.Contains("lwjgl") && (SystemInfo.Os == OsType.Android 
+                    || (CheckHelpers.GameLaunchVersionV2(version)
+                        && (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge))))
                 {
                     continue;
                 }
