@@ -295,7 +295,7 @@ public static class ConfigBinding
         ConfigUtils.Save();
     }
 
-    public static void SetGameWindow(bool v1, uint? v2, uint? v3)
+    public static void SetGameWindow(bool v1, uint v2, uint v3)
     {
         ConfigUtils.Config.Window ??= new();
         ConfigUtils.Config.Window.FullScreen = v1;

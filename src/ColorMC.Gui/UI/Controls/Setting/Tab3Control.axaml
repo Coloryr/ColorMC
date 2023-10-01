@@ -67,45 +67,45 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <Label Content="{setting:Localize SettingWindow.Tab3.Text3}" />
-                    <WrapPanel>
+                    <Grid ColumnDefinitions="3*,1*">
                         <TextBox
-                            Width="100"
-                            Margin="0,0,5,0"
+                            Grid.Column="0"
+                            Margin="0,0,10,0"
                             Classes="input1"
                             IsEnabled="{Binding !IsDownload}"
                             Text="{Binding IP}"
                             Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
                         <TextBox
-                            Width="100"
-                            Margin="0,0,5,0"
+                            Grid.Column="1"
                             Classes="input1"
                             IsEnabled="{Binding !IsDownload}"
                             MaxLength="5"
                             Text="{Binding Port}"
                             Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="1*,1*">
                         <TextBox
-                            Width="100"
-                            Margin="0,0,5,0"
+                            Grid.Column="0"
+                            Margin="0,0,10,0"
                             Classes="input1"
                             IsEnabled="{Binding !IsDownload}"
                             Text="{Binding User}"
                             Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
                         <TextBox
-                            Width="100"
-                            Margin="0,0,5,0"
+                            Grid.Column="1"
                             Classes="input1"
                             IsEnabled="{Binding !IsDownload}"
                             PasswordChar="*"
                             Text="{Binding Password}"
                             Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
-                            VerticalAlignment="Center"
-                            Command="{Binding SetProxy}"
-                            Content="{setting:Localize Button.Set}" />
-                    </WrapPanel>
+                    </Grid>
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding SetProxy}"
+                        Content="{setting:Localize Button.Set}" />
                     <WrapPanel Margin="0,5,0,0">
                         <CheckBox
                             Width="130"
@@ -123,9 +123,7 @@
                             IsChecked="{Binding GameProxy}"
                             IsEnabled="{Binding !IsDownload}" />
                     </WrapPanel>
-                    <Label Margin="5,0,0,0">
-                        <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
-                    </Label>
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border
@@ -134,7 +132,8 @@
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <Label Content="{setting:Localize SettingWindow.Tab3.Text14}" />
                     <WrapPanel>
@@ -150,8 +149,7 @@
                             Height="25"
                             Margin="0,5,5,5"
                             Command="{Binding StartUpdate}"
-                            Content="{setting:Localize SettingWindow.Tab3.Text17}"
-                            IsEnabled="{Binding !Phone}" />
+                            Content="{setting:Localize SettingWindow.Tab3.Text17}" />
                     </WrapPanel>
                 </StackPanel>
             </Border>
@@ -202,8 +200,17 @@
                     <Button
                         Width="160"
                         Height="25"
+                        Margin="0,0,5,0"
                         Command="{Binding OpenPicPath}"
                         Content="{setting:Localize SettingWindow.Tab3.Text18}" />
+                    <Button
+                        Width="160"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding OpenJavaPath}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text6}"
+                        DockPanel.Dock="Left"
+                        IsEnabled="{Binding !Phone}" />
                 </StackPanel>
             </Border>
         </StackPanel>

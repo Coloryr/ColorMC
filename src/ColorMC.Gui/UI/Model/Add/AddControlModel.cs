@@ -78,7 +78,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     [ObservableProperty]
     private int _downloadSource = -1;
     [ObservableProperty]
-    private int _page;
+    private int? _page = 0;
     [ObservableProperty]
     private int _categorie;
     [ObservableProperty]
@@ -148,7 +148,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         Refresh();
     }
 
-    partial void OnPageChanged(int value)
+    partial void OnPageChanged(int? value)
     {
         if (!Display || _load)
             return;
@@ -702,7 +702,7 @@ public partial class AddControlModel : GameModel, IAddWindow
                 return;
             }
 
-            var data = await WebBinding.SearchMcmod(_now, Name, Page);
+            var data = await WebBinding.SearchMcmod(_now, Name, Page ?? 0 );
             if (data == null)
             {
                 Model.ProgressClose();
@@ -728,7 +728,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         else
         {
             var data = await WebBinding.GetList(_now, type,
-                GameVersion, Name, Page,
+                GameVersion, Name, Page ?? 0,
                 SortType, Categorie < 0 ? "" :
                     Categories[Categorie], Obj.Loader);
 

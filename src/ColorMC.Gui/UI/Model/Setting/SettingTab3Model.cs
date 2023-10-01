@@ -17,12 +17,12 @@ public partial class SettingModel : TopModel
     [ObservableProperty]
     private int _source;
     [ObservableProperty]
-    private int _thread;
+    private int? _thread = 5;
 
     [ObservableProperty]
     private string _iP;
     [ObservableProperty]
-    private ushort _port;
+    private ushort? _port = 1080;
     [ObservableProperty]
     private string _user;
     [ObservableProperty]
@@ -85,12 +85,12 @@ public partial class SettingModel : TopModel
         SetProxyEnable();
     }
 
-    partial void OnThreadChanged(int value)
+    partial void OnThreadChanged(int? value)
     {
         if (_httpLoad)
             return;
 
-        ConfigBinding.SetDownloadThread(value);
+        ConfigBinding.SetDownloadThread(value ?? 5);
     }
 
     partial void OnSourceChanged(int value)
@@ -154,7 +154,7 @@ public partial class SettingModel : TopModel
     [RelayCommand]
     public void SetProxy()
     {
-        ConfigBinding.SetDownloadProxy(IP, Port, User, Password);
+        ConfigBinding.SetDownloadProxy(IP, Port ?? 1080, User, Password);
     }
 
     public void LoadHttpSetting()

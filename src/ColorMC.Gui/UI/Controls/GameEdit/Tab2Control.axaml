@@ -19,10 +19,20 @@
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    Text="{Binding TitleText}"
-                    TextTrimming="CharacterEllipsis" />
+                <Panel>
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Text="{Binding TitleText}"
+                        TextTrimming="CharacterEllipsis" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        HorizontalAlignment="Right"
+                        Command="{Binding DeleteConfig}"
+                        Content="{setting:Localize GameEditWindow.Tab2.Text28}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text38}"
+                        ToolTip.VerticalOffset="-30" />
+                </Panel>
             </Border>
             <Border
                 Margin="0,3,0,0"
@@ -39,7 +49,7 @@
                             VerticalAlignment="Center"
                             Content="{setting:Localize GameEditWindow.Tab2.Text22}" />
                         <ComboBox
-                            Width="300"
+                            Width="200"
                             IsEnabled="{Binding EnableJvmName}"
                             ItemsSource="{Binding JvmList}"
                             SelectedItem="{Binding JvmName}" />
@@ -138,7 +148,7 @@
                             VerticalAlignment="Center"
                             Content="{setting:Localize GameEditWindow.Tab2.Text2}" />
                         <ComboBox
-                            Width="300"
+                            Width="200"
                             ItemsSource="{Binding GCTypeList}"
                             SelectedIndex="{Binding Gc}" />
                     </WrapPanel>
@@ -172,10 +182,7 @@
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text8}" />
 
-                    <TextBlock
-                        Margin="5,0,0,0"
-                        Text="{setting:Localize GameEditWindow.Tab2.Text25}"
-                        TextWrapping="Wrap" />
+                    <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text25}" TextWrapping="Wrap" />
 
                     <TextBox
                         Name="TextBox13"
@@ -187,10 +194,7 @@
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text32}" />
 
-                    <TextBlock
-                        Margin="5,0,0,0"
-                        Text="{setting:Localize GameEditWindow.Tab2.Text25}"
-                        TextWrapping="Wrap" />
+                    <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text25}" TextWrapping="Wrap" />
 
                     <TextBox
                         Margin="0,5,0,0"
@@ -309,21 +313,6 @@
                     </WrapPanel>
 
                 </StackPanel>
-            </Border>
-            <Border
-                Margin="0,3,0,0"
-                Padding="8"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
-                <Button
-                    Width="100"
-                    Height="25"
-                    Command="{Binding DeleteConfig}"
-                    Content="{setting:Localize GameEditWindow.Tab2.Text28}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text38}"
-                    ToolTip.VerticalOffset="-30" />
             </Border>
         </StackPanel>
     </ScrollViewer>

@@ -38,9 +38,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     [ObservableProperty]
     private int _sortType;
     [ObservableProperty]
-    private int _page;
+    private int? _page = 0;
     [ObservableProperty]
-    private int _page1;
+    private int? _page1 = 0;
     [ObservableProperty]
     private string? _gameVersion;
     [ObservableProperty]
@@ -76,7 +76,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Load1();
     }
 
-    partial void OnPage1Changed(int value)
+    partial void OnPage1Changed(int? value)
     {
         Load1();
     }
@@ -108,7 +108,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Load();
     }
 
-    partial void OnPageChanged(int value)
+    partial void OnPageChanged(int? value)
     {
         if (_load)
             return;
@@ -289,7 +289,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
         Model.Progress(App.GetLanguage("AddModPackWindow.Info2"));
         var data = await WebBinding.GetPackList((SourceType)Source,
-            GameVersion, Text, Page, Source == 2 ? Categorie : SortType,
+            GameVersion, Text, Page ?? 0, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
 
         if (data == null)
@@ -327,14 +327,14 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         {
             PageEnable1 = true;
             list = await WebBinding.GetPackFile((SourceType)Source,
-                (_last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), Page1,
+                (_last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), Page1 ??0,
                 GameVersion1, Loaders.Normal);
         }
         else if (Source == 1)
         {
             PageEnable1 = false;
             list = await WebBinding.GetPackFile((SourceType)Source,
-                (_last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, Page1,
+                (_last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, Page1 ??0,
                 GameVersion1, Loaders.Normal);
         }
         if (list == null)
