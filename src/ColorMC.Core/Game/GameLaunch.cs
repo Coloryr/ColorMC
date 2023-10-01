@@ -804,8 +804,8 @@ public static class Launch
             {"${auth_access_token}",string.IsNullOrWhiteSpace(login.AccessToken) ? "0" : login.AccessToken },
             {"${game_assets}",assetsPath },
             {"${user_properties}", "{}" },
-            {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "legacy" },
-            {"${version_type}", "ColorMC" },
+            {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "mojang" },
+            {"${version_type}", "release" },
             {"${natives_directory}", SystemInfo.Os == OsType.Android
                 ? "%natives_directory%" : LibrariesPath.GetNativeDir(obj.Version) },
             {"${library_directory}",LibrariesPath.BaseDir },
