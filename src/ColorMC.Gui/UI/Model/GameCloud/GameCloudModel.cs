@@ -156,7 +156,7 @@ public partial class GameCloudModel : GameModel
     public async Task UploadConfig()
     {
         Model.Progress(App.GetLanguage("GameCloudWindow.Info8"));
-        var files = _files.GetSelectItems();
+        var files = _files.GetSelectItems(true);
         var data = GameCloudUtils.GetCloudData(Obj);
         string dir = Obj.GetBasePath();
         data.Config ??= new();

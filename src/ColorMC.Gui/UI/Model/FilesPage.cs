@@ -84,9 +84,9 @@ public class FilesPage
         return _root.GetUnSelectItems();
     }
 
-    public List<string> GetSelectItems()
+    public List<string> GetSelectItems(bool getdir = false)
     {
-        return _root.GetSelectItems();
+        return _root.GetSelectItems(getdir);
     }
 
     public void SetSelectItems(List<string> config)
