@@ -473,7 +473,7 @@ public static class InstancesPath
     /// <returns>结果</returns>
     public static async Task<GameSettingObj?> CreateGame(this GameSettingObj game)
     {
-        if (s_installGames.ContainsKey(game.Name))
+        if (s_installGames.Any(item => item.Value.DirName == game.Name))
         {
             if (ColorMCCore.GameOverwirte == null)
             {
