@@ -315,13 +315,40 @@ public static class ModPackHelper
         var now = 0;
         var list = new ConcurrentBag<DownloadItemObj>();
         var res = await CurseForgeAPI.GetMods(info.files);
+        var modpath = game.GetModsPath();
+        var respath = game.GetResourcepacksPath();
+        var shapath = game.GetShaderpacksPath();
+        var modpath1 = InstancesPath.Name11;
+        var respath1 = InstancesPath.Name8;
+        var shapath1 = InstancesPath.Name9;
+
         if (res != null)
         {
             var res1 = res.Distinct(CurseDataComparer.Instance);
+            
             foreach (var item in res1)
             {
-                list.Add(item.MakeModDownloadObj(game));
-                game.Mods.Add(item.modId.ToString(), item.MakeModInfo());
+                var path = modpath;
+                var path1 = modpath1;
+                if (!item.fileName.EndsWith(".jar"))
+                {
+                    var info1 = await CurseForgeAPI.GetModInfo(item.modId);
+                    if (info1 != null)
+                    {
+                        if (info1.Data.categories.Any(item=>item.classId == CurseForgeAPI.ClassResourcepack))
+                        {
+                            path = respath;
+                            path1 = respath1;
+                        }
+                        else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack))
+                        {
+                            path = shapath;
+                            path1 = shapath1;
+                        }
+                    }
+                }
+                list.Add(item.MakeModDownloadObj(game, path));
+                game.Mods.Add(item.modId.ToString(), item.MakeModInfo(path1));
 
                 now++;
                 if (notify)
@@ -342,8 +369,28 @@ public static class ModPackHelper
                     return;
                 }
 
-                list.Add(res.data.MakeModDownloadObj(game));
-                game.Mods.Add(res.data.modId.ToString(), res.data.MakeModInfo());
+                var path = modpath;
+                var path1 = modpath1;
+                if (!res.data.fileName.EndsWith(".jar"))
+                {
+                    var info1 = await CurseForgeAPI.GetModInfo(res.data.modId);
+                    if (info1 != null)
+                    {
+                        if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack))
+                        {
+                            path = respath;
+                            path1 = respath1;
+                        }
+                        else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack))
+                        {
+                            path = shapath;
+                            path1 = shapath1;
+                        }
+                    }
+                }
+
+                list.Add(res.data.MakeModDownloadObj(game, path));
+                game.Mods.Add(res.data.modId.ToString(), res.data.MakeModInfo(path1));
 
                 now++;
                 if (notify)

@@ -168,6 +168,7 @@ public static class GameBinding
                         FileType.Mod => CurseForgeAPI.ClassMod,
                         FileType.World => CurseForgeAPI.ClassWorld,
                         FileType.Resourcepack => CurseForgeAPI.ClassResourcepack,
+                        FileType.Shaderpack => CurseForgeAPI.ClassShaderpack,
                         _ => CurseForgeAPI.ClassModPack
                     }
                     orderby item2.name descending

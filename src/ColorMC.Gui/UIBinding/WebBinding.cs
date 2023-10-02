@@ -163,35 +163,30 @@ public static class WebBinding
 
     public static List<SourceType> GetSourceList(FileType type)
     {
-        switch (type)
+        return type switch
         {
-            case FileType.Mod:
-                return new()
+            FileType.Mod => new()
                 {
                     SourceType.CurseForge,
                     SourceType.Modrinth,
                     SourceType.McMod
-                };
-            case FileType.DataPacks:
-            case FileType.Resourcepack:
-                return new()
+                },
+            FileType.DataPacks or FileType.Resourcepack => new()
                 {
                     SourceType.CurseForge,
                     SourceType.Modrinth,
-                };
-            case FileType.Shaderpack:
-                return new()
-                {
-                    SourceType.Modrinth,
-                };
-            case FileType.World:
-                return new()
+                },
+            FileType.Shaderpack => new()
                 {
                     SourceType.CurseForge,
-                };
-            default:
-                return new();
-        }
+                    SourceType.Modrinth,
+                },
+            FileType.World => new()
+                {
+                    SourceType.CurseForge,
+                },
+            _ => new(),
+        };
     }
 
     public static async Task<List<FileItemObj>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
@@ -257,6 +252,24 @@ public static class WebBinding
                         _ => 1
                     }, categoryId: categoryId),
                 FileType.DataPacks => await CurseForgeAPI.GetDataPacksList(version, page, filter: filter,
+                    sortField: sort switch
+                    {
+                        0 => 1,
+                        1 => 2,
+                        2 => 3,
+                        3 => 4,
+                        4 => 6,
+                        _ => 2
+                    }, sortOrder: sort switch
+                    {
+                        0 => 1,
+                        1 => 1,
+                        2 => 1,
+                        3 => 0,
+                        4 => 1,
+                        _ => 1
+                    }),
+                FileType.Shaderpack => await CurseForgeAPI.GetShadersList(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -341,10 +354,14 @@ public static class WebBinding
         if (data == null)
             return (null, null, null);
 
+        string path = obj.GetModsPath();
+
         var res = new Dictionary<string, DownloadModDisplayModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
             var res1 = await CurseForgeAPI.GetModDependencies(data, obj.Version, obj.Loader, true);
+
+           
 
             foreach (var item1 in res1)
             {
@@ -356,7 +373,7 @@ public static class WebBinding
                 foreach (var item2 in item1.List)
                 {
                     version.Add(item2.displayName);
-                    items.Add((item2.MakeModDownloadObj(obj), item2.MakeModInfo()));
+                    items.Add((item2.MakeModDownloadObj(obj, path), item2.MakeModInfo(InstancesPath.Name11)));
                 }
                 res.Add(item1.Info.ModId, new()
                 {
@@ -370,7 +387,7 @@ public static class WebBinding
             }
         }
 
-        return (data.MakeModDownloadObj(obj), data.MakeModInfo(), res.Values.ToList());
+        return (data.MakeModDownloadObj(obj, path), data.MakeModInfo(InstancesPath.Name11), res.Values.ToList());
     }
 
     public static async Task<(DownloadItemObj? Item, ModInfoObj? Info,
@@ -478,6 +495,18 @@ public static class WebBinding
                     Name = data.displayName,
                     Url = data.downloadUrl,
                     Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + data.fileName),
+                    SHA1 = data.hashes.Where(a => a.algo == 1)
+                        .Select(a => a.value).FirstOrDefault(),
+                    Overwrite = true
+                };
+
+                return await DownloadManager.Start(new() { item });
+            case FileType.Shaderpack:
+                item = new DownloadItemObj()
+                {
+                    Name = data.displayName,
+                    Url = data.downloadUrl,
+                    Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + data.fileName),
                     SHA1 = data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault(),
                     Overwrite = true
@@ -614,6 +643,7 @@ public static class WebBinding
 
     public static async Task<List<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
     {
+        string path = game.GetModsPath();
         var list = new ConcurrentBag<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>();
         await Parallel.ForEachAsync(mods, async (item, cancel) =>
         {
@@ -637,7 +667,7 @@ public static class WebBinding
                         case SourceType.CurseForge:
                             if (item1.Data is CurseForgeModObj.Data data)
                             {
-                                list.Add((data.MakeModDownloadObj(game), data.MakeModInfo(), item));
+                                list.Add((data.MakeModDownloadObj(game, path), data.MakeModInfo(InstancesPath.Name11), item));
                             }
                             break;
                         case SourceType.Modrinth:

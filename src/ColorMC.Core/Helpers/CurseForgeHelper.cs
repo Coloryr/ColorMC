@@ -25,7 +25,7 @@ public static class CurseForgeHelper
     /// <param name="data">CurseForge数据</param>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.Data data, GameSettingObj obj)
+    public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.Data data, GameSettingObj obj, string path)
     {
         data.FixDownloadUrl();
 
@@ -33,7 +33,7 @@ public static class CurseForgeHelper
         {
             Url = data.downloadUrl,
             Name = data.displayName,
-            Local = obj.GetModsPath() + "/" + data.fileName,
+            Local = path + "/" + data.fileName,
             SHA1 = data.hashes.Where(a => a.algo == 1)
                     .Select(a => a.value).FirstOrDefault()
         };
@@ -44,13 +44,13 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="data"></param>
     /// <returns>Mod信息</returns>
-    public static ModInfoObj MakeModInfo(this CurseForgeModObj.Data data)
+    public static ModInfoObj MakeModInfo(this CurseForgeModObj.Data data, string path)
     {
         data.FixDownloadUrl();
 
         return new ModInfoObj()
         {
-            Path = "mods",
+            Path = path,
             Name = data.displayName,
             File = data.fileName,
             SHA1 = data.hashes.Where(a => a.algo == 1)
