@@ -23,6 +23,7 @@ public static class CurseForgeAPI
     public const int ClassMod = 6;
     public const int ClassWorld = 17;
     public const int ClassResourcepack = 12;
+    public const int ClassShaderpack = 6552;
 
     public const int CategoryIdDataPacks = 5193;
 
@@ -134,6 +135,15 @@ public static class CurseForgeAPI
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
     {
         return GetList(ClassResourcepack, version, page, sortField, filter, pagesize, sortOrder, CategoryIdDataPacks.ToString(), 0);
+    }
+
+    /// <summary>
+    /// 获取数据包列表
+    /// </summary>
+    public static Task<CurseForgeObjList?> GetShadersList(string version = "", int page = 0,
+        int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
+    {
+        return GetList(ClassShaderpack, version, page, sortField, filter, pagesize, sortOrder, "", 0);
     }
 
     /// <summary>
@@ -283,7 +293,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取Mod信息
     /// </summary>
-    public static async Task<CurseForgeObj?> GetModInfo(string id)
+    public static async Task<CurseForgeObj?> GetModInfo(long id)
     {
         try
         {
@@ -453,7 +463,7 @@ public static class CurseForgeAPI
             var res1 = await GetCurseForgeFiles(item.modId.ToString(), mc, loader: loader);
             if (res1 == null || res1.data.Count == 0)
                 return;
-            var res2 = await GetModInfo(item.modId.ToString());
+            var res2 = await GetModInfo(item.modId);
             if (res2 == null)
                 return;
 
