@@ -490,6 +490,7 @@ public static class InstancesPath
                 await Remove(temp);
             }
         }
+        game.DirName = game.Name;
 
         var dir = game.GetBasePath();
         if (Directory.Exists(dir))
@@ -508,7 +509,6 @@ public static class InstancesPath
             return null;
         }
 
-        game.DirName = game.Name;
         game.Mods ??= new();
         game.LaunchData ??= new()
         {
