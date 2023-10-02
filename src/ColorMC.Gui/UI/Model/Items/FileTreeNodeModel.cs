@@ -157,15 +157,20 @@ public partial class FileTreeNodeModel : ObservableObject
         return list;
     }
 
-    public List<string> GetSelectItems()
+    public List<string> GetSelectItems(bool getdir)
     {
         var list = new List<string>();
         if (Children != null)
         {
             foreach (var item in Children)
             {
-                list.AddRange(item.GetSelectItems());
+                list.AddRange(item.GetSelectItems(getdir));
             }
+        }
+
+        if (IsDirectory && !getdir)
+        {
+            return list;
         }
 
         if (IsChecked)
