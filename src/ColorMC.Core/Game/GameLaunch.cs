@@ -434,7 +434,10 @@ public static class Launch
         }
         if (!string.IsNullOrWhiteSpace(args.JvmArgs))
         {
-            jvmHead.AddRange(args.JvmArgs.Split(";"));
+            foreach(var item in args.JvmArgs.Split("\n"))
+            {
+                jvmHead.Add(item.Trim());
+            }
         }
 
         //loader
@@ -681,7 +684,7 @@ public static class Launch
             {
                 //不添加lwjgl
                 if (item.Name.Contains("lwjgl") && (SystemInfo.Os == OsType.Android
-                    || (CheckHelpers.GameLaunchVersionV2(version)
+                    || (CheckHelpers.IsGameLaunchVersion120(obj.Version)
                         && (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge))))
                 {
                     continue;
