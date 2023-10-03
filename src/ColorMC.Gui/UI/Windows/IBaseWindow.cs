@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;

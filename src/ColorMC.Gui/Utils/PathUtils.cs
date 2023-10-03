@@ -1,4 +1,4 @@
-﻿using Avalonia.Platform.Storage;
+using Avalonia.Platform.Storage;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System.IO;

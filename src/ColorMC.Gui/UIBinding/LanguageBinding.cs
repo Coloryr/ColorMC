@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;

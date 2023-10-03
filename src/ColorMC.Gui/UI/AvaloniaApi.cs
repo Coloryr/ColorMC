@@ -1,4 +1,4 @@
-﻿using Avalonia.OpenGL;
+using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Live2DCSharpSDK.Framework.Rendering.OpenGL;
 using System.Runtime.InteropServices;

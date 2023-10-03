@@ -1,4 +1,4 @@
-﻿using Avalonia;
+using Avalonia;
 using System.ComponentModel;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;

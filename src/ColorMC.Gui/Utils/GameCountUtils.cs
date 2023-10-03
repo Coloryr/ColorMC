@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;

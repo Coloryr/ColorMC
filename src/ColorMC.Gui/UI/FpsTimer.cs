@@ -1,4 +1,4 @@
-﻿using Avalonia.OpenGL.Controls;
+using Avalonia.OpenGL.Controls;
 using Avalonia.Threading;
 using System;
 using System.Threading;
