@@ -93,7 +93,7 @@ internal class Program
         Console.WriteLine(code);
     }
 
-    public static Task<bool> Download(string state, GameSettingObj obj)
+    public static Task<bool> Download(string state)
     {
         return Task.Run(() =>
         {

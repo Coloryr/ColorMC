@@ -109,6 +109,7 @@ public partial class AddGameModel : TopModel
     private async void AddPack(PackType type)
     {
         ColorMCCore.GameOverwirte = Tab2GameOverwirte;
+        ColorMCCore.GameRequest = Tab2GameRequest;
 
         if (string.IsNullOrWhiteSpace(ZipLocal))
         {
@@ -141,6 +142,14 @@ public partial class AddGameModel : TopModel
         Model.ProgressClose();
         var test = await Model.ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info2"), obj.Name));
+        Model.Progress();
+        return test;
+    }
+
+    private async Task<bool> Tab2GameRequest(string text)
+    {
+        Model.ProgressClose();
+        var test = await Model.ShowWait(text);
         Model.Progress();
         return test;
     }

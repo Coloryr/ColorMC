@@ -1006,7 +1006,7 @@ public static class Launch
 
         if (ColorMCCore.GameRequest != null && obj.GetModeFast() && obj.Loader == Loaders.Normal)
         {
-            var res1 = await ColorMCCore.GameRequest.Invoke(LanguageHelper.Get("Core.Launch.Info13"), obj);
+            var res1 = await ColorMCCore.GameRequest.Invoke(LanguageHelper.Get("Core.Launch.Info13"));
             if (!res1)
             {
                 throw new LaunchException(LaunchState.Cancel,
@@ -1026,7 +1026,7 @@ public static class Launch
                         LanguageHelper.Get("Core.Launch.Error4"));
                 }
 
-                download = await ColorMCCore.GameRequest.Invoke(LanguageHelper.Get("Core.Launch.Info12"), obj);
+                download = await ColorMCCore.GameRequest.Invoke(LanguageHelper.Get("Core.Launch.Info12"));
             }
 
             if (download)

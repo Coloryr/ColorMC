@@ -46,7 +46,7 @@ public static class ColorMCCore
     /// <summary>
     /// 是否请求回调
     /// </summary>
-    public static Func<string, GameSettingObj, Task<bool>>? GameRequest { internal get; set; }
+    public static Func<string, Task<bool>>? GameRequest { internal get; set; }
     /// <summary>
     /// 游戏启动回调
     /// </summary>

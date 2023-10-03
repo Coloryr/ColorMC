@@ -431,7 +431,7 @@ public static class WebBinding
     {
         foreach (var (Item, Info, Mod) in list)
         {
-            File.Delete(Mod.Local);
+            PathHelper.Delete(Mod.Local);
         }
 
         var list1 = new List<DownloadItemObj>();

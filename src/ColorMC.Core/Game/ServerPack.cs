@@ -385,10 +385,7 @@ public static class ServerPack
                                 var name = item1.FullName.Replace(path1, "").Replace("\\", "/");
                                 var file1 = new FileInfo(path2 + name);
                                 file1.Directory?.Create();
-                                if (File.Exists(file1.FullName))
-                                {
-                                    File.Delete(file1.FullName);
-                                }
+                                PathHelper.Delete(file1.FullName);
                                 PathHelper.CopyFile(item1.FullName, file1.FullName);
                                 using var stream = PathHelper.OpenRead(file1.FullName)!;
 

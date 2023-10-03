@@ -60,7 +60,7 @@ public static class BaseBinding
         ColorMCCore.UpdateState = UpdateState;
         ColorMCCore.OfflineLaunch = OfflineLaunch;
         ColorMCCore.GameLaunch = GameLunch;
-        ColorMCCore.GameRequest = GameDownload;
+        ColorMCCore.GameRequest = GameRequest;
         ColorMCCore.LaunchP = LaunchP;
         ColorMCCore.LoadDone = LoadDone;
 
@@ -151,7 +151,7 @@ public static class BaseBinding
             : App.GetLanguage("MainWindow.Info30")));
     }
 
-    private static Task<bool> GameDownload(string state, GameSettingObj obj)
+    private static Task<bool> GameRequest(string state)
     {
         if (s_window == null)
         {
@@ -382,6 +382,8 @@ public static class BaseBinding
     public static async Task<(bool, string?)> Launch(BaseModel window,
         GameSettingObj obj, LoginObj obj1, WorldObj? world = null, bool wait = false)
     {
+        ColorMCCore.GameRequest = GameRequest;
+
         s_window = window;
         s_launchCancel = new();
 
