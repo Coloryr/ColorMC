@@ -473,7 +473,8 @@ public static class InstancesPath
     /// <returns>结果</returns>
     public static async Task<GameSettingObj?> CreateGame(this GameSettingObj game)
     {
-        if (s_installGames.Any(item => item.Value.DirName == game.Name))
+        var value = s_installGames.Values.FirstOrDefault(item => item.DirName == game.Name);
+        if (value != null)
         {
             if (ColorMCCore.GameOverwirte == null)
             {
@@ -485,17 +486,20 @@ public static class InstancesPath
                 return null;
             }
 
-            if (s_installGames.Remove(game.Name, out var temp))
+            if (s_installGames.Remove(value.UUID, out var temp))
             {
-                await Remove(temp);
+                if(!await Remove(temp))
+                {
+                    return null;    
+                }
             }
         }
         game.DirName = game.Name;
 
         var dir = game.GetBasePath();
-        if (Directory.Exists(dir))
+        if (!await PathHelper.DeleteFiles(dir))
         {
-            Directory.Delete(dir, true);
+            return null;
         }
 
         try

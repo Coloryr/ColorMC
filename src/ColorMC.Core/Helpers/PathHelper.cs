@@ -16,7 +16,7 @@ public static class PathHelper
     /// <returns></returns>
     public static bool FilePathHasInvalidChars(string name)
     {
-        return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 
+        return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0
             || name.All('.'.Equals) || name.Length > 50;
     }
 
@@ -133,16 +133,28 @@ public static class PathHelper
     /// <summary>
     /// 删除文件夹
     /// </summary>
-    public static Task<bool> DeleteFiles(string local)
+    public static async Task<bool> DeleteFiles(string local)
     {
-        return Task.Run(() =>
+        if (!Directory.Exists(local))
+        {
+            return true;
+        }
+
+        if (ColorMCCore.GameRequest != null)
+        {
+            var res = await ColorMCCore.GameRequest.Invoke(
+                string.Format(LanguageHelper.Get("Core.Info2"), local));
+            if (!res)
+            {
+                return false;
+            }
+        }
+
+        return await Task.Run(() =>
         {
             try
             {
-                if (Directory.Exists(local))
-                {
-                    Directory.Delete(local, true);
-                }
+                Directory.Delete(local, true);
 
                 return true;
             }
@@ -236,6 +248,10 @@ public static class PathHelper
     public static void Delete(string local)
     {
         if (SystemInfo.Os == OsType.Android && local.StartsWith("content://"))
+        {
+            return;
+        }
+        if (!File.Exists(local))
         {
             return;
         }

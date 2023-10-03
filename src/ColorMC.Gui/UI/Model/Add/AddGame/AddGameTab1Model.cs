@@ -1,4 +1,5 @@
-﻿using Avalonia.Threading;
+﻿using Avalonia.Controls;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
@@ -203,6 +204,7 @@ public partial class AddGameModel : TopModel
     public async Task AddGame()
     {
         ColorMCCore.GameOverwirte = Tab1GameOverwirte;
+        ColorMCCore.GameRequest = Tab1GameRequest;
 
         if (BaseBinding.IsDownload)
         {
@@ -386,6 +388,12 @@ public partial class AddGameModel : TopModel
         var test = await Model.ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info2"), obj.Name));
         return test;
+    }
+
+    private Task<bool> Tab1GameRequest(string state)
+    {
+        Model.ProgressClose();
+        return Model.ShowWait(state);
     }
 
     private void Done()

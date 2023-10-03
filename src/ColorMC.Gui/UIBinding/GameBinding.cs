@@ -704,7 +704,7 @@ public static class GameBinding
 
     public static void DeleteResourcepack(ResourcepackObj obj)
     {
-        File.Delete(obj.Local);
+        PathHelper.Delete(obj.Local);
     }
 
     public static Task<bool> AddResourcepack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
@@ -723,7 +723,7 @@ public static class GameBinding
 
     public static void DeleteScreenshot(string file)
     {
-        File.Delete(file);
+        PathHelper.Delete(file);
     }
 
     public static void ClearScreenshots(GameSettingObj obj)
@@ -1342,11 +1342,11 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ½âÑ¹ÔÆÅäÖÃÎÄ¼þ
+    /// ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀý</param>
-    /// <param name="data">ÔÆÅäÖÃ´¢´æ</param>
-    /// <param name="local">ÅäÖÃÑ¹Ëõ°ü</param>
+    /// <param name="obj">ï¿½ï¿½Ï·Êµï¿½ï¿½</param>
+    /// <param name="data">ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½</param>
+    /// <param name="local">ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½</param>
     /// <returns></returns>
     public static async Task<bool> UnZipCloudConfig(GameSettingObj obj, CloudDataObj data, string local)
     {
@@ -1387,10 +1387,10 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÏÂÔØÔÆÊµÀý
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½
     /// </summary>
-    /// <param name="obj">ÔÆÊµÀýÐÅÏ¢</param>
-    /// <param name="group">Ìí¼Óµ½µÄ×é</param>
+    /// <param name="obj">ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½Ï¢</param>
+    /// <param name="group">ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½</param>
     /// <returns></returns>
     public static async Task<(bool, string?)> DownloadCloud(CloundListObj obj, string? group)
     {
@@ -1424,7 +1424,7 @@ public static class GameBinding
 
         game = game.Reload();
 
-        //ÏÂÔØÈ±Ê§µÄmod
+        //ï¿½ï¿½ï¿½ï¿½È±Ê§ï¿½ï¿½mod
         if (game.Mods != null)
         {
             var list = new List<DownloadItemObj>();

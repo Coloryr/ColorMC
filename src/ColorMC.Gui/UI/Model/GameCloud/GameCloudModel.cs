@@ -415,7 +415,7 @@ public partial class GameCloudModel : GameModel
             await new ZipUtils().ZipFile(local, pack, dir);
             if (have)
             {
-                File.Delete(delete);
+                PathHelper.Delete(delete);
             }
         }
 

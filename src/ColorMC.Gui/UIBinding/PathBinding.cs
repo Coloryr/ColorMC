@@ -261,7 +261,7 @@ public static class PathBinding
                         return null;
                     if (File.Exists(name))
                     {
-                        File.Delete(name);
+                        PathHelper.Delete(name);
                     }
 
                     File.WriteAllBytes(name, Utils.PathUtils.GetFile("ColorMC.Gui.Resource.UI.UI.axaml"));
@@ -890,7 +890,7 @@ public static class PathBinding
             if (stream == null)
                 return;
             string file = ColorMCGui.RunDir + "BG";
-            File.Delete(file);
+            PathHelper.Delete(file);
             using var temp = File.Create(file);
             await stream.CopyToAsync(temp);
         }
