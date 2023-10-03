@@ -1,4 +1,4 @@
-﻿using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Model.Skin;
 using System.Numerics;
