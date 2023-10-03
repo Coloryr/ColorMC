@@ -683,9 +683,8 @@ public static class Launch
             if (item.Later == null)
             {
                 //不添加lwjgl
-                if ((item.Name.Contains("org/lwjgl") || item.Name.Contains("org\\lwjgl")) 
-                    && (SystemInfo.Os == OsType.Android
-                    || (CheckHelpers.IsGameLaunchVersion120(obj.Version)
+                if (item.Name.Contains("org.lwjgl")
+                    && (SystemInfo.Os == OsType.Android || (CheckHelpers.IsGameLaunchVersion120(obj.Version)
                         && (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge))))
                 {
                     continue;
