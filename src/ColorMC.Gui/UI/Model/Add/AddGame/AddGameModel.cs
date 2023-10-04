@@ -98,17 +98,19 @@ public partial class AddGameModel : TopModel
         OnPropertyChanged("SideClose");
     }
 
+    public void WindowClose()
+    {
+        OnPropertyChanged("WindowClose");
+    }
+
     protected override void Close()
     {
+        ColorMCCore.GameOverwirte = null;
+        ColorMCCore.GameRequest = null;
         _load = true;
         GameVersionList.Clear();
         LoaderVersionList.Clear();
         _fileModel = null!;
         Files = null!;
-    }
-
-    public void WindowClose()
-    {
-        OnPropertyChanged("WindowClose");
     }
 }
