@@ -429,7 +429,7 @@ public static class TestItem
         var list1 = ModrinthAPI.GetFileVersions(item.project_id, "", Loaders.Fabric).Result;
         var item1 = list1!.First();
 
-        InstancesPath.InstallFromModrinth(item1, null, null).Wait();
+        InstancesPath.InstallModrinth(item1, null, null).Wait();
     }
 
     public static void Item22()

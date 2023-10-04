@@ -825,7 +825,7 @@ public static class InstancesPath
     /// <param name="type">类型</param>
     /// <param name="type">名字</param>
     /// <param name="type">群组</param>
-    public static async Task<(bool, GameSettingObj?)> InstallFromZip(string dir, PackType type, string? name, string? group)
+    public static async Task<(bool, GameSettingObj?)> InstallZip(string dir, PackType type, string? name, string? group)
     {
         GameSettingObj? game = null;
         bool import = false;
@@ -1097,7 +1097,7 @@ public static class InstancesPath
     /// <param name="name">名字</param>
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, GameSettingObj?)> InstallFromModrinth(ModrinthVersionObj data, string? name, string? group)
+    public static async Task<(bool, GameSettingObj?)> InstallModrinth(ModrinthVersionObj data, string? name, string? group)
     {
         var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
         var item = new DownloadItemObj()
@@ -1112,7 +1112,7 @@ public static class InstancesPath
         if (!res1)
             return (false, null);
 
-        var res2 = await InstallFromZip(item.Local, PackType.Modrinth, name, group);
+        var res2 = await InstallZip(item.Local, PackType.Modrinth, name, group);
         if (res2.Item1)
         {
             res2.Item2!.PID = data.project_id;
@@ -1130,7 +1130,7 @@ public static class InstancesPath
     /// <param name="name">名字</param>
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, GameSettingObj?)> InstallFromCurseForge(CurseForgeModObj.Data data, string? name, string? group)
+    public static async Task<(bool, GameSettingObj?)> InstallCurseForge(CurseForgeModObj.Data data, string? name, string? group)
     {
         data.FixDownloadUrl();
 
@@ -1145,7 +1145,7 @@ public static class InstancesPath
         if (!res1)
             return (false, null);
 
-        var res2 = await InstallFromZip(item.Local, PackType.CurseForge, name, group);
+        var res2 = await InstallZip(item.Local, PackType.CurseForge, name, group);
         if (res2.Item1)
         {
             res2.Item2!.PID = data.modId.ToString();

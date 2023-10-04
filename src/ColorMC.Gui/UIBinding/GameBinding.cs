@@ -128,7 +128,7 @@ public static class GameBinding
 
     public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type, string? name, string? group)
     {
-        return InstancesPath.InstallFromZip(dir, type, name, group);
+        return InstancesPath.InstallZip(dir, type, name, group);
     }
 
     public static Dictionary<string, List<GameSettingObj>> GetGameGroups()
@@ -211,7 +211,7 @@ public static class GameBinding
     public static async Task<bool> InstallCurseForge(CurseForgeModObj.Data data,
         CurseForgeObjList.Data data1, string? name, string? group)
     {
-        var res = await InstancesPath.InstallFromCurseForge(data, name, group);
+        var res = await InstancesPath.InstallCurseForge(data, name, group);
         if (!res.Item1)
         {
             return false;
@@ -227,7 +227,7 @@ public static class GameBinding
     public static async Task<bool> InstallModrinth(ModrinthVersionObj data,
         ModrinthSearchObj.Hit data1, string? name, string? group)
     {
-        var res = await InstancesPath.InstallFromModrinth(data, name, group);
+        var res = await InstancesPath.InstallModrinth(data, name, group);
         if (!res.Item1)
         {
             return false;
