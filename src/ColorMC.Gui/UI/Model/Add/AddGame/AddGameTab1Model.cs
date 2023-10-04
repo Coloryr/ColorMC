@@ -329,6 +329,9 @@ public partial class AddGameModel : TopModel
             return;
         }
 
+        ColorMCCore.GameOverwirte = Tab2GameOverwirte;
+        ColorMCCore.GameRequest = Tab2GameRequest;
+
         Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallCurseForge(data, data1, Name, Group);
         Model.ProgressClose();
@@ -349,6 +352,9 @@ public partial class AddGameModel : TopModel
             Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
             return;
         }
+
+        ColorMCCore.GameOverwirte = Tab2GameOverwirte;
+        ColorMCCore.GameRequest = Tab2GameRequest;
 
         Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallModrinth(data, data1, Name, Group);
