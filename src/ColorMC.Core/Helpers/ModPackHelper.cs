@@ -157,10 +157,7 @@ public static class ModPackHelper
             obj.Mods.Add(item.ModId, item);
         }
 
-        if (!await DownloadManager.Start(list1))
-        {
-            return false;
-        }
+        await DownloadManager.Start(list1);
 
         return true;
     }
@@ -291,11 +288,7 @@ public static class ModPackHelper
 
         ColorMCCore.PackState?.Invoke(CoreRunState.Download);
 
-        var res2 = await DownloadManager.Start(list.List.ToList());
-        if (!res2)
-        {
-            return (false, game);
-        }
+        await DownloadManager.Start(list.List.ToList());
 
         return (true, game);
     }
@@ -552,11 +545,7 @@ public static class ModPackHelper
             obj.Mods.Add(item.ModId, item);
         }
 
-        var res2 = await DownloadManager.Start(list1);
-        if (!res2)
-        {
-            return false;
-        }
+        await DownloadManager.Start(list1);
 
         return true;
     }
@@ -680,11 +669,7 @@ public static class ModPackHelper
 
         ColorMCCore.PackState?.Invoke(CoreRunState.Download);
 
-        var res = await DownloadManager.Start(list.ToList());
-        if (!res)
-        {
-            return (false, game);
-        }
+        await DownloadManager.Start(list.ToList());
 
         return (true, game);
     }
