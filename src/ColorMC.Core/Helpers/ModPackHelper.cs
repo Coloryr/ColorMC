@@ -69,10 +69,20 @@ public static class ModPackHelper
                 obj.Loader = Loaders.Forge;
                 obj.LoaderVersion = item.id.Replace("forge-", "");
             }
+            else if (item.id.StartsWith("neoforge"))
+            {
+                obj.Loader = Loaders.NeoForge;
+                obj.LoaderVersion = item.id.Replace("neoforge-", "");
+            }
             else if (item.id.StartsWith("fabric"))
             {
                 obj.Loader = Loaders.Fabric;
                 obj.LoaderVersion = item.id.Replace("fabric-", "");
+            }
+            else if (item.id.StartsWith("quilt"))
+            {
+                obj.Loader = Loaders.Quilt;
+                obj.LoaderVersion = item.id.Replace("quilt-", "");
             }
         }
 
@@ -453,6 +463,11 @@ public static class ModPackHelper
             obj.Loader = Loaders.Forge;
             obj.LoaderVersion = version;
         }
+        else if (info.dependencies.TryGetValue("neoforge", out version))
+        {
+            obj.Loader = Loaders.NeoForge;
+            obj.LoaderVersion = version;
+        }
         else if (info.dependencies.TryGetValue("fabric-loader", out version))
         {
             obj.Loader = Loaders.Fabric;
@@ -605,6 +620,11 @@ public static class ModPackHelper
         if (info.dependencies.TryGetValue("forge", out var version))
         {
             loaders = Loaders.Forge;
+            loaderversion = version;
+        }
+        else if (info.dependencies.TryGetValue("neoforge", out version))
+        {
+            loaders = Loaders.NeoForge;
             loaderversion = version;
         }
         else if (info.dependencies.TryGetValue("fabric-loader", out version))
