@@ -15,7 +15,7 @@ public partial class ModDisplayModel : ObservableObject
     [ObservableProperty]
     private bool _enable;
 
-    public string Name { get; set; }
+    public string Name { get; init; }
     public string Modid => Obj.modid;
     public string Version => Obj.version + (IsNew ? " " + App.GetLanguage("Gui.Info8") : "");
     public string Local => Obj.Local;

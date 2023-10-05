@@ -18,7 +18,8 @@ public static class LanguageBinding
         {
             App.GetLanguage("Text.Name"),
             App.GetLanguage("Text.FileName"),
-            App.GetLanguage("BaseBinding.Filter.Item3")
+            App.GetLanguage("BaseBinding.Filter.Item3"),
+            App.GetLanguage("BaseBinding.Filter.Item4")
         };
     }
 

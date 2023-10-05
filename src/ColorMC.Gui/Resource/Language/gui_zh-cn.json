@@ -811,6 +811,7 @@
 	"BaseBinding.SkinRotate.Item2": "腿部旋转",
 	"BaseBinding.SkinRotate.Item3": "头部旋转",
 	"BaseBinding.Filter.Item3": "作者",
+	"BaseBinding.Filter.Item4": "modid",
 	"BaseBinding.Export.Item1": "ColorMC整合包",
 	"BaseBinding.Export.Item2": "CurseForge整合包",
 	"BaseBinding.Export.Item3": "Modrinth整合包",
