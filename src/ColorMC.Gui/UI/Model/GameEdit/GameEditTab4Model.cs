@@ -279,6 +279,13 @@ public partial class GameEditModel : GameModel
                     ModList.Clear();
                     ModList.AddRange(list);
                     break;
+                case 3:
+                    list = from item in _modItems
+                           where item.Modid?.ToLower().Contains(fil) == true
+                           select item;
+                    ModList.Clear();
+                    ModList.AddRange(list);
+                    break;
             }
         }
     }
