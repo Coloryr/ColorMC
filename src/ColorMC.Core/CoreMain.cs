@@ -116,12 +116,12 @@ public static class ColorMCCore
     /// </summary>
     public static Action<string, int, int>? UnZipItem { internal get; set; }
 
-    public static Action<GameSettingObj, List<string>>? PhoneGameLaunch { internal get; set; }
+    public static Action<GameSettingObj, JavaInfo, List<string>>? PhoneGameLaunch { internal get; set; }
     public static Action<Stream, string>? PhoneJvmInstall { internal get; set; }
     public static Func<string, JavaInfo?>? PhoneReadJvm { internal get; set; }
     public static Func<string, Stream?>? PhoneReadFile { get; set; }
     public static Func<string>? PhoneGetDataDir { internal get; set; }
-    public static Func<GameSettingObj, string, string, List<string>, Task<bool>> PhoneJvmRun { internal get; set; }
+    public static Func<GameSettingObj, JavaInfo, string, List<string>, Task<bool>> PhoneJvmRun { internal get; set; }
     public static Action<string> PhoneOpenUrl { get; set; }
 
     /// <summary>
