@@ -35,7 +35,7 @@ public static class BaseBinding
 {
     public const string DrapType = "Game";
 
-    public readonly static Dictionary<Process, GameSettingObj> Games = new();
+    public readonly static Dictionary<Process, string> Games = new();
     public readonly static Dictionary<string, Process> RunGames = new();
     public readonly static Dictionary<string, StringBuilder> GameLogs = new();
     public static bool ISNewStart => ColorMCCore.NewStart;
@@ -387,7 +387,7 @@ public static class BaseBinding
         s_window = window;
         s_launchCancel = new();
 
-        if (Games.ContainsValue(obj))
+        if (Games.ContainsValue(obj.UUID))
         {
             return (false, App.GetLanguage("GameBinding.Error4"));
         }
@@ -517,7 +517,7 @@ public static class BaseBinding
                 GameBinding.GameStateUpdate(obj);
             };
 
-            Games.Add(pr, obj);
+            Games.Add(pr, obj.UUID);
             RunGames.Add(obj.UUID, pr);
             GameCountUtils.LaunchDone(obj);
             GameBinding.GameStateUpdate(obj);
@@ -660,10 +660,10 @@ public static class BaseBinding
         {
             return;
         }
-        if (Games.TryGetValue(p, out var obj))
+        if (Games.TryGetValue(p, out var uuid))
         {
-            GameLogs[obj.UUID].Append(d).Append(Environment.NewLine);
-            if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
+            GameLogs[uuid].Append(d).Append(Environment.NewLine);
+            if (App.GameLogWindows.TryGetValue(uuid, out var win))
             {
                 win.Log(d);
             }
