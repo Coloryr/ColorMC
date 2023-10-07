@@ -109,7 +109,7 @@ public static class JavaHelper
                     string type = firstL[0];
                     string version = firstL[2].Trim('\"');
                     bool is64 = result.Contains("64-Bit");
-                    ArchEnum arch = is64 ? ArchEnum.x64 : ArchEnum.x32;
+                    ArchEnum arch = is64 ? ArchEnum.x86_64 : ArchEnum.x86;
                     JavaInfo info = new()
                     {
                         Path = path,

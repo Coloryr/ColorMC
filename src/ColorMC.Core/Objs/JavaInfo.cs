@@ -5,6 +5,7 @@
 /// </summary>
 public record JavaInfo
 {
+    public string Name { get; set; }
     /// <summary>
     /// 路径
     /// </summary>

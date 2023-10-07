@@ -435,7 +435,7 @@ public static class Launch
         }
         if (!string.IsNullOrWhiteSpace(args.JvmArgs))
         {
-            foreach(var item in args.JvmArgs.Split("\n"))
+            foreach (var item in args.JvmArgs.Split("\n"))
             {
                 jvmHead.Add(item.Trim());
             }
@@ -816,8 +816,7 @@ public static class Launch
             {"${classpath_separator}", sep },
             {"${launcher_name}","ColorMC" },
             {"${launcher_version}", ColorMCCore.Version  },
-            {"${classpath}", SystemInfo.Os == OsType.Android
-                ? "%classpath%" : classpath },
+            {"${classpath}", classpath },
         };
 
         for (int a = 0; a < args.Count; a++)
@@ -842,16 +841,8 @@ public static class Launch
         var gamearg = GameArg(obj, v2, world);
         ReplaceAll(obj, login, jvmarg, classpath);
         ReplaceAll(obj, login, gamearg, classpath);
-        if (SystemInfo.Os == OsType.Android)
-        {
-            list.Add(jvmarg.Count.ToString());
-        }
         //jvm
         list.AddRange(jvmarg);
-        if (SystemInfo.Os == OsType.Android)
-        {
-            list.Add(classpath);
-        }
 
         //mainclass
         if (string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
@@ -887,10 +878,6 @@ public static class Launch
         else
         {
             list.Add(obj.AdvanceJvm.MainClass);
-        }
-        if (SystemInfo.Os == OsType.Android)
-        {
-            list.Add(gamearg.Count.ToString());
         }
         //gamearg
         list.AddRange(gamearg);
@@ -1202,18 +1189,7 @@ public static class Launch
                 }
             }
 
-            var arglist = new List<string>
-            {
-                obj.GetGamePath(),
-                jvm!.Path,
-                obj.Version,
-                jvm.MajorVersion.ToString(),
-                game.time,
-                CheckHelpers.GameLaunchVersionV2(game) ? "true" : "false"
-            };
-            arglist.AddRange(arg);
-
-            ColorMCCore.PhoneGameLaunch?.Invoke(obj, jvm, arglist);
+            ColorMCCore.PhoneGameLaunch?.Invoke(obj, jvm!, arg);
             return null;
         }
 
@@ -1312,15 +1288,23 @@ public static class Launch
     /// <param name="args">启动参数</param>
     public static int NativeLaunch(JavaInfo info, List<string> args)
     {
-        var info1 = new FileInfo(info.Path);
-        var path = info1.Directory?.Parent?.FullName;
-
-        var local = path + SystemInfo.Os switch
+        string path;
+        if (SystemInfo.Os == OsType.Android)
         {
-            OsType.Windows => "/bin/jli.dll",
-            OsType.Linux => "/lib/libjli.so",
-            OsType.MacOS => "/lib/libjli.dylib",
-            OsType.Android => "/lib/libjli.so",
+            path = info.Path;
+        }
+        else
+        {
+            var info1 = new FileInfo(info.Path);
+            path = info1.Directory?.Parent?.FullName!;
+        }
+
+        var local = SystemInfo.Os switch
+        {
+            OsType.Windows => PathHelper.GetFile(path, "jli.dll"),
+            OsType.Linux => PathHelper.GetFile(path, "libjli.so"),
+            OsType.MacOS => PathHelper.GetFile(path, "libjli.dylib"),
+            OsType.Android => PathHelper.GetFile(path, "libjli.so"),
             _ => throw new NotImplementedException(),
         };
         if (File.Exists(local))
@@ -1348,7 +1332,7 @@ public static class Launch
         try
         {
             var res = inv(s_argLength, s_args, 0, null!, 0, null!,
-                info.Version, info.MajorVersion.ToString(), "java", "java", false, true, false, 0);
+                info.Version, "1.8", "java", "java", false, true, false, 0);
 
             var res1 = NativeLoader.Loader.CloseLibrary(temp);
 

@@ -179,7 +179,7 @@ public static class DownloadItemHelper
     {
         var item = BuildForgeItem(mc, version, "launcher");
         var name = $"forge-{mc}-{version}-launcher";
-        item.Url = UrlHelper.DownloadForgeJar(mc, version,  SourceLocal.Offical) + name + ".jar";
+        item.Url = UrlHelper.DownloadForgeJar(mc, version, SourceLocal.Offical) + name + ".jar";
 
         return item;
     }
@@ -376,7 +376,7 @@ public static class DownloadItemHelper
 
                 if (lib == null && SystemInfo.Os == OsType.Windows)
                 {
-                    if (SystemInfo.SystemArch == ArchEnum.x32)
+                    if (SystemInfo.SystemArch == ArchEnum.x86)
                     {
                         lib = item1.downloads.classifiers.natives_windows_32;
                     }
