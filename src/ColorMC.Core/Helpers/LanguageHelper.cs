@@ -208,10 +208,10 @@ public static class LanguageHelper
     {
         return arch switch
         {
-            ArchEnum.x64 => Get("ArchEnum.x64"),
-            ArchEnum.x32 => Get("ArchEnum.x32"),
+            ArchEnum.x86_64 => Get("ArchEnum.x64"),
+            ArchEnum.x86 => Get("ArchEnum.x32"),
             ArchEnum.aarch64 => Get("ArchEnum.aarch64"),
-            ArchEnum.armV7 => Get("ArchEnum.armV7"),
+            ArchEnum.arm => Get("ArchEnum.armV7"),
             _ => Get("ArchEnum.Other")
         };
     }

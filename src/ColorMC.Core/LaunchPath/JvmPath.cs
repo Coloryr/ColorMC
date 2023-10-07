@@ -315,12 +315,14 @@ public static class JvmPath
                 {
                     Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info2"),
                         info.Path, info.Version));
+                    info.Name = a.Name;
                     Jvms.Add(a.Name, info);
                 }
                 else
                 {
-                    Jvms.Add(a.Name, new JavaInfo()
+                    Jvms.Add(a.Name, new()
                     {
+                        Name = a.Name,
                         Path = a.Local,
                         Type = Unknow,
                         Version = Unknow

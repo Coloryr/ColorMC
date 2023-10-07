@@ -298,10 +298,10 @@ public enum DownloadItemState
 /// </summary>
 public enum ArchEnum
 {
-    x32,
-    x64,
+    x86,
+    x86_64,
     aarch64,
-    armV7,
+    arm,
     unknow
 }
 

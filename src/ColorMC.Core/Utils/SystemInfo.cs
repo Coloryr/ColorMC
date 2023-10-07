@@ -20,7 +20,7 @@ public static class SystemInfo
     /// <summary>
     /// 系统进制
     /// </summary>
-    public static ArchEnum SystemArch { get; private set; } = ArchEnum.x64;
+    public static ArchEnum SystemArch { get; private set; } = ArchEnum.x86_64;
     /// <summary>
     /// 系统名
     /// </summary>
@@ -29,11 +29,14 @@ public static class SystemInfo
     /// 系统名
     /// </summary>
     public static string System { get; private set; }
-    //public static int ProcessorCount { get; private set; }
     /// <summary>
     /// 是否为Arm处理器
     /// </summary>
     public static bool IsArm { get; private set; }
+    /// <summary>
+    /// 是否为64位处理器
+    /// </summary>
+    public static bool Is64Bit { get; private set; }
 
     /// <summary>
     /// 初始化
@@ -43,7 +46,7 @@ public static class SystemInfo
         IsArm = RuntimeInformation.OSArchitecture == Architecture.Arm ||
                 RuntimeInformation.OSArchitecture == Architecture.Arm64;
 
-        if (Environment.Is64BitOperatingSystem)
+        if (Is64Bit = Environment.Is64BitOperatingSystem)
         {
             if (IsArm)
             {
@@ -51,18 +54,18 @@ public static class SystemInfo
             }
             else
             {
-                SystemArch = ArchEnum.x64;
+                SystemArch = ArchEnum.x86_64;
             }
         }
         else
         {
             if (IsArm)
             {
-                SystemArch = ArchEnum.armV7;
+                SystemArch = ArchEnum.arm;
             }
             else
             {
-                SystemArch = ArchEnum.x32;
+                SystemArch = ArchEnum.x86;
             }
         }
 
@@ -85,7 +88,6 @@ public static class SystemInfo
         }
 
         SystemName = RuntimeInformation.OSDescription;
-        //ProcessorCount = Environment.ProcessorCount;
         System = $"Os:{Os} Arch:{SystemArch}";
 
         Logs.Info(System);

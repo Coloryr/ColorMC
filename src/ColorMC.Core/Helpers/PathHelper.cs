@@ -241,6 +241,13 @@ public static class PathHelper
         return Encoding.UTF8.GetString(stream1.ToArray());
     }
 
+    public static string? ReadText(Stream stream)
+    {
+        using var stream1 = new MemoryStream();
+        stream.CopyTo(stream1);
+        return Encoding.UTF8.GetString(stream1.ToArray());
+    }
+
     /// <summary>
     /// 删除文件
     /// </summary>

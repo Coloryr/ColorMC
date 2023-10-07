@@ -40,6 +40,8 @@ public static class InstancesPath
     public const string Name20 = "server.old.json";
     public const string Name21 = "launch.json";
     public const string Name22 = "log4j-rce-patch.xml";
+    public const string Name23 = "temp";
+    public const string Name24 = "cache";
 
     /// <summary>
     /// 游戏实例列表
@@ -466,6 +468,16 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name22}");
     }
 
+    public static string GetGameTempPath(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name23}");
+    }
+
+    public static string GetGameCachePath(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name24}");
+    }
+
     /// <summary>
     /// 新建游戏版本
     /// </summary>
@@ -488,9 +500,9 @@ public static class InstancesPath
 
             if (s_installGames.Remove(value.UUID, out var temp))
             {
-                if(!await Remove(temp))
+                if (!await Remove(temp))
                 {
-                    return null;    
+                    return null;
                 }
             }
         }
