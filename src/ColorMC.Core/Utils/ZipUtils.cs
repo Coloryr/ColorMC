@@ -137,7 +137,7 @@ public class ZipUtils
     /// </summary>
     /// <param name="path">解压路径</param>
     /// <param name="local">文件名</param>
-    public void Unzip(string path, string local, Stream stream)
+    public async Task<bool> Unzip(string path, string local, Stream stream)
     {
         if (local.EndsWith("tar.gz"))
         {
@@ -159,31 +159,47 @@ public class ZipUtils
         }
         else
         {
-            using ZipFile s = new(stream);
+            using var s = new ZipFile(stream);
             Size = (int)s.Count;
             foreach (ZipEntry theEntry in s)
             {
                 Now++;
                 ColorMCCore.UnZipItem?.Invoke(theEntry.Name, Now, Size);
-                string filename = $"{path}/{theEntry.Name}";
-
-                var directoryName = Path.GetDirectoryName(filename);
-                string fileName = Path.GetFileName(theEntry.Name);
+                string name = theEntry.Name;
+                if (PathHelper.FilePathHasInvalidChars(name))
+                {
+                    if (ColorMCCore.GameRequest==null)
+                    {
+                        return false;
+                    }
+                    var res = await ColorMCCore.GameRequest.Invoke(string.Format(
+                        LanguageHelper.Get("Core.Zip.Info1"), name));
+                    if (!res)
+                    {
+                        return false;
+                    }
+                    name = PathHelper.ReplaceFileName(theEntry.Name);
+                }
+                var file = $"{path}/{theEntry.Name}";
+                var directory = Path.GetDirectoryName(file);
+                var fileName = Path.GetFileName(theEntry.Name);
 
                 // create directory
-                if (directoryName?.Length > 0)
+                if (directory?.Length > 0)
                 {
-                    Directory.CreateDirectory(directoryName);
+                    Directory.CreateDirectory(directory);
                 }
 
                 if (fileName != string.Empty)
                 {
-                    using var stream1 = PathHelper.OpenWrite(filename);
+                    using var stream1 = PathHelper.OpenWrite(file);
                     using var stream2 = s.GetInputStream(theEntry);
                     stream2.CopyTo(stream1);
                 }
             }
         }
+
+        return true;
     }
 
     /// <summary>
