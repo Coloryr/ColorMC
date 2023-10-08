@@ -1,0 +1,48 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Guide.Tab1Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Border
+        Margin="5,3,5,5"
+        Padding="8"
+        Background="{setting:Colors GroupBack}"
+        BorderBrush="{setting:Colors GroupColor}"
+        BorderThickness="2"
+        CornerRadius="{setting:Style ButtonCornerRadius}">
+        <Grid ColumnDefinitions="*,1.7*" RowDefinitions="*,*">
+            <StackPanel
+                Name="StackPanel"
+                Grid.RowSpan="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Image Width="200" Source="resm:ColorMC.Gui.Resource.Pic.Guide.pic1.png" />
+                <Label Content="{setting:Localize GuideWindow.Tab1.Text1}" FontSize="18" />
+            </StackPanel>
+
+            <StackPanel
+                Name="StackPanel1"
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Image Width="400" Source="resm:ColorMC.Gui.Resource.Pic.Guide.pic2.png" />
+                <Label Content="{setting:Localize GuideWindow.Tab1.Text2}" FontSize="18" />
+            </StackPanel>
+            <StackPanel
+                Name="StackPanel2"
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Image Width="400" Source="resm:ColorMC.Gui.Resource.Pic.Guide.pic3.png" />
+                <Label Content="{setting:Localize GuideWindow.Tab1.Text3}" FontSize="18" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

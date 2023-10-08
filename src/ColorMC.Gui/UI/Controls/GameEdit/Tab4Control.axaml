@@ -11,10 +11,9 @@
     x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel Margin="5,2,5,5">
+    <Panel Margin="5,3,5,5">
         <DockPanel>
             <Border
-                Margin="0,3,0,0"
                 Padding="8"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"

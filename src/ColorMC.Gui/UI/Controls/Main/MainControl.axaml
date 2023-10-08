@@ -33,8 +33,21 @@
                         Command="{Binding SideOpen}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text5}"
                         ToolTip.VerticalOffset="-30">
-                        <Svg Path="/Resource/Icon/side.svg" />
+                        <Svg Path="/Resource/Icon/menu.svg" />
                     </Button>
+
+                    <Button
+                        Width="30"
+                        Height="30"
+                        Margin="5,50,5,0"
+                        HorizontalAlignment="{Binding Mirror2}"
+                        VerticalAlignment="Top"
+                        Command="{Binding OpenGuide}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text5}"
+                        ToolTip.VerticalOffset="-30">
+                        <Svg Path="/Resource/Icon/book.svg" />
+                    </Button>
+
                     <StackPanel Margin="5,110,5,0" VerticalAlignment="Center">
                         <Button
                             Width="30"
@@ -130,7 +143,7 @@
                 </ScrollViewer>
                 <Panel
                     Name="Grid3"
-                    Background="{setting:Colors TopBottom}"
+                    Background="{setting:Colors BG1}"
                     IsVisible="{Binding IsNotGame}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Label
@@ -143,7 +156,7 @@
                             FontSize="30" />
                     </StackPanel>
                 </Panel>
-                <Panel Background="{setting:Colors TopBottom}" IsVisible="{Binding IsGameError}">
+                <Panel Background="{setting:Colors BG1}" IsVisible="{Binding IsGameError}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock
                             HorizontalAlignment="Center"
