@@ -281,16 +281,20 @@ public static class GameHelper
     /// <param name="stream">文件流</param>
     public static void UnpackNative(string version, Stream stream)
     {
-        using ZipFile zFile = new(stream);
+        using var zFile = new ZipFile(stream);
         foreach (ZipEntry e in zFile)
         {
             if (e.Name.StartsWith("META-INF"))
-                continue;
-            if (e.IsFile)
             {
-                string file = LibrariesPath.GetNativeDir(version) + "/" + e.Name;
+                continue;
+            }
+            else if (e.IsFile)
+            {
+                var file = Path.GetFullPath(LibrariesPath.GetNativeDir(version) + "/" + e.Name);
                 if (File.Exists(file))
+                {
                     continue;
+                }
 
                 using var stream1 = PathHelper.OpenWrite(file);
                 using var stream2 = zFile.GetInputStream(e);
