@@ -277,4 +277,28 @@ public static class PathHelper
         using var stream = OpenWrite(local);
         stream.Write(data, 0, data.Length);
     }
+
+    /// <summary>
+    /// 替换文件名非法字符
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static string ReplaceFileName(string name)
+    {
+        var chars = Path.GetInvalidFileNameChars().ToList();
+        var builder = new StringBuilder();
+        foreach (var item in name)
+        {
+            if (chars.Contains(item))
+            {
+                builder.Append('_');
+            }
+            else
+            {
+                builder.Append(item);
+            }
+        }
+
+        return builder.ToString();
+    }
 }
