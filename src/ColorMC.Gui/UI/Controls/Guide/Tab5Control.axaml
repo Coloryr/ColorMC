@@ -1,0 +1,40 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Guide.Tab5Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Border
+        Margin="5,3,5,5"
+        Padding="8"
+        Background="{setting:Colors GroupBack}"
+        BorderBrush="{setting:Colors GroupColor}"
+        BorderThickness="2"
+        CornerRadius="{setting:Style ButtonCornerRadius}">
+        <Grid ColumnDefinitions="*,*">
+            <StackPanel
+                Name="StackPanel"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Image Width="200" Source="resm:ColorMC.Gui.Resource.Pic.Guide.pic13.png" />
+                <Label Content="{setting:Localize GuideWindow.Tab5.Text1}" FontSize="18" />
+            </StackPanel>
+
+            <StackPanel
+                Name="StackPanel3"
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Image Width="270" Source="resm:ColorMC.Gui.Resource.Pic.Guide.pic12.png" />
+                <Label
+                    HorizontalAlignment="Center"
+                    Content="{setting:Localize GuideWindow.Tab5.Text2}"
+                    FontSize="18" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

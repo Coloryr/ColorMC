@@ -104,6 +104,12 @@ public partial class MainModel : TopModel, IMainTop
     }
 
     [RelayCommand]
+    public void OpenGuide()
+    {
+        App.ShowGuide();
+    }
+
+    [RelayCommand]
     public void SideOpen()
     {
         OnPropertyChanged("SideOpen");
