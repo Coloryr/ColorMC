@@ -351,7 +351,9 @@ public static class ModPackHelper
                     }
                 }
                 list.Add(item.MakeModDownloadObj(game, path));
-                game.Mods.Add(item.modId.ToString(), item.MakeModInfo(path1));
+                var modid = item.modId.ToString();
+                game.Mods.Remove(modid);
+                game.Mods.Add(modid, item.MakeModInfo(path1));
 
                 now++;
                 if (notify)
@@ -393,7 +395,9 @@ public static class ModPackHelper
                 }
 
                 list.Add(res.data.MakeModDownloadObj(game, path));
-                game.Mods.Add(res.data.modId.ToString(), res.data.MakeModInfo(path1));
+                var modid = res.data.modId.ToString();
+                game.Mods.Remove(modid);
+                game.Mods.Add(modid, res.data.MakeModInfo(path1));
 
                 now++;
                 if (notify)
@@ -728,6 +732,7 @@ public static class ModPackHelper
 
             list.Add(item11);
 
+            obj.Mods.Remove(modid);
             obj.Mods.Add(modid, new()
             {
                 Path = item.path[..item.path.IndexOf('/')],
