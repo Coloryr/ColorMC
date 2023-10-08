@@ -514,7 +514,7 @@ public partial class App : Application
 
             if (BaseBinding.ISNewStart)
             {
-                ShowSetting(SettingType.SetJava);
+                App.ShowGuide();
             }
         }
     }

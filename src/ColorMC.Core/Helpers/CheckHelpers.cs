@@ -391,7 +391,7 @@ public static class CheckHelpers
         //检查整合包mod
         if (obj.ModPack && ConfigUtils.Config.GameCheck.CheckMod)
         {
-            list1.Add(Task.Run(async () =>
+            list1.Add(Task.Run(() =>
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckMods);
 
@@ -410,13 +410,19 @@ public static class CheckHelpers
                     foreach (var item1 in mods)
                     {
                         if (item == null || item.Path != "mods")
-                            continue;
-                        if (!ConfigUtils.Config.GameCheck.CheckModSha1)
-                            continue;
-                        using var file = PathHelper.OpenRead(item1.FullName)!;
-                        if (HashHelper.GenSha1(file) == item.SHA1 ||
-                            item1.FullName.ToLower().EndsWith(item.File.ToLower()))
                         {
+                            continue;
+                        }
+                        if (item1.FullName.ToLower().EndsWith(item.File.ToLower()))
+                        {
+                            if (ConfigUtils.Config.GameCheck.CheckModSha1)
+                            {
+                                using var file = PathHelper.OpenRead(item1.FullName)!;
+                                if (HashHelper.GenSha1(file) != item.SHA1)
+                                {
+                                    continue;
+                                }
+                            }
                             mod = item1;
                             break;
                         }

@@ -62,17 +62,23 @@ public static class LibrariesPath
                 list.Add(item);
                 return;
             }
-            if (!ConfigUtils.Config.GameCheck.CheckLibSha1)
-                return;
-            using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
-                FileShare.Read);
-            var sha1 = await HashHelper.GenSha1Async(stream);
-            if (!string.IsNullOrWhiteSpace(item.SHA1) && item.SHA1 != sha1)
+            if (ConfigUtils.Config.GameCheck.CheckLibSha1)
             {
-                list.Add(item);
+                using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
+                    FileShare.Read);
+                var sha1 = await HashHelper.GenSha1Async(stream);
+                if (!string.IsNullOrWhiteSpace(item.SHA1) && item.SHA1 != sha1)
+                {
+                    list.Add(item);
+                    return;
+                }
             }
-
-            item.Later?.Invoke(stream);
+            if (item.Later != null)
+            {
+                using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
+                        FileShare.Read);
+                item.Later.Invoke(stream);
+            }
 
             return;
         });
