@@ -1,9 +1,13 @@
 using Avalonia.Media.Imaging;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Threading.Tasks;
 
@@ -30,6 +34,12 @@ public partial class FileItemModel : ObservableObject
     private bool _nowDownload = false;
     [ObservableProperty]
     private bool _isSelect;
+    [ObservableProperty]
+    private bool _top;
+    [ObservableProperty]
+    private bool _enableButton;
+    [ObservableProperty]
+    private bool _haveDownload;
 
     public FileItemModel(FileItemObj data, IAddWindow add)
     {
@@ -37,8 +47,39 @@ public partial class FileItemModel : ObservableObject
         _add = add;
 
         if (data == null)
+        {
             return;
+        }
         isDownload = data.IsDownload;
+        if (data.SourceType == SourceType.McMod)
+        {
+            var obj1 = (data.Data as McModSearchItemObj)!;
+            _haveDownload = obj1.curseforge_id != null || obj1.modrinth_id != null;
+        }
+        else
+        {
+            _haveDownload = true;
+        }
+    }
+
+    partial void OnIsSelectChanged(bool value)
+    {
+        EnableButton = Top || IsSelect;
+    }
+
+    partial void OnTopChanged(bool value)
+    {
+        EnableButton = Top || IsSelect;
+    }
+
+    [RelayCommand]
+    public void OpenWeb()
+    {
+        var url = Data.GetUrl();
+        if (url != null)
+        {
+            BaseBinding.OpUrl(url);
+        }
     }
 
     private async Task<Bitmap?> GetImage()
@@ -62,6 +103,10 @@ public partial class FileItemModel : ObservableObject
 
     public void Install()
     {
+        if (!HaveDownload)
+        {
+            return;
+        }
         _add.Install(this);
     }
 
