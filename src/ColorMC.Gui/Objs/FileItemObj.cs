@@ -1,4 +1,5 @@
 using ColorMC.Core.Objs;
+using System;
 
 namespace ColorMC.Gui.Objs;
 
@@ -53,5 +54,6 @@ public record FileItemObj
     /// 数据
     /// </summary>
     public object Data;
+    public object? Data1;
 }
 

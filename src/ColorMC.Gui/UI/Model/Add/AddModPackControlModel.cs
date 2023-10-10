@@ -145,17 +145,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
                     await GameBinding.GetModrinthGameVersions();
                 if (list == null)
                 {
-                    Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), () =>
-                    {
-                        if (Source == 1)
-                        {
-                            WindowClose();
-                        }
-                        else
-                        {
-                            Source++;
-                        }
-                    });
+                    Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), LoadFail);
                     return;
                 }
                 var list1 = Source == 0 ?
@@ -164,17 +154,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
                 Model.ProgressClose();
                 if (list1 == null)
                 {
-                    Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), () => 
-                    {
-                        if (Source == 1)
-                        {
-                            WindowClose();
-                        }
-                        else
-                        {
-                            Source++;
-                        }
-                    });
+                    Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), LoadFail);
                     return;
                 }
                 GameVersionList.AddRange(list);
@@ -294,6 +274,18 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
             App.AddGameWindow?.Install(
                 (data.Data as ModrinthVersionObj)!,
                 (_last!.Data?.Data as ModrinthSearchObj.Hit)!);
+        }
+    }
+
+    private void LoadFail()
+    {
+        if (Source == 1)
+        {
+            WindowClose();
+        }
+        else
+        {
+            Source++;
         }
     }
 

@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -28,12 +29,12 @@ public partial class FileItemControl : UserControl
 
     private void FileItemControl_PointerExited(object? sender, PointerEventArgs e)
     {
-        Rectangle2.IsVisible = false;
+        (DataContext as FileItemModel)!.Top = false;
     }
 
     private void FileItemControl_PointerEntered(object? sender, PointerEventArgs e)
     {
-        Rectangle2.IsVisible = true;
+        (DataContext as FileItemModel)!.Top = true;
     }
 
     private void FileItemControl_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -52,10 +53,13 @@ public partial class FileItemControl : UserControl
         void OpenFlyout()
         {
             var url = model.Data?.GetUrl();
-            if (url == null)
+            var url1 = model.Data?.GetMcMod();
+            if (url == null && url1 == null)
+            {
                 return;
+            }
 
-            _ = new UrlFlyout((sender as Control)!, url);
+            _ = new UrlFlyout((sender as Control)!, url, url1);
             e.Handled = true;
         }
 
@@ -83,6 +87,4 @@ public partial class FileItemControl : UserControl
             });
         });
     }
-
-
 }

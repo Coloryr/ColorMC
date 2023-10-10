@@ -15,10 +15,7 @@
     ToolTip.VerticalOffset="-30"
     mc:Ignorable="d">
     <Panel Margin="1" Background="{setting:Colors TranBack}">
-        <Rectangle
-            Name="Rectangle2"
-            Fill="{setting:Colors Back}"
-            IsVisible="False" />
+        <Rectangle Fill="{setting:Colors Back}" IsVisible="{Binding Top}" />
         <Rectangle
             Fill="{setting:Colors TranBack}"
             IsVisible="{Binding IsSelect}"
@@ -95,10 +92,34 @@
                     IsIndeterminate="{Binding NowDownload}" />
             </StackPanel>
         </Panel>
-        <Label
-            Margin="0,5,5,0"
+
+        <Button
+            Width="25"
+            Height="25"
+            Margin="5"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
+            Command="{Binding OpenWeb}"
+            IsVisible="{Binding EnableButton}">
+            <Svg Path="/Resource/Icon/Item/web.svg" />
+        </Button>
+
+        <Button
+            Width="25"
+            Height="25"
+            Margin="5,5,35,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding Install}"
+            IsEnabled="{Binding HaveDownload}"
+            IsVisible="{Binding EnableButton}">
+            <Svg Path="/Resource/Icon/Item/download.svg" />
+        </Button>
+
+        <Label
+            Margin="5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
             Background="{setting:Colors Bottom1}"
             Content="{setting:Localize AddWindow.Control.Text2}"
             Foreground="{setting:Colors Font}"

@@ -2,6 +2,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.Optifine;
 using ColorMC.Core.Utils;
@@ -26,12 +27,19 @@ public partial class AddControlModel : GameModel, IAddWindow
     public readonly Dictionary<int, string> Categories = new();
     public readonly List<DownloadModDisplayModel> ModList = new();
     public readonly List<OptifineObj> OptifineList = new();
+    private readonly List<string> SourceTypeNameList = new()
+    {
+        SourceType.CurseForge.GetName(),
+        SourceType.Modrinth.GetName(),
+    };
 
     private FileType _now;
     private FileItemModel? _last;
     private (DownloadItemObj, ModInfoObj) _modsave;
     private bool _load = false;
     private bool _close = false;
+    private SourceType _lastType = SourceType.McMod;
+    private string _lastId;
 
     public bool Display { get; set; }
 
@@ -183,16 +191,11 @@ public partial class AddControlModel : GameModel, IAddWindow
 
             Model.Progress(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetCurseForgeGameVersions();
-            if (list == null)
-            {
-                Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), WindowClose);
-                return;
-            }
             var list1 = await GameBinding.GetCurseForgeCategories(_now);
             Model.ProgressClose();
-            if (list1 == null)
+            if (list == null || list1 == null)
             {
-                Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), WindowClose);
+                Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), LoadFail);
                 return;
             }
 
@@ -238,7 +241,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             Model.ProgressClose();
             if (list == null || list1 == null)
             {
-                Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), WindowClose);
+                Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), LoadFail);
                 return;
             }
             GameVersionList.AddRange(list);
@@ -277,6 +280,18 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
         else if (type == SourceType.McMod)
         {
+            GameVersionList.Add("");
+            GameVersionList.Add(Obj.Version);
+
+            if (GameVersionList.Contains(Obj.Version))
+            {
+                GameVersionDownload = GameVersionOptifine = GameVersion = Obj.Version;
+            }
+            else
+            {
+                GameVersionDownload = GameVersionOptifine = GameVersion = GameVersionList.FirstOrDefault();
+            }
+
             Load();
         }
 
@@ -520,7 +535,6 @@ public partial class AddControlModel : GameModel, IAddWindow
                 Thread.Sleep(100);
         });
 
-        VersionDisplay = true;
         LoadFile(pid);
     }
 
@@ -532,7 +546,9 @@ public partial class AddControlModel : GameModel, IAddWindow
             return;
         }
 
-        VersionDisplay = true;
+        _lastType = SourceType.McMod;
+        _lastId = "";
+
         LoadFile();
     }
 
@@ -690,19 +706,25 @@ public partial class AddControlModel : GameModel, IAddWindow
         Load();
     }
 
+    private void LoadFail()
+    {
+        if (DownloadSource >= SourceTypeList.Count)
+        {
+            WindowClose();
+        }
+        else
+        {
+            DownloadSource++;
+        }
+    }
+
     private async void Load()
     {
         var type = SourceTypeList[DownloadSource];
         Model.Progress(App.GetLanguage("AddWindow.Info2"));
         if (type == SourceType.McMod)
         {
-            if (string.IsNullOrWhiteSpace(Name))
-            {
-                Model.ProgressClose();
-                return;
-            }
-
-            var data = await WebBinding.SearchMcmod(_now, Name, Page ?? 0 );
+            var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0 );
             if (data == null)
             {
                 Model.ProgressClose();
@@ -774,23 +796,64 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         FileList.Clear();
 
-        Model.Progress(App.GetLanguage("AddWindow.Info3"));
         List<FileDisplayObj>? list = null;
         var type = SourceTypeList[DownloadSource];
+        if (type == SourceType.McMod)
+        {
+            if (_lastType == SourceType.McMod)
+            {
+                var obj1 = (_last!.Data.Data as McModSearchItemObj)!;
+                if (obj1.curseforge_id != null && obj1.modrinth_id != null)
+                {
+                    var res = await Model.ShowCombo(App.GetLanguage("AddWindow.Info14"), SourceTypeNameList);
+                    if (res.Cancel)
+                    {
+                        return;
+                    }
+                    _lastType = type = res.Index == 0 ? SourceType.CurseForge : SourceType.Modrinth;
+                    _lastId = id = type == SourceType.CurseForge ? obj1.curseforge_id : obj1.modrinth_id;
+                }
+                else if (obj1.curseforge_id != null)
+                {
+                    _lastId = id = obj1.curseforge_id;
+                    _lastType = type = SourceType.CurseForge;
+                }
+                else if (obj1.modrinth_id != null)
+                {
+                    _lastId = id = obj1.modrinth_id;
+                    _lastType = type = SourceType.Modrinth;
+                }
+            }
+            else
+            {
+                type = _lastType;
+                id = _lastId;
+            }
+        }
+
+        if (type == SourceType.McMod)
+        {
+            Model.Show(App.GetLanguage("AddWindow.Error11"));
+            return;
+        }
+
+        VersionDisplay = true;
+        Model.Progress(App.GetLanguage("AddWindow.Info3"));
         if (type == SourceType.CurseForge)
         {
             EnablePage = true;
             list = await WebBinding.GetPackFile(type, id ??
-                (_last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), PageDownload,
+                (_last!.Data.Data as CurseForgeObjList.Data)!.id.ToString(), PageDownload,
                 GameVersionDownload, Obj.Loader, _now);
         }
         else if (type == SourceType.Modrinth)
         {
             EnablePage = false;
             list = await WebBinding.GetPackFile(type, id ??
-                (_last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, PageDownload,
+                (_last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, PageDownload,
                 GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
         }
+
         if (list == null)
         {
             Model.Show(App.GetLanguage("AddWindow.Error3"));

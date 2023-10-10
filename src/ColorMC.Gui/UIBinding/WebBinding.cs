@@ -1,4 +1,5 @@
 using Avalonia.Threading;
+using Avalonia.Threading;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -292,11 +293,18 @@ public static class WebBinding
             if (list == null)
                 return null;
             var list1 = new List<FileItemObj>();
+            var modlist = new List<string>();
             list.data.ForEach(item =>
             {
+                modlist.Add(item.id.ToString());
+            });
+            var list2 = await ColorMCAPI.GetMcModFromCF(modlist);
+            list.data.ForEach(item =>
+            {
+                var id = item.id.ToString();
                 list1.Add(new()
                 {
-                    ID = item.id.ToString(),
+                    ID = id,
                     Name = item.name,
                     Summary = item.summary,
                     Author = item.authors.GetString(),
@@ -305,7 +313,8 @@ public static class WebBinding
                     Logo = item.logo?.url,
                     FileType = now,
                     SourceType = SourceType.CurseForge,
-                    Data = item
+                    Data = item,
+                    Data1 = list2?.TryGetValue(id, out var data1) == true ? data1 : null
                 });
             });
 
@@ -324,6 +333,13 @@ public static class WebBinding
             if (list == null)
                 return null;
             var list1 = new List<FileItemObj>();
+
+            var modlist = new List<string>();
+            list.hits.ForEach(item =>
+            {
+                modlist.Add(item.project_id);
+            });
+            var list2 = await ColorMCAPI.GetMcModFromMO(modlist);
             list.hits.ForEach(item =>
             {
                 list1.Add(new()
@@ -337,7 +353,9 @@ public static class WebBinding
                     Logo = item.icon_url,
                     FileType = FileType.ModPack,
                     SourceType = SourceType.Modrinth,
-                    Data = item
+                    Data = item,
+                    Data1 = list2?.TryGetValue(item.project_id, out var data1) == true 
+                        ? data1 : null
                 });
             });
 
@@ -361,7 +379,7 @@ public static class WebBinding
         {
             var res1 = await CurseForgeAPI.GetModDependencies(data, obj.Version, obj.Loader, true);
 
-           
+
 
             foreach (var item1 in res1)
             {
@@ -621,10 +639,22 @@ public static class WebBinding
                 _ => "https://modrinth.com/mod/"
             } + obj1.project_id;
         }
+
+        return null;
+    }
+
+    public static string? GetMcMod(this FileItemObj obj)
+    {
+        if ((obj.SourceType == SourceType.CurseForge
+            || obj.SourceType == SourceType.Modrinth)
+            && obj.Data1 is McModSearchItemObj obj1)
+        {
+            return $"https://www.mcmod.cn/class/{obj1.mcmod_id}.html";
+        }
         else if (obj.SourceType == SourceType.McMod)
         {
-            var obj1 = (obj.Data as McModSearchItemObj)!;
-            return obj1.Url;
+            var obj2 = (obj.Data as McModSearchItemObj)!;
+            return $"https://www.mcmod.cn/class/{obj2.mcmod_id}.html";
         }
 
         return null;
@@ -697,23 +727,28 @@ public static class WebBinding
         BaseBinding.OpUrl($"https://search.mcmod.cn/s?key={obj.Name}");
     }
 
-    public static async Task<List<FileItemObj>?> SearchMcmod(FileType type, string key, int page)
+    public static async Task<List<FileItemObj>?> SearchMcmod(string key, int page)
     {
-        var list = type == FileType.Mod ? await McModAPI.SearchMod(key, page)
-            : await McModAPI.SearchModPack(key, page);
+        var list = await ColorMCAPI.GetMcModFromName(key, page);
         if (list == null)
             return null;
 
         var list1 = new List<FileItemObj>();
-        list.ForEach(a => list1.Add(new()
+        foreach (var item in list.Values)
         {
-            Name = a.Name,
-            Summary = a.Text,
-            FileType = type,
-            SourceType = SourceType.McMod,
-            Data = a,
-            ModifiedDate = a.Time
-        }));
+            list1.Add(new()
+            {
+                Logo = item.mcmod_icon.StartsWith("//")
+                    ? "https:" + item.mcmod_icon : item.mcmod_icon,
+                Name = item.mcmod_name,
+                Summary = item.mcmod_text,
+                Author = item.mcmod_author,
+                FileType = FileType.Mod,
+                SourceType = SourceType.McMod,
+                Data = item,
+                ModifiedDate = item.mcmod_time.ToString()
+            });
+        }
 
         return list1;
     }

@@ -2,11 +2,14 @@
 
 public record McModSearchItemObj
 {
-    public string Name { get; set; }
-    public string Url { get; set; }
-    public string Icon { get; set; }
-    public string Text { get; set; }
-    public string Time { get; set; }
-
-    public FileType Type;
+    public int mcmod_id { get; set; }
+    public string mcmod_icon { get; set; }
+    public string mcmod_name { get; set; }
+    public string mcmod_author { get; set; }
+    public string mcmod_text { get; set; }
+    public DateTime mcmod_time { get; set; }
+    public string? curseforge_url { get; set; }
+    public string? curseforge_id { get; set; }
+    public string? modrinth_url { get; set; }
+    public string? modrinth_id { get; set; }
 }

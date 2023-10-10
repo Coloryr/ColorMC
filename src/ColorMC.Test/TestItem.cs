@@ -449,7 +449,7 @@ public static class TestItem
 
     public static void Item24()
     {
-        var list = McModAPI.SearchMod("魔法", 0).Result;
+        var list = ColorMCAPI.GetMcModFromName("魔法", 0).Result;
     }
 
     public static void Item25()

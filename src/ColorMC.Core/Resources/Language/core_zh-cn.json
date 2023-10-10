@@ -56,6 +56,7 @@
   "Core.Http.Optifine.Error2": "获取Optifine下载地址失败",
   "Core.Http.Optifine.Error3": "获取Optifine下载信息失败",
   "Core.Http.Optifine.Error4": "下载Optifine失败",
+  "Core.Http.McMod.Error1": "获取McMod信息错误",
   "Core.Pack.Error1": "读取压缩包错误",
   "Core.Pack.Error2": "导入压缩包错误",
   "Core.Jvm.Error1": "Java检查失败",
