@@ -75,7 +75,7 @@ public partial class FileItemModel : ObservableObject
     [RelayCommand]
     public void OpenWeb()
     {
-        var url = Data.GetUrl();
+        var url = Data.SourceType == SourceType.McMod ? Data.GetMcMod() : Data.GetUrl();
         if (url != null)
         {
             BaseBinding.OpUrl(url);
