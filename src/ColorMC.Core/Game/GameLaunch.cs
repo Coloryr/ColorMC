@@ -67,20 +67,6 @@ public static class Launch
         string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
         ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.Get("Core.Launch.Info2"));
 
-        //去除重复的classpath
-        if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.ClassPath))
-        {
-            var list1 = obj.AdvanceJvm.ClassPath.Split(";");
-            foreach (var item1 in list1)
-            {
-                var path = Path.GetFullPath(item1);
-                if (File.Exists(path))
-                {
-                    libraries.Add(item1);
-                }
-            }
-        }
-
         //添加lib路径到classpath
         foreach (var item in libraries)
         {
@@ -761,7 +747,7 @@ public static class Launch
                     .Replace(GAME_BASE_DIR, dir2));
                 if (File.Exists(path))
                 {
-                    libraries.Add(item1);
+                    libraries.Add(path);
                 }
             }
         }
