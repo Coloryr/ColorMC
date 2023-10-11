@@ -617,7 +617,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         {
             try
             {
-                var list = type switch
+                var list = (type == SourceType.McMod ? _lastType : type) switch
                 {
                     SourceType.CurseForge => await WebBinding.DownloadMod(Obj,
                     data.Data as CurseForgeModObj.Data),
