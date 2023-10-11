@@ -752,9 +752,13 @@ public static class Launch
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.ClassPath))
         {
             var list = obj.AdvanceJvm.ClassPath.Split(";");
+            var dir1 = obj.GetGamePath();
+            var dir2 = obj.GetBasePath();
             foreach (var item1 in list)
             {
-                var path = Path.GetFullPath(item1);
+                var path = Path.GetFullPath(item1
+                    .Replace(GAME_DIR, dir1)
+                    .Replace(GAME_BASE_DIR, dir2));
                 if (File.Exists(path))
                 {
                     libraries.Add(item1);
