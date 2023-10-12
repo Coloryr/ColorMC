@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingModel : TopModel
+public partial class SettingModel : MenuModel
 {
     [ObservableProperty]
     private string? _javaName;

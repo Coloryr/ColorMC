@@ -1,4 +1,4 @@
-﻿using AvaloniaEdit.Utils;
+using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
@@ -18,7 +18,7 @@ public partial class AddGameModel : MenuModel
     /// </summary>
     public ObservableCollection<string> GroupList { get; init; } = new();
 
-    protected override List<MenuObj> TabItems { get; } = new()
+    protected override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/AddMenu/item1.svg",
             Text = App.GetLanguage("AddGameWindow.Tabs.Text1") },

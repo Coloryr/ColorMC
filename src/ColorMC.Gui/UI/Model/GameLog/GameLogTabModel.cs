@@ -167,7 +167,7 @@ public partial class GameLogModel : GameModel
 
     private void Run()
     {
-        string temp = null;
+        string? temp = null;
         while (_queue.Count != 0)
         {
             if (_queue.TryDequeue(out var temp1) && !string.IsNullOrWhiteSpace(temp1))

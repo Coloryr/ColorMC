@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : GameModel
+public partial class GameEditModel : MenuModel
 {
     public ObservableCollection<WorldModel> WorldList { get; init; } = new();
 
@@ -22,7 +22,7 @@ public partial class GameEditModel : GameModel
     [RelayCommand]
     public async Task BackupWorld()
     {
-        var info = new DirectoryInfo(Obj.GetWorldBackupPath());
+        var info = new DirectoryInfo(_obj.GetWorldBackupPath());
         if (!info.Exists)
         {
             info.Create();
@@ -43,7 +43,7 @@ public partial class GameEditModel : GameModel
             return;
 
         Model.Progress(App.GetLanguage("GameEditWindow.Tab5.Info11"));
-        res1 = await GameBinding.BackupWorld(Obj, item1);
+        res1 = await GameBinding.BackupWorld(_obj, item1);
         Model.ProgressClose();
         if (!res1)
         {
@@ -58,7 +58,7 @@ public partial class GameEditModel : GameModel
     [RelayCommand]
     public async Task ImportWorld()
     {
-        var file = await PathBinding.AddFile(Obj, FileType.World);
+        var file = await PathBinding.AddFile(_obj, FileType.World);
         if (file == null)
             return;
 
@@ -74,18 +74,18 @@ public partial class GameEditModel : GameModel
     [RelayCommand]
     public void OpenWorld()
     {
-        PathBinding.OpPath(Obj, PathType.SavePath);
+        PathBinding.OpPath(_obj, PathType.SavePath);
     }
     [RelayCommand]
     public void AddWorld()
     {
-        App.ShowAdd(Obj, FileType.World);
+        App.ShowAdd(_obj, FileType.World);
     }
 
     [RelayCommand]
     public void OpenBackupWorld()
     {
-        PathBinding.OpPath(Obj, PathType.WorldBackPath);
+        PathBinding.OpPath(_obj, PathType.WorldBackPath);
     }
     [RelayCommand]
     public async Task LoadWorld()
@@ -93,7 +93,7 @@ public partial class GameEditModel : GameModel
         Model.Progress(App.GetLanguage("GameEditWindow.Tab5.Info5"));
         WorldList.Clear();
 
-        var res = await GameBinding.GetWorlds(Obj!);
+        var res = await GameBinding.GetWorlds(_obj!);
         Model.ProgressClose();
         foreach (var item in res)
         {
@@ -114,7 +114,7 @@ public partial class GameEditModel : GameModel
 
     public async void DropWorld(IDataObject data)
     {
-        var res = await GameBinding.AddFile(Obj, data, FileType.World);
+        var res = await GameBinding.AddFile(_obj, data, FileType.World);
         if (res)
         {
             await LoadWorld();

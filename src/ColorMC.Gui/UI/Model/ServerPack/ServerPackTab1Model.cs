@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel : TopModel
+public partial class ServerPackModel : MenuModel
 {
     [ObservableProperty]
     private string _url;

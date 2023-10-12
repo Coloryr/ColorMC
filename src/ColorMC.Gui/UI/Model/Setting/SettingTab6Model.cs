@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingModel : TopModel
+public partial class SettingModel : MenuModel
 {
     private readonly List<string> _uuids = new();
 

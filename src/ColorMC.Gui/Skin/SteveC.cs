@@ -1,4 +1,4 @@
-﻿using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Skin;
 

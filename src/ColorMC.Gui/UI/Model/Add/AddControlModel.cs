@@ -24,60 +24,60 @@ namespace ColorMC.Gui.UI.Model.Add;
 public partial class AddControlModel : GameModel, IAddWindow
 {
     /// <summary>
-    /// ÏÔÊ¾µÄ¸ßÇåĞŞ¸´ÁĞ±í
+    /// æ˜¾ç¤ºçš„é«˜æ¸…ä¿®å¤åˆ—è¡¨
     /// </summary>
     public ObservableCollection<OptifineObj> DownloadOptifineList { get; init; } = new();
     /// <summary>
-    /// ÏÔÊ¾µÄÏÂÔØÄ£×éÏîÄ¿ÁĞ±í
+    /// æ˜¾ç¤ºçš„ä¸‹è½½æ¨¡ç»„é¡¹ç›®åˆ—è¡¨
     /// </summary>
     public ObservableCollection<DownloadModDisplayModel> DownloadModList { get; init; } = new();
-    /// ÏÔÊ¾µÄ<summary>
-    /// ÏÂÔØÀàĞÍÁĞ±í
+    /// æ˜¾ç¤ºçš„<summary>
+    /// ä¸‹è½½ç±»å‹åˆ—è¡¨
     /// </summary>
     public List<string> TypeList { get; init; } = LanguageBinding.GetAddType();
     /// <summary>
-    /// ÏÔÊ¾µÄÓÎÏ·°æ±¾ÁĞ±í
+    /// æ˜¾ç¤ºçš„æ¸¸æˆç‰ˆæœ¬åˆ—è¡¨
     /// </summary>
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     /// <summary>
-    /// ÏÔÊ¾µÄÎÄ¼şÁĞ±í
+    /// æ˜¾ç¤ºçš„æ–‡ä»¶åˆ—è¡¨
     /// </summary>
     public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
     /// <summary>
-    /// ÏÔÊ¾µÄÏîÄ¿ÁĞ±í
+    /// æ˜¾ç¤ºçš„é¡¹ç›®åˆ—è¡¨
     /// </summary>
     public ObservableCollection<FileItemModel> DisplayList { get; init; } = new();
     /// <summary>
-    /// ÏÔÊ¾µÄÏÂÔØÔ´ÁĞ±í
+    /// æ˜¾ç¤ºçš„ä¸‹è½½æºåˆ—è¡¨
     /// </summary>
     public ObservableCollection<string> DownloadSourceList { get; init; } = new();
     /// <summary>
-    /// ÏÔÊ¾µÄÅÅĞòÁĞ±í
+    /// æ˜¾ç¤ºçš„æ’åºåˆ—è¡¨
     /// </summary>
     public ObservableCollection<string> SortTypeList { get; init; } = new();
     /// <summary>
-    /// ÏÔÊ¾µÄ·ÖÀàÁĞ±í
+    /// æ˜¾ç¤ºçš„åˆ†ç±»åˆ—è¡¨
     /// </summary>
     public ObservableCollection<string> CategorieList { get; init; } = new();
 
     /// <summary>
-    /// ÏÂÔØÔ´ÁĞ±í
+    /// ä¸‹è½½æºåˆ—è¡¨
     /// </summary>
     public readonly List<SourceType> SourceTypeList = new();
     /// <summary>
-    /// ÀàĞÍÁĞ±í
+    /// ç±»å‹åˆ—è¡¨
     /// </summary>
     public readonly Dictionary<int, string> Categories = new();
     /// <summary>
-    /// ModÏÂÔØÏîÄ¿ÏÔÊ¾ÁĞ±í
+    /// Modä¸‹è½½é¡¹ç›®æ˜¾ç¤ºåˆ—è¡¨
     /// </summary>
     public readonly List<DownloadModDisplayModel> ModList = new();
     /// <summary>
-    /// ¸ßÇåĞŞ¸´ÁĞ±í
+    /// é«˜æ¸…ä¿®å¤åˆ—è¡¨
     /// </summary>
     public readonly List<OptifineObj> OptifineList = new();
     /// <summary>
-    /// ÏÂÔØÔ´ÁĞ±í
+    /// ä¸‹è½½æºåˆ—è¡¨
     /// </summary>
     private readonly List<string> SourceTypeNameList = new()
     {
@@ -86,156 +86,156 @@ public partial class AddControlModel : GameModel, IAddWindow
     };
 
     /// <summary>
-    /// µ±Ç°ÎÄ¼şÀàĞÍ
+    /// å½“å‰æ–‡ä»¶ç±»å‹
     /// </summary>
     private FileType _now;
     /// <summary>
-    /// ÏÂÔØÏîÄ¿
+    /// ä¸‹è½½é¡¹ç›®
     /// </summary>
     private FileItemModel? _last;
     /// <summary>
-    /// ÏÂÔØµÄÄ£×éÏîÄ¿
+    /// ä¸‹è½½çš„æ¨¡ç»„é¡¹ç›®
     /// </summary>
     private (DownloadItemObj, ModInfoObj) _modsave;
     /// <summary>
-    /// ÊÇ·ñÔÚ¼ÓÔØ
+    /// æ˜¯å¦åœ¨åŠ è½½
     /// </summary>
     private bool _load = false;
     /// <summary>
-    /// ÊÇ·ñ¹Ø±Õ
+    /// æ˜¯å¦å…³é—­
     /// </summary>
     private bool _close = false;
 
     /// <summary>
-    /// ÉÏÒ»¸öÏÂÔØÔ´
+    /// ä¸Šä¸€ä¸ªä¸‹è½½æº
     /// </summary>
     private SourceType _lastType = SourceType.McMod;
     /// <summary>
-    /// ÉÏÒ»¸öÏÂÔØID
+    /// ä¸Šä¸€ä¸ªä¸‹è½½ID
     /// </summary>
     private string _lastId;
 
     /// <summary>
-    /// ÊÇ·ñÒÑ¾­ÏÔÊ¾
+    /// æ˜¯å¦å·²ç»æ˜¾ç¤º
     /// </summary>
     public bool Display { get; set; }
 
     /// <summary>
-    /// ¸ßÇåĞŞ¸´ÏîÄ¿
+    /// é«˜æ¸…ä¿®å¤é¡¹ç›®
     /// </summary>
     [ObservableProperty]
     private OptifineObj? _optifineItem;
     /// <summary>
-    /// ÏîÄ¿
+    /// é¡¹ç›®
     /// </summary>
     [ObservableProperty]
     private FileDisplayObj? _file;
     /// <summary>
-    /// ÏÂÔØµÄÄ£×é
+    /// ä¸‹è½½çš„æ¨¡ç»„
     /// </summary>
     [ObservableProperty]
     private DownloadModDisplayModel? _mod;
 
     /// <summary>
-    /// ÊÇ·ñÔÚÏÂÔØ
+    /// æ˜¯å¦åœ¨ä¸‹è½½
     /// </summary>
     [ObservableProperty]
     private bool _isDownload;
     /// <summary>
-    /// ÊÇ·ñÃ»ÓĞÏîÄ¿
+    /// æ˜¯å¦æ²¡æœ‰é¡¹ç›®
     /// </summary>
     [ObservableProperty]
     private bool _emptyDisplay = true;
     /// <summary>
-    /// ¸ßÇåĞŞ¸´ÁĞ±íÏÔÊ¾
+    /// é«˜æ¸…ä¿®å¤åˆ—è¡¨æ˜¾ç¤º
     /// </summary>
     [ObservableProperty]
     private bool _optifineDisplay;
     /// <summary>
-    /// modÁĞ±íÏÔÊ¾
+    /// modåˆ—è¡¨æ˜¾ç¤º
     /// </summary>
     [ObservableProperty]
     private bool _modDownloadDisplay;
     /// <summary>
-    /// ÎÄ¼şÁĞ±íÏÔÊ¾
+    /// æ–‡ä»¶åˆ—è¡¨æ˜¾ç¤º
     /// </summary>
     [ObservableProperty]
     private bool _versionDisplay;
     /// <summary>
-    /// Õ¹Ê¾ËùÓĞ¸½Êômod
+    /// å±•ç¤ºæ‰€æœ‰é™„å±mod
     /// </summary>
     [ObservableProperty]
     private bool _loadMoreMod;
     /// <summary>
-    /// ÆôÓÃ·­Ò³
+    /// å¯ç”¨ç¿»é¡µ
     /// </summary>
     [ObservableProperty]
     private bool _enablePage;
     /// <summary>
-    /// ÊÇ·ñÑ¡ÔñÁËÏîÄ¿
+    /// æ˜¯å¦é€‰æ‹©äº†é¡¹ç›®
     /// </summary>
     [ObservableProperty]
     private bool _isSelect;
     /// <summary>
-    /// ÊÇ·ñÎª±ê¼ÇÄ£Ê½
+    /// æ˜¯å¦ä¸ºæ ‡è®°æ¨¡å¼
     /// </summary>
     [ObservableProperty]
     private bool _set;
 
     /// <summary>
-    /// ÏÂÔØÀàĞÍ
+    /// ä¸‹è½½ç±»å‹
     /// </summary>
     [ObservableProperty]
     private int _type = -1;
     /// <summary>
-    /// ÅÅĞòÀàĞÍ
+    /// æ’åºç±»å‹
     /// </summary>
     [ObservableProperty]
     private int _sortType = -1;
     /// <summary>
-    /// ËÑË÷Ô´
+    /// æœç´¢æº
     /// </summary>
     [ObservableProperty]
     private int _downloadSource = -1;
     /// <summary>
-    /// Ò³Êı
+    /// é¡µæ•°
     /// </summary>
     [ObservableProperty]
     private int? _page = 0;
     /// <summary>
-    /// ·ÖÀà
+    /// åˆ†ç±»
     /// </summary>
     [ObservableProperty]
     private int _categorie;
     /// <summary>
-    /// ÎÄ¼şÁĞ±íÒ³Êı
+    /// æ–‡ä»¶åˆ—è¡¨é¡µæ•°
     /// </summary>
     [ObservableProperty]
     private int _pageDownload;
 
     /// <summary>
-    /// ÓÎÏ·°æ±¾
+    /// æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     [ObservableProperty]
     private string? _gameVersion;
     /// <summary>
-    /// Ãû×Ö
+    /// åå­—
     /// </summary>
     [ObservableProperty]
     private string? _name;
     /// <summary>
-    /// ¸ßÇåĞŞ¸´ÓÎÏ·°æ±¾
+    /// é«˜æ¸…ä¿®å¤æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     [ObservableProperty]
     private string? _gameVersionOptifine;
     /// <summary>
-    /// ÎÄ¼şÁĞ±íÓÎÏ·°æ±¾
+    /// æ–‡ä»¶åˆ—è¡¨æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     [ObservableProperty]
     private string? _gameVersionDownload;
 
     /// <summary>
-    /// Õ¹Ê¾ËÑË÷Ñ¡Ïî
+    /// å±•ç¤ºæœç´¢é€‰é¡¹
     /// </summary>
     [ObservableProperty]
     private bool _displayFilter = true;
@@ -246,7 +246,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ¸ßÇåĞŞ¸´ÓÎÏ·°æ±¾Ñ¡Ôñ
+    /// é«˜æ¸…ä¿®å¤æ¸¸æˆç‰ˆæœ¬é€‰æ‹©
     /// </summary>
     /// <param name="value"></param>
     partial void OnGameVersionOptifineChanged(string? value)
@@ -255,7 +255,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ÏÂÔØÀàĞÍÑ¡Ôñ
+    /// ä¸‹è½½ç±»å‹é€‰æ‹©
     /// </summary>
     /// <param name="value"></param>
     async partial void OnTypeChanged(int value)
@@ -291,7 +291,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ÅÅĞòÀàĞÍÑ¡Ôñ
+    /// æ’åºç±»å‹é€‰æ‹©
     /// </summary>
     /// <param name="value"></param>
     partial void OnSortTypeChanged(int value)
@@ -300,7 +300,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ·ÖÀàÑ¡Ôñ
+    /// åˆ†ç±»é€‰æ‹©
     /// </summary>
     /// <param name="value"></param>
     partial void OnCategorieChanged(int value)
@@ -309,7 +309,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// Ò³ÊıĞŞ¸Ä
+    /// é¡µæ•°ä¿®æ”¹
     /// </summary>
     /// <param name="value"></param>
     async partial void OnPageChanged(int? value)
@@ -323,7 +323,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ÎÄ¼şÁĞ±íÒ³ÊıĞŞ¸Ä
+    /// æ–‡ä»¶åˆ—è¡¨é¡µæ•°ä¿®æ”¹
     /// </summary>
     /// <param name="value"></param>
     partial void OnPageDownloadChanged(int value)
@@ -337,7 +337,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ËÑË÷Ô´ĞŞ¸Ä
+    /// æœç´¢æºä¿®æ”¹
     /// </summary>
     /// <param name="value"></param>
     async partial void OnDownloadSourceChanged(int value)
@@ -355,7 +355,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
         DisplayList.Clear();
         var type = SourceTypeList[DownloadSource];
-        //CFËÑË÷Ô´
+        //CFæœç´¢æº
         if (type == SourceType.CurseForge)
         {
             SortTypeList.AddRange(LanguageBinding.GetCurseForgeSortTypes());
@@ -402,7 +402,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
             await GetList();
         }
-        //MOËÑË÷Ô´
+        //MOæœç´¢æº
         else if (type == SourceType.Modrinth)
         {
             SortTypeList.AddRange(LanguageBinding.GetModrinthSortTypes());
@@ -450,7 +450,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
             await GetList();
         }
-        //McModËÑË÷Ô´
+        //McModæœç´¢æº
         else if (type == SourceType.McMod)
         {
             GameVersionList.Add("");
@@ -472,7 +472,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ÓÎÏ·°æ±¾ĞŞ¸Ä
+    /// æ¸¸æˆç‰ˆæœ¬ä¿®æ”¹
     /// </summary>
     /// <param name="value"></param>
     partial void OnGameVersionChanged(string? value)
@@ -481,7 +481,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ÎÄ¼şÁĞ±íÓÎÏ·°æ±¾ĞŞ¸Ä
+    /// æ–‡ä»¶åˆ—è¡¨æ¸¸æˆç‰ˆæœ¬ä¿®æ”¹
     /// </summary>
     /// <param name="value"></param>
     partial void OnGameVersionDownloadChanged(string? value)
@@ -501,7 +501,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ÇĞ»»¹ıÂËÏÔÊ¾
+    /// åˆ‡æ¢è¿‡æ»¤æ˜¾ç¤º
     /// </summary>
     [RelayCommand]
     public void ShowFilter()
@@ -510,7 +510,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// »ñÈ¡ÏîÄ¿ÁĞ±í
+    /// è·å–é¡¹ç›®åˆ—è¡¨
     /// </summary>
     [RelayCommand]
     public async Task GetList()
@@ -519,7 +519,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         Model.Progress(App.GetLanguage("AddWindow.Info2"));
         if (type == SourceType.McMod)
         {
-            //McModËÑË÷Ô´
+            //McModæœç´¢æº
             var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0);
             if (data == null)
             {
@@ -545,7 +545,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
         else
         {
-            //ÆäËûËÑË÷Ô´
+            //å…¶ä»–æœç´¢æº
             var data = await WebBinding.GetList(_now, type,
                 GameVersion, Name, Page ?? 0,
                 SortType, Categorie < 0 ? "" :
@@ -590,7 +590,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ¸ù¾İÃû×ÖË¢ĞÂ
+    /// æ ¹æ®åå­—åˆ·æ–°
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -606,7 +606,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ÎÄ¼şÁĞ±í¹Ø±Õ
+    /// æ–‡ä»¶åˆ—è¡¨å…³é—­
     /// </summary>
     [RelayCommand]
     public void VersionClose()
@@ -615,7 +615,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ÏÂÔØÎÄ¼ş
+    /// ä¸‹è½½æ–‡ä»¶
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -637,7 +637,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// Ë¢ĞÂ
+    /// åˆ·æ–°
     /// </summary>
     [RelayCommand]
     public void Refresh1()
@@ -646,7 +646,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ×ªµ½ÎÄ¼şÁĞ±í
+    /// è½¬åˆ°æ–‡ä»¶åˆ—è¡¨
     /// </summary>
     [RelayCommand]
     public void GoInstall()
@@ -661,7 +661,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
     
     /// <summary>
-    /// Ë¢ĞÂ¸ßÇåĞŞ¸´ÁĞ±í
+    /// åˆ·æ–°é«˜æ¸…ä¿®å¤åˆ—è¡¨
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -690,7 +690,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ¹Ø±Õ¸ßÇåĞŞ¸´ÁĞ±í
+    /// å…³é—­é«˜æ¸…ä¿®å¤åˆ—è¡¨
     /// </summary>
     [RelayCommand]
     public void OptifineClose()
@@ -702,7 +702,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ÏÂÔØÄ£×é
+    /// ä¸‹è½½æ¨¡ç»„
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -737,7 +737,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ¼ÓÔØÄ£×éÁĞ±í
+    /// åŠ è½½æ¨¡ç»„åˆ—è¡¨
     /// </summary>
     [RelayCommand]
     public void ModsLoad()
@@ -763,7 +763,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// Ñ¡ÔñÏÂÔØËùÓĞÄ£×é
+    /// é€‰æ‹©ä¸‹è½½æ‰€æœ‰æ¨¡ç»„
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -777,7 +777,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// È¡ÏûÏÂÔØÄ£×é
+    /// å–æ¶ˆä¸‹è½½æ¨¡ç»„
     /// </summary>
     [RelayCommand]
     public void DownloadModCancel()
@@ -792,7 +792,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ÏÂÔØ¸ßÇåĞŞ¸´
+    /// ä¸‹è½½é«˜æ¸…ä¿®å¤
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -820,7 +820,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// Ñ¡ÔñÏîÄ¿
+    /// é€‰æ‹©é¡¹ç›®
     /// </summary>
     /// <param name="last"></param>
     public void SetSelect(FileItemModel last)
@@ -838,10 +838,10 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ×ªµ½ÏÂÔØÀàĞÍ
+    /// è½¬åˆ°ä¸‹è½½ç±»å‹
     /// </summary>
-    /// <param name="type">ÀàĞÍ</param>
-    /// <param name="pid">ÏîÄ¿ID</param>
+    /// <param name="type">ç±»å‹</param>
+    /// <param name="pid">é¡¹ç›®ID</param>
     public async void GoFile(SourceType type, string pid)
     {
         Type = (int)FileType.Mod - 1;
@@ -856,7 +856,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ´ò¿ªÎÄ¼şÁĞ±í
+    /// æ‰“å¼€æ–‡ä»¶åˆ—è¡¨
     /// </summary>
     public void Install()
     {
@@ -873,7 +873,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// ¿ªÊ¼ÏÂÔØÎÄ¼ş
+    /// å¼€å§‹ä¸‹è½½æ–‡ä»¶
     /// </summary>
     /// <param name="data"></param>
     public async void Install1(FileDisplayObj data)
@@ -903,8 +903,10 @@ public partial class AddControlModel : GameModel, IAddWindow
         VersionDisplay = false;
         bool res = false;
 
+        //æ•°æ®åŒ…
         if (_now == FileType.DataPacks)
         {
+            //é€‰æ‹©åœ°å›¾
             var list = await GameBinding.GetWorlds(Obj);
             if (list.Count == 0)
             {
@@ -937,6 +939,7 @@ public partial class AddControlModel : GameModel, IAddWindow
                 res = false;
             }
         }
+        //æ¨¡ç»„
         else if (_now == FileType.Mod)
         {
             try
@@ -962,6 +965,7 @@ public partial class AddControlModel : GameModel, IAddWindow
                 }
                 else
                 {
+                    //æ·»åŠ æ¨¡ç»„ä¿¡æ¯
                     ModList.Clear();
                     ModList.AddRange(list.Item3);
                     _modsave = (list.Item1!, list.Item2!);
@@ -990,9 +994,9 @@ public partial class AddControlModel : GameModel, IAddWindow
                 res = type switch
                 {
                     SourceType.CurseForge => await WebBinding.Download(_now, Obj,
-                    data.Data as CurseForgeModObj.Data),
+                        data.Data as CurseForgeModObj.Data),
                     SourceType.Modrinth => await WebBinding.Download(_now, Obj,
-                    data.Data as ModrinthVersionObj),
+                        data.Data as ModrinthVersionObj),
                     _ => false
                 };
                 IsDownload = false;
@@ -1023,7 +1027,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// Ë¢ĞÂÁĞ±í
+    /// åˆ·æ–°åˆ—è¡¨
     /// </summary>
     public async void Refresh()
     {
@@ -1035,6 +1039,9 @@ public partial class AddControlModel : GameModel, IAddWindow
         await GetList();
     }
 
+    /// <summary>
+    /// åŠ è½½å¤±è´¥
+    /// </summary>
     private void LoadFail()
     {
         if (DownloadSource >= SourceTypeList.Count)
@@ -1047,6 +1054,10 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
     }
 
+    /// <summary>
+    /// åŠ è½½æ–‡ä»¶åˆ—è¡¨
+    /// </summary>
+    /// <param name="id">é¡¹ç›®ID</param>
     private async void LoadFile(string? id = null)
     {
         FileList.Clear();
@@ -1139,12 +1150,19 @@ public partial class AddControlModel : GameModel, IAddWindow
         Model.ProgressClose();
     }
 
+    /// <summary>
+    /// æ‰“å¼€é«˜æ¸…ä¿®å¤åˆ—è¡¨
+    /// </summary>
     public async Task OptifineOpen()
     {
         OptifineDisplay = true;
         await LoadOptifineList();
     }
 
+    /// <summary>
+    /// è½¬åˆ°æ–‡ä»¶ç±»å‹
+    /// </summary>
+    /// <param name="file">æ–‡ä»¶ç±»å‹</param>
     public async void GoTo(FileType file)
     {
         if (file == FileType.Optifne)
@@ -1161,25 +1179,41 @@ public partial class AddControlModel : GameModel, IAddWindow
             DownloadSource = 0;
         }
     }
+
+    /// <summary>
+    /// ä¸Šä¸€é¡µ
+    /// </summary>
     public void Back()
     {
         if (IsDownload)
+        {
             return;
+        }
 
         if (Page <= 0)
+        {
             return;
+        }
 
         Page -= 1;
     }
 
+    /// <summary>
+    /// ä¸‹ä¸€é¡µ
+    /// </summary>
     public void Next()
     {
         if (IsDownload)
+        {
             return;
+        }
 
         Page += 1;
     }
 
+    /// <summary>
+    /// é‡è½½
+    /// </summary>
     public void Reload()
     {
         if (EnablePage)
@@ -1192,6 +1226,9 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
     }
 
+    /// <summary>
+    /// è½¬åˆ°æ ‡è®°
+    /// </summary>
     public async Task GoSet()
     {
         Set = true;
@@ -1205,17 +1242,19 @@ public partial class AddControlModel : GameModel, IAddWindow
         });
     }
 
+    /// <summary>
+    /// æ‰“å¼€æ–‡ä»¶åˆ—è¡¨
+    /// </summary>
+    /// <param name="item">é¡¹ç›®</param>
     public void Install(FileItemModel item)
     {
         SetSelect(item);
         Install();
     }
 
-    public void WindowClose()
-    {
-        OnPropertyChanged("WindowClose");
-    }
-
+    /// <summary>
+    /// åŠ è½½é«˜æ¸…ä¿®å¤åˆ—è¡¨
+    /// </summary>
     public void LoadOptifineVersion()
     {
         DownloadOptifineList.Clear();

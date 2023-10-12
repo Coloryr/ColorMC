@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : GameModel
+public partial class GameEditModel : MenuModel
 {
     public List<string> GCTypeList { get; init; } = JavaBinding.GetGCTypes();
     public ObservableCollection<string> JvmList { get; init; } = new();
@@ -80,9 +80,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.ProxyHost ??= new();
-        Obj.ProxyHost.Password = value;
-        Obj.Save();
+        _obj.ProxyHost ??= new();
+        _obj.ProxyHost.Password = value;
+        _obj.Save();
     }
 
     partial void OnProxyUserChanged(string? value)
@@ -90,9 +90,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.ProxyHost ??= new();
-        Obj.ProxyHost.User = value;
-        Obj.Save();
+        _obj.ProxyHost ??= new();
+        _obj.ProxyHost.User = value;
+        _obj.Save();
     }
 
     partial void OnProxyPortChanged(ushort? value)
@@ -100,9 +100,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.ProxyHost ??= new();
-        Obj.ProxyHost.Port = value;
-        Obj.Save();
+        _obj.ProxyHost ??= new();
+        _obj.ProxyHost.Port = value;
+        _obj.Save();
     }
 
     partial void OnProxyIPChanged(string? value)
@@ -110,9 +110,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.ProxyHost ??= new();
-        Obj.ProxyHost.IP = value;
-        Obj.Save();
+        _obj.ProxyHost ??= new();
+        _obj.ProxyHost.IP = value;
+        _obj.Save();
     }
 
     partial void OnPortChanged(ushort? value)
@@ -120,9 +120,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.StartServer ??= new();
-        Obj.StartServer.Port = value;
-        Obj.Save();
+        _obj.StartServer ??= new();
+        _obj.StartServer.Port = value;
+        _obj.Save();
     }
 
     partial void OnIPChanged(string? value)
@@ -130,9 +130,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.StartServer ??= new();
-        Obj.StartServer.IP = value;
-        Obj.Save();
+        _obj.StartServer ??= new();
+        _obj.StartServer.IP = value;
+        _obj.Save();
     }
 
     partial void OnHeightChanged(uint? value)
@@ -140,9 +140,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.Window ??= new();
-        Obj.Window.Height = value;
-        Obj.Save();
+        _obj.Window ??= new();
+        _obj.Window.Height = value;
+        _obj.Save();
     }
 
     partial void OnWidthChanged(uint? value)
@@ -150,9 +150,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.Window ??= new();
-        Obj.Window.Width = value;
-        Obj.Save();
+        _obj.Window ??= new();
+        _obj.Window.Width = value;
+        _obj.Save();
     }
 
     partial void OnMaxWindowChanged(bool? value)
@@ -160,9 +160,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.Window ??= new();
-        Obj.Window.FullScreen = value;
-        Obj.Save();
+        _obj.Window ??= new();
+        _obj.Window.FullScreen = value;
+        _obj.Save();
     }
 
     partial void OnMainClassChanged(string? value)
@@ -170,9 +170,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.AdvanceJvm ??= new();
-        Obj.AdvanceJvm.MainClass = value;
-        Obj.Save();
+        _obj.AdvanceJvm ??= new();
+        _obj.AdvanceJvm.MainClass = value;
+        _obj.Save();
     }
 
     partial void OnClassPathChanged(string? value)
@@ -180,9 +180,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.AdvanceJvm ??= new();
-        Obj.AdvanceJvm.ClassPath = value;
-        Obj.Save();
+        _obj.AdvanceJvm ??= new();
+        _obj.AdvanceJvm.ClassPath = value;
+        _obj.Save();
     }
 
     partial void OnGameArgChanged(string? value)
@@ -190,9 +190,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.GameArgs = value;
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.GameArgs = value;
+        _obj.Save();
     }
 
     partial void OnJvmArgChanged(string? value)
@@ -200,9 +200,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.JvmArgs = value;
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.JvmArgs = value;
+        _obj.Save();
     }
 
     partial void OnJavaAgentChanged(string? value)
@@ -210,9 +210,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.JavaAgent = value;
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.JavaAgent = value;
+        _obj.Save();
     }
 
     partial void OnMinMemChanged(uint? value)
@@ -220,9 +220,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.MinMemory = value;
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.MinMemory = value;
+        _obj.Save();
     }
 
     partial void OnMaxMemChanged(uint? value)
@@ -230,9 +230,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.MaxMemory = value;
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.MaxMemory = value;
+        _obj.Save();
     }
 
     partial void OnPerRunChanged(bool value)
@@ -240,9 +240,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.LaunchPre = value;
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.LaunchPre = value;
+        _obj.Save();
     }
 
     partial void OnPerRunCmdChanged(string? value)
@@ -250,9 +250,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.LaunchPreData = value;
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.LaunchPreData = value;
+        _obj.Save();
     }
 
     partial void OnPostRunChanged(bool value)
@@ -260,9 +260,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.LaunchPost = value;
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.LaunchPost = value;
+        _obj.Save();
     }
 
     partial void OnPostRunCmdChanged(string? value)
@@ -270,9 +270,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.LaunchPostData = value;
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.LaunchPostData = value;
+        _obj.Save();
     }
 
     partial void OnJvmLocalChanged(string? value)
@@ -289,9 +289,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmName = JvmName;
-        Obj.JvmLocal = JvmLocal;
-        Obj.Save();
+        _obj.JvmName = JvmName;
+        _obj.JvmLocal = JvmLocal;
+        _obj.Save();
     }
 
     partial void OnJvmNameChanged(string? value)
@@ -299,8 +299,8 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmName = JvmName;
-        Obj.Save();
+        _obj.JvmName = JvmName;
+        _obj.Save();
     }
 
     partial void OnJvmGcChanged(string? value)
@@ -308,9 +308,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.GCArgument = JvmGc;
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.GCArgument = JvmGc;
+        _obj.Save();
     }
 
     partial void OnGcChanged(int? value)
@@ -320,9 +320,9 @@ public partial class GameEditModel : GameModel
         if (_configLoad)
             return;
 
-        Obj.JvmArg ??= new();
-        Obj.JvmArg.GC = Gc == 0 ? null : (GCType?)(Gc - 1);
-        Obj.Save();
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.GC = Gc == 0 ? null : (GCType?)(Gc - 1);
+        _obj.Save();
     }
 
     [RelayCommand]
@@ -331,7 +331,7 @@ public partial class GameEditModel : GameModel
         var res = await Model.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
         if (res)
         {
-            GameBinding.DeleteConfig(Obj);
+            GameBinding.DeleteConfig(_obj);
 
             ConfigLoad();
         }
@@ -359,8 +359,8 @@ public partial class GameEditModel : GameModel
         JvmList.Clear();
         JvmList.AddRange(list);
 
-        JvmName = Obj.JvmName;
-        JvmLocal = Obj.JvmLocal;
+        JvmName = _obj.JvmName;
+        JvmLocal = _obj.JvmLocal;
 
         if (string.IsNullOrWhiteSpace(JvmLocal))
         {
@@ -371,7 +371,7 @@ public partial class GameEditModel : GameModel
             EnableJvmName = false;
         }
 
-        var config = Obj.JvmArg;
+        var config = _obj.JvmArg;
         if (config != null)
         {
             Gc = config.GC == null ? 0 : (int)(config.GC + 1);
@@ -404,7 +404,7 @@ public partial class GameEditModel : GameModel
             PostRun = false;
         }
 
-        var config1 = Obj.Window;
+        var config1 = _obj.Window;
         if (config1 != null)
         {
             Width = config1.Width;
@@ -418,7 +418,7 @@ public partial class GameEditModel : GameModel
             MaxWindow = false;
         }
 
-        var config2 = Obj.StartServer;
+        var config2 = _obj.StartServer;
         if (config2 != null)
         {
             IP = config2.IP;
@@ -430,7 +430,7 @@ public partial class GameEditModel : GameModel
             Port = null;
         }
 
-        var config3 = Obj.ProxyHost;
+        var config3 = _obj.ProxyHost;
         if (config3 != null)
         {
             ProxyIP = config3.IP;
@@ -446,7 +446,7 @@ public partial class GameEditModel : GameModel
             ProxyPassword = null;
         }
 
-        var config4 = Obj.AdvanceJvm;
+        var config4 = _obj.AdvanceJvm;
         if (config4 != null)
         {
             MainClass = config4.MainClass;

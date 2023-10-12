@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : GameModel
+public partial class GameEditModel : MenuModel
 {
     public ObservableCollection<ResourcePackModel> ResourcePackList { get; init; } = new();
 
@@ -18,13 +18,13 @@ public partial class GameEditModel : GameModel
     [RelayCommand]
     public void AddResource()
     {
-        App.ShowAdd(Obj, FileType.Resourcepack);
+        App.ShowAdd(_obj, FileType.Resourcepack);
     }
 
     [RelayCommand]
     public async Task ImportResource()
     {
-        var file = await PathBinding.AddFile(Obj, FileType.Resourcepack);
+        var file = await PathBinding.AddFile(_obj, FileType.Resourcepack);
         if (file == null)
             return;
 
@@ -41,7 +41,7 @@ public partial class GameEditModel : GameModel
     [RelayCommand]
     public void OpenResource()
     {
-        PathBinding.OpPath(Obj, PathType.ResourcepackPath);
+        PathBinding.OpPath(_obj, PathType.ResourcepackPath);
     }
 
     [RelayCommand]
@@ -50,7 +50,7 @@ public partial class GameEditModel : GameModel
         Model.Progress(App.GetLanguage("GameEditWindow.Tab8.Info3"));
         ResourcePackList.Clear();
 
-        var res = await GameBinding.GetResourcepacks(Obj);
+        var res = await GameBinding.GetResourcepacks(_obj);
         Model.ProgressClose();
         foreach (var item in res)
         {
@@ -74,7 +74,7 @@ public partial class GameEditModel : GameModel
 
     public async void DropResource(IDataObject data)
     {
-        var res = await GameBinding.AddFile(Obj, data, FileType.Resourcepack);
+        var res = await GameBinding.AddFile(_obj, data, FileType.Resourcepack);
         if (res)
         {
             await LoadResource();

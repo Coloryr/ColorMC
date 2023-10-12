@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameExport;
 
-public partial class GameExportModel : GameModel
+public partial class GameExportModel : MenuModel
 {
     /// <summary>
     /// 导出的文件列表
@@ -30,7 +30,7 @@ public partial class GameExportModel : GameModel
 
     public List<string> ExportTypes { get; init; } = LanguageBinding.GetExportName();
 
-    public List<MenuObj> TabItems { get; init; } = new()
+    protected override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.GetLanguage("GameExportWindow.Tabs.Text1") },
@@ -89,17 +89,13 @@ public partial class GameExportModel : GameModel
     [ObservableProperty]
     private bool _enableInput3;
 
-    [ObservableProperty]
-    private int _nowView;
-
-    [ObservableProperty]
-    private string _title;
-
     public readonly List<ModExportModel> Items = new();
 
-    public GameExportModel(BaseModel model, GameSettingObj obj) : base(model, obj)
+    public GameSettingObj Obj { get; init; }
+
+    public GameExportModel(BaseModel model, GameSettingObj obj) : base(model)
     {
-        _title = TabItems[0].Text;
+        Obj = obj;
     }
 
     async partial void OnTypeChanged(PackType value)
@@ -129,25 +125,6 @@ public partial class GameExportModel : GameModel
     partial void OnTextChanged(string value)
     {
         Load1();
-    }
-
-    partial void OnNowViewChanged(int value)
-    {
-        CloseSide();
-
-        Title = TabItems[NowView].Text;
-    }
-
-    [RelayCommand]
-    public void OpenSide()
-    {
-        OnPropertyChanged("SideOpen");
-    }
-
-    [RelayCommand]
-    public void CloseSide()
-    {
-        OnPropertyChanged("SideClose");
     }
 
     [RelayCommand]
@@ -180,7 +157,7 @@ public partial class GameExportModel : GameModel
                 return;
             }
             var info = new FileInfo(item.Local);
-            using var stream = PathHelper.OpenRead(item.Local);
+            using var stream = PathHelper.OpenRead(item.Local)!;
             var sha512 = await HashHelper.GenSha512Async(stream);
             var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
             if (item1 != null)
@@ -251,7 +228,7 @@ public partial class GameExportModel : GameModel
         }
 
         var info = new FileInfo(Obj.GetGamePath() + "/" + FileName);
-        using var stream = PathHelper.OpenRead(info.FullName);
+        using var stream = PathHelper.OpenRead(info.FullName)!;
 
         var sha1 = await HashHelper.GenSha1Async(stream)!;
         stream.Seek(0, SeekOrigin.Begin);

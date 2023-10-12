@@ -7,9 +7,9 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingModel : TopModel
+public partial class SettingModel : MenuModel
 {
-    public List<MenuObj> TabItems { get; init; } = new()
+    protected override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/Setting/item1.svg",
             Text = App.GetLanguage("SettingWindow.Tabs.Text2") },
@@ -27,12 +27,6 @@ public partial class SettingModel : TopModel
             Text = App.GetLanguage("SettingWindow.Tabs.Text7") },
     };
 
-    [ObservableProperty]
-    private int _nowView;
-
-    [ObservableProperty]
-    private string _title;
-
     public bool Phone { get; } = false;
 
     public SettingModel(BaseModel model) : base(model)
@@ -46,27 +40,6 @@ public partial class SettingModel : TopModel
             Phone = true;
             _enableWindowMode = false;
         }
-
-        _title = TabItems[0].Text;
-    }
-
-    partial void OnNowViewChanged(int value)
-    {
-        CloseSide();
-
-        Title = TabItems[NowView].Text;
-    }
-
-    [RelayCommand]
-    public void OpenSide()
-    {
-        OnPropertyChanged("SideOpen");
-    }
-
-    [RelayCommand]
-    public void CloseSide()
-    {
-        OnPropertyChanged("SideClose");
     }
 
     protected override void Close()

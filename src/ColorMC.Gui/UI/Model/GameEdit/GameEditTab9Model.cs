@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : GameModel
+public partial class GameEditModel : MenuModel
 {
     public ObservableCollection<ScreenshotModel> ScreenshotList { get; init; } = new();
 
@@ -19,7 +19,7 @@ public partial class GameEditModel : GameModel
         Model.Progress(App.GetLanguage("GameEditWindow.Tab9.Info3"));
         ScreenshotList.Clear();
 
-        var res = GameBinding.GetScreenshots(Obj);
+        var res = GameBinding.GetScreenshots(_obj);
         Model.ProgressClose();
         foreach (var item in res)
         {
@@ -30,20 +30,20 @@ public partial class GameEditModel : GameModel
     [RelayCommand]
     public void OpenScreenshot()
     {
-        PathBinding.OpPath(Obj, PathType.ScreenshotsPath);
+        PathBinding.OpPath(_obj, PathType.ScreenshotsPath);
     }
 
     [RelayCommand]
     public async Task ClearScreenshot()
     {
         var res = await Model.ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab9.Info2"), Obj.Name));
+            string.Format(App.GetLanguage("GameEditWindow.Tab9.Info2"), _obj.Name));
         if (!res)
         {
             return;
         }
 
-        GameBinding.ClearScreenshots(Obj);
+        GameBinding.ClearScreenshots(_obj);
         Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         LoadScreenshot();
     }

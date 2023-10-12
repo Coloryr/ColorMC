@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.Player;
+namespace ColorMC.Gui.Player;
 
 /// <summary>
 /// 音频输出

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingModel : TopModel
+public partial class SettingModel : MenuModel
 {
     public List<string> GCTypeList { get; init; } = JavaBinding.GetGCTypes();
 

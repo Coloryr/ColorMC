@@ -7,9 +7,9 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : GameModel
+public partial class GameEditModel : MenuModel
 {
-    public List<MenuObj> TabItems { get; init; } = new()
+    protected override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameEdit/item1.svg",
             Text = App.GetLanguage("GameEditWindow.Tabs.Text1") },
@@ -34,11 +34,7 @@ public partial class GameEditModel : GameModel
     [ObservableProperty]
     private bool _displayFilter = true;
 
-    [ObservableProperty]
-    private int _nowView;
-
-    [ObservableProperty]
-    private string _title;
+    private readonly GameSettingObj _obj;
 
     public bool Phone { get; } = false;
 
@@ -48,36 +44,17 @@ public partial class GameEditModel : GameModel
         DisplayFilter = !DisplayFilter;
     }
 
-    public GameEditModel(BaseModel model, GameSettingObj obj) : base(model, obj)
+    public GameEditModel(BaseModel model, GameSettingObj obj) : base(model)
     {
+        _obj = obj;
         if (SystemInfo.Os == OsType.Android)
         {
             Phone = true;
         }
 
-        _title = TabItems[0].Text;
-        _titleText = string.Format(App.GetLanguage("GameEditWindow.Tab2.Text13"), Obj.Name);
+        _titleText = string.Format(App.GetLanguage("GameEditWindow.Tab2.Text13"), _obj.Name);
         GameLoad();
         ConfigLoad();
-    }
-
-    partial void OnNowViewChanged(int value)
-    {
-        CloseSide();
-
-        Title = TabItems[NowView].Text;
-    }
-
-    [RelayCommand]
-    public void OpenSide()
-    {
-        OnPropertyChanged("SideOpen");
-    }
-
-    [RelayCommand]
-    public void CloseSide()
-    {
-        OnPropertyChanged("SideClose");
     }
 
     protected override void Close()

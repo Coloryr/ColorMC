@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
 using System.Runtime.InteropServices;
 
 namespace ColorMC.Core.Utils;

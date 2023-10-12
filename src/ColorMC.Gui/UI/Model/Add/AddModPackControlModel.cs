@@ -1,4 +1,4 @@
-﻿using AvaloniaEdit.Utils;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
@@ -407,11 +407,6 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         {
             Load();
         }
-    }
-
-    public void WindowClose()
-    {
-        OnPropertyChanged("WindowClose");
     }
 
     protected override void Close()

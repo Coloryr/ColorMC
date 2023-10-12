@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : GameModel
+public partial class GameEditModel : MenuModel
 {
     public ObservableCollection<ShaderpackObj> ShaderpackList { get; init; } = new();
 
@@ -20,20 +20,20 @@ public partial class GameEditModel : GameModel
     [RelayCommand]
     public void OpenShaderpack()
     {
-        PathBinding.OpPath(Obj, PathType.ShaderpacksPath);
+        PathBinding.OpPath(_obj, PathType.ShaderpacksPath);
     }
     [RelayCommand]
     public async Task LoadShaderpack()
     {
         Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         ShaderpackList.Clear();
-        ShaderpackList.AddRange(await GameBinding.GetShaderpacks(Obj));
+        ShaderpackList.AddRange(await GameBinding.GetShaderpacks(_obj));
         Model.ProgressClose();
     }
     [RelayCommand]
     public async Task ImportShaderpack()
     {
-        var res = await PathBinding.AddFile(Obj, FileType.Shaderpack);
+        var res = await PathBinding.AddFile(_obj, FileType.Shaderpack);
         if (res == null)
             return;
 
@@ -50,12 +50,12 @@ public partial class GameEditModel : GameModel
     [RelayCommand]
     public void AddShaderpack()
     {
-        App.ShowAdd(Obj, FileType.Shaderpack);
+        App.ShowAdd(_obj, FileType.Shaderpack);
     }
 
     public async void DropShaderpack(IDataObject data)
     {
-        var res = await GameBinding.AddFile(Obj, data, FileType.Shaderpack);
+        var res = await GameBinding.AddFile(_obj, data, FileType.Shaderpack);
         if (res)
         {
             await LoadShaderpack();

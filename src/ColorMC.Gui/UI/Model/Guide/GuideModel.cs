@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Guide;
 
-public partial class GuideModel : TopModel
+public partial class GuideModel : MenuModel
 {
-    public List<MenuObj> TabItems { get; init; } = new()
+    protected override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Text = App.GetLanguage("GuideWindow.Tabs.Text1") },
         new() { Text = App.GetLanguage("GuideWindow.Tabs.Text2") },
@@ -21,25 +21,13 @@ public partial class GuideModel : TopModel
     };
 
     [ObservableProperty]
-    private string _title;
-
-    [ObservableProperty]
-    private int _nowView;
-
-    [ObservableProperty]
     private bool _canLast;
     [ObservableProperty]
     private bool _canNext;
 
     public GuideModel(BaseModel model) : base(model)
     {
-        _title = TabItems[0].Text;
         Update();
-    }
-
-    partial void OnNowViewChanged(int value)
-    {
-        Title = TabItems[NowView].Text;
     }
 
     [RelayCommand]

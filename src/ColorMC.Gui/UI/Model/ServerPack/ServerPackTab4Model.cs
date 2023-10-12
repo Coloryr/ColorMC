@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel : TopModel
+public partial class ServerPackModel : MenuModel
 {
     public ObservableCollection<ServerPackConfigObj> FileList { get; init; } = new();
     public ObservableCollection<string> NameList { get; init; } = new();
