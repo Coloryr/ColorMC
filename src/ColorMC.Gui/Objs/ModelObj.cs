@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.Skin;
+﻿namespace ColorMC.Gui.Objs;
 
 /// <summary>
 /// 一个方块模型数据

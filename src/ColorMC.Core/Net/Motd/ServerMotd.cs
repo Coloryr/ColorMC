@@ -8,6 +8,9 @@ using System.Text;
 
 namespace ColorMC.Core.Net.Motd;
 
+/// <summary>
+/// 获取Motd
+/// </summary>
 public static class ServerMotd
 {
     /// <summary>
@@ -77,9 +80,9 @@ public static class ServerMotd
     /// <summary>
     /// 获取服务器信息
     /// </summary>
-    /// <param name="ip"></param>
-    /// <param name="port"></param>
-    /// <returns></returns>
+    /// <param name="ip">地址</param>
+    /// <param name="port">端口</param>
+    /// <returns>服务器信息</returns>
     public static async Task<ServerMotdObj> GetServerInfo(string ip, ushort port)
     {
         if (port == 0)

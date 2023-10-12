@@ -13,4 +13,12 @@ public abstract class TopModel : ObservableObject
         Close();
     }
     protected abstract void Close();
+
+    /// <summary>
+    /// 关闭窗口
+    /// </summary>
+    public void WindowClose()
+    {
+        OnPropertyChanged("WindowClose");
+    }
 }

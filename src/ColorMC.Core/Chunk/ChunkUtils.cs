@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Chunk;
+namespace ColorMC.Core.Chunk;
 
 /// <summary>
 /// 区块计算用

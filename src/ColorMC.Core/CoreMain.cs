@@ -12,8 +12,8 @@ namespace ColorMC.Core;
 
 public static class ColorMCCore
 {
-    public const string TopVersion = "A20";
-    public const string DateVersion = "20231011";
+    public const string TopVersion = "A21";
+    public const string DateVersion = "20231012";
 
     public const string Version = $"{TopVersion}.{DateVersion}";
 
@@ -116,13 +116,34 @@ public static class ColorMCCore
     /// </summary>
     public static Action<string, int, int>? UnZipItem { internal get; set; }
 
+    /// <summary>
+    /// 手机端启动
+    /// </summary>
     public static Action<GameSettingObj, JavaInfo, List<string>>? PhoneGameLaunch { internal get; set; }
+    /// <summary>
+    /// 手机端Jvm安装
+    /// </summary>
     public static Action<Stream, string>? PhoneJvmInstall { internal get; set; }
+    /// <summary>
+    /// 手机端读Java信息
+    /// </summary>
     public static Func<string, JavaInfo?>? PhoneReadJvm { internal get; set; }
+    /// <summary>
+    /// 手机端读文件
+    /// </summary>
     public static Func<string, Stream?>? PhoneReadFile { get; set; }
+    /// <summary>
+    /// 手机端获取运行路径
+    /// </summary>
     public static Func<string>? PhoneGetDataDir { internal get; set; }
+    /// <summary>
+    /// 手机端Jvm运行
+    /// </summary>
     public static Func<GameSettingObj, JavaInfo, string, List<string>, Task<bool>> PhoneJvmRun { internal get; set; }
-    public static Action<string> PhoneOpenUrl { get; set; }
+    /// <summary>
+    /// 手机端打开网页
+    /// </summary>
+    public static Action<string?> PhoneOpenUrl { get; set; }
 
     /// <summary>
     /// 新运行
@@ -135,7 +156,7 @@ public static class ColorMCCore
     internal static event Action? Stop;
 
     /// <summary>
-    /// 初始化
+    /// 初始化阶段1
     /// </summary>
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
@@ -151,6 +172,9 @@ public static class ColorMCCore
         Logs.Info(LanguageHelper.Get("Core.Info1"));
     }
 
+    /// <summary>
+    /// 初始化阶段2
+    /// </summary>
     public static void Init1()
     {
         ConfigSave.Init();
@@ -160,6 +184,8 @@ public static class ColorMCCore
         AuthDatabase.Init();
         MCPath.Init(BaseDir);
         LoadDone?.Invoke();
+
+        Logs.Info(LanguageHelper.Get("Core.Info3"));
     }
 
     /// <summary>

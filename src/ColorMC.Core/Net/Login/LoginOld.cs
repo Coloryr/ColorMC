@@ -8,6 +8,9 @@ using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net.Login;
 
+/// <summary>
+/// 旧版账户验证
+/// </summary>
 public static class LoginOld
 {
     /// <summary>

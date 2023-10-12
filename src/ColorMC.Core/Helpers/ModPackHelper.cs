@@ -317,7 +317,7 @@ public static class ModPackHelper
         var size = info.files.Count;
         var now = 0;
         var list = new ConcurrentBag<DownloadItemObj>();
-        var res = await CurseForgeAPI.GetMods(info.files);
+
         var modpath = game.GetModsPath();
         var respath = game.GetResourcepacksPath();
         var shapath = game.GetShaderpacksPath();
@@ -325,6 +325,8 @@ public static class ModPackHelper
         var respath1 = InstancesPath.Name8;
         var shapath1 = InstancesPath.Name9;
 
+        //获取Mod信息
+        var res = await CurseForgeAPI.GetMods(info.files);
         if (res != null)
         {
             var res1 = res.Distinct(CurseDataComparer.Instance);
@@ -364,6 +366,7 @@ public static class ModPackHelper
         }
         else
         {
+            //一个个获取
             bool done = true;
             await Parallel.ForEachAsync(info.files, async (item, token) =>
             {

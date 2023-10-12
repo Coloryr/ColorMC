@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Nbt;
+namespace ColorMC.Core.Nbt;
 
 /// <summary>
 /// Long类型的NBT标签

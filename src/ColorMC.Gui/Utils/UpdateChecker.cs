@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
@@ -19,7 +20,7 @@ namespace ColorMC.Gui.Utils;
 public static class UpdateChecker
 {
     //private const string url = $"http://localhost/colormc/{ColorMCCore.TopVersion}/";
-    private const string s_baseUrl = $"https://colormc.coloryr.com/colormc/";
+    private const string s_baseUrl = $"https://mc1.coloryr.com:8081/update/";
     private const string s_checkUrl = $"{s_baseUrl}{ColorMCCore.TopVersion}/";
 
     public static readonly string[] WebSha1s = new string[4] { "", "", "", "" };
@@ -57,8 +58,10 @@ public static class UpdateChecker
 
         try
         {
-            var data = await BaseClient.DownloadClient.GetStringAsync(s_baseUrl + "index.json");
-            var obj = JObject.Parse(data);
+            var req = new HttpRequestMessage(HttpMethod.Get, s_baseUrl + "index.json");
+            req.Headers.Add("ColorMC", ColorMCCore.Version);
+            var data = await BaseClient.DownloadClient.SendAsync(req);
+            var obj = JObject.Parse(await data.Content.ReadAsStringAsync());
             if (obj == null)
             {
                 App.UpdateCheckFail();
@@ -99,37 +102,41 @@ public static class UpdateChecker
 
         var list = new List<DownloadItemObj>()
         {
-            new DownloadItemObj()
+            new()
             {
                 Name = "ColorMC.Core.dll",
                 SHA1 = WebSha1s[0],
                 Url = $"{s_checkUrl}ColorMC.Core.dll",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Core.dll",
-                Overwrite = true
+                Overwrite = true,
+                UseColorMCHead = true
             },
-            new DownloadItemObj()
+            new()
             {
                 Name = "ColorMC.Core.pdb",
                 SHA1 = WebSha1s[1],
                 Url = $"{s_checkUrl}ColorMC.Core.pdb",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Core.pdb",
-                Overwrite = true
+                Overwrite = true,
+                UseColorMCHead = true
             },
-            new DownloadItemObj()
+            new()
             {
                 Name = "ColorMC.Gui.dll",
                 SHA1 = WebSha1s[2],
                 Url = $"{s_checkUrl}ColorMC.Gui.dll",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Gui.dll",
-                Overwrite = true
+                Overwrite = true,
+                UseColorMCHead = true
             },
-            new DownloadItemObj()
+            new()
             {
                 Name = "ColorMC.Gui.pdb",
                 SHA1 = WebSha1s[3],
                 Url = $"{s_checkUrl}ColorMC.Gui.pdb",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Gui.pdb",
-                Overwrite = true
+                Overwrite = true,
+                UseColorMCHead = true
             }
         };
 
@@ -151,8 +158,10 @@ public static class UpdateChecker
 
         try
         {
-            var data = await BaseClient.DownloadClient.GetStringAsync(s_checkUrl + "sha1.json");
-            var obj = JObject.Parse(data);
+            var req = new HttpRequestMessage(HttpMethod.Get, s_checkUrl + "sha1.json");
+            req.Headers.Add("ColorMC", ColorMCCore.Version);
+            var data = await BaseClient.DownloadClient.SendAsync(req);
+            var obj = JObject.Parse(await data.Content.ReadAsStringAsync());
             if (obj == null)
             {
                 App.ShowError(App.GetLanguage("Gui.Error21"), "Json Error");

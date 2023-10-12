@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Objs.Chunk;
+namespace ColorMC.Core.Objs.Chunk;
 
 /// <summary>
 /// 区块头数据

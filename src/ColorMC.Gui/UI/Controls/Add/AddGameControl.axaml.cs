@@ -81,7 +81,7 @@ public partial class AddGameControl : UserControl, IUserControl
             {
                 var model = (DataContext as AddGameModel)!;
                 model.NowView = 1;
-                model.AddFile(item);
+                model.SetFile(item);
             }
         }
     }
@@ -180,7 +180,7 @@ public partial class AddGameControl : UserControl, IUserControl
         {
             var model = (DataContext as AddGameModel)!;
             model.NowView = 1;
-            model.AddFile(file);
+            model.SetFile(file);
         }
     }
 }

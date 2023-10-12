@@ -11,19 +11,35 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : TopModel
+public partial class AddGameModel : MenuModel
 {
+    /// <summary>
+    /// 文件列表
+    /// </summary>
     private FilesPage _fileModel;
 
+    /// <summary>
+    /// 文件夹路径
+    /// </summary>
     [ObservableProperty]
     private string _selectPath;
 
+    /// <summary>
+    /// 文件列表
+    /// </summary>
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _files;
 
+    /// <summary>
+    /// 可以导入
+    /// </summary>
     [ObservableProperty]
     private bool _canInput;
 
+    /// <summary>
+    /// 刷新文件列表
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task RefashFiles()
     {
@@ -54,6 +70,10 @@ public partial class AddGameModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 添加实例
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task AddFiles()
     {
@@ -63,7 +83,7 @@ public partial class AddGameModel : TopModel
             return;
         }
 
-        if (PathHelper.FilePathHasInvalidChars(Name))
+        if (PathHelper.FileHasInvalidChars(Name))
         {
             Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error13"));
             return;
@@ -85,6 +105,10 @@ public partial class AddGameModel : TopModel
         WindowClose();
     }
 
+    /// <summary>
+    /// 选择文件夹路径
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task SelectLocal()
     {

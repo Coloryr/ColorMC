@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Nbt;
+namespace ColorMC.Core.Nbt;
 
 /// <summary>
 /// NBT类型

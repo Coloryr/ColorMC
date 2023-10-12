@@ -468,11 +468,21 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name22}");
     }
 
+    /// <summary>
+    /// 游戏临时路径
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static string GetGameTempPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name23}");
     }
 
+    /// <summary>
+    /// 游戏缓存路径
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static string GetGameCachePath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name24}");
@@ -982,7 +992,7 @@ public static class InstancesPath
                             {
                                 using var stream = zFile.GetInputStream(e);
                                 string file = Path.GetFullPath(game.GetBasePath() + "/" +
-                    e.Name[path.Length..]);
+                                    e.Name[path.Length..]);
                                 FileInfo info2 = new(file);
                                 info2.Directory?.Create();
                                 using FileStream stream3 = new(file, FileMode.Create,
@@ -1064,7 +1074,8 @@ public static class InstancesPath
                         {
                             if (e.IsFile && e.Name.StartsWith(overrides))
                             {
-                                string file = Path.GetFullPath(string.Concat(game.GetGamePath(), e.Name.AsSpan(overrides.Length)));
+                                string file = Path.GetFullPath(string.Concat(game.GetGamePath(), 
+                                    e.Name.AsSpan(overrides.Length)));
                                 if (e.Name.EndsWith("icon.png"))
                                 {
                                     file = game.GetIconFile();

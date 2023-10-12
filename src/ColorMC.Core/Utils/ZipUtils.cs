@@ -2,7 +2,6 @@
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
-using SharpCompress.Compressors.Xz;
 using System.Text;
 using Crc32 = ICSharpCode.SharpZipLib.Checksum.Crc32;
 
@@ -148,15 +147,6 @@ public class ZipUtils
             tarArchive.ExtractContents(path);
             tarArchive.Close();
         }
-        else if (local.EndsWith("tar.xz"))
-        {
-            using var gzipStream = new XZStream(stream);
-            var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
-            Size = tarArchive.RecordSize;
-            tarArchive.ProgressMessageEvent += TarArchive_ProgressMessageEvent;
-            tarArchive.ExtractContents(path);
-            tarArchive.Close();
-        }
         else
         {
             using var s = new ZipFile(stream);
@@ -165,33 +155,28 @@ public class ZipUtils
             {
                 Now++;
                 ColorMCCore.UnZipItem?.Invoke(theEntry.Name, Now, Size);
-                string name = theEntry.Name;
-                if (PathHelper.FilePathHasInvalidChars(name))
-                {
-                    if (ColorMCCore.GameRequest==null)
-                    {
-                        return false;
-                    }
-                    var res = await ColorMCCore.GameRequest.Invoke(string.Format(
-                        LanguageHelper.Get("Core.Zip.Info1"), name));
-                    if (!res)
-                    {
-                        return false;
-                    }
-                    name = PathHelper.ReplaceFileName(theEntry.Name);
-                }
+
                 var file = $"{path}/{theEntry.Name}";
-                var directory = Path.GetDirectoryName(file);
-                var fileName = Path.GetFileName(theEntry.Name);
+                var info = new FileInfo(file);
 
-                // create directory
-                if (directory?.Length > 0)
-                {
-                    Directory.CreateDirectory(directory);
-                }
+                info.Directory?.Create();
 
-                if (fileName != string.Empty)
+                if (info.Name != string.Empty)
                 {
+                    if (PathHelper.FileHasInvalidChars(info.Name))
+                    {
+                        if (ColorMCCore.GameRequest == null)
+                        {
+                            return false;
+                        }
+                        var res = await ColorMCCore.GameRequest.Invoke(string.Format(
+                            LanguageHelper.Get("Core.Zip.Info1"), theEntry.Name));
+                        if (!res)
+                        {
+                            return false;
+                        }
+                        file = $"{info.Directory!.FullName}/{PathHelper.ReplaceFileName(info.Name)}";
+                    }
                     using var stream1 = PathHelper.OpenWrite(file);
                     using var stream2 = s.GetInputStream(theEntry);
                     stream2.CopyTo(stream1);

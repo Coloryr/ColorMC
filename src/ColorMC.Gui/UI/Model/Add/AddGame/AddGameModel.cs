@@ -11,11 +11,14 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : TopModel
+public partial class AddGameModel : MenuModel
 {
+    /// <summary>
+    /// 游戏分组
+    /// </summary>
     public ObservableCollection<string> GroupList { get; init; } = new();
 
-    public List<MenuObj> TabItems { get; init; } = new()
+    protected override List<MenuObj> TabItems { get; } = new()
     {
         new() { Icon = "/Resource/Icon/AddMenu/item1.svg",
             Text = App.GetLanguage("AddGameWindow.Tabs.Text1") },
@@ -25,21 +28,30 @@ public partial class AddGameModel : TopModel
             Text = App.GetLanguage("AddGameWindow.Tabs.Text3") },
     };
 
-    [ObservableProperty]
-    private string _title;
-
+    /// <summary>
+    /// 实例名字
+    /// </summary>
     [ObservableProperty]
     private string _name;
+    /// <summary>
+    /// 实例组
+    /// </summary>
     [ObservableProperty]
     private string _group;
 
+    /// <summary>
+    /// 云同步启用
+    /// </summary>
     [ObservableProperty]
-    private int _nowView;
+    private bool _cloudEnable;
+
+    /// <summary>
+    /// 是否在加载中
+    /// </summary>
+    private bool _load = false;
 
     public AddGameModel(BaseModel model) : base(model)
     {
-        _title = TabItems[0].Text;
-
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
 
@@ -51,13 +63,10 @@ public partial class AddGameModel : TopModel
         CloudEnable = GameCloudUtils.Connect;
     }
 
-    partial void OnNowViewChanged(int value)
-    {
-        CloseSide();
-
-        Title = TabItems[NowView].Text;
-    }
-
+    /// <summary>
+    /// 添加新的游戏分组
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task AddGroup()
     {
@@ -84,23 +93,6 @@ public partial class AddGameModel : TopModel
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
         Group = Text;
-    }
-
-    [RelayCommand]
-    public void OpenSide()
-    {
-        OnPropertyChanged("SideOpen");
-    }
-
-    [RelayCommand]
-    public void CloseSide()
-    {
-        OnPropertyChanged("SideClose");
-    }
-
-    public void WindowClose()
-    {
-        OnPropertyChanged("WindowClose");
     }
 
     protected override void Close()

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace ColorMC.Core.LaunchPath;
 
 /// <summary>
-/// 游戏资源管理
+/// 游戏资源路径
 /// </summary>
 public static class AssetsPath
 {

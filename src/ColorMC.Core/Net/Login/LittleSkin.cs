@@ -4,6 +4,9 @@ using ColorMC.Core.Objs.Login;
 
 namespace ColorMC.Core.Net.Login;
 
+/// <summary>
+/// LittleSkin登录
+/// </summary>
 public static class LittleSkin
 {
     /// <summary>

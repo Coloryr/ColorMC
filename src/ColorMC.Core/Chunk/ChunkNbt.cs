@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Nbt;
+using ColorMC.Core.Nbt;
 
 namespace ColorMC.Core.Chunk;
 

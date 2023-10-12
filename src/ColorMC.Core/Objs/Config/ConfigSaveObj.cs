@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Objs.Config;
+namespace ColorMC.Core.Objs.Config;
 
 public record ConfigSaveObj
 {

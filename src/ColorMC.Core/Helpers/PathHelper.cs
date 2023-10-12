@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System.Text;
 
@@ -14,9 +14,20 @@ public static class PathHelper
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static bool FilePathHasInvalidChars(string name)
+    public static bool FileHasInvalidChars(string name)
     {
         return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0
+            || name.All('.'.Equals) || name.Length > 50;
+    }
+
+    /// <summary>
+    /// 检查路径非法名字
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static bool PathHasInvalidChars(string name)
+    {
+        return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidPathChars()) >= 0
             || name.All('.'.Equals) || name.Length > 50;
     }
 
@@ -241,6 +252,11 @@ public static class PathHelper
         return Encoding.UTF8.GetString(stream1.ToArray());
     }
 
+    /// <summary>
+    /// 读文本
+    /// </summary>
+    /// <param name="stream">流</param>
+    /// <returns>文字</returns>
     public static string? ReadText(Stream stream)
     {
         using var stream1 = new MemoryStream();
