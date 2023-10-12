@@ -1,7 +1,7 @@
 namespace ColorMC.Gui.Skin;
 
 /// <summary>
-/// ·½¿éÄ£ĞÍ
+/// æ–¹å—æ¨¡å‹
 /// </summary>
 public class CubeModel
 {
@@ -46,7 +46,7 @@ public class CubeModel
     };
 
     /// <summary>
-    /// »ñµÃÒ»¸ö·½¿é
+    /// è·å¾—ä¸€ä¸ªæ–¹å—
     /// </summary>
     /// <param name="multiplyX"></param>
     /// <param name="multiplyY"></param>
@@ -81,7 +81,7 @@ public class CubeModel
     }
 
     /// <summary>
-    /// »ñµÃÒ»¸ö±ê×¼·½¿é
+    /// è·å¾—ä¸€ä¸ªæ ‡å‡†æ–¹å—
     /// </summary>
     /// <param name="offset"></param>
     /// <returns></returns>
@@ -97,7 +97,7 @@ public class CubeModel
     }
 
     /// <summary>
-    /// »ñµÃÒ»Ğ©±ê×¼·½¿é
+    /// è·å¾—ä¸€äº›æ ‡å‡†æ–¹å—
     /// </summary>
     /// <param name="cubes"></param>
     /// <returns></returns>

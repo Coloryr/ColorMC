@@ -18,9 +18,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameCloud;
 
-public partial class GameCloudModel : GameModel
+public partial class GameCloudModel : MenuModel
 {
-    public List<MenuObj> TabItems { get; init; } = new()
+    protected override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.GetLanguage("GameCloudWindow.Tabs.Text1") },
@@ -32,12 +32,6 @@ public partial class GameCloudModel : GameModel
 
     [ObservableProperty]
     private bool _displayFilter = true;
-
-    [ObservableProperty]
-    private int _nowView;
-
-    [ObservableProperty]
-    private string _title;
 
     /// <summary>
     /// 导出的文件列表
@@ -58,34 +52,17 @@ public partial class GameCloudModel : GameModel
 
     private WorldCloudModel? _selectWorld;
 
+    public GameSettingObj Obj { get; init; }
+
     public ObservableCollection<WorldCloudModel> WorldCloudList { get; } = new();
 
     public string UUID => Obj.UUID;
 
-    public GameCloudModel(BaseModel model, GameSettingObj obj) : base(model, obj)
+    public GameCloudModel(BaseModel model, GameSettingObj obj) : base(model)
     {
-        _title = TabItems[0].Text;
+        Obj = obj; 
 
         LoadWorld();
-    }
-
-    partial void OnNowViewChanged(int value)
-    {
-        CloseSide();
-
-        Title = TabItems[NowView].Text;
-    }
-
-    [RelayCommand]
-    public void OpenSide()
-    {
-        OnPropertyChanged("SideOpen");
-    }
-
-    [RelayCommand]
-    public void CloseSide()
-    {
-        OnPropertyChanged("SideClose");
     }
 
     [RelayCommand]
@@ -341,11 +318,6 @@ public partial class GameCloudModel : GameModel
         }
     }
 
-    public void WindowClose()
-    {
-        OnPropertyChanged("WindowClose");
-    }
-
     protected override void Close()
     {
         _files = null!;
@@ -492,7 +464,7 @@ public partial class GameCloudModel : GameModel
             try
             {
                 using var file = PathHelper.OpenRead(local)!;
-                new ZipUtils().Unzip(dir, local, file);
+                await new ZipUtils().Unzip(dir, local, file);
                 Model.Notify(App.GetLanguage("GameCloudWindow.Info15"));
             }
             catch (Exception e)

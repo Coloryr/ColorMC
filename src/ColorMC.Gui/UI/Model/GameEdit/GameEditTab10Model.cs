@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : GameModel
+public partial class GameEditModel : MenuModel
 {
     public ObservableCollection<ServerInfoObj> ServerList { get; init; } = new();
 
@@ -27,7 +27,7 @@ public partial class GameEditModel : GameModel
     {
         Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         ServerList.Clear();
-        ServerList.AddRange(await GameBinding.GetServers(Obj));
+        ServerList.AddRange(await GameBinding.GetServers(_obj));
         Model.ProgressClose();
     }
 
@@ -49,7 +49,7 @@ public partial class GameEditModel : GameModel
         }
 
         Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info6"));
-        await GameBinding.AddServer(Obj, Text1, Text2);
+        await GameBinding.AddServer(_obj, Text1, Text2);
         Model.ProgressClose();
         Model.Notify(App.GetLanguage("GameEditWindow.Tab10.Info3"));
         await LoadServer();
@@ -58,7 +58,7 @@ public partial class GameEditModel : GameModel
     public async void DeleteServer(ServerInfoObj obj)
     {
         Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info6"));
-        await GameBinding.DeleteServer(Obj, obj);
+        await GameBinding.DeleteServer(_obj, obj);
         Model.ProgressClose();
         Model.Notify(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         await LoadServer();

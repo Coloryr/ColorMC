@@ -3,14 +3,14 @@ using ColorMC.Gui.Objs;
 namespace ColorMC.Gui.Skin;
 
 /// <summary>
-/// 生成史蒂夫贴图UV数据
+/// 鐢熸垚鍙茶拏澶创鍥綰V鏁版嵁
 /// </summary>
 public class Steve3DTexture
 {
     /// <summary>
-    /// 顶层数据
+    /// 椤跺眰鏁版嵁
     /// </summary>
-    /// <param name="type">类型</param>
+    /// <param name="type">绫诲瀷</param>
     /// <returns></returns>
     public SteveTexture GetSteveTextureTop(SkinType type)
     {
@@ -32,9 +32,9 @@ public class Steve3DTexture
     }
 
     /// <summary>
-    /// 本体数据
+    /// 鏈綋鏁版嵁
     /// </summary>
-    /// <param name="type">类型</param>
+    /// <param name="type">绫诲瀷</param>
     /// <returns></returns>
     public SteveTexture GetSteveTexture(SkinType type)
     {
@@ -144,7 +144,7 @@ public class Steve3DTexture
     };
 
     /// <summary>
-    /// 获取UV
+    /// 鑾峰彇UV
     /// </summary>
     /// <param name="input"></param>
     /// <param name="type"></param>
@@ -181,7 +181,7 @@ public class Steve3DTexture
     }
 
     /// <summary>
-    /// 获取披风UV
+    /// 鑾峰彇鎶UV
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>

@@ -1,5 +1,4 @@
 using Avalonia.Threading;
-using Avalonia.Threading;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;

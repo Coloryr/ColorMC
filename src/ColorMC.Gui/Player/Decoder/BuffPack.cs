@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.Player.Decoder;
+namespace ColorMC.Gui.Player.Decoder;
 
 /// <summary>
 /// 解码数据包

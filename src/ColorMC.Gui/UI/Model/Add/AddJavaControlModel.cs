@@ -1,4 +1,4 @@
-﻿using Avalonia.Threading;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
@@ -15,8 +15,14 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddJavaControlModel : TopModel
 {
+    /// <summary>
+    /// JAVA列表
+    /// </summary>
     private readonly List<JavaDownloadObj> _list1 = new();
 
+    /// <summary>
+    /// 显示的JAVA列表
+    /// </summary>
     public ObservableCollection<JavaDownloadObj> JavaList { get; init; } = new();
     public ObservableCollection<string> SystemList { get; init; } = new();
     public ObservableCollection<string> VersionList { get; init; } = new();

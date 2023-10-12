@@ -2,18 +2,17 @@
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel : TopModel
+public partial class ServerPackModel : MenuModel
 {
     public ServerPackObj Obj { get; }
 
-    public List<MenuObj> TabItems { get; init; } = new()
+    protected override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.GetLanguage("ServerPackWindow.Tabs.Text1") },
@@ -25,24 +24,9 @@ public partial class ServerPackModel : TopModel
             Text = App.GetLanguage("ServerPackWindow.Tabs.Text4") },
     };
 
-    [ObservableProperty]
-    private int _nowView;
-
-    [ObservableProperty]
-    private string _title;
-
     public ServerPackModel(BaseModel model, ServerPackObj obj) : base(model)
     {
         Obj = obj;
-
-        _title = TabItems[0].Text;
-    }
-
-    partial void OnNowViewChanged(int value)
-    {
-        CloseSide();
-
-        Title = TabItems[NowView].Text;
     }
 
     [RelayCommand]
@@ -75,18 +59,6 @@ public partial class ServerPackModel : TopModel
         {
             Model.Show(App.GetLanguage("ServerPackWindow.Tab1.Error3"));
         }
-    }
-
-    [RelayCommand]
-    public void OpenSide()
-    {
-        OnPropertyChanged("SideOpen");
-    }
-
-    [RelayCommand]
-    public void CloseSide()
-    {
-        OnPropertyChanged("SideClose");
     }
 
     protected override void Close()

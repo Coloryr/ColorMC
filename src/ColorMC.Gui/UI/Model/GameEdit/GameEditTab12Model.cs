@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : GameModel
+public partial class GameEditModel : MenuModel
 {
     public ObservableCollection<SchematicObj> SchematicList { get; set; } = new();
 
@@ -20,7 +20,7 @@ public partial class GameEditModel : GameModel
     [RelayCommand]
     public void OpenSchematic()
     {
-        PathBinding.OpPath(Obj, PathType.SchematicsPath);
+        PathBinding.OpPath(_obj, PathType.SchematicsPath);
     }
 
     [RelayCommand]
@@ -28,14 +28,14 @@ public partial class GameEditModel : GameModel
     {
         Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         SchematicList.Clear();
-        SchematicList.AddRange(await GameBinding.GetSchematics(Obj));
+        SchematicList.AddRange(await GameBinding.GetSchematics(_obj));
         Model.ProgressClose();
     }
 
     [RelayCommand]
     public async Task AddSchematic()
     {
-        var res = await PathBinding.AddFile(Obj, FileType.Schematic);
+        var res = await PathBinding.AddFile(_obj, FileType.Schematic);
 
         if (res == null)
             return;
@@ -52,7 +52,7 @@ public partial class GameEditModel : GameModel
 
     public async void DropSchematic(IDataObject data)
     {
-        var res = await GameBinding.AddFile(Obj, data, FileType.Schematic);
+        var res = await GameBinding.AddFile(_obj, data, FileType.Schematic);
         if (res)
         {
             await LoadSchematic();

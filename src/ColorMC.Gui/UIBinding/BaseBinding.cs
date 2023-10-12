@@ -1005,16 +1005,23 @@ public static class BaseBinding
     {
         if (SystemInfo.Os == OsType.Windows)
         {
-            var shellType = Type.GetTypeFromProgID("WScript.Shell");
-            dynamic shell = Activator.CreateInstance(shellType);
-            var file = $"{ColorMCGui.RunDir}{obj.Name}.lnk";
-            var shortcut = shell.CreateShortcut(file);
-            var path = Process.GetCurrentProcess().MainModule.FileName;
-            shortcut.TargetPath = path;
-            shortcut.Arguments = "-game " + obj.UUID;
-            shortcut.WorkingDirectory = ColorMCGui.RunDir;
-            shortcut.Save();
-            PathBinding.OpFile(file);
+            try
+            {
+                var shellType = Type.GetTypeFromProgID("WScript.Shell")!;
+                dynamic shell = Activator.CreateInstance(shellType)!;
+                var file = $"{ColorMCGui.RunDir}{obj.Name}.lnk";
+                var shortcut = shell.CreateShortcut(file);
+                var path = Process.GetCurrentProcess()!.MainModule!.FileName;
+                shortcut.TargetPath = path;
+                shortcut.Arguments = "-game " + obj.UUID;
+                shortcut.WorkingDirectory = ColorMCGui.RunDir;
+                shortcut.Save();
+                PathBinding.OpFile(file);
+            }
+            catch (Exception e)
+            {
+                Logs.Error("create error", e);
+            }
         }
     }
 

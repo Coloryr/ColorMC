@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Helpers;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;

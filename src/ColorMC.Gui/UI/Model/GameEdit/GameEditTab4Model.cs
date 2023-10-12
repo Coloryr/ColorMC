@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : GameModel
+public partial class GameEditModel : MenuModel
 {
     public ObservableCollection<ModDisplayModel> ModList { get; init; } = new();
     public List<string> ModFilterList { get; init; } = LanguageBinding.GetFilterName();
@@ -52,13 +52,13 @@ public partial class GameEditModel : GameModel
     [RelayCommand]
     public void AddMod()
     {
-        App.ShowAdd(Obj, FileType.Mod);
+        App.ShowAdd(_obj, FileType.Mod);
     }
 
     [RelayCommand]
     public void OpenMod()
     {
-        PathBinding.OpPath(Obj, PathType.ModPath);
+        PathBinding.OpPath(_obj, PathType.ModPath);
     }
 
     [RelayCommand]
@@ -68,14 +68,14 @@ public partial class GameEditModel : GameModel
             return;
 
         _isModSet = true;
-        await App.ShowAddSet(Obj);
+        await App.ShowAddSet(_obj);
         _isModSet = false;
     }
 
     [RelayCommand]
     public async Task ImportMod()
     {
-        var file = await PathBinding.AddFile(Obj, FileType.Mod);
+        var file = await PathBinding.AddFile(_obj, FileType.Mod);
 
         if (file == null)
             return;
@@ -94,7 +94,7 @@ public partial class GameEditModel : GameModel
     public async Task CheckMod()
     {
         Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info10"));
-        var res = await WebBinding.CheckModUpdate(Obj, _modItems);
+        var res = await WebBinding.CheckModUpdate(_obj, _modItems);
         Model.ProgressClose();
         if (res.Count > 0)
         {
@@ -103,7 +103,7 @@ public partial class GameEditModel : GameModel
             if (res1)
             {
                 Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info12"));
-                await WebBinding.DownloadMod(Obj, res);
+                await WebBinding.DownloadMod(_obj, res);
                 Model.ProgressClose();
 
                 await LoadMod();
@@ -120,7 +120,7 @@ public partial class GameEditModel : GameModel
     {
         Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info1"));
         _modItems.Clear();
-        var res = await GameBinding.GetGameMods(Obj);
+        var res = await GameBinding.GetGameMods(_obj);
         Model.ProgressClose();
         if (res == null)
         {
@@ -156,7 +156,7 @@ public partial class GameEditModel : GameModel
 
     public async void DropMod(IDataObject data)
     {
-        var res = await GameBinding.AddFile(Obj, data, FileType.Mod);
+        var res = await GameBinding.AddFile(_obj, data, FileType.Mod);
         if (res)
         {
             await LoadMod();
@@ -203,7 +203,7 @@ public partial class GameEditModel : GameModel
 
     public async void DisEMod(ModDisplayModel item)
     {
-        if (BaseBinding.IsGameRun(Obj))
+        if (BaseBinding.IsGameRun(_obj))
         {
             return;
         }

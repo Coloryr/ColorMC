@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Net;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -17,13 +17,25 @@ namespace ColorMC.Gui.Player;
 /// </summary>
 public static class Media
 {
+    /// <summary>
+    /// 音乐路径
+    /// </summary>
     private static string s_musicFile;
+    /// <summary>
+    /// 输出流
+    /// </summary>
     private static IPlayer? s_player;
 
     private static CancellationTokenSource s_cancel = new();
 
+    /// <summary>
+    /// 是否在解码中
+    /// </summary>
     public static bool Decoding { get; private set; }
 
+    /// <summary>
+    /// 音量
+    /// </summary>
     public static float Volume
     {
         set
@@ -221,14 +233,16 @@ public static class Media
     }
 
     /// <summary>
-    /// 播放
+    /// 播放Mp3
     /// </summary>
     /// <param name="stream"></param>
     /// <returns></returns>
     public static async Task<(bool, string?)> PlayMp3(Stream stream)
     {
         if (s_player == null)
+        {
             return (false, null);
+        }
 
         Stop();
 
