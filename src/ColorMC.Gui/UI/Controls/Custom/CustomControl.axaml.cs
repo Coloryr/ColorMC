@@ -92,7 +92,11 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         if (_obj == null)
             return false;
 
-        var model = (DataContext as CustomControlPanelModel)!;
+        var model = (DataContext as CustomControlPanelModel);
+        if (model == null)
+        {
+            return;
+        }
         if (model.IsLaunch)
         {
             var res = await model.Model.ShowWait(App.GetLanguage("MainWindow.Info34"));
