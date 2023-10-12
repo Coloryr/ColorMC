@@ -3,6 +3,9 @@ using System.Timers;
 
 namespace ColorMC.Gui.UI;
 
+/// <summary>
+/// 长按处理
+/// </summary>
 public static class LongPressed
 {
     private static bool s_init = false;
@@ -10,6 +13,10 @@ public static class LongPressed
 
     private static Action? s_action;
 
+    /// <summary>
+    /// 开始一个长按
+    /// </summary>
+    /// <param name="action">运行</param>
     public static void Pressed(Action action)
     {
         if (!s_init)
@@ -39,6 +46,9 @@ public static class LongPressed
         s_action?.Invoke();
     }
 
+    /// <summary>
+    /// 结束一个长按
+    /// </summary>
     public static void Released()
     {
         if (s_init)

@@ -1,8 +1,11 @@
-﻿using ColorMC.Core.Objs.Java;
+using ColorMC.Core.Objs.Java;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Java;
 
+/// <summary>
+/// PojavLauncherTeam下载源
+/// </summary>
 public static class PojavLauncherTeamFake
 {
     /// <summary>

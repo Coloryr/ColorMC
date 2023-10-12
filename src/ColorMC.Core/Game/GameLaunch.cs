@@ -550,7 +550,7 @@ public static class Launch
             if (obj.StartServer != null && !string.IsNullOrWhiteSpace(obj.StartServer.IP)
                 && obj.StartServer.Port != null)
             {
-                if (CheckHelpers.IsGameLaunchVersion120(obj.Version))
+                if (CheckHelpers.IsGameVersion120(obj.Version))
                 {
                     gameArg.Add($"--quickPlayMultiplayer");
                     if (obj.StartServer.Port > 0)
@@ -671,7 +671,7 @@ public static class Launch
             {
                 //不添加lwjgl
                 if (item.Name.Contains("org.lwjgl")
-                    && (SystemInfo.Os == OsType.Android || (CheckHelpers.IsGameLaunchVersion120(obj.Version)
+                    && (SystemInfo.Os == OsType.Android || (CheckHelpers.IsGameVersion120(obj.Version)
                         && (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge))))
                 {
                     continue;
@@ -825,7 +825,7 @@ public static class Launch
     {
         var list = new List<string>();
         var version = VersionPath.GetGame(obj.Version)!;
-        var v2 = CheckHelpers.GameLaunchVersionV2(version);
+        var v2 = CheckHelpers.ISGameVersionV2(version);
         var classpath = await MakeClassPath(obj, v2);
         var jvmarg = await JvmArg(obj, v2, login);
         var gamearg = GameArg(obj, v2, world);
@@ -1158,7 +1158,7 @@ public static class Launch
 
             //安装Forge
             var version = VersionPath.GetGame(obj.Version)!;
-            var v2 = CheckHelpers.GameLaunchVersionV2(version);
+            var v2 = CheckHelpers.ISGameVersionV2(version);
             if (v2 && obj.Loader is Loaders.Forge or Loaders.NeoForge)
             {
                 var obj1 = obj.Loader is Loaders.Forge

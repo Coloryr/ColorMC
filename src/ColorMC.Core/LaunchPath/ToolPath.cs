@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Downloader;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using System.Diagnostics;
 

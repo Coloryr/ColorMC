@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Utils;

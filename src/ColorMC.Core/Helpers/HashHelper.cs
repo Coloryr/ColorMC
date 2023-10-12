@@ -1,8 +1,11 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 文件哈希值计算
+/// </summary>
 public static class HashHelper
 {
     /// <summary>

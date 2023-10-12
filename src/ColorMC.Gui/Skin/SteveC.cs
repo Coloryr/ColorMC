@@ -7,7 +7,7 @@ namespace ColorMC.Gui.Skin;
 /// </summary>
 public class Steve3DModel
 {
-    private CubeModel _cube = new();
+    private readonly CubeModel _cube = new();
     /// <summary>
     /// 生成一个模型
     /// </summary>

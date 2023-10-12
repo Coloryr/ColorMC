@@ -1,5 +1,8 @@
 ﻿namespace ColorMC.Gui.Player;
 
+/// <summary>
+/// 音频输出
+/// </summary>
 public interface IPlayer
 {
     /// <summary>

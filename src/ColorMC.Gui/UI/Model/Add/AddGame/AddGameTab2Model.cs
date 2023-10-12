@@ -9,16 +9,29 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : TopModel
+public partial class AddGameModel : MenuModel
 {
+    /// <summary>
+    /// 压缩包类型列表
+    /// </summary>
     public List<string> PackTypeList { get; init; } = LanguageBinding.GetPackType();
 
+    /// <summary>
+    /// 压缩包位置
+    /// </summary>
     [ObservableProperty]
     private string _zipLocal;
 
+    /// <summary>
+    /// 压缩包类型
+    /// </summary>
     [ObservableProperty]
     private int _type = -1;
 
+    /// <summary>
+    /// 压缩包路径修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnZipLocalChanged(string value)
     {
         Type = GameBinding.CheckType(value) switch
@@ -31,6 +44,9 @@ public partial class AddGameModel : TopModel
         };
     }
 
+    /// <summary>
+    /// 添加压缩包
+    /// </summary>
     [RelayCommand]
     public void AddPackGame()
     {
@@ -65,6 +81,10 @@ public partial class AddGameModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 选择压缩包
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task SelectPack()
     {
@@ -75,11 +95,20 @@ public partial class AddGameModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 解压进度
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="now"></param>
     private void PackUpdate(int size, int now)
     {
         Model.ProgressUpdate((double)now / size);
     }
 
+    /// <summary>
+    /// 添加进度
+    /// </summary>
+    /// <param name="state"></param>
     private void PackState(CoreRunState state)
     {
         if (state == CoreRunState.Read)
@@ -106,6 +135,10 @@ public partial class AddGameModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 添加游戏实例
+    /// </summary>
+    /// <param name="type">压缩包类型</param>
     private async void AddPack(PackType type)
     {
         ColorMCCore.GameOverwirte = Tab2GameOverwirte;
@@ -132,11 +165,20 @@ public partial class AddGameModel : TopModel
         WindowClose();
     }
 
-    public void AddFile(string file)
+    /// <summary>
+    /// 设置文件位置
+    /// </summary>
+    /// <param name="file"></param>
+    public void SetFile(string file)
     {
         ZipLocal = file;
     }
 
+    /// <summary>
+    /// 请求
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     private async Task<bool> Tab2GameOverwirte(GameSettingObj obj)
     {
         Model.ProgressClose();
@@ -146,6 +188,11 @@ public partial class AddGameModel : TopModel
         return test;
     }
 
+    /// <summary>
+    /// 请求
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
     private async Task<bool> Tab2GameRequest(string text)
     {
         Model.ProgressClose();

@@ -149,7 +149,12 @@ public static class JvmPath
     {
         string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
-        var stream = PathHelper.OpenRead(file)!;
+        var stream = PathHelper.OpenRead(file);
+        if (stream == null)
+        {
+            return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
+        }
+
         if (SystemInfo.Os == OsType.Android)
         {
             await Task.Run(() =>
@@ -166,27 +171,11 @@ public static class JvmPath
         }
         else
         {
-            try
-            {
-                file = Path.GetFullPath(file);
-
-                if (stream == null)
-                {
-                    return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
-                }
-            }
-            catch (Exception e)
-            {
-                string temp = string.Format(LanguageHelper.Get("Core.Jvm.Error11"));
-                Logs.Error(temp, e);
-                return (false, temp);
-            }
-
-            var res = await Task.Run(() =>
+            var res = await Task.Run(async () =>
             {
                 try
                 {
-                    new ZipUtils().Unzip(path, file, stream);
+                    await new ZipUtils().Unzip(path, file, stream);
                     return (true, null!);
                 }
                 catch (Exception e)

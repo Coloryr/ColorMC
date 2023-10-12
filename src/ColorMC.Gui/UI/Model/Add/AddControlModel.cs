@@ -23,84 +23,220 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddControlModel : GameModel, IAddWindow
 {
+    /// <summary>
+    /// 显示的高清修复列表
+    /// </summary>
+    public ObservableCollection<OptifineObj> DownloadOptifineList { get; init; } = new();
+    /// <summary>
+    /// 显示的下载模组项目列表
+    /// </summary>
+    public ObservableCollection<DownloadModDisplayModel> DownloadModList { get; init; } = new();
+    /// 显示的<summary>
+    /// 下载类型列表
+    /// </summary>
+    public List<string> TypeList { get; init; } = LanguageBinding.GetAddType();
+    /// <summary>
+    /// 显示的游戏版本列表
+    /// </summary>
+    public ObservableCollection<string> GameVersionList { get; init; } = new();
+    /// <summary>
+    /// 显示的文件列表
+    /// </summary>
+    public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
+    /// <summary>
+    /// 显示的项目列表
+    /// </summary>
+    public ObservableCollection<FileItemModel> DisplayList { get; init; } = new();
+    /// <summary>
+    /// 显示的下载源列表
+    /// </summary>
+    public ObservableCollection<string> DownloadSourceList { get; init; } = new();
+    /// <summary>
+    /// 显示的排序列表
+    /// </summary>
+    public ObservableCollection<string> SortTypeList { get; init; } = new();
+    /// <summary>
+    /// 显示的分类列表
+    /// </summary>
+    public ObservableCollection<string> CategorieList { get; init; } = new();
+
+    /// <summary>
+    /// 下载源列表
+    /// </summary>
     public readonly List<SourceType> SourceTypeList = new();
+    /// <summary>
+    /// 类型列表
+    /// </summary>
     public readonly Dictionary<int, string> Categories = new();
+    /// <summary>
+    /// Mod下载项目显示列表
+    /// </summary>
     public readonly List<DownloadModDisplayModel> ModList = new();
+    /// <summary>
+    /// 高清修复列表
+    /// </summary>
     public readonly List<OptifineObj> OptifineList = new();
+    /// <summary>
+    /// 下载源列表
+    /// </summary>
     private readonly List<string> SourceTypeNameList = new()
     {
         SourceType.CurseForge.GetName(),
         SourceType.Modrinth.GetName(),
     };
 
+    /// <summary>
+    /// 当前文件类型
+    /// </summary>
     private FileType _now;
+    /// <summary>
+    /// 下载项目
+    /// </summary>
     private FileItemModel? _last;
+    /// <summary>
+    /// 下载的模组项目
+    /// </summary>
     private (DownloadItemObj, ModInfoObj) _modsave;
+    /// <summary>
+    /// 是否在加载
+    /// </summary>
     private bool _load = false;
+    /// <summary>
+    /// 是否关闭
+    /// </summary>
     private bool _close = false;
+
+    /// <summary>
+    /// 上一个下载源
+    /// </summary>
     private SourceType _lastType = SourceType.McMod;
+    /// <summary>
+    /// 上一个下载ID
+    /// </summary>
     private string _lastId;
 
+    /// <summary>
+    /// 是否已经显示
+    /// </summary>
     public bool Display { get; set; }
 
-    public ObservableCollection<OptifineObj> DownloadOptifineList { get; init; } = new();
-    public ObservableCollection<DownloadModDisplayModel> DownloadModList { get; init; } = new();
-    public List<string> TypeList { get; init; } = LanguageBinding.GetAddType();
-    public ObservableCollection<string> GameVersionList { get; init; } = new();
-    public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
-    public ObservableCollection<FileItemModel> DisplayList { get; init; } = new();
-    public ObservableCollection<string> DownloadSourceList { get; init; } = new();
-    public ObservableCollection<string> SortTypeList { get; init; } = new();
-    public ObservableCollection<string> CategorieList { get; init; } = new();
-
+    /// <summary>
+    /// 高清修复项目
+    /// </summary>
     [ObservableProperty]
     private OptifineObj? _optifineItem;
+    /// <summary>
+    /// 项目
+    /// </summary>
     [ObservableProperty]
     private FileDisplayObj? _file;
+    /// <summary>
+    /// 下载的模组
+    /// </summary>
     [ObservableProperty]
     private DownloadModDisplayModel? _mod;
 
+    /// <summary>
+    /// 是否在下载
+    /// </summary>
     [ObservableProperty]
     private bool _isDownload;
+    /// <summary>
+    /// 是否没有项目
+    /// </summary>
     [ObservableProperty]
     private bool _emptyDisplay = true;
+    /// <summary>
+    /// 高清修复列表显示
+    /// </summary>
     [ObservableProperty]
     private bool _optifineDisplay;
+    /// <summary>
+    /// mod列表显示
+    /// </summary>
     [ObservableProperty]
     private bool _modDownloadDisplay;
+    /// <summary>
+    /// 文件列表显示
+    /// </summary>
     [ObservableProperty]
     private bool _versionDisplay;
+    /// <summary>
+    /// 展示所有附属mod
+    /// </summary>
     [ObservableProperty]
     private bool _loadMoreMod;
+    /// <summary>
+    /// 启用翻页
+    /// </summary>
     [ObservableProperty]
     private bool _enablePage;
+    /// <summary>
+    /// 是否选择了项目
+    /// </summary>
     [ObservableProperty]
     private bool _isSelect;
+    /// <summary>
+    /// 是否为标记模式
+    /// </summary>
     [ObservableProperty]
     private bool _set;
 
+    /// <summary>
+    /// 下载类型
+    /// </summary>
     [ObservableProperty]
     private int _type = -1;
+    /// <summary>
+    /// 排序类型
+    /// </summary>
     [ObservableProperty]
     private int _sortType = -1;
+    /// <summary>
+    /// 搜索源
+    /// </summary>
     [ObservableProperty]
     private int _downloadSource = -1;
+    /// <summary>
+    /// 页数
+    /// </summary>
     [ObservableProperty]
     private int? _page = 0;
+    /// <summary>
+    /// 分类
+    /// </summary>
     [ObservableProperty]
     private int _categorie;
+    /// <summary>
+    /// 文件列表页数
+    /// </summary>
     [ObservableProperty]
     private int _pageDownload;
 
+    /// <summary>
+    /// 游戏版本
+    /// </summary>
     [ObservableProperty]
     private string? _gameVersion;
+    /// <summary>
+    /// 名字
+    /// </summary>
     [ObservableProperty]
     private string? _name;
+    /// <summary>
+    /// 高清修复游戏版本
+    /// </summary>
     [ObservableProperty]
     private string? _gameVersionOptifine;
+    /// <summary>
+    /// 文件列表游戏版本
+    /// </summary>
     [ObservableProperty]
     private string? _gameVersionDownload;
 
+    /// <summary>
+    /// 展示搜索选项
+    /// </summary>
     [ObservableProperty]
     private bool _displayFilter = true;
 
@@ -109,11 +245,19 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     }
 
+    /// <summary>
+    /// 高清修复游戏版本选择
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnGameVersionOptifineChanged(string? value)
     {
         LoadOptifineVersion();
     }
 
+    /// <summary>
+    /// 下载类型选择
+    /// </summary>
+    /// <param name="value"></param>
     async partial void OnTypeChanged(int value)
     {
         if (!Display)
@@ -146,36 +290,62 @@ public partial class AddControlModel : GameModel, IAddWindow
         DownloadSource = 0;
     }
 
+    /// <summary>
+    /// 排序类型选择
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnSortTypeChanged(int value)
     {
         Refresh();
     }
 
+    /// <summary>
+    /// 分类选择
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnCategorieChanged(int value)
     {
         Refresh();
     }
 
-    partial void OnPageChanged(int? value)
+    /// <summary>
+    /// 页数修改
+    /// </summary>
+    /// <param name="value"></param>
+    async partial void OnPageChanged(int? value)
     {
         if (!Display || _load)
+        {
             return;
+        }
 
-        Load();
+        await GetList();
     }
 
+    /// <summary>
+    /// 文件列表页数修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnPageDownloadChanged(int value)
     {
         if (!Display || _load)
+        {
             return;
+        }
 
         LoadFile();
     }
 
+    /// <summary>
+    /// 搜索源修改
+    /// </summary>
+    /// <param name="value"></param>
     async partial void OnDownloadSourceChanged(int value)
     {
         if (!Display || _load)
+        {
             return;
+        }
 
         _load = true;
 
@@ -185,6 +355,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
         DisplayList.Clear();
         var type = SourceTypeList[DownloadSource];
+        //CF搜索源
         if (type == SourceType.CurseForge)
         {
             SortTypeList.AddRange(LanguageBinding.GetCurseForgeSortTypes());
@@ -229,8 +400,9 @@ public partial class AddControlModel : GameModel, IAddWindow
             SortType = 1;
             Categorie = 0;
 
-            Load();
+            await GetList();
         }
+        //MO搜索源
         else if (type == SourceType.Modrinth)
         {
             SortTypeList.AddRange(LanguageBinding.GetModrinthSortTypes());
@@ -276,8 +448,9 @@ public partial class AddControlModel : GameModel, IAddWindow
             SortType = 0;
             Categorie = 0;
 
-            Load();
+            await GetList();
         }
+        //McMod搜索源
         else if (type == SourceType.McMod)
         {
             GameVersionList.Add("");
@@ -292,41 +465,136 @@ public partial class AddControlModel : GameModel, IAddWindow
                 GameVersionDownload = GameVersionOptifine = GameVersion = GameVersionList.FirstOrDefault();
             }
 
-            Load();
+            await GetList();
         }
 
         _load = false;
     }
 
+    /// <summary>
+    /// 游戏版本修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnGameVersionChanged(string? value)
     {
         Refresh();
     }
 
+    /// <summary>
+    /// 文件列表游戏版本修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnGameVersionDownloadChanged(string? value)
     {
         if (!Display || _load)
+        {
             return;
+        }
+
+        //Optifine
+        if (Type == 5)
+        {
+            return;
+        }
 
         LoadFile();
     }
 
-    ///////////////////////////////////////////////////
-
+    /// <summary>
+    /// 切换过滤显示
+    /// </summary>
     [RelayCommand]
     public void ShowFilter()
     {
         DisplayFilter = !DisplayFilter;
     }
 
+    /// <summary>
+    /// 获取项目列表
+    /// </summary>
     [RelayCommand]
-    public void GetList()
+    public async Task GetList()
     {
-        Load();
+        var type = SourceTypeList[DownloadSource];
+        Model.Progress(App.GetLanguage("AddWindow.Info2"));
+        if (type == SourceType.McMod)
+        {
+            //McMod搜索源
+            var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0);
+            if (data == null)
+            {
+                Model.ProgressClose();
+                Model.Show(App.GetLanguage("AddWindow.Error2"));
+                return;
+            }
+
+            DisplayList.Clear();
+
+            foreach (var item in data)
+            {
+                DisplayList.Add(new(item, this));
+            }
+
+            OnPropertyChanged(nameof(DisplayList));
+
+            _last = null;
+
+            EmptyDisplay = DisplayList.Count == 0;
+
+            Model.ProgressClose();
+        }
+        else
+        {
+            //其他搜索源
+            var data = await WebBinding.GetList(_now, type,
+                GameVersion, Name, Page ?? 0,
+                SortType, Categorie < 0 ? "" :
+                    Categories[Categorie], Obj.Loader);
+
+            if (data == null)
+            {
+                Model.ProgressClose();
+                Model.Show(App.GetLanguage("AddWindow.Error2"));
+                return;
+            }
+
+            DisplayList.Clear();
+
+            if (_now == FileType.Mod)
+            {
+                foreach (var item in data)
+                {
+                    if (Obj.Mods.ContainsKey(item.ID))
+                    {
+                        item.IsDownload = true;
+                    }
+                    DisplayList.Add(new(item, this));
+                }
+            }
+            else
+            {
+                foreach (var item in data)
+                {
+                    DisplayList.Add(new(item, this));
+                }
+            }
+
+            OnPropertyChanged(nameof(DisplayList));
+
+            _last = null;
+
+            EmptyDisplay = DisplayList.Count == 0;
+
+            Model.ProgressClose();
+        }
     }
 
+    /// <summary>
+    /// 根据名字刷新
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
-    public void GetNameList()
+    public async Task GetNameList()
     {
         if (!string.IsNullOrWhiteSpace(Name) && Page != 0)
         {
@@ -334,21 +602,30 @@ public partial class AddControlModel : GameModel, IAddWindow
             return;
         }
 
-        Load();
+        await GetList();
     }
 
+    /// <summary>
+    /// 文件列表关闭
+    /// </summary>
     [RelayCommand]
     public void VersionClose()
     {
         VersionDisplay = false;
     }
 
+    /// <summary>
+    /// 下载文件
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task GoFile()
     {
         var item = File;
         if (item == null)
+        {
             return;
+        }
 
         var res = await Model.ShowWait(
             string.Format(Set ? App.GetLanguage("AddWindow.Info8") : App.GetLanguage("AddWindow.Info1"),
@@ -359,12 +636,18 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
     }
 
+    /// <summary>
+    /// 刷新
+    /// </summary>
     [RelayCommand]
     public void Refresh1()
     {
         LoadFile();
     }
 
+    /// <summary>
+    /// 转到文件列表
+    /// </summary>
     [RelayCommand]
     public void GoInstall()
     {
@@ -376,7 +659,11 @@ public partial class AddControlModel : GameModel, IAddWindow
 
         Install();
     }
-
+    
+    /// <summary>
+    /// 刷新高清修复列表
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task LoadOptifineList()
     {
@@ -402,6 +689,9 @@ public partial class AddControlModel : GameModel, IAddWindow
         LoadOptifineVersion();
     }
 
+    /// <summary>
+    /// 关闭高清修复列表
+    /// </summary>
     [RelayCommand]
     public void OptifineClose()
     {
@@ -411,6 +701,10 @@ public partial class AddControlModel : GameModel, IAddWindow
         DownloadSource = 0;
     }
 
+    /// <summary>
+    /// 下载模组
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task DownloadMod()
     {
@@ -442,6 +736,9 @@ public partial class AddControlModel : GameModel, IAddWindow
         ModDownloadDisplay = false;
     }
 
+    /// <summary>
+    /// 加载模组列表
+    /// </summary>
     [RelayCommand]
     public void ModsLoad()
     {
@@ -465,6 +762,10 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
     }
 
+    /// <summary>
+    /// 选择下载所有模组
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task DownloadAllMod()
     {
@@ -475,6 +776,9 @@ public partial class AddControlModel : GameModel, IAddWindow
         await DownloadMod();
     }
 
+    /// <summary>
+    /// 取消下载模组
+    /// </summary>
     [RelayCommand]
     public void DownloadModCancel()
     {
@@ -487,6 +791,10 @@ public partial class AddControlModel : GameModel, IAddWindow
         ModDownloadDisplay = false;
     }
 
+    /// <summary>
+    /// 下载高清修复
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task DownloadOptifine()
     {
@@ -510,7 +818,11 @@ public partial class AddControlModel : GameModel, IAddWindow
             OptifineClose();
         }
     }
-    ///////////////////////////////////////////////////
+
+    /// <summary>
+    /// 选择项目
+    /// </summary>
+    /// <param name="last"></param>
     public void SetSelect(FileItemModel last)
     {
         if (IsDownload)
@@ -525,6 +837,11 @@ public partial class AddControlModel : GameModel, IAddWindow
         _last.IsSelect = true;
     }
 
+    /// <summary>
+    /// 转到下载类型
+    /// </summary>
+    /// <param name="type">类型</param>
+    /// <param name="pid">项目ID</param>
     public async void GoFile(SourceType type, string pid)
     {
         Type = (int)FileType.Mod - 1;
@@ -538,6 +855,9 @@ public partial class AddControlModel : GameModel, IAddWindow
         LoadFile(pid);
     }
 
+    /// <summary>
+    /// 打开文件列表
+    /// </summary>
     public void Install()
     {
         if (IsDownload)
@@ -552,6 +872,10 @@ public partial class AddControlModel : GameModel, IAddWindow
         LoadFile();
     }
 
+    /// <summary>
+    /// 开始下载文件
+    /// </summary>
+    /// <param name="data"></param>
     public async void Install1(FileDisplayObj data)
     {
         var type = SourceTypeList[DownloadSource];
@@ -698,12 +1022,17 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
     }
 
-    public void Refresh()
+    /// <summary>
+    /// 刷新列表
+    /// </summary>
+    public async void Refresh()
     {
         if (!Display || _load)
+        {
             return;
+        }
 
-        Load();
+        await GetList();
     }
 
     private void LoadFail()
@@ -715,80 +1044,6 @@ public partial class AddControlModel : GameModel, IAddWindow
         else
         {
             DownloadSource++;
-        }
-    }
-
-    private async void Load()
-    {
-        var type = SourceTypeList[DownloadSource];
-        Model.Progress(App.GetLanguage("AddWindow.Info2"));
-        if (type == SourceType.McMod)
-        {
-            var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0 );
-            if (data == null)
-            {
-                Model.ProgressClose();
-                Model.Show(App.GetLanguage("AddWindow.Error2"));
-                return;
-            }
-
-            DisplayList.Clear();
-
-            foreach (var item in data)
-            {
-                DisplayList.Add(new(item, this));
-            }
-
-            OnPropertyChanged(nameof(DisplayList));
-
-            _last = null;
-
-            EmptyDisplay = DisplayList.Count == 0;
-
-            Model.ProgressClose();
-        }
-        else
-        {
-            var data = await WebBinding.GetList(_now, type,
-                GameVersion, Name, Page ?? 0,
-                SortType, Categorie < 0 ? "" :
-                    Categories[Categorie], Obj.Loader);
-
-            if (data == null)
-            {
-                Model.ProgressClose();
-                Model.Show(App.GetLanguage("AddWindow.Error2"));
-                return;
-            }
-
-            DisplayList.Clear();
-
-            if (_now == FileType.Mod)
-            {
-                foreach (var item in data)
-                {
-                    if (Obj.Mods.ContainsKey(item.ID))
-                    {
-                        item.IsDownload = true;
-                    }
-                    DisplayList.Add(new(item, this));
-                }
-            }
-            else
-            {
-                foreach (var item in data)
-                {
-                    DisplayList.Add(new(item, this));
-                }
-            }
-
-            OnPropertyChanged(nameof(DisplayList));
-
-            _last = null;
-
-            EmptyDisplay = DisplayList.Count == 0;
-
-            Model.ProgressClose();
         }
     }
 

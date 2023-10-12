@@ -4,6 +4,9 @@ using ColorMC.Core.Objs.Login;
 
 namespace ColorMC.Core.Net.Login;
 
+/// <summary>
+/// 统一通行证
+/// </summary>
 public static class Nide8
 {
     /// <summary>

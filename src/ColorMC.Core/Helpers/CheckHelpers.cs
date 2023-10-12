@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Config;
+using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
@@ -89,7 +89,7 @@ public static class CheckHelpers
     /// <summary>
     /// 是否V2版本
     /// </summary>
-    public static bool GameLaunchVersionV2(GameArgObj version)
+    public static bool ISGameVersionV2(GameArgObj version)
     {
         return version.minimumLauncherVersion > 18;
     }
@@ -99,7 +99,7 @@ public static class CheckHelpers
     /// </summary>
     /// <param name="version"></param>
     /// <returns></returns>
-    public static bool IsGameLaunchVersion117(string version)
+    public static bool IsGameVersion117(string version)
     {
         Version version1 = new(version);
         return version1.Minor >= 17;
@@ -110,7 +110,7 @@ public static class CheckHelpers
     /// </summary>
     /// <param name="version"></param>
     /// <returns></returns>
-    public static bool IsGameLaunchVersion120(string version)
+    public static bool IsGameVersion120(string version)
     {
         Version version1 = new(version);
         return version1.Minor >= 20;
@@ -435,6 +435,7 @@ public static class CheckHelpers
                         array[a] = null;
                     }
                 }
+                //添加缺失的mod
                 if (find != array.Length)
                 {
                     foreach (var item in array)

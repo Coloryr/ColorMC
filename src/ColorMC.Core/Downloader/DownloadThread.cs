@@ -223,7 +223,12 @@ public class DownloadThread
                     }
 
                     //网络请求
-                    var data = BaseClient.DownloadClient.GetAsync(item.Url,
+                    var req = new HttpRequestMessage(HttpMethod.Get, item.Url);
+                    if (item.UseColorMCHead)
+                    {
+                        req.Headers.Add("ColorMc", ColorMCCore.Version);
+                    }
+                    var data = BaseClient.DownloadClient.SendAsync(req,
                         HttpCompletionOption.ResponseHeadersRead,
                         _token).Result;
                     item.AllSize = (long)data.Content.Headers.ContentLength!;

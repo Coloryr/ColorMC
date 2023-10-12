@@ -205,7 +205,7 @@ public static class DownloadItemHelper
     public static List<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
-        var v2 = CheckHelpers.GameLaunchVersionV2(version1);
+        var v2 = CheckHelpers.ISGameVersionV2(version1);
         var list = new List<DownloadItemObj>();
 
         if (v2)
@@ -217,7 +217,7 @@ public static class DownloadItemHelper
                 BuildNeoForgeUniversal(mc, version) :
                 BuildForgeUniversal(mc, version));
 
-            if (!CheckHelpers.IsGameLaunchVersion117(mc))
+            if (!CheckHelpers.IsGameVersion117(mc))
             {
                 list.Add(neo ?
                     BuildNeoForgeLauncher(mc, version) :
@@ -334,6 +334,7 @@ public static class DownloadItemHelper
                     }
                 }
 
+                //更换运行库
                 if (SystemInfo.Os == OsType.Android)
                 {
                     item1 = GameHelper.ReplaceLib(item1);
@@ -511,7 +512,7 @@ public static class DownloadItemHelper
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildForge(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
-        var v2 = CheckHelpers.GameLaunchVersionV2(version1);
+        var v2 = CheckHelpers.ISGameVersionV2(version1);
 
         var down = neo ?
             BuildNeoForgeInster(mc, version) :

@@ -3,6 +3,9 @@ using ColorMC.Core.Objs.Login;
 
 namespace ColorMC.Core.Net.Login;
 
+/// <summary>
+/// 外置登录
+/// </summary>
 public static class AuthlibInjector
 {
     /// <summary>

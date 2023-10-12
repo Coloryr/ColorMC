@@ -1003,16 +1003,19 @@ public static class BaseBinding
 
     public static void CreateLaunch(GameSettingObj obj)
     {
-        var shellType = Type.GetTypeFromProgID("WScript.Shell");
-        dynamic shell = Activator.CreateInstance(shellType);
-        var file = $"{ColorMCGui.RunDir}{obj.Name}.lnk";
-        var shortcut = shell.CreateShortcut(file);
-        var path = Process.GetCurrentProcess().MainModule.FileName;
-        shortcut.TargetPath = path;
-        shortcut.Arguments = "-game " + obj.UUID;
-        shortcut.WorkingDirectory = ColorMCGui.RunDir;
-        shortcut.Save();
-        PathBinding.OpFile(file);
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            var shellType = Type.GetTypeFromProgID("WScript.Shell");
+            dynamic shell = Activator.CreateInstance(shellType);
+            var file = $"{ColorMCGui.RunDir}{obj.Name}.lnk";
+            var shortcut = shell.CreateShortcut(file);
+            var path = Process.GetCurrentProcess().MainModule.FileName;
+            shortcut.TargetPath = path;
+            shortcut.Arguments = "-game " + obj.UUID;
+            shortcut.WorkingDirectory = ColorMCGui.RunDir;
+            shortcut.Save();
+            PathBinding.OpFile(file);
+        }
     }
 
     public static void SetLaunch(string uuid)

@@ -1,7 +1,8 @@
 {
   "Core.Language": "简体中文",
-  "Core.Info1": "ColorMC核心已初始化",
+  "Core.Info1": "ColorMC核心正在初始化",
   "Core.Info2": "是否要删除文件夹 {0}",
+  "Core.Info3": "ColorMC核心初始化结束",
   "Core.Config.Info1": "正在读取配置文件",
   "Core.Config.Info2": "正在保存配置文件",
   "Core.Config.Error1": "配置文件读取错误",

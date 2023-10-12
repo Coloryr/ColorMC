@@ -3,7 +3,7 @@ using System.Text;
 namespace ColorMC.Core.Nbt;
 
 /// <summary>
-/// 输出流
+/// 数据输出流
 /// </summary>
 public class DataOutputStream : IDisposable
 {
