@@ -27,14 +27,14 @@ internal static class GuiLoad
 
 public static class Program
 {
-    public const string TopVersion = "A20";
+    public const string TopVersion = "A21";
 
     public static readonly string[] BaseSha1 = new[]
     {
-        "24fc9eeac09b44e62651badb2cb1481def1ff1a7",
-        "b8bee4b5d46fcd84f106efd8f4547e5e39ea7622",
-        "2e7de71cdfca4457f76f992607db872a41199c95",
-        "f614cd7289ce14706e6f8df050a820a7db243d4f"
+        "bae496b399fdb7f62f561175812bf6f92d538e6c",
+        "226f84c056bc5c3a573d1f7afa0557c993f0cc3e",
+        "ef0683f9f25d5421a150fcf78063901dd69c2729",
+        "a13d691ccf9a1e8cb62fa138729132069f80d56e"
     };
     /// <summary>
     /// 加载路径
