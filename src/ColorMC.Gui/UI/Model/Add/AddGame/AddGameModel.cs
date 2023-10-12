@@ -18,7 +18,7 @@ public partial class AddGameModel : MenuModel
     /// </summary>
     public ObservableCollection<string> GroupList { get; init; } = new();
 
-    protected override List<MenuObj> TabItems { get; init; } = new()
+    public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/AddMenu/item1.svg",
             Text = App.GetLanguage("AddGameWindow.Tabs.Text1") },

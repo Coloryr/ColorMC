@@ -12,7 +12,7 @@ public partial class ServerPackModel : MenuModel
 {
     public ServerPackObj Obj { get; }
 
-    protected override List<MenuObj> TabItems { get; init; } = new()
+    public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.GetLanguage("ServerPackWindow.Tabs.Text1") },

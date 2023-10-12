@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Model.Guide;
 
 public partial class GuideModel : MenuModel
 {
-    protected override List<MenuObj> TabItems { get; init; } = new()
+    public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Text = App.GetLanguage("GuideWindow.Tabs.Text1") },
         new() { Text = App.GetLanguage("GuideWindow.Tabs.Text2") },
