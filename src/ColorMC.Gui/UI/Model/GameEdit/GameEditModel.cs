@@ -9,7 +9,7 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class GameEditModel : MenuModel
 {
-    protected override List<MenuObj> TabItems { get; init; } = new()
+    public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameEdit/item1.svg",
             Text = App.GetLanguage("GameEditWindow.Tabs.Text1") },

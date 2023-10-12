@@ -1,15 +1,13 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel : MenuModel
 {
-    protected override List<MenuObj> TabItems { get; init; } = new()
+    public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/Setting/item1.svg",
             Text = App.GetLanguage("SettingWindow.Tabs.Text2") },

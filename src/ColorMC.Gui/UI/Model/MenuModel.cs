@@ -14,7 +14,7 @@ public abstract partial class MenuModel : TopModel
     /// <summary>
     /// 菜单项
     /// </summary>
-    protected abstract List<MenuObj> TabItems { get; init; }
+    public abstract List<MenuObj> TabItems { get; init; }
 
     /// <summary>
     /// 显示的标题

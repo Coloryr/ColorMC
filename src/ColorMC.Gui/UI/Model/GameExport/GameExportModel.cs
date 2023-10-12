@@ -30,7 +30,7 @@ public partial class GameExportModel : MenuModel
 
     public List<string> ExportTypes { get; init; } = LanguageBinding.GetExportName();
 
-    protected override List<MenuObj> TabItems { get; init; } = new()
+    public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.GetLanguage("GameExportWindow.Tabs.Text1") },

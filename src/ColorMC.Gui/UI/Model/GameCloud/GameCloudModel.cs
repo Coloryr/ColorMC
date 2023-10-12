@@ -20,7 +20,7 @@ namespace ColorMC.Gui.UI.Model.GameCloud;
 
 public partial class GameCloudModel : MenuModel
 {
-    protected override List<MenuObj> TabItems { get; init; } = new()
+    public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.GetLanguage("GameCloudWindow.Tabs.Text1") },

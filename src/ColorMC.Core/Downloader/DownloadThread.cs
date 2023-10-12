@@ -226,7 +226,7 @@ public class DownloadThread
                     var req = new HttpRequestMessage(HttpMethod.Get, item.Url);
                     if (item.UseColorMCHead)
                     {
-                        req.Headers.Add("ColorMc", ColorMCCore.Version);
+                        req.Headers.Add("ColorMC", ColorMCCore.Version);
                     }
                     var data = BaseClient.DownloadClient.SendAsync(req,
                         HttpCompletionOption.ResponseHeadersRead,
