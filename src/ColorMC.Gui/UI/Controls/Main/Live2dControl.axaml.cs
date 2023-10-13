@@ -91,6 +91,8 @@ public partial class Live2dControl : UserControl
             return;
         }
 
+        LongPressed.Released();
+
         var pro = e.GetCurrentPoint(this);
         if (pro.Properties.IsLeftButtonPressed)
             Live2d.Moved((float)pro.Position.X, (float)pro.Position.Y);
