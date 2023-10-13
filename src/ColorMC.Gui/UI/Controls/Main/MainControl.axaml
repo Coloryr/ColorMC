@@ -177,95 +177,115 @@
             Name="Grid1"
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
-            <Border HorizontalAlignment="{Binding Mirror2}" Background="{setting:Colors Bottom}">
-                <StackPanel Margin="16,0,6,0" VerticalAlignment="Center">
-                    <Panel Margin="0,20,0,0">
-                        <Border
-                            Name="Border2"
-                            Width="86"
-                            Height="86"
-                            BorderBrush="{setting:Colors Main}"
-                            BorderThickness="3"
-                            IsVisible="False" />
+            <Border
+                Name="Border1"
+                HorizontalAlignment="{Binding Mirror2}"
+                Background="{setting:Colors Bottom}">
+                <Panel>
+                    <ListBoxItem
+                        Margin="0,4,0,0"
+                        VerticalAlignment="Top"
+                        DockPanel.Dock="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg
+                                Width="24"
+                                Height="24"
+                                Path="/Resource/Icon/left1.svg" />
+                            <TextBlock
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="{setting:Localize Gui.Info32}" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <StackPanel Margin="16,0,6,0" VerticalAlignment="Center">
+                        <Panel Margin="0,20,0,0">
+                            <Border
+                                Name="Border2"
+                                Width="86"
+                                Height="86"
+                                BorderBrush="{setting:Colors Main}"
+                                BorderThickness="3"
+                                IsVisible="False" />
 
-                        <Image
-                            Name="Image1"
-                            Width="80"
-                            Height="80"
-                            Margin="3"
-                            Source="{Binding Head}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text4}"
+                            <Image
+                                Name="Image1"
+                                Width="80"
+                                Height="80"
+                                Margin="3"
+                                Source="{Binding Head}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text4}"
+                                ToolTip.VerticalOffset="-30" />
+
+                            <ProgressBar
+                                Width="100"
+                                Height="20"
+                                MinWidth="100"
+                                Margin="0,5,0,0"
+                                IsIndeterminate="True"
+                                IsVisible="{Binding IsHeadLoad}" />
+                        </Panel>
+
+                        <TextBlock
+                            Width="100"
+                            Margin="0,5,0,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding UserName}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Width="100"
+                            Margin="0,0,0,5"
+                            VerticalAlignment="Center"
+                            Text="{Binding AuthType}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Command="{Binding ShowSkin}"
+                            Content="{setting:Localize MainWindow.Control.Text1}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text9}"
                             ToolTip.VerticalOffset="-30" />
 
-                        <ProgressBar
+                        <Button
                             Width="100"
-                            Height="20"
-                            MinWidth="100"
+                            Height="35"
                             Margin="0,5,0,0"
-                            IsIndeterminate="True"
-                            IsVisible="{Binding IsHeadLoad}" />
-                    </Panel>
+                            Command="{Binding AddGame}"
+                            Content="{setting:Localize MainWindow.Control.Text2}"
+                            IsVisible="{Binding !IsOneGame}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text10}"
+                            ToolTip.VerticalOffset="-30" />
 
-                    <TextBlock
-                        Width="100"
-                        Margin="0,5,0,0"
-                        VerticalAlignment="Center"
-                        Text="{Binding UserName}"
-                        TextAlignment="Center"
-                        TextWrapping="Wrap" />
-                    <TextBlock
-                        Width="100"
-                        Margin="0,0,0,5"
-                        VerticalAlignment="Center"
-                        Text="{Binding AuthType}"
-                        TextAlignment="Center"
-                        TextWrapping="Wrap" />
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Command="{Binding ShowSkin}"
-                        Content="{setting:Localize MainWindow.Control.Text1}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                        ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="0,5,0,0"
+                            Command="{Binding Launch}"
+                            Content="{setting:Localize MainWindow.Control.Text3}"
+                            IsEnabled="{Binding EnableButton1}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text11}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="0,5,0,0"
+                            Command="{Binding EditGame}"
+                            Content="{setting:Localize MainWindow.Control.Text4}"
+                            IsEnabled="{Binding EnableButton2}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text12}"
+                            ToolTip.VerticalOffset="-30" />
 
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="0,5,0,0"
-                        Command="{Binding AddGame}"
-                        Content="{setting:Localize MainWindow.Control.Text2}"
-                        IsVisible="{Binding !IsOneGame}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text10}"
-                        ToolTip.VerticalOffset="-30" />
-
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="0,5,0,0"
-                        Command="{Binding Launch}"
-                        Content="{setting:Localize MainWindow.Control.Text3}"
-                        IsEnabled="{Binding EnableButton1}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text11}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="0,5,0,0"
-                        Command="{Binding EditGame}"
-                        Content="{setting:Localize MainWindow.Control.Text4}"
-                        IsEnabled="{Binding EnableButton2}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text12}"
-                        ToolTip.VerticalOffset="-30" />
-
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="0,5,0,0"
-                        Command="{Binding ShowSetting}"
-                        Content="{setting:Localize MainWindow.Control.Text5}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text13}"
-                        ToolTip.VerticalOffset="-30" />
-                </StackPanel>
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="0,5,0,0"
+                            Command="{Binding ShowSetting}"
+                            Content="{setting:Localize MainWindow.Control.Text5}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text13}"
+                            ToolTip.VerticalOffset="-30" />
+                    </StackPanel>
+                </Panel>
             </Border>
         </Panel>
         <Panel

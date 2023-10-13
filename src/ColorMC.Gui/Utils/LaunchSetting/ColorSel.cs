@@ -22,6 +22,7 @@ public class ColorSel : INotifyPropertyChanged
     public static readonly IBrush AppLightBackColor5 = Brush.Parse("#22FFFFFF");
     public static readonly IBrush AppLightBackColor6 = Brush.Parse("#FFDDDDDD");
     public static readonly IBrush AppLightBackColor7 = Brush.Parse("#DDFFFFFF");
+    public static readonly IBrush AppLightBackColor8 = Brush.Parse("#FFBCBCBC"); //button boder
 
     public static readonly IBrush AppDarkBackColor = Brush.Parse("#FF202020");
     public static readonly IBrush AppDarkBackColor1 = Brush.Parse("#CC3A3A3A");
@@ -31,6 +32,7 @@ public class ColorSel : INotifyPropertyChanged
     public static readonly IBrush AppDarkBackColor5 = Brush.Parse("#AA000000");
     public static readonly IBrush AppDarkBackColor6 = Brush.Parse("#FF444444");
     public static readonly IBrush AppDarkBackColor7 = Brush.Parse("#EE000000");
+    public static readonly IBrush AppDarkBackColor8 = Brush.Parse("#FFEEEEEE"); //button boder
 
     public const string MainColorStr = "#FF5ABED6";
 
@@ -67,6 +69,7 @@ public class ColorSel : INotifyPropertyChanged
     public static IBrush BGColor1 { get; private set; } = AppLightBackColor7;
     public static IBrush GroupBackColor { get; private set; } = Brush.Parse(GroupLightColorStr);
     public static IBrush GroupBackColor1 { get; private set; } = Brush.Parse(GroupLightColor1Str);
+    public static IBrush ButtonBorder { get; private set; } = AppLightBackColor8;
 
     public readonly static ColorSel Instance = new();
 
@@ -121,6 +124,9 @@ public class ColorSel : INotifyPropertyChanged
 
             GroupBackColor = App.NowTheme == PlatformThemeVariant.Light
                 ? Brush.Parse(GroupLightColorStr) : Brush.Parse(GroupDarkColorStr);
+
+            ButtonBorder = App.NowTheme == PlatformThemeVariant.Light
+                ? AppLightBackColor8 : AppDarkBackColor8;
 
             if (App.BackBitmap != null)
             {
@@ -271,6 +277,8 @@ public class ColorSel : INotifyPropertyChanged
                 return BGColor1;
             else if (key == "Back1")
                 return Back2Color;
+            else if (key == "ButtonBorder")
+                return ButtonBorder;
 
             return Brushes.White;
         }

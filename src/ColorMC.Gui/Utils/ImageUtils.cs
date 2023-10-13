@@ -55,10 +55,11 @@ public static class ImageUtils
                 var data1 = await BaseClient.GetBytes(url);
                 if (data1.Item1)
                 {
-                    using var stream = new MemoryStream(data1.Item2!);
-                    var image = Bitmap.DecodeToWidth(stream, 80);
-                    image.Save(Local + sha1);
-                    return image;
+                    var image1 = Image.Load(data1.Item2);
+                    image1 = Resize(image1, 100, 100);
+                    image1.SaveAsJpeg(Local + sha1);
+                    image1.Dispose();
+                    return new Bitmap(Local + sha1);
                 }
 
                 return null;

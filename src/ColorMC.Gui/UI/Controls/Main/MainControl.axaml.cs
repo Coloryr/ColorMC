@@ -11,6 +11,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -18,6 +19,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 public partial class MainControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
+    private CancellationTokenSource _cancel1 = new();
     public string Title => App.GetLanguage("MainWindow.Title");
 
     public MainControl()
@@ -90,17 +92,21 @@ public partial class MainControl : UserControl, IUserControl
         }
         else if (e.PropertyName == "SideOpen")
         {
+            _cancel1.Dispose();
+            _cancel1 = new();
+            Grid1.IsVisible = true;
+            Border1.Opacity = 0;
             Dispatcher.UIThread.Post(() =>
             {
-                App.CrossFade100.Start(null, Grid1);
+                Border1.Opacity = 1;
+                App.SidePageSlide300.Start(null, Border1, _cancel1.Token);
             });
+
         }
         else if (e.PropertyName == "SideClose")
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                Grid1.IsVisible = false;
-            });
+            _cancel1.Cancel();
+            Grid1.IsVisible = false;
         }
     }
 

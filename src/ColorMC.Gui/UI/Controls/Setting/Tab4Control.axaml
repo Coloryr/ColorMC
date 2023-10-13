@@ -18,51 +18,98 @@
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
+                <!--  运行前检查  -->
                 <StackPanel>
-                    <!--  运行前检查  -->
-                    <Label Content="{setting:Localize SettingWindow.Tab4.Text13}" />
+                    <Label Content="{setting:Localize SettingWindow.Tab4.Text24}" />
                     <WrapPanel>
                         <StackPanel>
                             <CheckBox
                                 Margin="0,0,5,0"
                                 Content="{setting:Localize SettingWindow.Tab4.Text14}"
                                 IsChecked="{Binding CheckCore}" />
-                            <CheckBox
-                                Margin="0,0,5,0"
-                                Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                                IsChecked="{Binding CheckCoreSha1}" />
+                            <Panel>
+                                <Svg
+                                    Width="24"
+                                    Height="24"
+                                    Margin="2,-9,0,0"
+                                    HorizontalAlignment="Left"
+                                    Path="/Resource/Icon/down.svg" />
+                                <CheckBox
+                                    Margin="25,0,5,0"
+                                    Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                                    IsChecked="{Binding CheckCoreSha1}"
+                                    IsEnabled="{Binding CheckCore}" />
+                            </Panel>
                         </StackPanel>
-                        <StackPanel>
+                        <StackPanel Margin="5,0,0,0">
                             <CheckBox
                                 Margin="0,0,5,0"
                                 Content="{setting:Localize SettingWindow.Tab4.Text15}"
                                 IsChecked="{Binding CheckAssets}" />
-                            <CheckBox
-                                Margin="0,0,5,0"
-                                Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                                IsChecked="{Binding CheckAssetsSha1}" />
+                            <Panel>
+                                <Svg
+                                    Width="24"
+                                    Height="24"
+                                    Margin="2,-9,0,0"
+                                    HorizontalAlignment="Left"
+                                    Path="/Resource/Icon/down.svg" />
+                                <CheckBox
+                                    Margin="25,0,5,0"
+                                    Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                                    IsChecked="{Binding CheckAssetsSha1}"
+                                    IsEnabled="{Binding CheckAssets}" />
+                            </Panel>
                         </StackPanel>
-                        <StackPanel>
+                        <StackPanel Margin="5,0,0,0">
                             <CheckBox
                                 Margin="0,0,5,0"
                                 Content="{setting:Localize SettingWindow.Tab4.Text16}"
                                 IsChecked="{Binding CheckLib}" />
-                            <CheckBox
-                                Margin="0,0,5,0"
-                                Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                                IsChecked="{Binding CheckLibSha1}" />
+                            <Panel>
+                                <Svg
+                                    Width="24"
+                                    Height="24"
+                                    Margin="2,-9,0,0"
+                                    HorizontalAlignment="Left"
+                                    Path="/Resource/Icon/down.svg" />
+                                <CheckBox
+                                    Margin="25,0,5,0"
+                                    Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                                    IsChecked="{Binding CheckLibSha1}"
+                                    IsEnabled="{Binding CheckLib}" />
+                            </Panel>
                         </StackPanel>
-                        <StackPanel>
+                        <StackPanel Margin="5,0,0,0">
                             <CheckBox
                                 Margin="0,0,5,0"
                                 Content="{setting:Localize SettingWindow.Tab4.Text17}"
                                 IsChecked="{Binding CheckMod}" />
-                            <CheckBox
-                                Margin="0,0,5,0"
-                                Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                                IsChecked="{Binding CheckModSha1}" />
+                            <Panel>
+                                <Svg
+                                    Width="24"
+                                    Height="24"
+                                    Margin="2,-9,0,0"
+                                    HorizontalAlignment="Left"
+                                    Path="/Resource/Icon/down.svg" />
+                                <CheckBox
+                                    Margin="25,0,5,0"
+                                    Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                                    IsChecked="{Binding CheckModSha1}"
+                                    IsEnabled="{Binding CheckMod}" />
+                            </Panel>
                         </StackPanel>
                     </WrapPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label Content="{setting:Localize SettingWindow.Tab4.Text13}" />
                     <StackPanel Orientation="Horizontal">
                         <CheckBox
                             Margin="0,0,5,0"

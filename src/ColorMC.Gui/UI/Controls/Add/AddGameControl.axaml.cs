@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
@@ -23,6 +24,7 @@ public partial class AddGameControl : UserControl, IUserControl
     private readonly Tab3Control _tab3 = new();
 
     private CancellationTokenSource _cancel = new();
+    private CancellationTokenSource _cancel1 = new();
 
     private int _now;
 
@@ -119,10 +121,19 @@ public partial class AddGameControl : UserControl, IUserControl
         }
         else if (e.PropertyName == "SideOpen")
         {
-            App.CrossFade100.Start(null, StackPanel1);
+            _cancel1.Dispose();
+            _cancel1 = new();
+            StackPanel1.IsVisible = true;
+            DockPanel1.Opacity = 0;
+            Dispatcher.UIThread.Post(() =>
+            {
+                DockPanel1.Opacity = 1;
+                App.SidePageSlide300.Start(null, DockPanel1, _cancel1.Token);
+            });
         }
         else if (e.PropertyName == "SideClose")
         {
+            _cancel1.Cancel();
             StackPanel1.IsVisible = false;
         }
     }

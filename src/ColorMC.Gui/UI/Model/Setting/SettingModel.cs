@@ -22,7 +22,7 @@ public partial class SettingModel : MenuModel
         new() { Icon = "/Resource/Icon/Setting/item6.svg",
             Text = App.GetLanguage("SettingWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/Setting/item7.svg",
-            Text = App.GetLanguage("SettingWindow.Tabs.Text7") },
+            Text = App.GetLanguage("SettingWindow.Tabs.Text7") }
     };
 
     public bool Phone { get; } = false;

@@ -15,27 +15,31 @@
         <views:HeadControl Name="WinHead" DockPanel.Dock="Top" />
         <Grid Name="Grid3">
             <Image Name="Image_Back" Stretch="UniformToFill" />
-            <Grid Name="Controls" />
 
             <Button
                 Name="Button1"
-                Width="25"
+                Width="80"
                 Height="25"
-                Margin="0,-30,160,5"
+                Margin="0,-30,190,5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Content="↓" />
+                BorderBrush="#FFFFFF"
+                Content="{setting:Localize Gui.Info33}" />
 
-            <Grid Name="Grid1" />
+            <Grid Name="Controls" />
 
             <Button
                 Name="Button2"
-                Width="25"
+                Width="80"
                 Height="25"
-                Margin="0,-30,120,5"
+                Margin="0,-30,100,5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Content="←" />
+                BorderBrush="#FFFFFF"
+                Content="{setting:Localize Gui.Info31}"
+                DockPanel.Dock="Top" />
+
+            <Grid Name="Grid1" />
 
             <info:Info1Control IsVisible="False" />
             <info:Info4Control IsVisible="False" />

@@ -5,6 +5,7 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.Input;
+using Live2DCSharpSDK.Framework.Rendering;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -33,6 +34,11 @@ public partial class GameEditModel : MenuModel
         foreach (var item in list)
         {
             names.Add(item.Name);
+        }
+        if (names.Count == 0)
+        {
+            Model.Show(App.GetLanguage("GameEditWindow.Tab5.Error5"));
+            return;
         }
         var (cancel, index, _) = await Model.ShowCombo(App.GetLanguage("GameEditWindow.Tab5.Info9"), names);
         if (cancel)

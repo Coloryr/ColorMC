@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
@@ -63,7 +64,17 @@ public partial class AllControl : UserControl, IBaseWindow
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
 
+        PointerPressed += AllControl_PointerPressed;
+
         App.PicUpdate += Update;
+    }
+
+    private void AllControl_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsXButton1Pressed)
+        {
+            Back();
+        }
     }
 
     public void Closed()
