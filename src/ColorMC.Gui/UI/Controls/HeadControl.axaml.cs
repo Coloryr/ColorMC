@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 
@@ -27,6 +28,7 @@ public partial class HeadControl : UserControl
             Height = 24,
             Margin = new Thickness(3, 0, 3, 0),
             Content = "-",
+            BorderBrush = Brushes.White
         };
 
         _buttonMax = new Button()
@@ -35,6 +37,7 @@ public partial class HeadControl : UserControl
             Height = 24,
             Margin = new Thickness(3, 0, 3, 0),
             Content = "▢",
+            BorderBrush = Brushes.White
         };
 
         _buttonClose = new Button()
@@ -43,6 +46,7 @@ public partial class HeadControl : UserControl
             Height = 24,
             Margin = new Thickness(3, 0, 3, 0),
             Content = "X",
+            BorderBrush = Brushes.White
         };
 
         if (SystemInfo.Os == OsType.MacOS)

@@ -90,6 +90,7 @@ public partial class App : Application
     public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
     public static readonly SelfCrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));
     public static readonly SelfPageSlide PageSlide500 = new(TimeSpan.FromMilliseconds(500));
+    public static readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
     public static event Action? PicUpdate;
     public static event Action? UserEdit;

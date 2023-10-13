@@ -29,14 +29,12 @@ public partial class FlyoutsControl : UserControl
         var flyout = new SelfFlyout(this);
         foreach (var item in list)
         {
-            var button = new Button()
+            var button = new ListBoxItem()
             {
-                Width = 100,
-                Height = 25,
                 Content = item.Item1,
                 IsEnabled = item.Item2
             };
-            button.Click += (a, b) =>
+            button.PointerPressed += (a, b) =>
             {
                 flyout.Hide();
                 item.Item3.Invoke();
@@ -49,10 +47,8 @@ public partial class FlyoutsControl : UserControl
     public FlyoutsControl()
     {
         InitializeComponent();
-        var button = new Button()
+        var button = new ListBoxItem()
         {
-            Width = 100,
-            Height = 25,
             Content = "Test"
         };
         StackPanel1.Children.Add(button);

@@ -4,11 +4,14 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
         <Border Padding="20">
-            <ListBox>
-                <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text1}" />
-                <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text2}" />
-                <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text3}" />
-            </ListBox>
+            <StackPanel>
+                <ListBox>
+                    <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text1}" />
+                    <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text2}" />
+                    <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text3}" />
+                </ListBox>
+                <ListBoxItem Content="test" IsEnabled="False" />
+            </StackPanel>
         </Border>
     </Design.PreviewWith>
 
@@ -26,5 +29,9 @@
 
     <Style Selector="ListBoxItem:selected /template/ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{setting:Colors Bottom2}" />
+    </Style>
+
+    <Style Selector="ListBoxItem:disabled /template/ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#EEAAAAAA" />
     </Style>
 </Styles>

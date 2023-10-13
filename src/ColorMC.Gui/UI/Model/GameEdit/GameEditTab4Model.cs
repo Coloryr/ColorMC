@@ -203,6 +203,10 @@ public partial class GameEditModel : MenuModel
 
     public async void DisEMod(ModDisplayModel item)
     {
+        if (item == null)
+        {
+            return;
+        }
         if (BaseBinding.IsGameRun(_obj))
         {
             return;

@@ -13,8 +13,8 @@
             Fill="{setting:Colors Back}"
             RadiusX="3"
             RadiusY="3"
-            Stroke="{setting:Colors Main}"
-            StrokeThickness="2" />
+            Stroke="{setting:Colors ButtonBorder}"
+            StrokeThickness="1" />
         <StackPanel Name="StackPanel1" Margin="3" />
     </Panel>
 </UserControl>

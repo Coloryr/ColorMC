@@ -20,12 +20,17 @@
 
     <Style Selector="Button">
         <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors ButtonBorder}" />
+        <Setter Property="Background" Value="{setting:Colors Main}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
         <Setter Property="Padding" Value="0" />
-        <Setter Property="BorderBrush" Value="{setting:Colors Bottom}" />
+
+        <!--<Setter Property="Foreground" Value="{setting:Colors Main}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        <Setter Property="Background" Value="#FFFFFFFF" />-->
     </Style>
 
     <Style Selector="Button:pressed">
@@ -39,10 +44,6 @@
 
     <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="#FFAAAAAA" />
-    </Style>
-
-    <Style Selector="Button">
-        <Setter Property="Background" Value="{setting:Colors Main}" />
     </Style>
 
     <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">

@@ -27,7 +27,9 @@
                     <Button
                         Width="25"
                         Height="25"
-                        Command="{Binding OpenSide}">
+                        Command="{Binding OpenSide}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text5}"
+                        ToolTip.VerticalOffset="-30">
                         <Svg Path="/Resource/Icon/menu.svg" />
                     </Button>
                     <Label
@@ -47,27 +49,45 @@
             Name="StackPanel1"
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
-            <DockPanel HorizontalAlignment="Left" Background="{setting:Colors Bottom}">
-                <ListBox
-                    Margin="0,5,0,0"
-                    ItemsSource="{Binding TabItems}"
-                    SelectedIndex="{Binding NowView}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Svg
-                                    Width="24"
-                                    Height="24"
-                                    Path="{Binding Icon}" />
-                                <TextBlock
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding Text}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </DockPanel>
+            <Border
+                Name="DockPanel1"
+                HorizontalAlignment="Left"
+                Background="{setting:Colors Bottom}"
+                BorderThickness="2,2,0,0">
+                <DockPanel>
+                    <ListBoxItem Margin="0,4,0,0" DockPanel.Dock="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg
+                                Width="24"
+                                Height="24"
+                                Path="/Resource/Icon/left1.svg" />
+                            <TextBlock
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="{setting:Localize Gui.Info32}" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBox
+                        Margin="0,2,0,0"
+                        ItemsSource="{Binding TabItems}"
+                        SelectedIndex="{Binding NowView}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Svg
+                                        Width="24"
+                                        Height="24"
+                                        Path="{Binding Icon}" />
+                                    <TextBlock
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Text}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Border>
         </Panel>
     </Panel>
 </UserControl>
