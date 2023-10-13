@@ -18,11 +18,12 @@ namespace ColorMC.Gui.UI.Controls.Custom;
 public partial class CustomControl : UserControl, IUserControl, IMainTop
 {
     private GameSettingObj? _obj;
+    private CustomPanelControl? _ui;
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public string Title { get; set; }
 
-    private string _ui;
+    private string _uiPath;
 
     public CustomControl()
     {
@@ -44,7 +45,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
     public void Load(string local)
     {
-        _ui = local;
+        _uiPath = local;
 
         Grid1.Children.Clear();
     }
@@ -71,16 +72,16 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
             return;
         }
 
-        var ui = AvaloniaRuntimeXamlLoader.Parse<CustomPanelControl>(PathHelper.ReadText(_ui)!);
+        _ui = AvaloniaRuntimeXamlLoader.Parse<CustomPanelControl>(PathHelper.ReadText(_uiPath)!);
 
-        Title = ui.Title;
+        Title = _ui.Title;
         Window.SetTitle(Title);
 
-        Grid1.Children.Add(ui);
+        Grid1.Children.Add(_ui);
         var basemodel = (DataContext as BaseModel)!;
         var amodel = new CustomControlPanelModel(this, basemodel, _obj);
 
-        ui.DataContext = amodel;
+        _ui.DataContext = amodel;
         amodel.App_UserEdit();
         amodel.MotdLoad();
 
@@ -92,10 +93,10 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         if (_obj == null)
             return false;
 
-        var model = (DataContext as CustomControlPanelModel);
+        var model = (_ui.DataContext as CustomControlPanelModel);
         if (model == null)
         {
-            return;
+            return false;
         }
         if (model.IsLaunch)
         {
