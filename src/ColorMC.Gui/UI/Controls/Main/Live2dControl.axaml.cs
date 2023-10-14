@@ -82,6 +82,18 @@ public partial class Live2dControl : UserControl
                 _renderTimer.Pause = true;
             }
         }
+        else if (e.PropertyName == "Render")
+        {
+            var model = (sender as MainModel)!;
+            if (!model.Render)
+            {
+                _renderTimer.Pause = true;
+            }
+            else if (Live2d.HaveModel)
+            {
+                _renderTimer.Pause = false;
+            }
+        }
     }
 
     private void Live2dTop_PointerMoved(object? sender, PointerEventArgs e)
