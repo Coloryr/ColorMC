@@ -994,6 +994,7 @@
 	"ToolTip.Text67": "从各大平台下载游戏整合包",
 	"ToolTip.Text68": "从游戏云同步下载游戏实例",
 	"ToolTip.Text69": "从现有数据创建游戏实例",
+	"ToolTip.Text70": "打开入门指南",
 	"Tips.Text1": "双击可启动实例，右键可以打开实例下拉菜单\n实例添加于{0}\n最后启动于{1}\n上次游戏时间{2}\n总游戏时间{3}",
 	"Tips.Text2": "双击可切换账户，右键可以打开账户菜单",
 	"Text.ForgeVersion": "Forge版本",

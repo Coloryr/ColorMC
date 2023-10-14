@@ -43,7 +43,7 @@
                         HorizontalAlignment="{Binding Mirror2}"
                         VerticalAlignment="Top"
                         Command="{Binding OpenGuide}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text5}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text70}"
                         ToolTip.VerticalOffset="-30">
                         <Svg Path="/Resource/Icon/book.svg" />
                     </Button>
