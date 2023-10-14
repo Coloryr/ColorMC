@@ -90,41 +90,45 @@ public static class JavaHelper
             {
                 return ColorMCCore.PhoneReadJvm?.Invoke(path);
             }
-            else
-            {
-                if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
-                {
-                    using var p = new Process();
-                    p.StartInfo.FileName = path;
-                    p.StartInfo.Arguments = "-version";
-                    p.StartInfo.RedirectStandardError = true;
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.CreateNoWindow = true;
-                    p.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
-                    p.Start();
-                    string result = p.StandardError.ReadToEnd();
-                    string[] lines = result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
-                    string[] firstL = lines[0].Split(' ');
-                    string type = firstL[0];
-                    string version = firstL[2].Trim('\"');
-                    bool is64 = result.Contains("64-Bit");
-                    ArchEnum arch = is64 ? ArchEnum.x86_64 : ArchEnum.x86;
-                    JavaInfo info = new()
-                    {
-                        Path = path,
-                        Version = version,
-                        Arch = arch,
-                        Type = type,
-                        MajorVersion = GetMajorVersion(version)
-                    };
-                    return info;
-                }
-                else
+            if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+            {
+                using var p = new Process();
+                p.StartInfo.FileName = path;
+                p.StartInfo.Arguments = "-version";
+                p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
+                p.Start();
+                string result = p.StandardError.ReadToEnd();
+                string[] lines = result.Split('\n');
+
+                string select = lines[0];
+
+                foreach (var item in lines)
                 {
-                    return null;
+                    string[] firstL = item.Trim().Split(' ');
+                    if (firstL[1] == "version")
+                    {
+                        string type = firstL[0];
+                        string version = firstL[2].Trim('\"');
+                        bool is64 = result.Contains("64-Bit");
+                        ArchEnum arch = is64 ? ArchEnum.x86_64 : ArchEnum.x86;
+                        JavaInfo info = new()
+                        {
+                            Path = path,
+                            Version = version,
+                            Arch = arch,
+                            Type = type,
+                            MajorVersion = GetMajorVersion(version)
+                        };
+                        return info;
+                    }
                 }
             }
+
+            return null;
         }
         catch (Exception e)
         {
