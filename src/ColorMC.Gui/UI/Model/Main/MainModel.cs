@@ -89,7 +89,7 @@ public partial class MainModel : TopModel, IMainTop
     private Thickness _mirror4 = new(0, 5, 5, 5);
 
     [ObservableProperty]
-    private bool _render;
+    private bool _render = true;
 
     public MainModel(BaseModel model) : base(model)
     {
