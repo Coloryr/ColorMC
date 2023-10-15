@@ -37,6 +37,7 @@
     <None Remove="Resource\Icon\AddMenu\item1.svg" />
     <None Remove="Resource\Icon\AddMenu\item2.svg" />
     <None Remove="Resource\Icon\AddMenu\item3.svg" />
+    <None Remove="Resource\Icon\AddMenu\svg1.svg" />
     <None Remove="Resource\Icon\book.svg" />
     <None Remove="Resource\Icon\down.svg" />
     <None Remove="Resource\Icon\edit.svg" />
@@ -54,6 +55,8 @@
     <None Remove="Resource\Icon\GameEdit\svg2.svg" />
     <None Remove="Resource\Icon\GameEdit\svg3.svg" />
     <None Remove="Resource\Icon\GameEdit\svg4.svg" />
+    <None Remove="Resource\Icon\GameEdit\svg5.svg" />
+    <None Remove="Resource\Icon\GameEdit\svg6.svg" />
     <None Remove="Resource\Icon\GameExport\item1.svg" />
     <None Remove="Resource\Icon\GameExport\item2.svg" />
     <None Remove="Resource\Icon\GameExport\item3.svg" />
@@ -126,6 +129,7 @@
     <AvaloniaResource Include="Resource\Icon\AddMenu\item1.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item3.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\svg1.svg" />
     <AvaloniaResource Include="Resource\Icon\book.svg" />
     <AvaloniaResource Include="Resource\Icon\down.svg" />
     <AvaloniaResource Include="Resource\Icon\edit.svg" />
@@ -143,6 +147,8 @@
     <AvaloniaResource Include="Resource\Icon\GameEdit\svg2.svg" />
     <AvaloniaResource Include="Resource\Icon\GameEdit\svg3.svg" />
     <AvaloniaResource Include="Resource\Icon\GameEdit\svg4.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\svg5.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\svg6.svg" />
     <AvaloniaResource Include="Resource\Icon\GameExport\item1.svg" />
     <AvaloniaResource Include="Resource\Icon\GameExport\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\GameExport\item3.svg" />
@@ -217,17 +223,17 @@
     <TrimmableAssembly Include="Avalonia.Themes.Default" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.5-rc1" />
+    <PackageReference Include="Avalonia" Version="11.0.4" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.1" />
-    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.5-rc1" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.5-rc1" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.4" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.4" />
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.5-rc1" />
-	<PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.0.5-rc1" />
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5-rc1" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.4" />
+	<PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.0.4" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.4" />
     <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.3" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5-rc1" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.5-rc1" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.4" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.4" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     <PackageReference Include="NAudio.Core" Version="2.2.1" />
     <PackageReference Include="NAudio.WinMM" Version="2.2.1" />

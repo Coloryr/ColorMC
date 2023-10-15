@@ -57,7 +57,7 @@ public static class ImageUtils
                 {
                     var image1 = Image.Load(data1.Item2);
                     image1 = Resize(image1, 100, 100);
-                    image1.SaveAsJpeg(Local + sha1);
+                    image1.SaveAsPng(Local + sha1);
                     image1.Dispose();
                     return new Bitmap(Local + sha1);
                 }

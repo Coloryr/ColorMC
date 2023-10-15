@@ -207,6 +207,13 @@
                         </StackPanel>
                         <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text42}" IsChecked="{Binding AmFade}" />
                     </WrapPanel>
+                    <WrapPanel>
+                        <CheckBox
+                            Margin="0,0,5,0"
+                            Content="{setting:Localize SettingWindow.Tab2.Text50}"
+                            IsChecked="{Binding EnablePicRadius}" />
+                        <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text51}" IsChecked="{Binding EnableBorderRadius}" />
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border

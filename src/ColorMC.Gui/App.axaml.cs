@@ -203,7 +203,7 @@ public partial class App : Application
         ShowCustom();
         Task.Run(ColorMCCore.Init1);
         Dispatcher.UIThread.Post(() => _ = LoadImage());
-        if (SystemInfo.Os == OsType.Android)
+        if (ConfigBinding.WindowMode())
         {
             Dispatcher.UIThread.Post(() =>
             {

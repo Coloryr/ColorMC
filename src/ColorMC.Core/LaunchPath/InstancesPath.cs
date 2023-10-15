@@ -837,6 +837,7 @@ public static class InstancesPath
     public static Task<bool> Remove(this GameSettingObj obj)
     {
         obj.RemoveFromGroup();
+        PathHelper.Delete(obj.GetGameJsonFile());
         return PathHelper.DeleteFiles(obj.GetBasePath());
     }
 
@@ -1092,6 +1093,28 @@ public static class InstancesPath
 
                         ColorMCCore.PackState?.Invoke(CoreRunState.End);
                         import = true;
+                        break;
+                    }
+                    //直接解压
+                case PackType.ZipPack:
+                    {
+                        ColorMCCore.PackState?.Invoke(CoreRunState.Read);
+
+                        name ??= Path.GetFileName(dir);
+
+                        ColorMCCore.PackState?.Invoke(CoreRunState.Start);
+                        game = await CreateGame(new()
+                        {
+                            GroupName = group,
+                            Name = name!
+                        });
+
+                        if (game != null)
+                        {
+                            await new ZipUtils().Unzip(game!.GetGamePath(), dir, stream4!);
+                            ColorMCCore.PackState?.Invoke(CoreRunState.End);
+                            import = true;
+                        }
                         break;
                     }
             }

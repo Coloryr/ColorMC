@@ -47,11 +47,21 @@
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
             <StackPanel>
-                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <Svg
+                        Width="24"
+                        Height="24"
+                        Margin="0,0,5,0"
+                        Path="/Resource/Icon/GameEdit/svg3.svg" />
+                    <Label
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text5}"
+                        FontSize="{setting:Style FontTitle}" />
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <ComboBox
                         Width="200"
-                        Margin="8,0,5,0"
+                        Margin="0,0,5,0"
                         ItemsSource="{Binding GroupList}"
                         SelectedItem="{Binding Group}" />
                     <Button
@@ -71,28 +81,32 @@
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
             <StackPanel>
-                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab2.Text2}" />
-                <ComboBox
-                    Width="200"
-                    Margin="8,0,5,0"
-                    ItemsSource="{Binding PackTypeList}"
-                    SelectedIndex="{Binding Type}" />
+                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <Svg
+                        Width="24"
+                        Height="24"
+                        Margin="0,0,5,0"
+                        Path="/Resource/Icon/AddMenu/svg1.svg" />
+                    <Label
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize AddGameWindow.Tab2.Text2}"
+                        FontSize="{setting:Style FontTitle}" />
+                </StackPanel>
+                <Panel>
+                    <ComboBox
+                        Width="200"
+                        Margin="0,0,5,0"
+                        ItemsSource="{Binding PackTypeList}"
+                        SelectedIndex="{Binding Type}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Command="{Binding AddPackGame}"
+                        Content="{setting:Localize AddGameWindow.Text1}" />
+                </Panel>
             </StackPanel>
-        </Border>
-        <Border
-            Margin="0,3,0,0"
-            Padding="8"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
-            <Button
-                Width="100"
-                Height="25"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Command="{Binding AddPackGame}"
-                Content="{setting:Localize AddGameWindow.Text1}" />
         </Border>
     </StackPanel>
 </UserControl>

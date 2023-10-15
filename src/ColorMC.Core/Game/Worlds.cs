@@ -251,7 +251,6 @@ public static class Worlds
     /// <returns>还原结果</returns>
     public static async Task<bool> UnzipBackupWorld(this GameSettingObj obj, FileInfo item1)
     {
-
         var res = false;
 
         using var s = new ZipInputStream(PathHelper.OpenRead(item1.FullName));

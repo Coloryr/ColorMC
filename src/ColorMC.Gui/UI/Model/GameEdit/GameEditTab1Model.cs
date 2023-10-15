@@ -431,7 +431,9 @@ public partial class GameEditModel : MenuModel
         if (!res)
             return;
 
-        var res1 = await GameBinding.DeleteGame(_obj);
+        Model.Progress(App.GetLanguage("Gui.Info34"));
+        var res1 = await BaseBinding.DeleteGame(Model, _obj);
+        Model.ProgressClose();
         if (!res1)
         {
             Model.Show(App.GetLanguage("MainWindow.Info37"));

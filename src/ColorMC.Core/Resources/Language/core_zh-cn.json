@@ -252,6 +252,7 @@
   "PackType.Modrinth": "Modrinth整合包",
   "PackType.MMC": "MMC压缩包",
   "PackType.HMCL": "HMCL压缩包",
+  "PackType.ZipPack": "直接解压压缩包",
   "MFacets.categories": "分类",
   "MFacets.versions": "游戏版本",
   "MFacets.project_type": "项目类型",

@@ -116,6 +116,26 @@ public partial class MainControl : UserControl, IUserControl
             _cancel1.Cancel();
             Grid1.IsVisible = false;
         }
+        else if (e.PropertyName == "GuideShow")
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                var model = (DataContext as MainModel)!;
+
+                Task.Run(async () =>
+                {
+                    while (model.Render && !model.IsOpenGuide)
+                    {
+                        await Task.Delay(2000);
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            _buttonMove.Start(Svg1);
+                        });
+                        await Task.Delay(10000);
+                    }
+                });
+            });
+        }
     }
 
     private void MainControl_KeyDown(object? sender, KeyEventArgs e)
@@ -232,21 +252,6 @@ public partial class MainControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
-
-        var model = (DataContext as MainModel)!;
-
-        Task.Run(async () =>
-        {
-            while (model.Render && !model.IsOpenGuide)
-            {
-                await Task.Delay(2000);
-                Dispatcher.UIThread.Post(() =>
-                {
-                    _buttonMove.Start(Svg1);
-                });
-                await Task.Delay(10000);
-            }
-        });
     }
 
     private void Item_DoubleTapped(object? sender, TappedEventArgs e)

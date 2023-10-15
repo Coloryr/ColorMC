@@ -185,7 +185,9 @@ public partial class GameItemModel : GameModel
             return;
         }
 
-        res = await GameBinding.DeleteGame(Obj);
+        Model.Progress(App.GetLanguage("Gui.Info34"));
+        res = await BaseBinding.DeleteGame(Model, Obj);
+        Model.ProgressClose();
         Model.InputClose();
         if (!res)
         {

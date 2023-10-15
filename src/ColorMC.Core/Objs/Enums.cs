@@ -32,7 +32,7 @@ public enum FileType
 /// </summary>
 public enum PackType
 {
-    ColorMC, CurseForge, Modrinth, MMC, HMCL
+    ColorMC, CurseForge, Modrinth, MMC, HMCL, ZipPack
 }
 
 /// <summary>

@@ -11,6 +11,8 @@ public class StyleSel : INotifyPropertyChanged
     public readonly static StyleSel Instance = new();
 
     private CornerRadius ButtonCornerRadius = new(3);
+    private CornerRadius PicRadius = new(0);
+    private int Radius;
 
     private static double FontTitleSize = 17;
 
@@ -22,9 +24,17 @@ public class StyleSel : INotifyPropertyChanged
             {
                 return ButtonCornerRadius;
             }
+            else if (key == "PicRadius")
+            {
+                return PicRadius;
+            }
             else if (key == "FontTitle")
             {
                 return FontTitleSize;
+            }
+            else if (key == "Radius")
+            {
+                return Radius;
             }
             return null;
         }
@@ -49,6 +59,17 @@ public class StyleSel : INotifyPropertyChanged
         var config = GuiConfigUtils.Config.Style;
 
         ButtonCornerRadius = new(config.ButtonCornerRadius);
+
+        if (config.EnablePicRadius)
+        {
+            PicRadius = new(config.ButtonCornerRadius);
+        }
+        else
+        {
+            PicRadius = new(0);
+        }
+
+        Radius = config.EnableBorderRadius ? config.ButtonCornerRadius : 0;
 
         Reload();
     }
