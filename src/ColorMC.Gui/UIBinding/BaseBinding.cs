@@ -1090,4 +1090,29 @@ public static class BaseBinding
 
         return res;
     }
+
+    public static void OpenPicFile(string screenshot)
+    {
+        screenshot = Path.GetFullPath(screenshot);
+        switch (SystemInfo.Os)
+        {
+            case OsType.Windows:
+                {
+                    var proc = new Process();
+                    proc.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
+                    proc.StartInfo.FileName = "rundll32.exe";
+                    proc.StartInfo.Arguments = @"C:\WINDOWS\system32\shimgvw.dll,ImageView_Fullscreen " + screenshot;
+                    proc.Start();
+                    break;
+                }
+            case OsType.Linux:
+                Process.Start("xdg-open",
+                    '"' + screenshot + '"');
+                break;
+            case OsType.MacOS:
+                Process.Start("open", "-a Preview " +
+                    '"' + screenshot + '"');
+                break;
+        }
+    }
 }
