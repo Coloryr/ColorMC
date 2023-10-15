@@ -355,6 +355,7 @@ public static class PathBinding
     private static readonly string[] AUDIO = new string[] { "*.mp3", "*.wav" };
     private static readonly string[] MODEL = new string[] { "*.model3.json" };
     private static readonly string[] HEADFILE = new string[] { "*.png" };
+    private static readonly string[] LIVE2DCORE = new string[] { "*.zip" };
 
     /// <summary>
     /// 打开文件
@@ -498,6 +499,16 @@ public static class PathBinding
                     App.GetLanguage("UserBinding.Info1"),
                     HEADFILE,
                     App.GetLanguage("UserBinding.Info2"));
+                if (res?.Any() == true)
+                {
+                    return res[0].GetPath();
+                }
+                break;
+            case FileType.Live2DCore:
+                res = await SelectFile(top,
+                    App.GetLanguage("SettingWindow.Tab2.Info9"),
+                    LIVE2DCORE,
+                    App.GetLanguage("SettingWindow.Tab2.Info10"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();

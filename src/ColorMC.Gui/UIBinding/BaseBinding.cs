@@ -20,11 +20,13 @@ using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -1034,5 +1036,42 @@ public static class BaseBinding
     {
         GuiConfigUtils.Config.ServerKey = str[9..];
         App.ShowSetting(SettingType.Net);
+    }
+
+    public static async Task<bool> SetLive2DCore(string local)
+    {
+        using var stream = PathHelper.OpenRead(local);
+        using var zip = new ZipFile(stream);
+        string file = "";
+        string file1 = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName!;
+        switch (SystemInfo.Os)
+        {
+            case OsType.Windows:
+                file = "Core/dll/windows/" + (SystemInfo.Is64Bit ? "x86_64" : "x86") + "/Live2DCubismCore.dll";
+                file1 += "/Live2DCubismCore.dll";
+                break;
+            case OsType.MacOS:
+                file = "Core/dll/macos/libLive2DCubismCore.dylib";
+                file1 += "/Live2DCubismCore.dylib";
+                break;
+            case OsType.Linux:
+                file = SystemInfo.IsArm ? "Core/dll/linux/x86_64/libLive2DCubismCore.so" 
+                    : "Core/dll/experimental/rpi/libLive2DCubismCore.so";
+                file1 += "/Live2DCubismCore.so";
+                break;
+        }
+
+        foreach (ZipEntry item in zip)
+        {
+            if (item.IsFile && item.Name.Contains(file))
+            {
+                using var stream1 = zip.GetInputStream(item);
+                using var stream2 = PathHelper.OpenWrite(file1);
+                await stream1.CopyToAsync(stream2);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

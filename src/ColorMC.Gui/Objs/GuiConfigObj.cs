@@ -192,6 +192,7 @@ public record Live2DSetting
     public string? Model { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
+    public bool Enable { get; set; }
 }
 
 /// <summary>

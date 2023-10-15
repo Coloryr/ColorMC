@@ -31,6 +31,12 @@ public partial class MainModel : TopModel, IMainTop
     private readonly Semaphore _semaphore = new(0, 2);
     private readonly Dictionary<string, GameItemModel> Launchs = new();
 
+    private const string Side1 = "/Resource/Icon/menu.svg";
+    private const string Side2 = "/Resource/Icon/left.svg";
+
+    private const string Side3 = "/Resource/Icon/left1.svg";
+    private const string Side4 = "/Resource/Icon/menu1.svg";
+
     private LoginObj? _user;
     private bool _isplay = true;
     private bool _isCancel;
@@ -51,6 +57,10 @@ public partial class MainModel : TopModel, IMainTop
     private string _authType;
     [ObservableProperty]
     private string _message;
+    [ObservableProperty]
+    private string _sideIcon = Side1;
+    [ObservableProperty]
+    private string _sideIcon1 = Side3;
 
     [ObservableProperty]
     private bool _groupEnable;
@@ -70,6 +80,8 @@ public partial class MainModel : TopModel, IMainTop
     private bool _isHeadLoad;
     [ObservableProperty]
     private bool _musicDisplay;
+    [ObservableProperty]
+    private bool _isOpenGuide;
 
     [ObservableProperty]
     private GameItemModel? _game;
@@ -106,6 +118,7 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public void OpenGuide()
     {
+        IsOpenGuide = true;
         App.ShowGuide();
     }
 
@@ -554,6 +567,8 @@ public partial class MainModel : TopModel, IMainTop
             Mirror2 = HorizontalAlignment.Right;
             Mirror3 = HorizontalAlignment.Left;
             Mirror4 = new(5, 5, 0, 5);
+            SideIcon = Side2;
+            SideIcon1 = Side4;
         }
         else
         {
@@ -561,6 +576,8 @@ public partial class MainModel : TopModel, IMainTop
             Mirror2 = HorizontalAlignment.Left;
             Mirror3 = HorizontalAlignment.Right;
             Mirror4 = new(0, 5, 5, 5);
+            SideIcon = Side1;
+            SideIcon1 = Side3;
         }
     }
 

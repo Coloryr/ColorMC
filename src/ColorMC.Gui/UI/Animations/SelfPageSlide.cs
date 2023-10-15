@@ -26,6 +26,8 @@ public class SelfPageSlideSide
         Duration = duration;
     }
 
+    public bool Mirror { get; set; }
+
     /// <summary>
     /// Gets the duration of the animation.
     /// </summary>
@@ -60,7 +62,7 @@ public class SelfPageSlideSide
                             new Setter
                             {
                                 Property = TranslateTransform.XProperty,
-                                Value = -end + 1
+                                Value = Mirror ? end - 1 : -end + 1
                             }
                         },
                         Cue = new Cue(0d)
@@ -99,7 +101,7 @@ public class SelfPageSlideSide
                             new Setter
                             {
                                 Property = TranslateTransform.XProperty,
-                                Value = -end + 1
+                                Value = Mirror ? end - 1 : -end + 1
                             }
                         },
                         Cue = new Cue(0d)

@@ -75,6 +75,8 @@ public partial class SettingModel : MenuModel
     private bool _enableBG;
     [ObservableProperty]
     private bool _controlMode;
+    [ObservableProperty]
+    private bool _enableLive2D;
 
     [ObservableProperty]
     private LanguageType _language;
@@ -108,6 +110,14 @@ public partial class SettingModel : MenuModel
     private string _live2DCoreState;
 
     private bool _load = false;
+
+    partial void OnEnableLive2DChanged(bool value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetLive2D(value);
+    }
 
     partial void OnControlModeChanged(bool value)
     {
@@ -344,6 +354,27 @@ public partial class SettingModel : MenuModel
     }
 
     [RelayCommand]
+    public async Task InstallCore()
+    {
+        var file = await PathBinding.SelectFile(FileType.Live2DCore);
+
+        if (file != null)
+        {
+            Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info11"));
+            var res = await BaseBinding.SetLive2DCore(file);
+            Model.ProgressClose();
+            if (!res)
+            {
+                Model.Show(App.GetLanguage("SettingWindow.Tab2.Error4"));
+            }
+            else
+            {
+                App.Reboot();
+            }
+        }
+    }
+
+    [RelayCommand]
     public void OpenRunDir()
     {
         PathBinding.OpPath(PathType.RunPath);
@@ -544,6 +575,7 @@ public partial class SettingModel : MenuModel
             Live2DModel = con.Live2D.Model;
             L2dHeight = con.Live2D.Height;
             L2dWidth = con.Live2D.Width;
+            EnableLive2D = con.Live2D.Enable;
         }
         if (config.Item1 is { } con1)
         {

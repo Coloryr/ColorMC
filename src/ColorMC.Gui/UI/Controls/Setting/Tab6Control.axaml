@@ -19,7 +19,17 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab6.Text1}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg17.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab6.Text1}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel Margin="0,0,0,5">
                         <TextBox
                             Width="200"
@@ -66,6 +76,17 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg18.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab6.Text27}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox
                             VerticalAlignment="Center"
@@ -107,7 +128,17 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab6.Text8}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg19.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab6.Text8}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <DockPanel Margin="0,5,0,5">
                         <Button
                             Width="80"
@@ -161,6 +192,17 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg20.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab6.Text28}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <CheckBox
                         Content="{setting:Localize SettingWindow.Tab6.Text13}"
                         IsChecked="{Binding EnableServerPack}"
@@ -186,6 +228,17 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg21.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab6.Text29}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox Content="{setting:Localize SettingWindow.Tab6.Text16}" IsChecked="{Binding EnableMusic}" />
                         <CheckBox

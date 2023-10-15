@@ -4,11 +4,13 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
@@ -19,8 +21,13 @@ namespace ColorMC.Gui.UI.Controls.Main;
 public partial class MainControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
-    private CancellationTokenSource _cancel1 = new();
+
     public string Title => App.GetLanguage("MainWindow.Title");
+
+    private CancellationTokenSource _cancel1 = new();
+    private ButtonMove _buttonMove = new(TimeSpan.FromSeconds(6));
+
+    public readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
     public MainControl()
     {
@@ -96,10 +103,11 @@ public partial class MainControl : UserControl, IUserControl
             _cancel1 = new();
             Grid1.IsVisible = true;
             Border1.Opacity = 0;
+            SidePageSlide300.Mirror = ConfigBinding.GetAllConfig().Item2.Gui.WindowMirror;
             Dispatcher.UIThread.Post(() =>
             {
                 Border1.Opacity = 1;
-                App.SidePageSlide300.Start(null, Border1, _cancel1.Token);
+                SidePageSlide300.Start(null, Border1, _cancel1.Token);
             });
 
         }
@@ -224,6 +232,21 @@ public partial class MainControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+
+        var model = (DataContext as MainModel)!;
+
+        Task.Run(async () =>
+        {
+            while (model.Render && !model.IsOpenGuide)
+            {
+                await Task.Delay(2000);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    _buttonMove.Start(Svg1);
+                });
+                await Task.Delay(10000);
+            }
+        });
     }
 
     private void Item_DoubleTapped(object? sender, TappedEventArgs e)
