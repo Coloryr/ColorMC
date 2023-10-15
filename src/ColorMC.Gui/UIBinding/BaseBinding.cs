@@ -1074,4 +1074,20 @@ public static class BaseBinding
 
         return false;
     }
+
+    public static async Task<bool> DeleteGame(BaseModel model, GameSettingObj obj)
+    {
+        s_window = model;
+        var res = await obj.Remove();
+        App.MainWindow?.LoadMain();
+        if (res)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                App.CloseGameWindow(obj);
+            });
+        }
+
+        return res;
+    }
 }

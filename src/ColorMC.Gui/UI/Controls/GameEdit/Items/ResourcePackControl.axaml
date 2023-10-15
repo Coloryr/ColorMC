@@ -15,20 +15,28 @@
         <Rectangle
             Name="Rectangle2"
             Fill="{setting:Colors Back}"
-            IsVisible="False" />
+            IsVisible="False"
+            RadiusX="{setting:Style Radius}"
+            RadiusY="{setting:Style Radius}" />
         <Rectangle
             Name="Rectangle1"
             Fill="{setting:Colors TranBack}"
             IsVisible="{Binding IsSelect}"
+            RadiusX="{setting:Style Radius}"
+            RadiusY="{setting:Style Radius}"
             Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
         <Panel Margin="5">
-            <Image
+            <Border
                 Width="90"
                 Height="90"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Source="{Binding Pic}" />
+                CornerRadius="{setting:Style PicRadius}">
+                <Border.Background>
+                    <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
+                </Border.Background>
+            </Border>
             <StackPanel Margin="100,0,0,0">
                 <TextBlock
                     Margin="0,0,5,0"

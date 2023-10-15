@@ -153,6 +153,7 @@ public static class LanguageBinding
             PackType.Modrinth.GetName(),
             PackType.MMC.GetName(),
             PackType.HMCL.GetName(),
+            PackType.ZipPack.GetName()
         };
     }
 

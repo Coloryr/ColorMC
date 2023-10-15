@@ -7,6 +7,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -598,5 +599,21 @@ public static class ConfigBinding
     {
         ConfigUtils.Config.SafeLog4j = value;
         ConfigUtils.Save();
+    }
+
+    public static void SetRadiusEnable(bool enablePicRadius, bool enableBorderRadius)
+    {
+        GuiConfigUtils.Config.Style ??= new();
+        GuiConfigUtils.Config.Style.EnablePicRadius = enablePicRadius;
+        GuiConfigUtils.Config.Style.EnableBorderRadius = enableBorderRadius;
+        GuiConfigUtils.Save();
+
+        StyleSel.Instance.Load();
+    }
+
+    public static void SetNewLaunch(bool v)
+    {
+        GuiConfigUtils.Config.NewLaunch = v;
+        GuiConfigUtils.Save();
     }
 }

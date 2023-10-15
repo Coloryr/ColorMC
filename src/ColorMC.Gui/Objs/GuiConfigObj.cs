@@ -16,6 +16,8 @@ public record StyleSetting
     /// 过度淡化
     /// </summary>
     public bool AmFade { get; set; }
+    public bool EnablePicRadius { get; set; }
+    public bool EnableBorderRadius { get; set; }
 }
 
 public record MainWindowSetting
@@ -317,4 +319,5 @@ public record GuiConfigObj
     /// 控件堆叠模式
     /// </summary>
     public bool ControlMode { get; set; }
+    public bool NewLaunch { get; set; }
 }

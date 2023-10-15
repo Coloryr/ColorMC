@@ -342,7 +342,14 @@ MOTD颜色不正确 okl
 修复解压文件错误 okl
 调整自动更新服务器
 
+2023.10.15
+添加图标等内容 okl
+添加圆角选项 okl
+调整UI okl
+添加.minecraft压缩包直接导入 okl
+添加.minecraft的version识别 okl
+
 2023.10.8(计划)
-调整UI
+
 调整服务器同步
 

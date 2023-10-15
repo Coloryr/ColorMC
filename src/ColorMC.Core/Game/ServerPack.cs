@@ -144,11 +144,11 @@ public static class ServerPack
                     Local = Path.GetFullPath(path1 + "/" + item.FileName),
                     SHA1 = item.Sha1,
                     Url = item.Url,
-                    Later = (stream) =>
+                    Later = async (stream) =>
                     {
                         if (item.Dir)
                         {
-                            new ZipUtils().Unzip(Path.GetFullPath(path + "/" + item.Group), "", stream);
+                            await new ZipUtils().Unzip(Path.GetFullPath(path + "/" + item.Group), "", stream);
                         }
                     }
                 });

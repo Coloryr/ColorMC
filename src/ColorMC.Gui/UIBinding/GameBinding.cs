@@ -21,7 +21,9 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
+using Heijden.DNS;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json.Linq;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
@@ -119,6 +121,56 @@ public static class GameBinding
         {
             await game.Remove();
             App.ShowError(App.GetLanguage("Gui.Error26"), res.Item2);
+        }
+
+        var files = Directory.GetFiles(local);
+        foreach (var item in files)
+        {
+            if (item.EndsWith(".json"))
+            {
+                try
+                {
+                    var obj = JObject.Parse(PathHelper.ReadText(item)!);
+                    if (obj.TryGetValue("patches", out var patch) && patch is JArray array)
+                    {
+                        foreach (var item1 in array)
+                        {
+                            var id = item1["id"]?.ToString();
+                            var version = item1["version"]?.ToString() ?? "";
+                            if (id == "game")
+                            {
+                                game.Version = version;
+                            }
+                            else if (id == "forge")
+                            {
+                                game.LoaderVersion = version;
+                                game.Loader = Loaders.Forge;
+                            }
+                            else if (id == "fabric")
+                            {
+                                game.LoaderVersion = version;
+                                game.Loader = Loaders.Fabric;
+                            }
+                            else if (id == "quilt")
+                            {
+                                game.LoaderVersion = version;
+                                game.Loader = Loaders.Quilt;
+                            }
+                            else if (id == "neoforge")
+                            {
+                                game.LoaderVersion = version;
+                                game.Loader = Loaders.NeoForge;
+                            }
+                        }
+                        game.Save();
+                        break;
+                    }
+                }
+                catch
+                { 
+                
+                }
+            }
         }
 
         App.ShowGameEdit(game);
@@ -736,21 +788,6 @@ public static class GameBinding
         return obj.GetScreenshots();
     }
 
-    public static async Task<bool> DeleteGame(GameSettingObj obj)
-    {
-        var res = await obj.Remove();
-        App.MainWindow?.LoadMain();
-        if (res)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                App.CloseGameWindow(obj);
-            });
-        }
-
-        return res;
-    }
-
     public static GameSettingObj? GetGame(string? uuid)
     {
         return InstancesPath.GetGame(uuid);
@@ -1329,6 +1366,10 @@ public static class GameBinding
                     {
                         return PackType.CurseForge;
                     }
+                    else if (item.Name.Contains(".minecraft/"))
+                    {
+                        return PackType.ZipPack;
+                    }
                 }
             }
         }
@@ -1341,13 +1382,6 @@ public static class GameBinding
         return PackType.ColorMC;
     }
 
-    /// <summary>
-    /// ��ѹ�������ļ�
-    /// </summary>
-    /// <param name="obj">��Ϸʵ��</param>
-    /// <param name="data">�����ô���</param>
-    /// <param name="local">����ѹ����</param>
-    /// <returns></returns>
     public static async Task<bool> UnZipCloudConfig(GameSettingObj obj, CloudDataObj data, string local)
     {
         data.Config.Clear();
@@ -1385,13 +1419,6 @@ public static class GameBinding
             return false;
         });
     }
-
-    /// <summary>
-    /// ������ʵ��
-    /// </summary>
-    /// <param name="obj">��ʵ����Ϣ</param>
-    /// <param name="group">���ӵ�����</param>
-    /// <returns></returns>
     public static async Task<(bool, string?)> DownloadCloud(CloundListObj obj, string? group)
     {
         var game = await InstancesPath.CreateGame(new()
@@ -1424,7 +1451,6 @@ public static class GameBinding
 
         game = game.Reload();
 
-        //����ȱʧ��mod
         if (game.Mods != null)
         {
             var list = new List<DownloadItemObj>();

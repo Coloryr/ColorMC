@@ -150,7 +150,6 @@
                         <ComboBox
                             Name="ComboBox3"
                             Width="200"
-                            Margin="8,0,0,0"
                             ItemsSource="{Binding GroupList}"
                             SelectedItem="{Binding Group}" />
                         <Button

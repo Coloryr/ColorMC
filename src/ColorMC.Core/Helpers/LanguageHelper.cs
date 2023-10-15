@@ -294,6 +294,7 @@ public static class LanguageHelper
             PackType.Modrinth => Get("PackType.Modrinth"),
             PackType.MMC => Get("PackType.MMC"),
             PackType.HMCL => Get("PackType.HMCL"),
+            PackType.ZipPack => Get("PackType.ZipPack"),
             _ => Get("PackType.Other")
         };
     }

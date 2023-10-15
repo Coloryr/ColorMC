@@ -19,10 +19,17 @@
                 Name="StackPanel1"
                 DockPanel.Dock="Left"
                 Orientation="Horizontal" />
-            <Image
+            <Border
                 Name="Icons"
-                Margin="10,5,0,5"
-                Source="{Binding Icon}" />
+                Width="25"
+                Height="25"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <Border.Background>
+                    <ImageBrush Source="{Binding Icon}" Stretch="UniformToFill" />
+                </Border.Background>
+            </Border>
             <TextBlock
                 Name="TitleShow"
                 Margin="5,0,0,0"

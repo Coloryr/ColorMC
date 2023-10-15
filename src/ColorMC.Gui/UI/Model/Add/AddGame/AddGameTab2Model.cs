@@ -1,3 +1,4 @@
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Main;
@@ -26,7 +27,7 @@ public partial class AddGameModel : MenuModel
     /// 压缩包类型
     /// </summary>
     [ObservableProperty]
-    private int _type = -1;
+    private PackType? _type = null;
 
     /// <summary>
     /// 压缩包路径修改
@@ -34,14 +35,7 @@ public partial class AddGameModel : MenuModel
     /// <param name="value"></param>
     partial void OnZipLocalChanged(string value)
     {
-        Type = GameBinding.CheckType(value) switch
-        {
-            PackType.CurseForge => 1,
-            PackType.Modrinth => 2,
-            PackType.MMC => 3,
-            PackType.HMCL => 4,
-            _ => 0
-        };
+        Type = GameBinding.CheckType(value);
     }
 
     /// <summary>
@@ -55,30 +49,13 @@ public partial class AddGameModel : MenuModel
             Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
             return;
         }
-        if (Type == -1)
+        if (Type == null)
         {
             Model.Show(App.GetLanguage("AddGameWindow.Tab2.Error3"));
             return;
         }
 
-        switch (Type)
-        {
-            case 0:
-                AddPack(PackType.ColorMC);
-                break;
-            case 1:
-                AddPack(PackType.CurseForge);
-                break;
-            case 2:
-                AddPack(PackType.Modrinth);
-                break;
-            case 3:
-                AddPack(PackType.MMC);
-                break;
-            case 4:
-                AddPack(PackType.HMCL);
-                break;
-        }
+        AddPack((PackType)Type);
     }
 
     /// <summary>
@@ -143,6 +120,11 @@ public partial class AddGameModel : MenuModel
     {
         ColorMCCore.GameOverwirte = Tab2GameOverwirte;
         ColorMCCore.GameRequest = Tab2GameRequest;
+        string temp = App.GetLanguage("Gui.Info27");
+        ColorMCCore.UnZipItem = (a, b, c) =>
+        {
+            Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
+        };
 
         if (string.IsNullOrWhiteSpace(ZipLocal))
         {
@@ -162,6 +144,12 @@ public partial class AddGameModel : MenuModel
         var model = (App.MainWindow?.DataContext as MainModel);
         model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab2.Info5"));
         App.MainWindow?.LoadMain();
+
+        if (Type == PackType.ZipPack)
+        {
+            App.ShowGameEdit(res.Item2!);
+        }
+
         WindowClose();
     }
 

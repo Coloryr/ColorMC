@@ -31,7 +31,17 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label VerticalAlignment="Center" Content="{setting:Localize Text.GameVersion}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/GameEdit/svg1.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize Text.GameVersion}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
@@ -75,7 +85,17 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/GameEdit/svg2.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text4}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
@@ -126,18 +146,28 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/GameEdit/svg3.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text5}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel Orientation="Horizontal">
                         <ComboBox
                             Width="200"
-                            Margin="8,0,5,0"
+                            Margin="0,0,5,0"
                             VerticalContentAlignment="Center"
                             ItemsSource="{Binding GroupList}"
                             SelectedItem="{Binding Group}" />
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="0,5,0,0"
+                            Margin="0,0,5,0"
                             VerticalAlignment="Center"
                             Command="{Binding AddGroup}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text9}" />

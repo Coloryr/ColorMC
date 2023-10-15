@@ -119,6 +119,7 @@ public partial class MainModel : TopModel, IMainTop
     public void OpenGuide()
     {
         IsOpenGuide = true;
+        ConfigBinding.SetNewLaunch(true);
         App.ShowGuide();
     }
 
@@ -360,6 +361,13 @@ public partial class MainModel : TopModel, IMainTop
         else
         {
             MusicDisplay = false;
+        }
+
+        IsOpenGuide = config.Item2.NewLaunch;
+
+        if (!IsOpenGuide)
+        {
+            OnPropertyChanged("GuideShow");
         }
 
         Mirror();

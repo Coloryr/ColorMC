@@ -77,6 +77,10 @@ public partial class SettingModel : MenuModel
     private bool _controlMode;
     [ObservableProperty]
     private bool _enableLive2D;
+    [ObservableProperty]
+    private bool _enablePicRadius;
+    [ObservableProperty]
+    private bool _enableBorderRadius;
 
     [ObservableProperty]
     private LanguageType _language;
@@ -110,6 +114,22 @@ public partial class SettingModel : MenuModel
     private string _live2DCoreState;
 
     private bool _load = false;
+
+    partial void OnEnableBorderRadiusChanged(bool value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetRadiusEnable(EnablePicRadius, EnableBorderRadius);
+    }
+
+    partial void OnEnablePicRadiusChanged(bool value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetRadiusEnable(EnablePicRadius, EnableBorderRadius);
+    }
 
     partial void OnEnableLive2DChanged(bool value)
     {

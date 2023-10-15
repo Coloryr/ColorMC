@@ -179,7 +179,7 @@ public class ZipUtils
                     }
                     using var stream1 = PathHelper.OpenWrite(file);
                     using var stream2 = s.GetInputStream(theEntry);
-                    stream2.CopyTo(stream1);
+                    await stream2.CopyToAsync(stream1);
                 }
             }
         }
