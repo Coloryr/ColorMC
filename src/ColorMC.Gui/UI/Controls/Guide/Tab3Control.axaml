@@ -18,12 +18,20 @@
         <Grid ColumnDefinitions="*,*" RowDefinitions="2*,*">
             <StackPanel
                 Name="StackPanel"
-                Grid.RowSpan="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <Image Width="200" Source="resm:ColorMC.Gui.Resource.Pic.Guide.pic8.png" />
                 <Label Content="{setting:Localize GuideWindow.Tab3.Text1}" FontSize="18" />
             </StackPanel>
+
+			<StackPanel
+                Name="StackPanel2"
+				Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+				<Image Width="200" Source="resm:ColorMC.Gui.Resource.Pic.Guide.pic14.png" />
+				<Label Content="{setting:Localize GuideWindow.Tab3.Text4}" FontSize="18" />
+			</StackPanel>
 
             <StackPanel
                 Name="StackPanel3"

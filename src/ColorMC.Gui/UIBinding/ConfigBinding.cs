@@ -532,6 +532,15 @@ public static class ConfigBinding
         App.MainWindow?.DeleteModel();
     }
 
+    public static void SetLive2D(bool enable)
+    {
+        GuiConfigUtils.Config.Live2D ??= new();
+        GuiConfigUtils.Config.Live2D.Enable = enable;
+        GuiConfigUtils.Save();
+
+        App.MainWindow?.ChangeModel();
+    }
+
     public static void SetLive2D(string? live2DModel)
     {
         GuiConfigUtils.Config.Live2D ??= new();

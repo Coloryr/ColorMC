@@ -8,9 +8,11 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 /// </summary>
 public class StyleSel : INotifyPropertyChanged
 {
-    public readonly static StyleSel Instance = new StyleSel();
+    public readonly static StyleSel Instance = new();
 
     private CornerRadius ButtonCornerRadius = new(3);
+
+    private static double FontTitleSize = 17;
 
     public object? this[string key]
     {
@@ -19,6 +21,10 @@ public class StyleSel : INotifyPropertyChanged
             if (key == "ButtonCornerRadius")
             {
                 return ButtonCornerRadius;
+            }
+            else if (key == "FontTitle")
+            {
+                return FontTitleSize;
             }
             return null;
         }

@@ -24,7 +24,7 @@ public enum FileType
 {
     ModPack = 0, Mod, World, Shaderpack, Resourcepack, DataPacks, Schematic,
     Java, Game, Config, AuthConfig, Pic, UI, Optifne, Skin, ServerPack, Music,
-    Text, Live2D, Icon, Head, JavaZip
+    Text, Live2D, Icon, Head, JavaZip, Live2DCore
 }
 
 /// <summary>

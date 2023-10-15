@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="1000"
+    d:DesignHeight="1200"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -20,7 +20,17 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <!--  运行前检查  -->
                 <StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab4.Text24}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg11.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text24}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel>
                         <StackPanel>
                             <CheckBox
@@ -109,7 +119,17 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab4.Text13}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg12.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text13}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox
                             Margin="0,0,5,0"
@@ -140,7 +160,17 @@
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <!--  运行后  -->
-                    <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg13.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text19}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox
                             Margin="0,0,5,0"
@@ -166,8 +196,18 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab4.Text1}" />
                     <!--  Jvm内存  -->
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg14.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text1}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
@@ -246,7 +286,17 @@
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <!--  分辨率  -->
-                    <Label Content="{setting:Localize SettingWindow.Tab4.Text9}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg15.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text9}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label

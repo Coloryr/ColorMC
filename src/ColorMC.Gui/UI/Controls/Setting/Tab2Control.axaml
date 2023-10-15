@@ -7,7 +7,7 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:view="clr-namespace:ColorMC.Gui.Objs"
-    d:DesignHeight="1000"
+    d:DesignHeight="1200"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -20,6 +20,17 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg1.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text46}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <StackPanel Name="PhoneSetting" />
                     <WrapPanel Orientation="Horizontal">
                         <CheckBox
@@ -67,6 +78,17 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <!--  语言  -->
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg2.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text47}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel Orientation="Horizontal">
                         <Label
                             Margin="0,0,5,0"
@@ -128,10 +150,19 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text39}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg3.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text39}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
+
                     <WrapPanel>
-
-
                         <StackPanel Orientation="Horizontal">
                             <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text40}" />
                             <Slider
@@ -187,8 +218,17 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <!--  背景图  -->
-
-                    <Label Content="{setting:Localize SettingWindow.Tab2.Text2}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg4.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text2}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <CheckBox
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text44}"
@@ -328,7 +368,17 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <!--  颜色设置  -->
-                    <Label Content="{setting:Localize SettingWindow.Tab2.Text7}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg5.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text7}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
 
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <RadioButton
@@ -417,17 +467,6 @@
                             <ColorPicker Color="{Binding DarkFont2Color}" />
                         </StackPanel>
                     </WrapPanel>
-                </StackPanel>
-            </Border>
-
-            <Border
-                Margin="0,3,0,0"
-                Padding="8"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
-                <WrapPanel>
                     <!--  RGB模式  -->
                     <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text13}" IsChecked="{Binding EnableRGB}" />
                     <StackPanel Orientation="Horizontal">
@@ -475,7 +514,7 @@
                             VerticalAlignment="Center"
                             Content="{Binding RgbV2, StringFormat='{}{0}%'}" />
                     </StackPanel>
-                </WrapPanel>
+                </StackPanel>
             </Border>
 
             <Border
@@ -487,11 +526,27 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <!--  Live2D人物  -->
-
-                    <Label Content="{setting:Localize SettingWindow.Tab2.Text29}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg6.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text29}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
+                    <CheckBox
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize SettingWindow.Tab2.Text48}"
+                        IsChecked="{Binding EnableLive2D}" />
                     <WrapPanel IsEnabled="{Binding !Phone}">
-                        <Label Content="{setting:Localize SettingWindow.Tab2.Text30}" />
-                        <Label Margin="5,0,0,0" Content="{Binding Live2DCoreState}" />
+                        <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text30}" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding Live2DCoreState}" />
                         <Button
                             Width="80"
                             Height="25"
@@ -500,12 +555,13 @@
                             Command="{Binding DownloadCore}"
                             Content="{setting:Localize SettingWindow.Tab2.Text31}" />
                         <Button
-                            Width="80"
+                            Width="120"
                             Height="25"
                             Margin="0,0,5,0"
                             HorizontalAlignment="Right"
-                            Command="{Binding OpenRunDir}"
-                            Content="{setting:Localize Button.OpFile}" />
+                            Command="{Binding InstallCore}"
+                            Content="{setting:Localize SettingWindow.Tab2.Text49}"
+                            IsEnabled="{Binding !CoreInstall}" />
                     </WrapPanel>
 
                     <TextBox

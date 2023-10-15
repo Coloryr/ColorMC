@@ -18,45 +18,59 @@
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
-                <WrapPanel>
-                    <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg7.svg" />
                         <Label
-                            HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab3.Text1}" />
-                        <ComboBox
-                            Width="120"
-                            Margin="5,0,0,0"
-                            IsEnabled="{Binding !IsDownload}"
-                            ItemsSource="{Binding SourceList}"
-                            SelectedIndex="{Binding Source}" />
+                            Content="{setting:Localize SettingWindow.Tab3.Text23}"
+                            FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
+                    <WrapPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab3.Text1}" />
+                            <ComboBox
+                                Width="120"
+                                Margin="5,0,0,0"
+                                IsEnabled="{Binding !IsDownload}"
+                                ItemsSource="{Binding SourceList}"
+                                SelectedIndex="{Binding Source}" />
+                        </StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            Margin="5,0,5,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab3.Text2}" />
-                        <NumericUpDown
-                            Width="120"
-                            Height="30"
-                            Margin="0,0,10,0"
-                            FormatString="N0"
-                            IsEnabled="{Binding !IsDownload}"
-                            Minimum="1"
-                            Value="{Binding Thread}" />
-                    </StackPanel>
-                    <CheckBox
-                        Width="160"
-                        Content="{setting:Localize SettingWindow.Tab3.Text11}"
-                        IsChecked="{Binding CheckFile}"
-                        IsEnabled="{Binding !IsDownload}" />
-                    <CheckBox
-                        Content="{setting:Localize SettingWindow.Tab3.Text19}"
-                        IsChecked="{Binding AutoDownload}"
-                        IsEnabled="{Binding !IsDownload}" />
-                </WrapPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab3.Text2}" />
+                            <NumericUpDown
+                                Width="120"
+                                Height="30"
+                                Margin="0,0,10,0"
+                                FormatString="N0"
+                                IsEnabled="{Binding !IsDownload}"
+                                Minimum="1"
+                                Value="{Binding Thread}" />
+                        </StackPanel>
+                        <CheckBox
+                            Width="160"
+                            Content="{setting:Localize SettingWindow.Tab3.Text11}"
+                            IsChecked="{Binding CheckFile}"
+                            IsEnabled="{Binding !IsDownload}" />
+                        <CheckBox
+                            Content="{setting:Localize SettingWindow.Tab3.Text19}"
+                            IsChecked="{Binding AutoDownload}"
+                            IsEnabled="{Binding !IsDownload}" />
+                    </WrapPanel>
+                </StackPanel>
+
             </Border>
             <Border
                 Margin="0,3,0,0"
@@ -66,7 +80,17 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab3.Text3}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg8.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab3.Text3}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <Grid ColumnDefinitions="3*,1*">
                         <TextBox
                             Grid.Column="0"
@@ -135,7 +159,17 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab3.Text14}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg9.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab3.Text14}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel>
                         <CheckBox Content="{setting:Localize SettingWindow.Tab3.Text15}" IsChecked="{Binding CheckUpdate}" />
                         <Button
@@ -161,12 +195,21 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg10.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab3.Text20}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="{setting:Localize SettingWindow.Tab3.Text20}" />
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,0,0,0"
                             Command="{Binding GameCloudConnect}"
                             Content="{setting:Localize SettingWindow.Tab3.Text22}" />
                         <Label Margin="5,0,0,0" Content="{Binding ServerInfo}" />

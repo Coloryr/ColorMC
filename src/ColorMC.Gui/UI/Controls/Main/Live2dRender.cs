@@ -75,6 +75,10 @@ public class Live2dRender : OpenGlControlBase
             (DataContext as MainModel)!.Model.Show(App.GetLanguage("MainWindow.Live2d.Error1"));
             return;
         }
+        if (!GuiConfigUtils.Config.Live2D.Enable)
+        {
+            return;
+        }
         var info = new FileInfo(model);
         try
         {

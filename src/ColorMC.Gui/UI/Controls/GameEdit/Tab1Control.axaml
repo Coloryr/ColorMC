@@ -19,7 +19,17 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label Content="{setting:Localize Text.GameVersion}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/GameEdit/svg1.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize Text.GameVersion}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal">
                             <Label
@@ -62,7 +72,17 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/GameEdit/svg2.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text4}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal">
                             <Label
@@ -115,7 +135,17 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/GameEdit/svg3.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text5}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel Orientation="Horizontal">
                         <ComboBox
                             Name="ComboBox3"
@@ -141,28 +171,18 @@
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
-                <WrapPanel>
-                    <Button
-                        Width="120"
-                        Height="25"
-                        Command="{Binding OpenOptifine}"
-                        Content="{setting:Localize AddWindow.Text10}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text43}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Label
-                        Margin="5,2,0,2"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text4}" />
-                </WrapPanel>
-            </Border>
-            <Border
-                Margin="0,3,0,0"
-                Padding="8"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Svg
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/GameEdit/svg4.svg" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text12}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
                     <WrapPanel>
                         <CheckBox
                             Name="CheckBox1"
@@ -174,6 +194,7 @@
                             Height="25"
                             Command="{Binding CheckModPackUpdate}"
                             Content="{setting:Localize GameEditWindow.Tab1.Text10}"
+                            IsEnabled="{Binding ModPack}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text51}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
@@ -214,59 +235,74 @@
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
-                <WrapPanel>
-                    <Button
-                        Width="120"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding Delete}"
-                        Content="{setting:Localize Button.Delete}"
-                        IsEnabled="{Binding !GameRun}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text36}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="120"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding OpenServerPack}"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text5}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text47}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="120"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding ExportGame}"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text11}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text66}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="120"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding OpenGameLog}"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text7}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text65}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="120"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding OpenConfigEdit}"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text6}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text50}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="120"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Command="{Binding Open}"
-                        Content="{setting:Localize Button.OpFile}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                        ToolTip.VerticalOffset="-30" />
-                </WrapPanel>
+                <StackPanel>
+                    <WrapPanel Margin="0,0,0,3">
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Command="{Binding OpenOptifine}"
+                            Content="{setting:Localize AddWindow.Text10}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text43}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Label
+                            Margin="5,2,0,2"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text4}" />
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding Delete}"
+                            Content="{setting:Localize Button.Delete}"
+                            IsEnabled="{Binding !GameRun}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text36}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding OpenServerPack}"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text5}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding ExportGame}"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text11}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text66}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding OpenGameLog}"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text7}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text65}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding OpenConfigEdit}"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text6}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text50}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding Open}"
+                            Content="{setting:Localize Button.OpFile}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                            ToolTip.VerticalOffset="-30" />
+                    </WrapPanel>
+                </StackPanel>
             </Border>
         </StackPanel>
     </ScrollViewer>
