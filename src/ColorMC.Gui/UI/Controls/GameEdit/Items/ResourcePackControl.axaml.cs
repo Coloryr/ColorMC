@@ -20,7 +20,7 @@ public partial class ResourcePackControl : UserControl
 
     private void ResourcePackControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-
+        LongPressed.Released();
     }
 
     private void ResourcePackControl_PointerExited(object? sender, PointerEventArgs e)
