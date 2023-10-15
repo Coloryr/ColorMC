@@ -136,8 +136,17 @@ public partial class GameEditModel : MenuModel
         count = list.Count(a => a.Count() > 1);
         if (count > 0)
         {
-            Model.Show(string.Format(App
+            var list1 = new List<string>();
+            foreach (var item in list)
+            {
+                list1.Add(item.Key);
+            }
+            var res1 = await Model.ShowWait(string.Format(App
                      .GetLanguage("GameEditWindow.Tab4.Info14"), count));
+            if (res1)
+            {
+                DisplayMod(list1);
+            }
         }
         LoadMod1();
     }
@@ -247,6 +256,18 @@ public partial class GameEditModel : MenuModel
                     item1.Enable = !item1.Obj.Disable;
                 }
             }
+        }
+    }
+
+    private void DisplayMod(List<string> list)
+    {
+        ModList.Clear();
+        foreach (var item in list)
+        {
+            var list1 = from item1 in _modItems
+                       where item1.Modid == item
+                       select item1;
+            ModList.AddRange(list1);
         }
     }
 
