@@ -148,7 +148,7 @@ public partial class GameConfigEditModel : GameModel
         Model.Progress(App.GetLanguage("ConfigEditWindow.Info7"));
         _chunkData = null;
         var info = new FileInfo(value);
-        if (info.Extension is ".dat" or ".dat_old")
+        if (info.Extension is ".dat" or ".dat_old" or ".rio")
         {
             NbtEnable = true;
 
@@ -161,6 +161,8 @@ public partial class GameConfigEditModel : GameModel
             {
                 nbt = await GameBinding.ReadNbt(Obj, value);
             }
+
+            Model.ProgressClose();
 
             if (nbt is not NbtCompound nbt1)
             {
@@ -183,6 +185,8 @@ public partial class GameConfigEditModel : GameModel
             {
                 _chunkData = await GameBinding.ReadMca(Obj, value);
             }
+
+            Model.ProgressClose();
 
             if (_chunkData?.Nbt is not NbtList nbt1)
             {
@@ -207,9 +211,10 @@ public partial class GameConfigEditModel : GameModel
                 text = GameBinding.ReadConfigFile(Obj, value);
             }
 
+            Model.ProgressClose();
+
             Text = new(text);
         }
-        Model.ProgressClose();
     }
 
     [RelayCommand]

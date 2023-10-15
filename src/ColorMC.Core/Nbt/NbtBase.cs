@@ -159,8 +159,12 @@ public abstract class NbtBase
         return (Activator.CreateInstance(type) as NbtBase)!;
     }
 
-    public static async Task<NbtBase> Read(Stream stream, bool chunk = false)
+    public static async Task<NbtBase?> Read(Stream stream, bool chunk = false)
     {
+        if (stream.Length < 2)
+        {
+            return null;
+        }
         DataInputStream stream2;
         var data = new byte[2];
         await stream.ReadExactlyAsync(data);
@@ -182,13 +186,20 @@ public abstract class NbtBase
         {
             stream2 = new DataInputStream(stream);
         }
-        var type = (NbtType)stream2.ReadByte();
-        if (type == NbtType.NbtEnd)
+        var type = stream2.ReadByte();
+        if (type >= NbtTypes.VALUES.Count)
+        {
+            return null;
+        }
+
+        var type1 = (NbtType)type;
+
+        if (type1 == NbtType.NbtEnd)
         {
             return new NbtEnd();
         }
 
-        if (type == NbtType.NbtCompound)
+        if (type1 == NbtType.NbtCompound)
         {
             var temp = stream2.ReadShort();
             if (temp > 0)
@@ -206,7 +217,7 @@ public abstract class NbtBase
         }
         else
         {
-            nbt = ById(type);
+            nbt = ById(type1);
         }
         nbt.ZipType = zip;
         nbt.Read(stream2);
@@ -221,7 +232,7 @@ public abstract class NbtBase
     /// </summary>
     /// <param name="file">文件名</param>
     /// <returns></returns>
-    public static async Task<NbtBase> Read(string file)
+    public static async Task<NbtBase?> Read(string file)
     {
         using var stream = PathHelper.OpenRead(file)!;
         return await Read(stream);

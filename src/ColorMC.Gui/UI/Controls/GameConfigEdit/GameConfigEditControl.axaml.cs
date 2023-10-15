@@ -167,7 +167,7 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         var model = (DataContext as GameConfigEditModel)!;
         if (model.World != null)
         {
-            key = model.Obj.UUID + ":" + model.World.LevelName;
+            key = model.World.Game.UUID + ":" + model.World.LevelName;
         }
         else
         {

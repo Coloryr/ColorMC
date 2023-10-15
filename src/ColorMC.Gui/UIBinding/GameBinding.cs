@@ -631,14 +631,14 @@ public static class GameBinding
         return await ChunkMca.Read(Path.GetFullPath(dir + "/" + name));
     }
 
-    public static async Task<NbtBase> ReadNbt(WorldObj obj, string name)
+    public static async Task<NbtBase?> ReadNbt(WorldObj obj, string name)
     {
         var dir = obj.Local;
 
         return await NbtBase.Read(Path.GetFullPath(dir + "/" + name));
     }
 
-    public static async Task<NbtBase> ReadNbt(GameSettingObj obj, string name)
+    public static async Task<NbtBase?> ReadNbt(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
 
