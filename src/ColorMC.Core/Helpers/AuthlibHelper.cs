@@ -22,6 +22,17 @@ public static class AuthlibHelper
     /// </summary>
     public static string NowNide8Injector { get; private set; }
 
+    private static AuthlibInjectorObj GetLocalAuthLib()
+    {
+        return new()
+        {
+            build_number = 51,
+            checksums = new() { sha256 = "d3ec36486b0a5ab5a16069733cd8d749950c2d62e1bdacaf27864b30b92c1c7f" },
+            download_url = "https://authlib-injector.yushi.moe/artifact/51/authlib-injector-1.2.3.jar",
+            version = "1.2.3"
+        };
+    }
+
     /// <summary>
     /// 创建Nide8Injector下载实例
     /// </summary>
@@ -106,9 +117,10 @@ public static class AuthlibHelper
         var meta = await BaseClient.GetString(url);
         if (meta.Item1 == false)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
-                new Exception(url), false);
-            throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
+            return GetLocalAuthLib();
+            //ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+            //    new Exception(url), false);
+            //throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
         }
         var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!)
             ?? throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
