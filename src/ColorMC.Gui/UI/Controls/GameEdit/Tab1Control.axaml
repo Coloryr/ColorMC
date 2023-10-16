@@ -13,7 +13,7 @@
     <ScrollViewer>
         <StackPanel Margin="5,3,5,5">
             <Border
-                Padding="8"
+                Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
@@ -66,7 +66,7 @@
             </Border>
             <Border
                 Margin="0,3,0,0"
-                Padding="8"
+                Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
@@ -129,7 +129,7 @@
             </Border>
             <Border
                 Margin="0,3,0,0"
-                Padding="8"
+                Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
@@ -165,7 +165,7 @@
             </Border>
             <Border
                 Margin="0,3,0,0"
-                Padding="8"
+                Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
@@ -229,7 +229,7 @@
             </Border>
             <Border
                 Margin="0,3,0,0"
-                Padding="8"
+                Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"

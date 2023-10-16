@@ -13,7 +13,7 @@
     mc:Ignorable="d">
     <DockPanel Margin="5,3,5,5">
         <Border
-            Padding="8"
+            Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
