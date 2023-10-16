@@ -32,7 +32,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddModPackWindow.Text11}" />
                             <ComboBox
-                                Width="110"
+                                Width="120"
                                 Height="30"
                                 Margin="2,2,0,0"
                                 IsEnabled="{Binding Enable}"
