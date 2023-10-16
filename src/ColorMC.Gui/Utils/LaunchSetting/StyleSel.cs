@@ -15,6 +15,7 @@ public class StyleSel : INotifyPropertyChanged
     private int Radius;
 
     private static double FontTitleSize = 17;
+    private static Thickness BorderPadding = new(6);
 
     public object? this[string key]
     {
@@ -35,6 +36,10 @@ public class StyleSel : INotifyPropertyChanged
             else if (key == "Radius")
             {
                 return Radius;
+            }
+            else if (key == "BorderPadding")
+            {
+                return BorderPadding;
             }
             return null;
         }

@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     <Border
         Margin="5,3,5,5"
-        Padding="8"
+        Padding="{setting:Style BorderPadding}"
         Background="{setting:Colors GroupBack}"
         BorderBrush="{setting:Colors GroupColor}"
         BorderThickness="2"

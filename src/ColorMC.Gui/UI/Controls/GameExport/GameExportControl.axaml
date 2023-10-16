@@ -14,7 +14,7 @@
         <DockPanel>
             <Border
                 Margin="5,5,5,0"
-                Padding="8"
+                Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
