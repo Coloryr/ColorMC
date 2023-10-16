@@ -69,6 +69,7 @@ public partial class GameControl : UserControl
 
     private void GameControl_PointerMoved(object? sender, PointerEventArgs e)
     {
+        LongPressed.Released();
         var pro = e.GetCurrentPoint(this);
         if (pro.Properties.IsLeftButtonPressed)
         {

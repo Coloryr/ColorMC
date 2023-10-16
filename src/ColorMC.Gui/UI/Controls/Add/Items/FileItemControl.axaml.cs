@@ -20,6 +20,12 @@ public partial class FileItemControl : UserControl
         DoubleTapped += FileItemControl_DoubleTapped;
         PointerEntered += FileItemControl_PointerEntered;
         PointerExited += FileItemControl_PointerExited;
+        PointerMoved += FileItemControl_PointerMoved;
+    }
+
+    private void FileItemControl_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        LongPressed.Released();
     }
 
     private void FileItemControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
