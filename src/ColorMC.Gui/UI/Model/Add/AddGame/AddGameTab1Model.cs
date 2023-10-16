@@ -100,6 +100,39 @@ public partial class AddGameModel : MenuModel
         GameVersionUpdate();
     }
 
+    [RelayCommand]
+    public async Task ServerPackDownload()
+    {
+        var res = await Model.ShowInputOne(App.GetLanguage("AddGameWindow.Tab1.Info13"), false);
+        if (res.Cancel)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(res.Text))
+        {
+            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error14"));
+            return;
+        }
+
+        if (!res.Text.EndsWith('/'))
+        {
+            res.Text += '/';
+        }
+
+        Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info14"));
+        var res1 = await GameBinding.DownloadServerPack(Model, Name, Group, res.Text);
+        Model.ProgressClose();
+        if (!res1.Item1 && res1.Item2 != null)
+        {
+            Model.Show(res1.Item2!);
+        }
+        else
+        {
+            Done();
+        }
+    }
+
     /// <summary>
     /// 下载云同步游戏实例
     /// </summary>

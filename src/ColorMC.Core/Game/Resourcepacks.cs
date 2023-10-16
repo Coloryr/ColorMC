@@ -68,7 +68,7 @@ public static class Resourcepacks
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>列表</returns>
-    public static async Task<List<ResourcepackObj>> GetResourcepacks(this GameSettingObj game)
+    public static async Task<List<ResourcepackObj>> GetResourcepacks(this GameSettingObj game, bool sha256)
     {
         var list = new List<ResourcepackObj>();
         var dir = game.GetResourcepacksPath();
@@ -96,6 +96,11 @@ public static class Resourcepacks
                 {
                     obj.Local = Path.GetFullPath(item.FullName);
                     obj.Sha1 = sha1;
+                    if (sha256)
+                    {
+                        stream.Seek(0, SeekOrigin.Begin);
+                        obj.Sha256 = HashHelper.GenSha256(stream);
+                    }
                     list.Add(obj);
                 }
                 else

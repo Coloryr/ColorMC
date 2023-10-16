@@ -676,7 +676,7 @@ public partial class GameConfigEditModel : GameModel
 
     public async void Find()
     {
-        var data = await Model.ShowOne(App.GetLanguage("ConfigEditWindow.Info3"), false);
+        var data = await Model.ShowInputOne(App.GetLanguage("ConfigEditWindow.Info3"), false);
         if (data.Cancel)
         {
             return;

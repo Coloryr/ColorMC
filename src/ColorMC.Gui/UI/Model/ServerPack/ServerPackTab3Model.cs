@@ -44,9 +44,9 @@ public partial class ServerPackModel : MenuModel
     public async void LoadConfigList()
     {
         ConfigList.Clear();
-        var mods = await GameBinding.GetResourcepacks(Obj.Game);
+        var mods = await GameBinding.GetResourcepacks(Obj.Game, true);
 
-        Obj.Resourcepack?.RemoveAll(a => mods.Find(b => a.Sha1 == b.Sha1) == null);
+        Obj.Resourcepack?.RemoveAll(a => mods.Find(b => a.Sha256 == b.Sha256) == null);
 
         mods.ForEach(item =>
         {
@@ -55,14 +55,14 @@ public partial class ServerPackModel : MenuModel
 
             string file = Path.GetFileName(item.Local);
 
-            var item1 = Obj.Resourcepack?.FirstOrDefault(a => a.Sha1 == item.Sha1
+            var item1 = Obj.Resourcepack?.FirstOrDefault(a => a.Sha256 == item.Sha256
                         && a.File == file);
 
             var item2 = new ServerPackItemModel()
             {
                 FileName = file,
                 Check = item1 != null,
-                Sha1 = item.Sha1,
+                Sha256 = item.Sha256,
                 Resourcepack = item
             };
             if (item1 != null)
@@ -73,7 +73,7 @@ public partial class ServerPackModel : MenuModel
                 }
                 else
                 {
-                    item2.Url = BaseBinding.MakeUrl(item1, FileType.Resourcepack, Obj.Url);
+                    item2.Url = BaseBinding.MakeUrl(item1, FileType.Resourcepack, Obj.Game.ServerUrl);
                 }
             }
 
@@ -85,13 +85,13 @@ public partial class ServerPackModel : MenuModel
 
     private void ConfigItemEdit(ServerPackItemModel obj)
     {
-        var item = Obj.Resourcepack?.FirstOrDefault(a => a.Sha1 == obj.Sha1
+        var item = Obj.Resourcepack?.FirstOrDefault(a => a.Sha256 == obj.Sha256
                         && a.File == obj.FileName);
         if (obj.Check)
         {
             if (item != null)
             {
-                item.Sha1 = obj.Sha1;
+                item.Sha256 = obj.Sha256;
                 item.File = obj.FileName;
             }
             else
@@ -99,13 +99,13 @@ public partial class ServerPackModel : MenuModel
                 Obj.Resourcepack ??= new();
                 item = new()
                 {
-                    Sha1 = obj.Sha1,
+                    Sha256 = obj.Sha256,
                     File = obj.FileName
                 };
                 Obj.Resourcepack.Add(item);
             }
 
-            obj.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Resourcepack, Obj.Url);
+            obj.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Resourcepack, Obj.Game.ServerUrl);
         }
         else
         {

@@ -31,8 +31,6 @@ public partial class SettingModel : MenuModel
     [ObservableProperty]
     private string? _fileUI;
     [ObservableProperty]
-    private string? _serverUrl;
-    [ObservableProperty]
     private string? _music;
     [ObservableProperty]
     private string? _loginUrl;
@@ -52,8 +50,6 @@ public partial class SettingModel : MenuModel
     private bool _enableOneLogin;
     [ObservableProperty]
     private bool _enableOneLoginUrl;
-    [ObservableProperty]
-    private bool _enableServerPack;
     [ObservableProperty]
     private bool _enableMusic;
     [ObservableProperty]
@@ -120,16 +116,6 @@ public partial class SettingModel : MenuModel
     partial void OnRunPauseChanged(bool value)
     {
         SetMusic();
-    }
-
-    partial void OnEnableServerPackChanged(bool value)
-    {
-        SetServerPack();
-    }
-
-    partial void OnServerUrlChanged(string? value)
-    {
-        SetServerPack();
     }
 
     partial void OnFileUIChanged(string? value)
@@ -286,13 +272,11 @@ public partial class SettingModel : MenuModel
             ServerIP = config.IP;
             ServerPort = config.Port;
             FileUI = config.UIFile;
-            ServerUrl = config.ServerUrl;
             Music = config.Music;
 
             EnableMotd = config.Motd;
             EnableJoin = config.JoinServer;
             EnableOneGame = config.LockGame;
-            EnableServerPack = config.ServerPack;
             EnableMusic = config.PlayMusic;
             RunPause = config.RunPause;
             SlowVolume = config.SlowVolume;
@@ -332,14 +316,6 @@ public partial class SettingModel : MenuModel
             return;
 
         ConfigBinding.SetLoginLock(EnableOneLogin, Login, LoginUrl!);
-    }
-
-    private void SetServerPack()
-    {
-        if (_serverLoad)
-            return;
-
-        ConfigBinding.SetServerPack(EnableServerPack, ServerUrl);
     }
 
     private void SetIP()

@@ -182,6 +182,7 @@ public partial class App : Application
         ColorChange();
 
         BaseBinding.Init();
+        InfoBinding.Init();
 
         if (ConfigBinding.WindowMode())
         {

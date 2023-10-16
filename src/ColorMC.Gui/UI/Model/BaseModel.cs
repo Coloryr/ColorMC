@@ -295,8 +295,7 @@ public partial class BaseModel : ObservableObject
         return (_info3Cancel, Info3Text1, Info3Text2);
     }
 
-    public async Task<(bool Cancel, string? Text)>
-        ShowOne(string title, bool lock1)
+    public async Task<(bool Cancel, string? Text)> ShowInputOne(string title, bool lock1)
     {
         Info3Text2Visable = false;
         Info3TextReadonly = lock1;

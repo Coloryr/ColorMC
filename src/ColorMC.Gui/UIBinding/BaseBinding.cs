@@ -8,6 +8,7 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -21,6 +22,7 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,7 +44,6 @@ public static class BaseBinding
     public readonly static Dictionary<string, StringBuilder> GameLogs = new();
     public static bool ISNewStart => ColorMCCore.NewStart;
 
-    private static BaseModel? s_window;
     private static CancellationTokenSource s_launchCancel = new();
 
     private static string s_launch;
@@ -60,10 +61,6 @@ public static class BaseBinding
         ColorMCCore.NoJava = NoJava;
         ColorMCCore.UpdateSelect = PackUpdate;
         ColorMCCore.UpdateState = UpdateState;
-        ColorMCCore.OfflineLaunch = OfflineLaunch;
-        ColorMCCore.GameLaunch = GameLunch;
-        ColorMCCore.GameRequest = GameRequest;
-        ColorMCCore.LaunchP = LaunchP;
         ColorMCCore.LoadDone = LoadDone;
 
         if (ColorMCGui.RunType == RunType.Program)
@@ -141,148 +138,7 @@ public static class BaseBinding
         App.PageSlide500.Fade = GuiConfigUtils.Config.Style.AmFade;
     }
 
-    private static Task<bool> LaunchP(bool pre)
-    {
-        if (s_window == null)
-        {
-            return Task.Run(() => { return false; });
-        }
-
-        return Dispatcher.UIThread.InvokeAsync(() =>
-            s_window.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
-            : App.GetLanguage("MainWindow.Info30")));
-    }
-
-    private static Task<bool> GameRequest(string state)
-    {
-        if (s_window == null)
-        {
-            return Task.Run(() => { return false; });
-        }
-
-        return Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            return s_window.ShowWait(state);
-        });
-    }
-
-    private static Task<bool> OfflineLaunch(LoginObj login)
-    {
-        if (s_window == null)
-        {
-            return Task.Run(() => { return false; });
-        }
-        return Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            return s_window.ShowWait(string.Format(
-                App.GetLanguage("MainWindow.Info21"), login.UserName));
-        });
-    }
-
-    private static void GameLunch(GameSettingObj obj, LaunchState state)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            if (s_window == null)
-                return;
-            if (GuiConfigUtils.Config.CloseBeforeLaunch)
-            {
-                switch (state)
-                {
-                    case LaunchState.Login:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info8"));
-                        break;
-                    case LaunchState.Check:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info9"));
-                        break;
-                    case LaunchState.CheckVersion:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info10"));
-                        break;
-                    case LaunchState.CheckLib:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info11"));
-                        break;
-                    case LaunchState.CheckAssets:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info12"));
-                        break;
-                    case LaunchState.CheckLoader:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info13"));
-                        break;
-                    case LaunchState.CheckLoginCore:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info14"));
-                        break;
-                    case LaunchState.CheckMods:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info17"));
-                        break;
-                    case LaunchState.Download:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info15"));
-                        break;
-                    case LaunchState.JvmPrepare:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info16"));
-                        break;
-                    case LaunchState.LaunchPre:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info31"));
-                        break;
-                    case LaunchState.LaunchPost:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info32"));
-                        break;
-                    case LaunchState.InstallForge:
-                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info38"));
-                        break;
-                    case LaunchState.End:
-                        s_window.ProgressClose();
-                        break;
-                }
-            }
-            else
-            {
-                switch (state)
-                {
-                    case LaunchState.Login:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info8");
-                        break;
-                    case LaunchState.Check:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info9");
-                        break;
-                    case LaunchState.CheckVersion:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info10");
-                        break;
-                    case LaunchState.CheckLib:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info11");
-                        break;
-                    case LaunchState.CheckAssets:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info12");
-                        break;
-                    case LaunchState.CheckLoader:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info13");
-                        break;
-                    case LaunchState.CheckLoginCore:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info14");
-                        break;
-                    case LaunchState.CheckMods:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info17");
-                        break;
-                    case LaunchState.Download:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info15");
-                        break;
-                    case LaunchState.JvmPrepare:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info16");
-                        break;
-                    case LaunchState.LaunchPre:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info31");
-                        break;
-                    case LaunchState.LaunchPost:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info32");
-                        break;
-                    case LaunchState.InstallForge:
-                        s_window.Title1 = App.GetLanguage("MainWindow.Info38");
-                        break;
-                    case LaunchState.End:
-                        s_window.Title1 = "";
-                        break;
-                }
-            }
-        });
-    }
+    
 
     /// <summary>
     /// 复制到剪贴板
@@ -384,9 +240,9 @@ public static class BaseBinding
     public static async Task<(bool, string?)> Launch(BaseModel window,
         GameSettingObj obj, LoginObj obj1, WorldObj? world = null, bool wait = false)
     {
-        ColorMCCore.GameRequest = GameRequest;
+        InfoBinding.Window = window;
+        InfoBinding.Launch();
 
-        s_window = window;
         s_launchCancel = new();
 
         if (Games.ContainsValue(obj.UUID))
@@ -781,70 +637,6 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 服务器包检查
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    public static async void ServerPackCheck(BaseModel model, GameSettingObj obj)
-    {
-        var config = GuiConfigUtils.Config.ServerCustom;
-        if (config.ServerPack)
-        {
-            if (string.IsNullOrWhiteSpace(config.ServerUrl))
-            {
-                return;
-            }
-
-            var window = App.GetMainWindow();
-            if (window == null)
-            {
-                return;
-            }
-
-            try
-            {
-                string temp = App.GetLanguage("Gui.Info27");
-                ColorMCCore.UnZipItem = (a, b, c) =>
-                {
-                    Dispatcher.UIThread.Post(() => model.ProgressUpdate($"{temp} {a} {b}/{c}"));
-                };
-                var (Res, Obj) = await obj.ServerPackCheck(config.ServerUrl);
-                if (Res && !string.IsNullOrWhiteSpace(Obj?.UI))
-                {
-                    GuiConfigUtils.Config.ServerCustom.UIFile = Obj.UI;
-                    GuiConfigUtils.Save();
-                }
-
-                if (Res)
-                {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        model.ShowOk(App.GetLanguage("Gui.Info13"), App.Close);
-                    });
-                }
-                else if (Obj != null)
-                {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        model.Show(App.GetLanguage("Gui.Error18"));
-                    });
-                }
-
-            }
-            catch (Exception e)
-            {
-                string text = App.GetLanguage("Gui.Error19");
-                Logs.Error(text, e);
-                Dispatcher.UIThread.Post(() =>
-                {
-                    model.ProgressClose();
-                    model.Show(text);
-                });
-            }
-            ColorMCCore.UnZipItem = null;
-        }
-    }
-
-    /// <summary>
     /// 转网址
     /// </summary>
     /// <param name="item">项目</param>
@@ -1073,46 +865,5 @@ public static class BaseBinding
         }
 
         return false;
-    }
-
-    public static async Task<bool> DeleteGame(BaseModel model, GameSettingObj obj)
-    {
-        s_window = model;
-        var res = await obj.Remove();
-        App.MainWindow?.LoadMain();
-        if (res)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                App.CloseGameWindow(obj);
-            });
-        }
-
-        return res;
-    }
-
-    public static void OpenPicFile(string screenshot)
-    {
-        screenshot = Path.GetFullPath(screenshot);
-        switch (SystemInfo.Os)
-        {
-            case OsType.Windows:
-                {
-                    var proc = new Process();
-                    proc.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
-                    proc.StartInfo.FileName = "rundll32.exe";
-                    proc.StartInfo.Arguments = @"C:\WINDOWS\system32\shimgvw.dll,ImageView_Fullscreen " + screenshot;
-                    proc.Start();
-                    break;
-                }
-            case OsType.Linux:
-                Process.Start("xdg-open",
-                    '"' + screenshot + '"');
-                break;
-            case OsType.MacOS:
-                Process.Start("open", "-a Preview " +
-                    '"' + screenshot + '"');
-                break;
-        }
     }
 }

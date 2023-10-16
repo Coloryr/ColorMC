@@ -44,7 +44,7 @@ public partial class ServerPackModel : MenuModel
 
     private void ModItemEdit(ServerPackItemModel model)
     {
-        var item = Obj.Mod?.FirstOrDefault(a => a.Sha1 == model.Sha1
+        var item = Obj.Mod?.FirstOrDefault(a => a.Sha256 == model.Sha256
                         && a.File == model.FileName);
         if (model.Check)
         {
@@ -63,7 +63,7 @@ public partial class ServerPackModel : MenuModel
                 item.Projcet = model.PID;
                 item.FileId = model.FID;
                 item.Source = source;
-                item.Sha1 = model.Sha1;
+                item.Sha256 = model.Sha256;
                 item.File = model.FileName;
             }
             else
@@ -74,13 +74,13 @@ public partial class ServerPackModel : MenuModel
                     Projcet = model.PID,
                     FileId = model.FID,
                     Source = source,
-                    Sha1 = model.Sha1,
+                    Sha256 = model.Sha256,
                     File = model.FileName
                 };
                 Obj.Mod.Add(item);
             }
 
-            model.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Mod, Obj.Url);
+            model.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Mod, Obj.Game.ServerUrl);
         }
         else
         {
@@ -97,9 +97,9 @@ public partial class ServerPackModel : MenuModel
     public async void LoadMod()
     {
         ModList.Clear();
-        var mods = await GameBinding.GetGameMods(Obj.Game);
+        var mods = await GameBinding.GetGameMods(Obj.Game, true);
 
-        Obj.Mod?.RemoveAll(a => mods.Find(b => a.Sha1 == b.Obj.Sha1) == null);
+        Obj.Mod?.RemoveAll(a => mods.Find(b => a.Sha256 == b.Obj.Sha256) == null);
 
         mods.ForEach(item =>
         {
@@ -108,7 +108,7 @@ public partial class ServerPackModel : MenuModel
 
             string file = Path.GetFileName(item.Obj.Local);
 
-            var item1 = Obj.Mod?.FirstOrDefault(a => a.Sha1 == item.Obj.Sha1
+            var item1 = Obj.Mod?.FirstOrDefault(a => a.Sha256 == item.Obj.Sha256
                         && a.File == file);
 
             var item2 = new ServerPackItemModel()
@@ -117,7 +117,7 @@ public partial class ServerPackModel : MenuModel
                 Check = item1 != null,
                 PID = item.PID,
                 FID = item.FID,
-                Sha1 = item.Obj.Sha1,
+                Sha256 = item.Obj.Sha256,
                 Mod = item
             };
 
@@ -133,7 +133,7 @@ public partial class ServerPackModel : MenuModel
                     }
                     else
                     {
-                        item2.Url = BaseBinding.MakeUrl(item1, FileType.Mod, Obj.Url);
+                        item2.Url = BaseBinding.MakeUrl(item1, FileType.Mod, Obj.Game.ServerUrl);
                     }
                 }
             }

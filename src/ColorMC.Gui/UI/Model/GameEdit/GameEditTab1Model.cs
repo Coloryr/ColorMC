@@ -263,7 +263,7 @@ public partial class GameEditModel : MenuModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text1) = await Model.ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
+        var (Cancel, Text1) = await Model.ShowInputOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
         if (Cancel)
         {
             return;
@@ -432,7 +432,7 @@ public partial class GameEditModel : MenuModel
             return;
 
         Model.Progress(App.GetLanguage("Gui.Info34"));
-        var res1 = await BaseBinding.DeleteGame(Model, _obj);
+        var res1 = await GameBinding.DeleteGame(Model, _obj);
         Model.ProgressClose();
         if (!res1)
         {

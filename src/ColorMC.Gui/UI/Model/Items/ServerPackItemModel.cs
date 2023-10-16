@@ -15,9 +15,9 @@ public partial class ServerPackItemModel : ObservableObject
     [ObservableProperty]
     private string? fID;
     [ObservableProperty]
-    public string sha1;
+    public string _sha256;
     [ObservableProperty]
-    public bool check;
+    public bool _check;
     [ObservableProperty]
     public string _fileName;
 

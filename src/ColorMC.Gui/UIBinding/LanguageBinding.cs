@@ -190,7 +190,7 @@ public static class LanguageBinding
         };
     }
 
-    public static List<string> GetFontName()
+    public static List<string> GetFuntionList()
     {
         return new()
         {

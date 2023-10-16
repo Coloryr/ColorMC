@@ -1,14 +1,14 @@
 ﻿using Avalonia.Controls;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.ServerPack;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class ServerPackFlyout1
 {
-    private readonly ServerPackConfigObj _obj;
+    private readonly ServerPackConfigModel _obj;
     private readonly ServerPackModel _model;
-    public ServerPackFlyout1(Control con, ServerPackModel model, ServerPackConfigObj obj)
+    public ServerPackFlyout1(Control con, ServerPackModel model, ServerPackConfigModel obj)
     {
         _model = model;
         _obj = obj;

@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -12,12 +13,12 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public partial class ServerPackModel : MenuModel
 {
-    public ObservableCollection<ServerPackConfigObj> FileList { get; init; } = new();
+    public ObservableCollection<ServerPackConfigModel> FileList { get; init; } = new();
     public ObservableCollection<string> NameList { get; init; } = new();
-    public List<string> FuntionList { get; init; } = LanguageBinding.GetFontName();
+    public List<string> FuntionList { get; init; } = LanguageBinding.GetFuntionList();
 
     [ObservableProperty]
-    private ServerPackConfigObj _fileItem;
+    private ServerPackConfigModel _fileItem;
 
     [ObservableProperty]
     private int _funtion;
@@ -29,8 +30,11 @@ public partial class ServerPackModel : MenuModel
     public void AddFile()
     {
         if (string.IsNullOrEmpty(Group))
+        {
             return;
+        }
         string local = Obj.Game.GetGamePath() + "/" + Group;
+        local = local.Replace('\\', '/');
         Obj.Config ??= new();
         if (local.EndsWith("/"))
         {
@@ -39,11 +43,10 @@ public partial class ServerPackModel : MenuModel
                 var item = new ConfigPackObj()
                 {
                     Group = Group,
-                    Zip = true,
-                    Dir = true
+                    IsZip = true,
+                    IsDir = true
                 };
 
-                item.Url = GetUrl(item)[..^1] + ".zip";
                 Obj.Config.Add(item);
             }
             else
@@ -51,11 +54,10 @@ public partial class ServerPackModel : MenuModel
                 var item = new ConfigPackObj()
                 {
                     Group = Group,
-                    Zip = false,
-                    Dir = true
+                    IsZip = false,
+                    IsDir = true
                 };
 
-                item.Url = GetUrl(item);
                 Obj.Config.Add(item);
             }
         }
@@ -64,11 +66,10 @@ public partial class ServerPackModel : MenuModel
             var item = new ConfigPackObj()
             {
                 Group = Group,
-                Zip = Funtion == 0,
-                Dir = false
+                IsZip = false,
+                IsDir = false
             };
 
-            item.Url = GetUrl(item);
             Obj.Config.Add(item);
         }
         LoadFile();
@@ -76,8 +77,8 @@ public partial class ServerPackModel : MenuModel
 
     public void LoadFile()
     {
-        FuntionList.Clear();
         FileList.Clear();
+        NameList.Clear();
         var mods = GameBinding.GetAllTopConfig(Obj.Game);
 
         Obj.Config?.RemoveAll(a => mods.Find(b => a.Group == b) == null);
@@ -87,50 +88,22 @@ public partial class ServerPackModel : MenuModel
             var item1 = Obj.Config?.FirstOrDefault(a => a.Group == item);
             if (item1 != null)
             {
-                var item2 = new ServerPackConfigObj()
-                {
-                    Group = item,
-                    Type = GetType(item1),
-                    Url = item1.Url
-                };
-
-                FileList.Add(item2);
+                FileList.Add(new(item1));
             }
             else
             {
-                FuntionList.Add(item);
+                NameList.Add(item);
             }
         });
 
         GameBinding.SaveServerPack(Obj);
     }
 
-    private string GetUrl(ConfigPackObj item)
-    {
-        if (!string.IsNullOrWhiteSpace(Obj.Url))
-        {
-            return Obj.Url + "config/" + item.Group;
-        }
-        else
-        {
-            return "";
-        }
-    }
 
-    private string GetType(ConfigPackObj obj)
-    {
-        return App.GetLanguage(
-            obj.Zip ? "ServerPackWindow.Tab4.Item1"
-            : "ServerPackWindow.Tab4.Item2");
-    }
 
-    public void DeleteFile(ServerPackConfigObj obj)
+    public void DeleteFile(ServerPackConfigModel obj)
     {
-        var item1 = Obj.Config?.FirstOrDefault(a => a.Group == obj.Group);
-        if (item1 != null)
-        {
-            Obj.Config?.Remove(item1);
-            LoadFile();
-        }
+        Obj.Config?.Remove(obj.Obj);
+        LoadFile();
     }
 }

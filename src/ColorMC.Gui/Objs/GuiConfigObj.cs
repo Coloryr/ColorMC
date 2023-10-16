@@ -87,15 +87,6 @@ public record ServerCustom
     public string? UIFile { get; set; }
 
     /// <summary>
-    /// 启用服务器包
-    /// </summary>
-    public bool ServerPack { get; set; }
-    /// <summary>
-    /// 服务器包地址
-    /// </summary>
-    public string? ServerUrl { get; set; }
-
-    /// <summary>
     /// 播放背景音乐
     /// </summary>
     public bool PlayMusic { get; set; }

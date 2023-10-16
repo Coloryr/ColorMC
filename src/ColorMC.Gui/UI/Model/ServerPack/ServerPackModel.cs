@@ -32,21 +32,11 @@ public partial class ServerPackModel : MenuModel
     [RelayCommand]
     public async Task Gen()
     {
-        if (string.IsNullOrWhiteSpace(Obj.Url))
-        {
-            Model.Show(App.GetLanguage("ServerPackWindow.Tab1.Error1"));
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(Obj.Version))
-        {
-            Model.Show(App.GetLanguage("ServerPackWindow.Tab1.Error2"));
-            return;
-        }
-
         var local = await PathBinding.SelectPath(FileType.ServerPack);
         if (local == null)
             return;
+
+        InfoBinding.Window = Model;
 
         Model.Progress(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
         var res = await GameBinding.GenServerPack(Obj, local);

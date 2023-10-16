@@ -191,12 +191,20 @@
                         ToolTip.Tip="{setting:Localize ToolTip.Text67}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
-                        Width="100"
+                        Width="120"
                         Height="25"
+                        Margin="0,0,5,0"
                         Command="{Binding GameCloudDownload}"
                         Content="{setting:Localize AddGameWindow.Tab1.Text13}"
                         IsEnabled="{Binding CloudEnable}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text68}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Command="{Binding ServerPackDownload}"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text14}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text71}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"

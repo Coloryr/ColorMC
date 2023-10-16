@@ -308,7 +308,7 @@ public static class Mods
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>Mod列表</returns>
-    public static async Task<List<ModObj>> GetMods(this GameSettingObj obj)
+    public static async Task<List<ModObj>> GetMods(this GameSettingObj obj, bool sha256)
     {
         var list = new ConcurrentBag<ModObj>();
         var dir = obj.GetModsPath();
@@ -368,6 +368,11 @@ public static class Mods
                     mod.Game = obj;
                     list.Add(mod);
                     add = true;
+                    if (sha256)
+                    {
+                        filestream.Seek(0, SeekOrigin.Begin);
+                        mod.Sha256 = HashHelper.GenSha256(filestream);
+                    }
                 }
             }
             catch (Exception e)

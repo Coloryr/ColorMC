@@ -1,5 +1,6 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -8,6 +9,7 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
@@ -429,7 +431,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取服务器包文件
+    /// 获取服务器实例文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>文件路径</returns>
@@ -439,7 +441,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取旧服务器包文件
+    /// 获取旧服务器实例文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>文件路径</returns>
@@ -659,6 +661,37 @@ public static class InstancesPath
             GameType = obj.GameType,
             Icon = obj.Icon
         };
+    }
+
+    /// <summary>
+    /// 复制游戏实例存储
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>游戏实例</returns>
+    public static void CopyObj(this GameSettingObj obj, GameSettingObj now)
+    {
+        now.Version = obj.Version;
+        now.Loader = obj.Loader;
+        now.LoaderVersion = obj.LoaderVersion;
+
+        if (obj.JvmArg != null)
+        {
+            now.JvmArg = obj.JvmArg;
+        }
+        if (obj.Window != null)
+        {
+            now.Window = obj.Window;
+        }
+        if (obj.StartServer != null)
+        {
+            now.StartServer = obj.StartServer;
+        }
+        if (obj.AdvanceJvm != null)
+        {
+            now.AdvanceJvm = obj.AdvanceJvm;
+        }
+
+        now.Save();
     }
 
     /// <summary>
