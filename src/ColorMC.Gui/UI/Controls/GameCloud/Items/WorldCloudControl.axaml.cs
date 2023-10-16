@@ -16,6 +16,12 @@ public partial class WorldCloudControl : UserControl
         PointerReleased += WorldCloudControl_PointerReleased;
         PointerEntered += WorldCloudControl_PointerEntered;
         PointerExited += WorldCloudControl_PointerExited;
+        PointerMoved += WorldCloudControl_PointerMoved;
+    }
+
+    private void WorldCloudControl_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        LongPressed.Released();
     }
 
     private void WorldCloudControl_PointerReleased(object? sender, PointerReleasedEventArgs e)

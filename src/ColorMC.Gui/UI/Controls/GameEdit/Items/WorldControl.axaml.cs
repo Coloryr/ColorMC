@@ -16,6 +16,12 @@ public partial class WorldControl : UserControl
         PointerReleased += WorldControl_PointerReleased;
         PointerEntered += WorldControl_PointerEntered;
         PointerExited += WorldControl_PointerExited;
+        PointerMoved += WorldControl_PointerMoved;
+    }
+
+    private void WorldControl_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        LongPressed.Released();
     }
 
     private void WorldControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
