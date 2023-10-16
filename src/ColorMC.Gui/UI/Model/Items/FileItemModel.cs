@@ -90,7 +90,10 @@ public partial class FileItemModel : ObservableObject
         }
         try
         {
-            _img = await ImageUtils.Load(Data.Logo);
+            _img = await Task.Run(async () =>
+            {
+                return await ImageUtils.Load(Data.Logo);
+            });
             return _img;
         }
         catch (Exception e)
