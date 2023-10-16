@@ -30,7 +30,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Label
                                 Width="65"
-                                Margin="5"
+                                Margin="5,5,0,5"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddWindow.Text1}" />
                             <ComboBox
@@ -44,7 +44,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Label
                                 Width="65"
-                                Margin="5"
+                                Margin="5,5,0,5"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddWindow.Text2}" />
                             <ComboBox
@@ -56,7 +56,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
-                                Margin="5"
+                                Margin="5,5,0,5"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize Text.GameVersion}" />
                             <ComboBox
@@ -68,7 +68,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label
-                                Margin="5"
+                                Margin="5,5,0,5"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddModPackWindow.Text5}" />
                             <NumericUpDown
@@ -84,7 +84,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Label
                                 Width="65"
-                                Margin="5"
+                                Margin="5,5,0,5"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddWindow.Text4}" />
                             <ComboBox
@@ -97,7 +97,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Label
                                 Width="65"
-                                Margin="5"
+                                Margin="5,5,0,5"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddWindow.Text5}" />
                             <ComboBox
