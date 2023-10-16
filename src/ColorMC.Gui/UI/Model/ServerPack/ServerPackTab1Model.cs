@@ -9,16 +9,7 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 public partial class ServerPackModel : MenuModel
 {
     [ObservableProperty]
-    private string _url;
-    [ObservableProperty]
-    private string _version;
-    [ObservableProperty]
     private string _text;
-    [ObservableProperty]
-    private string _uI;
-
-    [ObservableProperty]
-    private bool _forceUpdate;
 
     private bool _loadConfig;
 
@@ -27,41 +18,10 @@ public partial class ServerPackModel : MenuModel
         SaveConfig();
     }
 
-    partial void OnVersionChanged(string value)
-    {
-        SaveConfig();
-    }
-
-    partial void OnUrlChanged(string value)
-    {
-        SaveConfig();
-    }
-
-    partial void OnUIChanged(string value)
-    {
-        SaveConfig();
-    }
-
-    [RelayCommand]
-    public async Task OpenUI()
-    {
-        var file = await PathBinding.SelectFile(FileType.UI);
-        if (file == null)
-            return;
-
-        UI = file;
-    }
-
     public void LoadConfig()
     {
         _loadConfig = true;
-
-        Url = Obj.Url;
-        Version = Obj.Version;
         Text = Obj.Text;
-        UI = Obj.UI;
-        ForceUpdate = Obj.ForceUpdate;
-
         _loadConfig = false;
     }
 

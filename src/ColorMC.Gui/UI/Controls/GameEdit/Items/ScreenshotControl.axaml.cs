@@ -31,7 +31,7 @@ public partial class ScreenshotControl : UserControl
     {
         LongPressed.Released();
         var model = (DataContext as ScreenshotModel)!;
-        BaseBinding.OpenPicFile(model.Screenshot);
+        PathBinding.OpenPicFile(model.Screenshot);
     }
 
     private void ScreenshotControl_PointerExited(object? sender, PointerEventArgs e)

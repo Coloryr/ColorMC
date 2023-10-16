@@ -184,7 +184,7 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text) = await Model.ShowOne(App.GetLanguage("MainWindow.Info1"), false);
+        var (Cancel, Text) = await Model.ShowInputOne(App.GetLanguage("MainWindow.Info1"), false);
         if (Cancel)
         {
             return;
@@ -328,19 +328,9 @@ public partial class MainModel : TopModel, IMainTop
 
         BaseBinding.LoadMusic();
 
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)
-        {
-            IsFirst = true;
-            var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
-            if (game != null)
-            {
-                BaseBinding.ServerPackCheck(Model, game);
-            }
-        }
-
 #if !DEBUG
-        if (ConfigBinding.GetAllConfig().Item1?.Http?.CheckUpdate == true)
+        var config = ConfigBinding.GetAllConfig();
+        if (config.Item1?.Http?.CheckUpdate == true)
         {
             UpdateChecker.Check();
         }

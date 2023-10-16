@@ -970,6 +970,31 @@ public static class Launch
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
 
+        if (obj.ModPackType == SourceType.ColorMC && string.IsNullOrWhiteSpace(obj.ServerUrl))
+        {
+            stopwatch.Restart();
+            stopwatch.Start();
+            var pack = await obj.ServerPackCheck();
+            stopwatch.Stop();
+            temp = string.Format(LanguageHelper.Get("Core.Launch.Info14"),
+                obj.Name, stopwatch.Elapsed.ToString());
+            ColorMCCore.GameLog?.Invoke(obj, temp);
+            Logs.Info(temp);
+            if (!pack)
+            {
+                if (ColorMCCore.GameRequest != null)
+                {
+                    var res1 = await ColorMCCore.GameRequest.Invoke(
+                        string.Format(LanguageHelper.Get("Core.Launch.Info14"), obj.Name));
+                    if (!res1)
+                    {
+                        throw new LaunchException(LaunchState.Cancel,
+                                LanguageHelper.Get("Core.Launch.Error8"));
+                    }
+                }
+            }
+        }
+
         //检查游戏文件
         stopwatch.Restart();
         stopwatch.Start();
@@ -982,7 +1007,8 @@ public static class Launch
 
         if (ColorMCCore.GameRequest != null && obj.GetModeFast() && obj.Loader == Loaders.Normal)
         {
-            var res1 = await ColorMCCore.GameRequest.Invoke(LanguageHelper.Get("Core.Launch.Info13"));
+            var res1 = await ColorMCCore.GameRequest.Invoke(
+                        string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
             if (!res1)
             {
                 throw new LaunchException(LaunchState.Cancel,

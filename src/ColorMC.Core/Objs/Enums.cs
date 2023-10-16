@@ -5,7 +5,7 @@ namespace ColorMC.Core.Objs;
 /// </summary>
 public enum SourceType
 {
-    CurseForge, Modrinth, McMod
+    CurseForge, Modrinth, McMod, ColorMC
 }
 
 /// <summary>

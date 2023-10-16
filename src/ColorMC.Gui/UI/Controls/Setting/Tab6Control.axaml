@@ -197,42 +197,6 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg20.svg" />
-                        <Label
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab6.Text28}"
-                            FontSize="{setting:Style FontTitle}" />
-                    </StackPanel>
-                    <CheckBox
-                        Content="{setting:Localize SettingWindow.Tab6.Text13}"
-                        IsChecked="{Binding EnableServerPack}"
-                        IsEnabled="{Binding EnableOneGame}" />
-                    <TextBox
-                        Name="TextBox4"
-                        Classes="input1"
-                        IsEnabled="{Binding EnableServerPack}"
-                        Text="{Binding ServerUrl}"
-                        Watermark="{setting:Localize SettingWindow.Tab6.Text14}" />
-                    <TextBlock
-                        Margin="0,5,0,0"
-                        Text="{setting:Localize SettingWindow.Tab6.Text15}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-            <Border
-                Margin="0,3,0,0"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
-                IsEnabled="{Binding !Phone}">
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
                             Path="/Resource/Icon/Setting/svg21.svg" />
                         <Label
                             VerticalAlignment="Center"

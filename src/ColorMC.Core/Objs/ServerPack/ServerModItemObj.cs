@@ -6,6 +6,6 @@ public record ServerModItemObj
     public SourceType? Source { get; set; }
     public string? Projcet { get; set; }
     public string? FileId { get; set; }
-    public string Sha1 { get; set; }
+    public string Sha256 { get; set; }
     public string Url { get; set; }
 }

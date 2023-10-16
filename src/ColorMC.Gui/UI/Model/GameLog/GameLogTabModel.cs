@@ -52,16 +52,6 @@ public partial class GameLogModel : GameModel
         });
         _run = true;
         _timer.Start();
-
-        if (!obj.Empty)
-        {
-            _isGameRun = BaseBinding.IsGameRun(Obj);
-
-            Load();
-            Load1();
-
-            File = "";
-        }
     }
 
     async partial void OnFileChanged(string? value)

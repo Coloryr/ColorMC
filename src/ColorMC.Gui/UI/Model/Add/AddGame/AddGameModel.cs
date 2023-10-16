@@ -70,7 +70,7 @@ public partial class AddGameModel : MenuModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text) = await Model.ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
+        var (Cancel, Text) = await Model.ShowInputOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
         if (Cancel)
         {
             return;

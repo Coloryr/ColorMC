@@ -312,7 +312,7 @@ public static class TestItem
     public static void Item12()
     {
         var games = InstancesPath.Games;
-        var list = games[0].GetMods().Result;
+        var list = games[0].GetMods(false).Result;
 
         list[0].Disable();
         Console.ReadLine();
@@ -324,14 +324,14 @@ public static class TestItem
             Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
         }
 
-        list = Mods.GetMods(games[1]).Result;
+        list = Mods.GetMods(games[1], false).Result;
 
         foreach (var item in list)
         {
             Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
         }
 
-        list = Mods.GetMods(games[2]).Result;
+        list = Mods.GetMods(games[2], false).Result;
 
         foreach (var item in list)
         {
@@ -353,7 +353,7 @@ public static class TestItem
     public static void Item14()
     {
         var games = InstancesPath.Games;
-        var packs = games[0].GetResourcepacks().Result;
+        var packs = games[0].GetResourcepacks(false).Result;
 
         foreach (var item in packs)
         {

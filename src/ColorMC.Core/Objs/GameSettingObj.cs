@@ -125,7 +125,7 @@ public record LaunchDataObj
 /// <summary>
 /// 游戏实例
 /// </summary>
-public record GameSettingObj
+public partial record GameSettingObj
 {
     public string UUID { get; set; }
     /// <summary>
@@ -204,6 +204,10 @@ public record GameSettingObj
     /// 图标
     /// </summary>
     public string? Icon { get; set; }
+    /// <summary>
+    /// 服务器实例网址
+    /// </summary>
+    public string ServerUrl { get; set; }
 
     /// <summary>
     /// Mod信息
@@ -215,6 +219,4 @@ public record GameSettingObj
     /// </summary>
     [JsonIgnore]
     public LaunchDataObj LaunchData { get; set; }
-    [JsonIgnore]
-    public bool Empty;
 }
