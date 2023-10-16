@@ -26,14 +26,13 @@
                 IsVisible="{Binding DisplayFilter}">
                 <StackPanel>
                     <WrapPanel>
-                        <DockPanel Width="210">
+                        <DockPanel Width="180">
                             <Label
                                 Margin="5"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddModPackWindow.Text11}" />
                             <ComboBox
-                                Name="ComboBox1"
-                                Width="150"
+                                Width="110"
                                 Height="30"
                                 Margin="2,2,0,0"
                                 IsEnabled="{Binding Enable}"
@@ -47,8 +46,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddModPackWindow.Text1}" />
                             <ComboBox
-                                Name="ComboBox2"
-                                Width="130"
+                                Width="110"
                                 Height="30"
                                 Margin="0,2,0,0"
                                 IsEnabled="{Binding Enable}"
@@ -62,8 +60,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize Text.GameVersion}" />
                             <ComboBox
-                                Name="ComboBox3"
-                                Width="130"
+                                Width="120"
                                 Height="30"
                                 Margin="0,2,0,0"
                                 IsEnabled="{Binding Enable}"
@@ -80,7 +77,7 @@
                     <WrapPanel>
                         <TextBox
                             Name="Input1"
-                            Width="200"
+                            Width="170"
                             Height="30"
                             Margin="10,0,0,0"
                             Classes="input1"
@@ -94,8 +91,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddModPackWindow.Text4}" />
                             <ComboBox
-                                Name="ComboBox4"
-                                Width="130"
+                                Width="110"
                                 Height="30"
                                 Margin="0,2,0,0"
                                 IsEnabled="{Binding Enable}"
@@ -109,8 +105,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddModPackWindow.Text5}" />
                             <NumericUpDown
-                                Name="Input2"
-                                Width="130"
+                                Width="120"
                                 Height="30"
                                 FormatString="N0"
                                 IsEnabled="{Binding PageEnable}"
@@ -185,7 +180,6 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddModPackWindow.Text7}" />
                     <NumericUpDown
-                        Name="Input3"
                         Width="120"
                         Height="30"
                         FormatString="N0"
@@ -199,7 +193,6 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize Text.GameVersion}" />
                     <ComboBox
-                        Name="ComboBox6"
                         Width="140"
                         VerticalAlignment="Center"
                         ItemsSource="{Binding GameVersionList}"

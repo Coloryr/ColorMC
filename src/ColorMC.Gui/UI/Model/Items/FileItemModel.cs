@@ -90,9 +90,9 @@ public partial class FileItemModel : ObservableObject
         }
         try
         {
-            _img = await Task.Run(async () =>
+            await Task.Run(() =>
             {
-                return await ImageUtils.Load(Data.Logo);
+                _img = ImageUtils.Load(Data.Logo).Result;
             });
             return _img;
         }

@@ -34,7 +34,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddWindow.Text1}" />
                             <ComboBox
-                                Width="120"
+                                Width="110"
                                 Height="30"
                                 Margin="2,2,0,0"
                                 IsEnabled="{ReflectionBinding !Set}"
@@ -48,7 +48,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddWindow.Text2}" />
                             <ComboBox
-                                Width="120"
+                                Width="110"
                                 Height="30"
                                 Margin="2,2,0,0"
                                 ItemsSource="{Binding DownloadSourceList}"
@@ -60,7 +60,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize Text.GameVersion}" />
                             <ComboBox
-                                Width="120"
+                                Width="110"
                                 Height="30"
                                 Margin="2,2,0,0"
                                 ItemsSource="{Binding GameVersionList}"
@@ -88,7 +88,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddWindow.Text4}" />
                             <ComboBox
-                                Width="120"
+                                Width="110"
                                 Height="30"
                                 Margin="2,2,0,0"
                                 ItemsSource="{Binding SortTypeList}"
@@ -101,7 +101,7 @@
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddWindow.Text5}" />
                             <ComboBox
-                                Width="120"
+                                Width="110"
                                 Height="30"
                                 Margin="2,2,0,0"
                                 ItemsSource="{Binding CategorieList}"
