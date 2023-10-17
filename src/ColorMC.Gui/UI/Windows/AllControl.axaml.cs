@@ -60,6 +60,11 @@ public partial class AllControl : UserControl, IBaseWindow
         {
             WinHead.IsVisible = false;
         }
+        else if (SystemInfo.Os == OsType.Android)
+        {
+            Button1.IsVisible = false;
+            Button2.IsVisible = false;
+        }
 
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
