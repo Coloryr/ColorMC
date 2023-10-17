@@ -503,7 +503,7 @@ public static class ServerPack
             var res2 = await obj1.Update(obj);
             if (res2)
             {
-                File.WriteAllText(obj.GetServerPackFile(), res.Item2!);
+                File.WriteAllText(obj.GetServerPackFile(), res1.Item2!);
             }
 
             return res2;
