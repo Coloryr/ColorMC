@@ -102,7 +102,7 @@ public static class ColorMCCore
     /// <summary>
     /// 更新状态
     /// </summary>
-    public static Action<string>? UpdateState { internal get; set; }
+    public static Action<string?>? UpdateState { internal get; set; }
     /// <summary>
     /// 执行命令
     /// </summary>

@@ -51,6 +51,8 @@ public static class ServerPack
             Mod = new()
         };
 
+        ColorMCCore.UpdateState?.Invoke(LanguageHelper.Get("Core.ServerPack.Info2"));
+
         //区分新旧mod
         ServerModItemObj?[] list1 = obj.Mod.ToArray();
         ServerModItemObj?[] list2 = old.Mod.ToArray();
@@ -172,13 +174,11 @@ public static class ServerPack
             }
         }
 
+        ColorMCCore.UpdateState?.Invoke(LanguageHelper.Get("Core.ServerPack.Info3"));
         //开始下载
-        if (!await DownloadManager.Start(list5))
-        {
-            return false;
-        }
-
-        return true;
+        var res = await DownloadManager.Start(list5);
+        ColorMCCore.UpdateState?.Invoke(null);
+        return res;
     }
 
     /// <summary>
@@ -262,7 +262,8 @@ public static class ServerPack
             Mod = new(),
             Resourcepack = new(),
             Config = new(),
-            Game = obj.Game
+            Game = obj.Game,
+            Text = obj.Text
         };
 
         if (!local.EndsWith("/"))
@@ -493,13 +494,19 @@ public static class ServerPack
             }
             if (await ColorMCCore.UpdateSelect(obj1.Text))
             {
-                return false;
+                return true;
             }
 
             obj2.Item2?.MoveToOld();
             ColorMCCore.UpdateState?.Invoke(LanguageHelper.Get("Core.ServerPack.Info1"));
 
-            return await obj1.Update(obj);
+            var res2 = await obj1.Update(obj);
+            if (res2)
+            {
+                File.WriteAllText(obj.GetServerPackFile(), res.Item2!);
+            }
+
+            return res2;
         }
 
         return false;
