@@ -65,9 +65,11 @@ public partial class AllControl : UserControl, IBaseWindow
             Button1.IsVisible = false;
             Button2.IsVisible = false;
         }
-
-        Button1.Click += Button1_Click;
-        Button2.Click += Button2_Click;
+        else
+        {
+            Button1.Click += Button1_Click;
+            Button2.Click += Button2_Click;
+        }
 
         PointerPressed += AllControl_PointerPressed;
 
@@ -229,6 +231,10 @@ public partial class AllControl : UserControl, IBaseWindow
 
     private void ButtonUp()
     {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            return;
+        }
         if (GuiConfigUtils.Config.ControlMode)
         {
             if (_switchs.Count > 0)
