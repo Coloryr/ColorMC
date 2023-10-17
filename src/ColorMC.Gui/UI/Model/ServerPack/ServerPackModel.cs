@@ -38,6 +38,8 @@ public partial class ServerPackModel : MenuModel
 
         InfoBinding.Window = Model;
 
+        Obj.Text = Text;
+
         Model.Progress(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
         var res = await GameBinding.GenServerPack(Obj, local);
         Model.ProgressClose();

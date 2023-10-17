@@ -970,7 +970,7 @@ public static class Launch
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
 
-        if (obj.ModPackType == SourceType.ColorMC && string.IsNullOrWhiteSpace(obj.ServerUrl))
+        if (obj.ModPackType == SourceType.ColorMC && !string.IsNullOrWhiteSpace(obj.ServerUrl))
         {
             stopwatch.Restart();
             stopwatch.Start();
@@ -980,12 +980,12 @@ public static class Launch
                 obj.Name, stopwatch.Elapsed.ToString());
             ColorMCCore.GameLog?.Invoke(obj, temp);
             Logs.Info(temp);
-            if (!pack)
+            if (pack == false)
             {
                 if (ColorMCCore.GameRequest != null)
                 {
                     var res1 = await ColorMCCore.GameRequest.Invoke(
-                        string.Format(LanguageHelper.Get("Core.Launch.Info14"), obj.Name));
+                        string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
                     if (!res1)
                     {
                         throw new LaunchException(LaunchState.Cancel,

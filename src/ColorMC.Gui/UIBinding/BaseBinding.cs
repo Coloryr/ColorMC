@@ -60,7 +60,6 @@ public static class BaseBinding
         ColorMCCore.LanguageReload = ChangeLanguage;
         ColorMCCore.NoJava = NoJava;
         ColorMCCore.UpdateSelect = PackUpdate;
-        ColorMCCore.UpdateState = UpdateState;
         ColorMCCore.LoadDone = LoadDone;
 
         if (ColorMCGui.RunType == RunType.Program)
@@ -163,21 +162,6 @@ public static class BaseBinding
             var obj = new DataObject();
             obj.Set(DataFormats.Files, file);
             await clipboard.SetDataObjectAsync(obj);
-        }
-    }
-
-    /// <summary>
-    /// 更新状态回调
-    /// </summary>
-    /// <param name="info">信息</param>
-    public static void UpdateState(string info)
-    {
-        if (App.GetMainWindow() is { } win)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                win.Model.Progress(info);
-            });
         }
     }
 

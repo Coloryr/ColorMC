@@ -18,11 +18,34 @@ public static class InfoBinding
         ColorMCCore.GameLaunch = GameLunch;
         ColorMCCore.GameRequest = GameRequest;
         ColorMCCore.LaunchP = LaunchP;
+        ColorMCCore.UpdateState = UpdateState;
     }
 
     public static void Launch()
     {
         ColorMCCore.GameRequest = GameRequest;
+    }
+
+    /// <summary>
+    /// 更新状态回调
+    /// </summary>
+    /// <param name="info">信息</param>
+    private static void UpdateState(string? info)
+    {
+        if (Window is { } win)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (info == null)
+                {
+                    win.ProgressClose();
+                }
+                else
+                {
+                    win.Progress(info);
+                }
+            });
+        }
     }
 
     private static Task<bool> LaunchP(bool pre)
