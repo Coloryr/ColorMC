@@ -181,31 +181,7 @@
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
-                <DockPanel>
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding AddOnlinePack}"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text10}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text67}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="120"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding GameCloudDownload}"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text13}"
-                        IsEnabled="{Binding CloudEnable}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text68}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="120"
-                        Height="25"
-                        Command="{Binding ServerPackDownload}"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text14}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text71}"
-                        ToolTip.VerticalOffset="-30" />
+                <StackPanel>
                     <Button
                         Width="100"
                         Height="25"
@@ -214,7 +190,35 @@
                         Content="{setting:Localize Button.Add}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text69}"
                         ToolTip.VerticalOffset="-30" />
-                </DockPanel>
+                    <WrapPanel>
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding AddOnlinePack}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text10}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text67}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding GameCloudDownload}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text13}"
+                            IsEnabled="{Binding CloudEnable}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text68}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="120"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            Command="{Binding ServerPackDownload}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text14}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text71}"
+                            ToolTip.VerticalOffset="-30" />
+                    </WrapPanel>
+
+                </StackPanel>
             </Border>
         </StackPanel>
     </ScrollViewer>
