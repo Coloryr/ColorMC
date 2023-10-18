@@ -82,7 +82,7 @@ public class Live2dRender : OpenGlControlBase
         var info = new FileInfo(model);
         try
         {
-            _model =_lapp.Live2dManager.LoadModel(info.DirectoryName! + "/", info.Name.Replace(".model3.json", ""));
+            _model = _lapp.Live2dManager.LoadModel(info.DirectoryName! + "/", info.Name.Replace(".model3.json", ""));
         }
         catch (Exception e)
         {

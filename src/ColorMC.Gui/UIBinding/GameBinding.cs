@@ -21,7 +21,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using Heijden.DNS;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -168,8 +167,8 @@ public static class GameBinding
                     }
                 }
                 catch
-                { 
-                
+                {
+
                 }
             }
         }
@@ -474,7 +473,7 @@ public static class GameBinding
         obj.Save();
     }
 
-    public static async Task<List<ModDisplayModel>> GetGameMods(GameSettingObj obj, 
+    public static async Task<List<ModDisplayModel>> GetGameMods(GameSettingObj obj,
         bool sha256 = false)
     {
         var list = new List<ModDisplayModel>();
@@ -751,7 +750,7 @@ public static class GameBinding
         return world.ExportWorldZip(file);
     }
 
-    public static Task<List<ResourcepackObj>> GetResourcepacks(GameSettingObj obj, 
+    public static Task<List<ResourcepackObj>> GetResourcepacks(GameSettingObj obj,
         bool sha256 = false)
     {
         return obj.GetResourcepacks(sha256);

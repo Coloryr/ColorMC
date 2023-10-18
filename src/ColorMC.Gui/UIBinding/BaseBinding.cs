@@ -8,7 +8,6 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -22,7 +21,6 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -137,7 +135,7 @@ public static class BaseBinding
         App.PageSlide500.Fade = GuiConfigUtils.Config.Style.AmFade;
     }
 
-    
+
 
     /// <summary>
     /// 复制到剪贴板
@@ -831,7 +829,7 @@ public static class BaseBinding
                 file1 += "/Live2DCubismCore.dylib";
                 break;
             case OsType.Linux:
-                file = SystemInfo.IsArm ? "Core/dll/linux/x86_64/libLive2DCubismCore.so" 
+                file = SystemInfo.IsArm ? "Core/dll/linux/x86_64/libLive2DCubismCore.so"
                     : "Core/dll/experimental/rpi/libLive2DCubismCore.so";
                 file1 += "/Live2DCubismCore.so";
                 break;

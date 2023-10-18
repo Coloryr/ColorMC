@@ -1,4 +1,3 @@
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using System.Text;

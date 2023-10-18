@@ -659,7 +659,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
         Install();
     }
-    
+
     /// <summary>
     /// 刷新高清修复列表
     /// </summary>

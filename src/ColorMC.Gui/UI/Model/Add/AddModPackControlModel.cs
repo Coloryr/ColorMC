@@ -339,14 +339,14 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         {
             PageEnable1 = true;
             list = await WebBinding.GetPackFile((SourceType)Source,
-                (_last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), Page1 ??0,
+                (_last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), Page1 ?? 0,
                 GameVersion1, Loaders.Normal);
         }
         else if (Source == 1)
         {
             PageEnable1 = false;
             list = await WebBinding.GetPackFile((SourceType)Source,
-                (_last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, Page1 ??0,
+                (_last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, Page1 ?? 0,
                 GameVersion1, Loaders.Normal);
         }
         if (list == null)

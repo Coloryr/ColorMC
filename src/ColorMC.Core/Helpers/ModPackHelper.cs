@@ -330,7 +330,7 @@ public static class ModPackHelper
         if (res != null)
         {
             var res1 = res.Distinct(CurseDataComparer.Instance);
-            
+
             foreach (var item in res1)
             {
                 var path = modpath;
@@ -340,7 +340,7 @@ public static class ModPackHelper
                     var info1 = await CurseForgeAPI.GetModInfo(item.modId);
                     if (info1 != null)
                     {
-                        if (info1.Data.categories.Any(item=>item.classId == CurseForgeAPI.ClassResourcepack))
+                        if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack))
                         {
                             path = respath;
                             path1 = respath1;

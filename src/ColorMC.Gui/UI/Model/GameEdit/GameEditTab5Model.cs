@@ -5,7 +5,6 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.Input;
-using Live2DCSharpSDK.Framework.Rendering;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
