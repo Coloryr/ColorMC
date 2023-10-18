@@ -52,10 +52,14 @@ public static class ImageUtils
         {
             try
             {
-                var data1 = await BaseClient.GetBytes(url);
+                var data1 = await BaseClient.GetStream(url);
                 if (data1.Item1)
                 {
-                    var image1 = Image.Load(data1.Item2);
+                    //var image = Bitmap.DecodeToWidth(data1.Item2!, 80);
+                    //image.Save(Local + sha1);
+                    //return image;
+
+                    var image1 = Image.Load(data1.Item2!);
                     image1 = Resize(image1, 100, 100);
                     image1.SaveAsPng(Local + sha1);
                     image1.Dispose();
