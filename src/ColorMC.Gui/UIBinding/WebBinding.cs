@@ -353,7 +353,7 @@ public static class WebBinding
                     FileType = FileType.ModPack,
                     SourceType = SourceType.Modrinth,
                     Data = item,
-                    Data1 = list2?.TryGetValue(item.project_id, out var data1) == true 
+                    Data1 = list2?.TryGetValue(item.project_id, out var data1) == true
                         ? data1 : null
                 });
             });

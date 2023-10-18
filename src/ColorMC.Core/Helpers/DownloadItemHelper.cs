@@ -9,7 +9,6 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Concurrent;
 using System.Text;
 

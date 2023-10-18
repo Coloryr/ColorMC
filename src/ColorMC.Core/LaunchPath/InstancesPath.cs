@@ -1,6 +1,5 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
-using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -9,7 +8,6 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
@@ -1108,7 +1106,7 @@ public static class InstancesPath
                         {
                             if (e.IsFile && e.Name.StartsWith(overrides))
                             {
-                                string file = Path.GetFullPath(string.Concat(game.GetGamePath(), 
+                                string file = Path.GetFullPath(string.Concat(game.GetGamePath(),
                                     e.Name.AsSpan(overrides.Length)));
                                 if (e.Name.EndsWith("icon.png"))
                                 {
@@ -1128,7 +1126,7 @@ public static class InstancesPath
                         import = true;
                         break;
                     }
-                    //直接解压
+                //直接解压
                 case PackType.ZipPack:
                     {
                         ColorMCCore.PackState?.Invoke(CoreRunState.Read);

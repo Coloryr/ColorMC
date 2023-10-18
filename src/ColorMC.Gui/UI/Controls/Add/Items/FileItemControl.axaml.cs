@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
-using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;

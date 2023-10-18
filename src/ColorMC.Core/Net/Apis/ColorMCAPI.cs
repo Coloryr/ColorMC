@@ -42,7 +42,7 @@ public static class ColorMCAPI
 
             var data2 = obj.GetValue("data")!;
             return data2.ToObject<Dictionary<string, McModSearchItemObj>>();
-        } 
+        }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.McMod.Error1"), e);

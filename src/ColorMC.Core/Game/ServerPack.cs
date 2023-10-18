@@ -7,8 +7,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System;
-using System.IO;
 
 namespace ColorMC.Core.Game;
 
@@ -38,7 +36,7 @@ public static class ServerPack
     {
         PathHelper.Delete(game.GetServerPackFile());
         var old = game.GetOldServerPack();
-        
+
         //替换旧的实例
         obj.Game.CopyObj(game);
 
@@ -95,7 +93,8 @@ public static class ServerPack
                     Name = item.File,
                     Local = Path.GetFullPath(path + item.File),
                     SHA256 = item.Sha256,
-                    Url = game.ServerUrl + item.Url
+                    Url = game.ServerUrl + item.Url,
+                    UseColorMCHead = true
                 });
             }
             else
@@ -105,7 +104,7 @@ public static class ServerPack
                     Name = item.File,
                     Local = Path.GetFullPath(path + item.File),
                     SHA256 = item.Sha256,
-                    Url = UrlHelper.MakeDownloadUrl(item.Source, item.Projcet!, item.FileId!, item.File)
+                    Url = UrlHelper.MakeDownloadUrl(item.Source, item.Projcet!, item.FileId!, item.File),
                 });
             }
         }
@@ -133,7 +132,8 @@ public static class ServerPack
                 Name = item.File,
                 Local = Path.GetFullPath(path + item.File),
                 SHA256 = item.Sha256,
-                Url = game.ServerUrl + item.Url
+                Url = game.ServerUrl + item.Url,
+                UseColorMCHead = true
             });
         }
 
@@ -152,6 +152,7 @@ public static class ServerPack
                     SHA256 = item.Sha256,
                     Url = game.ServerUrl + item.Url,
                     Overwrite = true,
+                    UseColorMCHead = true,
                     Later = (stream) =>
                     {
                         if (item.IsZip)
@@ -169,6 +170,7 @@ public static class ServerPack
                     Local = Path.GetFullPath(path + "/" + item.Group + item.FileName),
                     SHA256 = item.Sha256,
                     Overwrite = true,
+                    UseColorMCHead = true,
                     Url = game.ServerUrl + item.Url
                 });
             }

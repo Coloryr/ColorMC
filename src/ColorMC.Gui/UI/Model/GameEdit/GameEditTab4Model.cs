@@ -265,8 +265,8 @@ public partial class GameEditModel : MenuModel
         foreach (var item in list)
         {
             var list1 = from item1 in _modItems
-                       where item1.Modid == item
-                       select item1;
+                        where item1.Modid == item
+                        select item1;
             ModList.AddRange(list1);
         }
     }

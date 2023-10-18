@@ -1,12 +1,8 @@
 using Avalonia.Controls;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Model.Add;
-using ColorMC.Gui.UI.Model.Add.AddGame;
 using ColorMC.Gui.UI.Model.Guide;
 using ColorMC.Gui.UI.Windows;
-using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Guide;

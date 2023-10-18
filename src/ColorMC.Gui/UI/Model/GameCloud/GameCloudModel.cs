@@ -60,7 +60,7 @@ public partial class GameCloudModel : MenuModel
 
     public GameCloudModel(BaseModel model, GameSettingObj obj) : base(model)
     {
-        Obj = obj; 
+        Obj = obj;
 
         LoadWorld();
     }

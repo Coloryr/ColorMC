@@ -26,7 +26,7 @@ public record DownloadItemObj
     /// <summary>
     /// 使用ColorMC请求头
     /// </summary>
-    public bool UseColorMCHead = false;
+    public bool UseColorMCHead { get; set; } = false;
 
     /// <summary>
     /// 总大小
