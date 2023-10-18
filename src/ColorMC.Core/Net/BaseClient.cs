@@ -105,4 +105,21 @@ public static class BaseClient
         var data1 = await data.Content.ReadAsByteArrayAsync();
         return (true, data1);
     }
+
+    /// <summary>
+    /// GET 获取二进制
+    /// </summary>
+    /// <param name="url">地址</param>
+    /// <returns></returns>
+    public static async Task<(bool, Stream?)> GetStream(string url)
+    {
+        var data = await DownloadClient.GetAsync(url);
+        if (data.StatusCode == HttpStatusCode.NotFound)
+        {
+            return (false, null);
+        }
+
+        var data1 = await data.Content.ReadAsStreamAsync();
+        return (true, data1);
+    }
 }
