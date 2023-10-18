@@ -1,27 +1,20 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UIBinding;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Core.Utils;
 
 /// <summary>
 /// 游戏统计
 /// </summary>
-public static class GameCountUtils
+public static class GameCount
 {
     public const string Name = "count.dat";
 
     private static string s_local;
     private static bool s_isSave;
+    private static bool s_isRun;
 
     private static readonly object s_lock = new();
     private readonly static Dictionary<string, DateTime> s_timeList = new();
@@ -40,12 +33,21 @@ public static class GameCountUtils
     {
         s_local = Path.GetFullPath(dir + Name);
 
+        s_isRun = true;
+
+        ColorMCCore.Stop += ColorMCCore_Stop;
+
         new Thread(Run)
         {
             Name = "ColorMC_Count"
         }.Start();
 
         Read();
+    }
+
+    private static void ColorMCCore_Stop()
+    {
+        s_isRun = false;
     }
 
     /// <summary>
@@ -118,9 +120,9 @@ public static class GameCountUtils
         }
         catch (Exception e)
         {
-            string text = App.GetLanguage("Gui.Error27");
+            string text = LanguageHelper.Get("Core.GameCount.Error1");
             Logs.Error(text, e);
-            App.ShowError(text, e);
+            ColorMCCore.OnError?.Invoke(text, e, false);
         }
 
         if (Count == null)
@@ -139,13 +141,9 @@ public static class GameCountUtils
     private static void Run()
     {
         int a = 0;
-        while (!App.IsClose)
+        while (s_isRun)
         {
             Thread.Sleep(100);
-            if (BaseBinding.RunGames.Count <= 0)
-            {
-                continue;
-            }
 
             foreach (var item in new Dictionary<string, DateTime>(s_timeList))
             {

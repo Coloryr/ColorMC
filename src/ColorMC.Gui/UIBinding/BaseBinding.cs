@@ -62,8 +62,6 @@ public static class BaseBinding
 
         if (ColorMCGui.RunType == RunType.Program)
         {
-            GameCountUtils.Init(ColorMCGui.RunDir);
-
             try
             {
                 Media.Init();
@@ -318,7 +316,7 @@ public static class BaseBinding
 
             pr.Exited += (a, b) =>
             {
-                GameCountUtils.GameClose(obj);
+                GameCount.GameClose(obj);
                 RunGames.Remove(obj.UUID);
                 UserBinding.UnLockUser(obj1);
                 Dispatcher.UIThread.Post(() =>
@@ -359,7 +357,7 @@ public static class BaseBinding
 
             Games.Add(pr, obj.UUID);
             RunGames.Add(obj.UUID, pr);
-            GameCountUtils.LaunchDone(obj);
+            GameCount.LaunchDone(obj);
             GameBinding.GameStateUpdate(obj);
 
             if (wait)
@@ -390,7 +388,7 @@ public static class BaseBinding
         }
         else
         {
-            GameCountUtils.LaunchError(obj);
+            GameCount.LaunchError(obj);
             UserBinding.UnLockUser(obj1);
         }
 

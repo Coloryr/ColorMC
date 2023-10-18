@@ -116,6 +116,12 @@ public partial class MainModel : TopModel, IMainTop
     }
 
     [RelayCommand]
+    public void ShowCount()
+    {
+        App.ShowCount();
+    }
+
+    [RelayCommand]
     public void OpenGuide()
     {
         IsOpenGuide = true;

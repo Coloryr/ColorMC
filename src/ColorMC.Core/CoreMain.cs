@@ -3,6 +3,7 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
@@ -178,6 +179,7 @@ public static class ColorMCCore
     public static void Init1()
     {
         ConfigSave.Init();
+        GameCount.Init(BaseDir);
         JvmPath.Init(BaseDir);
         LocalMaven.Init(BaseDir);
         DownloadManager.Init(BaseDir);

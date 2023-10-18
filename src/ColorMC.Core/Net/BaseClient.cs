@@ -80,7 +80,7 @@ public static class BaseClient
     public static async Task<(bool, string?)> GetString(string url)
     {
         var data = await DownloadClient.GetAsync(url);
-        if (data.StatusCode == HttpStatusCode.NotFound)
+        if (data.StatusCode != HttpStatusCode.OK)
         {
             return (false, null);
         }
@@ -97,7 +97,7 @@ public static class BaseClient
     public static async Task<(bool, byte[]?)> GetBytes(string url)
     {
         var data = await DownloadClient.GetAsync(url);
-        if (data.StatusCode == HttpStatusCode.NotFound)
+        if (data.StatusCode != HttpStatusCode.OK)
         {
             return (false, null);
         }
@@ -114,7 +114,7 @@ public static class BaseClient
     public static async Task<(bool, Stream?)> GetStream(string url)
     {
         var data = await DownloadClient.GetAsync(url);
-        if (data.StatusCode == HttpStatusCode.NotFound)
+        if (data.StatusCode != HttpStatusCode.OK)
         {
             return (false, null);
         }

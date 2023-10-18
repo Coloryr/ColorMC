@@ -511,6 +511,6 @@ public static class ServerPack
             return res2;
         }
 
-        return false;
+        return true;
     }
 }
