@@ -27,15 +27,23 @@ public partial class GuideModel : MenuModel
     }
 
     [RelayCommand]
-    public void Last(object msg)
+    public void Last()
     {
+        if (!CanLast)
+        {
+            return;
+        }
         NowView--;
         Update();
     }
 
     [RelayCommand]
-    public void Next(object msg)
+    public void Next()
     {
+        if (!CanNext)
+        {
+            return;
+        }
         NowView++;
         Update();
     }

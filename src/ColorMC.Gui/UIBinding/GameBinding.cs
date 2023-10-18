@@ -1516,13 +1516,13 @@ public static class GameBinding
     public static async Task<(bool, string?)> DownloadServerPack(BaseModel model, string? name, string? group, string text)
     {
         InfoBinding.Window = model;
-        var data = await BaseClient.GetString(text + "server.json");
-        if (!data.Item1)
-        {
-            return (false, App.GetLanguage("AddGameWindow.Tab1.Error15"));
-        }
         try
         {
+            var data = await BaseClient.GetString(text + "server.json");
+            if (!data.Item1)
+            {
+                return (false, App.GetLanguage("AddGameWindow.Tab1.Error15"));
+            }
             var obj = JsonConvert.DeserializeObject<ServerPackObj>(data.Item2!);
             if (obj == null)
             {
@@ -1549,8 +1549,6 @@ public static class GameBinding
                 return (false, App.GetLanguage("AddGameWindow.Tab1.Error10"));
             }
 
-            PathHelper.WriteText(game.GetServerPackFile(), data.Item2!);
-
             model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info15"));
 
             var res1 = await obj.Update(game);
@@ -1564,6 +1562,9 @@ public static class GameBinding
 
                 return (false, null);
             }
+
+            PathHelper.WriteText(game.GetServerPackFile(), data.Item2!);
+
             return (true, null);
         }
         catch (Exception e)

@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Guide;
 using ColorMC.Gui.UI.Windows;
@@ -27,6 +28,21 @@ public partial class GuideControl : UserControl, IUserControl
     public GuideControl()
     {
         InitializeComponent();
+
+        PointerWheelChanged += GuideControl_PointerWheelChanged;
+    }
+
+    private void GuideControl_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        var model = (DataContext as GuideModel)!;
+        if (e.Delta.Y < 0)
+        {
+            model.Next();
+        }
+        else if(e.Delta.Y > 0) 
+        {
+            model.Last();
+        }
     }
 
     public void Closed()

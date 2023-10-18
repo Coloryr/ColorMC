@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
@@ -55,7 +56,7 @@ public partial class CountModel : ObservableObject
     public CountModel()
     {
         _date1 = _date = DateTime.Now;
-        var data = Utils.GameCountUtils.Count;
+        var data = Core.Utils.GameCount.Count;
         if (data == null)
         {
             _count = 0;
@@ -106,7 +107,7 @@ public partial class CountModel : ObservableObject
 
     partial void OnDateChanged(DateTime value)
     {
-        var data = Utils.GameCountUtils.Count;
+        var data = Core.Utils.GameCount.Count;
         if (data == null)
         {
             DateCount = 0;
@@ -124,7 +125,7 @@ public partial class CountModel : ObservableObject
 
     partial void OnDate1Changed(DateTime value)
     {
-        var data = Utils.GameCountUtils.Count;
+        var data = Core.Utils.GameCount.Count;
         if (data == null)
         {
             TimeDate = "";
@@ -157,7 +158,7 @@ public partial class CountModel : ObservableObject
         if (_list.Count == 0)
             return;
 
-        var data = Utils.GameCountUtils.Count;
+        var data = Core.Utils.GameCount.Count;
         if (data == null)
         {
             return;

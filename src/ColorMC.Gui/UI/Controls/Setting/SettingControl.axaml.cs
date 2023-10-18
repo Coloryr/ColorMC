@@ -1,5 +1,7 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
@@ -7,6 +9,7 @@ using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UI.Windows;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -108,7 +111,9 @@ public partial class SettingControl : UserControl, IUserControl
         _tab7.DataContext = new SettingTab7Model();
     }
 
-    private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private double x;
+
+    private async void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "NowView")
         {
@@ -148,19 +153,22 @@ public partial class SettingControl : UserControl, IUserControl
         }
         else if (e.PropertyName == "SideOpen")
         {
+            _cancel1.Cancel();
             _cancel1.Dispose();
             _cancel1 = new();
+            
             StackPanel1.IsVisible = true;
-            DockPanel1.Opacity = 0;
             Dispatcher.UIThread.Post(() =>
             {
-                DockPanel1.Opacity = 1;
                 App.SidePageSlide300.Start(null, DockPanel1, _cancel1.Token);
             });
         }
         else if (e.PropertyName == "SideClose")
         {
             _cancel1.Cancel();
+            _cancel1.Dispose();
+            _cancel1 = new();
+            App.SidePageSlide300.Start(DockPanel1, null, _cancel1.Token);
             StackPanel1.IsVisible = false;
         }
     }

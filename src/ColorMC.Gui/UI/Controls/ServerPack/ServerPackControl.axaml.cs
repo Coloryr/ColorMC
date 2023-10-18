@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
@@ -25,6 +26,7 @@ public partial class ServerPackControl : UserControl, IUserControl
     private bool _switch1 = false;
 
     private CancellationTokenSource _cancel = new();
+    private CancellationTokenSource _cancel1 = new();
 
     private int _now;
 
@@ -157,10 +159,22 @@ public partial class ServerPackControl : UserControl, IUserControl
         }
         else if (e.PropertyName == "SideOpen")
         {
-            App.CrossFade100.Start(null, StackPanel1);
+            _cancel1.Cancel();
+            _cancel1.Dispose();
+            _cancel1 = new();
+
+            StackPanel1.IsVisible = true;
+            Dispatcher.UIThread.Post(() =>
+            {
+                App.SidePageSlide300.Start(null, DockPanel1, _cancel1.Token);
+            });
         }
         else if (e.PropertyName == "SideClose")
         {
+            _cancel1.Cancel();
+            _cancel1.Dispose();
+            _cancel1 = new();
+            App.SidePageSlide300.Start(DockPanel1, null, _cancel1.Token);
             StackPanel1.IsVisible = false;
         }
     }
