@@ -286,7 +286,7 @@ public static class Media
             }
             catch (Exception e)
             {
-                Logs.Error("mp3 decode error", e);
+                Logs.Error(App.GetLanguage("Gui.Error29"), e);
             }
         }, s_cancel.Token);
 
@@ -333,7 +333,7 @@ public static class Media
         }
         catch (Exception e)
         {
-            Logs.Error("play error", e);
+            Logs.Error(App.GetLanguage("Gui.Error30"), e);
             return (false, null);
         }
     }

@@ -505,7 +505,7 @@ public static class GameBinding
         return list;
     }
 
-    public static bool ModEnDi(ModObj obj)
+    public static (bool, string?) ModEnDi(ModObj obj)
     {
         try
         {
@@ -518,12 +518,13 @@ public static class GameBinding
                 obj.Disable();
             }
 
-            return true;
+            return (true, null);
         }
         catch (Exception e)
         {
-            Logs.Error("Mod error", e);
-            return false;
+            string temp = string.Format(App.GetLanguage("GameEditWindow.Tab4.Error3"), obj.Local);
+            Logs.Error(temp, e);
+            return (false, temp);
         }
     }
 
@@ -1416,7 +1417,7 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                Logs.Error("unzip error", e);
+                Logs.Error(App.GetLanguage("AddGameWindow.Tab1.Error17"), e);
             }
             return false;
         });

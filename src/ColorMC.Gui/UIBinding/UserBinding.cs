@@ -270,7 +270,7 @@ public static class UserBinding
             }
             catch (Exception e)
             {
-                Logs.Error($"Skin error:{file}", e);
+                Logs.Error(string.Format(App.GetLanguage("Gui.Error34"), file), e);
             }
         }
 
@@ -282,7 +282,7 @@ public static class UserBinding
             }
             catch (Exception e)
             {
-                Logs.Error($"Cape error:{file1}", e);
+                Logs.Error(string.Format(App.GetLanguage("Gui.Error35"), file), e);
             }
         }
 

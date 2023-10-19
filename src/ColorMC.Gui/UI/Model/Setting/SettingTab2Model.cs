@@ -471,11 +471,6 @@ public partial class SettingModel : MenuModel
         if (_load)
             return;
 
-        //if (string.IsNullOrWhiteSpace(Pic))
-        //{
-        //    Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
-        //    return;
-        //}
         Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
         if (SystemInfo.Os == OsType.Android)
         {

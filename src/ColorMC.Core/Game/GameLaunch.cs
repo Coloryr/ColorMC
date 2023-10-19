@@ -1278,85 +1278,85 @@ public static class Launch
         return process;
     }
 
-    public delegate int DLaunch(int argc,
-        string[] argv, /* main argc, argc */
-        int jargc, string[] jargv,          /* java args */
-        int appclassc, string[] appclassv,  /* app classpath */
-        string fullversion,                 /* full version defined */
-        string dotversion,                  /* dot version defined */
-        string pname,                       /* program name */
-        string lname,                       /* launcher name */
-        bool javaargs,                      /* JAVA_ARGS */
-        bool cpwildcard,                    /* classpath wildcard*/
-        bool javaw,                         /* windows-only javaw */
-        int ergo                            /* ergonomics class policy */
-    );
+    //public delegate int DLaunch(int argc,
+    //    string[] argv, /* main argc, argc */
+    //    int jargc, string[] jargv,          /* java args */
+    //    int appclassc, string[] appclassv,  /* app classpath */
+    //    string fullversion,                 /* full version defined */
+    //    string dotversion,                  /* dot version defined */
+    //    string pname,                       /* program name */
+    //    string lname,                       /* launcher name */
+    //    bool javaargs,                      /* JAVA_ARGS */
+    //    bool cpwildcard,                    /* classpath wildcard*/
+    //    bool javaw,                         /* windows-only javaw */
+    //    int ergo                            /* ergonomics class policy */
+    //);
 
-    private static int s_argLength;
-    private static string[] s_args;
+    //private static int s_argLength;
+    //private static string[] s_args;
 
-    /// <summary>
-    /// native启动
-    /// </summary>
-    /// <param name="info">Java信息</param>
-    /// <param name="args">启动参数</param>
-    public static int NativeLaunch(JavaInfo info, List<string> args)
-    {
-        string path;
-        if (SystemInfo.Os == OsType.Android)
-        {
-            path = info.Path;
-        }
-        else
-        {
-            var info1 = new FileInfo(info.Path);
-            path = info1.Directory?.Parent?.FullName!;
-        }
+    ///// <summary>
+    ///// native启动
+    ///// </summary>
+    ///// <param name="info">Java信息</param>
+    ///// <param name="args">启动参数</param>
+    //public static int NativeLaunch(JavaInfo info, List<string> args)
+    //{
+    //    string path;
+    //    if (SystemInfo.Os == OsType.Android)
+    //    {
+    //        path = info.Path;
+    //    }
+    //    else
+    //    {
+    //        var info1 = new FileInfo(info.Path);
+    //        path = info1.Directory?.Parent?.FullName!;
+    //    }
 
-        var local = SystemInfo.Os switch
-        {
-            OsType.Windows => PathHelper.GetFile(path, "jli.dll"),
-            OsType.Linux => PathHelper.GetFile(path, "libjli.so"),
-            OsType.MacOS => PathHelper.GetFile(path, "libjli.dylib"),
-            OsType.Android => PathHelper.GetFile(path, "libjli.so"),
-            _ => throw new NotImplementedException(),
-        };
-        if (File.Exists(local))
-        {
-            local = Path.GetFullPath(local);
-        }
+    //    var local = SystemInfo.Os switch
+    //    {
+    //        OsType.Windows => PathHelper.GetFile(path, "jli.dll"),
+    //        OsType.Linux => PathHelper.GetFile(path, "libjli.so"),
+    //        OsType.MacOS => PathHelper.GetFile(path, "libjli.dylib"),
+    //        OsType.Android => PathHelper.GetFile(path, "libjli.so"),
+    //        _ => throw new NotImplementedException(),
+    //    };
+    //    if (File.Exists(local))
+    //    {
+    //        local = Path.GetFullPath(local);
+    //    }
 
-        //加载运行库
-        var temp = NativeLoader.Loader.LoadLibrary(local);
-        var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
-        var inv = Marshal.GetDelegateForFunctionPointer<DLaunch>(temp1);
+    //    //加载运行库
+    //    var temp = NativeLoader.Loader.LoadLibrary(local);
+    //    var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
+    //    var inv = Marshal.GetDelegateForFunctionPointer<DLaunch>(temp1);
 
-        var args1 = new string[args.Count + 1];
-        args1[0] = "java";
+    //    var args1 = new string[args.Count + 1];
+    //    args1[0] = "java";
 
-        for (int i = 1; i < args1.Length; i++)
-        {
-            args1[i] = args[i - 1];
-        }
+    //    for (int i = 1; i < args1.Length; i++)
+    //    {
+    //        args1[i] = args[i - 1];
+    //    }
 
-        s_argLength = args1.Length;
-        s_args = args1;
+    //    s_argLength = args1.Length;
+    //    s_args = args1;
 
-        //启动游戏
-        try
-        {
-            var res = inv(s_argLength, s_args, 0, null!, 0, null!,
-                info.Version, "1.8", "java", "java", false, true, false, 0);
+    //    //启动游戏
+    //    try
+    //    {
+    //        var res = inv(s_argLength, s_args, 0, null!, 0, null!,
+    //            info.Version, "1.8", "java", "java", false, true, false, 0);
 
-            var res1 = NativeLoader.Loader.CloseLibrary(temp);
+    //        var res1 = NativeLoader.Loader.CloseLibrary(temp);
 
-            return res;
-        }
-        catch (Exception e)
-        {
-            ColorMCCore.OnError?.Invoke("Error", e, false);
-        }
+    //        return res;
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        ColorMCCore.OnError?.Invoke("Error", e, false);
+    //    }
 
-        return -1;
-    }
+    //    return -1;
+    //}
 }

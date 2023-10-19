@@ -69,7 +69,7 @@ public static class GameLogs
         }
         catch (Exception e)
         {
-            Logs.Error("log error", e);
+            Logs.Error(string.Format(LanguageHelper.Get("Core.Game.Error14"), file), e);
         }
 
         return null;

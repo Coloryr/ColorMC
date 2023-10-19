@@ -86,8 +86,9 @@ public class Live2dRender : OpenGlControlBase
         }
         catch (Exception e)
         {
-            Logs.Error("model load error", e);
-            (DataContext as MainModel)!.Model.Show(App.GetLanguage("MainWindow.Live2d.Error2"));
+            string temp = App.GetLanguage("MainWindow.Live2d.Error2");
+            Logs.Error(temp, e);
+            (DataContext as MainModel)!.Model.Show(temp);
         }
     }
 
@@ -127,7 +128,7 @@ public class Live2dRender : OpenGlControlBase
         catch (Exception e)
         {
             (DataContext as MainModel)!.ChangeModelDone();
-            Logs.Error("live2d error", e);
+            Logs.Error(App.GetLanguage("Gui.Error31"), e);
         }
     }
 
