@@ -411,7 +411,7 @@ public partial class SettingModel : MenuModel
     {
         _load = true;
         ConfigBinding.ResetColor();
-        MainColor = ColorSel.MainColor.ToColor();
+        MainColor = Color.Parse(ColorSel.MainColorStr);
         LightBackColor = Color.Parse(ColorSel.BackLigthColorStr);
         LightTranColor = Color.Parse(ColorSel.Back1LigthColorStr);
         LightFont1Color = Color.Parse(ColorSel.ButtonLightFontStr);
