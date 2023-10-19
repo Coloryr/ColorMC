@@ -1,7 +1,5 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
@@ -9,7 +7,6 @@ using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UI.Windows;
 using System.ComponentModel;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -111,8 +108,6 @@ public partial class SettingControl : UserControl, IUserControl
         _tab7.DataContext = new SettingTab7Model();
     }
 
-    private double x;
-
     private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "NowView")
@@ -156,7 +151,7 @@ public partial class SettingControl : UserControl, IUserControl
             _cancel1.Cancel();
             _cancel1.Dispose();
             _cancel1 = new();
-            
+
             StackPanel1.IsVisible = true;
             Dispatcher.UIThread.Post(() =>
             {

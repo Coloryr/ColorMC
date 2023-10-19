@@ -64,8 +64,8 @@ public partial class AddGameModel : MenuModel
         else
         {
             CanInput = false;
-            Files = null;
-            _fileModel = null;
+            Files = null!;
+            _fileModel = null!;
             Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), SelectPath));
         }
     }
