@@ -61,7 +61,7 @@ public partial class SettingModel : MenuModel
     [ObservableProperty]
     private uint? _height;
 
-    private bool _argLoad = false;
+    private bool _argLoad = true;
 
     partial void OnSafeLog4jChanged(bool value)
     {

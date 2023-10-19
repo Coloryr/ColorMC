@@ -64,7 +64,7 @@ public partial class SettingModel : MenuModel
     [ObservableProperty]
     private int _login = -1;
 
-    private bool _serverLoad;
+    private bool _serverLoad = true;
 
     partial void OnLoginUrlChanged(string? value)
     {

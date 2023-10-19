@@ -10,7 +10,7 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel : MenuModel
 {
-    private bool _httpLoad;
+    private bool _httpLoad = true;
 
     public List<string> SourceList { get; init; } = LanguageBinding.GetDownloadSources();
 

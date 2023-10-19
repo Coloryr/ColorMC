@@ -108,6 +108,7 @@ public static class GuiConfigUtils
             }
             if (save)
             {
+                Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
                 Save();
             }
         }
@@ -126,6 +127,7 @@ public static class GuiConfigUtils
     /// </summary>
     public static void SaveNow()
     {
+        Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
         File.WriteAllText(s_local, JsonConvert.SerializeObject(Config));
     }
 
@@ -134,7 +136,6 @@ public static class GuiConfigUtils
     /// </summary>
     public static void Save()
     {
-        Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
         ConfigSave.AddItem(new()
         {
             Name = "gui.json",
