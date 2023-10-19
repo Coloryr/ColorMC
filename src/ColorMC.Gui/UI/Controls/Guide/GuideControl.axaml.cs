@@ -39,7 +39,7 @@ public partial class GuideControl : UserControl, IUserControl
         {
             model.Next();
         }
-        else if(e.Delta.Y > 0) 
+        else if (e.Delta.Y > 0)
         {
             model.Last();
         }

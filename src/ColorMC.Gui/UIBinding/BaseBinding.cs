@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -777,6 +778,7 @@ public static class BaseBinding
 
     public static void CreateLaunch(GameSettingObj obj)
     {
+#pragma warning disable CA1416 // 验证平台兼容性
         if (SystemInfo.Os == OsType.Windows)
         {
             try
@@ -797,6 +799,7 @@ public static class BaseBinding
                 Logs.Error(App.GetLanguage("Gui.Error33"), e);
             }
         }
+#pragma warning restore CA1416 // 验证平台兼容性
     }
 
     public static void SetLaunch(string uuid)
