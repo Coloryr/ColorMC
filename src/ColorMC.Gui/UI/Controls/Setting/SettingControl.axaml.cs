@@ -113,7 +113,7 @@ public partial class SettingControl : UserControl, IUserControl
 
     private double x;
 
-    private async void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "NowView")
         {

@@ -113,7 +113,7 @@ public partial class SettingModel : MenuModel
     [ObservableProperty]
     private string _live2DCoreState;
 
-    private bool _load = false;
+    private bool _load = true;
 
     partial void OnEnableBorderRadiusChanged(bool value)
     {
