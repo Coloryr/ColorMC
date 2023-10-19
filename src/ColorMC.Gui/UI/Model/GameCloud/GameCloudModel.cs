@@ -469,8 +469,9 @@ public partial class GameCloudModel : MenuModel
             }
             catch (Exception e)
             {
-                Logs.Error("cloud error", e);
-                Model.Show(App.GetLanguage("GameCloudWindow.Error9"));
+                string temp = App.GetLanguage("GameCloudWindow.Error9");
+                Logs.Error(temp, e);
+                Model.Show(temp);
             }
             Model.ProgressClose();
         }

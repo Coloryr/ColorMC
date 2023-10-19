@@ -221,9 +221,9 @@ public partial class GameEditModel : MenuModel
             return;
         }
         var res = GameBinding.ModEnDi(item.Obj);
-        if (!res)
+        if (!res.Item1)
         {
-            Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Error3"));
+            Model.Show(res.Item2!);
         }
         else
         {
@@ -241,9 +241,8 @@ public partial class GameEditModel : MenuModel
                 return;
             }
 
-            res = await Model.ShowWait(
-                string.Format(App.GetLanguage("GameEditWindow.Tab4.Info17"), list.Count));
-            if (res)
+            if (await Model.ShowWait(
+                string.Format(App.GetLanguage("GameEditWindow.Tab4.Info17"), list.Count)))
             {
                 foreach (var item1 in list)
                 {

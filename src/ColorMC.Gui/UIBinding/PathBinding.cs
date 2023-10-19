@@ -907,7 +907,7 @@ public static class PathBinding
         }
         catch (Exception e)
         {
-            Logs.Error("pic copy error", e);
+            Logs.Error(App.GetLanguage("SettingWindow.Tab2.Error5"), e);
         }
     }
 

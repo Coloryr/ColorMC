@@ -68,7 +68,7 @@ public static class BaseBinding
             }
             catch (Exception e)
             {
-                Logs.Error("error", e);
+                Logs.Error(App.GetLanguage("Gui.Error32"), e);
             }
         }
 
@@ -794,7 +794,7 @@ public static class BaseBinding
             }
             catch (Exception e)
             {
-                Logs.Error("create error", e);
+                Logs.Error(App.GetLanguage("Gui.Error33"), e);
             }
         }
     }

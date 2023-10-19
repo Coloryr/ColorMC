@@ -78,7 +78,7 @@ public static class GameCloudUtils
             }
             catch (Exception e)
             {
-                Logs.Error("load error", e);
+                Logs.Error(App.GetLanguage("Gui.Error36"), e);
             }
         }
 
@@ -177,7 +177,7 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("server error", e);
+            Logs.Error(App.GetLanguage("Gui.Error37"), e);
         }
     }
 
@@ -255,8 +255,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
         }
 
         return (-1, false, null);
@@ -295,8 +296,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
         }
 
         return -1;
@@ -337,8 +339,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
         }
         return -1;
     }
@@ -381,8 +384,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
 
         }
 
@@ -454,8 +458,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
         }
 
         return -1;
@@ -495,8 +500,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
         }
     }
 
@@ -533,8 +539,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
         }
         return null;
     }
@@ -573,8 +580,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
         }
         return null;
     }
@@ -618,8 +626,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
         }
         return -1;
     }
@@ -662,8 +671,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
         }
         return null;
     }
@@ -718,8 +728,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
             return -1;
         }
     }
@@ -763,8 +774,9 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error("cloud error", e);
-            App.ShowError("cloud error", e);
+            string temp = App.GetLanguage("GameCloudWindow.Error3");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
             return -1;
         }
     }

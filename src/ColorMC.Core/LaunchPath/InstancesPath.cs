@@ -531,7 +531,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error("create", e);
+            Logs.Error(string.Format(LanguageHelper.Get("Core.Game.Error15"), game.Name), e);
             return null;
         }
 

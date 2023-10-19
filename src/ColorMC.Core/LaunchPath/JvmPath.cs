@@ -155,23 +155,25 @@ public static class JvmPath
             return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
         }
 
+        (bool, Exception?) res;
         if (SystemInfo.Os == OsType.Android)
         {
-            await Task.Run(() =>
+            res = await Task.Run(() =>
             {
                 try
                 {
                     ColorMCCore.PhoneJvmInstall?.Invoke(stream, path);
+                    return (true, null!);
                 }
                 catch (Exception e)
                 {
-
+                    return (false, e);
                 }
             });
         }
         else
         {
-            var res = await Task.Run(async () =>
+            res = await Task.Run(async () =>
             {
                 try
                 {
@@ -185,19 +187,20 @@ public static class JvmPath
             });
 
             stream.Close();
-
-            if (!res.Item1)
-            {
-                string temp = LanguageHelper.Get("Core.Jvm.Error12");
-                Logs.Error(temp, res.e);
-                return (false, temp);
-            }
         }
 
+        if (!res.Item1)
+        {
+            string temp = LanguageHelper.Get("Core.Jvm.Error12");
+            Logs.Error(temp, res.Item2);
+            return (false, temp);
+        }
 
         var java = Find(path);
         if (java == null)
+        {
             return (false, LanguageHelper.Get("Core.Jvm.Error6"));
+        }
         else
         {
             if (java.Contains("jre"))
