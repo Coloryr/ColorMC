@@ -223,8 +223,8 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            MotdColor = "#FFFFFFFF",
-            MotdBackColor = "#FF000000",
+            MotdColor = "White",
+            MotdBackColor = "Black",
             Volume = 30
         };
     }

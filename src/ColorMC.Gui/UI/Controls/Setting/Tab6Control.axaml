@@ -58,11 +58,11 @@
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text6}" />
-                            <ColorPicker Color="{Binding Color1}" />
+                            <ColorPicker Color="{Binding MotdFontColor}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text5}" />
-                            <ColorPicker Color="{Binding Color2}" />
+                            <ColorPicker Color="{Binding MotdBackColor}" />
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>

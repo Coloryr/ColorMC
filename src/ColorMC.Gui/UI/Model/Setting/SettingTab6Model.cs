@@ -22,9 +22,9 @@ public partial class SettingModel : MenuModel
     public List<string> LoginList { get; init; } = UserBinding.GetLoginType();
 
     [ObservableProperty]
-    private Color _color1;
+    private Color _motdFontColor;
     [ObservableProperty]
-    private Color _color2;
+    private Color _motdBackColor;
 
     [ObservableProperty]
     private string _serverIP;
@@ -123,12 +123,12 @@ public partial class SettingModel : MenuModel
         ConfigBinding.SetUI(value);
     }
 
-    partial void OnColor1Changed(Color value)
+    partial void OnMotdFontColorChanged(Color value)
     {
         SetIP();
     }
 
-    partial void OnColor2Changed(Color value)
+    partial void OnMotdBackColorChanged(Color value)
     {
         SetIP();
     }
@@ -281,8 +281,8 @@ public partial class SettingModel : MenuModel
             RunPause = config.RunPause;
             SlowVolume = config.SlowVolume;
 
-            Color1 = ColorSel.MotdColor.ToColor();
-            Color2 = ColorSel.MotdBackColor.ToColor();
+            MotdFontColor = ColorSel.MotdColor.ToColor();
+            MotdBackColor = ColorSel.MotdBackColor.ToColor();
             if (config.GameName == null)
             {
                 Game = -1;
@@ -324,7 +324,7 @@ public partial class SettingModel : MenuModel
             return;
 
         ConfigBinding.SetMotd(ServerIP, ServerPort ?? 0, EnableMotd,
-            EnableJoin, Color1.ToString(), Color2.ToString());
+            EnableJoin, MotdFontColor.ToString(), MotdBackColor.ToString());
     }
 
     private void SetOneGame()
