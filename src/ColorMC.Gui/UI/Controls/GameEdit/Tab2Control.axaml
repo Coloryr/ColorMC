@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
     d:DesignHeight="1500"
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
@@ -43,11 +44,13 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameEdit/svg5.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/GameEdit/svg5.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize GameEditWindow.Tab2.Text24}"
@@ -92,11 +95,13 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg12.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/Setting/svg12.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize GameEditWindow.Tab2.Text33}"
@@ -134,7 +139,7 @@
                 <StackPanel>
                     <!--  Jvm内存  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
@@ -246,11 +251,13 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg15.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/Setting/svg15.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize GameEditWindow.Tab2.Text9}"
@@ -299,7 +306,7 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
@@ -335,11 +342,13 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg8.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/Setting/svg8.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize GameEditWindow.Tab2.Text17}"
@@ -373,7 +382,6 @@
                             Text="{Binding ProxyPassword}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text21}" />
                     </WrapPanel>
-
                 </StackPanel>
             </Border>
         </StackPanel>

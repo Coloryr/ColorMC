@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:svg="clr-namespace:Avalonia.Svg;assembly=Avalonia.Svg"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Main"
     d:DesignHeight="450"
@@ -20,7 +20,6 @@
             Height="{Binding Live2dHeight}"
             HorizontalAlignment="{Binding Mirror3}"
             VerticalAlignment="Bottom" />
-
         <DockPanel>
             <ScrollViewer DockPanel.Dock="{Binding Mirror1}">
                 <Panel>
@@ -48,12 +47,14 @@
                             ToolTip.VerticalOffset="-30">
                             <Svg Path="/Resource/Icon/book.svg" />
                         </Button>
-                        <Svg
+                        <svg:SvgControl
                             Name="Svg1"
                             Width="30"
                             Margin="0,5,0,0"
+                            Fill="{setting:Colors Font}"
                             Opacity="0"
-                            Path="/Resource/Icon/up_arrow.svg" />
+                            Path="/Resource/Icon/up_arrow.svg"
+                            Stroke="{setting:Colors Font}" />
                     </StackPanel>
 
                     <StackPanel Margin="5,110,5,0" VerticalAlignment="Center">

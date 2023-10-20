@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
-<svg fill="none" height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg">
-    <path d="M41.5 10H35.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
-    <path d="M27.5 6V14" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
-    <path d="M27.5 10L5.5 10" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
-    <path d="M13.5 24H5.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
-    <path d="M21.5 20V28" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
-    <path d="M43.5 24H21.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
-    <path d="M41.5 38H35.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
-    <path d="M27.5 34V42" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
-    <path d="M27.5 38H5.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
+<svg height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg">
+    <path d="M41.5 10H35.5" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
+    <path d="M27.5 6V14" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
+    <path d="M27.5 10L5.5 10" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
+    <path d="M13.5 24H5.5" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
+    <path d="M21.5 20V28" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
+    <path d="M43.5 24H21.5" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
+    <path d="M41.5 38H35.5" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
+    <path d="M27.5 34V42" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
+    <path d="M27.5 38H5.5" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
 </svg>

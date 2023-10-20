@@ -605,7 +605,7 @@ public partial class SettingModel : MenuModel
             uint patch = version & 0x0000FFFF;
             uint vesionNumber = version;
 
-            Live2DCoreState = $"version: {major:0}.{minor:0}.{patch:0000} ({vesionNumber})";
+            Live2DCoreState = $"Version: {major:0}.{minor:0}.{patch:0000} ({vesionNumber})";
             CoreInstall = true;
         }
         catch

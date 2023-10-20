@@ -2,9 +2,9 @@
 <svg height="48px" id="Layer_4" version="1.1" viewBox="0 0 48 48" width="48px" xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink">
     <g>
-        <rect fill="#000" height="29.498" width="21.07" y="-0.033" />
-        <rect fill="#000" height="29.498" width="21.07" x="26.93" y="18.535" />
-        <rect fill="#000" height="13.695" width="21.07" x="26.93" y="-0.033" />
-        <rect fill="#000" height="13.695" width="21.07" y="34.338" />
+        <rect height="29.498" width="21.07" y="-0.033" />
+        <rect height="29.498" width="21.07" x="26.93" y="18.535" />
+        <rect height="13.695" width="21.07" x="26.93" y="-0.033" />
+        <rect height="13.695" width="21.07" y="34.338" />
     </g>
 </svg>
