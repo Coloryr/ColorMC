@@ -43,7 +43,7 @@ public class ColorSel : INotifyPropertyChanged
 
     public const string BackDarkColorStr = "#FF202020";
     public const string Back1DarkColorStr = "#46202020";
-    public const string ButtonDarkFontStr = "#FF202020";
+    public const string ButtonDarkFontStr = "#FF000000";
     public const string FontDarkColorStr = "#FFE9E9E9";
 
     public const string GroupLightColorStr = "#CCfbfbfb";

@@ -27,7 +27,6 @@
                         Classes="input2"
                         Text="{Binding Text}"
                         Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
-
                     <Label Content="{setting:Localize ServerPackWindow.Tab1.Text1}" />
                 </StackPanel>
             </Border>

@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
     d:DesignHeight="800"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
@@ -20,11 +21,13 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg17.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/Setting/svg17.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab6.Text1}"
@@ -77,11 +80,13 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg18.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/Setting/svg18.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab6.Text27}"
@@ -129,11 +134,13 @@
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg19.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/Setting/svg19.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab6.Text8}"
@@ -193,11 +200,13 @@
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg21.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/Setting/svg21.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab6.Text29}"

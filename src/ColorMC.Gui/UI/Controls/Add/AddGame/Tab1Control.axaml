@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add.AddGame"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:AddGameModel"
@@ -32,11 +33,14 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
+                            Name="test"
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameEdit/svg1.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/GameEdit/svg1.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize Text.GameVersion}"
@@ -86,11 +90,13 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameEdit/svg2.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/GameEdit/svg2.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize AddGameWindow.Tab1.Text4}"
@@ -147,11 +153,13 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <Svg
+                        <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameEdit/svg3.svg" />
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/GameEdit/svg3.svg"
+                            Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
                             Content="{setting:Localize AddGameWindow.Tab1.Text5}"
@@ -217,7 +225,6 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text71}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
-
                 </StackPanel>
             </Border>
         </StackPanel>
