@@ -451,7 +451,7 @@ public static class CheckHelpers
 
                         if (item.Path != "mods")
                         {
-                            var path = Path.GetFullPath($"{obj.GetGamePath()}/{item.Path}/{item.Name}");
+                            var path = Path.GetFullPath($"{obj.GetGamePath()}/{item.Path}/{item.File}");
                             if (File.Exists(path))
                             {
                                 if (ConfigUtils.Config.GameCheck.CheckModSha1)
@@ -462,7 +462,7 @@ public static class CheckHelpers
                                         list.Add(new()
                                         {
                                             Url = item.Url,
-                                            Name = item.File,
+                                            Name = item.Name,
                                             Local = path,
                                             SHA1 = item.SHA1
                                         });
@@ -474,7 +474,7 @@ public static class CheckHelpers
                                 list.Add(new()
                                 {
                                     Url = item.Url,
-                                    Name = item.File,
+                                    Name = item.Name,
                                     Local = path,
                                     SHA1 = item.SHA1
                                 });
@@ -485,7 +485,7 @@ public static class CheckHelpers
                             list.Add(new()
                             {
                                 Url = item.Url,
-                                Name = item.File,
+                                Name = item.Name,
                                 Local = obj.GetModsPath() + item.File,
                                 SHA1 = item.SHA1
                             });
