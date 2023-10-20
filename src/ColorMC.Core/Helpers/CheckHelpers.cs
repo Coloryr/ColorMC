@@ -449,13 +449,47 @@ public static class CheckHelpers
                             continue;
                         }
 
-                        list.Add(new()
+                        if (item.Path != "mods")
                         {
-                            Url = item.Url,
-                            Name = item.File,
-                            Local = obj.GetModsPath() + item.File,
-                            SHA1 = item.SHA1
-                        });
+                            var path = Path.GetFullPath($"{obj.GetGamePath()}/{item.Path}/{item.Name}");
+                            if (File.Exists(path))
+                            {
+                                if (ConfigUtils.Config.GameCheck.CheckModSha1)
+                                {
+                                    using var file = PathHelper.OpenRead(path)!;
+                                    if (HashHelper.GenSha1(file) != item.SHA1)
+                                    {
+                                        list.Add(new()
+                                        {
+                                            Url = item.Url,
+                                            Name = item.File,
+                                            Local = path,
+                                            SHA1 = item.SHA1
+                                        });
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                list.Add(new()
+                                {
+                                    Url = item.Url,
+                                    Name = item.File,
+                                    Local = path,
+                                    SHA1 = item.SHA1
+                                });
+                            }
+                        }
+                        else
+                        {
+                            list.Add(new()
+                            {
+                                Url = item.Url,
+                                Name = item.File,
+                                Local = obj.GetModsPath() + item.File,
+                                SHA1 = item.SHA1
+                            });
+                        }
                     }
                 }
             }, cancel));
