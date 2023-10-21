@@ -24,8 +24,6 @@ public static class ColorMCGui
 
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
 
-    public static Action? PhoneOpenSetting;
-
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
