@@ -71,6 +71,15 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
         Value.Remove(item);
     }
 
+    /// <summary>
+    /// 复制内容
+    /// </summary>
+    /// <returns>NBT列表</returns>
+    public List<NbtBase> CopyList()
+    {
+        return new List<NbtBase>(Value);
+    }
+
     internal override NbtList Read(DataInputStream stream)
     {
         var type = stream.ReadByte();

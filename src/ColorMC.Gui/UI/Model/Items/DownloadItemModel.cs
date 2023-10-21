@@ -5,7 +5,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// <summary>
 /// 下载项目显示
 /// </summary>
-public partial class DownloadItemDisplayModel : ObservableObject
+public partial class DownloadItemModel : ObservableObject
 {
     /// <summary>
     /// 名字

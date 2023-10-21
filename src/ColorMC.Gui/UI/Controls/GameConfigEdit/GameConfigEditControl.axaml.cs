@@ -86,8 +86,10 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         {
             Flyout2((sender as Control)!);
         }
-
-        LongPressed.Pressed(() => Flyout2((sender as Control)!));
+        else
+        {
+            LongPressed.Pressed(() => Flyout2((sender as Control)!));
+        }
     }
 
     private void DataGrid1_CellEditEnded(object? sender, DataGridCellEditEndedEventArgs e)
@@ -112,8 +114,10 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         {
             Flyout1((sender as Control)!);
         }
-
-        LongPressed.Pressed(() => Flyout1((sender as Control)!));
+        else
+        {
+            LongPressed.Pressed(() => Flyout1((sender as Control)!));
+        }
     }
 
     private void Flyout1(Control control)

@@ -30,7 +30,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// 显示的下载模组项目列表
     /// </summary>
-    public ObservableCollection<DownloadModDisplayModel> DownloadModList { get; init; } = new();
+    public ObservableCollection<DownloadModModel> DownloadModList { get; init; } = new();
     /// 显示的<summary>
     /// 下载类型列表
     /// </summary>
@@ -71,7 +71,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// Mod下载项目显示列表
     /// </summary>
-    public readonly List<DownloadModDisplayModel> ModList = new();
+    public readonly List<DownloadModModel> ModList = new();
     /// <summary>
     /// 高清修复列表
     /// </summary>
@@ -134,7 +134,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// 下载的模组
     /// </summary>
     [ObservableProperty]
-    private DownloadModDisplayModel? _mod;
+    private DownloadModModel? _mod;
 
     /// <summary>
     /// 是否在下载

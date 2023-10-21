@@ -6,8 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    Height="100"
-    d:DesignHeight="100"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
+    MinHeight="100"
+    d:DesignHeight="200"
     d:DesignWidth="500"
     x:DataType="model:WorldModel"
     mc:Ignorable="d">
@@ -31,7 +32,7 @@
                 Width="90"
                 Height="90"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
+                VerticalAlignment="Top"
                 CornerRadius="{setting:Style PicRadius}">
                 <Border.Background>
                     <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
@@ -91,9 +92,51 @@
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
+                    MaxLines="3"
                     Text="{Binding Local}"
+                    TextTrimming="CharacterEllipsis"
                     TextWrapping="Wrap" />
             </StackPanel>
+            <DockPanel Margin="5,95,5,5" IsVisible="{Binding IsSelect}">
+                <Label Content="{setting:Localize GameEditWindow.Control.Text6}" DockPanel.Dock="Top" />
+                <Panel>
+                    <DataGrid
+                        Name="DataGridDataPack"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="True"
+                        HorizontalScrollBarVisibility="Auto"
+                        ItemsSource="{Binding DataPackList}"
+                        SelectedItem="{Binding DataPack}"
+                        VerticalScrollBarVisibility="Hidden">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn
+                                Binding="{Binding Enable}"
+                                Header="{setting:Localize GameEditWindow.Control.Text7}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Name}"
+                                Header="{setting:Localize GameEditWindow.Control.Text8}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding PackFormat}"
+                                Header="{setting:Localize GameEditWindow.Control.Text10}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Description}"
+                                Header="{setting:Localize GameEditWindow.Control.Text11}"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Panel Background="{setting:Colors BG1}" IsVisible="{Binding Empty}">
+                        <Label
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize GameEditWindow.Control.Text9}"
+                            FontSize="20" />
+                    </Panel>
+                </Panel>
+            </DockPanel>
         </Panel>
     </Panel>
 </UserControl>

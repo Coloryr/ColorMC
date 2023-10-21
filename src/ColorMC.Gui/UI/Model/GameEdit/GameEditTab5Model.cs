@@ -102,7 +102,9 @@ public partial class GameEditModel : MenuModel
         Model.ProgressClose();
         foreach (var item in res)
         {
-            WorldList.Add(new(this, item));
+            var item1 = new WorldModel(this, item);
+            await item1.Load();
+            WorldList.Add(item1);
         }
     }
     [RelayCommand]

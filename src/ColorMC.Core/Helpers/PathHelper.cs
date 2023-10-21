@@ -144,14 +144,14 @@ public static class PathHelper
     /// <summary>
     /// 删除文件夹
     /// </summary>
-    public static async Task<bool> DeleteFiles(string local)
+    public static async Task<bool> DeleteFiles(string local, bool req = true)
     {
         if (!Directory.Exists(local))
         {
             return true;
         }
 
-        if (ColorMCCore.GameRequest != null)
+        if (req && ColorMCCore.GameRequest != null)
         {
             var res = await ColorMCCore.GameRequest.Invoke(
                 string.Format(LanguageHelper.Get("Core.Info2"), local));
@@ -208,7 +208,7 @@ public static class PathHelper
         }
         if (File.Exists(local))
         {
-            return File.OpenRead(local);
+            return File.Open(local, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
         }
 
         return null;

@@ -124,8 +124,10 @@ public partial class UsersControl : UserControl, IUserControl
             {
                 model.Select(model.Item);
             }
-
-            LongPressed.Pressed(() => Flyout((sender as Control)!));
+            else
+            {
+                LongPressed.Pressed(() => Flyout((sender as Control)!));
+            }
         });
     }
 

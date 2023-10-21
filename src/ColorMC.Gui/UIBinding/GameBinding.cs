@@ -1575,4 +1575,50 @@ public static class GameBinding
             return (false, temp);
         }
     }
+
+    public static bool DataPackDisE(DataPackObj obj)
+    {
+        if (BaseBinding.IsGameRun(obj.World.Game))
+        {
+            return false;
+        }
+        return DataPack.DisE(new List<DataPackObj>() { obj }, obj.World);
+    }
+
+    public static bool DataPackDisE(IEnumerable<DataPackModel> pack)
+    {
+        var list = new List<DataPackObj>();
+        foreach (var item in pack)
+        {
+            list.Add(item.Pack);
+        }
+        if (BaseBinding.IsGameRun(list[0].World.Game))
+        {
+            return false;
+        }
+        return DataPack.DisE(list, list[0].World);
+    }
+
+    public static async Task<bool> DeleteDataPack(DataPackModel item)
+    {
+        if (BaseBinding.IsGameRun(item.Pack.World.Game))
+        {
+            return false;
+        }
+        return await DataPack.Delete(new List<DataPackObj>() { item.Pack }, item.Pack.World);
+    }
+
+    public static async Task<bool> DeleteDataPack(IEnumerable<DataPackModel> items)
+    {
+        var list = new List<DataPackObj>();
+        foreach (var item in items)
+        {
+            list.Add(item.Pack);
+        }
+        if (BaseBinding.IsGameRun(list[0].World.Game))
+        {
+            return false;
+        }
+        return await DataPack.Delete(list, list[0].World);
+    }
 }

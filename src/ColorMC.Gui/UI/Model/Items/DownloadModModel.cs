@@ -7,7 +7,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// <summary>
 /// Mod下载项目显示
 /// </summary>
-public partial class DownloadModDisplayModel : ObservableObject
+public partial class DownloadModModel : ObservableObject
 {
     [ObservableProperty]
     private bool _download;
