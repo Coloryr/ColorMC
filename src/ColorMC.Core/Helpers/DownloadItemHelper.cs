@@ -72,7 +72,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildGameItem(string mc)
     {
-        var game = VersionPath.GetGame(mc)!;
+        var game = VersionPath.GetVersion(mc)!;
         var file = LibrariesPath.GetGameFile(mc);
         return new()
         {
@@ -203,7 +203,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目列表</returns>
     public static List<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc, string version, bool neo)
     {
-        var version1 = VersionPath.GetGame(mc)!;
+        var version1 = VersionPath.GetVersion(mc)!;
         var v2 = CheckHelpers.ISGameVersionV2(version1);
         var list = new List<DownloadItemObj>();
 
@@ -510,7 +510,7 @@ public static class DownloadItemHelper
     /// List下载项目列表</returns>
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildForge(string mc, string version, bool neo)
     {
-        var version1 = VersionPath.GetGame(mc)!;
+        var version1 = VersionPath.GetVersion(mc)!;
         var v2 = CheckHelpers.ISGameVersionV2(version1);
 
         var down = neo ?

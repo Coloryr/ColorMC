@@ -202,7 +202,7 @@ public static class CheckHelpers
 
             res1.List!.ForEach(list.Add);
 
-            game = VersionPath.GetGame(obj.Version);
+            game = VersionPath.GetVersion(obj.Version);
         }
 
         if (game == null)

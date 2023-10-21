@@ -232,7 +232,7 @@ public static class VersionPath
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns>游戏数据</returns>
-    public static GameArgObj? GetGame(string version)
+    public static GameArgObj? GetVersion(string version)
     {
         if (s_gameArgs.TryGetValue(version, out var temp))
         {
@@ -277,7 +277,7 @@ public static class VersionPath
                 return await AddGame(data);
             }
 
-            return GetGame(version);
+            return GetVersion(version);
         }
 
         return null;

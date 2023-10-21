@@ -1,4 +1,5 @@
 ﻿using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
@@ -20,8 +21,10 @@ public partial class GameEditModel : MenuModel
     public ObservableCollection<string> GroupList { get; init; } = new();
     public List<string> VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
     public ObservableCollection<string> LoaderTypeList { get; init; } = new();
+    public ObservableCollection<string> LangList { get; init; } = new();
 
     private List<Loaders> _loaderTypeList = new();
+    private List<string> _langList = new();
 
     private bool _gameLoad = false;
 
@@ -40,6 +43,8 @@ public partial class GameEditModel : MenuModel
     private int _versionType = -1;
     [ObservableProperty]
     private int _loaderType = -1;
+    [ObservableProperty]
+    private int _lang = -1;
 
     [ObservableProperty]
     private bool _modPack;
@@ -49,6 +54,31 @@ public partial class GameEditModel : MenuModel
 
     [ObservableProperty]
     private bool _enableLoader;
+
+    partial void OnLangChanged(int value)
+    {
+        if (_gameLoad)
+        {
+            return;
+        }
+
+        if (value < 0 || value >= _langList.Count)
+        {
+            return;
+        }
+
+        var opt = _obj.GetOptions();
+        if (opt.ContainsKey(GameLang.Name2))
+        {
+            opt[GameLang.Name2] = _langList[value];
+        }
+        else
+        {
+            opt.Add(GameLang.Name2, _langList[value]);
+        }
+
+        _obj.SaveOptions(opt);
+    }
 
     partial void OnVersionTypeChanged(int value)
     {
@@ -156,6 +186,12 @@ public partial class GameEditModel : MenuModel
 
         _obj.FID = value;
         _obj.Save();
+    }
+
+    [RelayCommand]
+    public async Task LangReload()
+    { 
+        await LangLoad();
     }
 
     [RelayCommand]
@@ -495,7 +531,45 @@ public partial class GameEditModel : MenuModel
         GameRun = BaseBinding.IsGameRun(_obj);
     }
 
-    public void GameLoad()
+    public async Task LangLoad()
+    {
+        Model.Progress(App.GetLanguage("GameEditWindow.Tab1.Info9"));
+        LangList.Clear();
+        var list = await Task.Run(() =>
+        {
+            var version = VersionPath.GetVersion(_obj.Version);
+            if (version != null)
+            {
+                var ass = AssetsPath.GetIndex(version);
+                if (ass != null)
+                {
+                    return ass.GetLangs();
+                }
+            }
+
+            return GameLang.GetLangs(null);
+        });
+
+        var opt = _obj.GetOptions();
+        int a = 0;
+
+        opt.TryGetValue("lang", out string? lang);
+
+        foreach (var item in list)
+        {
+            LangList.Add(item.Value);
+            _langList.Add(item.Key);
+
+            if (lang != null && lang == item.Key)
+            {
+                Lang = a;
+            }
+            a++;
+        }
+        Model.ProgressClose();
+    }
+
+    public async void GameLoad()
     {
         _gameLoad = true;
 
@@ -548,6 +622,8 @@ public partial class GameEditModel : MenuModel
         PID = _obj.PID;
 
         GameRun = BaseBinding.IsGameRun(_obj);
+
+        await LangLoad();
 
         _gameLoad = false;
     }
