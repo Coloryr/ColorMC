@@ -11,7 +11,6 @@ using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
-
 public partial class Tab2Control : UserControl
 {
     public Tab2Control()
@@ -22,7 +21,7 @@ public partial class Tab2Control : UserControl
 
         if (SystemInfo.Os == OsType.Android)
         {
-            var con = ColorMCCore.PhoneGetSetting?.Invoke();
+            var con = ColorMCGui.PhoneGetSetting?.Invoke();
             if (con is Control con1)
             {
                 PhoneSetting.Children.Add(con1);
