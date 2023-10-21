@@ -1,3 +1,8 @@
+using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
+using System.Text;
+
 namespace ColorMC.Core.Game;
 
 /// <summary>
@@ -5,6 +10,28 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Options
 {
+    public static Dictionary<string, string> GetOptions(this GameSettingObj obj)
+    {
+        var file = obj.GetOptionsFile();
+        if (File.Exists(file))
+        {
+            return ReadOptions(PathHelper.ReadText(file)!);
+        }
+
+        return new();
+    }
+
+    public static void SaveOptions(this GameSettingObj obj, Dictionary<string, string> list, string sp = ":")
+    {
+        var file = obj.GetOptionsFile();
+        var builder = new StringBuilder();
+        foreach(var item in list)
+        {
+            builder.Append(item.Key).Append(sp).AppendLine(item.Value);
+        }
+        PathHelper.WriteText(file, builder.ToString());
+    }
+
     /// <summary>
     /// 读取配置文件
     /// </summary>

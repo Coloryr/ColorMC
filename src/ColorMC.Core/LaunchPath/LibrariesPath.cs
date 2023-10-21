@@ -93,7 +93,7 @@ public static class LibrariesPath
     /// <returns>丢失的库</returns>
     public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLib(this GameSettingObj obj, bool neo, CancellationToken cancel)
     {
-        var version1 = VersionPath.GetGame(obj.Version)!;
+        var version1 = VersionPath.GetVersion(obj.Version)!;
         var v2 = CheckHelpers.ISGameVersionV2(version1);
         if (v2)
         {

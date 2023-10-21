@@ -114,4 +114,9 @@ public static class AssetsPath
     {
         return Path.GetFullPath($"{BaseDir}/{Name3}/{obj.UUID}_cape.png");
     }
+
+    public static string? ReadAsset(string hash)
+    {
+        return PathHelper.ReadText($"{BaseDir}/{Name2}/{hash[0..2]}/{hash}");
+    }
 }

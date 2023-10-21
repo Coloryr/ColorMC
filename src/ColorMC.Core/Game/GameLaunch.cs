@@ -181,7 +181,7 @@ public static class Launch
     /// <returns>参数</returns>
     private static List<string> MakeV2JvmArg(GameSettingObj obj)
     {
-        var game = VersionPath.GetGame(obj.Version)!;
+        var game = VersionPath.GetVersion(obj.Version)!;
         if (game.arguments == null)
         {
             return V1JvmArg;
@@ -268,7 +268,7 @@ public static class Launch
             return new(forge.minecraftArguments.Split(" "));
         }
 
-        var version = VersionPath.GetGame(obj.Version)!;
+        var version = VersionPath.GetVersion(obj.Version)!;
         return new(version.minecraftArguments.Split(" "));
     }
 
@@ -279,7 +279,7 @@ public static class Launch
     /// <returns></returns>
     private static List<string> MakeV2GameArg(GameSettingObj obj)
     {
-        var game = VersionPath.GetGame(obj.Version)!;
+        var game = VersionPath.GetVersion(obj.Version)!;
         if (game.arguments == null)
         {
             return MakeV1GameArg(obj);
@@ -477,7 +477,7 @@ public static class Launch
         }
 
         //log4j2-xml
-        var game = VersionPath.GetGame(obj.Version)!;
+        var game = VersionPath.GetVersion(obj.Version)!;
         if (game.logging != null && ConfigUtils.Config.SafeLog4j)
         {
             var obj1 = DownloadItemHelper.BuildLog4jItem(game);
@@ -660,7 +660,7 @@ public static class Launch
     private static async Task<List<string>> GetLibs(GameSettingObj obj, bool v2)
     {
         Dictionary<LibVersionObj, string> list = new();
-        var version = VersionPath.GetGame(obj.Version)!;
+        var version = VersionPath.GetVersion(obj.Version)!;
 
         //GameLib
         var list1 = await DownloadItemHelper.BuildGameLibs(version);
@@ -769,7 +769,7 @@ public static class Launch
     /// <param name="v2">V2模式</param>
     private static void ReplaceAll(GameSettingObj obj, LoginObj login, List<string> args, string classpath)
     {
-        var version = VersionPath.GetGame(obj.Version)!;
+        var version = VersionPath.GetVersion(obj.Version)!;
         var assetsPath = AssetsPath.BaseDir;
         var gameDir = InstancesPath.GetGamePath(obj);
         var assetsIndexName = version.assets != null ? version.assets : "legacy";
@@ -821,7 +821,7 @@ public static class Launch
     private static async Task<List<string>> MakeArg(GameSettingObj obj, LoginObj login, WorldObj? world)
     {
         var list = new List<string>();
-        var version = VersionPath.GetGame(obj.Version)!;
+        var version = VersionPath.GetVersion(obj.Version)!;
         var v2 = CheckHelpers.ISGameVersionV2(version);
         var classpath = await MakeClassPath(obj, v2);
         var jvmarg = await JvmArg(obj, v2, login);
@@ -1056,7 +1056,7 @@ public static class Launch
         stopwatch.Start();
         var path = obj.JvmLocal;
         JavaInfo? jvm = null;
-        var game = VersionPath.GetGame(obj.Version)!;
+        var game = VersionPath.GetVersion(obj.Version)!;
         if (string.IsNullOrWhiteSpace(path))
         {
             var jv = game.javaVersion.majorVersion;
@@ -1180,7 +1180,7 @@ public static class Launch
             ConfigSet(obj);
 
             //安装Forge
-            var version = VersionPath.GetGame(obj.Version)!;
+            var version = VersionPath.GetVersion(obj.Version)!;
             var v2 = CheckHelpers.ISGameVersionV2(version);
             if (v2 && obj.Loader is Loaders.Forge or Loaders.NeoForge)
             {

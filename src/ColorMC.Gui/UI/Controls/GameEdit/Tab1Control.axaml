@@ -65,6 +65,23 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text33}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
+                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                        <Label
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text13}" />
+                        <ComboBox
+                            Width="200"
+                            Margin="0,0,5,0"
+                            ItemsSource="{Binding LangList}"
+                            SelectedIndex="{Binding Lang}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="0,2,0,2"
+                            Command="{Binding LangReload}"
+                            Content="{setting:Localize Button.Refash}" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <Border
