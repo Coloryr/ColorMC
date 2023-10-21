@@ -771,11 +771,6 @@ public static class BaseBinding
         return (true, null);
     }
 
-    public static void OpenPhoneSetting()
-    {
-        ColorMCGui.PhoneOpenSetting?.Invoke();
-    }
-
     public static void CreateLaunch(GameSettingObj obj)
     {
 #pragma warning disable CA1416 // 验证平台兼容性
