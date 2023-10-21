@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
@@ -23,6 +24,8 @@ public static class ColorMCGui
     public static string[] BaseSha1 { get; private set; }
 
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
+
+    public static Func<Control> PhoneGetSetting { get; set; }
 
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 
