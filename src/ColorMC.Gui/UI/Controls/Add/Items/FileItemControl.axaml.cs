@@ -83,13 +83,15 @@ public partial class FileItemControl : UserControl
             model.Next();
             e.Handled = true;
         }
-
-        LongPressed.Pressed(() =>
+        else
         {
-            Dispatcher.UIThread.Post(() =>
+            LongPressed.Pressed(() =>
             {
-                OpenFlyout();
+                Dispatcher.UIThread.Post(() =>
+                {
+                    OpenFlyout();
+                });
             });
-        });
+        }
     }
 }

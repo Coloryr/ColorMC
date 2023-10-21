@@ -17,6 +17,33 @@ public partial class WorldControl : UserControl
         PointerEntered += WorldControl_PointerEntered;
         PointerExited += WorldControl_PointerExited;
         PointerMoved += WorldControl_PointerMoved;
+
+        DataGridDataPack.DoubleTapped += DataGridDataPack_DoubleTapped;
+        DataGridDataPack.CellPointerPressed += DataGridDataPack_CellPointerPressed;
+    }
+
+    private void DataGridDataPack_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as WorldModel)!;
+
+            var pro = e.PointerPressedEventArgs.GetCurrentPoint(this);
+
+            if (pro.Properties.IsRightButtonPressed)
+            {
+                Flyout1((sender as Control)!);
+            }
+            else
+            {
+                LongPressed.Pressed(() => Flyout1((sender as Control)!));
+            }
+        });
+    }
+
+    private void DataGridDataPack_DoubleTapped(object? sender, TappedEventArgs e)
+    {
+        (DataContext as WorldModel)!.DisE();
     }
 
     private void WorldControl_PointerMoved(object? sender, PointerEventArgs e)
@@ -47,8 +74,10 @@ public partial class WorldControl : UserControl
         {
             Flyout((sender as Control)!);
         }
-
-        LongPressed.Pressed(() => Flyout((sender as Control)!));
+        else
+        {
+            LongPressed.Pressed(() => Flyout((sender as Control)!));
+        }
     }
 
     private void Flyout(Control control)
@@ -57,6 +86,15 @@ public partial class WorldControl : UserControl
         {
             var model = (DataContext as WorldModel)!;
             _ = new GameEditFlyout2(control, model);
+        });
+    }
+
+    private void Flyout1(Control control)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var model = (DataContext as WorldModel)!;
+            _ = new GameEditFlyout8(control, DataGridDataPack.SelectedItems, model);
         });
     }
 }

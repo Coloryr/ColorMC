@@ -18,6 +18,7 @@ namespace ColorMC.Core.Game;
 public static class Worlds
 {
     private const string Name1 = "datapacks";
+    private const string Name2 = "colormc.info.json";
 
     /// <summary>
     /// 获取世界列表
@@ -39,22 +40,21 @@ public static class Worlds
         await Parallel.ForEachAsync(info.GetDirectories(), async (item, cacenl) =>
         {
             var find = false;
-            foreach (var item1 in item.GetFiles())
+            var file = Path.GetFullPath(item.FullName + "/level.dat");
+            if (File.Exists(file))
             {
-                if (item1.Name != "level.dat")
-                {
-                    continue;
-                }
-
                 try
                 {
-                    var obj = new WorldObj();
-
                     //读NBT
-                    if (await NbtBase.Read(item1.FullName) is not NbtCompound tag)
+                    if (await NbtBase.Read(file) is not NbtCompound tag)
                     {
-                        break;
+                        return;
                     }
+
+                    var obj = new WorldObj()
+                    {
+                        Nbt = tag
+                    };
 
                     //读数据
                     var tag1 = (tag["Data"] as NbtCompound)!;
@@ -80,17 +80,16 @@ public static class Worlds
                 {
                     Logs.Error(LanguageHelper.Get("Core.Game.Error4"), e);
                 }
+            }
 
-                if (!find)
+            if (!find)
+            {
+                list.Add(new()
                 {
-                    list.Add(new()
-                    {
-                        Broken = true,
-                        Local = Path.GetFullPath(item.FullName),
-                        Game = game
-                    });
-                }
-                break;
+                    Broken = true,
+                    Local = Path.GetFullPath(item.FullName),
+                    Game = game
+                });
             }
         });
 
@@ -105,7 +104,7 @@ public static class Worlds
     {
         string dir = Path.GetFullPath(world.Game.GetRemoveWorldPath());
         Directory.CreateDirectory(dir);
-        Directory.Move(world.Local, Path.GetFullPath(dir + world.LevelName));
+        Directory.Move(world.Local, Path.GetFullPath(dir + "/" + world.LevelName));
     }
 
     /// <summary>
@@ -223,24 +222,14 @@ public static class Worlds
             .ToString("yyyy_MM_dd_HH_mm_ss") + ".zip");
 
         await new ZipUtils().ZipFile(world.Local, file);
-        using var s = new ZipFile(PathHelper.OpenWrite(file));
+        using var s = new ZipFile(PathHelper.OpenRead(file));
         var info = new { name = world.LevelName };
         var data = JsonConvert.SerializeObject(info);
         var data1 = Encoding.UTF8.GetBytes(data);
         using var stream = new ZipFileStream(data1);
-        var crc = new Crc32();
-        var entry = new ZipEntry("colormc.info.json")
-        {
-            DateTime = DateTime.Now,
-            Size = data.Length
-        };
-        crc.Reset();
-        crc.Update(data1);
-        entry.Crc = crc.Value;
         s.BeginUpdate();
-        s.Add(stream, entry);
+        s.Add(stream, Name2);
         s.CommitUpdate();
-        s.Close();
     }
 
     /// <summary>
@@ -251,44 +240,48 @@ public static class Worlds
     /// <returns>还原结果</returns>
     public static async Task<bool> UnzipBackupWorld(this GameSettingObj obj, FileInfo item1)
     {
-        var res = false;
-
-        using var s = new ZipInputStream(PathHelper.OpenRead(item1.FullName));
-        using var stream1 = new MemoryStream();
-        ZipEntry theEntry;
-        while ((theEntry = s.GetNextEntry()) != null)
-        {
-            if (theEntry.Name == "info.json")
-            {
-                await s.CopyToAsync(stream1);
-                res = true;
-                break;
-            }
-        }
-        if (!res)
-        {
-            return false;
-        }
-        var data = stream1.ToArray();
-        var data1 = Encoding.UTF8.GetString(data);
-        var info = JObject.Parse(data1);
-        var name = info?["name"]?.ToString();
-        if (name == null)
-        {
-            return false;
-        }
-
-        var list1 = await obj.GetWorlds();
-        var item = list1.FirstOrDefault(a => a.LevelName == name);
         var local = "";
-        if (item != null)
+
         {
-            local = item.Local;
-            await PathHelper.DeleteFiles(item.Local);
-        }
-        else
-        {
-            local = Path.GetFullPath(obj.GetSavesPath() + "/" + name);
+            var res = false;
+
+            using var s = new ZipInputStream(PathHelper.OpenRead(item1.FullName));
+            using var stream1 = new MemoryStream();
+            ZipEntry theEntry;
+            while ((theEntry = s.GetNextEntry()) != null)
+            {
+                if (theEntry.Name == Name2)
+                {
+                    await s.CopyToAsync(stream1);
+                    res = true;
+                    break;
+                }
+            }
+            if (!res)
+            {
+                return false;
+            }
+            var data = stream1.ToArray();
+            var data1 = Encoding.UTF8.GetString(data);
+            var info = JObject.Parse(data1);
+            var name = info?["name"]?.ToString();
+            if (name == null)
+            {
+                return false;
+            }
+
+            var list1 = await obj.GetWorlds();
+            var item = list1.FirstOrDefault(a => a.LevelName == name);
+
+            if (item != null)
+            {
+                local = item.Local;
+                await PathHelper.DeleteFiles(item.Local);
+            }
+            else
+            {
+                local = Path.GetFullPath(obj.GetSavesPath() + "/" + name);
+            }
         }
 
         try

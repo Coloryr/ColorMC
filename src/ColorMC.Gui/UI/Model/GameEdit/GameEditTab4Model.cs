@@ -133,21 +133,27 @@ public partial class GameEditModel : MenuModel
         _modItems.AddRange(res);
 
         var list = res.Where(a => a.Obj.ReadFail == false && !a.Obj.Disable && !string.IsNullOrWhiteSpace(a.Obj.modid)).GroupBy(a => a.Obj.modid);
-        count = list.Count(a => a.Count() > 1);
-        if (count > 0)
+        var list1 = new List<string>();
+
+        foreach (var item in list)
         {
-            var list1 = new List<string>();
-            foreach (var item in list)
+            if (item.Count() > 1)
             {
+                count++;
                 list1.Add(item.Key);
             }
+        }
+        if (list1.Any())
+        {
             var res1 = await Model.ShowWait(string.Format(App
                      .GetLanguage("GameEditWindow.Tab4.Info14"), count));
             if (res1)
             {
                 DisplayMod(list1);
+                return;
             }
         }
+
         LoadMod1();
     }
 

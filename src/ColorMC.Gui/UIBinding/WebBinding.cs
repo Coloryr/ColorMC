@@ -365,7 +365,7 @@ public static class WebBinding
     }
 
     public static async Task<(DownloadItemObj? Item, ModInfoObj? Info,
-        List<DownloadModDisplayModel>? List)>
+        List<DownloadModModel>? List)>
         DownloadMod(GameSettingObj obj, CurseForgeModObj.Data? data)
     {
         if (data == null)
@@ -373,7 +373,7 @@ public static class WebBinding
 
         string path = obj.GetModsPath();
 
-        var res = new Dictionary<string, DownloadModDisplayModel>();
+        var res = new Dictionary<string, DownloadModModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
             var res1 = await CurseForgeAPI.GetModDependencies(data, obj.Version, obj.Loader, true);
@@ -408,13 +408,13 @@ public static class WebBinding
     }
 
     public static async Task<(DownloadItemObj? Item, ModInfoObj? Info,
-        List<DownloadModDisplayModel>? List)>
+        List<DownloadModModel>? List)>
         DownloadMod(GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
             return (null, null, null);
 
-        var res = new Dictionary<string, DownloadModDisplayModel>();
+        var res = new Dictionary<string, DownloadModModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
             var list2 = await ModrinthAPI.GetModDependencies(data, obj.Version, obj.Loader);

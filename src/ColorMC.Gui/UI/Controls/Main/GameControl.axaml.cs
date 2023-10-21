@@ -108,8 +108,10 @@ public partial class GameControl : UserControl
         {
             Flyout((sender as Control)!);
         }
-
-        LongPressed.Pressed(() => Flyout((sender as Control)!));
+        else
+        {
+            LongPressed.Pressed(() => Flyout((sender as Control)!));
+        }
     }
 
     private void Flyout(Control control)

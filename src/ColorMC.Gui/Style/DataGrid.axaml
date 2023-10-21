@@ -10,18 +10,9 @@
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="123"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Arch}"
-                        Header="456"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Os}"
-                        Header="789"
-                        IsReadOnly="True" />
+                    <DataGridTextColumn Header="123" IsReadOnly="True" />
+                    <DataGridTextColumn Header="456" IsReadOnly="True" />
+                    <DataGridTextColumn Header="789" IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
 

@@ -151,6 +151,8 @@
   "Core.Tool.Error1": "mcaselector下载失败",
   "Core.Tool.Error2": "mcaselector启动失败，没有java",
   "Core.GameCount.Error1": "读取统计信息错误",
+  "Core.DataPack.Error1": "数据包 {0} 信息读取错误",
+  "Core.DataPack.Error2": "数据包操作错误",
   "AuthType.Offline": "离线",
   "AuthType.OAuth": "微软登录",
   "AuthType.Nide8": "统一通行证",

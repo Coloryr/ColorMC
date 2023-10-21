@@ -18,9 +18,9 @@ namespace ColorMC.Gui.UI.Model.Download;
 
 public partial class DownloadModel : TopModel
 {
-    public ObservableCollection<DownloadItemDisplayModel> ItemList { get; init; } = new();
+    public ObservableCollection<DownloadItemModel> ItemList { get; init; } = new();
 
-    private readonly Dictionary<string, DownloadItemDisplayModel> _downloadList = new();
+    private readonly Dictionary<string, DownloadItemModel> _downloadList = new();
 
     private long _count;
     private readonly Timer _timer;
@@ -92,7 +92,7 @@ public partial class DownloadModel : TopModel
     {
         if (item.State == DownloadItemState.Init)
         {
-            var item11 = new DownloadItemDisplayModel()
+            var item11 = new DownloadItemModel()
             {
                 Name = item.Name,
                 State = item.State.GetName(),
@@ -104,7 +104,7 @@ public partial class DownloadModel : TopModel
             return;
         }
 
-        if (!_downloadList.TryGetValue(item.Name, out DownloadItemDisplayModel? value))
+        if (!_downloadList.TryGetValue(item.Name, out DownloadItemModel? value))
         {
             return;
         }

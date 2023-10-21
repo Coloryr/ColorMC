@@ -1,4 +1,6 @@
-﻿namespace ColorMC.Core.Objs.Minecraft;
+﻿using ColorMC.Core.Nbt;
+
+namespace ColorMC.Core.Objs.Minecraft;
 
 /// <summary>
 /// 世界储存
@@ -52,4 +54,5 @@ public record WorldObj
     public bool Broken { get; set; }
 
     public GameSettingObj Game;
+    public NbtCompound Nbt;
 }
