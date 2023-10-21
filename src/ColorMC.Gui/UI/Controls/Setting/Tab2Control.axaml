@@ -13,8 +13,33 @@
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="5,3,5,5">
+        <StackPanel Margin="5,0,5,5">
             <Border
+                Margin="0,3,0,0"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsVisible="{Binding Phone}">
+                <StackPanel Name="PhoneSetting">
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/Setting/svg22.svg"
+                            Stroke="{setting:Colors Font}" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text43}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -34,7 +59,7 @@
                             Content="{setting:Localize SettingWindow.Tab2.Text46}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <StackPanel Name="PhoneSetting" />
+
                     <WrapPanel Orientation="Horizontal">
                         <CheckBox
                             Margin="0,0,5,0"

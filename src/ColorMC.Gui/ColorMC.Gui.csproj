@@ -93,6 +93,7 @@
     <None Remove="Resource\Icon\Setting\svg2.svg" />
     <None Remove="Resource\Icon\Setting\svg20.svg" />
     <None Remove="Resource\Icon\Setting\svg21.svg" />
+    <None Remove="Resource\Icon\Setting\svg22.svg" />
     <None Remove="Resource\Icon\Setting\svg3.svg" />
     <None Remove="Resource\Icon\Setting\svg4.svg" />
     <None Remove="Resource\Icon\Setting\svg5.svg" />
@@ -194,6 +195,7 @@
     <AvaloniaResource Include="Resource\Icon\Setting\svg2.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg20.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg21.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg22.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg3.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg4.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg5.svg" />
