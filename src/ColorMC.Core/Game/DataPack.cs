@@ -76,8 +76,8 @@ public static class DataPack
             {
                 try
                 {
-                    var file = PathHelper.OpenRead(item)!;
-                    var zip = new ZipFile(file);
+                    using var file = PathHelper.OpenRead(item)!;
+                    using var zip = new ZipFile(file);
                     var ent = zip.GetEntry("pack.mcmeta");
                     if (ent == null)
                     {
