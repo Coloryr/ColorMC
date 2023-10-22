@@ -99,13 +99,14 @@ public partial class GameEditModel : MenuModel
         WorldList.Clear();
 
         var res = await GameBinding.GetWorlds(_obj!);
-        Model.ProgressClose();
         foreach (var item in res)
         {
             var item1 = new WorldModel(this, item);
             await item1.Load();
             WorldList.Add(item1);
         }
+
+        Model.ProgressClose();
     }
     [RelayCommand]
     public async Task EditWorld()
