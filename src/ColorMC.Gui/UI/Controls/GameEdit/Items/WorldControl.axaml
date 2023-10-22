@@ -108,7 +108,7 @@
                         HorizontalScrollBarVisibility="Auto"
                         ItemsSource="{Binding DataPackList}"
                         SelectedItem="{Binding DataPack}"
-                        VerticalScrollBarVisibility="Hidden">
+                        VerticalScrollBarVisibility="Disabled">
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn
                                 Binding="{Binding Enable}"
