@@ -65,7 +65,9 @@ public partial class WorldModel : ObservableObject
     private async void Load1()
     {
         Top.Model.Progress(App.GetLanguage("GameEditWindow.Tab5.Info16"));
+        IsSelect = false;
         await Load();
+        IsSelect = true;
         Top.Model.ProgressClose();
     }
 
