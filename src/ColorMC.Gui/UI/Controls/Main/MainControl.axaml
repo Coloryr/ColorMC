@@ -83,7 +83,7 @@
                                 Command="{Binding ShowCount}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text12}"
                                 ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/skin.svg" />
+                                <Svg Path="/Resource/Icon/count.svg" />
                             </Button>
                             <Button
                                 Width="30"
@@ -135,6 +135,7 @@
                     </ScrollViewer>
                 </Border>
                 <Border
+                    Margin="3,0,0,0"
                     Padding="{setting:Style BorderPadding}"
                     Background="{setting:Colors GroupBack}"
                     BorderBrush="{setting:Colors GroupColor}"
@@ -196,6 +197,12 @@
                                 Margin="5,0,0,0"
                                 Command="{Binding OpenWeb2}"
                                 Content="{setting:Localize SettingWindow.Tab7.Text4}" />
+                            <Button
+                                Width="120"
+                                Height="35"
+                                Margin="5,0,0,0"
+                                Command="{Binding ShowSetting}"
+                                Content="{setting:Localize MainWindow.Control.Text5}" />
                         </StackPanel>
                     </Panel>
                 </Border>
