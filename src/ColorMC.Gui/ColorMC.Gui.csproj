@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net7.0</TargetFramework>
@@ -109,20 +109,6 @@
     <None Remove="Resource\Pic\bg.jpg" />
     <None Remove="Resource\Pic\bg1.jpg" />
     <None Remove="Resource\Pic\game.png" />
-    <None Remove="Resource\Pic\Guide\pic1.png" />
-    <None Remove="Resource\Pic\Guide\pic10.png" />
-    <None Remove="Resource\Pic\Guide\pic11.png" />
-    <None Remove="Resource\Pic\Guide\pic12.png" />
-    <None Remove="Resource\Pic\Guide\pic13.png" />
-    <None Remove="Resource\Pic\Guide\pic14.png" />
-    <None Remove="Resource\Pic\Guide\pic2.png" />
-    <None Remove="Resource\Pic\Guide\pic3.png" />
-    <None Remove="Resource\Pic\Guide\pic4.png" />
-    <None Remove="Resource\Pic\Guide\pic5.png" />
-    <None Remove="Resource\Pic\Guide\pic6.png" />
-    <None Remove="Resource\Pic\Guide\pic7.png" />
-    <None Remove="Resource\Pic\Guide\pic8.png" />
-    <None Remove="Resource\Pic\Guide\pic9.png" />
     <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\load.png" />
     <None Remove="Resource\Pic\user.png" />
@@ -206,24 +192,10 @@
     <AvaloniaResource Include="Resource\Icon\up_arrow.svg" />
     <AvaloniaResource Include="Resource\Icon\user.svg" />
     <AvaloniaResource Include="Resource\Icon\skin.svg" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic12.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic13.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic10.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic11.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic14.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic2.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic1.png" />
     <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
     <EmbeddedResource Include="Resource\Pic\bg.jpg" />
     <EmbeddedResource Include="Resource\Pic\bg1.jpg" />
     <EmbeddedResource Include="Resource\Pic\game.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic3.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic4.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic5.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic6.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic7.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic8.png" />
-    <EmbeddedResource Include="Resource\Pic\Guide\pic9.png" />
     <EmbeddedResource Include="Resource\Pic\launch.png" />
     <EmbeddedResource Include="Resource\Pic\load.png" />
     <EmbeddedResource Include="Resource\Pic\user.png" />
@@ -249,7 +221,7 @@
     <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.3" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.5" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="NAudio.Core" Version="2.2.1" />
     <PackageReference Include="NAudio.WinMM" Version="2.2.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -263,17 +235,6 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="UI\Controls\GameWindow.axaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="UI\Controls\Guide\Tab1Control.axaml.cs">
-      <DependentUpon>Tab1Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Guide\Tab5Control.axaml.cs">
-      <DependentUpon>Tab5Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Guide\Tab4Control.axaml.cs">
-      <DependentUpon>Tab4Control.axaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 
 </Project>

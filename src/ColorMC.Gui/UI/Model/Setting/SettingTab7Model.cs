@@ -1,5 +1,6 @@
 ﻿using Avalonia.Media.Imaging;
 using ColorMC.Core;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,36 +15,36 @@ public partial class SettingTab7Model : ObservableObject
     [RelayCommand]
     public void Open1()
     {
-        BaseBinding.OpUrl("https://www.github.com/Coloryr/ColorMC");
+        WebBinding.OpenWeb(WebType.Web);
     }
 
     [RelayCommand]
     public void Open2()
     {
-        BaseBinding.OpUrl("https://www.minecraft.net/");
+        WebBinding.OpenWeb(WebType.Minecraft);
     }
 
     [RelayCommand]
     public void Open3()
     {
-        BaseBinding.OpUrl("https://coloryr.github.io/sponsor.html");
+        WebBinding.OpenWeb(WebType.Sponsor);
     }
 
     [RelayCommand]
     public void Open4()
     {
-        App.ShowCount();
+        WebBinding.OpenWeb(WebType.Github);
     }
 
     [RelayCommand]
     public void Open5()
     {
-        BaseBinding.OpUrl("https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md");
+        WebBinding.OpenWeb(WebType.Guide);
     }
 
     [RelayCommand]
     public void Open6()
     {
-        BaseBinding.OpUrl("https://www.mcmod.cn/");
+        WebBinding.OpenWeb(WebType.Mcmod);
     }
 }

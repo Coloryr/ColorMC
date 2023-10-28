@@ -310,5 +310,4 @@ public record GuiConfigObj
     /// 控件堆叠模式
     /// </summary>
     public bool ControlMode { get; set; }
-    public bool NewLaunch { get; set; }
 }

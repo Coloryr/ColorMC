@@ -25,7 +25,6 @@ public partial class MainControl : UserControl, IUserControl
     public string Title => App.GetLanguage("MainWindow.Title");
 
     private CancellationTokenSource _cancel1 = new();
-    private ButtonMove _buttonMove = new(TimeSpan.FromSeconds(6));
 
     public readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
@@ -33,51 +32,24 @@ public partial class MainControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        Grid3.PointerPressed += Grid3_PointerPressed;
         ScrollViewer1.PointerPressed += ScrollViewer1_PointerPressed;
-
-        Image1.PointerPressed += Image1_PointerPressed;
-        Image1.PointerEntered += Image1_PointerEntered;
-        Image1.PointerExited += Image1_PointerExited;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
 
         KeyDown += MainControl_KeyDown;
-        Grid1.PointerPressed += Grid1_PointerPressed;
 
         SizeChanged += MainControl_SizeChanged;
-    }
-
-    private void Grid1_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        (DataContext as MainModel)!.SideClose();
     }
 
     private void MainControl_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
         var config = GuiConfigUtils.Config.Live2D;
-        var model = (DataContext as MainModel)!;
-        model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
-        model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
-    }
-
-    private void Image1_PointerExited(object? sender, PointerEventArgs e)
-    {
-        Border2.IsVisible = false;
-    }
-
-    private void Image1_PointerEntered(object? sender, PointerEventArgs e)
-    {
-        Border2.IsVisible = true;
-    }
-
-    private void Image1_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        if (DataContext is MainModel model)
         {
-            App.ShowUser();
+            model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
+            model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
         }
     }
 
@@ -97,47 +69,8 @@ public partial class MainControl : UserControl, IUserControl
                 }
             });
         }
-        else if (e.PropertyName == "SideOpen")
-        {
-            _cancel1.Dispose();
-            _cancel1 = new();
-            Grid1.IsVisible = true;
-            Border1.Opacity = 0;
-            SidePageSlide300.Mirror = ConfigBinding.GetAllConfig().Item2.Gui.WindowMirror;
-            Dispatcher.UIThread.Post(() =>
-            {
-                Border1.Opacity = 1;
-                SidePageSlide300.Start(null, Border1, _cancel1.Token);
-            });
-
-        }
-        else if (e.PropertyName == "SideClose")
-        {
-            _cancel1.Cancel();
-            Grid1.IsVisible = false;
-        }
-        else if (e.PropertyName == "GuideShow")
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                var model = (DataContext as MainModel)!;
-
-                Task.Run(async () =>
-                {
-                    while (model.Render && !model.IsOpenGuide)
-                    {
-                        await Task.Delay(2000);
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            _buttonMove.Start(Svg1);
-                        });
-                        await Task.Delay(10000);
-                    }
-                });
-            });
-        }
     }
-
+        
     private void MainControl_KeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.Down)
@@ -152,11 +85,6 @@ public partial class MainControl : UserControl, IUserControl
         {
             (DataContext as MainModel)!.Select(null);
         }
-    }
-
-    private void Grid3_PointerPressed(object? sender, PointerEventArgs e)
-    {
-        App.ShowAddGame();
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -198,7 +126,7 @@ public partial class MainControl : UserControl, IUserControl
             }
             if (str.StartsWith("authlib-injector:yggdrasil-server:"))
             {
-                App.ShowUser(str);
+                App.ShowUser(false, str);
             }
             else if (str.StartsWith("cloudkey:") || str.StartsWith("cloudKey:"))
             {

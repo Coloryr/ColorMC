@@ -75,3 +75,8 @@ public enum MoveType
     Left, Right,
     LeftDown, Down, RightDown
 }
+
+public enum WebType
+{
+    Web, Minecraft, Guide, Sponsor, Mcmod, Github
+}

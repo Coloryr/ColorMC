@@ -8,6 +8,7 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.User;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
+using System;
 using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.User;
@@ -147,6 +148,11 @@ public partial class UsersControl : UserControl, IUserControl
     public void AddUrl(string url)
     {
         (DataContext as UsersControlModel)!.AddUrl(url);
+    }
+
+    public void Add()
+    {
+        (DataContext as UsersControlModel)!.SetAdd();
     }
 
     public void SetBaseModel(BaseModel model)
