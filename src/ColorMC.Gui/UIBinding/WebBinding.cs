@@ -751,4 +751,17 @@ public static class WebBinding
 
         return list1;
     }
+
+    public static void OpenWeb(WebType type)
+    {
+        BaseBinding.OpUrl(type switch
+        { 
+            WebType.Guide => "https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md",
+            WebType.Mcmod => "https://www.mcmod.cn/",
+            WebType.Github => "https://www.github.com/Coloryr/ColorMC",
+            WebType.Sponsor => "https://coloryr.github.io/sponsor.html",
+            WebType.Minecraft => "https://www.minecraft.net/",
+            _ => "https://colormc.coloryr.com"
+        });
+    }
 }

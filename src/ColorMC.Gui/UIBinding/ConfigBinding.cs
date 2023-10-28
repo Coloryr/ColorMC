@@ -601,10 +601,4 @@ public static class ConfigBinding
 
         StyleSel.Instance.Load();
     }
-
-    public static void SetNewLaunch(bool v)
-    {
-        GuiConfigUtils.Config.NewLaunch = v;
-        GuiConfigUtils.Save();
-    }
 }

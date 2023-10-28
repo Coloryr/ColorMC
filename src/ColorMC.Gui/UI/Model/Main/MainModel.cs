@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
@@ -37,7 +36,6 @@ public partial class MainModel : TopModel, IMainTop
     private const string Side3 = "/Resource/Icon/left1.svg";
     private const string Side4 = "/Resource/Icon/menu1.svg";
 
-    private LoginObj? _user;
     private bool _isplay = true;
     private bool _isCancel;
 
@@ -51,10 +49,6 @@ public partial class MainModel : TopModel, IMainTop
 
     [ObservableProperty]
     private string? _groupItem;
-    [ObservableProperty]
-    private string _userName;
-    [ObservableProperty]
-    private string _authType;
     [ObservableProperty]
     private string _message;
     [ObservableProperty]
@@ -80,8 +74,6 @@ public partial class MainModel : TopModel, IMainTop
     private bool _isHeadLoad;
     [ObservableProperty]
     private bool _musicDisplay;
-    [ObservableProperty]
-    private bool _isOpenGuide;
 
     [ObservableProperty]
     private GameItemModel? _game;
@@ -94,11 +86,11 @@ public partial class MainModel : TopModel, IMainTop
     [ObservableProperty]
     private Dock _mirror1 = Dock.Left;
     [ObservableProperty]
-    private HorizontalAlignment _mirror2 = HorizontalAlignment.Left;
+    private Thickness _mirror2 = new(3, 3, 0, 3);
     [ObservableProperty]
     private HorizontalAlignment _mirror3 = HorizontalAlignment.Right;
     [ObservableProperty]
-    private Thickness _mirror4 = new(0, 5, 5, 5);
+    private Thickness _mirror4 = new(0, 3, 3, 3);
 
     [ObservableProperty]
     private bool _render = true;
@@ -119,20 +111,6 @@ public partial class MainModel : TopModel, IMainTop
     public void ShowCount()
     {
         App.ShowCount();
-    }
-
-    [RelayCommand]
-    public void OpenGuide()
-    {
-        IsOpenGuide = true;
-        ConfigBinding.SetNewLaunch(true);
-        App.ShowGuide();
-    }
-
-    [RelayCommand]
-    public void SideOpen()
-    {
-        OnPropertyChanged("SideOpen");
     }
 
     [RelayCommand]
@@ -235,6 +213,36 @@ public partial class MainModel : TopModel, IMainTop
         }
     }
 
+    [RelayCommand]
+    public void AddUser()
+    {
+        App.ShowUser(true);
+    }
+
+    [RelayCommand]
+    public void SetJava()
+    {
+        App.ShowSetting(SettingType.SetJava);
+    }
+
+    [RelayCommand]
+    public void OpenWeb1()
+    {
+        WebBinding.OpenWeb(WebType.Web);
+    }
+
+    [RelayCommand]
+    public void OpenWeb2()
+    {
+        WebBinding.OpenWeb(WebType.Minecraft);
+    }
+
+    [RelayCommand]
+    public void OpenGuide()
+    {
+        WebBinding.OpenWeb(WebType.Guide);
+    }
+
     private void App_SkinLoad()
     {
         Head = UserBinding.HeadBitmap!;
@@ -301,19 +309,6 @@ public partial class MainModel : TopModel, IMainTop
 
     public async void Load1()
     {
-        _user = UserBinding.GetLastUser();
-
-        if (_user == null)
-        {
-            UserName = App.GetLanguage("MainWindow.Info36");
-            AuthType = App.GetLanguage("MainWindow.Info35");
-        }
-        else
-        {
-            UserName = _user.UserName;
-            AuthType = _user.AuthType.GetName();
-        }
-
         IsHeadLoad = true;
 
         await UserBinding.LoadSkin();
@@ -357,13 +352,6 @@ public partial class MainModel : TopModel, IMainTop
         else
         {
             MusicDisplay = false;
-        }
-
-        IsOpenGuide = config.Item2.NewLaunch;
-
-        if (!IsOpenGuide)
-        {
-            OnPropertyChanged("GuideShow");
         }
 
         Mirror();
@@ -557,29 +545,24 @@ public partial class MainModel : TopModel, IMainTop
         OnPropertyChanged("ModelText");
     }
 
-    public void SideClose()
-    {
-        OnPropertyChanged("SideClose");
-    }
-
     public void Mirror()
     {
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2.Gui.WindowMirror)
         {
             Mirror1 = Dock.Right;
-            Mirror2 = HorizontalAlignment.Right;
             Mirror3 = HorizontalAlignment.Left;
-            Mirror4 = new(5, 5, 0, 5);
+            Mirror2 = new(0, 3, 3, 3);
+            Mirror4 = new(3, 3, 0, 3);
             SideIcon = Side2;
             SideIcon1 = Side4;
         }
         else
         {
             Mirror1 = Dock.Left;
-            Mirror2 = HorizontalAlignment.Left;
             Mirror3 = HorizontalAlignment.Right;
-            Mirror4 = new(0, 5, 5, 5);
+            Mirror2 = new(3, 3, 0, 3);
+            Mirror4 = new(0, 3, 3, 3);
             SideIcon = Side1;
             SideIcon1 = Side3;
         }

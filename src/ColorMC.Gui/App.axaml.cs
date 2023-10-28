@@ -26,7 +26,6 @@ using ColorMC.Gui.UI.Controls.GameCloud;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.GameExport;
 using ColorMC.Gui.UI.Controls.GameLog;
-using ColorMC.Gui.UI.Controls.Guide;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.ServerPack;
 using ColorMC.Gui.UI.Controls.Setting;
@@ -74,7 +73,6 @@ public partial class App : Application
     public static SkinControl? SkinWindow { get; set; }
     public static AddJavaControl? AddJavaWindow { get; set; }
     public static CountControl? CountWindow { get; set; }
-    public static GuideControl? GuideWindow { get; set; }
 
     public static TopLevel? TopLevel { get; set; }
 
@@ -425,21 +423,6 @@ public partial class App : Application
         }
     }
 
-    public static void ShowGuide()
-    {
-        if (GuideWindow != null)
-        {
-            GuideWindow.Window.Activate();
-        }
-        else
-        {
-            GuideWindow = new();
-            AWindow(GuideWindow);
-        }
-
-        GuideWindow?.Load();
-    }
-
     public static void ShowCustom(string obj)
     {
         if (CustomWindow != null)
@@ -485,7 +468,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowUser(string? url = null)
+    public static void ShowUser(bool add = false, string? url = null)
     {
         if (UserWindow != null)
         {
@@ -501,6 +484,10 @@ public partial class App : Application
         {
             UserWindow?.AddUrl(url);
         }
+        if (add)
+        {
+            UserWindow?.Add();
+        }
     }
 
     public static void ShowMain()
@@ -513,11 +500,6 @@ public partial class App : Application
         {
             MainWindow = new();
             AWindow(MainWindow);
-
-            if (BaseBinding.ISNewStart)
-            {
-                App.ShowGuide();
-            }
         }
     }
 
@@ -989,7 +971,6 @@ public partial class App : Application
         (AddGameWindow?.GetVisualRoot() as Window)?.Close();
         (UserWindow?.GetVisualRoot() as Window)?.Close();
         (DownloadWindow?.GetVisualRoot() as Window)?.Close();
-        (GuideWindow?.GetVisualRoot() as Window)?.Close();
         foreach (var item in GameEditWindows.Values)
         {
             (item.GetVisualRoot() as Window)?.Close();
