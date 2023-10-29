@@ -4,8 +4,8 @@ using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Core.Helpers;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -55,6 +55,10 @@ public partial class MainModel : TopModel, IMainTop
     private string _sideIcon = Side1;
     [ObservableProperty]
     private string _sideIcon1 = Side3;
+    [ObservableProperty]
+    private string _userId;
+    [ObservableProperty]
+    private string _userType;
 
     [ObservableProperty]
     private bool _groupEnable;
@@ -310,6 +314,19 @@ public partial class MainModel : TopModel, IMainTop
     public async void Load1()
     {
         IsHeadLoad = true;
+
+        var user = UserBinding.GetLastUser();
+
+        if (user == null)
+        {
+            UserId = App.GetLanguage("MainWindow.Info36");
+            UserType = App.GetLanguage("MainWindow.Info35");
+        }
+        else
+        {
+            UserId = user.UserName;
+            UserType = user.AuthType.GetName();
+        }
 
         await UserBinding.LoadSkin();
     }

@@ -72,6 +72,7 @@
     <None Remove="Resource\Icon\left1.svg" />
     <None Remove="Resource\Icon\menu.svg" />
     <None Remove="Resource\Icon\menu1.svg" />
+    <None Remove="Resource\Icon\play.svg" />
     <None Remove="Resource\Icon\setting.svg" />
     <None Remove="Resource\Icon\Setting\item1.svg" />
     <None Remove="Resource\Icon\Setting\item2.svg" />
@@ -161,6 +162,7 @@
     <AvaloniaResource Include="Resource\Icon\left1.svg" />
     <AvaloniaResource Include="Resource\Icon\menu.svg" />
     <AvaloniaResource Include="Resource\Icon\menu1.svg" />
+    <AvaloniaResource Include="Resource\Icon\play.svg" />
     <AvaloniaResource Include="Resource\Icon\setting.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item1.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item2.svg" />
@@ -192,7 +194,6 @@
     <AvaloniaResource Include="Resource\Icon\Setting\svg8.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg9.svg" />
     <AvaloniaResource Include="Resource\Icon\up_arrow.svg" />
-    <AvaloniaResource Include="Resource\Icon\user.svg" />
     <AvaloniaResource Include="Resource\Icon\skin.svg" />
     <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
     <EmbeddedResource Include="Resource\Pic\bg.jpg" />

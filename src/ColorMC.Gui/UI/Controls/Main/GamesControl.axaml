@@ -7,7 +7,6 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Main"
-    Margin="0,0,0,3"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:GamesModel"

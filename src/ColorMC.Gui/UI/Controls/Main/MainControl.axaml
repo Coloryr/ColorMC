@@ -20,122 +20,126 @@
             Height="{Binding Live2dHeight}"
             HorizontalAlignment="{Binding Mirror3}"
             VerticalAlignment="Bottom" />
-        <DockPanel>
+        <DockPanel Margin="5">
             <Border
-                Margin="{Binding Mirror2}"
-                Padding="0"
+                Margin="0,0,0,5"
+                Padding="3"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}"
-                DockPanel.Dock="{Binding Mirror1}"
-                IsVisible="{Binding !IsNotGame}">
-                <ScrollViewer>
-                    <Panel Margin="5,0,5,0">
-                        <StackPanel Margin="0,10,0,0" VerticalAlignment="Top">
-                            <Image
-                                Width="30"
-                                Height="30"
+                DockPanel.Dock="Top"
+                IsVisible="{Binding !IsNotGame, FallbackValue=true}">
+                <DockPanel>
+                    <Button
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding ShowUser}"
+                        DockPanel.Dock="Left">
+                        <Panel>
+                            <Border
+                                Width="35"
+                                Height="35"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Source="{Binding Head}" />
-
+                                CornerRadius="{setting:Style ButtonCornerRadius}">
+                                <Border.Background>
+                                    <ImageBrush Source="{Binding Head}" Stretch="UniformToFill" />
+                                </Border.Background>
+                            </Border>
                             <ProgressBar
-                                Width="30"
+                                Width="35"
                                 Height="20"
-                                MinWidth="30"
-                                Margin="0,5,0,0"
+                                MinWidth="35"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
                                 IsIndeterminate="True"
                                 IsVisible="{Binding IsHeadLoad}" />
-                        </StackPanel>
-
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Button
-                                Width="30"
-                                Height="30"
-                                Command="{Binding OpenGuide}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text70}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/book.svg" />
-                            </Button>
-                            <Button
-                                Width="30"
-                                Height="30"
-                                Margin="0,5,0,0"
-                                Command="{Binding ShowUser}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text4}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/user.svg" />
-                            </Button>
-                            <Button
-                                Width="30"
-                                Height="30"
-                                Margin="0,5,0,0"
-                                Command="{Binding ShowSkin}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/skin.svg" />
-                            </Button>
-                            <Button
-                                Width="30"
-                                Height="30"
-                                Margin="0,5,0,0"
-                                Command="{Binding ShowCount}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text12}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/count.svg" />
-                            </Button>
-                            <Button
-                                Width="30"
-                                Height="30"
-                                Margin="0,5,0,0"
-                                Command="{Binding ShowSetting}"
-                                Content="S"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text13}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/setting.svg" />
-                            </Button>
-                        </StackPanel>
-
+                        </Panel>
+                    </Button>
+                    <StackPanel
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Left">
+                        <TextBlock Text="{Binding UserId}" />
+                        <TextBlock Text="{Binding UserType}" />
+                    </StackPanel>
+                    <StackPanel
+                        HorizontalAlignment="Right"
+                        DockPanel.Dock="Right"
+                        Orientation="Horizontal">
                         <Button
-                            Width="30"
-                            Height="30"
-                            Margin="0,0,0,5"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
+                            Width="35"
+                            Height="35"
+                            Margin="0,0,5,0"
                             Command="{Binding MusicPause}"
-                            Content="▶️"
+                            CornerRadius="{setting:Style ButtonCornerRadius}"
                             IsVisible="{Binding MusicDisplay}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text48}"
-                            ToolTip.VerticalOffset="-30" />
-                    </Panel>
-                </ScrollViewer>
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/play.svg" />
+                        </Button>
+                        <Button
+                            Width="35"
+                            Height="35"
+                            Margin="0,0,5,0"
+                            Command="{Binding OpenGuide}"
+                            CornerRadius="{setting:Style ButtonCornerRadius}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text70}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/book.svg" />
+                        </Button>
+                        <Button
+                            Width="35"
+                            Height="35"
+                            Margin="0,0,5,0"
+                            Command="{Binding ShowSkin}"
+                            CornerRadius="{setting:Style ButtonCornerRadius}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text9}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/skin.svg" />
+                        </Button>
+                        <Button
+                            Width="35"
+                            Height="35"
+                            Margin="0,0,5,0"
+                            Command="{Binding ShowCount}"
+                            CornerRadius="{setting:Style ButtonCornerRadius}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text12}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/count.svg" />
+                        </Button>
+                        <Button
+                            Width="35"
+                            Height="35"
+                            Command="{Binding ShowSetting}"
+                            CornerRadius="{setting:Style ButtonCornerRadius}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text13}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/setting.svg" />
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
             </Border>
             <views:ServerMotdControl
-                Margin="0,5,5,0"
+                Margin="0,0,0,5"
                 DockPanel.Dock="Top"
                 IPPort="{Binding Server}"
                 IsVisible="{Binding MotdDisplay, FallbackValue=true}" />
-            <Panel Margin="{Binding Mirror4}">
-                <Border
-                    Padding="{setting:Style BorderPadding}"
-                    Background="{setting:Colors GroupBack}"
-                    BorderBrush="{setting:Colors GroupColor}"
-                    BorderThickness="2"
-                    CornerRadius="{setting:Style ButtonCornerRadius}"
-                    IsVisible="{Binding !IsNotGame}">
+            <Panel>
+                <Panel IsVisible="{Binding !IsNotGame, FallbackValue=true}">
                     <ScrollViewer Name="ScrollViewer1" VerticalAlignment="Top">
                         <ItemsControl ItemsSource="{Binding GameGroups}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <views1:GamesControl DataContext="{Binding}" />
+                                    <views1:GamesControl Margin="0,0,0,5" DataContext="{Binding}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                </Border>
+                </Panel>
+
                 <Border
-                    Margin="3,0,0,0"
                     Padding="{setting:Style BorderPadding}"
                     Background="{setting:Colors GroupBack}"
                     BorderBrush="{setting:Colors GroupColor}"
@@ -197,15 +201,10 @@
                                 Margin="5,0,0,0"
                                 Command="{Binding OpenWeb2}"
                                 Content="{setting:Localize SettingWindow.Tab7.Text4}" />
-                            <Button
-                                Width="120"
-                                Height="35"
-                                Margin="5,0,0,0"
-                                Command="{Binding ShowSetting}"
-                                Content="{setting:Localize MainWindow.Control.Text5}" />
                         </StackPanel>
                     </Panel>
                 </Border>
+
                 <Button
                     Width="40"
                     Height="40"
@@ -219,19 +218,7 @@
                     ToolTip.VerticalOffset="-30">
                     <Svg Path="/Resource/Icon/add.svg" />
                 </Button>
-                <Button
-                    Width="40"
-                    Height="40"
-                    Margin="10,10,55,10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Command="{Binding Launch}"
-                    CornerRadius="20"
-                    IsVisible="{Binding EnableButton1}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text11}"
-                    ToolTip.VerticalOffset="-30">
-                    <Svg Path="/Resource/Icon/launch.svg" />
-                </Button>
+
                 <Button
                     Width="40"
                     Height="40"
@@ -245,6 +232,20 @@
                     ToolTip.VerticalOffset="-30">
                     <Svg Path="/Resource/Icon/edit.svg" />
                 </Button>
+                <Button
+                    Width="40"
+                    Height="40"
+                    Margin="10,10,10,100"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding Launch}"
+                    CornerRadius="20"
+                    IsVisible="{Binding EnableButton1}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text11}"
+                    ToolTip.VerticalOffset="-30">
+                    <Svg Path="/Resource/Icon/launch.svg" />
+                </Button>
+
                 <Panel Background="{setting:Colors BG1}" IsVisible="{Binding IsGameError, FallbackValue=false}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock
