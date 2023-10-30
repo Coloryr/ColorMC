@@ -458,6 +458,11 @@ public partial class MainModel : TopModel, IMainTop
                     last ??= group.Find(uuid);
                 }
 
+                foreach (var item in list1)
+                {
+                    last ??= item.Find(uuid);
+                }
+
                 Select(last);
             }
         }

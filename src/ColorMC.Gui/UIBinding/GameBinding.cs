@@ -95,6 +95,11 @@ public static class GameBinding
 
         game = await InstancesPath.CreateGame(game);
 
+        if (game != null)
+        {
+            ConfigBinding.SetLastLaunch(game.UUID);
+        }
+
         return game != null;
     }
 
