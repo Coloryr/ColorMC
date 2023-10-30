@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Error;
 
-public partial class ErrorModel : ObservableObject
+public partial class ErrorModel : TopModel
 {
     [ObservableProperty]
     private TextDocument _text;
 
     public bool NeedClose { get; }
 
-    public ErrorModel(string? data, Exception? e, bool close)
+    public ErrorModel(BaseModel model, string? data, Exception? e, bool close) : base(model)
     {
         _text = new TextDocument($"{data ?? ""}{Environment.NewLine}" +
             $"{(e == null ? "" : e.ToString())}");
@@ -23,15 +23,51 @@ public partial class ErrorModel : ObservableObject
         NeedClose = close;
     }
 
-    public ErrorModel(string data, string e, bool close)
+    public ErrorModel(BaseModel model, string data, string e, bool close) : base(model)
     {
         _text = new TextDocument($"{data}{Environment.NewLine}{e}");
         NeedClose = close;
     }
 
     [RelayCommand]
+    public async Task Push()
+    {
+        if (string.IsNullOrWhiteSpace(Text.Text))
+        {
+            Model.Show(App.GetLanguage("GameLogWindow.Error2"));
+            return;
+        }
+        var res = await Model.ShowWait(App.GetLanguage("GameLogWindow.Info4"));
+        if (!res)
+        {
+            return;
+        }
+
+        Model.Progress(App.GetLanguage("GameLogWindow.Info6"));
+        var url = await WebBinding.Push(Text.Text);
+        Model.ProgressClose();
+        if (url == null)
+        {
+            Model.Show(App.GetLanguage("GameLogWindow.Error1"));
+            return;
+        }
+        else
+        {
+            Model.ShowReadInfoOne(string.Format(App.GetLanguage("GameLogWindow.Info5"), url), null);
+
+            await BaseBinding.CopyTextClipboard(url);
+            Model.Notify(App.GetLanguage("GameLogWindow.Info7"));
+        }
+    }
+
+    [RelayCommand]
     public async Task Save()
     {
         await PathBinding.SaveFile(FileType.Text, new[] { Text.Text });
+    }
+
+    protected override void Close()
+    {
+        
     }
 }

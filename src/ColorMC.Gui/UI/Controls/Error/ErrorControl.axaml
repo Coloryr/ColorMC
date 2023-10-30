@@ -32,5 +32,14 @@
             VerticalAlignment="Top"
             Command="{Binding Save}"
             Content="{setting:Localize ErrorWindow.Text1}" />
+        <Button
+            Width="100"
+            Height="25"
+            Margin="0,3,105,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding Push}"
+            Content="{setting:Localize GameLogWindow.Text8}"
+            ToolTip.VerticalOffset="-30" />
     </Panel>
 </UserControl>

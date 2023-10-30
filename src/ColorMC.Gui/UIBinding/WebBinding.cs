@@ -839,4 +839,9 @@ public static class WebBinding
 
         return list1;
     }
+
+    public static Task<string?> Push(string data)
+    {
+        return McloAPI.Push(data);
+    }
 }

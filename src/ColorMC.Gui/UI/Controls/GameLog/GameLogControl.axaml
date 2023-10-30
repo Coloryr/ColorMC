@@ -70,9 +70,17 @@
                     <Button
                         Width="100"
                         Height="25"
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         Command="{Binding Search}"
                         Content="{setting:Localize GameLogWindow.Text7}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        VerticalAlignment="Center"
+                        Command="{Binding Push}"
+                        Content="{setting:Localize GameLogWindow.Text8}"
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </StackPanel>
