@@ -208,7 +208,7 @@ public static class PathHelper
         }
         if (File.Exists(local))
         {
-            return File.Open(local, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
+            return File.Open(local, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
         }
 
         return null;
