@@ -16,6 +16,7 @@
     </Design.PreviewWith>
 
     <Style Selector="ComboBox">
+        <Setter Property="MaxDropDownHeight" Value="250" />
         <Setter Property="Background" Value="{setting:Colors Back}" />
         <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
         <Setter Property="BorderThickness" Value="2" />

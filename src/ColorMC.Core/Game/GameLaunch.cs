@@ -460,15 +460,18 @@ public static class Launch
         {
             jvmHead.Add($"-Dlibdir={LibrariesPath.BaseDir}");
             jvmHead.Add($"-Dgamecore={LibrariesPath.GetGameFile(obj.Version)}");
-            jvmHead.Add($"-Doptifine={LibrariesPath.GetOptionLib(obj)}");
-            jvmHead.Add("--add-opens");
-            jvmHead.Add("java.base/java.lang=ALL-UNNAMED");
-            jvmHead.Add("--add-opens");
-            jvmHead.Add("java.base/java.util=ALL-UNNAMED");
-            jvmHead.Add("--add-opens");
-            jvmHead.Add("java.base/java.net=ALL-UNNAMED");
-            jvmHead.Add("--add-opens");
-            jvmHead.Add("java.base/jdk.internal.loader=ALL-UNNAMED");
+            jvmHead.Add($"-Doptifine={Path.GetFullPath(LibrariesPath.GetOptionLib(obj))}");
+            if (v2)
+            {
+                jvmHead.Add("--add-opens");
+                jvmHead.Add("java.base/java.lang=ALL-UNNAMED");
+                jvmHead.Add("--add-opens");
+                jvmHead.Add("java.base/java.util=ALL-UNNAMED");
+                jvmHead.Add("--add-opens");
+                jvmHead.Add("java.base/java.net=ALL-UNNAMED");
+                jvmHead.Add("--add-opens");
+                jvmHead.Add("java.base/jdk.internal.loader=ALL-UNNAMED");
+            }
         }
 
         //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");

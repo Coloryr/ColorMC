@@ -92,6 +92,7 @@ public partial class GameEditModel : MenuModel
 
         var loader = _loaderTypeList[value];
         LoaderVersionList.Clear();
+        LoaderVersion = null;
         _obj.Loader = loader;
         _obj.LoaderVersion = null;
         _obj.Save();
