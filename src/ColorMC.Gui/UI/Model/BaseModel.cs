@@ -295,6 +295,12 @@ public partial class BaseModel : ObservableObject
         return (_info3Cancel, Info3Text1, Info3Text2);
     }
 
+    /// <summary>
+    /// 打开一个对话框，显示只读内容
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="lock1">是否不等待用户确认</param>
+    /// <returns></returns>
     public async Task<(bool Cancel, string? Text)> ShowInputOne(string title, bool lock1)
     {
         Info3Text2Visable = false;
@@ -370,7 +376,13 @@ public partial class BaseModel : ObservableObject
         return (_info3Cancel, Info3Text1, Info3Text2);
     }
 
-    public void ShowInput(string title, string title1, Action cancel)
+    /// <summary>
+    /// 打开一个对话框，显示两个只读内容
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="title1"></param>
+    /// <param name="cancel"></param>
+    public void ShowReadInfo(string title, string title1, Action cancel)
     {
         Info3TextReadonly = true;
         Info3Text1 = title;
@@ -390,6 +402,42 @@ public partial class BaseModel : ObservableObject
         Info3CancelVisible = true;
 
         Info3Password = '\0';
+
+        OnPropertyChanged("Info3Show");
+    }
+
+    /// <summary>
+    /// 打开一个对话框，显示一个只读内容
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="title1"></param>
+    /// <param name="cancel"></param>
+    public void ShowReadInfoOne(string title, Action? cancel)
+    {
+        Info3TextReadonly = true;
+        Info3Text1 = title;
+
+        Info3Watermark1 = "";
+
+        Info3ValueVisable = false;
+
+        Info3Text2Visable = false;
+        Info3ConfirmEnable = true;
+
+        if (cancel != null)
+        {
+            _info3Call = cancel;
+
+            Info3CancelEnable = true;
+            Info3CancelVisible = true;
+
+            Info3Password = '\0';
+        }
+        else
+        {
+            _info3Call = null;
+            Info3CancelVisible = false;
+        }
 
         OnPropertyChanged("Info3Show");
     }

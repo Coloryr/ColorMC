@@ -428,7 +428,7 @@ public partial class UsersControlModel : TopModel
     private async void LoginOAuthCode(string url, string code)
     {
         Model.ProgressClose();
-        Model.ShowInput(string.Format(App.GetLanguage("UserWindow.Info6"), url),
+        Model.ShowReadInfo(string.Format(App.GetLanguage("UserWindow.Info6"), url),
             string.Format(App.GetLanguage("UserWindow.Info7"), code), () =>
             {
                 _cancel = true;

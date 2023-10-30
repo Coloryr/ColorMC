@@ -505,7 +505,7 @@ public static class Launch
         }
         else if (login.AuthType == AuthType.SelfLittleSkin)
         {
-            var res = await BaseClient.GetString($"{login.Text1}/api/yggdrasil");
+            var res = await BaseClient.GetString($"{login.Text1}api/yggdrasil");
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
             jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Item2!)}");
         }
