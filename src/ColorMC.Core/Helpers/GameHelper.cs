@@ -21,6 +21,11 @@ public static class GameHelper
     public static string ForgeWrapper { get; private set; }
 
     /// <summary>
+    /// OptifineWrapper位置
+    /// </summary>
+    public static string OptifineWrapper { get; private set; }
+
+    /// <summary>
     /// Forge运行库修改映射
     /// </summary>
     public static ForgeLaunchObj.Libraries? MakeLibObj(ForgeInstallObj1.VersionInfo.Libraries item)
@@ -224,6 +229,24 @@ public static class GameHelper
                 Directory.CreateDirectory(file.DirectoryName!);
             }
             PathHelper.WriteBytes(file.FullName, Resource1.ForgeWrapper_colormc_1_5_7);
+        }
+    }
+
+    /// <summary>
+    /// Optifine加载器
+    /// </summary>
+    public static void ReadyOptifineWrapper()
+    {
+        OptifineWrapper = Path.GetFullPath(LibrariesPath.BaseDir +
+            "/coloryr/OptifineWrapper/1.0/OptifineWrapper-1.0.jar");
+        var file = new FileInfo(OptifineWrapper);
+        if (!file.Exists)
+        {
+            if (!Directory.Exists(file.DirectoryName))
+            {
+                Directory.CreateDirectory(file.DirectoryName!);
+            }
+            PathHelper.WriteBytes(file.FullName, Resource1.OptifineWrapper_1_0);
         }
     }
 

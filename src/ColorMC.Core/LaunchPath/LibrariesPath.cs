@@ -1,6 +1,7 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -230,5 +231,20 @@ public static class LibrariesPath
     public static string GetGameFile(string version)
     {
         return Path.GetFullPath($"{BaseDir}/net/minecraft/client/{version}/client-{version}.jar");
+    }
+
+    public static string GetOptionLib(this GameSettingObj obj)
+    {
+        return GetOptionLib(obj.Version, obj.LoaderVersion!);
+    }
+
+    public static string GetOptionLib(string mc, string version)
+    {
+        return $"{BaseDir}/optifine/installer/OptiFine-{mc}-{version}.jar";
+    }
+
+    public static bool CheckOptifineLib(this GameSettingObj obj)
+    {
+        return File.Exists(GetOptionLib(obj)); 
     }
 }

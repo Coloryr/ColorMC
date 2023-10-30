@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Objs.Optifine;
+﻿namespace ColorMC.Core.Objs.OptiFine;
 
 public record OptifineListObj
 {

@@ -3,13 +3,14 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Objs.Optifine;
+using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
@@ -21,6 +22,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ColorMC.Core.Objs.Java.AdoptiumObj;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -763,5 +765,78 @@ public static class WebBinding
             WebType.Minecraft => "https://www.minecraft.net/",
             _ => "https://colormc.coloryr.com"
         });
+    }
+
+    public static Task<List<string>?> GetForgeSupportVersion()
+    {
+        return ForgeAPI.GetSupportVersion(false, BaseClient.Source);
+    }
+    public static Task<List<string>?> GetFabricSupportVersion()
+    {
+        return FabricAPI.GetSupportVersion(BaseClient.Source);
+    }
+    public static Task<List<string>?> GetQuiltSupportVersion()
+    {
+        return QuiltAPI.GetSupportVersion(BaseClient.Source);
+    }
+
+    public static Task<List<string>?> GetNeoForgeVersion(string version)
+    {
+        return ForgeAPI.GetVersionList(true, version, BaseClient.Source);
+    }
+
+    public static Task<List<string>?> GetNeoForgeSupportVersion()
+    {
+        return ForgeAPI.GetSupportVersion(true, BaseClient.Source);
+    }
+    public static Task<List<string>?> GetForgeVersion(string version)
+    {
+        return ForgeAPI.GetVersionList(false, version, BaseClient.Source);
+    }
+
+    public static Task<List<string>?> GetFabricVersion(string version)
+    {
+        return FabricAPI.GetLoaders(version, BaseClient.Source);
+    }
+
+    public static Task<List<string>?> GetQuiltVersion(string version)
+    {
+        return QuiltAPI.GetLoaders(version, BaseClient.Source);
+    }
+
+    public static async Task<List<string>?> GetOptifineVersion(string version)
+    {
+        var list = await GetOptifine();
+        if (list == null)
+        {
+            return null;
+        }
+        var list1 = new List<string>();
+        foreach (var item in list)
+        {
+            if (item.MCVersion == version)
+            {
+                list1.Add(item.Version);
+            }
+        }
+
+        return list1;
+    }
+
+    public static async Task<List<string>?> GetOptifineSupportVersion()
+    {
+        var list = await GetOptifine();
+        if (list == null)
+        {
+            return null;
+        }
+        var list1 = new List<string>();
+        var list2 = list.GroupBy(item => item.MCVersion);
+        foreach (var item in list2)
+        {
+            list1.Add(item.Key);
+        }
+
+        return list1;
     }
 }

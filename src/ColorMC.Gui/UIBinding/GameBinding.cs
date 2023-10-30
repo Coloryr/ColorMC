@@ -703,21 +703,6 @@ public static class GameBinding
         data.Save(Path.GetFullPath(dir + "/" + file));
     }
 
-    public static Task<List<string>?> GetForgeVersion(string version)
-    {
-        return ForgeAPI.GetVersionList(false, version, BaseClient.Source);
-    }
-
-    public static Task<List<string>?> GetFabricVersion(string version)
-    {
-        return FabricAPI.GetLoaders(version, BaseClient.Source);
-    }
-
-    public static Task<List<string>?> GetQuiltVersion(string version)
-    {
-        return QuiltAPI.GetLoaders(version, BaseClient.Source);
-    }
-
     public static Task<List<WorldObj>> GetWorlds(GameSettingObj obj)
     {
         return obj.GetWorlds();
@@ -825,20 +810,6 @@ public static class GameBinding
         {
             obj.RemoveServer(server.Name, server.IP);
         });
-    }
-
-    public static Task<List<string>?> GetForgeSupportVersion()
-    {
-        return ForgeAPI.GetSupportVersion(false, BaseClient.Source);
-    }
-
-    public static Task<List<string>?> GetFabricSupportVersion()
-    {
-        return FabricAPI.GetSupportVersion(BaseClient.Source);
-    }
-    public static Task<List<string>?> GetQuiltSupportVersion()
-    {
-        return QuiltAPI.GetSupportVersion(BaseClient.Source);
     }
 
     public static void DeleteConfig(GameSettingObj obj)
@@ -1222,16 +1193,6 @@ public static class GameBinding
         }
 
         return list;
-    }
-
-    public static Task<List<string>?> GetNeoForgeVersion(string version)
-    {
-        return ForgeAPI.GetVersionList(true, version, BaseClient.Source);
-    }
-
-    public static Task<List<string>?> GetNeoForgeSupportVersion()
-    {
-        return ForgeAPI.GetSupportVersion(true, BaseClient.Source);
     }
 
     public static void GameStateUpdate(GameSettingObj obj)

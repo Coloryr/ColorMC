@@ -2,7 +2,7 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Optifine;
+using ColorMC.Core.Objs.OptiFine;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 
@@ -68,7 +68,7 @@ public static class OptifineAPI
                     list.Add(new()
                     {
                         FileName = file,
-                        Version = temp4,
+                        Version = temp4.Replace("OptiFine ", "").Replace(" ", "_"),
                         MCVersion = mc,
                         Forge = temp2,
                         Date = temp3,
@@ -90,7 +90,7 @@ public static class OptifineAPI
                     list.Add(new()
                     {
                         FileName = item.filename,
-                        Version = $"Optifine {item.mcversion} {item.patch}",
+                        Version = $"{item.type}_{item.patch}",
                         MCVersion = item.mcversion,
                         Forge = item.forge,
                         Url1 = UrlHelper.OptifineDownload(item, type),
@@ -103,7 +103,7 @@ public static class OptifineAPI
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Optifine.Error1"), e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.OptiFine.Error1"), e, false);
         }
 
         return (null, null);
@@ -118,24 +118,31 @@ public static class OptifineAPI
     {
         try
         {
-            _ = BaseClient.GetString(obj.Url1);
-            var data = await BaseClient.GetString(obj.Url2);
-            if (data.Item1 == false)
+            if (obj.Local == SourceLocal.Offical)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
-                    new Exception(obj.Url2), false);
-                return null;
+                _ = BaseClient.GetString(obj.Url1);
+                var data = await BaseClient.GetString(obj.Url2);
+                if (data.Item1 == false)
+                {
+                    ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                        new Exception(obj.Url2), false);
+                    return null;
+                }
+                HtmlDocument html = new();
+                html.LoadHtml(data.Item2!);
+                var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
+                if (list1 == null)
+                    return null;
+                return UrlHelper.OptiFine + list1[0].Attributes["href"].Value;
             }
-            HtmlDocument html = new();
-            html.LoadHtml(data.Item2!);
-            var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
-            if (list1 == null)
-                return null;
-            return UrlHelper.Optifine + list1[0].Attributes["href"].Value;
+            else
+            {
+                return obj.Url1;
+            }
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Optifine.Error2"), e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.OptiFine.Error2"), e, false);
         }
 
         return null;
@@ -150,38 +157,30 @@ public static class OptifineAPI
     public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item)
     {
         DownloadItemObj item1;
-        if (item.Local == SourceLocal.Offical)
+        var data = await GetOptifineDownloadUrl(item);
+        if (data == null)
         {
-            var data = await GetOptifineDownloadUrl(item);
-            if (data == null)
-            {
-                return (false, LanguageHelper.Get("Core.Http.Optifine.Error3"));
-            }
+            return (false, LanguageHelper.Get("Core.Http.OptiFine.Error3"));
+        }
 
-            item1 = new()
-            {
-                Name = item.Version,
-                Local = obj.GetModsPath() + "/" + item.FileName,
-                Overwrite = true,
-                Url = data
-            };
-        }
-        else
+        item1 = new()
         {
-            item1 = new()
-            {
-                Name = item.Version,
-                Local = obj.GetModsPath() + "/" + item.FileName,
-                Overwrite = true,
-                Url = item.Url1
-            };
-        }
+            Name = item.Version,
+            Local = obj.GetModsPath() + "/" + item.FileName,
+            Overwrite = true,
+            Url = data
+        };
 
         var res = await DownloadManager.Start(new() { item1 });
         if (!res)
         {
-            return (false, LanguageHelper.Get("Core.Http.Optifine.Error4"));
+            return (false, LanguageHelper.Get("Core.Http.OptiFine.Error4"));
         }
         return (true, null);
+    }
+
+    public static Task<List<string>?> GetSupportVersion(SourceLocal source)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -121,4 +121,7 @@
   <data name="ForgeWrapper_colormc_1_5_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\ForgeWrapper-colormc-1.5.7.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="OptifineWrapper_1_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\OptifineWrapper-1.0.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

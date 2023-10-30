@@ -553,6 +553,7 @@
 	"AddGameWindow.Tab1.Info13": "输入服务器实例网址",
 	"AddGameWindow.Tab1.Info14": "正在检测服务器实例",
 	"AddGameWindow.Tab1.Info15": "正在下载服务器实例文件",
+	"AddGameWindow.Tab1.Info16": "正在获取Optifine版本信息",
 	"AddGameWindow.Tab1.Error1": "获取加载器版本信息失败",
 	"AddGameWindow.Tab1.Error2": "请输入名字",
 	"AddGameWindow.Tab1.Error3": "游戏分组添加失败",

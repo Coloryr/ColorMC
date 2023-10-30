@@ -1,6 +1,44 @@
 namespace ColorMC.Core.Objs;
 
 /// <summary>
+/// 加载器类型
+/// </summary>
+public enum Loaders
+{
+    /// <summary>
+    /// 无Mod加载器
+    /// </summary>
+    Normal,
+    /// <summary>
+    /// Forge加载器
+    /// </summary>
+    Forge,
+    /// <summary>
+    /// Fabric加载器
+    /// </summary>
+    Fabric,
+    /// <summary>
+    /// Quilt加载器
+    /// </summary>
+    Quilt,
+    /// <summary>
+    /// NeoForge加载器
+    /// </summary>
+    NeoForge,
+    /// <summary>
+    /// 高清修复
+    /// </summary>
+    OptiFine
+}
+
+public enum GameType
+{
+    Release,
+    Snapshot,
+    Other
+}
+
+/// <summary>
 /// 资源来源
 /// </summary>
 public enum SourceType

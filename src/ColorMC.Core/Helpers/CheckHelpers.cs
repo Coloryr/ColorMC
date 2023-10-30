@@ -364,6 +364,18 @@ public static class CheckHelpers
                         }
                     }
                 }
+                else if (obj.Loader == Loaders.OptiFine)
+                {
+                    if (obj.CheckOptifineLib() == false)
+                    {
+                        var list4 = await DownloadItemHelper.BuildOptifine(obj);
+                        if (list4.State != GetDownloadState.End)
+                            throw new LaunchException(LaunchState.LostLoader,
+                            LanguageHelper.Get("Core.Launch.Error3"));
+
+                        list4.List!.ForEach(list.Add);
+                    }
+                }
 
                 //检查外置登录器
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoginCore);

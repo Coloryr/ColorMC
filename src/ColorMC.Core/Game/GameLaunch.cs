@@ -9,6 +9,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
@@ -43,8 +44,8 @@ public static class Launch
         {
             $"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}",
             $"-Dforgewrapper.installer={(obj.Loader == Loaders.NeoForge ?
-            DownloadItemHelper.BuildNeoForgeInster(obj.Version, obj.LoaderVersion!).Local :
-            DownloadItemHelper.BuildForgeInster(obj.Version, obj.LoaderVersion!).Local)}",
+            DownloadItemHelper.BuildNeoForgeInstaller(obj.Version, obj.LoaderVersion!).Local :
+            DownloadItemHelper.BuildForgeInstaller(obj.Version, obj.LoaderVersion!).Local)}",
             $"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}",
             "-Dforgewrapper.justInstall=true"
         };
@@ -267,9 +268,20 @@ public static class Launch
                 obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
             return new(forge.minecraftArguments.Split(" "));
         }
-
-        var version = VersionPath.GetVersion(obj.Version)!;
-        return new(version.minecraftArguments.Split(" "));
+        else if (obj.Loader == Loaders.OptiFine)
+        {
+            var version = VersionPath.GetVersion(obj.Version)!;
+            return new(version.minecraftArguments.Split(" "))
+            {
+                "--tweakClass",
+                "optifine.OptiFineTweaker"
+            };
+        }
+        else
+        {
+            var version = VersionPath.GetVersion(obj.Version)!;
+            return new(version.minecraftArguments.Split(" "));
+        }
     }
 
     /// <summary>
@@ -339,6 +351,11 @@ public static class Launch
             {
                 arg.Add(item);
             }
+        }
+        else if (obj.Loader == Loaders.OptiFine)
+        {
+            arg.Add("--tweakClass");
+            arg.Add("optifine.OptiFineTweaker");
         }
 
         return arg;
@@ -431,13 +448,27 @@ public static class Launch
         {
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
             jvmHead.Add($"-Dforgewrapper.installer={(obj.Loader == Loaders.NeoForge ?
-                DownloadItemHelper.BuildNeoForgeInster(obj.Version, obj.LoaderVersion!).Local :
-                DownloadItemHelper.BuildForgeInster(obj.Version, obj.LoaderVersion!).Local)}");
+                DownloadItemHelper.BuildNeoForgeInstaller(obj.Version, obj.LoaderVersion!).Local :
+                DownloadItemHelper.BuildForgeInstaller(obj.Version, obj.LoaderVersion!).Local)}");
             jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
             if (SystemInfo.Os == OsType.Android)
             {
                 jvmHead.Add("-Dforgewrapper.justLaunch=true");
             }
+        }
+        else if (obj.Loader == Loaders.OptiFine)
+        {
+            jvmHead.Add($"-Dlibdir={LibrariesPath.BaseDir}");
+            jvmHead.Add($"-Dgamecore={LibrariesPath.GetGameFile(obj.Version)}");
+            jvmHead.Add($"-Doptifine={LibrariesPath.GetOptionLib(obj)}");
+            jvmHead.Add("--add-opens");
+            jvmHead.Add("java.base/java.lang=ALL-UNNAMED");
+            jvmHead.Add("--add-opens");
+            jvmHead.Add("java.base/java.util=ALL-UNNAMED");
+            jvmHead.Add("--add-opens");
+            jvmHead.Add("java.base/java.net=ALL-UNNAMED");
+            jvmHead.Add("--add-opens");
+            jvmHead.Add("java.base/jdk.internal.loader=ALL-UNNAMED");
         }
 
         //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");
@@ -713,6 +744,11 @@ public static class Launch
                     Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
             }
         }
+        else if (obj.Loader == Loaders.OptiFine)
+        {
+            GameHelper.ReadyOptifineWrapper();
+            list.AddOrUpdate(new(), GameHelper.OptifineWrapper);
+        }
 
         //游戏核心
         var list3 = new List<string>(list.Values);
@@ -812,6 +848,48 @@ public static class Launch
         }
     }
 
+    private static string MakeMainClass(GameSettingObj obj, GameArgObj version, bool v2)
+    {
+        if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
+        {
+            return obj.AdvanceJvm.MainClass;
+        }
+        else if (obj.Loader == Loaders.Normal)
+        {
+            return version.mainClass;
+        }
+        //forgewrapper
+        else if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
+        {
+            if (v2)
+            {
+                return "io.github.zekerzhayard.forgewrapper.installer.Main";
+            }
+            else
+            {
+                var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
+                return forge.mainClass;
+            }
+        }
+        else if (obj.Loader == Loaders.Fabric)
+        {
+            var fabric = obj.GetFabricObj()!;
+            return fabric.mainClass;
+        }
+        else if (obj.Loader == Loaders.Quilt)
+        {
+            var quilt = obj.GetQuiltObj()!;
+            return quilt.mainClass;
+        }
+        //optifinewrapper
+        else if (obj.Loader == Loaders.OptiFine)
+        {
+            return "coloryr.optifinewrapper.Main";
+        }
+
+        return "";
+    }
+    
     /// <summary>
     /// 创建所有启动参数
     /// </summary>
@@ -832,40 +910,8 @@ public static class Launch
         list.AddRange(jvmarg);
 
         //mainclass
-        if (string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
-        {
-            if (obj.Loader == Loaders.Normal)
-            {
-                list.Add(version.mainClass);
-            }
-            //forgewrapper
-            else if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
-            {
-                if (v2)
-                {
-                    list.Add("io.github.zekerzhayard.forgewrapper.installer.Main");
-                }
-                else
-                {
-                    var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-                    list.Add(forge.mainClass);
-                }
-            }
-            else if (obj.Loader == Loaders.Fabric)
-            {
-                var fabric = obj.GetFabricObj()!;
-                list.Add(fabric.mainClass);
-            }
-            else if (obj.Loader == Loaders.Quilt)
-            {
-                var quilt = obj.GetQuiltObj()!;
-                list.Add(quilt.mainClass);
-            }
-        }
-        else
-        {
-            list.Add(obj.AdvanceJvm.MainClass);
-        }
+        list.Add(MakeMainClass(obj, version, v2));
+
         //gamearg
         list.AddRange(gamearg);
 

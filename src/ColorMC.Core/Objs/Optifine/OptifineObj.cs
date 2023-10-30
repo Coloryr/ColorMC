@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Objs.Optifine;
+﻿namespace ColorMC.Core.Objs.OptiFine;
 
 /// <summary>
 /// 高清修复信息

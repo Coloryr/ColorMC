@@ -221,7 +221,7 @@ public partial class AddGameModel : MenuModel
                 break;
             case Loaders.Forge:
                 Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
-                var list = await GameBinding.GetForgeVersion(Version);
+                var list = await WebBinding.GetForgeVersion(Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
@@ -235,7 +235,7 @@ public partial class AddGameModel : MenuModel
                 break;
             case Loaders.NeoForge:
                 Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
-                list = await GameBinding.GetNeoForgeVersion(Version);
+                list = await WebBinding.GetNeoForgeVersion(Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
@@ -249,7 +249,7 @@ public partial class AddGameModel : MenuModel
                 break;
             case Loaders.Fabric:
                 Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info2"));
-                list = await GameBinding.GetFabricVersion(Version);
+                list = await WebBinding.GetFabricVersion(Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
@@ -263,7 +263,21 @@ public partial class AddGameModel : MenuModel
                 break;
             case Loaders.Quilt:
                 Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
-                list = await GameBinding.GetQuiltVersion(Version);
+                list = await WebBinding.GetQuiltVersion(Version);
+                Model.ProgressClose();
+                if (list == null)
+                {
+                    Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    return;
+                }
+
+                EnableLoader = true;
+                LoaderVersionList.Clear();
+                LoaderVersionList.AddRange(list);
+                break;
+            case Loaders.OptiFine:
+                Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info16"));
+                list = await WebBinding.GetOptifineVersion(Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
@@ -364,31 +378,37 @@ public partial class AddGameModel : MenuModel
         }
 
         Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info4"));
-        var list = await GameBinding.GetForgeSupportVersion();
+        var list = await WebBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(item))
         {
             _loaderTypeList.Add(Loaders.Forge);
             LoaderTypeList.Add(Loaders.Forge.GetName());
         }
 
-        list = await GameBinding.GetFabricSupportVersion();
+        list = await WebBinding.GetFabricSupportVersion();
         if (list != null && list.Contains(item))
         {
             _loaderTypeList.Add(Loaders.Fabric);
             LoaderTypeList.Add(Loaders.Fabric.GetName());
         }
 
-        list = await GameBinding.GetQuiltSupportVersion();
+        list = await WebBinding.GetQuiltSupportVersion();
         if (list != null && list.Contains(item))
         {
             _loaderTypeList.Add(Loaders.Quilt);
             LoaderTypeList.Add(Loaders.Quilt.GetName());
         }
-        list = await GameBinding.GetNeoForgeSupportVersion();
+        list = await WebBinding.GetNeoForgeSupportVersion();
         if (list != null && list.Contains(item))
         {
             _loaderTypeList.Add(Loaders.NeoForge);
             LoaderTypeList.Add(Loaders.NeoForge.GetName());
+        }
+        list = await WebBinding.GetOptifineSupportVersion();
+        if (list != null && list.Contains(item))
+        {
+            _loaderTypeList.Add(Loaders.OptiFine);
+            LoaderTypeList.Add(Loaders.OptiFine.GetName());
         }
         Model.ProgressClose();
         LoaderType = 0;
