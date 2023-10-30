@@ -131,7 +131,7 @@ public static class DownloadItemHelper
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj BuildForgeInster(string mc, string version)
+    public static DownloadItemObj BuildForgeInstaller(string mc, string version)
     {
         return BuildForgeItem(mc, version, "installer");
     }
@@ -142,7 +142,7 @@ public static class DownloadItemHelper
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj BuildNeoForgeInster(string mc, string version)
+    public static DownloadItemObj BuildNeoForgeInstaller(string mc, string version)
     {
         return BuildNeoForgeItem(mc, version, "installer");
     }
@@ -210,8 +210,8 @@ public static class DownloadItemHelper
         if (v2)
         {
             list.Add(neo ?
-                BuildNeoForgeInster(mc, version) :
-                BuildForgeInster(mc, version));
+                BuildNeoForgeInstaller(mc, version) :
+                BuildForgeInstaller(mc, version));
             list.Add(neo ?
                 BuildNeoForgeUniversal(mc, version) :
                 BuildForgeUniversal(mc, version));
@@ -514,8 +514,8 @@ public static class DownloadItemHelper
         var v2 = CheckHelpers.ISGameVersionV2(version1);
 
         var down = neo ?
-            BuildNeoForgeInster(mc, version) :
-            BuildForgeInster(mc, version);
+            BuildNeoForgeInstaller(mc, version) :
+            BuildForgeInstaller(mc, version);
         try
         {
             var res = await DownloadManager.Start(new() { down });
@@ -789,5 +789,49 @@ public static class DownloadItemHelper
         }
 
         return (GetDownloadState.End, list);
+    }
+
+    /// <summary>
+    /// 获取Optifine下载项目
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>State下载状态
+    /// List下载项目列表</returns>
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildOptifine(GameSettingObj obj)
+    {
+        return BuildOptifine(obj.Version, obj.LoaderVersion);
+    }
+
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildOptifine(string mc, string? version = null)
+    {
+        var list = await OptifineAPI.GetOptifineVersion();
+        if (list.Item1 == null)
+        {
+            return (GetDownloadState.Init, null);
+        }
+
+        foreach (var item in list.Item2!)
+        {
+            if (item.Version == version && item.MCVersion == mc)
+            {
+                var url = await OptifineAPI.GetOptifineDownloadUrl(item);
+                if (url == null)
+                {
+                    return (GetDownloadState.GetInfo, null);
+                }
+                return (GetDownloadState.End, new()
+                {
+                    new()
+                    {
+                        Name = item.FileName,
+                        Local = LibrariesPath.GetOptionLib(mc, version),
+                        Overwrite = true,
+                        Url = url
+                    }
+                });
+            }
+        }
+
+        return (GetDownloadState.Init, null);
     }
 }

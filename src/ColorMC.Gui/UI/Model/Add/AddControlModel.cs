@@ -4,7 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Objs.Optifine;
+using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
@@ -491,7 +491,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             return;
         }
 
-        //Optifine
+        //OptiFine
         if (Type == 5)
         {
             return;

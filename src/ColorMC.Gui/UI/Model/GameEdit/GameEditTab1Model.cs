@@ -23,8 +23,8 @@ public partial class GameEditModel : MenuModel
     public ObservableCollection<string> LoaderTypeList { get; init; } = new();
     public ObservableCollection<string> LangList { get; init; } = new();
 
-    private List<Loaders> _loaderTypeList = new();
-    private List<string> _langList = new();
+    private readonly List<Loaders> _loaderTypeList = new();
+    private readonly List<string> _langList = new();
 
     private bool _gameLoad = false;
 
@@ -92,38 +92,10 @@ public partial class GameEditModel : MenuModel
 
         var loader = _loaderTypeList[value];
         LoaderVersionList.Clear();
-        switch (loader)
-        {
-            case Loaders.Normal:
-                _obj.Loader = Loaders.Normal;
-                _obj.LoaderVersion = null;
-                _obj.Save();
-                break;
-            case Loaders.Forge:
-                _obj.Loader = Loaders.Forge;
-                _obj.LoaderVersion = null;
-                _obj.Save();
-                await LoaderVersionLoad();
-                break;
-            case Loaders.NeoForge:
-                _obj.Loader = Loaders.NeoForge;
-                _obj.LoaderVersion = null;
-                _obj.Save();
-                await LoaderVersionLoad();
-                break;
-            case Loaders.Fabric:
-                _obj.Loader = Loaders.Fabric;
-                _obj.LoaderVersion = null;
-                _obj.Save();
-                await LoaderVersionLoad();
-                break;
-            case Loaders.Quilt:
-                _obj.Loader = Loaders.Quilt;
-                _obj.LoaderVersion = null;
-                _obj.Save();
-                await LoaderVersionLoad();
-                break;
-        }
+        _obj.Loader = loader;
+        _obj.LoaderVersion = null;
+        _obj.Save();
+        await LoaderVersionLoad();
 
     }
 
@@ -336,7 +308,7 @@ public partial class GameEditModel : MenuModel
                 break;
             case Loaders.Forge:
                 Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
-                var list = await GameBinding.GetForgeVersion(_obj.Version);
+                var list = await WebBinding.GetForgeVersion(_obj.Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
@@ -350,7 +322,7 @@ public partial class GameEditModel : MenuModel
                 break;
             case Loaders.NeoForge:
                 Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
-                list = await GameBinding.GetNeoForgeVersion(_obj.Version);
+                list = await WebBinding.GetNeoForgeVersion(_obj.Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
@@ -364,7 +336,7 @@ public partial class GameEditModel : MenuModel
                 break;
             case Loaders.Fabric:
                 Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info2"));
-                list = await GameBinding.GetFabricVersion(_obj.Version);
+                list = await WebBinding.GetFabricVersion(_obj.Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
@@ -378,7 +350,21 @@ public partial class GameEditModel : MenuModel
                 break;
             case Loaders.Quilt:
                 Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
-                list = await GameBinding.GetQuiltVersion(_obj.Version);
+                list = await WebBinding.GetQuiltVersion(_obj.Version);
+                Model.ProgressClose();
+                if (list == null)
+                {
+                    Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    return;
+                }
+
+                EnableLoader = true;
+                LoaderVersionList.Clear();
+                LoaderVersionList.AddRange(list);
+                break;
+            case Loaders.OptiFine:
+                Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info16"));
+                list = await WebBinding.GetOptifineVersion(_obj.Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
@@ -403,32 +389,38 @@ public partial class GameEditModel : MenuModel
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
         Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info4"));
-        var list = await GameBinding.GetForgeSupportVersion();
+        var list = await WebBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(_obj.Version))
         {
             _loaderTypeList.Add(Loaders.Forge);
             LoaderTypeList.Add(Loaders.Forge.GetName());
         }
 
-        list = await GameBinding.GetNeoForgeSupportVersion();
+        list = await WebBinding.GetNeoForgeSupportVersion();
         if (list != null && list.Contains(_obj.Version))
         {
             _loaderTypeList.Add(Loaders.NeoForge);
             LoaderTypeList.Add(Loaders.NeoForge.GetName());
         }
 
-        list = await GameBinding.GetFabricSupportVersion();
+        list = await WebBinding.GetFabricSupportVersion();
         if (list != null && list.Contains(_obj.Version))
         {
             _loaderTypeList.Add(Loaders.Fabric);
             LoaderTypeList.Add(Loaders.Fabric.GetName());
         }
 
-        list = await GameBinding.GetQuiltSupportVersion();
+        list = await WebBinding.GetQuiltSupportVersion();
         if (list != null && list.Contains(_obj.Version))
         {
             _loaderTypeList.Add(Loaders.Quilt);
             LoaderTypeList.Add(Loaders.Quilt.GetName());
+        }
+        list = await WebBinding.GetOptifineSupportVersion();
+        if (list != null && list.Contains(_obj.Version))
+        {
+            _loaderTypeList.Add(Loaders.OptiFine);
+            LoaderTypeList.Add(Loaders.OptiFine.GetName());
         }
         Model.ProgressClose();
 
@@ -480,12 +472,6 @@ public partial class GameEditModel : MenuModel
     public void Open()
     {
         PathBinding.OpPath(_obj, PathType.BasePath);
-    }
-
-    [RelayCommand]
-    public void OpenOptifine()
-    {
-        App.ShowAdd(_obj, FileType.Optifne);
     }
 
     [RelayCommand]

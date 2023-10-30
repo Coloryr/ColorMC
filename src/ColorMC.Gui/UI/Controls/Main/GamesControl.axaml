@@ -16,6 +16,7 @@
         Padding="5"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Top"
+        Background="{setting:Colors GroupBack}"
         BorderBrush="{setting:Colors GroupColor1}"
         BorderThickness="1"
         CornerRadius="{setting:Style ButtonCornerRadius}"
@@ -23,6 +24,7 @@
         IsExpanded="{Binding Expander}">
         <Expander.Styles>
             <Style Selector="Expander /template/ ToggleButton#ExpanderHeader">
+                <Setter Property="Background" Value="{setting:Colors GroupBack}" />
                 <Setter Property="BorderBrush" Value="{setting:Colors GroupColor1}" />
                 <Setter Property="BorderThickness" Value="2" />
             </Style>

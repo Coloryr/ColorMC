@@ -1,42 +1,6 @@
-﻿
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace ColorMC.Core.Objs;
-
-/// <summary>
-/// 加载器类型
-/// </summary>
-public enum Loaders
-{
-    /// <summary>
-    /// 无Mod加载器
-    /// </summary>
-    Normal,
-    /// <summary>
-    /// Forge加载器
-    /// </summary>
-    Forge,
-    /// <summary>
-    /// Fabric加载器
-    /// </summary>
-    Fabric,
-    /// <summary>
-    /// Quilt加载器
-    /// </summary>
-    Quilt,
-    /// <summary>
-    /// NeoForge加载器
-    /// </summary>
-    NeoForge
-}
-
-public enum GameType
-{
-    Release,
-    Snapshot,
-    Other
-}
 
 /// <summary>
 /// 加入服务器设置

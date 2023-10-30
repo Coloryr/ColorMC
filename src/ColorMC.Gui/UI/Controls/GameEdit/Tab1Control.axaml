@@ -261,19 +261,6 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <WrapPanel Margin="0,0,0,3">
-                        <Button
-                            Width="120"
-                            Height="25"
-                            Command="{Binding OpenOptifine}"
-                            Content="{setting:Localize AddWindow.Text10}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text43}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Label
-                            Margin="5,2,0,2"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab1.Text4}" />
-                    </WrapPanel>
                     <WrapPanel>
                         <Button
                             Width="120"

@@ -2,7 +2,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Objs.Optifine;
+using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 
@@ -34,7 +34,7 @@ public static class UrlHelper
     public const string FabricMeta = "https://meta.fabricmc.net/";
     public const string Quilt = "https://maven.quiltmc.org/";
     public const string QuiltMeta = "https://meta.quiltmc.org/";
-    public const string Optifine = "https://optifine.net/";
+    public const string OptiFine = "https://optifine.net/";
     public const string NeoForge = "https://maven.neoforged.net/";
 
     public const string NeoForgeDownload = "https://maven.neoforged.net/releases/";
@@ -441,7 +441,7 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}optifine/versionList",
             SourceLocal.MCBBS => $"{MCBBS}optifine/versionList",
-            _ => $"{Optifine}downloads"
+            _ => $"{OptiFine}downloads"
         };
     }
 
@@ -452,8 +452,8 @@ public static class UrlHelper
     {
         return local switch
         {
-            SourceLocal.MCBBS => $"{MCBBS}optifine/{obj.mcversion}/HD_U/{obj.patch}",
-            _ => $"{BMCLAPI}optifine/{obj.mcversion}/HD_U/{obj.patch}"
+            SourceLocal.MCBBS => $"{MCBBS}optifine/{obj.mcversion}/{obj.type}/{obj.patch}",
+            _ => $"{BMCLAPI}optifine/{obj.mcversion}/{obj.type}/{obj.patch}"
         };
     }
 

@@ -24,12 +24,20 @@
             <Border
                 Margin="0,0,0,5"
                 Padding="3"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 DockPanel.Dock="Top"
                 IsVisible="{Binding !IsNotGame, FallbackValue=true}">
+                <Border.Styles>
+                    <Style Selector="Border">
+                        <Setter Property="Background" Value="{setting:Colors GroupBack}" />
+                        <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+                    </Style>
+                    <Style Selector="Border:pointerover">
+                        <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrushPointerOver}" />
+                    </Style>
+                </Border.Styles>
                 <DockPanel>
                     <Button
                         Background="Transparent"
