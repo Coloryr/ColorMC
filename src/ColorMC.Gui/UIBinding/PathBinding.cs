@@ -16,7 +16,7 @@ using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using SixLabors.ImageSharp;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -281,7 +281,11 @@ public static class PathBinding
                 try
                 {
                     var name = file.GetPath();
-                    await UserBinding.SkinImage.SaveAsPngAsync(name);
+                    var data = UserBinding.SkinImage?.Encode(SKEncodedImageFormat.Png, 100);
+                    if (data?.AsSpan().ToArray() is { } data1)
+                    {
+                        PathHelper.WriteBytes(name!, data1);
+                    }
                     return true;
                 }
                 catch (Exception e)

@@ -9,8 +9,7 @@ using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
+using SkiaSharp;
 using System;
 using System.ComponentModel;
 using System.Numerics;
@@ -274,7 +273,7 @@ public class SkinRender : OpenGlControlBase
         RequestNextFrameRendering();
     }
 
-    private static unsafe void LoadTex(GlInterface gl, Image<Rgba32> image, int tex)
+    private static void LoadTex(GlInterface gl, SKBitmap image, int tex)
     {
         gl.ActiveTexture(GlConsts.GL_TEXTURE0);
         gl.BindTexture(GlConsts.GL_TEXTURE_2D, tex);
@@ -298,15 +297,8 @@ public class SkinRender : OpenGlControlBase
             0x2803, 0x812F
         );
 
-        var pixels = new byte[4 * image.Width * image.Height];
-        image.CopyPixelDataTo(pixels);
-
-        fixed (byte* prt = pixels)
-        {
-            gl.TexImage2D(GlConsts.GL_TEXTURE_2D, 0, GlConsts.GL_RGBA, image.Width,
-               image.Height, 0, GlConsts.GL_RGBA, GlConsts.GL_UNSIGNED_BYTE, (IntPtr)prt);
-        }
-
+        gl.TexImage2D(GlConsts.GL_TEXTURE_2D, 0, GlConsts.GL_RGBA, image.Width,
+               image.Height, 0, GlConsts.GL_RGBA, GlConsts.GL_UNSIGNED_BYTE, image.GetPixels());
         gl.BindTexture(GlConsts.GL_TEXTURE_2D, 0);
     }
 

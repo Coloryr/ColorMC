@@ -1,9 +1,11 @@
 <Application
     x:Class="ColorMC.Gui.App"
     xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia">
     <Application.Styles>
         <FluentTheme />
+        <dialog:DialogHostStyles />
         <StyleInclude Source="/Style/Button.axaml" />
         <StyleInclude Source="/Style/RepeatButton.axaml" />
         <StyleInclude Source="/Style/Tab.axaml" />

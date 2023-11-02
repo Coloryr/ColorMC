@@ -17,32 +17,32 @@
                 Width="100"
                 Height="25"
                 Margin="5,0,0,5"
-                Command="{Binding Launch}"
+                Command="{ReflectionBinding Launch}"
                 Content="启动游戏" />
             <Button
                 Width="100"
                 Height="25"
                 Margin="5,0,0,5"
-                Command="{Binding Setting}"
+                Command="{ReflectionBinding Setting}"
                 Content="启动器设置" />
             <Button
                 Width="100"
                 Height="25"
                 Margin="5,0,0,5"
-                Command="{Binding OpUrl}"
+                Command="{ReflectionBinding OpUrl}"
                 CommandParameter="Https://www.baidu.com"
                 Content="打开网页" />
             <Button
                 Width="100"
                 Height="25"
                 Margin="5,0,0,5"
-                Command="{Binding User}"
+                Command="{ReflectionBinding User}"
                 Content="编辑账户" />
             <Button
                 Width="100"
                 Height="25"
                 Margin="5,0,0,5"
-                Command="{Binding Skin}"
+                Command="{ReflectionBinding Skin}"
                 Content="查看皮肤" />
         </StackPanel>
         <Label
@@ -53,11 +53,11 @@
             Content="xxx服务器专用客户端"
             FontSize="20"
             Foreground="#FF000000" />
-        <views:ServerMotdControl Margin="5" IPPort="{Binding Server}" />
+        <views:ServerMotdControl Margin="5" IPPort="{ReflectionBinding Server}" />
         <views1:GameControl
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            DataContext="{Binding Game}" />
+            DataContext="{ReflectionBinding Game}" />
         <StackPanel
             Margin="10,80,10,10"
             HorizontalAlignment="Right"
@@ -68,15 +68,15 @@
                 Height="80"
                 Margin="10,0,10,0"
                 HorizontalAlignment="Center"
-                Source="{Binding Head}" />
+                Source="{ReflectionBinding Head}" />
             <Label
                 Margin="0,5,0,5"
                 HorizontalContentAlignment="Center"
-                Content="{Binding UserName}" />
+                Content="{ReflectionBinding UserName}" />
             <Label
                 Margin="0,5,0,5"
                 HorizontalContentAlignment="Center"
-                Content="{Binding UserType}" />
+                Content="{ReflectionBinding UserType}" />
         </StackPanel>
     </Panel>
 </view:CustomPanelControl>

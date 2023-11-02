@@ -3,10 +3,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
+using SkiaSharp;
 using System;
 using System.IO;
 using System.Reflection;
@@ -55,14 +52,10 @@ public static class ImageUtils
                 var data1 = await BaseClient.GetStream(url);
                 if (data1.Item1)
                 {
-                    //var image = Bitmap.DecodeToWidth(data1.Item2!, 80);
-                    //image.Save(Local + sha1);
-                    //return image;
-
-                    var image1 = Image.Load(data1.Item2!);
-                    image1 = Resize(image1, 100, 100);
-                    image1.SaveAsPng(Local + sha1);
-                    image1.Dispose();
+                    using var image1 = SKBitmap.Decode(data1.Item2!);
+                    using var image2 = Resize(image1, 100, 100);
+                    using var data = image2.Encode(SKEncodedImageFormat.Png, 100);
+                    PathHelper.WriteBytes(Local + sha1, data.AsSpan().ToArray());
                     return new Bitmap(Local + sha1);
                 }
 
@@ -82,17 +75,17 @@ public static class ImageUtils
     /// </summary>
     /// <param name="file">图片</param>
     /// <returns>图片数据</returns>
-    public static async Task<MemoryStream> MakeHeadImage(string file)
+    public static Stream MakeHeadImage(string file)
     {
-        using var image = await Image.LoadAsync<Rgba32>(file);
-        using var image1 = new Image<Rgba32>(8, 8);
-        using var image2 = new Image<Rgba32>(64, 64);
+        using var image = SKBitmap.Decode(file);
+        using var image1 = new SKBitmap(8, 8);
+        using var image2 = new SKBitmap(64, 64);
 
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
             {
-                image1[i, j] = image[i + 8, j + 8];
+                image1.SetPixel(i, j, image.GetPixel(i + 8, j + 8));
             }
         }
 
@@ -100,7 +93,7 @@ public static class ImageUtils
         {
             for (int j = 0; j < 8; j++)
             {
-                image1[i, j] = Mix(image1[i, j], image[i + 40, j + 8]);
+                image1.SetPixel(i, j, Mix(image1.GetPixel(i, j), image.GetPixel(i + 40, j + 8)));
             }
         }
 
@@ -108,13 +101,11 @@ public static class ImageUtils
         {
             for (int j = 0; j < 64; j++)
             {
-                image2[i, j] = image1[i / 8, j / 8];
+                image2.SetPixel(i, j, image1.GetPixel(i / 8, j / 8));
             }
         }
 
-        MemoryStream stream = new();
-        await image2.SaveAsBmpAsync(stream);
-        return stream;
+        return image2.Encode(SKEncodedImageFormat.Png, 100).AsStream();
     }
 
     /// <summary>
@@ -123,16 +114,14 @@ public static class ImageUtils
     /// <param name="rgba">源</param>
     /// <param name="mix">目标</param>
     /// <returns>结果</returns>
-    private static Rgba32 Mix(Rgba32 rgba, Rgba32 mix)
+    private static SKColor Mix(SKColor rgba, SKColor mix)
     {
-        double ap = mix.A / 255;
+        double ap = mix.Alpha / 255;
         double dp = 1 - ap;
 
-        rgba.R = (byte)(mix.R * ap + rgba.R * dp);
-        rgba.G = (byte)(mix.G * ap + rgba.G * dp);
-        rgba.B = (byte)(mix.B * ap + rgba.B * dp);
-
-        return rgba;
+        return new SKColor((byte)(mix.Red * ap + rgba.Red * dp),
+            (byte)(mix.Green * ap + rgba.Green * dp),
+            (byte)(mix.Blue * ap + rgba.Blue * dp));
     }
 
     /// <summary>
@@ -175,30 +164,31 @@ public static class ImageUtils
                 }
                 if (value > 0 || lim != 100)
                 {
-                    using var image = Image.Load(stream1);
-
+                    var image = SKBitmap.Decode(stream1);
                     if (lim != 100)
                     {
                         int x = (int)(image.Width * (float)lim / 100);
                         int y = (int)(image.Height * (float)lim / 100);
-                        image.Mutate(p =>
-                        {
-                            p.Resize(x, y);
-                        });
+                        var img1 = image.Resize(new SKSizeI(x, y), SKFilterQuality.High);
+                        image.Dispose();
+                        image = img1;
                     }
 
                     if (value > 0)
                     {
-                        image.Mutate(p =>
-                        {
-                            p.GaussianBlur(value);
-                        });
-                    }
+                        var image1 = new SKBitmap(image.Width, image.Height);
+                        var canvas = new SKCanvas(image1);
 
-                    using var stream = new MemoryStream();
-                    image.SaveAsPng(stream);
-                    stream.Seek(0, SeekOrigin.Begin);
-                    return new Bitmap(stream);
+                        var paint = new SKPaint
+                        {
+                            MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, value)
+                        };
+
+                        canvas.DrawBitmap(image1, new SKPoint(0, 0), paint);
+                        canvas.Flush();
+                    }
+                    using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+                    return new Bitmap(data.AsStream());
                 }
                 else
                 {
@@ -213,9 +203,8 @@ public static class ImageUtils
         });
     }
 
-    public static Image Resize(Image image, int width, int height)
+    public static SKBitmap Resize(SKBitmap image, int width, int height)
     {
-        Point pos;
         int newWidth;
         int newHeight;
 
@@ -223,28 +212,14 @@ public static class ImageUtils
         if (image.Width > image.Height)
         {
             newWidth = width;
-            newHeight = (int)(((float)image.Height / image.Width) * newWidth);
-
-            pos = new Point(0, (height - newHeight) / 2);
+            newHeight = (int)((float)image.Height / image.Width * newWidth);
         }
         // 竖屏图片
         else
         {
             newHeight = height;
             newWidth = (int)(newHeight * ((float)image.Width / image.Height));
-
-            pos = new Point((width - newWidth) / 2, 0);
         }
-
-        var image1 = new Image<Rgba32>(width, height);
-        image.Mutate(a => a.Resize(newWidth, newHeight));
-        image1.Mutate(a =>
-        {
-            a.Fill(Color.Transparent);
-            a.DrawImage(image, pos, 1);
-        });
-
-        image.Dispose();
-        return image1;
+        return image.Resize(new SKSizeI(newWidth, newHeight), SKFilterQuality.High);
     }
 }
