@@ -1,10 +1,11 @@
 ﻿using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
+using ColorMC.Gui.UI.Model.Dialog;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DialogHostAvalonia;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,71 +13,15 @@ namespace ColorMC.Gui.UI.Model;
 
 public partial class BaseModel : ObservableObject
 {
+    private readonly Info1Model _info1;
+    private readonly Info3Model _info3;
+    private readonly Info4Model _info4;
+    private readonly Info5Model _info5;
+    private readonly Info6Model _info6;
+
     public Task Info1Task;
 
     public string NotifyText;
-
-    private Action? _info3Call;
-    private Action<bool>? _info4Call;
-
-    private bool _info3Cancel;
-    private bool _info5Cancel;
-    private bool _info6Cancel;
-
-    private readonly Semaphore _info3Semaphore = new(0, 2);
-    private readonly Semaphore _info5Semaphore = new(0, 2);
-    private readonly Semaphore _info6Semaphore = new(0, 2);
-
-    [ObservableProperty]
-    private string _info1Text;
-    [ObservableProperty]
-    private double _info1Value;
-    [ObservableProperty]
-    private bool _info1Indeterminate;
-
-    [ObservableProperty]
-    private string _info3Text1;
-    [ObservableProperty]
-    private string _info3Text2;
-    [ObservableProperty]
-    private string _info3Watermark1;
-    [ObservableProperty]
-    private string _info3Watermark2;
-    [ObservableProperty]
-    private bool _info3ConfirmEnable;
-    [ObservableProperty]
-    private bool _info3CancelEnable;
-    [ObservableProperty]
-    private bool _info3CancelVisible;
-    [ObservableProperty]
-    private bool _info3TextReadonly;
-    [ObservableProperty]
-    private bool _info3Text2Visable;
-    [ObservableProperty]
-    private bool _info3ValueVisable;
-    [ObservableProperty]
-    private char _info3Password;
-
-    [ObservableProperty]
-    private string _info4Text;
-    [ObservableProperty]
-    private bool _info4Enable;
-    [ObservableProperty]
-    private bool _info4CancelVisable;
-
-    [ObservableProperty]
-    private string _info5Text;
-    [ObservableProperty]
-    private string _info5Select;
-    [ObservableProperty]
-    private int _info5Index;
-
-    [ObservableProperty]
-    private string _info6Text1;
-    [ObservableProperty]
-    private string _info6Text2;
-
-    public ObservableCollection<string> Info5Items { get; init; } = new();
 
     [ObservableProperty]
     private Bitmap _icon = App.GameIcon;
@@ -85,81 +30,20 @@ public partial class BaseModel : ObservableObject
     [ObservableProperty]
     private string? _title1;
 
-    [RelayCommand]
-    public void Info3Cancel()
+    public string Name { get; init; }
+
+    public BaseModel()
     {
-        if (_info3Call != null)
-        {
-            _info3Call();
-            Info3CancelEnable = false;
-            _info3Call = null;
-            return;
-        }
-
-        _info3Cancel = true;
-        _info3Semaphore.Release();
-
-        InputClose();
+        _info1 = new();
+        _info3 = new(Name);
+        _info4 = new(Name);
+        _info5 = new(Name);
+        _info6 = new(Name);
     }
 
-    [RelayCommand]
-    public void Info3Confirm()
+    public BaseModel(string name) : this()
     {
-        _info3Cancel = false;
-        _info3Semaphore.Release();
-
-        InputClose();
-    }
-
-    [RelayCommand]
-    public void Info4Cancel()
-    {
-        Info4Enable = false;
-
-        OnPropertyChanged("Info4Close");
-
-        _info4Call?.Invoke(false);
-    }
-
-    [RelayCommand]
-    public void Info4Confirm()
-    {
-        Info4Enable = false;
-        OnPropertyChanged("Info4Close");
-
-        _info4Call?.Invoke(true);
-    }
-
-    [RelayCommand]
-    public void Info5Cancel()
-    {
-        _info5Cancel = true;
-        _info5Semaphore.Release();
-        OnPropertyChanged("Info5Close");
-    }
-
-    [RelayCommand]
-    public void Info5Confirm()
-    {
-        _info5Cancel = false;
-        _info5Semaphore.Release();
-        OnPropertyChanged("Info5Close");
-    }
-
-    [RelayCommand]
-    public void Info6Cancel()
-    {
-        _info6Cancel = true;
-        _info6Semaphore.Release();
-        OnPropertyChanged("Info6Close");
-    }
-
-    [RelayCommand]
-    public void Info6Confirm()
-    {
-        _info6Cancel = false;
-        _info6Semaphore.Release();
-        OnPropertyChanged("Info6Close");
+        Name = name;
     }
 
     /// <summary>
@@ -167,7 +51,11 @@ public partial class BaseModel : ObservableObject
     /// </summary>
     public void Progress()
     {
-        OnPropertyChanged("Info1Show");
+        if (DialogHost.IsDialogOpen(Name))
+        {
+            return;
+        }
+        DialogHost.Show(_info1, Name);
     }
 
     /// <summary>
@@ -176,8 +64,8 @@ public partial class BaseModel : ObservableObject
     /// <param name="data">信息</param>
     public void Progress(string data)
     {
-        Info1Indeterminate = true;
-        Info1Text = data;
+        _info1.Indeterminate = true;
+        _info1.Text = data;
         Progress();
     }
 
@@ -189,12 +77,12 @@ public partial class BaseModel : ObservableObject
     {
         if (value == -1)
         {
-            Info1Indeterminate = true;
+            _info1.Indeterminate = true;
         }
         else
         {
-            Info1Indeterminate = false;
-            Info1Value = value;
+            _info1.Indeterminate = false;
+            _info1.Value = value;
         }
     }
 
@@ -204,20 +92,14 @@ public partial class BaseModel : ObservableObject
     /// <param name="data">信息</param>
     public void ProgressUpdate(string data)
     {
-        Info1Text = data;
+        _info1.Text = data;
     }
 
     public void ProgressClose()
     {
-        Info1Indeterminate = false;
-        OnPropertyChanged("Info1Close");
-    }
+        _info1.Indeterminate = false;
 
-    public Task ProgressCloseAsync()
-    {
-        Info1Indeterminate = false;
-        OnPropertyChanged("Info1CloseAsync");
-        return Info1Task;
+        DialogHost.Close(Name);
     }
 
     /// <summary>
@@ -237,62 +119,53 @@ public partial class BaseModel : ObservableObject
 
     public void InputClose()
     {
-        Info3ValueVisable = false;
-        OnPropertyChanged("Info3Close");
+        _info3.ValueVisable = false;
+        DialogHost.Close(Name);
     }
 
-    public async Task<(bool Cancel, string? Text1)>
-        ShowEdit(string title, string data)
+    public async Task<(bool Cancel, string? Text1)> ShowEdit(string title, string data)
     {
-        Info3CancelEnable = true;
-        Info3CancelVisible = true;
-        Info3ConfirmEnable = true;
+        _info3.CancelEnable = true;
+        _info3.CancelVisible = true;
+        _info3.ConfirmEnable = true;
 
-        Info3Text2Visable = false;
-        Info3TextReadonly = false;
-        Info3ValueVisable = false;
+        _info3.Text2Visable = false;
+        _info3.TextReadonly = false;
+        _info3.ValueVisable = false;
 
-        Info3Text1 = data;
-        Info3Watermark1 = title;
-        OnPropertyChanged("Info3Show");
+        _info3.Text1 = data;
+        _info3.Watermark1 = title;
 
-        _info3Call = null;
-        await Task.Run(() =>
-        {
-            _info3Semaphore.WaitOne();
+        await DialogHost.Show(_info3, Name);
 
-        });
+        _info3.Call = null;
 
-        return (_info3Cancel, Info3Text1);
+        return (_info3.IsCancel, _info3.Text1);
     }
 
     public async Task<(bool Cancel, string? Text1, string? Text2)>
        ShowEditInput(string data, string data1)
     {
-        Info3TextReadonly = false;
-        Info3Text1 = data;
-        Info3Text2 = data1;
+        _info3.TextReadonly = false;
+        _info3.Text1 = data;
+        _info3.Text2 = data1;
 
-        Info3Watermark1 = "";
-        Info3Watermark2 = "";
+        _info3.Watermark1 = "";
+        _info3.Watermark2 = "";
 
-        Info3ValueVisable = false;
+        _info3.ValueVisable = false;
 
-        Info3CancelEnable = true;
-        Info3CancelVisible = true;
-        Info3ConfirmEnable = true;
+        _info3.CancelEnable = true;
+        _info3.CancelVisible = true;
+        _info3.ConfirmEnable = true;
 
-        Info3Password = '\0';
+        _info3.Password = '\0';
 
-        OnPropertyChanged("Info3Show");
+        await DialogHost.Show(_info3, Name);
 
-        _info3Call = null;
-        await Task.Run(() =>
-        {
-            _info3Semaphore.WaitOne();
-        });
+        _info3.Call = null;
 
-        return (_info3Cancel, Info3Text1, Info3Text2);
+        return (_info3.IsCancel, _info3.Text1, _info3.Text2);
     }
 
     /// <summary>
@@ -303,77 +176,70 @@ public partial class BaseModel : ObservableObject
     /// <returns></returns>
     public async Task<(bool Cancel, string? Text)> ShowInputOne(string title, bool lock1)
     {
-        Info3Text2Visable = false;
-        Info3TextReadonly = lock1;
+        _info3.Text2Visable = false;
+        _info3.TextReadonly = lock1;
         if (lock1)
         {
-            Info3Text1 = title;
-            Info3Watermark1 = "";
+            _info3.Text1 = title;
+            _info3.Watermark1 = "";
 
-            Info3ValueVisable = true;
+            _info3.ValueVisable = true;
 
-            Info3CancelEnable = false;
-            Info3CancelVisible = false;
-            Info3ConfirmEnable = false;
+            _info3.CancelEnable = false;
+            _info3.CancelVisible = false;
+            _info3.ConfirmEnable = false;
 
-            Info3Password = '\0';
+            _info3.Password = '\0';
         }
         else
         {
-            Info3Text1 = "";
-            Info3ValueVisable = false;
+            _info3.Text1 = "";
+            _info3.ValueVisable = false;
 
-            Info3Watermark1 = title;
+            _info3.Watermark1 = title;
 
-            Info3CancelEnable = true;
-            Info3CancelVisible = true;
-            Info3ConfirmEnable = true;
+            _info3.CancelEnable = true;
+            _info3.CancelVisible = true;
+            _info3.ConfirmEnable = true;
         }
 
-        OnPropertyChanged("Info3Show");
+        await DialogHost.Show(_info3, Name);
 
         if (!lock1)
         {
-            _info3Call = null;
-            await Task.Run(() =>
-            {
-                _info3Semaphore.WaitOne();
-            });
+            await DialogHost.Show(_info3, Name);
+
+            _info3.Call = null;
         }
 
-        return (_info3Cancel, Info3Text1);
+        return (_info3.IsCancel, _info3.Text1);
     }
 
     public async Task<(bool Cancel, string? Text1, string? Text2)>
         ShowInput(string title, string title1, bool password)
     {
-        Info3TextReadonly = false;
+        _info3.TextReadonly = false;
 
-        Info3ValueVisable = false;
+        _info3.ValueVisable = false;
 
-        Info3Text1 = "";
-        Info3Text2 = "";
+        _info3.Text1 = "";
+        _info3.Text2 = "";
 
-        Info3Watermark1 = title;
-        Info3Watermark2 = title1;
+        _info3.Watermark1 = title;
+        _info3.Watermark2 = title1;
 
-        Info3ConfirmEnable = true;
+        _info3.ConfirmEnable = true;
 
-        Info3CancelEnable = true;
-        Info3CancelVisible = true;
+        _info3.CancelEnable = true;
+        _info3.CancelVisible = true;
 
-        Info3Password = password ? '*' : '\0';
+        _info3.Password = password ? '*' : '\0';
 
-        OnPropertyChanged("Info3Show");
+        await DialogHost.Show(_info3, Name);
 
-        _info3Call = null;
+        _info3.Call = null;
 
-        await Task.Run(() =>
-        {
-            _info3Semaphore.WaitOne();
-        });
-
-        return (_info3Cancel, Info3Text1, Info3Text2);
+        return (_info3.IsCancel, _info3.Text1, _info3.Text2);
     }
 
     /// <summary>
@@ -384,26 +250,26 @@ public partial class BaseModel : ObservableObject
     /// <param name="cancel"></param>
     public void ShowReadInfo(string title, string title1, Action cancel)
     {
-        Info3TextReadonly = true;
-        Info3Text1 = title;
-        Info3Text2 = title1;
+        _info3.TextReadonly = true;
+        _info3.Text1 = title;
+        _info3.Text2 = title1;
 
-        Info3Watermark1 = "";
-        Info3Watermark2 = "";
+        _info3.Watermark1 = "";
+        _info3.Watermark2 = "";
 
-        Info3ValueVisable = true;
+        _info3.ValueVisable = true;
 
-        Info3Text2Visable = true;
-        Info3ConfirmEnable = false;
+        _info3.Text2Visable = true;
+        _info3.ConfirmEnable = false;
 
-        _info3Call = cancel;
+        _info3.Call = cancel;
 
-        Info3CancelEnable = true;
-        Info3CancelVisible = true;
+        _info3.CancelEnable = true;
+        _info3.CancelVisible = true;
 
-        Info3Password = '\0';
+        _info3.Password = '\0';
 
-        OnPropertyChanged("Info3Show");
+        DialogHost.Show(_info3, Name);
     }
 
     /// <summary>
@@ -414,32 +280,32 @@ public partial class BaseModel : ObservableObject
     /// <param name="cancel"></param>
     public void ShowReadInfoOne(string title, Action? cancel)
     {
-        Info3TextReadonly = true;
-        Info3Text1 = title;
+        _info3.TextReadonly = true;
+        _info3.Text1 = title;
 
-        Info3Watermark1 = "";
+        _info3.Watermark1 = "";
 
-        Info3ValueVisable = false;
+        _info3.ValueVisable = false;
 
-        Info3Text2Visable = false;
-        Info3ConfirmEnable = true;
+        _info3.Text2Visable = false;
+        _info3.ConfirmEnable = true;
 
         if (cancel != null)
         {
-            _info3Call = cancel;
+            _info3.Call = cancel;
 
-            Info3CancelEnable = true;
-            Info3CancelVisible = true;
+            _info3.CancelEnable = true;
+            _info3.CancelVisible = true;
 
-            Info3Password = '\0';
+            _info3.Password = '\0';
         }
         else
         {
-            _info3Call = null;
-            Info3CancelVisible = false;
+            _info3.Call = null;
+            _info3.CancelVisible = false;
         }
 
-        OnPropertyChanged("Info3Show");
+        DialogHost.Show(_info3, Name);
     }
 
     /// <summary>
@@ -451,24 +317,19 @@ public partial class BaseModel : ObservableObject
     {
         bool reut = false;
         using Semaphore semaphore = new(0, 2);
-        Info4Enable = true;
-        Info4Text = data;
-        Info4CancelVisable = true;
+        _info4.Enable = true;
+        _info4.Text = data;
+        _info4.CancelVisable = true;
 
-        _info4Call = (res) =>
+        _info4.Call = (res) =>
         {
             reut = res;
             semaphore.Release();
         };
 
-        OnPropertyChanged("Info4Show");
+        await DialogHost.Show(_info4);
 
-        await Task.Run(() =>
-        {
-            semaphore.WaitOne();
-        });
-
-        _info4Call = null;
+        _info4.Call = null;
 
         return reut;
     }
@@ -479,60 +340,49 @@ public partial class BaseModel : ObservableObject
     /// <param name="data">内容</param>
     public void Show(string data)
     {
-        Info4Enable = true;
-        Info4CancelVisable = false;
-        _info4Call = null;
-        Info4Text = data;
+        _info4.Enable = true;
+        _info4.CancelVisable = false;
+        _info4.Call = null;
+        _info4.Text = data;
 
-        OnPropertyChanged("Info4Show");
+        DialogHost.Show(_info4);
     }
 
     public void ShowOk(string data, Action action)
     {
-        using Semaphore semaphore = new(0, 2);
-        Info4Enable = true;
-        Info4CancelVisable = false;
-        Info4Text = data;
+        _info4.Enable = true;
+        _info4.CancelVisable = false;
+        _info4.Text = data;
 
-        _info4Call = (res) =>
+        _info4.Call = (res) =>
         {
             action.Invoke();
         };
 
-        OnPropertyChanged("Info4Show");
+        DialogHost.Show(_info4);
     }
 
     public async Task<(bool Cancel, int Index, string? Item)>
         ShowCombo(string data, List<string> data1)
     {
-        Info5Text = data;
-        Info5Items.Clear();
-        Info5Items.AddRange(data1);
-        Info5Select = null!;
-        Info5Select = data1[0];
+        _info5.Text = data;
+        _info5.Items.Clear();
+        _info5.Items.AddRange(data1);
+        _info5.Select = null!;
+        _info5.Select = data1[0];
 
-        OnPropertyChanged("Info5Show");
+        await DialogHost.Show(_info5, Name);
 
-        await Task.Run(() =>
-        {
-            _info5Semaphore.WaitOne();
-        });
-
-        return (_info5Cancel, Info5Index, Info5Select);
+        return (_info5.IsCancel, _info5.Index, _info5.Select);
     }
 
     public async Task<bool> TextInfo(string data, string data1)
     {
-        Info6Text1 = data;
-        Info6Text2 = data1;
+        _info6.Text1 = data;
+        _info6.Text2 = data1;
 
-        OnPropertyChanged("Info6Show");
+        await DialogHost.Show(_info6, Name);
 
-        await Task.Run(() =>
-        {
-            _info6Semaphore.WaitOne();
-        });
-
-        return _info6Cancel;
+        return _info6.IsCancel;
     }
 }

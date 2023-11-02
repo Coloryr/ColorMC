@@ -501,7 +501,7 @@ public partial class MainModel : TopModel, IMainTop
         item.IsLoad = false;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
-            await Model.ProgressCloseAsync();
+            Model.ProgressClose();
         }
         if (res.Item1 == false)
         {

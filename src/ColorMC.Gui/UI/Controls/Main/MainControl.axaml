@@ -46,8 +46,8 @@
                         DockPanel.Dock="Left">
                         <Panel>
                             <Border
-                                Width="35"
-                                Height="35"
+                                Width="38"
+                                Height="38"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 CornerRadius="{setting:Style ButtonCornerRadius}">
@@ -56,9 +56,9 @@
                                 </Border.Background>
                             </Border>
                             <ProgressBar
-                                Width="35"
+                                Width="38"
                                 Height="20"
-                                MinWidth="35"
+                                MinWidth="38"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 IsIndeterminate="True"
@@ -77,9 +77,9 @@
                         DockPanel.Dock="Right"
                         Orientation="Horizontal">
                         <Button
-                            Width="35"
-                            Height="35"
-                            Margin="0,0,5,0"
+                            Width="38"
+                            Height="38"
+                            Margin="0,0,3,0"
                             Command="{Binding MusicPause}"
                             CornerRadius="{setting:Style ButtonCornerRadius}"
                             IsVisible="{Binding MusicDisplay}"
@@ -88,9 +88,9 @@
                             <Svg Path="/Resource/Icon/play.svg" />
                         </Button>
                         <Button
-                            Width="35"
-                            Height="35"
-                            Margin="0,0,5,0"
+                            Width="38"
+                            Height="38"
+                            Margin="0,0,3,0"
                             Command="{Binding OpenGuide}"
                             CornerRadius="{setting:Style ButtonCornerRadius}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text70}"
@@ -98,9 +98,9 @@
                             <Svg Path="/Resource/Icon/book.svg" />
                         </Button>
                         <Button
-                            Width="35"
-                            Height="35"
-                            Margin="0,0,5,0"
+                            Width="38"
+                            Height="38"
+                            Margin="0,0,3,0"
                             Command="{Binding ShowSkin}"
                             CornerRadius="{setting:Style ButtonCornerRadius}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text9}"
@@ -108,9 +108,9 @@
                             <Svg Path="/Resource/Icon/skin.svg" />
                         </Button>
                         <Button
-                            Width="35"
-                            Height="35"
-                            Margin="0,0,5,0"
+                            Width="38"
+                            Height="38"
+                            Margin="0,0,3,0"
                             Command="{Binding ShowCount}"
                             CornerRadius="{setting:Style ButtonCornerRadius}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text12}"
@@ -118,8 +118,8 @@
                             <Svg Path="/Resource/Icon/count.svg" />
                         </Button>
                         <Button
-                            Width="35"
-                            Height="35"
+                            Width="38"
+                            Height="38"
                             Command="{Binding ShowSetting}"
                             CornerRadius="{setting:Style ButtonCornerRadius}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text13}"

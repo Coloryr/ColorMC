@@ -394,6 +394,7 @@
                             Width="80"
                             Height="25"
                             VerticalAlignment="Center"
+                            Command="{Binding SetPicSize}"
                             Content="{setting:Localize Button.Set}"
                             IsEnabled="{Binding EnablePicResize}" />
                     </WrapPanel>

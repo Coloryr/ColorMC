@@ -86,7 +86,7 @@ public partial class CustomControlPanelModel : TopModel
         var res = await GameBinding.Launch(Model, game, wait: GuiConfigUtils.Config.CloseBeforeLaunch);
         Model.Title1 = null;
         item.IsLoad = false;
-        await Model.ProgressCloseAsync();
+        Model.ProgressClose();
         if (res.Item1 == false)
         {
             Model.Show(res.Item2!);
