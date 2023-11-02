@@ -8,23 +8,21 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Utils;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class UserBinding
 {
     private readonly static List<(AuthType, string)> s_lockUser = new();
-    public static Image<Rgba32>? SkinImage { get; set; }
-    public static Image<Rgba32>? CapeIamge { get; set; }
+    public static SKBitmap? SkinImage { get; set; }
+    public static SKBitmap? CapeIamge { get; set; }
     public static Bitmap HeadBitmap { get; private set; }
     public static List<string> GetLoginType()
     {
@@ -255,17 +253,15 @@ public static class UserBinding
         {
             try
             {
-                SkinImage = await Image.LoadAsync<Rgba32>(file);
-                var data = await ImageUtils.MakeHeadImage(file);
+                SkinImage = SKBitmap.Decode(file);
+                using var data = ImageUtils.MakeHeadImage(file);
                 if (file == null)
                 {
                     HeadBitmap = new Bitmap(asset);
                 }
                 else
                 {
-                    data.Seek(0, SeekOrigin.Begin);
                     HeadBitmap = new Bitmap(data);
-                    data.Close();
                 }
             }
             catch (Exception e)
@@ -278,7 +274,7 @@ public static class UserBinding
         {
             try
             {
-                CapeIamge = await Image.LoadAsync<Rgba32>(file1);
+                CapeIamge = SKBitmap.Decode(file1);
             }
             catch (Exception e)
             {

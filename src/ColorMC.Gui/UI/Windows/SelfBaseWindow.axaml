@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:info="clr-namespace:ColorMC.Gui.UI.Controls.Info"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
@@ -25,29 +26,34 @@
     mc:Ignorable="d">
     <DockPanel>
         <views:HeadControl Name="WinHead" DockPanel.Dock="Top" />
-        <Grid Name="Grid1">
+        <Panel Name="Grid1">
             <Image Name="Image_Back" Stretch="UniformToFill" />
 
-            <Grid Name="MainControl" />
+            <dialog:DialogHost CloseOnClickAway="True">
+                <Panel>
+                    <dialog:DialogHost.DialogContent />
+                    <Grid Name="MainControl" />
 
-            <info:Info1Control IsVisible="False" />
-            <info:Info4Control IsVisible="False" />
-            <info:Info6Control IsVisible="False" />
-            <info:Info5Control IsVisible="False" />
-            <info:Info3Control IsVisible="False" />
-            <info:Info2Control />
+                    <info:Info1Control IsVisible="False" />
+                    <info:Info4Control IsVisible="False" />
+                    <info:Info6Control IsVisible="False" />
+                    <info:Info5Control IsVisible="False" />
+                    <info:Info3Control IsVisible="False" />
+                    <info:Info2Control />
 
-            <Grid
-                Name="Grid2"
-                Background="{setting:Colors TopBottom}"
-                IsVisible="False">
-                <Label
-                    Name="Label1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="test"
-                    FontSize="30" />
-            </Grid>
-        </Grid>
+                    <Grid
+                        Name="Grid2"
+                        Background="{setting:Colors TopBottom}"
+                        IsVisible="False">
+                        <Label
+                            Name="Label1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="test"
+                            FontSize="30" />
+                    </Grid>
+                </Panel>
+            </dialog:DialogHost>
+        </Panel>
     </DockPanel>
 </Window>

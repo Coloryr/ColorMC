@@ -24,8 +24,7 @@ using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
+using SkiaSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -322,15 +321,21 @@ public static class GameBinding
             if (file != null)
             {
                 model.Progress(App.GetLanguage("Gui.Info30"));
-                var info = await Image.LoadAsync(PathHelper.OpenRead(file)!);
+                using var info = SKBitmap.Decode(PathHelper.OpenRead(file)!);
                 if (info.Width > 200 || info.Height > 200)
                 {
-                    await Task.Run(() =>
+                    using var image = await Task.Run(() =>
                     {
-                        info = ImageUtils.Resize(info, 200, 200);
+                        return ImageUtils.Resize(info, 200, 200);
                     });
+                    using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+                    PathHelper.WriteBytes(obj.GetIconFile(), data.AsSpan().ToArray());
                 }
-                await info.SaveAsPngAsync(obj.GetIconFile());
+                else
+                {
+                    using var data = info.Encode(SKEncodedImageFormat.Png, 100);
+                    PathHelper.WriteBytes(obj.GetIconFile(), data.AsSpan().ToArray());
+                }
 
                 model.ProgressClose();
                 model.Notify(App.GetLanguage("Gui.Info29"));

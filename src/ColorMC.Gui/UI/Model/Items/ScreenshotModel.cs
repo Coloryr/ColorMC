@@ -1,8 +1,7 @@
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.UI.Model.GameEdit;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
+using SkiaSharp;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -34,18 +33,11 @@ public partial class ScreenshotModel : ObservableObject
     {
         return await Task.Run(() =>
         {
-            using var image = SixLabors.ImageSharp.Image.Load
-                     (Screenshot);
-            using var stream = new MemoryStream();
-            image.Mutate(p =>
-            {
-                p.Resize(200, 120);
-            });
+            using var image = SKBitmap.Decode(Screenshot);
+            using var image1 = image.Resize(new SKSizeI(200, 120), SKFilterQuality.High);
+            using var data = image1.Encode(SKEncodedImageFormat.Png, 100);
 
-            image.SaveAsBmp(stream);
-
-            stream.Seek(0, SeekOrigin.Begin);
-            _img = new Bitmap(stream);
+            _img = new Bitmap(data.AsStream());
 
             return _img;
         });

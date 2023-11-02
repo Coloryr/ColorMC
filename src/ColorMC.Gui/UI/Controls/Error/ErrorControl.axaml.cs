@@ -61,7 +61,7 @@ public partial class ErrorControl : UserControl, IUserControl
         }
         else
         {
-            DataContext = new ErrorModel(model, _data, _e1, _close);
+            DataContext = new ErrorModel(model, _data ?? "", _e1, _close);
         }
     }
 }
