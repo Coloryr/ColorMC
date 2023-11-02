@@ -297,8 +297,10 @@ public class SkinRender : OpenGlControlBase
             0x2803, 0x812F
         );
 
+        using var image1 = image.Copy(SKColorType.Rgba8888);
+
         gl.TexImage2D(GlConsts.GL_TEXTURE_2D, 0, GlConsts.GL_RGBA, image.Width,
-               image.Height, 0, GlConsts.GL_RGBA, GlConsts.GL_UNSIGNED_BYTE, image.GetPixels());
+               image.Height, 0, GlConsts.GL_RGBA, GlConsts.GL_UNSIGNED_BYTE, image1.GetPixels());
         gl.BindTexture(GlConsts.GL_TEXTURE_2D, 0);
     }
 

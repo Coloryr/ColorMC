@@ -162,10 +162,10 @@ public static class ImageUtils
                 {
                     return null;
                 }
-                if (value > 0 || lim != 100)
+                if (value > 0 || (lim != 100 && lim > 0))
                 {
                     var image = SKBitmap.Decode(stream1);
-                    if (lim != 100)
+                    if (lim != 100 && lim > 0)
                     {
                         int x = (int)(image.Width * (float)lim / 100);
                         int y = (int)(image.Height * (float)lim / 100);
@@ -181,11 +181,13 @@ public static class ImageUtils
 
                         var paint = new SKPaint
                         {
-                            MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, value)
+                            ImageFilter = SKImageFilter.CreateBlur(value, value)
                         };
 
-                        canvas.DrawBitmap(image1, new SKPoint(0, 0), paint);
+                        canvas.DrawBitmap(image, new SKPoint(0, 0), paint);
                         canvas.Flush();
+                        image.Dispose();
+                        image = image1;
                     }
                     using var data = image.Encode(SKEncodedImageFormat.Png, 100);
                     return new Bitmap(data.AsStream());

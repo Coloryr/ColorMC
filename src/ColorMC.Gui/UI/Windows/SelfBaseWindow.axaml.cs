@@ -32,7 +32,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         InitializeComponent();
 
-        DataContext = new BaseModel();
+        DataContext = new BaseModel(con.Title);
 
         ICon = con;
 
