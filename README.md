@@ -84,10 +84,8 @@ $ dotnet run
 [Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
 [OpenTK.OpenAL](https://opentk.net/) openal音频  
 [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
-[SixLabors](https://sixlabors.com/) 图片处理  
 [Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
 [ForgeWrapper](https://github.com/ZekerZhayard/ForgeWrapper) Forge启动器  
-[SharpCompress](https://github.com/adamhathcock/sharpcompress) XZ解压支持  
 [Live2DCSharpSDK](https://github.com/coloryr/Live2DCSharpSDK) Live2d渲染
 
 ## 使用的IDE
