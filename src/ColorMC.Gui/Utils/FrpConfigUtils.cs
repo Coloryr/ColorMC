@@ -25,7 +25,7 @@ public static class FrpConfigUtils
     /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
-        s_local = dir + "gui.json";
+        s_local = dir + "frp.json";
 
         Load(s_local);
     }

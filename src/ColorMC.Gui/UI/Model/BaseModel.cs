@@ -41,9 +41,14 @@ public partial class BaseModel : ObservableObject
         _info6 = new(Name);
     }
 
-    public BaseModel(string name) : this()
+    public BaseModel(string name)
     {
         Name = name;
+        _info1 = new();
+        _info3 = new(Name);
+        _info4 = new(Name);
+        _info5 = new(Name);
+        _info6 = new(Name);
     }
 
     /// <summary>
@@ -327,7 +332,7 @@ public partial class BaseModel : ObservableObject
             semaphore.Release();
         };
 
-        await DialogHost.Show(_info4);
+        await DialogHost.Show(_info4, Name);
 
         _info4.Call = null;
 
@@ -345,7 +350,7 @@ public partial class BaseModel : ObservableObject
         _info4.Call = null;
         _info4.Text = data;
 
-        DialogHost.Show(_info4);
+        DialogHost.Show(_info4, Name);
     }
 
     public void ShowOk(string data, Action action)
@@ -359,7 +364,7 @@ public partial class BaseModel : ObservableObject
             action.Invoke();
         };
 
-        DialogHost.Show(_info4);
+        DialogHost.Show(_info4, Name);
     }
 
     public async Task<(bool Cancel, int Index, string? Item)>

@@ -157,6 +157,23 @@ public class DownloadThread
                     }
                     else if (ConfigUtils.Config.Http.CheckFile)
                     {
+                        if (!string.IsNullOrWhiteSpace(item.MD5))
+                        {
+                            using var stream2 = PathHelper.OpenRead(item.Local)!;
+                            string sha1 = HashHelper.GenMd5(stream2);
+                            if (sha1 == item.MD5)
+                            {
+                                item.State = DownloadItemState.Action;
+                                item.Update?.Invoke(_index);
+                                stream2.Seek(0, SeekOrigin.Begin);
+                                item.Later?.Invoke(stream2);
+
+                                item.State = DownloadItemState.Done;
+                                item.Update?.Invoke(_index);
+                                DownloadManager.Done();
+                                continue;
+                            }
+                        }
                         if (!string.IsNullOrWhiteSpace(item.SHA1))
                         {
                             using var stream2 = PathHelper.OpenRead(item.Local)!;
@@ -274,6 +291,18 @@ public class DownloadThread
                     if (ConfigUtils.Config.Http.CheckFile)
                     {
                         stream.Seek(0, SeekOrigin.Begin);
+                        if (!string.IsNullOrWhiteSpace(item.MD5))
+                        {
+                            string sha1 = HashHelper.GenMd5(stream);
+                            if (sha1 != item.MD5)
+                            {
+                                item.State = DownloadItemState.Error;
+                                item.Update?.Invoke(_index);
+                                DownloadManager.Error(_index, item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+
+                                break;
+                            }
+                        }
                         if (!string.IsNullOrWhiteSpace(item.SHA1))
                         {
                             string sha1 = HashHelper.GenSha1(stream);

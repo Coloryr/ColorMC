@@ -139,7 +139,7 @@
                                 ItemsSource="{Binding Items}"
                                 SelectedIndex="{Binding Index}"
                                 SelectedItem="{Binding Select}" />
-                            <StackPanel Margin="0,50,0,0">
+                            <StackPanel Margin="0,10,0,0">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <Button
                                         Width="100"

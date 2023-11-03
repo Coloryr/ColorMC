@@ -6,17 +6,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.NetFrp"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.NetFrp.Items"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:NetFrpModel"
     mc:Ignorable="d">
-    <StackPanel Margin="5,3,5,5">
+    <DockPanel Margin="5,0,5,5">
         <Border
+            Margin="0,3,0,0"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBox
@@ -24,22 +27,53 @@
                         Margin="0,0,5,5"
                         Classes="input1"
                         Text="{Binding Key}"
-                        Watermark="访问密钥" />
+                        Watermark="{setting:Localize NetFrpWindow.Tab1.Text1}" />
                     <Button
                         Width="80"
                         Height="25"
                         Margin="0,0,5,0"
-                        Command="{Binding TestKey}"
-                        Content="验证密钥" />
-                    <Label VerticalAlignment="Center" Content="用户ID：" />
+                        Command="{Binding TestKey1}"
+                        Content="{setting:Localize NetFrpWindow.Tab1.Text2}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize NetFrpWindow.Tab1.Text3}" />
                     <Label
                         Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         Content="{Binding User1ID}" />
-                    <Label VerticalAlignment="Center" Content="用户名：" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize NetFrpWindow.Tab1.Text4}" />
                     <Label VerticalAlignment="Center" Content="{Binding User1Name}" />
                 </StackPanel>
             </StackPanel>
         </Border>
-    </StackPanel>
+        <Border
+            Margin="0,3,0,0"
+            Padding="{setting:Style BorderPadding}"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <Label Margin="0,0,5,0" Content="{setting:Localize NetFrpWindow.Tab1.Text5}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Command="{Binding GetChannel1}"
+                        Content="{setting:Localize NetFrpWindow.Tab1.Text6}" />
+                </StackPanel>
+                <Label
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize NetFrpWindow.Tab1.Text7}"
+                    DockPanel.Dock="Bottom" />
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Remotes}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <view:NetFrpRemoteControl Margin="0,0,0,5" DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+    </DockPanel>
 </UserControl>

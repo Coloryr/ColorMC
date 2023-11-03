@@ -8,6 +8,7 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -18,6 +19,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using ICSharpCode.SharpZipLib.Zip;
@@ -843,5 +845,90 @@ public static class BaseBinding
         }
 
         return false;
+    }
+
+    public static async Task<bool> StartFrp(string key, NetFrpRemoteModel item1, string motd, string port)
+    {
+        var item = await DownloadItemHelper.BuildSakuraFrpItem();
+        if (item == null)
+        {
+            return false;
+        }
+
+        var info = await SakuraFrpAPI.GetChannelConfig(key, item1.ID);
+        if (info == null)
+        {
+            return false;
+        }
+
+        if (!File.Exists(item.Local))
+        {
+            var res = await DownloadManager.Start(new() { item });
+            if (!res)
+            {
+                return false;
+            }
+        }
+
+        var info2 = new FileInfo(item.Local);
+        var dir = info2.DirectoryName!;
+
+        var lines = info.Split("\n");
+        var builder = new StringBuilder();
+
+        string ip;
+
+        foreach (var item2 in lines)
+        {
+            var item3 = item2.Trim();
+            if (item3.StartsWith("login_fail_exit"))
+            {
+                builder.AppendLine("login_fail_exit = true");
+            }
+            else if (item3.StartsWith("server_addr"))
+            {
+                ip = item3.Split("=")[1].Trim();
+                builder.AppendLine(item3);
+            }
+            else if (item3.StartsWith("local_port"))
+            {
+                builder.AppendLine($"local_port = {port}");
+            }
+            else
+            {
+                builder.AppendLine(item3);
+            }
+        }
+
+        File.WriteAllText(dir + "/server.ini", builder.ToString());
+
+        var p = new Process
+        {
+            StartInfo = new ProcessStartInfo()
+            {
+                FileName = item.Local,
+                WorkingDirectory = dir,
+                Arguments = "-c server.ini",
+                //RedirectStandardError = true,
+                //RedirectStandardOutput = true
+            }
+        };
+        //p.OutputDataReceived += P_OutputDataReceived;
+        //p.ErrorDataReceived += P_ErrorDataReceived;
+        p.Start();
+        //p.BeginErrorReadLine();
+        //p.BeginOutputReadLine();
+
+        return true;
+    }
+
+    private static void P_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        Logs.Error(e.Data);
+    }
+
+    private static void P_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        Logs.Info(e.Data);
     }
 }

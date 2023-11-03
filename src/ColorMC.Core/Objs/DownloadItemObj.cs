@@ -17,6 +17,7 @@ public record DownloadItemObj
     /// 路径
     /// </summary>
     public string Local { get; set; }
+    public string? MD5 { get; set; }
     public string? SHA1 { get; set; }
     public string? SHA256 { get; set; }
     /// <summary>
