@@ -9,11 +9,9 @@ namespace ColorMC.Core.Game;
 
 public class LanClient
 {
-    public Action<string, string>? FindLan;
+    public Action<string, string, string>? FindLan;
 
     private UdpClient _socket;
-
-    private byte[] _temp = new byte[1024];
 
     public LanClient()
     {
@@ -36,7 +34,7 @@ public class LanClient
 
         if (ad != null)
         {
-            FindLan?.Invoke(motd, ad);
+            FindLan?.Invoke(motd, point.ToString(), ad);
         }
 
         _socket.BeginReceive(new AsyncCallback(Callback), null);

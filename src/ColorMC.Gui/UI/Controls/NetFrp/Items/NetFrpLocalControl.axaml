@@ -1,0 +1,28 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.NetFrp.Items.NetFrpLocalControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:NetFrpLocalModel"
+    mc:Ignorable="d">
+    <DockPanel VerticalAlignment="Top">
+        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+            <Label Content="{setting:Localize NetFrpWindow.Tab2.Text3}" />
+            <Label Content="{Binding Port}" />
+            <Label Content="{setting:Localize NetFrpWindow.Tab2.Text4}" />
+            <Label Content="{Binding Motd}" />
+        </StackPanel>
+        <Button
+            Width="80"
+            Height="25"
+            HorizontalAlignment="Right"
+            Command="{Binding Start}"
+            Content="{setting:Localize NetFrpWindow.Tab2.Text5}"
+            IsEnabled="{Binding !IsStart}" />
+    </DockPanel>
+</UserControl>

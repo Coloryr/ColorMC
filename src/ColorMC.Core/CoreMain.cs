@@ -180,6 +180,7 @@ public static class ColorMCCore
         ConfigSave.Init();
         GameCount.Init(BaseDir);
         JvmPath.Init(BaseDir);
+        FrpPath.Init(BaseDir);
         LocalMaven.Init(BaseDir);
         DownloadManager.Init(BaseDir);
         AuthDatabase.Init();

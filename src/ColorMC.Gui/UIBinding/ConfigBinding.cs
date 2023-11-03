@@ -7,6 +7,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -592,5 +593,12 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         StyleSel.Instance.Load();
+    }
+
+    public static void SetFrpKey1(string key)
+    {
+        FrpConfigUtils.Config.SakuraFrp ??= new();
+        FrpConfigUtils.Config.SakuraFrp.Key = key;
+        FrpConfigUtils.Save();
     }
 }

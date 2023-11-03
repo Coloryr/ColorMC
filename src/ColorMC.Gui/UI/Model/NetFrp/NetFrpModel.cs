@@ -13,7 +13,9 @@ public partial class NetFrpModel : MenuModel
     public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/Setting/item1.svg",
-            Text = App.GetLanguage("NetFrpWindow.Tab.Text1") }
+            Text = App.GetLanguage("NetFrpWindow.Tabs.Text1") },
+        new() { Icon = "/Resource/Icon/Setting/item1.svg",
+            Text = App.GetLanguage("NetFrpWindow.Tabs.Text2") }
     };
 
     public NetFrpModel(BaseModel model) : base(model)
@@ -23,6 +25,7 @@ public partial class NetFrpModel : MenuModel
 
     protected override void Close()
     {
-        
+        Remotes.Clear();
+        Locals.Clear();
     }
 }

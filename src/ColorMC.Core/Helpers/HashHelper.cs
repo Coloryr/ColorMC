@@ -68,6 +68,17 @@ public static class HashHelper
         }
         return text.ToString().ToLower();
     }
+
+    public static string GenMd5(Stream stream)
+    {
+        var text = new StringBuilder();
+        foreach (byte item in MD5.HashData(stream))
+        {
+            text.AppendFormat("{0:x2}", item);
+        }
+        return text.ToString().ToLower();
+    }
+
     /// <summary>
     /// 获取SHA1值
     /// </summary>

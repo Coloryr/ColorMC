@@ -541,12 +541,12 @@ public static class TestItem
     {
         var client = new LanClient
         {
-            FindLan = (motd, ip) =>
+            FindLan = (motd, ip, port) =>
             {
-                Console.WriteLine($"发现服务器 {ip} {motd}");
+                Console.WriteLine($"发现服务器 {ip} {port} {motd}");
             }
         };
-        var server = new LanServer("localhost:25565", "测试服务器");
+        var server = new LanServer("25565", "测试服务器");
        
     }
 }

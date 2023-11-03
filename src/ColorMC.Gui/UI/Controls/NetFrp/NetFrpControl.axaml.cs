@@ -13,6 +13,7 @@ namespace ColorMC.Gui.UI.Controls.NetFrp;
 public partial class NetFrpControl : UserControl, IUserControl
 {
     private NetFrpTab1Control _tab1 = new();
+    private NetFrpTab2Control _tab2 = new();
 
     private bool _switch1 = false;
 
@@ -23,7 +24,7 @@ public partial class NetFrpControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.GetLanguage("SettingWindow.Title");
+    public string Title => App.GetLanguage("NetFrpWindow.Ttile");
 
     public NetFrpControl()
     {
@@ -44,7 +45,7 @@ public partial class NetFrpControl : UserControl, IUserControl
     }
     public void Closed()
     {
-        App.SettingWindow = null;
+        App.NetFrpWindow = null;
     }
 
     private void Go(UserControl to)
@@ -75,6 +76,7 @@ public partial class NetFrpControl : UserControl, IUserControl
         Window.SetTitle(Title);
 
         Content1.Content = _tab1;
+        (DataContext as NetFrpModel)?.Load();
     }
 
     public void SetBaseModel(BaseModel model)
@@ -88,11 +90,16 @@ public partial class NetFrpControl : UserControl, IUserControl
     {
         if (e.PropertyName == "NowView")
         {
-            var model = (DataContext as SettingModel)!;
+            var model = (DataContext as NetFrpModel)!;
             switch (model.NowView)
             {
                 case 0:
                     Go(_tab1);
+                    model.Load();
+                    break;
+                case 1:
+                    Go(_tab2);
+                    model.LoadLocal();
                     break;
             }
 
