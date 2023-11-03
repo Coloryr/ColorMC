@@ -209,11 +209,7 @@
                     </DataTemplate>
                 </dialog:DialogHost.DataTemplates>
                 <Panel>
-
                     <Grid Name="MainControl" />
-
-                    <info:Info2Control />
-
                     <Grid
                         Name="Grid2"
                         Background="{setting:Colors TopBottom}"
@@ -227,6 +223,8 @@
                     </Grid>
                 </Panel>
             </dialog:DialogHost>
+
+            <info:Info2Control />
         </Panel>
     </DockPanel>
 </Window>

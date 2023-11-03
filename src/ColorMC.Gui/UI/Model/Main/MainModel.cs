@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Layout;
+﻿using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
@@ -30,12 +28,6 @@ public partial class MainModel : TopModel, IMainTop
     private readonly Semaphore _semaphore = new(0, 2);
     private readonly Dictionary<string, GameItemModel> Launchs = new();
 
-    private const string Side1 = "/Resource/Icon/menu.svg";
-    private const string Side2 = "/Resource/Icon/left.svg";
-
-    private const string Side3 = "/Resource/Icon/left1.svg";
-    private const string Side4 = "/Resource/Icon/menu1.svg";
-
     private bool _isplay = true;
     private bool _isCancel;
 
@@ -43,6 +35,10 @@ public partial class MainModel : TopModel, IMainTop
     private int _live2dWidth = 300;
     [ObservableProperty]
     private int _live2dHeight = 300;
+    [ObservableProperty]
+    private HorizontalAlignment _l2dPos = HorizontalAlignment.Right;
+    [ObservableProperty]
+    private VerticalAlignment _l2dPos1 = VerticalAlignment.Top;
 
     [ObservableProperty]
     private (string, ushort) _server;
@@ -51,10 +47,6 @@ public partial class MainModel : TopModel, IMainTop
     private string? _groupItem;
     [ObservableProperty]
     private string _message;
-    [ObservableProperty]
-    private string _sideIcon = Side1;
-    [ObservableProperty]
-    private string _sideIcon1 = Side3;
     [ObservableProperty]
     private string _userId;
     [ObservableProperty]
@@ -86,15 +78,6 @@ public partial class MainModel : TopModel, IMainTop
 
     [ObservableProperty]
     private Bitmap _head = App.LoadIcon;
-
-    [ObservableProperty]
-    private Dock _mirror1 = Dock.Left;
-    [ObservableProperty]
-    private Thickness _mirror2 = new(3, 3, 0, 3);
-    [ObservableProperty]
-    private HorizontalAlignment _mirror3 = HorizontalAlignment.Right;
-    [ObservableProperty]
-    private Thickness _mirror4 = new(0, 3, 3, 3);
 
     [ObservableProperty]
     private bool _render = true;
@@ -247,6 +230,12 @@ public partial class MainModel : TopModel, IMainTop
         WebBinding.OpenWeb(WebType.Guide);
     }
 
+    [RelayCommand]
+    public void OpenNetFrp()
+    {
+        App.ShowNetFrp();
+    }
+
     private void App_SkinLoad()
     {
         Head = UserBinding.HeadBitmap!;
@@ -370,8 +359,6 @@ public partial class MainModel : TopModel, IMainTop
         {
             MusicDisplay = false;
         }
-
-        Mirror();
 
         if (config.Item2.ServerCustom?.LockGame == true)
         {
@@ -565,29 +552,6 @@ public partial class MainModel : TopModel, IMainTop
     {
         Message = message;
         OnPropertyChanged("ModelText");
-    }
-
-    public void Mirror()
-    {
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item2.Gui.WindowMirror)
-        {
-            Mirror1 = Dock.Right;
-            Mirror3 = HorizontalAlignment.Left;
-            Mirror2 = new(0, 3, 3, 3);
-            Mirror4 = new(3, 3, 0, 3);
-            SideIcon = Side2;
-            SideIcon1 = Side4;
-        }
-        else
-        {
-            Mirror1 = Dock.Left;
-            Mirror3 = HorizontalAlignment.Right;
-            Mirror2 = new(3, 3, 0, 3);
-            Mirror4 = new(0, 3, 3, 3);
-            SideIcon = Side1;
-            SideIcon1 = Side3;
-        }
     }
 
     protected override void Close()

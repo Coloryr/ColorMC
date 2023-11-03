@@ -7,7 +7,6 @@ using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Live2DCSharpSDK.Framework.Core;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,8 +16,9 @@ namespace ColorMC.Gui.UI.Model.Setting;
 public partial class SettingModel : MenuModel
 {
     public ObservableCollection<FontDisplayObj> FontList { get; init; } = new();
-    public List<string> TranTypeList { get; init; } = LanguageBinding.GetWindowTranTypes();
-    public List<string> LanguageList { get; init; } = LanguageBinding.GetLanguages();
+    public string[] TranTypeList { get; init; } = LanguageBinding.GetWindowTranTypes();
+    public string[] LanguageList { get; init; } = LanguageBinding.GetLanguages();
+    public string[] PosList { get; init; }= LanguageBinding.GetPos();
 
     [ObservableProperty]
     private FontDisplayObj? _fontItem;
@@ -67,8 +67,6 @@ public partial class SettingModel : MenuModel
     [ObservableProperty]
     private bool _coreInstall;
     [ObservableProperty]
-    private bool _mainWindowMirror;
-    [ObservableProperty]
     private bool _amFade;
     [ObservableProperty]
     private bool _enableBG;
@@ -103,6 +101,8 @@ public partial class SettingModel : MenuModel
     private int _buttonCornerRadius;
     [ObservableProperty]
     private int _amTime;
+    [ObservableProperty]
+    private int _l2dPos;
 
     [ObservableProperty]
     private string? _pic;
@@ -113,6 +113,14 @@ public partial class SettingModel : MenuModel
     private string _live2DCoreState;
 
     private bool _load = true;
+
+    partial void OnL2dPosChanged(int value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight, L2dPos);
+    }
 
     partial void OnEnableBorderRadiusChanged(bool value)
     {
@@ -178,20 +186,12 @@ public partial class SettingModel : MenuModel
         ConfigBinding.SetStyle(ButtonCornerRadius);
     }
 
-    partial void OnMainWindowMirrorChanged(bool value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetMainWindow(MainWindowMirror);
-    }
-
     partial void OnL2dWidthChanged(int value)
     {
         if (_load)
             return;
 
-        ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight);
+        ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight, L2dPos);
     }
 
     partial void OnL2dHeightChanged(int value)
@@ -199,7 +199,7 @@ public partial class SettingModel : MenuModel
         if (_load)
             return;
 
-        ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight);
+        ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight, L2dPos);
     }
 
     partial void OnLightFont2ColorChanged(Color value)
@@ -580,8 +580,6 @@ public partial class SettingModel : MenuModel
             EnablePicResize = con.BackLimit;
             EnableWindowTran = con.WindowTran;
 
-            MainWindowMirror = con.Gui.WindowMirror;
-
             ButtonCornerRadius = con.Style.ButtonCornerRadius;
             AmTime = con.Style.AmTime;
             AmFade = con.Style.AmFade;
@@ -590,6 +588,7 @@ public partial class SettingModel : MenuModel
             L2dHeight = con.Live2D.Height;
             L2dWidth = con.Live2D.Width;
             EnableLive2D = con.Live2D.Enable;
+            L2dPos = con.Live2D.Pos;
         }
         if (config.Item1 is { } con1)
         {

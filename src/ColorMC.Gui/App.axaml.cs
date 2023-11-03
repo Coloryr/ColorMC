@@ -27,6 +27,7 @@ using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.GameExport;
 using ColorMC.Gui.UI.Controls.GameLog;
 using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Controls.NetFrp;
 using ColorMC.Gui.UI.Controls.ServerPack;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
@@ -73,6 +74,7 @@ public partial class App : Application
     public static SkinControl? SkinWindow { get; set; }
     public static AddJavaControl? AddJavaWindow { get; set; }
     public static CountControl? CountWindow { get; set; }
+    public static NetFrpControl? NetFrpWindow { get; set; }
 
     public static TopLevel? TopLevel { get; set; }
 
@@ -729,6 +731,19 @@ public partial class App : Application
             var con = new GameExportControl(obj);
             GameExportWindows.Add(obj.UUID, con);
             AWindow(con);
+        }
+    }
+
+    public static void ShowNetFrp()
+    {
+        if (NetFrpWindow != null)
+        {
+            NetFrpWindow.Window.Activate();
+        }
+        else
+        {
+            NetFrpWindow = new();
+            AWindow(NetFrpWindow);
         }
     }
 

@@ -31,7 +31,7 @@ public partial class GameConfigEditModel : GameModel
     public ObservableCollection<string> FileList { get; init; } = new();
     public ObservableCollection<NbtDataItemModel> DataList { get; init; } = new();
 
-    public List<string> TypeSource { get; init; } = LanguageBinding.GetNbtName();
+    public string[] TypeSource { get; init; } = LanguageBinding.GetNbtName();
 
     private NbtPage _nbtView;
 

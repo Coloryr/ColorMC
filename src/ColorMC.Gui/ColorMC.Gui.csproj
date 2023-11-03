@@ -70,10 +70,9 @@
         <None Remove="Resource\Icon\Item\download.svg" />
         <None Remove="Resource\Icon\Item\web.svg" />
         <None Remove="Resource\Icon\launch.svg" />
-        <None Remove="Resource\Icon\left.svg" />
         <None Remove="Resource\Icon\left1.svg" />
         <None Remove="Resource\Icon\menu.svg" />
-        <None Remove="Resource\Icon\menu1.svg" />
+        <None Remove="Resource\Icon\net.svg" />
         <None Remove="Resource\Icon\play.svg" />
         <None Remove="Resource\Icon\setting.svg" />
         <None Remove="Resource\Icon\Setting\item1.svg" />
@@ -154,10 +153,9 @@
         <AvaloniaResource Include="Resource\Icon\Item\download.svg" />
         <AvaloniaResource Include="Resource\Icon\Item\web.svg" />
         <AvaloniaResource Include="Resource\Icon\launch.svg" />
-        <AvaloniaResource Include="Resource\Icon\left.svg" />
         <AvaloniaResource Include="Resource\Icon\left1.svg" />
         <AvaloniaResource Include="Resource\Icon\menu.svg" />
-        <AvaloniaResource Include="Resource\Icon\menu1.svg" />
+        <AvaloniaResource Include="Resource\Icon\net.svg" />
         <AvaloniaResource Include="Resource\Icon\play.svg" />
         <AvaloniaResource Include="Resource\Icon\setting.svg" />
         <AvaloniaResource Include="Resource\Icon\Setting\item1.svg" />

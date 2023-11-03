@@ -1,0 +1,45 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.NetFrp.NetFrpTab1Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.NetFrp"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:NetFrpModel"
+    mc:Ignorable="d">
+    <StackPanel Margin="5,3,5,5">
+        <Border
+            Padding="{setting:Style BorderPadding}"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        MinWidth="200"
+                        Margin="0,0,5,5"
+                        Classes="input1"
+                        Text="{Binding Key}"
+                        Watermark="访问密钥" />
+                    <Button
+                        Width="80"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding TestKey}"
+                        Content="验证密钥" />
+                    <Label VerticalAlignment="Center" Content="用户ID：" />
+                    <Label
+                        Margin="0,0,5,0"
+                        VerticalAlignment="Center"
+                        Content="{Binding User1ID}" />
+                    <Label VerticalAlignment="Center" Content="用户名：" />
+                    <Label VerticalAlignment="Center" Content="{Binding User1Name}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

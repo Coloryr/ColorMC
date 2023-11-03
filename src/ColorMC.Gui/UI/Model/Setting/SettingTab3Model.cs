@@ -12,7 +12,7 @@ public partial class SettingModel : MenuModel
 {
     private bool _httpLoad = true;
 
-    public List<string> SourceList { get; init; } = LanguageBinding.GetDownloadSources();
+    public string[] SourceList { get; init; } = LanguageBinding.GetDownloadSources();
 
     [ObservableProperty]
     private int _source;

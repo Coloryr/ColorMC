@@ -15,7 +15,7 @@ public partial class AddGameModel : MenuModel
     /// <summary>
     /// 压缩包类型列表
     /// </summary>
-    public List<string> PackTypeList { get; init; } = LanguageBinding.GetPackType();
+    public string[] PackTypeList { get; init; } = LanguageBinding.GetPackType();
 
     /// <summary>
     /// 压缩包位置

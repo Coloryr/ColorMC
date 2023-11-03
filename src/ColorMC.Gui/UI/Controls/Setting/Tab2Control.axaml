@@ -75,10 +75,6 @@
                             IsEnabled="{Binding EnableWindowMode}" />
                         <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text23}" />
                     </WrapPanel>
-                    <CheckBox
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text37}"
-                        IsChecked="{Binding MainWindowMirror}" />
                     <StackPanel IsEnabled="{Binding !Phone}" Orientation="Horizontal">
                         <CheckBox
                             VerticalAlignment="Center"
@@ -645,6 +641,13 @@
                     </WrapPanel>
 
                     <WrapPanel IsEnabled="{Binding !Phone}">
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text52}" />
+                            <ComboBox
+                                Width="100"
+                                ItemsSource="{Binding PosList}"
+                                SelectedIndex="{Binding L2dPos}" />
+                        </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text34}" />
                             <Slider

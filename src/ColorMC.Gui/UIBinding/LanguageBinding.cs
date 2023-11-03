@@ -2,6 +2,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
+using System;
 using System.Collections.Generic;
 
 namespace ColorMC.Gui.UIBinding;
@@ -12,9 +13,9 @@ public static class LanguageBinding
     /// 获取过滤器选项
     /// </summary>
     /// <returns>选项</returns>
-    public static List<string> GetFilterName()
+    public static string[] GetFilterName()
     {
-        return new()
+        return new[]
         {
             App.GetLanguage("Text.Name"),
             App.GetLanguage("Text.FileName"),
@@ -23,10 +24,10 @@ public static class LanguageBinding
         };
     }
 
-    public static List<string> GetExportName()
+    public static string[] GetExportName()
     {
-        return new()
-        {
+        return new[]
+         {
             App.GetLanguage("BaseBinding.Export.Item1"),
             App.GetLanguage("BaseBinding.Export.Item2"),
             App.GetLanguage("BaseBinding.Export.Item3"),
@@ -35,24 +36,22 @@ public static class LanguageBinding
         };
     }
 
-    public static List<string> GetSkinType()
+    public static string[] GetSkinType()
     {
-        var list = new List<string>()
+        return new[]
         {
             App.GetLanguage("SkinType.Old"),
             App.GetLanguage("SkinType.New"),
             App.GetLanguage("SkinType.New_Slim")
         };
-
-        return list;
     }
     /// <summary>
     /// 获取旋转选项
     /// </summary>
     /// <returns>选项</returns>
-    public static List<string> GetSkinRotateName()
+    public static string[] GetSkinRotateName()
     {
-        return new()
+        return new[]
         {
             App.GetLanguage("BaseBinding.SkinRotate.Item1"),
             App.GetLanguage("BaseBinding.SkinRotate.Item2"),
@@ -64,9 +63,9 @@ public static class LanguageBinding
     /// 获取下载源选项
     /// </summary>
     /// <returns>选项</returns>
-    public static List<string> GetDownloadSources()
+    public static string[] GetDownloadSources()
     {
-        return new()
+        return new[]
         {
             SourceLocal.Offical.GetName(),
             SourceLocal.BMCLAPI.GetName(),
@@ -78,9 +77,9 @@ public static class LanguageBinding
     /// 获取窗口透明选项
     /// </summary>
     /// <returns>选项</returns>
-    public static List<string> GetWindowTranTypes()
+    public static string[] GetWindowTranTypes()
     {
-        return new()
+        return new[]
         {
             App.GetLanguage("TranTypes.Item1"),
             App.GetLanguage("TranTypes.Item2"),
@@ -93,18 +92,18 @@ public static class LanguageBinding
     /// 获取语言选项
     /// </summary>
     /// <returns>选项</returns>
-    public static List<string> GetLanguages()
+    public static string[] GetLanguages()
     {
-        return new()
+        return new[]
         {
             LanguageType.zh_cn.GetName(),
             LanguageType.en_us.GetName()
         };
     }
 
-    public static List<string> GetCurseForgeSortTypes()
+    public static string[] GetCurseForgeSortTypes()
     {
-        return new()
+        return new[]
         {
             CurseForgeSortField.Featured.GetName(),
             CurseForgeSortField.Popularity.GetName(),
@@ -114,9 +113,9 @@ public static class LanguageBinding
         };
     }
 
-    public static List<string> GetModrinthSortTypes()
+    public static string[] GetModrinthSortTypes()
     {
-        return new()
+        return new[]
         {
             MSortingObj.Relevance.GetName(),
             MSortingObj.Downloads.GetName(),
@@ -126,27 +125,27 @@ public static class LanguageBinding
         };
     }
 
-    public static List<string> GetSortOrder()
+    public static string[] GetSortOrder()
     {
-        return new()
+        return new[]
         {
             App.GetLanguage("GameBinding.SortOrder.Item1"),
             App.GetLanguage("GameBinding.SortOrder.Item2")
         };
     }
 
-    public static List<string> GetSourceList()
+    public static string[] GetSourceList()
     {
-        return new()
+        return new[]
         {
             SourceType.CurseForge.GetName(),
             SourceType.Modrinth.GetName()
         };
     }
 
-    public static List<string> GetPackType()
+    public static string[] GetPackType()
     {
-        return new()
+        return new[]
         {
             PackType.ColorMC.GetName(),
             PackType.CurseForge.GetName(),
@@ -157,9 +156,9 @@ public static class LanguageBinding
         };
     }
 
-    public static List<string> GetAddType()
+    public static string[] GetAddType()
     {
-        return new()
+        return new[]
         {
             FileType.Mod.GetName(),
             FileType.World.GetName(),
@@ -170,9 +169,9 @@ public static class LanguageBinding
         };
     }
 
-    public static List<string> GetNbtName()
+    public static string[] GetNbtName()
     {
-        return new()
+        return new[]
         {
             "NbtEnd",
             "NbtByte",
@@ -190,22 +189,38 @@ public static class LanguageBinding
         };
     }
 
-    public static List<string> GetFuntionList()
+    public static string[] GetFuntionList()
     {
-        return new()
+        return new[]
         {
             App.GetLanguage("ServerPackWindow.Tab4.Item1"),
             App.GetLanguage("ServerPackWindow.Tab4.Item2")
         };
     }
 
-    public static List<string> GetVersionType()
+    public static string[] GetVersionType()
     {
-        return new()
+        return new[]
         {
             App.GetLanguage("VersionType.Item1"),
             App.GetLanguage("VersionType.Item2"),
             App.GetLanguage("VersionType.Item3")
+        };
+    }
+
+    public static string[] GetPos()
+    {
+        return new[]
+        {
+            App.GetLanguage("Postion.Item1"),
+            App.GetLanguage("Postion.Item2"),
+            App.GetLanguage("Postion.Item3"),
+            App.GetLanguage("Postion.Item4"),
+            App.GetLanguage("Postion.Item5"),
+            App.GetLanguage("Postion.Item6"),
+            App.GetLanguage("Postion.Item7"),
+            App.GetLanguage("Postion.Item8"),
+            App.GetLanguage("Postion.Item9"),
         };
     }
 }

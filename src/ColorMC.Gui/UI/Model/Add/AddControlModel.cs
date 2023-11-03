@@ -34,7 +34,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// 显示的<summary>
     /// 下载类型列表
     /// </summary>
-    public List<string> TypeList { get; init; } = LanguageBinding.GetAddType();
+    public string[] TypeList { get; init; } = LanguageBinding.GetAddType();
     /// <summary>
     /// 显示的游戏版本列表
     /// </summary>

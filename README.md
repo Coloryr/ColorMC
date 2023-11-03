@@ -87,6 +87,7 @@ $ dotnet run
 [Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
 [ForgeWrapper](https://github.com/ZekerZhayard/ForgeWrapper) Forge启动器  
 [Live2DCSharpSDK](https://github.com/coloryr/Live2DCSharpSDK) Live2d渲染
+[OptifineWrapper](https://github.com/coloryr/OptifineWrapper) Optifine启动器 
 
 ## 使用的IDE
 

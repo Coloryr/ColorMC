@@ -17,7 +17,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddModPackControlModel : TopModel, IAddWindow
 {
-    public List<string> SourceList { get; init; } = LanguageBinding.GetSourceList();
+    public string[] SourceList { get; init; } = LanguageBinding.GetSourceList();
     public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> CategorieList { get; init; } = new();

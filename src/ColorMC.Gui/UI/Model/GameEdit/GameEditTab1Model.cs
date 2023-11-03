@@ -19,7 +19,7 @@ public partial class GameEditModel : MenuModel
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> LoaderVersionList { get; init; } = new();
     public ObservableCollection<string> GroupList { get; init; } = new();
-    public List<string> VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
+    public string[] VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
     public ObservableCollection<string> LoaderTypeList { get; init; } = new();
     public ObservableCollection<string> LangList { get; init; } = new();
 
