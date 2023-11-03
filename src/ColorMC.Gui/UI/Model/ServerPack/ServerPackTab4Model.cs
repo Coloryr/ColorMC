@@ -14,7 +14,7 @@ public partial class ServerPackModel : MenuModel
 {
     public ObservableCollection<ServerPackConfigModel> FileList { get; init; } = new();
     public ObservableCollection<string> NameList { get; init; } = new();
-    public List<string> FuntionList { get; init; } = LanguageBinding.GetFuntionList();
+    public string[] FuntionList { get; init; } = LanguageBinding.GetFuntionList();
 
     [ObservableProperty]
     private ServerPackConfigModel _fileItem;

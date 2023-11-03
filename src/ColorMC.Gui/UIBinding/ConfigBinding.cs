@@ -542,23 +542,15 @@ public static class ConfigBinding
         App.MainWindow?.ChangeModel();
     }
 
-    public static void SetLive2DSize(int width, int height)
+    public static void SetLive2DSize(int width, int height, int pos)
     {
         GuiConfigUtils.Config.Live2D ??= new();
         GuiConfigUtils.Config.Live2D.Width = width;
         GuiConfigUtils.Config.Live2D.Height = height;
+        GuiConfigUtils.Config.Live2D.Pos = pos;
         GuiConfigUtils.Save();
 
         App.MainWindow?.ChangeLive2DSize();
-    }
-
-    public static void SetMainWindow(bool v1)
-    {
-        GuiConfigUtils.Config.Gui ??= new();
-        GuiConfigUtils.Config.Gui.WindowMirror = v1;
-        GuiConfigUtils.Save();
-
-        App.MainWindow?.MirrorChange();
     }
 
     public static void SetStyle(int value)

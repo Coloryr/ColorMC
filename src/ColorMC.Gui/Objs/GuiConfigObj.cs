@@ -22,10 +22,7 @@ public record StyleSetting
 
 public record MainWindowSetting
 {
-    /// <summary>
-    /// 主界面镜像
-    /// </summary>
-    public bool WindowMirror { get; set; }
+    
 }
 
 /// <summary>
@@ -185,7 +182,14 @@ public record Live2DSetting
     public string? Model { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
+    /// <summary>
+    /// 是否启用
+    /// </summary>
     public bool Enable { get; set; }
+    /// <summary>
+    /// 显示位置
+    /// </summary>
+    public int Pos { get; set; }
 }
 
 /// <summary>

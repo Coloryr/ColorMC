@@ -28,7 +28,7 @@ public partial class GameExportModel : MenuModel
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
 
-    public List<string> ExportTypes { get; init; } = LanguageBinding.GetExportName();
+    public string[] ExportTypes { get; init; } = LanguageBinding.GetExportName();
 
     public override List<MenuObj> TabItems { get; init; } = new()
     {

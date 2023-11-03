@@ -196,32 +196,8 @@
                     </DataTemplate>
                 </dialog:DialogHost.DataTemplates>
                 <Panel>
-                    <Button
-                        Name="Button1"
-                        Width="80"
-                        Height="25"
-                        Margin="0,-30,190,5"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        BorderBrush="#FFFFFF"
-                        Content="{setting:Localize Gui.Info33}" />
-
                     <Grid Name="Controls" />
-
-                    <Button
-                        Name="Button2"
-                        Width="80"
-                        Height="25"
-                        Margin="0,-30,100,5"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        BorderBrush="#FFFFFF"
-                        Content="{setting:Localize Gui.Info31}"
-                        DockPanel.Dock="Top" />
-
                     <Grid Name="Grid1" />
-
-                    <info:Info2Control />
 
                     <Grid
                         Name="Grid2"
@@ -236,6 +212,26 @@
                     </Grid>
                 </Panel>
             </dialog:DialogHost>
+            <Button
+                Name="Button1"
+                Width="80"
+                Height="25"
+                Margin="0,-30,190,5"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                BorderBrush="#FFFFFF"
+                Content="{setting:Localize Gui.Info33}" />
+            <Button
+                Name="Button2"
+                Width="80"
+                Height="25"
+                Margin="0,-30,100,5"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                BorderBrush="#FFFFFF"
+                Content="{setting:Localize Gui.Info31}"
+                DockPanel.Dock="Top" />
+            <info:Info2Control />
         </Panel>
     </DockPanel>
 </UserControl>

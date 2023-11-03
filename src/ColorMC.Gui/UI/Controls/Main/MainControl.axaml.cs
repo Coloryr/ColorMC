@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Layout;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -180,6 +181,8 @@ public partial class MainControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+
+        ChangeLive2DSize();
     }
 
     private void Item_DoubleTapped(object? sender, TappedEventArgs e)
@@ -262,16 +265,13 @@ public partial class MainControl : UserControl, IUserControl
         var model = (DataContext as MainModel)!;
         model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
         model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
+        model.L2dPos = (HorizontalAlignment)((config.Pos % 3) + 1);
+        model.L2dPos1 = (VerticalAlignment)((config.Pos / 3) + 1);
     }
 
     public void ShowMessage(string message)
     {
         (DataContext as MainModel)!.ShowMessage(message);
-    }
-
-    public void MirrorChange()
-    {
-        (DataContext as MainModel)!.Mirror();
     }
 
     public void SetBaseModel(BaseModel model)

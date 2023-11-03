@@ -15,7 +15,7 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 public partial class GameEditModel : MenuModel
 {
     public ObservableCollection<ModDisplayModel> ModList { get; init; } = new();
-    public List<string> ModFilterList { get; init; } = LanguageBinding.GetFilterName();
+    public string[] ModFilterList { get; init; } = LanguageBinding.GetFilterName();
 
     private readonly List<ModDisplayModel> _modItems = new();
 

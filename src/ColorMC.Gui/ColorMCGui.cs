@@ -113,6 +113,7 @@ public static class ColorMCGui
 
         ColorMCCore.Init(RunDir);
         GuiConfigUtils.Init(RunDir);
+        FrpConfigUtils.Init(RunDir);
     }
 
     public static void TestLock()
@@ -144,6 +145,7 @@ public static class ColorMCGui
         }
 
         GuiConfigUtils.Init(RunDir);
+        FrpConfigUtils.Init(RunDir);
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();

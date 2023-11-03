@@ -536,4 +536,17 @@ public static class TestItem
         var obj = VersionPath.GetNeoForgeInstallObj("1.20.1", "47.1.76")!;
         var res = CheckHelpers.CheckForgeInstall(obj, "47.1.76", true).Result;
     }
+
+    public static void Item33()
+    {
+        var client = new LanClient
+        {
+            FindLan = (motd, ip) =>
+            {
+                Console.WriteLine($"发现服务器 {ip} {motd}");
+            }
+        };
+        var server = new LanServer("localhost:25565", "测试服务器");
+       
+    }
 }

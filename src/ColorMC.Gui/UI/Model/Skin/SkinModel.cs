@@ -11,8 +11,8 @@ namespace ColorMC.Gui.UI.Model.Skin;
 
 public partial class SkinModel : TopModel
 {
-    public List<string> SkinTypeList { get; init; } = LanguageBinding.GetSkinType();
-    public List<string> SkinRotateList { get; init; } = LanguageBinding.GetSkinRotateName();
+    public string[] SkinTypeList { get; init; } = LanguageBinding.GetSkinType();
+    public string[] SkinRotateList { get; init; } = LanguageBinding.GetSkinRotateName();
 
     [ObservableProperty]
     private int _type;
