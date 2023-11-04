@@ -849,10 +849,31 @@ public static class BaseBinding
 
     public static async Task<bool> StartFrp(string key, NetFrpRemoteModel item1, string motd, string port)
     {
-        var item = await DownloadItemHelper.BuildSakuraFrpItem();
-        if (item == null)
+        string file;
+        string dir;
+        if (SystemInfo.Os == OsType.Android)
         {
-            return false;
+            file = ColorMCCore.PhoneGetFrp.Invoke();
+            dir = FrpPath.BaseDir;
+        }
+        else
+        {
+            var item = await DownloadItemHelper.BuildSakuraFrpItem();
+            if (item == null)
+            {
+                return false;
+            }
+            if (!File.Exists(item.Local))
+            {
+                var res = await DownloadManager.Start(new() { item });
+                if (!res)
+                {
+                    return false;
+                }
+            }
+            var info2 = new FileInfo(item.Local);
+            dir = info2.DirectoryName!;
+            file = item.Local;
         }
 
         var info = await SakuraFrpAPI.GetChannelConfig(key, item1.ID);
@@ -860,18 +881,6 @@ public static class BaseBinding
         {
             return false;
         }
-
-        if (!File.Exists(item.Local))
-        {
-            var res = await DownloadManager.Start(new() { item });
-            if (!res)
-            {
-                return false;
-            }
-        }
-
-        var info2 = new FileInfo(item.Local);
-        var dir = info2.DirectoryName!;
 
         var lines = info.Split("\n");
         var builder = new StringBuilder();
@@ -906,7 +915,7 @@ public static class BaseBinding
         {
             StartInfo = new ProcessStartInfo()
             {
-                FileName = item.Local,
+                FileName = file,
                 WorkingDirectory = dir,
                 Arguments = "-c server.ini",
                 RedirectStandardError = true,
