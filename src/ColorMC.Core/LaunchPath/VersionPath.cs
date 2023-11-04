@@ -292,12 +292,15 @@ public static class VersionPath
     public static ForgeInstallObj? GetNeoForgeInstallObj(string mc, string version)
     {
         var key = $"{mc}-{version}";
-        if (s_forgeInstalls.TryGetValue(key, out var temp))
+        if (s_neoForgeInstalls.TryGetValue(key, out var temp))
         {
             return temp;
         }
 
-        string file = $"{BaseDir}/{Name4}/forge-{mc}-{version}-install.json";
+        var v2222 = CheckHelpers.IsGameVersion1202(mc);
+        string file = v2222
+            ? $"{BaseDir}/{Name4}/neoforge-{version}-install.json"
+            : $"{BaseDir}/{Name4}/forge-{mc}-{version}-install.json";
 
         if (!File.Exists(file))
         {
@@ -305,7 +308,7 @@ public static class VersionPath
         }
 
         var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(PathHelper.ReadText(file)!)!;
-        s_forgeInstalls.Add(key, obj);
+        s_neoForgeInstalls.Add(key, obj);
         return obj;
     }
 
@@ -333,7 +336,9 @@ public static class VersionPath
             return temp;
         }
 
-        string file = Path.GetFullPath($"{BaseDir}/{Name4}/forge-{mc}-{version}.json");
+        string file = CheckHelpers.IsGameVersion1202(mc) 
+            ? Path.GetFullPath($"{BaseDir}/{Name4}/neoforge-{version}.json")
+            : Path.GetFullPath($"{BaseDir}/{Name4}/forge-{mc}-{version}.json");
 
         if (!File.Exists(file))
         {

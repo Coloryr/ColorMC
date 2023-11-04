@@ -13,10 +13,10 @@ namespace ColorMC.Core.Net.Apis;
 public static class ForgeAPI
 {
     private static List<string>? s_supportVersion;
-    private static readonly Dictionary<string, List<Version>> s_forgeVersion = new();
+    private static readonly Dictionary<string, List<string>> s_forgeVersion = new();
 
     private static List<string>? s_neoSupportVersion;
-    private static readonly Dictionary<string, List<Version>> s_neoForgeVersion = new();
+    private static readonly Dictionary<string, List<string>> s_neoForgeVersion = new();
 
     /// <summary>
     /// 获取支持的版本
@@ -122,7 +122,6 @@ public static class ForgeAPI
                     }
                 }
 
-                list1.Sort();
                 list1.Reverse();
 
                 var list2 = new List<string>();
@@ -213,69 +212,121 @@ public static class ForgeAPI
         var list = new List<string>();
 
         var node = xml.SelectNodes("//metadata/versioning/versions/version");
-        if (node?.Count > 0)
+        if (node == null)
         {
+            return;
+        }
+
+        if (neo)
+        {
+            s_neoForgeVersion.Clear();
+        }
+        else
+        {
+            s_forgeVersion.Clear();
+        }
+        foreach (XmlNode item in node)
+        {
+            var str = item.InnerText;
+            var args = str.Split('-');
+            var mc1 = args[0];
+            var version = args[1];
+
+            if (!list.Contains(mc1))
+            {
+                list.Add(mc1);
+            }
+
             if (neo)
             {
-                s_neoForgeVersion.Clear();
-            }
-            else
-            {
-                s_forgeVersion.Clear();
-            }
-            foreach (XmlNode item in node)
-            {
-                var str = item.InnerText;
-                var args = str.Split('-');
-                var mc1 = args[0];
-                var version = args[1];
-
-                if (!list.Contains(mc1))
+                if (s_neoForgeVersion.TryGetValue(mc1, out var list2))
                 {
-                    list.Add(mc1);
-                }
-
-                if (neo)
-                {
-                    if (s_neoForgeVersion.TryGetValue(mc1, out var list2))
-                    {
-                        list2.Add(new(version));
-                    }
-                    else
-                    {
-                        var list3 = new List<Version>() { new(version) };
-                        s_neoForgeVersion.Add(mc1, list3);
-                    }
+                    list2.Add(new(version));
                 }
                 else
                 {
-                    if (s_forgeVersion.TryGetValue(mc1, out var list2))
+                    var list3 = new List<string>() { version };
+                    s_neoForgeVersion.Add(mc1, list3);
+                }
+            }
+            else
+            {
+                if (s_forgeVersion.TryGetValue(mc1, out var list2))
+                {
+                    list2.Add(new(version));
+                }
+                else
+                {
+                    var list3 = new List<string>() { version };
+                    s_forgeVersion.Add(mc1, list3);
+                }
+            }
+        }
+
+        foreach (var item in s_neoForgeVersion.Values)
+        {
+            item.Reverse();
+        }
+        foreach (var item in s_forgeVersion.Values)
+        {
+            item.Reverse();
+        }
+
+        if (neo)
+        {
+            s_neoSupportVersion = list;
+        }
+        else
+        {
+            s_supportVersion = list;
+        }
+
+        if (neo)
+        {
+            url = UrlHelper.NeoForgeNewVersion(SourceLocal.Offical);
+
+            html = await BaseClient.GetString(url);
+            if (html.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                    new Exception(url), false);
+                return;
+            }
+
+            xml = new XmlDocument();
+            xml.LoadXml(html.Item2!);
+
+            node = xml.SelectNodes("//metadata/versioning/versions/version");
+            if (node?.Count > 0)
+            {
+                foreach (XmlNode item in node)
+                {
+                    var str = item.InnerText;
+                    var args = str.Split('.');
+                    var mc1 = "1." + args[0] + "." + args[1];
+                    var version = str;
+
+                    if (!s_neoSupportVersion!.Contains(mc1))
                     {
-                        list2.Add(new(version));
+                        s_neoSupportVersion.Add(mc1);
+                    }
+
+                    if (s_neoForgeVersion.TryGetValue(mc1, out var list2))
+                    {
+                        list2.Add(version);
                     }
                     else
                     {
-                        var list3 = new List<Version>() { new(version) };
-                        s_forgeVersion.Add(mc1, list3);
+                        var list3 = new List<string>() { version };
+                        s_neoForgeVersion.Add(mc1, list3);
                     }
                 }
-            }
 
-            foreach (var item in s_neoForgeVersion.Values)
-            {
-                item.Sort();
-                item.Reverse();
+                foreach (var item in s_neoForgeVersion.Values)
+                {
+                    item.Reverse();
+                }
             }
-            foreach (var item in s_forgeVersion.Values)
-            {
-                item.Sort();
-                item.Reverse();
-            }
-
-            if (neo)
-                s_neoSupportVersion = list;
-            else
-                s_supportVersion = list;
         }
     }
 }

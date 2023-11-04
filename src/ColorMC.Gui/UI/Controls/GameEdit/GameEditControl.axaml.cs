@@ -118,6 +118,8 @@ public partial class GameEditControl : UserControl, IUserControl
             _icon = new(icon);
             Window.SetIcon(_icon);
         }
+
+        (DataContext as GameEditModel)?.OpenLoad();
     }
 
     public void SetType(GameEditWindowType type)

@@ -101,7 +101,6 @@ public partial class BaseModel : ObservableObject
     {
         _info1.Indeterminate = false;
 
-        DClose();
         DialogHost.Close(Name);
     }
 
@@ -124,7 +123,6 @@ public partial class BaseModel : ObservableObject
     {
         _info3.ValueVisable = false;
 
-        DClose();
         DialogHost.Close(Name);
     }
 

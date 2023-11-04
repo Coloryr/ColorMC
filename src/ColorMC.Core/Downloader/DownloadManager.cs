@@ -83,9 +83,9 @@ public static class DownloadManager
     /// </summary>
     public static void DownloadStop()
     {
-        s_threads.ForEach(a => a.DownloadStop());
-        s_cancel.Cancel();
         s_items.Clear();
+        s_cancel.Cancel();
+        s_threads.ForEach(a => a.DownloadStop());
     }
 
     /// <summary>

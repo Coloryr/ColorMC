@@ -53,6 +53,10 @@ public partial class GameEditModel : MenuModel
         }
 
         _titleText = string.Format(App.Lang("GameEditWindow.Tab2.Text13"), _obj.Name);
+    }
+
+    public void OpenLoad()
+    {
         GameLoad();
         ConfigLoad();
     }
