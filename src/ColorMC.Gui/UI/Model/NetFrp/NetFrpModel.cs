@@ -27,6 +27,8 @@ public partial class NetFrpModel : MenuModel
 
     protected override void Close()
     {
+        _client.Stop();
+
         Remotes.Clear();
         Locals.Clear();
     }
