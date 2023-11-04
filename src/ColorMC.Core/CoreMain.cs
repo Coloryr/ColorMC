@@ -144,6 +144,7 @@ public static class ColorMCCore
     /// 手机端打开网页
     /// </summary>
     public static Action<string?> PhoneOpenUrl { get; set; }
+    public static Func<string> PhoneGetFrp { get; set; }
 
     /// <summary>
     /// 新运行
