@@ -118,22 +118,20 @@ public static class AuthlibHelper
         if (meta.Item1 == false)
         {
             return GetLocalAuthLib();
-            //ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
-            //    new Exception(url), false);
-            //throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
         }
-        var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!)
-            ?? throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
+        var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!);
+        if (obj == null)
+        {
+            return GetLocalAuthLib();
+        }
         var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).ToList()[0];
 
         var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
         if (info.Item1 == false)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"), new Exception(url), false);
-            throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
+            return GetLocalAuthLib();
         }
-        return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!)
-            ?? throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
+        return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!) ?? GetLocalAuthLib();
     }
 
     /// <summary>
