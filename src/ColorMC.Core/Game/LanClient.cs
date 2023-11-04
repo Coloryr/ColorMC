@@ -12,6 +12,7 @@ public class LanClient
     public Action<string, string, string>? FindLan;
 
     private UdpClient _socket;
+    private bool _isRun;
 
     public LanClient()
     {
@@ -19,25 +20,47 @@ public class LanClient
         _socket = new(ipep);
         _socket.JoinMulticastGroup(IPAddress.Parse("224.0.2.60"));
 
+        _isRun = true;
+
         _socket.BeginReceive(new AsyncCallback(Callback), null);
     }
 
     private void Callback(IAsyncResult result)
     {
         var point = new IPEndPoint(IPAddress.Any, 0);
-        var data = _socket.EndReceive(result, ref point);
-
-        string temp = Encoding.UTF8.GetString(data);
-
-        string motd = GetMotd(temp);
-        string? ad = GetAd(temp);
-
-        if (ad != null)
+        try
         {
-            FindLan?.Invoke(motd, point.ToString(), ad);
+            var data = _socket.EndReceive(result, ref point);
+
+            string temp = Encoding.UTF8.GetString(data);
+
+            string motd = GetMotd(temp);
+            string? ad = GetAd(temp);
+
+            if (ad != null)
+            {
+                FindLan?.Invoke(motd, point.ToString(), ad);
+            }
+        }
+        catch
+        { 
+            
+        }
+
+        if (!_isRun)
+        {
+            return;
         }
 
         _socket.BeginReceive(new AsyncCallback(Callback), null);
+    }
+
+    public void Stop()
+    {
+        _isRun = false;
+
+        _socket.Close();
+        _socket.Dispose();
     }
 
     public static string GetMotd(string input)
