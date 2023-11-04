@@ -31,19 +31,15 @@ public partial class Info4Model : ObservableObject
     public void Cancel()
     {
         Enable = false;
-
-        DialogHost.Close(_name);
-
         Call?.Invoke(false);
+        DialogHost.Close(_name);
     }
 
     [RelayCommand]
     public void Confirm()
     {
         Enable = false;
-
-        DialogHost.Close(_name);
-
         Call?.Invoke(true);
+        DialogHost.Close(_name);
     }
 }
