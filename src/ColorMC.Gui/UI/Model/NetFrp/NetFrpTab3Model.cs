@@ -5,9 +5,7 @@ using ColorMC.Core.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -71,7 +69,8 @@ public partial class NetFrpModel : MenuModel
     private void _process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         Log(e.Data);
-        if (e.Data?.Contains("TCP 类型隧道启动成功") == true)
+        if (e.Data?.Contains("TCP 类型隧道启动成功") == true
+            || e.Data?.Contains("Your TCP proxy is available now") == true)
         {
             Dispatcher.UIThread.Post(() =>
             {
