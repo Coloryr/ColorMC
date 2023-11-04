@@ -853,7 +853,7 @@ public static class BaseBinding
         string dir;
         if (SystemInfo.Os == OsType.Android)
         {
-            file = ColorMCCore.PhoneGetFrp.Invoke();
+            file = ColorMCGui.PhoneGetFrp.Invoke();
             dir = FrpPath.BaseDir;
         }
         else
