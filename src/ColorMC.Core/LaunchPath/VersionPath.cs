@@ -174,7 +174,16 @@ public static class VersionPath
     /// <param name="neo">是否为NeoForge</param>
     public static void AddGame(ForgeLaunchObj obj, byte[] array, string mc, string version, bool neo)
     {
-        string name = $"forge-{mc}-{version}";
+        var v2222 = CheckHelpers.IsGameVersion1202(mc);
+        string name;
+        if (neo && v2222)
+        {
+            name = $"neoforge-{version}";
+        }
+        else
+        {
+            name = $"forge-{mc}-{version}";
+        }
         PathHelper.WriteBytes($"{(neo ? NeoForgeDir : ForgeDir)}/{name}.json", array);
 
         var key = $"{mc}-{version}";
@@ -198,7 +207,17 @@ public static class VersionPath
     /// <param name="neo">是否为NeoForge</param>
     public static void AddGame(ForgeInstallObj obj, byte[] array, string mc, string version, bool neo)
     {
-        string name = $"forge-{mc}-{version}-install";
+        var v2222 = CheckHelpers.IsGameVersion1202(mc);
+        string name;
+        if (neo && v2222)
+        {
+            name = $"neoforge-{version}-install";
+        }
+        else
+        {
+            name = $"forge-{mc}-{version}-install";
+        }
+
         PathHelper.WriteBytes($"{(neo ? NeoForgeDir : ForgeDir)}/{name}.json", array);
 
         var key = $"{mc}-{version}";
