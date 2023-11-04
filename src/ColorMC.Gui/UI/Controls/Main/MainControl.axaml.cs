@@ -23,7 +23,7 @@ public partial class MainControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.GetLanguage("MainWindow.Title");
+    public string Title => App.Lang("MainWindow.Title");
 
     private CancellationTokenSource _cancel1 = new();
 
@@ -97,12 +97,12 @@ public partial class MainControl : UserControl, IUserControl
         if (e.Data.Contains(DataFormats.Text))
         {
             Grid2.IsVisible = true;
-            Label1.Content = App.GetLanguage("Gui.Info6");
+            Label1.Content = App.Lang("Gui.Info6");
         }
         else if (e.Data.Contains(DataFormats.Files))
         {
             Grid2.IsVisible = true;
-            Label1.Content = App.GetLanguage("Gui.Info7");
+            Label1.Content = App.Lang("Gui.Info7");
         }
     }
 
@@ -195,7 +195,7 @@ public partial class MainControl : UserControl, IUserControl
         var model = (DataContext as MainModel)!;
         if (model.IsLaunch)
         {
-            var res = await model.Model.ShowWait(App.GetLanguage("MainWindow.Info34"));
+            var res = await model.Model.ShowWait(App.Lang("MainWindow.Info34"));
             if (res)
             {
                 return false;

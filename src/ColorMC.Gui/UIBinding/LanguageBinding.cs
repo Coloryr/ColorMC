@@ -17,10 +17,10 @@ public static class LanguageBinding
     {
         return new[]
         {
-            App.GetLanguage("Text.Name"),
-            App.GetLanguage("Text.FileName"),
-            App.GetLanguage("BaseBinding.Filter.Item3"),
-            App.GetLanguage("BaseBinding.Filter.Item4")
+            App.Lang("Text.Name"),
+            App.Lang("Text.FileName"),
+            App.Lang("BaseBinding.Filter.Item3"),
+            App.Lang("BaseBinding.Filter.Item4")
         };
     }
 
@@ -28,9 +28,9 @@ public static class LanguageBinding
     {
         return new[]
          {
-            App.GetLanguage("BaseBinding.Export.Item1"),
-            App.GetLanguage("BaseBinding.Export.Item2"),
-            App.GetLanguage("BaseBinding.Export.Item3"),
+            App.Lang("BaseBinding.Export.Item1"),
+            App.Lang("BaseBinding.Export.Item2"),
+            App.Lang("BaseBinding.Export.Item3"),
             //App.GetLanguage("BaseBinding.Export.Item4"),
             //App.GetLanguage("BaseBinding.Export.Item5")
         };
@@ -40,9 +40,9 @@ public static class LanguageBinding
     {
         return new[]
         {
-            App.GetLanguage("SkinType.Old"),
-            App.GetLanguage("SkinType.New"),
-            App.GetLanguage("SkinType.New_Slim")
+            App.Lang("SkinType.Old"),
+            App.Lang("SkinType.New"),
+            App.Lang("SkinType.New_Slim")
         };
     }
     /// <summary>
@@ -53,9 +53,9 @@ public static class LanguageBinding
     {
         return new[]
         {
-            App.GetLanguage("BaseBinding.SkinRotate.Item1"),
-            App.GetLanguage("BaseBinding.SkinRotate.Item2"),
-            App.GetLanguage("BaseBinding.SkinRotate.Item3")
+            App.Lang("BaseBinding.SkinRotate.Item1"),
+            App.Lang("BaseBinding.SkinRotate.Item2"),
+            App.Lang("BaseBinding.SkinRotate.Item3")
         };
     }
 
@@ -81,11 +81,11 @@ public static class LanguageBinding
     {
         return new[]
         {
-            App.GetLanguage("TranTypes.Item1"),
-            App.GetLanguage("TranTypes.Item2"),
-            App.GetLanguage("TranTypes.Item3"),
-            App.GetLanguage("TranTypes.Item4"),
-            App.GetLanguage("TranTypes.Item5")
+            App.Lang("TranTypes.Item1"),
+            App.Lang("TranTypes.Item2"),
+            App.Lang("TranTypes.Item3"),
+            App.Lang("TranTypes.Item4"),
+            App.Lang("TranTypes.Item5")
         };
     }
     /// <summary>
@@ -129,8 +129,8 @@ public static class LanguageBinding
     {
         return new[]
         {
-            App.GetLanguage("GameBinding.SortOrder.Item1"),
-            App.GetLanguage("GameBinding.SortOrder.Item2")
+            App.Lang("GameBinding.SortOrder.Item1"),
+            App.Lang("GameBinding.SortOrder.Item2")
         };
     }
 
@@ -193,8 +193,8 @@ public static class LanguageBinding
     {
         return new[]
         {
-            App.GetLanguage("ServerPackWindow.Tab4.Item1"),
-            App.GetLanguage("ServerPackWindow.Tab4.Item2")
+            App.Lang("ServerPackWindow.Tab4.Item1"),
+            App.Lang("ServerPackWindow.Tab4.Item2")
         };
     }
 
@@ -202,9 +202,9 @@ public static class LanguageBinding
     {
         return new[]
         {
-            App.GetLanguage("VersionType.Item1"),
-            App.GetLanguage("VersionType.Item2"),
-            App.GetLanguage("VersionType.Item3")
+            App.Lang("VersionType.Item1"),
+            App.Lang("VersionType.Item2"),
+            App.Lang("VersionType.Item3")
         };
     }
 
@@ -212,15 +212,15 @@ public static class LanguageBinding
     {
         return new[]
         {
-            App.GetLanguage("Postion.Item1"),
-            App.GetLanguage("Postion.Item2"),
-            App.GetLanguage("Postion.Item3"),
-            App.GetLanguage("Postion.Item4"),
-            App.GetLanguage("Postion.Item5"),
-            App.GetLanguage("Postion.Item6"),
-            App.GetLanguage("Postion.Item7"),
-            App.GetLanguage("Postion.Item8"),
-            App.GetLanguage("Postion.Item9"),
+            App.Lang("Postion.Item1"),
+            App.Lang("Postion.Item2"),
+            App.Lang("Postion.Item3"),
+            App.Lang("Postion.Item4"),
+            App.Lang("Postion.Item5"),
+            App.Lang("Postion.Item6"),
+            App.Lang("Postion.Item7"),
+            App.Lang("Postion.Item8"),
+            App.Lang("Postion.Item9"),
         };
     }
 }

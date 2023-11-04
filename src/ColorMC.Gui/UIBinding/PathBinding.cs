@@ -174,7 +174,7 @@ public static class PathBinding
             case FileType.ServerPack:
                 var res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
-                    Title = App.GetLanguage("Gui.Info11")
+                    Title = App.Lang("Gui.Info11")
                 });
                 if (res?.Any() == true)
                 {
@@ -184,7 +184,7 @@ public static class PathBinding
             case FileType.Game:
                 res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
-                    Title = App.GetLanguage("Gui.Info24")
+                    Title = App.Lang("Gui.Info24")
                 });
                 if (res?.Any() == true)
                 {
@@ -233,7 +233,7 @@ public static class PathBinding
         {
             case FileType.World:
                 var file = await SaveFile(top,
-                    App.GetLanguage("GameEditWindow.Tab5.Info2"), ".zip", "world.zip");
+                    App.Lang("GameEditWindow.Tab5.Info2"), ".zip", "world.zip");
                 if (file == null)
                     break;
 
@@ -245,12 +245,12 @@ public static class PathBinding
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(App.GetLanguage("GameEditWindow.Tab5.Error1"), e);
+                    Logs.Error(App.Lang("GameEditWindow.Tab5.Error1"), e);
                     return false;
                 }
             case FileType.UI:
                 file = await SaveFile(top,
-                    App.GetLanguage("SettingWindow.Tab6.Info1"), ".axaml", "ui.axaml");
+                    App.Lang("SettingWindow.Tab6.Info1"), ".axaml", "ui.axaml");
                 if (file == null)
                     break;
 
@@ -269,12 +269,12 @@ public static class PathBinding
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(App.GetLanguage("SettingWindow.Tab6.Error3"), e);
+                    Logs.Error(App.Lang("SettingWindow.Tab6.Error3"), e);
                     return false;
                 }
             case FileType.Skin:
                 file = await SaveFile(top,
-                    App.GetLanguage("Gui.Info9"), ".png", "skin.png");
+                    App.Lang("Gui.Info9"), ".png", "skin.png");
                 if (file == null)
                     break;
 
@@ -290,12 +290,12 @@ public static class PathBinding
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(App.GetLanguage("SettingWindow.Tab6.Error3"), e);
+                    Logs.Error(App.Lang("SettingWindow.Tab6.Error3"), e);
                     return false;
                 }
             case FileType.Text:
                 file = await SaveFile(top,
-                    App.GetLanguage("Gui.Info21"), ".txt", "log.txt");
+                    App.Lang("Gui.Info21"), ".txt", "log.txt");
                 if (file == null)
                     break;
 
@@ -309,7 +309,7 @@ public static class PathBinding
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(App.GetLanguage("SettingWindow.Tab6.Error3"), e);
+                    Logs.Error(App.Lang("SettingWindow.Tab6.Error3"), e);
                     return false;
                 }
         }
@@ -379,9 +379,9 @@ public static class PathBinding
         {
             case FileType.Java:
                 var res = await SelectFile(top,
-                    App.GetLanguage("SettingWindow.Tab5.Info2"),
+                    App.Lang("SettingWindow.Tab5.Info2"),
                     SystemInfo.Os == OsType.Windows ? EXE : null,
-                    App.GetLanguage("SettingWindow.Tab5.Info2"),
+                    App.Lang("SettingWindow.Tab5.Info2"),
                     storage: JavaBinding.GetSuggestedStartLocation());
                 if (res?.Any() == true)
                 {
@@ -400,9 +400,9 @@ public static class PathBinding
                 break;
             case FileType.JavaZip:
                 res = await SelectFile(top,
-                    App.GetLanguage("SettingWindow.Tab5.Info5"),
+                    App.Lang("SettingWindow.Tab5.Info5"),
                     ZIP,
-                    App.GetLanguage("SettingWindow.Tab5.Info5"));
+                    App.Lang("SettingWindow.Tab5.Info5"));
                 if (res?.Any() == true)
                 {
                     var file = res[0].GetPath();
@@ -420,9 +420,9 @@ public static class PathBinding
                 break;
             case FileType.Config:
                 res = await SelectFile(top,
-                    App.GetLanguage("SettingWindow.Tab1.Info7"),
+                    App.Lang("SettingWindow.Tab1.Info7"),
                     JSON,
-                    App.GetLanguage("SettingWindow.Tab1.Info11"));
+                    App.Lang("SettingWindow.Tab1.Info11"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -430,9 +430,9 @@ public static class PathBinding
                 break;
             case FileType.AuthConfig:
                 res = await SelectFile(top,
-                    App.GetLanguage("SettingWindow.Tab1.Info10"),
+                    App.Lang("SettingWindow.Tab1.Info10"),
                     JSON,
-                    App.GetLanguage("SettingWindow.Tab1.Info12"));
+                    App.Lang("SettingWindow.Tab1.Info12"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -440,9 +440,9 @@ public static class PathBinding
                 break;
             case FileType.ModPack:
                 res = await SelectFile(top,
-                    App.GetLanguage("Gui.Info22"),
+                    App.Lang("Gui.Info22"),
                     MODPACK,
-                    App.GetLanguage("Gui.Info23"));
+                    App.Lang("Gui.Info23"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -450,9 +450,9 @@ public static class PathBinding
                 break;
             case FileType.Pic:
                 res = await SelectFile(top,
-                    App.GetLanguage("SettingWindow.Tab2.Info3"),
+                    App.Lang("SettingWindow.Tab2.Info3"),
                     PICFILE,
-                    App.GetLanguage("SettingWindow.Tab2.Info6"));
+                    App.Lang("SettingWindow.Tab2.Info6"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -460,9 +460,9 @@ public static class PathBinding
                 break;
             case FileType.UI:
                 res = await SelectFile(top,
-                    App.GetLanguage("SettingWindow.Tab6.Info2"),
+                    App.Lang("SettingWindow.Tab6.Info2"),
                     UIFILE,
-                    App.GetLanguage("SettingWindow.Tab6.Info3"));
+                    App.Lang("SettingWindow.Tab6.Info3"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -470,9 +470,9 @@ public static class PathBinding
                 break;
             case FileType.Music:
                 res = await SelectFile(top,
-                    App.GetLanguage("SettingWindow.Tab6.Info5"),
+                    App.Lang("SettingWindow.Tab6.Info5"),
                     AUDIO,
-                    App.GetLanguage("SettingWindow.Tab6.Info6"));
+                    App.Lang("SettingWindow.Tab6.Info6"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -480,9 +480,9 @@ public static class PathBinding
                 break;
             case FileType.Live2D:
                 res = await SelectFile(top,
-                    App.GetLanguage("SettingWindow.Tab2.Info7"),
+                    App.Lang("SettingWindow.Tab2.Info7"),
                     MODEL,
-                    App.GetLanguage("SettingWindow.Tab2.Info8"));
+                    App.Lang("SettingWindow.Tab2.Info8"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -490,9 +490,9 @@ public static class PathBinding
                 break;
             case FileType.Icon:
                 res = await SelectFile(top,
-                    App.GetLanguage("GameBinding.Info2"),
+                    App.Lang("GameBinding.Info2"),
                     PICFILE,
-                    App.GetLanguage("GameBinding.Info3"));
+                    App.Lang("GameBinding.Info3"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -500,9 +500,9 @@ public static class PathBinding
                 break;
             case FileType.Head:
                 res = await SelectFile(top,
-                    App.GetLanguage("UserBinding.Info1"),
+                    App.Lang("UserBinding.Info1"),
                     HEADFILE,
-                    App.GetLanguage("UserBinding.Info2"));
+                    App.Lang("UserBinding.Info2"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -510,9 +510,9 @@ public static class PathBinding
                 break;
             case FileType.Live2DCore:
                 res = await SelectFile(top,
-                    App.GetLanguage("SettingWindow.Tab2.Info9"),
+                    App.Lang("SettingWindow.Tab2.Info9"),
                     LIVE2DCORE,
-                    App.GetLanguage("SettingWindow.Tab2.Info10"));
+                    App.Lang("SettingWindow.Tab2.Info10"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -535,9 +535,9 @@ public static class PathBinding
         {
             case FileType.Schematic:
                 var res = await SelectFile(top,
-                      App.GetLanguage("GameEditWindow.Tab12.Info1"),
+                      App.Lang("GameEditWindow.Tab12.Info1"),
                       new string[] { "*" + Schematic.Name1, "*" + Schematic.Name2 },
-                      App.GetLanguage("GameEditWindow.Tab12.Info2"), true);
+                      App.Lang("GameEditWindow.Tab12.Info2"), true);
                 if (res?.Any() == true)
                 {
                     return GameBinding.AddSchematic(obj, res);
@@ -545,9 +545,9 @@ public static class PathBinding
                 return null;
             case FileType.Shaderpack:
                 res = await SelectFile(top,
-                    App.GetLanguage("GameEditWindow.Tab11.Info1"),
+                    App.Lang("GameEditWindow.Tab11.Info1"),
                     new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
+                    App.Lang("GameEditWindow.Tab11.Info2"), true);
                 if (res?.Any() == true)
                 {
                     return await GameBinding.AddShaderpack(obj, res);
@@ -555,9 +555,9 @@ public static class PathBinding
                 return null;
             case FileType.Mod:
                 res = await SelectFile(top,
-                    App.GetLanguage("GameEditWindow.Tab4.Info7"),
+                    App.Lang("GameEditWindow.Tab4.Info7"),
                     new string[] { "*.jar" },
-                    App.GetLanguage("GameEditWindow.Tab4.Info8"), true);
+                    App.Lang("GameEditWindow.Tab4.Info8"), true);
                 if (res?.Any() == true)
                 {
                     return await GameBinding.AddMods(obj, res);
@@ -565,9 +565,9 @@ public static class PathBinding
                 return null;
             case FileType.World:
                 res = await SelectFile(top,
-                    App.GetLanguage("GameEditWindow.Tab5.Info2"),
+                    App.Lang("GameEditWindow.Tab5.Info2"),
                     new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab5.Info6"));
+                    App.Lang("GameEditWindow.Tab5.Info6"));
                 if (res?.Any() == true)
                 {
                     return await GameBinding.AddWorld(obj, res[0].GetPath());
@@ -575,9 +575,9 @@ public static class PathBinding
                 return null;
             case FileType.Resourcepack:
                 res = await SelectFile(top,
-                    App.GetLanguage("GameEditWindow.Tab8.Info2"),
+                    App.Lang("GameEditWindow.Tab8.Info2"),
                     new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab8.Info5"), true);
+                    App.Lang("GameEditWindow.Tab8.Info5"), true);
                 if (res?.Any() == true)
                 {
                     return await GameBinding.AddResourcepack(obj, res);
@@ -599,7 +599,7 @@ public static class PathBinding
         if (model.Type == PackType.ColorMC)
         {
             var file = await SaveFile(top,
-                   App.GetLanguage("GameEditWindow.Tab6.Info1"),
+                   App.Lang("GameEditWindow.Tab6.Info1"),
                    ".zip", $"{model.Obj.Name}.zip");
             if (file == null)
                 return null;
@@ -617,7 +617,7 @@ public static class PathBinding
             }
             catch (Exception e)
             {
-                string temp = App.GetLanguage("GameEditWindow.Tab6.Error1");
+                string temp = App.Lang("GameEditWindow.Tab6.Error1");
                 App.ShowError(temp, e);
                 Logs.Error(temp, e);
                 return false;
@@ -626,7 +626,7 @@ public static class PathBinding
         else if (model.Type == PackType.CurseForge)
         {
             var file = await SaveFile(top,
-               App.GetLanguage("GameEditWindow.Tab6.Info1"),
+               App.Lang("GameEditWindow.Tab6.Info1"),
                ".zip", $"{model.Name}-{model.Version}.zip");
             if (file == null)
                 return null;
@@ -753,7 +753,7 @@ public static class PathBinding
             }
             catch (Exception e)
             {
-                string temp = App.GetLanguage("GameEditWindow.Tab6.Error1");
+                string temp = App.Lang("GameEditWindow.Tab6.Error1");
                 App.ShowError(temp, e);
                 Logs.Error(temp, e);
                 return false;
@@ -762,7 +762,7 @@ public static class PathBinding
         else if (model.Type == PackType.Modrinth)
         {
             var file = await PathBinding.SaveFile(top,
-               App.GetLanguage("GameEditWindow.Tab6.Info1"),
+               App.Lang("GameEditWindow.Tab6.Info1"),
                ".zip", $"{model.Name}-{model.Version}.mrpack");
             if (file == null)
                 return null;
@@ -888,7 +888,7 @@ public static class PathBinding
             }
             catch (Exception e)
             {
-                string temp = App.GetLanguage("GameEditWindow.Tab6.Error1");
+                string temp = App.Lang("GameEditWindow.Tab6.Error1");
                 App.ShowError(temp, e);
                 Logs.Error(temp, e);
                 return false;
@@ -911,7 +911,7 @@ public static class PathBinding
         }
         catch (Exception e)
         {
-            Logs.Error(App.GetLanguage("SettingWindow.Tab2.Error5"), e);
+            Logs.Error(App.Lang("SettingWindow.Tab2.Error5"), e);
         }
     }
 

@@ -15,13 +15,13 @@ public partial class ServerPackModel : MenuModel
     public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
-            Text = App.GetLanguage("ServerPackWindow.Tabs.Text1") },
+            Text = App.Lang("ServerPackWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/GameExport/item2.svg",
-            Text = App.GetLanguage("ServerPackWindow.Tabs.Text2") },
+            Text = App.Lang("ServerPackWindow.Tabs.Text2") },
         new() { Icon = "/Resource/Icon/GameExport/item3.svg",
-            Text = App.GetLanguage("ServerPackWindow.Tabs.Text3") },
+            Text = App.Lang("ServerPackWindow.Tabs.Text3") },
         new() { Icon = "/Resource/Icon/GameExport/item4.svg",
-            Text = App.GetLanguage("ServerPackWindow.Tabs.Text4") },
+            Text = App.Lang("ServerPackWindow.Tabs.Text4") },
     };
 
     public ServerPackModel(BaseModel model, ServerPackObj obj) : base(model)
@@ -40,16 +40,16 @@ public partial class ServerPackModel : MenuModel
 
         Obj.Text = Text;
 
-        Model.Progress(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
+        Model.Progress(App.Lang("ServerPackWindow.Tab1.Info1"));
         var res = await GameBinding.GenServerPack(Obj, local);
         Model.ProgressClose();
         if (res)
         {
-            Model.Notify(App.GetLanguage("ServerPackWindow.Tab1.Info2"));
+            Model.Notify(App.Lang("ServerPackWindow.Tab1.Info2"));
         }
         else
         {
-            Model.Show(App.GetLanguage("ServerPackWindow.Tab1.Error3"));
+            Model.Show(App.Lang("ServerPackWindow.Tab1.Error3"));
         }
     }
 

@@ -81,11 +81,11 @@ public class ConfigFlyout1
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("ConfigEditWindow.Flyouts1.Text1"), add, Button1_Click),
-            (App.GetLanguage("ConfigEditWindow.Flyouts1.Text2"), delete, Button2_Click),
-            (App.GetLanguage("ConfigEditWindow.Flyouts1.Text3"), editKey, Button3_Click),
-            (App.GetLanguage("ConfigEditWindow.Flyouts1.Text4"), editValue, Button4_Click),
-            (App.GetLanguage("ConfigEditWindow.Flyouts1.Text5"), true, Button5_Click),
+            (App.Lang("ConfigEditWindow.Flyouts1.Text1"), add, Button1_Click),
+            (App.Lang("ConfigEditWindow.Flyouts1.Text2"), delete, Button2_Click),
+            (App.Lang("ConfigEditWindow.Flyouts1.Text3"), editKey, Button3_Click),
+            (App.Lang("ConfigEditWindow.Flyouts1.Text4"), editValue, Button4_Click),
+            (App.Lang("ConfigEditWindow.Flyouts1.Text5"), true, Button5_Click),
         }, con);
     }
 

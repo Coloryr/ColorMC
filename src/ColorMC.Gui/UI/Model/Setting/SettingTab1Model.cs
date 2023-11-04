@@ -55,25 +55,25 @@ public partial class SettingModel : MenuModel
         var local = Local1;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
+            Model.Show(App.Lang("SettingWindow.Tab1.Error1"));
             return;
         }
-        Model.Progress(App.GetLanguage("SettingWindow.Tab1.Info5"));
+        Model.Progress(App.Lang("SettingWindow.Tab1.Info5"));
 
         try
         {
             var res = ConfigBinding.LoadConfig(local);
             if (!res)
             {
-                Model.Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
+                Model.Show(App.Lang("SettingWindow.Tab1.Error2"));
                 return;
             }
-            Model.Notify(App.GetLanguage("SettingWindow.Tab1.Info6"));
+            Model.Notify(App.Lang("SettingWindow.Tab1.Info6"));
         }
         catch (Exception e1)
         {
-            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
-            App.ShowError(App.GetLanguage("SettingWindow.Tab1.Error3"), e1);
+            Model.Show(App.Lang("SettingWindow.Tab1.Error3"));
+            App.ShowError(App.Lang("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {
@@ -87,24 +87,24 @@ public partial class SettingModel : MenuModel
         var local = Local2;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
+            Model.Show(App.Lang("SettingWindow.Tab1.Error1"));
             return;
         }
-        Model.Progress(App.GetLanguage("SettingWindow.Tab1.Info8"));
+        Model.Progress(App.Lang("SettingWindow.Tab1.Info8"));
 
         try
         {
             var res = ConfigBinding.LoadAuthDatabase(local);
             if (!res)
             {
-                Model.Show(App.GetLanguage("SettingWindow.Tab1.Error4"));
+                Model.Show(App.Lang("SettingWindow.Tab1.Error4"));
                 return;
             }
-            Model.Notify(App.GetLanguage("SettingWindow.Tab1.Info9"));
+            Model.Notify(App.Lang("SettingWindow.Tab1.Info9"));
         }
         catch (Exception)
         {
-            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error5"));
+            Model.Show(App.Lang("SettingWindow.Tab1.Error5"));
         }
         finally
         {
@@ -118,25 +118,25 @@ public partial class SettingModel : MenuModel
         var local = Local3;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
+            Model.Show(App.Lang("SettingWindow.Tab1.Error1"));
             return;
         }
-        Model.Progress(App.GetLanguage("SettingWindow.Tab1.Info5"));
+        Model.Progress(App.Lang("SettingWindow.Tab1.Info5"));
 
         try
         {
             var res = ConfigBinding.LoadGuiConfig(local);
             if (!res)
             {
-                Model.Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
+                Model.Show(App.Lang("SettingWindow.Tab1.Error2"));
                 return;
             }
-            Model.Notify(App.GetLanguage("SettingWindow.Tab1.Info6"));
+            Model.Notify(App.Lang("SettingWindow.Tab1.Info6"));
         }
         catch (Exception e1)
         {
-            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
-            App.ShowError(App.GetLanguage("SettingWindow.Tab1.Error3"), e1);
+            Model.Show(App.Lang("SettingWindow.Tab1.Error3"));
+            App.ShowError(App.Lang("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {
@@ -147,23 +147,23 @@ public partial class SettingModel : MenuModel
     [RelayCommand]
     public async Task Reset()
     {
-        var res = await Model.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info1"));
+        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info1"));
         if (!res)
             return;
 
         ConfigBinding.ResetConfig();
-        Model.Notify(App.GetLanguage("SettingWindow.Tab1.Info2"));
+        Model.Notify(App.Lang("SettingWindow.Tab1.Info2"));
     }
 
     [RelayCommand]
     public async Task ClearUser()
     {
-        var res = await Model.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info3"));
+        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info3"));
         if (!res)
             return;
 
         UserBinding.ClearAllUser();
-        Model.Notify(App.GetLanguage("SettingWindow.Tab1.Info4"));
+        Model.Notify(App.Lang("SettingWindow.Tab1.Info4"));
     }
 
     [RelayCommand]

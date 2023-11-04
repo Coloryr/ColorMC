@@ -71,7 +71,7 @@ public static class BaseBinding
             }
             catch (Exception e)
             {
-                Logs.Error(App.GetLanguage("Gui.Error32"), e);
+                Logs.Error(App.Lang("Gui.Error32"), e);
             }
         }
 
@@ -109,11 +109,11 @@ public static class BaseBinding
                 }
                 if (game == null)
                 {
-                    window?.Model.Show(App.GetLanguage("Gui.Error28"));
+                    window?.Model.Show(App.Lang("Gui.Error28"));
                 }
                 else if (window?.Model is BaseModel model)
                 {
-                    window.Model.Progress(string.Format(App.GetLanguage("Gui.Info28"), game.Name));
+                    window.Model.Progress(string.Format(App.Lang("Gui.Info28"), game.Name));
                     var res = await GameBinding.Launch(model, game, wait: true);
                     if (!res.Item1)
                     {
@@ -230,7 +230,7 @@ public static class BaseBinding
 
         if (Games.ContainsValue(obj.UUID))
         {
-            return (false, App.GetLanguage("GameBinding.Error4"));
+            return (false, App.Lang("GameBinding.Error4"));
         }
         //设置自动加入服务器
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
@@ -293,7 +293,7 @@ public static class BaseBinding
                 Media.Pause();
             }
 
-            App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text2"));
+            App.MainWindow?.ShowMessage(App.Lang("Live2D.Text2"));
 
             //_ = Task.Run(() =>
             //{
@@ -337,7 +337,7 @@ public static class BaseBinding
                     Dispatcher.UIThread.Post(() =>
                     {
                         App.ShowGameLog(obj, true);
-                        App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text3"));
+                        App.MainWindow?.ShowMessage(App.Lang("Live2D.Text3"));
                     });
                 }
                 else
@@ -434,7 +434,7 @@ public static class BaseBinding
         }
         catch (LaunchException e1)
         {
-            temp = App.GetLanguage("Gui.Error6");
+            temp = App.Lang("Gui.Error6");
             if (!string.IsNullOrWhiteSpace(e1.Message))
             {
                 temp = e1.Message;
@@ -447,7 +447,7 @@ public static class BaseBinding
         }
         catch (Exception e)
         {
-            temp = App.GetLanguage("Gui.Error6");
+            temp = App.Lang("Gui.Error6");
             Logs.Error(temp, e);
             App.ShowError(temp, e);
         }
@@ -752,7 +752,7 @@ public static class BaseBinding
             file = GetRunDir() + file;
             if (!File.Exists(file))
             {
-                return (false, App.GetLanguage("Gui.Error9"));
+                return (false, App.Lang("Gui.Error9"));
             }
         }
 
@@ -763,7 +763,7 @@ public static class BaseBinding
         }
         catch (Exception ex)
         {
-            var data = App.GetLanguage("SettingWindow.Tab6.Error2");
+            var data = App.Lang("SettingWindow.Tab6.Error2");
             Logs.Error(data, ex);
             App.ShowError(data, ex);
 
@@ -793,7 +793,7 @@ public static class BaseBinding
             }
             catch (Exception e)
             {
-                Logs.Error(App.GetLanguage("Gui.Error33"), e);
+                Logs.Error(App.Lang("Gui.Error33"), e);
             }
         }
 #pragma warning restore CA1416 // 验证平台兼容性
@@ -876,7 +876,7 @@ public static class BaseBinding
         var lines = info.Split("\n");
         var builder = new StringBuilder();
 
-        string ip;
+        string ip = "";
 
         foreach (var item2 in lines)
         {
@@ -909,15 +909,12 @@ public static class BaseBinding
                 FileName = item.Local,
                 WorkingDirectory = dir,
                 Arguments = "-c server.ini",
-                //RedirectStandardError = true,
-                //RedirectStandardOutput = true
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
             }
         };
-        //p.OutputDataReceived += P_OutputDataReceived;
-        //p.ErrorDataReceived += P_ErrorDataReceived;
-        p.Start();
-        //p.BeginErrorReadLine();
-        //p.BeginOutputReadLine();
+        App.ShowNetFrp(p, ip + ":" + port);
 
         return true;
     }

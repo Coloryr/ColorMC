@@ -28,7 +28,7 @@ public partial class GameCloudControl : UserControl, IUserControl
     public IBaseWindow Window => App.FindRoot(VisualRoot);
     public UserControl Con => this;
     public string Title =>
-        string.Format(App.GetLanguage("GameCloudWindow.Title"), Obj.Name);
+        string.Format(App.Lang("GameCloudWindow.Title"), Obj.Name);
 
     public GameCloudControl()
     {

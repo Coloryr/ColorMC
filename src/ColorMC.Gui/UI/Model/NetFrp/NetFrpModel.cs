@@ -13,9 +13,11 @@ public partial class NetFrpModel : MenuModel
     public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/Setting/item1.svg",
-            Text = App.GetLanguage("NetFrpWindow.Tabs.Text1") },
+            Text = App.Lang("NetFrpWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/Setting/item1.svg",
-            Text = App.GetLanguage("NetFrpWindow.Tabs.Text2") }
+            Text = App.Lang("NetFrpWindow.Tabs.Text2") },
+        new() { Icon = "/Resource/Icon/Setting/item1.svg",
+            Text = App.Lang("NetFrpWindow.Tabs.Text3") }
     };
 
     public NetFrpModel(BaseModel model) : base(model)

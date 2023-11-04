@@ -43,7 +43,7 @@ public partial class GameEditControl : UserControl, IUserControl
     public UserControl Con => this;
 
     public string Title =>
-        string.Format(App.GetLanguage("GameEditWindow.Title"), _obj.Name);
+        string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
 
     public BaseModel Model { get; }
 

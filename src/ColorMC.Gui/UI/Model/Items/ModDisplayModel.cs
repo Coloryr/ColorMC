@@ -17,7 +17,7 @@ public partial class ModDisplayModel : ObservableObject
 
     public string Name { get; init; }
     public string Modid => Obj.modid;
-    public string Version => Obj.version + (IsNew ? " " + App.GetLanguage("Gui.Info8") : "");
+    public string Version => Obj.version + (IsNew ? " " + App.Lang("Gui.Info8") : "");
     public string Local => Obj.Local;
     public string Author => MakeString(Obj.authorList);
     public string? Url => Obj.url;

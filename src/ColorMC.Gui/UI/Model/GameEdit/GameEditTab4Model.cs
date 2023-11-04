@@ -82,27 +82,27 @@ public partial class GameEditModel : MenuModel
 
         if (file == false)
         {
-            Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Error2"));
+            Model.Progress(App.Lang("GameEditWindow.Tab4.Error2"));
             return;
         }
 
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        Model.Notify(App.Lang("GameEditWindow.Tab4.Info2"));
         await LoadMod();
     }
 
     [RelayCommand]
     public async Task CheckMod()
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info10"));
+        Model.Progress(App.Lang("GameEditWindow.Tab4.Info10"));
         var res = await WebBinding.CheckModUpdate(_obj, _modItems);
         Model.ProgressClose();
         if (res.Count > 0)
         {
             var res1 = await Model.ShowWait(string.Format(
-                App.GetLanguage("GameEditWindow.Tab4.Info11"), res.Count));
+                App.Lang("GameEditWindow.Tab4.Info11"), res.Count));
             if (res1)
             {
-                Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info12"));
+                Model.Progress(App.Lang("GameEditWindow.Tab4.Info12"));
                 await WebBinding.DownloadMod(_obj, res);
                 Model.ProgressClose();
 
@@ -111,20 +111,20 @@ public partial class GameEditModel : MenuModel
         }
         else
         {
-            Model.Show(App.GetLanguage("GameEditWindow.Tab4.Info13"));
+            Model.Show(App.Lang("GameEditWindow.Tab4.Info13"));
         }
     }
 
     [RelayCommand]
     public async Task LoadMod()
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info1"));
+        Model.Progress(App.Lang("GameEditWindow.Tab4.Info1"));
         _modItems.Clear();
         var res = await GameBinding.GetGameMods(_obj);
         Model.ProgressClose();
         if (res == null)
         {
-            Model.Show(App.GetLanguage("GameEditWindow.Tab4.Error1"));
+            Model.Show(App.Lang("GameEditWindow.Tab4.Error1"));
             return;
         }
 
@@ -146,7 +146,7 @@ public partial class GameEditModel : MenuModel
         if (list1.Any())
         {
             var res1 = await Model.ShowWait(string.Format(App
-                     .GetLanguage("GameEditWindow.Tab4.Info14"), count));
+                     .Lang("GameEditWindow.Tab4.Info14"), count));
             if (res1)
             {
                 DisplayMod(list1);
@@ -160,12 +160,12 @@ public partial class GameEditModel : MenuModel
     [RelayCommand]
     public async Task DependTestMod()
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info15"));
+        Model.Progress(App.Lang("GameEditWindow.Tab4.Info15"));
         var res = await GameBinding.ModCheck(_modItems);
         Model.ProgressClose();
         if (res)
         {
-            Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info16"));
+            Model.Notify(App.Lang("GameEditWindow.Tab4.Info16"));
         }
     }
 
@@ -181,7 +181,7 @@ public partial class GameEditModel : MenuModel
     public async void DeleteMod(IEnumerable<ModDisplayModel> items)
     {
         var res = await Model.ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count()));
+            string.Format(App.Lang("GameEditWindow.Tab4.Info9"), items.Count()));
         if (!res)
         {
             return;
@@ -193,13 +193,13 @@ public partial class GameEditModel : MenuModel
             ModList.Remove(item);
         });
 
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
     }
 
     public async void DeleteMod(ModDisplayModel item)
     {
         var res = await Model.ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab4.Info4"), item.Name));
+            string.Format(App.Lang("GameEditWindow.Tab4.Info4"), item.Name));
         if (!res)
         {
             return;
@@ -208,7 +208,7 @@ public partial class GameEditModel : MenuModel
         GameBinding.DeleteMod(item.Obj);
         ModList.Remove(item);
 
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
     }
 
     public void DisEMod()
@@ -248,7 +248,7 @@ public partial class GameEditModel : MenuModel
             }
 
             if (await Model.ShowWait(
-                string.Format(App.GetLanguage("GameEditWindow.Tab4.Info17"), list.Count)))
+                string.Format(App.Lang("GameEditWindow.Tab4.Info17"), list.Count)))
             {
                 foreach (var item1 in list)
                 {

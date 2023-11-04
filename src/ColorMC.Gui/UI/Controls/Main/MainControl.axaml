@@ -31,7 +31,7 @@
                 <Border.Styles>
                     <Style Selector="Border">
                         <Setter Property="Background" Value="{setting:Colors GroupBack}" />
-                        <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+                        <Setter Property="BorderBrush" Value="{setting:Colors GroupColor1}" />
                     </Style>
                     <Style Selector="Border:pointerover">
                         <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />

@@ -46,12 +46,12 @@ public partial class AddGameModel : MenuModel
     {
         if (BaseBinding.IsDownload)
         {
-            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
+            Model.Show(App.Lang("AddGameWindow.Tab1.Error4"));
             return;
         }
         if (Type == null)
         {
-            Model.Show(App.GetLanguage("AddGameWindow.Tab2.Error3"));
+            Model.Show(App.Lang("AddGameWindow.Tab2.Error3"));
             return;
         }
 
@@ -90,19 +90,19 @@ public partial class AddGameModel : MenuModel
     {
         if (state == CoreRunState.Read)
         {
-            Model.Progress(App.GetLanguage("AddGameWindow.Tab2.Info1"));
+            Model.Progress(App.Lang("AddGameWindow.Tab2.Info1"));
         }
         else if (state == CoreRunState.Init)
         {
-            Model.ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info2"));
+            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info2"));
         }
         else if (state == CoreRunState.GetInfo)
         {
-            Model.ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info3"));
+            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info3"));
         }
         else if (state == CoreRunState.Download)
         {
-            Model.ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info4"));
+            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info4"));
             Model.ProgressUpdate(-1);
         }
         else if (state == CoreRunState.End)
@@ -120,7 +120,7 @@ public partial class AddGameModel : MenuModel
     {
         ColorMCCore.GameOverwirte = Tab2GameOverwirte;
         ColorMCCore.GameRequest = Tab2GameRequest;
-        string temp = App.GetLanguage("Gui.Info27");
+        string temp = App.Lang("Gui.Info27");
         ColorMCCore.UnZipItem = (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
@@ -128,21 +128,21 @@ public partial class AddGameModel : MenuModel
 
         if (string.IsNullOrWhiteSpace(ZipLocal))
         {
-            Model.Show(App.GetLanguage("AddGameWindow.Tab2.Error2"));
+            Model.Show(App.Lang("AddGameWindow.Tab2.Error2"));
             return;
         }
 
-        Model.Progress(App.GetLanguage("AddGameWindow.Tab2.Info6"));
+        Model.Progress(App.Lang("AddGameWindow.Tab2.Info6"));
         var res = await GameBinding.AddPack(ZipLocal, type, Name, Group);
         Model.ProgressClose();
         if (!res.Item1)
         {
-            Model.Show(App.GetLanguage("AddGameWindow.Tab2.Error1"));
+            Model.Show(App.Lang("AddGameWindow.Tab2.Error1"));
             return;
         }
 
         var model = (App.MainWindow?.DataContext as MainModel);
-        model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab2.Info5"));
+        model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
         App.MainWindow?.LoadMain();
 
         if (Type == PackType.ZipPack)
@@ -171,7 +171,7 @@ public partial class AddGameModel : MenuModel
     {
         Model.ProgressClose();
         var test = await Model.ShowWait(
-            string.Format(App.GetLanguage("AddGameWindow.Info2"), obj.Name));
+            string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
         Model.Progress();
         return test;
     }

@@ -25,7 +25,7 @@ public record ServerPackConfigModel
 
     private string GetType(ConfigPackObj obj)
     {
-        return App.GetLanguage(
+        return App.Lang(
             obj.IsZip ? "ServerPackWindow.Tab4.Item1"
             : "ServerPackWindow.Tab4.Item2");
     }

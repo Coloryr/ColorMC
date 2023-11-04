@@ -56,8 +56,8 @@ public static class InfoBinding
         }
 
         return Dispatcher.UIThread.InvokeAsync(() =>
-            Window.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
-            : App.GetLanguage("MainWindow.Info30")));
+            Window.ShowWait(pre ? App.Lang("MainWindow.Info29")
+            : App.Lang("MainWindow.Info30")));
     }
 
     private static Task<bool> GameRequest(string state)
@@ -82,7 +82,7 @@ public static class InfoBinding
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
             return Window.ShowWait(string.Format(
-                App.GetLanguage("MainWindow.Info21"), login.UserName));
+                App.Lang("MainWindow.Info21"), login.UserName));
         });
     }
 
@@ -97,43 +97,43 @@ public static class InfoBinding
                 switch (state)
                 {
                     case LaunchState.Login:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info8"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info8"));
                         break;
                     case LaunchState.Check:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info9"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info9"));
                         break;
                     case LaunchState.CheckVersion:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info10"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info10"));
                         break;
                     case LaunchState.CheckLib:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info11"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info11"));
                         break;
                     case LaunchState.CheckAssets:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info12"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info12"));
                         break;
                     case LaunchState.CheckLoader:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info13"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info13"));
                         break;
                     case LaunchState.CheckLoginCore:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info14"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info14"));
                         break;
                     case LaunchState.CheckMods:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info17"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info17"));
                         break;
                     case LaunchState.Download:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info15"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info15"));
                         break;
                     case LaunchState.JvmPrepare:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info16"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info16"));
                         break;
                     case LaunchState.LaunchPre:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info31"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info31"));
                         break;
                     case LaunchState.LaunchPost:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info32"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info32"));
                         break;
                     case LaunchState.InstallForge:
-                        Window.ProgressUpdate(App.GetLanguage("MainWindow.Info38"));
+                        Window.ProgressUpdate(App.Lang("MainWindow.Info38"));
                         break;
                     case LaunchState.End:
                         Window.ProgressClose();
@@ -145,43 +145,43 @@ public static class InfoBinding
                 switch (state)
                 {
                     case LaunchState.Login:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info8");
+                        Window.Title1 = App.Lang("MainWindow.Info8");
                         break;
                     case LaunchState.Check:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info9");
+                        Window.Title1 = App.Lang("MainWindow.Info9");
                         break;
                     case LaunchState.CheckVersion:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info10");
+                        Window.Title1 = App.Lang("MainWindow.Info10");
                         break;
                     case LaunchState.CheckLib:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info11");
+                        Window.Title1 = App.Lang("MainWindow.Info11");
                         break;
                     case LaunchState.CheckAssets:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info12");
+                        Window.Title1 = App.Lang("MainWindow.Info12");
                         break;
                     case LaunchState.CheckLoader:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info13");
+                        Window.Title1 = App.Lang("MainWindow.Info13");
                         break;
                     case LaunchState.CheckLoginCore:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info14");
+                        Window.Title1 = App.Lang("MainWindow.Info14");
                         break;
                     case LaunchState.CheckMods:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info17");
+                        Window.Title1 = App.Lang("MainWindow.Info17");
                         break;
                     case LaunchState.Download:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info15");
+                        Window.Title1 = App.Lang("MainWindow.Info15");
                         break;
                     case LaunchState.JvmPrepare:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info16");
+                        Window.Title1 = App.Lang("MainWindow.Info16");
                         break;
                     case LaunchState.LaunchPre:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info31");
+                        Window.Title1 = App.Lang("MainWindow.Info31");
                         break;
                     case LaunchState.LaunchPost:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info32");
+                        Window.Title1 = App.Lang("MainWindow.Info32");
                         break;
                     case LaunchState.InstallForge:
-                        Window.Title1 = App.GetLanguage("MainWindow.Info38");
+                        Window.Title1 = App.Lang("MainWindow.Info38");
                         break;
                     case LaunchState.End:
                         Window.Title1 = "";

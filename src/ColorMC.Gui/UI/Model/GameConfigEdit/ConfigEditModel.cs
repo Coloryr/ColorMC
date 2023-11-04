@@ -145,7 +145,7 @@ public partial class GameConfigEditModel : GameModel
             return;
         }
 
-        Model.Progress(App.GetLanguage("ConfigEditWindow.Info7"));
+        Model.Progress(App.Lang("ConfigEditWindow.Info7"));
         _chunkData = null;
         var info = new FileInfo(value);
         if (info.Extension is ".dat" or ".dat_old" or ".rio")
@@ -166,7 +166,7 @@ public partial class GameConfigEditModel : GameModel
 
             if (nbt is not NbtCompound nbt1)
             {
-                Model.Show(App.GetLanguage("ConfigEditWindow.Error9"));
+                Model.Show(App.Lang("ConfigEditWindow.Error9"));
                 return;
             }
 
@@ -190,7 +190,7 @@ public partial class GameConfigEditModel : GameModel
 
             if (_chunkData?.Nbt is not NbtList nbt1)
             {
-                Model.Show(App.GetLanguage("ConfigEditWindow.Error10"));
+                Model.Show(App.Lang("ConfigEditWindow.Error10"));
                 return;
             }
 
@@ -221,8 +221,8 @@ public partial class GameConfigEditModel : GameModel
     public void FindEntity()
     {
         _isEntity = true;
-        FindText1 = App.GetLanguage("ConfigEditWindow.Text6");
-        FindText2 = App.GetLanguage("ConfigEditWindow.Text11");
+        FindText1 = App.Lang("ConfigEditWindow.Text6");
+        FindText2 = App.Lang("ConfigEditWindow.Text11");
         PosClear();
         PosChange();
         DisplayFind = true;
@@ -232,8 +232,8 @@ public partial class GameConfigEditModel : GameModel
     public void FindBlock()
     {
         _isEntity = false;
-        FindText1 = App.GetLanguage("ConfigEditWindow.Text5");
-        FindText2 = App.GetLanguage("ConfigEditWindow.Text7");
+        FindText1 = App.Lang("ConfigEditWindow.Text5");
+        FindText2 = App.Lang("ConfigEditWindow.Text7");
         PosClear();
         PosChange();
         DisplayFind = true;
@@ -271,7 +271,7 @@ public partial class GameConfigEditModel : GameModel
             }
             if (nbt == null)
             {
-                Model.Show(string.Format(App.GetLanguage("ConfigEditWindow.Error4"), Chunk));
+                Model.Show(string.Format(App.Lang("ConfigEditWindow.Error4"), Chunk));
                 return;
             }
 
@@ -304,8 +304,8 @@ public partial class GameConfigEditModel : GameModel
                     else
                     {
                         Model.Show(string.Format(_isEntity
-                            ? App.GetLanguage("ConfigEditWindow.Error8")
-                            : App.GetLanguage("ConfigEditWindow.Error6"), PosName));
+                            ? App.Lang("ConfigEditWindow.Error8")
+                            : App.Lang("ConfigEditWindow.Error6"), PosName));
                     }
                 }
             }
@@ -315,8 +315,8 @@ public partial class GameConfigEditModel : GameModel
         else
         {
             Model.Show(string.Format(_isEntity
-                 ? App.GetLanguage("ConfigEditWindow.Error7")
-                 : App.GetLanguage("ConfigEditWindow.Error5"), chunkflie));
+                 ? App.Lang("ConfigEditWindow.Error7")
+                 : App.Lang("ConfigEditWindow.Error5"), chunkflie));
         }
     }
 
@@ -365,7 +365,7 @@ public partial class GameConfigEditModel : GameModel
             }
         }
 
-        Model.Notify(App.GetLanguage("Gui.Info10"));
+        Model.Notify(App.Lang("Gui.Info10"));
     }
 
     [RelayCommand]
@@ -413,8 +413,8 @@ public partial class GameConfigEditModel : GameModel
             Key = "";
             Type = 0;
             DisplayType = true;
-            Title = App.GetLanguage("ConfigEditWindow.Info2");
-            Title1 = App.GetLanguage("ConfigEditWindow.Info3");
+            Title = App.Lang("ConfigEditWindow.Info2");
+            Title1 = App.Lang("ConfigEditWindow.Info3");
             DisplayAdd = true;
             await Task.Run(_semaphore.WaitOne);
             DisplayAdd = false;
@@ -424,12 +424,12 @@ public partial class GameConfigEditModel : GameModel
             }
             if (string.IsNullOrWhiteSpace(Key))
             {
-                Model.Show(App.GetLanguage("ConfigEditWindow.Error1"));
+                Model.Show(App.Lang("ConfigEditWindow.Error1"));
                 return;
             }
             else if (list.HaveKey(Key))
             {
-                Model.Show(App.GetLanguage("ConfigEditWindow.Error2"));
+                Model.Show(App.Lang("ConfigEditWindow.Error2"));
                 return;
             }
 
@@ -446,7 +446,7 @@ public partial class GameConfigEditModel : GameModel
         if (model.Top == null)
             return;
 
-        var res = await Model.ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
+        var res = await Model.ShowWait(App.Lang("ConfigEditWindow.Info1"));
         if (!res)
             return;
 
@@ -457,7 +457,7 @@ public partial class GameConfigEditModel : GameModel
     {
         var list1 = new List<NbtNodeModel?>(list);
 
-        var res = await Model.ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
+        var res = await Model.ShowWait(App.Lang("ConfigEditWindow.Info1"));
         if (!res)
         {
             return;
@@ -479,8 +479,8 @@ public partial class GameConfigEditModel : GameModel
         var list = (model.Top.Nbt as NbtCompound)!;
         Key = model.Key!;
         DisplayType = false;
-        Title = App.GetLanguage("ConfigEditWindow.Info5");
-        Title1 = App.GetLanguage("ConfigEditWindow.Info3");
+        Title = App.Lang("ConfigEditWindow.Info5");
+        Title1 = App.Lang("ConfigEditWindow.Info3");
         DisplayAdd = true;
         await Task.Run(_semaphore.WaitOne);
         DisplayAdd = false;
@@ -490,7 +490,7 @@ public partial class GameConfigEditModel : GameModel
         }
         if (string.IsNullOrWhiteSpace(Key))
         {
-            Model.Show(App.GetLanguage("ConfigEditWindow.Error1"));
+            Model.Show(App.Lang("ConfigEditWindow.Error1"));
             return;
         }
         else if (Key == model.Key)
@@ -499,7 +499,7 @@ public partial class GameConfigEditModel : GameModel
         }
         else if (list.HaveKey(Key))
         {
-            Model.Show(App.GetLanguage("ConfigEditWindow.Error2"));
+            Model.Show(App.Lang("ConfigEditWindow.Error2"));
             return;
         }
 
@@ -589,8 +589,8 @@ public partial class GameConfigEditModel : GameModel
         {
             Key = model.Nbt.Value.ToString();
             DisplayType = false;
-            Title = App.GetLanguage("ConfigEditWindow.Info6");
-            Title1 = App.GetLanguage("ConfigEditWindow.Info4");
+            Title = App.Lang("ConfigEditWindow.Info6");
+            Title1 = App.Lang("ConfigEditWindow.Info4");
             DisplayAdd = true;
             await Task.Run(_semaphore.WaitOne);
             DisplayAdd = false;
@@ -600,7 +600,7 @@ public partial class GameConfigEditModel : GameModel
             }
             if (string.IsNullOrWhiteSpace(Key))
             {
-                Model.Show(App.GetLanguage("ConfigEditWindow.Error1"));
+                Model.Show(App.Lang("ConfigEditWindow.Error1"));
                 return;
             }
 
@@ -610,7 +610,7 @@ public partial class GameConfigEditModel : GameModel
             }
             catch
             {
-                Model.Show(App.GetLanguage("ConfigEditWindow.Error3"));
+                Model.Show(App.Lang("ConfigEditWindow.Error3"));
             }
         }
 
@@ -636,7 +636,7 @@ public partial class GameConfigEditModel : GameModel
         }
         catch
         {
-            Model.Show(App.GetLanguage("ConfigEditWindow.Error3"));
+            Model.Show(App.Lang("ConfigEditWindow.Error3"));
             DataItem.Value = 0;
             return;
         }
@@ -676,7 +676,7 @@ public partial class GameConfigEditModel : GameModel
 
     public async void Find()
     {
-        var data = await Model.ShowInputOne(App.GetLanguage("ConfigEditWindow.Info3"), false);
+        var data = await Model.ShowInputOne(App.Lang("ConfigEditWindow.Info3"), false);
         if (data.Cancel)
         {
             return;

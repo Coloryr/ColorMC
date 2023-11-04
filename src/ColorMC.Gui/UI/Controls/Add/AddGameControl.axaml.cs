@@ -32,7 +32,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public UserControl Con => this;
 
-    public string Title => App.GetLanguage("AddGameWindow.Title");
+    public string Title => App.Lang("AddGameWindow.Title");
 
     public AddGameControl()
     {

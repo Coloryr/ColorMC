@@ -12,7 +12,7 @@ public partial class AddJavaControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.GetLanguage("AddJavaWindow.Title");
+    public string Title => App.Lang("AddJavaWindow.Title");
 
     public AddJavaControl()
     {

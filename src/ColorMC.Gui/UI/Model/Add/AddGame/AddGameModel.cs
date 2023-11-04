@@ -21,11 +21,11 @@ public partial class AddGameModel : MenuModel
     public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/AddMenu/item1.svg",
-            Text = App.GetLanguage("AddGameWindow.Tabs.Text1") },
+            Text = App.Lang("AddGameWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/AddMenu/item2.svg",
-            Text = App.GetLanguage("AddGameWindow.Tabs.Text2") },
+            Text = App.Lang("AddGameWindow.Tabs.Text2") },
         new() { Icon = "/Resource/Icon/AddMenu/item3.svg",
-            Text = App.GetLanguage("AddGameWindow.Tabs.Text3") },
+            Text = App.Lang("AddGameWindow.Tabs.Text3") },
     };
 
     /// <summary>
@@ -70,7 +70,7 @@ public partial class AddGameModel : MenuModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text) = await Model.ShowInputOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
+        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("AddGameWindow.Tab1.Info5"), false);
         if (Cancel)
         {
             return;
@@ -78,17 +78,17 @@ public partial class AddGameModel : MenuModel
 
         if (string.IsNullOrWhiteSpace(Text))
         {
-            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error2"));
+            Model.Show(App.Lang("AddGameWindow.Tab1.Error2"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(Text))
         {
-            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error3"));
+            Model.Show(App.Lang("AddGameWindow.Tab1.Error3"));
             return;
         }
 
-        Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info6"));
+        Model.Notify(App.Lang("AddGameWindow.Tab1.Info6"));
 
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);

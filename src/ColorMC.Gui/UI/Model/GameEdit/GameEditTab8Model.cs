@@ -30,11 +30,11 @@ public partial class GameEditModel : MenuModel
 
         if (file == false)
         {
-            Model.Notify(App.GetLanguage("GameEditWindow.Tab8.Error1"));
+            Model.Notify(App.Lang("GameEditWindow.Tab8.Error1"));
             return;
         }
 
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        Model.Notify(App.Lang("GameEditWindow.Tab4.Info2"));
         await LoadResource();
     }
 
@@ -47,7 +47,7 @@ public partial class GameEditModel : MenuModel
     [RelayCommand]
     public async Task LoadResource()
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab8.Info3"));
+        Model.Progress(App.Lang("GameEditWindow.Tab8.Info3"));
         ResourcePackList.Clear();
 
         var res = await GameBinding.GetResourcepacks(_obj);
@@ -61,14 +61,14 @@ public partial class GameEditModel : MenuModel
     public async void DeleteResource(ResourcepackObj obj)
     {
         var res = await Model.ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab8.Info1"), obj.Local));
+            string.Format(App.Lang("GameEditWindow.Tab8.Info1"), obj.Local));
         if (!res)
         {
             return;
         }
 
         GameBinding.DeleteResourcepack(obj);
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         await LoadResource();
     }
 

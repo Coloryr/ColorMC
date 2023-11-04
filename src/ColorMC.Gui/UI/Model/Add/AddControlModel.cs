@@ -360,13 +360,13 @@ public partial class AddControlModel : GameModel, IAddWindow
         {
             SortTypeList.AddRange(LanguageBinding.GetCurseForgeSortTypes());
 
-            Model.Progress(App.GetLanguage("AddModPackWindow.Info4"));
+            Model.Progress(App.Lang("AddModPackWindow.Info4"));
             var list = await GameBinding.GetCurseForgeGameVersions();
             var list1 = await GameBinding.GetCurseForgeCategories(_now);
             Model.ProgressClose();
             if (list == null || list1 == null)
             {
-                Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), LoadFail);
+                Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
                 return;
             }
 
@@ -407,13 +407,13 @@ public partial class AddControlModel : GameModel, IAddWindow
         {
             SortTypeList.AddRange(LanguageBinding.GetModrinthSortTypes());
 
-            Model.Progress(App.GetLanguage("AddModPackWindow.Info4"));
+            Model.Progress(App.Lang("AddModPackWindow.Info4"));
             var list = await GameBinding.GetModrinthGameVersions();
             var list1 = await GameBinding.GetModrinthCategories(_now);
             Model.ProgressClose();
             if (list == null || list1 == null)
             {
-                Model.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), LoadFail);
+                Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
                 return;
             }
             GameVersionList.AddRange(list);
@@ -516,7 +516,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     public async Task GetList()
     {
         var type = SourceTypeList[DownloadSource];
-        Model.Progress(App.GetLanguage("AddWindow.Info2"));
+        Model.Progress(App.Lang("AddWindow.Info2"));
         if (type == SourceType.McMod)
         {
             //McMod搜索源
@@ -524,7 +524,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             if (data == null)
             {
                 Model.ProgressClose();
-                Model.Show(App.GetLanguage("AddWindow.Error2"));
+                Model.Show(App.Lang("AddWindow.Error2"));
                 return;
             }
 
@@ -554,7 +554,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             if (data == null)
             {
                 Model.ProgressClose();
-                Model.Show(App.GetLanguage("AddWindow.Error2"));
+                Model.Show(App.Lang("AddWindow.Error2"));
                 return;
             }
 
@@ -628,7 +628,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
 
         var res = await Model.ShowWait(
-            string.Format(Set ? App.GetLanguage("AddWindow.Info8") : App.GetLanguage("AddWindow.Info1"),
+            string.Format(Set ? App.Lang("AddWindow.Info8") : App.Lang("AddWindow.Info1"),
             item.Name));
         if (res)
         {
@@ -653,7 +653,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         if (_last == null)
         {
-            Model.Show(App.GetLanguage("AddWindow.Error1"));
+            Model.Show(App.Lang("AddWindow.Error1"));
             return;
         }
 
@@ -670,12 +670,12 @@ public partial class AddControlModel : GameModel, IAddWindow
         GameVersionList.Clear();
         OptifineList.Clear();
         DownloadOptifineList.Clear();
-        Model.Progress(App.GetLanguage("AddWindow.Info13"));
+        Model.Progress(App.Lang("AddWindow.Info13"));
         var list = await WebBinding.GetOptifine();
         Model.ProgressClose();
         if (list == null)
         {
-            Model.Show(App.GetLanguage("AddWindow.Error10"));
+            Model.Show(App.Lang("AddWindow.Error10"));
             return;
         }
 
@@ -708,7 +708,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     [RelayCommand]
     public async Task DownloadMod()
     {
-        Model.Progress(App.GetLanguage("AddWindow.Info5"));
+        Model.Progress(App.Lang("AddWindow.Info5"));
         var list = DownloadModList.Where(item => item.Download)
                         .Select(item => item.Items[item.SelectVersion]).ToList();
         list.Add(_modsave);
@@ -717,7 +717,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         Model.ProgressClose();
         if (!res)
         {
-            Model.Show(App.GetLanguage("AddWindow.Error5"));
+            Model.Show(App.Lang("AddWindow.Error5"));
             if (_last != null)
             {
                 _last.IsDownload = false;
@@ -802,10 +802,10 @@ public partial class AddControlModel : GameModel, IAddWindow
             return;
 
         var res = await Model.ShowWait(string.Format(
-            App.GetLanguage("AddWindow.Info10"), OptifineItem.Version));
+            App.Lang("AddWindow.Info10"), OptifineItem.Version));
         if (!res)
             return;
-        Model.Progress(App.GetLanguage("AddWindow.Info11"));
+        Model.Progress(App.Lang("AddWindow.Info11"));
         var res1 = await WebBinding.DownloadOptifine(Obj, OptifineItem);
         Model.ProgressClose();
         if (res1.Item1 == false)
@@ -814,7 +814,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
         else
         {
-            Model.Notify(App.GetLanguage("AddWindow.Info12"));
+            Model.Notify(App.Lang("AddWindow.Info12"));
             OptifineClose();
         }
     }
@@ -862,7 +862,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         if (IsDownload)
         {
-            Model.Show(App.GetLanguage("AddWindow.Info9"));
+            Model.Show(App.Lang("AddWindow.Info9"));
             return;
         }
 
@@ -910,13 +910,13 @@ public partial class AddControlModel : GameModel, IAddWindow
             var list = await GameBinding.GetWorlds(Obj);
             if (list.Count == 0)
             {
-                Model.Show(App.GetLanguage("AddWindow.Error6"));
+                Model.Show(App.Lang("AddWindow.Error6"));
                 return;
             }
 
             var world = new List<string>();
             list.ForEach(item => world.Add(item.LevelName));
-            var res1 = await Model.ShowCombo(App.GetLanguage("AddWindow.Info7"), world);
+            var res1 = await Model.ShowCombo(App.Lang("AddWindow.Info7"), world);
             if (res1.Cancel)
                 return;
             var item = list[res1.Index];
@@ -935,7 +935,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             }
             catch (Exception e)
             {
-                Logs.Error(App.GetLanguage("AddWindow.Error7"), e);
+                Logs.Error(App.Lang("AddWindow.Error7"), e);
                 res = false;
             }
         }
@@ -954,7 +954,7 @@ public partial class AddControlModel : GameModel, IAddWindow
                 };
                 if (list.Item1 == null)
                 {
-                    Model.Show(App.GetLanguage("AddWindow.Error9"));
+                    Model.Show(App.Lang("AddWindow.Error9"));
                     return;
                 }
                 if (list.Item3!.Count == 0)
@@ -983,7 +983,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             }
             catch (Exception e)
             {
-                Logs.Error(App.GetLanguage("AddWindow.Error8"), e);
+                Logs.Error(App.Lang("AddWindow.Error8"), e);
                 res = false;
             }
         }
@@ -1003,13 +1003,13 @@ public partial class AddControlModel : GameModel, IAddWindow
             }
             catch (Exception e)
             {
-                Logs.Error(App.GetLanguage("AddWindow.Error8"), e);
+                Logs.Error(App.Lang("AddWindow.Error8"), e);
                 res = false;
             }
         }
         if (res)
         {
-            Model.Notify(App.GetLanguage("AddWindow.Info6"));
+            Model.Notify(App.Lang("AddWindow.Info6"));
             if (last != null)
             {
                 last.NowDownload = false;
@@ -1022,7 +1022,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             {
                 last.NowDownload = false;
             }
-            Model.Show(App.GetLanguage("AddWindow.Error5"));
+            Model.Show(App.Lang("AddWindow.Error5"));
         }
     }
 
@@ -1071,7 +1071,7 @@ public partial class AddControlModel : GameModel, IAddWindow
                 var obj1 = (_last!.Data.Data as McModSearchItemObj)!;
                 if (obj1.curseforge_id != null && obj1.modrinth_id != null)
                 {
-                    var res = await Model.ShowCombo(App.GetLanguage("AddWindow.Info14"), SourceTypeNameList);
+                    var res = await Model.ShowCombo(App.Lang("AddWindow.Info14"), SourceTypeNameList);
                     if (res.Cancel)
                     {
                         return;
@@ -1099,12 +1099,12 @@ public partial class AddControlModel : GameModel, IAddWindow
 
         if (type == SourceType.McMod)
         {
-            Model.Show(App.GetLanguage("AddWindow.Error11"));
+            Model.Show(App.Lang("AddWindow.Error11"));
             return;
         }
 
         VersionDisplay = true;
-        Model.Progress(App.GetLanguage("AddWindow.Info3"));
+        Model.Progress(App.Lang("AddWindow.Info3"));
         if (type == SourceType.CurseForge)
         {
             EnablePage = true;
@@ -1122,7 +1122,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
         if (list == null)
         {
-            Model.Show(App.GetLanguage("AddWindow.Error3"));
+            Model.Show(App.Lang("AddWindow.Error3"));
             Model.ProgressClose();
             return;
         }

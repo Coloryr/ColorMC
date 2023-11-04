@@ -107,13 +107,13 @@ public partial class MainModel : TopModel, IMainTop
         {
             BaseBinding.MusicPause();
 
-            Model.Title = App.GetLanguage("MainWindow.Title");
+            Model.Title = App.Lang("MainWindow.Title");
         }
         else
         {
             BaseBinding.MusicPlay();
 
-            Model.Title = App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33");
+            Model.Title = App.Lang("MainWindow.Title") + " " + App.Lang("MainWindow.Info33");
         }
 
         _isplay = !_isplay;
@@ -155,7 +155,7 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text) = await Model.ShowInputOne(App.GetLanguage("MainWindow.Info1"), false);
+        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("MainWindow.Info1"), false);
         if (Cancel)
         {
             return;
@@ -163,13 +163,13 @@ public partial class MainModel : TopModel, IMainTop
 
         if (string.IsNullOrWhiteSpace(Text))
         {
-            Model.Show(App.GetLanguage("MainWindow.Error3"));
+            Model.Show(App.Lang("MainWindow.Error3"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(Text))
         {
-            Model.Show(App.GetLanguage("MainWindow.Error4"));
+            Model.Show(App.Lang("MainWindow.Error4"));
             return;
         }
 
@@ -233,7 +233,14 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public void OpenNetFrp()
     {
-        App.ShowNetFrp();
+        if (UserBinding.HaveOnline())
+        {
+            App.ShowNetFrp();
+        }
+        else
+        {
+            Model.Show(App.Lang("MainWindow.Info39"));
+        }
     }
 
     private void App_SkinLoad()
@@ -308,8 +315,8 @@ public partial class MainModel : TopModel, IMainTop
 
         if (user == null)
         {
-            UserId = App.GetLanguage("MainWindow.Info36");
-            UserType = App.GetLanguage("MainWindow.Info35");
+            UserId = App.Lang("MainWindow.Info36");
+            UserType = App.Lang("MainWindow.Info35");
         }
         else
         {
@@ -352,7 +359,7 @@ public partial class MainModel : TopModel, IMainTop
 
         if (config.Item2.ServerCustom?.PlayMusic == true)
         {
-            Model.Title = App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33");
+            Model.Title = App.Lang("MainWindow.Title") + " " + App.Lang("MainWindow.Info33");
             MusicDisplay = true;
         }
         else
@@ -394,7 +401,7 @@ public partial class MainModel : TopModel, IMainTop
                 {
                     if (item.Key == " ")
                     {
-                        DefaultGroup = new(Model, this, " ", App.GetLanguage("MainWindow.Info20"), item.Value);
+                        DefaultGroup = new(Model, this, " ", App.Lang("MainWindow.Info20"), item.Value);
                         if (list.Count > 0)
                         {
                             DefaultGroup.Expander = false;
@@ -476,13 +483,13 @@ public partial class MainModel : TopModel, IMainTop
         UpdateLaunch();
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
-            Model.Progress(App.GetLanguage("MainWindow.Info3"));
+            Model.Progress(App.Lang("MainWindow.Info3"));
         }
         var item = Game!;
         var game = item.Obj;
         item.IsLaunch = false;
         item.IsLoad = true;
-        Model.Notify(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
+        Model.Notify(App.Lang(string.Format(App.Lang("MainWindow.Info28"), game.Name)));
         var res = await GameBinding.Launch(Model, game, wait: GuiConfigUtils.Config.CloseBeforeLaunch);
         Model.Title1 = null;
         item.IsLoad = false;
@@ -496,7 +503,7 @@ public partial class MainModel : TopModel, IMainTop
         }
         else
         {
-            Model.Notify(App.GetLanguage("MainWindow.Info2"));
+            Model.Notify(App.Lang("MainWindow.Info2"));
             if (SystemInfo.Os != OsType.Android)
             {
                 item.IsLaunch = true;
@@ -505,7 +512,7 @@ public partial class MainModel : TopModel, IMainTop
 
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
-                Model.Progress(App.GetLanguage("MainWindow.Info26"));
+                Model.Progress(App.Lang("MainWindow.Info26"));
             }
         }
         IsLaunch = false;

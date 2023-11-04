@@ -14,7 +14,7 @@ public partial class AddModPackControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.GetLanguage("AddModPackWindow.Title");
+    public string Title => App.Lang("AddModPackWindow.Title");
 
     public AddModPackControl()
     {

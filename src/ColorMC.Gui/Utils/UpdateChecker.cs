@@ -91,7 +91,7 @@ public static class UpdateChecker
         catch (Exception e)
         {
             App.UpdateCheckFail();
-            Logs.Error(App.GetLanguage("Gui.Error21"), e);
+            Logs.Error(App.Lang("Gui.Error21"), e);
         }
     }
 
@@ -147,7 +147,7 @@ public static class UpdateChecker
         }
         else
         {
-            App.ShowError(App.GetLanguage("Gui.Error22"), "");
+            App.ShowError(App.Lang("Gui.Error22"), "");
         }
     }
 
@@ -164,7 +164,7 @@ public static class UpdateChecker
             var obj = JObject.Parse(await data.Content.ReadAsStringAsync());
             if (obj == null)
             {
-                App.ShowError(App.GetLanguage("Gui.Error21"), "Json Error");
+                App.ShowError(App.Lang("Gui.Error21"), "Json Error");
                 return (false, null);
             }
 
@@ -183,7 +183,7 @@ public static class UpdateChecker
                 if (WebSha1s[a] != Sha1s[a])
                 {
                     obj.TryGetValue("text", out var data1);
-                    return (true, data1?.ToString() ?? App.GetLanguage("Gui.Info20"));
+                    return (true, data1?.ToString() ?? App.Lang("Gui.Info20"));
                 }
             }
 
@@ -191,7 +191,7 @@ public static class UpdateChecker
         }
         catch (Exception e)
         {
-            App.ShowError(App.GetLanguage("Gui.Error21"), e);
+            App.ShowError(App.Lang("Gui.Error21"), e);
         }
 
         return (null, null);

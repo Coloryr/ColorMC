@@ -13,7 +13,7 @@ public class Localizer : INotifyPropertyChanged
     {
         get
         {
-            return App.GetLanguage(key);
+            return App.Lang(key);
         }
     }
 

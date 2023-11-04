@@ -19,21 +19,21 @@ public class MainFlyout
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("MainWindow.Flyouts.Text2"), true, Button3_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text1"), true, Button1_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text3"), true, Button11_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text4"), true, Button2_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text6"), true, Button4_Click),
-            (App.GetLanguage("Button.OpFile"), true, Button7_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text7"), true, Button5_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text8"), true, Button9_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text15"), SystemInfo.Os == OsType.Windows, Button15_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text14"), GameCloudUtils.Connect, Button14_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text10"), !run, Button12_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text9"), !run, Button8_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text11"), !run, Button6_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text12"), !run, Button13_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text13"), run, Button10_Click)
+            (App.Lang("MainWindow.Flyouts.Text2"), true, Button3_Click),
+            (App.Lang("MainWindow.Flyouts.Text1"), true, Button1_Click),
+            (App.Lang("MainWindow.Flyouts.Text3"), true, Button11_Click),
+            (App.Lang("MainWindow.Flyouts.Text4"), true, Button2_Click),
+            (App.Lang("MainWindow.Flyouts.Text6"), true, Button4_Click),
+            (App.Lang("Button.OpFile"), true, Button7_Click),
+            (App.Lang("MainWindow.Flyouts.Text7"), true, Button5_Click),
+            (App.Lang("MainWindow.Flyouts.Text8"), true, Button9_Click),
+            (App.Lang("MainWindow.Flyouts.Text15"), SystemInfo.Os == OsType.Windows, Button15_Click),
+            (App.Lang("MainWindow.Flyouts.Text14"), GameCloudUtils.Connect, Button14_Click),
+            (App.Lang("MainWindow.Flyouts.Text10"), !run, Button12_Click),
+            (App.Lang("MainWindow.Flyouts.Text9"), !run, Button8_Click),
+            (App.Lang("MainWindow.Flyouts.Text11"), !run, Button6_Click),
+            (App.Lang("MainWindow.Flyouts.Text12"), !run, Button13_Click),
+            (App.Lang("MainWindow.Flyouts.Text13"), run, Button10_Click)
 
         }, con);
     }

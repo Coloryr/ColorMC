@@ -334,7 +334,7 @@ public partial class SettingModel : MenuModel
 
         if (value)
         {
-            Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
+            Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
             await ConfigBinding.SetBackLimit(value, PicResize);
             Model.ProgressClose();
         }
@@ -362,7 +362,7 @@ public partial class SettingModel : MenuModel
         if (_load)
             return;
 
-        Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info1"));
+        Model.Progress(App.Lang("SettingWindow.Tab2.Info1"));
         ConfigBinding.SetLanguage(value);
         Model.ProgressClose();
     }
@@ -379,12 +379,12 @@ public partial class SettingModel : MenuModel
 
         if (file != null)
         {
-            Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info11"));
+            Model.Progress(App.Lang("SettingWindow.Tab2.Info11"));
             var res = await BaseBinding.SetLive2DCore(file);
             Model.ProgressClose();
             if (!res)
             {
-                Model.Show(App.GetLanguage("SettingWindow.Tab2.Error4"));
+                Model.Show(App.Lang("SettingWindow.Tab2.Error4"));
             }
             else
             {
@@ -420,24 +420,24 @@ public partial class SettingModel : MenuModel
         DarkFont1Color = Color.Parse(ColorSel.ButtonDarkFontStr);
         DarkFont2Color = Color.Parse(ColorSel.FontDarkColorStr);
         _load = false;
-        Model.Notify(App.GetLanguage("SettingWindow.Tab2.Info4"));
+        Model.Notify(App.Lang("SettingWindow.Tab2.Info4"));
     }
 
     [RelayCommand]
     public async Task SetPicSize()
     {
-        Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackLimit(EnablePicResize, PicResize);
         Model.ProgressClose();
 
-        Model.Notify(App.GetLanguage("Gui.Info3"));
+        Model.Notify(App.Lang("Gui.Info3"));
     }
 
     [RelayCommand]
     public void SetPicTran()
     {
         ConfigBinding.SetBackTran(PicTran);
-        Model.Notify(App.GetLanguage("Gui.Info3"));
+        Model.Notify(App.Lang("Gui.Info3"));
     }
 
     [RelayCommand]
@@ -470,7 +470,7 @@ public partial class SettingModel : MenuModel
         if (_load)
             return;
 
-        Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
         if (SystemInfo.Os == OsType.Android)
         {
             await PathBinding.CopyBG(Pic!);
@@ -478,7 +478,7 @@ public partial class SettingModel : MenuModel
         await ConfigBinding.SetBackPic(EnableBG, Pic, PicEffect);
         Model.ProgressClose();
 
-        Model.Notify(App.GetLanguage("Gui.Info3"));
+        Model.Notify(App.Lang("Gui.Info3"));
     }
 
     [RelayCommand]
@@ -513,14 +513,14 @@ public partial class SettingModel : MenuModel
 
         if (string.IsNullOrWhiteSpace(Live2DModel))
         {
-            Model.Show(App.GetLanguage("SettingWindow.Tab2.Error3"));
+            Model.Show(App.Lang("SettingWindow.Tab2.Error3"));
             return;
         }
-        Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
         ConfigBinding.SetLive2D(Live2DModel);
         Model.ProgressClose();
 
-        Model.Notify(App.GetLanguage("Gui.Info3"));
+        Model.Notify(App.Lang("Gui.Info3"));
     }
 
     public void LoadUISetting()
@@ -609,7 +609,7 @@ public partial class SettingModel : MenuModel
         }
         catch
         {
-            Live2DCoreState = App.GetLanguage("SettingWindow.Tab2.Error2");
+            Live2DCoreState = App.Lang("SettingWindow.Tab2.Error2");
             CoreInstall = false;
         }
 
@@ -633,7 +633,7 @@ public partial class SettingModel : MenuModel
         if (_load)
             return;
 
-        Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info5"));
+        Model.Progress(App.Lang("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetWindowTran(EnableWindowTran, WindowTranType);
         Model.ProgressClose();
     }

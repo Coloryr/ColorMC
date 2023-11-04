@@ -13,8 +13,8 @@ public class GameEditFlyout4
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("Button.OpFile"), true, Button1_Click),
-            (App.GetLanguage("GameEditWindow.Tab9.Text1"), true, Button2_Click)
+            (App.Lang("Button.OpFile"), true, Button1_Click),
+            (App.Lang("GameEditWindow.Tab9.Text1"), true, Button2_Click)
         }, con);
     }
 

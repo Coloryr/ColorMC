@@ -176,7 +176,7 @@ public partial class SkinModel : TopModel
     {
         if (Type == (int)SkinType.Unkonw)
         {
-            Model.Show(App.GetLanguage("SkinWindow.Info1"));
+            Model.Show(App.Lang("SkinWindow.Info1"));
             Type = (int)SteveModelType;
             return;
         }
@@ -290,7 +290,7 @@ public partial class SkinModel : TopModel
         var res = await PathBinding.SaveFile(FileType.Skin, null);
         if (res == true)
         {
-            Model.Notify(App.GetLanguage("Gui.Info10"));
+            Model.Notify(App.Lang("Gui.Info10"));
         }
     }
 

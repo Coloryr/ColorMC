@@ -98,7 +98,7 @@ public partial class FileItemModel : ObservableObject
         }
         catch (Exception e)
         {
-            Logs.Error(App.GetLanguage("AddModPackWindow.Error5"), e);
+            Logs.Error(App.Lang("AddModPackWindow.Error5"), e);
         }
 
         return null;

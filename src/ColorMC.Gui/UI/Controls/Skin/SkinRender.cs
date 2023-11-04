@@ -176,7 +176,7 @@ public class SkinRender : OpenGlControlBase
         var smg = gl.CompileShaderAndGetError(_vertexShader, SkinShader.VertexShader(GlVersion, false));
         if (smg != null)
         {
-            App.ShowError(App.GetLanguage("SkinWindow.Error2"),
+            App.ShowError(App.Lang("SkinWindow.Error2"),
                     new Exception($"GlConsts.GL_VERTEX_SHADER.\n{smg}"));
         }
 
@@ -184,7 +184,7 @@ public class SkinRender : OpenGlControlBase
         smg = gl.CompileShaderAndGetError(_fragmentShader, SkinShader.VertexShader(GlVersion, true));
         if (smg != null)
         {
-            App.ShowError(App.GetLanguage("SkinWindow.Error2"),
+            App.ShowError(App.Lang("SkinWindow.Error2"),
                     new Exception($"GlConsts.GL_FRAGMENT_SHADER.\n{smg}"));
         }
 
@@ -195,7 +195,7 @@ public class SkinRender : OpenGlControlBase
         smg = gl.LinkProgramAndGetError(_shaderProgram);
         if (smg != null)
         {
-            App.ShowError(App.GetLanguage("SkinWindow.Error1"), new Exception(smg));
+            App.ShowError(App.Lang("SkinWindow.Error1"), new Exception(smg));
         }
 
         InitVAO(gl, _normalVAO);
@@ -311,7 +311,7 @@ public class SkinRender : OpenGlControlBase
         if (UserBinding.SkinImage == null)
         {
             model.HaveSkin = false;
-            model.Text = App.GetLanguage("SkinWindow.Info2");
+            model.Text = App.Lang("SkinWindow.Info2");
             return;
         }
 
@@ -319,7 +319,7 @@ public class SkinRender : OpenGlControlBase
         if (model.SteveModelType == SkinType.Unkonw)
         {
             model.HaveSkin = false;
-            model.Text = App.GetLanguage("SkinWindow.Info3");
+            model.Text = App.Lang("SkinWindow.Info3");
             return;
         }
         LoadTex(gl, UserBinding.SkinImage, _texture);

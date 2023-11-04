@@ -35,7 +35,7 @@ public partial class ServerPackControl : UserControl, IUserControl
     private Bitmap _icon;
     public Bitmap GetIcon() => _icon;
 
-    public string Title => string.Format(App.GetLanguage("ServerPackWindow.Title"),
+    public string Title => string.Format(App.Lang("ServerPackWindow.Title"),
            _obj.Name);
 
     public ServerPackControl()

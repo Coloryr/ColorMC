@@ -188,7 +188,7 @@ public partial class SettingModel : MenuModel
     {
         if (string.IsNullOrWhiteSpace(FileUI))
         {
-            Model.Show(App.GetLanguage("Gui.Error8"));
+            Model.Show(App.Lang("Gui.Error8"));
             return;
         }
         var res = BaseBinding.TestCustomWindow(FileUI);
@@ -207,11 +207,11 @@ public partial class SettingModel : MenuModel
 
         if (str == false)
         {
-            Model.Show(App.GetLanguage("SettingWindow.Tab6.Error3"));
+            Model.Show(App.Lang("SettingWindow.Tab6.Error3"));
             return;
         }
 
-        Model.Notify(App.GetLanguage("SettingWindow.Tab6.Info4"));
+        Model.Notify(App.Lang("SettingWindow.Tab6.Info4"));
     }
 
     [RelayCommand]

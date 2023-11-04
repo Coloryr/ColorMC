@@ -99,7 +99,7 @@ public partial class AddJavaControlModel : TopModel
     [RelayCommand]
     public async Task Load()
     {
-        Model.Progress(App.GetLanguage("AddJavaWindow.Info4"));
+        Model.Progress(App.Lang("AddJavaWindow.Info4"));
 
         _load = true;
 
@@ -133,7 +133,7 @@ public partial class AddJavaControlModel : TopModel
         else
         {
             Model.ProgressClose();
-            Model.Show(App.GetLanguage("AddJavaWindow.Error1"));
+            Model.Show(App.Lang("AddJavaWindow.Error1"));
         }
 
         _load = false;
@@ -142,7 +142,7 @@ public partial class AddJavaControlModel : TopModel
     public async void Install(JavaDownloadObj obj)
     {
         var res = await Model.ShowWait(string.Format(
-            App.GetLanguage("AddJavaWindow.Info1"), obj.Name));
+            App.Lang("AddJavaWindow.Info1"), obj.Name));
         if (!res)
         {
             return;
@@ -150,7 +150,7 @@ public partial class AddJavaControlModel : TopModel
 
         if (ConfigBinding.GetAllConfig().Item2?.WindowMode != true)
         {
-            Model.Progress(App.GetLanguage("AddJavaWindow.Info2"));
+            Model.Progress(App.Lang("AddJavaWindow.Info2"));
         }
         var res1 = await JavaBinding.DownloadJava(obj);
         Model.ProgressClose();
@@ -160,7 +160,7 @@ public partial class AddJavaControlModel : TopModel
             return;
         }
 
-        Model.Notify(App.GetLanguage("AddJavaWindow.Info3"));
+        Model.Notify(App.Lang("AddJavaWindow.Info3"));
         (App.SettingWindow?.DataContext as SettingModel)?.LoadJava();
     }
 
@@ -203,7 +203,7 @@ public partial class AddJavaControlModel : TopModel
     {
         Dispatcher.UIThread.Post(() =>
         {
-            Model.ProgressUpdate(App.GetLanguage("AddJavaWindow.Info5"));
+            Model.ProgressUpdate(App.Lang("AddJavaWindow.Info5"));
         });
     }
 

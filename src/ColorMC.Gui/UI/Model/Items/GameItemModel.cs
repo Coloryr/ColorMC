@@ -73,7 +73,7 @@ public partial class GameItemModel : GameModel
 
     public void SetTips()
     {
-        Tips = string.Format(App.GetLanguage("Tips.Text1"),
+        Tips = string.Format(App.Lang("Tips.Text1"),
             Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
             Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),
             Obj.LaunchData.LastPlay.Ticks == 0 ? "" :
@@ -137,14 +137,14 @@ public partial class GameItemModel : GameModel
 
     public async void Rename()
     {
-        var (Cancel, Text1) = await Model.ShowEdit(App.GetLanguage("MainWindow.Info23"), Obj.Name);
+        var (Cancel, Text1) = await Model.ShowEdit(App.Lang("MainWindow.Info23"), Obj.Name);
         if (Cancel)
         {
             return;
         }
         if (string.IsNullOrWhiteSpace(Text1))
         {
-            Model.Show(App.GetLanguage("MainWindow.Error3"));
+            Model.Show(App.Lang("MainWindow.Error3"));
             return;
         }
 
@@ -153,45 +153,45 @@ public partial class GameItemModel : GameModel
 
     public async void Copy()
     {
-        var (Cancel, Text1) = await Model.ShowEdit(App.GetLanguage("MainWindow.Info23"),
-            Obj.Name + App.GetLanguage("MainWindow.Info24"));
+        var (Cancel, Text1) = await Model.ShowEdit(App.Lang("MainWindow.Info23"),
+            Obj.Name + App.Lang("MainWindow.Info24"));
         if (Cancel)
         {
             return;
         }
         if (string.IsNullOrWhiteSpace(Text1))
         {
-            Model.Show(App.GetLanguage("MainWindow.Error3"));
+            Model.Show(App.Lang("MainWindow.Error3"));
             return;
         }
 
         var res = await GameBinding.CopyGame(Obj, Text1);
         if (!res)
         {
-            Model.Show(App.GetLanguage("MainWindow.Error5"));
+            Model.Show(App.Lang("MainWindow.Error5"));
             return;
         }
         else
         {
-            Model.Notify(App.GetLanguage("MainWindow.Info25"));
+            Model.Notify(App.Lang("MainWindow.Info25"));
         }
     }
 
     public async void DeleteGame()
     {
-        var res = await Model.ShowWait(string.Format(App.GetLanguage("MainWindow.Info19"), Obj.Name));
+        var res = await Model.ShowWait(string.Format(App.Lang("MainWindow.Info19"), Obj.Name));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(App.GetLanguage("Gui.Info34"));
+        Model.Progress(App.Lang("Gui.Info34"));
         res = await GameBinding.DeleteGame(Model, Obj);
         Model.ProgressClose();
         Model.InputClose();
         if (!res)
         {
-            Model.Show(App.GetLanguage("MainWindow.Info37"));
+            Model.Show(App.Lang("MainWindow.Info37"));
         }
     }
 

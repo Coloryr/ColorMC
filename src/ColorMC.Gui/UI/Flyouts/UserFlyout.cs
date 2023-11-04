@@ -16,12 +16,12 @@ public class UserFlyout
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("UserWindow.Flyouts.Text1"), true, Button1_Click),
-            (App.GetLanguage("UserWindow.Flyouts.Text2"), _obj.AuthType != AuthType.Offline, Button2_Click),
-            (App.GetLanguage("UserWindow.Flyouts.Text3"), _obj.AuthType != AuthType.Offline
+            (App.Lang("UserWindow.Flyouts.Text1"), true, Button1_Click),
+            (App.Lang("UserWindow.Flyouts.Text2"), _obj.AuthType != AuthType.Offline, Button2_Click),
+            (App.Lang("UserWindow.Flyouts.Text3"), _obj.AuthType != AuthType.Offline
                 && _obj.AuthType != AuthType.OAuth, Button4_Click),
-            (App.GetLanguage("UserWindow.Flyouts.Text4"), true, Button3_Click),
-            (App.GetLanguage("UserWindow.Flyouts.Text5"), _obj.AuthType == AuthType.Offline, Button5_Click)
+            (App.Lang("UserWindow.Flyouts.Text4"), true, Button3_Click),
+            (App.Lang("UserWindow.Flyouts.Text5"), _obj.AuthType == AuthType.Offline, Button5_Click)
         }, con);
     }
 

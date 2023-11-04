@@ -11,7 +11,7 @@ public partial class ErrorControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.GetLanguage("ErrorWindow.Title");
+    public string Title => App.Lang("ErrorWindow.Title");
 
     private string? _data;
     private Exception? _e;

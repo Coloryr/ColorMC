@@ -56,7 +56,7 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.UnhandledException += (a, e) =>
         {
-            string temp = GetLanguage("Gui.Error25");
+            string temp = Lang("Gui.Error25");
             Logs.Error(temp, e.ExceptionObject as Exception);
             App.ShowError(temp, e.ExceptionObject as Exception);
         };
@@ -110,7 +110,10 @@ public partial class App : Application
 
     public static PlatformThemeVariant NowTheme { get; private set; }
 
+    public static Process? FrpProcess;
+
     private static readonly Language s_language = new();
+
 
     public override void Initialize()
     {
@@ -122,7 +125,7 @@ public partial class App : Application
         }
     }
 
-    public static string GetLanguage(string input)
+    public static string Lang(string input)
     {
         var data = s_language.GetLanguage(input, out bool have);
         if (have)
@@ -365,7 +368,7 @@ public partial class App : Application
             }
             catch (Exception e)
             {
-                var data = GetLanguage("Gui.Error10");
+                var data = Lang("Gui.Error10");
                 Logs.Error(data, e);
                 ShowError(data, e, true);
                 ok = false;
@@ -734,7 +737,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowNetFrp()
+    public static void ShowNetFrp(Process? p = null, string? ip = null)
     {
         if (NetFrpWindow != null)
         {
@@ -744,6 +747,11 @@ public partial class App : Application
         {
             NetFrpWindow = new();
             AWindow(NetFrpWindow);
+        }
+
+        if (p != null)
+        {
+            NetFrpWindow.SetProcess(p, ip!);
         }
     }
 
@@ -799,6 +807,7 @@ public partial class App : Application
 
     public static void Close()
     {
+        FrpProcess?.Kill(true);
         IsClose = true;
         OnClose?.Invoke();
         CloseAllWindow();
@@ -886,7 +895,7 @@ public partial class App : Application
             return Task.FromResult(false);
         }
         data ??= "";
-        return window.Model.TextInfo(GetLanguage("Gui.Info5"), data);
+        return window.Model.TextInfo(Lang("Gui.Info5"), data);
     }
 
     public static void UpdateCheckFail()
@@ -896,7 +905,7 @@ public partial class App : Application
         {
             return;
         }
-        window.Model.Show(GetLanguage("Gui.Error21"));
+        window.Model.Show(Lang("Gui.Error21"));
     }
 
     public static IBaseWindow? GetMainWindow()

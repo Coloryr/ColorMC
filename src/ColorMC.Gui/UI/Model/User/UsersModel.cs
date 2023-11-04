@@ -77,7 +77,7 @@ public partial class UsersControlModel : TopModel
                 break;
             case 2:
                 EnableName = true;
-                WatermarkName = App.GetLanguage("UserWindow.Info9");
+                WatermarkName = App.Lang("UserWindow.Info9");
                 Name = "";
                 EnableUser = true;
                 User = "";
@@ -86,7 +86,7 @@ public partial class UsersControlModel : TopModel
                 break;
             case 3:
                 EnableName = true;
-                WatermarkName = App.GetLanguage("UserWindow.Info10");
+                WatermarkName = App.Lang("UserWindow.Info10");
                 Name = "";
                 EnableUser = true;
                 User = "";
@@ -104,7 +104,7 @@ public partial class UsersControlModel : TopModel
                 break;
             case 5:
                 EnableName = true;
-                WatermarkName = App.GetLanguage("UserWindow.Info11");
+                WatermarkName = App.Lang("UserWindow.Info11");
                 Name = "";
                 EnableUser = true;
                 User = "";
@@ -159,7 +159,7 @@ public partial class UsersControlModel : TopModel
                 var name = User;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    Model.Show(App.GetLanguage("Gui.Error8"));
+                    Model.Show(App.Lang("Gui.Error8"));
                     break;
                 }
                 var res = await UserBinding.AddUser(AuthType.Offline, name, null);
@@ -168,14 +168,14 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.GetLanguage("Gui.Info4"));
+                Model.Notify(App.Lang("Gui.Info4"));
                 Name = "";
                 ok = true;
                 break;
             case 1:
                 _cancel = false;
                 ColorMCCore.LoginOAuthCode = LoginOAuthCode;
-                Model.Progress(App.GetLanguage("UserWindow.Info1"));
+                Model.Progress(App.Lang("UserWindow.Info1"));
                 res = await UserBinding.AddUser(AuthType.OAuth, null);
                 Model.ProgressClose();
                 Model.InputClose();
@@ -186,7 +186,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.GetLanguage("Gui.Info4"));
+                Model.Notify(App.Lang("Gui.Info4"));
                 Name = "";
                 ok = true;
                 break;
@@ -194,16 +194,16 @@ public partial class UsersControlModel : TopModel
                 var server = Name;
                 if (server?.Length != 32)
                 {
-                    Model.Show(App.GetLanguage("UserWindow.Error3"));
+                    Model.Show(App.Lang("UserWindow.Error3"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(User) ||
                     string.IsNullOrWhiteSpace(Password))
                 {
-                    Model.Show(App.GetLanguage("Gui.Error8"));
+                    Model.Show(App.Lang("Gui.Error8"));
                     break;
                 }
-                Model.Progress(App.GetLanguage("UserWindow.Info2"));
+                Model.Progress(App.Lang("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.Nide8, server,
                     User, Password);
                 Model.ProgressClose();
@@ -212,7 +212,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.GetLanguage("Gui.Info4"));
+                Model.Notify(App.Lang("Gui.Info4"));
                 Name = "";
                 ok = true;
                 break;
@@ -220,16 +220,16 @@ public partial class UsersControlModel : TopModel
                 server = Name;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Model.Show(App.GetLanguage("UserWindow.Error4"));
+                    Model.Show(App.Lang("UserWindow.Error4"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
                 {
-                    Model.Show(App.GetLanguage("Gui.Error8"));
+                    Model.Show(App.Lang("Gui.Error8"));
                     break;
                 }
-                Model.Progress(App.GetLanguage("UserWindow.Info2"));
+                Model.Progress(App.Lang("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.AuthlibInjector, server,
                     User, Password);
                 Model.ProgressClose();
@@ -238,7 +238,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.GetLanguage("Gui.Info4"));
+                Model.Notify(App.Lang("Gui.Info4"));
                 Name = "";
                 ok = true;
                 break;
@@ -246,10 +246,10 @@ public partial class UsersControlModel : TopModel
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
                 {
-                    Model.Show(App.GetLanguage("Gui.Error8"));
+                    Model.Show(App.Lang("Gui.Error8"));
                     break;
                 }
-                Model.Progress(App.GetLanguage("UserWindow.Info2"));
+                Model.Progress(App.Lang("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.LittleSkin,
                     User, Password);
                 Model.ProgressClose();
@@ -258,23 +258,23 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.GetLanguage("Gui.Info4"));
+                Model.Notify(App.Lang("Gui.Info4"));
                 ok = true;
                 break;
             case 5:
                 server = Name;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Model.Show(App.GetLanguage("UserWindow.Error4"));
+                    Model.Show(App.Lang("UserWindow.Error4"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
                 {
-                    Model.Show(App.GetLanguage("Gui.Error8"));
+                    Model.Show(App.Lang("Gui.Error8"));
                     break;
                 }
-                Model.Progress(App.GetLanguage("UserWindow.Info2"));
+                Model.Progress(App.Lang("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.SelfLittleSkin,
                     User, Password, server);
                 Model.ProgressClose();
@@ -283,12 +283,12 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.GetLanguage("Gui.Info4"));
+                Model.Notify(App.Lang("Gui.Info4"));
                 Name = "";
                 ok = true;
                 break;
             default:
-                Model.Show(App.GetLanguage("UserWindow.Error5"));
+                Model.Show(App.Lang("UserWindow.Error5"));
                 break;
         }
         if (ok)
@@ -316,7 +316,7 @@ public partial class UsersControlModel : TopModel
     {
         if (Item == null)
         {
-            Model.Show(App.GetLanguage("UserWindow.Error1"));
+            Model.Show(App.Lang("UserWindow.Error1"));
             return;
         }
 
@@ -327,7 +327,7 @@ public partial class UsersControlModel : TopModel
     {
         UserBinding.SetLastUser(item.UUID, item.AuthType);
 
-        Model.Notify(App.GetLanguage("UserWindow.Info5"));
+        Model.Notify(App.Lang("UserWindow.Info5"));
         Load();
     }
 
@@ -358,12 +358,12 @@ public partial class UsersControlModel : TopModel
 
     public async void Refresh(UserDisplayObj obj)
     {
-        Model.Progress(App.GetLanguage("UserWindow.Info3"));
+        Model.Progress(App.Lang("UserWindow.Info3"));
         var res = await UserBinding.ReLogin(obj.UUID, obj.AuthType);
         Model.ProgressClose();
         if (!res)
         {
-            Model.Show(App.GetLanguage("UserWindow.Error6"));
+            Model.Show(App.Lang("UserWindow.Error6"));
             var user = UserBinding.GetUser(obj.UUID, obj.AuthType);
             if (user == null)
                 return;
@@ -387,7 +387,7 @@ public partial class UsersControlModel : TopModel
         }
         else
         {
-            Model.Notify(App.GetLanguage("UserWindow.Info4"));
+            Model.Notify(App.Lang("UserWindow.Info4"));
         }
     }
 
@@ -428,8 +428,8 @@ public partial class UsersControlModel : TopModel
     private async void LoginOAuthCode(string url, string code)
     {
         Model.ProgressClose();
-        Model.ShowReadInfo(string.Format(App.GetLanguage("UserWindow.Info6"), url),
-            string.Format(App.GetLanguage("UserWindow.Info7"), code), () =>
+        Model.ShowReadInfo(string.Format(App.Lang("UserWindow.Info6"), url),
+            string.Format(App.Lang("UserWindow.Info7"), code), () =>
             {
                 _cancel = true;
                 UserBinding.OAuthCancel();

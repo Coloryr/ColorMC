@@ -16,8 +16,8 @@ public class Live2DFlyout
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("Live2DFlyout.Text1"), true, Button1_Click),
-            (App.GetLanguage("Live2DFlyout.Text2"), true, Button2_Click),
+            (App.Lang("Live2DFlyout.Text1"), true, Button1_Click),
+            (App.Lang("Live2DFlyout.Text2"), true, Button2_Click),
         }, con);
     }
 

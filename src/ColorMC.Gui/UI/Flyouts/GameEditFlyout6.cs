@@ -13,8 +13,8 @@ public class GameEditFlyout6
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("Button.OpFile"), true, Button1_Click),
-            (App.GetLanguage("Button.Delete"), true, Button2_Click)
+            (App.Lang("Button.OpFile"), true, Button1_Click),
+            (App.Lang("Button.Delete"), true, Button2_Click)
         }, con);
     }
 

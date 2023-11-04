@@ -34,29 +34,29 @@ public partial class ErrorModel : TopModel
     {
         if (string.IsNullOrWhiteSpace(Text.Text))
         {
-            Model.Show(App.GetLanguage("GameLogWindow.Error2"));
+            Model.Show(App.Lang("GameLogWindow.Error2"));
             return;
         }
-        var res = await Model.ShowWait(App.GetLanguage("GameLogWindow.Info4"));
+        var res = await Model.ShowWait(App.Lang("GameLogWindow.Info4"));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(App.GetLanguage("GameLogWindow.Info6"));
+        Model.Progress(App.Lang("GameLogWindow.Info6"));
         var url = await WebBinding.Push(Text.Text);
         Model.ProgressClose();
         if (url == null)
         {
-            Model.Show(App.GetLanguage("GameLogWindow.Error1"));
+            Model.Show(App.Lang("GameLogWindow.Error1"));
             return;
         }
         else
         {
-            Model.ShowReadInfoOne(string.Format(App.GetLanguage("GameLogWindow.Info5"), url), null);
+            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), null);
 
             await BaseBinding.CopyTextClipboard(url);
-            Model.Notify(App.GetLanguage("GameLogWindow.Info7"));
+            Model.Notify(App.Lang("GameLogWindow.Info7"));
         }
     }
 

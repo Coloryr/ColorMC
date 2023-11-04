@@ -18,7 +18,7 @@ public partial class AddControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => string.Format(App.GetLanguage("AddWindow.Title"), Obj.Name);
+    public string Title => string.Format(App.Lang("AddWindow.Title"), Obj.Name);
 
     public AddControl()
     {

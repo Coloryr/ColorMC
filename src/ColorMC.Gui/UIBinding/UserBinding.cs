@@ -94,7 +94,7 @@ public static class UserBinding
             if (Ex != null)
             {
                 App.ShowError(Message!, Ex);
-                return (false, App.GetLanguage("Gui.Error4"));
+                return (false, App.Lang("Gui.Error4"));
             }
             else
             {
@@ -104,7 +104,7 @@ public static class UserBinding
         if (string.IsNullOrWhiteSpace(Obj?.UUID))
         {
             BaseBinding.OpUrl("https://minecraft.net/");
-            return (false, App.GetLanguage("UserBinding.Info3"));
+            return (false, App.Lang("UserBinding.Info3"));
         }
         AuthDatabase.Save(Obj!);
         return (true, null);
@@ -266,7 +266,7 @@ public static class UserBinding
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(App.GetLanguage("Gui.Error34"), file), e);
+                Logs.Error(string.Format(App.Lang("Gui.Error34"), file), e);
             }
         }
 
@@ -278,7 +278,7 @@ public static class UserBinding
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(App.GetLanguage("Gui.Error35"), file), e);
+                Logs.Error(string.Format(App.Lang("Gui.Error35"), file), e);
             }
         }
 
@@ -359,5 +359,10 @@ public static class UserBinding
                 break;
             }
         }
+    }
+
+    public static bool HaveOnline()
+    {
+        return AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
     }
 }

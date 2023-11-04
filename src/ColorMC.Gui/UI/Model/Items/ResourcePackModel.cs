@@ -18,7 +18,7 @@ public partial class ResourcePackModel : ObservableObject
     public string PackFormat => Pack.pack_format.ToString();
     public string Description => Pack.description;
     public string Broken => Pack.Broken ?
-            App.GetLanguage("GameEditWindow.Tab8.Info4") : "";
+            App.Lang("GameEditWindow.Tab8.Info4") : "";
 
     public Bitmap Pic { get; }
 

@@ -25,7 +25,7 @@ public partial class GameEditModel : MenuModel
     [RelayCommand]
     public async Task LoadShaderpack()
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
+        Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
         ShaderpackList.Clear();
         ShaderpackList.AddRange(await GameBinding.GetShaderpacks(_obj));
         Model.ProgressClose();
@@ -39,11 +39,11 @@ public partial class GameEditModel : MenuModel
 
         if (res == false)
         {
-            Model.Notify(App.GetLanguage("Gui.Error12"));
+            Model.Notify(App.Lang("Gui.Error12"));
             return;
         }
 
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab11.Info3"));
+        Model.Notify(App.Lang("GameEditWindow.Tab11.Info3"));
         await LoadShaderpack();
     }
 
@@ -65,7 +65,7 @@ public partial class GameEditModel : MenuModel
     public async void DeleteShaderpack(ShaderpackObj obj)
     {
         GameBinding.DeleteShaderpack(obj);
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab10.Info5"));
+        Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         await LoadShaderpack();
     }
 }
