@@ -30,14 +30,14 @@ public class GameEditFlyout1
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text1"), true, Button1_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text2"), true, Button2_Click),
-            (App.GetLanguage("Button.OpFile"), _single, Button3_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text6"), true, Button7_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text3"), _single, Button4_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text4"), _single
+            (App.Lang("GameEditWindow.Flyouts1.Text1"), true, Button1_Click),
+            (App.Lang("GameEditWindow.Flyouts1.Text2"), true, Button2_Click),
+            (App.Lang("Button.OpFile"), _single, Button3_Click),
+            (App.Lang("GameEditWindow.Flyouts1.Text6"), true, Button7_Click),
+            (App.Lang("GameEditWindow.Flyouts1.Text3"), _single, Button4_Click),
+            (App.Lang("GameEditWindow.Flyouts1.Text4"), _single
                 && !string.IsNullOrWhiteSpace(_obj?.Url), Button5_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text5"), _single
+            (App.Lang("GameEditWindow.Flyouts1.Text5"), _single
                 && !string.IsNullOrWhiteSpace(_obj?.PID) && !string.IsNullOrWhiteSpace(_obj?.FID), Button6_Click),
         }, con);
     }

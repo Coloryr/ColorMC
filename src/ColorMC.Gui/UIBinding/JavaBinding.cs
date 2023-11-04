@@ -86,7 +86,7 @@ public static class JavaBinding
             var info = JvmPath.GetInfo(res.Msg);
             if (info == null)
             {
-                return (null, App.GetLanguage("Gui.Error5"));
+                return (null, App.Lang("Gui.Error5"));
             }
             return (MakeInfo(res.Msg, info), null);
         }
@@ -297,7 +297,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.GetLanguage("JavaBinding.Error1"), e);
+            App.ShowError(App.Lang("JavaBinding.Error1"), e);
             return (false, null, null, null, null);
         }
     }
@@ -356,7 +356,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.GetLanguage("JavaBinding.Error1"), e);
+            App.ShowError(App.Lang("JavaBinding.Error1"), e);
             return (false, null, null);
         }
     }
@@ -573,7 +573,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.GetLanguage("JavaBinding.Error1"), e);
+            App.ShowError(App.Lang("JavaBinding.Error1"), e);
             return null;
         }
     }
@@ -630,7 +630,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.GetLanguage("JavaBinding.Error1"), e);
+            App.ShowError(App.Lang("JavaBinding.Error1"), e);
             return (false, null, null, null, null);
         }
     }

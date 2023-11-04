@@ -5,15 +5,19 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UI.Windows;
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.NetFrp;
 
 public partial class NetFrpControl : UserControl, IUserControl
 {
-    private NetFrpTab1Control _tab1 = new();
-    private NetFrpTab2Control _tab2 = new();
+    private readonly NetFrpTab1Control _tab1 = new();
+    private readonly NetFrpTab2Control _tab2 = new();
+    private readonly NetFrpTab3Control _tab3 = new();
 
     private bool _switch1 = false;
 
@@ -24,7 +28,7 @@ public partial class NetFrpControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.GetLanguage("NetFrpWindow.Ttile");
+    public string Title => App.Lang("NetFrpWindow.Ttile");
 
     public NetFrpControl()
     {
@@ -86,6 +90,13 @@ public partial class NetFrpControl : UserControl, IUserControl
         DataContext = amodel;
     }
 
+    public void SetProcess(Process process, string ip)
+    {
+        var model = (DataContext as NetFrpModel)!;
+        model.SetProcess(process, ip);
+        model.NowView = 2;
+    }
+
     private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "NowView")
@@ -100,6 +111,9 @@ public partial class NetFrpControl : UserControl, IUserControl
                 case 1:
                     Go(_tab2);
                     model.LoadLocal();
+                    break;
+                case 2:
+                    Go(_tab3);
                     break;
             }
 
@@ -125,5 +139,10 @@ public partial class NetFrpControl : UserControl, IUserControl
             App.SidePageSlide300.Start(DockPanel1, null, _cancel1.Token);
             StackPanel1.IsVisible = false;
         }
+    }
+
+    public Task<bool> Closing()
+    {
+        return (DataContext as NetFrpModel)!.Closing();
     }
 }

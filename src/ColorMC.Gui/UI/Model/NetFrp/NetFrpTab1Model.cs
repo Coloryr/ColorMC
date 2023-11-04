@@ -41,15 +41,15 @@ public partial class NetFrpModel : MenuModel
     {
         if (string.IsNullOrWhiteSpace(Key))
         {
-            Model.Show("请输入密钥");
+            Model.Show(App.Lang("NetFrpWindow.Tab1.Error3"));
             return;
         }
-        Model.Progress("正在获取用户信息");
+        Model.Progress(App.Lang("NetFrpWindow.Tab1.Info1"));
         var res = await SakuraFrpAPI.GetUserInfo(Key);
         Model.ProgressClose();
         if (res == null)
         {
-            Model.Show("用户信息获取失败");
+            Model.Show(App.Lang("NetFrpWindow.Tab1.Error1"));
             return;
         }
 
@@ -62,15 +62,15 @@ public partial class NetFrpModel : MenuModel
     {
         if (string.IsNullOrWhiteSpace(Key))
         {
-            Model.Show("请输入密钥");
+            Model.Show(App.Lang("NetFrpWindow.Tab1.Error3"));
             return;
         }
-        Model.Progress("正在获取隧道信息");
+        Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
         var res = await SakuraFrpAPI.GetChannel(Key);
         Model.ProgressClose();
         if (res == null)
         {
-            Model.Show("隧道信息获取失败");
+            Model.Show(App.Lang("NetFrpWindow.Tab1.Error2"));
             return;
         }
 
@@ -95,17 +95,17 @@ public partial class NetFrpModel : MenuModel
             return;
         }
 
-        Model.Progress("正在获取用户信息");
+        Model.Progress(App.Lang("NetFrpWindow.Tab1.Info1"));
         var res = await SakuraFrpAPI.GetUserInfo(Key);
-        Model.ProgressClose();
         if (res == null)
         {
+            Model.ProgressClose();
             return;
         }
 
         User1ID = res.id.ToString();
         User1Name = res.name;
-        Model.Progress("正在获取隧道信息");
+        Model.ProgressUpdate(App.Lang("NetFrpWindow.Tab1.Info2"));
         var res1 = await SakuraFrpAPI.GetChannel(Key);
         Model.ProgressClose();
         if (res1 == null)

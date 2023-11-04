@@ -9,11 +9,11 @@ public partial class GuideModel : MenuModel
 {
     public override List<MenuObj> TabItems { get; init; } = new()
     {
-        new() { Text = App.GetLanguage("GuideWindow.Tabs.Text1") },
-        new() { Text = App.GetLanguage("GuideWindow.Tabs.Text2") },
-        new() { Text = App.GetLanguage("GuideWindow.Tabs.Text3") },
-        new() { Text = App.GetLanguage("GuideWindow.Tabs.Text4") },
-        new() { Text = App.GetLanguage("GuideWindow.Tabs.Text5") },
+        new() { Text = App.Lang("GuideWindow.Tabs.Text1") },
+        new() { Text = App.Lang("GuideWindow.Tabs.Text2") },
+        new() { Text = App.Lang("GuideWindow.Tabs.Text3") },
+        new() { Text = App.Lang("GuideWindow.Tabs.Text4") },
+        new() { Text = App.Lang("GuideWindow.Tabs.Text5") },
     };
 
     [ObservableProperty]

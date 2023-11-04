@@ -178,46 +178,46 @@ public partial class GameEditModel : MenuModel
     {
         if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
         {
-            Model.Show(App.GetLanguage("GameEditWindow.Tab1.Error3"));
+            Model.Show(App.Lang("GameEditWindow.Tab1.Error3"));
             return;
         }
 
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab1.Info2"));
+        Model.Progress(App.Lang("GameEditWindow.Tab1.Info2"));
         if (FuntionUtils.CheckNotNumber(PID) || FuntionUtils.CheckNotNumber(FID))
         {
             var list = await ModrinthAPI.GetFileVersions(PID, _obj.Version, _obj.Loader);
             Model.ProgressClose();
             if (list == null)
             {
-                Model.Show(App.GetLanguage("GameEditWindow.Tab1.Info3"));
+                Model.Show(App.Lang("GameEditWindow.Tab1.Info3"));
             }
             else if (list.Count == 0)
             {
-                Model.Notify(App.GetLanguage("GameEditWindow.Tab1.Info4"));
+                Model.Notify(App.Lang("GameEditWindow.Tab1.Info4"));
             }
             else if (list[0].id.ToString() == FID)
             {
-                Model.Notify(App.GetLanguage("GameEditWindow.Tab1.Info5"));
+                Model.Notify(App.Lang("GameEditWindow.Tab1.Info5"));
             }
             else
             {
-                var res = await Model.ShowWait(App.GetLanguage("GameEditWindow.Tab1.Info6"));
+                var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab1.Info6"));
                 if (!res)
                 {
                     return;
                 }
 
-                Model.Progress(App.GetLanguage("GameEditWindow.Tab1.Info8"));
+                Model.Progress(App.Lang("GameEditWindow.Tab1.Info8"));
                 var item = list[0];
                 res = await GameBinding.ModPackUpdate(_obj, item);
                 Model.ProgressClose();
                 if (!res)
                 {
-                    Model.Show(App.GetLanguage("GameEditWindow.Tab1.Error2"));
+                    Model.Show(App.Lang("GameEditWindow.Tab1.Error2"));
                 }
                 else
                 {
-                    Model.Notify(App.GetLanguage("GameEditWindow.Tab1.Info7"));
+                    Model.Notify(App.Lang("GameEditWindow.Tab1.Info7"));
                     FID = item.id.ToString();
                 }
             }
@@ -228,35 +228,35 @@ public partial class GameEditModel : MenuModel
             Model.ProgressClose();
             if (list == null)
             {
-                Model.Show(App.GetLanguage("GameEditWindow.Tab1.Info3"));
+                Model.Show(App.Lang("GameEditWindow.Tab1.Info3"));
             }
             else if (list.data.Count == 0)
             {
-                Model.Notify(App.GetLanguage("GameEditWindow.Tab1.Info4"));
+                Model.Notify(App.Lang("GameEditWindow.Tab1.Info4"));
             }
             else if (list.data[0].id.ToString() == FID)
             {
-                Model.Notify(App.GetLanguage("GameEditWindow.Tab1.Info5"));
+                Model.Notify(App.Lang("GameEditWindow.Tab1.Info5"));
             }
             else
             {
-                var res = await Model.ShowWait(App.GetLanguage("GameEditWindow.Tab1.Info6"));
+                var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab1.Info6"));
                 if (!res)
                 {
                     return;
                 }
 
-                Model.Progress(App.GetLanguage("GameEditWindow.Tab1.Info8"));
+                Model.Progress(App.Lang("GameEditWindow.Tab1.Info8"));
                 var item = list.data[0];
                 res = await GameBinding.ModPackUpdate(_obj, item);
                 Model.ProgressClose();
                 if (!res)
                 {
-                    Model.Show(App.GetLanguage("GameEditWindow.Tab1.Error2"));
+                    Model.Show(App.Lang("GameEditWindow.Tab1.Error2"));
                 }
                 else
                 {
-                    Model.Notify(App.GetLanguage("GameEditWindow.Tab1.Info7"));
+                    Model.Notify(App.Lang("GameEditWindow.Tab1.Info7"));
                     FID = item.id.ToString();
                 }
             }
@@ -272,7 +272,7 @@ public partial class GameEditModel : MenuModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text1) = await Model.ShowInputOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
+        var (Cancel, Text1) = await Model.ShowInputOne(App.Lang("AddGameWindow.Tab1.Info5"), false);
         if (Cancel)
         {
             return;
@@ -280,17 +280,17 @@ public partial class GameEditModel : MenuModel
 
         if (string.IsNullOrWhiteSpace(Text1))
         {
-            Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Error2"));
+            Model.Progress(App.Lang("AddGameWindow.Tab1.Error2"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(Text1))
         {
-            Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Error3"));
+            Model.Progress(App.Lang("AddGameWindow.Tab1.Error3"));
             return;
         }
 
-        Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info6"));
+        Model.Notify(App.Lang("AddGameWindow.Tab1.Info6"));
 
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
@@ -308,12 +308,12 @@ public partial class GameEditModel : MenuModel
                 LoaderVersionList.Clear();
                 break;
             case Loaders.Forge:
-                Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+                Model.Progress(App.Lang("AddGameWindow.Tab1.Info1"));
                 var list = await WebBinding.GetForgeVersion(_obj.Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
-                    Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
                     return;
                 }
 
@@ -322,12 +322,12 @@ public partial class GameEditModel : MenuModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.NeoForge:
-                Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+                Model.Progress(App.Lang("AddGameWindow.Tab1.Info1"));
                 list = await WebBinding.GetNeoForgeVersion(_obj.Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
-                    Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
                     return;
                 }
 
@@ -336,12 +336,12 @@ public partial class GameEditModel : MenuModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.Fabric:
-                Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info2"));
+                Model.Progress(App.Lang("AddGameWindow.Tab1.Info2"));
                 list = await WebBinding.GetFabricVersion(_obj.Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
-                    Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
                     return;
                 }
 
@@ -350,12 +350,12 @@ public partial class GameEditModel : MenuModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.Quilt:
-                Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
+                Model.Progress(App.Lang("AddGameWindow.Tab1.Info3"));
                 list = await WebBinding.GetQuiltVersion(_obj.Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
-                    Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
                     return;
                 }
 
@@ -364,12 +364,12 @@ public partial class GameEditModel : MenuModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.OptiFine:
-                Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info16"));
+                Model.Progress(App.Lang("AddGameWindow.Tab1.Info16"));
                 list = await WebBinding.GetOptifineVersion(_obj.Version);
                 Model.ProgressClose();
                 if (list == null)
                 {
-                    Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
                     return;
                 }
 
@@ -389,7 +389,7 @@ public partial class GameEditModel : MenuModel
         LoaderTypeList.Clear();
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
-        Model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info4"));
+        Model.Progress(App.Lang("AddGameWindow.Tab1.Info4"));
         var list = await WebBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(_obj.Version))
         {
@@ -431,12 +431,12 @@ public partial class GameEditModel : MenuModel
     [RelayCommand]
     public async Task GameVersionReload()
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Info1"));
+        Model.Progress(App.Lang("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
         Model.ProgressClose();
         if (!res)
         {
-            Model.Show(App.GetLanguage("GameEditWindow.Error1"));
+            Model.Show(App.Lang("GameEditWindow.Error1"));
             return;
         }
 
@@ -451,21 +451,21 @@ public partial class GameEditModel : MenuModel
     {
         if (BaseBinding.IsGameRun(_obj))
         {
-            Model.Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));
+            Model.Show(App.Lang("GameEditWindow.Tab1.Error1"));
             return;
         }
 
         var res = await Model.ShowWait(string.Format(
-            App.GetLanguage("GameEditWindow.Tab1.Info1"), _obj.Name));
+            App.Lang("GameEditWindow.Tab1.Info1"), _obj.Name));
         if (!res)
             return;
 
-        Model.Progress(App.GetLanguage("Gui.Info34"));
+        Model.Progress(App.Lang("Gui.Info34"));
         var res1 = await GameBinding.DeleteGame(Model, _obj);
         Model.ProgressClose();
         if (!res1)
         {
-            Model.Show(App.GetLanguage("MainWindow.Info37"));
+            Model.Show(App.Lang("MainWindow.Info37"));
         }
     }
 
@@ -520,7 +520,7 @@ public partial class GameEditModel : MenuModel
 
     public async Task LangLoad()
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab1.Info9"));
+        Model.Progress(App.Lang("GameEditWindow.Tab1.Info9"));
         LangList.Clear();
         var list = await Task.Run(() =>
         {

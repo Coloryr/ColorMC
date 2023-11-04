@@ -716,7 +716,7 @@ public static class WebBinding
             }
             catch (Exception e)
             {
-                Logs.Error(App.GetLanguage("Gui.Error16"), e);
+                Logs.Error(App.Lang("Gui.Error16"), e);
             }
         });
 

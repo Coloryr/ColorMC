@@ -16,7 +16,7 @@ public class ConfigFlyout2
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("Button.Delete"), true, Button1_Click),
+            (App.Lang("Button.Delete"), true, Button1_Click),
         }, con);
     }
 

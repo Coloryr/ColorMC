@@ -17,7 +17,7 @@ public partial class UsersControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.GetLanguage("UserWindow.Title");
+    public string Title => App.Lang("UserWindow.Title");
 
     public UsersControl()
     {

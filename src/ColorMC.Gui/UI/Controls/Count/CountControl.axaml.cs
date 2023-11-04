@@ -9,7 +9,7 @@ public partial class CountControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.GetLanguage("CountWindow.Title");
+    public string Title => App.Lang("CountWindow.Title");
 
     public CountControl()
     {

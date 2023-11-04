@@ -23,11 +23,11 @@ public partial class GameCloudModel : MenuModel
     public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
-            Text = App.GetLanguage("GameCloudWindow.Tabs.Text1") },
+            Text = App.Lang("GameCloudWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/GameExport/item2.svg",
-            Text = App.GetLanguage("GameCloudWindow.Tabs.Text2") },
+            Text = App.Lang("GameCloudWindow.Tabs.Text2") },
         new() { Icon = "/Resource/Icon/GameExport/item4.svg",
-            Text = App.GetLanguage("GameCloudWindow.Tabs.Text3") }
+            Text = App.Lang("GameCloudWindow.Tabs.Text3") }
     };
 
     [ObservableProperty]
@@ -73,21 +73,21 @@ public partial class GameCloudModel : MenuModel
             return;
         }
 
-        Model.Progress(App.GetLanguage("GameCloudWindow.Info3"));
+        Model.Progress(App.Lang("GameCloudWindow.Info3"));
         var res = await GameCloudUtils.StartCloud(Obj);
         Model.ProgressClose();
         if (res == 101)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error2"));
+            Model.Show(App.Lang("GameCloudWindow.Error2"));
             return;
         }
         else if (res != 100)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error3"));
+            Model.Show(App.Lang("GameCloudWindow.Error3"));
             return;
         }
 
-        Model.Notify(App.GetLanguage("GameCloudWindow.Info4"));
+        Model.Notify(App.Lang("GameCloudWindow.Info4"));
         Enable = true;
     }
 
@@ -99,40 +99,40 @@ public partial class GameCloudModel : MenuModel
             return;
         }
 
-        var ok = await Model.ShowWait(App.GetLanguage("GameCloudWindow.Info7"));
+        var ok = await Model.ShowWait(App.Lang("GameCloudWindow.Info7"));
         if (!ok)
         {
             return;
         }
 
-        Model.Progress(App.GetLanguage("GameCloudWindow.Info5"));
+        Model.Progress(App.Lang("GameCloudWindow.Info5"));
         var res = await GameCloudUtils.StopCloud(Obj);
         Model.ProgressClose();
         if (res == 101)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error2"));
+            Model.Show(App.Lang("GameCloudWindow.Error2"));
             return;
         }
         else if (res == 102)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error4"));
+            Model.Show(App.Lang("GameCloudWindow.Error4"));
             return;
         }
         else if (res != 100)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error3"));
+            Model.Show(App.Lang("GameCloudWindow.Error3"));
             return;
         }
 
 
-        Model.Notify(App.GetLanguage("GameCloudWindow.Info6"));
+        Model.Notify(App.Lang("GameCloudWindow.Info6"));
         Enable = false;
     }
 
     [RelayCommand]
     public async Task UploadConfig()
     {
-        Model.Progress(App.GetLanguage("GameCloudWindow.Info8"));
+        Model.Progress(App.Lang("GameCloudWindow.Info8"));
         var files = _files.GetSelectItems(true);
         var data = GameCloudUtils.GetCloudData(Obj);
         string dir = Obj.GetBasePath();
@@ -145,26 +145,26 @@ public partial class GameCloudModel : MenuModel
         string name = Path.GetFullPath(dir + "/config.zip");
         files.Remove(name);
         await new ZipUtils().ZipFile(name, files, dir);
-        Model.ProgressUpdate(App.GetLanguage("GameCloudWindow.Info9"));
+        Model.ProgressUpdate(App.Lang("GameCloudWindow.Info9"));
         var res = await GameCloudUtils.UploadConfig(Obj, name);
         PathHelper.Delete(name);
         Model.ProgressClose();
         if (res == 104)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error5"));
+            Model.Show(App.Lang("GameCloudWindow.Error5"));
             return;
         }
         else if (res == 101)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error2"));
+            Model.Show(App.Lang("GameCloudWindow.Error2"));
             return;
         }
         else if (res != 100)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error3"));
+            Model.Show(App.Lang("GameCloudWindow.Error3"));
             return;
         }
-        Model.Notify(App.GetLanguage("GameCloudWindow.Info14"));
+        Model.Notify(App.Lang("GameCloudWindow.Info14"));
         await LoadCloud();
         if (_configHave)
         {
@@ -177,27 +177,27 @@ public partial class GameCloudModel : MenuModel
     [RelayCommand]
     public async Task DownloadConfig()
     {
-        Model.Progress(App.GetLanguage("GameCloudWindow.Info10"));
+        Model.Progress(App.Lang("GameCloudWindow.Info10"));
         var data = GameCloudUtils.GetCloudData(Obj);
         string local = Path.GetFullPath(Obj.GetBasePath() + "/config.zip");
         var res = await GameCloudUtils.DownloadConfig(Obj, local);
         if (res == 101)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error2"));
+            Model.Show(App.Lang("GameCloudWindow.Error2"));
             return;
         }
         else if (res != 100)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error3"));
+            Model.Show(App.Lang("GameCloudWindow.Error3"));
             return;
         }
 
-        Model.ProgressUpdate(App.GetLanguage("GameCloudWindow.Info11"));
+        Model.ProgressUpdate(App.Lang("GameCloudWindow.Info11"));
         var res1 = await GameBinding.UnZipCloudConfig(Obj, data, local);
         Model.ProgressClose();
         if (!res1)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error6"));
+            Model.Show(App.Lang("GameCloudWindow.Error6"));
             return;
         }
         await LoadCloud();
@@ -215,17 +215,17 @@ public partial class GameCloudModel : MenuModel
     /// </summary>
     public async Task LoadCloud()
     {
-        Model.Progress(App.GetLanguage("GameCloudWindow.Info1"));
+        Model.Progress(App.Lang("GameCloudWindow.Info1"));
         var res = await GameCloudUtils.HaveCloud(Obj);
         Model.ProgressClose();
         if (res.Item1 == 101)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error2"));
+            Model.Show(App.Lang("GameCloudWindow.Error2"));
             return;
         }
         Enable = res.Item2;
         _configHave = res.Item3 != null;
-        ConfigTime = res.Item3 ?? App.GetLanguage("GameCloudWindow.Info2");
+        ConfigTime = res.Item3 ?? App.Lang("GameCloudWindow.Info2");
     }
 
     /// <summary>
@@ -235,7 +235,7 @@ public partial class GameCloudModel : MenuModel
     {
         if (!GameCloudUtils.Connect)
         {
-            Model.ShowOk(App.GetLanguage("GameCloudWindow.Erro1"), WindowClose);
+            Model.ShowOk(App.Lang("GameCloudWindow.Erro1"), WindowClose);
             return;
         }
         await LoadCloud();
@@ -331,18 +331,18 @@ public partial class GameCloudModel : MenuModel
         string local = Path.GetFullPath(world.World.Game.GetSavesPath() + "/" + world.World.LevelName + ".zip");
         if (!world.HaveCloud)
         {
-            Model.Progress(App.GetLanguage("GameCloudWindow.Info8"));
+            Model.Progress(App.Lang("GameCloudWindow.Info8"));
             await new ZipUtils().ZipFile(dir, local);
         }
         else
         {
-            Model.Progress(App.GetLanguage("GameCloudWindow.Info12"));
+            Model.Progress(App.Lang("GameCloudWindow.Info12"));
             //云端文件
             var list = await GameCloudUtils.GetWorldFiles(Obj, world.World);
             if (list == null)
             {
                 Model.ProgressClose();
-                Model.Show(App.GetLanguage("GameCloudWindow.Error7"));
+                Model.Show(App.Lang("GameCloudWindow.Error7"));
                 return;
             }
             //本地文件
@@ -380,10 +380,10 @@ public partial class GameCloudModel : MenuModel
             if (pack.Count == 0)
             {
                 Model.ProgressClose();
-                Model.Show(App.GetLanguage("GameCloudWindow.Info13"));
+                Model.Show(App.Lang("GameCloudWindow.Info13"));
                 return;
             }
-            Model.ProgressUpdate(App.GetLanguage("GameCloudWindow.Info8"));
+            Model.ProgressUpdate(App.Lang("GameCloudWindow.Info8"));
             await new ZipUtils().ZipFile(local, pack, dir);
             if (have)
             {
@@ -391,35 +391,35 @@ public partial class GameCloudModel : MenuModel
             }
         }
 
-        Model.ProgressUpdate(App.GetLanguage("GameCloudWindow.Info9"));
+        Model.ProgressUpdate(App.Lang("GameCloudWindow.Info9"));
         var res = await GameCloudUtils.UploadWorld(Obj, world.World, local);
         PathHelper.Delete(local);
         Model.ProgressClose();
         if (res == 101)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error2"));
+            Model.Show(App.Lang("GameCloudWindow.Error2"));
             return;
         }
         else if (res == 104)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error5"));
+            Model.Show(App.Lang("GameCloudWindow.Error5"));
             return;
         }
         else if (res != 100)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error3"));
+            Model.Show(App.Lang("GameCloudWindow.Error3"));
             return;
         }
         else
         {
-            Model.Notify(App.GetLanguage("GameCloudWindow.Info14"));
+            Model.Notify(App.Lang("GameCloudWindow.Info14"));
         }
         LoadWorld();
     }
 
     public async void DownloadWorld(WorldCloudModel world)
     {
-        Model.Progress(App.GetLanguage("GameCloudWindow.Info10"));
+        Model.Progress(App.Lang("GameCloudWindow.Info10"));
         string dir = Obj.GetSavesPath() + "/" + world.Cloud.Name;
         string local = Path.GetFullPath(Obj.GetSavesPath() + "/" + world.Cloud.Name + ".zip");
         var list = new Dictionary<string, string>();
@@ -439,37 +439,37 @@ public partial class GameCloudModel : MenuModel
         var res = await GameCloudUtils.DownloadWorld(Obj, world.Cloud, local, list);
         if (res == 101)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error2"));
+            Model.Show(App.Lang("GameCloudWindow.Error2"));
             return;
         }
         else if (res == 102)
         {
             Model.ProgressClose();
-            Model.Show(App.GetLanguage("GameCloudWindow.Error8"));
+            Model.Show(App.Lang("GameCloudWindow.Error8"));
             return;
         }
         else if (res == 103)
         {
             Model.ProgressClose();
-            Model.Show(App.GetLanguage("GameCloudWindow.Info13"));
+            Model.Show(App.Lang("GameCloudWindow.Info13"));
             return;
         }
         else if (res != 100)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error3"));
+            Model.Show(App.Lang("GameCloudWindow.Error3"));
         }
         else
         {
-            Model.ProgressUpdate(App.GetLanguage("GameCloudWindow.Info11"));
+            Model.ProgressUpdate(App.Lang("GameCloudWindow.Info11"));
             try
             {
                 using var file = PathHelper.OpenRead(local)!;
                 await new ZipUtils().Unzip(dir, local, file);
-                Model.Notify(App.GetLanguage("GameCloudWindow.Info15"));
+                Model.Notify(App.Lang("GameCloudWindow.Info15"));
             }
             catch (Exception e)
             {
-                string temp = App.GetLanguage("GameCloudWindow.Error9");
+                string temp = App.Lang("GameCloudWindow.Error9");
                 Logs.Error(temp, e);
                 Model.Show(temp);
             }
@@ -481,34 +481,34 @@ public partial class GameCloudModel : MenuModel
 
     public async void DeleteCloud(WorldCloudModel world)
     {
-        var res = await Model.ShowWait(App.GetLanguage("GameCloudWindow.Info16"));
+        var res = await Model.ShowWait(App.Lang("GameCloudWindow.Info16"));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(App.GetLanguage("GameCloudWindow.Info18"));
+        Model.Progress(App.Lang("GameCloudWindow.Info18"));
         var res1 = await GameCloudUtils.DeleteWorld(Obj, world.Cloud.Name);
         Model.ProgressClose();
         if (res1 == 101)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error2"));
+            Model.Show(App.Lang("GameCloudWindow.Error2"));
             return;
         }
         else if (res1 == 102)
         {
 
-            Model.Show(App.GetLanguage("GameCloudWindow.Error8"));
+            Model.Show(App.Lang("GameCloudWindow.Error8"));
             return;
         }
         else if (res1 != 100)
         {
-            Model.Show(App.GetLanguage("GameCloudWindow.Error3"));
+            Model.Show(App.Lang("GameCloudWindow.Error3"));
             return;
         }
         else
         {
-            Model.Notify(App.GetLanguage("GameCloudWindow.Info17"));
+            Model.Notify(App.Lang("GameCloudWindow.Info17"));
         }
         LoadWorld();
     }

@@ -46,7 +46,7 @@ public static class FrpConfigUtils
             }
             catch (Exception e)
             {
-                Logs.Error(App.GetLanguage("Gui.Error17"), e);
+                Logs.Error(App.Lang("Gui.Error17"), e);
             }
 
             if (Config == null)

@@ -30,7 +30,7 @@ public partial class DownloadModel : TopModel
     [ObservableProperty]
     private string _now;
     [ObservableProperty]
-    private string _button1 = App.GetLanguage("DownloadWindow.Text1");
+    private string _button1 = App.Lang("DownloadWindow.Text1");
     [ObservableProperty]
     private double _value = 0;
     [ObservableProperty]
@@ -52,14 +52,14 @@ public partial class DownloadModel : TopModel
         if (!value)
         {
             BaseBinding.DownloadResume();
-            Button1 = App.GetLanguage("DownloadWindow.Text1");
-            Model.Notify(App.GetLanguage("DownloadWindow.Info3"));
+            Button1 = App.Lang("DownloadWindow.Text1");
+            Model.Notify(App.Lang("DownloadWindow.Info3"));
         }
         else
         {
             BaseBinding.DownloadPause();
-            Button1 = App.GetLanguage("DownloadWindow.Info5");
-            Model.Notify(App.GetLanguage("DownloadWindow.Info2"));
+            Button1 = App.Lang("DownloadWindow.Info5");
+            Model.Notify(App.Lang("DownloadWindow.Info2"));
         }
     }
 
@@ -72,7 +72,7 @@ public partial class DownloadModel : TopModel
     [RelayCommand]
     public async Task Stop()
     {
-        var res = await Model.ShowWait(App.GetLanguage("DownloadWindow.Info1"));
+        var res = await Model.ShowWait(App.Lang("DownloadWindow.Info1"));
         if (res)
         {
             ItemList.Clear();

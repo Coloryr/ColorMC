@@ -29,7 +29,7 @@ public partial class SettingControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.GetLanguage("SettingWindow.Title");
+    public string Title => App.Lang("SettingWindow.Title");
 
     public SettingControl()
     {

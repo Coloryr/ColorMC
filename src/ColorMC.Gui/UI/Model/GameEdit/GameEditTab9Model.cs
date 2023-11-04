@@ -16,7 +16,7 @@ public partial class GameEditModel : MenuModel
     [RelayCommand]
     public void LoadScreenshot()
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab9.Info3"));
+        Model.Progress(App.Lang("GameEditWindow.Tab9.Info3"));
         ScreenshotList.Clear();
 
         var res = GameBinding.GetScreenshots(_obj);
@@ -37,28 +37,28 @@ public partial class GameEditModel : MenuModel
     public async Task ClearScreenshot()
     {
         var res = await Model.ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab9.Info2"), _obj.Name));
+            string.Format(App.Lang("GameEditWindow.Tab9.Info2"), _obj.Name));
         if (!res)
         {
             return;
         }
 
         GameBinding.ClearScreenshots(_obj);
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         LoadScreenshot();
     }
 
     public async void DeleteScreenshot(ScreenshotModel obj)
     {
         var res = await Model.ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab9.Info1"), obj.Screenshot));
+            string.Format(App.Lang("GameEditWindow.Tab9.Info1"), obj.Screenshot));
         if (!res)
         {
             return;
         }
 
         GameBinding.DeleteScreenshot(obj.Screenshot);
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         LoadScreenshot();
     }
 

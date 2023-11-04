@@ -35,7 +35,7 @@ public partial class GameExportControl : UserControl, IUserControl
     public IBaseWindow Window => App.FindRoot(VisualRoot);
     public UserControl Con => this;
     public string Title =>
-        string.Format(App.GetLanguage("GameExportWindow.Title"), _obj.Name);
+        string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
 
     public GameExportControl()
     {
@@ -65,7 +65,7 @@ public partial class GameExportControl : UserControl, IUserControl
         Window.SetTitle(Title);
 
         var model = (DataContext as GameExportModel)!;
-        model.Model.Progress(App.GetLanguage("GameExportWindow.Info7"));
+        model.Model.Progress(App.Lang("GameExportWindow.Info7"));
         Content1.Content = _tab1;
 
         _tab2.Opened();

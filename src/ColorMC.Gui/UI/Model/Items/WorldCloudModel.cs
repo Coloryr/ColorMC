@@ -13,9 +13,9 @@ public partial class WorldCloudModel : ObservableObject
 {
     public string Name => HaveLocal ? World.LevelName : Cloud.Name;
     public string Time => HaveLocal ? FuntionUtils.MillisecondsToDataTime(World.LastPlayed).ToString()
-        : App.GetLanguage("GameCloudWindow.Tab3.Info3");
-    public string Time1 => HaveCloud ? Cloud.Time : App.GetLanguage("GameCloudWindow.Tab3.Info1");
-    public string Local => HaveLocal ? World.Local : App.GetLanguage("GameCloudWindow.Tab3.Info2");
+        : App.Lang("GameCloudWindow.Tab3.Info3");
+    public string Time1 => HaveCloud ? Cloud.Time : App.Lang("GameCloudWindow.Tab3.Info1");
+    public string Local => HaveLocal ? World.Local : App.Lang("GameCloudWindow.Tab3.Info2");
 
     public WorldObj World { get; init; }
     public CloudWorldObj Cloud { get; init; }

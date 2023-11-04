@@ -33,8 +33,8 @@ public partial class SettingModel : MenuModel
             return;
         }
 
-        Model.Progress(App.GetLanguage("SettingWindow.Tab5.Info7"));
-        string temp = App.GetLanguage("Gui.Info27");
+        Model.Progress(App.Lang("SettingWindow.Tab5.Info7"));
+        string temp = App.Lang("Gui.Info27");
         ColorMCCore.UnZipItem = (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
@@ -48,7 +48,7 @@ public partial class SettingModel : MenuModel
         }
         else
         {
-            Model.Notify(App.GetLanguage("SettingWindow.Tab5.Info6"));
+            Model.Notify(App.Lang("SettingWindow.Tab5.Info6"));
         }
         LoadJava();
     }
@@ -70,11 +70,11 @@ public partial class SettingModel : MenuModel
     {
         if (string.IsNullOrWhiteSpace(JavaName) || string.IsNullOrWhiteSpace(JavaLocal))
         {
-            Model.Show(App.GetLanguage("Gui.Error8"));
+            Model.Show(App.Lang("Gui.Error8"));
             return;
         }
 
-        Model.Progress(App.GetLanguage("SettingWindow.Tab5.Info1"));
+        Model.Progress(App.Lang("SettingWindow.Tab5.Info1"));
 
         var res = JavaBinding.AddJava(JavaName, JavaLocal);
         Model.ProgressClose();
@@ -112,13 +112,13 @@ public partial class SettingModel : MenuModel
         var list = JavaBinding.FindJava();
         if (list == null)
         {
-            Model.Show(App.GetLanguage("SettingWindow.Tab5.Error1"));
+            Model.Show(App.Lang("SettingWindow.Tab5.Error1"));
             return;
         }
 
         list.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
         LoadJava();
-        Model.Notify(App.GetLanguage("SettingWindow.Tab5.Info4"));
+        Model.Notify(App.Lang("SettingWindow.Tab5.Info4"));
     }
 
     [RelayCommand]
@@ -131,7 +131,7 @@ public partial class SettingModel : MenuModel
     [RelayCommand]
     public async Task DeleteJava()
     {
-        var res = await Model.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
+        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab5.Info3"));
         if (!res)
             return;
 

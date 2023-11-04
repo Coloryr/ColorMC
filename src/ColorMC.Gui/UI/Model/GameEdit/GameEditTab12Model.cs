@@ -26,7 +26,7 @@ public partial class GameEditModel : MenuModel
     [RelayCommand]
     public async Task LoadSchematic()
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
+        Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
         SchematicList.Clear();
         SchematicList.AddRange(await GameBinding.GetSchematics(_obj));
         Model.ProgressClose();
@@ -42,11 +42,11 @@ public partial class GameEditModel : MenuModel
 
         if (res == false)
         {
-            Model.Show(App.GetLanguage("Gui.Error12"));
+            Model.Show(App.Lang("Gui.Error12"));
             return;
         }
 
-        Model.Show(App.GetLanguage("GameEditWindow.Tab12.Info3"));
+        Model.Show(App.Lang("GameEditWindow.Tab12.Info3"));
         await LoadSchematic();
     }
 
@@ -62,7 +62,7 @@ public partial class GameEditModel : MenuModel
     public async void DeleteSchematic(SchematicObj obj)
     {
         GameBinding.DeleteSchematic(obj);
-        Model.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
+        Model.Show(App.Lang("GameEditWindow.Tab10.Info5"));
         await LoadSchematic();
     }
 }

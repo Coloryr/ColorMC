@@ -15,8 +15,8 @@ public class GameEditFlyout5
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("Button.Delete"), true, Button1_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts5.Text1"), true, Button2_Click)
+            (App.Lang("Button.Delete"), true, Button1_Click),
+            (App.Lang("GameEditWindow.Flyouts5.Text1"), true, Button2_Click)
         }, con);
     }
 

@@ -64,7 +64,7 @@ public partial class WorldModel : ObservableObject
 
     private async void Load1()
     {
-        Top.Model.Progress(App.GetLanguage("GameEditWindow.Tab5.Info16"));
+        Top.Model.Progress(App.Lang("GameEditWindow.Tab5.Info16"));
         IsSelect = false;
         await Load();
         IsSelect = true;
@@ -105,7 +105,7 @@ public partial class WorldModel : ObservableObject
     public async void Delete(DataPackModel item)
     {
         var res = await Top.Model.ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab5.Info15"), item.Name));
+            string.Format(App.Lang("GameEditWindow.Tab5.Info15"), item.Name));
         if (!res)
         {
             return;
@@ -123,7 +123,7 @@ public partial class WorldModel : ObservableObject
     public async void Delete(IEnumerable<DataPackModel> items)
     {
         var res = await Top.Model.ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab5.Info14"), items.Count()));
+            string.Format(App.Lang("GameEditWindow.Tab5.Info14"), items.Count()));
         if (!res)
         {
             return;

@@ -19,7 +19,7 @@ public class SettingFlyout1
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("SettingWindow.Flyouts.Text1"), true, Button1_Click),
+            (App.Lang("SettingWindow.Flyouts.Text1"), true, Button1_Click),
         }, con);
     }
 

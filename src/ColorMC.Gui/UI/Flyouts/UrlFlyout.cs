@@ -15,8 +15,8 @@ public class UrlFlyout
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("AddWindow.Control.Text3"), _url != null, Button1_Click),
-            (App.GetLanguage("AddWindow.Control.Text4"), _url1 != null, Button2_Click)
+            (App.Lang("AddWindow.Control.Text3"), _url != null, Button1_Click),
+            (App.Lang("AddWindow.Control.Text4"), _url1 != null, Button2_Click)
         }, con);
     }
 

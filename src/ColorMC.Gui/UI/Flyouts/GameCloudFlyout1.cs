@@ -14,10 +14,10 @@ public class GameCloudFlyout1
 
         _ = new FlyoutsControl(new()
         {
-            (App.GetLanguage("Button.OpFile"), model.HaveLocal, Button1_Click),
-            (App.GetLanguage("GameCloudWindow.Flyouts1.Text1"), model.HaveLocal, Button2_Click),
-            (App.GetLanguage("GameCloudWindow.Flyouts1.Text2"), model.HaveCloud, Button3_Click),
-            (App.GetLanguage("GameCloudWindow.Flyouts1.Text3"), model.HaveCloud, Button4_Click),
+            (App.Lang("Button.OpFile"), model.HaveLocal, Button1_Click),
+            (App.Lang("GameCloudWindow.Flyouts1.Text1"), model.HaveLocal, Button2_Click),
+            (App.Lang("GameCloudWindow.Flyouts1.Text2"), model.HaveCloud, Button3_Click),
+            (App.Lang("GameCloudWindow.Flyouts1.Text3"), model.HaveCloud, Button4_Click),
         }, con);
     }
 

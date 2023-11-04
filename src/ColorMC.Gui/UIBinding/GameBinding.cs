@@ -124,7 +124,7 @@ public static class GameBinding
         if (!res.Item1)
         {
             await game.Remove();
-            App.ShowError(App.GetLanguage("Gui.Error26"), res.Item2);
+            App.ShowError(App.Lang("Gui.Error26"), res.Item2);
         }
 
         var files = Directory.GetFiles(local);
@@ -308,8 +308,8 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            Logs.Error(App.GetLanguage("GameBinding.Error8"), e);
-            App.ShowError(App.GetLanguage("GameBinding.Error8"), e);
+            Logs.Error(App.Lang("GameBinding.Error8"), e);
+            App.ShowError(App.Lang("GameBinding.Error8"), e);
         }
     }
 
@@ -320,7 +320,7 @@ public static class GameBinding
             var file = await PathBinding.SelectFile(FileType.Icon);
             if (file != null)
             {
-                model.Progress(App.GetLanguage("Gui.Info30"));
+                model.Progress(App.Lang("Gui.Info30"));
                 using var info = SKBitmap.Decode(PathHelper.OpenRead(file)!);
                 if (info.Width > 200 || info.Height > 200)
                 {
@@ -338,13 +338,13 @@ public static class GameBinding
                 }
 
                 model.ProgressClose();
-                model.Notify(App.GetLanguage("Gui.Info29"));
+                model.Notify(App.Lang("Gui.Info29"));
             }
         }
         catch (Exception e)
         {
-            Logs.Error(App.GetLanguage("GameBinding.Error5"), e);
-            App.ShowError(App.GetLanguage("GameBinding.Error5"), e);
+            Logs.Error(App.Lang("GameBinding.Error5"), e);
+            App.ShowError(App.Lang("GameBinding.Error5"), e);
         }
     }
 
@@ -353,7 +353,7 @@ public static class GameBinding
         var login = UserBinding.GetLastUser();
         if (login == null)
         {
-            return (null, App.GetLanguage("GameBinding.Error2"));
+            return (null, App.Lang("GameBinding.Error2"));
         }
         if (login.AuthType == AuthType.Offline)
         {
@@ -361,15 +361,15 @@ public static class GameBinding
             if (!have)
             {
                 BaseBinding.OpUrl(UrlHelper.Minecraft);
-                return (null, App.GetLanguage("GameBinding.Error7"));
+                return (null, App.Lang("GameBinding.Error7"));
             }
         }
 
         if (UserBinding.IsLock(login))
         {
-            var res = await model.ShowWait(App.GetLanguage("GameBinding.Info1"));
+            var res = await model.ShowWait(App.Lang("GameBinding.Info1"));
             if (!res)
-                return (null, App.GetLanguage("GameBinding.Error3"));
+                return (null, App.Lang("GameBinding.Error3"));
         }
 
         return (login, null);
@@ -379,12 +379,12 @@ public static class GameBinding
     {
         if (obj == null)
         {
-            return (false, App.GetLanguage("GameBinding.Error1"));
+            return (false, App.Lang("GameBinding.Error1"));
         }
 
         if (BaseBinding.IsGameRun(obj))
         {
-            return (false, App.GetLanguage("GameBinding.Error4"));
+            return (false, App.Lang("GameBinding.Error4"));
         }
 
         var user = await GetUser(model);
@@ -497,7 +497,7 @@ public static class GameBinding
         {
             var obj1 = new ModDisplayModel()
             {
-                Name = item.ReadFail ? App.GetLanguage("GameEditWindow.Tab4.Info5")
+                Name = item.ReadFail ? App.Lang("GameEditWindow.Tab4.Info5")
                 : item.name,
                 Obj = item
             };
@@ -532,7 +532,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string temp = string.Format(App.GetLanguage("GameEditWindow.Tab4.Error3"), obj.Local);
+            string temp = string.Format(App.Lang("GameEditWindow.Tab4.Error3"), obj.Local);
             Logs.Error(temp, e);
             return (false, temp);
         }
@@ -871,7 +871,7 @@ public static class GameBinding
             {
                 list1.Add(new()
                 {
-                    Name = App.GetLanguage("Gui.Error14"),
+                    Name = App.Lang("Gui.Error14"),
                     Local = item.Local,
                 });
             }
@@ -969,7 +969,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string text = App.GetLanguage("Gui.Error20");
+            string text = App.Lang("Gui.Error20");
             Logs.Error(text, e);
             App.ShowError(text, e);
             return false;
@@ -1116,11 +1116,11 @@ public static class GameBinding
                 var str = new StringBuilder();
                 foreach (var item in lost)
                 {
-                    str.Append(string.Format(App.GetLanguage("Gui.Info25"), item.Item1,
+                    str.Append(string.Format(App.Lang("Gui.Info25"), item.Item1,
                         GetString(item.Item2))).Append(Environment.NewLine);
                 }
 
-                App.ShowError(App.GetLanguage("Gui.Info26"), str.ToString());
+                App.ShowError(App.Lang("Gui.Info26"), str.ToString());
                 return false;
             }
 
@@ -1388,7 +1388,7 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                Logs.Error(App.GetLanguage("AddGameWindow.Tab1.Error17"), e);
+                Logs.Error(App.Lang("AddGameWindow.Tab1.Error17"), e);
             }
             return false;
         });
@@ -1403,7 +1403,7 @@ public static class GameBinding
         });
         if (game == null)
         {
-            return (false, App.GetLanguage("AddGameWindow.Tab1.Error10"));
+            return (false, App.Lang("AddGameWindow.Tab1.Error10"));
         }
 
         var cloud = new CloudDataObj()
@@ -1416,7 +1416,7 @@ public static class GameBinding
         var res = await GameCloudUtils.DownloadConfig(obj, local);
         if (res != 100)
         {
-            return (false, App.GetLanguage("AddGameWindow.Tab1.Error11"));
+            return (false, App.Lang("AddGameWindow.Tab1.Error11"));
         }
         await UnZipCloudConfig(game, cloud, local);
         var temp = await GameCloudUtils.HaveCloud(game);
@@ -1444,7 +1444,7 @@ public static class GameBinding
                 var res1 = await DownloadManager.Start(list);
                 if (!res1)
                 {
-                    return (false, App.GetLanguage("AddGameWindow.Tab1.Error12"));
+                    return (false, App.Lang("AddGameWindow.Tab1.Error12"));
                 }
             }
         }
@@ -1493,12 +1493,12 @@ public static class GameBinding
             var data = await BaseClient.GetString(text + "server.json");
             if (!data.Item1)
             {
-                return (false, App.GetLanguage("AddGameWindow.Tab1.Error15"));
+                return (false, App.Lang("AddGameWindow.Tab1.Error15"));
             }
             var obj = JsonConvert.DeserializeObject<ServerPackObj>(data.Item2!);
             if (obj == null)
             {
-                return (false, App.GetLanguage("AddGameWindow.Tab1.Error16"));
+                return (false, App.Lang("AddGameWindow.Tab1.Error16"));
             }
 
             var game = obj.Game;
@@ -1518,16 +1518,16 @@ public static class GameBinding
 
             if (game == null)
             {
-                return (false, App.GetLanguage("AddGameWindow.Tab1.Error10"));
+                return (false, App.Lang("AddGameWindow.Tab1.Error10"));
             }
 
-            model.Progress(App.GetLanguage("AddGameWindow.Tab1.Info15"));
+            model.Progress(App.Lang("AddGameWindow.Tab1.Info15"));
 
             var res1 = await obj.Update(game);
             if (!res1)
             {
                 model.ProgressClose();
-                model.ShowOk(App.GetLanguage("AddGameWindow.Tab1.Error12"), async () =>
+                model.ShowOk(App.Lang("AddGameWindow.Tab1.Error12"), async () =>
                 {
                     await game.Remove();
                 });
@@ -1541,7 +1541,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string temp = App.GetLanguage("AddGameWindow.Tab1.Error16");
+            string temp = App.Lang("AddGameWindow.Tab1.Error16");
             Logs.Error(temp, e);
             return (false, temp);
         }

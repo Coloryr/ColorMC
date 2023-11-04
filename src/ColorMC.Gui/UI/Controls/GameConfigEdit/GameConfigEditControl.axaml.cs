@@ -34,12 +34,12 @@ public partial class GameConfigEditControl : UserControl, IUserControl
             var model = (DataContext as GameConfigEditModel)!;
             if (model.World == null)
             {
-                return string.Format(App.GetLanguage("ConfigEditWindow.Title"),
+                return string.Format(App.Lang("ConfigEditWindow.Title"),
                     model.Obj?.Name);
             }
             else
             {
-                return string.Format(App.GetLanguage("ConfigEditWindow.Title1"),
+                return string.Format(App.Lang("ConfigEditWindow.Title1"),
                     model.World?.Game.Name, model.World?.LevelName);
             }
         }

@@ -12,23 +12,23 @@ public partial class GameEditModel : MenuModel
     public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameEdit/item1.svg",
-            Text = App.GetLanguage("GameEditWindow.Tabs.Text1") },
+            Text = App.Lang("GameEditWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/GameEdit/item2.svg",
-            Text = App.GetLanguage("GameEditWindow.Tabs.Text2") },
+            Text = App.Lang("GameEditWindow.Tabs.Text2") },
         new() { Icon = "/Resource/Icon/GameEdit/item3.svg",
-            Text = App.GetLanguage("GameEditWindow.Tabs.Text4") },
+            Text = App.Lang("GameEditWindow.Tabs.Text4") },
         new() { Icon = "/Resource/Icon/GameEdit/item4.svg",
-            Text = App.GetLanguage("GameEditWindow.Tabs.Text5") },
+            Text = App.Lang("GameEditWindow.Tabs.Text5") },
         new() { Icon = "/Resource/Icon/GameEdit/item5.svg",
-            Text = App.GetLanguage("GameEditWindow.Tabs.Text6") },
+            Text = App.Lang("GameEditWindow.Tabs.Text6") },
         new() { Icon = "/Resource/Icon/GameEdit/item6.svg",
-            Text = App.GetLanguage("GameEditWindow.Tabs.Text7") },
+            Text = App.Lang("GameEditWindow.Tabs.Text7") },
         new() { Icon = "/Resource/Icon/GameEdit/item7.svg",
-            Text = App.GetLanguage("GameEditWindow.Tabs.Text10") },
+            Text = App.Lang("GameEditWindow.Tabs.Text10") },
         new() { Icon = "/Resource/Icon/GameEdit/item8.svg",
-            Text = App.GetLanguage("GameEditWindow.Tabs.Text11") },
+            Text = App.Lang("GameEditWindow.Tabs.Text11") },
         new() { Icon = "/Resource/Icon/GameEdit/item9.svg",
-            Text = App.GetLanguage("GameEditWindow.Tabs.Text12") },
+            Text = App.Lang("GameEditWindow.Tabs.Text12") },
     };
 
     [ObservableProperty]
@@ -52,7 +52,7 @@ public partial class GameEditModel : MenuModel
             Phone = true;
         }
 
-        _titleText = string.Format(App.GetLanguage("GameEditWindow.Tab2.Text13"), _obj.Name);
+        _titleText = string.Format(App.Lang("GameEditWindow.Tab2.Text13"), _obj.Name);
         GameLoad();
         ConfigLoad();
     }

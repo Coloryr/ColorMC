@@ -63,7 +63,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         {
             Grid1.Children.Add(new Label()
             {
-                Content = App.GetLanguage("MainWindow.Info18"),
+                Content = App.Lang("MainWindow.Info18"),
                 Foreground = Brushes.Black,
                 Background = Brush.Parse("#EEEEEE"),
                 VerticalAlignment = VerticalAlignment.Center,
@@ -98,7 +98,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         }
         if (model.IsLaunch)
         {
-            var res = await model.Model.ShowWait(App.GetLanguage("MainWindow.Info34"));
+            var res = await model.Model.ShowWait(App.Lang("MainWindow.Info34"));
             if (res)
             {
                 return false;

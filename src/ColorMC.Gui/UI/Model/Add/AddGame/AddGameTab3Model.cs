@@ -45,12 +45,12 @@ public partial class AddGameModel : MenuModel
     {
         if (Directory.Exists(SelectPath))
         {
-            var res = await Model.ShowWait(string.Format(App.GetLanguage("AddGameWindow.Tab3.Info3"), SelectPath));
+            var res = await Model.ShowWait(string.Format(App.Lang("AddGameWindow.Tab3.Info3"), SelectPath));
             if (!res)
             {
                 return;
             }
-            Model.Progress(App.GetLanguage("AddGameWindow.Tab3.Info2"));
+            Model.Progress(App.Lang("AddGameWindow.Tab3.Info2"));
             await Task.Run(() =>
             {
                 _fileModel = new FilesPage(SelectPath, true, new()
@@ -66,7 +66,7 @@ public partial class AddGameModel : MenuModel
             CanInput = false;
             Files = null!;
             _fileModel = null!;
-            Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), SelectPath));
+            Model.Show(string.Format(App.Lang("AddGameWindow.Tab1.Error2"), SelectPath));
         }
     }
 
@@ -79,28 +79,28 @@ public partial class AddGameModel : MenuModel
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
-            Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), SelectPath));
+            Model.Show(string.Format(App.Lang("AddGameWindow.Tab1.Error2"), SelectPath));
             return;
         }
 
         if (PathHelper.FileHasInvalidChars(Name))
         {
-            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error13"));
+            Model.Show(App.Lang("AddGameWindow.Tab1.Error13"));
             return;
         }
 
-        Model.Progress(App.GetLanguage("AddGameWindow.Tab3.Info1"));
+        Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
         var res = await GameBinding.AddGame(Name, SelectPath, _fileModel.GetUnSelectItems(), Group);
         Model.ProgressClose();
 
         if (!res)
         {
-            Model.Show(App.GetLanguage("AddGameWindow.Tab3.Error1"));
+            Model.Show(App.Lang("AddGameWindow.Tab3.Error1"));
             return;
         }
 
         var model = (App.MainWindow?.DataContext as MainModel);
-        model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab2.Info5"));
+        model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
         App.MainWindow?.LoadMain();
         WindowClose();
     }
@@ -126,7 +126,7 @@ public partial class AddGameModel : MenuModel
         }
         else
         {
-            Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab3.Error2"), res));
+            Model.Show(string.Format(App.Lang("AddGameWindow.Tab3.Error2"), res));
         }
     }
 }

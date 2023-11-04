@@ -18,8 +18,8 @@ public class GameEditFlyout3
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("Button.OpFile"), true, Button1_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts3.Text1"), true, Button2_Click)
+            (App.Lang("Button.OpFile"), true, Button1_Click),
+            (App.Lang("GameEditWindow.Flyouts3.Text1"), true, Button2_Click)
         }, con);
     }
 

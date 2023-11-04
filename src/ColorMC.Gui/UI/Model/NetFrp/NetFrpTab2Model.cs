@@ -30,10 +30,10 @@ public partial class NetFrpModel : MenuModel
         var list = new List<string>();
         foreach (var item in Remotes)
         {
-            list.Add($"樱花映射 {item.Name} {item.ID}");
+            list.Add($"{App.Lang("NetFrpWindow.Tabs.Text1")} {item.Name} {item.ID}");
         }
 
-        var res = await Model.ShowCombo("选择通道", list);
+        var res = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
         if (res.Cancel)
         {
             return;
@@ -44,11 +44,11 @@ public partial class NetFrpModel : MenuModel
         var res1 = await BaseBinding.StartFrp(Key, item1, local.Motd, local.Port);
         if (!res1)
         {
-            Model.Show("映射开启失败");
+            Model.Show(App.Lang("NetFrpWindow.Tab2.Error1"));
         }
         else
         {
-            Model.Notify("映射开启成功");
+            Model.Notify(App.Lang("NetFrpWindow.Tab2.Info2"));
         }
     }
 

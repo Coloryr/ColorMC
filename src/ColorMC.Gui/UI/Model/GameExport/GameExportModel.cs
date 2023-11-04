@@ -33,13 +33,13 @@ public partial class GameExportModel : MenuModel
     public override List<MenuObj> TabItems { get; init; } = new()
     {
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
-            Text = App.GetLanguage("GameExportWindow.Tabs.Text1") },
+            Text = App.Lang("GameExportWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/GameExport/item2.svg",
-            Text = App.GetLanguage("GameExportWindow.Tabs.Text2") },
+            Text = App.Lang("GameExportWindow.Tabs.Text2") },
         new() { Icon = "/Resource/Icon/GameExport/item3.svg",
-            Text = App.GetLanguage("GameExportWindow.Tabs.Text3") },
+            Text = App.Lang("GameExportWindow.Tabs.Text3") },
         new() { Icon = "/Resource/Icon/GameExport/item4.svg",
-            Text = App.GetLanguage("GameExportWindow.Tabs.Text4") },
+            Text = App.Lang("GameExportWindow.Tabs.Text4") },
     };
 
     /// <summary>
@@ -100,7 +100,7 @@ public partial class GameExportModel : MenuModel
 
     async partial void OnTypeChanged(PackType value)
     {
-        Model.Progress(App.GetLanguage("GameExportWindow.Info6"));
+        Model.Progress(App.Lang("GameExportWindow.Info6"));
 
         CfEx = value == PackType.CurseForge;
         MoEx = value == PackType.Modrinth;
@@ -196,12 +196,12 @@ public partial class GameExportModel : MenuModel
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Version))
             {
-                Model.Show(App.GetLanguage("GameExportWindow.Error2"));
+                Model.Show(App.Lang("GameExportWindow.Error2"));
                 return;
             }
         }
 
-        Model.Progress(App.GetLanguage("GameExportWindow.Info1"));
+        Model.Progress(App.Lang("GameExportWindow.Info1"));
         var file = await PathBinding.Export(this);
         Model.ProgressClose();
         if (file == null)
@@ -211,11 +211,11 @@ public partial class GameExportModel : MenuModel
 
         if (file == false)
         {
-            Model.Show(App.GetLanguage("GameExportWindow.Error1"));
+            Model.Show(App.Lang("GameExportWindow.Error1"));
         }
         else
         {
-            Model.Notify(App.GetLanguage("GameExportWindow.Info2"));
+            Model.Notify(App.Lang("GameExportWindow.Info2"));
         }
     }
 

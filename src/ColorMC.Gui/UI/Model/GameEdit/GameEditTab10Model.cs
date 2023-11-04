@@ -25,7 +25,7 @@ public partial class GameEditModel : MenuModel
     [RelayCommand]
     public async Task LoadServer()
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
+        Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
         ServerList.Clear();
         ServerList.AddRange(await GameBinding.GetServers(_obj));
         Model.ProgressClose();
@@ -35,8 +35,8 @@ public partial class GameEditModel : MenuModel
     public async Task AddServer()
     {
         var (Cancel, Text1, Text2) = await Model.ShowInput(
-            App.GetLanguage("GameEditWindow.Tab10.Info1"),
-            App.GetLanguage("GameEditWindow.Tab10.Info2"), false);
+            App.Lang("GameEditWindow.Tab10.Info1"),
+            App.Lang("GameEditWindow.Tab10.Info2"), false);
         if (Cancel)
         {
             return;
@@ -44,23 +44,23 @@ public partial class GameEditModel : MenuModel
 
         if (string.IsNullOrWhiteSpace(Text1) || string.IsNullOrWhiteSpace(Text2))
         {
-            Model.Show(App.GetLanguage("GameEditWindow.Tab10.Error1"));
+            Model.Show(App.Lang("GameEditWindow.Tab10.Error1"));
             return;
         }
 
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info6"));
+        Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
         await GameBinding.AddServer(_obj, Text1, Text2);
         Model.ProgressClose();
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab10.Info3"));
+        Model.Notify(App.Lang("GameEditWindow.Tab10.Info3"));
         await LoadServer();
     }
 
     public async void DeleteServer(ServerInfoObj obj)
     {
-        Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info6"));
+        Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
         await GameBinding.DeleteServer(_obj, obj);
         Model.ProgressClose();
-        Model.Notify(App.GetLanguage("GameEditWindow.Tab10.Info5"));
+        Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         await LoadServer();
     }
 }

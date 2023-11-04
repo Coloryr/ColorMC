@@ -129,17 +129,17 @@ public partial class SettingModel : MenuModel
     [RelayCommand]
     public async Task StartCheck()
     {
-        Model.Progress(App.GetLanguage("SettingWindow.Tab3.Info1"));
+        Model.Progress(App.Lang("SettingWindow.Tab3.Info1"));
         var res = await UpdateChecker.CheckOne();
         Model.ProgressClose();
         if (res.Item1 == null)
         {
-            Model.Show(App.GetLanguage("Gui.Error21"));
+            Model.Show(App.Lang("Gui.Error21"));
             return;
         }
         else if (res.Item1 == true)
         {
-            var res1 = await Model.TextInfo(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
+            var res1 = await Model.TextInfo(App.Lang("SettingWindow.Tab3.Info2"), res.Item2!);
             if (!res1)
             {
                 UpdateChecker.StartUpdate();
@@ -147,7 +147,7 @@ public partial class SettingModel : MenuModel
         }
         else
         {
-            Model.Show(App.GetLanguage("SettingWindow.Tab3.Info3"));
+            Model.Show(App.Lang("SettingWindow.Tab3.Info3"));
         }
     }
 

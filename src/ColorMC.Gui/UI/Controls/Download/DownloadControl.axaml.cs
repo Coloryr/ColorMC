@@ -15,7 +15,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public UserControl Con => this;
 
-    public string Title => App.GetLanguage("DownloadWindow.Title");
+    public string Title => App.Lang("DownloadWindow.Title");
 
     public DownloadControl()
     {
@@ -45,7 +45,7 @@ public partial class DownloadControl : UserControl, IUserControl
     {
         if (BaseBinding.IsDownload)
         {
-            var res = await (DataContext as DownloadModel)!.Model.ShowWait(App.GetLanguage("DownloadWindow.Info4"));
+            var res = await (DataContext as DownloadModel)!.Model.ShowWait(App.Lang("DownloadWindow.Info4"));
             if (res)
             {
                 BaseBinding.DownloadStop();

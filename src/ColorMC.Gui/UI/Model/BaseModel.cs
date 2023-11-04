@@ -56,10 +56,7 @@ public partial class BaseModel : ObservableObject
     /// </summary>
     public void Progress()
     {
-        if (DialogHost.IsDialogOpen(Name))
-        {
-            return;
-        }
+        DClose();
         DialogHost.Show(_info1, Name);
     }
 
@@ -104,6 +101,7 @@ public partial class BaseModel : ObservableObject
     {
         _info1.Indeterminate = false;
 
+        DClose();
         DialogHost.Close(Name);
     }
 
@@ -125,6 +123,8 @@ public partial class BaseModel : ObservableObject
     public void InputClose()
     {
         _info3.ValueVisable = false;
+
+        DClose();
         DialogHost.Close(Name);
     }
 
@@ -141,9 +141,10 @@ public partial class BaseModel : ObservableObject
         _info3.Text1 = data;
         _info3.Watermark1 = title;
 
-        await DialogHost.Show(_info3, Name);
-
         _info3.Call = null;
+
+        DClose();
+        await DialogHost.Show(_info3, Name);
 
         return (_info3.IsCancel, _info3.Text1);
     }
@@ -166,9 +167,10 @@ public partial class BaseModel : ObservableObject
 
         _info3.Password = '\0';
 
-        await DialogHost.Show(_info3, Name);
-
         _info3.Call = null;
+
+        DClose();
+        await DialogHost.Show(_info3, Name);
 
         return (_info3.IsCancel, _info3.Text1, _info3.Text2);
     }
@@ -183,6 +185,8 @@ public partial class BaseModel : ObservableObject
     {
         _info3.Text2Visable = false;
         _info3.TextReadonly = lock1;
+        _info3.Call = null;
+
         if (lock1)
         {
             _info3.Text1 = title;
@@ -208,14 +212,8 @@ public partial class BaseModel : ObservableObject
             _info3.ConfirmEnable = true;
         }
 
+        DClose();
         await DialogHost.Show(_info3, Name);
-
-        if (!lock1)
-        {
-            await DialogHost.Show(_info3, Name);
-
-            _info3.Call = null;
-        }
 
         return (_info3.IsCancel, _info3.Text1);
     }
@@ -240,6 +238,7 @@ public partial class BaseModel : ObservableObject
 
         _info3.Password = password ? '*' : '\0';
 
+        DClose();
         await DialogHost.Show(_info3, Name);
 
         _info3.Call = null;
@@ -253,7 +252,7 @@ public partial class BaseModel : ObservableObject
     /// <param name="title"></param>
     /// <param name="title1"></param>
     /// <param name="cancel"></param>
-    public void ShowReadInfo(string title, string title1, Action cancel)
+    public void ShowReadInfo(string title, string title1, Action? cancel)
     {
         _info3.TextReadonly = true;
         _info3.Text1 = title;
@@ -262,18 +261,29 @@ public partial class BaseModel : ObservableObject
         _info3.Watermark1 = "";
         _info3.Watermark2 = "";
 
-        _info3.ValueVisable = true;
-
         _info3.Text2Visable = true;
-        _info3.ConfirmEnable = false;
-
-        _info3.Call = cancel;
-
-        _info3.CancelEnable = true;
-        _info3.CancelVisible = true;
 
         _info3.Password = '\0';
 
+        if (cancel != null)
+        {
+            _info3.ConfirmEnable = false;
+            _info3.ValueVisable = true;
+
+            _info3.Call = cancel;
+
+            _info3.CancelEnable = true;
+            _info3.CancelVisible = true;
+        }
+        else
+        {
+            _info3.ConfirmEnable = true;
+
+            _info3.CancelEnable = false;
+            _info3.CancelVisible = false;
+        }
+
+        DClose();
         DialogHost.Show(_info3, Name);
     }
 
@@ -310,6 +320,7 @@ public partial class BaseModel : ObservableObject
             _info3.CancelVisible = false;
         }
 
+        DClose();
         DialogHost.Show(_info3, Name);
     }
 
@@ -321,7 +332,6 @@ public partial class BaseModel : ObservableObject
     public async Task<bool> ShowWait(string data)
     {
         bool reut = false;
-        using Semaphore semaphore = new(0, 2);
         _info4.Enable = true;
         _info4.Text = data;
         _info4.CancelVisable = true;
@@ -329,9 +339,9 @@ public partial class BaseModel : ObservableObject
         _info4.Call = (res) =>
         {
             reut = res;
-            semaphore.Release();
         };
 
+        DClose();
         await DialogHost.Show(_info4, Name);
 
         _info4.Call = null;
@@ -350,6 +360,7 @@ public partial class BaseModel : ObservableObject
         _info4.Call = null;
         _info4.Text = data;
 
+        DClose();
         DialogHost.Show(_info4, Name);
     }
 
@@ -364,6 +375,7 @@ public partial class BaseModel : ObservableObject
             action.Invoke();
         };
 
+        DClose();
         DialogHost.Show(_info4, Name);
     }
 
@@ -376,6 +388,7 @@ public partial class BaseModel : ObservableObject
         _info5.Select = null!;
         _info5.Select = data1[0];
 
+        DClose();
         await DialogHost.Show(_info5, Name);
 
         return (_info5.IsCancel, _info5.Index, _info5.Select);
@@ -386,8 +399,17 @@ public partial class BaseModel : ObservableObject
         _info6.Text1 = data;
         _info6.Text2 = data1;
 
+        DClose();
         await DialogHost.Show(_info6, Name);
 
         return _info6.IsCancel;
+    }
+
+    private void DClose()
+    {
+        if (DialogHost.IsDialogOpen(Name))
+        {
+            DialogHost.Close(Name);
+        }
     }
 }

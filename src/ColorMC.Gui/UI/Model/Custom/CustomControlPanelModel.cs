@@ -77,12 +77,12 @@ public partial class CustomControlPanelModel : TopModel
         }
 
         IsLaunch = true;
-        Model.Progress(App.GetLanguage("MainWindow.Info3"));
+        Model.Progress(App.Lang("MainWindow.Info3"));
         var item = Game;
         var game = item.Obj;
         item.IsLaunch = false;
         item.IsLoad = true;
-        Model.Notify(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
+        Model.Notify(App.Lang(string.Format(App.Lang("MainWindow.Info28"), game.Name)));
         var res = await GameBinding.Launch(Model, game, wait: GuiConfigUtils.Config.CloseBeforeLaunch);
         Model.Title1 = null;
         item.IsLoad = false;
@@ -93,14 +93,14 @@ public partial class CustomControlPanelModel : TopModel
         }
         else
         {
-            Model.Notify(App.GetLanguage("MainWindow.Info2"));
+            Model.Notify(App.Lang("MainWindow.Info2"));
 
             if (SystemInfo.Os != OsType.Android)
             {
                 item.IsLaunch = true;
             }
 
-            Model.Progress(App.GetLanguage("MainWindow.Info26"));
+            Model.Progress(App.Lang("MainWindow.Info26"));
         }
         IsLaunch = false;
     }
@@ -116,8 +116,8 @@ public partial class CustomControlPanelModel : TopModel
 
         if (user == null)
         {
-            UserType = App.GetLanguage("MainWindow.Info35");
-            UserName = App.GetLanguage("MainWindow.Info36");
+            UserType = App.Lang("MainWindow.Info35");
+            UserName = App.Lang("MainWindow.Info36");
         }
         else
         {

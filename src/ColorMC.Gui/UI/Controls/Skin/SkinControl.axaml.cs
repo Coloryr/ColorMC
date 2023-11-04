@@ -18,7 +18,7 @@ public partial class SkinControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.GetLanguage("SkinWindow.Title");
+    public string Title => App.Lang("SkinWindow.Title");
 
     public SkinControl()
     {
