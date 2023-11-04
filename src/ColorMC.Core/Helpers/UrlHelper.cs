@@ -194,11 +194,15 @@ public static class UrlHelper
     /// </summary>
     public static string DownloadNeoForgeJar(string mc, string version, SourceLocal? local)
     {
-        string? url = local switch
+        var v2222 = CheckHelpers.IsGameVersion1202(mc);
+        var baseurl = v2222
+            ? $"neoforge/{version}/"
+            : $"forge/{mc}-{version}/";
+        string ? url = local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/neoforged/forge/{mc}-{version}/",
-            SourceLocal.MCBBS => $"{MCBBS}maven/net/neoforged/forge/{mc}-{version}/",
-            _ => $"{NeoForge}releases/net/neoforged/forge/{mc}-{version}/"
+            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/neoforged/{baseurl}",
+            SourceLocal.MCBBS => $"{MCBBS}maven/net/neoforged/{baseurl}",
+            _ => $"{NeoForge}releases/net/neoforged/{baseurl}"
         };
 
         return url;
@@ -230,8 +234,8 @@ public static class UrlHelper
     {
         string? to = local switch
         {
-            SourceLocal.BMCLAPI => BMCLAPI + "maven/",
-            SourceLocal.MCBBS => MCBBS + "maven/",
+            //SourceLocal.BMCLAPI => BMCLAPI + "maven/",
+            //SourceLocal.MCBBS => MCBBS + "maven/",
             _ => null
         };
         if (to == null)
@@ -385,6 +389,19 @@ public static class UrlHelper
             //SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
             //SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
             _ => $"{NeoForge}releases/net/neoforged/forge/maven-metadata.xml"
+        };
+    }
+
+    /// <summary>
+    /// NeoForge版本地址
+    /// </summary>
+    public static string NeoForgeNewVersion(SourceLocal? local)
+    {
+        return local switch
+        {
+            //SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
+            //SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
+            _ => $"{NeoForge}releases/net/neoforged/neoforge/maven-metadata.xml"
         };
     }
 

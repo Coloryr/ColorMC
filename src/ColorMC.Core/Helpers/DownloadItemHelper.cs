@@ -171,14 +171,18 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     private static DownloadItemObj BuildNeoForgeItem(string mc, string version, string type)
     {
-        var name = $"forge-{mc}-{version}-{type}";
+        var v2222 = CheckHelpers.IsGameVersion1202(mc);
+        var name = v2222
+            ? $"neoforge-{version}-{type}"
+            : $"forge-{mc}-{version}-{type}";
         var url = UrlHelper.DownloadNeoForgeJar(mc, version, BaseClient.Source);
 
         return new()
         {
             Url = url + name + ".jar",
-            Name = $"net.neoforged:forge:{mc}-{version}-{type}",
-            Local = $"{LibrariesPath.BaseDir}/net/neoforged/forge/{mc}-{version}/{name}.jar",
+            Name = $"net.neoforged:{name}",
+            Local = $"{LibrariesPath.BaseDir}/net/neoforged/" +
+            $"{(v2222 ? $"neoforge/{version}" : $"forge/{mc}-{version}")}/{name}.jar",
         };
     }
 

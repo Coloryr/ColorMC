@@ -117,6 +117,17 @@ public static class CheckHelpers
     }
 
     /// <summary>
+    /// 是否是1.20.2以上版本
+    /// </summary>
+    /// <param name="version"></param>
+    /// <returns></returns>
+    public static bool IsGameVersion1202(string version)
+    {
+        Version version1 = new(version);
+        return version1.Minor >= 20 && version1.Build >= 2;
+    }
+
+    /// <summary>
     /// 是否添加任务
     /// </summary>
     /// <param name="obj">下载项目</param>
