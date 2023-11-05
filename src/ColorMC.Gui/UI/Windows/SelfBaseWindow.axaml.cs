@@ -32,24 +32,17 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         InitializeComponent();
 
-        DataContext = new BaseModel(con.Title);
-
         ICon = con;
 
         if (SystemInfo.Os == OsType.Linux)
         {
             SystemDecorations = SystemDecorations.Full;
-            WinHead.IsVisible = false;
+            Model.EnableHead = false;
         }
 
         KeyDown += Window_KeyDown;
 
         Icon = App.Icon;
-
-        if (App.BackBitmap != null)
-        {
-            Image_Back.Source = App.BackBitmap;
-        }
 
         if (ICon is UserControl con1)
         {
@@ -213,10 +206,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private void Update()
     {
-        App.UpdateWindow(this, Image_Back);
-
-        Grid1.Background = GuiConfigUtils.Config.WindowTran ?
-                ColorSel.BottomTranColor : ColorSel.BottomColor;
+        App.UpdateWindow(Model);
 
         ICon.Update();
     }

@@ -202,6 +202,16 @@ public partial class MainControl : UserControl, IUserControl
             }
             return true;
         }
+        if (App.FrpProcess != null)
+        {
+            var res = await model.Model.ShowWait(App.Lang("NetFrpWindow.Tab3.Info2"));
+            if (res)
+            {
+                App.FrpProcess.Kill(true);
+                return false;
+            }
+            return true;
+        }
 
         if (BaseBinding.IsGameRuning())
         {

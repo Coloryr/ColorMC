@@ -32,6 +32,7 @@ using ColorMC.Gui.UI.Controls.ServerPack;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -193,7 +194,7 @@ public partial class App : Application
             {
                 AllWindow = new();
                 (Life as ISingleViewApplicationLifetime)!.MainView = AllWindow;
-                AllWindow.WinHead.Display(false);
+                AllWindow.Model.HeadDisplay = false;
                 AllWindow.Opened();
             }
             else
@@ -737,7 +738,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowNetFrp(Process? p = null, string? ip = null)
+    public static void ShowNetFrp(Process? p = null, NetFrpLocalModel? model = null, string? ip = null)
     {
         if (NetFrpWindow != null)
         {
@@ -751,7 +752,7 @@ public partial class App : Application
 
         if (p != null)
         {
-            NetFrpWindow.SetProcess(p, ip!);
+            NetFrpWindow.SetProcess(p, model!, ip!);
         }
     }
 
@@ -816,64 +817,58 @@ public partial class App : Application
         Environment.Exit(Environment.ExitCode);
     }
 
-    public static void UpdateWindow(Window? window, Image? image)
+    public static void UpdateWindow(BaseModel model)
     {
         if (GuiConfigUtils.Config != null)
         {
-            if (image != null)
+            model.Background = GuiConfigUtils.Config.WindowTran ?
+                ColorSel.BottomTranColor : ColorSel.BottomColor;
+            model.Back = BackBitmap;
+            if (BackBitmap != null)
             {
-                if (BackBitmap != null)
+                if (GuiConfigUtils.Config.BackTran != 0)
                 {
-                    image.Source = BackBitmap;
-                    if (GuiConfigUtils.Config.BackTran != 0)
-                    {
-                        image.Opacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
-                    }
-                    else
-                    {
-                        image.Opacity = 1.0;
-                    }
-                    image.IsVisible = true;
+                    model.BgOpacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
                 }
                 else
                 {
-                    image.IsVisible = false;
-                    image.Source = null;
+                    model.BgOpacity = 1.0;
                 }
+                model.BgVisible = true;
+            }
+            else
+            {
+                model.BgVisible = false;
             }
 
-
-            if (window != null)
+            if (GuiConfigUtils.Config.WindowTran)
             {
-                if (GuiConfigUtils.Config.WindowTran)
+                model.Hints = new[]
                 {
-                    window.TransparencyLevelHint = new WindowTransparencyLevel[]
-                        {
-                            WindowTran[GuiConfigUtils.Config.WindowTranType]
-                        };
-                }
-                else
+                    WindowTran[GuiConfigUtils.Config.WindowTranType]
+                };
+            }
+            else
+            {
+                model.Hints = new[]
                 {
-                    window.TransparencyLevelHint = new WindowTransparencyLevel[]
-                        {
-                            WindowTransparencyLevel.None
-                        };
-                }
+                    WindowTransparencyLevel.None
+                };
+            }
 
-                switch (GuiConfigUtils.Config.ColorType)
-                {
-                    case ColorType.Auto:
-                        window.RequestedThemeVariant =
-                            ThisApp.PlatformSettings!.GetColorValues().ThemeVariant ==
-                            PlatformThemeVariant.Light ? ThemeVariant.Light : ThemeVariant.Dark;
-                        break;
-                    case ColorType.Light:
-                        window.RequestedThemeVariant = ThemeVariant.Light;
-                        break;
-                    case ColorType.Dark:
-                        window.RequestedThemeVariant = ThemeVariant.Dark;
-                        break;
-                }
+            switch (GuiConfigUtils.Config.ColorType)
+            {
+                case ColorType.Auto:
+                    model.Theme =
+                        ThisApp.PlatformSettings!.GetColorValues().ThemeVariant ==
+                        PlatformThemeVariant.Light ? ThemeVariant.Light : ThemeVariant.Dark;
+                    break;
+                case ColorType.Light:
+                    model.Theme = ThemeVariant.Light;
+                    break;
+                case ColorType.Dark:
+                    model.Theme = ThemeVariant.Dark;
+                    break;
             }
         }
     }

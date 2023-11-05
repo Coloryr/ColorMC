@@ -3,9 +3,11 @@ using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;
+
 public partial class SingleWindow : Window
 {
     public SingleWindow()
@@ -22,10 +24,6 @@ public partial class SingleWindow : Window
         Closed += UserWindow_Closed;
         Opened += UserWindow_Opened;
         Closing += SingleWindow_Closing;
-
-        App.PicUpdate += Update;
-
-        Update();
     }
 
     private async void SingleWindow_Closing(object? sender, WindowClosingEventArgs e)
@@ -68,10 +66,5 @@ public partial class SingleWindow : Window
     {
         Win.Closed();
         App.Close();
-    }
-
-    private void Update()
-    {
-        App.UpdateWindow(this, null);
     }
 }

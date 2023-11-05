@@ -2,9 +2,11 @@
 using AvaloniaEdit.Document;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Model.Items;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel : MenuModel
 {
+    private readonly List<string> _isOut = new();
 
     [ObservableProperty]
     private bool _isRuning;
@@ -26,8 +29,9 @@ public partial class NetFrpModel : MenuModel
     private readonly object Lock = new();
 
     private string _remoteIP;
+    private string _localIP;
     
-    public void SetProcess(Process process, string ip)
+    public void SetProcess(Process process,  NetFrpLocalModel model, string ip)
     {
         if (_process != null)
         {
@@ -37,6 +41,7 @@ public partial class NetFrpModel : MenuModel
         App.FrpProcess = process;
         _process = process;
         _remoteIP = ip;
+        _localIP = model.Port;
 
         if (SystemInfo.Os == OsType.Windows)
         {
@@ -72,6 +77,7 @@ public partial class NetFrpModel : MenuModel
         if (e.Data?.Contains("TCP 类型隧道启动成功") == true
             || e.Data?.Contains("Your TCP proxy is available now") == true)
         {
+            _isOut.Add(_localIP);
             Dispatcher.UIThread.Post(() =>
             {
                 Model.ShowReadInfo(App.Lang("NetFrpWindow.Tab3.Info1"), _remoteIP, null);

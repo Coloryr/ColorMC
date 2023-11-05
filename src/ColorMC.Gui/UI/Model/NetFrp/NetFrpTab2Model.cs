@@ -15,9 +15,10 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 public partial class NetFrpModel : MenuModel
 {
     private readonly LanClient _client = new();
-    public ObservableCollection<NetFrpLocalModel> Locals { get; set; } = new();
     private readonly List<string> _have = new();
 
+    public ObservableCollection<NetFrpLocalModel> Locals { get; set; } = new();
+   
     [RelayCommand]
     public void CleanLocal()
     {
@@ -41,7 +42,7 @@ public partial class NetFrpModel : MenuModel
 
         var item1 = Remotes[res.Index];
         local.IsStart = true;
-        var res1 = await BaseBinding.StartFrp(Key, item1, local.Motd, local.Port);
+        var res1 = await BaseBinding.StartFrp(Key, item1, local);
         if (!res1)
         {
             Model.Show(App.Lang("NetFrpWindow.Tab2.Error1"));
@@ -68,7 +69,12 @@ public partial class NetFrpModel : MenuModel
 
         Dispatcher.UIThread.Post(() =>
         {
-            Locals.Add(new(this, motd, port));
+            var item = new NetFrpLocalModel(this, motd, port);
+            if (_isOut.Contains(port))
+            {
+                item.IsStart = true;
+            }
+            Locals.Add(item);
         });
     }
 }

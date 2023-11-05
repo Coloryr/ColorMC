@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UI.Windows;
@@ -90,10 +91,10 @@ public partial class NetFrpControl : UserControl, IUserControl
         DataContext = amodel;
     }
 
-    public void SetProcess(Process process, string ip)
+    public void SetProcess(Process process, NetFrpLocalModel model1, string ip)
     {
         var model = (DataContext as NetFrpModel)!;
-        model.SetProcess(process, ip);
+        model.SetProcess(process, model1, ip);
         model.NowView = 2;
     }
 

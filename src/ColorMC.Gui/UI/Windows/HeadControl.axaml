@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.HeadControl"
+    x:Class="ColorMC.Gui.UI.Windows.HeadControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -14,7 +14,7 @@
     mc:Ignorable="d">
     <Panel>
         <Border Name="Border1" Background="{setting:Colors Main}" />
-        <DockPanel Margin="5,0,5,0">
+        <DockPanel>
             <StackPanel
                 Name="StackPanel1"
                 DockPanel.Dock="Left"
@@ -23,9 +23,9 @@
                 Name="Icons"
                 Width="25"
                 Height="25"
-                Margin="10,0,0,0"
                 VerticalAlignment="Center"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                DockPanel.Dock="Left">
                 <Border.Background>
                     <ImageBrush Source="{Binding Icon}" Stretch="UniformToFill" />
                 </Border.Background>

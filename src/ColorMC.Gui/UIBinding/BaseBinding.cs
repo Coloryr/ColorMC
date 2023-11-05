@@ -847,7 +847,7 @@ public static class BaseBinding
         return false;
     }
 
-    public static async Task<bool> StartFrp(string key, NetFrpRemoteModel item1, string motd, string port)
+    public static async Task<bool> StartFrp(string key, NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
         string file;
         string dir;
@@ -901,7 +901,7 @@ public static class BaseBinding
             }
             else if (item3.StartsWith("local_port"))
             {
-                builder.AppendLine($"local_port = {port}");
+                builder.AppendLine($"local_port = {model.Port}");
             }
             else
             {
@@ -923,18 +923,8 @@ public static class BaseBinding
                 CreateNoWindow = true
             }
         };
-        App.ShowNetFrp(p, ip + ":" + port);
+        App.ShowNetFrp(p, model, ip + ":" + model.Port);
 
         return true;
-    }
-
-    private static void P_ErrorDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        Logs.Error(e.Data);
-    }
-
-    private static void P_OutputDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        Logs.Info(e.Data);
     }
 }

@@ -7,23 +7,27 @@
     xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:info="clr-namespace:ColorMC.Gui.UI.Controls.Info"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
-    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.User"
-    xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model"
+    xmlns:windows="clr-namespace:ColorMC.Gui.UI.Windows"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:DataType="model:BaseModel"
     mc:Ignorable="d">
 
     <Design.DataContext>
-        <vm:BaseModel />
+        <model:BaseModel />
     </Design.DataContext>
 
     <DockPanel>
-        <views:HeadControl Name="WinHead" DockPanel.Dock="Top" />
-        <Panel Name="Grid3">
-            <Image Name="Image_Back" Stretch="UniformToFill" />
-            <dialog:DialogHost>
+        <windows:HeadControl DockPanel.Dock="Top" IsVisible="{Binding EnableHead}" />
+        <Panel Background="{Binding Background}">
+            <Image
+                IsVisible="{Binding BgVisible}"
+                Opacity="{Binding BgOpacity}"
+                Source="{Binding Back}"
+                Stretch="UniformToFill" />
+            <dialog:DialogHost Identifier="{Binding Name}">
                 <dialog:DialogHost.DataTemplates>
                     <DataTemplate DataType="dialogmodel:Info1Model">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -33,13 +37,12 @@
                                 Text="{Binding Text}"
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
-                            <StackPanel Margin="0,10,0,0">
-                                <ProgressBar
-                                    Height="20"
-                                    IsIndeterminate="{Binding Indeterminate}"
-                                    ShowProgressText="{Binding !Indeterminate}"
-                                    Value="{Binding Value}" />
-                            </StackPanel>
+                            <ProgressBar
+                                Height="20"
+                                Margin="0,10,0,0"
+                                IsIndeterminate="{Binding Indeterminate}"
+                                ShowProgressText="{Binding !Indeterminate}"
+                                Value="{Binding Value}" />
                         </StackPanel>
                     </DataTemplate>
                     <DataTemplate DataType="dialogmodel:Info3Model">
@@ -58,7 +61,7 @@
                             <TextBox
                                 Name="TextBox2"
                                 MinWidth="350"
-                                Margin="0,20,0,0"
+                                Margin="0,10,0,0"
                                 Classes="input1"
                                 FontSize="20"
                                 Foreground="{setting:Colors Font}"
@@ -72,13 +75,14 @@
                             <StackPanel Margin="0,10,0,0">
                                 <ProgressBar
                                     Height="20"
+                                    Margin="0,0,0,10"
                                     IsIndeterminate="{Binding ValueVisable}"
                                     IsVisible="{Binding ValueVisable}" />
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <Button
                                         Width="100"
                                         Height="30"
-                                        Margin="0,0,30,0"
+                                        Margin="10,0,10,0"
                                         HorizontalAlignment="Center"
                                         Command="{Binding Confirm}"
                                         Content="{setting:Localize Button.Confirm}"
@@ -87,6 +91,7 @@
                                     <Button
                                         Width="100"
                                         Height="30"
+                                        Margin="10,0,10,0"
                                         HorizontalAlignment="Center"
                                         Command="{Binding Cancel}"
                                         Content="{setting:Localize Button.Cancel}"
@@ -113,13 +118,14 @@
                                 <Button
                                     Width="100"
                                     Height="30"
+                                    Margin="10,0,10,0"
                                     Command="{Binding Confirm}"
                                     Content="{setting:Localize Button.Confirm}"
                                     IsEnabled="{Binding Enable}" />
                                 <Button
                                     Width="100"
                                     Height="30"
-                                    Margin="30,0,0,0"
+                                    Margin="10,0,10,0"
                                     Command="{Binding Cancel}"
                                     Content="{setting:Localize Button.Cancel}"
                                     IsEnabled="{Binding Enable}"
@@ -139,22 +145,24 @@
                                 ItemsSource="{Binding Items}"
                                 SelectedIndex="{Binding Index}"
                                 SelectedItem="{Binding Select}" />
-                            <StackPanel Margin="0,10,0,0">
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Button
-                                        Width="100"
-                                        Height="30"
-                                        Margin="0,0,30,0"
-                                        HorizontalAlignment="Center"
-                                        Command="{Binding Confirm}"
-                                        Content="{setting:Localize Button.Confirm}" />
-                                    <Button
-                                        Width="100"
-                                        Height="30"
-                                        HorizontalAlignment="Center"
-                                        Command="{Binding Cancel}"
-                                        Content="{setting:Localize Button.Cancel}" />
-                                </StackPanel>
+                            <StackPanel
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Button
+                                    Width="100"
+                                    Height="30"
+                                    Margin="10,0,10,0"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding Confirm}"
+                                    Content="{setting:Localize Button.Confirm}" />
+                                <Button
+                                    Width="100"
+                                    Height="30"
+                                    Margin="10,0,10,0"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding Cancel}"
+                                    Content="{setting:Localize Button.Cancel}" />
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
@@ -174,13 +182,14 @@
                                     <Button
                                         Width="100"
                                         Height="30"
-                                        Margin="0,0,30,0"
+                                        Margin="10,0,10,0"
                                         HorizontalAlignment="Center"
                                         Command="{Binding Confirm}"
                                         Content="{setting:Localize Button.Confirm}" />
                                     <Button
                                         Width="100"
                                         Height="30"
+                                        Margin="10,0,10,0"
                                         HorizontalAlignment="Center"
                                         Command="{Binding Cancel}"
                                         Content="{setting:Localize Button.Cancel}" />
@@ -196,10 +205,9 @@
                     </DataTemplate>
                 </dialog:DialogHost.DataTemplates>
                 <Panel>
-                    <Grid Name="Controls" />
-                    <Grid Name="Grid1" />
+                    <Panel Name="Controls" />
 
-                    <Grid
+                    <Panel
                         Name="Grid2"
                         Background="{setting:Colors TopBottom}"
                         IsVisible="False">
@@ -209,28 +217,29 @@
                             VerticalAlignment="Center"
                             Content="test"
                             FontSize="30" />
-                    </Grid>
+                    </Panel>
                 </Panel>
             </dialog:DialogHost>
             <Button
                 Name="Button1"
                 Width="80"
-                Height="25"
-                Margin="0,-30,190,5"
+                Height="35"
+                Margin="0,-35,200,5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                BorderBrush="#FFFFFF"
-                Content="{setting:Localize Gui.Info33}" />
+                BorderBrush="Transparent"
+                Content="{setting:Localize Gui.Info33}"
+                CornerRadius="0" />
             <Button
                 Name="Button2"
                 Width="80"
-                Height="25"
-                Margin="0,-30,100,5"
+                Height="35"
+                Margin="0,-35,120,5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                BorderBrush="#FFFFFF"
+                BorderBrush="Transparent"
                 Content="{setting:Localize Gui.Info31}"
-                DockPanel.Dock="Top" />
+                CornerRadius="0" />
             <info:Info2Control />
         </Panel>
     </DockPanel>

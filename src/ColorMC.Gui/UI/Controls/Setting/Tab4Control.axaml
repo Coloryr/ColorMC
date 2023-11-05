@@ -46,7 +46,8 @@
                                     Height="24"
                                     Margin="2,-9,0,0"
                                     HorizontalAlignment="Left"
-                                    Path="/Resource/Icon/down.svg" />
+                                    Path="/Resource/Icon/down.svg"
+                                    Stroke="{setting:Colors Font}" />
                                 <CheckBox
                                     Margin="25,0,5,0"
                                     Content="{setting:Localize SettingWindow.Tab4.Text22}"
@@ -65,7 +66,8 @@
                                     Height="24"
                                     Margin="2,-9,0,0"
                                     HorizontalAlignment="Left"
-                                    Path="/Resource/Icon/down.svg" />
+                                    Path="/Resource/Icon/down.svg"
+                                    Stroke="{setting:Colors Font}" />
                                 <CheckBox
                                     Margin="25,0,5,0"
                                     Content="{setting:Localize SettingWindow.Tab4.Text22}"
@@ -84,7 +86,6 @@
                                     Height="24"
                                     Margin="2,-9,0,0"
                                     HorizontalAlignment="Left"
-                                    Fill="{setting:Colors Font}"
                                     Path="/Resource/Icon/down.svg"
                                     Stroke="{setting:Colors Font}" />
                                 <CheckBox
@@ -105,7 +106,8 @@
                                     Height="24"
                                     Margin="2,-9,0,0"
                                     HorizontalAlignment="Left"
-                                    Path="/Resource/Icon/down.svg" />
+                                    Path="/Resource/Icon/down.svg"
+                                    Stroke="{setting:Colors Font}" />
                                 <CheckBox
                                     Margin="25,0,5,0"
                                     Content="{setting:Localize SettingWindow.Tab4.Text22}"

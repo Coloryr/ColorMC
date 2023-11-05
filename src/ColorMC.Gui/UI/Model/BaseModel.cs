@@ -1,4 +1,7 @@
-﻿using Avalonia.Media.Imaging;
+﻿using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Styling;
 using AvaloniaEdit.Utils;
 using ColorMC.Gui.UI.Model.Dialog;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -6,10 +9,55 @@ using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model;
+
+public class BoolPublisher : IObservable<bool>
+{
+    private readonly List<IObserver<bool>> _observers = new();
+    /// <summary>
+    /// 订阅主题，将观察者添加到列表中
+    /// </summary>
+    /// <param name="observer"></param>
+    /// <returns></returns>
+    public IDisposable Subscribe(IObserver<bool> observer)
+    {
+        _observers.Add(observer);
+        return new Unsubscribe(_observers, observer);
+    }
+    /// <summary>
+    /// 取消订阅类
+    /// </summary>
+    private class Unsubscribe : IDisposable
+    {
+        private readonly List<IObserver<bool>> _observers;
+        private readonly IObserver<bool> _observer;
+        public Unsubscribe(List<IObserver<bool>> observers, IObserver<bool> observer)
+        {
+            _observer = observer;
+            _observers = observers;
+        }
+
+        public void Dispose()
+        {
+            _observers?.Remove(_observer);
+        }
+    }
+    /// <summary>
+    /// 通知已订阅的观察者
+    /// </summary>
+    /// <param name="weatherData"></param>
+    public void Notify(bool weatherData)
+    {
+        foreach (var observer in _observers)
+        {
+            observer.OnNext(weatherData);
+        }
+    }
+}
 
 public partial class BaseModel : ObservableObject
 {
@@ -19,16 +67,37 @@ public partial class BaseModel : ObservableObject
     private readonly Info5Model _info5;
     private readonly Info6Model _info6;
 
-    public Task Info1Task;
-
     public string NotifyText;
 
     [ObservableProperty]
     private Bitmap _icon = App.GameIcon;
     [ObservableProperty]
+    private Bitmap? _back;
+
+    [ObservableProperty]
     private string? _title;
     [ObservableProperty]
     private string? _title1;
+
+    [ObservableProperty]
+    private bool _bgVisible;
+    [ObservableProperty]
+    private double _bgOpacity;
+
+    [ObservableProperty]
+    private ThemeVariant _theme;
+    [ObservableProperty]
+    private IBrush _background;
+
+    [ObservableProperty]
+    private bool _enableHead = true;
+    [ObservableProperty]
+    private bool _headDisplay = true;
+
+    public IObservable<bool> HeadDisplayObservale = new BoolPublisher();
+
+    [ObservableProperty]
+    private WindowTransparencyLevel[] _hints;
 
     public string Name { get; init; }
 
@@ -49,6 +118,11 @@ public partial class BaseModel : ObservableObject
         _info4 = new(Name);
         _info5 = new(Name);
         _info6 = new(Name);
+    }
+
+    partial void OnHeadDisplayChanged(bool value)
+    {
+        (HeadDisplayObservale as BoolPublisher)?.Notify(value);
     }
 
     /// <summary>
@@ -101,7 +175,7 @@ public partial class BaseModel : ObservableObject
     {
         _info1.Indeterminate = false;
 
-        DialogHost.Close(Name);
+        DClose();
     }
 
     /// <summary>
@@ -123,7 +197,7 @@ public partial class BaseModel : ObservableObject
     {
         _info3.ValueVisable = false;
 
-        DialogHost.Close(Name);
+        DClose();
     }
 
     public async Task<(bool Cancel, string? Text1)> ShowEdit(string title, string data)
@@ -403,7 +477,7 @@ public partial class BaseModel : ObservableObject
         return _info6.IsCancel;
     }
 
-    private void DClose()
+    public void DClose()
     {
         if (DialogHost.IsDialogOpen(Name))
         {

@@ -18,7 +18,7 @@
             <Label Content="{Binding Motd}" />
         </StackPanel>
         <Button
-            Width="80"
+            Width="120"
             Height="25"
             HorizontalAlignment="Right"
             Command="{Binding Start}"

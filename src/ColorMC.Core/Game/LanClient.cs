@@ -11,8 +11,10 @@ public class LanClient
 {
     public Action<string, string, string>? FindLan;
 
-    private UdpClient _socket;
+    private readonly UdpClient _socket;
+
     private bool _isRun;
+    private CancellationTokenSource _cancel = new();
 
     public LanClient()
     {
@@ -22,42 +24,44 @@ public class LanClient
 
         _isRun = true;
 
-        _socket.BeginReceive(new AsyncCallback(Callback), null);
+        new Thread(Run).Start();
     }
 
-    private void Callback(IAsyncResult result)
+    private async void Run()
     {
-        var point = new IPEndPoint(IPAddress.Any, 0);
-        try
+        while (_isRun)
         {
-            var data = _socket.EndReceive(result, ref point);
-
-            string temp = Encoding.UTF8.GetString(data);
-
-            string motd = GetMotd(temp);
-            string? ad = GetAd(temp);
-
-            if (ad != null)
+            try
             {
-                FindLan?.Invoke(motd, point.ToString(), ad);
+                var data = await _socket.ReceiveAsync(_cancel.Token);
+                if (!_isRun)
+                {
+                    return;
+                }
+
+                string temp = Encoding.UTF8.GetString(data.Buffer);
+                var point = data.RemoteEndPoint;
+
+                string motd = GetMotd(temp);
+                string? ad = GetAd(temp);
+
+                if (ad != null)
+                {
+                    FindLan?.Invoke(motd, point.ToString(), ad);
+                }
+            }
+            catch
+            { 
+                
             }
         }
-        catch
-        { 
-            
-        }
-
-        if (!_isRun)
-        {
-            return;
-        }
-
-        _socket.BeginReceive(new AsyncCallback(Callback), null);
     }
 
     public void Stop()
     {
         _isRun = false;
+
+        _cancel.Cancel(false);
 
         _socket.Close();
         _socket.Dispose();

@@ -23,11 +23,16 @@ internal static class GuiLoad
         ColorMCGui.SetBaseSha1(Program.BaseSha1);
         ColorMCGui.Main(args);
     }
+
+    public static AppBuilder BuildAvaloniaApp()
+    {
+        return ColorMCGui.BuildAvaloniaApp();
+    }
 }
 
 public static class Program
 {
-    public const string TopVersion = "A21";
+    public const string TopVersion = "A22";
 
     public static readonly string[] BaseSha1 = new[]
     {
@@ -94,8 +99,8 @@ public static class Program
 
     public static AppBuilder BuildAvaloniaApp()
     {
-#if NativeAOT
-        return ColorMCGui.BuildAvaloniaApp();
+#if NativeAOT || DEBUG
+        return GuiLoad.BuildAvaloniaApp();
 #else
         Load();
         return BuildApp();
