@@ -26,50 +26,9 @@ public partial class UsersControl : UserControl, IUserControl
         DataGrid_User.DoubleTapped += DataGrid_User_DoubleTapped;
         DataGrid_User.CellPointerPressed += DataGrid_User_PointerPressed;
 
-        TextBox_Input1.KeyDown += TextBox_Input1_KeyDown;
-        TextBox_Input3.KeyDown += TextBox_Input3_KeyDown;
-
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
-    }
-
-    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == "DisplayAdd")
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                if ((DataContext as UsersControlModel)!.DisplayAdd)
-                {
-                    App.CrossFade300.Start(null, Grid1);
-                }
-                else
-                {
-                    App.CrossFade300.Start(Grid1, null);
-                }
-            });
-        }
-    }
-
-    private async void TextBox_Input3_KeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Enter)
-        {
-            await (DataContext as UsersControlModel)!.Add();
-        }
-    }
-
-    private async void TextBox_Input1_KeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Enter)
-        {
-            var model = (DataContext as UsersControlModel)!;
-            if (model.Type == 0)
-            {
-                await model.Add();
-            }
-        }
     }
 
     public void Opened()
@@ -158,7 +117,6 @@ public partial class UsersControl : UserControl, IUserControl
     public void SetBaseModel(BaseModel model)
     {
         var amodel = new UsersControlModel(model);
-        amodel.PropertyChanged += Model_PropertyChanged;
         DataContext = amodel;
     }
 }

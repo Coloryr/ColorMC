@@ -1,4 +1,5 @@
-﻿using Avalonia.OpenGL;
+﻿using Avalonia.Controls;
+using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Avalonia.Threading;
 using ColorMC.Core.Utils;
@@ -92,16 +93,6 @@ public class Live2dRender : OpenGlControlBase
         }
     }
 
-    //private void Live2dRender_PointerPressed(object? sender, PointerPressedEventArgs e)
-    //{
-    //    var pro = e.GetCurrentPoint(this);
-    //    if (pro.Properties.IsLeftButtonPressed)
-    //    {
-    //        Pressed();
-    //        Moved((float)pro.Position.X, (float)pro.Position.Y);
-    //    }
-    //}
-
     private static void CheckError(GlInterface gl)
     {
         int err;
@@ -135,6 +126,9 @@ public class Live2dRender : OpenGlControlBase
     protected override void OnOpenGlDeinit(GlInterface GL)
     {
         _lapp?.Dispose();
+        _lapp = null;
+        _init = false;
+        _first = false;
     }
 
     protected override void OnOpenGlRender(GlInterface gl, int fb)
@@ -155,7 +149,18 @@ public class Live2dRender : OpenGlControlBase
             _lapp.Live2dManager.ReleaseAllModel();
             model.ChangeModelDone();
         }
-        gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
+
+        int x = (int)Bounds.Width;
+        int y = (int)Bounds.Height;
+
+        if (VisualRoot is TopLevel window)
+        {
+            var screen = window.RenderScaling;
+            x = (int)(Bounds.Width * screen);
+            y = (int)(Bounds.Height * screen);
+        }
+
+        gl.Viewport(0, 0, x, y);
         var now = DateTime.Now;
         float span = 0;
         if (_time.Ticks == 0)

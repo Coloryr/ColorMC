@@ -13,7 +13,9 @@ public partial class NetFrpLocalModel : ObservableObject
 {
     public string Motd { get; init; }
     public string Port { get; init; }
-    public bool IsStart { get; set; }
+
+    [ObservableProperty]
+    private bool _isStart;
 
     private readonly NetFrpModel _top;
     public NetFrpLocalModel(NetFrpModel top, string motd, string port)

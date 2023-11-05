@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.User"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
@@ -11,113 +12,126 @@
     x:DataType="model:UsersControlModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel Margin="3" Background="{setting:Colors TranBack}">
-        <Label
-            Margin="3"
-            VerticalAlignment="Bottom"
-            Content="{setting:Localize Tips.Text2}" />
+    <Panel Margin="5" Background="{setting:Colors TranBack}">
+        <dialog:DialogHost Identifier="UsersControl">
+            <dialog:DialogHost.DataTemplates>
+                <DataTemplate DataType="model:UsersControlModel">
+                    <StackPanel Margin="5">
+                        <Label Content="{setting:Localize UserWindow.Text5}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="{setting:Localize UserWindow.Text3}" />
+                            <ComboBox
+                                Width="200"
+                                Margin="5,0,5,0"
+                                IsEnabled="{Binding EnableType}"
+                                ItemsSource="{Binding UserTypeList}"
+                                SelectedIndex="{Binding Type}" />
+                        </StackPanel>
+                        <TextBox
+                            Name="TextBox_Input1"
+                            Margin="5"
+                            Classes="input1"
+                            IsEnabled="{Binding EnableName}"
+                            Text="{Binding Name}"
+                            Watermark="{Binding WatermarkName}" />
+                        <TextBox
+                            Name="TextBox_Input2"
+                            Margin="5"
+                            Classes="input1"
+                            IsEnabled="{Binding EnableUser}"
+                            Text="{Binding User}"
+                            Watermark="{setting:Localize Text.UserName}" />
+                        <TextBox
+                            Name="TextBox_Input3"
+                            Margin="5"
+                            Classes="input1"
+                            IsEnabled="{Binding EnablePassword}"
+                            PasswordChar="*"
+                            Text="{Binding Password}"
+                            Watermark="{setting:Localize UserWindow.Text2}" />
+                        <DockPanel HorizontalAlignment="Stretch">
+                            <Button
+                                Width="80"
+                                Height="25"
+                                Margin="5"
+                                Command="{Binding Add}"
+                                Content="{setting:Localize Button.Add}"
+                                DockPanel.Dock="Right"
+                                IsEnabled="{Binding !IsAdding}" />
+                            <Button
+                                Width="80"
+                                Height="25"
+                                Margin="5"
+                                Command="{Binding Cancel}"
+                                Content="{setting:Localize Button.Cancel}" />
+                        </DockPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </dialog:DialogHost.DataTemplates>
+            <Panel>
+                <Panel>
+                    <Label VerticalAlignment="Bottom" Content="{setting:Localize Tips.Text2}" />
+                    <Border
+                        Padding="{setting:Style BorderPadding}"
+                        Background="{setting:Colors GroupBack}"
+                        BorderBrush="{setting:Colors GroupColor}"
+                        BorderThickness="2"
+                        CornerRadius="{setting:Style ButtonCornerRadius}"
+                        DockPanel.Dock="Bottom">
+                        <DataGrid
+                            Name="DataGrid_User"
+                            AutoGenerateColumns="False"
+                            CanUserResizeColumns="True"
+                            CanUserSortColumns="False"
+                            HorizontalScrollBarVisibility="Visible"
+                            ItemsSource="{Binding UserList}"
+                            SelectedItem="{Binding Item}"
+                            VerticalScrollBarVisibility="Visible">
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn
+                                    Binding="{Binding Use}"
+                                    Header="{setting:Localize UserWindow.DataGrid.Text1}"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Binding="{Binding Type}"
+                                    Header="{setting:Localize UserWindow.DataGrid.Text3}"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Binding="{Binding Name}"
+                                    Header="{setting:Localize Text.UserName}"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Binding="{Binding UUID}"
+                                    Header="{setting:Localize UserWindow.DataGrid.Text4}"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Binding="{Binding Text1}"
+                                    Header="{setting:Localize UserWindow.DataGrid.Text5}"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Binding="{Binding Text2}"
+                                    Header="{setting:Localize UserWindow.DataGrid.Text6}"
+                                    IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </Panel>
 
-        <DataGrid
-            Name="DataGrid_User"
-            AutoGenerateColumns="False"
-            CanUserResizeColumns="True"
-            CanUserSortColumns="False"
-            HorizontalScrollBarVisibility="Visible"
-            ItemsSource="{Binding UserList}"
-            SelectedItem="{Binding Item}"
-            VerticalScrollBarVisibility="Visible">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn
-                    Binding="{Binding Use}"
-                    Header="{setting:Localize UserWindow.DataGrid.Text1}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Type}"
-                    Header="{setting:Localize UserWindow.DataGrid.Text3}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Name}"
-                    Header="{setting:Localize Text.UserName}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding UUID}"
-                    Header="{setting:Localize UserWindow.DataGrid.Text4}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Text1}"
-                    Header="{setting:Localize UserWindow.DataGrid.Text5}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Text2}"
-                    Header="{setting:Localize UserWindow.DataGrid.Text6}"
-                    IsReadOnly="True" />
-            </DataGrid.Columns>
-        </DataGrid>
+                <Button
+                    Width="40"
+                    Height="40"
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding SetAdd}"
+                    CornerRadius="20"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text26}"
+                    ToolTip.VerticalOffset="-30">
+                    <Svg Path="/Resource/Icon/add.svg" />
+                </Button>
+            </Panel>
+        </dialog:DialogHost>
 
-        <Button
-            Width="100"
-            Height="25"
-            Margin="0,3,5,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Command="{Binding SetAdd}"
-            Content="{setting:Localize UserWindow.Text4}" />
-
-        <Panel
-            Name="Grid1"
-            Background="{setting:Colors BG1}"
-            IsVisible="False">
-            <StackPanel Margin="5">
-                <Label Content="{setting:Localize UserWindow.Text5}" />
-                <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize UserWindow.Text3}" />
-                    <ComboBox
-                        Width="200"
-                        Margin="5,0,0,0"
-                        IsEnabled="{Binding EnableType}"
-                        ItemsSource="{Binding UserTypeList}"
-                        SelectedIndex="{Binding Type}" />
-                </StackPanel>
-                <TextBox
-                    Name="TextBox_Input1"
-                    Margin="5"
-                    Classes="input1"
-                    IsEnabled="{Binding EnableName}"
-                    Text="{Binding Name}"
-                    Watermark="{Binding WatermarkName}" />
-                <TextBox
-                    Name="TextBox_Input2"
-                    Margin="5"
-                    Classes="input1"
-                    IsEnabled="{Binding EnableUser}"
-                    Text="{Binding User}"
-                    Watermark="{setting:Localize Text.UserName}" />
-                <TextBox
-                    Name="TextBox_Input3"
-                    Margin="5"
-                    Classes="input1"
-                    IsEnabled="{Binding EnablePassword}"
-                    PasswordChar="*"
-                    Text="{Binding Password}"
-                    Watermark="{setting:Localize UserWindow.Text2}" />
-                <DockPanel HorizontalAlignment="Stretch">
-                    <Button
-                        Width="80"
-                        Height="25"
-                        Margin="5"
-                        Command="{Binding Add}"
-                        Content="{setting:Localize Button.Add}"
-                        DockPanel.Dock="Right"
-                        IsEnabled="{Binding !IsAdding}" />
-                    <Button
-                        Width="80"
-                        Height="25"
-                        Margin="5"
-                        Command="{Binding Cancel}"
-                        Content="{setting:Localize Button.Cancel}" />
-                </DockPanel>
-            </StackPanel>
-        </Panel>
         <Panel
             Name="Grid2"
             Background="{setting:Colors BG1}"

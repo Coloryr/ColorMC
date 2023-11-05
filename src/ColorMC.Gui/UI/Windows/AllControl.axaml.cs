@@ -26,7 +26,6 @@ public partial class AllControl : UserControl, IBaseWindow
     private IUserControl _baseControl;
     private IUserControl _nowControl;
     private readonly AllFlyout _allFlyout;
-    private bool _isDialog;
 
     //mode true
     private readonly Dictionary<IUserControl, Control> _cons = new();
@@ -51,14 +50,9 @@ public partial class AllControl : UserControl, IBaseWindow
 
         _allFlyout = new(_buttonList);
 
-        if (App.BackBitmap != null)
-        {
-            Image_Back.Source = App.BackBitmap;
-        }
-
         if (SystemInfo.Os == OsType.Linux)
         {
-            WinHead.IsVisible = false;
+            Model.EnableHead = false;
         }
         else if (SystemInfo.Os == OsType.Android)
         {
@@ -74,6 +68,8 @@ public partial class AllControl : UserControl, IBaseWindow
         PointerPressed += AllControl_PointerPressed;
 
         App.PicUpdate += Update;
+
+        Update();
     }
 
     private void AllControl_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -97,13 +93,10 @@ public partial class AllControl : UserControl, IBaseWindow
     public void Back()
     {
         if (_nowControl == null)
-            return;
-
-        if (_isDialog)
         {
-            Grid1.Children.Clear();
-            _isDialog = false;
+            return;
         }
+
         else
         {
             Close(_nowControl);
@@ -372,19 +365,9 @@ public partial class AllControl : UserControl, IBaseWindow
         ButtonUp();
     }
 
-    public void ShowDialog(UserControl con)
-    {
-        Grid1.Children.Add(con);
-
-        _isDialog = true;
-    }
-
     private void Update()
     {
-        App.UpdateWindow(null, Image_Back);
-
-        Grid3.Background = GuiConfigUtils.Config.WindowTran ?
-                ColorSel.BottomTranColor : ColorSel.BottomColor;
+        App.UpdateWindow(Model);
     }
 
     public void SetTitle(string data)

@@ -1,18 +1,21 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Model;
+using System;
 
-namespace ColorMC.Gui.UI.Controls;
+namespace ColorMC.Gui.UI.Windows;
 
 public partial class HeadControl : UserControl
 {
-    private Button _buttonClose;
-    private Button _buttonMax;
-    private Button _buttonMin;
+    private readonly Button _buttonClose;
+    private readonly Button _buttonMax;
+    private readonly Button _buttonMin;
 
     public HeadControl()
     {
@@ -24,29 +27,30 @@ public partial class HeadControl : UserControl
 
         _buttonMin = new Button()
         {
-            Width = 24,
-            Height = 24,
-            Margin = new Thickness(3, 0, 3, 0),
-            Content = "-",
-            BorderBrush = Brushes.White
+            Width = 40,
+            Height = 35,
+            Content = new HeadImg() { Path = "/Resource/Icon/Head/min.svg" },
+            BorderThickness = new Thickness(0),
+            BorderBrush = Brushes.Transparent,
+            CornerRadius = new CornerRadius(0)
         };
-
         _buttonMax = new Button()
         {
-            Width = 24,
-            Height = 24,
-            Margin = new Thickness(3, 0, 3, 0),
-            Content = "▢",
-            BorderBrush = Brushes.White
+            Width = 40,
+            Height = 35,
+            Content = new HeadImg() { Path = "/Resource/Icon/Head/max.svg" },
+            BorderThickness = new Thickness(0),
+            BorderBrush = Brushes.Transparent,
+            CornerRadius = new CornerRadius(0)
         };
-
         _buttonClose = new Button()
         {
-            Width = 24,
-            Height = 24,
-            Margin = new Thickness(3, 0, 3, 0),
-            Content = "X",
-            BorderBrush = Brushes.White
+            Width = 40,
+            Height = 35,
+            Content = new HeadImg() { Path = "/Resource/Icon/Head/close.svg" },
+            BorderThickness = new Thickness(0),
+            BorderBrush = Brushes.Transparent,
+            CornerRadius = new CornerRadius(0)
         };
 
         if (SystemInfo.Os == OsType.MacOS)
@@ -59,7 +63,7 @@ public partial class HeadControl : UserControl
         }
         else
         {
-            Icons.Margin = new Thickness(0, 0, 0, 0);
+            Icons.Margin = new Thickness(5, 0, 0, 0);
             StackPanel1.SetValue(DockPanel.DockProperty, Dock.Right);
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
@@ -69,6 +73,18 @@ public partial class HeadControl : UserControl
         _buttonMin.Click += ButtonMin_Click;
         _buttonMax.Click += ButtonMax_Click;
         _buttonClose.Click += ButtonClose_Click;
+
+        DataContextChanged += HeadControl_DataContextChanged;
+    }
+
+    private void HeadControl_DataContextChanged(object? sender, EventArgs e)
+    {
+        if (DataContext is BaseModel model)
+        {
+            _buttonMin.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
+            _buttonMax.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
+            _buttonClose.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
+        }
     }
 
     public void Display(bool value)

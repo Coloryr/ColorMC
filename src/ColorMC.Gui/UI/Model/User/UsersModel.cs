@@ -6,6 +6,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DialogHostAvalonia;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -34,8 +35,6 @@ public partial class UsersControlModel : TopModel
     private bool _enableType;
     [ObservableProperty]
     private bool _isAdding;
-    [ObservableProperty]
-    private bool _displayAdd;
 
     [ObservableProperty]
     private string _watermarkName;
@@ -47,6 +46,7 @@ public partial class UsersControlModel : TopModel
     private string _password;
 
     private bool _cancel;
+    private bool _isOAuth;
 
     public UsersControlModel(BaseModel model) : base(model)
     {
@@ -145,7 +145,7 @@ public partial class UsersControlModel : TopModel
         User = "";
         Password = "";
 
-        DisplayAdd = true;
+        DialogHost.Show(this, "UsersControl");
     }
 
     [RelayCommand]
@@ -157,6 +157,7 @@ public partial class UsersControlModel : TopModel
         {
             case 0:
                 var name = User;
+                _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(name))
                 {
                     Model.Show(App.Lang("Gui.Error8"));
@@ -176,9 +177,9 @@ public partial class UsersControlModel : TopModel
                 _cancel = false;
                 ColorMCCore.LoginOAuthCode = LoginOAuthCode;
                 Model.Progress(App.Lang("UserWindow.Info1"));
+                _isOAuth = true;
                 res = await UserBinding.AddUser(AuthType.OAuth, null);
-                Model.ProgressClose();
-                Model.InputClose();
+                Model.DClose();
                 if (_cancel)
                     break;
                 if (!res.Item1)
@@ -188,10 +189,12 @@ public partial class UsersControlModel : TopModel
                 }
                 Model.Notify(App.Lang("Gui.Info4"));
                 Name = "";
+                _isOAuth = false;
                 ok = true;
                 break;
             case 2:
                 var server = Name;
+                _isOAuth = false;
                 if (server?.Length != 32)
                 {
                     Model.Show(App.Lang("UserWindow.Error3"));
@@ -218,6 +221,7 @@ public partial class UsersControlModel : TopModel
                 break;
             case 3:
                 server = Name;
+                _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
                 {
                     Model.Show(App.Lang("UserWindow.Error4"));
@@ -243,6 +247,7 @@ public partial class UsersControlModel : TopModel
                 ok = true;
                 break;
             case 4:
+                _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
                 {
@@ -263,6 +268,7 @@ public partial class UsersControlModel : TopModel
                 break;
             case 5:
                 server = Name;
+                _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
                 {
                     Model.Show(App.Lang("UserWindow.Error4"));
@@ -294,7 +300,7 @@ public partial class UsersControlModel : TopModel
         if (ok)
         {
             UserBinding.UserLastUser();
-            DisplayAdd = false;
+            DialogHost.Close("UsersControl");
         }
         Load();
         IsAdding = false;
@@ -303,7 +309,7 @@ public partial class UsersControlModel : TopModel
     [RelayCommand]
     public void Cancel()
     {
-        DisplayAdd = false;
+        DialogHost.Close("UsersControl");
     }
 
     public void Remove(UserDisplayObj item)
@@ -402,7 +408,7 @@ public partial class UsersControlModel : TopModel
         Name = obj.Text1;
         User = obj.Text2;
 
-        DisplayAdd = true;
+        DialogHost.Show(this, "UsersControl");
         IsAdding = false;
     }
 
@@ -441,6 +447,10 @@ public partial class UsersControlModel : TopModel
     protected override void Close()
     {
         UserList.Clear();
+        if (_isOAuth)
+        {
+            UserBinding.OAuthCancel();
+        }
     }
 
     public async void Edit(UserDisplayObj obj)

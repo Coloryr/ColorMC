@@ -1,5 +1,7 @@
+using Avalonia.Controls;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
+using Avalonia.VisualTree;
 using Live2DCSharpSDK.Framework.Rendering.OpenGL;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -73,8 +75,17 @@ public class AvaloniaApi : OpenGLApi
 
     public override void GetWindowSize(out int w, out int h)
     {
-        w = (int)Con.Bounds.Width;
-        h = (int)Con.Bounds.Height;
+        if (Con.GetVisualRoot() is TopLevel window)
+        {
+            var screen = window.RenderScaling;
+            w = (int)(Con.Bounds.Width * screen);
+            h = (int)(Con.Bounds.Height * screen);
+        }
+        else
+        {
+            w = (int)Con.Bounds.Width;
+            h = (int)Con.Bounds.Height;
+        }
     }
 
     public override void glActiveTexture(int bit)

@@ -881,7 +881,7 @@
 	"NetFrpWindow.Tab3.Text1": "进程日志",
 	"NetFrpWindow.Tab3.Text2": "结束映射",
 	"NetFrpWindow.Tab3.Info1": "开启成功，快发送地址给你的小伙伴一起联机吧！",
-	"NetFrpWindow.Tab3.Info2": "映射启动中，是否要关闭",
+	"NetFrpWindow.Tab3.Info2": "映射运行中，是否要关闭",
 	"Live2DFlyout.Text1": "播放动画",
 	"Live2DFlyout.Text2": "切换表情",
 	"ServerMotdControl.Text1": "玩家数量：",
