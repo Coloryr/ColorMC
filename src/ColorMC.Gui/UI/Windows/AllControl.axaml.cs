@@ -52,9 +52,10 @@ public partial class AllControl : UserControl, IBaseWindow
 
         if (SystemInfo.Os == OsType.Linux)
         {
-            Model.EnableHead = false;
+            ResizeButton.IsVisible = true;
         }
-        else if (SystemInfo.Os == OsType.Android)
+
+        if (SystemInfo.Os == OsType.Android)
         {
             Model.HeadBackDisplay = false;
             Model.HeadDownDisplay = false;
@@ -66,10 +67,17 @@ public partial class AllControl : UserControl, IBaseWindow
         }
 
         PointerPressed += AllControl_PointerPressed;
+        ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
 
         App.PicUpdate += Update;
 
         Update();
+    }
+
+    private void ResizeButton_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        e.Handled = true;
+        (VisualRoot as Window)?.BeginResizeDrag(WindowEdge.SouthEast, e);
     }
 
     private void AllControl_PointerPressed(object? sender, PointerPressedEventArgs e)

@@ -29,11 +29,7 @@ public partial class SettingModel : MenuModel
 
     public SettingModel(BaseModel model) : base(model)
     {
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            _enableWindowMode = false;
-        }
-        else if (SystemInfo.Os == OsType.Android)
+        if (SystemInfo.Os == OsType.Android)
         {
             Phone = true;
             _enableWindowMode = false;

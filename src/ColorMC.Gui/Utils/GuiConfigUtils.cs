@@ -101,11 +101,6 @@ public static class GuiConfigUtils
                 Config.Style = MakeStyleSettingConfig();
                 save = true;
             }
-            if (SystemInfo.Os == OsType.Linux && Config.WindowMode)
-            {
-                Config.WindowMode = false;
-                save = true;
-            }
             if (save)
             {
                 Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
