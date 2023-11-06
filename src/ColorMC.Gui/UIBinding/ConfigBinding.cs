@@ -384,10 +384,9 @@ public static class ConfigBinding
     /// 设置窗口模式
     /// </summary>
     /// <param name="value"></param>
-    public static void SetWindowMode(bool value, bool value1)
+    public static void SetWindowMode(bool value)
     {
         GuiConfigUtils.Config.WindowMode = value;
-        GuiConfigUtils.Config.ControlMode = value1;
 
         GuiConfigUtils.Save();
 

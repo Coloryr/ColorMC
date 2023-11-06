@@ -71,8 +71,6 @@ public partial class SettingModel : MenuModel
     [ObservableProperty]
     private bool _enableBG;
     [ObservableProperty]
-    private bool _controlMode;
-    [ObservableProperty]
     private bool _enableLive2D;
     [ObservableProperty]
     private bool _enablePicRadius;
@@ -144,14 +142,6 @@ public partial class SettingModel : MenuModel
             return;
 
         ConfigBinding.SetLive2D(value);
-    }
-
-    partial void OnControlModeChanged(bool value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetWindowMode(WindowMode, value);
     }
 
     async partial void OnEnableBGChanged(bool value)
@@ -291,7 +281,7 @@ public partial class SettingModel : MenuModel
         if (_load)
             return;
 
-        ConfigBinding.SetWindowMode(value, ControlMode);
+        ConfigBinding.SetWindowMode(value);
     }
 
     partial void OnIsAutoColorChanged(bool value)
@@ -576,7 +566,6 @@ public partial class SettingModel : MenuModel
             IsDefaultFont = con.FontDefault;
             EnableFontList = !IsDefaultFont;
             WindowMode = con.WindowMode;
-            ControlMode = con.ControlMode;
             EnablePicResize = con.BackLimit;
             EnableWindowTran = con.WindowTran;
 

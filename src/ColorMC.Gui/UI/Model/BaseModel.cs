@@ -5,11 +5,15 @@ using Avalonia.Media.Imaging;
 using Avalonia.Reactive;
 using Avalonia.Styling;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Dialog;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -20,19 +24,13 @@ namespace ColorMC.Gui.UI.Model;
 public class SelfPublisher<T> : IObservable<T>
 {
     private readonly List<IObserver<T>> _observers = new();
-    /// <summary>
-    /// 订阅主题，将观察者添加到列表中
-    /// </summary>
-    /// <param name="observer"></param>
-    /// <returns></returns>
+
     public IDisposable Subscribe(IObserver<T> observer)
     {
         _observers.Add(observer);
         return new Unsubscribe(_observers, observer);
     }
-    /// <summary>
-    /// 取消订阅类
-    /// </summary>
+
     private class Unsubscribe : IDisposable
     {
         private readonly List<IObserver<T>> _observers;
@@ -48,15 +46,11 @@ public class SelfPublisher<T> : IObservable<T>
             _observers?.Remove(_observer);
         }
     }
-    /// <summary>
-    /// 通知已订阅的观察者
-    /// </summary>
-    /// <param name="weatherData"></param>
-    public void Notify(T weatherData)
+    public void Notify(T data)
     {
         foreach (var observer in _observers)
         {
-            observer.OnNext(weatherData);
+            observer.OnNext(data);
         }
     }
 }
@@ -69,7 +63,8 @@ public partial class BaseModel : ObservableObject
     private readonly Info5Model _info5;
     private readonly Info6Model _info6;
 
-    public Action? BackClick;
+    private readonly ConcurrentStack<Action> _listBack = new();
+
     public Action? DownClick;
     public Action? ChoiseClick;
 
@@ -105,13 +100,25 @@ public partial class BaseModel : ObservableObject
     public SelfPublisher<bool> HeadBackObservale = new();
     public SelfPublisher<bool> HeadDownObservale = new();
     public SelfPublisher<bool> HeadChoiseObservale = new();
+    public SelfPublisher<bool> HeadCloseObservale = new();
     public SelfPublisher<string> HeadChoiseContentObservale = new();
 
     public bool HeadDisplay
     {
         set
         {
+            HeadCloseObservale.Notify(value);
             HeadDisplayObservale.Notify(value);
+        }
+    }
+    public bool HeadCloseDisplay
+    {
+        set
+        {
+            if (!GuiConfigUtils.Config.WindowMode)
+            {
+                HeadCloseObservale.Notify(value);
+            }
         }
     }
     public bool HeadBackDisplay
@@ -163,6 +170,50 @@ public partial class BaseModel : ObservableObject
         _info4 = new(Name);
         _info5 = new(Name);
         _info6 = new(Name);
+    }
+
+    public void Work()
+    {
+        if (!_listBack.IsEmpty)
+        {
+            HeadBackDisplay = false;
+        }
+        HeadCloseDisplay = false;
+    }
+
+    public void NoWork()
+    {
+        if (!_listBack.IsEmpty)
+        {
+            HeadBackDisplay = true;
+        }
+        HeadCloseDisplay = true;
+    }
+
+    public void AddBack(Action action)
+    {
+        _listBack.Push(action);
+        if (!_listBack.IsEmpty)
+        {
+            HeadBackDisplay = true;
+        }
+    }
+
+    public void RemoveBack()
+    {
+        _listBack.TryPop(out _);
+        if (_listBack.IsEmpty)
+        {
+            HeadBackDisplay = false;
+        }
+    }
+
+    public void BackClick()
+    {
+        if (_listBack.TryPeek(out var action))
+        {
+            action();
+        }
     }
 
     /// <summary>

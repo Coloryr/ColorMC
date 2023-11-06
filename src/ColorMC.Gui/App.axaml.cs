@@ -961,7 +961,6 @@ public partial class App : Application
         {
             if (AllWindow?.GetVisualRoot() is Window window)
             {
-                AllWindow?.HideAll();
                 window.Hide();
             }
         }
