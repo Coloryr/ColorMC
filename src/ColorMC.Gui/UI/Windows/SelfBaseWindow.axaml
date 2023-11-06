@@ -221,16 +221,20 @@
                 </dialog:DialogHost.DataTemplates>
                 <Panel Name="MainControl" />
             </dialog:DialogHost>
-            <svg:SvgControl
+            <Button
                 Name="ResizeButton"
                 Width="18"
                 Height="18"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                Fill="{setting:Colors Font}"
-                IsVisible="False"
-                Path="/Resource/Icon/resize.svg"
-                Stroke="{setting:Colors Font}" />
+                Background="Transparent"
+                BorderBrush="Transparent"
+                IsVisible="False">
+                <svg:SvgControl
+                    Fill="{setting:Colors Font}"
+                    Path="/Resource/Icon/resize.svg"
+                    Stroke="{setting:Colors Font}" />
+            </Button>
             <info:Info2Control />
         </Panel>
     </DockPanel>
