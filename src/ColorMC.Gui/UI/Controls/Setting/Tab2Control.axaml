@@ -44,7 +44,8 @@
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -68,14 +69,6 @@
                             IsChecked="{Binding WindowMode}"
                             IsEnabled="{Binding EnableWindowMode}" />
                         <CheckBox
-                            Margin="0,0,5,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab2.Text45}"
-                            IsChecked="{Binding ControlMode}"
-                            IsEnabled="{Binding EnableWindowMode}" />
-                    </WrapPanel>
-                    <StackPanel IsEnabled="{Binding !Phone}" Orientation="Horizontal">
-                        <CheckBox
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab2.Text9}"
                             IsChecked="{Binding EnableWindowTran}" />
@@ -86,10 +79,8 @@
                             IsEnabled="{Binding EnableWindowTran}"
                             ItemsSource="{Binding TranTypeList}"
                             SelectedIndex="{Binding WindowTranType}" />
-                    </StackPanel>
-                    <Label Margin="5,0,0,0">
-                        <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text6}" TextWrapping="Wrap" />
-                    </Label>
+                    </WrapPanel>
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text6}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border

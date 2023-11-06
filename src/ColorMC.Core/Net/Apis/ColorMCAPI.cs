@@ -19,6 +19,8 @@ public static class ColorMCAPI
     /// <returns></returns>
     private static async Task<Dictionary<string, McModSearchItemObj>?> GetList(int type, List<string> ids)
     {
+
+        return null;
         try
         {
             string temp = $"https://mc1.coloryr.com:8081/findmod";

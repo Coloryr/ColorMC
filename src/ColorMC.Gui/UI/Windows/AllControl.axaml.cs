@@ -25,15 +25,7 @@ public partial class AllControl : UserControl, IBaseWindow
 {
     private IUserControl _baseControl;
     private IUserControl _nowControl;
-    private readonly AllFlyout _allFlyout;
 
-    //mode true
-    private readonly Dictionary<IUserControl, Control> _cons = new();
-    private readonly Dictionary<Control, IUserControl> _cons1 = new();
-    private readonly Dictionary<Control, Button> _switchs = new();
-    private readonly List<Button> _buttonList = new();
-
-    //mode false
     private readonly List<Control> controls = new();
 
     public IBaseWindow Window => this;
@@ -48,8 +40,6 @@ public partial class AllControl : UserControl, IBaseWindow
 
         DataContext = new BaseModel();
 
-        _allFlyout = new(_buttonList);
-
         if (SystemInfo.Os == OsType.Linux)
         {
             ResizeButton.IsVisible = true;
@@ -62,8 +52,7 @@ public partial class AllControl : UserControl, IBaseWindow
         }
         else
         {
-            Model.DownClick = DownClick;
-            Model.BackClick = BackClick;
+            Model.AddBack(Back);
         }
 
         PointerPressed += AllControl_PointerPressed;
@@ -111,61 +100,6 @@ public partial class AllControl : UserControl, IBaseWindow
         }
     }
 
-    public class AllFlyout : PopupFlyoutBase
-    {
-        private readonly List<Button> Obj;
-        private readonly StackPanel panel;
-        private readonly Grid control;
-        public AllFlyout(List<Button> list)
-        {
-            Obj = list;
-
-            Closing += AllFlyout_Closing;
-            Opening += AllFlyout_Opening;
-
-            control = new Grid();
-            control.Children.Add(new Rectangle()
-            {
-                Fill = ColorSel.BackColor,
-                Stroke = ColorSel.MainColor,
-                StrokeThickness = 3
-            });
-            panel = new StackPanel()
-            {
-                Margin = new Thickness(5)
-            };
-            control.Children.Add(panel);
-        }
-
-        private void AllFlyout_Opening(object? sender, EventArgs e)
-        {
-            foreach (var item in Obj)
-            {
-                panel.Children.Add(item);
-            }
-        }
-
-        private void AllFlyout_Closing(object? sender, CancelEventArgs e)
-        {
-            panel.Children.Clear();
-        }
-
-        protected override Control CreatePresenter()
-        {
-            return control;
-        }
-    }
-
-    private void DownClick()
-    {
-        _allFlyout.ShowAt(this, true);
-    }
-
-    private void BackClick()
-    {
-        Back();
-    }
-
     public void Add(IUserControl con)
     {
         if (_baseControl == null)
@@ -180,45 +114,15 @@ public partial class AllControl : UserControl, IBaseWindow
         }
         else
         {
-            if (GuiConfigUtils.Config.ControlMode)
+            var con1 = Controls.Children[0];
+            var con2 = (con as Control)!;
+            Controls.Children.Remove(con1);
+            if (con1 is not (MainControl or CustomControl))
             {
-                var button = new Button
-                {
-                    Content = con.Title,
-                    Height = 25,
-                    Width = 150
-                };
-                button.Click += (a, e) =>
-                {
-                    _allFlyout.Hide();
-                    Active(con);
-                };
-                var grid = new Border
-                {
-                    IsVisible = false,
-                    Background = ColorSel.TopBottomColor
-                };
-                _buttonList.Add(button);
-                grid.Child = (con as Control)!;
-                _switchs.Add(grid, button);
-                _cons.Add(con, grid);
-                _cons1.Add(grid, con);
-
-                Controls.Children.Add(grid);
-                App.CrossFade300.Start(null, grid);
+                controls.Add(con1);
             }
-            else
-            {
-                var con1 = Controls.Children[0];
-                var con2 = (con as Control)!;
-                Controls.Children.Remove(con1);
-                if (con1 is not (MainControl or CustomControl))
-                {
-                    controls.Add(con1);
-                }
-                Controls.Children.Add(con2);
-                App.CrossFade300.Start(null, con2);
-            }
+            Controls.Children.Add(con2);
+            App.CrossFade300.Start(null, con2);
 
             con.Opened();
         }
@@ -236,70 +140,29 @@ public partial class AllControl : UserControl, IBaseWindow
         {
             return;
         }
-        if (GuiConfigUtils.Config.ControlMode)
+        Model.HeadDownDisplay = false;
+        if (controls.Count > 0 || _nowControl is not (MainControl or CustomControl))
         {
-            if (_switchs.Count > 0)
-            {
-                Model.HeadBackDisplay = true;
-                if (_switchs.Count > 1)
-                {
-                    Model.HeadDownDisplay = true;
-                }
-                else
-                {
-                    Model.HeadDownDisplay = false;
-                }
-            }
-            else
-            {
-                Model.HeadDownDisplay = false;
-                Model.HeadBackDisplay = false;
-            }
+            Model.HeadBackDisplay = true;
         }
         else
         {
-            Model.HeadDownDisplay = false;
-            if (controls.Count > 0 || _nowControl is not (MainControl or CustomControl))
-            {
-                Model.HeadBackDisplay = true;
-            }
-            else
-            {
-                Model.HeadBackDisplay = false;
-            }
+            Model.HeadBackDisplay = false;
         }
     }
 
     public void Active(IUserControl con)
     {
 
-        if (GuiConfigUtils.Config.ControlMode)
-        {
-            foreach (Control item1 in Controls.Children)
-            {
-                if (item1 == _baseControl)
-                    continue;
+        var con1 = (con as Control)!;
+        if (Controls.Children.Contains(con1))
+            return;
 
-                item1.ZIndex = 0;
-            }
-
-            if (_cons.TryGetValue(con, out var item))
-            {
-                item.ZIndex = 1;
-            }
-        }
-        else
-        {
-            var con1 = (con as Control)!;
-            if (Controls.Children.Contains(con1))
-                return;
-
-            controls.Remove(con1);
-            var con2 = Controls.Children[0];
-            Controls.Children.Clear();
-            controls.Add(con2);
-            Controls.Children.Add(con1);
-        }
+        controls.Remove(con1);
+        var con2 = Controls.Children[0];
+        Controls.Children.Clear();
+        controls.Add(con2);
+        Controls.Children.Add(con1);
 
         _nowControl = con;
         SetTitle(_nowControl.Title);
@@ -316,52 +179,27 @@ public partial class AllControl : UserControl, IBaseWindow
             return;
         }
 
-        if (GuiConfigUtils.Config.ControlMode)
+        var con1 = Controls.Children[0];
+        var con2 = (con as Control)!;
+        if (con1 == con2)
         {
-            if (_cons.Remove(con, out var item))
+            Controls.Children.Remove(con1);
+        }
+        controls.Remove(con2);
+        if (Controls.Children.Count == 0)
+        {
+            if (controls.Count > 0)
             {
-                _cons1.Remove(item);
-                Controls.Children.Remove(item);
-                if (_switchs.Remove(item, out var item1))
-                {
-                    _buttonList.Remove(item1);
-                }
-            }
-
-            var item2 = Controls.Children.Last();
-            if (item2 is Border grid)
-            {
-                _nowControl = _cons1[grid];
+                con1 = controls.Last();
+                controls.Remove(con1);
+                _nowControl = (con1 as IUserControl)!;
             }
             else
             {
+                con1 = (_baseControl as Control)!;
                 _nowControl = _baseControl;
             }
-        }
-        else
-        {
-            var con1 = Controls.Children[0];
-            var con2 = (con as Control)!;
-            if (con1 == con2)
-            {
-                Controls.Children.Remove(con1);
-            }
-            controls.Remove(con2);
-            if (Controls.Children.Count == 0)
-            {
-                if (controls.Count > 0)
-                {
-                    con1 = controls.Last();
-                    controls.Remove(con1);
-                    _nowControl = (con1 as IUserControl)!;
-                }
-                else
-                {
-                    con1 = (_baseControl as Control)!;
-                    _nowControl = _baseControl;
-                }
-                Controls.Children.Add(con1);
-            }
+            Controls.Children.Add(con1);
         }
 
         SetTitle(_nowControl.Title);
@@ -396,12 +234,6 @@ public partial class AllControl : UserControl, IBaseWindow
             return false;
 
         return await now.Closing();
-    }
-
-    public void HideAll()
-    {
-        var list = new List<IUserControl>(_cons.Keys);
-        list.ForEach(Close);
     }
 
     public void SetIcon(Bitmap icon)

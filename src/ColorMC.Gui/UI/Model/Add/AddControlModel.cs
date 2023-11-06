@@ -253,18 +253,16 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         if (value)
         {
-            Model.HeadChoiseContent = null;
-            Model.HeadBackDisplay = true;
-            Model.BackClick = () =>
+            Model.AddBack(() =>
             {
                 OptifineDisplay = false;
-            };
+            });
+            Model.HeadChoiseContent = null;
         }
         else
         {
             Model.HeadChoiseContent = App.Lang("Button.Filter");
-            Model.BackClick = null;
-            Model.HeadBackDisplay = false;
+            Model.RemoveBack();
             Type = 0;
             DownloadSource = 0;
         }
@@ -274,18 +272,16 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         if (value)
         {
-            Model.HeadChoiseContent = null;
-            Model.HeadBackDisplay = true;
-            Model.BackClick = () =>
+            Model.AddBack(() =>
             {
                 VersionDisplay = false;
-            };
+            });
+            Model.HeadChoiseContent = null;
         }
         else
         {
             Model.HeadChoiseContent = App.Lang("Button.Filter");
-            Model.BackClick = null;
-            Model.HeadBackDisplay = false;
+            Model.RemoveBack();
         }
     }
 
@@ -393,12 +389,15 @@ public partial class AddControlModel : GameModel, IAddWindow
 
         _load = true;
 
+        Model.Work();
+
         GameVersionList.Clear();
         SortTypeList.Clear();
         CategorieList.Clear();
 
         DisplayList.Clear();
         var type = SourceTypeList[DownloadSource];
+        
         //CF搜索源
         if (type == SourceType.CurseForge)
         {
@@ -512,6 +511,8 @@ public partial class AddControlModel : GameModel, IAddWindow
             await GetList();
         }
 
+        Model.NoWork();
+
         _load = false;
     }
 
@@ -550,7 +551,10 @@ public partial class AddControlModel : GameModel, IAddWindow
     [RelayCommand]
     public async Task GetList()
     {
+        Model.Work();
+
         var type = SourceTypeList[DownloadSource];
+        
         Model.Progress(App.Lang("AddWindow.Info2"));
         if (type == SourceType.McMod)
         {
@@ -622,6 +626,8 @@ public partial class AddControlModel : GameModel, IAddWindow
 
             Model.ProgressClose();
         }
+
+        Model.NoWork();
     }
 
     /// <summary>
@@ -693,6 +699,8 @@ public partial class AddControlModel : GameModel, IAddWindow
     [RelayCommand]
     public async Task LoadOptifineList()
     {
+        Model.Work();
+
         GameVersionList.Clear();
         OptifineList.Clear();
         DownloadOptifineList.Clear();
@@ -713,6 +721,8 @@ public partial class AddControlModel : GameModel, IAddWindow
                                  select newgroup.Key);
 
         LoadOptifineVersion();
+
+        Model.NoWork();
     }
 
     /// <summary>
@@ -722,6 +732,8 @@ public partial class AddControlModel : GameModel, IAddWindow
     [RelayCommand]
     public async Task DownloadMod()
     {
+        Model.Work();
+
         Model.Progress(App.Lang("AddWindow.Info5"));
         var list = DownloadModList.Where(item => item.Download)
                         .Select(item => item.Items[item.SelectVersion]).ToList();
@@ -748,6 +760,8 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
         IsDownload = false;
         ModDownloadDisplay = false;
+
+        Model.NoWork();
     }
 
     /// <summary>
@@ -812,6 +826,8 @@ public partial class AddControlModel : GameModel, IAddWindow
     [RelayCommand]
     public async Task DownloadOptifine()
     {
+        Model.Work();
+
         if (OptifineItem == null)
             return;
 
@@ -831,6 +847,8 @@ public partial class AddControlModel : GameModel, IAddWindow
             Model.Notify(App.Lang("AddWindow.Info12"));
             OptifineDisplay = false;
         }
+
+        Model.NoWork();
     }
 
     /// <summary>
@@ -892,6 +910,8 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <param name="data"></param>
     public async void Install1(FileDisplayObj data)
     {
+        Model.Work();
+
         var type = SourceTypeList[DownloadSource];
         if (Set)
         {
@@ -1038,6 +1058,8 @@ public partial class AddControlModel : GameModel, IAddWindow
             }
             Model.Show(App.Lang("AddWindow.Error5"));
         }
+
+        Model.NoWork();
     }
 
     /// <summary>
@@ -1074,6 +1096,8 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <param name="id">项目ID</param>
     private async void LoadFile(string? id = null)
     {
+        Model.Work();
+
         FileList.Clear();
 
         List<FileDisplayObj>? list = null;
@@ -1162,6 +1186,8 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
 
         Model.ProgressClose();
+
+        Model.NoWork();
     }
 
     /// <summary>
@@ -1289,6 +1315,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         _close = true;
         _load = true;
+        Model.HeadChoiseContent = null;
         ModList.Clear();
         OptifineList.Clear();
         DownloadOptifineList.Clear();

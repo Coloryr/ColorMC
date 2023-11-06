@@ -17,7 +17,6 @@ public partial class HeadControl : UserControl
     private readonly Button _buttonMax;
     private readonly Button _buttonMin;
     private readonly Button _buttonBack;
-    private readonly Button _buttonDown;
     private readonly Button _buttonChoise;
 
     public HeadControl()
@@ -66,16 +65,6 @@ public partial class HeadControl : UserControl
             CornerRadius = new CornerRadius(0),
             IsVisible = false
         };
-        _buttonDown = new Button()
-        {
-            Width = 80,
-            Height = 35,
-            Content = App.Lang("Gui.Info33"),
-            BorderThickness = new Thickness(0),
-            BorderBrush = Brushes.Transparent,
-            CornerRadius = new CornerRadius(0),
-            IsVisible = false
-        };
         _buttonBack = new Button()
         {
             Width = 80,
@@ -94,7 +83,6 @@ public partial class HeadControl : UserControl
             StackPanel1.Children.Add(_buttonClose);
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
-            StackPanel1.Children.Add(_buttonDown);
             StackPanel1.Children.Add(_buttonBack);
             StackPanel1.Children.Add(_buttonChoise);
         }
@@ -102,7 +90,6 @@ public partial class HeadControl : UserControl
         {
             Icons.Margin = new Thickness(5, 0, 0, 0);
             StackPanel1.SetValue(DockPanel.DockProperty, Dock.Right);
-            StackPanel1.Children.Add(_buttonDown);
             StackPanel1.Children.Add(_buttonBack);
             StackPanel1.Children.Add(_buttonChoise);
             StackPanel1.Children.Add(_buttonMin);
@@ -114,8 +101,21 @@ public partial class HeadControl : UserControl
         _buttonMax.Click += ButtonMax_Click;
         _buttonClose.Click += ButtonClose_Click;
         _buttonBack.Click += ButtonBack_Click;
-        _buttonDown.Click += ButtonDown_Click;
         _buttonChoise.Click += ButtonChoise_Click;
+    }
+
+    private void HeadControl_DataContextChanged(object? sender, EventArgs e)
+    {
+        if (DataContext is BaseModel model)
+        {
+            _buttonMin.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
+            _buttonMax.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
+            _buttonClose.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
+            _buttonBack.Bind(IsVisibleProperty, model.HeadBackObservale.ToBinding());
+            _buttonChoise.Bind(IsVisibleProperty, model.HeadChoiseObservale.ToBinding());
+            _buttonChoise.Bind(ContentProperty, model.HeadChoiseContentObservale.ToBinding());
+            _buttonClose.Bind(IsEnabledProperty, model.HeadCloseObservale.ToBinding());
+        }
     }
 
     private void ButtonChoise_Click(object? sender, RoutedEventArgs e)
@@ -130,28 +130,7 @@ public partial class HeadControl : UserControl
 
     private void ButtonBack_Click(object? sender, RoutedEventArgs e)
     {
-        (DataContext as BaseModel)?.BackClick?.Invoke();
-    }
-
-    private void HeadControl_DataContextChanged(object? sender, EventArgs e)
-    {
-        if (DataContext is BaseModel model)
-        {
-            _buttonMin.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
-            _buttonMax.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
-            _buttonClose.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
-            _buttonBack.Bind(IsVisibleProperty, model.HeadBackObservale.ToBinding());
-            _buttonDown.Bind(IsVisibleProperty, model.HeadDownObservale.ToBinding());
-            _buttonChoise.Bind(IsVisibleProperty, model.HeadChoiseObservale.ToBinding());
-            _buttonChoise.Bind(ContentProperty, model.HeadChoiseContentObservale.ToBinding());
-        }
-    }
-
-    public void Display(bool value)
-    {
-        _buttonMin.IsVisible = value;
-        _buttonMax.IsVisible = value;
-        _buttonClose.IsVisible = value;
+        (DataContext as BaseModel)?.BackClick();
     }
 
     private void ButtonClose_Click(object? sender, RoutedEventArgs e)
@@ -167,9 +146,13 @@ public partial class HeadControl : UserControl
         }
 
         if (window.WindowState == WindowState.Maximized)
+        {
             window.WindowState = WindowState.Normal;
+        }
         else
+        {
             window.WindowState = WindowState.Maximized;
+        }
     }
 
     private void ButtonMin_Click(object? sender, RoutedEventArgs e)

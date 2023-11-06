@@ -287,7 +287,7 @@ public record GuiConfigObj
     /// </summary>
     public bool CloseBeforeLaunch { get; set; }
     /// <summary>
-    /// 窗口模式
+    /// 单窗口模式
     /// </summary>
     public bool WindowMode { get; set; }
     /// <summary>
@@ -310,8 +310,4 @@ public record GuiConfigObj
     /// 服务器云同步密钥
     /// </summary>
     public string ServerKey { get; set; }
-    /// <summary>
-    /// 控件堆叠模式
-    /// </summary>
-    public bool ControlMode { get; set; }
 }
