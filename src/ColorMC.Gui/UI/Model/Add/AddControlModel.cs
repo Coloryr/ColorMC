@@ -242,7 +242,51 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     public AddControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
+        Model.HeadChoiseContent = App.Lang("Button.Filter");
+        Model.ChoiseClick = () =>
+        {
+            DisplayFilter = !DisplayFilter;
+        };
+    }
 
+    partial void OnOptifineDisplayChanged(bool value)
+    {
+        if (value)
+        {
+            Model.HeadChoiseContent = null;
+            Model.HeadBackDisplay = true;
+            Model.BackClick = () =>
+            {
+                OptifineDisplay = false;
+            };
+        }
+        else
+        {
+            Model.HeadChoiseContent = App.Lang("Button.Filter");
+            Model.BackClick = null;
+            Model.HeadBackDisplay = false;
+            Type = 0;
+            DownloadSource = 0;
+        }
+    }
+
+    partial void OnVersionDisplayChanged(bool value)
+    {
+        if (value)
+        {
+            Model.HeadChoiseContent = null;
+            Model.HeadBackDisplay = true;
+            Model.BackClick = () =>
+            {
+                VersionDisplay = false;
+            };
+        }
+        else
+        {
+            Model.HeadChoiseContent = App.Lang("Button.Filter");
+            Model.BackClick = null;
+            Model.HeadBackDisplay = false;
+        }
     }
 
     /// <summary>
@@ -501,15 +545,6 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// 切换过滤显示
-    /// </summary>
-    [RelayCommand]
-    public void ShowFilter()
-    {
-        DisplayFilter = !DisplayFilter;
-    }
-
-    /// <summary>
     /// 获取项目列表
     /// </summary>
     [RelayCommand]
@@ -606,15 +641,6 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// 文件列表关闭
-    /// </summary>
-    [RelayCommand]
-    public void VersionClose()
-    {
-        VersionDisplay = false;
-    }
-
-    /// <summary>
     /// 下载文件
     /// </summary>
     /// <returns></returns>
@@ -687,18 +713,6 @@ public partial class AddControlModel : GameModel, IAddWindow
                                  select newgroup.Key);
 
         LoadOptifineVersion();
-    }
-
-    /// <summary>
-    /// 关闭高清修复列表
-    /// </summary>
-    [RelayCommand]
-    public void OptifineClose()
-    {
-        OptifineDisplay = false;
-
-        Type = 0;
-        DownloadSource = 0;
     }
 
     /// <summary>
@@ -815,7 +829,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         else
         {
             Model.Notify(App.Lang("AddWindow.Info12"));
-            OptifineClose();
+            OptifineDisplay = false;
         }
     }
 

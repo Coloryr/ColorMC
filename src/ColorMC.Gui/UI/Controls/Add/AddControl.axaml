@@ -145,13 +145,13 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <Panel>
-                    <DockPanel IsVisible="{Binding EmptyDisplay}">
+                    <Panel IsVisible="{Binding EmptyDisplay}">
                         <Label
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Content="{setting:Localize AddModPackWindow.Text13}"
                             FontSize="30" />
-                    </DockPanel>
+                    </Panel>
                     <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
                         <ItemsControl
                             HorizontalAlignment="Stretch"
@@ -167,15 +167,6 @@
                 </Panel>
             </Border>
         </DockPanel>
-
-        <Button
-            Height="25"
-            Margin="5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Command="{Binding ShowFilter}">
-            <Svg Path="/Resource/Icon/filter.svg" />
-        </Button>
 
         <DockPanel
             Name="Grid1"
@@ -226,14 +217,6 @@
                     VerticalAlignment="Top"
                     Command="{Binding GoFile}"
                     Content="{setting:Localize AddModPackWindow.Text12}" />
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="5,0,0,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Command="{Binding VersionClose}"
-                    Content="{setting:Localize Button.Cancel}" />
             </WrapPanel>
 
             <DataGrid
@@ -303,12 +286,6 @@
                     Margin="5,0,0,0"
                     Command="{Binding DownloadOptifine}"
                     Content="{setting:Localize AddModPackWindow.Text12}" />
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="5,0,0,0"
-                    Command="{Binding OptifineClose}"
-                    Content="{setting:Localize Button.Cancel}" />
             </WrapPanel>
 
             <DataGrid

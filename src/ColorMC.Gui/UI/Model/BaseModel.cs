@@ -1,6 +1,8 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Reactive;
 using Avalonia.Styling;
 using AvaloniaEdit.Utils;
 using ColorMC.Gui.UI.Model.Dialog;
@@ -15,27 +17,27 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model;
 
-public class BoolPublisher : IObservable<bool>
+public class SelfPublisher<T> : IObservable<T>
 {
-    private readonly List<IObserver<bool>> _observers = new();
+    private readonly List<IObserver<T>> _observers = new();
     /// <summary>
     /// 订阅主题，将观察者添加到列表中
     /// </summary>
     /// <param name="observer"></param>
     /// <returns></returns>
-    public IDisposable Subscribe(IObserver<bool> observer)
+    public IDisposable Subscribe(IObserver<T> observer)
     {
         _observers.Add(observer);
-        return new Unsubscribe(_observers, observer);
+        return new Unsubscribe<T>(_observers, observer);
     }
     /// <summary>
     /// 取消订阅类
     /// </summary>
-    private class Unsubscribe : IDisposable
+    private class Unsubscribe<T> : IDisposable
     {
-        private readonly List<IObserver<bool>> _observers;
-        private readonly IObserver<bool> _observer;
-        public Unsubscribe(List<IObserver<bool>> observers, IObserver<bool> observer)
+        private readonly List<IObserver<T>> _observers;
+        private readonly IObserver<T> _observer;
+        public Unsubscribe(List<IObserver<T>> observers, IObserver<T> observer)
         {
             _observer = observer;
             _observers = observers;
@@ -50,7 +52,7 @@ public class BoolPublisher : IObservable<bool>
     /// 通知已订阅的观察者
     /// </summary>
     /// <param name="weatherData"></param>
-    public void Notify(bool weatherData)
+    public void Notify(T weatherData)
     {
         foreach (var observer in _observers)
         {
@@ -66,6 +68,10 @@ public partial class BaseModel : ObservableObject
     private readonly Info4Model _info4;
     private readonly Info5Model _info5;
     private readonly Info6Model _info6;
+
+    public Action? BackClick;
+    public Action? DownClick;
+    public Action? ChoiseClick;
 
     public string NotifyText;
 
@@ -91,13 +97,52 @@ public partial class BaseModel : ObservableObject
 
     [ObservableProperty]
     private bool _enableHead = true;
-    [ObservableProperty]
-    private bool _headDisplay = true;
-
-    public IObservable<bool> HeadDisplayObservale = new BoolPublisher();
 
     [ObservableProperty]
     private WindowTransparencyLevel[] _hints;
+
+    public SelfPublisher<bool> HeadDisplayObservale = new();
+    public SelfPublisher<bool> HeadBackObservale = new();
+    public SelfPublisher<bool> HeadDownObservale = new();
+    public SelfPublisher<bool> HeadChoiseObservale = new();
+    public SelfPublisher<string> HeadChoiseContentObservale = new();
+
+    public bool HeadDisplay
+    {
+        set
+        {
+            HeadDisplayObservale.Notify(value);
+        }
+    }
+    public bool HeadBackDisplay
+    {
+        set
+        {
+            HeadBackObservale.Notify(value);
+        }
+    }
+    public bool HeadDownDisplay
+    {
+        set
+        {
+            HeadDownObservale.Notify(value);
+        }
+    }
+    public string? HeadChoiseContent 
+    {
+        set 
+        {
+            if (value == null)
+            {
+                HeadChoiseObservale.Notify(false);
+            }
+            else
+            {
+                HeadChoiseObservale.Notify(true);
+                HeadChoiseContentObservale.Notify(value);
+            }
+        }
+    }
 
     public string Name { get; init; }
 
@@ -118,11 +163,6 @@ public partial class BaseModel : ObservableObject
         _info4 = new(Name);
         _info5 = new(Name);
         _info6 = new(Name);
-    }
-
-    partial void OnHeadDisplayChanged(bool value)
-    {
-        (HeadDisplayObservale as BoolPublisher)?.Notify(value);
     }
 
     /// <summary>

@@ -35,6 +35,8 @@ public partial class AddControl : UserControl, IUserControl
         DataGrid2.DoubleTapped += DataGrid2_DoubleTapped;
 
         Grid1.PointerPressed += Grid1_PointerPressed;
+        Grid2.PointerPressed += Grid2_PointerPressed;
+        Grid4.PointerPressed += Grid4_PointerPressed;
     }
 
     public void SetBaseModel(BaseModel model)
@@ -113,7 +115,25 @@ public partial class AddControl : UserControl, IUserControl
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
         {
-            (DataContext as AddControlModel)!.VersionClose();
+            (DataContext as AddControlModel)!.VersionDisplay = false;
+            e.Handled = true;
+        }
+    }
+    private void Grid2_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var ev = e.GetCurrentPoint(this);
+        if (ev.Properties.IsXButton1Pressed)
+        {
+            (DataContext as AddControlModel)!.OptifineDisplay = false;
+            e.Handled = true;
+        }
+    }
+    private void Grid4_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var ev = e.GetCurrentPoint(this);
+        if (ev.Properties.IsXButton1Pressed)
+        {
+            (DataContext as AddControlModel)!.ModDownloadDisplay = false;
             e.Handled = true;
         }
     }

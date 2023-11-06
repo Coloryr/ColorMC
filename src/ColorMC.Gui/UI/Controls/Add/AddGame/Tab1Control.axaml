@@ -195,7 +195,7 @@
                         Height="25"
                         HorizontalAlignment="Right"
                         Command="{Binding AddGame}"
-                        Content="{setting:Localize Button.Add}"
+                        Content="{setting:Localize Button.Done}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text69}"
                         ToolTip.VerticalOffset="-30" />
                     <WrapPanel>

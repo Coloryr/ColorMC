@@ -56,13 +56,13 @@ public partial class AllControl : UserControl, IBaseWindow
         }
         else if (SystemInfo.Os == OsType.Android)
         {
-            Button1.IsVisible = false;
-            Button2.IsVisible = false;
+            Model.HeadBackDisplay = false;
+            Model.HeadDownDisplay = false;
         }
         else
         {
-            Button1.Click += Button1_Click;
-            Button2.Click += Button2_Click;
+            Model.DownClick = DownClick;
+            Model.BackClick = BackClick;
         }
 
         PointerPressed += AllControl_PointerPressed;
@@ -148,12 +148,12 @@ public partial class AllControl : UserControl, IBaseWindow
         }
     }
 
-    private void Button1_Click(object? sender, RoutedEventArgs e)
+    private void DownClick()
     {
         _allFlyout.ShowAt(this, true);
     }
 
-    private void Button2_Click(object? sender, RoutedEventArgs e)
+    private void BackClick()
     {
         Back();
     }
@@ -232,32 +232,32 @@ public partial class AllControl : UserControl, IBaseWindow
         {
             if (_switchs.Count > 0)
             {
-                Button2.IsVisible = true;
+                Model.HeadBackDisplay = true;
                 if (_switchs.Count > 1)
                 {
-                    Button1.IsVisible = true;
+                    Model.HeadDownDisplay = true;
                 }
                 else
                 {
-                    Button1.IsVisible = false;
+                    Model.HeadDownDisplay = false;
                 }
             }
             else
             {
-                Button1.IsVisible = false;
-                Button2.IsVisible = false;
+                Model.HeadDownDisplay = false;
+                Model.HeadBackDisplay = false;
             }
         }
         else
         {
-            Button1.IsVisible = false;
+            Model.HeadDownDisplay = false;
             if (controls.Count > 0 || _nowControl is not (MainControl or CustomControl))
             {
-                Button2.IsVisible = true;
+                Model.HeadBackDisplay = true;
             }
             else
             {
-                Button2.IsVisible = false;
+                Model.HeadBackDisplay = false;
             }
         }
     }
