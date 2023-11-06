@@ -56,7 +56,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Activated += Window_Activated;
         Closing += SelfBaseWindow_Closing;
         PropertyChanged += SelfBaseWindow_PropertyChanged;
-        ResizeButton.PointerPressed += ResizeButton_PointerPressed;
+        ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
 
         App.PicUpdate += Update;
 
@@ -74,7 +74,8 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private void ResizeButton_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        BeginResizeDrag(WindowEdge.SouthWest, e);
+        e.Handled = true;
+        BeginResizeDrag(WindowEdge.SouthEast, e);
     }
 
     private void SelfBaseWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
