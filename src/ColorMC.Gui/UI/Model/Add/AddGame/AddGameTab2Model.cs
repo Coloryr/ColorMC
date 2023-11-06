@@ -5,7 +5,6 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;

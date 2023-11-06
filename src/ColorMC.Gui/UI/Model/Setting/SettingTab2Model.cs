@@ -18,7 +18,7 @@ public partial class SettingModel : MenuModel
     public ObservableCollection<FontDisplayObj> FontList { get; init; } = new();
     public string[] TranTypeList { get; init; } = LanguageBinding.GetWindowTranTypes();
     public string[] LanguageList { get; init; } = LanguageBinding.GetLanguages();
-    public string[] PosList { get; init; }= LanguageBinding.GetPos();
+    public string[] PosList { get; init; } = LanguageBinding.GetPos();
 
     [ObservableProperty]
     private FontDisplayObj? _fontItem;

@@ -18,7 +18,7 @@ public partial class AddJavaControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
+        JavaFiles.DoubleTapped += JavaFiles_DoubleTapped;
     }
 
     public async void OnKeyDown(object? sender, KeyEventArgs e)
@@ -35,7 +35,7 @@ public partial class AddJavaControl : UserControl, IUserControl
 
         (DataContext as AddJavaControlModel)!.TypeIndex = 0;
 
-        DataGrid1.SetFontColor();
+        JavaFiles.SetFontColor();
     }
 
     public void Closed()
@@ -43,9 +43,9 @@ public partial class AddJavaControl : UserControl, IUserControl
         App.AddJavaWindow = null;
     }
 
-    private void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
+    private void JavaFiles_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        if (DataGrid1.SelectedItem is not JavaDownloadObj obj)
+        if (JavaFiles.SelectedItem is not JavaDownloadObj obj)
             return;
 
         (DataContext as AddJavaControlModel)!.Install(obj);
@@ -53,7 +53,6 @@ public partial class AddJavaControl : UserControl, IUserControl
 
     public void SetBaseModel(BaseModel model)
     {
-        var amodel = new AddJavaControlModel(model);
-        DataContext = amodel;
+        DataContext = new AddJavaControlModel(model);
     }
 }

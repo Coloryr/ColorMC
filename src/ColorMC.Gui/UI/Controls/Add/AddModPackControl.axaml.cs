@@ -20,9 +20,9 @@ public partial class AddModPackControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
+        PackFiles.DoubleTapped += PackFiles_DoubleTapped;
 
-        Grid1.PointerPressed += Grid1_PointerPressed;
+        ModPackFiles.PointerPressed += ModPackFiles_PointerPressed;
 
         Input1.KeyDown += Input1_KeyDown;
     }
@@ -47,11 +47,11 @@ public partial class AddModPackControl : UserControl, IUserControl
             {
                 if ((DataContext as AddModPackControlModel)!.Display)
                 {
-                    App.CrossFade300.Start(null, Grid1);
+                    App.CrossFade300.Start(null, ModPackFiles);
                 }
                 else
                 {
-                    App.CrossFade300.Start(Grid1, null);
+                    App.CrossFade300.Start(ModPackFiles, null);
                 }
             });
         }
@@ -61,7 +61,7 @@ public partial class AddModPackControl : UserControl, IUserControl
         }
     }
 
-    private async void Grid1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private async void ModPackFiles_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
@@ -79,7 +79,7 @@ public partial class AddModPackControl : UserControl, IUserControl
         }
     }
 
-    private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
+    private async void PackFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
         await (DataContext as AddModPackControlModel)!.Download();
     }
@@ -93,7 +93,7 @@ public partial class AddModPackControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        DataGridFiles.SetFontColor();
+        PackFiles.SetFontColor();
 
         (DataContext as AddModPackControlModel)!.Source = 0;
     }

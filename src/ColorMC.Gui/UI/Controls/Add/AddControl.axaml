@@ -169,7 +169,7 @@
         </DockPanel>
 
         <DockPanel
-            Name="Grid1"
+            Name="VersionDisplay"
             Background="{setting:Colors BG1}"
             IsVisible="False">
             <WrapPanel
@@ -220,7 +220,7 @@
             </WrapPanel>
 
             <DataGrid
-                Name="DataGridFiles"
+                Name="VersionFiles"
                 Background="{setting:Colors TranBack}"
                 CanUserResizeColumns="True"
                 ItemsSource="{Binding FileList}"
@@ -251,7 +251,7 @@
         </DockPanel>
 
         <DockPanel
-            Name="Grid2"
+            Name="OptifineDisplay"
             Background="{setting:Colors BG1}"
             IsVisible="False">
             <WrapPanel
@@ -289,7 +289,7 @@
             </WrapPanel>
 
             <DataGrid
-                Name="DataGrid1"
+                Name="OptifineFiles"
                 Background="{setting:Colors TranBack}"
                 CanUserResizeColumns="True"
                 ItemsSource="{Binding DownloadOptifineList}"
@@ -316,7 +316,7 @@
         </DockPanel>
 
         <DockPanel
-            Name="Grid4"
+            Name="ModDownloadDisplay"
             Background="{setting:Colors BG1}"
             IsVisible="False">
             <WrapPanel
@@ -345,16 +345,10 @@
                     Margin="5,0,0,0"
                     Command="{Binding DownloadMod}"
                     Content="{setting:Localize AddModPackWindow.Text12}" />
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="5,0,0,0"
-                    Command="{Binding DownloadModCancel}"
-                    Content="{setting:Localize Button.Cancel}" />
             </WrapPanel>
 
             <DataGrid
-                Name="DataGrid2"
+                Name="ModDownloadFiles"
                 Background="{setting:Colors TranBack}"
                 CanUserResizeColumns="True"
                 ItemsSource="{Binding DownloadModList}"
@@ -379,13 +373,5 @@
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
-
-        <Panel Background="{setting:Colors BG1}" IsVisible="False">
-            <Label
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{setting:Localize AddWindow.Text8}"
-                FontSize="30" />
-        </Panel>
     </Panel>
 </UserControl>

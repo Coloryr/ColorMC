@@ -1,6 +1,5 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;

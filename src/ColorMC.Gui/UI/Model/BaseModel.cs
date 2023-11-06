@@ -1,59 +1,18 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Reactive;
 using Avalonia.Styling;
 using AvaloniaEdit.Utils;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model;
-
-public class SelfPublisher<T> : IObservable<T>
-{
-    private readonly List<IObserver<T>> _observers = new();
-
-    public IDisposable Subscribe(IObserver<T> observer)
-    {
-        _observers.Add(observer);
-        return new Unsubscribe(_observers, observer);
-    }
-
-    private class Unsubscribe : IDisposable
-    {
-        private readonly List<IObserver<T>> _observers;
-        private readonly IObserver<T> _observer;
-        public Unsubscribe(List<IObserver<T>> observers, IObserver<T> observer)
-        {
-            _observer = observer;
-            _observers = observers;
-        }
-
-        public void Dispose()
-        {
-            _observers?.Remove(_observer);
-        }
-    }
-    public void Notify(T data)
-    {
-        foreach (var observer in _observers)
-        {
-            observer.OnNext(data);
-        }
-    }
-}
 
 public partial class BaseModel : ObservableObject
 {
@@ -135,9 +94,9 @@ public partial class BaseModel : ObservableObject
             HeadDownObservale.Notify(value);
         }
     }
-    public string? HeadChoiseContent 
+    public string? HeadChoiseContent
     {
-        set 
+        set
         {
             if (value == null)
             {

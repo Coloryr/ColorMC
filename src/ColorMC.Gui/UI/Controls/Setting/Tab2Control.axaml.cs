@@ -1,11 +1,8 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Threading;
-using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Setting;
-using ColorMC.Gui.UIBinding;
 using System;
 using System.ComponentModel;
 

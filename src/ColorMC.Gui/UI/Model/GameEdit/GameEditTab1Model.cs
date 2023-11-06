@@ -163,7 +163,7 @@ public partial class GameEditModel : MenuModel
 
     [RelayCommand]
     public async Task LangReload()
-    { 
+    {
         await LangLoad();
     }
 

@@ -547,6 +547,6 @@ public static class TestItem
             }
         };
         var server = new LanServer("25565", "测试服务器");
-       
+
     }
 }

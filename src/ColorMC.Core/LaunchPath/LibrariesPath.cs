@@ -1,7 +1,6 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -245,6 +244,6 @@ public static class LibrariesPath
 
     public static bool CheckOptifineLib(this GameSettingObj obj)
     {
-        return File.Exists(GetOptionLib(obj)); 
+        return File.Exists(GetOptionLib(obj));
     }
 }

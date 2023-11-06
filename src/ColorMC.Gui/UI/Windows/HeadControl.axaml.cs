@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -83,15 +82,15 @@ public partial class HeadControl : UserControl
             StackPanel1.Children.Add(_buttonClose);
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
-            StackPanel1.Children.Add(_buttonBack);
             StackPanel1.Children.Add(_buttonChoise);
+            StackPanel1.Children.Add(_buttonBack);
         }
         else
         {
             Icons.Margin = new Thickness(5, 0, 0, 0);
             StackPanel1.SetValue(DockPanel.DockProperty, Dock.Right);
-            StackPanel1.Children.Add(_buttonBack);
             StackPanel1.Children.Add(_buttonChoise);
+            StackPanel1.Children.Add(_buttonBack);
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
             StackPanel1.Children.Add(_buttonClose);

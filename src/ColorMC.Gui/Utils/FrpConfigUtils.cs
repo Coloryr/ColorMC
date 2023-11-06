@@ -2,14 +2,9 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 
@@ -64,7 +59,7 @@ public static class FrpConfigUtils
                 Config.SakuraFrp = new();
                 save = true;
             }
-            
+
             if (save)
             {
                 Logs.Info(LanguageHelper.Get("Core.Config.Info2"));

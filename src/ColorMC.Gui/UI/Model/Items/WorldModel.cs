@@ -1,5 +1,4 @@
 ﻿using Avalonia.Media.Imaging;
-using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Minecraft;
@@ -7,7 +6,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;

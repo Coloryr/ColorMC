@@ -22,7 +22,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ColorMC.Core.Objs.Java.AdoptiumObj;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -757,7 +756,7 @@ public static class WebBinding
     public static void OpenWeb(WebType type)
     {
         BaseBinding.OpUrl(type switch
-        { 
+        {
             WebType.Guide => "https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md",
             WebType.Mcmod => "https://www.mcmod.cn/",
             WebType.Github => "https://www.github.com/Coloryr/ColorMC",

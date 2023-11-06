@@ -22,7 +22,7 @@ public record StyleSetting
 
 public record MainWindowSetting
 {
-    
+
 }
 
 /// <summary>

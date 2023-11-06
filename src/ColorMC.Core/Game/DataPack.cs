@@ -4,9 +4,6 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace ColorMC.Core.Game;
@@ -133,7 +130,7 @@ public static class DataPack
     {
         var nbt = (world.Nbt.TryGet("Data") as NbtCompound)?.TryGet("DataPacks") as NbtCompound;
 
-        if (nbt?.TryGet("Enabled") is not NbtList ens 
+        if (nbt?.TryGet("Enabled") is not NbtList ens
             || nbt?.TryGet("Disabled") is not NbtList dis)
         {
             return false;

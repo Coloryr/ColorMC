@@ -68,7 +68,28 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
     public AddModPackControlModel(BaseModel model) : base(model)
     {
+        Model.HeadChoiseContent = App.Lang("Button.Filter");
+        Model.ChoiseClick = () =>
+        {
+            DisplayFilter = !DisplayFilter;
+        };
+    }
 
+    partial void OnDisplayChanged(bool value)
+    {
+        if (value)
+        {
+            Model.AddBack(() =>
+            {
+                Display = false;
+            });
+            Model.HeadChoiseContent = null;
+        }
+        else
+        {
+            Model.HeadChoiseContent = App.Lang("Button.Filter");
+            Model.RemoveBack();
+        }
     }
 
     partial void OnGameVersion1Changed(string? value)
@@ -183,13 +204,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
                 break;
         }
 
-        _load = false;
-    }
+        Model.NoWork();
 
-    [RelayCommand]
-    public void ShowFilter()
-    {
-        DisplayFilter = !DisplayFilter;
+        _load = false;
     }
 
     [RelayCommand]
@@ -214,12 +231,6 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
 
         Load();
-    }
-
-    [RelayCommand]
-    public void Cancel()
-    {
-        Display = false;
     }
 
     [RelayCommand]
@@ -412,6 +423,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     protected override void Close()
     {
         _load = true;
+        Model.HeadChoiseContent = null;
         FileList.Clear();
         foreach (var item in DisplayList)
         {

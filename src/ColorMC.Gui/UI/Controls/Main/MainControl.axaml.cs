@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Layout;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
@@ -15,7 +16,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Layout;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -71,7 +71,7 @@ public partial class MainControl : UserControl, IUserControl
             });
         }
     }
-        
+
     private void MainControl_KeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.Down)

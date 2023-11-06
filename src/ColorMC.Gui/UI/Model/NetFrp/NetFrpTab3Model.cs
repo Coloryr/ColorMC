@@ -30,8 +30,8 @@ public partial class NetFrpModel : MenuModel
 
     private string _remoteIP;
     private string _localIP;
-    
-    public void SetProcess(Process process,  NetFrpLocalModel model, string ip)
+
+    public void SetProcess(Process process, NetFrpLocalModel model, string ip)
     {
         if (_process != null)
         {
