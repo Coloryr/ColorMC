@@ -220,26 +220,6 @@
                     </Panel>
                 </Panel>
             </dialog:DialogHost>
-            <Button
-                Name="Button1"
-                Width="80"
-                Height="35"
-                Margin="0,-35,200,5"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                BorderBrush="Transparent"
-                Content="{setting:Localize Gui.Info33}"
-                CornerRadius="0" />
-            <Button
-                Name="Button2"
-                Width="80"
-                Height="35"
-                Margin="0,-35,120,5"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                BorderBrush="Transparent"
-                Content="{setting:Localize Gui.Info31}"
-                CornerRadius="0" />
             <info:Info2Control />
         </Panel>
     </DockPanel>

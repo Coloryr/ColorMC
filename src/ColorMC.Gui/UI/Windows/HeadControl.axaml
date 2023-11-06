@@ -39,7 +39,7 @@
                 TextTrimming="CharacterEllipsis" />
             <TextBlock
                 Name="TitleShow1"
-                Margin="10,0,0,0"
+                Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Foreground="{setting:Colors ButtonFont}"
                 Text="{Binding Title1}"
