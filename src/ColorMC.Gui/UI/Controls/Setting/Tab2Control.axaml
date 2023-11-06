@@ -73,7 +73,6 @@
                             Content="{setting:Localize SettingWindow.Tab2.Text45}"
                             IsChecked="{Binding ControlMode}"
                             IsEnabled="{Binding EnableWindowMode}" />
-                        <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text23}" />
                     </WrapPanel>
                     <StackPanel IsEnabled="{Binding !Phone}" Orientation="Horizontal">
                         <CheckBox

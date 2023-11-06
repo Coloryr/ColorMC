@@ -61,7 +61,7 @@ public class LanClient
     {
         _isRun = false;
 
-        _cancel.Cancel(false);
+        _cancel.Cancel();
 
         _socket.Close();
         _socket.Dispose();

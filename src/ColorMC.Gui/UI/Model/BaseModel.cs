@@ -28,12 +28,12 @@ public class SelfPublisher<T> : IObservable<T>
     public IDisposable Subscribe(IObserver<T> observer)
     {
         _observers.Add(observer);
-        return new Unsubscribe<T>(_observers, observer);
+        return new Unsubscribe(_observers, observer);
     }
     /// <summary>
     /// 取消订阅类
     /// </summary>
-    private class Unsubscribe<T> : IDisposable
+    private class Unsubscribe : IDisposable
     {
         private readonly List<IObserver<T>> _observers;
         private readonly IObserver<T> _observer;
