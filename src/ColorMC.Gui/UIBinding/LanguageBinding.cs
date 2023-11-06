@@ -2,8 +2,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
-using System;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UIBinding;
 

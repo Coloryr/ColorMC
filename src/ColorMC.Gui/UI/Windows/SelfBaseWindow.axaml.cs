@@ -10,8 +10,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;

@@ -8,8 +8,6 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.User;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
-using System;
-using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.User;
 

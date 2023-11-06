@@ -97,7 +97,7 @@
             CornerRadius="{setting:Style ButtonCornerRadius}">
             <Panel>
                 <DataGrid
-                    Name="DataGrid1"
+                    Name="JavaFiles"
                     AutoGenerateColumns="False"
                     CanUserResizeColumns="True"
                     CanUserSortColumns="False"

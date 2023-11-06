@@ -153,17 +153,8 @@
             </Border>
         </DockPanel>
 
-        <Button
-            Height="25"
-            Margin="5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Command="{Binding ShowFilter}">
-            <Svg Path="/Resource/Icon/filter.svg" />
-        </Button>
-
         <DockPanel
-            Name="Grid1"
+            Name="ModPackFiles"
             Background="{setting:Colors BG1}"
             IsVisible="False">
             <WrapPanel
@@ -212,16 +203,10 @@
                     Margin="5,0,0,0"
                     Command="{Binding Download}"
                     Content="{setting:Localize AddModPackWindow.Text12}" />
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="5,0,0,0"
-                    Command="{Binding Cancel}"
-                    Content="{setting:Localize Button.Cancel}" />
             </WrapPanel>
 
             <DataGrid
-                Name="DataGridFiles"
+                Name="PackFiles"
                 Background="{setting:Colors TranBack}"
                 CanUserResizeColumns="True"
                 ItemsSource="{Binding FileList}"

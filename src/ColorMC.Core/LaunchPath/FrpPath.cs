@@ -1,13 +1,4 @@
-﻿using ColorMC.Core.Config;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.LaunchPath;
+﻿namespace ColorMC.Core.LaunchPath;
 
 public static class FrpPath
 {

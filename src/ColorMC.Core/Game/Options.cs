@@ -25,7 +25,7 @@ public static class Options
     {
         var file = obj.GetOptionsFile();
         var builder = new StringBuilder();
-        foreach(var item in list)
+        foreach (var item in list)
         {
             builder.Append(item.Key).Append(sp).AppendLine(item.Value);
         }

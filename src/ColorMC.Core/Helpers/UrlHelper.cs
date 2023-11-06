@@ -198,7 +198,7 @@ public static class UrlHelper
         var baseurl = v2222
             ? $"neoforge/{version}/"
             : $"forge/{mc}-{version}/";
-        string ? url = local switch
+        string? url = local switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/neoforged/{baseurl}",
             SourceLocal.MCBBS => $"{MCBBS}maven/net/neoforged/{baseurl}",

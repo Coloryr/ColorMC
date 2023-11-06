@@ -1,8 +1,6 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs.Minecraft;
-using Jint.Native;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Game;
 
@@ -26,8 +24,8 @@ public static class GameLang
                                 data.Name + "-" + data.Region);
                     }
                     catch
-                    { 
-                        
+                    {
+
                     }
                 }
             }

@@ -68,6 +68,6 @@ public partial class ErrorModel : TopModel
 
     protected override void Close()
     {
-        
+
     }
 }

@@ -46,8 +46,8 @@ public class SocketProxy
                 item.Tcp2.Dispose();
             }
             catch
-            { 
-                
+            {
+
             }
         }
     }

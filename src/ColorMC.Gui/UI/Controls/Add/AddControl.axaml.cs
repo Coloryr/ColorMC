@@ -29,14 +29,13 @@ public partial class AddControl : UserControl, IUserControl
     {
         Obj = obj;
 
-        DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
+        VersionFiles.DoubleTapped += VersionFiles_DoubleTapped;
+        OptifineFiles.DoubleTapped += OptifineFiles_DoubleTapped;
+        ModDownloadFiles.DoubleTapped += ModDownloadFiles_DoubleTapped;
 
-        DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
-        DataGrid2.DoubleTapped += DataGrid2_DoubleTapped;
-
-        Grid1.PointerPressed += Grid1_PointerPressed;
-        Grid2.PointerPressed += Grid2_PointerPressed;
-        Grid4.PointerPressed += Grid4_PointerPressed;
+        VersionDisplay.PointerPressed += VersionDisplay_PointerPressed;
+        OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
+        ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
     }
 
     public void SetBaseModel(BaseModel model)
@@ -64,11 +63,11 @@ public partial class AddControl : UserControl, IUserControl
             {
                 if (model.OptifineDisplay == true)
                 {
-                    App.CrossFade300.Start(null, Grid2);
+                    App.CrossFade300.Start(null, OptifineDisplay);
                 }
                 else
                 {
-                    App.CrossFade300.Start(Grid2, null);
+                    App.CrossFade300.Start(OptifineDisplay, null);
                 }
             });
         }
@@ -78,11 +77,11 @@ public partial class AddControl : UserControl, IUserControl
             {
                 if (model.ModDownloadDisplay == true)
                 {
-                    App.CrossFade300.Start(null, Grid4);
+                    App.CrossFade300.Start(null, ModDownloadDisplay);
                 }
                 else
                 {
-                    App.CrossFade300.Start(Grid4, null);
+                    App.CrossFade300.Start(ModDownloadDisplay, null);
                 }
             });
         }
@@ -92,11 +91,11 @@ public partial class AddControl : UserControl, IUserControl
             {
                 if (model.VersionDisplay == true)
                 {
-                    App.CrossFade300.Start(null, Grid1);
+                    App.CrossFade300.Start(null, VersionDisplay);
                 }
                 else
                 {
-                    App.CrossFade300.Start(Grid1, null);
+                    App.CrossFade300.Start(VersionDisplay, null);
                 }
             });
         }
@@ -110,7 +109,7 @@ public partial class AddControl : UserControl, IUserControl
         }
     }
 
-    private void Grid1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private void VersionDisplay_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
@@ -119,7 +118,7 @@ public partial class AddControl : UserControl, IUserControl
             e.Handled = true;
         }
     }
-    private void Grid2_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private void OptifineDisplay_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
@@ -128,7 +127,7 @@ public partial class AddControl : UserControl, IUserControl
             e.Handled = true;
         }
     }
-    private void Grid4_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private void ModDownloadDisplay_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
@@ -137,7 +136,7 @@ public partial class AddControl : UserControl, IUserControl
             e.Handled = true;
         }
     }
-    private void DataGrid2_DoubleTapped(object? sender, TappedEventArgs e)
+    private void ModDownloadFiles_DoubleTapped(object? sender, TappedEventArgs e)
     {
         var item = (DataContext as AddControlModel)!.Mod;
         if (item != null)
@@ -146,12 +145,12 @@ public partial class AddControl : UserControl, IUserControl
         }
     }
 
-    private async void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
+    private async void OptifineFiles_DoubleTapped(object? sender, TappedEventArgs e)
     {
         await (DataContext as AddControlModel)!.DownloadOptifine();
     }
 
-    private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
+    private async void VersionFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
         await (DataContext as AddControlModel)!.GoFile();
     }
@@ -170,9 +169,9 @@ public partial class AddControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        DataGridFiles.SetFontColor();
-        DataGrid1.SetFontColor();
-        DataGrid2.SetFontColor();
+        VersionFiles.SetFontColor();
+        OptifineFiles.SetFontColor();
+        ModDownloadFiles.SetFontColor();
 
         (DataContext as AddControlModel)!.Display = true;
     }

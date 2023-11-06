@@ -355,7 +355,7 @@ public static class VersionPath
             return temp;
         }
 
-        string file = CheckHelpers.IsGameVersion1202(mc) 
+        string file = CheckHelpers.IsGameVersion1202(mc)
             ? Path.GetFullPath($"{BaseDir}/{Name4}/neoforge-{version}.json")
             : Path.GetFullPath($"{BaseDir}/{Name4}/forge-{mc}-{version}.json");
 

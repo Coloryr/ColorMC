@@ -3,12 +3,8 @@ using ColorMC.Core.Game;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
@@ -18,7 +14,7 @@ public partial class NetFrpModel : MenuModel
     private readonly List<string> _have = new();
 
     public ObservableCollection<NetFrpLocalModel> Locals { get; set; } = new();
-   
+
     [RelayCommand]
     public void CleanLocal()
     {

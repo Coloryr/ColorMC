@@ -9,7 +9,6 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
@@ -892,7 +891,7 @@ public static class Launch
 
         return "";
     }
-    
+
     /// <summary>
     /// 创建所有启动参数
     /// </summary>
