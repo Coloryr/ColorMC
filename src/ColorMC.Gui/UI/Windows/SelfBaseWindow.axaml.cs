@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
@@ -38,8 +39,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         if (SystemInfo.Os == OsType.Linux)
         {
-            SystemDecorations = SystemDecorations.Full;
-            Model.EnableHead = false;
+            ResizeButton.IsVisible = true;
         }
 
         KeyDown += Window_KeyDown;
@@ -56,6 +56,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Activated += Window_Activated;
         Closing += SelfBaseWindow_Closing;
         PropertyChanged += SelfBaseWindow_PropertyChanged;
+        ResizeButton.PointerPressed += ResizeButton_PointerPressed;
 
         App.PicUpdate += Update;
 
@@ -69,6 +70,11 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         }
 
         Update();
+    }
+
+    private void ResizeButton_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        BeginResizeDrag(WindowEdge.SouthWest, e);
     }
 
     private void SelfBaseWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)

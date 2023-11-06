@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
     xmlns:windows="clr-namespace:ColorMC.Gui.UI.Windows"
     Title="Title"
     Width="760"
@@ -220,6 +221,20 @@
                 </dialog:DialogHost.DataTemplates>
                 <Panel Name="MainControl" />
             </dialog:DialogHost>
+            <Button
+                Name="ResizeButton"
+                Width="18"
+                Height="18"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                IsVisible="False">
+                <svg:SvgControl
+                    Fill="{setting:Colors Font}"
+                    Path="/Resource/Icon/resize.svg"
+                    Stroke="{setting:Colors Font}" />
+            </Button>
             <info:Info2Control />
         </Panel>
     </DockPanel>
