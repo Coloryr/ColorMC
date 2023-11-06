@@ -229,7 +229,13 @@
                 VerticalAlignment="Bottom"
                 Background="Transparent"
                 BorderBrush="Transparent"
+                Cursor="BottomRightCorner"
                 IsVisible="False">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </Button.Styles>
                 <svg:SvgControl
                     Fill="{setting:Colors Font}"
                     Path="/Resource/Icon/resize.svg"
