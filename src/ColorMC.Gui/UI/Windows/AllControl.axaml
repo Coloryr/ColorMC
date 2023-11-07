@@ -206,7 +206,7 @@
                     </DataTemplate>
                 </dialog:DialogHost.DataTemplates>
                 <Panel>
-                    <Panel Name="Controls" />
+                    <ContentControl Name="Controls" />
 
                     <Panel
                         Name="Grid2"

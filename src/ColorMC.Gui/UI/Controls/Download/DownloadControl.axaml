@@ -28,7 +28,7 @@
                     BorderBrush="White"
                     BorderThickness="1"
                     Foreground="#FF5EBDD3"
-                    Maximum="100"
+                    Maximum="120"
                     ShowProgressText="True"
                     Value="{Binding Value}" />
                 <StackPanel Orientation="Horizontal">
@@ -47,22 +47,6 @@
                         HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
                         Content="{Binding Now}"
-                        DockPanel.Dock="Right" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="5,2,0,2"
-                        Command="{Binding Pause}"
-                        Content="{Binding Button1}"
-                        DockPanel.Dock="Right" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="5,2,0,2"
-                        Command="{Binding Stop}"
-                        Content="{setting:Localize DownloadWindow.Text2}"
                         DockPanel.Dock="Right" />
                 </StackPanel>
             </WrapPanel>

@@ -38,15 +38,7 @@ public partial class AllControl : UserControl, IBaseWindow
             ResizeButton.IsVisible = true;
         }
 
-        if (SystemInfo.Os == OsType.Android)
-        {
-            Model.HeadBackDisplay = false;
-            Model.HeadDownDisplay = false;
-        }
-        else
-        {
-            Model.AddBack(Back);
-        }
+        Model.AddHeadCall(null, Back);
 
         PointerPressed += AllControl_PointerPressed;
         ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
@@ -66,31 +58,18 @@ public partial class AllControl : UserControl, IBaseWindow
     {
         if (e.GetCurrentPoint(this).Properties.IsXButton1Pressed)
         {
-            Back();
+            Model.BackClick();
         }
     }
 
     public void Closed()
     {
-        Controls.Children.Clear();
+        Controls.Content = null;
     }
 
     public void Opened()
     {
         Update();
-    }
-
-    public void Back()
-    {
-        if (_nowControl == null)
-        {
-            return;
-        }
-
-        else
-        {
-            Close(_nowControl);
-        }
     }
 
     public void Add(IUserControl con)
@@ -99,7 +78,7 @@ public partial class AllControl : UserControl, IBaseWindow
         {
             _baseControl = con;
             var con1 = (_baseControl as Control)!;
-            Controls.Children.Add(con1);
+            Controls.Content = con1;
             Dispatcher.UIThread.Post(() =>
             {
                 _baseControl.Opened();
@@ -107,14 +86,14 @@ public partial class AllControl : UserControl, IBaseWindow
         }
         else
         {
-            var con1 = Controls.Children[0];
+            var con1 = Controls.Content;
             var con2 = (con as Control)!;
-            Controls.Children.Remove(con1);
-            if (con1 is not (MainControl or CustomControl))
+            Controls.Content = null;
+            if (con1 is not (MainControl or CustomControl) && con1 is Control con3)
             {
-                controls.Add(con1);
+                controls.Add(con3);
             }
-            Controls.Children.Add(con2);
+            Controls.Content = con2;
             App.CrossFade300.Start(null, con2);
 
             con.Opened();
@@ -127,35 +106,14 @@ public partial class AllControl : UserControl, IBaseWindow
         ButtonUp();
     }
 
-    private void ButtonUp()
-    {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return;
-        }
-        Model.HeadDownDisplay = false;
-        if (controls.Count > 0 || _nowControl is not (MainControl or CustomControl))
-        {
-            Model.HeadBackDisplay = true;
-        }
-        else
-        {
-            Model.HeadBackDisplay = false;
-        }
-    }
-
     public void Active(IUserControl con)
     {
-
         var con1 = (con as Control)!;
-        if (Controls.Children.Contains(con1))
-            return;
 
         controls.Remove(con1);
-        var con2 = Controls.Children[0];
-        Controls.Children.Clear();
-        controls.Add(con2);
-        Controls.Children.Add(con1);
+        var con2 = Controls.Content as Control;
+        controls.Add(con2!);
+        Controls.Content = con1;
 
         _nowControl = con;
         SetTitle(_nowControl.Title);
@@ -172,14 +130,14 @@ public partial class AllControl : UserControl, IBaseWindow
             return;
         }
 
-        var con1 = Controls.Children[0];
+        var con1 = Controls.Content as Control;
         var con2 = (con as Control)!;
         if (con1 == con2)
         {
-            Controls.Children.Remove(con1);
+            Controls.Content = null;
         }
         controls.Remove(con2);
-        if (Controls.Children.Count == 0)
+        if (Controls.Content == null)
         {
             if (controls.Count > 0)
             {
@@ -192,7 +150,7 @@ public partial class AllControl : UserControl, IBaseWindow
                 con1 = (_baseControl as Control)!;
                 _nowControl = _baseControl;
             }
-            Controls.Children.Add(con1);
+            Controls.Content = con1;
         }
 
         SetTitle(_nowControl.Title);
@@ -202,6 +160,35 @@ public partial class AllControl : UserControl, IBaseWindow
         con.Closed();
 
         ButtonUp();
+    }
+
+    private void Back()
+    {
+        if (_nowControl == null)
+        {
+            return;
+        }
+
+        else
+        {
+            Close(_nowControl);
+        }
+    }
+
+    private void ButtonUp()
+    {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            return;
+        }
+        if (controls.Count > 0 || _nowControl is not (MainControl or CustomControl))
+        {
+            Model.HeadBackDisplay = true;
+        }
+        else
+        {
+            Model.HeadBackDisplay = false;
+        }
     }
 
     private void Update()

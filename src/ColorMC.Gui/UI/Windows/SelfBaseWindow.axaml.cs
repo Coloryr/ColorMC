@@ -46,7 +46,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         if (ICon is UserControl con1)
         {
-            MainControl.Children.Add(con1);
+            MainControl.Content = con1;
         }
 
         Closed += UserWindow_Closed;
@@ -183,7 +183,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         DataContext = null;
         ICon.Closed();
 
-        MainControl.Children.Clear();
+        MainControl.Content = null;
 
         if (App.LastWindow == this)
         {

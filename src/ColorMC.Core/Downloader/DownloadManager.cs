@@ -83,9 +83,9 @@ public static class DownloadManager
     /// </summary>
     public static void DownloadStop()
     {
-        s_items.Clear();
         s_cancel.Cancel();
         s_threads.ForEach(a => a.DownloadStop());
+        s_items.Clear();
     }
 
     /// <summary>
@@ -173,6 +173,11 @@ public static class DownloadManager
         });
 
         ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.End);
+
+        if (s_cancel.IsCancellationRequested)
+        {
+            return false;
+        }
 
         return AllSize == DoneSize;
     }

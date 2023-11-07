@@ -66,28 +66,31 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     [ObservableProperty]
     private bool _displayFilter = true;
 
+    private string _useName;
+
     public AddModPackControlModel(BaseModel model) : base(model)
     {
-        Model.HeadChoiseContent = App.Lang("Button.Filter");
-        Model.ChoiseClick = () =>
+        _useName = ToString() ?? "AddModPackControlModel";
+        Model.AddHeadContent(_useName, App.Lang("Button.Filter"));
+        Model.AddHeadCall(_useName, choise: () =>
         {
             DisplayFilter = !DisplayFilter;
-        };
+        });
     }
 
     partial void OnDisplayChanged(bool value)
     {
         if (value)
         {
-            Model.AddBack(() =>
+            Model.AddHeadCall(back: () =>
             {
                 Display = false;
             });
-            Model.HeadChoiseContent = null;
+            Model.HeadChoiseDisplay = false;
         }
         else
         {
-            Model.HeadChoiseContent = App.Lang("Button.Filter");
+            Model.HeadChoiseDisplay = true;
             Model.RemoveBack();
         }
     }
@@ -143,70 +146,77 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
         Lock();
 
-        CategorieList.Clear();
-        SortTypeList.Clear();
+        Model.Work();
 
-        GameVersionList.Clear();
-        _categories.Clear();
-
-        DisplayList.Clear();
-        OnPropertyChanged(nameof(DisplayList));
-
-        switch (Source)
+        try
         {
-            case 0:
-            case 1:
-                SortTypeList.AddRange(Source == 0 ?
-                    LanguageBinding.GetCurseForgeSortTypes() :
-                    LanguageBinding.GetModrinthSortTypes());
+            CategorieList.Clear();
+            SortTypeList.Clear();
 
-                Model.Progress(App.Lang("AddModPackWindow.Info4"));
-                var list = Source == 0 ?
-                    await GameBinding.GetCurseForgeGameVersions() :
-                    await GameBinding.GetModrinthGameVersions();
-                if (list == null)
-                {
-                    Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
-                    return;
-                }
-                var list1 = Source == 0 ?
-                    await GameBinding.GetCurseForgeCategories() :
-                    await GameBinding.GetModrinthCategories();
-                Model.ProgressClose();
-                if (list1 == null)
-                {
-                    Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
-                    return;
-                }
-                GameVersionList.AddRange(list);
+            GameVersionList.Clear();
+            _categories.Clear();
 
-                _categories.Add(0, "");
-                var a = 1;
-                foreach (var item in list1)
-                {
-                    _categories.Add(a++, item.Key);
-                }
+            DisplayList.Clear();
+            OnPropertyChanged(nameof(DisplayList));
 
-                var list2 = new List<string>()
+            switch (Source)
+            {
+                case 0:
+                case 1:
+                    SortTypeList.AddRange(Source == 0 ?
+                        LanguageBinding.GetCurseForgeSortTypes() :
+                        LanguageBinding.GetModrinthSortTypes());
+
+                    Model.Progress(App.Lang("AddModPackWindow.Info4"));
+                    var list = Source == 0 ?
+                        await GameBinding.GetCurseForgeGameVersions() :
+                        await GameBinding.GetModrinthGameVersions();
+                    if (list == null)
+                    {
+                        Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
+                        return;
+                    }
+                    var list1 = Source == 0 ?
+                        await GameBinding.GetCurseForgeCategories() :
+                        await GameBinding.GetModrinthCategories();
+                    Model.ProgressClose();
+                    if (list1 == null)
+                    {
+                        Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
+                        return;
+                    }
+                    GameVersionList.AddRange(list);
+
+                    _categories.Add(0, "");
+                    var a = 1;
+                    foreach (var item in list1)
+                    {
+                        _categories.Add(a++, item.Key);
+                    }
+
+                    var list2 = new List<string>()
                 {
                     ""
                 };
 
-                list2.AddRange(list1.Values);
+                    list2.AddRange(list1.Values);
 
-                CategorieList.AddRange(list2);
+                    CategorieList.AddRange(list2);
 
-                Categorie = 0;
-                GameVersion = GameVersionList.FirstOrDefault();
-                SortType = Source == 0 ? 1 : 0;
+                    Categorie = 0;
+                    GameVersion = GameVersionList.FirstOrDefault();
+                    SortType = Source == 0 ? 1 : 0;
 
-                Load();
-                break;
+                    Load();
+                    break;
+            }
+
+            _load = false;
         }
-
-        Model.NoWork();
-
-        _load = false;
+        finally
+        {
+            Model.NoWork();
+        }
     }
 
     [RelayCommand]
@@ -423,7 +433,8 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     protected override void Close()
     {
         _load = true;
-        Model.HeadChoiseContent = null;
+        Model.RemoveChoiseCall(_useName);
+        Model.RemoveHeadContent(_useName);
         FileList.Clear();
         foreach (var item in DisplayList)
         {

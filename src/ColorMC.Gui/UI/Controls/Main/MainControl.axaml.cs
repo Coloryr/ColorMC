@@ -25,8 +25,6 @@ public partial class MainControl : UserControl, IUserControl
 
     public string Title => App.Lang("MainWindow.Title");
 
-    private CancellationTokenSource _cancel1 = new();
-
     public readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
     public MainControl()
