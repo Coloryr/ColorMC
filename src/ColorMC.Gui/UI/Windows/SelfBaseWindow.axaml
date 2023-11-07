@@ -219,7 +219,7 @@
                         </DockPanel>
                     </DataTemplate>
                 </dialog:DialogHost.DataTemplates>
-                <Panel Name="MainControl" />
+                <ContentControl Name="MainControl" />
             </dialog:DialogHost>
             <Button
                 Name="ResizeButton"

@@ -15,12 +15,18 @@ public partial class ErrorModel : TopModel
 
     public bool NeedClose { get; }
 
+    private readonly string _useName;
+
     public ErrorModel(BaseModel model, string? data, Exception? e, bool close) : base(model)
     {
+        _useName = ToString() ?? "ErrorModel";
         _text = new TextDocument($"{data ?? ""}{Environment.NewLine}" +
             $"{(e == null ? "" : e.ToString())}");
 
         NeedClose = close;
+
+        Model.AddHeadContent(_useName, App.Lang("ErrorWindow.Text1"), App.Lang("GameLogWindow.Text8"));
+        Model.AddHeadCall(_useName, Save, Push);
     }
 
     public ErrorModel(BaseModel model, string data, string e, bool close) : base(model)
@@ -29,8 +35,12 @@ public partial class ErrorModel : TopModel
         NeedClose = close;
     }
 
-    [RelayCommand]
-    public async Task Push()
+    public async void Save()
+    {
+        await PathBinding.SaveFile(FileType.Text, new[] { Text.Text });
+    }
+
+    public async void Push()
     {
         if (string.IsNullOrWhiteSpace(Text.Text))
         {
@@ -60,14 +70,10 @@ public partial class ErrorModel : TopModel
         }
     }
 
-    [RelayCommand]
-    public async Task Save()
-    {
-        await PathBinding.SaveFile(FileType.Text, new[] { Text.Text });
-    }
-
     protected override void Close()
     {
-
+        Model.RemoveBack();
+        Model.RemoveChoiseCall(_useName);
+        Model.RemoveHeadContent(_useName);
     }
 }

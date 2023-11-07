@@ -24,8 +24,12 @@ public partial class BaseModel : ObservableObject
 
     private readonly ConcurrentStack<Action> _listBack = new();
 
-    public Action? DownClick;
-    public Action? ChoiseClick;
+    private string? _nowUse;
+    private string? _noChoiseUse;
+
+    private bool _isWork;
+
+    private Action? _choiseClick;
 
     public string NotifyText;
 
@@ -57,10 +61,10 @@ public partial class BaseModel : ObservableObject
 
     public SelfPublisher<bool> HeadDisplayObservale = new();
     public SelfPublisher<bool> HeadBackObservale = new();
-    public SelfPublisher<bool> HeadDownObservale = new();
     public SelfPublisher<bool> HeadChoiseObservale = new();
     public SelfPublisher<bool> HeadCloseObservale = new();
-    public SelfPublisher<string> HeadChoiseContentObservale = new();
+    public SelfPublisher<string?> HeadChoiseContentObservale = new();
+    public SelfPublisher<string?> HeadBackContentObservale = new();
 
     public bool HeadDisplay
     {
@@ -84,29 +88,18 @@ public partial class BaseModel : ObservableObject
     {
         set
         {
+            if (_isWork && value)
+            {
+                return;
+            }
             HeadBackObservale.Notify(value);
         }
     }
-    public bool HeadDownDisplay
+    public bool HeadChoiseDisplay
     {
         set
         {
-            HeadDownObservale.Notify(value);
-        }
-    }
-    public string? HeadChoiseContent
-    {
-        set
-        {
-            if (value == null)
-            {
-                HeadChoiseObservale.Notify(false);
-            }
-            else
-            {
-                HeadChoiseObservale.Notify(true);
-                HeadChoiseContentObservale.Notify(value);
-            }
+            HeadChoiseObservale.Notify(value);
         }
     }
 
@@ -131,17 +124,37 @@ public partial class BaseModel : ObservableObject
         _info6 = new(Name);
     }
 
+    public void AddHeadContent(string now, string? choise, string? back = null)
+    {
+        if (_nowUse != now)
+        {
+            HeadChoiseObservale.Notify(true);
+        }
+        _nowUse = now;
+        HeadBackContentObservale.Notify(back ?? App.Lang("Gui.Info31"));
+        HeadChoiseContentObservale.Notify(choise ?? "");
+    }
+
+    public void RemoveHeadContent(string now)
+    {
+        if (_nowUse == now)
+        {
+            _nowUse = null;
+            HeadBackContentObservale.Notify(App.Lang("Gui.Info31"));
+            HeadChoiseContentObservale.Notify(null);
+        }
+    }
+
     public void Work()
     {
-        if (!_listBack.IsEmpty)
-        {
-            HeadBackDisplay = false;
-        }
+        HeadBackDisplay = false;
         HeadCloseDisplay = false;
+        _isWork = true;
     }
 
     public void NoWork()
     {
+        _isWork = false;
         if (!_listBack.IsEmpty)
         {
             HeadBackDisplay = true;
@@ -149,9 +162,24 @@ public partial class BaseModel : ObservableObject
         HeadCloseDisplay = true;
     }
 
-    public void AddBack(Action action)
+    public void AddHeadCall(string? use = null, Action? back = null, Action? choise = null)
     {
-        _listBack.Push(action);
+        if (use != null)
+        {
+            _noChoiseUse = use;
+        }
+        if (back != null)
+        {
+            _listBack.Push(back);
+        }
+        if (choise != null)
+        {
+            if (use == null)
+            {
+                throw new ArgumentNullException("use is null");
+            }
+            _choiseClick = choise;
+        }
         if (!_listBack.IsEmpty)
         {
             HeadBackDisplay = true;
@@ -165,6 +193,21 @@ public partial class BaseModel : ObservableObject
         {
             HeadBackDisplay = false;
         }
+    }
+
+    public void RemoveChoiseCall(string now)
+    {
+        if (_noChoiseUse == now)
+        {
+            HeadChoiseObservale.Notify(false);
+            _noChoiseUse = null;
+            _choiseClick = null;
+        }
+    }
+
+    public void ChoiseClick()
+    {
+        _choiseClick?.Invoke();
     }
 
     public void BackClick()

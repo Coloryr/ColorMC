@@ -102,6 +102,7 @@ public partial class AddGameModel : MenuModel
         _load = true;
         GameVersionList.Clear();
         LoaderVersionList.Clear();
+        LoaderTypeList.Clear();
         _fileModel = null!;
         Files = null!;
     }

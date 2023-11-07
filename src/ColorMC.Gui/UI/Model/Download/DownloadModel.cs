@@ -30,21 +30,27 @@ public partial class DownloadModel : TopModel
     [ObservableProperty]
     private string _now;
     [ObservableProperty]
-    private string _button1 = App.Lang("DownloadWindow.Text1");
-    [ObservableProperty]
     private double _value = 0;
     [ObservableProperty]
     private bool _isPause;
 
+    private readonly string _useName;
+
     public DownloadModel(BaseModel model) : base(model)
     {
         ColorMCCore.DownloadItemStateUpdate = DownloadItemStateUpdate;
+
+        _useName = ToString() ?? "DownloadModel";
 
         _timer = new(TimeSpan.FromSeconds(1))
         {
             AutoReset = true
         };
         _timer.Elapsed += Timer_Elapsed;
+
+        Model.AddHeadContent(_useName, 
+            App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
+        Model.AddHeadCall(_useName, Stop, Pause);
     }
 
     partial void OnIsPauseChanged(bool value)
@@ -52,25 +58,25 @@ public partial class DownloadModel : TopModel
         if (!value)
         {
             BaseBinding.DownloadResume();
-            Button1 = App.Lang("DownloadWindow.Text1");
+            Model.AddHeadContent(_useName, 
+                App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
             Model.Notify(App.Lang("DownloadWindow.Info3"));
         }
         else
         {
             BaseBinding.DownloadPause();
-            Button1 = App.Lang("DownloadWindow.Info5");
+            Model.AddHeadContent(_useName, 
+                App.Lang("DownloadWindow.Text4"), App.Lang("DownloadWindow.Text2"));
             Model.Notify(App.Lang("DownloadWindow.Info2"));
         }
     }
 
-    [RelayCommand]
-    public void Pause()
+    private void Pause()
     {
         IsPause = !IsPause;
     }
 
-    [RelayCommand]
-    public async Task Stop()
+    private async void Stop()
     {
         var res = await Model.ShowWait(App.Lang("DownloadWindow.Info1"));
         if (res)
@@ -144,6 +150,9 @@ public partial class DownloadModel : TopModel
     protected override void Close()
     {
         _timer.Dispose();
+        Model.RemoveBack();
+        Model.RemoveChoiseCall(_useName);
+        Model.RemoveHeadContent(_useName);
         ItemList.Clear();
         _downloadList.Clear();
     }

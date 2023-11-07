@@ -240,28 +240,31 @@ public partial class AddControlModel : GameModel, IAddWindow
     [ObservableProperty]
     private bool _displayFilter = true;
 
+    private readonly string _useName;
+
     public AddControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
-        Model.HeadChoiseContent = App.Lang("Button.Filter");
-        Model.ChoiseClick = () =>
+        _useName = ToString() ?? "AddControlModel";
+        Model.AddHeadContent(_useName, App.Lang("Button.Filter"));
+        Model.AddHeadCall(_useName, choise: () =>
         {
             DisplayFilter = !DisplayFilter;
-        };
+        });
     }
 
     partial void OnOptifineDisplayChanged(bool value)
     {
         if (value)
         {
-            Model.AddBack(() =>
+            Model.AddHeadCall(back: () =>
             {
                 OptifineDisplay = false;
             });
-            Model.HeadChoiseContent = null;
+            Model.HeadChoiseDisplay = false;
         }
         else
         {
-            Model.HeadChoiseContent = App.Lang("Button.Filter");
+            Model.HeadChoiseDisplay = true;
             Model.RemoveBack();
             Type = 0;
             DownloadSource = 0;
@@ -272,15 +275,15 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         if (value)
         {
-            Model.AddBack(() =>
+            Model.AddHeadCall(back: () =>
             {
                 VersionDisplay = false;
             });
-            Model.HeadChoiseContent = null;
+            Model.HeadChoiseDisplay = false;
         }
         else
         {
-            Model.HeadChoiseContent = App.Lang("Button.Filter");
+            Model.HeadChoiseDisplay = true;
             Model.RemoveBack();
         }
     }
@@ -289,15 +292,15 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         if (value)
         {
-            Model.AddBack(() =>
+            Model.AddHeadCall(back: () =>
             {
                 ModDownloadDisplay = false;
             });
-            Model.HeadChoiseContent = null;
+            Model.HeadChoiseDisplay = false;
         }
         else
         {
-            Model.HeadChoiseContent = App.Lang("Button.Filter");
+            Model.HeadChoiseDisplay = true;
             Model.RemoveBack();
             if (_last != null)
             {
@@ -1346,7 +1349,8 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         _close = true;
         _load = true;
-        Model.HeadChoiseContent = null;
+        Model.RemoveChoiseCall(_useName);
+        Model.RemoveHeadContent(_useName);
         ModList.Clear();
         OptifineList.Clear();
         DownloadOptifineList.Clear();

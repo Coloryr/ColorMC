@@ -111,6 +111,7 @@ public partial class HeadControl : UserControl
             _buttonMax.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
             _buttonClose.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
             _buttonBack.Bind(IsVisibleProperty, model.HeadBackObservale.ToBinding());
+            _buttonBack.Bind(ContentProperty, model.HeadBackContentObservale.ToBinding());
             _buttonChoise.Bind(IsVisibleProperty, model.HeadChoiseObservale.ToBinding());
             _buttonChoise.Bind(ContentProperty, model.HeadChoiseContentObservale.ToBinding());
             _buttonClose.Bind(IsEnabledProperty, model.HeadCloseObservale.ToBinding());
@@ -119,12 +120,7 @@ public partial class HeadControl : UserControl
 
     private void ButtonChoise_Click(object? sender, RoutedEventArgs e)
     {
-        (DataContext as BaseModel)?.ChoiseClick?.Invoke();
-    }
-
-    private void ButtonDown_Click(object? sender, RoutedEventArgs e)
-    {
-        (DataContext as BaseModel)?.DownClick?.Invoke();
+        (DataContext as BaseModel)?.ChoiseClick();
     }
 
     private void ButtonBack_Click(object? sender, RoutedEventArgs e)
