@@ -102,25 +102,25 @@ public partial class AddGameModel : MenuModel
     [RelayCommand]
     public async Task ServerPackDownload()
     {
-        var res = await Model.ShowInputOne(App.Lang("AddGameWindow.Tab1.Info13"), false);
-        if (res.Cancel)
+        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("AddGameWindow.Tab1.Info13"), false);
+        if (Cancel)
         {
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(res.Text))
+        if (string.IsNullOrWhiteSpace(Text))
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error14"));
             return;
         }
 
-        if (!res.Text.EndsWith('/'))
+        if (!Text.EndsWith('/'))
         {
-            res.Text += '/';
+            Text += '/';
         }
 
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info14"));
-        var res1 = await GameBinding.DownloadServerPack(Model, Name, Group, res.Text);
+        var res1 = await GameBinding.DownloadServerPack(Model, Name, Group, Text);
         Model.ProgressClose();
         if (!res1.Item1 && res1.Item2 != null)
         {
@@ -195,7 +195,6 @@ public partial class AddGameModel : MenuModel
         }
 
         App.ShowGameCloud(GameBinding.GetGame(obj.UUID!)!);
-
         Done();
     }
 

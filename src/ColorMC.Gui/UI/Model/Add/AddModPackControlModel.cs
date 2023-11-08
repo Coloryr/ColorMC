@@ -146,77 +146,68 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
         Lock();
 
-        Model.Work();
+        CategorieList.Clear();
+        SortTypeList.Clear();
 
-        try
+        GameVersionList.Clear();
+        _categories.Clear();
+
+        DisplayList.Clear();
+        OnPropertyChanged(nameof(DisplayList));
+
+        switch (Source)
         {
-            CategorieList.Clear();
-            SortTypeList.Clear();
+            case 0:
+            case 1:
+                SortTypeList.AddRange(Source == 0 ?
+                    LanguageBinding.GetCurseForgeSortTypes() :
+                    LanguageBinding.GetModrinthSortTypes());
 
-            GameVersionList.Clear();
-            _categories.Clear();
+                Model.Progress(App.Lang("AddModPackWindow.Info4"));
+                var list = Source == 0 ?
+                    await GameBinding.GetCurseForgeGameVersions() :
+                    await GameBinding.GetModrinthGameVersions();
+                if (list == null)
+                {
+                    Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
+                    return;
+                }
+                var list1 = Source == 0 ?
+                    await GameBinding.GetCurseForgeCategories() :
+                    await GameBinding.GetModrinthCategories();
+                Model.ProgressClose();
+                if (list1 == null)
+                {
+                    Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
+                    return;
+                }
+                GameVersionList.AddRange(list);
 
-            DisplayList.Clear();
-            OnPropertyChanged(nameof(DisplayList));
+                _categories.Add(0, "");
+                var a = 1;
+                foreach (var item in list1)
+                {
+                    _categories.Add(a++, item.Key);
+                }
 
-            switch (Source)
-            {
-                case 0:
-                case 1:
-                    SortTypeList.AddRange(Source == 0 ?
-                        LanguageBinding.GetCurseForgeSortTypes() :
-                        LanguageBinding.GetModrinthSortTypes());
-
-                    Model.Progress(App.Lang("AddModPackWindow.Info4"));
-                    var list = Source == 0 ?
-                        await GameBinding.GetCurseForgeGameVersions() :
-                        await GameBinding.GetModrinthGameVersions();
-                    if (list == null)
-                    {
-                        Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
-                        return;
-                    }
-                    var list1 = Source == 0 ?
-                        await GameBinding.GetCurseForgeCategories() :
-                        await GameBinding.GetModrinthCategories();
-                    Model.ProgressClose();
-                    if (list1 == null)
-                    {
-                        Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
-                        return;
-                    }
-                    GameVersionList.AddRange(list);
-
-                    _categories.Add(0, "");
-                    var a = 1;
-                    foreach (var item in list1)
-                    {
-                        _categories.Add(a++, item.Key);
-                    }
-
-                    var list2 = new List<string>()
+                var list2 = new List<string>()
                 {
                     ""
                 };
 
-                    list2.AddRange(list1.Values);
+                list2.AddRange(list1.Values);
 
-                    CategorieList.AddRange(list2);
+                CategorieList.AddRange(list2);
 
-                    Categorie = 0;
-                    GameVersion = GameVersionList.FirstOrDefault();
-                    SortType = Source == 0 ? 1 : 0;
+                Categorie = 0;
+                GameVersion = GameVersionList.FirstOrDefault();
+                SortType = Source == 0 ? 1 : 0;
 
-                    Load();
-                    break;
-            }
-
-            _load = false;
+                Load();
+                break;
         }
-        finally
-        {
-            Model.NoWork();
-        }
+
+        _load = false;
     }
 
     [RelayCommand]

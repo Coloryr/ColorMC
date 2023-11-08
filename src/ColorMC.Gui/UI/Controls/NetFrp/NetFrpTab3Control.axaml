@@ -23,7 +23,7 @@
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                     <Label Content="{setting:Localize NetFrpWindow.Tab3.Text1}" />
                     <Button
-                        Width="120"
+                        Width="100"
                         Height="25"
                         Command="{Binding Stop}"
                         Content="{setting:Localize NetFrpWindow.Tab3.Text2}"

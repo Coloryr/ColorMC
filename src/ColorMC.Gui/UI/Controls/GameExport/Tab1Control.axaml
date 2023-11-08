@@ -59,25 +59,18 @@
                     Text="{Binding Author}"
                     Watermark="{setting:Localize GameExportWindow.Tab1.Text5}" />
                 <TextBox
-                    Margin="0,5,0,0"
+                    Margin="0,5,0,5"
                     Classes="input1"
                     IsEnabled="{Binding MoEx}"
                     Text="{Binding Summary}"
                     Watermark="{setting:Localize GameExportWindow.Tab1.Text6}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    HorizontalAlignment="Right"
+                    Command="{Binding Export}"
+                    Content="{setting:Localize GameExportWindow.Tab1.Text2}" />
             </StackPanel>
-        </Border>
-        <Border
-            Margin="0,3,0,0"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
-            <Button
-                Width="100"
-                Height="25"
-                Command="{Binding Export}"
-                Content="{setting:Localize GameExportWindow.Tab1.Text2}" />
         </Border>
     </StackPanel>
 </UserControl>

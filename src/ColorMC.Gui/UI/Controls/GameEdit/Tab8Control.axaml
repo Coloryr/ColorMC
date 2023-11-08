@@ -22,15 +22,7 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 DockPanel.Dock="Top">
                 <WrapPanel>
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        HorizontalAlignment="Right"
-                        Command="{Binding OpenResource}"
-                        Content="{setting:Localize Button.OpFile}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                        ToolTip.VerticalOffset="-30" />
+
                     <Button
                         Width="100"
                         Height="25"
@@ -46,8 +38,17 @@
                     <Button
                         Width="100"
                         Height="25"
+                        Margin="0,0,5,0"
                         Command="{Binding LoadResource}"
                         Content="{setting:Localize Button.Refash}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        HorizontalAlignment="Right"
+                        Command="{Binding OpenResource}"
+                        Content="{setting:Localize Button.OpFile}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                        ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
             <Border

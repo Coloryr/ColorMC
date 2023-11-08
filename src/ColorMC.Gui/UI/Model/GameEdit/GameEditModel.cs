@@ -38,14 +38,12 @@ public partial class GameEditModel : MenuModel
 
     public bool Phone { get; } = false;
 
-    [RelayCommand]
-    public void ShowFilter()
-    {
-        DisplayFilter = !DisplayFilter;
-    }
+    private string _useName;
 
     public GameEditModel(BaseModel model, GameSettingObj obj) : base(model)
     {
+        _useName = ToString() + ":" + obj.UUID;
+
         _obj = obj;
         if (SystemInfo.Os == OsType.Android)
         {
@@ -53,6 +51,23 @@ public partial class GameEditModel : MenuModel
         }
 
         _titleText = string.Format(App.Lang("GameEditWindow.Tab2.Text13"), _obj.Name);
+    }
+
+    public void ShowFilter()
+    {
+        DisplayFilter = !DisplayFilter;
+    }
+
+    public void SetBackHeadTab()
+    {
+        Model.AddHeadContent(_useName, App.Lang("Button.Refash"));
+        Model.AddHeadCall(_useName, choise: ShowFilter);
+    }
+
+    public void RemoveBackHead()
+    {
+        Model.RemoveHeadContent(_useName);
+        Model.RemoveChoiseCall(_useName);
     }
 
     public void OpenLoad()

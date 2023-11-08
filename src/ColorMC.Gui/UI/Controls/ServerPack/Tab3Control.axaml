@@ -10,22 +10,23 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,3,5,0">
+    <DockPanel Margin="5,0,5,5">
         <Border
+            Margin="0,3,0,0"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}"
-            DockPanel.Dock="Top">
+            DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal">
                 <Button
-                    Width="80"
+                    Width="100"
                     Height="25"
                     Command="{Binding SelectAllConfig}"
                     Content="{setting:Localize ServerPackWindow.Tab2.Text2}" />
                 <Button
-                    Width="80"
+                    Width="100"
                     Height="25"
                     Margin="5,0,0,0"
                     Command="{Binding UnSelectAllConfig}"

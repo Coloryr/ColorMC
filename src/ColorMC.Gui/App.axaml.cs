@@ -205,6 +205,7 @@ public partial class App : Application
             }
         }
 
+        //new Window1().Show();
         ShowCustom();
         Task.Run(ColorMCCore.Init1);
         Dispatcher.UIThread.Post(() => _ = LoadImage());

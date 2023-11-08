@@ -124,6 +124,23 @@ public partial class BaseModel : ObservableObject
         _info6 = new(Name);
     }
 
+    private void Work()
+    {
+        HeadBackDisplay = false;
+        HeadCloseDisplay = false;
+        _isWork = true;
+    }
+
+    private void NoWork()
+    {
+        _isWork = false;
+        if (!_listBack.IsEmpty)
+        {
+            HeadBackDisplay = true;
+        }
+        HeadCloseDisplay = true;
+    }
+
     public void AddHeadContent(string now, string? choise, string? back = null)
     {
         if (_nowUse != now)
@@ -143,23 +160,6 @@ public partial class BaseModel : ObservableObject
             HeadBackContentObservale.Notify(App.Lang("Gui.Info31"));
             HeadChoiseContentObservale.Notify(null);
         }
-    }
-
-    public void Work()
-    {
-        HeadBackDisplay = false;
-        HeadCloseDisplay = false;
-        _isWork = true;
-    }
-
-    public void NoWork()
-    {
-        _isWork = false;
-        if (!_listBack.IsEmpty)
-        {
-            HeadBackDisplay = true;
-        }
-        HeadCloseDisplay = true;
     }
 
     public void AddHeadCall(string? use = null, Action? back = null, Action? choise = null)
@@ -225,6 +225,8 @@ public partial class BaseModel : ObservableObject
     {
         DClose();
         DialogHost.Show(_info1, Name);
+
+        Work();
     }
 
     /// <summary>
@@ -269,6 +271,8 @@ public partial class BaseModel : ObservableObject
         _info1.Indeterminate = false;
 
         DClose();
+
+        NoWork();
     }
 
     /// <summary>
@@ -309,7 +313,10 @@ public partial class BaseModel : ObservableObject
         _info3.Call = null;
 
         DClose();
+        Work();
         await DialogHost.Show(_info3, Name);
+
+        NoWork();
 
         return (_info3.IsCancel, _info3.Text1);
     }
@@ -335,7 +342,10 @@ public partial class BaseModel : ObservableObject
         _info3.Call = null;
 
         DClose();
+        Work();
         await DialogHost.Show(_info3, Name);
+
+        NoWork();
 
         return (_info3.IsCancel, _info3.Text1, _info3.Text2);
     }
@@ -351,6 +361,7 @@ public partial class BaseModel : ObservableObject
         _info3.Text2Visable = false;
         _info3.TextReadonly = lock1;
         _info3.Call = null;
+        _info3.IsCancel = true;
 
         if (lock1)
         {
@@ -378,7 +389,10 @@ public partial class BaseModel : ObservableObject
         }
 
         DClose();
+        Work();
         await DialogHost.Show(_info3, Name);
+
+        NoWork();
 
         return (_info3.IsCancel, _info3.Text1);
     }
@@ -403,8 +417,13 @@ public partial class BaseModel : ObservableObject
 
         _info3.Password = password ? '*' : '\0';
 
+        _info3.IsCancel = true;
+
         DClose();
+        Work();
         await DialogHost.Show(_info3, Name);
+
+        NoWork();
 
         _info3.Call = null;
 
@@ -429,6 +448,8 @@ public partial class BaseModel : ObservableObject
         _info3.Text2Visable = true;
 
         _info3.Password = '\0';
+
+        _info3.IsCancel = true;
 
         if (cancel != null)
         {
@@ -470,6 +491,8 @@ public partial class BaseModel : ObservableObject
         _info3.Text2Visable = false;
         _info3.ConfirmEnable = true;
 
+        _info3.IsCancel = true;
+
         if (cancel != null)
         {
             _info3.Call = cancel;
@@ -507,7 +530,10 @@ public partial class BaseModel : ObservableObject
         };
 
         DClose();
+        Work();
         await DialogHost.Show(_info4, Name);
+
+        NoWork();
 
         _info4.Call = null;
 
@@ -552,9 +578,13 @@ public partial class BaseModel : ObservableObject
         _info5.Items.AddRange(data1);
         _info5.Select = null!;
         _info5.Select = data1[0];
+        _info5.IsCancel = true;
 
         DClose();
+        Work();
         await DialogHost.Show(_info5, Name);
+
+        NoWork();
 
         return (_info5.IsCancel, _info5.Index, _info5.Select);
     }
@@ -563,18 +593,29 @@ public partial class BaseModel : ObservableObject
     {
         _info6.Text1 = data;
         _info6.Text2 = data1;
+        _info6.IsCancel = true;
 
         DClose();
+        Work();
         await DialogHost.Show(_info6, Name);
+
+        NoWork();
 
         return _info6.IsCancel;
     }
 
     public void DClose()
     {
-        if (DialogHost.IsDialogOpen(Name))
+        try
         {
-            DialogHost.Close(Name);
+            if (DialogHost.IsDialogOpen(Name))
+            {
+                DialogHost.Close(Name);
+            }
+        }
+        catch
+        { 
+        
         }
     }
 }

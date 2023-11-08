@@ -12,28 +12,7 @@
     d:DesignWidth="800"
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,3,5,5" IsEnabled="{Binding Enable}">
-        <Border
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
-            DockPanel.Dock="Top">
-            <StackPanel Orientation="Horizontal">
-                <Button
-                    Width="100"
-                    Height="25"
-                    Command="{Binding UploadConfig}"
-                    Content="{setting:Localize GameCloudWindow.Tab2.Text1}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    Command="{Binding DownloadConfig}"
-                    Content="{setting:Localize GameCloudWindow.Tab2.Text2}" />
-            </StackPanel>
-        </Border>
+    <DockPanel Margin="5,0,5,5" IsEnabled="{Binding Enable}">
         <Border
             Margin="0,3,0,0"
             Padding="{setting:Style BorderPadding}"
@@ -41,29 +20,47 @@
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
-            <TreeDataGrid Margin="3" Source="{Binding Source}">
-                <TreeDataGrid.Resources>
-                    <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
-                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
-                    </DataTemplate>
-                    <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
-                        <StackPanel Orientation="Horizontal">
-                            <Label
-                                Width="30"
-                                VerticalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                <Label.Content>
-                                    <MultiBinding Converter="{x:Static icon:IconConverter.FileIconConverter}">
-                                        <Binding Path="IsDirectory" />
-                                        <Binding Path="IsExpanded" />
-                                    </MultiBinding>
-                                </Label.Content>
-                            </Label>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </TreeDataGrid.Resources>
-            </TreeDataGrid>
+            <DockPanel>
+                <StackPanel
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Command="{Binding UploadConfig}"
+                        Content="{setting:Localize GameCloudWindow.Tab2.Text1}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Command="{Binding DownloadConfig}"
+                        Content="{setting:Localize GameCloudWindow.Tab2.Text2}" />
+                </StackPanel>
+                <TreeDataGrid Margin="3" Source="{Binding Source}">
+                    <TreeDataGrid.Resources>
+                        <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
+                            <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+                        </DataTemplate>
+                        <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
+                            <StackPanel Orientation="Horizontal">
+                                <Label
+                                    Width="30"
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Center">
+                                    <Label.Content>
+                                        <MultiBinding Converter="{x:Static icon:IconConverter.FileIconConverter}">
+                                            <Binding Path="IsDirectory" />
+                                            <Binding Path="IsExpanded" />
+                                        </MultiBinding>
+                                    </Label.Content>
+                                </Label>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TreeDataGrid.Resources>
+                </TreeDataGrid>
+            </DockPanel>
         </Border>
     </DockPanel>
 </UserControl>

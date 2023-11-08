@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
@@ -38,5 +39,17 @@ public partial class Tab10Control : UserControl
     public void Opened()
     {
         DataGrid1.SetFontColor();
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        (DataContext as GameEditModel)?.SetBackHeadTab10();
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        (DataContext as GameEditModel)?.RemoveBackHeadTab10();
     }
 }

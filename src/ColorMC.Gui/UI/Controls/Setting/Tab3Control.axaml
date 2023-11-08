@@ -215,54 +215,22 @@
                             Content="{setting:Localize SettingWindow.Tab3.Text20}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Command="{Binding GameCloudConnect}"
-                            Content="{setting:Localize SettingWindow.Tab3.Text22}" />
-                        <Label Margin="5,0,0,0" Content="{Binding ServerInfo}" />
-                    </StackPanel>
+                    <Label Margin="5,0,0,5" Content="{Binding ServerInfo}" />
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,0"
+                        Margin="0,0,0,5"
                         AcceptsReturn="True"
                         Classes="input2"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                         Text="{Binding ServerKey}"
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
-                </StackPanel>
-            </Border>
-            <Border
-                Margin="0,3,0,0"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
-                IsEnabled="{Binding !Phone}">
-                <StackPanel Orientation="Horizontal">
                     <Button
-                        Width="160"
+                        Width="100"
                         Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding OpenDownloadPath}"
-                        Content="{setting:Localize SettingWindow.Tab3.Text13}" />
-                    <Button
-                        Width="160"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding OpenPicPath}"
-                        Content="{setting:Localize SettingWindow.Tab3.Text18}" />
-                    <Button
-                        Width="160"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding OpenJavaPath}"
-                        Content="{setting:Localize SettingWindow.Tab5.Text6}"
-                        DockPanel.Dock="Left"
-                        IsEnabled="{Binding !Phone}" />
+                        HorizontalAlignment="Right"
+                        Command="{Binding GameCloudConnect}"
+                        Content="{setting:Localize SettingWindow.Tab3.Text22}" />
                 </StackPanel>
             </Border>
         </StackPanel>
