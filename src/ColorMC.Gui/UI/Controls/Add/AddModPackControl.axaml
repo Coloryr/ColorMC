@@ -155,81 +155,94 @@
 
         <DockPanel
             Name="ModPackFiles"
-            Background="{setting:Colors BG1}"
-            IsVisible="False">
-            <WrapPanel
-                Margin="0,3,0,3"
-                DockPanel.Dock="Top"
-                Orientation="Horizontal">
-                <Label
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize AddModPackWindow.Text6}" />
-                <StackPanel Orientation="Horizontal">
+            Background="{setting:Colors TopBottom}"
+            IsVisible="True">
+            <Border
+                Margin="5,5,5,3"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors BG1}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                DockPanel.Dock="Top">
+                <WrapPanel>
                     <Label
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
-                        Content="{setting:Localize AddModPackWindow.Text7}" />
-                    <NumericUpDown
-                        Width="120"
+                        Content="{setting:Localize AddModPackWindow.Text6}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddModPackWindow.Text7}" />
+                        <NumericUpDown
+                            Width="120"
+                            Height="30"
+                            FormatString="N0"
+                            IsEnabled="{Binding PageEnable1}"
+                            Minimum="0"
+                            Value="{Binding Page1}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize Text.GameVersion}" />
+                        <ComboBox
+                            Width="140"
+                            VerticalAlignment="Center"
+                            ItemsSource="{Binding GameVersionList}"
+                            SelectedItem="{Binding GameVersion1}" />
+                    </StackPanel>
+
+                    <Button
+                        Width="100"
                         Height="30"
-                        FormatString="N0"
-                        IsEnabled="{Binding PageEnable1}"
-                        Minimum="0"
-                        Value="{Binding Page1}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label
                         Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize Text.GameVersion}" />
-                    <ComboBox
-                        Width="140"
-                        VerticalAlignment="Center"
-                        ItemsSource="{Binding GameVersionList}"
-                        SelectedItem="{Binding GameVersion1}" />
-                </StackPanel>
+                        Command="{Binding Search}"
+                        Content="{setting:Localize AddModPackWindow.Text10}" />
 
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="5,0,0,0"
-                    Command="{Binding Search}"
-                    Content="{setting:Localize AddModPackWindow.Text10}" />
-
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="5,0,0,0"
-                    Command="{Binding Download}"
-                    Content="{setting:Localize AddModPackWindow.Text12}" />
-            </WrapPanel>
-
-            <DataGrid
-                Name="PackFiles"
-                Background="{setting:Colors TranBack}"
-                CanUserResizeColumns="True"
-                ItemsSource="{Binding FileList}"
-                SelectedItem="{Binding Item}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="{setting:Localize Text.Name}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Size}"
-                        Header="{setting:Localize AddModPackWindow.DataGrid.Text2}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Download}"
-                        Header="{setting:Localize AddModPackWindow.DataGrid.Text3}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Time}"
-                        Header="{setting:Localize AddModPackWindow.DataGrid.Text4}"
-                        IsReadOnly="True" />
-                </DataGrid.Columns>
-            </DataGrid>
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="5,0,0,0"
+                        Command="{Binding Download}"
+                        Content="{setting:Localize AddModPackWindow.Text12}" />
+                </WrapPanel>
+            </Border>
+            <Border
+                Margin="5,0,5,5"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors BG1}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <DataGrid
+                    Name="PackFiles"
+                    Background="{setting:Colors TranBack}"
+                    CanUserResizeColumns="True"
+                    ItemsSource="{Binding FileList}"
+                    SelectedItem="{Binding Item}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize Text.Name}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Size}"
+                            Header="{setting:Localize AddModPackWindow.DataGrid.Text2}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Download}"
+                            Header="{setting:Localize AddModPackWindow.DataGrid.Text3}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Time}"
+                            Header="{setting:Localize AddModPackWindow.DataGrid.Text4}"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
         </DockPanel>
     </Panel>
 </UserControl>

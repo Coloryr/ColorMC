@@ -17,44 +17,38 @@
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
-            <StackPanel Orientation="Horizontal">
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding MakeEnable}"
-                    Content="{setting:Localize GameCloudWindow.Tab1.Text1}"
-                    IsEnabled="{Binding !Enable}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Command="{Binding MakeDisable}"
-                    Content="{setting:Localize GameCloudWindow.Tab1.Text3}"
-                    IsEnabled="{Binding Enable}" />
-            </StackPanel>
-        </Border>
-        <Border
-            Margin="0,3,0,0"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
-            <StackPanel IsEnabled="{Binding Enable}">
-                <Label Content="{setting:Localize GameCloudWindow.Tab1.Text2}" />
-                <TextBox
-                    Margin="0,5,5,0"
-                    Classes="input1"
-                    IsEnabled="False"
-                    IsReadOnly="True"
-                    Text="{Binding UUID}" />
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{setting:Localize GameCloudWindow.Tab1.Text4}" />
-                    <Label Content="{Binding ConfigTime}" />
+            <StackPanel>
+                <StackPanel IsEnabled="{Binding Enable}">
+                    <Label Content="{setting:Localize GameCloudWindow.Tab1.Text2}" />
+                    <TextBox
+                        Margin="0,5,5,0"
+                        Classes="input1"
+                        IsEnabled="False"
+                        IsReadOnly="True"
+                        Text="{Binding UUID}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{setting:Localize GameCloudWindow.Tab1.Text4}" />
+                        <Label Content="{Binding ConfigTime}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{setting:Localize GameCloudWindow.Tab1.Text5}" />
+                        <Label Content="{Binding LocalConfigTime}" />
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{setting:Localize GameCloudWindow.Tab1.Text5}" />
-                    <Label Content="{Binding LocalConfigTime}" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding MakeEnable}"
+                        Content="{setting:Localize GameCloudWindow.Tab1.Text1}"
+                        IsEnabled="{Binding !Enable}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Command="{Binding MakeDisable}"
+                        Content="{setting:Localize GameCloudWindow.Tab1.Text3}"
+                        IsEnabled="{Binding Enable}" />
                 </StackPanel>
             </StackPanel>
         </Border>

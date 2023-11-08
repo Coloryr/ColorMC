@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -70,5 +71,17 @@ public partial class Tab4Control : UserControl
             var items = DataGrid1.SelectedItems;
             _ = new GameEditFlyout1(control, items, (DataContext as GameEditModel)!);
         });
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        (DataContext as GameEditModel)?.SetBackHeadTab();
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        (DataContext as GameEditModel)?.RemoveBackHead();
     }
 }

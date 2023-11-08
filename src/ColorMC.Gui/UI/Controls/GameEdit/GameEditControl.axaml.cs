@@ -90,7 +90,7 @@ public partial class GameEditControl : UserControl, IUserControl
                     model.LoadScreenshot();
                     break;
                 case 6:
-                    await model.LoadServer();
+                    model.LoadServer();
                     break;
                 case 7:
                     await model.LoadShaderpack();
@@ -211,7 +211,7 @@ public partial class GameEditControl : UserControl, IUserControl
                     break;
                 case 6:
                     Go(_tab10);
-                    await model.LoadServer();
+                    model.LoadServer();
                     break;
                 case 7:
                     Go(_tab11);

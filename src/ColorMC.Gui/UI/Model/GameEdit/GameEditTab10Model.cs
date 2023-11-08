@@ -23,15 +23,6 @@ public partial class GameEditModel : MenuModel
     }
 
     [RelayCommand]
-    public async Task LoadServer()
-    {
-        Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
-        ServerList.Clear();
-        ServerList.AddRange(await GameBinding.GetServers(_obj));
-        Model.ProgressClose();
-    }
-
-    [RelayCommand]
     public async Task AddServer()
     {
         var (Cancel, Text1, Text2) = await Model.ShowInput(
@@ -52,7 +43,15 @@ public partial class GameEditModel : MenuModel
         await GameBinding.AddServer(_obj, Text1, Text2);
         Model.ProgressClose();
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info3"));
-        await LoadServer();
+        LoadServer();
+    }
+
+    public async void LoadServer()
+    {
+        Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
+        ServerList.Clear();
+        ServerList.AddRange(await GameBinding.GetServers(_obj));
+        Model.ProgressClose();
     }
 
     public async void DeleteServer(ServerInfoObj obj)
@@ -61,6 +60,18 @@ public partial class GameEditModel : MenuModel
         await GameBinding.DeleteServer(_obj, obj);
         Model.ProgressClose();
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
-        await LoadServer();
+        LoadServer();
+    }
+
+    public void SetBackHeadTab10()
+    {
+        Model.AddHeadContent(_useName, App.Lang("Button.Refash"));
+        Model.AddHeadCall(_useName, choise: LoadServer);
+    }
+
+    public void RemoveBackHeadTab10()
+    {
+        Model.RemoveHeadContent(_useName);
+        Model.RemoveChoiseCall(_useName);
     }
 }

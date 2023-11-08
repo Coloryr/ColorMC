@@ -130,7 +130,6 @@ public partial class AddGameModel : MenuModel
             Model.Show(App.Lang("AddGameWindow.Tab2.Error2"));
             return;
         }
-
         Model.Progress(App.Lang("AddGameWindow.Tab2.Info6"));
         var res = await GameBinding.AddPack(ZipLocal, type, Name, Group);
         Model.ProgressClose();

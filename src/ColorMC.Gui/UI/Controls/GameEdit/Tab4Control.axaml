@@ -22,7 +22,21 @@
                 DockPanel.Dock="Top"
                 IsVisible="{Binding DisplayFilter}">
                 <StackPanel>
-                    <WrapPanel Margin="0,0,0,5">
+                    <DockPanel Margin="0,0,0,5">
+                        <Label VerticalAlignment="Center" Content="{setting:Localize GameEditWindow.Tab4.Text2}" />
+                        <ComboBox
+                            Width="100"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            ItemsSource="{Binding ModFilterList}"
+                            SelectedIndex="{Binding ModFilter}" />
+                        <TextBox
+                            Margin="5,0,0,0"
+                            Classes="input1"
+                            Text="{Binding ModText}"
+                            Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
+                    </DockPanel>
+                    <WrapPanel>
                         <Button
                             Width="100"
                             Height="25"
@@ -79,20 +93,6 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
-                    <DockPanel DockPanel.Dock="Top" IsVisible="{Binding DisplayFilter}">
-                        <Label VerticalAlignment="Center" Content="{setting:Localize GameEditWindow.Tab4.Text2}" />
-                        <ComboBox
-                            Width="100"
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            ItemsSource="{Binding ModFilterList}"
-                            SelectedIndex="{Binding ModFilter}" />
-                        <TextBox
-                            Margin="5,0,0,0"
-                            Classes="input1"
-                            Text="{Binding ModText}"
-                            Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
-                    </DockPanel>
                 </StackPanel>
             </Border>
             <Border
@@ -159,15 +159,6 @@
                 </DataGrid>
             </Border>
         </DockPanel>
-
-        <Button
-            Height="25"
-            Margin="5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Command="{Binding ShowFilter}">
-            <Svg Path="/Resource/Icon/filter.svg" />
-        </Button>
 
         <Panel
             Name="Grid2"

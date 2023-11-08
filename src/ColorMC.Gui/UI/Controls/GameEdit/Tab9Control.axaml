@@ -24,21 +24,21 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding OpenScreenshot}"
-                    Content="{setting:Localize Button.OpFile}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
                     Command="{Binding LoadScreenshot}"
                     Content="{setting:Localize Button.Refash}" />
                 <Button
                     Width="100"
                     Height="25"
+                    Margin="0,0,5,0"
                     Command="{Binding ClearScreenshot}"
                     Content="{setting:Localize GameEditWindow.Flyouts4.Text1}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Command="{Binding OpenScreenshot}"
+                    Content="{setting:Localize Button.OpFile}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
             </WrapPanel>
         </Border>
         <Border

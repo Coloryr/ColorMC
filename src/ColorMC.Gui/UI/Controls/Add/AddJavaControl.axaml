@@ -130,7 +130,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Panel Background="{setting:Colors TopBottom}" IsVisible="{Binding Display}">
+                <Panel Background="{setting:Colors BG1}" IsVisible="{Binding Display}">
                     <Label
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"

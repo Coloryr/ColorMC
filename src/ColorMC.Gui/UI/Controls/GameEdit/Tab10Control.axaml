@@ -13,33 +13,7 @@
     mc:Ignorable="d">
     <DockPanel Margin="5,3,5,5">
         <view:ServerMotdControl DockPanel.Dock="Top" IPPort="{Binding IPPort}" />
-        <DockPanel>
-            <Border
-                Margin="0,3,0,0"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
-                DockPanel.Dock="Top">
-                <StackPanel Orientation="Horizontal">
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Command="{Binding AddServer}"
-                        Content="{setting:Localize Button.Add}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text58}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="5,0,0,0"
-                        Command="{Binding LoadServer}"
-                        Content="{setting:Localize Button.Refash}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text59}"
-                        ToolTip.VerticalOffset="-30" />
-                </StackPanel>
-            </Border>
+        <Panel>
             <Border
                 Margin="0,3,0,0"
                 Padding="{setting:Style BorderPadding}"
@@ -66,6 +40,18 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
-        </DockPanel>
+            <Button
+                Width="40"
+                Height="40"
+                Margin="10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Command="{Binding AddServer}"
+                CornerRadius="20"
+                ToolTip.Tip="{setting:Localize ToolTip.Text58}"
+                ToolTip.VerticalOffset="-30">
+                <Svg Path="/Resource/Icon/add.svg" />
+            </Button>
+        </Panel>
     </DockPanel>
 </UserControl>

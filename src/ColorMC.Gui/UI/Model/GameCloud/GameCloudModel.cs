@@ -58,8 +58,12 @@ public partial class GameCloudModel : MenuModel
 
     public string UUID => Obj.UUID;
 
+    private readonly string _useName;
+
     public GameCloudModel(BaseModel model, GameSettingObj obj) : base(model)
     {
+        _useName = ToString() + ":" + obj.UUID;
+
         Obj = obj;
 
         LoadWorld();
@@ -207,7 +211,6 @@ public partial class GameCloudModel : MenuModel
         }
         LocalConfigTime = ConfigTime;
         GameCloudUtils.Save();
-
     }
 
     /// <summary>
@@ -510,6 +513,17 @@ public partial class GameCloudModel : MenuModel
         {
             Model.Notify(App.Lang("GameCloudWindow.Info17"));
         }
-        LoadWorld();
+    }
+
+    public void SetHeadBack()
+    {
+        Model.AddHeadContent(_useName, App.Lang("Button.Refash"));
+        Model.AddHeadCall(_useName, choise: LoadWorld);
+    }
+
+    public void RemoveHeadBack()
+    {
+        Model.RemoveHeadContent(_useName);
+        Model.RemoveChoiseCall(_useName);
     }
 }

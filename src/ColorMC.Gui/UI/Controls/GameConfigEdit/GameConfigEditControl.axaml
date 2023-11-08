@@ -22,7 +22,24 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 DockPanel.Dock="Top">
                 <StackPanel>
-                    <WrapPanel Orientation="Horizontal">
+                    <DockPanel>
+                        <Label
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize ConfigEditWindow.Text13}" />
+                        <ComboBox
+                            Width="200"
+                            Margin="0,0,5,0"
+                            ItemsSource="{Binding FileList}"
+                            SelectedIndex="{Binding Select}"
+                            SelectedItem="{Binding File}" />
+                        <TextBox
+                            VerticalAlignment="Center"
+                            Classes="input1"
+                            Text="{Binding Name}"
+                            Watermark="{setting:Localize ConfigEditWindow.Text1}" />
+                    </DockPanel>
+                    <WrapPanel Margin="0,3,0,0">
                         <Button
                             Width="100"
                             Height="25"
@@ -66,19 +83,6 @@
                             Content="{setting:Localize ConfigEditWindow.Text6}"
                             IsVisible="{Binding IsWorld}" />
                     </WrapPanel>
-                    <DockPanel Margin="0,3,0,0">
-                        <ComboBox
-                            Width="200"
-                            Margin="0,0,5,0"
-                            ItemsSource="{Binding FileList}"
-                            SelectedIndex="{Binding Select}"
-                            SelectedItem="{Binding File}" />
-                        <TextBox
-                            VerticalAlignment="Center"
-                            Classes="input1"
-                            Text="{Binding Name}"
-                            Watermark="{setting:Localize ConfigEditWindow.Text1}" />
-                    </DockPanel>
                 </StackPanel>
             </Border>
             <Border

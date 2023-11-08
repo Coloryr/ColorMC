@@ -124,79 +124,56 @@
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg12.svg"
-                            Stroke="{setting:Colors Font}" />
-                        <Label
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text13}"
-                            FontSize="{setting:Style FontTitle}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox
-                            Margin="0,0,5,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text23}"
-                            IsChecked="{Binding SafeLog4j}" />
-                        <CheckBox
-                            Margin="0,0,5,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text20}"
-                            IsChecked="{Binding PreRun}" />
-                    </StackPanel>
-                    <TextBox
-                        Height="100"
-                        Margin="0,5,0,0"
-                        AcceptsReturn="True"
-                        Classes="input2"
-                        IsEnabled="{Binding PreRun}"
-                        Text="{Binding PreCmd}"
-                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
-                </StackPanel>
-            </Border>
-            <Border
-                Margin="0,3,0,0"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
-                    <!--  运行后  -->
+                    <!--  分辨率  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
                             Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg13.svg"
+                            Path="/Resource/Icon/Setting/svg15.svg"
                             Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text19}"
+                            Content="{setting:Localize SettingWindow.Tab4.Text9}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <WrapPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Width="120"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab4.Text10}" />
+                            <NumericUpDown
+                                Width="150"
+                                Height="30"
+                                FormatString="N0"
+                                IsEnabled="{Binding !FullScreen}"
+                                Minimum="1"
+                                Value="{Binding Width}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Width="120"
+                                Margin="20,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab4.Text11}" />
+                            <NumericUpDown
+                                Width="150"
+                                Height="30"
+                                FormatString="N0"
+                                IsEnabled="{Binding !FullScreen}"
+                                Minimum="1"
+                                Value="{Binding Height}" />
+                        </StackPanel>
                         <CheckBox
-                            Margin="0,0,5,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text18}"
-                            IsChecked="{Binding CloseBefore}" />
-                        <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PostRun}" />
-                    </StackPanel>
-                    <TextBox
-                        Height="100"
-                        Margin="0,5,0,0"
-                        AcceptsReturn="True"
-                        Classes="input2"
-                        IsEnabled="{Binding PostRun}"
-                        Text="{Binding PostCmd}"
-                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
+                            Margin="20,0,0,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text12}"
+                            IsChecked="{Binding FullScreen}" />
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border
@@ -295,58 +272,83 @@
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
-                IsEnabled="{Binding !Phone}">
+                CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <!--  分辨率  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
                             Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg15.svg"
+                            Path="/Resource/Icon/Setting/svg12.svg"
                             Stroke="{setting:Colors Font}" />
                         <Label
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text9}"
+                            Content="{setting:Localize SettingWindow.Tab4.Text13}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label
-                                Width="120"
-                                VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab4.Text10}" />
-                            <NumericUpDown
-                                Width="150"
-                                Height="30"
-                                FormatString="N0"
-                                IsEnabled="{Binding !FullScreen}"
-                                Minimum="1"
-                                Value="{Binding Width}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label
-                                Width="120"
-                                Margin="20,0,0,0"
-                                VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab4.Text11}" />
-                            <NumericUpDown
-                                Width="150"
-                                Height="30"
-                                FormatString="N0"
-                                IsEnabled="{Binding !FullScreen}"
-                                Minimum="1"
-                                Value="{Binding Height}" />
-                        </StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <CheckBox
-                            Margin="20,0,0,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text12}"
-                            IsChecked="{Binding FullScreen}" />
-                    </WrapPanel>
+                            Margin="0,0,5,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text23}"
+                            IsChecked="{Binding SafeLog4j}" />
+                        <CheckBox
+                            Margin="0,0,5,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text20}"
+                            IsChecked="{Binding PreRun}" />
+                    </StackPanel>
+                    <TextBox
+                        Height="100"
+                        Margin="0,5,0,0"
+                        AcceptsReturn="True"
+                        Classes="input2"
+                        IsEnabled="{Binding PreRun}"
+                        Text="{Binding PreCmd}"
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
                 </StackPanel>
             </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsEnabled="{Binding !Phone}">
+                <StackPanel>
+                    <!--  运行后  -->
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/Setting/svg13.svg"
+                            Stroke="{setting:Colors Font}" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab4.Text19}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox
+                            Margin="0,0,5,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text18}"
+                            IsChecked="{Binding CloseBefore}" />
+                        <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PostRun}" />
+                    </StackPanel>
+                    <TextBox
+                        Height="100"
+                        Margin="0,5,0,0"
+                        AcceptsReturn="True"
+                        Classes="input2"
+                        IsEnabled="{Binding PostRun}"
+                        Text="{Binding PostCmd}"
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
+                </StackPanel>
+            </Border>
+
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>
