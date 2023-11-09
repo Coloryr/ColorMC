@@ -2,6 +2,7 @@
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.User;
+using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -14,7 +15,7 @@ public class UserFlyout
         _model = model;
         _obj = model.Item!;
 
-        var fy = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new (string, bool, Action)[]
         {
             (App.Lang("UserWindow.Flyouts.Text1"), true, Button1_Click),
             (App.Lang("UserWindow.Flyouts.Text2"), _obj.AuthType != AuthType.Offline, Button2_Click),

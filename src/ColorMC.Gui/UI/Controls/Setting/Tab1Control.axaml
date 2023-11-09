@@ -11,9 +11,9 @@
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <Border
+        Name="ScrollViewer1"
         Margin="5,3,5,5"
         Padding="{setting:Style BorderPadding}"
-        VerticalAlignment="Top"
         Background="{setting:Colors GroupBack}"
         BorderBrush="{setting:Colors GroupColor}"
         BorderThickness="2"

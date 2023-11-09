@@ -10,26 +10,24 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <Panel Margin="5,3,5,5">
-        <ScrollViewer>
-            <Border
-                Padding="{setting:Style BorderPadding}"
-                VerticalAlignment="Top"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
-                <StackPanel>
-                    <TextBox
-                        Height="60"
-                        Margin="0,0,0,5"
-                        AcceptsReturn="True"
-                        Classes="input2"
-                        Text="{Binding Text}"
-                        Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
-                    <Label Content="{setting:Localize ServerPackWindow.Tab1.Text1}" />
-                </StackPanel>
-            </Border>
-        </ScrollViewer>
-    </Panel>
+    <ScrollViewer Name="ScrollViewer1">
+        <Border
+            Margin="5,3,5,5"
+            Padding="{setting:Style BorderPadding}"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <StackPanel>
+                <TextBox
+                    Height="60"
+                    Margin="0,0,0,5"
+                    AcceptsReturn="True"
+                    Classes="input2"
+                    Text="{Binding Text}"
+                    Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
+                <Label Content="{setting:Localize ServerPackWindow.Tab1.Text1}" />
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
 </UserControl>

@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -12,7 +13,7 @@ public class GameCloudFlyout1
     {
         _model = model;
 
-        _ = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new (string, bool, Action)[]
         {
             (App.Lang("Button.OpFile"), model.HaveLocal, Button1_Click),
             (App.Lang("GameCloudWindow.Flyouts1.Text1"), model.HaveLocal, Button2_Click),

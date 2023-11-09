@@ -16,9 +16,13 @@ public partial class AddModPackControl : UserControl, IUserControl
 
     public string Title => App.Lang("AddModPackWindow.Title");
 
+    public string UseName { get; }
+
     public AddModPackControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "AddModPackControl";
 
         PackFiles.DoubleTapped += PackFiles_DoubleTapped;
 

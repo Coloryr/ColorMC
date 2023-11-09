@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Setting;
@@ -13,6 +14,22 @@ public partial class Tab5Control : UserControl
         InitializeComponent();
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+    }
+
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (DataContext is SettingModel model && model.NowView == 3)
+        {
+            if (e.Delta.Y < 0)
+            {
+                model.NowView++;
+            }
+            else if (e.Delta.Y > 0)
+            {
+                model.NowView--;
+            }
+        }
     }
 
     public void Opened()

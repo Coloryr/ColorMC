@@ -48,8 +48,8 @@ public class SelfPageSlide : IPageTransition
 
         var tasks = new List<Task>();
         var parent = GetVisualParent(from, to);
-        var distance = parent.Bounds.Width;
-        var translateProperty = TranslateTransform.XProperty;
+        var distance = parent.Bounds.Height;
+        var translateProperty = TranslateTransform.YProperty;
 
         if (from != null)
         {

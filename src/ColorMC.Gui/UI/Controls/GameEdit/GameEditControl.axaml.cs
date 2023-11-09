@@ -45,7 +45,7 @@ public partial class GameEditControl : UserControl, IUserControl
     public string Title =>
         string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
 
-    public BaseModel Model { get; }
+    public string UseName { get; }
 
     public GameEditControl()
     {
@@ -54,6 +54,8 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public GameEditControl(GameSettingObj obj) : this()
     {
+        UseName = (ToString() ?? "GameEditControl") + ":" + obj.UUID;
+
         _obj = obj;
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;
@@ -180,7 +182,20 @@ public partial class GameEditControl : UserControl, IUserControl
 
     private async void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "NowView")
+        if (e.PropertyName == "Switch")
+        {
+            var model = (DataContext as GameEditModel)!;
+            switch (model.NowView)
+            {
+                case 0:
+                    _tab1.Reset();
+                    break;
+                case 1:
+                    _tab2.Reset();
+                    break;
+            }
+        }
+        else  if (e.PropertyName == "NowView")
         {
             var model = (DataContext as GameEditModel)!;
             switch (model.NowView)

@@ -11,9 +11,13 @@ public partial class CountControl : UserControl, IUserControl
 
     public string Title => App.Lang("CountWindow.Title");
 
+    public string UseName { get; }
+
     public CountControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "CountControl";
     }
 
     public void Closed()

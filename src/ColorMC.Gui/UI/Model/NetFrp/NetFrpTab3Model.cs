@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -109,7 +110,7 @@ public partial class NetFrpModel : MenuModel
             Temp = data + Environment.NewLine;
             Dispatcher.UIThread.Invoke(() =>
             {
-                OnPropertyChanged("Insert");
+                Text.Insert(Text.TextLength, Temp);
             });
             Temp = "";
         }

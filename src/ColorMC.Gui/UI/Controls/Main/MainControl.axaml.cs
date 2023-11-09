@@ -14,7 +14,6 @@ using ColorMC.Gui.Utils;
 using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -27,9 +26,13 @@ public partial class MainControl : UserControl, IUserControl
 
     public readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
+    public string UseName { get; }
+
     public MainControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "MainControl";
 
         ScrollViewer1.PointerPressed += ScrollViewer1_PointerPressed;
 

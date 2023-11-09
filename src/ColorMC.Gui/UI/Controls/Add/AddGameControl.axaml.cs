@@ -34,9 +34,13 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public string Title => App.Lang("AddGameWindow.Title");
 
+    public string UseName { get; }
+
     public AddGameControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "AddGameControl";
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);

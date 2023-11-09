@@ -19,9 +19,13 @@ public partial class ErrorControl : UserControl, IUserControl
     private bool _close;
     private bool _type = false;
 
+    public string UseName { get; }
+
     public ErrorControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "ErrorControl";
     }
 
     public ErrorControl(string? data, Exception? e, bool close) : this()

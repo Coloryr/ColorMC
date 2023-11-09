@@ -4,6 +4,7 @@ using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
 using ColorMC.Gui.UI.Model.Items;
+using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -79,7 +80,7 @@ public class ConfigFlyout1
             }
         }
 
-        var fy = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new (string, bool, Action)[]
         {
             (App.Lang("ConfigEditWindow.Flyouts1.Text1"), add, Button1_Click),
             (App.Lang("ConfigEditWindow.Flyouts1.Text2"), delete, Button2_Click),

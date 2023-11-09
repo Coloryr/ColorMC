@@ -1,4 +1,6 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -14,8 +16,6 @@ public partial class Tab2Control : UserControl
     {
         InitializeComponent();
 
-        DataContextChanged += OnDataContext_Change;
-
         if (SystemInfo.Os == OsType.Android)
         {
             var con = ColorMCGui.PhoneGetSetting?.Invoke();
@@ -26,22 +26,29 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    public void OnDataContext_Change(object? sender, EventArgs e)
+    public void Reset()
     {
-        if (DataContext is SettingModel model)
+        ScrollViewer1.ScrollToHome();
+    }
+
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (DataContext is SettingModel model && model.NowView == 0)
         {
-            model.PropertyChanged += Tab2Control_PropertyChanged;
+            if (e.Delta.Y < 0 && ScrollViewer1.ScrollBarMaximum == ScrollViewer1.Offset)
+            {
+                model.NowView++;
+            }
         }
     }
 
-    private void Tab2Control_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        if (e.PropertyName == "Hide")
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                DropDownButton1.Flyout?.Hide();
-            });
-        }
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
     }
 }

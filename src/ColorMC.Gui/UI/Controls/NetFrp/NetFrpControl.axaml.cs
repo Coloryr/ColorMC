@@ -29,9 +29,13 @@ public partial class NetFrpControl : UserControl, IUserControl
 
     public string Title => App.Lang("NetFrpWindow.Ttile");
 
+    public string UseName { get; }
+
     public NetFrpControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "NetFrpControl";
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;
         StackPanel2.PointerPressed += StackPanel2_PointerPressed;

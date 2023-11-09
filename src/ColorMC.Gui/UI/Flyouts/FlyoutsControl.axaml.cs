@@ -22,7 +22,7 @@ public partial class FlyoutsControl : UserControl
         }
     }
 
-    public FlyoutsControl(List<(string, bool, Action)> list, Control con)
+    public FlyoutsControl((string, bool, Action)[] list, Control con)
     {
         InitializeComponent();
 

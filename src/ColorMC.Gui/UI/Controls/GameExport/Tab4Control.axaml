@@ -10,7 +10,10 @@
     d:DesignWidth="800"
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,3,5,5" IsEnabled="{Binding MoEx}">
+    <DockPanel
+        Name="ScrollViewer1"
+        Margin="5,3,5,5"
+        IsEnabled="{Binding MoEx}">
         <Border
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"

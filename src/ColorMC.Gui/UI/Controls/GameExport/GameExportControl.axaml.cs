@@ -37,6 +37,8 @@ public partial class GameExportControl : UserControl, IUserControl
     public string Title =>
         string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
 
+    public string UseName { get; }
+
     public GameExportControl()
     {
         InitializeComponent();
@@ -44,6 +46,8 @@ public partial class GameExportControl : UserControl, IUserControl
 
     public GameExportControl(GameSettingObj obj) : this()
     {
+        UseName = (ToString() ?? "GameExportControl") + ":" + obj.UUID;
+
         _obj = obj;
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;

@@ -24,9 +24,36 @@ public abstract partial class MenuModel : TopModel
     [ObservableProperty]
     private int _nowView;
 
+    /// <summary>
+    /// 目前视图
+    /// </summary>
+    [ObservableProperty]
+    private int _nowView1;
+
     public MenuModel(BaseModel model) : base(model)
     {
         Title = TabItems[0].Text;
+    }
+
+    partial void OnNowView1Changed(int value)
+    {
+        if (value != NowView)
+        {
+            NowView = value;
+            OnPropertyChanged("Switch");
+        }
+    }
+
+    /// <summary>
+    /// 视图切换
+    /// </summary>
+    /// <param name="value"></param>
+    partial void OnNowViewChanged(int value)
+    {
+        CloseSide();
+
+        Title = TabItems[NowView].Text;
+        NowView1 = value;
     }
 
     /// <summary>
@@ -45,16 +72,5 @@ public abstract partial class MenuModel : TopModel
     public void CloseSide()
     {
         OnPropertyChanged("SideClose");
-    }
-
-    /// <summary>
-    /// 视图切换
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnNowViewChanged(int value)
-    {
-        CloseSide();
-
-        Title = TabItems[NowView].Text;
     }
 }

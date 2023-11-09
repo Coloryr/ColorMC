@@ -20,9 +20,13 @@ public partial class SkinControl : UserControl, IUserControl
 
     public string Title => App.Lang("SkinWindow.Title");
 
+    public string UseName { get; }
+
     public SkinControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "SkinControl";
 
         Button2.Click += Button2_Click;
 

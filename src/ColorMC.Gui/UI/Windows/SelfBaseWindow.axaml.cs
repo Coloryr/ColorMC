@@ -31,7 +31,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         InitializeComponent();
 
-        DataContext = new BaseModel(con.Title);
+        DataContext = new BaseModel(con.UseName);
 
         ICon = con;
 
@@ -182,8 +182,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         ((ICon as UserControl)?.DataContext as TopModel)?.TopClose();
         DataContext = null;
         ICon.Closed();
-
-        MainControl.Content = null;
 
         if (App.LastWindow == this)
         {
