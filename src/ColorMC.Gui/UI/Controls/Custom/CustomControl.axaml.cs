@@ -25,9 +25,13 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
     private string _uiPath;
 
+    public string UseName { get; }
+
     public CustomControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "CustomControl";
     }
 
     public void Closed()

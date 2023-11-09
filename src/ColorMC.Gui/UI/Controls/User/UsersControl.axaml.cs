@@ -17,9 +17,13 @@ public partial class UsersControl : UserControl, IUserControl
 
     public string Title => App.Lang("UserWindow.Title");
 
+    public string UseName { get; }
+
     public UsersControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "UsersControl";
 
         DataGrid_User.DoubleTapped += DataGrid_User_DoubleTapped;
         DataGrid_User.CellPointerPressed += DataGrid_User_PointerPressed;

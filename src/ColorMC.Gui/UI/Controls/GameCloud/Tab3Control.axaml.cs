@@ -13,13 +13,11 @@ public partial class Tab3Control : UserControl
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        base.OnAttachedToVisualTree(e);
         (DataContext as GameCloudModel)?.SetHeadBack();
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        base.OnDetachedFromVisualTree(e);
         (DataContext as GameCloudModel)?.RemoveHeadBack();
     }
 }

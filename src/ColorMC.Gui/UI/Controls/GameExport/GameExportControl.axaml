@@ -39,7 +39,21 @@
                         FontSize="18" />
                 </StackPanel>
             </Border>
-
+            <Border
+                Margin="5,3,5,5"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                DockPanel.Dock="Bottom">
+                <Button
+                    Width="100"
+                    Height="25"
+                    HorizontalAlignment="Right"
+                    Command="{Binding Export}"
+                    Content="{setting:Localize GameExportWindow.Tab1.Text2}" />
+            </Border>
             <Panel ClipToBounds="True">
                 <ContentControl Name="Content1" />
                 <ContentControl Name="Content2" />
@@ -73,7 +87,7 @@
                     <ListBox
                         Margin="0,2,0,0"
                         ItemsSource="{Binding TabItems}"
-                        SelectedIndex="{Binding NowView}">
+                        SelectedIndex="{Binding NowView1}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

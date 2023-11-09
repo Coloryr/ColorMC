@@ -10,6 +10,7 @@ public interface IUserControl
 {
     public IBaseWindow Window { get; }
     public string Title { get; }
+    public string UseName { get; }
     virtual public Bitmap GetIcon() { return App.GameIcon; }
     public void SetBaseModel(BaseModel model);
     virtual public void WindowStateChange(WindowState state) { }

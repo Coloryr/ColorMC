@@ -38,9 +38,13 @@ public partial class ServerPackControl : UserControl, IUserControl
     public string Title => string.Format(App.Lang("ServerPackWindow.Title"),
            _obj.Name);
 
+    public string UseName { get; }
+
     public ServerPackControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "ServerPackControl";
     }
 
     public ServerPackControl(GameSettingObj obj) : this()

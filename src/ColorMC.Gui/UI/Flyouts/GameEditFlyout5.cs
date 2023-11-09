@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
+using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -13,7 +14,7 @@ public class GameEditFlyout5
         _con = con;
         _model = model;
 
-        var fy = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new (string, bool, Action)[]
         {
             (App.Lang("Button.Delete"), true, Button1_Click),
             (App.Lang("GameEditWindow.Flyouts5.Text1"), true, Button2_Click)

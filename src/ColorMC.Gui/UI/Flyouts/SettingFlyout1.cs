@@ -2,6 +2,7 @@
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ public class SettingFlyout1
         _model = model;
         _list = list.Cast<JavaDisplayObj>();
 
-        var fy = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new (string, bool, Action)[]
         {
             (App.Lang("SettingWindow.Flyouts.Text1"), true, Button1_Click),
         }, con);

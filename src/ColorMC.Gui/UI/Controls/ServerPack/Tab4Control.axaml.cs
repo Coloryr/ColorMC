@@ -1,4 +1,6 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.ServerPack;
@@ -39,5 +41,26 @@ public partial class Tab4Control : UserControl
             var model = (DataContext as ServerPackModel)!;
             _ = new ServerPackFlyout1(control, model, model.FileItem);
         });
+    }
+
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (DataContext is ServerPackModel model && model.NowView == 3)
+        {
+            if (e.Delta.Y > 0)
+            {
+                model.NowView--;
+            }
+        }
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
     }
 }

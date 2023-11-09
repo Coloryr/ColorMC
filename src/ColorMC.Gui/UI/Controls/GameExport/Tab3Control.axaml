@@ -13,6 +13,7 @@
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
     <Border
+        Name="ScrollViewer1"
         Margin="5"
         Background="{setting:Colors GroupBack}"
         BorderBrush="{setting:Colors GroupColor}"

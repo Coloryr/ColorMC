@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Gui.UIBinding;
+using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -13,7 +14,7 @@ public class UrlFlyout
         _url = url;
         _url1 = url1;
 
-        var fy = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new (string, bool, Action)[]
         {
             (App.Lang("AddWindow.Control.Text3"), _url != null, Button1_Click),
             (App.Lang("AddWindow.Control.Text4"), _url1 != null, Button2_Click)

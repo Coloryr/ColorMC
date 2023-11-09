@@ -14,9 +14,13 @@ public partial class AddJavaControl : UserControl, IUserControl
 
     public string Title => App.Lang("AddJavaWindow.Title");
 
+    public string UseName { get; }
+
     public AddJavaControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "AddJavaControl";
 
         JavaFiles.DoubleTapped += JavaFiles_DoubleTapped;
     }

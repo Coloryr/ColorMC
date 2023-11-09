@@ -30,6 +30,8 @@ public partial class GameCloudControl : UserControl, IUserControl
     public string Title =>
         string.Format(App.Lang("GameCloudWindow.Title"), Obj.Name);
 
+    public string UseName { get; }
+
     public GameCloudControl()
     {
         InitializeComponent();
@@ -37,6 +39,8 @@ public partial class GameCloudControl : UserControl, IUserControl
 
     public GameCloudControl(GameSettingObj obj) : this()
     {
+        UseName = (ToString() ?? "GameCloudControl") + ":" + obj.UUID;
+
         Obj = obj;
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;

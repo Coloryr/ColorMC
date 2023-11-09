@@ -3,6 +3,7 @@ using Avalonia.Platform.Storage;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ public class GameEditFlyout1
             _obj = _list.ToList()[0];
         }
 
-        var fy = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new (string, bool, Action)[]
         {
             (App.Lang("GameEditWindow.Flyouts1.Text1"), true, Button1_Click),
             (App.Lang("GameEditWindow.Flyouts1.Text2"), true, Button2_Click),
@@ -38,7 +39,8 @@ public class GameEditFlyout1
             (App.Lang("GameEditWindow.Flyouts1.Text4"), _single
                 && !string.IsNullOrWhiteSpace(_obj?.Url), Button5_Click),
             (App.Lang("GameEditWindow.Flyouts1.Text5"), _single
-                && !string.IsNullOrWhiteSpace(_obj?.PID) && !string.IsNullOrWhiteSpace(_obj?.FID), Button6_Click),
+                && !string.IsNullOrWhiteSpace(_obj?.PID)
+                && !string.IsNullOrWhiteSpace(_obj?.FID), Button6_Click),
         }, con);
     }
 

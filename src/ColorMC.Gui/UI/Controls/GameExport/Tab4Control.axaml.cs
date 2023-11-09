@@ -1,4 +1,6 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.Utils;
 using System;
@@ -7,15 +9,9 @@ namespace ColorMC.Gui.UI.Controls.GameExport;
 
 public partial class Tab4Control : UserControl
 {
-    private GameExportModel _model;
-
     public Tab4Control()
     {
         InitializeComponent();
-
-        //DataGrid1.CellPointerPressed += DataGrid1_Pressed;
-
-        DataContextChanged += Tab4Control_DataContextChanged;
     }
 
     public void Opened()
@@ -23,20 +19,24 @@ public partial class Tab4Control : UserControl
         DataGrid1.SetFontColor();
     }
 
-    private void Tab4Control_DataContextChanged(object? sender, EventArgs e)
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (DataContext is GameExportModel model)
+        if (DataContext is GameExportModel model && model.NowView == 3)
         {
-            _model = model;
+            if (e.Delta.Y > 0)
+            {
+                model.NowView--;
+            }
         }
     }
 
-    //private void DataGrid1_Pressed(object? sender, DataGridCellPointerPressedEventArgs e)
-    //{
-    //    var point = e.PointerPressedEventArgs.GetCurrentPoint(this);
-    //    if (point.Properties.IsRightButtonPressed)
-    //    {
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+    }
 
-    //    }
-    //}
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
+    }
 }

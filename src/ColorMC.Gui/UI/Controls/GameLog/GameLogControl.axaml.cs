@@ -26,9 +26,13 @@ public partial class GameLogControl : UserControl, IUserControl
     private bool _loadlast;
     public Bitmap GetIcon() => _icon;
 
+    public string UseName { get; }
+
     public GameLogControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "GameLogControl";
     }
 
     public GameLogControl(GameSettingObj obj, bool loadlast) : this()

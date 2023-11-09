@@ -23,6 +23,21 @@ public partial class Tab4Control : UserControl
         AddHandler(DragDrop.DropEvent, Drop);
     }
 
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (DataContext is GameEditModel model && model.NowView == 2)
+        {
+            if (e.Delta.Y < 0)
+            {
+                model.NowView++;
+            }
+            else if (e.Delta.Y > 0)
+            {
+                model.NowView--;
+            }
+        }
+    }
+
     public void Opened()
     {
         DataGrid1.SetFontColor();
@@ -75,13 +90,13 @@ public partial class Tab4Control : UserControl
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        base.OnAttachedToVisualTree(e);
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
         (DataContext as GameEditModel)?.SetBackHeadTab();
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        base.OnDetachedFromVisualTree(e);
+        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
         (DataContext as GameEditModel)?.RemoveBackHead();
     }
 }

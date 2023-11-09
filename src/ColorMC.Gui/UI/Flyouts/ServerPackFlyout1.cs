@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.ServerPack;
+using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -13,7 +14,7 @@ public class ServerPackFlyout1
         _model = model;
         _obj = obj;
 
-        var fy = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new (string, bool, Action)[]
         {
             (App.Lang("Button.Delete"), true, Button1_Click),
         }, con);

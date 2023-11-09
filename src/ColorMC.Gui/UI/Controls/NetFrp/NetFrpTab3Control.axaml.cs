@@ -1,5 +1,8 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using ColorMC.Gui.UI.Model.NetFrp;
+using ColorMC.Gui.UI.Model.ServerPack;
 using System;
 using System.ComponentModel;
 
@@ -10,23 +13,26 @@ public partial class NetFrpTab3Control : UserControl
     public NetFrpTab3Control()
     {
         InitializeComponent();
-
-        DataContextChanged += NetFrpTab3Control_DataContextChanged;
     }
 
-    private void NetFrpTab3Control_DataContextChanged(object? sender, EventArgs e)
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (DataContext is NetFrpModel model)
+        if (DataContext is NetFrpModel model && model.NowView == 2)
         {
-            model.PropertyChanged += Model_PropertyChanged;
+            if (e.Delta.Y > 0)
+            {
+                model.NowView--;
+            }
         }
     }
 
-    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        if (e.PropertyName == "Insert")
-        {
-            TextEditor1.AppendText((DataContext as NetFrpModel)!.Temp ?? "");
-        }
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
     }
 }

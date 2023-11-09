@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
@@ -14,6 +15,21 @@ public partial class Tab10Control : UserControl
         InitializeComponent();
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
+    }
+
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (DataContext is GameEditModel model && model.NowView == 6)
+        {
+            if (e.Delta.Y < 0)
+            {
+                model.NowView++;
+            }
+            else if (e.Delta.Y > 0)
+            {
+                model.NowView--;
+            }
+        }
     }
 
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
@@ -43,13 +59,13 @@ public partial class Tab10Control : UserControl
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        base.OnAttachedToVisualTree(e);
         (DataContext as GameEditModel)?.SetBackHeadTab10();
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        base.OnDetachedFromVisualTree(e);
         (DataContext as GameEditModel)?.RemoveBackHeadTab10();
+        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
     }
 }

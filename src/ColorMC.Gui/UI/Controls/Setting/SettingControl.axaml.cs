@@ -31,9 +31,13 @@ public partial class SettingControl : UserControl, IUserControl
 
     public string Title => App.Lang("SettingWindow.Title");
 
+    public string UseName { get; }
+
     public SettingControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "SettingControl";
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;
         StackPanel2.PointerPressed += StackPanel2_PointerPressed;
@@ -110,7 +114,33 @@ public partial class SettingControl : UserControl, IUserControl
 
     private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "NowView")
+        if (e.PropertyName == "Switch")
+        {
+            var model = (DataContext as SettingModel)!;
+            switch (model.NowView)
+            {
+                case 0:
+                    _tab2.Reset();
+                    break;
+                case 1:
+                    _tab3.Reset();
+                    break;
+                case 2:
+                    _tab4.Reset();
+                    break;
+                case 4:
+                    _tab6.Reset();
+                    break;
+                case 5:
+                    Go(_tab1);
+                    break;
+                case 6:
+                    Go(_tab7);
+                    _tab7.Start();
+                    break;
+            }
+        }
+        else if (e.PropertyName == "NowView")
         {
             var model = (DataContext as SettingModel)!;
             switch (model.NowView)

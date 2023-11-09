@@ -2,6 +2,7 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -13,7 +14,7 @@ public class GameEditFlyout2
     {
         _model = model;
 
-        _ = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new (string, bool, Action)[]
         {
             (App.Lang("Button.OpFile"), true, Button1_Click),
             (App.Lang("GameEditWindow.Flyouts2.Text5"), CheckHelpers.IsGameVersion120(_model.World.Game.Version), Button6_Click),

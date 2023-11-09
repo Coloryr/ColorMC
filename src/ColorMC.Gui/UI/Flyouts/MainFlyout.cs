@@ -5,6 +5,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -17,7 +18,7 @@ public class MainFlyout
 
         var run = BaseBinding.IsGameRun(obj.Obj);
 
-        var fy = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new (string, bool, Action)[]
         {
             (App.Lang("MainWindow.Flyouts.Text2"), true, Button3_Click),
             (App.Lang("MainWindow.Flyouts.Text1"), true, Button1_Click),

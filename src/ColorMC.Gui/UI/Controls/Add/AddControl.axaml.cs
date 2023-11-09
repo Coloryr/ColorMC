@@ -14,11 +14,13 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddControl : UserControl, IUserControl
 {
-    public GameSettingObj Obj { get; }
+    private GameSettingObj _obj;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => string.Format(App.Lang("AddWindow.Title"), Obj.Name);
+    public string Title => string.Format(App.Lang("AddWindow.Title"), _obj.Name);
+
+    public string UseName { get; }
 
     public AddControl()
     {
@@ -27,7 +29,9 @@ public partial class AddControl : UserControl, IUserControl
 
     public AddControl(GameSettingObj obj) : this()
     {
-        Obj = obj;
+        UseName = (ToString() ?? "GameSettingObj") + ":" + obj.UUID;
+
+        _obj = obj;
 
         VersionFiles.DoubleTapped += VersionFiles_DoubleTapped;
         OptifineFiles.DoubleTapped += OptifineFiles_DoubleTapped;
@@ -40,7 +44,7 @@ public partial class AddControl : UserControl, IUserControl
 
     public void SetBaseModel(BaseModel model)
     {
-        var amodel = new AddControlModel(model, Obj);
+        var amodel = new AddControlModel(model, _obj);
         amodel.PropertyChanged += Model_PropertyChanged;
 
         DataContext = amodel;
@@ -157,7 +161,7 @@ public partial class AddControl : UserControl, IUserControl
 
     public void Closed()
     {
-        App.AddWindows.Remove(Obj.UUID);
+        App.AddWindows.Remove(_obj.UUID);
     }
 
     public void GoFile(SourceType type, string pid)

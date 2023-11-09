@@ -17,9 +17,13 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public string Title => App.Lang("DownloadWindow.Title");
 
+    public string UseName { get; }
+
     public DownloadControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "DownloadControl";
     }
 
     public void Opened()
