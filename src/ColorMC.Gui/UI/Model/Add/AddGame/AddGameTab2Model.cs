@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : MenuModel
+public partial class AddGameModel : TopModel
 {
     /// <summary>
     /// 压缩包类型列表
@@ -20,7 +20,7 @@ public partial class AddGameModel : MenuModel
     /// 压缩包位置
     /// </summary>
     [ObservableProperty]
-    private string _zipLocal;
+    private string? _zipLocal;
 
     /// <summary>
     /// 压缩包类型
@@ -32,9 +32,12 @@ public partial class AddGameModel : MenuModel
     /// 压缩包路径修改
     /// </summary>
     /// <param name="value"></param>
-    partial void OnZipLocalChanged(string value)
+    partial void OnZipLocalChanged(string? value)
     {
-        Type = GameBinding.CheckType(value);
+        if (value != null)
+        {
+            Type = GameBinding.CheckType(value);
+        }
     }
 
     /// <summary>

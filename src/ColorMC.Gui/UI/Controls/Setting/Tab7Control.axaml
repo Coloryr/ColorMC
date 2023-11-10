@@ -28,7 +28,7 @@
                     Height="160"
                     Margin="80,0,10,0"
                     HorizontalAlignment="Center"
-                    Source="{Binding Bitmap}" />
+                    Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
 
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <StackPanel Name="StackPanel1">

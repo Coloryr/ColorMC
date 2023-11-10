@@ -589,11 +589,23 @@ public partial class BaseModel : ObservableObject
         return (_info5.IsCancel, _info5.Index, _info5.Select);
     }
 
-    public async Task<bool> TextInfo(string data, string data1)
+    public void ShowText(string data, string data1)
     {
         _info6.Text1 = data;
         _info6.Text2 = data1;
         _info6.IsCancel = true;
+        _info6.NeedCancel = false;
+
+        DClose();
+        DialogHost.Show(_info6, Name);
+    }
+
+    public async Task<bool> ShowTextWait(string data, string data1)
+    {
+        _info6.Text1 = data;
+        _info6.Text2 = data1;
+        _info6.IsCancel = true;
+        _info6.NeedCancel = true;
 
         DClose();
         Work();
@@ -601,7 +613,7 @@ public partial class BaseModel : ObservableObject
 
         NoWork();
 
-        return _info6.IsCancel;
+        return !_info6.IsCancel;
     }
 
     public void DClose()

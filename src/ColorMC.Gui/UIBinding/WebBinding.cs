@@ -843,4 +843,9 @@ public static class WebBinding
     {
         return McloAPI.Push(data);
     }
+
+    public static Task<string?> GetNewLog()
+    {
+        return ColorMCAPI.GetNewLog();
+    }
 }

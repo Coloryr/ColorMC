@@ -10,6 +10,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -82,6 +83,14 @@ public partial class MainModel : TopModel, IMainTop
     [ObservableProperty]
     private bool _render = true;
 
+    [ObservableProperty]
+    private bool _haveUpdate;
+
+    private bool _isNewUpdate;
+    private string _updateStr;
+
+    private bool _isGetNewInfo;
+
     public MainModel(BaseModel model) : base(model)
     {
         App.SkinLoad += App_SkinLoad;
@@ -92,6 +101,43 @@ public partial class MainModel : TopModel, IMainTop
     partial void OnGameChanged(GameItemModel? value)
     {
         UpdateLaunch();
+    }
+
+    [RelayCommand]
+    public async Task NewInfo()
+    {
+        if (_isGetNewInfo)
+        {
+            return;
+        }
+        _isGetNewInfo = true;
+
+        var data = await WebBinding.GetNewLog();
+        if (data == null)
+        {
+            Model.Show(App.Lang("Gui.Error38"));
+        }
+        else
+        {
+            Model.ShowText(App.Lang("Gui.Info35"), data);
+        }
+    }
+
+    [RelayCommand]
+    public async Task Upgrade()
+    {
+        var res = await Model.ShowTextWait(App.Lang("Gui.Info5"), _updateStr);
+        if (res)
+        {
+            if (_isNewUpdate)
+            {
+                BaseBinding.OpUrl("https://colormc.coloryr.com/");
+            }
+            else
+            {
+                UpdateChecker.StartUpdate();
+            }
+        }
     }
 
     [RelayCommand]
@@ -333,7 +379,7 @@ public partial class MainModel : TopModel, IMainTop
         Load();
     }
 
-    public void LoadDone()
+    public async void LoadDone()
     {
         Load();
         Load1();
@@ -342,13 +388,18 @@ public partial class MainModel : TopModel, IMainTop
 
         BaseBinding.LoadMusic();
 
-#if !DEBUG
         var config = ConfigBinding.GetAllConfig();
         if (config.Item1?.Http?.CheckUpdate == true)
         {
-            UpdateChecker.Check();
+            var data = await UpdateChecker.Check();
+            if (!data.Item1)
+            {
+                return;
+            }
+            HaveUpdate = true;
+            _isNewUpdate = data.Item2;
+            _updateStr = data.Item3!;
         }
-#endif
     }
 
     public void Load()

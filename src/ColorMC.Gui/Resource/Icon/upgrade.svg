@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<svg
+    height="48px" version="1.1" viewBox="-4 -4 56 56" width="48px"
+    xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g>
+        <polygon fill="#FFF"
+            points="44,37.984 44,44 4,44 4,37.984 0,37.984 0,44 0,48 4,48 44,48 48,48 48,44 48,37.984  " />
+        <polygon fill="#FFF" points="19,40 21,40 27,40 29,40 29,15 34.954,15 24,0 13.046,15 19,15  " />
+    </g>
+</svg>

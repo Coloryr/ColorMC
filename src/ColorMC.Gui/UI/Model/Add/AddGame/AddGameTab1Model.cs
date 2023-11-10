@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : MenuModel
+public partial class AddGameModel : TopModel
 {
     /// <summary>
     /// 游戏版本列表
@@ -40,7 +40,7 @@ public partial class AddGameModel : MenuModel
     /// 游戏版本
     /// </summary>
     [ObservableProperty]
-    private string _version;
+    private string? _version;
     /// <summary>
     /// 加载器版本
     /// </summary>
@@ -73,9 +73,12 @@ public partial class AddGameModel : MenuModel
     /// 游戏版本修改
     /// </summary>
     /// <param name="value"></param>
-    async partial void OnVersionChanged(string value)
+    async partial void OnVersionChanged(string? value)
     {
-        await VersionSelect();
+        if (value != null)
+        {
+            await VersionSelect();
+        }
     }
 
     /// <summary>

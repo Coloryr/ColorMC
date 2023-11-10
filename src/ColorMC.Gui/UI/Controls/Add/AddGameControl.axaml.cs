@@ -17,16 +17,9 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddGameControl : UserControl, IUserControl
 {
-    private bool _switch1 = false;
-
     private readonly Tab1Control _tab1 = new();
     private readonly Tab2Control _tab2 = new();
     private readonly Tab3Control _tab3 = new();
-
-    private CancellationTokenSource _cancel = new();
-    private CancellationTokenSource _cancel1 = new();
-
-    private int _now;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -45,19 +38,6 @@ public partial class AddGameControl : UserControl, IUserControl
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
-
-        StackPanel1.PointerPressed += StackPanel1_PointerPressed;
-        StackPanel2.PointerPressed += StackPanel2_PointerPressed;
-    }
-
-    private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        (DataContext as AddGameModel)!.OpenSide();
-    }
-
-    private void StackPanel1_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        (DataContext as AddGameModel)!.CloseSide();
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -86,7 +66,7 @@ public partial class AddGameControl : UserControl, IUserControl
             if (item?.EndsWith(".zip") == true || item?.EndsWith(".mrpack") == true)
             {
                 var model = (DataContext as AddGameModel)!;
-                model.NowView = 1;
+                model.GoTab("Tab2");
                 model.SetFile(item);
             }
         }
@@ -105,43 +85,21 @@ public partial class AddGameControl : UserControl, IUserControl
         {
             Window.Close();
         }
-        else if (e.PropertyName == "NowView")
+        else if (e.PropertyName == "GoTab1")
         {
-            var model = (DataContext as AddGameModel)!;
-            switch (model.NowView)
-            {
-                case 0:
-                    Go(_tab1, model.NowView);
-                    break;
-                case 1:
-                    Go(_tab2, model.NowView);
-                    break;
-                case 2:
-                    Go(_tab3, model.NowView);
-                    break;
-            }
-
-            _now = model.NowView;
+            Content1.Content = _tab1;
         }
-        else if (e.PropertyName == "SideOpen")
+        else if (e.PropertyName == "GoTab2")
         {
-            _cancel1.Cancel();
-            _cancel1.Dispose();
-            _cancel1 = new();
-
-            StackPanel1.IsVisible = true;
-            Dispatcher.UIThread.Post(() =>
-            {
-                App.SidePageSlide300.Start(null, DockPanel1, _cancel1.Token);
-            });
+            Content1.Content = _tab2;
         }
-        else if (e.PropertyName == "SideClose")
+        else if (e.PropertyName == "GoTab3")
         {
-            _cancel1.Cancel();
-            _cancel1.Dispose();
-            _cancel1 = new();
-            App.SidePageSlide300.Start(DockPanel1, null, _cancel1.Token);
-            StackPanel1.IsVisible = false;
+            Content1.Content = _tab3;
+        }
+        else if (e.PropertyName == "Back")
+        {
+            Content1.Content = null;
         }
     }
 
@@ -154,32 +112,9 @@ public partial class AddGameControl : UserControl, IUserControl
         App.AddGameWindow = null;
     }
 
-    private void Go(UserControl to, int now)
-    {
-        _cancel.Cancel();
-        _cancel.Dispose();
-
-        _cancel = new();
-
-        if (!_switch1)
-        {
-            Content2.Content = to;
-            _ = App.PageSlide500.Start(Content1, Content2, _now < now, _cancel.Token);
-        }
-        else
-        {
-            Content1.Content = to;
-            _ = App.PageSlide500.Start(Content2, Content1, _now < now, _cancel.Token);
-        }
-
-        _switch1 = !_switch1;
-    }
-
     public void Opened()
     {
         Window.SetTitle(Title);
-
-        Content1.Content = _tab1;
     }
 
     public void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
@@ -197,7 +132,7 @@ public partial class AddGameControl : UserControl, IUserControl
         if (file.EndsWith(".zip") == true || file.EndsWith(".mrpack") == true)
         {
             var model = (DataContext as AddGameModel)!;
-            model.NowView = 1;
+            model.GoTab("Tab2");
             model.SetFile(file);
         }
     }

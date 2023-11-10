@@ -494,7 +494,7 @@ public static class ServerPack
                 Logs.Error(LanguageHelper.Get("Core.Http.Error12"), e);
                 return false;
             }
-            if (await ColorMCCore.UpdateSelect(obj1.Text))
+            if (!await ColorMCCore.UpdateSelect(obj1.Text))
             {
                 return true;
             }

@@ -11,6 +11,10 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class ColorMCAPI
 {
+    //private const string url = $"http://localhost/colormc/{ColorMCCore.TopVersion}/";
+    public const string BaseUrl = $"https://mc1.coloryr.com:8081/update/";
+    public const string CheckUrl = $"{BaseUrl}{ColorMCCore.TopVersion}/";
+
     /// <summary>
     /// 获取Mod列表
     /// </summary>
@@ -45,7 +49,7 @@ public static class ColorMCAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.McMod.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error1"), e);
             return null;
         }
     }
@@ -79,5 +83,37 @@ public static class ColorMCAPI
     public static Task<Dictionary<string, McModSearchItemObj>?> GetMcModFromName(string name, int page)
     {
         return GetList(2, new() { name, page.ToString() });
+    }
+
+    public static async Task<string?> GetNewLog()
+    {
+        try
+        {
+            var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "log");
+            req.Headers.Add("ColorMC", ColorMCCore.Version);
+            var data = await BaseClient.DownloadClient.SendAsync(req);
+            return await data.Content.ReadAsStringAsync();
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error2"), e);
+            return null;
+        }
+    }
+
+    public static async Task<JObject> GetUpdateIndex()
+    {
+        var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "index.json");
+        req.Headers.Add("ColorMC", ColorMCCore.Version);
+        var data = await BaseClient.DownloadClient.SendAsync(req);
+        return JObject.Parse(await data.Content.ReadAsStringAsync());
+    }
+
+    public static async Task<JObject> GetUpdateSha1()
+    {
+        var req = new HttpRequestMessage(HttpMethod.Get, CheckUrl + "sha1.json");
+        req.Headers.Add("ColorMC", ColorMCCore.Version);
+        var data = await BaseClient.DownloadClient.SendAsync(req);
+        return JObject.Parse(await data.Content.ReadAsStringAsync());
     }
 }

@@ -1,3 +1,4 @@
+using Avalonia.Controls.Shapes;
 using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
@@ -11,47 +12,42 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : MenuModel
+public partial class AddGameModel : TopModel
 {
     /// <summary>
     /// 游戏分组
     /// </summary>
     public ObservableCollection<string> GroupList { get; init; } = new();
 
-    public override List<MenuObj> TabItems { get; init; } = new()
-    {
-        new() { Icon = "/Resource/Icon/AddMenu/item1.svg",
-            Text = App.Lang("AddGameWindow.Tabs.Text1") },
-        new() { Icon = "/Resource/Icon/AddMenu/item2.svg",
-            Text = App.Lang("AddGameWindow.Tabs.Text2") },
-        new() { Icon = "/Resource/Icon/AddMenu/item3.svg",
-            Text = App.Lang("AddGameWindow.Tabs.Text3") },
-    };
-
     /// <summary>
     /// 实例名字
     /// </summary>
     [ObservableProperty]
-    private string _name;
+    private string? _name;
     /// <summary>
     /// 实例组
     /// </summary>
     [ObservableProperty]
-    private string _group;
+    private string? _group;
 
     /// <summary>
     /// 云同步启用
     /// </summary>
     [ObservableProperty]
     private bool _cloudEnable;
+    [ObservableProperty]
+    private bool _main = true;
 
     /// <summary>
     /// 是否在加载中
     /// </summary>
     private bool _load = false;
 
+    private readonly string _useName;
+
     public AddGameModel(BaseModel model) : base(model)
     {
+        _useName = ToString() ?? "AddGameModel";
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
 
@@ -93,6 +89,30 @@ public partial class AddGameModel : MenuModel
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
         Group = Text;
+    }
+
+    [RelayCommand]
+    public void GoTab(object? arg)
+    {
+        Model.AddHeadCall(_useName, Back);
+        Main = false;
+        OnPropertyChanged("Go" + arg);
+    }
+
+    private void Back()
+    {
+        Model.RemoveBack();
+        Name = null;
+        Group = null;
+        Version = null;
+        LoaderVersion = null;
+        Type = null;
+        ZipLocal = null;
+        _fileModel = null;
+        SelectPath = null;
+        Files = null;
+        OnPropertyChanged("Back");
+        Main = true;
     }
 
     protected override void Close()
