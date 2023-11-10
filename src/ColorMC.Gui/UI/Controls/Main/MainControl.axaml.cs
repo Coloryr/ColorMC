@@ -40,8 +40,6 @@ public partial class MainControl : UserControl, IUserControl
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
 
-        KeyDown += MainControl_KeyDown;
-
         SizeChanged += MainControl_SizeChanged;
     }
 
@@ -70,14 +68,6 @@ public partial class MainControl : UserControl, IUserControl
                     App.CrossFade100.Start(StackPanel1, null);
                 }
             });
-        }
-    }
-
-    private void MainControl_KeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Down)
-        {
-
         }
     }
 
@@ -184,6 +174,11 @@ public partial class MainControl : UserControl, IUserControl
         Window.SetTitle(Title);
 
         ChangeLive2DSize();
+
+        if (BaseBinding.ISNewStart)
+        {
+            Start.Start();
+        }
     }
 
     private void Item_DoubleTapped(object? sender, TappedEventArgs e)

@@ -13,6 +13,9 @@ public partial class Info6Model : ObservableObject
     [ObservableProperty]
     private string _text2;
 
+    [ObservableProperty]
+    private bool _needCancel;
+
     private readonly string? _name;
     public Info6Model(string? name)
     {

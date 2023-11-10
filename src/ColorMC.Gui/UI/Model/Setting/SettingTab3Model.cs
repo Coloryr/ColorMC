@@ -138,8 +138,8 @@ public partial class SettingModel : MenuModel
         }
         else if (res.Item1 == true)
         {
-            var res1 = await Model.TextInfo(App.Lang("SettingWindow.Tab3.Info2"), res.Item2!);
-            if (!res1)
+            var res1 = await Model.ShowTextWait(App.Lang("SettingWindow.Tab3.Info2"), res.Item2!);
+            if (res1)
             {
                 UpdateChecker.StartUpdate();
             }

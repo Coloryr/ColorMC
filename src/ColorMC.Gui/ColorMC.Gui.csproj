@@ -79,6 +79,7 @@
         <None Remove="Resource\Icon\NetFrp\item1.svg" />
         <None Remove="Resource\Icon\NetFrp\item2.svg" />
         <None Remove="Resource\Icon\NetFrp\item3.svg" />
+        <None Remove="Resource\Icon\new.svg" />
         <None Remove="Resource\Icon\play.svg" />
         <None Remove="Resource\Icon\resize.svg" />
         <None Remove="Resource\Icon\setting.svg" />
@@ -113,6 +114,7 @@
         <None Remove="Resource\Icon\Setting\svg9.svg" />
         <None Remove="Resource\Icon\size.svg" />
         <None Remove="Resource\Icon\skin.svg" />
+        <None Remove="Resource\Icon\upgrade.svg" />
         <None Remove="Resource\Icon\up_arrow.svg" />
         <None Remove="Resource\Icon\user.svg" />
         <None Remove="Resource\Language\gui_zh-cn.json" />
@@ -169,6 +171,7 @@
         <AvaloniaResource Include="Resource\Icon\NetFrp\item1.svg" />
         <AvaloniaResource Include="Resource\Icon\NetFrp\item2.svg" />
         <AvaloniaResource Include="Resource\Icon\NetFrp\item3.svg" />
+        <AvaloniaResource Include="Resource\Icon\new.svg" />
         <AvaloniaResource Include="Resource\Icon\play.svg" />
         <AvaloniaResource Include="Resource\Icon\setting.svg" />
 		<AvaloniaResource Include="Resource\Icon\resize.svg" />
@@ -201,6 +204,7 @@
         <AvaloniaResource Include="Resource\Icon\Setting\svg7.svg" />
         <AvaloniaResource Include="Resource\Icon\Setting\svg8.svg" />
         <AvaloniaResource Include="Resource\Icon\Setting\svg9.svg" />
+        <AvaloniaResource Include="Resource\Icon\upgrade.svg" />
         <AvaloniaResource Include="Resource\Icon\up_arrow.svg" />
         <AvaloniaResource Include="Resource\Icon\skin.svg" />
         <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
@@ -243,6 +247,9 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
         <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <UpToDateCheckInput Remove="UI\Controls\Main\StartControl.axaml" />
     </ItemGroup>
 
 </Project>

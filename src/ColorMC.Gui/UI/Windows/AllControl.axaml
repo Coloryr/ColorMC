@@ -193,7 +193,8 @@
                                         Margin="10,0,10,0"
                                         HorizontalAlignment="Center"
                                         Command="{Binding Cancel}"
-                                        Content="{setting:Localize Button.Cancel}" />
+                                        Content="{setting:Localize Button.Cancel}"
+                                        IsVisible="{Binding NeedCancel}" />
                                 </StackPanel>
                             </StackPanel>
                             <TextBox

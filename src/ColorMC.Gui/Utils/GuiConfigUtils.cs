@@ -186,7 +186,7 @@ public static class GuiConfigUtils
             FontDefault = true,
             Render = MakeRenderConfig(),
             BackLimitValue = 50,
-            EnableBG = true,
+            EnableBG = false,
             BackImage = "https://api.cyrilstudio.top/bing/image.php",
             Live2D = MakeLive2DConfig(),
             Gui = MakeGuiSettingConfig(),

@@ -891,7 +891,7 @@ public partial class App : Application
             return Task.FromResult(false);
         }
         data ??= "";
-        return window.Model.TextInfo(Lang("Gui.Info5"), data);
+        return window.Model.ShowTextWait(Lang("Gui.Info5"), data);
     }
 
     public static void UpdateCheckFail()

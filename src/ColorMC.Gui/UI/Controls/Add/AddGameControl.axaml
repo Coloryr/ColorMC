@@ -13,88 +13,77 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel>
-            <Border
-                Margin="5,5,5,0"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
-                DockPanel.Dock="Top">
-                <StackPanel
-                    Name="StackPanel2"
+        <Border
+            Margin="5"
+            Padding="{setting:Style BorderPadding}"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            IsVisible="{Binding Main}">
+            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button
+                    Width="100"
+                    Height="130"
+                    Margin="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     Background="Transparent"
-                    Orientation="Horizontal">
-                    <Button
-                        Width="25"
-                        Height="25"
-                        Command="{Binding OpenSide}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text5}"
-                        ToolTip.VerticalOffset="-30">
-                        <Svg Path="/Resource/Icon/menu.svg" />
-                    </Button>
-                    <Label
-                        Margin="20,0,0,0"
-                        Content="{Binding Title}"
-                        FontSize="18" />
-                </StackPanel>
-            </Border>
+                    BorderThickness="0"
+                    Command="{Binding GoTab}"
+                    CommandParameter="Tab1"
+                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                    <StackPanel>
+                        <Svg Path="/Resource/Icon/AddMenu/item1.svg" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tabs.Text1}" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Width="100"
+                    Height="130"
+                    Margin="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding GoTab}"
+                    CommandParameter="Tab2"
+                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                    <StackPanel>
+                        <Svg Path="/Resource/Icon/AddMenu/item2.svg" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tabs.Text2}" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Width="100"
+                    Height="130"
+                    Margin="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding GoTab}"
+                    CommandParameter="Tab3"
+                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                    <StackPanel>
+                        <Svg Path="/Resource/Icon/AddMenu/item3.svg" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tabs.Text3}" />
+                    </StackPanel>
+                </Button>
+            </WrapPanel>
+        </Border>
 
-            <Panel ClipToBounds="True">
-                <ContentControl Name="Content1" />
-                <ContentControl Name="Content2" />
-            </Panel>
-        </DockPanel>
+        <ContentControl Name="Content1" />
 
-        <Panel
-            Name="StackPanel1"
-            Background="{setting:Colors TopBottom}"
-            IsVisible="False">
-            <Border
-                Name="DockPanel1"
-                HorizontalAlignment="Left"
-                Background="{setting:Colors Bottom}"
-                BorderThickness="2,2,0,0">
-                <DockPanel>
-                    <ListBoxItem Margin="0,4,0,0" DockPanel.Dock="Top">
-                        <StackPanel Orientation="Horizontal">
-                            <svg:SvgControl
-                                Width="24"
-                                Height="24"
-                                Fill="{setting:Colors Font}"
-                                Path="/Resource/Icon/left1.svg"
-                                Stroke="{setting:Colors Font}" />
-                            <TextBlock
-                                Margin="5,0,0,0"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize Gui.Info32}" />
-                        </StackPanel>
-                    </ListBoxItem>
-                    <ListBox
-                        Margin="0,2,0,0"
-                        ItemsSource="{Binding TabItems}"
-                        SelectedIndex="{Binding NowView}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <svg:SvgControl
-                                        Width="24"
-                                        Height="24"
-                                        Fill="{setting:Colors Font}"
-                                        Path="{Binding Icon}"
-                                        Stroke="{setting:Colors Font}" />
-                                    <TextBlock
-                                        Margin="5,0,0,0"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding Text}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </DockPanel>
-            </Border>
-        </Panel>
         <Panel
             Name="Grid2"
             Background="{setting:Colors BG1}"

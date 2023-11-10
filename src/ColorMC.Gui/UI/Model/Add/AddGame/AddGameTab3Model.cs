@@ -11,24 +11,24 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : MenuModel
+public partial class AddGameModel : TopModel
 {
     /// <summary>
     /// 文件列表
     /// </summary>
-    private FilesPage _fileModel;
+    private FilesPage? _fileModel;
 
     /// <summary>
     /// 文件夹路径
     /// </summary>
     [ObservableProperty]
-    private string _selectPath;
+    private string? _selectPath;
 
     /// <summary>
     /// 文件列表
     /// </summary>
     [ObservableProperty]
-    private HierarchicalTreeDataGridSource<FileTreeNodeModel> _files;
+    private HierarchicalTreeDataGridSource<FileTreeNodeModel>? _files;
 
     /// <summary>
     /// 可以导入
@@ -51,9 +51,9 @@ public partial class AddGameModel : MenuModel
                 return;
             }
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info2"));
-            await Task.Run(() =>
+            _fileModel = await Task.Run(() =>
             {
-                _fileModel = new FilesPage(SelectPath, true, new()
+                return new FilesPage(SelectPath, true, new()
                 { "assets", "libraries", "versions", "launcher_profiles.json" });
             });
             Model.ProgressClose();
@@ -79,13 +79,25 @@ public partial class AddGameModel : MenuModel
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
-            Model.Show(string.Format(App.Lang("AddGameWindow.Tab1.Error2"), SelectPath));
+            Model.Show(App.Lang("AddGameWindow.Tab1.Error2"));
             return;
         }
 
         if (PathHelper.FileHasInvalidChars(Name))
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error13"));
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(SelectPath))
+        {
+            Model.Show(App.Lang("AddGameWindow.Tab3.Error3"));
+            return;
+        }
+
+        if (_fileModel == null)
+        {
+            Model.Show(App.Lang("AddGameWindow.Tab3.Error4"));
             return;
         }
 
