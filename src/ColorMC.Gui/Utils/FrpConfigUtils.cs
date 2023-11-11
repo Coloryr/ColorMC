@@ -22,16 +22,15 @@ public static class FrpConfigUtils
     {
         s_local = dir + "frp.json";
 
-        Load(s_local);
+        Load(s_local, false);
     }
 
     /// <summary>
     /// 加载配置文件
     /// </summary>
     /// <param name="local">路径</param>
-    /// <param name="quit">加载失败是否退出</param>
     /// <returns>是否加载成功</returns>
-    public static bool Load(string local)
+    public static bool Load(string local, bool exit)
     {
         if (File.Exists(local))
         {
@@ -41,11 +40,20 @@ public static class FrpConfigUtils
             }
             catch (Exception e)
             {
+                if (exit)
+                {
+                    return false;
+                }    
                 Logs.Error(App.Lang("Gui.Error17"), e);
             }
 
             if (Config == null)
             {
+                if (exit)
+                {
+                    return false;
+                }
+
                 Config = MakeDefaultConfig();
 
                 SaveNow();
@@ -56,6 +64,11 @@ public static class FrpConfigUtils
 
             if (Config.SakuraFrp == null)
             {
+                if (exit)
+                {
+                    return false;
+                }
+
                 Config.SakuraFrp = new();
                 save = true;
             }

@@ -824,19 +824,7 @@ public static class WebBinding
 
     public static async Task<List<string>?> GetOptifineSupportVersion()
     {
-        var list = await GetOptifine();
-        if (list == null)
-        {
-            return null;
-        }
-        var list1 = new List<string>();
-        var list2 = list.GroupBy(item => item.MCVersion);
-        foreach (var item in list2)
-        {
-            list1.Add(item.Key);
-        }
-
-        return list1;
+        return await OptifineAPI.GetSupportVersion();
     }
 
     public static Task<string?> Push(string data)

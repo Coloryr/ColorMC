@@ -11,6 +11,8 @@ public partial class Tab8Control : UserControl
     {
         InitializeComponent();
 
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
@@ -20,25 +22,8 @@ public partial class Tab8Control : UserControl
     {
         if (DataContext is GameEditModel model && model.NowView == 4)
         {
-            if (e.Delta.Y < 0)
-            {
-                model.NowView++;
-            }
-            else if (e.Delta.Y > 0)
-            {
-                model.NowView--;
-            }
+            model.WhellChange(e.Delta.Y);
         }
-    }
-
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-    }
-
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
     }
 
     private void DragEnter(object? sender, DragEventArgs e)

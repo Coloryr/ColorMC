@@ -94,7 +94,7 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public void GoTab(object? arg)
     {
-        Model.AddHeadCall(_useName, Back);
+        Model.AddBackCall(Back);
         Main = false;
         OnPropertyChanged("Go" + arg);
     }
@@ -117,6 +117,7 @@ public partial class AddGameModel : TopModel
 
     protected override void Close()
     {
+        Model.RemoveBack();
         ColorMCCore.GameOverwirte = null;
         ColorMCCore.GameRequest = null;
         _load = true;

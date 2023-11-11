@@ -25,8 +25,8 @@ public partial class ErrorModel : TopModel
 
         NeedClose = close;
 
-        Model.AddHeadContent(_useName, App.Lang("ErrorWindow.Text1"), App.Lang("GameLogWindow.Text8"));
-        Model.AddHeadCall(_useName, Save, Push);
+        Model.SetChoiseContent(_useName, App.Lang("ErrorWindow.Text1"), App.Lang("GameLogWindow.Text8"));
+        Model.SetChoiseCall(_useName, Save, Push);
     }
 
     public ErrorModel(BaseModel model, string data, string e, bool close) : base(model)
@@ -72,8 +72,7 @@ public partial class ErrorModel : TopModel
 
     protected override void Close()
     {
-        Model.RemoveBack();
+        Model.RemoveChoiseContent(_useName);
         Model.RemoveChoiseCall(_useName);
-        Model.RemoveHeadContent(_useName);
     }
 }

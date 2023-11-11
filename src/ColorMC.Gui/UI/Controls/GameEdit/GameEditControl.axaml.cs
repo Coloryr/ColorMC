@@ -198,6 +198,16 @@ public partial class GameEditControl : UserControl, IUserControl
         else  if (e.PropertyName == "NowView")
         {
             var model = (DataContext as GameEditModel)!;
+            switch (_now)
+            {
+                case 2:
+                    model.RemoveBackHead();
+                    break;
+                case 7:
+                    model.RemoveBackHeadTab10();
+                    break;
+            }
+            _now = model.NowView;
             switch (model.NowView)
             {
                 case 0:
@@ -210,6 +220,7 @@ public partial class GameEditControl : UserControl, IUserControl
                     break;
                 case 2:
                     Go(_tab4);
+                    model.SetBackHeadTab();
                     await model.LoadMod();
                     break;
                 case 3:
@@ -226,6 +237,7 @@ public partial class GameEditControl : UserControl, IUserControl
                     break;
                 case 6:
                     Go(_tab10);
+                    model.SetBackHeadTab10();
                     model.LoadServer();
                     break;
                 case 7:
@@ -237,8 +249,6 @@ public partial class GameEditControl : UserControl, IUserControl
                     await model.LoadSchematic();
                     break;
             }
-
-            _now = model.NowView;
         }
         else if (e.PropertyName == "SideOpen")
         {

@@ -7,6 +7,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -218,7 +219,7 @@ public static class ConfigBinding
         ConfigUtils.Config.Http.DownloadThread = value;
         ConfigUtils.Save();
 
-        BaseClient.Init();
+        DownloadManager.LoadThread();
     }
 
     public static void SetDownloadProxy(string ip, ushort port, string user, string password)
@@ -598,5 +599,10 @@ public static class ConfigBinding
         FrpConfigUtils.Config.SakuraFrp ??= new();
         FrpConfigUtils.Config.SakuraFrp.Key = key;
         FrpConfigUtils.Save();
+    }
+
+    public static bool LoadFrpConfig(string local)
+    {
+        return FrpConfigUtils.Load(local, true);
     }
 }

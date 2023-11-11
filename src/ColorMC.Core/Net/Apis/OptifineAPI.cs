@@ -3,8 +3,10 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.OptiFine;
+using ColorMC.Core.Utils;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -13,6 +15,7 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class OptifineAPI
 {
+    private static List<string> s_OptifneMcVersion;
     /// <summary>
     /// 获取高清修复版本
     /// </summary>
@@ -103,7 +106,7 @@ public static class OptifineAPI
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.OptiFine.Error1"), e, false);
+            Logs.Error(LanguageHelper.Get("Core.Http.OptiFine.Error1"), e);
         }
 
         return (null, null);
@@ -179,8 +182,26 @@ public static class OptifineAPI
         return (true, null);
     }
 
-    public static Task<List<string>?> GetSupportVersion(SourceLocal source)
+    public static async Task<List<string>?> GetSupportVersion()
     {
-        throw new NotImplementedException();
+        if (s_OptifneMcVersion != null)
+        {
+            return s_OptifneMcVersion;
+        }
+        var list = await GetOptifineVersion();
+        if (list.Item1 == null)
+        {
+            return null;
+        }
+        var list1 = new List<string>();
+        var list2 = list.Item2!.GroupBy(item => item.MCVersion);
+        foreach (var item in list2)
+        {
+            list1.Add(item.Key);
+        }
+
+        s_OptifneMcVersion = list1;
+
+        return list1;
     }
 }

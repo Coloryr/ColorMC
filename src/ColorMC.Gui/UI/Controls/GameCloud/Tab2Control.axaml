@@ -12,7 +12,10 @@
     d:DesignWidth="800"
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,0,5,5" IsEnabled="{Binding Enable}">
+    <DockPanel
+        Name="ScrollViewer1"
+        Margin="5,0,5,5"
+        IsEnabled="{Binding Enable}">
         <Border
             Margin="0,3,0,0"
             Padding="{setting:Style BorderPadding}"

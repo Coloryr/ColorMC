@@ -109,7 +109,6 @@ public partial class SettingControl : UserControl, IUserControl
         var amodel = new SettingModel(model);
         amodel.PropertyChanged += Amodel_PropertyChanged;
         DataContext = amodel;
-        _tab7.DataContext = new SettingTab7Model();
     }
 
     private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -130,13 +129,6 @@ public partial class SettingControl : UserControl, IUserControl
                     break;
                 case 4:
                     _tab6.Reset();
-                    break;
-                case 5:
-                    Go(_tab1);
-                    break;
-                case 6:
-                    Go(_tab7);
-                    _tab7.Start();
                     break;
             }
         }

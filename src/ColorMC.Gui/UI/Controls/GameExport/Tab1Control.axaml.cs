@@ -10,26 +10,15 @@ public partial class Tab1Control : UserControl
     public Tab1Control()
     {
         InitializeComponent();
+
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         if (DataContext is GameExportModel model && model.NowView == 0)
         {
-            if (e.Delta.Y < 0)
-            {
-                model.NowView++;
-            }
+            model.WhellChange(e.Delta.Y);
         }
-    }
-
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-    }
-
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
     }
 }

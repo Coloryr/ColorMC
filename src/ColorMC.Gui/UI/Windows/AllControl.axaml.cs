@@ -31,14 +31,14 @@ public partial class AllControl : UserControl, IBaseWindow
     {
         InitializeComponent();
 
-        DataContext = new BaseModel();
+        DataContext = new BaseModel("AllControl");
 
         if (SystemInfo.Os == OsType.Linux)
         {
             ResizeButton.IsVisible = true;
         }
 
-        Model.AddHeadCall(null, Back);
+        Model.AddBackCall(Back);
 
         PointerPressed += AllControl_PointerPressed;
         ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);

@@ -30,6 +30,8 @@ public abstract partial class MenuModel : TopModel
     [ObservableProperty]
     private int _nowView1;
 
+    private double _lastWheel;
+
     public MenuModel(BaseModel model) : base(model)
     {
         Title = TabItems[0].Text;
@@ -41,6 +43,27 @@ public abstract partial class MenuModel : TopModel
         {
             NowView = value;
             OnPropertyChanged("Switch");
+        }
+    }
+
+    public void WhellChange(double dir)
+    {
+        _lastWheel += dir;
+        if (_lastWheel < -2)
+        {
+            if (NowView < TabItems.Count)
+            {
+                NowView++;
+            }
+            _lastWheel = 0;
+        }
+        else if(_lastWheel > 2)
+        {
+            if (NowView > 0)
+            {
+                NowView--;
+            }
+            _lastWheel = 0;
         }
     }
 

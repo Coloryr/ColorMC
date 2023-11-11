@@ -517,13 +517,13 @@ public partial class GameCloudModel : MenuModel
 
     public void SetHeadBack()
     {
-        Model.AddHeadContent(_useName, App.Lang("Button.Refash"));
-        Model.AddHeadCall(_useName, choise: LoadWorld);
+        Model.SetChoiseContent(_useName, App.Lang("Button.Refash"));
+        Model.SetChoiseCall(_useName, LoadWorld);
     }
 
     public void RemoveHeadBack()
     {
-        Model.RemoveHeadContent(_useName);
         Model.RemoveChoiseCall(_useName);
+        Model.RemoveChoiseContent(_useName);
     }
 }

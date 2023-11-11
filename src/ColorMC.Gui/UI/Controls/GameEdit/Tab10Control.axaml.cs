@@ -15,20 +15,15 @@ public partial class Tab10Control : UserControl
         InitializeComponent();
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
+
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         if (DataContext is GameEditModel model && model.NowView == 6)
         {
-            if (e.Delta.Y < 0)
-            {
-                model.NowView++;
-            }
-            else if (e.Delta.Y > 0)
-            {
-                model.NowView--;
-            }
+            model.WhellChange(e.Delta.Y);
         }
     }
 
@@ -55,17 +50,5 @@ public partial class Tab10Control : UserControl
     public void Opened()
     {
         DataGrid1.SetFontColor();
-    }
-
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        (DataContext as GameEditModel)?.SetBackHeadTab10();
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-    }
-
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        (DataContext as GameEditModel)?.RemoveBackHeadTab10();
-        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
     }
 }

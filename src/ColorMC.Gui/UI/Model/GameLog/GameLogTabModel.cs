@@ -143,6 +143,10 @@ public partial class GameLogModel : GameModel
             Model.Show(res.Item2!);
         }
         Load();
+        if (File == null)
+        {
+            IsAuto = true;
+        }
     }
 
     [RelayCommand]

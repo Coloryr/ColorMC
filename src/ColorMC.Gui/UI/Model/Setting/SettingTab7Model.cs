@@ -7,43 +7,43 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab7Model : ObservableObject
+public partial class SettingModel : MenuModel
 {
     public Bitmap Bitmap => App.GameIcon;
     public string Version => ColorMCCore.Version;
 
     [RelayCommand]
-    public void Open1()
+    public void OpenUrl1()
     {
         WebBinding.OpenWeb(WebType.Web);
     }
 
     [RelayCommand]
-    public void Open2()
+    public void OpenUrl2()
     {
         WebBinding.OpenWeb(WebType.Minecraft);
     }
 
     [RelayCommand]
-    public void Open3()
+    public void OpenUrl3()
     {
         WebBinding.OpenWeb(WebType.Sponsor);
     }
 
     [RelayCommand]
-    public void Open4()
+    public void OpenUrl4()
     {
         WebBinding.OpenWeb(WebType.Github);
     }
 
     [RelayCommand]
-    public void Open5()
+    public void OpenUrl5()
     {
         WebBinding.OpenWeb(WebType.Guide);
     }
 
     [RelayCommand]
-    public void Open6()
+    public void OpenUrl6()
     {
         WebBinding.OpenWeb(WebType.Mcmod);
     }

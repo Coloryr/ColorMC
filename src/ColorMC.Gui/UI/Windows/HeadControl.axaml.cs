@@ -17,6 +17,7 @@ public partial class HeadControl : UserControl
     private readonly Button _buttonMin;
     private readonly Button _buttonBack;
     private readonly Button _buttonChoise;
+    private readonly Button _buttonChoise1;
 
     public HeadControl()
     {
@@ -64,6 +65,15 @@ public partial class HeadControl : UserControl
             CornerRadius = new CornerRadius(0),
             IsVisible = false
         };
+        _buttonChoise1 = new Button()
+        {
+            Width = 80,
+            Height = 35,
+            BorderThickness = new Thickness(0),
+            BorderBrush = Brushes.Transparent,
+            CornerRadius = new CornerRadius(0),
+            IsVisible = false
+        };
         _buttonBack = new Button()
         {
             Width = 80,
@@ -83,6 +93,7 @@ public partial class HeadControl : UserControl
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
             StackPanel1.Children.Add(_buttonChoise);
+            StackPanel1.Children.Add(_buttonChoise1);
             StackPanel1.Children.Add(_buttonBack);
         }
         else
@@ -90,6 +101,7 @@ public partial class HeadControl : UserControl
             Icons.Margin = new Thickness(5, 0, 0, 0);
             StackPanel1.SetValue(DockPanel.DockProperty, Dock.Right);
             StackPanel1.Children.Add(_buttonChoise);
+            StackPanel1.Children.Add(_buttonChoise1);
             StackPanel1.Children.Add(_buttonBack);
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
@@ -101,6 +113,7 @@ public partial class HeadControl : UserControl
         _buttonClose.Click += ButtonClose_Click;
         _buttonBack.Click += ButtonBack_Click;
         _buttonChoise.Click += ButtonChoise_Click;
+        _buttonChoise1.Click += _buttonChoise1_Click;
     }
 
     private void HeadControl_DataContextChanged(object? sender, EventArgs e)
@@ -111,11 +124,17 @@ public partial class HeadControl : UserControl
             _buttonMax.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
             _buttonClose.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
             _buttonBack.Bind(IsVisibleProperty, model.HeadBackObservale.ToBinding());
-            _buttonBack.Bind(ContentProperty, model.HeadBackContentObservale.ToBinding());
             _buttonChoise.Bind(IsVisibleProperty, model.HeadChoiseObservale.ToBinding());
             _buttonChoise.Bind(ContentProperty, model.HeadChoiseContentObservale.ToBinding());
             _buttonClose.Bind(IsEnabledProperty, model.HeadCloseObservale.ToBinding());
+            _buttonChoise1.Bind(IsVisibleProperty, model.HeadChoise1Observale.ToBinding());
+            _buttonChoise1.Bind(ContentProperty, model.HeadChoise1ContentObservale.ToBinding());
         }
+    }
+
+    private void _buttonChoise1_Click(object? sender, RoutedEventArgs e)
+    {
+        (DataContext as BaseModel)?.Choise1Click();
     }
 
     private void ButtonChoise_Click(object? sender, RoutedEventArgs e)

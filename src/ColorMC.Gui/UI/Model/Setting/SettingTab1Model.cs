@@ -15,6 +15,8 @@ public partial class SettingModel : MenuModel
     private string? _local2;
     [ObservableProperty]
     private string? _local3;
+    [ObservableProperty]
+    private string? _local4;
 
     [RelayCommand]
     public async Task Open1()
@@ -46,6 +48,17 @@ public partial class SettingModel : MenuModel
         if (file != null)
         {
             Local3 = file;
+        }
+    }
+
+    [RelayCommand]
+    public async Task Open4()
+    {
+        var file = await PathBinding.SelectFile(FileType.Config);
+
+        if (file != null)
+        {
+            Local4 = file;
         }
     }
 
@@ -126,6 +139,38 @@ public partial class SettingModel : MenuModel
         try
         {
             var res = ConfigBinding.LoadGuiConfig(local);
+            if (!res)
+            {
+                Model.Show(App.Lang("SettingWindow.Tab1.Error2"));
+                return;
+            }
+            Model.Notify(App.Lang("SettingWindow.Tab1.Info6"));
+        }
+        catch (Exception e1)
+        {
+            Model.Show(App.Lang("SettingWindow.Tab1.Error3"));
+            App.ShowError(App.Lang("SettingWindow.Tab1.Error3"), e1);
+        }
+        finally
+        {
+            Model.ProgressClose();
+        }
+    }
+    
+    [RelayCommand]
+    public void Import4()
+    {
+        var local = Local4;
+        if (string.IsNullOrWhiteSpace(local))
+        {
+            Model.Show(App.Lang("SettingWindow.Tab1.Error1"));
+            return;
+        }
+        Model.Progress(App.Lang("SettingWindow.Tab1.Info5"));
+
+        try
+        {
+            var res = ConfigBinding.LoadFrpConfig(local);
             if (!res)
             {
                 Model.Show(App.Lang("SettingWindow.Tab1.Error2"));

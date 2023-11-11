@@ -121,4 +121,8 @@ public partial class UsersControl : UserControl, IUserControl
         var amodel = new UsersControlModel(model);
         DataContext = amodel;
     }
+
+    private void TextBox_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
+    {
+    }
 }

@@ -245,8 +245,9 @@ public partial class AddControlModel : GameModel, IAddWindow
     public AddControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
         _useName = ToString() ?? "AddControlModel";
-        Model.AddHeadContent(_useName, App.Lang("Button.Filter"));
-        Model.AddHeadCall(_useName, choise: () =>
+        Model.HeadChoiseDisplay = true;
+        Model.SetChoiseContent(_useName, App.Lang("Button.Filter"));
+        Model.SetChoiseCall(_useName, choise: () =>
         {
             DisplayFilter = !DisplayFilter;
         });
@@ -256,7 +257,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         if (value)
         {
-            Model.AddHeadCall(back: () =>
+            Model.AddBackCall(back: () =>
             {
                 OptifineDisplay = false;
             });
@@ -275,7 +276,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         if (value)
         {
-            Model.AddHeadCall(back: () =>
+            Model.AddBackCall(back: () =>
             {
                 VersionDisplay = false;
             });
@@ -292,7 +293,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         if (value)
         {
-            Model.AddHeadCall(back: () =>
+            Model.AddBackCall(back: () =>
             {
                 ModDownloadDisplay = false;
             });
@@ -1302,7 +1303,8 @@ public partial class AddControlModel : GameModel, IAddWindow
         _close = true;
         _load = true;
         Model.RemoveChoiseCall(_useName);
-        Model.RemoveHeadContent(_useName);
+        Model.RemoveChoiseContent(_useName);
+        Model.RemoveBack();
         ModList.Clear();
         OptifineList.Clear();
         DownloadOptifineList.Clear();

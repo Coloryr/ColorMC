@@ -21,14 +21,7 @@ public partial class Tab5Control : UserControl
     {
         if (DataContext is SettingModel model && model.NowView == 3)
         {
-            if (e.Delta.Y < 0)
-            {
-                model.NowView++;
-            }
-            else if (e.Delta.Y > 0)
-            {
-                model.NowView--;
-            }
+            model.WhellChange(e.Delta.Y);
         }
     }
 

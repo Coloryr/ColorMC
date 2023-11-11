@@ -24,12 +24,12 @@ public partial class BaseModel : ObservableObject
 
     private readonly ConcurrentStack<Action> _listBack = new();
 
-    private string? _nowUse;
-    private string? _noChoiseUse;
+    private string? _nowChoiseUse;
 
     private bool _isWork;
 
     private Action? _choiseClick;
+    private Action? _choise1Click;
 
     public string NotifyText;
 
@@ -62,9 +62,10 @@ public partial class BaseModel : ObservableObject
     public SelfPublisher<bool> HeadDisplayObservale = new();
     public SelfPublisher<bool> HeadBackObservale = new();
     public SelfPublisher<bool> HeadChoiseObservale = new();
+    public SelfPublisher<bool> HeadChoise1Observale = new();
     public SelfPublisher<bool> HeadCloseObservale = new();
     public SelfPublisher<string?> HeadChoiseContentObservale = new();
-    public SelfPublisher<string?> HeadBackContentObservale = new();
+    public SelfPublisher<string?> HeadChoise1ContentObservale = new();
 
     public bool HeadDisplay
     {
@@ -100,6 +101,14 @@ public partial class BaseModel : ObservableObject
         set
         {
             HeadChoiseObservale.Notify(value);
+        }
+    }
+
+    public bool HeadChoise1Display
+    {
+        set
+        {
+            HeadChoise1Observale.Notify(value);
         }
     }
 
@@ -141,45 +150,47 @@ public partial class BaseModel : ObservableObject
         HeadCloseDisplay = true;
     }
 
-    public void AddHeadContent(string now, string? choise, string? back = null)
+    public void SetChoiseContent(string now, string? choise, string? choise1 = null)
     {
-        if (_nowUse != now)
-        {
-            HeadChoiseObservale.Notify(true);
-        }
-        _nowUse = now;
-        HeadBackContentObservale.Notify(back ?? App.Lang("Gui.Info31"));
+        _nowChoiseUse = now;
         HeadChoiseContentObservale.Notify(choise ?? "");
+        HeadChoise1ContentObservale.Notify(choise1 ?? "");
     }
 
-    public void RemoveHeadContent(string now)
+    public void SetChoiseCall(string use, Action? choise, Action? choise1 = null)
     {
-        if (_nowUse == now)
+        _nowChoiseUse = use;
+        _choiseClick = choise;
+        _choise1Click = choise1;
+    }
+
+    public void RemoveChoiseContent(string now)
+    {
+        if (_nowChoiseUse == now)
         {
-            _nowUse = null;
-            HeadBackContentObservale.Notify(App.Lang("Gui.Info31"));
+            _nowChoiseUse = null;
             HeadChoiseContentObservale.Notify(null);
+            HeadChoise1ContentObservale.Notify(null);
         }
     }
 
-    public void AddHeadCall(string? use = null, Action? back = null, Action? choise = null)
+    public void RemoveChoiseCall(string now)
     {
-        if (use != null)
+        if (_nowChoiseUse == now)
         {
-            _noChoiseUse = use;
+            _nowChoiseUse = null;
+
+            HeadChoiseObservale.Notify(false);
+            HeadChoise1Observale.Notify(false);
+
+            _choiseClick = null;
+            _choise1Click = null;
         }
-        if (back != null)
-        {
-            _listBack.Push(back);
-        }
-        if (choise != null)
-        {
-            if (use == null)
-            {
-                throw new ArgumentNullException("use is null");
-            }
-            _choiseClick = choise;
-        }
+    }
+
+    public void AddBackCall(Action back)
+    {
+        _listBack.Push(back);
         if (!_listBack.IsEmpty)
         {
             HeadBackDisplay = true;
@@ -195,19 +206,14 @@ public partial class BaseModel : ObservableObject
         }
     }
 
-    public void RemoveChoiseCall(string now)
-    {
-        if (_noChoiseUse == now)
-        {
-            HeadChoiseObservale.Notify(false);
-            _noChoiseUse = null;
-            _choiseClick = null;
-        }
-    }
-
     public void ChoiseClick()
     {
         _choiseClick?.Invoke();
+    }
+
+    public void Choise1Click()
+    {
+        _choise1Click?.Invoke();
     }
 
     public void BackClick()
@@ -616,7 +622,7 @@ public partial class BaseModel : ObservableObject
         return !_info6.IsCancel;
     }
 
-    public void DClose()
+    private void DClose()
     {
         try
         {

@@ -129,6 +129,13 @@ public partial class GameCloudControl : UserControl, IUserControl
         else if (e.PropertyName == "NowView")
         {
             var model = (DataContext as GameCloudModel)!;
+            switch (_now)
+            {
+                case 2:
+                    model.RemoveHeadBack();
+                    break;
+            }
+            _now = model.NowView;
             switch (model.NowView)
             {
                 case 0:
@@ -138,11 +145,12 @@ public partial class GameCloudControl : UserControl, IUserControl
                     Go(_tab2);
                     break;
                 case 2:
+                    model.SetHeadBack();
                     Go(_tab3);
                     break;
             }
 
-            _now = model.NowView;
+            
         }
     }
 
