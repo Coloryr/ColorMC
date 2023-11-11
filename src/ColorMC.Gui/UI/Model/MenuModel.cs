@@ -57,7 +57,7 @@ public abstract partial class MenuModel : TopModel
             }
             _lastWheel = 0;
         }
-        else if(_lastWheel > 2)
+        else if (_lastWheel > 2)
         {
             if (NowView > 0)
             {

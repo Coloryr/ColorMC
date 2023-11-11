@@ -218,6 +218,10 @@ public partial class BaseModel : ObservableObject
 
     public void BackClick()
     {
+        if (_isWork)
+        {
+            return;
+        }
         if (_listBack.TryPeek(out var action))
         {
             action();
@@ -632,8 +636,8 @@ public partial class BaseModel : ObservableObject
             }
         }
         catch
-        { 
-        
+        {
+
         }
     }
 }

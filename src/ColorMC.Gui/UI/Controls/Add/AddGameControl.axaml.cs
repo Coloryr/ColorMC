@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
@@ -11,7 +10,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 

@@ -156,7 +156,7 @@ public partial class SettingModel : MenuModel
             Model.ProgressClose();
         }
     }
-    
+
     [RelayCommand]
     public void Import4()
     {

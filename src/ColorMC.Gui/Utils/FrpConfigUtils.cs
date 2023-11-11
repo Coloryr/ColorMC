@@ -43,7 +43,7 @@ public static class FrpConfigUtils
                 if (exit)
                 {
                     return false;
-                }    
+                }
                 Logs.Error(App.Lang("Gui.Error17"), e);
             }
 

@@ -150,7 +150,7 @@ public partial class GameCloudControl : UserControl, IUserControl
                     break;
             }
 
-            
+
         }
     }
 

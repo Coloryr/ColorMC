@@ -1,9 +1,7 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.Utils;
-using System;
 
 namespace ColorMC.Gui.UI.Controls.GameExport;
 

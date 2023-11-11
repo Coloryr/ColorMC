@@ -364,7 +364,7 @@ public partial class AddGameModel : TopModel
         _loaderTypeList.Clear();
         LoaderTypeList.Clear();
         LoaderVersionList.Clear();
-        
+
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
 

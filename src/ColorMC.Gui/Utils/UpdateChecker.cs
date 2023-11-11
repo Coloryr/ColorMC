@@ -1,16 +1,12 @@
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UIBinding;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;

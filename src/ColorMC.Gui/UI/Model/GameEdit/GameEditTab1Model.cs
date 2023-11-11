@@ -96,7 +96,7 @@ public partial class GameEditModel : MenuModel
         if (_loaderTypeList.Count != 0)
         {
             var loader = _loaderTypeList[value];
-            
+
             _obj.Loader = loader;
             _obj.LoaderVersion = null;
         }

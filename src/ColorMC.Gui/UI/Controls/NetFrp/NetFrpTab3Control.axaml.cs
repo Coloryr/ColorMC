@@ -1,10 +1,6 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.UI.Model.NetFrp;
-using ColorMC.Gui.UI.Model.ServerPack;
-using System;
-using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.NetFrp;
 
