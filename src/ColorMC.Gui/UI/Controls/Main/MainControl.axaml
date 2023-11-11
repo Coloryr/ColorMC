@@ -91,22 +91,23 @@
                             Width="38"
                             Height="38"
                             Margin="0,0,3,0"
+                            Command="{Binding NewInfo}"
+                            CornerRadius="{setting:Style ButtonCornerRadius}"
+                            IsVisible="{Binding HaveUpdate}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text74}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/new.svg" />
+                        </Button>
+                        <Button
+                            Width="38"
+                            Height="38"
+                            Margin="0,0,3,0"
                             Command="{Binding MusicPause}"
                             CornerRadius="{setting:Style ButtonCornerRadius}"
                             IsVisible="{Binding MusicDisplay}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text48}"
                             ToolTip.VerticalOffset="-30">
                             <Svg Path="/Resource/Icon/play.svg" />
-                        </Button>
-                        <Button
-                            Width="38"
-                            Height="38"
-                            Margin="0,0,3,0"
-                            Command="{Binding NewInfo}"
-                            CornerRadius="{setting:Style ButtonCornerRadius}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text74}"
-                            ToolTip.VerticalOffset="-30">
-                            <Svg Path="/Resource/Icon/new.svg" />
                         </Button>
                         <Button
                             Width="38"

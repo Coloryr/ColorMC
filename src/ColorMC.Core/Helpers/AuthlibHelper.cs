@@ -113,25 +113,32 @@ public static class AuthlibHelper
     /// <exception cref="Exception">获取失败</exception>
     private static async Task<AuthlibInjectorObj> GetAuthlibInjectorObj()
     {
-        string url = UrlHelper.AuthlibInjectorMeta(BaseClient.Source);
-        var meta = await BaseClient.GetString(url);
-        if (meta.Item1 == false)
+        try
         {
-            return GetLocalAuthLib();
-        }
-        var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!);
-        if (obj == null)
-        {
-            return GetLocalAuthLib();
-        }
-        var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).ToList()[0];
+            string url = UrlHelper.AuthlibInjectorMeta(BaseClient.Source);
+            var meta = await BaseClient.GetString(url);
+            if (meta.Item1 == false)
+            {
+                return GetLocalAuthLib();
+            }
+            var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!);
+            if (obj == null)
+            {
+                return GetLocalAuthLib();
+            }
+            var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).ToList()[0];
 
-        var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
-        if (info.Item1 == false)
+            var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
+            if (info.Item1 == false)
+            {
+                return GetLocalAuthLib();
+            }
+            return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!) ?? GetLocalAuthLib();
+        }
+        catch
         {
             return GetLocalAuthLib();
         }
-        return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!) ?? GetLocalAuthLib();
     }
 
     /// <summary>
