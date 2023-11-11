@@ -16,6 +16,8 @@ public partial class Tab2Control : UserControl
     {
         InitializeComponent();
 
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+
         if (SystemInfo.Os == OsType.Android)
         {
             var con = ColorMCGui.PhoneGetSetting?.Invoke();
@@ -35,20 +37,7 @@ public partial class Tab2Control : UserControl
     {
         if (DataContext is SettingModel model && model.NowView == 0)
         {
-            if (e.Delta.Y < 0 && ScrollViewer1.ScrollBarMaximum == ScrollViewer1.Offset)
-            {
-                model.NowView++;
-            }
+            model.WhellChange(e.Delta.Y);
         }
-    }
-
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-    }
-
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
     }
 }

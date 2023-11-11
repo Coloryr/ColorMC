@@ -15,6 +15,7 @@ public partial class Tab12Control : UserControl
         InitializeComponent();
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
@@ -25,21 +26,8 @@ public partial class Tab12Control : UserControl
     {
         if (DataContext is GameEditModel model && model.NowView == 8)
         {
-            if (e.Delta.Y > 0)
-            {
-                model.NowView--;
-            }
+            model.WhellChange(e.Delta.Y);
         }
-    }
-
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-    }
-
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
     }
 
     public void Opened()

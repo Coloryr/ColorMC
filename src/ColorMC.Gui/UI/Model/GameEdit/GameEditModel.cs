@@ -60,13 +60,13 @@ public partial class GameEditModel : MenuModel
 
     public void SetBackHeadTab()
     {
-        Model.AddHeadContent(_useName, App.Lang("Button.Refash"));
-        Model.AddHeadCall(_useName, choise: ShowFilter);
+        Model.SetChoiseContent(_useName, App.Lang("Button.Refash"));
+        Model.SetChoiseCall(_useName, ShowFilter);
     }
 
     public void RemoveBackHead()
     {
-        Model.RemoveHeadContent(_useName);
+        Model.RemoveChoiseContent(_useName);
         Model.RemoveChoiseCall(_useName);
     }
 

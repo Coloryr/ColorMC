@@ -12,7 +12,7 @@
     x:DataType="model:UsersControlModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel Margin="5" Background="{setting:Colors TranBack}">
+    <Panel Background="{setting:Colors TranBack}">
         <dialog:DialogHost Identifier="UsersControl">
             <dialog:DialogHost.DataTemplates>
                 <DataTemplate DataType="model:UsersControlModel">
@@ -28,22 +28,22 @@
                                 SelectedIndex="{Binding Type}" />
                         </StackPanel>
                         <TextBox
-                            Name="TextBox_Input1"
                             Margin="5"
+                            AcceptsReturn="True"
                             Classes="input1"
                             IsEnabled="{Binding EnableName}"
                             Text="{Binding Name}"
                             Watermark="{Binding WatermarkName}" />
                         <TextBox
-                            Name="TextBox_Input2"
                             Margin="5"
+                            AcceptsReturn="True"
                             Classes="input1"
                             IsEnabled="{Binding EnableUser}"
                             Text="{Binding User}"
                             Watermark="{setting:Localize Text.UserName}" />
                         <TextBox
-                            Name="TextBox_Input3"
                             Margin="5"
+                            AcceptsReturn="True"
                             Classes="input1"
                             IsEnabled="{Binding EnablePassword}"
                             PasswordChar="*"
@@ -68,7 +68,7 @@
                     </StackPanel>
                 </DataTemplate>
             </dialog:DialogHost.DataTemplates>
-            <Panel>
+            <Panel Margin="5">
                 <Panel>
                     <Label VerticalAlignment="Bottom" Content="{setting:Localize Tips.Text2}" />
                     <Border

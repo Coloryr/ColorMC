@@ -209,7 +209,7 @@ public partial class AddGameModel : TopModel
     public async Task GetLoader()
     {
         EnableLoader = false;
-        if (string.IsNullOrWhiteSpace(Version))
+        if (string.IsNullOrWhiteSpace(Version) || _loaderTypeList.Count == 0)
         {
             return;
         }
@@ -364,54 +364,29 @@ public partial class AddGameModel : TopModel
         _loaderTypeList.Clear();
         LoaderTypeList.Clear();
         LoaderVersionList.Clear();
-
+        
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
 
-        var item = Version;
-        if (string.IsNullOrWhiteSpace(item))
+        if (string.IsNullOrWhiteSpace(Version))
         {
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Name))
         {
-            Name = item;
+            Name = Version;
         }
 
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info4"));
-        var list = await WebBinding.GetForgeSupportVersion();
-        if (list != null && list.Contains(item))
+
+        var loaders = await GameBinding.GetSupportLoader(Version);
+        foreach (var item in loaders)
         {
-            _loaderTypeList.Add(Loaders.Forge);
-            LoaderTypeList.Add(Loaders.Forge.GetName());
+            _loaderTypeList.Add(item);
+            LoaderTypeList.Add(item.GetName());
         }
 
-        list = await WebBinding.GetFabricSupportVersion();
-        if (list != null && list.Contains(item))
-        {
-            _loaderTypeList.Add(Loaders.Fabric);
-            LoaderTypeList.Add(Loaders.Fabric.GetName());
-        }
-
-        list = await WebBinding.GetQuiltSupportVersion();
-        if (list != null && list.Contains(item))
-        {
-            _loaderTypeList.Add(Loaders.Quilt);
-            LoaderTypeList.Add(Loaders.Quilt.GetName());
-        }
-        list = await WebBinding.GetNeoForgeSupportVersion();
-        if (list != null && list.Contains(item))
-        {
-            _loaderTypeList.Add(Loaders.NeoForge);
-            LoaderTypeList.Add(Loaders.NeoForge.GetName());
-        }
-        list = await WebBinding.GetOptifineSupportVersion();
-        if (list != null && list.Contains(item))
-        {
-            _loaderTypeList.Add(Loaders.OptiFine);
-            LoaderTypeList.Add(Loaders.OptiFine.GetName());
-        }
         Model.ProgressClose();
         LoaderType = 0;
         _load = false;
@@ -424,6 +399,10 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public async Task LoadVersion()
     {
+        _loaderTypeList.Clear();
+        LoaderTypeList.Clear();
+        EnableLoader = false;
+        LoaderVersion = null;
         Model.Progress(App.Lang("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
         Model.ProgressClose();

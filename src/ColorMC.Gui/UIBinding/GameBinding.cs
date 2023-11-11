@@ -1592,4 +1592,56 @@ public static class GameBinding
         }
         return await DataPack.Delete(list, list[0].World);
     }
+
+    public static async Task<List<Loaders>> GetSupportLoader(string version)
+    {
+        var loaders = new List<Loaders>();
+        var list = new List<Task>();
+        list.Add(Task.Run(async () =>
+        {
+            var list = await WebBinding.GetForgeSupportVersion();
+            if (list != null && list.Contains(version))
+            {
+                loaders.Add(Loaders.Forge);
+            }
+        }));
+        list.Add(Task.Run(async () =>
+        {
+            var list = await WebBinding.GetFabricSupportVersion();
+            if (list != null && list.Contains(version))
+            {
+                loaders.Add(Loaders.Fabric);
+            }
+        }));
+        list.Add(Task.Run(async () =>
+        {
+            var list = await WebBinding.GetQuiltSupportVersion();
+            if (list != null && list.Contains(version))
+            {
+                loaders.Add(Loaders.Quilt);
+            }
+        }));
+        list.Add(Task.Run(async () =>
+        {
+            var list = await WebBinding.GetNeoForgeSupportVersion();
+            if (list != null && list.Contains(version))
+            {
+                loaders.Add(Loaders.NeoForge);
+            }
+        }));
+        list.Add(Task.Run(async () =>
+        {
+            var list = await WebBinding.GetOptifineSupportVersion();
+            if (list != null && list.Contains(version))
+            {
+                loaders.Add(Loaders.OptiFine);
+            }
+        }));
+
+        await Task.WhenAll(list);
+
+        loaders.Sort();
+
+        return loaders;
+    }
 }

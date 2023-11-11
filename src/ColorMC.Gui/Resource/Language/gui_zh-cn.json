@@ -117,6 +117,8 @@
 	"SettingWindow.Tab1.Text7": "账户储存数据库路径",
 	"SettingWindow.Tab1.Text8": "导入现有的图形配置文件",
 	"SettingWindow.Tab1.Text9": "图形配置文件路径",
+	"SettingWindow.Tab1.Text10": "导入现有的映射配置文件",
+	"SettingWindow.Tab1.Text11": "配置文件路径",
 	"SettingWindow.Tab1.Info1": "是否重置所有配置",
 	"SettingWindow.Tab1.Info2": "已重置",
 	"SettingWindow.Tab1.Info3": "是否删除所有账户",

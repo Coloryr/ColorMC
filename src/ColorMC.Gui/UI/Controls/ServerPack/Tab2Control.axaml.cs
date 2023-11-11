@@ -14,6 +14,7 @@ public partial class Tab2Control : UserControl
         InitializeComponent();
 
         DataGrid1.CellEditEnded += DataGrid1_CellEditEnded;
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
     public void Opened()
@@ -30,24 +31,7 @@ public partial class Tab2Control : UserControl
     {
         if (DataContext is SettingModel model && model.NowView == 1)
         {
-            if (e.Delta.Y < 0)
-            {
-                model.NowView++;
-            }
-            else if (e.Delta.Y > 0)
-            {
-                model.NowView--;
-            }
+            model.WhellChange(e.Delta.Y);
         }
-    }
-
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-    }
-
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
     }
 }

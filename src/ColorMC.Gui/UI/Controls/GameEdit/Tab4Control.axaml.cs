@@ -17,6 +17,7 @@ public partial class Tab4Control : UserControl
 
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
@@ -27,14 +28,7 @@ public partial class Tab4Control : UserControl
     {
         if (DataContext is GameEditModel model && model.NowView == 2)
         {
-            if (e.Delta.Y < 0)
-            {
-                model.NowView++;
-            }
-            else if (e.Delta.Y > 0)
-            {
-                model.NowView--;
-            }
+            model.WhellChange(e.Delta.Y);
         }
     }
 
@@ -86,17 +80,5 @@ public partial class Tab4Control : UserControl
             var items = DataGrid1.SelectedItems;
             _ = new GameEditFlyout1(control, items, (DataContext as GameEditModel)!);
         });
-    }
-
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-        (DataContext as GameEditModel)?.SetBackHeadTab();
-    }
-
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        ScrollViewer1.PointerWheelChanged -= ScrollViewer1_PointerWheelChanged;
-        (DataContext as GameEditModel)?.RemoveBackHead();
     }
 }

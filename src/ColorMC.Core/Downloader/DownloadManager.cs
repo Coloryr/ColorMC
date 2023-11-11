@@ -56,8 +56,15 @@ public static class DownloadManager
 
         DownloadDir = dir + "download";
         Directory.CreateDirectory(DownloadDir);
+
+        LoadThread();
+    }
+
+    public static void LoadThread()
+    {
         Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info1"),
-            ConfigUtils.Config.Http.DownloadThread));
+    ConfigUtils.Config.Http.DownloadThread));
+        s_semaphore?.Dispose();
         s_semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
         s_threads.ForEach(a => a.Close());
         s_threads.Clear();

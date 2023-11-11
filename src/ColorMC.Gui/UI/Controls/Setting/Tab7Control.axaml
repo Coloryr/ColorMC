@@ -8,9 +8,9 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:SettingTab7Model"
+    x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer>
+    <ScrollViewer Name="ScrollViewer1">
         <Border
             Margin="5,3,5,5"
             Padding="{setting:Style BorderPadding}"
@@ -49,7 +49,7 @@
                                 Height="30"
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
-                                Command="{Binding Open1}"
+                                Command="{Binding OpenUrl1}"
                                 Content="{setting:Localize SettingWindow.Tab7.Text3}" />
                             <Button
                                 Grid.Row="0"
@@ -57,7 +57,7 @@
                                 Height="30"
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
-                                Command="{Binding Open5}"
+                                Command="{Binding OpenUrl5}"
                                 Content="{setting:Localize SettingWindow.Tab7.Text8}" />
                             <Button
                                 Grid.Row="1"
@@ -65,7 +65,7 @@
                                 Height="30"
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
-                                Command="{Binding Open4}"
+                                Command="{Binding OpenUrl4}"
                                 Content="{setting:Localize SettingWindow.Tab7.Text7}" />
                             <Button
                                 Grid.Row="1"
@@ -73,7 +73,7 @@
                                 Height="30"
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
-                                Command="{Binding Open3}"
+                                Command="{Binding OpenUrl3}"
                                 Content="{setting:Localize SettingWindow.Tab7.Text5}" />
                             <Button
                                 Grid.Row="2"
@@ -81,7 +81,7 @@
                                 Height="30"
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
-                                Command="{Binding Open2}"
+                                Command="{Binding OpenUrl2}"
                                 Content="{setting:Localize SettingWindow.Tab7.Text4}" />
                             <Button
                                 Grid.Row="2"
@@ -89,7 +89,7 @@
                                 Height="30"
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
-                                Command="{Binding Open6}"
+                                Command="{Binding OpenUrl6}"
                                 Content="{setting:Localize SettingWindow.Tab7.Text9}" />
                         </Grid>
                     </StackPanel>

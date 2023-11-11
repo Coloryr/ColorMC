@@ -48,9 +48,9 @@ public partial class DownloadModel : TopModel
         };
         _timer.Elapsed += Timer_Elapsed;
 
-        Model.AddHeadContent(_useName, 
+        Model.SetChoiseContent(_useName, 
             App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
-        Model.AddHeadCall(_useName, Stop, Pause);
+        Model.SetChoiseCall(_useName, Pause, Stop);
     }
 
     partial void OnIsPauseChanged(bool value)
@@ -58,14 +58,14 @@ public partial class DownloadModel : TopModel
         if (!value)
         {
             BaseBinding.DownloadResume();
-            Model.AddHeadContent(_useName, 
+            Model.SetChoiseContent(_useName, 
                 App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
             Model.Notify(App.Lang("DownloadWindow.Info3"));
         }
         else
         {
             BaseBinding.DownloadPause();
-            Model.AddHeadContent(_useName, 
+            Model.SetChoiseContent(_useName, 
                 App.Lang("DownloadWindow.Text4"), App.Lang("DownloadWindow.Text2"));
             Model.Notify(App.Lang("DownloadWindow.Info2"));
         }
@@ -152,7 +152,7 @@ public partial class DownloadModel : TopModel
         _timer.Dispose();
         Model.RemoveBack();
         Model.RemoveChoiseCall(_useName);
-        Model.RemoveHeadContent(_useName);
+        Model.RemoveChoiseContent(_useName);
         ItemList.Clear();
         _downloadList.Clear();
     }

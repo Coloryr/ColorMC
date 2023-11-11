@@ -71,8 +71,8 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     public AddModPackControlModel(BaseModel model) : base(model)
     {
         _useName = ToString() ?? "AddModPackControlModel";
-        Model.AddHeadContent(_useName, App.Lang("Button.Filter"));
-        Model.AddHeadCall(_useName, choise: () =>
+        Model.SetChoiseContent(_useName, App.Lang("Button.Filter"));
+        Model.SetChoiseCall(_useName, choise: () =>
         {
             DisplayFilter = !DisplayFilter;
         });
@@ -82,7 +82,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     {
         if (value)
         {
-            Model.AddHeadCall(back: () =>
+            Model.AddBackCall(back: () =>
             {
                 Display = false;
             });
@@ -425,7 +425,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     {
         _load = true;
         Model.RemoveChoiseCall(_useName);
-        Model.RemoveHeadContent(_useName);
+        Model.RemoveChoiseContent(_useName);
         FileList.Clear();
         foreach (var item in DisplayList)
         {

@@ -90,11 +90,21 @@ public partial class GameEditModel : MenuModel
         if (_gameLoad)
             return;
 
-        var loader = _loaderTypeList[value];
         LoaderVersionList.Clear();
         LoaderVersion = null;
-        _obj.Loader = loader;
-        _obj.LoaderVersion = null;
+
+        if (_loaderTypeList.Count != 0)
+        {
+            var loader = _loaderTypeList[value];
+            
+            _obj.Loader = loader;
+            _obj.LoaderVersion = null;
+        }
+        else
+        {
+            _obj.Loader = Loaders.Normal;
+            _obj.LoaderVersion = null;
+        }
         _obj.Save();
         await LoaderVersionLoad();
 
@@ -390,39 +400,14 @@ public partial class GameEditModel : MenuModel
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info4"));
-        var list = await WebBinding.GetForgeSupportVersion();
-        if (list != null && list.Contains(_obj.Version))
+
+        var loaders = await GameBinding.GetSupportLoader(GameVersion);
+        foreach (var item in loaders)
         {
-            _loaderTypeList.Add(Loaders.Forge);
-            LoaderTypeList.Add(Loaders.Forge.GetName());
+            _loaderTypeList.Add(item);
+            LoaderTypeList.Add(item.GetName());
         }
 
-        list = await WebBinding.GetNeoForgeSupportVersion();
-        if (list != null && list.Contains(_obj.Version))
-        {
-            _loaderTypeList.Add(Loaders.NeoForge);
-            LoaderTypeList.Add(Loaders.NeoForge.GetName());
-        }
-
-        list = await WebBinding.GetFabricSupportVersion();
-        if (list != null && list.Contains(_obj.Version))
-        {
-            _loaderTypeList.Add(Loaders.Fabric);
-            LoaderTypeList.Add(Loaders.Fabric.GetName());
-        }
-
-        list = await WebBinding.GetQuiltSupportVersion();
-        if (list != null && list.Contains(_obj.Version))
-        {
-            _loaderTypeList.Add(Loaders.Quilt);
-            LoaderTypeList.Add(Loaders.Quilt.GetName());
-        }
-        list = await WebBinding.GetOptifineSupportVersion();
-        if (list != null && list.Contains(_obj.Version))
-        {
-            _loaderTypeList.Add(Loaders.OptiFine);
-            LoaderTypeList.Add(Loaders.OptiFine.GetName());
-        }
         Model.ProgressClose();
 
         _gameLoad = false;
@@ -431,6 +416,11 @@ public partial class GameEditModel : MenuModel
     [RelayCommand]
     public async Task GameVersionReload()
     {
+        _gameLoad = true;
+
+        _loaderTypeList.Clear();
+        LoaderTypeList.Clear();
+        EnableLoader = false;
         Model.Progress(App.Lang("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
         Model.ProgressClose();
@@ -444,6 +434,8 @@ public partial class GameEditModel : MenuModel
         LoaderType = 0;
 
         GameVersionLoad();
+
+        _gameLoad = false;
     }
 
     [RelayCommand]
@@ -520,8 +512,13 @@ public partial class GameEditModel : MenuModel
 
     public async Task LangLoad()
     {
-        Model.Progress(App.Lang("GameEditWindow.Tab1.Info9"));
         LangList.Clear();
+        if (_obj.Version == null)
+        {
+            return;
+        }
+
+        Model.Progress(App.Lang("GameEditWindow.Tab1.Info9"));
         var list = await Task.Run(() =>
         {
             var version = VersionPath.GetVersion(_obj.Version);

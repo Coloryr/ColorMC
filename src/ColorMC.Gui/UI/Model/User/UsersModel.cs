@@ -7,6 +7,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -51,6 +52,36 @@ public partial class UsersControlModel : TopModel
     public UsersControlModel(BaseModel model) : base(model)
     {
         Load();
+    }
+
+    partial void OnPasswordChanging(string value)
+    {
+        if (value.EndsWith(Environment.NewLine))
+        {
+            Password = value.TrimEnd();
+
+            _ = Add();
+        }
+    }
+
+    partial void OnUserChanging(string value)
+    {
+        if (value.EndsWith(Environment.NewLine))
+        {
+            User = value.TrimEnd();
+
+            _ = Add();
+        }
+    }
+
+    partial void OnNameChanging(string value)
+    {
+        if (value.EndsWith(Environment.NewLine))
+        {
+            Name = value.TrimEnd();
+
+            _ = Add();
+        }
     }
 
     partial void OnTypeChanged(int value)
@@ -145,6 +176,12 @@ public partial class UsersControlModel : TopModel
         User = "";
         Password = "";
 
+        Model.AddBackCall(() =>
+        {
+            DialogHost.Close("UsersControl");
+            Model.RemoveBack();
+        });
+
         DialogHost.Show(this, "UsersControl");
     }
 
@@ -176,12 +213,14 @@ public partial class UsersControlModel : TopModel
             case 1:
                 _cancel = false;
                 ColorMCCore.LoginOAuthCode = LoginOAuthCode;
-                Model.Progress(App.Lang("UserWindow.Info1"));
                 _isOAuth = true;
+                Model.Progress(App.Lang("UserWindow.Info1"));
                 res = await UserBinding.AddUser(AuthType.OAuth, null);
-                Model.DClose();
+                Model.ProgressClose();
                 if (_cancel)
+                {
                     break;
+                }
                 if (!res.Item1)
                 {
                     Model.Show(res.Item2!);

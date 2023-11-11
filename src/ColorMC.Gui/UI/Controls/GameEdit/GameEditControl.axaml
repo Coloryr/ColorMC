@@ -73,7 +73,7 @@
                     <ListBox
                         Margin="0,2,0,0"
                         ItemsSource="{Binding TabItems}"
-                        SelectedIndex="{Binding NowView}">
+                        SelectedIndex="{Binding NowView1}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
