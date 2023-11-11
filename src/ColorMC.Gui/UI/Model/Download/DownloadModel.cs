@@ -6,11 +6,9 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Timers;
 using Timer = System.Timers.Timer;
 
@@ -48,7 +46,7 @@ public partial class DownloadModel : TopModel
         };
         _timer.Elapsed += Timer_Elapsed;
 
-        Model.SetChoiseContent(_useName, 
+        Model.SetChoiseContent(_useName,
             App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
         Model.SetChoiseCall(_useName, Pause, Stop);
     }
@@ -58,14 +56,14 @@ public partial class DownloadModel : TopModel
         if (!value)
         {
             BaseBinding.DownloadResume();
-            Model.SetChoiseContent(_useName, 
+            Model.SetChoiseContent(_useName,
                 App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
             Model.Notify(App.Lang("DownloadWindow.Info3"));
         }
         else
         {
             BaseBinding.DownloadPause();
-            Model.SetChoiseContent(_useName, 
+            Model.SetChoiseContent(_useName,
                 App.Lang("DownloadWindow.Text4"), App.Lang("DownloadWindow.Text2"));
             Model.Notify(App.Lang("DownloadWindow.Info2"));
         }

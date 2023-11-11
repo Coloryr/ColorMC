@@ -2,7 +2,6 @@
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;

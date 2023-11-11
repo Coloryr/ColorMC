@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.UI.Model.GameCloud;
-using ColorMC.Gui.UI.Model.GameEdit;
 
 namespace ColorMC.Gui.UI.Controls.GameCloud;
 

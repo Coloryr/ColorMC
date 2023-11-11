@@ -6,7 +6,6 @@ using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace ColorMC.Core.Net.Apis;
 

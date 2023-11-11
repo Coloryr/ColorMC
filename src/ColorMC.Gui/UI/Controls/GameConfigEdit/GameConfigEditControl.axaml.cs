@@ -66,7 +66,7 @@ public partial class GameConfigEditControl : UserControl, IUserControl
 
     public GameConfigEditControl(WorldObj world) : this()
     {
-        UseName = (ToString() ?? "GameConfigEditControl") 
+        UseName = (ToString() ?? "GameConfigEditControl")
             + ":" + world.Game.UUID + ":" + world.LevelName;
 
         _world = world;

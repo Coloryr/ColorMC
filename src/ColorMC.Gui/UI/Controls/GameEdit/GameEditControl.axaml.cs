@@ -195,7 +195,7 @@ public partial class GameEditControl : UserControl, IUserControl
                     break;
             }
         }
-        else  if (e.PropertyName == "NowView")
+        else if (e.PropertyName == "NowView")
         {
             var model = (DataContext as GameEditModel)!;
             switch (_now)

@@ -2,9 +2,7 @@
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Error;
 

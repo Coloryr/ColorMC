@@ -3,7 +3,6 @@ using Avalonia.Controls.Primitives;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

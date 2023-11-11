@@ -26,7 +26,7 @@ public class GameEditFlyout8
 
         _ = new FlyoutsControl(new (string, bool, Action)[]
         {
-            (App.Lang("GameEditWindow.Flyouts1.Text1"), 
+            (App.Lang("GameEditWindow.Flyouts1.Text1"),
                 !BaseBinding.IsGameRun(model.World.Game), Button1_Click),
             (App.Lang("Button.Delete"), !BaseBinding.IsGameRun(model.World.Game), Button2_Click)
         }, con);
