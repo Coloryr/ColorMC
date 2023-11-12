@@ -1,4 +1,5 @@
 ﻿using Avalonia.Input;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -176,13 +177,7 @@ public partial class UsersControlModel : TopModel
         User = "";
         Password = "";
 
-        Model.AddBackCall(() =>
-        {
-            DialogHost.Close("UsersControl");
-            Model.RemoveBack();
-        });
-
-        DialogHost.Show(this, "UsersControl");
+        Show();
     }
 
     [RelayCommand]
@@ -339,7 +334,7 @@ public partial class UsersControlModel : TopModel
         if (ok)
         {
             UserBinding.UserLastUser();
-            DialogHost.Close("UsersControl");
+            CloseShow();
         }
         Load();
         IsAdding = false;
@@ -348,7 +343,7 @@ public partial class UsersControlModel : TopModel
     [RelayCommand]
     public void Cancel()
     {
-        DialogHost.Close("UsersControl");
+        CloseShow();
     }
 
     public void Remove(UserDisplayObj item)
@@ -447,7 +442,7 @@ public partial class UsersControlModel : TopModel
         Name = obj.Text1;
         User = obj.Text2;
 
-        DialogHost.Show(this, "UsersControl");
+        Show();
         IsAdding = false;
     }
 
@@ -506,5 +501,24 @@ public partial class UsersControlModel : TopModel
         }
 
         UserBinding.EditUser(obj.Name, obj.UUID, res.Text1, res.Text2);
+    }
+
+    private void Show()
+    {
+        Model.AddBackCall(() =>
+        {
+            DialogHost.Close("UsersControl");
+            Model.RemoveBack();
+        });
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            DialogHost.Show(this, "UsersControl");
+        });
+    }
+
+    private void CloseShow()
+    {
+        Model.BackClick();
     }
 }

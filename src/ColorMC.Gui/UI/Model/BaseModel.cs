@@ -3,6 +3,8 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -143,7 +145,7 @@ public partial class BaseModel : ObservableObject
     private void NoWork()
     {
         _isWork = false;
-        if (!_listBack.IsEmpty)
+        if (SystemInfo.Os != OsType.Android && !_listBack.IsEmpty)
         {
             HeadBackDisplay = true;
         }
@@ -191,7 +193,7 @@ public partial class BaseModel : ObservableObject
     public void AddBackCall(Action back)
     {
         _listBack.Push(back);
-        if (!_listBack.IsEmpty)
+        if (SystemInfo.Os != OsType.Android && !_listBack.IsEmpty)
         {
             HeadBackDisplay = true;
         }
