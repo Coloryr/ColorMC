@@ -21,7 +21,7 @@
             CornerRadius="{setting:Style ButtonCornerRadius}"
             DockPanel.Dock="Top">
             <StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <WrapPanel Orientation="Horizontal">
                     <TextBox
                         MinWidth="200"
                         Margin="0,0,5,5"
@@ -34,6 +34,12 @@
                         Margin="0,0,5,0"
                         Command="{Binding TestKey1}"
                         Content="{setting:Localize NetFrpWindow.Tab1.Text2}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding OpenUrl1}"
+                        Content="{setting:Localize AddWindow.Control.Text3}" />
                     <Label VerticalAlignment="Center" Content="{setting:Localize NetFrpWindow.Tab1.Text3}" />
                     <Label
                         Margin="0,0,5,0"
@@ -41,7 +47,7 @@
                         Content="{Binding User1ID}" />
                     <Label VerticalAlignment="Center" Content="{setting:Localize NetFrpWindow.Tab1.Text4}" />
                     <Label VerticalAlignment="Center" Content="{Binding User1Name}" />
-                </StackPanel>
+                </WrapPanel>
             </StackPanel>
         </Border>
         <Border

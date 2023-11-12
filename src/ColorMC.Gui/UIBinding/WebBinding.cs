@@ -762,6 +762,7 @@ public static class WebBinding
             WebType.Github => "https://www.github.com/Coloryr/ColorMC",
             WebType.Sponsor => "https://coloryr.github.io/sponsor.html",
             WebType.Minecraft => "https://www.minecraft.net/",
+            WebType.NetFrp1 => "https://www.natfrp.com/user/",
             _ => "https://colormc.coloryr.com"
         });
     }

@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Net.Apis;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -73,6 +74,12 @@ public partial class NetFrpModel : MenuModel
         {
             Remotes.Add(new(item));
         }
+    }
+
+    [RelayCommand]
+    public void OpenUrl1()
+    {
+        WebBinding.OpenWeb(WebType.NetFrp1);   
     }
 
     public async void Load()

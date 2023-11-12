@@ -79,7 +79,7 @@
                         Text="{Binding JavaLocal}"
                         Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
                 </DockPanel>
-                <WrapPanel HorizontalAlignment="Right">
+                <WrapPanel HorizontalAlignment="Right" IsVisible="{Binding !Phone}">
                     <Button
                         Width="100"
                         Height="25"

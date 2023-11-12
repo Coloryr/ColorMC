@@ -78,5 +78,5 @@ public enum MoveType
 
 public enum WebType
 {
-    Web, Minecraft, Guide, Sponsor, Mcmod, Github
+    Web, Minecraft, Guide, Sponsor, Mcmod, Github, NetFrp1
 }
