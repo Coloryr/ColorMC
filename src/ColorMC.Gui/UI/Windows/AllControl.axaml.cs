@@ -38,8 +38,6 @@ public partial class AllControl : UserControl, IBaseWindow
             ResizeButton.IsVisible = true;
         }
 
-        Model.AddBackCall(Back);
-
         PointerPressed += AllControl_PointerPressed;
         ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
 
@@ -97,13 +95,12 @@ public partial class AllControl : UserControl, IBaseWindow
             App.CrossFade300.Start(null, con2);
 
             con.Opened();
+            Model.AddBackCall(Back);
         }
 
         _nowControl = con;
         SetTitle(_nowControl.Title);
         SetIcon(_nowControl.GetIcon());
-
-        ButtonUp();
     }
 
     public void Active(IUserControl con)
@@ -118,8 +115,6 @@ public partial class AllControl : UserControl, IBaseWindow
         _nowControl = con;
         SetTitle(_nowControl.Title);
         SetIcon(_nowControl.GetIcon());
-
-        ButtonUp();
     }
 
     public async void Close(IUserControl con)
@@ -152,14 +147,13 @@ public partial class AllControl : UserControl, IBaseWindow
             }
             Controls.Content = con1;
         }
+        Model.RemoveBack();
 
         SetTitle(_nowControl.Title);
         SetIcon(_nowControl.GetIcon());
 
         ((con as UserControl)?.DataContext as TopModel)?.TopClose();
         con.Closed();
-
-        ButtonUp();
     }
 
     private void Back()
@@ -172,22 +166,6 @@ public partial class AllControl : UserControl, IBaseWindow
         else
         {
             Close(_nowControl);
-        }
-    }
-
-    private void ButtonUp()
-    {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return;
-        }
-        if (controls.Count > 0 || _nowControl is not (MainControl or CustomControl))
-        {
-            Model.HeadBackDisplay = true;
-        }
-        else
-        {
-            Model.HeadBackDisplay = false;
         }
     }
 

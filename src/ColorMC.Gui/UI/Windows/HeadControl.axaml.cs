@@ -124,6 +124,7 @@ public partial class HeadControl : UserControl
             _buttonMax.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
             _buttonClose.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
             _buttonBack.Bind(IsVisibleProperty, model.HeadBackObservale.ToBinding());
+            _buttonBack.Bind(IsEnabledProperty, model.HeadBackEnableObservale.ToBinding());
             _buttonChoise.Bind(IsVisibleProperty, model.HeadChoiseObservale.ToBinding());
             _buttonChoise.Bind(ContentProperty, model.HeadChoiseContentObservale.ToBinding());
             _buttonClose.Bind(IsEnabledProperty, model.HeadCloseObservale.ToBinding());
