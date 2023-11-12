@@ -70,7 +70,8 @@
                     BorderThickness="0"
                     Command="{Binding GoTab}"
                     CommandParameter="Tab3"
-                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                    IsVisible="{Binding !IsPhone}">
                     <StackPanel>
                         <Svg Path="/Resource/Icon/AddMenu/item3.svg" />
                         <Label
