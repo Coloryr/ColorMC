@@ -1,5 +1,7 @@
 using AvaloniaEdit.Utils;
 using ColorMC.Core;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -35,18 +37,19 @@ public partial class AddGameModel : TopModel
     [ObservableProperty]
     private bool _main = true;
 
+    public bool IsPhone { get; }
+
     /// <summary>
     /// 是否在加载中
     /// </summary>
     private bool _load = false;
 
-    private readonly string _useName;
-
     public AddGameModel(BaseModel model) : base(model)
     {
-        _useName = ToString() ?? "AddGameModel";
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
+
+        IsPhone = SystemInfo.Os == OsType.Android;
 
         GameVersionUpdate();
 
@@ -114,7 +117,6 @@ public partial class AddGameModel : TopModel
 
     protected override void Close()
     {
-        Model.RemoveBack();
         ColorMCCore.GameOverwirte = null;
         ColorMCCore.GameRequest = null;
         _load = true;

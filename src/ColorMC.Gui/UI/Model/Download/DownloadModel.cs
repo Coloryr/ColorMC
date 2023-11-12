@@ -49,6 +49,7 @@ public partial class DownloadModel : TopModel
         Model.SetChoiseContent(_useName,
             App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
         Model.SetChoiseCall(_useName, Pause, Stop);
+        Model.HeadBackEnable = false;
     }
 
     partial void OnIsPauseChanged(bool value)
@@ -76,12 +77,19 @@ public partial class DownloadModel : TopModel
 
     private async void Stop()
     {
+        Model.HeadChoise1Display = false;
+        Model.HeadChoiseDisplay = false;
         var res = await Model.ShowWait(App.Lang("DownloadWindow.Info1"));
         if (res)
         {
             ItemList.Clear();
             _downloadList.Clear();
             BaseBinding.DownloadStop();
+        }
+        else
+        {
+            Model.HeadChoise1Display = true;
+            Model.HeadChoiseDisplay = true;
         }
     }
 
@@ -148,7 +156,7 @@ public partial class DownloadModel : TopModel
     protected override void Close()
     {
         _timer.Dispose();
-        Model.RemoveBack();
+        Model.HeadBackEnable = true;
         Model.RemoveChoiseCall(_useName);
         Model.RemoveChoiseContent(_useName);
         ItemList.Clear();

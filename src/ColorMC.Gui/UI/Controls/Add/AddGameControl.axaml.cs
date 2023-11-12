@@ -29,15 +29,11 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public string UseName { get; }
 
-    public bool IsPhone { get; }
-
     public AddGameControl()
     {
         InitializeComponent();
 
         UseName = ToString() ?? "AddGameControl";
-
-        IsPhone = SystemInfo.Os == OsType.Android;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);

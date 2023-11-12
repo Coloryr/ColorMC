@@ -245,9 +245,8 @@ public partial class AddControlModel : GameModel, IAddWindow
     public AddControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
         _useName = ToString() ?? "AddControlModel";
-        Model.HeadChoiseDisplay = true;
         Model.SetChoiseContent(_useName, App.Lang("Button.Filter"));
-        Model.SetChoiseCall(_useName, choise: () =>
+        Model.SetChoiseCall(_useName, () =>
         {
             DisplayFilter = !DisplayFilter;
         });
@@ -1304,7 +1303,6 @@ public partial class AddControlModel : GameModel, IAddWindow
         _load = true;
         Model.RemoveChoiseCall(_useName);
         Model.RemoveChoiseContent(_useName);
-        Model.RemoveBack();
         ModList.Clear();
         OptifineList.Clear();
         DownloadOptifineList.Clear();

@@ -63,6 +63,7 @@ public partial class BaseModel : ObservableObject
 
     public SelfPublisher<bool> HeadDisplayObservale = new();
     public SelfPublisher<bool> HeadBackObservale = new();
+    public SelfPublisher<bool> HeadBackEnableObservale = new();
     public SelfPublisher<bool> HeadChoiseObservale = new();
     public SelfPublisher<bool> HeadChoise1Observale = new();
     public SelfPublisher<bool> HeadCloseObservale = new();
@@ -85,6 +86,13 @@ public partial class BaseModel : ObservableObject
             {
                 HeadCloseObservale.Notify(value);
             }
+        }
+    }
+    public bool HeadBackEnable
+    {
+        set
+        {
+            HeadBackEnableObservale.Notify(value);
         }
     }
     public bool HeadBackDisplay
@@ -163,7 +171,15 @@ public partial class BaseModel : ObservableObject
     {
         _nowChoiseUse = use;
         _choiseClick = choise;
+        if (choise != null)
+        {
+            HeadChoiseObservale.Notify(true);
+        }
         _choise1Click = choise1;
+        if (choise1 != null)
+        {
+            HeadChoise1Observale.Notify(true);
+        }
     }
 
     public void RemoveChoiseContent(string now)
