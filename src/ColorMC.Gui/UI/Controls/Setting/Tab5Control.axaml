@@ -34,32 +34,6 @@
                         Content="{setting:Localize SettingWindow.Tab5.Text1}"
                         FontSize="{setting:Style FontTitle}" />
                 </StackPanel>
-                <DockPanel Margin="0,5,0,5" IsEnabled="{Binding !Phone}">
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Command="{Binding AddJava}"
-                        Content="{setting:Localize Button.Add}"
-                        DockPanel.Dock="Right" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding SelectJava}"
-                        Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right" />
-                    <TextBox
-                        Width="120"
-                        Margin="0,0,5,0"
-                        Classes="input1"
-                        Text="{Binding JavaName}"
-                        Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
-                    <TextBox
-                        Margin="0,0,5,0"
-                        Classes="input1"
-                        Text="{Binding JavaLocal}"
-                        Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
-                </DockPanel>
                 <WrapPanel>
                     <Button
                         Width="100"
@@ -92,6 +66,31 @@
                         Margin="0,0,5,0"
                         Command="{Binding AddJavaZip}"
                         Content="{setting:Localize SettingWindow.Tab5.Text8}" />
+                </WrapPanel>
+                <DockPanel Margin="0,5,0,5" IsVisible="{Binding !Phone}">
+                    <TextBox
+                        Width="130"
+                        Margin="0,0,5,0"
+                        Classes="input1"
+                        Text="{Binding JavaName}"
+                        Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
+                    <TextBox
+                        Classes="input1"
+                        Text="{Binding JavaLocal}"
+                        Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
+                </DockPanel>
+                <WrapPanel HorizontalAlignment="Right">
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding SelectJava}"
+                        Content="{setting:Localize Button.Select}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Command="{Binding AddJava}"
+                        Content="{setting:Localize Button.Add}" />
                 </WrapPanel>
             </StackPanel>
         </Border>
