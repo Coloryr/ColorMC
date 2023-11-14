@@ -1,57 +1,56 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <BaseOutputPath></BaseOutputPath>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <BaseOutputPath></BaseOutputPath>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DebugType>portable</DebugType>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DebugType>portable</DebugType>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
+    <ItemGroup>
+        <None Remove="Resources\Language\core_zh-cn.json" />
+        <None Remove="Resources\Language\en-us" />
+        <None Remove="Resources\Language\zh-cn" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Resources\Language\core_zh-cn.json" />
-    <None Remove="Resources\Language\en-us" />
-    <None Remove="Resources\Language\zh-cn" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\Language\core_zh-cn.json" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Language\core_zh-cn.json" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="..\.editorconfig" Link=".editorconfig" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Heijden.Dns.Portable" Version="2.0.19" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
+        <PackageReference Include="Jint" Version="3.0.0-beta-2052" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="SharpZipLib" Version="1.4.2" />
+        <PackageReference Include="Tomlyn" Version="0.16.2" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Heijden.Dns.Portable" Version="2.0.19" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
-    <PackageReference Include="Jint" Version="3.0.0-beta-2052" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="SharpZipLib" Version="1.4.2" />
-    <PackageReference Include="Tomlyn" Version="0.16.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Resource1.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resource1.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Resource1.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resource1.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resource1.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
+    <ItemGroup>
+        <EmbeddedResource Update="Resource1.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
 </Project>

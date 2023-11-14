@@ -1,32 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <TrimMode>link</TrimMode>
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Platforms>AnyCPU</Platforms>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
-	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<TrimMode>link</TrimMode>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<Platforms>AnyCPU</Platforms>
+		<ApplicationIcon>icon.ico</ApplicationIcon>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	</PropertyGroup>
 
-  <PropertyGroup>
-	<ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+	<PropertyGroup>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
 
 	<ItemGroup>
-    <EmbeddedResource Include="Mp3\sfd.temp" />
-    <EmbeddedResource Include="Resources\MiSans-Normal.ttf" />
-  </ItemGroup>
+		<EmbeddedResource Include="Mp3\sfd.temp" />
+		<EmbeddedResource Include="Resources\MiSans-Normal.ttf" />
+	</ItemGroup>
 	
-  <ItemGroup>
-    <None Remove=".gitignore" />
-    <None Remove="Mp3\sfd.temp" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="Mp3\sfd.temp" />
+	</ItemGroup>
 	
-  <ItemGroup>
-    <ProjectReference Include="..\ColorMC.Gui\ColorMC.Gui.csproj" />
-    <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ColorMC.Gui\ColorMC.Gui.csproj" />
+		<ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
+	</ItemGroup>
 </Project>
