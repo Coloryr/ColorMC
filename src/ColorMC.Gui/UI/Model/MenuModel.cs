@@ -51,7 +51,7 @@ public abstract partial class MenuModel : TopModel
         _lastWheel += dir;
         if (_lastWheel < -2)
         {
-            if (NowView < TabItems.Count)
+            if (NowView < TabItems.Count - 1)
             {
                 NowView++;
             }
