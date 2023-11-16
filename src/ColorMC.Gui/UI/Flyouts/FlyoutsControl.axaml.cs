@@ -40,7 +40,7 @@ public partial class FlyoutsControl : UserControl
             };
             StackPanel1.Children.Add(button);
         }
-        flyout.ShowAt(con!, SystemInfo.Os != OsType.Android);
+        flyout.ShowAt(con!, true);
     }
 
     public FlyoutsControl()
