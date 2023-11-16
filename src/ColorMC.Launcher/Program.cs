@@ -4,6 +4,8 @@ using ColorMC.Gui;
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 
@@ -78,6 +80,17 @@ public static class Program
         }
 
         Console.WriteLine($"CheckDir:{LoadDir}");
+        //Test AOT
+        try
+        {
+            var assemblyName = new AssemblyName("AotTestClass");
+            var assBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+        }
+        catch
+        {
+            Aot = true;
+        }
+
         try
         {
             Load();
@@ -93,12 +106,8 @@ public static class Program
 
     public static AppBuilder BuildAvaloniaApp()
     {
-#if DEBUG
-        return GuiLoad.BuildAvaloniaApp();
-#else
         Load();
         return BuildApp();
-#endif
     }
 
     private static bool NotHaveDll()
@@ -115,7 +124,12 @@ public static class Program
         GuiLoad.Load();
         return;
 #endif
-        if (NotHaveDll())
+        if (Aot)
+        {
+            GuiLoad.Load();
+            return;
+        }
+        else if (NotHaveDll())
         {
             try
             {

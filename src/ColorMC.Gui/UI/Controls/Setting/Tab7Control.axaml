@@ -38,6 +38,8 @@
                         <StackPanel Orientation="Horizontal">
                             <Label Content="{setting:Localize SettingWindow.Tab7.Text6}" FontSize="20" />
                             <Label Content="{Binding Version}" FontSize="20" />
+                            <Label Content="{setting:Localize SettingWindow.Tab7.Text10}" FontSize="20" />
+                            <Label Content="{Binding RunType}" FontSize="20" />
                         </StackPanel>
                     </StackPanel>
 

@@ -10,6 +10,7 @@ public partial class SettingModel : MenuModel
 {
     public Bitmap Bitmap => App.GameIcon;
     public string Version => ColorMCCore.Version;
+    public string RunType => App.Lang(ColorMCGui.IsAot ? "SettingWindow.Tab7.Info1" : "SettingWindow.Tab7.Info2");
 
     [RelayCommand]
     public void OpenUrl1()
