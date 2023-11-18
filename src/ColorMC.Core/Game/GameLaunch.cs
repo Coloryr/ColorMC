@@ -459,7 +459,7 @@ public static class Launch
         {
             jvmHead.Add($"-Dlibdir={LibrariesPath.BaseDir}");
             jvmHead.Add($"-Dgamecore={LibrariesPath.GetGameFile(obj.Version)}");
-            jvmHead.Add($"-Doptifine={Path.GetFullPath(LibrariesPath.GetOptionLib(obj))}");
+            jvmHead.Add($"-Doptifine={Path.GetFullPath(LibrariesPath.GetOptiFineLib(obj))}");
             if (v2)
             {
                 jvmHead.Add("--add-opens");
@@ -762,6 +762,12 @@ public static class Launch
         return list3;
     }
 
+    /// <summary>
+    /// 创建Classpath
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="v2">是否为v2版本</param>
+    /// <returns>结果</returns>
     private static async Task<string> MakeClassPath(GameSettingObj obj, bool v2)
     {
         var libraries = await GetLibs(obj, v2);
@@ -850,6 +856,13 @@ public static class Launch
         }
     }
 
+    /// <summary>
+    /// 创建主类
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="version">游戏数据</param>
+    /// <param name="v2">是否为v2版本</param>
+    /// <returns>主类</returns>
     private static string MakeMainClass(GameSettingObj obj, GameArgObj version, bool v2)
     {
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))

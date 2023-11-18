@@ -31,7 +31,9 @@ public class ModComparer : IComparer<ModObj>
     public int Compare(ModObj? x, ModObj? y)
     {
         if (x == null || y == null)
-            throw new Exception("ModObj is null");
+        {
+            return 0;
+        }
 
         var b3 = string.IsNullOrWhiteSpace(x.name);
         var b4 = string.IsNullOrWhiteSpace(y.name);

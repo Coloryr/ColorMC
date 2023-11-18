@@ -4,6 +4,9 @@ using System.Text;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 局域网游戏
+/// </summary>
 public class LanClient
 {
     public Action<string, string, string>? FindLan;
@@ -21,39 +24,40 @@ public class LanClient
 
         _isRun = true;
 
-        new Thread(Run).Start();
-    }
-
-    private async void Run()
-    {
-        while (_isRun)
+        new Thread(async () => 
         {
-            try
+            while (_isRun)
             {
-                var data = await _socket.ReceiveAsync(_cancel.Token);
-                if (!_isRun)
+                try
                 {
-                    return;
+                    var data = await _socket.ReceiveAsync(_cancel.Token);
+                    if (!_isRun)
+                    {
+                        return;
+                    }
+
+                    string temp = Encoding.UTF8.GetString(data.Buffer);
+                    var point = data.RemoteEndPoint;
+
+                    string motd = GetMotd(temp);
+                    string? ad = GetAd(temp);
+
+                    if (ad != null)
+                    {
+                        FindLan?.Invoke(motd, point.ToString(), ad);
+                    }
                 }
-
-                string temp = Encoding.UTF8.GetString(data.Buffer);
-                var point = data.RemoteEndPoint;
-
-                string motd = GetMotd(temp);
-                string? ad = GetAd(temp);
-
-                if (ad != null)
+                catch
                 {
-                    FindLan?.Invoke(motd, point.ToString(), ad);
+
                 }
             }
-            catch
-            {
-
-            }
-        }
+        }).Start();
     }
 
+    /// <summary>
+    /// 停止获取局域网数据
+    /// </summary>
     public void Stop()
     {
         _isRun = false;
@@ -64,6 +68,11 @@ public class LanClient
         _socket.Dispose();
     }
 
+    /// <summary>
+    /// 获取Motd信息
+    /// </summary>
+    /// <param name="input">输入字符串</param>
+    /// <returns>Motd信息</returns>
     public static string GetMotd(string input)
     {
         int i = input.IndexOf("[MOTD]");
@@ -79,6 +88,11 @@ public class LanClient
         }
     }
 
+    /// <summary>
+    /// 获取地址信息
+    /// </summary>
+    /// <param name="input">输入字符串</param>
+    /// <returns>地址信息</returns>
     public static string? GetAd(string input)
     {
         int i = input.IndexOf("[/MOTD]");

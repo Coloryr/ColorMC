@@ -20,6 +20,10 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class DownloadItemHelper
 {
+    /// <summary>
+    /// 创建Frp下载项目
+    /// </summary>
+    /// <returns></returns>
     public static async Task<DownloadItemObj?> BuildSakuraFrpItem()
     {
         var data = await SakuraFrpAPI.GetDownload();
@@ -863,6 +867,12 @@ public static class DownloadItemHelper
         return BuildOptifine(obj.Version, obj.LoaderVersion);
     }
 
+    /// <summary>
+    /// 创建optifine下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">optifine版本</param>
+    /// <returns></returns>
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildOptifine(string mc, string? version = null)
     {
         var list = await OptifineAPI.GetOptifineVersion();
@@ -885,7 +895,7 @@ public static class DownloadItemHelper
                     new()
                     {
                         Name = item.FileName,
-                        Local = LibrariesPath.GetOptionLib(mc, version),
+                        Local = LibrariesPath.GetOptiFineLib(mc, version),
                         Overwrite = true,
                         Url = url
                     }

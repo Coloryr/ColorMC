@@ -13,7 +13,7 @@ public static class JvmPath
 {
     public const string Unknow = "unknow";
     public const string Name1 = "java";
-    public static Dictionary<string, JavaInfo> Jvms { get; } = new();
+    public static Dictionary<string, JavaInfo> Jvms { get; } = [];
 
     public static string BaseDir { get; private set; }
 
@@ -109,10 +109,7 @@ public static class JvmPath
             Url = url
         };
 
-        var res = await DownloadManager.Start(new List<DownloadItemObj>()
-        {
-            item
-        });
+        var res = await DownloadManager.Start([item]);
 
         if (res == false)
         {
@@ -249,7 +246,7 @@ public static class JvmPath
         if (info != null)
         {
             Jvms.Add(name, info);
-            ConfigUtils.Config.JavaList.Add(new JvmConfigObj
+            ConfigUtils.Config.JavaList.Add(new()
             {
                 Name = name,
                 Local = local

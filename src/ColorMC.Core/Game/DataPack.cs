@@ -8,8 +8,19 @@ using System.Text;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 数据包处理
+/// </summary>
 public static class DataPack
 {
+    /// <summary>
+    /// 检查数据包
+    /// </summary>
+    /// <param name="path">路径</param>
+    /// <param name="ens">已启用的数据包</param>
+    /// <param name="dis">已禁用的数据包</param>
+    /// <param name="data">数据包内容</param>
+    /// <returns></returns>
     private static DataPackObj? CheckPack(string path, NbtList? ens, NbtList? dis, JObject data)
     {
         if (data.TryGetValue("pack", out var obj) && obj is JObject obj1)
@@ -52,6 +63,11 @@ public static class DataPack
         return null;
     }
 
+    /// <summary>
+    /// 获取数据包列表
+    /// </summary>
+    /// <param name="world">世界存储</param>
+    /// <returns>列表</returns>
     public static List<DataPackObj> GetDataPacks(this WorldObj world)
     {
         var list = new List<DataPackObj>();
@@ -126,6 +142,12 @@ public static class DataPack
         return list;
     }
 
+    /// <summary>
+    /// 禁用启用数据包
+    /// </summary>
+    /// <param name="list">数据包列表</param>
+    /// <param name="world">世界储存</param>
+    /// <returns></returns>
     public static bool DisE(IEnumerable<DataPackObj> list, WorldObj world)
     {
         var nbt = (world.Nbt.TryGet("Data") as NbtCompound)?.TryGet("DataPacks") as NbtCompound;
@@ -194,6 +216,12 @@ public static class DataPack
         return true;
     }
 
+    /// <summary>
+    /// 删除数据包
+    /// </summary>
+    /// <param name="list">数据包列表</param>
+    /// <param name="world">世界存储</param>
+    /// <returns>是否删除</returns>
     public static async Task<bool> Delete(List<DataPackObj> list, WorldObj world)
     {
         var nbt = (world.Nbt.TryGet("Data") as NbtCompound)?.TryGet("DataPacks") as NbtCompound;
