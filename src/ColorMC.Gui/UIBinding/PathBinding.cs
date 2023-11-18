@@ -264,7 +264,7 @@ public static class PathBinding
                         PathHelper.Delete(name);
                     }
 
-                    File.WriteAllBytes(name, Utils.PathUtils.GetFile("ColorMC.Gui.Resource.UI.UI.axaml"));
+                    File.WriteAllBytes(name, PathUtils.GetFile("ColorMC.Gui.Resource.UI.UI.axaml"));
                     return true;
                 }
                 catch (Exception e)
@@ -350,16 +350,17 @@ public static class PathBinding
         });
     }
 
-    private static readonly string[] EXE = new string[] { "*.exe" };
-    private static readonly string[] ZIP = new string[] { "*.zip", "*.tar.xz", "*.tar.gz" };
-    private static readonly string[] JSON = new string[] { "*.json" };
-    private static readonly string[] MODPACK = new string[] { "*.zip", "*.mrpack" };
-    private static readonly string[] PICFILE = new string[] { "*.png", "*.jpg", "*.bmp" };
-    private static readonly string[] UIFILE = new string[] { "*.axaml" };
-    private static readonly string[] AUDIO = new string[] { "*.mp3", "*.wav" };
-    private static readonly string[] MODEL = new string[] { "*.model3.json" };
-    private static readonly string[] HEADFILE = new string[] { "*.png" };
-    private static readonly string[] LIVE2DCORE = new string[] { "*.zip" };
+    private static readonly string[] EXE = ["*.exe"];
+    private static readonly string[] ZIP = ["*.zip", "*.tar.xz", "*.tar.gz"];
+    private static readonly string[] JSON = ["*.json"];
+    private static readonly string[] MODPACK = ["*.zip", "*.mrpack"];
+    private static readonly string[] PICFILE = ["*.png", "*.jpg", "*.bmp"];
+    private static readonly string[] UIFILE = ["*.axaml"];
+    private static readonly string[] AUDIO = ["*.mp3", "*.wav"];
+    private static readonly string[] MODEL = ["*.model3.json"];
+    private static readonly string[] HEADFILE = ["*.png"];
+    private static readonly string[] ZIPFILE = ["*.zip"];
+    private static readonly string[] JARFILE = ["*.jar"];
 
     /// <summary>
     /// 打开文件
@@ -511,7 +512,7 @@ public static class PathBinding
             case FileType.Live2DCore:
                 res = await SelectFile(top,
                     App.Lang("SettingWindow.Tab2.Info9"),
-                    LIVE2DCORE,
+                    ZIPFILE,
                     App.Lang("SettingWindow.Tab2.Info10"));
                 if (res?.Any() == true)
                 {
@@ -536,7 +537,7 @@ public static class PathBinding
             case FileType.Schematic:
                 var res = await SelectFile(top,
                       App.Lang("GameEditWindow.Tab12.Info1"),
-                      new string[] { "*" + Schematic.Name1, "*" + Schematic.Name2 },
+                      ["*" + Schematic.Name1, "*" + Schematic.Name2],
                       App.Lang("GameEditWindow.Tab12.Info2"), true);
                 if (res?.Any() == true)
                 {
@@ -546,7 +547,7 @@ public static class PathBinding
             case FileType.Shaderpack:
                 res = await SelectFile(top,
                     App.Lang("GameEditWindow.Tab11.Info1"),
-                    new string[] { "*.zip" },
+                    ZIPFILE,
                     App.Lang("GameEditWindow.Tab11.Info2"), true);
                 if (res?.Any() == true)
                 {
@@ -556,7 +557,7 @@ public static class PathBinding
             case FileType.Mod:
                 res = await SelectFile(top,
                     App.Lang("GameEditWindow.Tab4.Info7"),
-                    new string[] { "*.jar" },
+                    JARFILE,
                     App.Lang("GameEditWindow.Tab4.Info8"), true);
                 if (res?.Any() == true)
                 {
@@ -566,7 +567,7 @@ public static class PathBinding
             case FileType.World:
                 res = await SelectFile(top,
                     App.Lang("GameEditWindow.Tab5.Info2"),
-                    new string[] { "*.zip" },
+                    ZIPFILE,
                     App.Lang("GameEditWindow.Tab5.Info6"));
                 if (res?.Any() == true)
                 {
@@ -576,7 +577,7 @@ public static class PathBinding
             case FileType.Resourcepack:
                 res = await SelectFile(top,
                     App.Lang("GameEditWindow.Tab8.Info2"),
-                    new string[] { "*.zip" },
+                    ZIPFILE,
                     App.Lang("GameEditWindow.Tab8.Info5"), true);
                 if (res?.Any() == true)
                 {
@@ -646,9 +647,9 @@ public static class PathBinding
                 minecraft = new()
                 {
                     version = model.Obj.Version,
-                    modLoaders = new()
+                    modLoaders = []
                 },
-                files = new()
+                files = []
             };
 
             if (model.Obj.Loader != Loaders.Normal)
@@ -761,7 +762,7 @@ public static class PathBinding
         }
         else if (model.Type == PackType.Modrinth)
         {
-            var file = await PathBinding.SaveFile(top,
+            var file = await SaveFile(top,
                App.Lang("GameEditWindow.Tab6.Info1"),
                ".zip", $"{model.Name}-{model.Version}.mrpack");
             if (file == null)
@@ -777,8 +778,8 @@ public static class PathBinding
                 name = model.Name,
                 versionId = model.Version,
                 summary = model.Summary,
-                files = new(),
-                dependencies = new()
+                files = [],
+                dependencies = []
             };
 
             obj.dependencies.Add("minecraft", model.Obj.Version);
@@ -808,10 +809,7 @@ public static class PathBinding
                             sha1 = item.Sha1,
                             sha512 = item.Sha512
                         },
-                        downloads = new()
-                        {
-                            item.Url
-                        },
+                        downloads = [ item.Url ],
                         fileSize = item.FileSize
                     });
                 }
@@ -827,10 +825,7 @@ public static class PathBinding
                         sha1 = item.Sha1,
                         sha512 = item.Sha512
                     },
-                    downloads = new()
-                    {
-                        item.Url
-                    },
+                    downloads = [item.Url],
                     fileSize = item.FileSize
                 });
             }

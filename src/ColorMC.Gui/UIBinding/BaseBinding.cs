@@ -39,10 +39,18 @@ public static class BaseBinding
 {
     public const string DrapType = "Game";
 
-    public readonly static Dictionary<Process, string> Games = new();
-    public readonly static Dictionary<string, Process> RunGames = new();
-    public readonly static Dictionary<string, StringBuilder> GameLogs = new();
-    public static bool ISNewStart => ColorMCCore.NewStart;
+    public readonly static Dictionary<Process, string> Games = [];
+    public readonly static Dictionary<string, Process> RunGames = [];
+    public readonly static Dictionary<string, StringBuilder> GameLogs = [];
+
+    /// <summary>
+    /// 是否为第一次启动
+    /// </summary>
+    public static bool NewStart => ColorMCCore.NewStart;
+    /// <summary>
+    /// 是否正在下载
+    /// </summary>
+    public static bool IsDownload => DownloadManager.State != CoreRunState.End;
 
     private static CancellationTokenSource s_launchCancel = new();
 
@@ -53,16 +61,43 @@ public static class BaseBinding
     /// </summary>
     public static void Init()
     {
-        ColorMCCore.OnError = ShowError;
-        ColorMCCore.DownloaderUpdate = DownloaderUpdate;
-        ColorMCCore.ProcessLog = PLog;
-        ColorMCCore.GameLog = PLog;
-        ColorMCCore.LanguageReload = ChangeLanguage;
+        ColorMCCore.OnError = App.ShowError;
+        ColorMCCore.DownloaderUpdate = App.DownloaderUpdate;
+        ColorMCCore.ProcessLog = (p, d)=>
+        {
+            if (p != null && Games.TryGetValue(p, out var uuid))
+            {
+                GameLogs[uuid].Append(d).Append(Environment.NewLine);
+                if (App.GameLogWindows.TryGetValue(uuid, out var win))
+                {
+                    win.Log(d);
+                }
+            }
+        };
+        ColorMCCore.GameLog = (obj ,d)=> 
+        {
+            if (GameLogs.TryGetValue(obj.UUID, out var log))
+            {
+                log.Append(d).Append(Environment.NewLine);
+            }
+
+            if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
+            {
+                win.Log(d);
+            }
+        };
+        ColorMCCore.LanguageReload = (type)=> 
+        {
+            App.LoadLanguage(type);
+            Localizer.Reload();
+
+            App.Reboot();
+        };
         ColorMCCore.NoJava = NoJava;
         ColorMCCore.UpdateSelect = PackUpdate;
         ColorMCCore.LoadDone = LoadDone;
 
-        if (ColorMCGui.RunType == RunType.Program)
+        if (ColorMCGui.RunType == RunType.Program && SystemInfo.Os != OsType.Android)
         {
             try
             {
@@ -76,9 +111,9 @@ public static class BaseBinding
 
         ImageUtils.Init(ColorMCGui.RunDir);
 
-        FontSel.Instance.Load();
-        ColorSel.Instance.Load();
-        StyleSel.Instance.Load();
+        FontSel.Load();
+        ColorSel.Load();
+        StyleSel.Load();
         LoadStyle();
 
         InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>
@@ -134,8 +169,6 @@ public static class BaseBinding
         App.PageSlide500.Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime);
         App.PageSlide500.Fade = GuiConfigUtils.Config.Style.AmFade;
     }
-
-
 
     /// <summary>
     /// 复制到剪贴板
@@ -244,7 +277,13 @@ public static class BaseBinding
             obj.StartServer.Port = server.ServerPort;
         }
 
-        ColorMCCore.DownloaderUpdate = DownloaderUpdateOnThread;
+        ColorMCCore.DownloaderUpdate = (state) =>
+        {
+            Dispatcher.UIThread.Invoke(() =>
+            {
+                App.DownloaderUpdate(state);
+            });
+        };
 
         if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
         {
@@ -394,7 +433,7 @@ public static class BaseBinding
             UserBinding.UnLockUser(obj1);
         }
 
-        ColorMCCore.DownloaderUpdate = DownloaderUpdate;
+        ColorMCCore.DownloaderUpdate = App.DownloaderUpdate;
 
         return (res.Item1 != null, res.Item2);
     }
@@ -454,99 +493,12 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 下载器状态更新回调
-    /// </summary>
-    /// <param name="state">状态</param>
-    public static void DownloaderUpdateOnThread(CoreRunState state)
-    {
-        Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            App.DownloaderUpdate(state);
-        }).Wait();
-    }
-
-    /// <summary>
-    /// 下载器状态更新回调
-    /// </summary>
-    /// <param name="state">状态</param>
-    public static void DownloaderUpdate(CoreRunState state)
-    {
-        App.DownloaderUpdate(state);
-    }
-
-    /// <summary>
     /// 获取下载状态
     /// </summary>
     /// <returns>状态</returns>
     public static (int, int) GetDownloadSize()
     {
         return (DownloadManager.AllSize, DownloadManager.DoneSize);
-    }
-
-    /// <summary>
-    /// 是否正在下载
-    /// </summary>
-    public static bool IsDownload
-        => DownloadManager.State != CoreRunState.End;
-
-    /// <summary>
-    /// 进程日志回调
-    /// </summary>
-    /// <param name="p">进程</param>
-    /// <param name="d">日志</param>
-    public static void PLog(Process? p, string? d)
-    {
-        if (p == null)
-        {
-            return;
-        }
-        if (Games.TryGetValue(p, out var uuid))
-        {
-            GameLogs[uuid].Append(d).Append(Environment.NewLine);
-            if (App.GameLogWindows.TryGetValue(uuid, out var win))
-            {
-                win.Log(d);
-            }
-        }
-    }
-
-    /// <summary>
-    /// 游戏实例日志回调
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="d">日志</param>
-    public static void PLog(GameSettingObj obj, string? d)
-    {
-        if (GameLogs.TryGetValue(obj.UUID, out var log))
-        {
-            log.Append(d).Append(Environment.NewLine);
-        }
-
-        if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
-        {
-            win.Log(d);
-        }
-    }
-
-    /// <summary>
-    /// 错误显示回调
-    /// </summary>
-    /// <param name="data">数据</param>
-    /// <param name="e">错误</param>
-    /// <param name="close">是否关闭</param>
-    private static void ShowError(string? data, Exception? e, bool close)
-    {
-        App.ShowError(data, e, close);
-    }
-
-    /// <summary>
-    /// 语言调整回调
-    /// </summary>
-    /// <param name="type">语言类型</param>
-    private static void ChangeLanguage(LanguageType type)
-    {
-        App.LoadLanguage(type);
-        Localizer.Instance.Reload();
     }
 
     /// <summary>

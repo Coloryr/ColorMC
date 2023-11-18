@@ -137,11 +137,7 @@ public static class WebBinding
             var list1 = new List<FileDisplayObj>();
             list.ForEach(item =>
             {
-                var file = item.files.FirstOrDefault(a => a.primary);
-                if (file == null)
-                {
-                    file = item.files[0];
-                }
+                var file = item.files.FirstOrDefault(a => a.primary) ?? item.files[0];
                 list1.Add(new()
                 {
                     ID = item.project_id,
@@ -166,27 +162,27 @@ public static class WebBinding
     {
         return type switch
         {
-            FileType.Mod => new()
-                {
+            FileType.Mod =>
+                [
                     SourceType.CurseForge,
                     SourceType.Modrinth,
                     SourceType.McMod
-                },
-            FileType.DataPacks or FileType.Resourcepack => new()
-                {
+                ],
+            FileType.DataPacks or FileType.Resourcepack =>
+                [
                     SourceType.CurseForge,
                     SourceType.Modrinth,
-                },
-            FileType.Shaderpack => new()
-                {
+                ],
+            FileType.Shaderpack =>
+                [
                     SourceType.CurseForge,
                     SourceType.Modrinth,
-                },
-            FileType.World => new()
-                {
+                ],
+            FileType.World =>
+                [
                     SourceType.CurseForge,
-                },
-            _ => new(),
+                ],
+            _ => [],
         };
     }
 
@@ -379,15 +375,15 @@ public static class WebBinding
         {
             var res1 = await CurseForgeAPI.GetModDependencies(data, obj.Version, obj.Loader, true);
 
-
-
             foreach (var item1 in res1)
             {
                 if (res.ContainsKey(item1.Info.ModId) || obj.Mods.ContainsKey(item1.Info.ModId))
+                {
                     continue;
+                }
 
-                List<string> version = new();
-                List<(DownloadItemObj Item, ModInfoObj Info)> items = new();
+                List<string> version = [];
+                List<(DownloadItemObj Item, ModInfoObj Info)> items = [];
                 foreach (var item2 in item1.List)
                 {
                     version.Add(item2.displayName);
@@ -423,8 +419,8 @@ public static class WebBinding
             {
                 if (res.ContainsKey(item1.Info.ModId) || obj.Mods.ContainsKey(item1.Info.ModId))
                     continue;
-                List<string> version = new();
-                List<(DownloadItemObj Item, ModInfoObj Info)> items = new();
+                List<string> version = [];
+                List<(DownloadItemObj Item, ModInfoObj Info)> items = [];
                 foreach (var item2 in item1.List)
                 {
                     version.Add(item2.name);
@@ -500,7 +496,7 @@ public static class WebBinding
                     Overwrite = true
                 };
 
-                res = await DownloadManager.Start(new() { item });
+                res = await DownloadManager.Start([item]);
                 if (!res)
                 {
                     return false;
@@ -508,7 +504,7 @@ public static class WebBinding
 
                 return await GameBinding.AddWorld(obj, item.Local);
             case FileType.Resourcepack:
-                item = new DownloadItemObj()
+                return await DownloadManager.Start([new()
                 {
                     Name = data.displayName,
                     Url = data.downloadUrl,
@@ -516,11 +512,9 @@ public static class WebBinding
                     SHA1 = data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault(),
                     Overwrite = true
-                };
-
-                return await DownloadManager.Start(new() { item });
+                }]);
             case FileType.Shaderpack:
-                item = new DownloadItemObj()
+                return await DownloadManager.Start([new()
                 {
                     Name = data.displayName,
                     Url = data.downloadUrl,
@@ -528,9 +522,7 @@ public static class WebBinding
                     SHA1 = data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault(),
                     Overwrite = true
-                };
-
-                return await DownloadManager.Start(new() { item });
+                }]);
             default:
                 return false;
         }
@@ -539,53 +531,44 @@ public static class WebBinding
     public static async Task<bool> Download(FileType type, GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
-            return false;
-
-        var file = data.files.FirstOrDefault(a => a.primary);
-        if (file == null)
         {
-            file = data.files[0];
+            return false;
         }
 
-        DownloadItemObj item;
+        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
 
-        switch (type)
+        return type switch
         {
-            case FileType.Resourcepack:
-                item = new DownloadItemObj()
+            FileType.Resourcepack => await DownloadManager.Start([new()
                 {
                     Name = data.name,
                     Url = file.url,
                     Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + file.filename),
                     SHA1 = file.hashes.sha1,
                     Overwrite = true
-                };
-
-                return await DownloadManager.Start(new() { item });
-            case FileType.Shaderpack:
-                item = new DownloadItemObj()
+                }]),
+            FileType.Shaderpack => await DownloadManager.Start([new()
                 {
                     Name = data.name,
                     Url = file.url,
                     Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + file.filename),
                     SHA1 = file.hashes.sha1,
                     Overwrite = true
-                };
-
-                return await DownloadManager.Start(new() { item });
-            default:
-                return false;
-        }
+                }]),
+            _ => false,
+        };
     }
 
     public static async Task<bool> Download(WorldObj obj1, CurseForgeModObj.Data? data)
     {
         if (data == null)
+        {
             return false;
+        }
 
         data.FixDownloadUrl();
 
-        var item = new DownloadItemObj()
+        return await DownloadManager.Start([new()
         {
             Name = data.displayName,
             Url = data.downloadUrl,
@@ -593,32 +576,26 @@ public static class WebBinding
             SHA1 = data.hashes.Where(a => a.algo == 1)
                 .Select(a => a.value).FirstOrDefault(),
             Overwrite = true
-        };
-
-        return await DownloadManager.Start(new() { item });
+        }]);
     }
 
     public static async Task<bool> Download(WorldObj obj1, ModrinthVersionObj? data)
     {
         if (data == null)
-            return false;
-
-        var file = data.files.FirstOrDefault(a => a.primary);
-        if (file == null)
         {
-            file = data.files[0];
+            return false;
         }
 
-        var item = new DownloadItemObj()
+        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
+
+        return await DownloadManager.Start([new()
         {
             Name = data.name,
             Url = file.url,
             Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + file.filename),
             SHA1 = file.hashes.sha1,
             Overwrite = true
-        };
-
-        return await DownloadManager.Start(new() { item });
+        }]);
     }
 
     public static string? GetUrl(this FileItemObj obj)
@@ -671,7 +648,8 @@ public static class WebBinding
         return OptifineAPI.DownloadOptifine(obj, item);
     }
 
-    public static async Task<List<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
+    public static async Task<List<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>> 
+        CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
     {
         string path = game.GetModsPath();
         var list = new ConcurrentBag<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>();
@@ -680,7 +658,9 @@ public static class WebBinding
             try
             {
                 if (string.IsNullOrWhiteSpace(item.PID) || string.IsNullOrWhiteSpace(item.FID))
+                {
                     return;
+                }
 
                 var type1 = FuntionUtils.CheckNotNumber(item.PID) || FuntionUtils.CheckNotNumber(item.FID) ?
                    SourceType.Modrinth : SourceType.CurseForge;
@@ -688,7 +668,9 @@ public static class WebBinding
                 var list1 = await GetPackFile(type1, item.PID, 0,
                    game.Version, game.Loader, FileType.Mod);
                 if (list1 == null || list1.Count == 0)
+                {
                     return;
+                }
                 var item1 = list1[0];
                 if (item1.ID1 != item.FID)
                 {

@@ -63,8 +63,8 @@ public class Steve3DTexture
         return tex;
     }
 
-    private readonly float[] _headTex = new float[]
-    {
+    private readonly float[] _headTex =
+    [
         // back
         32f, 8f, 32f, 16f, 24f, 16f, 24f, 8f,
         // front
@@ -77,10 +77,10 @@ public class Steve3DTexture
         8f, 0f, 8f, 8f, 16f, 8f, 16f, 0f,
         // bottom
         24f, 0f, 24f, 8f, 16f, 8f, 16f, 0f
-    };
+    ];
 
-    private readonly float[] _legArmTex = new float[]
-    {
+    private readonly float[] _legArmTex =
+    [
         // back
         12f, 4f, 12f, 16f, 16f, 16f, 16f, 4f,
         // front
@@ -93,10 +93,10 @@ public class Steve3DTexture
         4f, 0f, 4f, 4f, 8f, 4f, 8f, 0f,
         // bottom
         12f, 0f, 12f, 4f, 8f, 4f, 8f, 0f,
-    };
+    ];
 
-    private readonly float[] _slimArmTex = new float[]
-    {
+    private readonly float[] _slimArmTex =
+    [
         // back
         11f, 4f, 11f, 16f, 14f, 16f, 14f, 4f,
         // front
@@ -109,10 +109,10 @@ public class Steve3DTexture
         4f, 0f, 4f, 4f, 7f, 4f, 7f, 0f,
         // bottom
         10f, 0f, 10f, 4f, 7f, 4f, 7f, 0f,
-    };
+    ];
 
-    private readonly float[] _bodyTex = new float[]
-    {
+    private readonly float[] _bodyTex =
+    [
         // back
         24f, 4f, 24f, 16f, 16f, 16f, 16f, 4f,
         // front
@@ -125,10 +125,10 @@ public class Steve3DTexture
         4f, 0f, 4f, 4f, 12f, 4f, 12f, 0f,
         // bottom
         20f, 0f, 20f, 4f, 12f, 4f, 12f, 0f
-    };
+    ];
 
-    private readonly float[] _capeTex = new float[]
-    {
+    private readonly float[] _capeTex =
+    [
         // back
         11f, 1f, 11f, 17f, 1f, 17f, 1f, 1f,
         // front
@@ -141,7 +141,7 @@ public class Steve3DTexture
         1f, 0f,1f, 1f, 11f, 1f, 11f, 0f, 
         // bottom
         21f, 0f, 21f, 1f, 11f, 1f, 11f, 0f,
-    };
+    ];
 
     /// <summary>
     /// 获取UV

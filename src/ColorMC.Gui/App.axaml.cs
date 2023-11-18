@@ -258,7 +258,7 @@ public partial class App : Application
         {
             NowTheme = PlatformSettings!.GetColorValues().ThemeVariant;
 
-            ColorSel.Instance.Load();
+            ColorSel.Load();
             await LoadImage();
         }
     }
@@ -287,7 +287,7 @@ public partial class App : Application
         }
         string name = type switch
         {
-            //LanguageType.en_us => "ColorMC.Gui.Resource.Language.gui_en-us.json",
+            LanguageType.en_us => "ColorMC.Gui.Resource.Language.gui_en-us.json",
             _ => "ColorMC.Gui.Resource.Language.gui_zh-cn.json"
         };
         using var item = assm.GetManifestResourceStream(name)!;
@@ -321,7 +321,7 @@ public partial class App : Application
         }
 
         OnPicUpdate();
-        ColorSel.Instance.Load();
+        ColorSel.Load();
         FuntionUtils.RunGC();
     }
 

@@ -175,7 +175,7 @@ public partial class MainControl : UserControl, IUserControl
 
         ChangeLive2DSize();
 
-        if (BaseBinding.ISNewStart)
+        if (BaseBinding.NewStart)
         {
             Start.Start();
         }

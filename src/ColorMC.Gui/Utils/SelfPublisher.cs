@@ -13,19 +13,11 @@ public class SelfPublisher<T> : IObservable<T>
         return new Unsubscribe(_observers, observer);
     }
 
-    private class Unsubscribe : IDisposable
+    private class Unsubscribe(List<IObserver<T>> observers, IObserver<T> observer) : IDisposable
     {
-        private readonly List<IObserver<T>> _observers;
-        private readonly IObserver<T> _observer;
-        public Unsubscribe(List<IObserver<T>> observers, IObserver<T> observer)
-        {
-            _observer = observer;
-            _observers = observers;
-        }
-
         public void Dispose()
         {
-            _observers?.Remove(_observer);
+            observers.Remove(observer);
         }
     }
     public void Notify(T data)

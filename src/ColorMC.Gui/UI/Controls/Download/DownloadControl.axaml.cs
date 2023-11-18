@@ -47,18 +47,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public async Task<bool> Closing()
     {
-        if (BaseBinding.IsDownload)
-        {
-            var res = await (DataContext as DownloadModel)!.Model.ShowWait(App.Lang("DownloadWindow.Info4"));
-            if (res)
-            {
-                BaseBinding.DownloadStop();
-                return false;
-            }
-            return true;
-        }
-
-        return false;
+        return DataContext is DownloadModel model && !await model.Stop();
     }
 
     public void SetBaseModel(BaseModel model)

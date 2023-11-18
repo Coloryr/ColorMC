@@ -13,35 +13,35 @@ public static class LanguageBinding
     /// <returns>选项</returns>
     public static string[] GetFilterName()
     {
-        return new[]
-        {
+        return
+        [
             App.Lang("Text.Name"),
             App.Lang("Text.FileName"),
             App.Lang("BaseBinding.Filter.Item3"),
             App.Lang("BaseBinding.Filter.Item4")
-        };
+        ];
     }
 
     public static string[] GetExportName()
     {
-        return new[]
-         {
+        return
+        [
             App.Lang("BaseBinding.Export.Item1"),
             App.Lang("BaseBinding.Export.Item2"),
             App.Lang("BaseBinding.Export.Item3"),
             //App.GetLanguage("BaseBinding.Export.Item4"),
             //App.GetLanguage("BaseBinding.Export.Item5")
-        };
+        ];
     }
 
     public static string[] GetSkinType()
     {
-        return new[]
-        {
+        return
+        [
             App.Lang("SkinType.Old"),
             App.Lang("SkinType.New"),
             App.Lang("SkinType.New_Slim")
-        };
+        ];
     }
     /// <summary>
     /// 获取旋转选项
@@ -49,12 +49,12 @@ public static class LanguageBinding
     /// <returns>选项</returns>
     public static string[] GetSkinRotateName()
     {
-        return new[]
-        {
+        return
+        [
             App.Lang("BaseBinding.SkinRotate.Item1"),
             App.Lang("BaseBinding.SkinRotate.Item2"),
             App.Lang("BaseBinding.SkinRotate.Item3")
-        };
+        ];
     }
 
     /// <summary>
@@ -63,12 +63,12 @@ public static class LanguageBinding
     /// <returns>选项</returns>
     public static string[] GetDownloadSources()
     {
-        return new[]
-        {
+        return  
+        [
             SourceLocal.Offical.GetName(),
             SourceLocal.BMCLAPI.GetName(),
             SourceLocal.MCBBS.GetName()
-        };
+        ];
     }
 
     /// <summary>
@@ -77,14 +77,14 @@ public static class LanguageBinding
     /// <returns>选项</returns>
     public static string[] GetWindowTranTypes()
     {
-        return new[]
-        {
+        return
+        [
             App.Lang("TranTypes.Item1"),
             App.Lang("TranTypes.Item2"),
             App.Lang("TranTypes.Item3"),
             App.Lang("TranTypes.Item4"),
             App.Lang("TranTypes.Item5")
-        };
+        ];
     }
     /// <summary>
     /// 获取语言选项
@@ -92,85 +92,85 @@ public static class LanguageBinding
     /// <returns>选项</returns>
     public static string[] GetLanguages()
     {
-        return new[]
-        {
+        return
+        [
             LanguageType.zh_cn.GetName(),
             LanguageType.en_us.GetName()
-        };
+        ];
     }
 
     public static string[] GetCurseForgeSortTypes()
     {
-        return new[]
-        {
+        return
+        [
             CurseForgeSortField.Featured.GetName(),
             CurseForgeSortField.Popularity.GetName(),
             CurseForgeSortField.LastUpdated.GetName(),
             CurseForgeSortField.Name.GetName(),
             CurseForgeSortField.TotalDownloads.GetName()
-        };
+        ];
     }
 
     public static string[] GetModrinthSortTypes()
     {
-        return new[]
-        {
+        return
+        [
             MSortingObj.Relevance.GetName(),
             MSortingObj.Downloads.GetName(),
             MSortingObj.Follows.GetName(),
             MSortingObj.Newest.GetName(),
             MSortingObj.Updated.GetName()
-        };
+        ];
     }
 
     public static string[] GetSortOrder()
     {
-        return new[]
-        {
+        return
+        [
             App.Lang("GameBinding.SortOrder.Item1"),
             App.Lang("GameBinding.SortOrder.Item2")
-        };
+        ];
     }
 
     public static string[] GetSourceList()
     {
-        return new[]
-        {
+        return
+        [
             SourceType.CurseForge.GetName(),
             SourceType.Modrinth.GetName()
-        };
+        ];
     }
 
     public static string[] GetPackType()
     {
-        return new[]
-        {
+        return
+        [
             PackType.ColorMC.GetName(),
             PackType.CurseForge.GetName(),
             PackType.Modrinth.GetName(),
             PackType.MMC.GetName(),
             PackType.HMCL.GetName(),
             PackType.ZipPack.GetName()
-        };
+        ];
     }
 
     public static string[] GetAddType()
     {
-        return new[]
-        {
+        return
+        [
             FileType.Mod.GetName(),
             FileType.World.GetName(),
             FileType.Shaderpack.GetName(),
             FileType.Resourcepack.GetName(),
             FileType.DataPacks.GetName(),
             FileType.Optifne.GetName()
-        };
+        ];
     }
 
     public static string[] GetNbtName()
     {
-        return new[]
-        {
+        return
+        [
             "NbtEnd",
             "NbtByte",
             "NbtShort",
@@ -184,32 +184,32 @@ public static class LanguageBinding
             "NbtCompound",
             "NbtIntArray",
             "NbtLongArray",
-        };
+        ];
     }
 
     public static string[] GetFuntionList()
     {
-        return new[]
-        {
+        return
+        [
             App.Lang("ServerPackWindow.Tab4.Item1"),
             App.Lang("ServerPackWindow.Tab4.Item2")
-        };
+        ];
     }
 
     public static string[] GetVersionType()
     {
-        return new[]
-        {
+        return
+        [
             App.Lang("VersionType.Item1"),
             App.Lang("VersionType.Item2"),
             App.Lang("VersionType.Item3")
-        };
+        ];
     }
 
     public static string[] GetPos()
-    {
-        return new[]
-        {
+    {   
+        return
+        [
             App.Lang("Postion.Item1"),
             App.Lang("Postion.Item2"),
             App.Lang("Postion.Item3"),
@@ -219,6 +219,6 @@ public static class LanguageBinding
             App.Lang("Postion.Item7"),
             App.Lang("Postion.Item8"),
             App.Lang("Postion.Item9"),
-        };
+        ];
     }
 }

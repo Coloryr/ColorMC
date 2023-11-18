@@ -1257,7 +1257,7 @@ public static class GameBinding
                 }
                 return false;
             case FileType.Resourcepack:
-                list1 = new List<string>();
+                list1 = [];
                 foreach (var item in list)
                 {
                     var file = item.TryGetLocalPath();
@@ -1272,7 +1272,7 @@ public static class GameBinding
                 }
                 return await obj.AddResourcepack(list1);
             case FileType.Shaderpack:
-                list1 = new List<string>();
+                list1 = [];
                 foreach (var item in list)
                 {
                     var file = item.TryGetLocalPath();
@@ -1285,7 +1285,7 @@ public static class GameBinding
                 }
                 return await obj.AddShaderpack(list1);
             case FileType.Schematic:
-                list1 = new List<string>();
+                list1 = [];
                 foreach (var item in list)
                 {
                     var file = item.TryGetLocalPath();
@@ -1485,7 +1485,8 @@ public static class GameBinding
         return res;
     }
 
-    public static async Task<(bool, string?)> DownloadServerPack(BaseModel model, string? name, string? group, string text)
+    public static async Task<(bool, string?)> DownloadServerPack(BaseModel model, 
+        string? name, string? group, string text)
     {
         InfoBinding.Window = model;
         try
@@ -1596,47 +1597,49 @@ public static class GameBinding
     public static async Task<List<Loaders>> GetSupportLoader(string version)
     {
         var loaders = new List<Loaders>();
-        var list = new List<Task>();
-        list.Add(Task.Run(async () =>
-        {
-            var list = await WebBinding.GetForgeSupportVersion();
-            if (list != null && list.Contains(version))
+        Task[] list =
+        [
+            Task.Run(async () =>
             {
-                loaders.Add(Loaders.Forge);
-            }
-        }));
-        list.Add(Task.Run(async () =>
-        {
-            var list = await WebBinding.GetFabricSupportVersion();
-            if (list != null && list.Contains(version))
+                var list = await WebBinding.GetForgeSupportVersion();
+                if (list != null && list.Contains(version))
+                {
+                    loaders.Add(Loaders.Forge);
+                }
+            }),
+            Task.Run(async () =>
             {
-                loaders.Add(Loaders.Fabric);
-            }
-        }));
-        list.Add(Task.Run(async () =>
-        {
-            var list = await WebBinding.GetQuiltSupportVersion();
-            if (list != null && list.Contains(version))
+                var list = await WebBinding.GetFabricSupportVersion();
+                if (list != null && list.Contains(version))
+                {
+                    loaders.Add(Loaders.Fabric);
+                }
+            }),
+            Task.Run(async () =>
             {
-                loaders.Add(Loaders.Quilt);
-            }
-        }));
-        list.Add(Task.Run(async () =>
-        {
-            var list = await WebBinding.GetNeoForgeSupportVersion();
-            if (list != null && list.Contains(version))
+                var list = await WebBinding.GetQuiltSupportVersion();
+                if (list != null && list.Contains(version))
+                {
+                    loaders.Add(Loaders.Quilt);
+                }
+            }),
+            Task.Run(async () =>
             {
-                loaders.Add(Loaders.NeoForge);
-            }
-        }));
-        list.Add(Task.Run(async () =>
-        {
-            var list = await WebBinding.GetOptifineSupportVersion();
-            if (list != null && list.Contains(version))
+                var list = await WebBinding.GetNeoForgeSupportVersion();
+                if (list != null && list.Contains(version))
+                {
+                    loaders.Add(Loaders.NeoForge);
+                }
+            }),
+            Task.Run(async () =>
             {
-                loaders.Add(Loaders.OptiFine);
-            }
-        }));
+                var list = await WebBinding.GetOptifineSupportVersion();
+                if (list != null && list.Contains(version))
+                {
+                    loaders.Add(Loaders.OptiFine);
+                }
+            })
+        ];
 
         await Task.WhenAll(list);
 

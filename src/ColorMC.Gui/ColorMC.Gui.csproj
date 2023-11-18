@@ -117,6 +117,7 @@
         <None Remove="Resource\Icon\upgrade.svg" />
         <None Remove="Resource\Icon\up_arrow.svg" />
         <None Remove="Resource\Icon\user.svg" />
+        <None Remove="Resource\Language\gui_en-us.json" />
         <None Remove="Resource\Language\gui_zh-cn.json" />
         <None Remove="Resource\Pic\bg.jpg" />
         <None Remove="Resource\Pic\bg1.jpg" />
@@ -208,6 +209,7 @@
         <AvaloniaResource Include="Resource\Icon\up_arrow.svg" />
         <AvaloniaResource Include="Resource\Icon\skin.svg" />
         <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
+        <EmbeddedResource Include="Resource\Language\gui_en-us.json" />
         <EmbeddedResource Include="Resource\Pic\bg.jpg" />
         <EmbeddedResource Include="Resource\Pic\bg1.jpg" />
         <EmbeddedResource Include="Resource\Pic\game.png" />

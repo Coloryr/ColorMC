@@ -1,3 +1,5 @@
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using System;
 using System.Timers;
 
@@ -19,25 +21,29 @@ public static class LongPressed
     /// <param name="action">ÔËÐÐ</param>
     public static void Pressed(Action action)
     {
-        if (!s_init)
-        {
-            s_init = true;
-            t_timer = new();
-            t_timer.BeginInit();
-            t_timer.AutoReset = false;
-            t_timer.Elapsed += Timer_Elapsed;
-            t_timer.Interval = 1000;
-            t_timer.EndInit();
-
-            App.OnClose += App_OnClose;
-        }
-
         s_action = action;
-        t_timer.Start();
+        if (SystemInfo.Os != OsType.Android)
+        {
+            if (!s_init)
+            {
+                s_init = true;
+                t_timer = new();
+                t_timer.BeginInit();
+                t_timer.AutoReset = false;
+                t_timer.Elapsed += Timer_Elapsed;
+                t_timer.Interval = 1000;
+                t_timer.EndInit();
+
+                App.OnClose += App_OnClose;
+            }
+
+            t_timer.Start();
+        }
     }
 
     private static void App_OnClose()
     {
+        s_action = null;
         t_timer.Dispose();
     }
 
@@ -51,9 +57,14 @@ public static class LongPressed
     /// </summary>
     public static void Released()
     {
-        if (s_init)
+        if (SystemInfo.Os == OsType.Android)
+        {
+            s_action?.Invoke();
+        }
+        else if (s_init)
         {
             s_action = null;
+
             t_timer.Stop();
         }
     }

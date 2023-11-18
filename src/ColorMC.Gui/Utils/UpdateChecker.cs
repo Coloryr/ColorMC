@@ -16,14 +16,16 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class UpdateChecker
 {
-    public static readonly string[] WebSha1s = new string[4] { "", "", "", "" };
-    public static readonly string[] Sha1s = new string[4] { "", "", "", "" };
-    public static readonly string[] LocalPath = new string[4] { "", "", "", "" };
+    public static readonly string[] WebSha1s = ["", "", "", ""];
+    public static readonly string[] Sha1s = ["", "", "", ""];
+    public static readonly string[] LocalPath = ["", "", "", ""];
 
     public static void Init()
     {
         if (ColorMCGui.BaseSha1 == null)
+        {
             return;
+        }
 
         LocalPath[0] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Core.dll");
         LocalPath[1] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Core.pdb");
@@ -139,7 +141,9 @@ public static class UpdateChecker
     public static async Task<(bool?, string?)> CheckOne()
     {
         if (ColorMCGui.BaseSha1 == null)
+        {
             return (false, null);
+        }
 
         try
         {
