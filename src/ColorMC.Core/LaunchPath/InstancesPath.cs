@@ -43,14 +43,16 @@ public static class InstancesPath
     public const string Name23 = "temp";
     public const string Name24 = "cache";
 
+    private const string DefaultGroup = " ";
+
     /// <summary>
     /// 游戏实例列表
     /// </summary>
-    private readonly static Dictionary<string, GameSettingObj> s_installGames = new();
+    private readonly static Dictionary<string, GameSettingObj> s_installGames = [];
     /// <summary>
     /// 游戏实例组
     /// </summary>
-    private readonly static Dictionary<string, List<GameSettingObj>> s_gameGroups = new();
+    private readonly static Dictionary<string, List<GameSettingObj>> s_gameGroups = [];
 
     /// <summary>
     /// 基础路径
@@ -94,7 +96,7 @@ public static class InstancesPath
 
         if (string.IsNullOrWhiteSpace(obj.GroupName))
         {
-            s_gameGroups[" "].Add(obj);
+            s_gameGroups[DefaultGroup].Add(obj);
         }
         else
         {
@@ -121,9 +123,9 @@ public static class InstancesPath
     {
         s_installGames.Remove(obj.UUID);
 
-        if (string.IsNullOrEmpty(obj.GroupName) || obj.GroupName == " ")
+        if (string.IsNullOrEmpty(obj.GroupName) || obj.GroupName == DefaultGroup)
         {
-            s_gameGroups[" "].Remove(obj);
+            s_gameGroups[DefaultGroup].Remove(obj);
         }
         else if (s_gameGroups.TryGetValue(obj.GroupName, out var group))
         {
@@ -146,7 +148,7 @@ public static class InstancesPath
 
         Directory.CreateDirectory(BaseDir);
 
-        s_gameGroups.Add(" ", new List<GameSettingObj>());
+        s_gameGroups.Add(DefaultGroup, []);
 
         var list = Directory.GetDirectories(BaseDir);
         foreach (var item in list)
@@ -535,7 +537,7 @@ public static class InstancesPath
             return null;
         }
 
-        game.Mods ??= new();
+        game.Mods ??= [];
         game.LaunchData ??= new()
         {
             AddTime = DateTime.Now,
@@ -584,7 +586,7 @@ public static class InstancesPath
             return false;
         }
 
-        s_gameGroups.Add(name, new());
+        s_gameGroups.Add(name, []);
 
         return true;
     }
@@ -599,15 +601,12 @@ public static class InstancesPath
         var group = obj.GroupName;
         if (string.IsNullOrWhiteSpace(group))
         {
-            s_gameGroups[" "].Remove(obj);
+            s_gameGroups[DefaultGroup].Remove(obj);
         }
         else
         {
             var list = s_gameGroups[group];
-            if (list.Contains(obj))
-            {
-                list.Remove(obj);
-            }
+            list.Remove(obj);
 
             if (list.Count == 0)
             {
@@ -617,7 +616,7 @@ public static class InstancesPath
 
         if (string.IsNullOrWhiteSpace(now))
         {
-            s_gameGroups[" "].Add(obj);
+            s_gameGroups[DefaultGroup].Add(obj);
         }
         else
         {
@@ -772,7 +771,7 @@ public static class InstancesPath
         string file = obj.GetModInfoJsonFile();
         if (!File.Exists(file))
         {
-            obj.Mods = new();
+            obj.Mods = [];
             return;
         }
 
@@ -782,7 +781,7 @@ public static class InstancesPath
             var res = JsonConvert.DeserializeObject<Dictionary<string, ModInfoObj>>(temp);
             if (res == null)
             {
-                obj.Mods = new();
+                obj.Mods = [];
             }
             else
             {

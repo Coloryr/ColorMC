@@ -69,6 +69,11 @@ public static class HashHelper
         return text.ToString().ToLower();
     }
 
+    /// <summary>
+    /// 获取MD5值
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <returns></returns>
     public static string GenMd5(Stream stream)
     {
         var text = new StringBuilder();

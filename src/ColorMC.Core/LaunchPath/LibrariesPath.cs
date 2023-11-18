@@ -232,18 +232,34 @@ public static class LibrariesPath
         return Path.GetFullPath($"{BaseDir}/net/minecraft/client/{version}/client-{version}.jar");
     }
 
-    public static string GetOptionLib(this GameSettingObj obj)
+    /// <summary>
+    /// 获取OptiFine路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static string GetOptiFineLib(this GameSettingObj obj)
     {
-        return GetOptionLib(obj.Version, obj.LoaderVersion!);
+        return GetOptiFineLib(obj.Version, obj.LoaderVersion!);
     }
 
-    public static string GetOptionLib(string mc, string version)
+    /// <summary>
+    /// 获取OptiFine路径
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">optifine版本</param>
+    /// <returns></returns>
+    public static string GetOptiFineLib(string mc, string version)
     {
         return $"{BaseDir}/optifine/installer/OptiFine-{mc}-{version}.jar";
     }
 
+    /// <summary>
+    /// 检测OptiFine是否存在
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static bool CheckOptifineLib(this GameSettingObj obj)
     {
-        return File.Exists(GetOptionLib(obj));
+        return File.Exists(GetOptiFineLib(obj));
     }
 }

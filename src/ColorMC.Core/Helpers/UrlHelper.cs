@@ -43,17 +43,17 @@ public static class UrlHelper
     public const string MinecraftLib = "https://libraries.minecraft.net/";
     public const string MinecraftResources = "https://resources.download.minecraft.net/";
     public static readonly string[] Mojang =
-    {
+    [
         "https://launchermeta.mojang.com/",
         "https://launcher.mojang.com/",
         "https://piston-data.mojang.com/"
-    };
+    ];
 
     public static readonly string[] MavenUrl =
-    {
+    [
         "https://repo1.maven.org/maven2/",
         "https://maven.aliyun.com/repository/public/"
-    };
+    ];
 
     /// <summary>
     /// 修正Forge下载地址

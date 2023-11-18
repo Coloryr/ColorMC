@@ -17,8 +17,8 @@ public static class GameCount
     private static bool s_isRun;
 
     private static readonly object s_lock = new();
-    private readonly static Dictionary<string, DateTime> s_timeList = new();
-    private readonly static Dictionary<string, TimeSpan> s_spanTimeList = new();
+    private readonly static Dictionary<string, DateTime> s_timeList = [];
+    private readonly static Dictionary<string, TimeSpan> s_spanTimeList = [];
 
     /// <summary>
     /// 统计数据
@@ -59,8 +59,8 @@ public static class GameCount
         {
             Count = new()
             {
-                GameRuns = new(),
-                LaunchLogs = new()
+                GameRuns = [],
+                LaunchLogs = []
             };
             Save();
             return;
@@ -129,8 +129,8 @@ public static class GameCount
         {
             Count = new()
             {
-                GameRuns = new(),
-                LaunchLogs = new()
+                GameRuns = [],
+                LaunchLogs = []
             };
         }
     }
@@ -202,7 +202,7 @@ public static class GameCount
 
             s_isSave = true;
         }
-        NbtCompound nbt = new()
+        var nbt = new NbtCompound()
         {
             { "LaunchCount", new NbtLong() { Value = Count.LaunchCount } },
             { "LaunchDoneCount", new NbtLong() { Value = Count.LaunchDoneCount } },
@@ -213,7 +213,7 @@ public static class GameCount
         var list = new NbtList() { InNbtType = NbtType.NbtCompound };
         foreach (var item in Count.GameRuns)
         {
-            NbtCompound com = new()
+            var com = new NbtCompound()
             {
                 { "Key", new NbtString() { Value = item.Key } },
             };
@@ -234,7 +234,7 @@ public static class GameCount
         list = new NbtList() { InNbtType = NbtType.NbtCompound };
         foreach (var item in Count.LaunchLogs)
         {
-            NbtCompound com = new()
+            var com = new NbtCompound()
             {
                 { "Key", new NbtString(){ Value = item.Key } },
             };

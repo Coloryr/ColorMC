@@ -23,6 +23,11 @@ public static class FrpPath
         Directory.CreateDirectory(BaseDir);
     }
 
+    /// <summary>
+    /// 获取SakuraFrp文件路径
+    /// </summary>
+    /// <param name="ver"></param>
+    /// <returns></returns>
     public static string GetSakuraFrpLocal(string ver)
     {
         return $"{BaseDir}/SakuraFrp/{ver}/frpc.exe";

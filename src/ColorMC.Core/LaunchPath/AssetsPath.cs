@@ -115,6 +115,11 @@ public static class AssetsPath
         return Path.GetFullPath($"{BaseDir}/{Name3}/{obj.UUID}_cape.png");
     }
 
+    /// <summary>
+    /// 获取资源数据
+    /// </summary>
+    /// <param name="hash">资源名</param>
+    /// <returns>数据</returns>
     public static string? ReadAsset(string hash)
     {
         return PathHelper.ReadText($"{BaseDir}/{Name2}/{hash[0..2]}/{hash}");

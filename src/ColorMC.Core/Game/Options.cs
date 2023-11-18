@@ -10,6 +10,11 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Options
 {
+    /// <summary>
+    /// 获取设置选项
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>选项列表</returns>
     public static Dictionary<string, string> GetOptions(this GameSettingObj obj)
     {
         var file = obj.GetOptionsFile();
@@ -21,6 +26,12 @@ public static class Options
         return new();
     }
 
+    /// <summary>
+    /// 报错设置选项
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="list">选项列表</param>
+    /// <param name="sp">分隔符</param>
     public static void SaveOptions(this GameSettingObj obj, Dictionary<string, string> list, string sp = ":")
     {
         var file = obj.GetOptionsFile();

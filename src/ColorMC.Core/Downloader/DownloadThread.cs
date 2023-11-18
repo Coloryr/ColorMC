@@ -144,7 +144,7 @@ public class DownloadThread
             }
 
             byte[]? buffer = null;
-            FileInfo info = new(item.Local);
+            var info = new FileInfo(item.Local);
 
             if (info.Exists)
             {
