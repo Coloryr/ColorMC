@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Timers;
 using Timer = System.Timers.Timer;
 
@@ -48,7 +49,7 @@ public partial class DownloadModel : TopModel
 
         Model.SetChoiseContent(_useName,
             App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
-        Model.SetChoiseCall(_useName, Pause, Stop);
+        Model.SetChoiseCall(_useName, Pause, () => _ = Stop());
         Model.HeadBackEnable = false;
     }
 
@@ -75,21 +76,31 @@ public partial class DownloadModel : TopModel
         IsPause = !IsPause;
     }
 
-    private async void Stop()
+    public async Task<bool> Stop()
     {
+        if (BaseBinding.IsDownload)
+        {
+            return true;
+        }
+        
         Model.HeadChoise1Display = false;
         Model.HeadChoiseDisplay = false;
+
         var res = await Model.ShowWait(App.Lang("DownloadWindow.Info1"));
         if (res)
         {
             ItemList.Clear();
             _downloadList.Clear();
             BaseBinding.DownloadStop();
+
+            return true;
         }
         else
         {
             Model.HeadChoise1Display = true;
             Model.HeadChoiseDisplay = true;
+
+            return false;
         }
     }
 

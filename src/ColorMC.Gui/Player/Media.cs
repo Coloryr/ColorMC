@@ -52,11 +52,6 @@ public static class Media
     /// </summary>
     public static unsafe void Init()
     {
-        if (ColorMCGui.RunType != RunType.Program)
-        {
-            return;
-        }
-
         if (SystemInfo.Os == OsType.Windows)
         {
             s_player = new NAudioPlayer();
@@ -65,12 +60,7 @@ public static class Media
         {
             s_player = new OpenalPlayer();
         }
-        App.OnClose += App_OnClose;
-    }
-
-    private static void App_OnClose()
-    {
-        Close();
+        App.OnClose += Close;
     }
 
     /// <summary>
@@ -94,12 +84,18 @@ public static class Media
     /// <summary>
     /// 暂停
     /// </summary>
-    public static void Pause() => s_player?.Pause();
+    public static void Pause()
+    {
+        s_player?.Pause();
+    }
 
     /// <summary>
     /// 播放
     /// </summary>
-    public static void Play() => s_player?.Play();
+    public static void Play()
+    {
+        s_player?.Play();
+    }
 
     /// <summary>
     /// 停止

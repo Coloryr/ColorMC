@@ -14,50 +14,53 @@ public static class InfoBinding
 
     public static void Init()
     {
-        ColorMCCore.OfflineLaunch = OfflineLaunch;
+        ColorMCCore.OfflineLaunch = (login) =>
+        {
+            if (Window == null)
+            {
+                return Task.Run(() => { return false; });
+            }
+            return Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                return Window.ShowWait(string.Format(
+                    App.Lang("MainWindow.Info21"), login.UserName));
+            });
+        };
         ColorMCCore.GameLaunch = GameLunch;
         ColorMCCore.GameRequest = GameRequest;
-        ColorMCCore.LaunchP = LaunchP;
-        ColorMCCore.UpdateState = UpdateState;
+        ColorMCCore.LaunchP = (pre) =>
+        {
+            if (Window == null)
+            {
+                return Task.Run(() => { return false; });
+            }
+
+            return Dispatcher.UIThread.InvokeAsync(() =>
+                Window.ShowWait(pre ? App.Lang("MainWindow.Info29")
+                : App.Lang("MainWindow.Info30")));
+        };
+        ColorMCCore.UpdateState = (info) =>
+        {
+            if (Window is { } win)
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (info == null)
+                    {
+                        win.ProgressClose();
+                    }
+                    else
+                    {
+                        win.Progress(info);
+                    }
+                });
+            }
+        };
     }
 
     public static void Launch()
     {
         ColorMCCore.GameRequest = GameRequest;
-    }
-
-    /// <summary>
-    /// 更新状态回调
-    /// </summary>
-    /// <param name="info">信息</param>
-    private static void UpdateState(string? info)
-    {
-        if (Window is { } win)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                if (info == null)
-                {
-                    win.ProgressClose();
-                }
-                else
-                {
-                    win.Progress(info);
-                }
-            });
-        }
-    }
-
-    private static Task<bool> LaunchP(bool pre)
-    {
-        if (Window == null)
-        {
-            return Task.Run(() => { return false; });
-        }
-
-        return Dispatcher.UIThread.InvokeAsync(() =>
-            Window.ShowWait(pre ? App.Lang("MainWindow.Info29")
-            : App.Lang("MainWindow.Info30")));
     }
 
     private static Task<bool> GameRequest(string state)
@@ -73,25 +76,14 @@ public static class InfoBinding
         });
     }
 
-    private static Task<bool> OfflineLaunch(LoginObj login)
-    {
-        if (Window == null)
-        {
-            return Task.Run(() => { return false; });
-        }
-        return Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            return Window.ShowWait(string.Format(
-                App.Lang("MainWindow.Info21"), login.UserName));
-        });
-    }
-
     private static void GameLunch(GameSettingObj obj, LaunchState state)
     {
         Dispatcher.UIThread.Post(() =>
         {
             if (Window == null)
+            {
                 return;
+            }
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
                 switch (state)

@@ -126,7 +126,7 @@ public class Live2dRender : OpenGlControlBase
     protected override void OnOpenGlDeinit(GlInterface GL)
     {
         _lapp?.Dispose();
-        _lapp = null;
+        _lapp = null!;
         _init = false;
         _first = false;
     }

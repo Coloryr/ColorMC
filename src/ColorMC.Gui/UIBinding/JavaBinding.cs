@@ -14,13 +14,6 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
-public record JavaInfoObj
-{
-    public string Name { get; set; }
-    public string Path { get; set; }
-    public string Info { get; set; }
-}
-
 public static class JavaBinding
 {
     private readonly static List<string> PCJavaType =
@@ -31,6 +24,13 @@ public static class JavaBinding
 
     private const string Android = "Android";
     private const string Arm64 = "Arm64";
+
+    public record JavaInfoObj
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+        public string Info { get; set; }
+    }
 
     private static JavaInfoObj MakeInfo(string name, JavaInfo item)
     {
@@ -163,7 +163,9 @@ public static class JavaBinding
         }
 
         if (Directory.Exists(JvmPath.BaseDir))
+        {
             return new DirectoryInfo(JvmPath.BaseDir);
+        }
 
         return null;
     }
@@ -188,7 +190,7 @@ public static class JavaBinding
                 return (false, null, null, null, null);
             }
 
-            return (true, new() { Arm64 }, new() { Android }, new() { "", "8", "17", "21" }, res);
+            return (true, [Arm64], [Android], ["", "8", "17", "21"], res);
         }
 
         if (mainversion == -1)

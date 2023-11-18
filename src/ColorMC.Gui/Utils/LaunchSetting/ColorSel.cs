@@ -4,7 +4,7 @@ using Avalonia.Platform;
 using Avalonia.Threading;
 using ColorMC.Core.Utils;
 using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
@@ -12,7 +12,7 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 /// <summary>
 /// 颜色设定
 /// </summary>
-public class ColorSel : INotifyPropertyChanged
+public static class ColorSel
 {
     public static readonly IBrush AppLightBackColor = Brush.Parse("#FFF3F3F3");
     public static readonly IBrush AppLightBackColor1 = Brush.Parse("#AA989898");
@@ -72,12 +72,32 @@ public class ColorSel : INotifyPropertyChanged
     public static IBrush GroupBackColor2 { get; private set; } = Brush.Parse(GroupLightColor1Str);
     public static IBrush ButtonBorder { get; private set; } = AppLightBackColor8;
 
-    public readonly static ColorSel Instance = new();
+
+    private static int s_now;
+    private static IBrush s_color = MainColor;
+    private static IBrush s_color1 = FontColor;
+    private static readonly Semaphore s_semaphore = new(0, 2);
+    private static readonly Dictionary<string, List<IObserver<IBrush>>> s_colorList = [];
+
+    private static readonly Thread t_tick = new(Tick)
+    {
+        Name = "ColorMC_RGB"
+    };
+    private static bool s_rgb;
+    private static bool s_run = true;
+    private static double s_rgbS = 1;
+    private static double s_rgbV = 1;
+
+    static ColorSel()
+    {
+        t_tick.Start();
+        App.OnClose += App_OnClose;
+    }
 
     /// <summary>
     /// 加载颜色
     /// </summary>
-    public void Load()
+    public static void Load()
     {
         try
         {
@@ -157,82 +177,60 @@ public class ColorSel : INotifyPropertyChanged
         }
     }
 
-    private int now;
-    private IBrush _color = MainColor;
-    private IBrush _color1 = FontColor;
-    private Semaphore _semaphore = new(0, 2);
-
-    private readonly Thread t_tick;
-    private bool _rgb;
-    private bool _run;
-    private double _rgbS = 1;
-    private double _rgbV = 1;
-
-    public ColorSel()
+    private static void App_OnClose()
     {
-        t_tick = new(Tick)
-        {
-            Name = "ColorMC_RGB"
-        };
-        _run = true;
-        t_tick.Start();
-        App.OnClose += App_OnClose;
-    }
-
-    private void App_OnClose()
-    {
-        _run = false;
+        s_run = false;
     }
 
     /// <summary>
     /// 启用RGB模式
     /// </summary>
-    public void EnableRGB()
+    public static void EnableRGB()
     {
-        if (_rgb)
+        if (s_rgb)
             return;
 
-        _rgb = true;
+        s_rgb = true;
 
-        _rgbS = (double)GuiConfigUtils.Config.RGBS / 100;
-        _rgbV = (double)GuiConfigUtils.Config.RGBV / 100;
+        s_rgbS = (double)GuiConfigUtils.Config.RGBS / 100;
+        s_rgbV = (double)GuiConfigUtils.Config.RGBV / 100;
 
-        _semaphore.Release();
+        s_semaphore.Release();
     }
 
     /// <summary>
     /// 关闭RGB模式
     /// </summary>
-    public void DisableRGB()
+    public static void DisableRGB()
     {
-        _rgb = false;
+        s_rgb = false;
     }
 
-    private void Tick(object? obj)
+    private static void Tick(object? obj)
     {
-        while (_run)
+        while (s_run)
         {
-            _semaphore.WaitOne();
-            while (_rgb)
+            s_semaphore.WaitOne();
+            while (s_rgb)
             {
-                now += 1;
-                now %= 360;
-                var temp = HsvColor.ToRgb(now, _rgbS, _rgbV);
-                _color = new ImmutableSolidColorBrush(temp);
-                if (_rgbV >= 0.8)
+                s_now += 1;
+                s_now %= 360;
+                var temp = HsvColor.ToRgb(s_now, s_rgbS, s_rgbV);
+                s_color = new ImmutableSolidColorBrush(temp);
+                if (s_rgbV >= 0.8)
                 {
-                    if (now == 190)
+                    if (s_now == 190)
                     {
-                        _color1 = Brush.Parse("#FFFFFFFF");
+                        s_color1 = Brush.Parse("#FFFFFFFF");
                     }
-                    else if (now == 10)
+                    else if (s_now == 10)
                     {
-                        _color1 = Brush.Parse("#FF000000");
+                        s_color1 = Brush.Parse("#FF000000");
                     }
                 }
                 else
                 {
-                    _color1 = Brush.Parse("#FFFFFFFF");
+                    s_color1 = Brush.Parse("#FFFFFFFF");
                 }
 
                 Dispatcher.UIThread.InvokeAsync(Reload).Wait();
@@ -242,63 +240,85 @@ public class ColorSel : INotifyPropertyChanged
         }
     }
 
-    public IBrush this[string key]
+    public static IDisposable Add(string key, IObserver<IBrush> observer)
     {
-        get
+        if (s_colorList.TryGetValue(key, out var list))
         {
-            if (key == "Main")
-                return _rgb ? _color : MainColor;
-            else if (key == "Back")
-                return BackColor;
-            else if (key == "TranBack")
-                return Back1Color;
-            else if (key == "Font")
-                return FontColor;
-            else if (key == "ButtonFont")
-                return _rgb ? _color1 : ButtonFont;
-            else if (key == "Motd")
-                return MotdColor;
-            else if (key == "MotdBack")
-                return MotdBackColor;
-            else if (key == "Bottom")
-                return BottomColor;
-            else if (key == "Bottom1")
-                return BottomColor1;
-            else if (key == "Bottom2")
-                return BottomColor2;
-            else if (key == "TopBottom")
-                return TopBottomColor;
-            else if (key == "BottomTran")
-                return BottomTranColor;
-            else if (key == "PointIn")
-                return MainColor;
-            else if (key == "GroupBack")
-                return GroupBackColor;
-            else if (key == "GroupColor")
-                return GroupBackColor1;
-            else if (key == "GroupColor1")
-                return GroupBackColor2;
-            else if (key == "BG")
-                return BGColor;
-            else if (key == "BG1")
-                return BGColor1;
-            else if (key == "Back1")
-                return Back2Color;
-            else if (key == "ButtonBorder")
-                return ButtonBorder;
+            list.Add(observer);
+        }
+        else
+        {
+            list = [observer];
+            s_colorList.Add(key, list);
+        }
+        var value = GetColor(key);
+        observer.OnNext(value);
+        return new Unsubscribe(list, observer);
+    }
 
-            return Brushes.White;
+    private class Unsubscribe(List<IObserver<IBrush>> observers, IObserver<IBrush> observer) : IDisposable
+    {
+        public void Dispose()
+        {
+            observers.Remove(observer);
         }
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    /// <summary>
-    /// 刷新UI
-    /// </summary>
-    private void Reload()
+    public static void Reload()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
+        foreach (var item in s_colorList)
+        {
+            var value = GetColor(item.Key);
+            foreach (var item1 in item.Value)
+            {
+                item1.OnNext(value);
+            }
+        }
+    }
+
+    private static IBrush GetColor(string key)
+    {
+        if (key == "Main")
+            return s_rgb ? s_color : MainColor;
+        else if (key == "Back")
+            return BackColor;
+        else if (key == "TranBack")
+            return Back1Color;
+        else if (key == "Font")
+            return FontColor;
+        else if (key == "ButtonFont")
+            return s_rgb ? s_color1 : ButtonFont;
+        else if (key == "Motd")
+            return MotdColor;
+        else if (key == "MotdBack")
+            return MotdBackColor;
+        else if (key == "Bottom")
+            return BottomColor;
+        else if (key == "Bottom1")
+            return BottomColor1;
+        else if (key == "Bottom2")
+            return BottomColor2;
+        else if (key == "TopBottom")
+            return TopBottomColor;
+        else if (key == "BottomTran")
+            return BottomTranColor;
+        else if (key == "PointIn")
+            return MainColor;
+        else if (key == "GroupBack")
+            return GroupBackColor;
+        else if (key == "GroupColor")
+            return GroupBackColor1;
+        else if (key == "GroupColor1")
+            return GroupBackColor2;
+        else if (key == "BG")
+            return BGColor;
+        else if (key == "BG1")
+            return BGColor1;
+        else if (key == "Back1")
+            return Back2Color;
+        else if (key == "ButtonBorder")
+            return ButtonBorder;
+
+        return Brushes.White;
     }
 }

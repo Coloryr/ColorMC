@@ -1,4 +1,7 @@
 using Avalonia.Media;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -7,44 +10,41 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 /// <summary>
 /// 字体
 /// </summary>
-public class FontSel : INotifyPropertyChanged
+public static class FontSel
 {
-    public readonly static FontSel Instance = new FontSel();
-
     private static FontFamily s_font = new(ColorMCGui.Font);
+    private static readonly List<IObserver<FontFamily>> s_fontList = [];
 
-    public FontFamily this[string key]
+    public static IDisposable Add(IObserver<FontFamily> observer)
     {
-        get
-        {
-            return s_font;
-        }
+        s_fontList.Add(observer);
+        observer.OnNext(s_font);
+        return new Unsubscribe(s_fontList, observer);
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    private class Unsubscribe(List<IObserver<FontFamily>> observers, IObserver<FontFamily> observer) : IDisposable
+    {
+        public void Dispose()
+        {
+            observers.Remove(observer);
+        }
+    }
 
     /// <summary>
     /// 刷新UI
     /// </summary>
-    private void Reload()
+    private static void Reload()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
-    }
-
-    /// <summary>
-    /// 获取字体名字
-    /// </summary>
-    /// <returns></returns>
-    public static string GetFont()
-    {
-        return s_font.Name;
+        foreach (var item in s_fontList)
+        {
+            item.OnNext(s_font);
+        }
     }
 
     /// <summary>
     /// 加载字体
     /// </summary>
-    public void Load()
+    public static void Load()
     {
         if (!GuiConfigUtils.Config.FontDefault
             && !string.IsNullOrWhiteSpace(GuiConfigUtils.Config.FontName)

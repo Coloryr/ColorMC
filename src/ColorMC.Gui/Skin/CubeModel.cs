@@ -7,8 +7,8 @@ public class CubeModel
 {
     public const float Value = 0.5f;
 
-    private readonly float[] _cube = new float[]
-    {
+    private readonly float[] _cube =
+    [
         Value, Value, -Value, /* Back. */
         Value, -Value, -Value,
         -Value, -Value, -Value,
@@ -33,17 +33,17 @@ public class CubeModel
         Value, -Value, Value,
         -Value, -Value, Value,
         -Value, -Value, -Value,
-    };
+    ];
 
-    private readonly ushort[] _cubeIndicies = new ushort[]
-    {
+    private readonly ushort[] _cubeIndicies =
+    [
        0, 1, 2, 0, 2, 3,
        4, 5, 6, 4, 6, 7,
        8, 9, 10, 8, 10, 11,
        12, 13, 14, 12, 14, 15,
        16, 17, 18, 16, 18, 19,
        20, 21, 22, 20, 22, 23
-    };
+    ];
 
     /// <summary>
     /// 获得一个方块
@@ -95,20 +95,4 @@ public class CubeModel
 
         return temp;
     }
-
-    /// <summary>
-    /// 获得一些标准方块
-    /// </summary>
-    /// <param name="cubes"></param>
-    /// <returns></returns>
-    //public ushort[] GetCubeIndicies(int cubes = 1)
-    //{
-    //    var cube = new List<ushort>();
-    //    for (int a = 0; a <= cubes; a++)
-    //    {
-    //        cube.AddRange(GetSquareIndicies(a * 24));
-    //    }
-
-    //    return cube.ToArray();
-    //}
 }

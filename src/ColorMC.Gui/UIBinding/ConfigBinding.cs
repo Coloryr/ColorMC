@@ -48,9 +48,9 @@ public static class ConfigBinding
         var res = GuiConfigUtils.Load(dir, true);
         if (res)
         {
-            ColorSel.Instance.Load();
-            FontSel.Instance.Load();
-            StyleSel.Instance.Load();
+            ColorSel.Load();
+            FontSel.Load();
+            StyleSel.Load();
         }
 
         return res;
@@ -73,7 +73,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.RGB = enable;
 
         GuiConfigUtils.Save();
-        ColorSel.Instance.Load();
+        ColorSel.Load();
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.RGBS = v1;
         GuiConfigUtils.Config.RGBV = v2;
         GuiConfigUtils.Save();
-        ColorSel.Instance.Load();
+        ColorSel.Load();
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ColorDark.ColorFont1 = font3;
         GuiConfigUtils.Config.ColorDark.ColorFont2 = font4;
         GuiConfigUtils.Save();
-        ColorSel.Instance.Load();
+        ColorSel.Load();
     }
 
     /// <summary>
@@ -212,7 +212,9 @@ public static class ConfigBinding
     public static void SetDownloadThread(int value)
     {
         if (DownloadManager.State != CoreRunState.End)
+        {
             return;
+        }
 
         ConfigUtils.Config.Http ??= new();
         ConfigUtils.Config.Http.DownloadThread = value;
@@ -355,7 +357,7 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
 
-        FontSel.Instance.Load();
+        FontSel.Load();
     }
 
     /// <summary>
@@ -426,7 +428,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         App.ColorChange();
-        ColorSel.Instance.Load();
+        ColorSel.Load();
         await App.LoadImage();
     }
 
@@ -462,7 +464,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         App.MainWindow?.MotdLoad();
-        ColorSel.Instance.Load();
+        ColorSel.Load();
     }
 
     public static void SetOneGame(bool v1, string? v2)
@@ -558,7 +560,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Style.ButtonCornerRadius = value;
         GuiConfigUtils.Save();
 
-        StyleSel.Instance.Load();
+        StyleSel.Load();
     }
 
     public static void SetStyle1(int value, bool value1)
@@ -590,7 +592,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Style.EnableBorderRadius = enableBorderRadius;
         GuiConfigUtils.Save();
 
-        StyleSel.Instance.Load();
+        StyleSel.Load();
     }
 
     public static void SetFrpKey1(string key)

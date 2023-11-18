@@ -58,7 +58,6 @@ public class NAudioPlayer : IPlayer
         {
             _waveOut.Play();
         }
-
     }
 
     public void Stop()

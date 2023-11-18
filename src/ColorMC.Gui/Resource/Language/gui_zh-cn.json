@@ -529,7 +529,6 @@
 	"DownloadWindow.Info1": "是否要停止下载",
 	"DownloadWindow.Info2": "下载已暂停",
 	"DownloadWindow.Info3": "下载已继续",
-	"DownloadWindow.Info4": "下载还未完成，是否要取消",
 	"AddGameWindow.Title": "ColorMC 添加游戏实例",
 	"AddGameWindow.Tabs.Text1": "新建实例",
 	"AddGameWindow.Tabs.Text2": "从压缩包导入",

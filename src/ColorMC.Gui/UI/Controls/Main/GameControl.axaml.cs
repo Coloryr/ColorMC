@@ -3,6 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using System;
 using System.ComponentModel;
@@ -99,6 +101,7 @@ public partial class GameControl : UserControl
     {
         e.Handled = true;
 
+        var select = GameModel.IsSelect;
         GameModel.SetSelect();
 
         var pro = e.GetCurrentPoint(this);
@@ -108,8 +111,12 @@ public partial class GameControl : UserControl
         {
             Flyout((sender as Control)!);
         }
-        else
+        else 
         {
+            if (SystemInfo.Os == OsType.Android && !select)
+            {
+                return;
+            }
             LongPressed.Pressed(() => Flyout((sender as Control)!));
         }
     }

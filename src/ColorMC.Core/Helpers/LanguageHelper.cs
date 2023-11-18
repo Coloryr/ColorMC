@@ -26,7 +26,7 @@ public static class LanguageHelper
     {
         string name = type switch
         {
-            //LanguageType.en_us => "ColorMC.Core.Resources.Language.core_en-us.json",
+            LanguageType.en_us => "ColorMC.Core.Resources.Language.core_en-us.json",
             _ => "ColorMC.Core.Resources.Language.core_zh-cn.json"
         };
         var assm = Assembly.GetExecutingAssembly();

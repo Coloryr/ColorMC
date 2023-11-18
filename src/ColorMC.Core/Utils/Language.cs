@@ -7,7 +7,7 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public class Language
 {
-    private readonly Dictionary<string, string> _languageList = new();
+    private readonly Dictionary<string, string> _languageList = [];
 
     /// <summary>
     /// 加载语言
