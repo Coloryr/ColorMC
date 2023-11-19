@@ -60,6 +60,7 @@ public static class LongPressed
         if (SystemInfo.Os == OsType.Android)
         {
             s_action?.Invoke();
+            s_action = null;
         }
         else if (s_init)
         {
