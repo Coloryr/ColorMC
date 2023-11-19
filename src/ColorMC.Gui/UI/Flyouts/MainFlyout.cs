@@ -18,8 +18,8 @@ public class MainFlyout
 
         var run = BaseBinding.IsGameRun(obj.Obj);
 
-        _ = new FlyoutsControl(new (string, bool, Action)[]
-        {
+        _ = new FlyoutsControl(
+        [
             (App.Lang("MainWindow.Flyouts.Text2"), true, Button3_Click),
             (App.Lang("MainWindow.Flyouts.Text1"), true, Button1_Click),
             (App.Lang("MainWindow.Flyouts.Text3"), true, Button11_Click),
@@ -35,8 +35,7 @@ public class MainFlyout
             (App.Lang("MainWindow.Flyouts.Text11"), !run, Button6_Click),
             (App.Lang("MainWindow.Flyouts.Text12"), !run, Button13_Click),
             (App.Lang("MainWindow.Flyouts.Text13"), run, Button10_Click)
-
-        }, con);
+        ], con);
     }
 
     private void Button15_Click()

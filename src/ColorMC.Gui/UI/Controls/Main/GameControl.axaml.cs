@@ -88,7 +88,7 @@ public partial class GameControl : UserControl
     {
         GameModel.IsDrop = false;
 
-        LongPressed.Released();
+        Dispatcher.UIThread.Post(LongPressed.Released);
     }
 
     private void GameControl_DoubleTapped(object? sender, TappedEventArgs e)
