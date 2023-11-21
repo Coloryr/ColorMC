@@ -115,6 +115,14 @@ public partial class App : Application
 
     private static readonly Language s_language = new();
 
+    private static readonly WindowTransparencyLevel[] WindowTran =
+    [
+        WindowTransparencyLevel.None,
+        WindowTransparencyLevel.Transparent,
+        WindowTransparencyLevel.Blur,
+        WindowTransparencyLevel.AcrylicBlur,
+        WindowTransparencyLevel.Mica
+    ];
 
     public override void Initialize()
     {
@@ -844,17 +852,11 @@ public partial class App : Application
 
             if (GuiConfigUtils.Config.WindowTran)
             {
-                model.Hints = new[]
-                {
-                    WindowTran[GuiConfigUtils.Config.WindowTranType]
-                };
+                model.Hints = [WindowTran[GuiConfigUtils.Config.WindowTranType]];
             }
             else
             {
-                model.Hints = new[]
-                {
-                    WindowTransparencyLevel.None
-                };
+                model.Hints = [WindowTransparencyLevel.None];
             }
 
             switch (GuiConfigUtils.Config.ColorType)
@@ -873,15 +875,6 @@ public partial class App : Application
             }
         }
     }
-
-    private static readonly WindowTransparencyLevel[] WindowTran = new[]
-    {
-        WindowTransparencyLevel.None,
-        WindowTransparencyLevel.Transparent,
-        WindowTransparencyLevel.Blur,
-        WindowTransparencyLevel.AcrylicBlur,
-        WindowTransparencyLevel.Mica
-    };
 
     public static Task<bool> HaveUpdate(string? data)
     {

@@ -71,7 +71,7 @@ public partial class GameControl : UserControl
 
     private void GameControl_PointerMoved(object? sender, PointerEventArgs e)
     {
-        LongPressed.Released();
+        LongPressed.Cancel();
         var pro = e.GetCurrentPoint(this);
         if (pro.Properties.IsLeftButtonPressed)
         {
@@ -88,7 +88,7 @@ public partial class GameControl : UserControl
     {
         GameModel.IsDrop = false;
 
-        Dispatcher.UIThread.Post(LongPressed.Released);
+        LongPressed.Released();
     }
 
     private void GameControl_DoubleTapped(object? sender, TappedEventArgs e)

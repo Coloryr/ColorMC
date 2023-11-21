@@ -21,7 +21,7 @@ public partial class WorldCloudControl : UserControl
 
     private void WorldCloudControl_PointerMoved(object? sender, PointerEventArgs e)
     {
-        LongPressed.Released();
+        LongPressed.Cancel();
     }
 
     private void WorldCloudControl_PointerReleased(object? sender, PointerReleasedEventArgs e)

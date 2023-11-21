@@ -103,7 +103,7 @@ public partial class Live2dControl : UserControl
             return;
         }
 
-        LongPressed.Released();
+        LongPressed.Cancel();
 
         var pro = e.GetCurrentPoint(this);
         if (pro.Properties.IsLeftButtonPressed)

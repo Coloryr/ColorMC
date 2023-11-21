@@ -48,7 +48,7 @@ public partial class WorldControl : UserControl
 
     private void WorldControl_PointerMoved(object? sender, PointerEventArgs e)
     {
-        LongPressed.Released();
+        LongPressed.Cancel();
     }
 
     private void WorldControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
