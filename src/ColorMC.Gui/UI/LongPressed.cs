@@ -6,7 +6,7 @@ using System.Timers;
 namespace ColorMC.Gui.UI;
 
 /// <summary>
-/// ³¤°´´¦Àí
+/// é•¿æŒ‰å¤„ç†
 /// </summary>
 public static class LongPressed
 {
@@ -28,9 +28,9 @@ public static class LongPressed
     }
 
     /// <summary>
-    /// ¿ªÊ¼Ò»¸ö³¤°´
+    /// å¼€å§‹ä¸€ä¸ªé•¿æŒ‰
     /// </summary>
-    /// <param name="action">ÔËĞĞ</param>
+    /// <param name="action">è¿è¡Œ</param>
     public static void Pressed(Action action)
     {
         s_action = action;
@@ -54,7 +54,7 @@ public static class LongPressed
     }
 
     /// <summary>
-    /// ½áÊøÒ»¸ö³¤°´
+    /// ç»“æŸä¸€ä¸ªé•¿æŒ‰
     /// </summary>
     public static void Released()
     {
