@@ -24,7 +24,7 @@ public partial class FileItemControl : UserControl
 
     private void FileItemControl_PointerMoved(object? sender, PointerEventArgs e)
     {
-        LongPressed.Released();
+        LongPressed.Cancel();
     }
 
     private void FileItemControl_PointerReleased(object? sender, PointerReleasedEventArgs e)

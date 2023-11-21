@@ -19,14 +19,19 @@ public static class FontSel
     {
         s_fontList.Add(observer);
         observer.OnNext(s_font);
-        return new Unsubscribe(s_fontList, observer);
+        return new Unsubscribe(observer);
     }
 
-    private class Unsubscribe(List<IObserver<FontFamily>> observers, IObserver<FontFamily> observer) : IDisposable
+    public static void Remove(IObserver<FontFamily> observer)
+    {
+        s_fontList.Remove(observer);
+    }
+
+    private class Unsubscribe(IObserver<FontFamily> observer) : IDisposable
     {
         public void Dispose()
         {
-            observers.Remove(observer);
+            FontSel.Remove(observer);
         }
     }
 
@@ -48,9 +53,10 @@ public static class FontSel
     {
         if (!GuiConfigUtils.Config.FontDefault
             && !string.IsNullOrWhiteSpace(GuiConfigUtils.Config.FontName)
-            && FontManager.Current.SystemFonts.Any(a => a.Name == GuiConfigUtils.Config.FontName))
+            && FontManager.Current.SystemFonts.Any(a => a.Name == GuiConfigUtils.Config.FontName)
+            && SkiaSharp.SKFontManager.Default.MatchFamily(GuiConfigUtils.Config.FontName) is { } font)
         {
-            s_font = new(GuiConfigUtils.Config.FontName);
+            s_font = new(font.FamilyName);
             Reload();
         }
         else

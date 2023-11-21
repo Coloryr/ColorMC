@@ -10,10 +10,22 @@ namespace ColorMC.Gui.UI;
 /// </summary>
 public static class LongPressed
 {
-    private static bool s_init = false;
-    private static Timer t_timer;
+    private static readonly Timer t_timer;
 
     private static Action? s_action;
+    private static int s_count;
+
+    static LongPressed()
+    {
+        t_timer = new();
+        t_timer.BeginInit();
+        t_timer.AutoReset = false;
+        t_timer.Elapsed += Timer_Elapsed;
+        t_timer.Interval = 500;
+        t_timer.EndInit();
+
+        App.OnClose += App_OnClose;
+    }
 
     /// <summary>
     /// 开始一个长按
@@ -22,23 +34,8 @@ public static class LongPressed
     public static void Pressed(Action action)
     {
         s_action = action;
-        if (SystemInfo.Os != OsType.Android)
-        {
-            if (!s_init)
-            {
-                s_init = true;
-                t_timer = new();
-                t_timer.BeginInit();
-                t_timer.AutoReset = false;
-                t_timer.Elapsed += Timer_Elapsed;
-                t_timer.Interval = 1000;
-                t_timer.EndInit();
 
-                App.OnClose += App_OnClose;
-            }
-
-            t_timer.Start();
-        }
+        t_timer.Start();
     }
 
     private static void App_OnClose()
@@ -49,7 +46,11 @@ public static class LongPressed
 
     private static void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
-        s_action?.Invoke();
+        s_count++;
+        if (s_count >= 4 && SystemInfo.Os != OsType.Android)
+        {
+            s_action?.Invoke();
+        }
     }
 
     /// <summary>
@@ -57,16 +58,16 @@ public static class LongPressed
     /// </summary>
     public static void Released()
     {
-        if (SystemInfo.Os == OsType.Android)
+        if (s_count >= 2 && SystemInfo.Os == OsType.Android)
         {
             s_action?.Invoke();
-            s_action = null;
         }
-        else if (s_init)
-        {
-            s_action = null;
+        Cancel();
+    }
 
-            t_timer.Stop();
-        }
+    public static void Cancel()
+    {
+        s_action = null;
+        t_timer.Stop();
     }
 }

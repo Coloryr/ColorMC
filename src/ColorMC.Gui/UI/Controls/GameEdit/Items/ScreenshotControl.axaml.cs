@@ -29,7 +29,7 @@ public partial class ScreenshotControl : UserControl
 
     private void ScreenshotControl_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        LongPressed.Released();
+        LongPressed.Cancel();
         var model = (DataContext as ScreenshotModel)!;
         PathBinding.OpenPicFile(model.Screenshot);
     }
