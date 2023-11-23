@@ -245,47 +245,6 @@
                     </Panel>
                 </Border>
 
-                <Button
-                    Width="40"
-                    Height="40"
-                    Margin="10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Command="{Binding AddGame}"
-                    CornerRadius="20"
-                    IsVisible="{Binding !IsOneGame}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text10}"
-                    ToolTip.VerticalOffset="-30">
-                    <Svg Path="/Resource/Icon/add.svg" />
-                </Button>
-
-                <Button
-                    Width="40"
-                    Height="40"
-                    Margin="10,10,10,55"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Command="{Binding EditGame}"
-                    CornerRadius="20"
-                    IsVisible="{Binding EnableButton2}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text12}"
-                    ToolTip.VerticalOffset="-30">
-                    <Svg Path="/Resource/Icon/edit.svg" />
-                </Button>
-                <Button
-                    Width="40"
-                    Height="40"
-                    Margin="10,10,10,100"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Command="{Binding Launch}"
-                    CornerRadius="20"
-                    IsVisible="{Binding EnableButton1}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text11}"
-                    ToolTip.VerticalOffset="-30">
-                    <Svg Path="/Resource/Icon/launch.svg" />
-                </Button>
-
                 <Panel Background="{setting:Colors BG1}" IsVisible="{Binding IsGameError, FallbackValue=false}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock

@@ -34,7 +34,7 @@
                     CommandParameter="Tab1"
                     CornerRadius="{setting:Style ButtonCornerRadius}">
                     <StackPanel>
-                        <Svg Path="/Resource/Icon/AddMenu/item1.svg" />
+                        <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item1.svg" />
                         <Label
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
@@ -53,7 +53,7 @@
                     CommandParameter="Tab2"
                     CornerRadius="{setting:Style ButtonCornerRadius}">
                     <StackPanel>
-                        <Svg Path="/Resource/Icon/AddMenu/item2.svg" />
+                        <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item2.svg" />
                         <Label
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
@@ -73,7 +73,7 @@
                     CornerRadius="{setting:Style ButtonCornerRadius}"
                     IsVisible="{Binding !IsPhone}">
                     <StackPanel>
-                        <Svg Path="/Resource/Icon/AddMenu/item3.svg" />
+                        <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item3.svg" />
                         <Label
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"

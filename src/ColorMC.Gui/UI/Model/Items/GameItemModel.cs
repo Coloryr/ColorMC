@@ -10,6 +10,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.IO;
 
@@ -25,6 +26,10 @@ public partial class GameItemModel : GameModel
     private bool _isLoad;
     [ObservableProperty]
     private bool _isDrop;
+    [ObservableProperty]
+    private bool _isOver;
+    [ObservableProperty]
+    private bool _isNew;
 
     [ObservableProperty]
     private string _tips;
@@ -41,6 +46,11 @@ public partial class GameItemModel : GameModel
     [ObservableProperty]
     private Bitmap _pic;
 
+    public GameItemModel(BaseModel model) : base(model, new() { })
+    {
+        _isNew = true;
+    }
+
     public GameItemModel(BaseModel model, IMainTop top, GameSettingObj obj) : base(model, obj)
     {
         _top = top;
@@ -52,6 +62,29 @@ public partial class GameItemModel : GameModel
         Wrap = value ? TextWrapping.Wrap : TextWrapping.NoWrap;
         Trim = value ? TextTrimming.None : TextTrimming.CharacterEllipsis;
         IsDrop = false;
+    }
+
+    [RelayCommand]
+    public void AddGame()
+    {
+        App.ShowAddGame();
+    }
+
+    [RelayCommand]
+    public void Launch()
+    {
+        if (IsLaunch)
+        {
+            return;
+        }
+
+        _top.Launch(this);
+    }
+
+    [RelayCommand]
+    public void EditGame()
+    {
+        App.ShowGameEdit(Obj);
     }
 
     public void LoadIcon()
@@ -73,6 +106,10 @@ public partial class GameItemModel : GameModel
 
     public void SetTips()
     {
+        if (IsNew)
+        {
+            return;
+        }    
         Tips = string.Format(App.Lang("Tips.Text1"),
             Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
             Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),
@@ -110,16 +147,6 @@ public partial class GameItemModel : GameModel
     public void Flyout(Control con)
     {
         _ = new MainFlyout(con, this);
-    }
-
-    public void Launch()
-    {
-        if (IsLaunch)
-        {
-            return;
-        }
-
-        _top.Launch(this);
     }
 
     private Bitmap GetImage()
@@ -204,7 +231,7 @@ public partial class GameItemModel : GameModel
     {
         if (Pic != App.GameIcon)
         {
-            Pic.Dispose();
+            Pic?.Dispose();
         }
     }
 }

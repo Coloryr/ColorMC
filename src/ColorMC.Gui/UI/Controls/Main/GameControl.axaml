@@ -6,66 +6,121 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
     Width="80"
-    d:DesignHeight="100"
-    d:DesignWidth="80"
+    VerticalAlignment="Top"
+    d:DesignHeight="200"
+    d:DesignWidth="100"
     x:DataType="model:GameItemModel"
     ToolTip.Tip="{Binding Tips}"
     mc:Ignorable="d">
     <Panel>
-        <Rectangle
-            Name="Rectangle2"
-            Fill="{setting:Colors Back}"
-            IsVisible="False"
-            RadiusX="{setting:Style Radius}"
-            RadiusY="{setting:Style Radius}" />
-        <Rectangle
-            Name="Rectangle1"
-            Fill="{setting:Colors TranBack}"
-            IsVisible="{Binding IsSelect}"
-            RadiusX="{setting:Style Radius}"
-            RadiusY="{setting:Style Radius}"
-            Stroke="{setting:Colors Main}"
-            StrokeThickness="3" />
-        <StackPanel Margin="5">
-            <Border
-                Name="Icons"
-                Width="70"
-                Height="70"
-                VerticalAlignment="Center"
-                CornerRadius="{setting:Style PicRadius}">
-                <Border.Background>
-                    <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
-                </Border.Background>
-            </Border>
-            <TextBlock
-                Name="TextBlock1"
-                HorizontalAlignment="Center"
-                FontSize="13"
-                Text="{Binding Name}"
-                TextAlignment="Center"
-                TextTrimming="{Binding Trim}"
-                TextWrapping="{Binding Wrap}" />
-        </StackPanel>
+        <Button
+            Width="78"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            Command="{Binding AddGame}"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            IsVisible="{Binding IsNew}">
+            <StackPanel>
+                <svg:SvgControl
+                    Width="70"
+                    Height="70"
+                    Fill="{setting:Colors Font}"
+                    Path="/Resource/Icon/add1.svg"
+                    Stroke="{setting:Colors Font}" />
+                <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize MainWindow.Control.Text2}" />
+            </StackPanel>
+        </Button>
+        <Panel IsVisible="{Binding !IsNew, FallbackValue=false}">
+            <Rectangle
+                Fill="{setting:Colors Back}"
+                IsVisible="{Binding IsOver}"
+                RadiusX="{setting:Style Radius}"
+                RadiusY="{setting:Style Radius}" />
+            <Rectangle
+                Name="Rectangle1"
+                Fill="{setting:Colors TranBack}"
+                IsVisible="{Binding IsSelect}"
+                RadiusX="{setting:Style Radius}"
+                RadiusY="{setting:Style Radius}"
+                Stroke="{setting:Colors Main}"
+                StrokeThickness="3" />
+            <StackPanel Margin="5">
+                <Panel>
+                    <Border
+                        Name="Icons"
+                        Width="70"
+                        Height="70"
+                        VerticalAlignment="Center"
+                        CornerRadius="{setting:Style PicRadius}">
+                        <Border.Background>
+                            <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
+                        </Border.Background>
+                    </Border>
+                    <Image
+                        Width="30"
+                        Height="30"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding IsLaunch}"
+                        Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
+                        Stretch="UniformToFill" />
+                    <Image
+                        Width="30"
+                        Height="30"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding IsLoad}"
+                        Source="resm:ColorMC.Gui.Resource.Pic.load.png"
+                        Stretch="UniformToFill" />
+                    <Button
+                        Width="30"
+                        Height="30"
+                        Margin="33,0,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        ClipToBounds="False"
+                        Command="{Binding EditGame}"
+                        CornerRadius="20"
+                        IsVisible="{Binding IsOver}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text12}"
+                        ToolTip.VerticalOffset="-30">
+                        <Svg Path="/Resource/Icon/edit.svg" />
+                    </Button>
+                    <Button
+                        Width="30"
+                        Height="30"
+                        Margin="0,0,33,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        ClipToBounds="False"
+                        Command="{Binding Launch}"
+                        CornerRadius="20"
+                        IsEnabled="{Binding !IsLaunch}"
+                        IsVisible="{Binding IsOver}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text11}"
+                        ToolTip.VerticalOffset="-30">
+                        <Svg Path="/Resource/Icon/launch.svg" />
+                    </Button>
+                </Panel>
 
-        <Image
-            Width="32"
-            Height="32"
-            Margin="0,30,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            IsVisible="{Binding IsLaunch}"
-            Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
-            Stretch="UniformToFill" />
-        <Image
-            Width="32"
-            Height="32"
-            Margin="0,30,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            IsVisible="{Binding IsLoad}"
-            Source="resm:ColorMC.Gui.Resource.Pic.load.png"
-            Stretch="UniformToFill" />
+                <TextBlock
+                    Name="TextBlock1"
+                    HorizontalAlignment="Center"
+                    FontSize="13"
+                    Text="{Binding Name, FallbackValue=1234}"
+                    TextAlignment="Center"
+                    TextTrimming="{Binding Trim}"
+                    TextWrapping="{Binding Wrap}" />
+            </StackPanel>
+        </Panel>
+
     </Panel>
 
 </UserControl>

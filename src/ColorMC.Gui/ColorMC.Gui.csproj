@@ -36,6 +36,7 @@
         <None Remove=".gitignore" />
         <None Remove="icon.ico" />
         <None Remove="Resource\Icon\add.svg" />
+        <None Remove="Resource\Icon\add1.svg" />
         <None Remove="Resource\Icon\AddMenu\item1.svg" />
         <None Remove="Resource\Icon\AddMenu\item2.svg" />
         <None Remove="Resource\Icon\AddMenu\item3.svg" />
@@ -129,6 +130,7 @@
     <ItemGroup>
         <EmbeddedResource Include="icon.ico" />
         <AvaloniaResource Include="Resource\Icon\add.svg" />
+        <AvaloniaResource Include="Resource\Icon\add1.svg" />
         <AvaloniaResource Include="Resource\Icon\AddMenu\item1.svg" />
         <AvaloniaResource Include="Resource\Icon\AddMenu\item2.svg" />
         <AvaloniaResource Include="Resource\Icon\AddMenu\item3.svg" />

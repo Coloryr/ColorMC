@@ -181,11 +181,6 @@ public partial class MainControl : UserControl, IUserControl
         }
     }
 
-    private void Item_DoubleTapped(object? sender, TappedEventArgs e)
-    {
-        (DataContext as MainModel)!.Launch();
-    }
-
     public async Task<bool> Closing()
     {
         var model = (DataContext as MainModel)!;

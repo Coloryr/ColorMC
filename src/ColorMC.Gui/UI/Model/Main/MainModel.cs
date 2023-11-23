@@ -177,21 +177,6 @@ public partial class MainModel : TopModel, IMainTop
     }
 
     [RelayCommand]
-    public void AddGame()
-    {
-        App.ShowAddGame();
-    }
-
-    [RelayCommand]
-    public void EditGame()
-    {
-        if (Game != null)
-        {
-            App.ShowGameEdit(Game.Obj);
-        }
-    }
-
-    [RelayCommand]
     public void ShowSetting()
     {
         App.ShowSetting(SettingType.Normal);
@@ -234,15 +219,6 @@ public partial class MainModel : TopModel, IMainTop
     {
         _isCancel = true;
         _semaphore.Release();
-    }
-
-    [RelayCommand]
-    public void Launch()
-    {
-        if (Game != null)
-        {
-            Launch(Game);
-        }
     }
 
     [RelayCommand]
