@@ -49,8 +49,8 @@ public static class ConfigBinding
         if (res)
         {
             ColorSel.Load();
-            FontSel.Load();
-            StyleSel.Load();
+            FontSel.Instance.Load();
+            StyleSel.Instance.Load();
         }
 
         return res;
@@ -357,7 +357,7 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
 
-        FontSel.Load();
+        FontSel.Instance.Load();
     }
 
     /// <summary>
@@ -560,7 +560,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Style.ButtonCornerRadius = value;
         GuiConfigUtils.Save();
 
-        StyleSel.Load();
+        StyleSel.Instance.Load();
     }
 
     public static void SetStyle1(int value, bool value1)
@@ -592,7 +592,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Style.EnableBorderRadius = enableBorderRadius;
         GuiConfigUtils.Save();
 
-        StyleSel.Load();
+        StyleSel.Instance.Load();
     }
 
     public static void SetFrpKey1(string key)
