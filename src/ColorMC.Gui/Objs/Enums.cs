@@ -5,7 +5,18 @@ namespace ColorMC.Gui.Objs;
 /// </summary>
 public enum SettingType
 {
-    Normal, SetJava, Net
+    /// <summary>
+    /// 默认设置
+    /// </summary>
+    Normal, 
+    /// <summary>
+    /// 设置Java
+    /// </summary>
+    SetJava, 
+    /// <summary>
+    /// 网络设置
+    /// </summary>
+    Net
 }
 
 /// <summary>
@@ -13,7 +24,18 @@ public enum SettingType
 /// </summary>
 public enum GameEditWindowType
 {
-    Normal, Mod, World
+    /// <summary>
+    /// 默认编辑
+    /// </summary>
+    Normal, 
+    /// <summary>
+    /// 模组设置
+    /// </summary>
+    Mod, 
+    /// <summary>
+    /// 世界设置
+    /// </summary>
+    World
 }
 
 /// <summary>
@@ -63,7 +85,18 @@ public enum ColorType
 /// </summary>
 public enum RunType
 {
-    Program, AppBuilder, Phone
+    /// <summary>
+    /// 程序
+    /// </summary>
+    Program, 
+    /// <summary>
+    /// 预览器
+    /// </summary>
+    AppBuilder, 
+    /// <summary>
+    /// 手机
+    /// </summary>
+    Phone
 }
 
 /// <summary>
@@ -78,5 +111,32 @@ public enum MoveType
 
 public enum WebType
 {
-    Web, Minecraft, Guide, Sponsor, Mcmod, Github, NetFrp1
+    /// <summary>
+    /// 官网
+    /// </summary>
+    Web, 
+    /// <summary>
+    /// MC官网
+    /// </summary>
+    Minecraft, 
+    /// <summary>
+    /// 用户手册
+    /// </summary>
+    Guide, 
+    /// <summary>
+    /// 赞助
+    /// </summary>
+    Sponsor, 
+    /// <summary>
+    /// McMod
+    /// </summary>
+    Mcmod,
+    /// <summary>
+    /// 开源地址
+    /// </summary>
+    Github, 
+    /// <summary>
+    /// 樱花映射
+    /// </summary>
+    NetFrp1
 }

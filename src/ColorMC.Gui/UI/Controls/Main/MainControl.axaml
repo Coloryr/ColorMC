@@ -222,11 +222,18 @@
                                     Command="{Binding SetJava}"
                                     Content="{setting:Localize MainWindow.Text5}" />
                             </StackPanel>
-                            <Label
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Left"
-                                Content="{setting:Localize MainWindow.Text6}"
-                                FontSize="20" />
+                            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                                <Label
+                                    Width="120"
+                                    HorizontalAlignment="Left"
+                                    Content="{setting:Localize MainWindow.Text6}"
+                                    FontSize="20" />
+                                <Button
+                                    Width="120"
+                                    Height="35"
+                                    Command="{Binding AddGame}"
+                                    Content="{setting:Localize MainWindow.Control.Text2}" />
+                            </StackPanel>
 
                         </StackPanel>
                         <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
