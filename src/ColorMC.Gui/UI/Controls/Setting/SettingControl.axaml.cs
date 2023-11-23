@@ -55,14 +55,6 @@ public partial class SettingControl : UserControl, IUserControl
 
     public void Closed()
     {
-        _tab1 = null;
-        _tab2 = null;
-        _tab3 = null;
-        _tab4 = null;
-        _tab5 = null;
-        _tab6 = null;
-        _tab7 = null;
-
         App.SettingWindow = null;
     }
 

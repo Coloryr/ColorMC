@@ -13,7 +13,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A22";
-    public const string DateVersion = "20231121";
+    public const string DateVersion = "20231123";
 
     public const string Version = $"{TopVersion}.{DateVersion}";
 
