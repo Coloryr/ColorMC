@@ -10,46 +10,34 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 /// <summary>
 /// 字体
 /// </summary>
-public static class FontSel
+public class FontSel : INotifyPropertyChanged
 {
     private static FontFamily s_font = new(ColorMCGui.Font);
-    private static readonly List<IObserver<FontFamily>> s_fontList = [];
-
-    public static IDisposable Add(IObserver<FontFamily> observer)
-    {
-        s_fontList.Add(observer);
-        observer.OnNext(s_font);
-        return new Unsubscribe(observer);
-    }
-
-    public static void Remove(IObserver<FontFamily> observer)
-    {
-        s_fontList.Remove(observer);
-    }
-
-    private class Unsubscribe(IObserver<FontFamily> observer) : IDisposable
-    {
-        public void Dispose()
-        {
-            Remove(observer);
-        }
-    }
+    public readonly static FontSel Instance = new FontSel();
 
     /// <summary>
     /// 刷新UI
     /// </summary>
-    private static void Reload()
+    public FontFamily this[string key]
     {
-        foreach (var item in s_fontList)
+        get
         {
-            item.OnNext(s_font);
+            return s_font;
         }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void Reload()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
     }
 
     /// <summary>
     /// 加载字体
     /// </summary>
-    public static void Load()
+    public void Load()
     {
         if (!GuiConfigUtils.Config.FontDefault
             && !string.IsNullOrWhiteSpace(GuiConfigUtils.Config.FontName)
