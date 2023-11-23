@@ -33,6 +33,7 @@ public partial class GamesModel : TopModel
             _items.Add(item.UUID, model1);
             GameList.Add(model1);
         }
+        GameList.Add(new(model));
         Header = name;
         Key = key;
     }
@@ -89,6 +90,7 @@ public partial class GamesModel : TopModel
             _items.Add(item.UUID, model);
             GameList.Add(model);
         }
+        GameList.Add(new(Model));
     }
 
     protected override void Close()

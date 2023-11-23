@@ -13,8 +13,6 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class GameControl : UserControl
 {
-    public GameItemModel GameModel { get; private set; }
-
     public GameControl()
     {
         InitializeComponent();
@@ -26,25 +24,15 @@ public partial class GameControl : UserControl
         PointerReleased += GameControl_PointerReleased;
         PointerMoved += GameControl_PointerMoved;
         DoubleTapped += GameControl_DoubleTapped;
-
-        DataContextChanged += GameControl_DataContextChanged;
-    }
-
-    private void GameControl_DataContextChanged(object? sender, EventArgs e)
-    {
-        if (DataContext is GameItemModel mo)
-        {
-            GameModel = mo;
-        }
     }
 
     private void GameModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "IsDrop")
+        if (e.PropertyName == "IsDrop" && DataContext is GameItemModel model)
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (GameModel.IsDrop == true)
+                if (model.IsDrop == true)
                 {
                     RenderTransform = new ScaleTransform(0.95, 0.95);
                 }
@@ -58,13 +46,19 @@ public partial class GameControl : UserControl
 
     private void GameControl_PointerExited(object? sender, PointerEventArgs e)
     {
-        Rectangle2.IsVisible = false;
+        if (DataContext is GameItemModel model)
+        {
+            model.IsOver = false;
+        }
     }
 
     private void GameControl_PointerEntered(object? sender, PointerEventArgs e)
     {
-        Rectangle2.IsVisible = true;
-        GameModel.SetTips();
+        if (DataContext is GameItemModel model)
+        {
+            model.IsOver = true;
+            model.SetTips();
+        }
     }
 
     private Point point;
@@ -73,12 +67,12 @@ public partial class GameControl : UserControl
     {
         LongPressed.Cancel();
         var pro = e.GetCurrentPoint(this);
-        if (pro.Properties.IsLeftButtonPressed)
+        if (pro.Properties.IsLeftButtonPressed && DataContext is GameItemModel model)
         {
             var pos = pro.Position;
             if (Math.Sqrt(Math.Pow(Math.Abs(pos.X - point.X), 2) + Math.Pow(Math.Abs(pos.Y - point.Y), 2)) > 30)
             {
-                GameModel.Move(e);
+                model.Move(e);
                 e.Handled = true;
             }
         }
@@ -86,7 +80,10 @@ public partial class GameControl : UserControl
 
     private void GameControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        GameModel.IsDrop = false;
+        if (DataContext is GameItemModel model)
+        {
+            model.IsDrop = false;
+        }
 
         LongPressed.Released();
     }
@@ -94,38 +91,46 @@ public partial class GameControl : UserControl
     private void GameControl_DoubleTapped(object? sender, TappedEventArgs e)
     {
         e.Handled = true;
-        GameModel.Launch();
+        if (DataContext is GameItemModel model)
+        {
+            model.Launch();
+        }
     }
 
     private void GameControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         e.Handled = true;
-
-        var select = GameModel.IsSelect;
-        GameModel.SetSelect();
-
-        var pro = e.GetCurrentPoint(this);
-        point = pro.Position;
-
-        if (pro.Properties.IsRightButtonPressed)
+        if (DataContext is GameItemModel model)
         {
-            Flyout((sender as Control)!);
-        }
-        else 
-        {
-            if (SystemInfo.Os == OsType.Android && !select)
+            var select = model.IsSelect;
+            model.SetSelect();
+
+            var pro = e.GetCurrentPoint(this);
+            point = pro.Position;
+
+            if (pro.Properties.IsRightButtonPressed)
             {
-                return;
+                Flyout((sender as Control)!);
             }
-            LongPressed.Pressed(() => Flyout((sender as Control)!));
+            else
+            {
+                if (SystemInfo.Os == OsType.Android && !select)
+                {
+                    return;
+                }
+                LongPressed.Pressed(() => Flyout((sender as Control)!));
+            }
         }
     }
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is GameItemModel model)
         {
-            GameModel.Flyout(control);
-        });
+            Dispatcher.UIThread.Post(() =>
+            {
+                model.Flyout(control);
+            });
+        }
     }
 }
