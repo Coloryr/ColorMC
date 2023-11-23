@@ -43,7 +43,7 @@ public static class InstancesPath
     public const string Name23 = "temp";
     public const string Name24 = "cache";
 
-    private const string DefaultGroup = " ";
+    public const string DefaultGroup = " ";
 
     /// <summary>
     /// 游戏实例列表

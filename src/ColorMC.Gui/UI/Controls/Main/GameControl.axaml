@@ -82,7 +82,7 @@
                     <Button
                         Width="30"
                         Height="30"
-                        Margin="33,0,0,0"
+                        Margin="34,0,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         ClipToBounds="False"
@@ -96,7 +96,7 @@
                     <Button
                         Width="30"
                         Height="30"
-                        Margin="0,0,33,0"
+                        Margin="0,0,34,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         ClipToBounds="False"

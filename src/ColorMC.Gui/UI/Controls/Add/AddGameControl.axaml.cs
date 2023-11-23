@@ -10,6 +10,7 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add.AddGame;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
+using System;
 using System.ComponentModel;
 using System.Linq;
 
@@ -134,6 +135,14 @@ public partial class AddGameControl : UserControl, IUserControl
             var model = (DataContext as AddGameModel)!;
             model.GoTab("Tab2");
             model.SetFile(file);
+        }
+    }
+
+    public void SetGroup(string? group)
+    {
+        if (DataContext is AddGameModel model)
+        {
+            model.Group = group;
         }
     }
 }

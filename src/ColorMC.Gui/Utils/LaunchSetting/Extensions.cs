@@ -1,17 +1,10 @@
 using Avalonia;
 using Avalonia.Data;
 using Avalonia.Markup.Xaml;
-using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Media;
 using System;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
-
-public static class Indexer
-{
-    public const string IndexerName = "Item";
-    public const string IndexerArrayName = "Item[]";
-}
 
 public class ColorsExtension(string key) : MarkupExtension, IObservable<IBrush>
 {

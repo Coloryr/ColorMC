@@ -46,8 +46,11 @@ public partial class GameItemModel : GameModel
     [ObservableProperty]
     private Bitmap _pic;
 
-    public GameItemModel(BaseModel model) : base(model, new() { })
+    private string? _group;
+
+    public GameItemModel(BaseModel model, string? group) : base(model, new() { })
     {
+        _group = group;
         _isNew = true;
     }
 
@@ -67,7 +70,7 @@ public partial class GameItemModel : GameModel
     [RelayCommand]
     public void AddGame()
     {
-        App.ShowAddGame();
+        App.ShowAddGame(_group);
     }
 
     [RelayCommand]

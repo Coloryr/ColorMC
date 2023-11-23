@@ -1,10 +1,12 @@
 ﻿using Avalonia.Input;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -33,9 +35,10 @@ public partial class GamesModel : TopModel
             _items.Add(item.UUID, model1);
             GameList.Add(model1);
         }
-        GameList.Add(new(model));
+       
         Header = name;
         Key = key;
+        GameList.Add(new(model, Key == InstancesPath.DefaultGroup ? null : Key));
     }
 
     public bool DropIn(IDataObject data)
@@ -90,7 +93,7 @@ public partial class GamesModel : TopModel
             _items.Add(item.UUID, model);
             GameList.Add(model);
         }
-        GameList.Add(new(Model));
+        GameList.Add(new(Model, Key));
     }
 
     protected override void Close()

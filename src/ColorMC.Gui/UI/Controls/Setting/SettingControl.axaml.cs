@@ -12,13 +12,13 @@ namespace ColorMC.Gui.UI.Controls.Setting;
 
 public partial class SettingControl : UserControl, IUserControl
 {
-    private readonly Tab1Control _tab1 = new();
-    private readonly Tab2Control _tab2 = new();
-    private readonly Tab3Control _tab3 = new();
-    private readonly Tab4Control _tab4 = new();
-    private readonly Tab5Control _tab5 = new();
-    private readonly Tab6Control _tab6 = new();
-    private readonly Tab7Control _tab7 = new();
+    private Tab1Control _tab1 = new();
+    private Tab2Control _tab2 = new();
+    private Tab3Control _tab3 = new();
+    private Tab4Control _tab4 = new();
+    private Tab5Control _tab5 = new();
+    private Tab6Control _tab6 = new();
+    private Tab7Control _tab7 = new();
 
     private bool _switch1 = false;
 
@@ -55,6 +55,14 @@ public partial class SettingControl : UserControl, IUserControl
 
     public void Closed()
     {
+        _tab1 = null;
+        _tab2 = null;
+        _tab3 = null;
+        _tab4 = null;
+        _tab5 = null;
+        _tab6 = null;
+        _tab7 = null;
+
         App.SettingWindow = null;
     }
 
@@ -125,7 +133,7 @@ public partial class SettingControl : UserControl, IUserControl
                     _tab3.Reset();
                     break;
                 case 2:
-                    _tab4.Reset();
+                    //_tab4.Reset();
                     break;
                 case 4:
                     _tab6.Reset();

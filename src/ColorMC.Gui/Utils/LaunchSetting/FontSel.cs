@@ -31,7 +31,7 @@ public static class FontSel
     {
         public void Dispose()
         {
-            FontSel.Remove(observer);
+            Remove(observer);
         }
     }
 

@@ -215,7 +215,10 @@ public partial class App : Application
 
         //new Window1().Show();
         ShowCustom();
-        Task.Run(ColorMCCore.Init1);
+        if (ColorMCGui.RunType == RunType.Program)
+        {
+            Task.Run(ColorMCCore.Init1);
+        }
         Dispatcher.UIThread.Post(() => _ = LoadImage());
         if (ConfigBinding.WindowMode())
         {
@@ -453,7 +456,7 @@ public partial class App : Application
         CustomWindow?.Load(obj);
     }
 
-    public static void ShowAddGame(string? file = null)
+    public static void ShowAddGame(string? group, string? file = null)
     {
         if (AddGameWindow != null)
         {
@@ -464,6 +467,7 @@ public partial class App : Application
             AddGameWindow = new();
             AWindow(AddGameWindow);
         }
+        AddGameWindow.SetGroup(group);
         if (!string.IsNullOrWhiteSpace(file))
         {
             AddGameWindow?.AddFile(file);
