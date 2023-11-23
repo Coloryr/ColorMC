@@ -62,6 +62,7 @@ public partial class HeadControl : UserControl
             Height = 35,
             BorderThickness = new Thickness(0),
             BorderBrush = Brushes.Transparent,
+            Foreground = Brushes.White,
             CornerRadius = new CornerRadius(0),
             IsVisible = false
         };
@@ -71,6 +72,7 @@ public partial class HeadControl : UserControl
             Height = 35,
             BorderThickness = new Thickness(0),
             BorderBrush = Brushes.Transparent,
+            Foreground = Brushes.White,
             CornerRadius = new CornerRadius(0),
             IsVisible = false
         };
@@ -80,6 +82,7 @@ public partial class HeadControl : UserControl
             Height = 35,
             Content = App.Lang("Gui.Info31"),
             BorderThickness = new Thickness(0),
+            Foreground = Brushes.White,
             BorderBrush = Brushes.Transparent,
             CornerRadius = new CornerRadius(0),
             IsVisible = false

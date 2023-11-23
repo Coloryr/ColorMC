@@ -274,7 +274,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     public void Install1(FileDisplayObj data)
     {
         WindowClose();
-        App.ShowAddGame();
+        App.ShowAddGame(null);
         if (data.SourceType == SourceType.CurseForge)
         {
             App.AddGameWindow?.Install(

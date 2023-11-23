@@ -136,7 +136,7 @@ public partial class MainControl : UserControl, IUserControl
                 return;
             if (item.EndsWith(".zip") || item.EndsWith(".mrpack"))
             {
-                App.ShowAddGame(item);
+                App.ShowAddGame(null, item);
             }
         }
     }
