@@ -213,9 +213,8 @@ public partial class App : Application
             }
         }
 
-        //new Window1().Show();
         ShowCustom();
-        if (ColorMCGui.RunType == RunType.Program)
+        if (ColorMCGui.RunType != RunType.AppBuilder)
         {
             Task.Run(ColorMCCore.Init1);
         }

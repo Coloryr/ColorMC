@@ -58,7 +58,7 @@ public static class LongPressed
     /// </summary>
     public static void Released()
     {
-        if (s_count >= 2 && SystemInfo.Os == OsType.Android)
+        if (s_count >= 1 && SystemInfo.Os == OsType.Android)
         {
             s_action?.Invoke();
         }
