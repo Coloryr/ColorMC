@@ -140,6 +140,12 @@ public partial class MainModel : TopModel, IMainTop
     }
 
     [RelayCommand]
+    public void AddGame()
+    {
+        App.ShowAddGame(null);
+    }
+
+    [RelayCommand]
     public void ShowCount()
     {
         App.ShowCount();

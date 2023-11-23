@@ -2,6 +2,9 @@ using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
 
+/// <summary>
+/// 样式设置
+/// </summary>
 public record StyleSetting
 {
     /// <summary>
@@ -16,10 +19,19 @@ public record StyleSetting
     /// 过度淡化
     /// </summary>
     public bool AmFade { get; set; }
+    /// <summary>
+    /// 是否启用图片圆角
+    /// </summary>
     public bool EnablePicRadius { get; set; }
+    /// <summary>
+    /// 是否启用边框圆角
+    /// </summary>
     public bool EnableBorderRadius { get; set; }
 }
 
+/// <summary>
+/// 主界面设置
+/// </summary>
 public record MainWindowSetting
 {
 
@@ -180,7 +192,13 @@ public record Live2DSetting
     /// Live2D模型地址
     /// </summary>
     public string? Model { get; set; }
+    /// <summary>
+    /// 显示宽度
+    /// </summary>
     public int Width { get; set; }
+    /// <summary>
+    /// 显示高度
+    /// </summary>
     public int Height { get; set; }
     /// <summary>
     /// 是否启用

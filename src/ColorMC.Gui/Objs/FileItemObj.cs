@@ -10,31 +10,31 @@ public record FileItemObj
     /// <summary>
     /// 名字
     /// </summary>
-    public string Name;
+    public string Name { get; set; }
     /// <summary>
     /// 介绍
     /// </summary>
-    public string Summary;
+    public string Summary { get; set; }
     /// <summary>
     /// 作者
     /// </summary>
-    public string Author;
+    public string Author { get; set; }
     /// <summary>
     /// 下载次数
     /// </summary>
-    public long DownloadCount;
+    public long DownloadCount { get; set; }
     /// <summary>
     /// 更新日期
     /// </summary>
-    public string ModifiedDate;
+    public string ModifiedDate { get; set; }
     /// <summary>
     /// 图标网址
     /// </summary>
-    public string? Logo;
+    public string? Logo { get; set; }
     /// <summary>
     /// 是否已经下载
     /// </summary>
-    public bool IsDownload;
+    public bool IsDownload { get; set; }
 
     /// <summary>
     /// 文件类型
@@ -53,6 +53,9 @@ public record FileItemObj
     /// 数据
     /// </summary>
     public object Data;
+    /// <summary>
+    /// 数据
+    /// </summary>
     public object? Data1;
 }
 
