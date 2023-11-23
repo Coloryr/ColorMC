@@ -65,6 +65,10 @@ public partial class GameItemModel : GameModel
         Wrap = value ? TextWrapping.Wrap : TextWrapping.NoWrap;
         Trim = value ? TextTrimming.None : TextTrimming.CharacterEllipsis;
         IsDrop = false;
+        if (SystemInfo.Os == OsType.Android)
+        {
+            IsOver = value;
+        }
     }
 
     [RelayCommand]
