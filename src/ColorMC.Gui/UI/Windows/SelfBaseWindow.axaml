@@ -42,7 +42,7 @@
                 Opacity="{Binding BgOpacity}"
                 Source="{Binding Back}"
                 Stretch="UniformToFill" />
-            <dialog:DialogHost Identifier="{Binding Name}">
+            <dialog:DialogHost DisableOpeningAnimation="True" Identifier="{Binding Name}">
                 <dialog:DialogHost.DataTemplates>
                     <DataTemplate DataType="dialogmodel:Info1Model">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
