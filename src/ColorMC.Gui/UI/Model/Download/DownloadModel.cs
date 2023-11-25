@@ -76,9 +76,13 @@ public partial class DownloadModel : TopModel
         IsPause = !IsPause;
     }
 
+    /// <summary>
+    /// 请求停止下载
+    /// </summary>
+    /// <returns>是否已经停止</returns>
     public async Task<bool> Stop()
     {
-        if (BaseBinding.IsDownload)
+        if (!BaseBinding.IsDownload)
         {
             return true;
         }
