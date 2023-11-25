@@ -21,6 +21,8 @@ public partial class SettingModel : MenuModel
     private string? _jvmArg;
     [ObservableProperty]
     private string? _gameArg;
+    [ObservableProperty]
+    private string? _jvmEnv;
 
     [ObservableProperty]
     private bool _checkCore;
@@ -96,6 +98,11 @@ public partial class SettingModel : MenuModel
     partial void OnFullScreenChanged(bool value)
     {
         SetWindow();
+    }
+
+    partial void OnJvmEnvChanged(string? value)
+    {
+        SetArg();
     }
 
     partial void OnGameArgChanged(string? value)
@@ -202,6 +209,7 @@ public partial class SettingModel : MenuModel
             GameArg = con.DefaultJvmArg.GameArgs;
             PostCmd = con.DefaultJvmArg.LaunchPostData;
             PreCmd = con.DefaultJvmArg.LaunchPreData;
+            JvmEnv = con.DefaultJvmArg.JvmEnv;
 
             FullScreen = con.Window.FullScreen ?? false;
             CheckCore = con.GameCheck.CheckCore;
@@ -253,7 +261,7 @@ public partial class SettingModel : MenuModel
         if (_argLoad)
             return;
 
-        ConfigBinding.SetRunArg(JavaAgent, JvmArg, GameArg);
+        ConfigBinding.SetRunArg(JavaAgent, JvmArg, GameArg, JvmEnv);
     }
 
     private void SetCommand()

@@ -13,9 +13,9 @@
         Orientation="Horizontal">
         <Image
             Name="Image1"
-            Width="160"
-            Height="160"
-            Margin="0,0,20,0"
+            Width="100"
+            Height="100"
+            Margin="0,0,10,0"
             HorizontalAlignment="Center"
             Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
         <StackPanel Name="Grid1" ClipToBounds="True">
@@ -23,12 +23,12 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="欢迎使用"
-                FontSize="60" />
+                FontSize="40" />
             <Label
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="ColorMC"
-                FontSize="60" />
+                FontSize="40" />
         </StackPanel>
     </StackPanel>
 </UserControl>

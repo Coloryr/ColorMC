@@ -71,11 +71,28 @@ public enum GCType
     /// </summary>
     User = 4
 }
+
+/// <summary>
+/// 启动参数
+/// </summary>
 public record JvmArgObj
 {
+    /// <summary>
+    /// 自定义Jvm参数
+    /// </summary>
     public string? JvmArgs { get; set; }
+    /// <summary>
+    /// 自定义游戏参数
+    /// </summary>
     public string? GameArgs { get; set; }
+    /// <summary>
+    /// 自定义GC参数
+    /// </summary>
     public string? GCArgument { get; set; }
+    /// <summary>
+    /// 自定义环境变量
+    /// </summary>
+    public string? JvmEnv { get; set; }
     public GCType? GC { get; set; }
     public string? JavaAgent { get; set; }
     public uint? MaxMemory { get; set; }
