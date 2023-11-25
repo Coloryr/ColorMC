@@ -13,7 +13,7 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel Background="{setting:Colors TranBack}">
-        <dialog:DialogHost Identifier="UsersControl">
+        <dialog:DialogHost DisableOpeningAnimation="True" Identifier="UsersControl">
             <dialog:DialogHost.DataTemplates>
                 <DataTemplate DataType="model:UsersControlModel">
                     <StackPanel Margin="5">
