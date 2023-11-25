@@ -288,12 +288,13 @@ public static class ConfigBinding
         ConfigUtils.Save();
     }
 
-    public static void SetRunArg(string? v1, string? v2, string? v3)
+    public static void SetRunArg(string? v1, string? v2, string? v3, string? v4)
     {
         ConfigUtils.Config.DefaultJvmArg ??= new();
         ConfigUtils.Config.DefaultJvmArg.JavaAgent = v1;
         ConfigUtils.Config.DefaultJvmArg.JvmArgs = v2;
         ConfigUtils.Config.DefaultJvmArg.GameArgs = v3;
+        ConfigUtils.Config.DefaultJvmArg.JvmEnv = v4;
         ConfigUtils.Save();
     }
 

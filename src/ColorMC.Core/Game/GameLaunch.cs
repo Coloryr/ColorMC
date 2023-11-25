@@ -125,7 +125,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="cmd">命令</param>
-    public static void CmdRun(GameSettingObj obj, string cmd)
+    public static void CmdRun(GameSettingObj obj, string cmd, Dictionary<string, string> env)
     {
         var args = cmd.Split('\n');
         var file = args[0].Trim();
@@ -141,6 +141,10 @@ public static class Launch
             RedirectStandardError = true,
             RedirectStandardOutput = true
         };
+        foreach (var item in env)
+        {
+            info.Environment.Add(item.Key, item.Value);
+        }
         for (int a = 1; a < args.Length; a++)
         {
             info.ArgumentList.Add(args[a].Trim());
@@ -1171,6 +1175,58 @@ public static class Launch
             return null;
         }
 
+        //自定义启动参数
+        var env = new Dictionary<string, string>();
+        string envstr;
+        if (obj.JvmArg?.JvmEnv is { } str)
+        {
+            envstr = str;
+        }
+        else if (ConfigUtils.Config.DefaultJvmArg.JvmEnv is { } str1)
+        {
+            envstr = str1;
+        }
+        else
+        {
+            envstr = "";
+        }
+
+        if (!string.IsNullOrWhiteSpace(envstr))
+        {
+            var list1 = envstr.Split('\n');
+            foreach (var item in list1)
+            {
+                var item1 = item.Trim();
+                var index = item1.IndexOf('=');
+                string key, value;
+                if (index == -1)
+                {
+                    key = item1;
+                    value = "";
+                }
+                else if (index + 1 == item1.Length)
+                {
+                    key = item1[..^1];
+                    value = "";
+                }
+                else
+                {
+                    key = item1[..index];
+                    value = item1[(index + 1)..];
+                }
+
+                if (!env.TryAdd(key, value))
+                {
+                    env[key] = value;
+                }
+            }
+        }
+
+        if (s_cancel.IsCancellationRequested)
+        {
+            return null;
+        }
+
         //启动前运行
         if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
             || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
@@ -1200,7 +1256,7 @@ public static class Launch
                             arglist.Add(args[a].Trim());
                         }
 
-                        await ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1, obj.GetGamePath(), arglist);
+                        await ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1, obj.GetGamePath(), arglist, env);
 
                         stopwatch.Stop();
                         string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
@@ -1214,7 +1270,7 @@ public static class Launch
                     stopwatch.Start();
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
                     start = ReplaceArg(obj, path!, arg, start);
-                    CmdRun(obj, start);
+                    CmdRun(obj, start, env);
                     stopwatch.Stop();
                     string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                         obj.Name, stopwatch.Elapsed.ToString());
@@ -1248,13 +1304,15 @@ public static class Launch
                 var obj1 = obj.Loader is Loaders.Forge
                     ? VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!)!
                     : VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!)!;
-                var install = await CheckHelpers.CheckForgeInstall(obj1, obj.LoaderVersion!, obj.Loader is Loaders.NeoForge);
+                var install = await CheckHelpers.CheckForgeInstall(obj1, 
+                    obj.LoaderVersion!, obj.Loader is Loaders.NeoForge);
                 if (install)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.InstallForge);
                     var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
                             LanguageHelper.Get("Core.Launch.Error9"));
-                    var res1 = await ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1, obj.GetGamePath(), obj.MakeInstallForgeArg());
+                    var res1 = await ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1, 
+                        obj.GetGamePath(), obj.MakeInstallForgeArg(), env);
                     if (res1 != true)
                     {
                         throw new LaunchException(LaunchState.JavaError,
@@ -1263,7 +1321,7 @@ public static class Launch
                 }
             }
 
-            ColorMCCore.PhoneGameLaunch?.Invoke(obj, jvm!, arg);
+            ColorMCCore.PhoneGameLaunch?.Invoke(obj, jvm!, arg, env);
             return null;
         }
 
@@ -1278,6 +1336,10 @@ public static class Launch
         foreach (var item in arg)
         {
             process.StartInfo.ArgumentList.Add(item);
+        }
+        foreach (var item in env)
+        {
+            process.StartInfo.Environment.Add(item.Key, item.Value);
         }
 
         process.StartInfo.RedirectStandardInput = true;
@@ -1317,7 +1379,7 @@ public static class Launch
                         stopwatch.Start();
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPost);
                         start = ReplaceArg(obj, path!, arg, start);
-                        CmdRun(obj, start);
+                        CmdRun(obj, start, env);
                         stopwatch.Stop();
                         string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info9"),
                             obj.Name, stopwatch.Elapsed.ToString());

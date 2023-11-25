@@ -45,6 +45,8 @@ public partial class GameEditModel : MenuModel
     private string? _proxyUser;
     [ObservableProperty]
     private string? _proxyPassword;
+    [ObservableProperty]
+    private string? _jvmEnv;
 
     [ObservableProperty]
     private ushort? _proxyPort;
@@ -74,6 +76,16 @@ public partial class GameEditModel : MenuModel
     private bool? _maxWindow;
 
     private bool _configLoad;
+
+    partial void OnJvmEnvChanged(string? value)
+    {
+        if (_configLoad)
+            return;
+
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.JvmEnv = value;
+        _obj.Save();
+    }
 
     partial void OnProxyPasswordChanged(string? value)
     {
@@ -383,6 +395,7 @@ public partial class GameEditModel : MenuModel
             JavaAgent = config.JavaAgent;
             JvmArg = config.JvmArgs;
             GameArg = config.GameArgs;
+            JvmEnv = config.JvmEnv;
             PostRunCmd = config.LaunchPostData;
             PerRunCmd = config.LaunchPreData;
 
@@ -398,6 +411,7 @@ public partial class GameEditModel : MenuModel
             JavaAgent = null;
             JvmArg = null;
             GameArg = null;
+            JvmEnv = null;
             PostRunCmd = null;
             PerRunCmd = null;
             PerRun = false;
