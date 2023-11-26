@@ -60,7 +60,7 @@ public static class DownloadManager
         LoadThread();
     }
 
-    public static void LoadThread()
+    private static void LoadThread()
     {
         Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info1"),
             ConfigUtils.Config.Http.DownloadThread));

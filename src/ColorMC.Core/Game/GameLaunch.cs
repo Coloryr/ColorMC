@@ -820,7 +820,7 @@ public static class Launch
         var version = VersionPath.GetVersion(obj.Version)!;
         var assetsPath = AssetsPath.BaseDir;
         var gameDir = InstancesPath.GetGamePath(obj);
-        var assetsIndexName = version.assets != null ? version.assets : "legacy";
+        var assetsIndexName = version.assets ?? "legacy";
 
         var version_name = obj.Loader switch
         {
@@ -935,22 +935,6 @@ public static class Launch
         list.AddRange(gamearg);
 
         return list;
-    }
-
-    /// <summary>
-    /// 保持splash不开启
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    private static void ConfigSet(GameSettingObj obj)
-    {
-        var dir = obj.GetConfigPath();
-        Directory.CreateDirectory(dir);
-        var file = dir + "splash.properties";
-        string data = PathHelper.ReadText(file) ?? "enabled=true";
-        if (data.Contains("enabled=true"))
-        {
-            PathHelper.WriteText(file, data.Replace("enabled=true", "enabled=false"));
-        }
     }
 
     /// <summary>
@@ -1294,8 +1278,6 @@ public static class Launch
 
         if (SystemInfo.Os == OsType.Android)
         {
-            ConfigSet(obj);
-
             //安装Forge
             var version = VersionPath.GetVersion(obj.Version)!;
             var v2 = CheckHelpers.ISGameVersionV2(version);

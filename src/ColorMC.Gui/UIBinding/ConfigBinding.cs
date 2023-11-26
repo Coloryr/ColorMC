@@ -219,8 +219,6 @@ public static class ConfigBinding
         ConfigUtils.Config.Http ??= new();
         ConfigUtils.Config.Http.DownloadThread = value;
         ConfigUtils.Save();
-
-        DownloadManager.LoadThread();
     }
 
     public static void SetDownloadProxy(string ip, ushort port, string user, string password)
