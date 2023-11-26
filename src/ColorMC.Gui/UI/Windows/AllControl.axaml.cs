@@ -8,6 +8,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UIBinding;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -154,6 +155,8 @@ public partial class AllControl : UserControl, IBaseWindow
 
         ((con as UserControl)?.DataContext as TopModel)?.TopClose();
         con.Closed();
+
+        BaseBinding.Clear();
     }
 
     private void Back()

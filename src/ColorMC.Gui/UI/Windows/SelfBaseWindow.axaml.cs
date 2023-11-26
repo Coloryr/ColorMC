@@ -200,6 +200,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             }
         }
 
+        BaseBinding.Clear();
         FuntionUtils.RunGC();
     }
 

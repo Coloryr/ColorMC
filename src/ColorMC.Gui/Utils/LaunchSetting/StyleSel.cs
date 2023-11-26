@@ -2,17 +2,15 @@ using Avalonia;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Tmds.DBus.SourceGenerator;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 
 /// <summary>
 /// 样式获取
 /// </summary>
-public class StyleSel : INotifyPropertyChanged
-
+public static class StyleSel
 {
-    public readonly static StyleSel Instance = new();
+    private static readonly Dictionary<string, List<WeakReference<IObserver<object?>>>> s_styleList = [];
 
     private static readonly double s_fontTitleSize = 17;
     private static readonly Thickness s_borderPadding = new(6);
@@ -21,46 +19,81 @@ public class StyleSel : INotifyPropertyChanged
     private static CornerRadius s_picRadius = new(0);
     private static int Radius;
 
-    public object? this[string key]
+    private static object? Get(string key)
     {
-        get
+        if (key == "ButtonCornerRadius")
         {
-            if (key == "ButtonCornerRadius")
+            return s_buttonCornerRadius;
+        }
+        else if (key == "PicRadius")
+        {
+            return s_picRadius;
+        }
+        else if (key == "FontTitle")
+        {
+            return s_fontTitleSize;
+        }
+        else if (key == "Radius")
+        {
+            return Radius;
+        }
+        else if (key == "BorderPadding")
+        {
+            return s_borderPadding;
+        }
+        return null;
+    }
+
+    public static IDisposable Add(string key, IObserver<object?> observer)
+    {
+        if (s_styleList.TryGetValue(key, out var list))
+        {
+            list.Add(new(observer));
+        }
+        else
+        {
+            list = [new(observer)];
+            s_styleList.Add(key, list);
+        }
+        var value = Get(key);
+        observer.OnNext(value);
+        return new Unsubscribe(list, observer);
+    }
+
+    private class Unsubscribe(List<WeakReference<IObserver<object?>>> observers, IObserver<object?> observer) : IDisposable
+    {
+        public void Dispose()
+        {
+            foreach (var item in observers.ToArray())
             {
-                return s_buttonCornerRadius;
+                if (!item.TryGetTarget(out var target)
+                    || target == observer)
+                {
+                    observers.Remove(item);
+                }
             }
-            else if (key == "PicRadius")
-            {
-                return s_picRadius;
-            }
-            else if (key == "FontTitle")
-            {
-                return s_fontTitleSize;
-            }
-            else if (key == "Radius")
-            {
-                return Radius;
-            }
-            else if (key == "BorderPadding")
-            {
-                return s_borderPadding;
-            }
-            return null;
         }
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    private void Reload()
+    private static void Reload()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
+        foreach (var item in s_styleList)
+        {
+            var value = Get(item.Key);
+            foreach (var item1 in item.Value)
+            {
+                if (item1.TryGetTarget(out var target))
+                {
+                    target.OnNext(value);
+                }
+            }
+        }
     }
 
     /// <summary>
     /// 加载
     /// </summary>
-    public void Load()
+    public static void Load()
     {
         var config = GuiConfigUtils.Config.Style;
 
@@ -78,5 +111,19 @@ public class StyleSel : INotifyPropertyChanged
         Radius = config.EnableBorderRadius ? config.ButtonCornerRadius : 0;
 
         Reload();
+    }
+
+    public static void Remove()
+    {
+        foreach (var item in s_styleList.Values)
+        {
+            foreach (var item1 in item.ToArray())
+            {
+                if (!item1.TryGetTarget(out _))
+                {
+                    item.Remove(item1);
+                }
+            }
+        }
     }
 }

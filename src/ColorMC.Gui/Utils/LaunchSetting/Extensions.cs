@@ -1,69 +1,59 @@
 using Avalonia;
 using Avalonia.Data;
 using Avalonia.Markup.Xaml;
-using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Media;
 using System;
-using Tmds.DBus.Protocol;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 
-public static class Indexer
-{
-    public const string IndexerName = "Item";
-    public const string IndexerArrayName = "Item[]";
-}
-
-public class ColorsExtension(string key) : MarkupExtension
+public class ColorsExtension(string key) : MarkupExtension, IObservable<IBrush>
 {
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        var binding = new ReflectionBindingExtension($"[{key}]")
-        {
-            Mode = BindingMode.OneWay,
-            Source = ColorSel.Instance,
-        };
+        return this.ToBinding();
+    }
 
-        return binding.ProvideValue(serviceProvider);
+    public IDisposable Subscribe(IObserver<IBrush> observer)
+    {
+        return ColorSel.Add(key, observer);
     }
 }
 
-public class LocalizeExtension(string key) : MarkupExtension
+public class LocalizeExtension(string key) : MarkupExtension, IObservable<string>
 {
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        var binding = new ReflectionBindingExtension($"[{key}]")
-        {
-            Mode = BindingMode.OneWay,
-            Source = Localizer.Instance,
-        };
+        return this.ToBinding();
+    }
 
-        return binding.ProvideValue(serviceProvider);
+    public IDisposable Subscribe(IObserver<string> observer)
+    {
+        return LangSel.Add(key, observer);
     }
 }
 
-public class FontExtension : MarkupExtension
+public class FontExtension : MarkupExtension, IObservable<FontFamily>
 {
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        var binding = new ReflectionBindingExtension("[Font]")
-        {
-            Mode = BindingMode.OneWay,
-            Source = FontSel.Instance,
-        };
-        return binding.ProvideValue(serviceProvider);
+        return this.ToBinding();
+    }
+
+    public IDisposable Subscribe(IObserver<FontFamily> observer)
+    {
+        return FontSel.Add(observer);
     }
 }
 
-public class StyleExtension(string key) : MarkupExtension
+public class StyleExtension(string key) : MarkupExtension, IObservable<object?>
 {
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        var binding = new ReflectionBindingExtension($"[{key}]")
-        {
-            Mode = BindingMode.OneWay,
-            Source = StyleSel.Instance,
-        };
-        return binding.ProvideValue(serviceProvider);
+        return this.ToBinding();
+    }
+
+    public IDisposable Subscribe(IObserver<object?> observer)
+    {
+        return StyleSel.Add(key, observer);
     }
 }
