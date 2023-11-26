@@ -43,6 +43,14 @@ public static class UIUtils
         return default;
     }
 
+    private class ColorObservable(string key) : IObservable<IBrush>
+    {
+        public IDisposable Subscribe(IObserver<IBrush> observer)
+        {
+            return ColorSel.Add(key, observer);
+        }
+    }
+
     /// <summary>
     /// 背景透明
     /// </summary>
@@ -52,11 +60,7 @@ public static class UIUtils
         try
         {
             var item1 = expander.FindToEnd<Border>();
-            item1?.Bind(Border.BackgroundProperty, new Binding
-            {
-                Source = ColorSel.Instance,
-                Path = "[TranBack]"
-            });
+            item1?.Bind(Border.BackgroundProperty, new ColorObservable("TranBack").ToBinding());
         }
         catch
         {
@@ -78,11 +82,7 @@ public static class UIUtils
                 foreach (var item in item1.GetVisualChildren())
                 {
                     var item2 = item.FindToEnd<TextBlock>();
-                    item2?.Bind(TextBlock.ForegroundProperty, new Binding
-                    {
-                        Source = ColorSel.Instance,
-                        Path = "[Font]"
-                    });
+                    item2?.Bind(TextBlock.ForegroundProperty, new ColorObservable("Font").ToBinding());
                 }
             }
         }

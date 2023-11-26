@@ -10,34 +10,56 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 /// <summary>
 /// 字体
 /// </summary>
-public class FontSel : INotifyPropertyChanged
+public static class FontSel
 {
-    private static FontFamily s_font = new(ColorMCGui.Font);
-    public readonly static FontSel Instance = new FontSel();
+    private static FontFamily s_font = new(FontFamily.DefaultFontFamilyName);
+    private static readonly List<WeakReference<IObserver<FontFamily>>> s_fontList = [];
+
+    public static IDisposable Add(IObserver<FontFamily> observer)
+    {
+        s_fontList.Add(new WeakReference<IObserver<FontFamily>>(observer));
+        observer.OnNext(s_font);
+        return new Unsubscribe(observer);
+    }
+
+    public static void Remove(IObserver<FontFamily> observer)
+    {
+        foreach (var item in s_fontList.ToArray())
+        {
+            if (!item.TryGetTarget(out var target)
+                || target == observer)
+            {
+                s_fontList.Remove(item);
+            }
+        }
+    }
+
+    private class Unsubscribe(IObserver<FontFamily> observer) : IDisposable
+    {
+        public void Dispose()
+        {
+            Remove(observer);
+        }
+    }
 
     /// <summary>
     /// 刷新UI
     /// </summary>
-    public FontFamily this[string key]
+    private static void Reload()
     {
-        get
+        foreach (var item in s_fontList)
         {
-            return s_font;
+            if (item.TryGetTarget(out var target))
+            {
+                target.OnNext(s_font);
+            }
         }
-    }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    private void Reload()
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
     }
 
     /// <summary>
     /// 加载字体
     /// </summary>
-    public void Load()
+    public static void Load()
     {
         if (!GuiConfigUtils.Config.FontDefault
             && !string.IsNullOrWhiteSpace(GuiConfigUtils.Config.FontName)
@@ -51,6 +73,17 @@ public class FontSel : INotifyPropertyChanged
         {
             s_font = new(ColorMCGui.Font);
             Reload();
+        }
+    }
+
+    public static void Remove()
+    {
+        foreach (var item in s_fontList.ToArray())
+        {
+            if (!item.TryGetTarget(out _))
+            {
+                s_fontList.Remove(item);
+            }
         }
     }
 }

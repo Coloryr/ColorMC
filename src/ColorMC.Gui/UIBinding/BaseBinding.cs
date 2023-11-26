@@ -89,7 +89,7 @@ public static class BaseBinding
         ColorMCCore.LanguageReload = (type)=> 
         {
             App.LoadLanguage(type);
-            Localizer.Instance.Reload();
+            LangSel.Reload();
 
             App.Reboot();
         };
@@ -111,9 +111,9 @@ public static class BaseBinding
 
         ImageUtils.Init(ColorMCGui.RunDir);
 
-        FontSel.Instance.Load();
+        FontSel.Load();
         ColorSel.Load();
-        StyleSel.Instance.Load();
+        StyleSel.Load();
         LoadStyle();
 
         InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>
@@ -877,5 +877,13 @@ public static class BaseBinding
         App.ShowNetFrp(p, model, ip + ":" + model.Port);
 
         return true;
+    }
+
+    public static void Clear()
+    {
+        ColorSel.Remove();
+        FontSel.Remove();
+        LangSel.Remove();
+        StyleSel.Remove();
     }
 }

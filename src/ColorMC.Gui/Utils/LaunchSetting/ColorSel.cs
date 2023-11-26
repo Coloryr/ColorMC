@@ -5,7 +5,6 @@ using Avalonia.Threading;
 using ColorMC.Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
@@ -13,10 +12,8 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 /// <summary>
 /// 颜色设定
 /// </summary>
-public class ColorSel : INotifyPropertyChanged
+public static class ColorSel
 {
-    public readonly static ColorSel Instance = new();
-
     public static readonly IBrush AppLightBackColor = Brush.Parse("#FFF3F3F3");
     public static readonly IBrush AppLightBackColor1 = Brush.Parse("#AA989898");
     public static readonly IBrush AppLightBackColor2 = Brush.Parse("#11FFFFFF");
@@ -80,7 +77,7 @@ public class ColorSel : INotifyPropertyChanged
     private static IBrush s_color = MainColor;
     private static IBrush s_color1 = FontColor;
     private static readonly Semaphore s_semaphore = new(0, 2);
-    private static readonly Dictionary<string, List<IObserver<IBrush>>> s_colorList = [];
+    private static readonly Dictionary<string, List<WeakReference<IObserver<IBrush>>>> s_colorList = [];
 
     private static readonly Thread t_tick = new(Tick)
     {
@@ -172,7 +169,7 @@ public class ColorSel : INotifyPropertyChanged
             MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
             MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
 
-            Instance.Reload();
+            Reload();
         }
         catch (Exception e)
         {
@@ -236,67 +233,116 @@ public class ColorSel : INotifyPropertyChanged
                     s_color1 = Brush.Parse("#FFFFFFFF");
                 }
 
-                Dispatcher.UIThread.InvokeAsync(Instance.Reload).Wait();
+                Dispatcher.UIThread.InvokeAsync(Reload).Wait();
 
                 Thread.Sleep(20);
             }
         }
     }
 
-    public void Reload()
+    public static IDisposable Add(string key, IObserver<IBrush> observer)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
+        if (s_colorList.TryGetValue(key, out var list))
+        {
+            list.Add(new(observer));
+        }
+        else
+        {
+            list = [new(observer)];
+            s_colorList.Add(key, list);
+        }
+        var value = GetColor(key);
+        observer.OnNext(value);
+        return new Unsubscribe(list, observer);
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    public IBrush this[string key]
+    private class Unsubscribe(List<WeakReference<IObserver<IBrush>>> observers, IObserver<IBrush> observer) : IDisposable
     {
-        get 
+        public void Dispose()
         {
-            if (key == "Main")
-                return s_rgb ? s_color : MainColor;
-            else if (key == "Back")
-                return BackColor;
-            else if (key == "TranBack")
-                return Back1Color;
-            else if (key == "Font")
-                return FontColor;
-            else if (key == "ButtonFont")
-                return s_rgb ? s_color1 : ButtonFont;
-            else if (key == "Motd")
-                return MotdColor;
-            else if (key == "MotdBack")
-                return MotdBackColor;
-            else if (key == "Bottom")
-                return BottomColor;
-            else if (key == "Bottom1")
-                return BottomColor1;
-            else if (key == "Bottom2")
-                return BottomColor2;
-            else if (key == "TopBottom")
-                return TopBottomColor;
-            else if (key == "BottomTran")
-                return BottomTranColor;
-            else if (key == "PointIn")
-                return MainColor;
-            else if (key == "GroupBack")
-                return GroupBackColor;
-            else if (key == "GroupColor")
-                return GroupBackColor1;
-            else if (key == "GroupColor1")
-                return GroupBackColor2;
-            else if (key == "BG")
-                return BGColor;
-            else if (key == "BG1")
-                return BGColor1;
-            else if (key == "Back1")
-                return Back2Color;
-            else if (key == "ButtonBorder")
-                return ButtonBorder;
-
-            return Brushes.White;
+            foreach (var item in observers.ToArray())
+            {
+                if (!item.TryGetTarget(out var target)
+                    || target == observer)
+                {
+                    observers.Remove(item);
+                }
+            }
         }
+    }
+
+    public static void Reload()
+    {
+        foreach (var item in s_colorList)
+        {
+            var value = GetColor(item.Key);
+            foreach (var item1 in item.Value)
+            {
+                if (item1.TryGetTarget(out var target))
+                {
+                    target.OnNext(value);
+                }
+            }
+        }
+    }
+
+    public static void Remove()
+    {
+        foreach (var item in s_colorList.Values)
+        {
+            foreach (var item1 in item.ToArray())
+            {
+                if (!item1.TryGetTarget(out _))
+                {
+                    item.Remove(item1);
+                }
+            }
+        }
+    }
+
+    private static IBrush GetColor(string key)
+    {
+        if (key == "Main")
+            return s_rgb ? s_color : MainColor;
+        else if (key == "Back")
+            return BackColor;
+        else if (key == "TranBack")
+            return Back1Color;
+        else if (key == "Font")
+            return FontColor;
+        else if (key == "ButtonFont")
+            return s_rgb ? s_color1 : ButtonFont;
+        else if (key == "Motd")
+            return MotdColor;
+        else if (key == "MotdBack")
+            return MotdBackColor;
+        else if (key == "Bottom")
+            return BottomColor;
+        else if (key == "Bottom1")
+            return BottomColor1;
+        else if (key == "Bottom2")
+            return BottomColor2;
+        else if (key == "TopBottom")
+            return TopBottomColor;
+        else if (key == "BottomTran")
+            return BottomTranColor;
+        else if (key == "PointIn")
+            return MainColor;
+        else if (key == "GroupBack")
+            return GroupBackColor;
+        else if (key == "GroupColor")
+            return GroupBackColor1;
+        else if (key == "GroupColor1")
+            return GroupBackColor2;
+        else if (key == "BG")
+            return BGColor;
+        else if (key == "BG1")
+            return BGColor1;
+        else if (key == "Back1")
+            return Back2Color;
+        else if (key == "ButtonBorder")
+            return ButtonBorder;
+
+        return Brushes.White;
     }
 }
