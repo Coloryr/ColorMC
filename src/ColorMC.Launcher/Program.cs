@@ -37,13 +37,13 @@ public static class Program
 {
     public const string TopVersion = "A22";
 
-    public static readonly string[] BaseSha1 = new[]
-    {
-        "",
-        "",
-        "",
-        ""
-    };
+    public static readonly string[] BaseSha1 =
+    [
+        "4c83d46b3080735b52c72aded1dc4b5fdec2139a",
+        "176025ab89021869c2b5324954b29dab2f975d02",
+        "b0adcdb0894a8ec32be7a3dc1ca575a471adfb9c",
+        "ea7db255b71b7a8a5a19504be6d3d93cf061ded0"
+    ];
     /// <summary>
     /// 加载路径
     /// </summary>
