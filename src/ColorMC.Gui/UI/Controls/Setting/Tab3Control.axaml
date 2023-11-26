@@ -72,6 +72,10 @@
                             IsChecked="{Binding AutoDownload}"
                             IsEnabled="{Binding !IsDownload}" />
                     </WrapPanel>
+                    <TextBlock
+                        Margin="0,2,0,0"
+                        Text="{setting:Localize SettingWindow.Tab3.Text24}"
+                        TextWrapping="Wrap" />
                 </StackPanel>
 
             </Border>
