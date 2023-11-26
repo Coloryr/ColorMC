@@ -13,6 +13,8 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class GameControl : UserControl
 {
+    private bool press;
+
     public GameControl()
     {
         InitializeComponent();
@@ -65,9 +67,13 @@ public partial class GameControl : UserControl
 
     private void GameControl_PointerMoved(object? sender, PointerEventArgs e)
     {
+        if (!press)
+        {
+            return;
+        }
         LongPressed.Cancel();
         var pro = e.GetCurrentPoint(this);
-        if (pro.Properties.IsLeftButtonPressed && DataContext is GameItemModel model)
+        if (pro.Properties.IsLeftButtonPressed && DataContext is GameItemModel model && !model.IsNew)
         {
             var pos = pro.Position;
             if (Math.Sqrt(Math.Pow(Math.Abs(pos.X - point.X), 2) + Math.Pow(Math.Abs(pos.Y - point.Y), 2)) > 30)
@@ -80,6 +86,8 @@ public partial class GameControl : UserControl
 
     private void GameControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
+        press = false;
+
         if (DataContext is GameItemModel model)
         {
             model.IsDrop = false;
@@ -99,6 +107,7 @@ public partial class GameControl : UserControl
 
     private void GameControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
+        press = true;
         e.Handled = true;
         if (DataContext is GameItemModel model)
         {
