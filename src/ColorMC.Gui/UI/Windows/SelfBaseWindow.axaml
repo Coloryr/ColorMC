@@ -11,7 +11,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
     xmlns:windows="clr-namespace:ColorMC.Gui.UI.Windows"
-    Title="Title"
+    Title="{Binding Title}"
     Width="760"
     Height="450"
     MinWidth="340"
@@ -25,7 +25,6 @@
     ExtendClientAreaToDecorationsHint="True"
     FontFamily="{setting:Font}"
     RequestedThemeVariant="{Binding Theme}"
-    SystemDecorations="BorderOnly"
     TransparencyBackgroundFallback="Transparent"
     TransparencyLevelHint="{Binding Hints}"
     mc:Ignorable="d">
@@ -35,7 +34,10 @@
     </Design.DataContext>
 
     <DockPanel>
-        <windows:HeadControl DockPanel.Dock="Top" IsVisible="{Binding EnableHead}" />
+        <windows:HeadControl
+            Name="Head"
+            DockPanel.Dock="Top"
+            IsVisible="{Binding EnableHead}" />
         <Panel Background="{Binding Background}">
             <Image
                 IsVisible="{Binding BgVisible}"

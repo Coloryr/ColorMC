@@ -6,11 +6,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     x:DataType="model:NetFrpRemoteModel"
     mc:Ignorable="d">
-    <StackPanel>
+    <Border
+        Padding="{setting:Style BorderPadding}"
+        Background="{setting:Colors GroupBack}"
+        BorderBrush="{setting:Colors GroupColor}"
+        BorderThickness="2"
+        CornerRadius="{setting:Style ButtonCornerRadius}">
         <StackPanel Orientation="Horizontal">
             <Label Content="{setting:Localize NetFrpWindow.Tab1.Text9}" />
             <Label Margin="0,0,10,0" Content="{Binding Name}" />
@@ -23,5 +26,5 @@
             <Label Content="{setting:Localize NetFrpWindow.Tab1.Text13}" />
             <Label Margin="0,0,10,0" Content="{Binding Use}" />
         </StackPanel>
-    </StackPanel>
+    </Border>
 </UserControl>

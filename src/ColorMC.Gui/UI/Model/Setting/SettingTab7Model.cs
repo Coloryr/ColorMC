@@ -13,7 +13,7 @@ public partial class SettingModel : MenuModel
     public string RunType => App.Lang(ColorMCGui.IsAot ? "SettingWindow.Tab7.Info1" : "SettingWindow.Tab7.Info2");
 
     [RelayCommand]
-    public void OpenUrl1()
+    public void OpenUrl1(object urls)
     {
         WebBinding.OpenWeb(WebType.Web);
     }
@@ -46,5 +46,17 @@ public partial class SettingModel : MenuModel
     public void OpenUrl6()
     {
         WebBinding.OpenWeb(WebType.Mcmod);
+    }
+
+    [RelayCommand]
+    public void OpenUrl7()
+    {
+        WebBinding.OpenWeb(WebType.Apache2_0);
+    }
+
+    [RelayCommand]
+    public void OpenUrl8()
+    {
+        WebBinding.OpenWeb(WebType.MIT);
     }
 }

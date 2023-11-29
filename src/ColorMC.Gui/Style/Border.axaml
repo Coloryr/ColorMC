@@ -1,0 +1,20 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!--  Add Controls for Previewer Here  -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="Border.t1">
+        <Setter Property="Background" Value="{setting:Colors GroupBack}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors GroupColor1}" />
+    </Style>
+    <Style Selector="Border.t1:pointerover">
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrushPointerOver}" />
+    </Style>
+</Styles>

@@ -9,6 +9,7 @@ using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -205,5 +206,11 @@ public partial class AllControl : UserControl, IBaseWindow
     public void Hide()
     {
         (VisualRoot as Window)?.Hide();
+    }
+
+    public void WindowStateChange(WindowState windowState)
+    {
+        ICon.WindowStateChange(windowState);
+        Head.WindowStateChange(windowState);
     }
 }

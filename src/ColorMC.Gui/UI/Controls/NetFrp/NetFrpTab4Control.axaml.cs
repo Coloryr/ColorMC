@@ -4,9 +4,9 @@ using ColorMC.Gui.UI.Model.NetFrp;
 
 namespace ColorMC.Gui.UI.Controls.NetFrp;
 
-public partial class NetFrpTab1Control : UserControl
+public partial class NetFrpTab4Control : UserControl
 {
-    public NetFrpTab1Control()
+    public NetFrpTab4Control()
     {
         InitializeComponent();
 
@@ -15,7 +15,7 @@ public partial class NetFrpTab1Control : UserControl
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (DataContext is NetFrpModel model && model.NowView == 1)
+        if (DataContext is NetFrpModel model && model.NowView == 0)
         {
             model.WhellChange(e.Delta.Y);
         }

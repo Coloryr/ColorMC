@@ -16,9 +16,8 @@
             <Border
                 Margin="5,5,5,0"
                 Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
+                Classes="t1"
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 DockPanel.Dock="Top">
                 <StackPanel

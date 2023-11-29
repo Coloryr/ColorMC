@@ -92,4 +92,5 @@ $ dotnet run
 ## 使用的IDE
 
 [Visual Studio Code](https://code.visualstudio.com/)  
-[Visual Studio 2022](https://visualstudio.microsoft.com/)
+[Visual Studio 2022](https://visualstudio.microsoft.com/)  
+![dotMemory logo](https://resources.jetbrains.com/storage/products/company/brand/logos/dotMemory_icon.svg)

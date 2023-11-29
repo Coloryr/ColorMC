@@ -60,6 +60,8 @@
   "Core.Http.OptiFine.Error4": "下载Optifine失败",
   "Core.Http.ColorMC.Error1": "获取McMod信息错误",
   "Core.Http.ColorMC.Error2": "获取更新日志错误",
+  "Core.Http.ColorMC.Error3": "推送映射信息错误",
+  "Core.Http.ColorMC.Error4": "映射列表获取错误",
   "Core.Http.Mclo.Error1": "上传日志文件错误",
   "Core.Pack.Error1": "读取压缩包错误",
   "Core.Pack.Error2": "导入压缩包错误",

@@ -148,7 +148,7 @@ public static class UpdateChecker
         try
         {
             var obj = await ColorMCAPI.GetUpdateSha1();
-            if (obj == null)
+            if (obj == null || obj.TryGetValue("res", out _))
             {
                 App.ShowError(App.Lang("Gui.Error21"), "Json Error");
                 return (false, null);

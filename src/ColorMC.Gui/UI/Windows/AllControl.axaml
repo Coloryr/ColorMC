@@ -21,7 +21,10 @@
     </Design.DataContext>
 
     <DockPanel>
-        <windows:HeadControl DockPanel.Dock="Top" IsVisible="{Binding EnableHead}" />
+        <windows:HeadControl
+            Name="Head"
+            DockPanel.Dock="Top"
+            IsVisible="{Binding EnableHead}" />
         <Panel Background="{Binding Background}">
             <Image
                 IsVisible="{Binding BgVisible}"

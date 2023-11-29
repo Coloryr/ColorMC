@@ -745,6 +745,8 @@ public static class WebBinding
             WebType.Sponsor => "https://coloryr.github.io/sponsor.html",
             WebType.Minecraft => "https://www.minecraft.net/",
             WebType.NetFrp1 => "https://www.natfrp.com/user/",
+            WebType.Apache2_0 => "https://www.apache.org/licenses/LICENSE-2.0.html",
+            WebType.MIT => "https://mit-license.org/",
             _ => "https://colormc.coloryr.com"
         });
     }
@@ -818,5 +820,21 @@ public static class WebBinding
     public static Task<string?> GetNewLog()
     {
         return ColorMCAPI.GetNewLog();
+    }
+
+    public static async Task<List<CloudServerModel>?> GetCloudServer()
+    {
+        var list = await ColorMCAPI.GetCloudServer();
+        if (list == null || list?["list"] is not { } list1)
+        {
+            return null;
+        }
+
+        return list1.ToObject<List<CloudServerModel>>();
+    }
+
+    public static Task<bool> ShareIP(string token, string ip)
+    {
+        return ColorMCAPI.PutCloudServer(token, ip);
     }
 }

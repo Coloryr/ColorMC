@@ -48,8 +48,9 @@ public class OpenalPlayer : IPlayer
                     AL.DeleteBuffer(temp);
                     Thread.Sleep(10);
                 }
+                AL.GetSource(_alSource, ALGetSourcei.SourceState, out int state);
                 if (_isPlay && value == 0 && Media.Decoding == false &&
-                    AL.GetSourceState(_alSource) == ALSourceState.Stopped)
+                    (ALSourceState)state == ALSourceState.Stopped)
                 {
                     _isPlay = false;
                     Media.PlayEnd();
@@ -137,8 +138,8 @@ public class OpenalPlayer : IPlayer
         AL.GenBuffer(out int alBuffer);
         AL.BufferData(alBuffer, format, new ReadOnlySpan<byte>(buff, 0, length), sampleRate);
         AL.SourceQueueBuffer(_alSource, alBuffer);
-
-        if (AL.GetSourceState(_alSource) != ALSourceState.Playing)
+        AL.GetSource(_alSource, ALGetSourcei.SourceState, out int state);
+        if ((ALSourceState)state != ALSourceState.Playing)
         {
             AL.SourcePlay(_alSource);
             _isPlay = true;

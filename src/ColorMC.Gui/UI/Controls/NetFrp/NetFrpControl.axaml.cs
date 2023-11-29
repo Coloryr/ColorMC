@@ -17,6 +17,7 @@ public partial class NetFrpControl : UserControl, IUserControl
     private readonly NetFrpTab1Control _tab1 = new();
     private readonly NetFrpTab2Control _tab2 = new();
     private readonly NetFrpTab3Control _tab3 = new();
+    private readonly NetFrpTab4Control _tab4 = new();
 
     private bool _switch1 = false;
 
@@ -82,8 +83,10 @@ public partial class NetFrpControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        Content1.Content = _tab1;
-        (DataContext as NetFrpModel)?.Load();
+        Content1.Content = _tab4;
+
+        var model = (DataContext as NetFrpModel)!;
+        model.Open();
     }
 
     public void SetBaseModel(BaseModel model)
@@ -97,7 +100,7 @@ public partial class NetFrpControl : UserControl, IUserControl
     {
         var model = (DataContext as NetFrpModel)!;
         model.SetProcess(process, model1, ip);
-        model.NowView = 2;
+        model.NowView = 3;
     }
 
     private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -108,14 +111,18 @@ public partial class NetFrpControl : UserControl, IUserControl
             switch (model.NowView)
             {
                 case 0:
+                    Go(_tab4);
+                    model.LoadCloud();
+                    break;
+                case 1:
                     Go(_tab1);
                     model.Load();
                     break;
-                case 1:
+                case 2:
                     Go(_tab2);
                     model.LoadLocal();
                     break;
-                case 2:
+                case 3:
                     Go(_tab3);
                     break;
             }
@@ -141,6 +148,10 @@ public partial class NetFrpControl : UserControl, IUserControl
             _cancel1 = new();
             App.SidePageSlide300.Start(DockPanel1, null, _cancel1.Token);
             StackPanel1.IsVisible = false;
+        }
+        else if (e.PropertyName == "WindowClose")
+        {
+            Window.Close();
         }
     }
 

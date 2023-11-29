@@ -3,6 +3,7 @@ using AvaloniaEdit.Document;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -13,12 +14,14 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
-public partial class NetFrpModel : MenuModel
+public partial class NetFrpModel 
 {
-    private readonly List<string> _isOut = new();
+    private readonly List<string> _isOut = [];
 
     [ObservableProperty]
     private bool _isRuning;
+    [ObservableProperty]
+    private bool _isOk;
 
     [ObservableProperty]
     private TextDocument _text = new();
@@ -49,9 +52,9 @@ public partial class NetFrpModel : MenuModel
             _process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
         }
 
-        _process.Exited += _process_Exited;
-        _process.OutputDataReceived += _process_OutputDataReceived;
-        _process.ErrorDataReceived += _process_ErrorDataReceived;
+        _process.Exited += process_Exited;
+        _process.OutputDataReceived += process_OutputDataReceived;
+        _process.ErrorDataReceived += process_ErrorDataReceived;
         _process.Start();
         _process.BeginErrorReadLine();
         _process.BeginOutputReadLine();
@@ -61,17 +64,17 @@ public partial class NetFrpModel : MenuModel
         IsRuning = true;
     }
 
-    private void _process_Exited(object? sender, EventArgs e)
+    private void process_Exited(object? sender, EventArgs e)
     {
         IsRuning = false;
     }
 
-    private void _process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+    private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
         Log(e.Data);
     }
 
-    private void _process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         Log(e.Data);
         if (e.Data?.Contains("TCP 类型隧道启动成功") == true
@@ -80,14 +83,41 @@ public partial class NetFrpModel : MenuModel
             _isOut.Add(_localIP);
             Dispatcher.UIThread.Post(() =>
             {
+                IsOk = true;
                 Model.ShowReadInfo(App.Lang("NetFrpWindow.Tab3.Info1"), _remoteIP, null);
             });
         }
     }
 
     [RelayCommand]
+    public async Task Share()
+    {
+        var res = await Model.ShowWait(App.Lang("NetFrpWindow.Tab3.Info3"));
+        if (!res)
+        {
+            return;
+        }
+        var user = UserBinding.GetLastUser();
+        if (user == null || user.AuthType != AuthType.OAuth)
+        {
+            Model.Show(App.Lang("NetFrpWindow.Tab4.Error1"));
+            return;
+        }
+        res = await WebBinding.ShareIP(user.AccessToken,  _remoteIP);
+        if (!res)
+        {
+            Model.Show(App.Lang("NetFrpWindow.Tab3.Error1"));
+        }
+        else
+        {
+            Model.Notify(App.Lang("NetFrpWindow.Tab3.Info4"));
+        }
+    }
+
+    [RelayCommand]
     public void Stop()
     {
+        IsOk = false;
         IsRuning = false;
 
         if (_process == null || _process.HasExited)
