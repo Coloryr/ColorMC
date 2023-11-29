@@ -55,4 +55,8 @@
             <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Objs\ColorMC\" />
+    </ItemGroup>
 </Project>

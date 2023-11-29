@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
-public partial class NetFrpModel : MenuModel
+public partial class NetFrpModel
 {
     [ObservableProperty]
     private string _key;
@@ -91,6 +91,8 @@ public partial class NetFrpModel : MenuModel
             Key = con.Key;
         }
 
+        _isLoad1 = false;
+
         if (string.IsNullOrWhiteSpace(Key))
         {
             return;
@@ -120,6 +122,6 @@ public partial class NetFrpModel : MenuModel
             Remotes.Add(new(item));
         }
 
-        _isLoad1 = false;
+
     }
 }

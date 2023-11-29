@@ -6,6 +6,7 @@ using Avalonia.Media;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.Utils;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -18,6 +19,14 @@ public partial class HeadControl : UserControl
     private readonly Button _buttonBack;
     private readonly Button _buttonChoise;
     private readonly Button _buttonChoise1;
+
+    private readonly SelfPublisher<string> MaxObservale = new();
+
+    private readonly string[] MaxIcon =
+    [
+        "/Resource/Icon/Head/max1.svg",
+        "/Resource/Icon/Head/max.svg"
+    ];
 
     public HeadControl()
     {
@@ -42,11 +51,14 @@ public partial class HeadControl : UserControl
         {
             Width = 40,
             Height = 35,
-            Content = new HeadImg() { Path = "/Resource/Icon/Head/max.svg" },
             BorderThickness = new Thickness(0),
             BorderBrush = Brushes.Transparent,
             CornerRadius = new CornerRadius(0)
         };
+        var max = new HeadImg();
+        max.Bind(HeadImg.PathProperty, MaxObservale.ToBinding());
+        MaxObservale.Notify(MaxIcon[0]);
+        _buttonMax.Content = max;
         _buttonClose = new Button()
         {
             Width = 40,
@@ -186,5 +198,17 @@ public partial class HeadControl : UserControl
     private void HeadControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         (VisualRoot as Window)?.BeginMoveDrag(e);
+    }
+
+    public void WindowStateChange(WindowState state)
+    {
+        if (state == WindowState.Maximized)
+        {
+            MaxObservale.Notify(MaxIcon[1]);
+        }
+        else
+        {
+            MaxObservale.Notify(MaxIcon[0]);
+        }
     }
 }

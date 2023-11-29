@@ -874,7 +874,7 @@ public static class BaseBinding
                 CreateNoWindow = true
             }
         };
-        App.ShowNetFrp(p, model, ip + ":" + model.Port);
+        App.ShowNetFrp(p, model, ip + ":" + item1.Remote);
 
         return true;
     }

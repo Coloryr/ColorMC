@@ -138,5 +138,7 @@ public enum WebType
     /// <summary>
     /// 樱花映射
     /// </summary>
-    NetFrp1
+    NetFrp1,
+    Apache2_0,
+    MIT
 }

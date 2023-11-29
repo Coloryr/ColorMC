@@ -144,18 +144,6 @@ public partial class MainControl : UserControl, IUserControl
     public void WindowStateChange(WindowState state)
     {
         (DataContext as MainModel)!.Render = state != WindowState.Minimized;
-
-        if (SystemInfo.Os == OsType.Windows)
-        {
-            if (state == WindowState.Maximized)
-            {
-                Margin = new Avalonia.Thickness(10);
-            }
-            else
-            {
-                Margin = new Avalonia.Thickness(0);
-            }
-        }
     }
 
     public void Closed()

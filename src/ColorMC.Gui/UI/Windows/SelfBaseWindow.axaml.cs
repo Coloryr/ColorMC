@@ -81,6 +81,15 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         if (e.Property == WindowStateProperty)
         {
             ICon.WindowStateChange(WindowState);
+            Head.WindowStateChange(WindowState);
+            if (WindowState == WindowState.Maximized)
+            {
+                Padding = new Thickness(8);
+            }
+            else
+            {
+                Padding = new Thickness(0);
+            }
         }
     }
 
@@ -107,7 +116,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     public void SetTitle(string temp)
     {
         Model.Title = temp;
-        Title = temp;
     }
 
     private void FindGoodPos()

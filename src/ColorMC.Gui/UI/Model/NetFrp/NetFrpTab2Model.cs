@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
-public partial class NetFrpModel : MenuModel
+public partial class NetFrpModel
 {
     private readonly LanClient _client = new();
     private readonly List<string> _have = new();
@@ -24,19 +24,24 @@ public partial class NetFrpModel : MenuModel
 
     public async void StartThisLan(NetFrpLocalModel local)
     {
+        if (Remotes.Count == 0)
+        {
+            Model.Show(App.Lang("NetFrpWindow.Tab2.Error2"));
+            return;
+        }
         var list = new List<string>();
         foreach (var item in Remotes)
         {
             list.Add($"{App.Lang("NetFrpWindow.Tabs.Text1")} {item.Name} {item.ID}");
         }
 
-        var res = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
-        if (res.Cancel)
+        var (Cancel, Index, Item) = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
+        if (Cancel)
         {
             return;
         }
 
-        var item1 = Remotes[res.Index];
+        var item1 = Remotes[Index];
         local.IsStart = true;
         var res1 = await BaseBinding.StartFrp(Key, item1, local);
         if (!res1)

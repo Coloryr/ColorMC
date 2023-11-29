@@ -111,7 +111,8 @@ public static class GameAuth
         AuthState now = AuthState.OAuth;
         try
         {
-            if (await LoginOld.Validate("https://authserver.mojang.com/validate", obj))
+            var profile = await MinecraftAPI.GetMinecraftProfileAsync(obj.AccessToken);
+            if (profile != null)
             {
                 return (AuthState.Profile, LoginState.Done, obj, null, null);
             }
@@ -145,7 +146,7 @@ public static class GameAuth
                     LanguageHelper.Get("Core.Login.Error4"), null);
             }
 
-            var profile = await MinecraftAPI.GetMinecraftProfileAsync(token!);
+            profile = await MinecraftAPI.GetMinecraftProfileAsync(token!);
             if (done != LoginState.Done)
             {
                 return (AuthState.Token, LoginState.Error, null,

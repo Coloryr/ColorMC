@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
@@ -23,6 +24,24 @@ public partial class SingleWindow : Window
         Closed += UserWindow_Closed;
         Opened += UserWindow_Opened;
         Closing += SingleWindow_Closing;
+        PropertyChanged += SelfBaseWindow_PropertyChanged;
+    }
+
+    private void SelfBaseWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == WindowStateProperty)
+        {
+            Win.WindowStateChange(WindowState);
+
+            if (WindowState == WindowState.Maximized)
+            {
+                Padding = new Thickness(8);
+            }
+            else
+            {
+                Padding = new Thickness(0);
+            }
+        }
     }
 
     private async void SingleWindow_Closing(object? sender, WindowClosingEventArgs e)

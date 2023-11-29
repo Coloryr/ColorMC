@@ -15,7 +15,7 @@ public partial class NetFrpTab3Control : UserControl
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (DataContext is NetFrpModel model && model.NowView == 2)
+        if (DataContext is NetFrpModel model && model.NowView == 3)
         {
             model.WhellChange(e.Delta.Y);
         }

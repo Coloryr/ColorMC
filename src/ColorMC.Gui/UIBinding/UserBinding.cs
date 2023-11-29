@@ -365,4 +365,9 @@ public static class UserBinding
     {
         return AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
     }
+
+    public static async Task<bool> TestLogin(LoginObj user)
+    {
+        return (await user.RefreshToken()).LoginState == LoginState.Done;
+    }
 }

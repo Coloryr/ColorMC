@@ -50,36 +50,40 @@
                 </WrapPanel>
             </StackPanel>
         </Border>
-        <Border
-            Margin="0,3,0,0"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
-            <DockPanel>
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                    <Label Margin="0,0,5,0" Content="{setting:Localize NetFrpWindow.Tab1.Text5}" />
+
+        <DockPanel>
+            <Border
+                Margin="0,3,0,0"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                DockPanel.Dock="Top">
+                <DockPanel>
                     <Button
                         Width="100"
                         Height="25"
                         Command="{Binding GetChannel1}"
-                        Content="{setting:Localize NetFrpWindow.Tab1.Text6}" />
-                </StackPanel>
-                <Label
-                    Margin="0,0,5,0"
-                    Content="{setting:Localize NetFrpWindow.Tab1.Text7}"
-                    DockPanel.Dock="Bottom" />
-                <ScrollViewer>
-                    <ItemsControl ItemsSource="{Binding Remotes}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <view:NetFrpRemoteControl Margin="0,0,0,5" DataContext="{Binding}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-            </DockPanel>
-        </Border>
+                        Content="{setting:Localize NetFrpWindow.Tab1.Text6}"
+                        DockPanel.Dock="Right" />
+                    <Label
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize NetFrpWindow.Tab1.Text7}"
+                        DockPanel.Dock="Bottom" />
+                    <Label Margin="0,0,5,0" Content="{setting:Localize NetFrpWindow.Tab1.Text5}" />
+                </DockPanel>
+            </Border>
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding Remotes}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <view:NetFrpRemoteControl Margin="0,0,0,5" DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+
     </DockPanel>
 </UserControl>

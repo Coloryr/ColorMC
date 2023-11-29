@@ -1,8 +1,10 @@
+using System;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Http;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -11,9 +13,9 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class ColorMCAPI
 {
-    //private const string url = $"http://localhost/colormc/{ColorMCCore.TopVersion}/";
-    public const string BaseUrl = $"https://mc1.coloryr.com:8081/update/";
-    public const string CheckUrl = $"{BaseUrl}{ColorMCCore.TopVersion}/";
+    //public const string BaseUrl = $"http://localhost:8080/";
+    public const string BaseUrl = $"https://mc1.coloryr.com:8081/";
+    public const string CheckUrl = $"{BaseUrl}update/{ColorMCCore.TopVersion}/";
 
     /// <summary>
     /// 获取Mod列表
@@ -25,7 +27,7 @@ public static class ColorMCAPI
     {
         try
         {
-            string temp = $"https://mc1.coloryr.com:8081/findmod";
+            string temp = $"{BaseUrl}findmod";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Post,
@@ -82,14 +84,14 @@ public static class ColorMCAPI
     /// <returns>数据</returns>
     public static Task<Dictionary<string, McModSearchItemObj>?> GetMcModFromName(string name, int page)
     {
-        return GetList(2, new() { name, page.ToString() });
+        return GetList(2, [name, page.ToString()]);
     }
 
     public static async Task<string?> GetNewLog()
     {
         try
         {
-            var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "log");
+            var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "update/log");
             req.Headers.Add("ColorMC", ColorMCCore.Version);
             var data = await BaseClient.DownloadClient.SendAsync(req);
             return await data.Content.ReadAsStringAsync();
@@ -103,7 +105,7 @@ public static class ColorMCAPI
 
     public static async Task<JObject> GetUpdateIndex()
     {
-        var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "index.json");
+        var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "update/index.json");
         req.Headers.Add("ColorMC", ColorMCCore.Version);
         var data = await BaseClient.DownloadClient.SendAsync(req);
         return JObject.Parse(await data.Content.ReadAsStringAsync());
@@ -115,5 +117,54 @@ public static class ColorMCAPI
         req.Headers.Add("ColorMC", ColorMCCore.Version);
         var data = await BaseClient.DownloadClient.SendAsync(req);
         return JObject.Parse(await data.Content.ReadAsStringAsync());
+    }
+
+    public static async Task<JObject?> GetCloudServer()
+    {
+        try
+        {
+            var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "frplist");
+            req.Headers.Add("ColorMC", ColorMCCore.Version);
+            var data = await BaseClient.DownloadClient.SendAsync(req);
+            return JObject.Parse(await data.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error4"), e);
+            return null;
+        }
+    }
+
+    public static async Task<bool> PutCloudServer(string token, string ip)
+    {
+        HttpRequestMessage httpRequest = new()
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(BaseUrl + "frp"),
+        };
+        httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
+        httpRequest.Content = new StringContent(JsonConvert.SerializeObject(new { token, ip }));
+
+        try
+        {
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
+            var data1 = await data.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(data1))
+            {
+                return false;
+            }
+            var obj = JObject.Parse(data1);
+            if (obj.TryGetValue("res", out var res) && ((int)res) != 100)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error3"), e);
+            return false;
+        }
     }
 }
