@@ -6,7 +6,6 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -35,7 +34,7 @@ public partial class GamesModel : TopModel
             _items.Add(item.UUID, model1);
             GameList.Add(model1);
         }
-       
+
         Header = name;
         Key = key;
         GameList.Add(new(model, Key == InstancesPath.DefaultGroup ? null : Key));

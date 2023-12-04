@@ -1,4 +1,3 @@
-using Avalonia.Media;
 using System;
 using System.Collections.Generic;
 
@@ -50,7 +49,7 @@ public static class LangSel
             foreach (var item1 in item.Value)
             {
                 if (item1.TryGetTarget(out var target))
-                { 
+                {
                     target.OnNext(value);
                 }
             }

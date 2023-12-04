@@ -54,7 +54,7 @@ public partial class ServerPackControl : UserControl, IUserControl
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;
         StackPanel2.PointerPressed += StackPanel2_PointerPressed;
 
-        Content1.Content = _tab1;
+        Content1.Child = _tab1;
     }
 
     private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -94,12 +94,12 @@ public partial class ServerPackControl : UserControl, IUserControl
 
         if (!_switch1)
         {
-            Content2.Content = to;
+            Content2.Child = to;
             _ = App.PageSlide500.Start(Content1, Content2, _now < model.NowView, _cancel.Token);
         }
         else
         {
-            Content1.Content = to;
+            Content1.Child = to;
             _ = App.PageSlide500.Start(Content2, Content1, _now < model.NowView, _cancel.Token);
         }
 

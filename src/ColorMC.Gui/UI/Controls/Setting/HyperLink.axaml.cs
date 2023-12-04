@@ -19,7 +19,7 @@ public class HyperLink : Button
             var textBlock = new TextBlock
             {
                 Text = string.IsNullOrEmpty(_alias) ? "Url" : _alias,
-                Classes = 
+                Classes =
                 {
                     "link"
                 }

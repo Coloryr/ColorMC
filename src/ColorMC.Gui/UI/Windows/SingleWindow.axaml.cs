@@ -32,14 +32,16 @@ public partial class SingleWindow : Window
         if (e.Property == WindowStateProperty)
         {
             Win.WindowStateChange(WindowState);
-
-            if (WindowState == WindowState.Maximized)
+            if (SystemInfo.Os == OsType.Windows)
             {
-                Padding = new Thickness(8);
-            }
-            else
-            {
-                Padding = new Thickness(0);
+                if (WindowState == WindowState.Maximized)
+                {
+                    Padding = new Thickness(8);
+                }
+                else
+                {
+                    Padding = new Thickness(0);
+                }
             }
         }
     }

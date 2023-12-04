@@ -9,7 +9,6 @@ using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,7 +63,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
     public void Closed()
     {
-        Controls.Content = null;
+        Controls.Child = null;
     }
 
     public void Opened()
@@ -78,7 +77,7 @@ public partial class AllControl : UserControl, IBaseWindow
         {
             _baseControl = con;
             var con1 = (_baseControl as Control)!;
-            Controls.Content = con1;
+            Controls.Child = con1;
             Dispatcher.UIThread.Post(() =>
             {
                 _baseControl.Opened();
@@ -86,14 +85,14 @@ public partial class AllControl : UserControl, IBaseWindow
         }
         else
         {
-            var con1 = Controls.Content;
+            var con1 = Controls.Child;
             var con2 = (con as Control)!;
-            Controls.Content = null;
-            if (con1 is not (MainControl or CustomControl) && con1 is Control con3)
+            Controls.Child = null;
+            if (con1 is not (MainControl or CustomControl) && con1 is { } con3)
             {
                 controls.Add(con3);
             }
-            Controls.Content = con2;
+            Controls.Child = con2;
             App.CrossFade300.Start(null, con2);
 
             con.Opened();
@@ -110,9 +109,9 @@ public partial class AllControl : UserControl, IBaseWindow
         var con1 = (con as Control)!;
 
         controls.Remove(con1);
-        var con2 = Controls.Content as Control;
+        var con2 = Controls.Child;
         controls.Add(con2!);
-        Controls.Content = con1;
+        Controls.Child = con1;
 
         _nowControl = con;
         SetTitle(_nowControl.Title);
@@ -127,14 +126,14 @@ public partial class AllControl : UserControl, IBaseWindow
             return;
         }
 
-        var con1 = Controls.Content as Control;
+        var con1 = Controls.Child;
         var con2 = (con as Control)!;
         if (con1 == con2)
         {
-            Controls.Content = null;
+            Controls.Child = null;
         }
         controls.Remove(con2);
-        if (Controls.Content == null)
+        if (Controls.Child == null)
         {
             if (controls.Count > 0)
             {
@@ -147,7 +146,7 @@ public partial class AllControl : UserControl, IBaseWindow
                 con1 = (_baseControl as Control)!;
                 _nowControl = _baseControl;
             }
-            Controls.Content = con1;
+            Controls.Child = con1;
         }
         Model.RemoveBack();
 

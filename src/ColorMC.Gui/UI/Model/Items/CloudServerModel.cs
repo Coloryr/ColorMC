@@ -1,10 +1,6 @@
 ﻿using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -30,8 +26,8 @@ public partial class CloudServerModel : ObservableObject
 
     [RelayCommand]
     public void Join()
-    { 
-        
+    {
+
     }
 
     [RelayCommand]

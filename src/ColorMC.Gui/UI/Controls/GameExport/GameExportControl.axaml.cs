@@ -70,7 +70,7 @@ public partial class GameExportControl : UserControl, IUserControl
 
         var model = (DataContext as GameExportModel)!;
         model.Model.Progress(App.Lang("GameExportWindow.Info7"));
-        Content1.Content = _tab1;
+        Content1.Child = _tab1;
 
         _tab2.Opened();
         _tab4.Opened();
@@ -98,12 +98,12 @@ public partial class GameExportControl : UserControl, IUserControl
 
         if (!_switch1)
         {
-            Content2.Content = to;
+            Content2.Child = to;
             _ = App.PageSlide500.Start(Content1, Content2, _now < model.NowView, _cancel.Token);
         }
         else
         {
-            Content1.Content = to;
+            Content1.Child = to;
             _ = App.PageSlide500.Start(Content2, Content1, _now < model.NowView, _cancel.Token);
         }
 

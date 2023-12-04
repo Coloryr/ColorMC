@@ -1,7 +1,6 @@
 using Avalonia;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 

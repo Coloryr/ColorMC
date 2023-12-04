@@ -3,7 +3,6 @@ using ColorMC.Core;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Download;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using System.Threading.Tasks;
 

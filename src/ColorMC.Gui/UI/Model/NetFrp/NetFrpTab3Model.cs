@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
-public partial class NetFrpModel 
+public partial class NetFrpModel
 {
     private readonly List<string> _isOut = [];
 
@@ -103,7 +103,7 @@ public partial class NetFrpModel
             Model.Show(App.Lang("NetFrpWindow.Tab4.Error1"));
             return;
         }
-        res = await WebBinding.ShareIP(user.AccessToken,  _remoteIP);
+        res = await WebBinding.ShareIP(user.AccessToken, _remoteIP);
         if (!res)
         {
             Model.Show(App.Lang("NetFrpWindow.Tab3.Error1"));

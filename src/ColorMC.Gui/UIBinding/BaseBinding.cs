@@ -63,7 +63,7 @@ public static class BaseBinding
     {
         ColorMCCore.OnError = App.ShowError;
         ColorMCCore.DownloaderUpdate = App.DownloaderUpdate;
-        ColorMCCore.ProcessLog = (p, d)=>
+        ColorMCCore.ProcessLog = (p, d) =>
         {
             if (p != null && Games.TryGetValue(p, out var uuid))
             {
@@ -74,7 +74,7 @@ public static class BaseBinding
                 }
             }
         };
-        ColorMCCore.GameLog = (obj ,d)=> 
+        ColorMCCore.GameLog = (obj, d) =>
         {
             if (GameLogs.TryGetValue(obj.UUID, out var log))
             {
@@ -86,7 +86,7 @@ public static class BaseBinding
                 win.Log(d);
             }
         };
-        ColorMCCore.LanguageReload = (type)=> 
+        ColorMCCore.LanguageReload = (type) =>
         {
             App.LoadLanguage(type);
             LangSel.Reload();

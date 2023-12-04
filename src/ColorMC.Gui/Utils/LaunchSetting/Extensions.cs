@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Data;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using System;

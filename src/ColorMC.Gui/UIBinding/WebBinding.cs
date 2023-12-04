@@ -648,7 +648,7 @@ public static class WebBinding
         return OptifineAPI.DownloadOptifine(obj, item);
     }
 
-    public static async Task<List<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>> 
+    public static async Task<List<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>>
         CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
     {
         string path = game.GetModsPath();

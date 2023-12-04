@@ -69,12 +69,12 @@ public partial class SettingControl : UserControl, IUserControl
 
         if (!_switch1)
         {
-            Content2.Content = to;
+            Content2.Child = to;
             _ = App.PageSlide500.Start(Content1, Content2, _now < model.NowView, _cancel.Token);
         }
         else
         {
-            Content1.Content = to;
+            Content1.Child = to;
             _ = App.PageSlide500.Start(Content2, Content1, _now < model.NowView, _cancel.Token);
         }
 
@@ -100,7 +100,7 @@ public partial class SettingControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        Content1.Content = _tab2;
+        Content1.Child = _tab2;
         (DataContext as SettingModel)!.LoadUISetting();
     }
 
