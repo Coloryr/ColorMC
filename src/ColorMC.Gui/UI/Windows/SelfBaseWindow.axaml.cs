@@ -46,7 +46,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         if (ICon is UserControl con1)
         {
-            MainControl.Content = con1;
+            MainControl.Child = con1;
         }
 
         Closed += UserWindow_Closed;
@@ -82,13 +82,16 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         {
             ICon.WindowStateChange(WindowState);
             Head.WindowStateChange(WindowState);
-            if (WindowState == WindowState.Maximized)
+            if (SystemInfo.Os == OsType.Windows)
             {
-                Padding = new Thickness(8);
-            }
-            else
-            {
-                Padding = new Thickness(0);
+                if (WindowState == WindowState.Maximized)
+                {
+                    Padding = new Thickness(8);
+                }
+                else
+                {
+                    Padding = new Thickness(0);
+                }
             }
         }
     }

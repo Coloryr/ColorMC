@@ -83,7 +83,7 @@
             </WrapPanel>
         </Border>
 
-        <ContentControl Name="Content1" />
+        <Decorator Name="Content1" />
 
         <Panel
             Name="Grid2"

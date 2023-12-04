@@ -86,7 +86,7 @@ public partial class DownloadModel : TopModel
         {
             return true;
         }
-        
+
         Model.HeadChoise1Display = false;
         Model.HeadChoiseDisplay = false;
 

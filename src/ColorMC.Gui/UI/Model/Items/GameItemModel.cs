@@ -116,7 +116,7 @@ public partial class GameItemModel : GameModel
         if (IsNew)
         {
             return;
-        }    
+        }
         Tips = string.Format(App.Lang("Tips.Text1"),
             Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
             Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),

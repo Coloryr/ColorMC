@@ -309,8 +309,8 @@ public static class UserBinding
                 BaseBinding.OpUrl($"https://login.mc-user.com:233/{obj.Text1}/skin");
                 break;
             //case AuthType.AuthlibInjector:
-                //BaseBinding.OpUrl($"https://login.mc-user.com:233/{obj.Text1}/skin");
-                //break;
+            //BaseBinding.OpUrl($"https://login.mc-user.com:233/{obj.Text1}/skin");
+            //break;
             case AuthType.LittleSkin:
                 BaseBinding.OpUrl("https://littleskin.cn/user/closet");
                 break;

@@ -1,10 +1,8 @@
-using System;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Net.Http;
 
 namespace ColorMC.Core.Net.Apis;
 

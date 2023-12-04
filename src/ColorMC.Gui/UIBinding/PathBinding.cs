@@ -809,7 +809,7 @@ public static class PathBinding
                             sha1 = item.Sha1,
                             sha512 = item.Sha512
                         },
-                        downloads = [ item.Url ],
+                        downloads = [item.Url],
                         fileSize = item.FileSize
                     });
                 }

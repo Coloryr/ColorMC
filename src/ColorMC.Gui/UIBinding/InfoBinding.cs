@@ -1,7 +1,6 @@
 ﻿using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
 using System.Threading.Tasks;

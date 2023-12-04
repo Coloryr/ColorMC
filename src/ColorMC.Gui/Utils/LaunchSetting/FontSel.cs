@@ -1,8 +1,6 @@
 using Avalonia.Media;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;

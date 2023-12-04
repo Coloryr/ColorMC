@@ -210,7 +210,7 @@
                     </DataTemplate>
                 </dialog:DialogHost.DataTemplates>
                 <Panel>
-                    <ContentControl Name="Controls" />
+                    <Decorator Name="Controls" />
 
                     <Panel
                         Name="Grid2"

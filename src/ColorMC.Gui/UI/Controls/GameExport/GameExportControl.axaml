@@ -54,8 +54,8 @@
                     Content="{setting:Localize GameExportWindow.Tab1.Text2}" />
             </Border>
             <Panel ClipToBounds="True">
-                <ContentControl Name="Content1" />
-                <ContentControl Name="Content2" />
+                <Decorator Name="Content1" />
+                <Decorator Name="Content2" />
             </Panel>
         </DockPanel>
 

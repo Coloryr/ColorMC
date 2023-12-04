@@ -1,10 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls.Add.AddGame;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add.AddGame;
@@ -88,19 +86,19 @@ public partial class AddGameControl : UserControl, IUserControl
         }
         else if (e.PropertyName == "GoTab1")
         {
-            Content1.Content = _tab1;
+            Content1.Child = _tab1;
         }
         else if (e.PropertyName == "GoTab2")
         {
-            Content1.Content = _tab2;
+            Content1.Child = _tab2;
         }
         else if (e.PropertyName == "GoTab3")
         {
-            Content1.Content = _tab3;
+            Content1.Child = _tab3;
         }
         else if (e.PropertyName == "Back")
         {
-            Content1.Content = null;
+            Content1.Child = null;
         }
     }
 

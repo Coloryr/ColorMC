@@ -1485,7 +1485,7 @@ public static class GameBinding
         return res;
     }
 
-    public static async Task<(bool, string?)> DownloadServerPack(BaseModel model, 
+    public static async Task<(bool, string?)> DownloadServerPack(BaseModel model,
         string? name, string? group, string text)
     {
         InfoBinding.Window = model;

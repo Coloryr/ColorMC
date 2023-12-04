@@ -1286,14 +1286,14 @@ public static class Launch
                 var obj1 = obj.Loader is Loaders.Forge
                     ? VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!)!
                     : VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!)!;
-                var install = await CheckHelpers.CheckForgeInstall(obj1, 
+                var install = await CheckHelpers.CheckForgeInstall(obj1,
                     obj.LoaderVersion!, obj.Loader is Loaders.NeoForge);
                 if (install)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.InstallForge);
                     var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
                             LanguageHelper.Get("Core.Launch.Error9"));
-                    var res1 = await ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1, 
+                    var res1 = await ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1,
                         obj.GetGamePath(), obj.MakeInstallForgeArg(), env);
                     if (res1 != true)
                     {

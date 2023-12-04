@@ -65,7 +65,7 @@ public static class GameAuth
             }
 
             var profile = await MinecraftAPI.GetMinecraftProfileAsync(token!);
-            if (profile == null)
+            if (profile == null || string.IsNullOrWhiteSpace(profile.id))
             {
                 return (AuthState.Profile, LoginState.Error, null,
                     LanguageHelper.Get("Core.Login.Error5"), null);
@@ -112,7 +112,7 @@ public static class GameAuth
         try
         {
             var profile = await MinecraftAPI.GetMinecraftProfileAsync(obj.AccessToken);
-            if (profile != null)
+            if (profile != null && !string.IsNullOrWhiteSpace(profile.id))
             {
                 return (AuthState.Profile, LoginState.Done, obj, null, null);
             }
@@ -147,7 +147,7 @@ public static class GameAuth
             }
 
             profile = await MinecraftAPI.GetMinecraftProfileAsync(token!);
-            if (done != LoginState.Done)
+            if (profile != null && !string.IsNullOrWhiteSpace(profile.id))
             {
                 return (AuthState.Token, LoginState.Error, null,
                     LanguageHelper.Get("Core.Login.Error5"), null);

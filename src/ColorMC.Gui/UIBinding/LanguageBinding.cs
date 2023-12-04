@@ -63,7 +63,7 @@ public static class LanguageBinding
     /// <returns>选项</returns>
     public static string[] GetDownloadSources()
     {
-        return  
+        return
         [
             SourceLocal.Offical.GetName(),
             SourceLocal.BMCLAPI.GetName(),
@@ -207,7 +207,7 @@ public static class LanguageBinding
     }
 
     public static string[] GetPos()
-    {   
+    {
         return
         [
             App.Lang("Postion.Item1"),

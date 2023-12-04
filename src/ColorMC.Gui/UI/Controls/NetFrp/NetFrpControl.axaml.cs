@@ -67,12 +67,12 @@ public partial class NetFrpControl : UserControl, IUserControl
 
         if (!_switch1)
         {
-            Content2.Content = to;
+            Content2.Child = to;
             _ = App.PageSlide500.Start(Content1, Content2, _now < model.NowView, _cancel.Token);
         }
         else
         {
-            Content1.Content = to;
+            Content1.Child = to;
             _ = App.PageSlide500.Start(Content2, Content1, _now < model.NowView, _cancel.Token);
         }
 
@@ -83,7 +83,7 @@ public partial class NetFrpControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        Content1.Content = _tab4;
+        Content1.Child = _tab4;
 
         var model = (DataContext as NetFrpModel)!;
         model.Open();

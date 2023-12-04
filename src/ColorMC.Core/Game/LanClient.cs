@@ -24,7 +24,7 @@ public class LanClient
 
         _isRun = true;
 
-        new Thread(async () => 
+        new Thread(async () =>
         {
             while (_isRun)
             {

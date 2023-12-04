@@ -1,13 +1,10 @@
 using Avalonia;
-using ColorMC.Core.Helpers;
 using ColorMC.Gui;
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
-using System.Runtime.Loader;
 
 namespace ColorMC.Launcher;
 
@@ -122,8 +119,7 @@ public static class Program
     {
 #if DEBUG
         GuiLoad.Load();
-        return;
-#endif
+#else
         if (Aot)
         {
             GuiLoad.Load();
@@ -191,5 +187,6 @@ public static class Program
         {
             GuiLoad.Load();
         }
+#endif
     }
 }

@@ -79,7 +79,7 @@ public partial class NetFrpModel
     [RelayCommand]
     public void OpenUrl1()
     {
-        WebBinding.OpenWeb(WebType.NetFrp1);   
+        WebBinding.OpenWeb(WebType.NetFrp1);
     }
 
     public async void Load()
