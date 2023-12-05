@@ -12,10 +12,13 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="5,0,5,5">
+    <ScrollViewer
+        Name="ScrollViewer1"
+        Margin="5,0,5,2"
+        HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -39,7 +42,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -84,7 +87,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -141,7 +144,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -217,7 +220,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -370,7 +373,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -530,7 +533,7 @@
             </Border>
 
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"

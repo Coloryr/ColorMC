@@ -260,4 +260,7 @@
         <DependentUpon>NetFrpTab4Control.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
+    <ItemGroup>
+      <UpToDateCheckInput Remove="UI\Controls\MenuControl.axaml" />
+    </ItemGroup>
 </Project>
