@@ -63,10 +63,6 @@ public partial class MainModel : TopModel, IMainTop
     [ObservableProperty]
     private bool _isOneGame;
     [ObservableProperty]
-    private bool _enableButton1;
-    [ObservableProperty]
-    private bool _enableButton2;
-    [ObservableProperty]
     private bool _isHeadLoad;
     [ObservableProperty]
     private bool _musicDisplay;
@@ -95,11 +91,6 @@ public partial class MainModel : TopModel, IMainTop
         App.SkinLoad += App_SkinLoad;
 
         App.UserEdit += Load1;
-    }
-
-    partial void OnGameChanged(GameItemModel? value)
-    {
-        UpdateLaunch();
     }
 
     [RelayCommand]
@@ -498,10 +489,6 @@ public partial class MainModel : TopModel, IMainTop
     {
         if (Launchs.Remove(uuid, out var con))
         {
-            if (Game?.Obj?.UUID == uuid)
-            {
-                UpdateLaunch();
-            }
             con.IsLaunch = false;
         }
     }
@@ -511,8 +498,9 @@ public partial class MainModel : TopModel, IMainTop
         if (IsLaunch || obj.IsLaunch)
             return;
 
+        Select(obj);
+
         IsLaunch = true;
-        UpdateLaunch();
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
             Model.Progress(App.Lang("MainWindow.Info3"));
@@ -548,28 +536,6 @@ public partial class MainModel : TopModel, IMainTop
             }
         }
         IsLaunch = false;
-        UpdateLaunch();
-    }
-
-    private void UpdateLaunch()
-    {
-        if (Game == null)
-        {
-            EnableButton1 = false;
-            EnableButton2 = false;
-        }
-        else
-        {
-            if (BaseBinding.IsGameRun(Game.Obj) || IsLaunch)
-            {
-                EnableButton1 = false;
-            }
-            else
-            {
-                EnableButton1 = true;
-            }
-            EnableButton2 = true;
-        }
     }
 
     public void ChangeModel()
