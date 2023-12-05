@@ -7,8 +7,8 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel : MenuModel
 {
-    public override List<MenuObj> TabItems { get; init; } = new()
-    {
+    public override List<MenuObj> TabItems { get; init; } =
+    [
         new() { Icon = "/Resource/Icon/Setting/item1.svg",
             Text = App.Lang("SettingWindow.Tabs.Text2") },
         new() { Icon = "/Resource/Icon/Setting/item2.svg",
@@ -23,7 +23,7 @@ public partial class SettingModel : MenuModel
             Text = App.Lang("SettingWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/Setting/item7.svg",
             Text = App.Lang("SettingWindow.Tabs.Text7") }
-    };
+    ];
 
     public bool Phone { get; } = false;
 

@@ -1,15 +1,15 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Setting.SettingControl"
+    x:Class="ColorMC.Gui.UI.Controls.MenuControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:SettingModel"
+    x:DataType="model:MenuModel"
     mc:Ignorable="d">
     <Panel>
         <DockPanel>
@@ -39,7 +39,7 @@
                 </StackPanel>
             </Border>
 
-            <Panel ClipToBounds="True">
+            <Panel Margin="0,3,0,0" ClipToBounds="True">
                 <Decorator Name="Content1" />
                 <Decorator Name="Content2" />
             </Panel>

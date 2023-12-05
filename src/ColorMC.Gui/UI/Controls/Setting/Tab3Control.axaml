@@ -11,8 +11,11 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="5,3,5,5">
+    <ScrollViewer
+        Name="ScrollViewer1"
+        Margin="5,0,5,5"
+        HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
             <Border
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
@@ -103,29 +106,31 @@
                     <Grid ColumnDefinitions="3*,1*">
                         <TextBox
                             Grid.Column="0"
-                            Margin="0,0,10,0"
+                            Margin="0,0,10,5"
                             Classes="input1"
                             IsEnabled="{Binding !IsDownload}"
                             Text="{Binding IP}"
                             Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
                         <TextBox
                             Grid.Column="1"
+                            Margin="0,0,0,5"
                             Classes="input1"
                             IsEnabled="{Binding !IsDownload}"
                             MaxLength="5"
                             Text="{Binding Port}"
                             Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
                     </Grid>
-                    <Grid ColumnDefinitions="1*,1*">
+                    <Grid ColumnDefinitions="*,*">
                         <TextBox
                             Grid.Column="0"
-                            Margin="0,0,10,0"
+                            Margin="0,0,10,5"
                             Classes="input1"
                             IsEnabled="{Binding !IsDownload}"
                             Text="{Binding User}"
                             Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
                         <TextBox
                             Grid.Column="1"
+                            Margin="0,0,0,5"
                             Classes="input1"
                             IsEnabled="{Binding !IsDownload}"
                             PasswordChar="*"
