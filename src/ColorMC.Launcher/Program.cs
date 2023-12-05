@@ -5,6 +5,10 @@ using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
+#if !DEBUG
+using System.Linq;
+using System.Runtime.Loader;
+#endif
 
 namespace ColorMC.Launcher;
 
@@ -154,10 +158,10 @@ public static class Program
                     context.Unload();
                     GuiLoad.Load();
 
-                    PathHelper.Delete($"{LoadDir}ColorMC.Gui.dll");
-                    PathHelper.Delete($"{LoadDir}ColorMC.Gui.pdb");
-                    PathHelper.Delete($"{LoadDir}ColorMC.Core.dll");
-                    PathHelper.Delete($"{LoadDir}ColorMC.Core.pdb");
+                    File.Delete($"{LoadDir}ColorMC.Gui.dll");
+                    File.Delete($"{LoadDir}ColorMC.Gui.pdb");
+                    File.Delete($"{LoadDir}ColorMC.Core.dll");
+                    File.Delete($"{LoadDir}ColorMC.Core.pdb");
 
                     return;
                 }
