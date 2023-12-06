@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
@@ -10,6 +12,7 @@ using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,13 +23,15 @@ public partial class AllControl : UserControl, IBaseWindow
     private IUserControl _baseControl;
     private IUserControl _nowControl;
 
-    private readonly List<Control> controls = new();
+    private readonly List<Control> controls = [];
 
     public IBaseWindow Window => this;
 
     public IUserControl ICon => _nowControl;
 
     public BaseModel Model => (DataContext as BaseModel)!;
+
+    private WindowNotificationManager windowNotification;
 
     public AllControl()
     {
@@ -40,11 +45,33 @@ public partial class AllControl : UserControl, IBaseWindow
         }
 
         PointerPressed += AllControl_PointerPressed;
+
         ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
 
         App.PicUpdate += Update;
 
         Update();
+    }
+
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        var level = TopLevel.GetTopLevel(this);
+        windowNotification = new WindowNotificationManager(level)
+        {
+            Position = NotificationPosition.TopRight,
+            MaxItems = 3,
+            Margin = new(0, 30, 0, 0)
+        };
+    }
+
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == BaseModel.InfoName)
+        {
+            windowNotification.Show(Model.NotifyText);
+        }
     }
 
     private void ResizeButton_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -148,13 +175,14 @@ public partial class AllControl : UserControl, IBaseWindow
             }
             Controls.Child = con1;
         }
-        Model.RemoveBack();
 
         SetTitle(_nowControl.Title);
         SetIcon(_nowControl.GetIcon());
 
         ((con as UserControl)?.DataContext as TopModel)?.TopClose();
         con.Closed();
+
+        Model.RemoveBack();
 
         BaseBinding.Clear();
     }

@@ -747,6 +747,7 @@ public static class WebBinding
             WebType.NetFrp1 => "https://www.natfrp.com/user/",
             WebType.Apache2_0 => "https://www.apache.org/licenses/LICENSE-2.0.html",
             WebType.MIT => "https://mit-license.org/",
+            WebType.MiSans => "https://hyperos.mi.com/font/",
             _ => "https://colormc.coloryr.com"
         });
     }

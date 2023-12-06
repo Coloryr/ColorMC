@@ -6,21 +6,22 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameExport"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
-    <Panel Name="ScrollViewer1" Margin="5,3,5,5">
+    <Panel Name="ScrollViewer1" Margin="5,0,5,2">
         <Border
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
@@ -40,31 +41,40 @@
                         ItemsSource="{Binding ExportTypes}"
                         SelectedIndex="{Binding Type}" />
                 </StackPanel>
-                <TextBox
-                    Margin="0,5,5,0"
-                    Classes="input1"
-                    IsEnabled="{Binding EnableInput1}"
-                    Text="{Binding Name}"
-                    Watermark="{setting:Localize GameExportWindow.Tab1.Text3}" />
-                <TextBox
-                    Margin="0,5,0,0"
-                    Classes="input1"
-                    IsEnabled="{Binding EnableInput1}"
-                    Text="{Binding Version}"
-                    Watermark="{setting:Localize GameExportWindow.Tab1.Text4}" />
-                <TextBox
-                    Margin="0,5,0,0"
-                    Classes="input1"
-                    IsEnabled="{Binding CfEx}"
-                    Text="{Binding Author}"
-                    Watermark="{setting:Localize GameExportWindow.Tab1.Text5}" />
-                <TextBox
-                    Margin="0,5,0,5"
-                    Classes="input1"
-                    IsEnabled="{Binding MoEx}"
-                    Text="{Binding Summary}"
-                    Watermark="{setting:Localize GameExportWindow.Tab1.Text6}" />
-            </StackPanel>
+                <Button
+                    Width="100"
+                    Height="25"
+                    HorizontalAlignment="Right"
+                    Command="{Binding Export}"
+                    Content="{setting:Localize GameExportWindow.Tab1.Text2}"
+                    DockPanel.Dock="Bottom" />
+                <StackPanel>
+                    <TextBox
+                        Margin="0,5,5,0"
+                        Classes="input1"
+                        IsEnabled="{Binding EnableInput1}"
+                        Text="{Binding Name}"
+                        Watermark="{setting:Localize GameExportWindow.Tab1.Text3}" />
+                    <TextBox
+                        Margin="0,5,0,0"
+                        Classes="input1"
+                        IsEnabled="{Binding EnableInput1}"
+                        Text="{Binding Version}"
+                        Watermark="{setting:Localize GameExportWindow.Tab1.Text4}" />
+                    <TextBox
+                        Margin="0,5,0,0"
+                        Classes="input1"
+                        IsEnabled="{Binding CfEx}"
+                        Text="{Binding Author}"
+                        Watermark="{setting:Localize GameExportWindow.Tab1.Text5}" />
+                    <TextBox
+                        Margin="0,5,0,5"
+                        Classes="input1"
+                        IsEnabled="{Binding MoEx}"
+                        Text="{Binding Summary}"
+                        Watermark="{setting:Localize GameExportWindow.Tab1.Text6}" />
+                </StackPanel>
+            </DockPanel>
         </Border>
     </Panel>
 </UserControl>

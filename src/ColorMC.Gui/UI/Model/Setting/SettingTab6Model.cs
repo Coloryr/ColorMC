@@ -15,9 +15,9 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel : MenuModel
 {
-    private readonly List<string> _uuids = new();
+    private readonly List<string> _uuids = [];
 
-    public ObservableCollection<string> GameList { get; init; } = new();
+    public ObservableCollection<string> GameList { get; init; } = [];
 
     public List<string> LoginList { get; init; } = UserBinding.GetLoginType();
 
@@ -56,6 +56,8 @@ public partial class SettingModel : MenuModel
     private bool _slowVolume;
     [ObservableProperty]
     private bool _runPause;
+    [ObservableProperty]
+    private bool _enableUI;
 
     [ObservableProperty]
     private int _game = -1;
@@ -69,6 +71,14 @@ public partial class SettingModel : MenuModel
     partial void OnLoginUrlChanged(string? value)
     {
         SetLoginLock();
+    }
+
+    partial void OnEnableUIChanged(bool value)
+    {
+        if (_serverLoad)
+            return;
+
+        ConfigBinding.SetUI(value, FileUI);
     }
 
     partial void OnLoginChanged(int value)
@@ -120,7 +130,10 @@ public partial class SettingModel : MenuModel
 
     partial void OnFileUIChanged(string? value)
     {
-        ConfigBinding.SetUI(value);
+        if (_serverLoad)
+            return;
+
+        ConfigBinding.SetUI(EnableUI, value);
     }
 
     partial void OnMotdFontColorChanged(Color value)
@@ -278,6 +291,7 @@ public partial class SettingModel : MenuModel
             EnableJoin = config.JoinServer;
             EnableOneGame = config.LockGame;
             EnableMusic = config.PlayMusic;
+            EnableUI = config.EnableUI;
             RunPause = config.RunPause;
             SlowVolume = config.SlowVolume;
 

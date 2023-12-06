@@ -22,7 +22,7 @@ public static class ColorSel
     public static readonly IBrush AppLightBackColor5 = Brush.Parse("#22FFFFFF");
     public static readonly IBrush AppLightBackColor6 = Brush.Parse("#FFDDDDDD");
     public static readonly IBrush AppLightBackColor7 = Brush.Parse("#DDFFFFFF");
-    public static readonly IBrush AppLightBackColor8 = Brush.Parse("#FFDDDDDD"); //button boder
+    public static readonly IBrush AppLightBackColor8 = Brush.Parse("#FFb7bac1"); //button boder
 
     public static readonly IBrush AppDarkBackColor = Brush.Parse("#FF202020");
     public static readonly IBrush AppDarkBackColor1 = Brush.Parse("#CC3A3A3A");

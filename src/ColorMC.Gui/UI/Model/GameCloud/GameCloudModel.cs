@@ -20,15 +20,15 @@ namespace ColorMC.Gui.UI.Model.GameCloud;
 
 public partial class GameCloudModel : MenuModel
 {
-    public override List<MenuObj> TabItems { get; init; } = new()
-    {
+    public override List<MenuObj> TabItems { get; init; } =
+    [
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.Lang("GameCloudWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/GameExport/item2.svg",
             Text = App.Lang("GameCloudWindow.Tabs.Text2") },
         new() { Icon = "/Resource/Icon/GameExport/item4.svg",
             Text = App.Lang("GameCloudWindow.Tabs.Text3") }
-    };
+    ];
 
     [ObservableProperty]
     private bool _displayFilter = true;
@@ -54,7 +54,7 @@ public partial class GameCloudModel : MenuModel
 
     public GameSettingObj Obj { get; init; }
 
-    public ObservableCollection<WorldCloudModel> WorldCloudList { get; } = new();
+    public ObservableCollection<WorldCloudModel> WorldCloudList { get; } = [];
 
     public string UUID => Obj.UUID;
 
@@ -65,6 +65,8 @@ public partial class GameCloudModel : MenuModel
         _useName = ToString() + ":" + obj.UUID;
 
         Obj = obj;
+
+        SetHeadBack();
 
         LoadWorld();
     }
@@ -231,10 +233,7 @@ public partial class GameCloudModel : MenuModel
         ConfigTime = res.Item3 ?? App.Lang("GameCloudWindow.Info2");
     }
 
-    /// <summary>
-    /// 加载数据
-    /// </summary>
-    public async void Load()
+    public async Task Init()
     {
         if (!GameCloudUtils.Connect)
         {
@@ -242,7 +241,14 @@ public partial class GameCloudModel : MenuModel
             return;
         }
         await LoadCloud();
+        await LoadConfig();
+    }
 
+    /// <summary>
+    /// 加载数据
+    /// </summary>
+    public async Task LoadConfig()
+    {
         string dir = Obj.GetBasePath();
         _files = new FilesPage(dir, false);
         var data = GameCloudUtils.GetCloudData(Obj);
@@ -325,6 +331,7 @@ public partial class GameCloudModel : MenuModel
     {
         _files = null!;
         WorldCloudList.Clear();
+        RemoveHeadBack();
         Source = null!;
     }
 
@@ -515,10 +522,26 @@ public partial class GameCloudModel : MenuModel
         }
     }
 
+    private async void Reload()
+    {
+        switch (NowView)
+        {
+            case 0:
+                await LoadCloud();
+                break;
+            case 1:
+                await LoadConfig();
+                break;
+            case 2:
+                LoadWorld();
+                break;
+        }
+    }
+
     public void SetHeadBack()
     {
         Model.SetChoiseContent(_useName, App.Lang("Button.Refash"));
-        Model.SetChoiseCall(_useName, LoadWorld);
+        Model.SetChoiseCall(_useName, Reload);
     }
 
     public void RemoveHeadBack()

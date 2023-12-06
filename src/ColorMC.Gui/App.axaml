@@ -21,7 +21,9 @@
         <StyleInclude Source="/Style/DropDownButton.axaml" />
         <StyleInclude Source="/Style/ToolTip.axaml" />
         <StyleInclude Source="/Style/ListBox.axaml" />
-        <StyleInclude Source="/UI/Controls/Setting/HyperLink.axaml" />
+        <StyleInclude Source="/Style/ToggleSwitch.axaml" />
+        <StyleInclude Source="/Style/ToggleButton.axaml" />
+        <StyleInclude Source="/UI/Views/HyperLink.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />

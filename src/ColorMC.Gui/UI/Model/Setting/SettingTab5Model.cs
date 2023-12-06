@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingModel : MenuModel
+public partial class SettingModel
 {
     [ObservableProperty]
     private string? _javaName;
@@ -22,7 +22,7 @@ public partial class SettingModel : MenuModel
     [ObservableProperty]
     private JavaDisplayObj _javaItem;
 
-    public ObservableCollection<JavaDisplayObj> JavaList { get; init; } = new();
+    public ObservableCollection<JavaDisplayObj> JavaList { get; init; } = [];
 
     [RelayCommand]
     public async Task AddJavaZip()

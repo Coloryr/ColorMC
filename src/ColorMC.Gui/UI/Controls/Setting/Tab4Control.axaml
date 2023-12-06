@@ -6,17 +6,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="1200"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer
         Name="ScrollViewer1"
-        Margin="5,0,5,5"
+        Margin="5,0,5,2"
         HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
             <Border
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -122,7 +123,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -180,7 +181,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -280,7 +281,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -321,7 +322,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -360,8 +361,6 @@
                         Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
                 </StackPanel>
             </Border>
-
-
         </StackPanel>
     </ScrollViewer>
 </UserControl>

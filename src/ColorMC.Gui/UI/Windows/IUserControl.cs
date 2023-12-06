@@ -18,5 +18,5 @@ public interface IUserControl
     virtual public void Opened() { }
     virtual public void Closed() { }
     virtual public void Update() { }
-    virtual public Task<bool> Closing() { return Task.Run(() => { return false; }); }
+    virtual public Task<bool> Closing() { return Task.FromResult(false); }
 }

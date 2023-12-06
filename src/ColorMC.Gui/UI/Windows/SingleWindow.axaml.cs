@@ -12,6 +12,7 @@ public partial class SingleWindow : Window
 {
     public SingleWindow()
     {
+
         InitializeComponent();
 
         Icon = App.Icon;
@@ -25,6 +26,8 @@ public partial class SingleWindow : Window
         Opened += UserWindow_Opened;
         Closing += SingleWindow_Closing;
         PropertyChanged += SelfBaseWindow_PropertyChanged;
+
+        DataContext = Win.DataContext;
     }
 
     private void SelfBaseWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)

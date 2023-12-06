@@ -4,14 +4,17 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
         <Border Padding="20">
-            <NumericUpDown Width="150" Height="30" FormatString="N0" />
+            <NumericUpDown
+                Width="150"
+                Height="30"
+                FormatString="N0" />
         </Border>
     </Design.PreviewWith>
 
     <Style Selector="NumericUpDown">
-		<Setter Property="Foreground" Value="{setting:Colors Font}" />
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
         <Setter Property="Background" Value="{setting:Colors Back}" />
         <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
-        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderThickness" Value="1" />
     </Style>
 </Styles>

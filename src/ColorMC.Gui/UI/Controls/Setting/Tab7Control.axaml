@@ -3,7 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:hyper="clr-namespace:ColorMC.Gui.UI.Controls.Setting"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
@@ -45,50 +45,55 @@
 
                     <StackPanel Name="StackPanel2" MaxWidth="350">
                         <StackPanel Orientation="Horizontal">
-                            <hyper:HyperLink
+                            <views:HyperLink
                                 Margin="5,0,0,0"
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text3}"
                                 Command="{Binding OpenUrl1}" />
-                            <hyper:HyperLink
+                            <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text8}"
                                 Command="{Binding OpenUrl5}" />
-                            <hyper:HyperLink
+                            <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text7}"
                                 Command="{Binding OpenUrl4}" />
-                            <hyper:HyperLink
+                            <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text5}"
                                 Command="{Binding OpenUrl3}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <hyper:HyperLink
+                            <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text4}"
                                 Command="{Binding OpenUrl2}" />
-                            <hyper:HyperLink
+                            <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text4}"
                                 Command="{Binding OpenUrl6}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <hyper:HyperLink
+                            <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text11}"
                                 Command="{Binding OpenUrl7}" />
-                            <hyper:HyperLink
+                            <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text12}"
                                 Command="{Binding OpenUrl8}" />
+                            <views:HyperLink
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Stretch"
+                                Alias="{setting:Localize SettingWindow.Tab7.Text13}"
+                                Command="{Binding OpenUrl9}" />
                         </StackPanel>
                     </StackPanel>
 

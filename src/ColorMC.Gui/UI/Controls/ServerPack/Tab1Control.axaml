@@ -18,16 +18,26 @@
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
-            <StackPanel>
+            <DockPanel>
                 <TextBox
                     Height="60"
                     Margin="0,0,0,5"
                     AcceptsReturn="True"
                     Classes="input2"
+                    DockPanel.Dock="Top"
                     Text="{Binding Text}"
                     Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
+                <Button
+                    Width="160"
+                    Height="25"
+                    HorizontalAlignment="Right"
+                    Command="{Binding Gen}"
+                    Content="{setting:Localize ServerPackWindow.Tab1.Text10}"
+                    DockPanel.Dock="Bottom"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+                    ToolTip.VerticalOffset="-30" />
                 <Label Content="{setting:Localize ServerPackWindow.Tab1.Text1}" />
-            </StackPanel>
+            </DockPanel>
         </Border>
     </ScrollViewer>
 </UserControl>

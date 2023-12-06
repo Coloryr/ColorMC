@@ -1,5 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
@@ -11,11 +13,14 @@ using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
 using System;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Windows;
 
 public partial class SelfBaseWindow : Window, IBaseWindow
 {
+    private WindowNotificationManager windowNotification;
+
     public IUserControl ICon { get; set; }
 
     public BaseModel Model => (DataContext as BaseModel)!;
@@ -55,6 +60,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Closing += SelfBaseWindow_Closing;
         PropertyChanged += SelfBaseWindow_PropertyChanged;
         ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
+        Model.PropertyChanged += Model_PropertyChanged;
 
         App.PicUpdate += Update;
 
@@ -68,6 +74,26 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         }
 
         Update();
+    }
+
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == BaseModel.InfoName)
+        {
+            windowNotification.Show(Model.NotifyText);
+        }
+    }
+
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        windowNotification = new WindowNotificationManager(this)
+        {
+            Position = NotificationPosition.TopRight,
+            MaxItems = 3,
+            Margin = new(0, 30, 0, 0)
+        };
     }
 
     private void ResizeButton_PointerPressed(object? sender, PointerPressedEventArgs e)

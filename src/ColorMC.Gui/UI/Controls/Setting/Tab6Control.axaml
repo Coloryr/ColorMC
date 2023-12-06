@@ -6,17 +6,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="800"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer
         Name="ScrollViewer1"
-        Margin="5,0,5,5"
+        Margin="5,0,5,2"
         HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
             <Border
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -37,6 +38,16 @@
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,5">
+                        <ToggleSwitch
+                            Margin="0,0,20,0"
+                            IsChecked="{Binding EnableMotd}"
+                            OffContent="{setting:Localize SettingWindow.Tab6.Text1}"
+                            OnContent="{setting:Localize SettingWindow.Tab6.Text1}" />
+                        <ToggleSwitch
+                            Margin="0,0,10,0"
+                            IsChecked="{Binding EnableJoin}"
+                            OffContent="{setting:Localize SettingWindow.Tab6.Text4}"
+                            OnContent="{setting:Localize SettingWindow.Tab6.Text4}" />
                         <TextBox
                             Width="200"
                             Margin="0,0,5,0"
@@ -52,22 +63,20 @@
                             MaxLength="5"
                             Text="{Binding ServerPort}"
                             Watermark="{setting:Localize SettingWindow.Tab6.Text3}" />
-                        <CheckBox
-                            Margin="10,0,0,0"
-                            Content="{setting:Localize SettingWindow.Tab6.Text1}"
-                            IsChecked="{Binding EnableMotd}" />
-                        <CheckBox
-                            Margin="10,0,0,0"
-                            Content="{setting:Localize SettingWindow.Tab6.Text4}"
-                            IsChecked="{Binding EnableJoin}" />
                     </WrapPanel>
                     <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text6}" />
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <Label
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab6.Text6}" />
                             <ColorPicker Color="{Binding MotdFontColor}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text5}" />
+                            <Label
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize SettingWindow.Tab6.Text5}" />
                             <ColorPicker Color="{Binding MotdBackColor}" />
                         </StackPanel>
                     </WrapPanel>
@@ -95,26 +104,28 @@
                             Content="{setting:Localize SettingWindow.Tab6.Text27}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <ToggleSwitch
+                            Margin="0,0,20,0"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab6.Text7}"
-                            IsChecked="{Binding EnableOneGame}" />
+                            IsChecked="{Binding EnableOneGame}"
+                            OffContent="{setting:Localize SettingWindow.Tab6.Text7}"
+                            OnContent="{setting:Localize SettingWindow.Tab6.Text7}" />
                         <ComboBox
                             Width="200"
-                            Margin="10,5,0,0"
                             IsEnabled="{Binding EnableOneGame}"
                             ItemsSource="{Binding GameList}"
                             SelectedIndex="{Binding Game}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox
+                        <ToggleSwitch
+                            Margin="0,0,20,0"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab6.Text24}"
-                            IsChecked="{Binding EnableOneLogin}" />
+                            IsChecked="{Binding EnableOneLogin}"
+                            OffContent="{setting:Localize SettingWindow.Tab6.Text24}"
+                            OnContent="{setting:Localize SettingWindow.Tab6.Text24}" />
                         <ComboBox
                             Width="200"
-                            Margin="10,5,0,0"
                             IsEnabled="{Binding EnableOneLogin}"
                             ItemsSource="{Binding LoginList}"
                             SelectedIndex="{Binding Login}" />
@@ -134,7 +145,7 @@
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}"
-                IsEnabled="{Binding !Phone}">
+                IsVisible="{Binding !Phone}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -149,6 +160,10 @@
                             Content="{setting:Localize SettingWindow.Tab6.Text8}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
+                    <ToggleSwitch
+                        IsEnabled="{Binding EnableUI}"
+                        OffContent="{setting:Localize SettingWindow.Tab6.Text30}"
+                        OnContent="{setting:Localize SettingWindow.Tab6.Text30}" />
                     <DockPanel Margin="0,5,0,5">
                         <Button
                             Width="80"
@@ -187,10 +202,6 @@
                             DockPanel.Dock="Right"
                             IsEnabled="{Binding FileUI, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                     </WrapPanel>
-                    <TextBlock
-                        Margin="0,5,0,0"
-                        Text="{setting:Localize SettingWindow.Tab6.Text12}"
-                        TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border
@@ -200,7 +211,7 @@
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}"
-                IsEnabled="{Binding !Phone}">
+                IsVisible="{Binding !Phone}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -216,15 +227,20 @@
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox Content="{setting:Localize SettingWindow.Tab6.Text16}" IsChecked="{Binding EnableMusic}" />
-                        <CheckBox
-                            Margin="5,0,0,0"
-                            Content="{setting:Localize SettingWindow.Tab6.Text22}"
-                            IsEnabled="{Binding EnableMusic}" />
-                        <CheckBox
-                            Margin="5,0,0,0"
-                            Content="{setting:Localize SettingWindow.Tab6.Text26}"
-                            IsEnabled="{Binding RunPause}" />
+                        <ToggleSwitch
+                            Margin="0,0,20,0"
+                            IsChecked="{Binding EnableMusic}"
+                            OffContent="{setting:Localize SettingWindow.Tab6.Text16}"
+                            OnContent="{setting:Localize SettingWindow.Tab6.Text16}" />
+                        <ToggleSwitch
+                            Margin="0,0,20,0"
+                            IsEnabled="{Binding EnableMusic}"
+                            OffContent="{setting:Localize SettingWindow.Tab6.Text22}"
+                            OnContent="{setting:Localize SettingWindow.Tab6.Text22}" />
+                        <ToggleSwitch
+                            IsEnabled="{Binding RunPause}"
+                            OffContent="{setting:Localize SettingWindow.Tab6.Text26}"
+                            OnContent="{setting:Localize SettingWindow.Tab6.Text26}" />
                     </StackPanel>
                     <DockPanel>
                         <Button

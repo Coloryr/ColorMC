@@ -1,0 +1,30 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.NetFrpRemoteControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    x:DataType="model:NetFrpRemoteModel"
+    mc:Ignorable="d">
+    <Border
+        Padding="{setting:Style BorderPadding}"
+        Background="{setting:Colors GroupBack}"
+        BorderBrush="{setting:Colors GroupColor}"
+        BorderThickness="2"
+        CornerRadius="{setting:Style ButtonCornerRadius}">
+        <StackPanel Orientation="Horizontal">
+            <Label Content="{setting:Localize NetFrpWindow.Tab1.Text9}" />
+            <Label Margin="0,0,10,0" Content="{Binding Name}" />
+            <Label Content="{setting:Localize NetFrpWindow.Tab1.Text10}" />
+            <Label Margin="0,0,10,0" Content="{Binding ID}" />
+            <Label Content="{setting:Localize NetFrpWindow.Tab1.Text11}" />
+            <Label Margin="0,0,10,0" Content="{Binding Type}" />
+            <Label Content="{setting:Localize NetFrpWindow.Tab1.Text12}" />
+            <Label Margin="0,0,10,0" Content="{Binding Remote}" />
+            <Label Content="{setting:Localize NetFrpWindow.Tab1.Text13}" />
+            <Label Margin="0,0,10,0" Content="{Binding Use}" />
+        </StackPanel>
+    </Border>
+</UserControl>

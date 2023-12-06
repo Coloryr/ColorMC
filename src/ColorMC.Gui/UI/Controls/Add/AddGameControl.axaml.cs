@@ -3,7 +3,6 @@ using Avalonia.Input;
 using ColorMC.Core;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Gui.UI.Controls.Add.AddGame;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add.AddGame;
 using ColorMC.Gui.UI.Windows;
@@ -16,9 +15,9 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddGameControl : UserControl, IUserControl
 {
-    private readonly Tab1Control _tab1 = new();
-    private readonly Tab2Control _tab2 = new();
-    private readonly Tab3Control _tab3 = new();
+    private readonly AddGameTab1Control _tab1 = new();
+    private readonly AddGameTab2Control _tab2 = new();
+    private readonly AddGameTab3Control _tab3 = new();
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 

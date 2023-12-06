@@ -18,6 +18,8 @@ namespace ColorMC.Gui.UI.Model;
 
 public partial class BaseModel : ObservableObject
 {
+    public const string InfoName = "Info2Show";
+
     private readonly Info1Model _info1;
     private readonly Info3Model _info3;
     private readonly Info4Model _info4;
@@ -310,7 +312,7 @@ public partial class BaseModel : ObservableObject
     public void Notify(string data)
     {
         NotifyText = data;
-        OnPropertyChanged("Info2Show");
+        OnPropertyChanged(InfoName);
     }
 
     public void SetIcon(Bitmap image)

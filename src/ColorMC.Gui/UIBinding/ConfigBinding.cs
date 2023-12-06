@@ -476,9 +476,10 @@ public static class ConfigBinding
         App.MainWindow?.LoadMain();
     }
 
-    public static void SetUI(string? value)
+    public static void SetUI(bool enable, string? value)
     {
         GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom.EnableUI = enable;
         GuiConfigUtils.Config.ServerCustom.UIFile = value;
         GuiConfigUtils.Save();
     }

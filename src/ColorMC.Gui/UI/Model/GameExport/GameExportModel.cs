@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameExport;
 
-public partial class GameExportModel : MenuModel
+public partial class GameExportModel(BaseModel model, GameSettingObj obj) : MenuModel(model)
 {
     /// <summary>
     /// 导出的文件列表
@@ -91,12 +91,7 @@ public partial class GameExportModel : MenuModel
 
     public readonly List<ModExportModel> Items = new();
 
-    public GameSettingObj Obj { get; init; }
-
-    public GameExportModel(BaseModel model, GameSettingObj obj) : base(model)
-    {
-        Obj = obj;
-    }
+    public GameSettingObj Obj { get; init; } = obj;
 
     async partial void OnTypeChanged(PackType value)
     {

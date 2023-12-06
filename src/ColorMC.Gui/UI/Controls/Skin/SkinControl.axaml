@@ -23,10 +23,6 @@
                 <Panel>
                     <view2:SkinRender Name="Skin" />
 
-                    <Panel
-                        Name="SkinTop"
-                        Background="#00FFFFFF"
-                        Opacity="0" />
                     <Grid
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"

@@ -27,8 +27,12 @@ public partial class SettingModel : MenuModel
 
     public bool Phone { get; } = false;
 
+    private readonly string _useName;
+
     public SettingModel(BaseModel model) : base(model)
     {
+        _useName = ToString() ?? "SettingModel";
+
         if (SystemInfo.Os == OsType.Android)
         {
             Phone = true;

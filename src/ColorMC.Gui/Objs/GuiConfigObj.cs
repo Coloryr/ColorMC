@@ -90,6 +90,11 @@ public record ServerCustom
     /// 游戏实例
     /// </summary>
     public string? GameName { get; set; }
+
+    /// <summary>
+    /// 是否启用自定义UI
+    /// </summary>
+    public bool EnableUI { get; set; }
     /// <summary>
     /// 自定义UI文件
     /// </summary>

@@ -6,17 +6,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="600"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer
         Name="ScrollViewer1"
-        Margin="5,0,5,5"
+        Margin="5,0,5,2"
         HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
             <Border
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -65,25 +66,26 @@
                                 Minimum="1"
                                 Value="{Binding Thread}" />
                         </StackPanel>
-                        <CheckBox
-                            Width="160"
-                            Content="{setting:Localize SettingWindow.Tab3.Text11}"
+                        <ToggleSwitch
+                            Margin="0,0,20,0"
                             IsChecked="{Binding CheckFile}"
-                            IsEnabled="{Binding !IsDownload}" />
-                        <CheckBox
-                            Content="{setting:Localize SettingWindow.Tab3.Text19}"
+                            IsEnabled="{Binding !IsDownload}"
+                            OffContent="{setting:Localize SettingWindow.Tab3.Text11}"
+                            OnContent="{setting:Localize SettingWindow.Tab3.Text11}" />
+                        <ToggleSwitch
                             IsChecked="{Binding AutoDownload}"
-                            IsEnabled="{Binding !IsDownload}" />
+                            IsEnabled="{Binding !IsDownload}"
+                            OffContent="{setting:Localize SettingWindow.Tab3.Text19}"
+                            OnContent="{setting:Localize SettingWindow.Tab3.Text19}" />
                     </WrapPanel>
                     <TextBlock
                         Margin="0,2,0,0"
                         Text="{setting:Localize SettingWindow.Tab3.Text24}"
                         TextWrapping="Wrap" />
                 </StackPanel>
-
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -138,34 +140,36 @@
                             Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
                     </Grid>
                     <Button
-                        Width="100"
+                        Width="80"
                         Height="25"
-                        Margin="0,5,0,0"
+                        Margin="0,0,0,0"
                         HorizontalAlignment="Right"
                         Command="{Binding SetProxy}"
                         Content="{setting:Localize Button.Set}" />
                     <WrapPanel Margin="0,5,0,0">
-                        <CheckBox
-                            Width="130"
-                            Content="{setting:Localize SettingWindow.Tab3.Text8}"
+                        <ToggleSwitch
+                            Margin="0,0,20,0"
                             IsChecked="{Binding LoginProxy}"
-                            IsEnabled="{Binding !IsDownload}" />
-                        <CheckBox
-                            Width="130"
-                            Content="{setting:Localize SettingWindow.Tab3.Text9}"
+                            IsEnabled="{Binding !IsDownload}"
+                            OffContent="{setting:Localize SettingWindow.Tab3.Text8}"
+                            OnContent="{setting:Localize SettingWindow.Tab3.Text8}" />
+                        <ToggleSwitch
+                            Margin="0,0,20,0"
                             IsChecked="{Binding DownloadProxy}"
-                            IsEnabled="{Binding !IsDownload}" />
-                        <CheckBox
-                            Width="130"
-                            Content="{setting:Localize SettingWindow.Tab3.Text10}"
+                            IsEnabled="{Binding !IsDownload}"
+                            OffContent="{setting:Localize SettingWindow.Tab3.Text9}"
+                            OnContent="{setting:Localize SettingWindow.Tab3.Text9}" />
+                        <ToggleSwitch
                             IsChecked="{Binding GameProxy}"
-                            IsEnabled="{Binding !IsDownload}" />
+                            IsEnabled="{Binding !IsDownload}"
+                            OffContent="{setting:Localize SettingWindow.Tab3.Text10}"
+                            OnContent="{setting:Localize SettingWindow.Tab3.Text10}" />
                     </WrapPanel>
                     <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -187,15 +191,19 @@
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
                     <WrapPanel>
-                        <CheckBox Content="{setting:Localize SettingWindow.Tab3.Text15}" IsChecked="{Binding CheckUpdate}" />
+                        <ToggleSwitch
+                            Margin="0,0,20,0"
+                            IsChecked="{Binding CheckUpdate}"
+                            OffContent="{setting:Localize SettingWindow.Tab3.Text15}"
+                            OnContent="{setting:Localize SettingWindow.Tab3.Text15}" />
                         <Button
-                            Width="120"
+                            Width="80"
                             Height="25"
                             Margin="5"
                             Command="{Binding StartCheck}"
                             Content="{setting:Localize SettingWindow.Tab3.Text16}" />
                         <Button
-                            Width="120"
+                            Width="80"
                             Height="25"
                             Margin="0,5,5,5"
                             Command="{Binding StartUpdate}"
@@ -204,7 +212,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -235,7 +243,7 @@
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
                     <Button
-                        Width="100"
+                        Width="80"
                         Height="25"
                         HorizontalAlignment="Right"
                         Command="{Binding GameCloudConnect}"

@@ -3,7 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.GameEdit.Items"
+    xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
     xmlns:obj="clr-namespace:ColorMC.Gui.Objs"
@@ -14,8 +14,9 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel Name="ScrollViewer1">
-        <DockPanel Margin="5,3,5,5">
+        <DockPanel Margin="5,0,5,2">
             <Border
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -73,7 +74,7 @@
                 </WrapPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"

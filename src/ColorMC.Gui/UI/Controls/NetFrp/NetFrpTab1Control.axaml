@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.NetFrp"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.NetFrp.Items"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:NetFrpModel"

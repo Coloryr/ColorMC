@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Custom"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
-    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Main"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     Title="自定义标题"
     mc:Ignorable="d">
     <Panel>
