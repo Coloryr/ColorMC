@@ -17,20 +17,16 @@ public class GameEditFlyout3
         _top = model.Top;
         _obj = model.Pack;
 
-        _ = new FlyoutsControl(new (string, bool, Action)[]
-        {
-            (App.Lang("Button.OpFile"), true, Button1_Click),
-            (App.Lang("GameEditWindow.Flyouts3.Text1"), true, Button2_Click)
-        }, con);
-    }
-
-    private void Button2_Click()
-    {
-        _top.DeleteResource(_obj);
-    }
-
-    private void Button1_Click()
-    {
-        PathBinding.OpFile(_obj.Local);
+        _ = new FlyoutsControl(
+        [
+            (App.Lang("Button.OpFile"), true, ()=>
+            {
+                PathBinding.OpFile(_obj.Local);
+            }),
+            (App.Lang("GameEditWindow.Flyouts3.Text1"), true, ()=>
+            {
+                _top.DeleteResource(_obj);
+            })
+        ], con);
     }
 }

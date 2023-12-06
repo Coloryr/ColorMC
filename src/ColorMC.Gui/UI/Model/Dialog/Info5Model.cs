@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
-public partial class Info5Model : ObservableObject
+public partial class Info5Model(string? name) : ObservableObject
 {
 
     [ObservableProperty]
@@ -17,21 +17,14 @@ public partial class Info5Model : ObservableObject
 
     public bool IsCancel;
 
-    public ObservableCollection<string> Items { get; init; } = new();
-
-    private readonly string? _name;
-
-    public Info5Model(string? name)
-    {
-        _name = name;
-    }
+    public ObservableCollection<string> Items { get; init; } = [];
 
     [RelayCommand]
     public void Cancel()
     {
         IsCancel = true;
 
-        DialogHost.Close(_name);
+        DialogHost.Close(name);
     }
 
     [RelayCommand]
@@ -39,6 +32,6 @@ public partial class Info5Model : ObservableObject
     {
         IsCancel = false;
 
-        DialogHost.Close(_name);
+        DialogHost.Close(name);
     }
 }

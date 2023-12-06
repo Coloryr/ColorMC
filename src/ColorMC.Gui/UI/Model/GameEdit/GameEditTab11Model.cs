@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : MenuModel
+public partial class GameEditModel
 {
-    public ObservableCollection<ShaderpackObj> ShaderpackList { get; init; } = new();
+    public ObservableCollection<ShaderpackObj> ShaderpackList { get; init; } = [];
 
     [ObservableProperty]
     private ShaderpackObj? _shaderpackItem;

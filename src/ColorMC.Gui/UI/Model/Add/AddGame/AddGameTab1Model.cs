@@ -16,16 +16,16 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : TopModel
+public partial class AddGameModel
 {
     /// <summary>
     /// 游戏版本列表
     /// </summary>
-    public ObservableCollection<string> GameVersionList { get; init; } = new();
+    public ObservableCollection<string> GameVersionList { get; init; } = [];
     /// <summary>
     /// 加载器版本列表
     /// </summary>
-    public ObservableCollection<string> LoaderVersionList { get; init; } = new();
+    public ObservableCollection<string> LoaderVersionList { get; init; } = [];
 
     /// <summary>
     /// 游戏版本类型
@@ -34,7 +34,7 @@ public partial class AddGameModel : TopModel
     /// <summary>
     /// 加载器版本类型
     /// </summary>
-    public ObservableCollection<string> LoaderTypeList { get; init; } = new();
+    public ObservableCollection<string> LoaderTypeList { get; init; } = [];
 
     /// <summary>
     /// 游戏版本
@@ -67,7 +67,7 @@ public partial class AddGameModel : TopModel
     /// <summary>
     /// 加载器类型列表
     /// </summary>
-    private readonly List<Loaders> _loaderTypeList = new();
+    private readonly List<Loaders> _loaderTypeList = [];
 
     /// <summary>
     /// 游戏版本修改

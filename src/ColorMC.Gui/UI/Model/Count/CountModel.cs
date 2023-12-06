@@ -48,9 +48,9 @@ public partial class CountModel : ObservableObject
     [ObservableProperty]
     private string _gameTime1;
 
-    private readonly List<GameSettingObj> _list = new();
+    private readonly List<GameSettingObj> _list = [];
 
-    public ObservableCollection<string> Game { get; init; } = new();
+    public ObservableCollection<string> Game { get; init; } = [];
 
     public CountModel()
     {

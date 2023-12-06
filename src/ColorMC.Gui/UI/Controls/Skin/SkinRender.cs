@@ -196,20 +196,13 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
         CheckError(gl);
 
-        IntPtr temp = gl.GetProcAddress("glDepthFunc");
-        glDepthFunc = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
-        temp = gl.GetProcAddress("glBlendFunc");
-        glBlendFunc = (GlFunc1)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc1));
-        temp = gl.GetProcAddress("glDepthMask");
-        glDepthMask = (GlFunc4)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc4));
-        temp = gl.GetProcAddress("glCullFace");
-        glCullFace = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
-        temp = gl.GetProcAddress("glDisable");
-        glDisable = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
-        temp = gl.GetProcAddress("glDisableVertexAttribArray");
-        glDisableVertexAttribArray = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
-        temp = gl.GetProcAddress("glUniform3f");
-        glUniform3f = (GlFunc6)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc6));
+        glDepthFunc = Marshal.GetDelegateForFunctionPointer<GlFunc2>(gl.GetProcAddress("glDepthFunc"));
+        glBlendFunc = Marshal.GetDelegateForFunctionPointer<GlFunc1>(gl.GetProcAddress("glBlendFunc"));
+        glDepthMask = Marshal.GetDelegateForFunctionPointer<GlFunc4>(gl.GetProcAddress("glDepthMask"));
+        glCullFace = Marshal.GetDelegateForFunctionPointer<GlFunc2>(gl.GetProcAddress("glCullFace"));
+        glDisable = Marshal.GetDelegateForFunctionPointer<GlFunc2>(gl.GetProcAddress("glDisable"));
+        glDisableVertexAttribArray = Marshal.GetDelegateForFunctionPointer<GlFunc2>(gl.GetProcAddress("glDisableVertexAttribArray"));
+        glUniform3f = Marshal.GetDelegateForFunctionPointer<GlFunc6>(gl.GetProcAddress("glUniform3f"));
 
         gl.ClearColor(0, 0, 0, 1);
         //GL_BLEND

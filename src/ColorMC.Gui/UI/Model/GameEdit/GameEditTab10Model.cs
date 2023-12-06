@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : MenuModel
+public partial class GameEditModel
 {
-    public ObservableCollection<ServerInfoObj> ServerList { get; init; } = new();
+    public ObservableCollection<ServerInfoObj> ServerList { get; init; } = [];
 
     [ObservableProperty]
     private ServerInfoObj? _serverItem;

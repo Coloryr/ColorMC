@@ -13,11 +13,11 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public string Title => App.Lang("ErrorWindow.Title");
 
-    private string? _data;
-    private Exception? _e;
-    private string _e1;
-    private bool _close;
-    private bool _type = false;
+    private readonly string? _data;
+    private readonly Exception? _e;
+    private readonly string _e1;
+    private readonly bool _close;
+    private readonly bool _type = false;
 
     public string UseName { get; }
 

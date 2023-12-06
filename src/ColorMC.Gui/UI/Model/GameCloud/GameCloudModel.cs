@@ -142,7 +142,7 @@ public partial class GameCloudModel : MenuModel
         var files = _files.GetSelectItems(true);
         var data = GameCloudUtils.GetCloudData(Obj);
         string dir = Obj.GetBasePath();
-        data.Config ??= new();
+        data.Config ??= [];
         data.Config.Clear();
         foreach (var item in files)
         {

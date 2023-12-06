@@ -10,8 +10,9 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class Live2dControl : UserControl
 {
+    private readonly FpsTimer _renderTimer;
+
     private CancellationTokenSource _cancel = new();
-    private FpsTimer _renderTimer;
 
     public Live2dControl()
     {

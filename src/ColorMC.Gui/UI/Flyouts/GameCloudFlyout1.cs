@@ -13,33 +13,15 @@ public class GameCloudFlyout1
     {
         _model = model;
 
-        _ = new FlyoutsControl(new (string, bool, Action)[]
-        {
-            (App.Lang("Button.OpFile"), model.HaveLocal, Button1_Click),
-            (App.Lang("GameCloudWindow.Flyouts1.Text1"), model.HaveLocal, Button2_Click),
-            (App.Lang("GameCloudWindow.Flyouts1.Text2"), model.HaveCloud, Button3_Click),
-            (App.Lang("GameCloudWindow.Flyouts1.Text3"), model.HaveCloud, Button4_Click),
-        }, con);
+        _ = new FlyoutsControl(
+        [
+            (App.Lang("Button.OpFile"), model.HaveLocal, () =>
+            {
+                PathBinding.OpPath(_model.World);
+            }),
+            (App.Lang("GameCloudWindow.Flyouts1.Text1"), model.HaveLocal, _model.Upload),
+            (App.Lang("GameCloudWindow.Flyouts1.Text2"), model.HaveCloud, _model.Download),
+            (App.Lang("GameCloudWindow.Flyouts1.Text3"), model.HaveCloud, _model.DeleteCloud),
+        ], con);
     }
-
-    private void Button4_Click()
-    {
-        _model.DeleteCloud();
-    }
-
-    private void Button3_Click()
-    {
-        _model.Download();
-    }
-
-    private void Button2_Click()
-    {
-        _model.Upload();
-    }
-
-    private void Button1_Click()
-    {
-        PathBinding.OpPath(_model.World);
-    }
-
 }

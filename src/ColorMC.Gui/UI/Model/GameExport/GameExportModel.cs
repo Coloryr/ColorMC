@@ -30,8 +30,8 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
 
     public string[] ExportTypes { get; init; } = LanguageBinding.GetExportName();
 
-    public override List<MenuObj> TabItems { get; init; } = new()
-    {
+    public override List<MenuObj> TabItems { get; init; } =
+    [
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.Lang("GameExportWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/GameExport/item2.svg",
@@ -40,21 +40,21 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
             Text = App.Lang("GameExportWindow.Tabs.Text3") },
         new() { Icon = "/Resource/Icon/GameExport/item4.svg",
             Text = App.Lang("GameExportWindow.Tabs.Text4") },
-    };
+    ];
 
     /// <summary>
     /// 在线下载的Mod列表
     /// </summary>
-    public ObservableCollection<ModExportModel> Mods { get; init; } = new();
+    public ObservableCollection<ModExportModel> Mods { get; init; } = [];
     /// <summary>
     /// 在线下载的文件列表
     /// </summary>
-    public ObservableCollection<ModExport1Model> OtherFiles { get; init; } = new();
+    public ObservableCollection<ModExport1Model> OtherFiles { get; init; } = [];
 
     /// <summary>
     /// 待选择的文件列表
     /// </summary>
-    public ObservableCollection<string> FileList { get; init; } = new();
+    public ObservableCollection<string> FileList { get; init; } = [];
 
     [ObservableProperty]
     private PackType _type;
@@ -89,7 +89,7 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
     [ObservableProperty]
     private bool _enableInput3;
 
-    public readonly List<ModExportModel> Items = new();
+    public readonly List<ModExportModel> Items = [];
 
     public GameSettingObj Obj { get; init; } = obj;
 

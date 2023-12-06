@@ -17,9 +17,9 @@ namespace ColorMC.Gui.UI.Model.Download;
 
 public partial class DownloadModel : TopModel
 {
-    public ObservableCollection<DownloadItemModel> ItemList { get; init; } = new();
+    public ObservableCollection<DownloadItemModel> ItemList { get; init; } = [];
 
-    private readonly Dictionary<string, DownloadItemModel> _downloadList = new();
+    private readonly Dictionary<string, DownloadItemModel> _downloadList = [];
 
     private long _count;
     private readonly Timer _timer;

@@ -4,7 +4,7 @@ using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
-public partial class Info6Model : ObservableObject
+public partial class Info6Model(string? name) : ObservableObject
 {
     public bool IsCancel;
 
@@ -16,18 +16,12 @@ public partial class Info6Model : ObservableObject
     [ObservableProperty]
     private bool _needCancel;
 
-    private readonly string? _name;
-    public Info6Model(string? name)
-    {
-        _name = name;
-    }
-
     [RelayCommand]
     public void Cancel()
     {
         IsCancel = true;
 
-        DialogHost.Close(_name);
+        DialogHost.Close(name);
     }
 
     [RelayCommand]
@@ -35,6 +29,6 @@ public partial class Info6Model : ObservableObject
     {
         IsCancel = false;
 
-        DialogHost.Close(_name);
+        DialogHost.Close(name);
     }
 }

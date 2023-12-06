@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : MenuModel
+public partial class GameEditModel
 {
-    public ObservableCollection<WorldModel> WorldList { get; init; } = new();
+    public ObservableCollection<WorldModel> WorldList { get; init; } = [];
 
     private WorldModel? _selectWorld;
 
@@ -156,8 +156,7 @@ public partial class GameEditModel : MenuModel
     public async void Export(WorldModel obj)
     {
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info4"));
-        var file = await PathBinding.SaveFile(FileType.World, new object[]
-            { obj });
+        var file = await PathBinding.SaveFile(FileType.World, [obj]);
         Model.ProgressClose();
         if (file == null)
             return;

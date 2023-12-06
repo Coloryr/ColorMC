@@ -16,7 +16,7 @@ public partial class AddGameModel : TopModel
     /// <summary>
     /// 游戏分组
     /// </summary>
-    public ObservableCollection<string> GroupList { get; init; } = new();
+    public ObservableCollection<string> GroupList { get; init; } = [];
 
     /// <summary>
     /// 实例名字

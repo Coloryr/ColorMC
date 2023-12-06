@@ -14,7 +14,7 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddControl : UserControl, IUserControl
 {
-    private GameSettingObj _obj;
+    private readonly GameSettingObj _obj;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 

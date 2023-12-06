@@ -21,8 +21,6 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public UserControl Con => this;
-
     public string Title => App.Lang("AddGameWindow.Title");
 
     public string UseName { get; }

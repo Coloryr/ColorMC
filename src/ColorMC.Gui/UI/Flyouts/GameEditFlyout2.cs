@@ -14,44 +14,32 @@ public class GameEditFlyout2
     {
         _model = model;
 
-        _ = new FlyoutsControl(new (string, bool, Action)[]
-        {
-            (App.Lang("Button.OpFile"), true, Button1_Click),
-            (App.Lang("GameEditWindow.Flyouts2.Text5"), CheckHelpers.IsGameVersion120(_model.World.Game.Version), Button6_Click),
-            (App.Lang("GameEditWindow.Flyouts2.Text1"), true, Button2_Click),
-            (App.Lang("GameEditWindow.Flyouts2.Text4"), true, Button5_Click),
-            (App.Lang("GameEditWindow.Flyouts2.Text3"), !_model.World.Broken, Button3_Click),
-            (App.Lang("GameEditWindow.Flyouts2.Text2"), !_model.World.Broken, Button4_Click)
-        }, con);
-    }
-
-    private void Button6_Click()
-    {
-        _model.Top.LaunchWorld(_model);
-    }
-
-    private void Button5_Click()
-    {
-        App.ShowConfigEdit(_model.World);
-    }
-
-    private void Button4_Click()
-    {
-        _model.Top.DeleteWorld(_model);
-    }
-
-    private void Button3_Click()
-    {
-        _model.Top.BackupWorld(_model);
-    }
-
-    private void Button2_Click()
-    {
-        _model.Top.Export(_model);
-    }
-
-    private void Button1_Click()
-    {
-        PathBinding.OpPath(_model.World);
+        _ = new FlyoutsControl(
+        [
+            (App.Lang("Button.OpFile"), true, ()=>
+            {
+                PathBinding.OpPath(_model.World);
+            }),
+            (App.Lang("GameEditWindow.Flyouts2.Text5"), CheckHelpers.IsGameVersion120(_model.World.Game.Version), ()=>
+            {
+                _model.Top.LaunchWorld(_model);
+            }),
+            (App.Lang("GameEditWindow.Flyouts2.Text1"), true, ()=>
+            {
+                _model.Top.Export(_model);
+            }),
+            (App.Lang("GameEditWindow.Flyouts2.Text4"), true, ()=>
+            {
+                App.ShowConfigEdit(_model.World);
+            }),
+            (App.Lang("GameEditWindow.Flyouts2.Text3"), !_model.World.Broken, ()=>
+            {
+                _model.Top.BackupWorld(_model);
+            }),
+            (App.Lang("GameEditWindow.Flyouts2.Text2"), !_model.World.Broken, ()=>
+            {
+                _model.Top.DeleteWorld(_model);
+            })
+        ], con);
     }
 }

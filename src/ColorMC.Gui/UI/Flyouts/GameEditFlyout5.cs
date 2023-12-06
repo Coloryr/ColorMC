@@ -16,18 +16,14 @@ public class GameEditFlyout5
 
         _ = new FlyoutsControl(new (string, bool, Action)[]
         {
-            (App.Lang("Button.Delete"), true, Button1_Click),
-            (App.Lang("GameEditWindow.Flyouts5.Text1"), true, Button2_Click)
+            (App.Lang("Button.Delete"), true, ()=>
+            {
+                _model.DeleteServer(_model.ServerItem!);
+            }),
+            (App.Lang("GameEditWindow.Flyouts5.Text1"), true, ()=>
+            {
+                GameBinding.CopyServer(_model.ServerItem!);
+            })
         }, con);
-    }
-
-    private void Button2_Click()
-    {
-        GameBinding.CopyServer(_model.ServerItem!);
-    }
-
-    private void Button1_Click()
-    {
-        _model.DeleteServer(_model.ServerItem!);
     }
 }
