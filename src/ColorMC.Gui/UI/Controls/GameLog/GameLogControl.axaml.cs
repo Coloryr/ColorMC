@@ -23,7 +23,7 @@ public partial class GameLogControl : UserControl, IUserControl
             _obj.Name);
 
     private Bitmap _icon;
-    private bool _loadlast;
+    private readonly bool _loadlast;
     public Bitmap GetIcon() => _icon;
 
     public string UseName { get; }

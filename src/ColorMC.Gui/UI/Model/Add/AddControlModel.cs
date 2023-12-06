@@ -26,11 +26,11 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// 显示的高清修复列表
     /// </summary>
-    public ObservableCollection<OptifineObj> DownloadOptifineList { get; init; } = new();
+    public ObservableCollection<OptifineObj> DownloadOptifineList { get; init; } = [];
     /// <summary>
     /// 显示的下载模组项目列表
     /// </summary>
-    public ObservableCollection<DownloadModModel> DownloadModList { get; init; } = new();
+    public ObservableCollection<DownloadModModel> DownloadModList { get; init; } = [];
     /// 显示的<summary>
     /// 下载类型列表
     /// </summary>
@@ -38,52 +38,52 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// 显示的游戏版本列表
     /// </summary>
-    public ObservableCollection<string> GameVersionList { get; init; } = new();
+    public ObservableCollection<string> GameVersionList { get; init; } = [];
     /// <summary>
     /// 显示的文件列表
     /// </summary>
-    public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
+    public ObservableCollection<FileDisplayObj> FileList { get; init; } = [];
     /// <summary>
     /// 显示的项目列表
     /// </summary>
-    public ObservableCollection<FileItemModel> DisplayList { get; init; } = new();
+    public ObservableCollection<FileItemModel> DisplayList { get; init; } = [];
     /// <summary>
     /// 显示的下载源列表
     /// </summary>
-    public ObservableCollection<string> DownloadSourceList { get; init; } = new();
+    public ObservableCollection<string> DownloadSourceList { get; init; } = [];
     /// <summary>
     /// 显示的排序列表
     /// </summary>
-    public ObservableCollection<string> SortTypeList { get; init; } = new();
+    public ObservableCollection<string> SortTypeList { get; init; } = [];
     /// <summary>
     /// 显示的分类列表
     /// </summary>
-    public ObservableCollection<string> CategorieList { get; init; } = new();
+    public ObservableCollection<string> CategorieList { get; init; } = [];
 
     /// <summary>
     /// 下载源列表
     /// </summary>
-    public readonly List<SourceType> SourceTypeList = new();
+    public readonly List<SourceType> SourceTypeList = [];
     /// <summary>
     /// 类型列表
     /// </summary>
-    public readonly Dictionary<int, string> Categories = new();
+    public readonly Dictionary<int, string> Categories = [];
     /// <summary>
     /// Mod下载项目显示列表
     /// </summary>
-    public readonly List<DownloadModModel> ModList = new();
+    public readonly List<DownloadModModel> ModList = [];
     /// <summary>
     /// 高清修复列表
     /// </summary>
-    public readonly List<OptifineObj> OptifineList = new();
+    public readonly List<OptifineObj> OptifineList = [];
     /// <summary>
     /// 下载源列表
     /// </summary>
-    private readonly List<string> SourceTypeNameList = new()
-    {
+    private readonly List<string> SourceTypeNameList =
+    [
         SourceType.CurseForge.GetName(),
         SourceType.Modrinth.GetName(),
-    };
+    ];
 
     /// <summary>
     /// 当前文件类型

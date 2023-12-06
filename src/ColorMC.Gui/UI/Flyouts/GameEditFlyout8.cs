@@ -10,49 +10,43 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout8
 {
-    private readonly IEnumerable<DataPackModel> _list;
-    private readonly DataPackModel _obj;
-    private readonly WorldModel _model;
-    private readonly bool _single;
-    public GameEditFlyout8(Control con, IList obj, WorldModel model)
+    public GameEditFlyout8(Control con, IList list, WorldModel model)
     {
-        _model = model;
-        _list = obj.Cast<DataPackModel>();
-        if (_list.Count() == 1)
+        IEnumerable<DataPackModel> mods;
+        DataPackModel obj = null!;
+        bool single =  false;
+        mods = list.Cast<DataPackModel>();
+        if (mods.Count() == 1)
         {
-            _single = true;
-            _obj = _list.ToList()[0];
+            single = true;
+            obj = mods.ToList()[0];
         }
 
-        _ = new FlyoutsControl(new (string, bool, Action)[]
-        {
+        _ = new FlyoutsControl(
+        [
             (App.Lang("GameEditWindow.Flyouts1.Text1"),
-                !BaseBinding.IsGameRun(model.World.Game), Button1_Click),
-            (App.Lang("Button.Delete"), !BaseBinding.IsGameRun(model.World.Game), Button2_Click)
-        }, con);
-    }
-
-    private void Button1_Click()
-    {
-        if (_single)
-        {
-            _model.DisE(_obj);
-        }
-        else
-        {
-            _model.DisE(_list);
-        }
-    }
-
-    private void Button2_Click()
-    {
-        if (_single)
-        {
-            _model.Delete(_obj);
-        }
-        else
-        {
-            _model.Delete(_list);
-        }
+                !BaseBinding.IsGameRun(model.World.Game), ()=>
+                {
+                    if (single)
+                    {
+                        model.DisE(obj);
+                    }
+                    else
+                    {
+                        model.DisE(mods);
+                    }
+                }),
+            (App.Lang("Button.Delete"), !BaseBinding.IsGameRun(model.World.Game), ()=>
+            {
+                if (single)
+                {
+                    model.Delete(obj);
+                }
+                else
+                {
+                    model.Delete(mods);
+                }
+            })
+        ], con);
     }
 }

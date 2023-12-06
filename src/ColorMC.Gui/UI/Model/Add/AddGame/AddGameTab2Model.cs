@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : TopModel
+public partial class AddGameModel
 {
     /// <summary>
     /// 压缩包类型列表

@@ -19,95 +19,55 @@ public class MainFlyout
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("MainWindow.Flyouts.Text2"), true, Button3_Click),
-            (App.Lang("MainWindow.Flyouts.Text1"), true, Button1_Click),
-            (App.Lang("MainWindow.Flyouts.Text3"), true, Button11_Click),
-            (App.Lang("MainWindow.Flyouts.Text4"), true, Button2_Click),
-            (App.Lang("MainWindow.Flyouts.Text6"), true, Button4_Click),
-            (App.Lang("Button.OpFile"), true, Button7_Click),
-            (App.Lang("MainWindow.Flyouts.Text7"), true, Button5_Click),
-            (App.Lang("MainWindow.Flyouts.Text8"), true, Button9_Click),
-            (App.Lang("MainWindow.Flyouts.Text15"), SystemInfo.Os == OsType.Windows, Button15_Click),
-            (App.Lang("MainWindow.Flyouts.Text14"), GameCloudUtils.Connect, Button14_Click),
-            (App.Lang("MainWindow.Flyouts.Text10"), !run, Button12_Click),
-            (App.Lang("MainWindow.Flyouts.Text9"), !run, Button8_Click),
-            (App.Lang("MainWindow.Flyouts.Text11"), !run, Button6_Click),
-            (App.Lang("MainWindow.Flyouts.Text12"), !run, Button13_Click),
-            (App.Lang("MainWindow.Flyouts.Text13"), run, Button10_Click)
+            (App.Lang("MainWindow.Flyouts.Text2"), true, ()=>
+            {
+                App.ShowGameEdit(_obj.Obj);
+            }),
+            (App.Lang("MainWindow.Flyouts.Text1"), true, ()=>
+            {
+                App.ShowGameLog(_obj.Obj);
+            }),
+            (App.Lang("MainWindow.Flyouts.Text3"), true, ()=>
+            {
+                App.ShowAdd(_obj.Obj, FileType.Mod);
+            }),
+            (App.Lang("MainWindow.Flyouts.Text4"), true, ()=>
+            {
+                App.ShowGameEdit(_obj.Obj, GameEditWindowType.Mod);
+            }),
+            (App.Lang("MainWindow.Flyouts.Text6"), true, ()=>
+            {
+                App.ShowGameEdit(_obj.Obj, GameEditWindowType.World);
+            }),
+            (App.Lang("Button.OpFile"), true, ()=>
+            {
+                GameBinding.OpPath(_obj.Obj);
+            }),
+            (App.Lang("MainWindow.Flyouts.Text7"), true, _obj.EditGroup),
+            (App.Lang("MainWindow.Flyouts.Text8"), true, async ()=>
+            {
+                await GameBinding.SetGameIconFromFile(_obj.Model, _obj.Obj);
+                _obj.LoadIcon();
+            }),
+            (App.Lang("MainWindow.Flyouts.Text15"), SystemInfo.Os == OsType.Windows, ()=>
+            {
+                BaseBinding.CreateLaunch(_obj.Obj);
+            }),
+            (App.Lang("MainWindow.Flyouts.Text14"), GameCloudUtils.Connect, ()=>
+            {
+                App.ShowGameCloud(_obj.Obj);
+            }),
+            (App.Lang("MainWindow.Flyouts.Text10"), !run, _obj.Rename),
+            (App.Lang("MainWindow.Flyouts.Text9"), !run, ()=>
+            {
+                App.ShowGameExport(_obj.Obj);
+            }),
+            (App.Lang("MainWindow.Flyouts.Text11"), !run, _obj.DeleteGame),
+            (App.Lang("MainWindow.Flyouts.Text12"), !run,  _obj.Copy),
+            (App.Lang("MainWindow.Flyouts.Text13"), run, ()=>
+            {
+                BaseBinding.StopGame(_obj.Obj);
+            })
         ], con);
-    }
-
-    private void Button15_Click()
-    {
-        BaseBinding.CreateLaunch(_obj.Obj);
-    }
-    private void Button14_Click()
-    {
-        App.ShowGameCloud(_obj.Obj);
-    }
-    private void Button3_Click()
-    {
-        App.ShowGameEdit(_obj.Obj);
-    }
-
-    private void Button13_Click()
-    {
-        _obj.Copy();
-    }
-
-    private void Button12_Click()
-    {
-        _obj.Rename();
-    }
-
-    private void Button11_Click()
-    {
-        App.ShowAdd(_obj.Obj, FileType.Mod);
-    }
-
-    private void Button10_Click()
-    {
-        BaseBinding.StopGame(_obj.Obj);
-    }
-
-    private async void Button9_Click()
-    {
-        await GameBinding.SetGameIconFromFile(_obj.Model, _obj.Obj);
-        _obj.LoadIcon();
-    }
-
-    private void Button8_Click()
-    {
-        App.ShowGameExport(_obj.Obj);
-    }
-
-    private void Button7_Click()
-    {
-        GameBinding.OpPath(_obj.Obj);
-    }
-
-    private void Button6_Click()
-    {
-        _obj.DeleteGame();
-    }
-
-    private void Button5_Click()
-    {
-        _obj.EditGroup();
-    }
-
-    private void Button4_Click()
-    {
-        App.ShowGameEdit(_obj.Obj, GameEditWindowType.World);
-    }
-
-    private void Button2_Click()
-    {
-        App.ShowGameEdit(_obj.Obj, GameEditWindowType.Mod);
-    }
-
-    private void Button1_Click()
-    {
-        App.ShowGameLog(_obj.Obj);
     }
 }

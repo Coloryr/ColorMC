@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : MenuModel
+public partial class GameEditModel
 {
-    public ObservableCollection<SchematicObj> SchematicList { get; set; } = new();
+    public ObservableCollection<SchematicObj> SchematicList { get; set; } = [];
 
     [ObservableProperty]
     private SchematicObj? _schematicItem;

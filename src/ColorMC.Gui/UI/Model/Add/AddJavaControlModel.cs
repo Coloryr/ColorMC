@@ -18,15 +18,15 @@ public partial class AddJavaControlModel : TopModel
     /// <summary>
     /// JAVA列表
     /// </summary>
-    private readonly List<JavaDownloadObj> _list1 = new();
+    private readonly List<JavaDownloadObj> _list1 = [];
 
     /// <summary>
     /// 显示的JAVA列表
     /// </summary>
-    public ObservableCollection<JavaDownloadObj> JavaList { get; init; } = new();
-    public ObservableCollection<string> SystemList { get; init; } = new();
-    public ObservableCollection<string> VersionList { get; init; } = new();
-    public ObservableCollection<string> ArchList { get; init; } = new();
+    public ObservableCollection<JavaDownloadObj> JavaList { get; init; } = [];
+    public ObservableCollection<string> SystemList { get; init; } = [];
+    public ObservableCollection<string> VersionList { get; init; } = [];
+    public ObservableCollection<string> ArchList { get; init; } = [];
     public List<string> JavaTypeList { get; init; } = JavaBinding.GetJavaType();
 
     [ObservableProperty]

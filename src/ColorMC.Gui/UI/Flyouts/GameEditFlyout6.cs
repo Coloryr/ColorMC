@@ -12,20 +12,16 @@ public class GameEditFlyout6
     {
         _obj = obj;
 
-        _ = new FlyoutsControl(new (string, bool, Action)[]
-        {
-            (App.Lang("Button.OpFile"), true, Button1_Click),
-            (App.Lang("Button.Delete"), true, Button2_Click)
-        }, con);
-    }
-
-    private void Button1_Click()
-    {
-        PathBinding.OpFile(_obj.ShaderpackItem!.Local);
-    }
-
-    private void Button2_Click()
-    {
-        _obj.DeleteShaderpack(_obj.ShaderpackItem!);
+        _ = new FlyoutsControl(
+        [
+            (App.Lang("Button.OpFile"), true, ()=>
+            {
+                PathBinding.OpFile(_obj.ShaderpackItem!.Local);
+            }),
+            (App.Lang("Button.Delete"), true, ()=>
+            {
+                _obj.DeleteShaderpack(_obj.ShaderpackItem!);
+            })
+        ], con);
     }
 }

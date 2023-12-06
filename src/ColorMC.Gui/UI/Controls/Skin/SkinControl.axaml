@@ -329,11 +329,23 @@
                         ItemsSource="{Binding SkinTypeList}"
                         SelectedIndex="{Binding Type}" />
 
-                    <CheckBox Content="{setting:Localize SkinWindow.Text5}" IsChecked="{Binding EnableTop}" />
+                    <ToggleSwitch
+                        Margin="0,0,0,-5"
+                        IsChecked="{Binding EnableTop}"
+                        OffContent="{setting:Localize SkinWindow.Text5}"
+                        OnContent="{setting:Localize SkinWindow.Text5}" />
 
-                    <CheckBox Content="{setting:Localize SkinWindow.Text6}" IsChecked="{Binding EnableCape}" />
+                    <ToggleSwitch
+                        Margin="0,0,0,-5"
+                        IsChecked="{Binding EnableCape}"
+                        OffContent="{setting:Localize SkinWindow.Text6}"
+                        OnContent="{setting:Localize SkinWindow.Text6}" />
 
-                    <CheckBox Content="{setting:Localize SkinWindow.Text7}" IsChecked="{Binding EnableAnimation}" />
+                    <ToggleSwitch
+                        Margin="0,0,0,-5"
+                        IsChecked="{Binding EnableAnimation}"
+                        OffContent="{setting:Localize SkinWindow.Text7}"
+                        OnContent="{setting:Localize SkinWindow.Text7}" />
 
                     <ComboBox
                         Margin="0,5,0,0"

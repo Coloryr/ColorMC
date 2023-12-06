@@ -10,6 +10,4 @@ public partial class Info1Model : ObservableObject
     private double _value;
     [ObservableProperty]
     private bool _indeterminate;
-
-
 }

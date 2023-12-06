@@ -5,7 +5,7 @@ using System;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
-public partial class Info3Model : ObservableObject
+public partial class Info3Model(string? name) : ObservableObject
 {
     public Action? Call;
 
@@ -35,13 +35,6 @@ public partial class Info3Model : ObservableObject
     [ObservableProperty]
     private char _password;
 
-    private readonly string? _name;
-
-    public Info3Model(string? name)
-    {
-        _name = name;
-    }
-
     [RelayCommand]
     public void Cancel()
     {
@@ -55,7 +48,7 @@ public partial class Info3Model : ObservableObject
 
         IsCancel = true;
 
-        DialogHost.Close(_name);
+        DialogHost.Close(name);
     }
 
     [RelayCommand]
@@ -63,7 +56,7 @@ public partial class Info3Model : ObservableObject
     {
         IsCancel = false;
 
-        DialogHost.Close(_name);
+        DialogHost.Close(name);
     }
 
 

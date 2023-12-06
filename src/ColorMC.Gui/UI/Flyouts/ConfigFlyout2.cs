@@ -15,14 +15,12 @@ public class ConfigFlyout2
         _model = model;
         _item = item;
 
-        _ = new FlyoutsControl(new (string, bool, Action)[]
-        {
-            (App.Lang("Button.Delete"), true, Button1_Click),
-        }, con);
-    }
-
-    public void Button1_Click()
-    {
-        _model.DeleteItem(_item);
+        _ = new FlyoutsControl(
+        [
+            (App.Lang("Button.Delete"), true, () =>
+            {
+                _model.DeleteItem(_item);
+            }),
+        ], con);
     }
 }

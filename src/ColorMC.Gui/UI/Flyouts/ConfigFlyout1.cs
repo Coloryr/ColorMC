@@ -80,45 +80,32 @@ public class ConfigFlyout1
             }
         }
 
-        _ = new FlyoutsControl(new (string, bool, Action)[]
-        {
-            (App.Lang("ConfigEditWindow.Flyouts1.Text1"), add, Button1_Click),
-            (App.Lang("ConfigEditWindow.Flyouts1.Text2"), delete, Button2_Click),
-            (App.Lang("ConfigEditWindow.Flyouts1.Text3"), editKey, Button3_Click),
-            (App.Lang("ConfigEditWindow.Flyouts1.Text4"), editValue, Button4_Click),
-            (App.Lang("ConfigEditWindow.Flyouts1.Text5"), true, Button5_Click),
-        }, con);
-    }
-
-    private void Button1_Click()
-    {
-        _model.AddItem(_item!);
-    }
-
-    private void Button2_Click()
-    {
-        if (_item == null)
-        {
-            _model.Delete(_list.SelectedItems);
-        }
-        else
-        {
-            _model.Delete(_item!);
-        }
-    }
-
-    private void Button3_Click()
-    {
-        _model.SetKey(_item!);
-    }
-
-    private void Button4_Click()
-    {
-        _model.SetValue(_item!);
-    }
-
-    private void Button5_Click()
-    {
-        _model.Find();
+        _ = new FlyoutsControl(
+        [
+            (App.Lang("ConfigEditWindow.Flyouts1.Text1"), add, () =>
+            {
+                _model.AddItem(_item!);
+            }),
+            (App.Lang("ConfigEditWindow.Flyouts1.Text2"), delete, () =>
+            {
+                if (_item == null)
+                {
+                    _model.Delete(_list.SelectedItems);
+                }
+                else
+                {
+                    _model.Delete(_item!);
+                }
+            }),
+            (App.Lang("ConfigEditWindow.Flyouts1.Text3"), editKey, () =>
+            {
+                _model.SetKey(_item!);
+            }),
+            (App.Lang("ConfigEditWindow.Flyouts1.Text4"), editValue, () =>
+            {
+                _model.SetValue(_item!);
+            }),
+            (App.Lang("ConfigEditWindow.Flyouts1.Text5"), true, _model.Find),
+        ], con);
     }
 }

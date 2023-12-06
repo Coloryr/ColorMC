@@ -5,7 +5,7 @@ using System;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
-public partial class Info4Model : ObservableObject
+public partial class Info4Model(string? name) : ObservableObject
 {
     public Action<bool>? Call;
 
@@ -16,19 +16,12 @@ public partial class Info4Model : ObservableObject
     [ObservableProperty]
     private bool _cancelVisable;
 
-    private readonly string? _name;
-
-    public Info4Model(string? name)
-    {
-        _name = name;
-    }
-
     [RelayCommand]
     public void Cancel()
     {
         Enable = false;
         Call?.Invoke(false);
-        DialogHost.Close(_name);
+        DialogHost.Close(name);
     }
 
     [RelayCommand]
@@ -36,6 +29,6 @@ public partial class Info4Model : ObservableObject
     {
         Enable = false;
         Call?.Invoke(true);
-        DialogHost.Close(_name);
+        DialogHost.Close(name);
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : TopModel
+public partial class AddGameModel
 {
     /// <summary>
     /// 文件列表

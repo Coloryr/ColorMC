@@ -5,6 +5,7 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : MenuModel
+public partial class GameEditModel
 {
-    public ObservableCollection<ModDisplayModel> ModList { get; init; } = new();
+    public ObservableCollection<ModDisplayModel> ModList { get; init; } = [];
     public string[] ModFilterList { get; init; } = LanguageBinding.GetFilterName();
 
-    private readonly List<ModDisplayModel> _modItems = new();
+    private readonly List<ModDisplayModel> _modItems = [];
 
     [ObservableProperty]
     private ModDisplayModel _modItem;
@@ -143,7 +144,7 @@ public partial class GameEditModel : MenuModel
                 list1.Add(item.Key);
             }
         }
-        if (list1.Any())
+        if (list1.Count != 0)
         {
             var res1 = await Model.ShowWait(string.Format(App
                      .Lang("GameEditWindow.Tab4.Info14"), count));
@@ -290,28 +291,28 @@ public partial class GameEditModel : MenuModel
             {
                 case 0:
                     var list = from item in _modItems
-                               where item.Name.ToLower().Contains(fil)
+                               where item.Name.Contains(fil, StringComparison.OrdinalIgnoreCase)
                                select item;
                     ModList.Clear();
                     ModList.AddRange(list);
                     break;
                 case 1:
                     list = from item in _modItems
-                           where item.Local.ToLower().Contains(fil)
+                           where item.Local.Contains(fil, StringComparison.OrdinalIgnoreCase)
                            select item;
                     ModList.Clear();
                     ModList.AddRange(list);
                     break;
                 case 2:
                     list = from item in _modItems
-                           where item.Author.ToLower().Contains(fil)
+                           where item.Author.Contains(fil, StringComparison.OrdinalIgnoreCase)
                            select item;
                     ModList.Clear();
                     ModList.AddRange(list);
                     break;
                 case 3:
                     list = from item in _modItems
-                           where item.Modid?.ToLower().Contains(fil) == true
+                           where item.Modid?.Contains(fil, StringComparison.OrdinalIgnoreCase) == true
                            select item;
                     ModList.Clear();
                     ModList.AddRange(list);

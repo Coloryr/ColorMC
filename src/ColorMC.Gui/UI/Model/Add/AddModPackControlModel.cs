@@ -18,13 +18,13 @@ namespace ColorMC.Gui.UI.Model.Add;
 public partial class AddModPackControlModel : TopModel, IAddWindow
 {
     public string[] SourceList { get; init; } = LanguageBinding.GetSourceList();
-    public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
-    public ObservableCollection<string> GameVersionList { get; init; } = new();
-    public ObservableCollection<string> CategorieList { get; init; } = new();
-    public ObservableCollection<string> SortTypeList { get; init; } = new();
-    public ObservableCollection<FileItemModel> DisplayList { get; init; } = new();
+    public ObservableCollection<FileDisplayObj> FileList { get; init; } = [];
+    public ObservableCollection<string> GameVersionList { get; init; } = [];
+    public ObservableCollection<string> CategorieList { get; init; } = [];
+    public ObservableCollection<string> SortTypeList { get; init; } = [];
+    public ObservableCollection<FileItemModel> DisplayList { get; init; } = [];
 
-    private readonly Dictionary<int, string> _categories = new();
+    private readonly Dictionary<int, string> _categories = [];
     private FileItemModel? _last;
     private bool _load = false;
 
@@ -66,7 +66,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     [ObservableProperty]
     private bool _displayFilter = true;
 
-    private string _useName;
+    private readonly string _useName;
 
     public AddModPackControlModel(BaseModel model) : base(model)
     {

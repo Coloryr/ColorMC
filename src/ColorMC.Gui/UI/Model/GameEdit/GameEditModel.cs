@@ -8,8 +8,8 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class GameEditModel : MenuModel
 {
-    public override List<MenuObj> TabItems { get; init; } = new()
-    {
+    public override List<MenuObj> TabItems { get; init; } =
+    [
         new() { Icon = "/Resource/Icon/GameEdit/item1.svg",
             Text = App.Lang("GameEditWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/GameEdit/item2.svg",
@@ -28,7 +28,7 @@ public partial class GameEditModel : MenuModel
             Text = App.Lang("GameEditWindow.Tabs.Text11") },
         new() { Icon = "/Resource/Icon/GameEdit/item9.svg",
             Text = App.Lang("GameEditWindow.Tabs.Text12") },
-    };
+    ];
 
     [ObservableProperty]
     private bool _displayFilter = true;
@@ -37,7 +37,7 @@ public partial class GameEditModel : MenuModel
 
     public bool Phone { get; } = false;
 
-    private string _useName;
+    private readonly string _useName;
 
     public GameEditModel(BaseModel model, GameSettingObj obj) : base(model)
     {

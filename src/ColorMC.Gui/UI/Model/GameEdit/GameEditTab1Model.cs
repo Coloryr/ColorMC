@@ -14,17 +14,17 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel : MenuModel
+public partial class GameEditModel
 {
-    public ObservableCollection<string> GameVersionList { get; init; } = new();
-    public ObservableCollection<string> LoaderVersionList { get; init; } = new();
-    public ObservableCollection<string> GroupList { get; init; } = new();
+    public ObservableCollection<string> GameVersionList { get; init; } = [];
+    public ObservableCollection<string> LoaderVersionList { get; init; } = [];
+    public ObservableCollection<string> GroupList { get; init; } = [];
     public string[] VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
-    public ObservableCollection<string> LoaderTypeList { get; init; } = new();
-    public ObservableCollection<string> LangList { get; init; } = new();
+    public ObservableCollection<string> LoaderTypeList { get; init; } = [];
+    public ObservableCollection<string> LangList { get; init; } = [];
 
-    private readonly List<Loaders> _loaderTypeList = new();
-    private readonly List<string> _langList = new();
+    private readonly List<Loaders> _loaderTypeList = [];
+    private readonly List<string> _langList = [];
 
     private bool _gameLoad = false;
 

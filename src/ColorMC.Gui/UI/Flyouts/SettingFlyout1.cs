@@ -11,26 +11,21 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class SettingFlyout1
 {
-    private readonly IEnumerable<JavaDisplayObj> _list;
-    private readonly SettingModel _model;
     public SettingFlyout1(Control con, SettingModel model, IList list)
     {
-        _model = model;
-        _list = list.Cast<JavaDisplayObj>();
+        var java = list.Cast<JavaDisplayObj>();
 
-        _ = new FlyoutsControl(new (string, bool, Action)[]
-        {
-            (App.Lang("SettingWindow.Flyouts.Text1"), true, Button1_Click),
-        }, con);
-    }
+        _ = new FlyoutsControl(
+        [
+            (App.Lang("SettingWindow.Flyouts.Text1"), true, ()=>
+            {
+                foreach (var item in java)
+                {
+                    JavaBinding.RemoveJava(item.Name);
+                }
 
-    private void Button1_Click()
-    {
-        foreach (var item in _list)
-        {
-            JavaBinding.RemoveJava(item.Name);
-        }
-
-        _model.LoadJava();
+                model.LoadJava();
+            }),
+        ], con);
     }
 }

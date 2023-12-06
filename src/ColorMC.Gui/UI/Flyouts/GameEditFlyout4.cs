@@ -12,20 +12,16 @@ public class GameEditFlyout4
     {
         _model = model;
 
-        _ = new FlyoutsControl(new (string, bool, Action)[]
-        {
-            (App.Lang("Button.OpFile"), true, Button1_Click),
-            (App.Lang("GameEditWindow.Tab9.Text1"), true, Button2_Click)
-        }, con);
-    }
-
-    private void Button2_Click()
-    {
-        _model.Top.DeleteScreenshot(_model);
-    }
-
-    private void Button1_Click()
-    {
-        PathBinding.OpFile(_model.Screenshot);
+        _ = new FlyoutsControl(
+        [
+            (App.Lang("Button.OpFile"), true, ()=>
+            {
+                PathBinding.OpFile(_model.Screenshot);
+            }),
+            (App.Lang("GameEditWindow.Tab9.Text1"), true, ()=>
+            {
+                _model.Top.DeleteScreenshot(_model);
+            })
+        ], con);
     }
 }
