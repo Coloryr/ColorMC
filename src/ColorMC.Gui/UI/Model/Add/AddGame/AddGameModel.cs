@@ -120,6 +120,7 @@ public partial class AddGameModel : TopModel
         ColorMCCore.GameOverwirte = null;
         ColorMCCore.GameRequest = null;
         _load = true;
+        Back();
         GameVersionList.Clear();
         LoaderVersionList.Clear();
         LoaderTypeList.Clear();

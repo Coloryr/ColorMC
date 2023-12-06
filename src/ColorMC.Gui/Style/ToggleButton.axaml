@@ -1,0 +1,24 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel>
+                <ToggleButton Classes="t1" Content="123" />
+                <ToggleButton
+                    Classes="t1"
+                    Content="123"
+                    IsChecked="True" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="ToggleButton.t1:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{setting:Colors Back1}" />
+    </Style>
+
+    <Style Selector="ToggleButton.t1:checked /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{setting:Colors Main}" />
+    </Style>
+</Styles>

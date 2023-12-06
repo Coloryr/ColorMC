@@ -1,0 +1,203 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Add.AddGameTab1Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add.AddGame"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:AddGameModel"
+    mc:Ignorable="d">
+    <ScrollViewer>
+        <StackPanel Margin="5,0,5,5">
+            <Border
+                Margin="0,3,0,0"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <TextBox
+                        Margin="0,0,0,5"
+                        Classes="input1"
+                        Text="{Binding Name}"
+                        Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Name="test"
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/GameEdit/svg1.svg"
+                            Stroke="{setting:Colors Font}" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize Text.GameVersion}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
+                    <WrapPanel Margin="0,0,0,5">
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <ComboBox
+                                Width="120"
+                                Margin="0,0,5,0"
+                                ItemsSource="{Binding VersionTypeList}"
+                                SelectedIndex="{Binding VersionType}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                            <ComboBox
+                                Width="150"
+                                Margin="0,0,5,0"
+                                VerticalContentAlignment="Center"
+                                ItemsSource="{Binding GameVersionList}"
+                                SelectedItem="{Binding Version}" />
+                        </StackPanel>
+
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="0,2,0,0"
+                            Command="{Binding LoadVersion}"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text2}" />
+                    </WrapPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/GameEdit/svg2.svg"
+                            Stroke="{setting:Colors Font}" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text4}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
+                    <WrapPanel Margin="0,0,0,5">
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <ComboBox
+                                Width="120"
+                                Margin="0,0,5,0"
+                                VerticalContentAlignment="Center"
+                                ItemsSource="{Binding LoaderTypeList}"
+                                SelectedIndex="{Binding LoaderType}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                            <ComboBox
+                                Width="150"
+                                Margin="0,0,5,0"
+                                VerticalContentAlignment="Center"
+                                IsEnabled="{Binding EnableLoader}"
+                                ItemsSource="{Binding LoaderVersionList}"
+                                SelectedItem="{Binding LoaderVersion}" />
+                        </StackPanel>
+
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="0,2,0,0"
+                            Command="{Binding VersionSelect}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text11}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,2,0,0"
+                            Command="{Binding GetLoader}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text12}" />
+                    </WrapPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/GameEdit/svg3.svg"
+                            Stroke="{setting:Colors Font}" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text5}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
+                    <WrapPanel Orientation="Horizontal">
+                        <ComboBox
+                            Width="200"
+                            Margin="0,0,5,0"
+                            VerticalContentAlignment="Center"
+                            ItemsSource="{Binding GroupList}"
+                            SelectedItem="{Binding Group}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding AddGroup}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
+                    </WrapPanel>
+                    <Button
+                        Width="100"
+                        Height="25"
+                        HorizontalAlignment="Right"
+                        Command="{Binding AddGame}"
+                        Content="{setting:Localize Button.Done}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text69}"
+                        ToolTip.VerticalOffset="-30" />
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <WrapPanel>
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding AddOnlinePack}"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text10}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text67}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding GameCloudDownload}"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text13}"
+                        IsEnabled="{Binding CloudEnable}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text68}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding ServerPackDownload}"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text14}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text71}"
+                        ToolTip.VerticalOffset="-30" />
+                </WrapPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -22,13 +22,15 @@
             DockPanel.Dock="Top">
             <StackPanel>
                 <WrapPanel>
-                    <CheckBox
+                    <ToggleButton
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
+                        Classes="t1"
                         Content="{setting:Localize GameLogWindow.Text1}"
                         IsChecked="{Binding IsWordWrap}" />
-                    <CheckBox
+                    <ToggleButton
                         Margin="5,0,0,0"
+                        Classes="t1"
                         Content="{setting:Localize GameLogWindow.Text2}"
                         IsChecked="{Binding IsAuto}" />
                     <ComboBox

@@ -19,16 +19,10 @@ public abstract partial class MenuModel : TopModel
     private string _title;
 
     /// <summary>
-    /// 目前视图
+    /// 切换目标视图
     /// </summary>
     [ObservableProperty]
     private int _nowView;
-
-    /// <summary>
-    /// 目前视图
-    /// </summary>
-    [ObservableProperty]
-    private int _nowView1;
 
     private double _lastWheel;
 
@@ -37,13 +31,12 @@ public abstract partial class MenuModel : TopModel
         Title = TabItems[0].Text;
     }
 
-    partial void OnNowView1Changed(int value)
+    partial void OnNowViewChanged(int value)
     {
-        if (value != NowView)
-        {
-            NowView = value;
-            OnPropertyChanged("Switch");
-        }
+        CloseSide();
+
+        Title = TabItems[value].Text;
+        OnPropertyChanged("Switch");
     }
 
     public void WhellChange(double dir)
@@ -65,18 +58,6 @@ public abstract partial class MenuModel : TopModel
             }
             _lastWheel = 0;
         }
-    }
-
-    /// <summary>
-    /// 视图切换
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnNowViewChanged(int value)
-    {
-        CloseSide();
-
-        Title = TabItems[NowView].Text;
-        NowView1 = value;
     }
 
     /// <summary>

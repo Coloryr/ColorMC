@@ -10,32 +10,31 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <StackPanel Name="ScrollViewer1" Margin="5,0,5,5">
+    <StackPanel Name="ScrollViewer1" Margin="5,0,5,2">
         <Border
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
-
             <StackPanel>
                 <Label Content="{setting:Localize SettingWindow.Tab1.Text4}" />
                 <DockPanel>
                     <Button
-                        Width="100"
-                        Height="30"
+                        Width="80"
+                        Height="25"
                         Command="{Binding Import1}"
                         Content="{setting:Localize Button.Input}"
                         DockPanel.Dock="Right" />
                     <Button
-                        Width="100"
-                        Height="30"
+                        Width="80"
+                        Height="25"
                         Margin="5,0,5,0"
                         Command="{Binding Open1}"
                         Content="{setting:Localize Button.Select}"
                         DockPanel.Dock="Right" />
                     <TextBox
-                        Height=""
                         Margin="0,0,0,5"
                         Classes="input1"
                         Text="{Binding Local1}"
@@ -44,14 +43,14 @@
                 <Label Content="{setting:Localize SettingWindow.Tab1.Text6}" />
                 <DockPanel>
                     <Button
-                        Width="100"
-                        Height="30"
+                        Width="80"
+                        Height="25"
                         Command="{Binding Import2}"
                         Content="{setting:Localize Button.Input}"
                         DockPanel.Dock="Right" />
                     <Button
-                        Width="100"
-                        Height="30"
+                        Width="80"
+                        Height="25"
                         Margin="5,0,5,0"
                         Command="{Binding Open2}"
                         Content="{setting:Localize Button.Select}"
@@ -66,14 +65,14 @@
                 <Label Content="{setting:Localize SettingWindow.Tab1.Text8}" />
                 <DockPanel>
                     <Button
-                        Width="100"
-                        Height="30"
+                        Width="80"
+                        Height="25"
                         Command="{Binding Import3}"
                         Content="{setting:Localize Button.Input}"
                         DockPanel.Dock="Right" />
                     <Button
-                        Width="100"
-                        Height="30"
+                        Width="80"
+                        Height="25"
                         Margin="5,0,5,0"
                         Command="{Binding Open3}"
                         Content="{setting:Localize Button.Select}"
@@ -87,14 +86,14 @@
                 <Label Content="{setting:Localize SettingWindow.Tab1.Text10}" />
                 <DockPanel>
                     <Button
-                        Width="100"
-                        Height="30"
+                        Width="80"
+                        Height="25"
                         Command="{Binding Import3}"
                         Content="{setting:Localize Button.Input}"
                         DockPanel.Dock="Right" />
                     <Button
-                        Width="100"
-                        Height="30"
+                        Width="80"
+                        Height="25"
                         Margin="5,0,5,0"
                         Command="{Binding Open4}"
                         Content="{setting:Localize Button.Select}"
@@ -109,7 +108,7 @@
 
         </Border>
         <Border
-            Margin="0,3,0,0"
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
@@ -135,7 +134,7 @@
             </WrapPanel>
         </Border>
         <Border
-            Margin="0,3,0,0"
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"

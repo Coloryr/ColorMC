@@ -355,7 +355,9 @@ public partial class App : Application
     {
         bool ok = true;
         var config = ConfigBinding.GetAllConfig();
-        if (config.Item2 == null || string.IsNullOrWhiteSpace(config.Item2.ServerCustom.UIFile))
+        if (config.Item2 == null
+            || config.Item2.ServerCustom?.EnableUI == false
+            || string.IsNullOrWhiteSpace(config.Item2.ServerCustom?.UIFile))
         {
             ok = false;
         }
@@ -366,7 +368,7 @@ public partial class App : Application
                 string file = config.Item2.ServerCustom.UIFile;
                 if (!File.Exists(file))
                 {
-                    file = BaseBinding.GetRunDir() + config.Item2.ServerCustom.UIFile;
+                    file = BaseBinding.GetRunDir() + file;
                     if (!File.Exists(file))
                     {
                         ok = false;

@@ -13,10 +13,6 @@
     mc:Ignorable="d">
     <Panel>
         <views1:Live2dRender Name="Live2d" />
-        <Panel
-            Name="Live2dTop"
-            Background="#00FFFFFF"
-            Opacity="0" />
         <Label
             Name="Label1"
             VerticalAlignment="Bottom"

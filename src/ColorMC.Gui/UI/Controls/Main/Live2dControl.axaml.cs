@@ -1,7 +1,5 @@
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Threading;
-using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Main;
 using System;
 using System.ComponentModel;
@@ -18,10 +16,6 @@ public partial class Live2dControl : UserControl
     public Live2dControl()
     {
         InitializeComponent();
-
-        Live2dTop.PointerPressed += Live2dTop_PointerPressed;
-        Live2dTop.PointerReleased += Live2dTop_PointerReleased;
-        Live2dTop.PointerMoved += Live2dTop_PointerMoved;
 
         DataContextChanged += Live2dControl_DataContextChanged;
 
@@ -94,62 +88,6 @@ public partial class Live2dControl : UserControl
                 _renderTimer.Pause = false;
             }
         }
-    }
-
-    private void Live2dTop_PointerMoved(object? sender, PointerEventArgs e)
-    {
-        if (!Live2d.HaveModel)
-        {
-            return;
-        }
-
-        LongPressed.Cancel();
-
-        var pro = e.GetCurrentPoint(this);
-        if (pro.Properties.IsLeftButtonPressed)
-            Live2d.Moved((float)pro.Position.X, (float)pro.Position.Y);
-    }
-
-    private void Live2dTop_PointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        if (!Live2d.HaveModel)
-        {
-            return;
-        }
-
-        LongPressed.Released();
-        Live2d.Release();
-    }
-
-    private void Live2dTop_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (!Live2d.HaveModel)
-        {
-            return;
-        }
-
-        var pro = e.GetCurrentPoint(this);
-        if (pro.Properties.IsLeftButtonPressed)
-        {
-            Live2d.Pressed();
-            Live2d.Moved((float)pro.Position.X, (float)pro.Position.Y);
-        }
-        else if (pro.Properties.IsRightButtonPressed)
-        {
-            Flyout((sender as Control)!);
-        }
-        else
-        {
-            LongPressed.Pressed(() => Flyout((sender as Control)!));
-        }
-    }
-
-    private void Flyout(Control control)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            _ = new Live2DFlyout(control, Live2d);
-        });
     }
 
     private async void ShowMessage()

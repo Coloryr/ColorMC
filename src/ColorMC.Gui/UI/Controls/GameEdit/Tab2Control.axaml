@@ -6,15 +6,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="1500"
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
     <ScrollViewer Name="ScrollViewer1">
-        <StackPanel Margin="5,3,5,5">
+        <StackPanel Margin="5,0,5,2">
             <!--  指定Java  -->
             <Border
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -36,7 +37,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -115,7 +116,7 @@
 
             <!--  分辨率  -->
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -171,7 +172,7 @@
 
             <!--  执行程序  -->
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -214,7 +215,7 @@
             </Border>
             <!--  Jvm参数  -->
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -313,7 +314,7 @@
 
             <!--  自动加入  -->
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -349,7 +350,7 @@
             </Border>
             <!--  代理  -->
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"

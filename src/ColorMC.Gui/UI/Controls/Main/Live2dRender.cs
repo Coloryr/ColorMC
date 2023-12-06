@@ -1,8 +1,12 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
+using Avalonia.Rendering;
 using Avalonia.Threading;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
 using Live2DCSharpSDK.App;
@@ -14,7 +18,7 @@ using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
-public class Live2dRender : OpenGlControlBase
+public class Live2dRender : OpenGlControlBase, ICustomHitTest
 {
     private LAppDelegate _lapp;
     private LAppModel _model;
@@ -40,6 +44,66 @@ public class Live2dRender : OpenGlControlBase
     public Live2dRender()
     {
         DataContextChanged += Live2dRender_DataContextChanged;
+
+        PointerPressed += Live2dTop_PointerPressed;
+        PointerReleased += Live2dTop_PointerReleased;
+        PointerMoved += Live2dTop_PointerMoved;
+    }
+
+    private void Live2dTop_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (!HaveModel)
+        {
+            return;
+        }
+
+        LongPressed.Cancel();
+
+        var pro = e.GetCurrentPoint(this);
+        if (pro.Properties.IsLeftButtonPressed)
+            Moved((float)pro.Position.X, (float)pro.Position.Y);
+    }
+
+    private void Flyout()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            _ = new Live2DFlyout(this);
+        });
+    }
+
+    private void Live2dTop_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (!HaveModel)
+        {
+            return;
+        }
+
+        LongPressed.Released();
+        Release();
+    }
+
+    private void Live2dTop_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (!HaveModel)
+        {
+            return;
+        }
+
+        var pro = e.GetCurrentPoint(this);
+        if (pro.Properties.IsLeftButtonPressed)
+        {
+            Pressed();
+            Moved((float)pro.Position.X, (float)pro.Position.Y);
+        }
+        else if (pro.Properties.IsRightButtonPressed)
+        {
+            Flyout();
+        }
+        else
+        {
+            LongPressed.Pressed(Flyout);
+        }
     }
 
     private void Live2dRender_DataContextChanged(object? sender, EventArgs e)
@@ -209,5 +273,10 @@ public class Live2dRender : OpenGlControlBase
     public void PlayExpression(string name)
     {
         _model.SetExpression(name);
+    }
+
+    public bool HitTest(Point point)
+    {
+        return IsVisible;
     }
 }

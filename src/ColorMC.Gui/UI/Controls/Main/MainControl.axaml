@@ -6,16 +6,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
-    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Main"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Items"
+    xmlns:views2="clr-namespace:ColorMC.Gui.UI.Controls.Main"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:MainModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <views1:Live2dControl
+        <views2:Live2dControl
             Width="{Binding Live2dWidth}"
             Height="{Binding Live2dHeight}"
             HorizontalAlignment="{Binding L2dPos}"
@@ -163,7 +164,7 @@
                         <ItemsControl ItemsSource="{Binding GameGroups}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <views1:GamesControl Margin="0,0,0,3" DataContext="{Binding}" />
+                                    <views2:GamesControl Margin="0,0,0,3" DataContext="{Binding}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -305,7 +306,7 @@
             </StackPanel>
         </Panel>
 
-        <views1:StartControl
+        <views2:StartControl
             Name="Start"
             Background="White"
             IsVisible="False" />

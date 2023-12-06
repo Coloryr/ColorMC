@@ -1,13 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 namespace ColorMC.Gui.UI.Model;
 
-public abstract class TopModel : ObservableObject
+public abstract class TopModel(BaseModel model) : ObservableObject
 {
-    public BaseModel Model { get; }
-    public TopModel(BaseModel model)
-    {
-        Model = model;
-    }
+    public BaseModel Model { get; } = model;
+
     public void TopClose()
     {
         Close();

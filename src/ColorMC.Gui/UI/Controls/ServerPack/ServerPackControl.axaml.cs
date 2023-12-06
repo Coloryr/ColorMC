@@ -1,20 +1,16 @@
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.ServerPack;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.ComponentModel;
 using System.IO;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
 
-public partial class ServerPackControl : UserControl, IUserControl
+public partial class ServerPackControl : MenuControl
 {
     private readonly GameSettingObj _obj;
 
@@ -23,53 +19,29 @@ public partial class ServerPackControl : UserControl, IUserControl
     private readonly Tab3Control _tab3 = new();
     private readonly Tab4Control _tab4 = new();
 
-    private bool _switch1 = false;
-
-    private CancellationTokenSource _cancel = new();
-    private CancellationTokenSource _cancel1 = new();
-
-    private int _now;
-
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
     private Bitmap _icon;
-    public Bitmap GetIcon() => _icon;
+    public override Bitmap GetIcon() => _icon;
 
-    public string Title => string.Format(App.Lang("ServerPackWindow.Title"),
+    public override string Title => string.Format(App.Lang("ServerPackWindow.Title"),
            _obj.Name);
 
-    public string UseName { get; }
+    public override string UseName { get; }
 
     public ServerPackControl()
     {
-        InitializeComponent();
-
         UseName = ToString() ?? "ServerPackControl";
     }
 
     public ServerPackControl(GameSettingObj obj) : this()
     {
         _obj = obj;
-
-        StackPanel1.PointerPressed += StackPanel1_PointerPressed;
-        StackPanel2.PointerPressed += StackPanel2_PointerPressed;
-
-        Content1.Child = _tab1;
     }
 
-    private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        (DataContext as ServerPackModel)!.OpenSide();
-    }
-
-    private void StackPanel1_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        (DataContext as ServerPackModel)!.CloseSide();
-    }
-
-    public void Opened()
+    public override void Opened()
     {
         Window.SetTitle(Title);
+
+        Content1.Child = _tab1;
 
         _tab2.Opened();
         _tab3.Opened();
@@ -83,37 +55,14 @@ public partial class ServerPackControl : UserControl, IUserControl
         }
     }
 
-    private void Go(UserControl to)
-    {
-        _cancel.Cancel();
-        _cancel.Dispose();
-
-        _cancel = new();
-
-        var model = (DataContext as ServerPackModel)!;
-
-        if (!_switch1)
-        {
-            Content2.Child = to;
-            _ = App.PageSlide500.Start(Content1, Content2, _now < model.NowView, _cancel.Token);
-        }
-        else
-        {
-            Content1.Child = to;
-            _ = App.PageSlide500.Start(Content2, Content1, _now < model.NowView, _cancel.Token);
-        }
-
-        _switch1 = !_switch1;
-    }
-
-    public void Closed()
+    public override void Closed()
     {
         _icon?.Dispose();
 
         App.ServerPackWindows.Remove(_obj.UUID);
     }
 
-    public void SetBaseModel(BaseModel model)
+    protected override MenuModel SetModel(BaseModel model)
     {
         var pack = GameBinding.GetServerPack(_obj);
         if (pack == null)
@@ -121,65 +70,36 @@ public partial class ServerPackControl : UserControl, IUserControl
             pack = new()
             {
                 Game = _obj,
-                Mod = new(),
-                Resourcepack = new(),
-                Config = new()
+                Mod = [],
+                Resourcepack = [],
+                Config = []
             };
 
             GameBinding.SaveServerPack(pack);
         }
 
-        var amodel = new ServerPackModel(model, pack);
-        amodel.PropertyChanged += Amodel_PropertyChanged;
-        DataContext = amodel;
+        return new ServerPackModel(model, pack);
     }
 
-    private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    protected override Control ViewChange(int old, int index)
     {
-        if (e.PropertyName == "NowView")
+        var model = (DataContext as ServerPackModel)!;
+        switch (model.NowView)
         {
-            var model = (DataContext as ServerPackModel)!;
-            switch (model.NowView)
-            {
-                case 0:
-                    Go(_tab1);
-                    model.LoadConfig();
-                    break;
-                case 1:
-                    Go(_tab2);
-                    model.LoadMod();
-                    break;
-                case 2:
-                    Go(_tab3);
-                    model.LoadConfigList();
-                    break;
-                case 3:
-                    Go(_tab4);
-                    model.LoadFile();
-                    break;
-            }
-
-            _now = model.NowView;
-        }
-        else if (e.PropertyName == "SideOpen")
-        {
-            _cancel1.Cancel();
-            _cancel1.Dispose();
-            _cancel1 = new();
-
-            StackPanel1.IsVisible = true;
-            Dispatcher.UIThread.Post(() =>
-            {
-                App.SidePageSlide300.Start(null, DockPanel1, _cancel1.Token);
-            });
-        }
-        else if (e.PropertyName == "SideClose")
-        {
-            _cancel1.Cancel();
-            _cancel1.Dispose();
-            _cancel1 = new();
-            App.SidePageSlide300.Start(DockPanel1, null, _cancel1.Token);
-            StackPanel1.IsVisible = false;
+            case 0:
+                model.LoadConfig();
+                return _tab1;
+            case 1:
+                model.LoadMod();
+                return _tab2;
+            case 2:
+                model.LoadConfigList();
+                return _tab3;
+            case 3:
+                model.LoadFile();
+                return _tab4;
+            default:
+                throw new InvalidEnumArgumentException();
         }
     }
 }

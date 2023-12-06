@@ -6,14 +6,57 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Controls.Svg"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:sys="using:System"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,5">
+    <DockPanel Name="ScrollViewer1" Margin="5,0,5,2">
         <Border
+            Margin="0,0,0,3"
+            Padding="{setting:Style BorderPadding}"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            DockPanel.Dock="Top">
+            <WrapPanel>
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding ShowAddJava}"
+                    Content="{setting:Localize SettingWindow.Tab5.Text4}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding OpenJavaFile}"
+                    Content="{setting:Localize SettingWindow.Tab5.Text7}"
+                    IsEnabled="{Binding !Phone}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding DeleteJava}"
+                    Content="{setting:Localize SettingWindow.Tab5.Text5}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding AddJavaZip}"
+                    Content="{setting:Localize SettingWindow.Tab5.Text8}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding LoadJava}"
+                    Content="{setting:Localize Button.Refash}" />
+            </WrapPanel>
+        </Border>
+        <Border
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
@@ -34,43 +77,11 @@
                         Content="{setting:Localize SettingWindow.Tab5.Text1}"
                         FontSize="{setting:Style FontTitle}" />
                 </StackPanel>
-                <WrapPanel>
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding ShowAddJava}"
-                        Content="{setting:Localize SettingWindow.Tab5.Text4}" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding OpenJavaFile}"
-                        Content="{setting:Localize SettingWindow.Tab5.Text7}"
-                        IsEnabled="{Binding !Phone}" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding DeleteJava}"
-                        Content="{setting:Localize SettingWindow.Tab5.Text5}" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding LoadJava}"
-                        Content="{setting:Localize Button.Refash}" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding AddJavaZip}"
-                        Content="{setting:Localize SettingWindow.Tab5.Text8}" />
-                </WrapPanel>
+
                 <DockPanel Margin="0,5,0,5" IsVisible="{Binding !Phone}">
                     <TextBox
                         Width="130"
-                        Margin="0,0,5,0"
+                        Margin="0,0,10,0"
                         Classes="input1"
                         Text="{Binding JavaName}"
                         Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
@@ -96,7 +107,7 @@
         </Border>
 
         <Border
-            Margin="0,3,0,0"
+            Margin="0,0,0,3"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"

@@ -140,5 +140,6 @@ public enum WebType
     /// </summary>
     NetFrp1,
     Apache2_0,
-    MIT
+    MIT,
+    MiSans
 }

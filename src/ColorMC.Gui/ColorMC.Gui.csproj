@@ -256,6 +256,15 @@
         <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
     </ItemGroup>
     <ItemGroup>
+      <Compile Update="UI\Controls\Add\AddGameTab1Control.axaml.cs">
+        <DependentUpon>AddGameTab1Control.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="UI\Controls\Add\AddGameTab2Control.axaml.cs">
+        <DependentUpon>AddGameTab2Control.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="UI\Controls\Add\AddGameTab3Control.axaml.cs">
+        <DependentUpon>AddGameTab3Control.axaml</DependentUpon>
+      </Compile>
       <Compile Update="UI\Controls\NetFrp\NetFrpTab4Control.axaml.cs">
         <DependentUpon>NetFrpTab4Control.axaml</DependentUpon>
       </Compile>

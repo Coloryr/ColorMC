@@ -13,9 +13,6 @@ public partial class SkinControl : UserControl, IUserControl
 {
     private FpsTimer _renderTimer;
 
-    private float _xdiff = 0;
-    private float _ydiff = 0;
-
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public string Title => App.Lang("SkinWindow.Title");
@@ -31,10 +28,6 @@ public partial class SkinControl : UserControl, IUserControl
         Button2.Click += Button2_Click;
 
         App.SkinLoad += App_SkinLoad;
-
-        SkinTop.PointerMoved += SkinTop_PointerMoved;
-        SkinTop.PointerPressed += SkinTop_PointerPressed;
-        SkinTop.PointerWheelChanged += SkinTop_PointerWheelChanged;
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -57,50 +50,6 @@ public partial class SkinControl : UserControl, IUserControl
         if (e.Key == Key.F5)
         {
             await (DataContext as SkinModel)!.Load();
-        }
-    }
-
-    private void SkinTop_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (e.Delta.Y > 0)
-        {
-            Skin.AddDis(0.05f);
-        }
-        else
-        {
-            Skin.AddDis(-0.05f);
-        }
-    }
-
-    private void SkinTop_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        var pro = e.GetCurrentPoint(this);
-        _xdiff = (float)pro.Position.X;
-        _ydiff = -(float)pro.Position.Y;
-    }
-
-    private void SkinTop_PointerMoved(object? sender, PointerEventArgs e)
-    {
-        var pro = e.GetCurrentPoint(this);
-        if (pro.Properties.IsLeftButtonPressed)
-        {
-            float y = (float)pro.Position.X - _xdiff;
-            float x = (float)pro.Position.Y + _ydiff;
-
-            _xdiff = (float)pro.Position.X;
-            _ydiff = -(float)pro.Position.Y;
-
-            Skin.Rot(x, y);
-        }
-        else if (pro.Properties.IsRightButtonPressed)
-        {
-            float x = (float)pro.Position.X - _xdiff;
-            float y = (float)pro.Position.Y + _ydiff;
-
-            _xdiff = (float)pro.Position.X;
-            _ydiff = -(float)pro.Position.Y;
-
-            Skin.Pos(x / ((float)Bounds.Width / 8), -y / ((float)Bounds.Height / 8));
         }
     }
 

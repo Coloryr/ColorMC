@@ -24,5 +24,9 @@
     TransparencyBackgroundFallback="Transparent"
     TransparencyLevelHint="{Binding Hints}"
     mc:Ignorable="d">
+    <Design.DataContext>
+        <model:BaseModel />
+    </Design.DataContext>
+
     <views1:AllControl Name="Win" />
 </Window>

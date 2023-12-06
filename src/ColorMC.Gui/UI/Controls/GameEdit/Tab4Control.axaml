@@ -11,9 +11,10 @@
     x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel Name="ScrollViewer1" Margin="5,3,5,5">
+    <Panel Name="ScrollViewer1" Margin="5,0,5,2">
         <DockPanel>
             <Border
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -96,7 +97,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"

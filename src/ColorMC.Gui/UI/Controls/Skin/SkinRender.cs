@@ -1,7 +1,9 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
+using Avalonia.Rendering;
 using Avalonia.Threading;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Skin;
@@ -17,13 +19,15 @@ using System.Runtime.InteropServices;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 
-public class SkinRender : OpenGlControlBase
+public class SkinRender : OpenGlControlBase, ICustomHitTest
 {
     private bool _haveCape = false;
     private bool _switchModel = false;
     private bool _switchSkin = false;
 
     private float _dis = 1;
+    private float _xdiff = 0;
+    private float _ydiff = 0;
     private Vector2 _rotXY;
     private Vector2 _diffXY;
 
@@ -66,6 +70,54 @@ public class SkinRender : OpenGlControlBase
         _last = Matrix4x4.Identity;
 
         DataContextChanged += SkinRender_DataContextChanged;
+
+        PointerMoved += SkinTop_PointerMoved;
+        PointerPressed += SkinTop_PointerPressed;
+        PointerWheelChanged += SkinTop_PointerWheelChanged;
+    }
+
+    private void SkinTop_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (e.Delta.Y > 0)
+        {
+            AddDis(0.05f);
+        }
+        else
+        {
+            AddDis(-0.05f);
+        }
+    }
+
+    private void SkinTop_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var pro = e.GetCurrentPoint(this);
+        _xdiff = (float)pro.Position.X;
+        _ydiff = -(float)pro.Position.Y;
+    }
+
+    private void SkinTop_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        var pro = e.GetCurrentPoint(this);
+        if (pro.Properties.IsLeftButtonPressed)
+        {
+            float y = (float)pro.Position.X - _xdiff;
+            float x = (float)pro.Position.Y + _ydiff;
+
+            _xdiff = (float)pro.Position.X;
+            _ydiff = -(float)pro.Position.Y;
+
+            Rot(x, y);
+        }
+        else if (pro.Properties.IsRightButtonPressed)
+        {
+            float x = (float)pro.Position.X - _xdiff;
+            float y = (float)pro.Position.Y + _ydiff;
+
+            _xdiff = (float)pro.Position.X;
+            _ydiff = -(float)pro.Position.Y;
+
+            Pos(x / ((float)Bounds.Width / 8), -y / ((float)Bounds.Height / 8));
+        }
     }
 
     private void SkinRender_DataContextChanged(object? sender, EventArgs e)
@@ -346,7 +398,7 @@ public class SkinRender : OpenGlControlBase
     private unsafe void PutVAO(GlInterface gl, VAOItem vao, CubeModelItem model, float[] uv)
     {
         float[] vertices =
-        {
+        [
             0.0f,  0.0f, -1.0f,
             0.0f,  0.0f, -1.0f,
             0.0f,  0.0f, -1.0f,
@@ -376,7 +428,7 @@ public class SkinRender : OpenGlControlBase
             0.0f, -1.0f,  0.0f,
             0.0f, -1.0f,  0.0f,
             0.0f, -1.0f,  0.0f,
-        };
+        ];
 
         gl.UseProgram(_shaderProgram);
         gl.BindVertexArray(vao.VertexArrayObject);
@@ -921,5 +973,10 @@ public class SkinRender : OpenGlControlBase
         }
 
         RequestNextFrameRendering();
+    }
+
+    public bool HitTest(Point point)
+    {
+        return IsVisible;
     }
 }

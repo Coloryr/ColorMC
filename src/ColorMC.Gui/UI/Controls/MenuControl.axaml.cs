@@ -1,10 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -30,11 +32,14 @@ public partial class MenuControl : UserControl, IUserControl
         StackPanel2.PointerPressed += StackPanel2_PointerPressed;
     }
 
-    protected virtual MenuModel SetModel(BaseModel model) { throw new WarningException(); }
-    protected virtual Control ViewChange(int index) { throw new WarningException(); }
+    virtual protected MenuModel SetModel(BaseModel model) { throw new WarningException(); }
+    virtual protected Control ViewChange(int old, int index) { throw new WarningException(); }
 
-    public virtual void Opened() { }
-    public virtual void Closed() { }
+    virtual public void OnKeyDown(object? sender, KeyEventArgs e) { }
+    virtual public Bitmap GetIcon() { return App.GameIcon; }
+    virtual public void Opened() { }
+    virtual public void Closed() { }
+    virtual public Task<bool> Closing() { return Task.FromResult(false); }
 
     private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
@@ -101,9 +106,13 @@ public partial class MenuControl : UserControl, IUserControl
         else if (e.PropertyName == "NowView")
         {
             var model = (DataContext as MenuModel)!;
-            Go(ViewChange(model.NowView));
+            Go(ViewChange(_now, model.NowView));
 
             _now = model.NowView;
+        }
+        else if (e.PropertyName == "WindowClose")
+        {
+            Window.Close();
         }
     }
 }

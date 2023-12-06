@@ -59,4 +59,10 @@ public partial class SettingModel : MenuModel
     {
         WebBinding.OpenWeb(WebType.MIT);
     }
+
+    [RelayCommand]
+    public void OpenUrl9()
+    {
+        WebBinding.OpenWeb(WebType.MiSans);
+    }
 }

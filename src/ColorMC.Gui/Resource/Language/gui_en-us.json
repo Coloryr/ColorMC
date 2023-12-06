@@ -897,7 +897,6 @@
 	"ServerMotdControl.Text3": "Delay：",
 	"ServerMotdControl.Text4": "Fetching Mod",
 	"ServerMotdControl.Text5": "Server Motd fetch failed",
-	"ServerMotdControl.Text6": "Fetching Mod",
 	"BaseBinding.SkinRotate.Item1": "Rotate your arm",
 	"BaseBinding.SkinRotate.Item2": "Rotate Leg",
 	"BaseBinding.SkinRotate.Item3": "Rotate Head",

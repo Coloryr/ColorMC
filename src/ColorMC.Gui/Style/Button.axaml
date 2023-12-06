@@ -20,11 +20,11 @@
 
     <Style Selector="Button">
         <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
-        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{setting:Colors ButtonBorder}" />
         <Setter Property="Background" Value="{setting:Colors Main}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
         <Setter Property="Padding" Value="0" />
     </Style>
