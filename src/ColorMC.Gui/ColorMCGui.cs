@@ -14,6 +14,7 @@ using System.IO.MemoryMappedFiles;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Tmds.DBus.Protocol;
 
 namespace ColorMC.Gui;
 
@@ -100,6 +101,10 @@ public static class ColorMCGui
 
     private static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
+        if (e.Exception.InnerException is DBusException)
+        {
+            return;
+        }
         PathBinding.OpFile(Logs.SaveCrash("Gui Crash", e.Exception));
     }
 

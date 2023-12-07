@@ -59,7 +59,7 @@ public partial class App : Application
         {
             string temp = Lang("Gui.Error25");
             Logs.Error(temp, e.ExceptionObject as Exception);
-            App.ShowError(temp, e.ExceptionObject as Exception);
+            ShowError(temp, e.ExceptionObject as Exception);
         };
     }
     public static Window? LastWindow { get; set; }
