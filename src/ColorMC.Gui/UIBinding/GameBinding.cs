@@ -1026,7 +1026,7 @@ public static class GameBinding
         return Task.Run(() =>
         {
             var modid = new List<string>();
-            var  mod = new List<ModDisplayModel>();
+            var mod = new List<ModDisplayModel>();
             foreach (var item in list)
             {
                 if (item.Obj.modid == null || item.Obj.Disable)

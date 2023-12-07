@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.ServerPack;
-using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

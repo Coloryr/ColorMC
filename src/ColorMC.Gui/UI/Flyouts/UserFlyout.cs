@@ -2,7 +2,6 @@
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.User;
-using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

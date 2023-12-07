@@ -14,7 +14,7 @@ public class GameEditFlyout8
     {
         IEnumerable<DataPackModel> mods;
         DataPackModel obj = null!;
-        bool single =  false;
+        bool single = false;
         mods = list.Cast<DataPackModel>();
         if (mods.Count() == 1)
         {

@@ -2,9 +2,7 @@
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace ColorMC.Gui.UI.Flyouts;

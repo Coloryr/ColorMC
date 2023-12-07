@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Gui.UIBinding;
-using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
