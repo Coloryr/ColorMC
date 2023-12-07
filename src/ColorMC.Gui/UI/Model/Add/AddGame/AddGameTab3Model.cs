@@ -16,7 +16,7 @@ public partial class AddGameModel
     /// <summary>
     /// 文件列表
     /// </summary>
-    private FilesPage? _fileModel;
+    private FilesPageModel? _fileModel;
 
     /// <summary>
     /// 文件夹路径
@@ -53,7 +53,7 @@ public partial class AddGameModel
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info2"));
             _fileModel = await Task.Run(() =>
             {
-                return new FilesPage(SelectPath, true, new()
+                return new FilesPageModel(SelectPath, true, new()
                 { "assets", "libraries", "versions", "launcher_profiles.json" });
             });
             Model.ProgressClose();

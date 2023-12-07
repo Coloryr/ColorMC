@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel : MenuModel
+public partial class ServerPackModel
 {
     [ObservableProperty]
     private string _text;

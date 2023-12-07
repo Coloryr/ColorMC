@@ -27,7 +27,8 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class WebBinding
 {
-    public static async Task<List<FileItemObj>?> GetPackList(SourceType type, string? version, string? filter, int page, int sort, string categoryId)
+    public static async Task<List<FileItemObj>?> GetPackList(SourceType type, string? version,
+        string? filter, int page, int sort, string categoryId)
     {
         version ??= "";
         filter ??= "";
@@ -701,7 +702,7 @@ public static class WebBinding
             }
         });
 
-        return list.ToList();
+        return [.. list];
     }
 
     public static void OpenMcmod(ModDisplayModel obj)

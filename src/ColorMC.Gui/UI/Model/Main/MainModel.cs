@@ -22,11 +22,11 @@ public partial class MainModel : TopModel, IMainTop
     public bool IsLaunch = false;
     public bool IsFirst = true;
 
-    public ObservableCollection<string> GroupList { get; init; } = new();
-    public ObservableCollection<GamesModel> GameGroups { get; init; } = new();
+    public ObservableCollection<string> GroupList { get; init; } = [];
+    public ObservableCollection<GamesModel> GameGroups { get; init; } = [];
 
     private readonly Semaphore _semaphore = new(0, 2);
-    private readonly Dictionary<string, GameItemModel> Launchs = new();
+    private readonly Dictionary<string, GameItemModel> Launchs = [];
 
     private bool _isplay = true;
     private bool _isCancel;

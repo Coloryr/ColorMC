@@ -46,7 +46,7 @@ public partial class GameItemModel : GameModel
     [ObservableProperty]
     private Bitmap _pic;
 
-    private string? _group;
+    private readonly string? _group;
 
     public GameItemModel(BaseModel model, string? group) : base(model, new() { })
     {
@@ -117,13 +117,17 @@ public partial class GameItemModel : GameModel
         {
             return;
         }
+        var time1 = Obj.LaunchData.AddTime;
+        var time2 = Obj.LaunchData.LastTime;
+        var time3 = Obj.LaunchData.LastPlay;
+        var time4 = Obj.LaunchData.GameTime;
         Tips = string.Format(App.Lang("Tips.Text1"),
-            Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
-            Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),
-            Obj.LaunchData.LastPlay.Ticks == 0 ? "" :
-            $"{Obj.LaunchData.LastPlay.TotalHours:#}:{Obj.LaunchData.LastPlay.Minutes:00}:{Obj.LaunchData.LastPlay.Seconds:00}",
-            Obj.LaunchData.GameTime.Ticks == 0 ? "" :
-            $"{Obj.LaunchData.GameTime.TotalHours:#}:{Obj.LaunchData.GameTime.Minutes:00}:{Obj.LaunchData.GameTime.Seconds:00}");
+            time1.Ticks == 0 ? "" : time1.ToString(),
+            time2.Ticks == 0 ? "" : time2.ToString(),
+            time3.Ticks == 0 ? "" :
+            $"{time3.TotalHours:#}:{time3.Minutes:00}:{time3.Seconds:00}",
+            time4.Ticks == 0 ? "" :
+            $"{time4.TotalHours:#}:{time4.Minutes:00}:{time4.Seconds:00}");
     }
 
     public async void Move(PointerEventArgs e)
@@ -134,7 +138,7 @@ public partial class GameItemModel : GameModel
 
         if (SystemInfo.Os != OsType.Android)
         {
-            List<IStorageFolder> files = new();
+            var files = new List<IStorageFolder>();
             var item = await App.TopLevel!.StorageProvider
                    .TryGetFolderFromPathAsync(Obj.GetBasePath());
             files.Add(item!);

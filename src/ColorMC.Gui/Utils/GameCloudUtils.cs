@@ -47,9 +47,11 @@ public static class GameCloudUtils
     /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
-        HttpClientHandler handler = new HttpClientHandler();
-        _client = new HttpClient(handler);
-        _client.Timeout = Timeout.InfiniteTimeSpan;
+        var handler = new HttpClientHandler();
+        _client = new HttpClient(handler)
+        {
+            Timeout = Timeout.InfiniteTimeSpan
+        };
 
         s_file = Path.GetFullPath(dir + "/" + Name);
 
@@ -84,7 +86,7 @@ public static class GameCloudUtils
 
         if (s_datas == null)
         {
-            s_datas = new();
+            s_datas = [];
             Save();
         }
     }

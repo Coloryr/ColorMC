@@ -33,7 +33,7 @@ public partial class WorldModel : ObservableObject
     public string Hardcore => World.Hardcore == 1 ? "True" : "False";
     public Bitmap Pic { get; }
 
-    public ObservableCollection<DataPackModel> DataPackList { get; init; } = new();
+    public ObservableCollection<DataPackModel> DataPackList { get; init; } = [];
 
     public WorldModel(GameEditModel top, WorldObj world)
     {

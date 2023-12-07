@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel : MenuModel
+public partial class ServerPackModel(BaseModel model, ServerPackObj obj) : MenuModel(model)
 {
-    public ServerPackObj Obj { get; }
+    public ServerPackObj Obj { get; } = obj;
 
-    public override List<MenuObj> TabItems { get; init; } = new()
-    {
+    public override List<MenuObj> TabItems { get; init; } =
+    [
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.Lang("ServerPackWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/GameExport/item2.svg",
@@ -22,12 +22,7 @@ public partial class ServerPackModel : MenuModel
             Text = App.Lang("ServerPackWindow.Tabs.Text3") },
         new() { Icon = "/Resource/Icon/GameExport/item4.svg",
             Text = App.Lang("ServerPackWindow.Tabs.Text4") },
-    };
-
-    public ServerPackModel(BaseModel model, ServerPackObj obj) : base(model)
-    {
-        Obj = obj;
-    }
+    ];
 
     [RelayCommand]
     public async Task Gen()

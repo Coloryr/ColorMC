@@ -5,7 +5,7 @@ namespace ColorMC.Gui.Utils;
 
 public class SelfPublisher<T> : IObservable<T>
 {
-    private readonly List<IObserver<T>> _observers = new();
+    private readonly List<IObserver<T>> _observers = [];
 
     public IDisposable Subscribe(IObserver<T> observer)
     {

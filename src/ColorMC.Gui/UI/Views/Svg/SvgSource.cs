@@ -17,7 +17,6 @@ namespace ColorMC.Gui.UI.Views.Svg;
 [TypeConverter(typeof(SvgSourceTypeConverter))]
 public class SvgSource
 {
-
     /// <summary>
     /// Loads svg picture from file or resource.
     /// </summary>
@@ -32,7 +31,7 @@ public class SvgSource
         Color? fill1 = fill is ImmutableSolidColorBrush brush1
             ? Color.FromArgb(brush1.Color.A, brush1.Color.R,
             brush1.Color.G, brush1.Color.B) : null;
-        var uri = path.StartsWith("/") ? new Uri(path, UriKind.Relative) : new Uri(path, UriKind.RelativeOrAbsolute);
+        var uri = path.StartsWith('/') ? new Uri(path, UriKind.Relative) : new Uri(path, UriKind.RelativeOrAbsolute);
         if (uri.IsAbsoluteUri && uri.IsFile)
         {
             var document = SvgExtensions.Open(uri.LocalPath);

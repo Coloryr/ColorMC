@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class GamesModel : TopModel
 {
-    public ObservableCollection<GameItemModel> GameList { get; init; } = new();
+    public ObservableCollection<GameItemModel> GameList { get; init; } = [];
 
     public string Header { get; }
     public string Key { get; }
@@ -20,7 +20,7 @@ public partial class GamesModel : TopModel
     private bool _expander = true;
 
     private readonly IMainTop _top;
-    private readonly Dictionary<string, GameItemModel> _items = new();
+    private readonly Dictionary<string, GameItemModel> _items = [];
 
     public GamesModel(BaseModel model, IMainTop top, string key, string name,
         List<GameSettingObj> list) : base(model)

@@ -20,7 +20,7 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class UserBinding
 {
-    private readonly static List<(AuthType, string)> s_lockUser = new();
+    private readonly static List<(AuthType, string)> s_lockUser = [];
     public static SKBitmap? SkinImage { get; set; }
     public static SKBitmap? CapeIamge { get; set; }
     public static Bitmap HeadBitmap { get; private set; }

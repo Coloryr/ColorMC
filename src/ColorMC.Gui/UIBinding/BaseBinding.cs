@@ -543,7 +543,7 @@ public static class BaseBinding
     /// <returns></returns>
     public static List<FontFamily> GetFontList()
     {
-        return FontManager.Current.SystemFonts.ToList();
+        return [.. FontManager.Current.SystemFonts];
     }
 
     /// <summary>
@@ -735,7 +735,7 @@ public static class BaseBinding
                 dynamic shell = Activator.CreateInstance(shellType)!;
                 var file = $"{ColorMCGui.RunDir}{obj.Name}.lnk";
                 var shortcut = shell.CreateShortcut(file);
-                var path = Process.GetCurrentProcess()!.MainModule!.FileName;
+                var path = Environment.ProcessPath;
                 shortcut.TargetPath = path;
                 shortcut.Arguments = "-game " + obj.UUID;
                 shortcut.WorkingDirectory = ColorMCGui.RunDir;
@@ -816,7 +816,7 @@ public static class BaseBinding
             }
             if (!File.Exists(item.Local))
             {
-                var res = await DownloadManager.Start(new() { item });
+                var res = await DownloadManager.Start([item]);
                 if (!res)
                 {
                     return false;

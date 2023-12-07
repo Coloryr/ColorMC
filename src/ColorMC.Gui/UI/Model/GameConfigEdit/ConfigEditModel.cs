@@ -33,7 +33,7 @@ public partial class GameConfigEditModel : GameModel
 
     public string[] TypeSource { get; init; } = LanguageBinding.GetNbtName();
 
-    private NbtPage _nbtView;
+    private NbtPageModel _nbtView;
 
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<NbtNodeModel> _source;
@@ -295,7 +295,7 @@ public partial class GameConfigEditModel : GameModel
                     }
                     if (nbt2 != null)
                     {
-                        model = _nbtView.Find(model, nbt2);
+                        model = NbtPageModel.Find(model, nbt2);
                         if (model != null)
                         {
                             _nbtView.Select(model);

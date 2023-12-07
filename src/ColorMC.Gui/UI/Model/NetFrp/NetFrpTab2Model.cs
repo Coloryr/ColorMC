@@ -11,9 +11,9 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 public partial class NetFrpModel
 {
     private readonly LanClient _client = new();
-    private readonly List<string> _have = new();
+    private readonly List<string> _have = [];
 
-    public ObservableCollection<NetFrpLocalModel> Locals { get; set; } = new();
+    public ObservableCollection<NetFrpLocalModel> Locals { get; set; } = [];
 
     [RelayCommand]
     public void CleanLocal()
@@ -35,7 +35,7 @@ public partial class NetFrpModel
             list.Add($"{App.Lang("NetFrpWindow.Tabs.Text1")} {item.Name} {item.ID}");
         }
 
-        var (Cancel, Index, Item) = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
+        var (Cancel, Index, _) = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
         if (Cancel)
         {
             return;

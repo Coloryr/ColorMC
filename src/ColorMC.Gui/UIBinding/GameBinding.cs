@@ -921,14 +921,11 @@ public static class GameBinding
             SHA1 = data.hashes.Where(a => a.algo == 1)
                 .Select(a => a.value).FirstOrDefault()
         };
-        if (obj.Mods.ContainsKey(obj1.ModId))
+        if (!obj.Mods.TryAdd(obj1.ModId, obj1))
         {
             obj.Mods[obj1.ModId] = obj1;
         }
-        else
-        {
-            obj.Mods.Add(obj1.ModId, obj1);
-        }
+
         obj.SaveModInfo();
     }
 
@@ -949,14 +946,11 @@ public static class GameBinding
             Url = file.url,
             SHA1 = file.hashes.sha1
         };
-        if (obj.Mods.ContainsKey(obj1.ModId))
+        if (!obj.Mods.TryAdd(obj1.ModId, obj1))
         {
             obj.Mods[obj1.ModId] = obj1;
         }
-        else
-        {
-            obj.Mods.Add(obj1.ModId, obj1);
-        }
+
         obj.SaveModInfo();
     }
 
@@ -1031,8 +1025,8 @@ public static class GameBinding
     {
         return Task.Run(() =>
         {
-            List<string> modid = new();
-            List<ModDisplayModel> mod = new();
+            var modid = new List<string>();
+            var  mod = new List<ModDisplayModel>();
             foreach (var item in list)
             {
                 if (item.Obj.modid == null || item.Obj.Disable)
@@ -1053,7 +1047,7 @@ public static class GameBinding
             modid.Add("java");
             modid.Add("fabricloader");
 
-            ConcurrentBag<(string, List<string>)> lost = new();
+            var lost = new ConcurrentBag<(string, List<string>)>();
 
             Parallel.ForEach(mod, item =>
             {
@@ -1408,7 +1402,7 @@ public static class GameBinding
 
         var cloud = new CloudDataObj()
         {
-            Config = new()
+            Config = []
         };
 
         GameCloudUtils.SetCloudData(game, cloud);
@@ -1577,7 +1571,7 @@ public static class GameBinding
         {
             return false;
         }
-        return await DataPack.Delete(new List<DataPackObj>() { item.Pack }, item.Pack.World);
+        return await DataPack.Delete([item.Pack], item.Pack.World);
     }
 
     public static async Task<bool> DeleteDataPack(IEnumerable<DataPackModel> items)

@@ -1,19 +1,13 @@
 ﻿using ColorMC.Core.Objs.Minecraft;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class DataPackModel : ObservableObject
+public partial class DataPackModel(DataPackObj obj)
 {
-    public readonly DataPackObj Pack;
+    public DataPackObj Pack => obj;
 
-    public bool? Enable => Pack.Enable;
-    public string Name => Pack.Name;
-    public string Description => Pack.Description;
-    public int PackFormat => Pack.PackFormat;
-
-    public DataPackModel(DataPackObj obj)
-    {
-        Pack = obj;
-    }
+    public bool? Enable => obj.Enable;
+    public string Name => obj.Name;
+    public string Description => obj.Description;
+    public int PackFormat => obj.PackFormat;
 }

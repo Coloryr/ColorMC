@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class FileTreeNodeModel : ObservableObject
 {
-    public ObservableCollection<FileTreeNodeModel> Children { get; init; } = new();
+    public ObservableCollection<FileTreeNodeModel> Children { get; init; } = [];
     public bool IsDirectory { get; init; }
 
     [ObservableProperty]

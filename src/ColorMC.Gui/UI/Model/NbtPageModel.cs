@@ -10,19 +10,19 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model;
 
-public class NbtPage
+public class NbtPageModel
 {
     private readonly NbtNodeModel _root;
     private readonly Action<int> _turn;
     public NbtBase Nbt { get; }
     public HierarchicalTreeDataGridSource<NbtNodeModel> Source { get; init; }
 
-    public NbtPage(NbtBase nbt, Action<int> turn)
+    public NbtPageModel(NbtBase nbt, Action<int> turn)
     {
         Nbt = nbt;
         _turn = turn;
         _root = new NbtNodeModel(null, nbt, null);
-        Source = new HierarchicalTreeDataGridSource<NbtNodeModel>(new[] { _root })
+        Source = new HierarchicalTreeDataGridSource<NbtNodeModel>([_root])
         {
             Columns =
             {
@@ -60,7 +60,7 @@ public class NbtPage
         Select(data);
     }
 
-    public NbtNodeModel? Find(NbtNodeModel from, NbtBase nbt)
+    public static NbtNodeModel? Find(NbtNodeModel from, NbtBase nbt)
     {
         NbtNodeModel? model = null;
         foreach (var item in from.Children)
