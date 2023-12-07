@@ -20,6 +20,10 @@ public partial class SingleWindow : Window
         {
             KeyDown += Window_KeyDown;
         }
+        else if (SystemInfo.Os == OsType.Linux)
+        {
+            SystemDecorations = SystemDecorations.BorderOnly;
+        }
 
         Closed += UserWindow_Closed;
         Opened += UserWindow_Opened;

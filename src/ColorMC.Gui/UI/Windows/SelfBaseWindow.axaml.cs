@@ -43,6 +43,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         if (SystemInfo.Os == OsType.Linux)
         {
             ResizeButton.IsVisible = true;
+            SystemDecorations = SystemDecorations.BorderOnly;
         }
 
         KeyDown += Window_KeyDown;
