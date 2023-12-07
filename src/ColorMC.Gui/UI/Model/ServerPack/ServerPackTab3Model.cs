@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel 
+public partial class ServerPackModel
 {
     public ObservableCollection<ServerPackItemModel> ConfigList { get; init; } = [];
 
