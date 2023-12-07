@@ -4,25 +4,17 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class NetFrpLocalModel : ObservableObject
+public partial class NetFrpLocalModel(NetFrpModel top, string motd, string port) : ObservableObject
 {
-    public string Motd { get; init; }
-    public string Port { get; init; }
+    public string Motd => motd;
+    public string Port => port;
 
     [ObservableProperty]
     private bool _isStart;
 
-    private readonly NetFrpModel _top;
-    public NetFrpLocalModel(NetFrpModel top, string motd, string port)
-    {
-        _top = top;
-        Motd = motd;
-        Port = port;
-    }
-
     [RelayCommand]
     public void Start()
     {
-        _top.StartThisLan(this);
+        top.StartThisLan(this);
     }
 }

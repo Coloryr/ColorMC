@@ -10,9 +10,9 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel : MenuModel
+public partial class ServerPackModel
 {
-    public ObservableCollection<ServerPackItemModel> ModList { get; init; } = new();
+    public ObservableCollection<ServerPackItemModel> ModList { get; init; } = [];
 
     [ObservableProperty]
     private ServerPackItemModel _modItem;

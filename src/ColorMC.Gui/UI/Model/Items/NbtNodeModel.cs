@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -13,7 +14,7 @@ public partial class NbtNodeModel : ObservableObject
     public string? Key { get; set; }
     public NbtType NbtType => Nbt.NbtType;
 
-    public ObservableCollection<NbtNodeModel> Children { get; init; } = new();
+    public ObservableCollection<NbtNodeModel> Children { get; init; } = [];
 
     [ObservableProperty]
     private bool _isExpanded;
@@ -43,8 +44,9 @@ public partial class NbtNodeModel : ObservableObject
             return Nbt.ToString();
         }
         else
-
+        {
             return $"{Key}: {Nbt}";
+        }
     }
 
     public void Add(string key, NbtType type)
@@ -82,7 +84,9 @@ public partial class NbtNodeModel : ObservableObject
     public void EditKey(string old, string now)
     {
         if (Top == null)
+        {
             return;
+        }
 
         if (Top.NbtType == NbtType.NbtCompound)
         {
@@ -106,7 +110,7 @@ public partial class NbtNodeModel : ObservableObject
 
     public NbtNodeModel? Find(string name)
     {
-        if (name.ToLower() == Key?.ToLower())
+        if (name.Equals(Key, StringComparison.OrdinalIgnoreCase))
         {
             return this;
         }

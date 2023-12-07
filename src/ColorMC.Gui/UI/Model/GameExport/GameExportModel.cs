@@ -23,7 +23,7 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
     /// <summary>
     /// 导出的文件列表
     /// </summary>
-    public FilesPage Files { get; private set; }
+    public FilesPageModel Files { get; private set; }
 
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
@@ -303,11 +303,11 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
     {
         if (Type == PackType.CurseForge || Type == PackType.Modrinth)
         {
-            Files = new FilesPage(Obj.GetGamePath(), false);
+            Files = new FilesPageModel(Obj.GetGamePath(), false);
         }
         else
         {
-            Files = new FilesPage(Obj.GetBasePath(), true);
+            Files = new FilesPageModel(Obj.GetBasePath(), true);
         }
 
         Source = Files.Source;

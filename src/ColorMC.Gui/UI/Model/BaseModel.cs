@@ -601,13 +601,17 @@ public partial class BaseModel : ObservableObject
     }
 
     public async Task<(bool Cancel, int Index, string? Item)>
-        ShowCombo(string data, List<string> data1)
+        ShowCombo(string data, IEnumerable<string> data1)
     {
         _info5.Text = data;
         _info5.Items.Clear();
         _info5.Items.AddRange(data1);
         _info5.Select = null!;
-        _info5.Select = data1[0];
+        foreach (var item in data1)
+        {
+            _info5.Select = item;
+            break;
+        }
         _info5.IsCancel = true;
 
         DClose();

@@ -16,7 +16,7 @@ namespace ColorMC.Gui.UI.Model.GameLog;
 
 public partial class GameLogModel : GameModel
 {
-    public ObservableCollection<string> FileList { get; init; } = new();
+    public ObservableCollection<string> FileList { get; init; } = [];
 
     [ObservableProperty]
     private TextDocument _text;
@@ -38,8 +38,6 @@ public partial class GameLogModel : GameModel
 
     public GameLogModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
-        Obj = obj;
-
         _text = new();
 
         _timer = new(() =>
@@ -193,7 +191,7 @@ public partial class GameLogModel : GameModel
     private void Run()
     {
         string? temp = null;
-        while (_queue.Count != 0)
+        while (!_queue.IsEmpty)
         {
             if (_queue.TryDequeue(out var temp1) && !string.IsNullOrWhiteSpace(temp1))
             {

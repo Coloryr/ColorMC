@@ -9,10 +9,10 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel : MenuModel
+public partial class ServerPackModel
 {
-    public ObservableCollection<ServerPackConfigModel> FileList { get; init; } = new();
-    public ObservableCollection<string> NameList { get; init; } = new();
+    public ObservableCollection<ServerPackConfigModel> FileList { get; init; } = [];
+    public ObservableCollection<string> NameList { get; init; } = [];
     public string[] FuntionList { get; init; } = LanguageBinding.GetFuntionList();
 
     [ObservableProperty]
@@ -33,8 +33,8 @@ public partial class ServerPackModel : MenuModel
         }
         string local = Obj.Game.GetGamePath() + "/" + Group;
         local = local.Replace('\\', '/');
-        Obj.Config ??= new();
-        if (local.EndsWith("/"))
+        Obj.Config ??= [];
+        if (local.EndsWith('/'))
         {
             if (Funtion == 0)
             {
@@ -96,8 +96,6 @@ public partial class ServerPackModel : MenuModel
 
         GameBinding.SaveServerPack(Obj);
     }
-
-
 
     public void DeleteFile(ServerPackConfigModel obj)
     {

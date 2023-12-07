@@ -21,7 +21,7 @@ public partial class NetFrpModel
 
     private bool _isLoad1;
 
-    public ObservableCollection<NetFrpRemoteModel> Remotes { get; set; } = new();
+    public ObservableCollection<NetFrpRemoteModel> Remotes { get; set; } = [];
 
     partial void OnKeyChanged(string value)
     {

@@ -51,7 +51,7 @@ public partial class ModDisplayModel : ObservableObject
         OnPropertyChanged(nameof(Local));
     }
 
-    private string MakeString(List<string>? strings)
+    private static string MakeString(List<string>? strings)
     {
         if (strings == null)
             return "";

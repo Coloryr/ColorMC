@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Skin;
 
-public partial class SkinModel : TopModel
+public partial class SkinModel(BaseModel model) : TopModel(model)
 {
     public string[] SkinTypeList { get; init; } = LanguageBinding.GetSkinType();
     public string[] SkinRotateList { get; init; } = LanguageBinding.GetSkinRotateName();
@@ -69,11 +69,6 @@ public partial class SkinModel : TopModel
         {
             NowFps = $"{value}Fps";
         }
-    }
-
-    public SkinModel(BaseModel model) : base(model)
-    {
-
     }
 
     partial void OnRotateXChanged(float value)

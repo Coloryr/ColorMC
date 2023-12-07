@@ -52,9 +52,9 @@ public partial class NetFrpModel
             _process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
         }
 
-        _process.Exited += process_Exited;
-        _process.OutputDataReceived += process_OutputDataReceived;
-        _process.ErrorDataReceived += process_ErrorDataReceived;
+        _process.Exited += Process_Exited;
+        _process.OutputDataReceived += Process_OutputDataReceived;
+        _process.ErrorDataReceived += Process_ErrorDataReceived;
         _process.Start();
         _process.BeginErrorReadLine();
         _process.BeginOutputReadLine();
@@ -64,17 +64,17 @@ public partial class NetFrpModel
         IsRuning = true;
     }
 
-    private void process_Exited(object? sender, EventArgs e)
+    private void Process_Exited(object? sender, EventArgs e)
     {
         IsRuning = false;
     }
 
-    private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+    private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
         Log(e.Data);
     }
 
-    private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         Log(e.Data);
         if (e.Data?.Contains("TCP 类型隧道启动成功") == true

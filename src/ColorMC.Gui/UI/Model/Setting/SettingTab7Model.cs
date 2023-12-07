@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingModel : MenuModel
+public partial class SettingModel
 {
     public Bitmap Bitmap => App.GameIcon;
     public string Version => ColorMCCore.Version;

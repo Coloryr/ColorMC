@@ -19,7 +19,7 @@ namespace ColorMC.Gui.UI.Model.User;
 public partial class UsersControlModel : TopModel
 {
     public List<string> UserTypeList { get; init; } = UserBinding.GetUserTypes();
-    public ObservableCollection<UserDisplayObj> UserList { get; init; } = new();
+    public ObservableCollection<UserDisplayObj> UserList { get; init; } = [];
 
     [ObservableProperty]
     private UserDisplayObj? _item;

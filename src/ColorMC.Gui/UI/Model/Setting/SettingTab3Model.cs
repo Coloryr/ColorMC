@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingModel : MenuModel
+public partial class SettingModel
 {
     private bool _httpLoad = true;
 

@@ -2,12 +2,7 @@
 
 namespace ColorMC.Gui.UI.Model;
 
-public abstract partial class GameModel : TopModel
+public abstract partial class GameModel(BaseModel model, GameSettingObj obj) : TopModel(model)
 {
-    public GameSettingObj Obj { get; init; }
-
-    public GameModel(BaseModel model, GameSettingObj obj) : base(model)
-    {
-        Obj = obj;
-    }
+    public GameSettingObj Obj => obj;
 }

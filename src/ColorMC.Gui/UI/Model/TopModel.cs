@@ -3,7 +3,7 @@ namespace ColorMC.Gui.UI.Model;
 
 public abstract class TopModel(BaseModel model) : ObservableObject
 {
-    public BaseModel Model { get; } = model;
+    public BaseModel Model => model;
 
     public void TopClose()
     {

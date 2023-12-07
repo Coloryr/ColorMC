@@ -12,7 +12,6 @@ public partial class SingleWindow : Window
 {
     public SingleWindow()
     {
-
         InitializeComponent();
 
         Icon = App.Icon;

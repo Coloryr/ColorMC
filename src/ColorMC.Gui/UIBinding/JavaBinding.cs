@@ -17,10 +17,10 @@ namespace ColorMC.Gui.UIBinding;
 public static class JavaBinding
 {
     private readonly static List<string> PCJavaType =
-        new() { "Adoptium", "Zulu", "Dragonwell", "OpenJ9" };
+        ["Adoptium", "Zulu", "Dragonwell", "OpenJ9"];
 
     private readonly static List<string> PhoneJavaType =
-        new() { "PojavLauncherTeam" };
+        ["PojavLauncherTeam"];
 
     private const string Android = "Android";
     private const string Arm64 = "Arm64";
@@ -54,7 +54,7 @@ public static class JavaBinding
 
     public static List<JavaInfoObj> GetJavaInfo()
     {
-        List<JavaInfoObj> res = new();
+        var res = new List<JavaInfoObj>();
         foreach (var item in JvmPath.Jvms)
         {
             res.Add(MakeInfo(item.Key, item.Value));
@@ -76,19 +76,19 @@ public static class JavaBinding
 
     public static (JavaInfoObj?, string?) AddJava(string name, string local)
     {
-        var res = JvmPath.AddItem(name, local);
-        if (res.Res == false)
+        var (Res, Msg) = JvmPath.AddItem(name, local);
+        if (Res == false)
         {
-            return (null, res.Msg);
+            return (null, Msg);
         }
         else
         {
-            var info = JvmPath.GetInfo(res.Msg);
+            var info = JvmPath.GetInfo(Msg);
             if (info == null)
             {
                 return (null, App.Lang("Gui.Error5"));
             }
-            return (MakeInfo(res.Msg, info), null);
+            return (MakeInfo(Msg, info), null);
         }
     }
 
@@ -118,7 +118,7 @@ public static class JavaBinding
 
     public static List<JavaDisplayObj> GetJavas()
     {
-        List<JavaDisplayObj> res = new();
+        var res = new List<JavaDisplayObj>();
         foreach (var item in JvmPath.Jvms)
         {
             res.Add(new()
@@ -137,10 +137,10 @@ public static class JavaBinding
 
     public static async Task<(bool, string?)> DownloadJava(JavaDownloadObj obj)
     {
-        var res = await JvmPath.Install(obj.File, obj.Name, obj.Sha256, obj.Url);
-        if (res.Item1 != CoreRunState.Init)
+        var (Res, Message) = await JvmPath.Install(obj.File, obj.Name, obj.Sha256, obj.Url);
+        if (Res != CoreRunState.Init)
         {
-            return (false, res.Item2);
+            return (false, Message);
         }
 
         return (true, null);

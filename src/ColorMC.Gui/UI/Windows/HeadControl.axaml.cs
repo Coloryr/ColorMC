@@ -128,7 +128,7 @@ public partial class HeadControl : UserControl
         _buttonClose.Click += ButtonClose_Click;
         _buttonBack.Click += ButtonBack_Click;
         _buttonChoise.Click += ButtonChoise_Click;
-        _buttonChoise1.Click += _buttonChoise1_Click;
+        _buttonChoise1.Click += ButtonChoise1_Click;
     }
 
     private void HeadControl_DataContextChanged(object? sender, EventArgs e)
@@ -148,7 +148,7 @@ public partial class HeadControl : UserControl
         }
     }
 
-    private void _buttonChoise1_Click(object? sender, RoutedEventArgs e)
+    private void ButtonChoise1_Click(object? sender, RoutedEventArgs e)
     {
         (DataContext as BaseModel)?.Choise1Click();
     }

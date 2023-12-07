@@ -7,27 +7,20 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class ScreenshotModel : ObservableObject
+public partial class ScreenshotModel(GameEditModel top, string obj) : ObservableObject
 {
-    public readonly string Screenshot;
+    public string Screenshot => obj;
 
-    public readonly GameEditModel Top;
+    public GameEditModel Top => top;
 
     [ObservableProperty]
     private bool _isSelect;
 
-    public string Name { get; }
+    public string Name { get; } = Path.GetFileName(obj);
 
     public Task<Bitmap> Image => GetImage();
 
     private Bitmap _img;
-
-    public ScreenshotModel(GameEditModel top, string obj)
-    {
-        Top = top;
-        Screenshot = obj;
-        Name = Path.GetFileName(Screenshot);
-    }
 
     private async Task<Bitmap> GetImage()
     {

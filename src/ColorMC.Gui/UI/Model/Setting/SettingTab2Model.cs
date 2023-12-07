@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingModel : MenuModel
+public partial class SettingModel
 {
-    public ObservableCollection<FontDisplayObj> FontList { get; init; } = new();
+    public ObservableCollection<FontDisplayObj> FontList { get; init; } = [];
     public string[] TranTypeList { get; init; } = LanguageBinding.GetWindowTranTypes();
     public string[] LanguageList { get; init; } = LanguageBinding.GetLanguages();
     public string[] PosList { get; init; } = LanguageBinding.GetPos();
