@@ -81,7 +81,7 @@ public partial class ServerPackControl : MenuControl
         return new ServerPackModel(model, pack);
     }
 
-    protected override Control ViewChange(int old, int index)
+    protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as ServerPackModel)!;
         switch (model.NowView)

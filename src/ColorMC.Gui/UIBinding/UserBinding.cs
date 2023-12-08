@@ -146,6 +146,8 @@ public static class UserBinding
             return false;
         }
 
+        obj.AccessToken = "";
+
         return (await obj.RefreshToken()).LoginState == LoginState.Done;
     }
 

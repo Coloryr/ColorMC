@@ -13,7 +13,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 public partial class Live2dControl : UserControl
 {
     private readonly FpsTimer _renderTimer;
-    private readonly Live2dRender render;
+    private readonly Live2dRender _render;
 
     private CancellationTokenSource _cancel = new();
 
@@ -23,12 +23,15 @@ public partial class Live2dControl : UserControl
 
         if (SystemInfo.Os == OsType.Android)
         {
+            IsVisible = false;
             return;
         }
 
-        render = new();
+        _render = new();
 
-        _renderTimer = new(render)
+        Live2D.Child = _render;
+
+        _renderTimer = new(_render)
         {
             FpsTick = FpsTick
         };
@@ -75,12 +78,12 @@ public partial class Live2dControl : UserControl
         }
         else if (e.PropertyName == "ModelChangeDone")
         {
-            if (render.HaveModel)
+            if (_render.HaveModel)
             {
                 IsVisible = true;
                 _renderTimer.Pause = false;
             }
-            else if (!render.HaveModel)
+            else if (!_render.HaveModel)
             {
                 IsVisible = false;
                 _renderTimer.Pause = true;
@@ -93,7 +96,7 @@ public partial class Live2dControl : UserControl
             {
                 _renderTimer.Pause = true;
             }
-            else if (render.HaveModel)
+            else if (_render.HaveModel)
             {
                 _renderTimer.Pause = false;
             }
@@ -102,7 +105,7 @@ public partial class Live2dControl : UserControl
 
     private async void ShowMessage()
     {
-        if (!render.HaveModel)
+        if (!_render.HaveModel)
         {
             return;
         }

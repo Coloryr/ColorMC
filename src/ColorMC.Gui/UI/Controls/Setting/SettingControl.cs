@@ -53,55 +53,62 @@ public partial class SettingControl : MenuControl
         (DataContext as SettingModel)!.LoadUISetting();
     }
 
-    private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == "Switch")
-        {
-            var model = (DataContext as SettingModel)!;
-            switch (model.NowView)
-            {
-                case 0:
-                    _tab2.Reset();
-                    break;
-                case 1:
-                    _tab3.Reset();
-                    break;
-                case 2:
-                    _tab4.Reset();
-                    break;
-                case 4:
-                    _tab6.Reset();
-                    break;
-            }
-        }
-    }
-
     protected override MenuModel SetModel(BaseModel model)
     {
-        var amodel = new SettingModel(model);
-        amodel.PropertyChanged += Amodel_PropertyChanged;
-        return amodel;
+        return new SettingModel(model);
     }
 
-    protected override Control ViewChange(int old, int index)
+    protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as SettingModel)!;
         switch (index)
         {
             case 0:
                 model.LoadUISetting();
+                if (iswhell && old == 1)
+                {
+                    _tab2.End();
+                }
+                else
+                {
+                    _tab2.Reset();
+                }
                 return _tab2;
             case 1:
                 model.LoadHttpSetting();
+                if (iswhell && old == 2)
+                {
+                    _tab3.End();
+                }
+                else
+                {
+                    _tab3.Reset();
+                }
                 return _tab3;
             case 2:
                 model.LoadArg();
+                if (iswhell && old == 3)
+                {
+                    _tab4.End();
+                }
+                else
+                {
+                    _tab4.Reset();
+                }
                 return _tab4;
             case 3:
                 model.LoadJava();
                 return _tab5;
             case 4:
                 model.LoadServer();
+                if (iswhell && old == 5)
+                {
+                    _tab6.End();
+                }
+                else
+                {
+                    _tab6.Reset();
+                }
                 return _tab6;
             case 5:
                 return _tab1;

@@ -33,7 +33,7 @@ public partial class MenuControl : UserControl, IUserControl
     }
 
     virtual protected MenuModel SetModel(BaseModel model) { throw new WarningException(); }
-    virtual protected Control ViewChange(int old, int index) { throw new WarningException(); }
+    virtual protected Control ViewChange(bool iswhell, int old, int index) { throw new WarningException(); }
 
     virtual public void OnKeyDown(object? sender, KeyEventArgs e) { }
     virtual public Bitmap GetIcon() { return App.GameIcon; }
@@ -103,16 +103,15 @@ public partial class MenuControl : UserControl, IUserControl
             App.SidePageSlide300.Start(DockPanel1, null, _cancel1.Token);
             StackPanel1.IsVisible = false;
         }
-        else if (e.PropertyName == "NowView")
-        {
-            var model = (DataContext as MenuModel)!;
-            Go(ViewChange(_now, model.NowView));
-
-            _now = model.NowView;
-        }
         else if (e.PropertyName == "WindowClose")
         {
             Window.Close();
+        }
+        else if (e.PropertyName == "NowView")
+        {
+            var model = (DataContext as MenuModel)!;
+            Go(ViewChange(model.IsWhell, _now, model.NowView));
+            _now = model.NowView;
         }
     }
 }

@@ -67,7 +67,7 @@ public partial class GameExportControl : MenuControl
         return new GameExportModel(model, _obj);
     }
 
-    protected override Control ViewChange(int old, int index)
+    protected override Control ViewChange(bool iswhell, int old, int index)
     {
         return index switch
         {

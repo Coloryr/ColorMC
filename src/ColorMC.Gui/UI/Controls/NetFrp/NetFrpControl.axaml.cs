@@ -51,7 +51,7 @@ public partial class NetFrpControl : MenuControl
         model.NowView = 3;
     }
 
-    protected override Control ViewChange(int old, int index)
+    protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as NetFrpModel)!;
         switch (index)

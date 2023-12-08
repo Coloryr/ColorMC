@@ -13,6 +13,11 @@ public partial class Tab1Control : UserControl
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
+    public void End()
+    {
+        ScrollViewer1.ScrollToEnd();
+    }
+
     public void Reset()
     {
         ScrollViewer1.ScrollToHome();
