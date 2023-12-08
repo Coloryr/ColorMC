@@ -110,6 +110,8 @@ public partial class MainModel : TopModel, IMainTop
         {
             Model.ShowText(App.Lang("Gui.Info35"), data);
         }
+
+        _isGetNewInfo = false;
     }
 
     [RelayCommand]

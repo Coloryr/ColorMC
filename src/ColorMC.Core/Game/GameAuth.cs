@@ -147,7 +147,7 @@ public static class GameAuth
             }
 
             profile = await MinecraftAPI.GetMinecraftProfileAsync(token!);
-            if (profile != null && !string.IsNullOrWhiteSpace(profile.id))
+            if (profile == null || string.IsNullOrWhiteSpace(profile.id))
             {
                 return (AuthState.Token, LoginState.Error, null,
                     LanguageHelper.Get("Core.Login.Error5"), null);
