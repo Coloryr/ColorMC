@@ -26,7 +26,7 @@
                     Command="{Binding OpenMod}"
                     Content="{setting:Localize Button.OpFile}"
                     DockPanel.Dock="Right"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text113}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
                     Width="100"
@@ -76,7 +76,7 @@
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Source}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text8}"
+                        Header="{setting:Localize Text.DownloadSource}"
                         IsReadOnly="True" />
                     <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}" />
                     <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}" />

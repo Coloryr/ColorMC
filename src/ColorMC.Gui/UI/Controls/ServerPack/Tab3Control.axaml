@@ -10,31 +10,35 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,5">
+    <DockPanel Name="ScrollViewer1" Margin="5,0,5,2">
         <Border
-            Margin="0,3,0,0"
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}"
-            DockPanel.Dock="Bottom">
+            DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal">
                 <Button
                     Width="100"
                     Height="25"
                     Command="{Binding SelectAllConfig}"
-                    Content="{setting:Localize ServerPackWindow.Tab2.Text2}" />
+                    Content="{setting:Localize ServerPackWindow.Tab2.Text2}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text117}"
+                    ToolTip.VerticalOffset="-30" />
                 <Button
                     Width="100"
                     Height="25"
                     Margin="5,0,0,0"
                     Command="{Binding UnSelectAllConfig}"
-                    Content="{setting:Localize ServerPackWindow.Tab2.Text3}" />
+                    Content="{setting:Localize ServerPackWindow.Tab2.Text3}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text118}"
+                    ToolTip.VerticalOffset="-30" />
             </StackPanel>
         </Border>
         <Border
-            Margin="0,3,0,0"
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"

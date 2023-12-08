@@ -70,7 +70,7 @@
             </dialog:DialogHost.DataTemplates>
             <Panel Margin="5">
                 <Panel>
-                    <Label VerticalAlignment="Bottom" Content="{setting:Localize Tips.Text2}" />
+                    <Label VerticalAlignment="Bottom" Content="{setting:Localize UserWindow.Text6}" />
                     <Border
                         Padding="{setting:Style BorderPadding}"
                         Background="{setting:Colors GroupBack}"

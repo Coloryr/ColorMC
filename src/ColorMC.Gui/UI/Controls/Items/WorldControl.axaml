@@ -116,11 +116,11 @@
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Name}"
-                                Header="{setting:Localize GameEditWindow.Control.Text8}"
+                                Header="{setting:Localize Text.Name}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding PackFormat}"
-                                Header="{setting:Localize GameEditWindow.Control.Text10}"
+                                Header="{setting:Localize Text.Version}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Description}"

@@ -121,7 +121,7 @@ public partial class GameItemModel : GameModel
         var time2 = Obj.LaunchData.LastTime;
         var time3 = Obj.LaunchData.LastPlay;
         var time4 = Obj.LaunchData.GameTime;
-        Tips = string.Format(App.Lang("Tips.Text1"),
+        Tips = string.Format(App.Lang("ToolTip.Text125"),
             time1.Ticks == 0 ? "" : time1.ToString(),
             time2.Ticks == 0 ? "" : time2.ToString(),
             time3.Ticks == 0 ? "" :

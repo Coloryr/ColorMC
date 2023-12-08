@@ -47,7 +47,9 @@
                     HorizontalAlignment="Right"
                     Command="{Binding Export}"
                     Content="{setting:Localize GameExportWindow.Tab1.Text2}"
-                    DockPanel.Dock="Bottom" />
+                    DockPanel.Dock="Bottom"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text112}"
+                    ToolTip.VerticalOffset="-30" />
                 <StackPanel>
                     <TextBox
                         Margin="0,5,5,0"
@@ -66,7 +68,7 @@
                         Classes="input1"
                         IsEnabled="{Binding CfEx}"
                         Text="{Binding Author}"
-                        Watermark="{setting:Localize GameExportWindow.Tab1.Text5}" />
+                        Watermark="{setting:Localize Text.Author}" />
                     <TextBox
                         Margin="0,5,0,5"
                         Classes="input1"

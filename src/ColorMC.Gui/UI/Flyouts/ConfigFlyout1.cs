@@ -81,11 +81,11 @@ public class ConfigFlyout1
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("ConfigEditWindow.Flyouts1.Text1"), add, () =>
+            (App.Lang("Button.Add"), add, () =>
             {
                 _model.AddItem(_item!);
             }),
-            (App.Lang("ConfigEditWindow.Flyouts1.Text2"), delete, () =>
+            (App.Lang("Button.Delete"), delete, () =>
             {
                 if (_item == null)
                 {

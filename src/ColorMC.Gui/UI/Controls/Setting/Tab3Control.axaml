@@ -42,7 +42,7 @@
                             <Label
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab3.Text1}" />
+                                Content="{setting:Localize Text.DownloadSource}" />
                             <ComboBox
                                 Width="120"
                                 Margin="5,0,0,0"
@@ -140,7 +140,7 @@
                             Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
                     </Grid>
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="25"
                         Margin="0,0,0,0"
                         HorizontalAlignment="Right"
@@ -197,13 +197,13 @@
                             OffContent="{setting:Localize SettingWindow.Tab3.Text15}"
                             OnContent="{setting:Localize SettingWindow.Tab3.Text15}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="5"
                             Command="{Binding StartCheck}"
                             Content="{setting:Localize SettingWindow.Tab3.Text16}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,5,5,5"
                             Command="{Binding StartUpdate}"
@@ -243,7 +243,7 @@
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="25"
                         HorizontalAlignment="Right"
                         Command="{Binding GameCloudConnect}"

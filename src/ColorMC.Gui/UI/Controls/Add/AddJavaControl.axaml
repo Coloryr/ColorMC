@@ -19,75 +19,68 @@
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}"
             DockPanel.Dock="Top">
-            <WrapPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddJavaWindow.Text1}" />
-                    <ComboBox
-                        Width="120"
-                        ItemsSource="{Binding JavaTypeList}"
-                        SelectedIndex="{Binding TypeIndex}"
-                        SelectedItem="{Binding JavaType}" />
-                </StackPanel>
+            <StackPanel>
+                <WrapPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize Text.DownloadSource}" />
+                        <ComboBox
+                            Width="120"
+                            ItemsSource="{Binding JavaTypeList}"
+                            SelectedIndex="{Binding TypeIndex}"
+                            SelectedItem="{Binding JavaType}" />
+                    </StackPanel>
 
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddJavaWindow.Text2}" />
-                    <ComboBox
-                        Width="120"
-                        ItemsSource="{Binding SystemList}"
-                        SelectedItem="{Binding System}" />
-                </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddJavaWindow.Text2}" />
+                        <ComboBox
+                            Width="100"
+                            ItemsSource="{Binding SystemList}"
+                            SelectedItem="{Binding System}" />
+                    </StackPanel>
 
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddJavaWindow.Text3}" />
-                    <ComboBox
-                        Width="70"
-                        ItemsSource="{Binding VersionList}"
-                        SelectedItem="{Binding Version}" />
-                </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize Text.Version}" />
+                        <ComboBox
+                            Width="70"
+                            ItemsSource="{Binding VersionList}"
+                            SelectedItem="{Binding Version}" />
+                    </StackPanel>
 
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddJavaWindow.Text4}" />
-                    <ComboBox
+                    <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                        <Label
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddJavaWindow.Text4}" />
+                        <ComboBox
+                            Width="100"
+                            ItemsSource="{Binding ArchList}"
+                            SelectedIndex="{Binding ArchIndex}"
+                            SelectedItem="{Binding Arch}" />
+                    </StackPanel>
+
+                    <Button
                         Width="100"
-                        ItemsSource="{Binding ArchList}"
-                        SelectedIndex="{Binding ArchIndex}"
-                        SelectedItem="{Binding Arch}" />
-                </StackPanel>
-
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding Load}"
-                    Content="{setting:Localize Button.Refash}" />
-            </WrapPanel>
-        </Border>
-
-        <Border
-            Margin="0,3,0,0"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
-            DockPanel.Dock="Bottom">
-            <Label
-                Margin="2,0,0,0"
-                VerticalAlignment="Bottom"
-                Content="{setting:Localize AddJavaWindow.Text5}" />
+                        Height="25"
+                        VerticalAlignment="Center"
+                        Command="{Binding Load}"
+                        Content="{setting:Localize Button.Refash}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text90}"
+                        ToolTip.VerticalOffset="-30" />
+                </WrapPanel>
+                <Label
+                    Margin="2,0,0,0"
+                    VerticalAlignment="Bottom"
+                    Content="{setting:Localize AddJavaWindow.Text5}" />
+            </StackPanel>
         </Border>
         <Border
             Margin="0,3,0,0"
@@ -121,11 +114,11 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Version}"
-                            Header="{setting:Localize AddJavaWindow.DataGrid.Text5}"
+                            Header="{setting:Localize Text.Version}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Size}"
-                            Header="{setting:Localize AddJavaWindow.DataGrid.Text6}"
+                            Header="{setting:Localize Text.Size}"
                             IsReadOnly="True" />
                     </DataGrid.Columns>
                 </DataGrid>

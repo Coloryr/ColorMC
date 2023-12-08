@@ -1,5 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Main;
 using System;
 using System.ComponentModel;
@@ -11,6 +13,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 public partial class Live2dControl : UserControl
 {
     private readonly FpsTimer _renderTimer;
+    private readonly Live2dRender render;
 
     private CancellationTokenSource _cancel = new();
 
@@ -18,13 +21,19 @@ public partial class Live2dControl : UserControl
     {
         InitializeComponent();
 
-        DataContextChanged += Live2dControl_DataContextChanged;
+        if (SystemInfo.Os == OsType.Android)
+        {
+            return;
+        }
 
-        _renderTimer = new(Live2d)
+        render = new();
+
+        _renderTimer = new(render)
         {
             FpsTick = FpsTick
         };
 
+        DataContextChanged += Live2dControl_DataContextChanged;
         App.OnClose += App_OnClose;
     }
 
@@ -66,12 +75,12 @@ public partial class Live2dControl : UserControl
         }
         else if (e.PropertyName == "ModelChangeDone")
         {
-            if (Live2d.HaveModel)
+            if (render.HaveModel)
             {
                 IsVisible = true;
                 _renderTimer.Pause = false;
             }
-            else if (!Live2d.HaveModel)
+            else if (!render.HaveModel)
             {
                 IsVisible = false;
                 _renderTimer.Pause = true;
@@ -84,7 +93,7 @@ public partial class Live2dControl : UserControl
             {
                 _renderTimer.Pause = true;
             }
-            else if (Live2d.HaveModel)
+            else if (render.HaveModel)
             {
                 _renderTimer.Pause = false;
             }
@@ -93,7 +102,7 @@ public partial class Live2dControl : UserControl
 
     private async void ShowMessage()
     {
-        if (!Live2d.HaveModel)
+        if (!render.HaveModel)
         {
             return;
         }

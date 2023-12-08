@@ -17,8 +17,8 @@ public static class LanguageBinding
         [
             App.Lang("Text.Name"),
             App.Lang("Text.FileName"),
-            App.Lang("BaseBinding.Filter.Item3"),
-            App.Lang("BaseBinding.Filter.Item4")
+            App.Lang("Text.Author"),
+            App.Lang("ModFilter.Item4")
         ];
     }
 
@@ -26,11 +26,11 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("BaseBinding.Export.Item1"),
-            App.Lang("BaseBinding.Export.Item2"),
-            App.Lang("BaseBinding.Export.Item3"),
-            //App.GetLanguage("BaseBinding.Export.Item4"),
-            //App.GetLanguage("BaseBinding.Export.Item5")
+            App.Lang("ExportPack.Item1"),
+            App.Lang("ExportPack.Item2"),
+            App.Lang("ExportPack.Item3"),
+            //App.GetLanguage("ExportPack.Item4"),
+            //App.GetLanguage("ExportPack.Item5")
         ];
     }
 
@@ -51,9 +51,9 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("BaseBinding.SkinRotate.Item1"),
-            App.Lang("BaseBinding.SkinRotate.Item2"),
-            App.Lang("BaseBinding.SkinRotate.Item3")
+            App.Lang("SkinRotate.Item1"),
+            App.Lang("SkinRotate.Item2"),
+            App.Lang("SkinRotate.Item3")
         ];
     }
 
@@ -127,8 +127,8 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("GameBinding.SortOrder.Item1"),
-            App.Lang("GameBinding.SortOrder.Item2")
+            App.Lang("SortOrder.Item1"),
+            App.Lang("SortOrder.Item2")
         ];
     }
 

@@ -22,18 +22,22 @@
                 <Label Content="{setting:Localize SettingWindow.Tab1.Text4}" />
                 <DockPanel>
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="25"
                         Command="{Binding Import1}"
                         Content="{setting:Localize Button.Input}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="25"
                         Margin="5,0,5,0"
                         Command="{Binding Open1}"
                         Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                        ToolTip.VerticalOffset="-30" />
                     <TextBox
                         Margin="0,0,0,5"
                         Classes="input1"
@@ -43,18 +47,22 @@
                 <Label Content="{setting:Localize SettingWindow.Tab1.Text6}" />
                 <DockPanel>
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="25"
                         Command="{Binding Import2}"
                         Content="{setting:Localize Button.Input}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="25"
                         Margin="5,0,5,0"
                         Command="{Binding Open2}"
                         Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                        ToolTip.VerticalOffset="-30" />
                     <TextBox
                         Margin="0,0,0,5"
                         Classes="input1"
@@ -65,18 +73,22 @@
                 <Label Content="{setting:Localize SettingWindow.Tab1.Text8}" />
                 <DockPanel>
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="25"
                         Command="{Binding Import3}"
                         Content="{setting:Localize Button.Input}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="25"
                         Margin="5,0,5,0"
                         Command="{Binding Open3}"
                         Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                        ToolTip.VerticalOffset="-30" />
                     <TextBox
                         Margin="0,0,0,5"
                         Classes="input1"
@@ -86,18 +98,22 @@
                 <Label Content="{setting:Localize SettingWindow.Tab1.Text10}" />
                 <DockPanel>
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="25"
                         Command="{Binding Import3}"
                         Content="{setting:Localize Button.Input}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="25"
                         Margin="5,0,5,0"
                         Command="{Binding Open4}"
                         Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                        ToolTip.VerticalOffset="-30" />
                     <TextBox
                         Margin="0,0,0,5"
                         Classes="input1"
@@ -124,13 +140,17 @@
                     Height="25"
                     Margin="0,0,5,0"
                     Command="{Binding Reset}"
-                    Content="{setting:Localize SettingWindow.Tab1.Text1}" />
+                    Content="{setting:Localize SettingWindow.Tab1.Text1}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text122}"
+                    ToolTip.VerticalOffset="-30" />
                 <Button
                     Width="120"
                     Height="25"
                     Margin="0,0,5,0"
                     Command="{Binding ClearUser}"
-                    Content="{setting:Localize SettingWindow.Tab1.Text2}" />
+                    Content="{setting:Localize SettingWindow.Tab1.Text2}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text123}"
+                    ToolTip.VerticalOffset="-30" />
             </WrapPanel>
         </Border>
         <Border
@@ -151,8 +171,7 @@
                     Height="25"
                     Margin="0,0,5,0"
                     Command="{Binding Open}"
-                    Content="{setting:Localize SettingWindow.Tab1.Text3}"
-                    IsEnabled="{Binding !Phone}" />
+                    Content="{setting:Localize SettingWindow.Tab1.Text3}" />
                 <Button
                     Width="120"
                     Height="25"
@@ -170,9 +189,7 @@
                     Height="25"
                     Margin="0,0,5,0"
                     Command="{Binding OpenJavaPath}"
-                    Content="{setting:Localize SettingWindow.Tab5.Text6}"
-                    DockPanel.Dock="Left"
-                    IsEnabled="{Binding !Phone}" />
+                    Content="{setting:Localize SettingWindow.Tab5.Text6}" />
             </WrapPanel>
         </Border>
     </StackPanel>

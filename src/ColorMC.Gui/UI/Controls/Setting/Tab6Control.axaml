@@ -166,7 +166,7 @@
                         OnContent="{setting:Localize SettingWindow.Tab6.Text30}" />
                     <DockPanel Margin="0,5,0,5">
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="5,0,0,0"
                             Command="{Binding SelectUI}"
@@ -179,7 +179,7 @@
                     </DockPanel>
                     <WrapPanel HorizontalAlignment="Right">
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding Save}"
@@ -187,7 +187,7 @@
                             DockPanel.Dock="Right" />
 
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding Delete}"
@@ -195,7 +195,7 @@
                             DockPanel.Dock="Right"
                             IsEnabled="{Binding FileUI, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Command="{Binding Test}"
                             Content="{setting:Localize SettingWindow.Tab6.Text11}"
@@ -244,7 +244,7 @@
                     </StackPanel>
                     <DockPanel>
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="5,0,0,0"
                             Command="{Binding SelectMusic}"
@@ -285,28 +285,28 @@
                                 Content="{Binding Volume, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding MusicStart}"
                             Content="{setting:Localize SettingWindow.Tab6.Text19}"
                             IsEnabled="{Binding EnableMusic}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding MusicPause}"
                             Content="{setting:Localize SettingWindow.Tab6.Text21}"
                             IsEnabled="{Binding EnableMusic}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding MusicPlay}"
                             Content="{setting:Localize SettingWindow.Tab6.Text23}"
                             IsEnabled="{Binding EnableMusic}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Command="{Binding MusicStop}"
                             Content="{setting:Localize SettingWindow.Tab6.Text20}"

@@ -299,7 +299,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.Lang("JavaBinding.Error1"), e);
+            App.ShowError(App.Lang("Gui.Error46"), e);
             return (false, null, null, null, null);
         }
     }
@@ -358,7 +358,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.Lang("JavaBinding.Error1"), e);
+            App.ShowError(App.Lang("Gui.Error46"), e);
             return (false, null, null);
         }
     }
@@ -575,7 +575,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.Lang("JavaBinding.Error1"), e);
+            App.ShowError(App.Lang("Gui.Error46"), e);
             return null;
         }
     }
@@ -632,7 +632,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.Lang("JavaBinding.Error1"), e);
+            App.ShowError(App.Lang("Gui.Error46"), e);
             return (false, null, null, null, null);
         }
     }

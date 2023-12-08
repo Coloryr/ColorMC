@@ -44,7 +44,7 @@ public class FilesPageModel
                     x => x.HasChildren,
                     x => x.IsExpanded),
                 new TextColumn<FileTreeNodeModel, long?>(
-                    App.Lang("GameExportWindow.Info4"),
+                    App.Lang("Text.Size"),
                     x => x.Size,
                     options: new TextColumnOptions<FileTreeNodeModel>
                     {

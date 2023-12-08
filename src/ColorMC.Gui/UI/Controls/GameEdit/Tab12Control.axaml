@@ -25,14 +25,15 @@
                     <Button
                         Width="100"
                         Height="25"
-                        Command="{Binding OpenSchematic}"
-                        Content="{setting:Localize Button.OpFile}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                        Margin="0,0,5,0"
+                        Command="{Binding LoadSchematic}"
+                        Content="{setting:Localize Button.Refash}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text64}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         Command="{Binding AddSchematic}"
                         Content="{setting:Localize Button.Input}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text63}"
@@ -40,10 +41,10 @@
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="5,0,0,0"
-                        Command="{Binding LoadSchematic}"
-                        Content="{setting:Localize Button.Refash}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text64}"
+                        Command="{Binding OpenSchematic}"
+                        Content="{setting:Localize Button.OpFile}"
+                        IsEnabled="{Binding !Phone}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                         ToolTip.VerticalOffset="-30" />
                 </StackPanel>
             </Border>
@@ -68,7 +69,7 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Author}"
-                            Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text2}"
+                            Header="{setting:Localize Text.Author}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Description}"

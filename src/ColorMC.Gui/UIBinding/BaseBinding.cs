@@ -261,7 +261,7 @@ public static class BaseBinding
 
         if (Games.ContainsValue(obj.UUID))
         {
-            return (false, App.Lang("GameBinding.Error4"));
+            return (false, App.Lang("Gui.Error42"));
         }
         //设置自动加入服务器
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&

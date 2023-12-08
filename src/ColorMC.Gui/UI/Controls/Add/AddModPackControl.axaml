@@ -28,7 +28,7 @@
                             <Label
                                 Margin="5"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize AddModPackWindow.Text11}" />
+                                Content="{setting:Localize Text.DownloadSource}" />
                             <ComboBox
                                 Width="120"
                                 Height="30"
@@ -51,7 +51,7 @@
                                 ItemsSource="{Binding CategorieList}"
                                 SelectedIndex="{Binding Categorie}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
                             <Label
                                 Width="80"
                                 Margin="5"
@@ -67,10 +67,11 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="30"
-                            Margin="10,0,0,0"
+                            Height="25"
                             Command="{Binding Reload}"
-                            Content="{setting:Localize AddModPackWindow.Text8}" />
+                            Content="{setting:Localize AddModPackWindow.Text8}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text75}"
+                            ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
                     <WrapPanel>
                         <TextBox
@@ -96,7 +97,7 @@
                                 ItemsSource="{Binding SortTypeList}"
                                 SelectedIndex="{Binding SortType}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
                             <Label
                                 Width="80"
                                 Margin="5"
@@ -112,11 +113,12 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="30"
-                            Margin="10,0,0,0"
+                            Height="25"
                             Command="{Binding Select}"
                             Content="{setting:Localize AddModPackWindow.Text9}"
-                            IsEnabled="{Binding IsSelect}" />
+                            IsEnabled="{Binding IsSelect}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text76}"
+                            ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
                 </StackPanel>
             </Border>
@@ -172,7 +174,7 @@
                         <Label
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddModPackWindow.Text7}" />
+                            Content="{setting:Localize AddModPackWindow.Text5}" />
                         <NumericUpDown
                             Width="120"
                             Height="30"
@@ -181,7 +183,7 @@
                             Minimum="0"
                             Value="{Binding Page1}" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
                         <Label
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
@@ -195,17 +197,20 @@
 
                     <Button
                         Width="100"
-                        Height="30"
-                        Margin="5,0,0,0"
+                        Height="25"
+                        Margin="0,0,5,0"
                         Command="{Binding Search}"
-                        Content="{setting:Localize AddModPackWindow.Text10}" />
+                        Content="{setting:Localize AddModPackWindow.Text10}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text77}"
+                        ToolTip.VerticalOffset="-30" />
 
                     <Button
                         Width="100"
-                        Height="30"
-                        Margin="5,0,0,0"
+                        Height="25"
                         Command="{Binding Download}"
-                        Content="{setting:Localize AddModPackWindow.Text12}" />
+                        Content="{setting:Localize AddModPackWindow.Text12}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text91}"
+                        ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
             <Border
@@ -228,7 +233,7 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Size}"
-                            Header="{setting:Localize AddModPackWindow.DataGrid.Text2}"
+                            Header="{setting:Localize Text.Size}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Download}"

@@ -11,18 +11,16 @@
     d:DesignWidth="800"
     x:DataType="model:ErrorModel"
     mc:Ignorable="d">
-    <Panel>
-        <ae:TextEditor
-            Margin="3"
-            Background="{setting:Colors TranBack}"
-            Document="{Binding Text}"
-            FontSize="14"
-            FontWeight="Normal"
-            Foreground="{setting:Colors Font}"
-            HorizontalScrollBarVisibility="Auto"
-            IsReadOnly="True"
-            ShowLineNumbers="True"
-            VerticalScrollBarVisibility="Visible"
-            WordWrap="True" />
-    </Panel>
+    <ae:TextEditor
+        Margin="3"
+        Background="{setting:Colors TranBack}"
+        Document="{Binding Text}"
+        FontSize="14"
+        FontWeight="Normal"
+        Foreground="{setting:Colors Font}"
+        HorizontalScrollBarVisibility="Auto"
+        IsReadOnly="True"
+        ShowLineNumbers="True"
+        VerticalScrollBarVisibility="Visible"
+        WordWrap="True" />
 </UserControl>

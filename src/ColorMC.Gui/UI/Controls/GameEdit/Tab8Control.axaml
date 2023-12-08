@@ -28,26 +28,33 @@
                         Height="25"
                         Margin="0,0,5,0"
                         Command="{Binding ImportResource}"
-                        Content="{setting:Localize Button.Input}" />
+                        Content="{setting:Localize Button.Input}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text105}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
                         Height="25"
                         Margin="0,0,5,0"
                         Command="{Binding AddResource}"
-                        Content="{setting:Localize Button.NetDownload}" />
+                        Content="{setting:Localize Button.NetDownload}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text106}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
                         Height="25"
                         Margin="0,0,5,0"
                         Command="{Binding LoadResource}"
-                        Content="{setting:Localize Button.Refash}" />
+                        Content="{setting:Localize Button.Refash}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text107}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
                         Height="25"
                         HorizontalAlignment="Right"
                         Command="{Binding OpenResource}"
                         Content="{setting:Localize Button.OpFile}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                        IsEnabled="{Binding !Phone}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text108}"
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>

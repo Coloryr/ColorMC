@@ -11,27 +11,25 @@
     d:DesignWidth="800"
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,2">
-        <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
-            <ScrollViewer IsEnabled="{Binding Enable}" VerticalScrollBarVisibility="Visible">
-                <ItemsControl
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    ItemsSource="{Binding WorldCloudList}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <item:WorldCloudControl DataContext="{Binding}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </Border>
-    </DockPanel>
-
+    <Border
+        Name="ScrollViewer1"
+        Margin="5,0,5,5"
+        Padding="{setting:Style BorderPadding}"
+        Background="{setting:Colors GroupBack}"
+        BorderBrush="{setting:Colors GroupColor}"
+        BorderThickness="2"
+        CornerRadius="{setting:Style ButtonCornerRadius}">
+        <ScrollViewer IsEnabled="{Binding Enable}" VerticalScrollBarVisibility="Visible">
+            <ItemsControl
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                ItemsSource="{Binding WorldCloudList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <item:WorldCloudControl DataContext="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Border>
 </UserControl>

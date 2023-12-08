@@ -265,6 +265,12 @@
       <Compile Update="UI\Controls\Add\AddGameTab3Control.axaml.cs">
         <DependentUpon>AddGameTab3Control.axaml</DependentUpon>
       </Compile>
+      <Compile Update="UI\Controls\Main\MainGroupControl.axaml.cs">
+        <DependentUpon>MainGroupControl.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="UI\Controls\Main\MainStartControl.axaml.cs">
+        <DependentUpon>MainStartControl.axaml</DependentUpon>
+      </Compile>
       <Compile Update="UI\Controls\NetFrp\NetFrpTab4Control.axaml.cs">
         <DependentUpon>NetFrpTab4Control.axaml</DependentUpon>
       </Compile>

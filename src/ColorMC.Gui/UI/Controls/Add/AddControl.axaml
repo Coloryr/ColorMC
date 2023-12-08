@@ -108,9 +108,9 @@
                                 SelectedIndex="{Binding Categorie}" />
                         </StackPanel>
                         <TextBox
-                            Width="180"
+                            Width="150"
                             Height="30"
-                            Margin="5,0,5,0"
+                            Margin="5,0,5,5"
                             Classes="input1"
                             Text="{Binding Name}"
                             Watermark="{setting:Localize Text.Name}">
@@ -120,17 +120,21 @@
                         </TextBox>
                         <StackPanel Orientation="Horizontal">
                             <Button
-                                Width="80"
-                                Height="30"
-                                Margin="5,0,5,0"
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,0"
                                 Command="{Binding GetList}"
-                                Content="{setting:Localize AddModPackWindow.Text8}" />
+                                Content="{setting:Localize AddModPackWindow.Text8}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text75}"
+                                ToolTip.VerticalOffset="-30" />
                             <Button
-                                Width="80"
-                                Height="30"
+                                Width="100"
+                                Height="25"
                                 Command="{Binding GoInstall}"
                                 Content="{setting:Localize AddModPackWindow.Text9}"
-                                IsEnabled="{Binding IsSelect}" />
+                                IsEnabled="{Binding IsSelect}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text76}"
+                                ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
@@ -186,7 +190,7 @@
                     <Label
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
-                        Content="{setting:Localize AddModPackWindow.Text7}" />
+                        Content="{setting:Localize AddModPackWindow.Text5}" />
                     <NumericUpDown
                         Width="120"
                         Height="30"
@@ -206,20 +210,24 @@
                         SelectedItem="{Binding GameVersionDownload}" />
                     <Button
                         Width="100"
-                        Height="30"
+                        Height="25"
                         Margin="5,0,0,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Command="{Binding Refresh1}"
-                        Content="{setting:Localize AddModPackWindow.Text10}" />
+                        Content="{setting:Localize AddModPackWindow.Text10}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text77}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="30"
+                        Height="25"
                         Margin="5,0,0,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Command="{Binding GoFile}"
-                        Content="{setting:Localize AddModPackWindow.Text12}" />
+                        Content="{setting:Localize AddModPackWindow.Text12}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text78}"
+                        ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
             <Border
@@ -242,11 +250,11 @@
                             IsReadOnly="True" />
                         <DataGridCheckBoxColumn
                             Binding="{Binding IsDownload}"
-                            Header="{setting:Localize AddModPackWindow.DataGrid.Text5}"
+                            Header="{setting:Localize Text.Downloaded}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Size}"
-                            Header="{setting:Localize AddModPackWindow.DataGrid.Text2}"
+                            Header="{setting:Localize Text.Size}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Download}"
@@ -285,23 +293,27 @@
                         Content="{setting:Localize Text.GameVersion}" />
                     <ComboBox
                         Width="140"
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         ItemsSource="{Binding GameVersionList}"
                         SelectedItem="{Binding GameVersionOptifine}" />
 
                     <Button
                         Width="100"
-                        Height="30"
-                        Margin="5,0,0,0"
+                        Height="25"
+                        Margin="0,0,5,0"
                         Command="{Binding LoadOptifineList}"
-                        Content="{setting:Localize AddModPackWindow.Text10}" />
+                        Content="{setting:Localize AddModPackWindow.Text10}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text77}"
+                        ToolTip.VerticalOffset="-30" />
 
                     <Button
                         Width="100"
-                        Height="30"
-                        Margin="5,0,0,0"
+                        Height="25"
                         Command="{Binding DownloadOptifine}"
-                        Content="{setting:Localize AddModPackWindow.Text12}" />
+                        Content="{setting:Localize AddModPackWindow.Text12}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text78}"
+                        ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
             <Border
@@ -356,24 +368,26 @@
                         Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddWindow.Text7}" />
-
                     <CheckBox
+                        Margin="0,0,5,0"
                         Command="{Binding ModsLoad}"
                         Content="{setting:Localize AddWindow.Text9}"
                         IsChecked="{Binding LoadMoreMod}" />
-
                     <Button
                         Width="100"
-                        Height="30"
-                        Margin="5,0,0,0"
+                        Height="25"
+                        Margin="0,0,5,0"
                         Command="{Binding DownloadAllMod}"
-                        Content="{setting:Localize AddWindow.Text6}" />
+                        Content="{setting:Localize AddWindow.Text6}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text79}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="30"
-                        Margin="5,0,0,0"
+                        Height="25"
                         Command="{Binding DownloadMod}"
-                        Content="{setting:Localize AddModPackWindow.Text12}" />
+                        Content="{setting:Localize AddModPackWindow.Text12}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text80}"
+                        ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
             <Border
