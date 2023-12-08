@@ -11,9 +11,9 @@
     d:DesignWidth="800"
     x:DataType="model:NetFrpModel"
     mc:Ignorable="d">
-    <StackPanel Name="ScrollViewer1" Margin="5,0,5,5">
+    <StackPanel Name="ScrollViewer1" Margin="5,0,5,2">
         <Border
-            Margin="0,3,0,0"
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
@@ -30,7 +30,7 @@
                 </StackPanel>
             </DockPanel>
         </Border>
-        <ScrollViewer Margin="0,3,0,0">
+        <ScrollViewer Margin="0,0,0,3">
             <ItemsControl ItemsSource="{Binding CloudServers}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
