@@ -5,6 +5,7 @@ using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Avalonia.Rendering;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Main;
@@ -43,6 +44,10 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     public Live2dRender()
     {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            return;
+        }
         DataContextChanged += Live2dRender_DataContextChanged;
 
         PointerPressed += Live2dTop_PointerPressed;
@@ -166,6 +171,11 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     protected override unsafe void OnOpenGlInit(GlInterface gl)
     {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            return;
+        }
+
         if (_first)
             return;
         _first = true;
@@ -189,6 +199,11 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     protected override void OnOpenGlDeinit(GlInterface GL)
     {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            return;
+        }
+
         _lapp?.Dispose();
         _lapp = null!;
         _init = false;
@@ -197,6 +212,11 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     protected override void OnOpenGlRender(GlInterface gl, int fb)
     {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            return;
+        }
+
         if (!_init)
             return;
         var model = (DataContext as MainModel)!;

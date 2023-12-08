@@ -836,7 +836,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
         else
         {
-            Model.Notify(App.Lang("AddWindow.Info12"));
+            Model.Notify(App.Lang("Text.Downloaded"));
             OptifineDisplay = false;
         }
     }
@@ -1035,7 +1035,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
         if (res)
         {
-            Model.Notify(App.Lang("AddWindow.Info6"));
+            Model.Notify(App.Lang("Text.Downloaded"));
             if (last != null)
             {
                 last.NowDownload = false;

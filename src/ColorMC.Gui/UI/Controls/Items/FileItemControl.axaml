@@ -131,7 +131,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Background="{setting:Colors Bottom1}"
-            Content="{setting:Localize AddWindow.Control.Text2}"
+            Content="{setting:Localize Text.Downloaded}"
             Foreground="{setting:Colors Font}"
             IsVisible="{Binding IsDownload}" />
     </Panel>

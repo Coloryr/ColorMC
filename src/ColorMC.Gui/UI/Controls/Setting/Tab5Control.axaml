@@ -130,7 +130,7 @@
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Version}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text4}"
+                        Header="{setting:Localize Text.Version}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Type}"

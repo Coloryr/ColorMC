@@ -31,11 +31,13 @@
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="5,0,0,0"
                             Command="{Binding SelectLocal}"
                             Content="{setting:Localize AddGameWindow.Tab3.Text2}"
-                            DockPanel.Dock="Right" />
+                            DockPanel.Dock="Right"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text87}"
+                            ToolTip.VerticalOffset="-30" />
                         <TextBox
+                            Margin="0,0,5,0"
                             Classes="input1"
                             Text="{Binding SelectPath}"
                             Watermark="{setting:Localize AddGameWindow.Tab3.Text1}" />
@@ -65,20 +67,26 @@
                             Height="25"
                             Margin="5,2,0,2"
                             Command="{Binding AddGroup}"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
+                            Content="{setting:Localize AddGameWindow.Tab1.Text9}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text84}"
+                            ToolTip.VerticalOffset="-30" />
                         <Button
                             Width="100"
                             Height="25"
                             Margin="5,2,0,2"
                             Command="{Binding RefashFiles}"
-                            Content="{setting:Localize Button.Refash}" />
+                            Content="{setting:Localize Button.Refash}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text88}"
+                            ToolTip.VerticalOffset="-30" />
                         <Button
                             Width="100"
                             Height="25"
                             Margin="5,2,0,2"
                             Command="{Binding AddFiles}"
                             Content="{setting:Localize Button.Input}"
-                            IsEnabled="{Binding CanInput}" />
+                            IsEnabled="{Binding CanInput}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text89}"
+                            ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
                 </StackPanel>
             </Border>

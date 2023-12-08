@@ -10,9 +10,9 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,5">
+    <DockPanel Name="ScrollViewer1" Margin="5,0,5,2">
         <Border
-            Margin="0,3,0,0"
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
@@ -30,8 +30,9 @@
                         Height="25"
                         Command="{Binding AddFile}"
                         Content="{setting:Localize Button.Add}"
-                        DockPanel.Dock="Right" />
-
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text119}"
+                        ToolTip.VerticalOffset="-30" />
                     <ComboBox
                         Width="140"
                         Margin="0,0,5,0"
@@ -53,7 +54,7 @@
             </StackPanel>
         </Border>
         <Border
-            Margin="0,3,0,0"
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"

@@ -24,22 +24,29 @@
                 <StackPanel>
                     <DockPanel>
                         <Label
+                            Grid.Column="0"
                             Margin="0,0,5,0"
                             VerticalAlignment="Center"
                             Content="{setting:Localize ConfigEditWindow.Text13}" />
-                        <ComboBox
-                            Width="200"
-                            Margin="0,0,5,0"
-                            ItemsSource="{Binding FileList}"
-                            SelectedIndex="{Binding Select}"
-                            SelectedItem="{Binding File}" />
-                        <TextBox
-                            VerticalAlignment="Center"
-                            Classes="input1"
-                            Text="{Binding Name}"
-                            Watermark="{setting:Localize ConfigEditWindow.Text1}" />
+                        <Grid ColumnDefinitions="0.5*,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="0,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                ItemsSource="{Binding FileList}"
+                                SelectedIndex="{Binding Select}"
+                                SelectedItem="{Binding File}" />
+                            <TextBox
+                                Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Classes="input1"
+                                Text="{Binding Name}"
+                                Watermark="{setting:Localize ConfigEditWindow.Text1}" />
+                        </Grid>
                     </DockPanel>
-                    <WrapPanel Margin="0,3,0,0">
+                    <WrapPanel Margin="0,5,0,0">
                         <Button
                             Width="100"
                             Height="25"
@@ -74,14 +81,18 @@
                             VerticalAlignment="Center"
                             Command="{Binding FindBlock}"
                             Content="{setting:Localize ConfigEditWindow.Text5}"
-                            IsVisible="{Binding IsWorld}" />
+                            IsVisible="{Binding IsWorld}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text97}"
+                            ToolTip.VerticalOffset="-30" />
                         <Button
                             Width="100"
                             Height="25"
                             VerticalAlignment="Center"
                             Command="{Binding FindEntity}"
                             Content="{setting:Localize ConfigEditWindow.Text6}"
-                            IsVisible="{Binding IsWorld}" />
+                            IsVisible="{Binding IsWorld}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text98}"
+                            ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
                 </StackPanel>
             </Border>

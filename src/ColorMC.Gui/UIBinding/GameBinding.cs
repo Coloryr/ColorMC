@@ -308,8 +308,8 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("GameBinding.Error8"), e);
-            App.ShowError(App.Lang("GameBinding.Error8"), e);
+            Logs.Error(App.Lang("Gui.Error45"), e);
+            App.ShowError(App.Lang("Gui.Error45"), e);
         }
     }
 
@@ -343,8 +343,8 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("GameBinding.Error5"), e);
-            App.ShowError(App.Lang("GameBinding.Error5"), e);
+            Logs.Error(App.Lang("Gui.Error43"), e);
+            App.ShowError(App.Lang("Gui.Error43"), e);
         }
     }
 
@@ -353,7 +353,7 @@ public static class GameBinding
         var login = UserBinding.GetLastUser();
         if (login == null)
         {
-            return (null, App.Lang("GameBinding.Error2"));
+            return (null, App.Lang("Gui.Error40"));
         }
         if (login.AuthType == AuthType.Offline)
         {
@@ -361,15 +361,15 @@ public static class GameBinding
             if (!have)
             {
                 BaseBinding.OpUrl(UrlHelper.Minecraft);
-                return (null, App.Lang("GameBinding.Error7"));
+                return (null, App.Lang("Gui.Error44"));
             }
         }
 
         if (UserBinding.IsLock(login))
         {
-            var res = await model.ShowWait(App.Lang("GameBinding.Info1"));
+            var res = await model.ShowWait(App.Lang("Gui.Info36"));
             if (!res)
-                return (null, App.Lang("GameBinding.Error3"));
+                return (null, App.Lang("Gui.Error41"));
         }
 
         return (login, null);
@@ -379,12 +379,12 @@ public static class GameBinding
     {
         if (obj == null)
         {
-            return (false, App.Lang("GameBinding.Error1"));
+            return (false, App.Lang("Gui.Error39"));
         }
 
         if (BaseBinding.IsGameRun(obj))
         {
-            return (false, App.Lang("GameBinding.Error4"));
+            return (false, App.Lang("Gui.Error42"));
         }
 
         var user = await GetUser(model);

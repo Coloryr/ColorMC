@@ -34,7 +34,7 @@
                 <Label
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize MainWindow.Control.Text2}" />
+                    Content="{setting:Localize MainWindow.Text8}" />
             </StackPanel>
         </Button>
         <Panel IsVisible="{Binding !IsNew, FallbackValue=false}">

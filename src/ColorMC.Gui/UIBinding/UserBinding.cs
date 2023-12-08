@@ -104,7 +104,7 @@ public static class UserBinding
         if (string.IsNullOrWhiteSpace(Obj?.UUID))
         {
             BaseBinding.OpUrl("https://minecraft.net/");
-            return (false, App.Lang("UserBinding.Info3"));
+            return (false, App.Lang("Gui.Error47"));
         }
         AuthDatabase.Save(Obj!);
         return (true, null);

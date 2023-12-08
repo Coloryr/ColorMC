@@ -6,13 +6,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Main"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:MainModel"
     mc:Ignorable="d">
     <Panel>
-        <views1:Live2dRender Name="Live2d" />
+        <Decorator Name="Live2D" />
         <Label
             Name="Label1"
             VerticalAlignment="Bottom"

@@ -73,13 +73,19 @@ public static class ConfigUtils
         }
         else
         {
-            obj.JavaList ??= new();
+            obj.JavaList ??= [];
             obj.Http ??= MakeHttpConfig();
             obj.DefaultJvmArg ??= MakeJvmArgConfig();
             obj.Window ??= MakeWindowSettingConfig();
             obj.GameCheck ??= MakeGameCheckConfig();
 
             Config = obj;
+        }
+
+        if (Config.Version != ColorMCCore.Version)
+        {
+            ColorMCCore.NewStart = true;
+            Config.Version = ColorMCCore.Version;
         }
 
         LanguageHelper.Change(Config.Language);

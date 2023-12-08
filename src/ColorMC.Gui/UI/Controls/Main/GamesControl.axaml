@@ -59,7 +59,7 @@
                 <Label
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize MainWindow.Control.Text8}"
+                    Content="{setting:Localize MainWindow.Text11}"
                     FontSize="20" />
             </Panel>
         </Panel>

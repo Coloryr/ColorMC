@@ -491,9 +491,9 @@ public static class PathBinding
                 break;
             case FileType.Icon:
                 res = await SelectFile(top,
-                    App.Lang("GameBinding.Info2"),
+                    App.Lang("Gui.Info37"),
                     PICFILE,
-                    App.Lang("GameBinding.Info3"));
+                    App.Lang("Gui.Info38"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -501,9 +501,9 @@ public static class PathBinding
                 break;
             case FileType.Head:
                 res = await SelectFile(top,
-                    App.Lang("UserBinding.Info1"),
+                    App.Lang("Gui.Info39"),
                     HEADFILE,
-                    App.Lang("UserBinding.Info2"));
+                    App.Lang("Gui.Info40"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();

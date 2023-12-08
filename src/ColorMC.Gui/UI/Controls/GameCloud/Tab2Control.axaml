@@ -29,13 +29,17 @@
                         Width="100"
                         Height="25"
                         Command="{Binding UploadConfig}"
-                        Content="{setting:Localize GameCloudWindow.Tab2.Text1}" />
+                        Content="{setting:Localize GameCloudWindow.Tab2.Text1}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text95}"
+                        ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
                         Height="25"
                         Margin="5,0,0,0"
                         Command="{Binding DownloadConfig}"
-                        Content="{setting:Localize GameCloudWindow.Tab2.Text2}" />
+                        Content="{setting:Localize GameCloudWindow.Tab2.Text2}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text96}"
+                        ToolTip.VerticalOffset="-30" />
                 </StackPanel>
                 <TreeDataGrid Margin="3" Source="{Binding Source}">
                     <TreeDataGrid.Resources>

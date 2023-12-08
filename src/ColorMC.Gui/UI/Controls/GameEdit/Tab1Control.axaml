@@ -50,7 +50,7 @@
                             <Label
                                 Margin="0,0,5,0"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                                Content="{setting:Localize Text.Version}" />
                             <ComboBox
                                 Width="150"
                                 Margin="0,0,5,0"
@@ -63,7 +63,7 @@
                             Margin="0,2,0,2"
                             Command="{Binding GameVersionReload}"
                             Content="{setting:Localize GameEditWindow.Tab1.Text2}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text33}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text81}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
                     <WrapPanel Margin="0,0,0,5">
@@ -83,7 +83,9 @@
                             Height="25"
                             Margin="0,2,0,2"
                             Command="{Binding LangReload}"
-                            Content="{setting:Localize Button.Refash}" />
+                            Content="{setting:Localize Button.Refash}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text99}"
+                            ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -114,7 +116,7 @@
                             <Label
                                 Margin="0,0,5,0"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                                Content="{setting:Localize Text.Version}" />
                             <ComboBox
                                 Width="150"
                                 Margin="0,0,5,0"
@@ -129,7 +131,7 @@
                             Margin="0,2,0,2"
                             Command="{Binding LoaderReload}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text11}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text34}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text83}"
                             ToolTip.VerticalOffset="-30" />
                         <Button
                             Width="100"
@@ -137,7 +139,7 @@
                             Margin="5,2,0,2"
                             Command="{Binding LoaderVersionLoad}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text12}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text35}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text82}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -165,7 +167,7 @@
                             Margin="5,2,0,2"
                             Command="{Binding AddGroup}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text9}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text37}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text84}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
                 </StackPanel>

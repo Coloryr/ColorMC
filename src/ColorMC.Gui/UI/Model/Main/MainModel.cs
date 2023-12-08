@@ -10,6 +10,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DialogHostAvalonia;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -53,8 +54,6 @@ public partial class MainModel : TopModel, IMainTop
     private string _userType;
 
     [ObservableProperty]
-    private bool _groupEnable;
-    [ObservableProperty]
     private bool _isNotGame;
     [ObservableProperty]
     private bool _motdDisplay;
@@ -90,7 +89,7 @@ public partial class MainModel : TopModel, IMainTop
     {
         App.SkinLoad += App_SkinLoad;
 
-        App.UserEdit += Load1;
+        App.UserEdit += LoadUser;
     }
 
     [RelayCommand]
@@ -257,7 +256,7 @@ public partial class MainModel : TopModel, IMainTop
         }
         else
         {
-            Model.Show(App.Lang("MainWindow.Info39"));
+            Model.Show(App.Lang("MainWindow.Error6"));
         }
     }
 
@@ -273,7 +272,7 @@ public partial class MainModel : TopModel, IMainTop
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
 
-        GroupEnable = true;
+        DialogHost.Show(this, "MainCon");
 
         GroupItem = obj.Obj.GroupName;
 
@@ -287,7 +286,8 @@ public partial class MainModel : TopModel, IMainTop
     public async void EditGroup(GameItemModel obj)
     {
         await Set(obj);
-        GroupEnable = false;
+        DialogHost.Close("MainCon");
+
         if (_isCancel)
         {
             return;
@@ -296,7 +296,7 @@ public partial class MainModel : TopModel, IMainTop
         GameBinding.MoveGameGroup(obj.Obj, GroupItem);
     }
 
-    public void MotdLoad()
+    public void LoadMotd()
     {
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2 != null && config.Item2.ServerCustom?.Motd == true &&
@@ -325,7 +325,7 @@ public partial class MainModel : TopModel, IMainTop
         }
     }
 
-    public async void Load1()
+    public async void LoadUser()
     {
         IsHeadLoad = true;
 
@@ -348,15 +348,15 @@ public partial class MainModel : TopModel, IMainTop
     public void IsDelete()
     {
         Game = null;
-        Load();
+        LoadGameItem();
     }
 
     public async void LoadDone()
     {
-        Load();
-        Load1();
+        LoadGameItem();
+        LoadUser();
 
-        MotdLoad();
+        LoadMotd();
 
         BaseBinding.LoadMusic();
 
@@ -374,7 +374,7 @@ public partial class MainModel : TopModel, IMainTop
         }
     }
 
-    public void Load()
+    public void LoadGameItem()
     {
         IsNotGame = GameBinding.IsNotGame;
 
@@ -483,6 +483,8 @@ public partial class MainModel : TopModel, IMainTop
                 Select(last);
             }
         }
+
+        OnPropertyChanged("SwitchView");
     }
 
     public void GameClose(string uuid)

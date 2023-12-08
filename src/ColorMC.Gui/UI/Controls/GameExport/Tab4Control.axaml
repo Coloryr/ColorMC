@@ -29,7 +29,9 @@
                     VerticalAlignment="Center"
                     Command="{Binding AddFile}"
                     Content="{setting:Localize Button.Add}"
-                    DockPanel.Dock="Right" />
+                    DockPanel.Dock="Right"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text114}"
+                    ToolTip.VerticalOffset="-30" />
                 <ComboBox
                     HorizontalAlignment="Stretch"
                     ItemsSource="{Binding FileList}"
@@ -58,7 +60,7 @@
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding FileSize}"
-                        Header="{setting:Localize GameExportWindow.Tab4.Text3}"
+                        Header="{setting:Localize Text.Size}"
                         IsReadOnly="True" />
                     <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize GameExportWindow.Tab4.Text2}" />
                     <DataGridTextColumn

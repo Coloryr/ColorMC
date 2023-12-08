@@ -2,22 +2,26 @@ using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
-public partial class StartControl : UserControl
+public partial class MainStartControl : UserControl
 {
     public Easing SlideEasing = new CircularEaseInOut();
 
-    public StartControl()
+    public MainStartControl()
     {
         InitializeComponent();
+
+        Background = App.NowTheme == PlatformThemeVariant.Light 
+            ? Brushes.White : Brushes.Black;
     }
 
-    public async void Start()
+    public async void Start(Control panel)
     {
         var animation = new Animation
         {
@@ -138,11 +142,11 @@ public partial class StartControl : UserControl
             },
             Duration = TimeSpan.FromMilliseconds(500)
         };
-        IsVisible = true;
+        panel.IsVisible = true;
         _ = animation.RunAsync(Image1);
         _ = animation1.RunAsync(Grid1);
         await Task.Delay(2000);
         await animation2.RunAsync(this);
-        IsVisible = false;
+        panel.IsVisible = false;
     }
 }

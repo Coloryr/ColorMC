@@ -280,21 +280,20 @@
                         Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
                     <WrapPanel HorizontalAlignment="Right" IsEnabled="{Binding EnableBG}">
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding DeletePic}"
-                            Content="{setting:Localize Button.Delete}"
-                            DockPanel.Dock="Right" />
+                            Content="{setting:Localize Button.Delete}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding OpenPic}"
                             Content="{setting:Localize Button.Select}"
                             DockPanel.Dock="Right" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding SetPic}"
@@ -324,7 +323,7 @@
                                 Content="{Binding PicEffect, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             VerticalAlignment="Center"
@@ -354,7 +353,7 @@
                                 Content="{Binding PicTran, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             VerticalAlignment="Center"
                             Command="{Binding SetPicTran}"
@@ -388,7 +387,7 @@
                                 Content="{Binding PicResize, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             VerticalAlignment="Center"
                             Command="{Binding SetPicSize}"
@@ -434,11 +433,13 @@
                             Content="{setting:Localize SettingWindow.Tab2.Text8}" />
                         <ColorPicker Margin="0,0,10,0" Color="{Binding MainColor}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             VerticalAlignment="Center"
                             Command="{Binding ColorReset}"
-                            Content="{setting:Localize SettingWindow.Tab2.Text12}" />
+                            Content="{setting:Localize SettingWindow.Tab2.Text12}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text124}"
+                            ToolTip.VerticalOffset="-30" />
                     </StackPanel>
                     <RadioButton
                         Margin="5,0,0,0"
@@ -594,7 +595,7 @@
                             VerticalAlignment="Center"
                             Text="{Binding Live2DCoreState}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             HorizontalAlignment="Right"
@@ -602,7 +603,7 @@
                             Content="{setting:Localize SettingWindow.Tab2.Text31}"
                             IsEnabled="{Binding !CoreInstall}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             HorizontalAlignment="Right"
@@ -624,7 +625,7 @@
                         Watermark="{setting:Localize SettingWindow.Tab2.Text33}" />
                     <WrapPanel Margin="0,5,0,0" HorizontalAlignment="Right">
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding DeleteLive2D}"
@@ -632,7 +633,7 @@
                             DockPanel.Dock="Right"
                             IsEnabled="{Binding CoreInstall}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding OpenLive2D}"
@@ -640,7 +641,7 @@
                             DockPanel.Dock="Right"
                             IsEnabled="{Binding CoreInstall}" />
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="25"
                             Margin="0,0,5,0"
                             Command="{Binding SetLive2D}"

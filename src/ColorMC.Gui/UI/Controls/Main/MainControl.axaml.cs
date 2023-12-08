@@ -9,6 +9,7 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using DialogHostAvalonia;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -32,8 +33,6 @@ public partial class MainControl : UserControl, IUserControl
 
         UseName = ToString() ?? "MainControl";
 
-        ScrollViewer1.PointerPressed += ScrollViewer1_PointerPressed;
-
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
@@ -48,32 +47,6 @@ public partial class MainControl : UserControl, IUserControl
         {
             model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
             model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
-        }
-    }
-
-    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == "GroupEnable")
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                if ((DataContext as MainModel)!.GroupEnable)
-                {
-                    App.CrossFade100.Start(null, StackPanel1);
-                }
-                else
-                {
-                    App.CrossFade100.Start(StackPanel1, null);
-                }
-            });
-        }
-    }
-
-    private void ScrollViewer1_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (e.GetCurrentPoint(ScrollViewer1).Properties.IsLeftButtonPressed)
-        {
-            (DataContext as MainModel)!.Select(null);
         }
     }
 
@@ -139,6 +112,29 @@ public partial class MainControl : UserControl, IUserControl
         }
     }
 
+    private void SwitchView()
+    {
+        var model = (DataContext as MainModel)!;
+        if (model.IsOneGame)
+        {
+            if (Content1.Child is not MainOneGameControl)
+            {
+                Content1.Child = new MainOneGameControl();
+            }
+        }
+        else
+        {
+            if (model.IsNotGame && Content1.Child is not MainEmptyControl)
+            {
+                Content1.Child = new MainEmptyControl();
+            }
+            else if(Content1.Child is not MainGamesControl)
+            {
+                Content1.Child = new MainGamesControl();
+            }
+        }
+    }
+
     public void WindowStateChange(WindowState state)
     {
         (DataContext as MainModel)!.Render = state != WindowState.Minimized;
@@ -163,7 +159,9 @@ public partial class MainControl : UserControl, IUserControl
 
         if (BaseBinding.NewStart)
         {
-            Start.Start();
+            var con1 = new MainStartControl();
+            Start.Child = con1;
+            con1.Start(Start);
         }
     }
 
@@ -216,7 +214,7 @@ public partial class MainControl : UserControl, IUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            (DataContext as MainModel)!.Load();
+            (DataContext as MainModel)!.LoadGameItem();
         });
     }
 
@@ -224,7 +222,7 @@ public partial class MainControl : UserControl, IUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            (DataContext as MainModel)!.MotdLoad();
+            (DataContext as MainModel)!.LoadMotd();
         });
     }
 
@@ -264,11 +262,19 @@ public partial class MainControl : UserControl, IUserControl
     public void SetBaseModel(BaseModel model)
     {
         var amodel = new MainModel(model);
-        amodel.PropertyChanged += Model_PropertyChanged;
+        amodel.PropertyChanged += Amodel_PropertyChanged;
         DataContext = amodel;
 
         var config = GuiConfigUtils.Config.Live2D;
         amodel.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
         amodel.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
+    }
+
+    private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "SwitchView")
+        {
+            SwitchView();
+        }
     }
 }

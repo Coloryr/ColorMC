@@ -91,6 +91,7 @@
                             Height="25"
                             Command="{Binding OpenMod}"
                             Content="{setting:Localize Button.OpFile}"
+                            IsEnabled="{Binding !Phone}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
@@ -126,7 +127,7 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Version}"
-                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text3}"
+                            Header="{setting:Localize Text.Version}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Loader}"
@@ -134,7 +135,7 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Source}"
-                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text8}"
+                            Header="{setting:Localize Text.DownloadSource}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding PID}"
@@ -150,7 +151,7 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Author}"
-                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text5}"
+                            Header="{setting:Localize Text.Author}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Url}"
