@@ -29,6 +29,11 @@ public partial class Tab2Control : UserControl
         ScrollViewer1.ScrollToHome();
     }
 
+    public void End()
+    {
+        ScrollViewer1.ScrollToEnd();
+    }
+
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         if (DataContext is SettingModel model && model.NowView == 0)

@@ -120,11 +120,9 @@ public partial class GameEditControl : MenuControl
 
     protected override MenuModel SetModel(BaseModel model)
     {
-        var amodel = new GameEditModel(model, _obj);
-        amodel.PropertyChanged += Amodel_PropertyChanged;
-        return amodel;
+        return new GameEditModel(model, _obj);
     }
-    protected override Control ViewChange(int old, int index)
+    protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as GameEditModel)!;
         switch (old)
@@ -140,9 +138,25 @@ public partial class GameEditControl : MenuControl
         {
             case 0:
                 model.GameLoad();
+                if (iswhell && old == 1)
+                {
+                    _tab1.End();
+                }
+                else
+                {
+                    _tab1.Reset();
+                }
                 return _tab1;
             case 1:
                 model.ConfigLoad();
+                if (iswhell && old == 2)
+                {
+                    _tab2.End();
+                }
+                else
+                {
+                    _tab2.Reset();
+                }
                 return _tab2;
             case 2:
                 model.SetBackHeadTab();
@@ -169,23 +183,6 @@ public partial class GameEditControl : MenuControl
                 return _tab12;
             default:
                 throw new InvalidEnumArgumentException();
-        }
-    }
-
-    private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == "Switch")
-        {
-            var model = (DataContext as GameEditModel)!;
-            switch (model.NowView)
-            {
-                case 0:
-                    _tab1.Reset();
-                    break;
-                case 1:
-                    _tab2.Reset();
-                    break;
-            }
         }
     }
 }
