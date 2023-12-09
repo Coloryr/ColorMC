@@ -3,10 +3,10 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
@@ -89,6 +89,13 @@
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text12}"
                                 Command="{Binding OpenUrl8}" />
+                            <views:HyperLink
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Stretch"
+                                Alias="{setting:Localize SettingWindow.Tab7.Text14}"
+                                Command="{Binding OpenUrl10}" />
+                        </StackPanel>
+                        <StackPanel>
                             <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"

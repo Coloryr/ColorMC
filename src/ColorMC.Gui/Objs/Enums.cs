@@ -141,5 +141,6 @@ public enum WebType
     NetFrp1,
     Apache2_0,
     MIT,
-    MiSans
+    MiSans,
+    BSD
 }

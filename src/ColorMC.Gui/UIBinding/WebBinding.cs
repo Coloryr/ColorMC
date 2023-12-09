@@ -749,6 +749,7 @@ public static class WebBinding
             WebType.Apache2_0 => "https://www.apache.org/licenses/LICENSE-2.0.html",
             WebType.MIT => "https://mit-license.org/",
             WebType.MiSans => "https://hyperos.mi.com/font/",
+            WebType.BSD => "https://licenses.nuget.org/BSD-2-Clause",
             _ => "https://colormc.coloryr.com"
         });
     }

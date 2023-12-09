@@ -65,4 +65,10 @@ public partial class SettingModel
     {
         WebBinding.OpenWeb(WebType.MiSans);
     }
+
+    [RelayCommand]
+    public void OpenUrl10()
+    {
+        WebBinding.OpenWeb(WebType.BSD);
+    }
 }
