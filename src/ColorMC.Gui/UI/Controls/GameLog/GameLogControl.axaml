@@ -22,20 +22,20 @@
             DockPanel.Dock="Top">
             <StackPanel>
                 <WrapPanel>
-                    <ToggleButton
-                        Margin="5,0,0,0"
+                    <ToggleSwitch
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
-                        Classes="t1"
-                        Content="{setting:Localize GameLogWindow.Text1}"
-                        IsChecked="{Binding IsWordWrap}" />
-                    <ToggleButton
-                        Margin="5,0,0,0"
-                        Classes="t1"
-                        Content="{setting:Localize GameLogWindow.Text2}"
-                        IsChecked="{Binding IsAuto}" />
+                        IsChecked="{Binding IsWordWrap}"
+                        OffContent="{setting:Localize GameLogWindow.Text1}"
+                        OnContent="{setting:Localize GameLogWindow.Text1}" />
+                    <ToggleSwitch
+                        Margin="0,0,10,0"
+                        IsChecked="{Binding IsAuto}"
+                        OffContent="{setting:Localize GameLogWindow.Text2}"
+                        OnContent="{setting:Localize GameLogWindow.Text1}" />
                     <ComboBox
                         Width="200"
-                        Margin="10,0,5,0"
+                        Margin="0,0,0,0"
                         HorizontalAlignment="Stretch"
                         ItemsSource="{Binding FileList}"
                         SelectedItem="{Binding File}" />

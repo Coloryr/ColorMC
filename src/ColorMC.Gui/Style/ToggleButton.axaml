@@ -14,6 +14,12 @@
         </Border>
     </Design.PreviewWith>
 
+    <Style Selector="ToggleButton.t1">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+
     <Style Selector="ToggleButton.t1:pointerover /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{setting:Colors Back1}" />
     </Style>

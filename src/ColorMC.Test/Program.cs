@@ -2,6 +2,8 @@
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
@@ -53,22 +55,46 @@ internal class Program
 
     public static void GetSha1()
     {
+        var text = File.Exists("tmp/sha1.json") 
+            ? File.ReadAllText("tmp/sha1.json") : "{\"text\":\"\"}";
+        var obj = JObject.Parse(text);
         {
             using var file = File.OpenRead($"tmp/ColorMC.Core.dll");
-            Console.WriteLine($"ColorMC.Core.dll:{GenSha1(file)}");
+            var sha1 = GenSha1(file); ;
+            if (!obj.TryAdd("core.dll", sha1))
+            {
+                obj["core.dll"] = sha1;
+            }
+            Console.WriteLine($"ColorMC.Core.dll:{obj["core.dll"]}");
         }
         {
             using var file = File.OpenRead($"tmp/ColorMC.Core.pdb");
-            Console.WriteLine($"ColorMC.Core.pdb:{GenSha1(file)}");
+            var sha1 = GenSha1(file); ;
+            if (!obj.TryAdd("core.pdb", sha1))
+            {
+                obj["core.pdb"] = sha1;
+            }
+            Console.WriteLine($"ColorMC.Core.pdb:{obj["core.pdb"]}");
         }
         {
             using var file = File.OpenRead($"tmp/ColorMC.Gui.dll");
-            Console.WriteLine($"ColorMC.Gui.dll:{GenSha1(file)}");
+            var sha1 = GenSha1(file); ;
+            if (!obj.TryAdd("gui.dll", sha1))
+            {
+                obj["gui.dll"] = sha1;
+            }
+            Console.WriteLine($"ColorMC.Gui.dll:{obj["gui.dll"]}");
         }
         {
             using var file = File.OpenRead($"tmp/ColorMC.Gui.pdb");
-            Console.WriteLine($"ColorMC.Gui.pdb:{GenSha1(file)}");
+            var sha1 = GenSha1(file); ;
+            if (!obj.TryAdd("gui.pdb", sha1))
+            {
+                obj["gui.pdb"] = sha1;
+            }
+            Console.WriteLine($"ColorMC.Gui.pdb:{obj["gui.pdb"]}");
         }
+        File.WriteAllText("tmp/sha1.json", obj.ToString(Formatting.Indented));
     }
 
     public static string GenSha1(Stream stream)

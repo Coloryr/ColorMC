@@ -352,14 +352,16 @@ public partial class BaseModel : ObservableObject
     }
 
     public async Task<(bool Cancel, string? Text1, string? Text2)>
-       ShowEditInput(string data, string data1)
+       ShowEditInput(string data, string data1, string text1 = "", string text2 = "")
     {
         _info3.TextReadonly = false;
         _info3.Text1 = data;
         _info3.Text2 = data1;
 
-        _info3.Watermark1 = "";
-        _info3.Watermark2 = "";
+        _info3.Text2Visable = true;
+
+        _info3.Watermark1 = text1;
+        _info3.Watermark2 = text2;
 
         _info3.ValueVisable = false;
 
