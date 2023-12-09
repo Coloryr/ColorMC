@@ -143,6 +143,7 @@
                                 Margin="0,0,3,0"
                                 Command="{Binding ShowCount}"
                                 CornerRadius="{setting:Style ButtonCornerRadius}"
+                                IsVisible="{Binding !IsPhone}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text92}"
                                 ToolTip.VerticalOffset="-30">
                                 <Svg Path="/Resource/Icon/count.svg" />
