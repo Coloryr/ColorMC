@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    xmlns:dialogview="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
     xmlns:info="clr-namespace:ColorMC.Gui.UI.Controls.Info"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
@@ -34,179 +35,19 @@
             <dialog:DialogHost DisableOpeningAnimation="True" Identifier="{Binding Name}">
                 <dialog:DialogHost.DataTemplates>
                     <DataTemplate DataType="dialogmodel:Info1Model">
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock
-                                FontSize="20"
-                                Foreground="{setting:Colors Font}"
-                                Text="{Binding Text}"
-                                TextAlignment="Center"
-                                TextWrapping="Wrap" />
-                            <ProgressBar
-                                Height="20"
-                                Margin="0,10,0,0"
-                                IsIndeterminate="{Binding Indeterminate}"
-                                ShowProgressText="{Binding !Indeterminate}"
-                                Value="{Binding Value}" />
-                        </StackPanel>
+                        <dialogview:Info1Control DataContext="{Binding}" />
                     </DataTemplate>
                     <DataTemplate DataType="dialogmodel:Info3Model">
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBox
-                                Name="TextBox1"
-                                MinWidth="350"
-                                Classes="input1"
-                                FontSize="20"
-                                Foreground="{setting:Colors Font}"
-                                IsReadOnly="{Binding TextReadonly}"
-                                Text="{Binding Text1}"
-                                TextAlignment="Center"
-                                TextWrapping="Wrap"
-                                Watermark="{Binding Watermark1}" />
-                            <TextBox
-                                Name="TextBox2"
-                                MinWidth="350"
-                                Margin="0,10,0,0"
-                                Classes="input1"
-                                FontSize="20"
-                                Foreground="{setting:Colors Font}"
-                                IsReadOnly="{Binding TextReadonly}"
-                                IsVisible="{Binding Text2Visable}"
-                                PasswordChar="{Binding Password}"
-                                Text="{Binding Text2}"
-                                TextAlignment="Center"
-                                TextWrapping="Wrap"
-                                Watermark="{Binding Watermark2}" />
-                            <StackPanel Margin="0,10,0,0">
-                                <ProgressBar
-                                    Height="20"
-                                    Margin="0,0,0,10"
-                                    IsIndeterminate="{Binding ValueVisable}"
-                                    IsVisible="{Binding ValueVisable}" />
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Button
-                                        Width="100"
-                                        Height="30"
-                                        Margin="10,0,10,0"
-                                        HorizontalAlignment="Center"
-                                        Command="{Binding Confirm}"
-                                        Content="{setting:Localize Button.Confirm}"
-                                        IsEnabled="{Binding ConfirmEnable}"
-                                        IsVisible="{Binding ConfirmEnable}" />
-                                    <Button
-                                        Width="100"
-                                        Height="30"
-                                        Margin="10,0,10,0"
-                                        HorizontalAlignment="Center"
-                                        Command="{Binding Cancel}"
-                                        Content="{setting:Localize Button.Cancel}"
-                                        IsEnabled="{Binding CancelEnable}"
-                                        IsVisible="{Binding CancelVisible}" />
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
+                        <dialogview:Info3Control DataContext="{Binding}" />
                     </DataTemplate>
                     <DataTemplate DataType="dialogmodel:Info4Model">
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                FontSize="20"
-                                Foreground="{setting:Colors Font}"
-                                Text="{Binding Text}"
-                                TextAlignment="Center"
-                                TextWrapping="Wrap" />
-                            <StackPanel
-                                Margin="0,10,0,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal">
-                                <Button
-                                    Width="100"
-                                    Height="30"
-                                    Margin="10,0,10,0"
-                                    Command="{Binding Confirm}"
-                                    Content="{setting:Localize Button.Confirm}"
-                                    IsEnabled="{Binding Enable}" />
-                                <Button
-                                    Width="100"
-                                    Height="30"
-                                    Margin="10,0,10,0"
-                                    Command="{Binding Cancel}"
-                                    Content="{setting:Localize Button.Cancel}"
-                                    IsEnabled="{Binding Enable}"
-                                    IsVisible="{Binding CancelVisable}" />
-                            </StackPanel>
-                        </StackPanel>
+                        <dialogview:Info4Control DataContext="{Binding}" />
                     </DataTemplate>
                     <DataTemplate DataType="dialogmodel:Info5Model">
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Label
-                                HorizontalAlignment="Center"
-                                Content="{Binding Text}"
-                                FontSize="20" />
-                            <ComboBox
-                                Margin="0,10,0,0"
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding Items}"
-                                SelectedIndex="{Binding Index}"
-                                SelectedItem="{Binding Select}" />
-                            <StackPanel
-                                Margin="0,10,0,0"
-                                HorizontalAlignment="Center"
-                                Orientation="Horizontal">
-                                <Button
-                                    Width="100"
-                                    Height="30"
-                                    Margin="10,0,10,0"
-                                    HorizontalAlignment="Center"
-                                    Command="{Binding Confirm}"
-                                    Content="{setting:Localize Button.Confirm}" />
-                                <Button
-                                    Width="100"
-                                    Height="30"
-                                    Margin="10,0,10,0"
-                                    HorizontalAlignment="Center"
-                                    Command="{Binding Cancel}"
-                                    Content="{setting:Localize Button.Cancel}" />
-                            </StackPanel>
-                        </StackPanel>
+                        <dialogview:Info5Control DataContext="{Binding}" />
                     </DataTemplate>
                     <DataTemplate DataType="dialogmodel:Info6Model">
-                        <DockPanel
-                            Margin="20"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            LastChildFill="True">
-                            <Label
-                                HorizontalAlignment="Left"
-                                Content="{Binding Text1}"
-                                DockPanel.Dock="Top"
-                                FontSize="20" />
-                            <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom">
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Button
-                                        Width="100"
-                                        Height="30"
-                                        Margin="10,0,10,0"
-                                        HorizontalAlignment="Center"
-                                        Command="{Binding Confirm}"
-                                        Content="{setting:Localize Button.Confirm}" />
-                                    <Button
-                                        Width="100"
-                                        Height="30"
-                                        Margin="10,0,10,0"
-                                        HorizontalAlignment="Center"
-                                        Command="{Binding Cancel}"
-                                        Content="{setting:Localize Button.Cancel}"
-                                        IsVisible="{Binding NeedCancel}" />
-                                </StackPanel>
-                            </StackPanel>
-                            <TextBox
-                                Margin="0,5,0,0"
-                                AcceptsReturn="True"
-                                CornerRadius="0"
-                                IsReadOnly="True"
-                                Text="{Binding Text2}" />
-                        </DockPanel>
+                        <dialogview:Info6Control DataContext="{Binding}" />
                     </DataTemplate>
                 </dialog:DialogHost.DataTemplates>
                 <Panel>

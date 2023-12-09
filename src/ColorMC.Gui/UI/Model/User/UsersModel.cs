@@ -3,6 +3,7 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -494,9 +495,20 @@ public partial class UsersControlModel : TopModel
             return;
         }
 
-        var res = await Model.ShowEditInput(obj.Name, obj.UUID);
-        if (res.Cancel || string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
+        var res = await Model.ShowEditInput(obj.Name, obj.UUID, 
+            App.Lang("Text.UserName"), App.Lang("UserWindow.DataGrid.Text4"));
+        if (res.Cancel)
         {
+            return;
+        }
+        else if (string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
+        {
+            Model.Show(App.Lang("UserWindow.Error7"));
+            return;
+        }
+        else if (res.Text2.Length != 32 || !FuntionUtils.CheckIs(res.Text2))
+        {
+            Model.Show(App.Lang("UserWindow.Error8"));
             return;
         }
 

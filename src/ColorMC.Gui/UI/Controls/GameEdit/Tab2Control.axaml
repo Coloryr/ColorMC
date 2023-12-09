@@ -74,7 +74,7 @@
                             Height="25"
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
-                            Command="{Binding Open}"
+                            Command="{Binding OpenJava}"
                             Content="{setting:Localize Button.Select}"
                             DockPanel.Dock="Right"
                             ToolTip.Tip="{setting:Localize ToolTip.Text7}"

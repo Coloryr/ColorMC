@@ -86,6 +86,8 @@
 	"UserWindow.Error4": "服务器地址错误",
 	"UserWindow.Error5": "请选择类型",
 	"UserWindow.Error6": "刷新失败",
+	"UserWindow.Error7": "用户信息不能为空",
+	"UserWindow.Error8": "UUID必须为32位英文数字",
 	"UserWindow.Info1": "正在加载",
 	"UserWindow.Info2": "正在登录",
 	"UserWindow.Info3": "正在刷新登录",

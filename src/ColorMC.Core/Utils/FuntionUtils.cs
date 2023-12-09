@@ -11,6 +11,9 @@ public static partial class FuntionUtils
     [GeneratedRegex("[^0-9]+")]
     private static partial Regex Regex1();
 
+    [GeneratedRegex("^[a-zA-Z0-9]+$")]
+    private static partial Regex Regex2();
+
     /// <summary>
     /// 检查是否为数字
     /// </summary>
@@ -21,6 +24,16 @@ public static partial class FuntionUtils
         if (string.IsNullOrWhiteSpace(input))
             return true;
         return Regex1().IsMatch(input);
+    }
+
+    /// <summary>
+    /// 检查是否为英文数字
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static bool CheckIs(string input)
+    { 
+        return Regex2().IsMatch(input);
     }
 
     /// <summary>
