@@ -85,6 +85,8 @@ public partial class MainModel : TopModel, IMainTop
 
     private bool _isGetNewInfo;
 
+    public bool IsPhone { get; } = SystemInfo.Os == OsType.Android;
+
     public MainModel(BaseModel model) : base(model)
     {
         App.SkinLoad += App_SkinLoad;

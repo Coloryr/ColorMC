@@ -130,15 +130,15 @@
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
-            <WrapPanel>
+            <WrapPanel Margin="0,0,0,-5">
                 <Label
-                    Margin="0,0,10,0"
+                    Margin="0,0,10,5"
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab1.Text12}" />
                 <Button
                     Width="120"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding Reset}"
                     Content="{setting:Localize SettingWindow.Tab1.Text1}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text122}"
@@ -146,7 +146,7 @@
                 <Button
                     Width="120"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding ClearUser}"
                     Content="{setting:Localize SettingWindow.Tab1.Text2}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text123}"
@@ -161,33 +161,33 @@
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}"
             IsVisible="{Binding !Phone}">
-            <WrapPanel>
+            <WrapPanel Margin="0,0,0,-5">
                 <Label
-                    Margin="0,0,10,0"
+                    Margin="0,0,10,5"
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab1.Text13}" />
                 <Button
                     Width="120"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding Open}"
                     Content="{setting:Localize SettingWindow.Tab1.Text3}" />
                 <Button
                     Width="120"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding OpenDownloadPath}"
                     Content="{setting:Localize SettingWindow.Tab3.Text13}" />
                 <Button
                     Width="120"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding OpenPicPath}"
                     Content="{setting:Localize SettingWindow.Tab3.Text18}" />
                 <Button
                     Width="120"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding OpenJavaPath}"
                     Content="{setting:Localize SettingWindow.Tab5.Text6}" />
             </WrapPanel>
