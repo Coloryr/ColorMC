@@ -241,14 +241,14 @@
 		<PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
 		<PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.5" />
-		<PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.6" />
+		<PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.7" />
 		<PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.1" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
         <PackageReference Include="DialogHost.Avalonia" Version="0.7.7" />
         <PackageReference Include="NAudio.Core" Version="2.2.1" />
         <PackageReference Include="NAudio.WinMM" Version="2.2.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="OpenTK.Audio.OpenAL" Version="4.8.1" />
+        <PackageReference Include="OpenTK.Audio.OpenAL" Version="4.8.2" />
         <PackageReference Include="SkiaSharp" Version="2.88.6" />
     </ItemGroup>
     <ItemGroup>
