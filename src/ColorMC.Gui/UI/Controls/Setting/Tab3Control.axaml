@@ -38,13 +38,13 @@
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
                     <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize Text.DownloadSource}" />
+                                Text="{setting:Localize Text.DownloadSource}" />
                             <ComboBox
-                                Width="120"
+                                Width="100"
                                 Margin="5,0,0,0"
                                 IsEnabled="{Binding !IsDownload}"
                                 ItemsSource="{Binding SourceList}"
@@ -52,22 +52,22 @@
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <Label
-                                Margin="5,0,5,0"
+                            <TextBlock
+                                Margin="0,0,5,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab3.Text2}" />
+                                Text="{setting:Localize SettingWindow.Tab3.Text2}" />
                             <NumericUpDown
-                                Width="120"
+                                Width="105"
                                 Height="30"
-                                Margin="0,0,10,0"
+                                Margin="0,0,5,0"
                                 FormatString="N0"
                                 IsEnabled="{Binding !IsDownload}"
                                 Minimum="1"
                                 Value="{Binding Thread}" />
                         </StackPanel>
                         <ToggleSwitch
-                            Margin="0,0,20,0"
+                            Margin="0,0,10,0"
                             IsChecked="{Binding CheckFile}"
                             IsEnabled="{Binding !IsDownload}"
                             OffContent="{setting:Localize SettingWindow.Tab3.Text11}"
@@ -105,7 +105,7 @@
                             Content="{setting:Localize SettingWindow.Tab3.Text3}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <Grid ColumnDefinitions="3*,1*">
+                    <Grid Margin="0,0,5,0" ColumnDefinitions="3*,1*">
                         <TextBox
                             Grid.Column="0"
                             Margin="0,0,10,5"
@@ -122,7 +122,7 @@
                             Text="{Binding Port}"
                             Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
                     </Grid>
-                    <Grid ColumnDefinitions="*,*">
+                    <Grid Margin="0,0,5,0" ColumnDefinitions="*,*">
                         <TextBox
                             Grid.Column="0"
                             Margin="0,0,10,5"
@@ -142,7 +142,7 @@
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="0,0,0,0"
+                        Margin="0,0,5,0"
                         HorizontalAlignment="Right"
                         Command="{Binding SetProxy}"
                         Content="{setting:Localize Button.Set}" />
@@ -192,22 +192,24 @@
                     </StackPanel>
                     <WrapPanel>
                         <ToggleSwitch
-                            Margin="0,0,20,0"
+                            Margin="0,0,10,0"
                             IsChecked="{Binding CheckUpdate}"
                             OffContent="{setting:Localize SettingWindow.Tab3.Text15}"
                             OnContent="{setting:Localize SettingWindow.Tab3.Text15}" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="5"
-                            Command="{Binding StartCheck}"
-                            Content="{setting:Localize SettingWindow.Tab3.Text16}" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="0,5,5,5"
-                            Command="{Binding StartUpdate}"
-                            Content="{setting:Localize SettingWindow.Tab3.Text17}" />
+                        <StackPanel Margin="0,0,0,-5" Orientation="Horizontal">
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                Command="{Binding StartCheck}"
+                                Content="{setting:Localize SettingWindow.Tab3.Text16}" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                Command="{Binding StartUpdate}"
+                                Content="{setting:Localize SettingWindow.Tab3.Text17}" />
+                        </StackPanel>
                     </WrapPanel>
                 </StackPanel>
             </Border>

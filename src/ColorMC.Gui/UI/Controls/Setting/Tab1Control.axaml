@@ -10,187 +10,196 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <StackPanel Name="ScrollViewer1" Margin="5,0,5,2">
-        <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
-            <StackPanel>
-                <Label Content="{setting:Localize SettingWindow.Tab1.Text4}" />
-                <DockPanel>
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Import1}"
-                        Content="{setting:Localize Button.Input}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text120}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="5,0,5,0"
-                        Command="{Binding Open1}"
-                        Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text121}"
-                        ToolTip.VerticalOffset="-30" />
-                    <TextBox
-                        Margin="0,0,0,5"
-                        Classes="input1"
-                        Text="{Binding Local1}"
-                        Watermark="{setting:Localize SettingWindow.Tab1.Text5}" />
-                </DockPanel>
-                <Label Content="{setting:Localize SettingWindow.Tab1.Text6}" />
-                <DockPanel>
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Import2}"
-                        Content="{setting:Localize Button.Input}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text120}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="5,0,5,0"
-                        Command="{Binding Open2}"
-                        Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text121}"
-                        ToolTip.VerticalOffset="-30" />
-                    <TextBox
-                        Margin="0,0,0,5"
-                        Classes="input1"
-                        Text="{Binding Local2}"
-                        Watermark="{setting:Localize SettingWindow.Tab1.Text7}" />
-                </DockPanel>
+    <ScrollViewer Name="ScrollViewer1" Margin="5,0,5,2">
+        <StackPanel>
+            <Border
+                Margin="0,0,0,3"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label Content="{setting:Localize SettingWindow.Tab1.Text4}" />
+                    <StackPanel>
+                        <TextBox
+                            Margin="0,0,0,5"
+                            Classes="input1"
+                            Text="{Binding Local1}"
+                            Watermark="{setting:Localize SettingWindow.Tab1.Text5}" />
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Command="{Binding Open1}"
+                                Content="{setting:Localize Button.Select}"
+                                DockPanel.Dock="Right"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                                ToolTip.VerticalOffset="-30" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="5,0,0,0"
+                                Command="{Binding Import1}"
+                                Content="{setting:Localize Button.Input}"
+                                DockPanel.Dock="Right"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                                ToolTip.VerticalOffset="-30" />
+                        </StackPanel>
+                    </StackPanel>
+                    <Label Content="{setting:Localize SettingWindow.Tab1.Text6}" />
+                    <StackPanel>
+                        <TextBox
+                            Margin="0,0,0,5"
+                            Classes="input1"
+                            Text="{Binding Local2}"
+                            Watermark="{setting:Localize SettingWindow.Tab1.Text7}" />
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Command="{Binding Open2}"
+                                Content="{setting:Localize Button.Select}"
+                                DockPanel.Dock="Right"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                                ToolTip.VerticalOffset="-30" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="5,0,0,0"
+                                Command="{Binding Import2}"
+                                Content="{setting:Localize Button.Input}"
+                                DockPanel.Dock="Right"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                                ToolTip.VerticalOffset="-30" />
+                        </StackPanel>
+                    </StackPanel>
+                    <Label Content="{setting:Localize SettingWindow.Tab1.Text8}" />
+                    <StackPanel>
+                        <TextBox
+                            Margin="0,0,0,5"
+                            Classes="input1"
+                            Text="{Binding Local3}"
+                            Watermark="{setting:Localize SettingWindow.Tab1.Text9}" />
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Command="{Binding Open3}"
+                                Content="{setting:Localize Button.Select}"
+                                DockPanel.Dock="Right"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                                ToolTip.VerticalOffset="-30" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="5,0,0,0"
+                                Command="{Binding Import3}"
+                                Content="{setting:Localize Button.Input}"
+                                DockPanel.Dock="Right"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                                ToolTip.VerticalOffset="-30" />
+                        </StackPanel>
+                    </StackPanel>
+                    <Label Content="{setting:Localize SettingWindow.Tab1.Text10}" />
+                    <StackPanel>
+                        <TextBox
+                            Margin="0,0,0,5"
+                            Classes="input1"
+                            Text="{Binding Local4}"
+                            Watermark="{setting:Localize SettingWindow.Tab1.Text11}" />
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Command="{Binding Open4}"
+                                Content="{setting:Localize Button.Select}"
+                                DockPanel.Dock="Right"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                                ToolTip.VerticalOffset="-30" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="5,0,0,0"
+                                Command="{Binding Import3}"
+                                Content="{setting:Localize Button.Input}"
+                                DockPanel.Dock="Right"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                                ToolTip.VerticalOffset="-30" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
 
-                <Label Content="{setting:Localize SettingWindow.Tab1.Text8}" />
-                <DockPanel>
+            </Border>
+            <Border
+                Margin="0,0,0,3"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <WrapPanel Margin="0,0,0,-5">
+                    <Label
+                        Margin="0,0,10,5"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize SettingWindow.Tab1.Text12}" />
                     <Button
                         Width="100"
                         Height="25"
-                        Command="{Binding Import3}"
-                        Content="{setting:Localize Button.Input}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                        Margin="0,0,5,5"
+                        Command="{Binding Reset}"
+                        Content="{setting:Localize SettingWindow.Tab1.Text1}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text122}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="5,0,5,0"
-                        Command="{Binding Open3}"
-                        Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                        Margin="0,0,5,5"
+                        Command="{Binding ClearUser}"
+                        Content="{setting:Localize SettingWindow.Tab1.Text2}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text123}"
                         ToolTip.VerticalOffset="-30" />
-                    <TextBox
-                        Margin="0,0,0,5"
-                        Classes="input1"
-                        Text="{Binding Local3}"
-                        Watermark="{setting:Localize SettingWindow.Tab1.Text9}" />
-                </DockPanel>
-                <Label Content="{setting:Localize SettingWindow.Tab1.Text10}" />
-                <DockPanel>
+                </WrapPanel>
+            </Border>
+            <Border
+                Margin="0,0,0,3"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsVisible="{Binding !Phone}">
+                <WrapPanel Margin="0,0,0,-5">
+                    <Label
+                        Margin="0,0,10,5"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize SettingWindow.Tab1.Text13}" />
                     <Button
                         Width="100"
                         Height="25"
-                        Command="{Binding Import3}"
-                        Content="{setting:Localize Button.Input}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text120}"
-                        ToolTip.VerticalOffset="-30" />
+                        Margin="0,0,5,5"
+                        Command="{Binding Open}"
+                        Content="{setting:Localize SettingWindow.Tab1.Text3}" />
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="5,0,5,0"
-                        Command="{Binding Open4}"
-                        Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text121}"
-                        ToolTip.VerticalOffset="-30" />
-                    <TextBox
-                        Margin="0,0,0,5"
-                        Classes="input1"
-                        Text="{Binding Local4}"
-                        Watermark="{setting:Localize SettingWindow.Tab1.Text11}" />
-                </DockPanel>
-            </StackPanel>
-
-        </Border>
-        <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
-            <WrapPanel Margin="0,0,0,-5">
-                <Label
-                    Margin="0,0,10,5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab1.Text12}" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="0,0,5,5"
-                    Command="{Binding Reset}"
-                    Content="{setting:Localize SettingWindow.Tab1.Text1}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text122}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="0,0,5,5"
-                    Command="{Binding ClearUser}"
-                    Content="{setting:Localize SettingWindow.Tab1.Text2}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text123}"
-                    ToolTip.VerticalOffset="-30" />
-            </WrapPanel>
-        </Border>
-        <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
-            IsVisible="{Binding !Phone}">
-            <WrapPanel Margin="0,0,0,-5">
-                <Label
-                    Margin="0,0,10,5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab1.Text13}" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="0,0,5,5"
-                    Command="{Binding Open}"
-                    Content="{setting:Localize SettingWindow.Tab1.Text3}" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="0,0,5,5"
-                    Command="{Binding OpenDownloadPath}"
-                    Content="{setting:Localize SettingWindow.Tab3.Text13}" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="0,0,5,5"
-                    Command="{Binding OpenPicPath}"
-                    Content="{setting:Localize SettingWindow.Tab3.Text18}" />
-                <Button
-                    Width="120"
-                    Height="25"
-                    Margin="0,0,5,5"
-                    Command="{Binding OpenJavaPath}"
-                    Content="{setting:Localize SettingWindow.Tab5.Text6}" />
-            </WrapPanel>
-        </Border>
-    </StackPanel>
+                        Margin="0,0,5,5"
+                        Command="{Binding OpenJavaPath}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text6}" />
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Margin="0,0,5,5"
+                        Command="{Binding OpenDownloadPath}"
+                        Content="{setting:Localize SettingWindow.Tab3.Text13}" />
+                    <Button
+                        Width="120"
+                        Height="25"
+                        Margin="0,0,5,5"
+                        Command="{Binding OpenPicPath}"
+                        Content="{setting:Localize SettingWindow.Tab3.Text18}" />
+                </WrapPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

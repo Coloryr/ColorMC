@@ -8,6 +8,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
 using System;
 using System.Collections.Concurrent;
@@ -18,12 +19,27 @@ namespace ColorMC.Gui.UI.Model;
 
 public partial class BaseModel : ObservableObject
 {
-    public const string InfoName = "Info2Show";
+    public const string InfoName = "InfoShow";
 
+    /// <summary>
+    /// 进度条
+    /// </summary>
     private readonly Info1Model _info1;
+    /// <summary>
+    /// 输入框
+    /// </summary>
     private readonly Info3Model _info3;
+    /// <summary>
+    /// 选择框
+    /// </summary>
     private readonly Info4Model _info4;
+    /// <summary>
+    /// 单选框
+    /// </summary>
     private readonly Info5Model _info5;
+    /// <summary>
+    /// 长文本
+    /// </summary>
     private readonly Info6Model _info6;
 
     private readonly ConcurrentStack<Action> _listBack = new();
@@ -63,15 +79,23 @@ public partial class BaseModel : ObservableObject
     [ObservableProperty]
     private WindowTransparencyLevel[] _hints;
 
-    public SelfPublisher<bool> HeadDisplayObservale = new();
-    public SelfPublisher<bool> HeadBackObservale = new();
-    public SelfPublisher<bool> HeadBackEnableObservale = new();
-    public SelfPublisher<bool> HeadChoiseObservale = new();
-    public SelfPublisher<bool> HeadChoise1Observale = new();
-    public SelfPublisher<bool> HeadCloseObservale = new();
-    public SelfPublisher<string?> HeadChoiseContentObservale = new();
-    public SelfPublisher<string?> HeadChoise1ContentObservale = new();
+    [ObservableProperty]
+    private bool _headChoiseDisplay;
+    [ObservableProperty]
+    private string? _headChoiseContent;
+    [ObservableProperty]
+    private bool _headChoise1Display;
+    [ObservableProperty]
+    private string? _headChoise1Content;
 
+    [ObservableProperty]
+    private bool _headBack;
+    [ObservableProperty]
+    private bool _headBackEnable;
+
+    public SelfPublisher<bool> HeadDisplayObservale = new();
+    public SelfPublisher<bool> HeadCloseObservale = new();
+    
     public bool HeadDisplay
     {
         set
@@ -90,13 +114,7 @@ public partial class BaseModel : ObservableObject
             }
         }
     }
-    public bool HeadBackEnable
-    {
-        set
-        {
-            HeadBackEnableObservale.Notify(value);
-        }
-    }
+
     public bool HeadBackDisplay
     {
         set
@@ -105,22 +123,7 @@ public partial class BaseModel : ObservableObject
             {
                 return;
             }
-            HeadBackObservale.Notify(value);
-        }
-    }
-    public bool HeadChoiseDisplay
-    {
-        set
-        {
-            HeadChoiseObservale.Notify(value);
-        }
-    }
-
-    public bool HeadChoise1Display
-    {
-        set
-        {
-            HeadChoise1Observale.Notify(value);
+            HeadBack = value;
         }
     }
 
@@ -145,6 +148,31 @@ public partial class BaseModel : ObservableObject
         _info6 = new(Name);
     }
 
+    [RelayCommand]
+    public void ChoiseClick()
+    {
+        _choiseClick?.Invoke();
+    }
+
+    [RelayCommand]
+    public void Choise1Click()
+    {
+        _choise1Click?.Invoke();
+    }
+
+    [RelayCommand]
+    public void BackClick()
+    {
+        if (_isWork)
+        {
+            return;
+        }
+        if (_listBack.TryPeek(out var action))
+        {
+            action();
+        }
+    }
+
     private void Work()
     {
         HeadBackDisplay = false;
@@ -165,8 +193,8 @@ public partial class BaseModel : ObservableObject
     public void SetChoiseContent(string now, string? choise, string? choise1 = null)
     {
         _nowChoiseUse = now;
-        HeadChoiseContentObservale.Notify(choise ?? "");
-        HeadChoise1ContentObservale.Notify(choise1 ?? "");
+        HeadChoiseContent = choise ?? "";
+        HeadChoise1Content = choise1 ?? "";
     }
 
     public void SetChoiseCall(string use, Action? choise, Action? choise1 = null)
@@ -175,12 +203,12 @@ public partial class BaseModel : ObservableObject
         _choiseClick = choise;
         if (choise != null)
         {
-            HeadChoiseObservale.Notify(true);
+            HeadChoiseDisplay = true;
         }
         _choise1Click = choise1;
         if (choise1 != null)
         {
-            HeadChoise1Observale.Notify(true);
+            HeadChoise1Display = true;
         }
     }
 
@@ -189,8 +217,8 @@ public partial class BaseModel : ObservableObject
         if (_nowChoiseUse == now)
         {
             _nowChoiseUse = null;
-            HeadChoiseContentObservale.Notify(null);
-            HeadChoise1ContentObservale.Notify(null);
+            HeadChoiseContent = null;
+            HeadChoise1Content = null;
         }
     }
 
@@ -200,8 +228,8 @@ public partial class BaseModel : ObservableObject
         {
             _nowChoiseUse = null;
 
-            HeadChoiseObservale.Notify(false);
-            HeadChoise1Observale.Notify(false);
+            HeadChoiseDisplay = false;
+            HeadChoise1Display = false;
 
             _choiseClick = null;
             _choise1Click = null;
@@ -223,28 +251,6 @@ public partial class BaseModel : ObservableObject
         if (_listBack.IsEmpty)
         {
             HeadBackDisplay = false;
-        }
-    }
-
-    public void ChoiseClick()
-    {
-        _choiseClick?.Invoke();
-    }
-
-    public void Choise1Click()
-    {
-        _choise1Click?.Invoke();
-    }
-
-    public void BackClick()
-    {
-        if (_isWork)
-        {
-            return;
-        }
-        if (_listBack.TryPeek(out var action))
-        {
-            action();
         }
     }
 

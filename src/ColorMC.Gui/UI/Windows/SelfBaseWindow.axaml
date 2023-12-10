@@ -15,7 +15,7 @@
     Title="{Binding Title}"
     Width="760"
     Height="450"
-    MinWidth="340"
+    MinWidth="335"
     MinHeight="450"
     d:DesignHeight="450"
     d:DesignWidth="760"

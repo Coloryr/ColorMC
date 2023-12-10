@@ -75,6 +75,7 @@
         <None Remove="Resource\Icon\Item\download.svg" />
         <None Remove="Resource\Icon\Item\web.svg" />
         <None Remove="Resource\Icon\launch.svg" />
+        <None Remove="Resource\Icon\left.svg" />
         <None Remove="Resource\Icon\left1.svg" />
         <None Remove="Resource\Icon\menu.svg" />
         <None Remove="Resource\Icon\net.svg" />
@@ -118,7 +119,6 @@
         <None Remove="Resource\Icon\size.svg" />
         <None Remove="Resource\Icon\skin.svg" />
         <None Remove="Resource\Icon\upgrade.svg" />
-        <None Remove="Resource\Icon\up_arrow.svg" />
         <None Remove="Resource\Icon\user.svg" />
         <None Remove="Resource\Language\gui_en-us.json" />
         <None Remove="Resource\Language\gui_zh-cn.json" />
@@ -171,6 +171,7 @@
         <AvaloniaResource Include="Resource\Icon\Item\download.svg" />
         <AvaloniaResource Include="Resource\Icon\Item\web.svg" />
         <AvaloniaResource Include="Resource\Icon\launch.svg" />
+        <AvaloniaResource Include="Resource\Icon\left.svg" />
         <AvaloniaResource Include="Resource\Icon\left1.svg" />
         <AvaloniaResource Include="Resource\Icon\menu.svg" />
         <AvaloniaResource Include="Resource\Icon\net.svg" />
@@ -212,7 +213,6 @@
         <AvaloniaResource Include="Resource\Icon\Setting\svg8.svg" />
         <AvaloniaResource Include="Resource\Icon\Setting\svg9.svg" />
         <AvaloniaResource Include="Resource\Icon\upgrade.svg" />
-        <AvaloniaResource Include="Resource\Icon\up_arrow.svg" />
         <AvaloniaResource Include="Resource\Icon\skin.svg" />
         <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
         <EmbeddedResource Include="Resource\Language\gui_en-us.json" />

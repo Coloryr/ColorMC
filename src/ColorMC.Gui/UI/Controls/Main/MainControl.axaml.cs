@@ -47,6 +47,19 @@ public partial class MainControl : UserControl, IUserControl
         {
             model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
             model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
+
+            if (Bounds.Width > 500 && model.TopSide2 != false)
+            {
+                model.TopSide2 = false;
+                model.TopSide = true;
+                model.TopSide1 = true;
+            }
+            else if (Bounds.Width <= 500 && model.TopSide2 != true)
+            {
+                model.TopSide2 = true;
+                model.TopSide = false;
+                model.TopSide1 = true;
+            }
         }
     }
 

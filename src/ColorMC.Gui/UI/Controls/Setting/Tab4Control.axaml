@@ -145,10 +145,10 @@
                             Content="{setting:Localize SettingWindow.Tab4.Text9}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
+                    <WrapPanel Margin="0,0,0,-5">
+                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <Label
-                                Width="120"
+                                Width="110"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize SettingWindow.Tab4.Text10}" />
                             <NumericUpDown
@@ -159,10 +159,9 @@
                                 Minimum="1"
                                 Value="{Binding Width}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <Label
-                                Width="120"
-                                Margin="20,0,0,0"
+                                Width="110"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize SettingWindow.Tab4.Text11}" />
                             <NumericUpDown
@@ -173,10 +172,10 @@
                                 Minimum="1"
                                 Value="{Binding Height}" />
                         </StackPanel>
-                        <CheckBox
-                            Margin="20,0,0,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text12}"
-                            IsChecked="{Binding FullScreen}" />
+                        <ToggleSwitch
+                            IsChecked="{Binding FullScreen}"
+                            OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
+                            OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
                     </WrapPanel>
                 </StackPanel>
             </Border>
@@ -202,10 +201,10 @@
                             Content="{setting:Localize SettingWindow.Tab4.Text1}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
+                    <WrapPanel Margin="0,0,0,-5">
+                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <Label
-                                Width="120"
+                                Width="110"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize SettingWindow.Tab4.Text4}" />
                             <NumericUpDown
@@ -215,10 +214,9 @@
                                 Minimum="1"
                                 Value="{Binding MinMemory}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <Label
-                                Width="120"
-                                Margin="20,0,0,0"
+                                Width="110"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize SettingWindow.Tab4.Text5}" />
                             <NumericUpDown
@@ -232,7 +230,7 @@
                     <!--  Jvm参数  -->
                     <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                         <Label
-                            Width="120"
+                            Width="110"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab4.Text2}" />

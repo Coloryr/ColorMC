@@ -431,7 +431,7 @@
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab2.Text8}" />
-                        <ColorPicker Margin="0,0,10,0" Color="{Binding MainColor}" />
+                        <ColorPicker Margin="0,0,5,0" Color="{Binding MainColor}" />
                         <Button
                             Width="100"
                             Height="25"
@@ -594,22 +594,24 @@
                             Margin="5,0,5,0"
                             VerticalAlignment="Center"
                             Text="{Binding Live2DCoreState}" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding DownloadCore}"
-                            Content="{setting:Localize SettingWindow.Tab2.Text31}"
-                            IsEnabled="{Binding !CoreInstall}" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding InstallCore}"
-                            Content="{setting:Localize SettingWindow.Tab2.Text49}"
-                            IsEnabled="{Binding !CoreInstall}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding DownloadCore}"
+                                Content="{setting:Localize SettingWindow.Tab2.Text31}"
+                                IsEnabled="{Binding !CoreInstall}" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding InstallCore}"
+                                Content="{setting:Localize SettingWindow.Tab2.Text49}"
+                                IsEnabled="{Binding !CoreInstall}" />
+                        </StackPanel>
                     </WrapPanel>
                     <ToggleSwitch
                         Margin="0,0,5,0"
@@ -649,7 +651,7 @@
                             DockPanel.Dock="Right"
                             IsEnabled="{Binding CoreInstall}" />
                     </WrapPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                         <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text52}" />
                         <ComboBox
                             Width="150"
