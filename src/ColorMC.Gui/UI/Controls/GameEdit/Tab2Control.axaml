@@ -7,13 +7,11 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    d:DesignHeight="1500"
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
     <ScrollViewer Name="ScrollViewer1">
         <StackPanel Margin="5,0,5,2">
-            <!--  指定Java  -->
             <Border
                 Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
@@ -34,83 +32,6 @@
                         Content="{setting:Localize GameEditWindow.Tab2.Text28}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text38}"
                         ToolTip.VerticalOffset="-30" />
-                </StackPanel>
-            </Border>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/GameEdit/svg5.svg"
-                            Stroke="{setting:Colors Font}" />
-                        <Label
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab2.Text24}"
-                            FontSize="{setting:Style FontTitle}" />
-                    </StackPanel>
-                    <WrapPanel Margin="0,0,0,5">
-                        <Label
-                            Width="140"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab2.Text22}" />
-                        <ComboBox
-                            Width="200"
-                            IsEnabled="{Binding EnableJvmName}"
-                            ItemsSource="{Binding JvmList}"
-                            SelectedItem="{Binding JvmName}" />
-                    </WrapPanel>
-                    <DockPanel Margin="0,0,0,5" IsEnabled="{Binding !Phone}">
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            Command="{Binding OpenJava}"
-                            Content="{setting:Localize Button.Select}"
-                            DockPanel.Dock="Right"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text7}"
-                            ToolTip.VerticalOffset="-30" />
-                        <TextBox
-                            Classes="input1"
-                            Text="{Binding JvmLocal}"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
-                    </DockPanel>
-                    <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label
-                                Width="140"
-                                VerticalAlignment="Center"
-                                Content="{setting:Localize GameEditWindow.Tab2.Text4}" />
-                            <NumericUpDown
-                                Width="150"
-                                Height="30"
-                                Margin="0,0,20,0"
-                                FormatString="N0"
-                                Minimum="1"
-                                Value="{Binding MinMem}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <Label
-                                Width="140"
-                                VerticalAlignment="Center"
-                                Content="{setting:Localize GameEditWindow.Tab2.Text5}" />
-                            <NumericUpDown
-                                Width="150"
-                                Height="30"
-                                FormatString="N0"
-                                Minimum="1"
-                                Value="{Binding MaxMem}" />
-                        </StackPanel>
-                    </WrapPanel>
                 </StackPanel>
             </Border>
 
@@ -136,36 +57,116 @@
                             Content="{setting:Localize GameEditWindow.Tab2.Text9}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <WrapPanel>
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <WrapPanel Margin="0,0,0,-5">
+                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <Label
-                                Width="140"
+                                Width="110"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize GameEditWindow.Tab2.Text10}" />
                             <NumericUpDown
                                 Width="150"
                                 Height="30"
-                                Margin="0,0,20,0"
                                 FormatString="N0"
                                 IsEnabled="{Binding !MaxWindow}"
                                 Minimum="1"
                                 Value="{Binding Width}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <Label
-                                Width="140"
+                                Width="110"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize GameEditWindow.Tab2.Text11}" />
                             <NumericUpDown
                                 Width="150"
                                 Height="30"
-                                Margin="0,0,20,0"
                                 FormatString="N0"
                                 IsEnabled="{Binding !MaxWindow}"
                                 Minimum="1"
                                 Value="{Binding Height}" />
                         </StackPanel>
-                        <CheckBox Content="{setting:Localize GameEditWindow.Tab2.Text12}" IsChecked="{Binding MaxWindow}" />
+                        <ToggleSwitch
+                            Margin="0,0,0,5"
+                            IsChecked="{Binding MaxWindow}"
+                            OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
+                            OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <!--  指定Java  -->
+            <Border
+                Margin="0,0,0,3"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Fill="{setting:Colors Font}"
+                            Path="/Resource/Icon/GameEdit/svg5.svg"
+                            Stroke="{setting:Colors Font}" />
+                        <Label
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize GameEditWindow.Tab2.Text24}"
+                            FontSize="{setting:Style FontTitle}" />
+                    </StackPanel>
+                    <WrapPanel Margin="0,0,0,5">
+                        <Label
+                            Width="110"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize GameEditWindow.Tab2.Text22}" />
+                        <ComboBox
+                            Width="150"
+                            IsEnabled="{Binding EnableJvmName}"
+                            ItemsSource="{Binding JvmList}"
+                            SelectedItem="{Binding JvmName}" />
+                    </WrapPanel>
+                    <DockPanel Margin="0,0,0,5" IsEnabled="{Binding !Phone}">
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding OpenJava}"
+                            Content="{setting:Localize Button.Select}"
+                            DockPanel.Dock="Right"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text7}"
+                            ToolTip.VerticalOffset="-30" />
+                        <TextBox
+                            Classes="input1"
+                            Text="{Binding JvmLocal}"
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
+                    </DockPanel>
+                    <WrapPanel Margin="0,0,0,-5">
+                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
+                            <Label
+                                Width="110"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize GameEditWindow.Tab2.Text4}" />
+                            <NumericUpDown
+                                Width="150"
+                                Height="30"
+                                FormatString="N0"
+                                Minimum="1"
+                                Value="{Binding MinMem}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <Label
+                                Width="110"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize GameEditWindow.Tab2.Text5}" />
+                            <NumericUpDown
+                                Width="150"
+                                Height="30"
+                                FormatString="N0"
+                                Minimum="1"
+                                Value="{Binding MaxMem}" />
+                        </StackPanel>
                     </WrapPanel>
                 </StackPanel>
             </Border>
@@ -240,7 +241,7 @@
                     <!--  Jvm GC  -->
                     <WrapPanel Orientation="Horizontal">
                         <Label
-                            Width="140"
+                            Width="110"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Content="{setting:Localize GameEditWindow.Tab2.Text2}" />
@@ -370,34 +371,37 @@
                             Content="{setting:Localize GameEditWindow.Tab2.Text17}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <WrapPanel Orientation="Horizontal">
+                    <Grid Margin="0,0,5,0" ColumnDefinitions="3*,1*">
                         <TextBox
-                            Width="200"
-                            Margin="0,0,10,0"
+                            Grid.Column="0"
+                            Margin="0,0,10,5"
                             Classes="input1"
                             Text="{Binding ProxyIP}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text18}" />
                         <TextBox
-                            Width="80"
-                            Margin="0,0,10,0"
+                            Grid.Column="1"
+                            Margin="0,0,0,5"
                             Classes="input1"
                             MaxLength="5"
                             Text="{Binding ProxyPort}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text19}" />
+
+                    </Grid>
+                    <Grid Margin="0,0,5,0" ColumnDefinitions="*,*">
                         <TextBox
-                            Width="200"
-                            Margin="0,0,10,0"
+                            Grid.Column="0"
+                            Margin="0,0,10,5"
                             Classes="input1"
                             Text="{Binding ProxyUser}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text20}" />
                         <TextBox
-                            Name="TextBox10"
-                            Width="200"
+                            Grid.Column="1"
+                            Margin="0,0,0,5"
                             Classes="input1"
                             PasswordChar="*"
                             Text="{Binding ProxyPassword}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text21}" />
-                    </WrapPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
         </StackPanel>

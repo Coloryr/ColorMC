@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.NetFrp.NetFrpTab1Control"
+    x:Class="ColorMC.Gui.UI.Controls.NetFrp.NetFrpTab5Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -26,27 +26,27 @@
                         MinWidth="200"
                         Margin="0,0,5,5"
                         Classes="input1"
-                        Text="{Binding KeySakura}"
+                        Text="{Binding KeyOpenFrp}"
                         Watermark="{setting:Localize NetFrpWindow.Tab1.Text1}" />
+                    <!--<Button
+                        Width="100"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding TestKeyOpenFrp}"
+                        Content="{setting:Localize NetFrpWindow.Tab1.Text2}" />-->
                     <Button
                         Width="100"
                         Height="25"
                         Margin="0,0,5,0"
-                        Command="{Binding TestKeySakura}"
-                        Content="{setting:Localize NetFrpWindow.Tab1.Text2}" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding OpenUrlSakura}"
+                        Command="{Binding OpenUrlOpenFrp}"
                         Content="{setting:Localize AddWindow.Control.Text3}" />
                     <Label VerticalAlignment="Center" Content="{setting:Localize NetFrpWindow.Tab1.Text3}" />
                     <Label
                         Margin="0,0,5,0"
                         VerticalAlignment="Center"
-                        Content="{Binding UserSakuraID}" />
+                        Content="{Binding UserOpenFrpID}" />
                     <Label VerticalAlignment="Center" Content="{setting:Localize NetFrpWindow.Tab1.Text4}" />
-                    <Label VerticalAlignment="Center" Content="{Binding UserSakuraName}" />
+                    <Label VerticalAlignment="Center" Content="{Binding UserOpenFrpName}" />
                 </WrapPanel>
             </StackPanel>
         </Border>
@@ -64,7 +64,7 @@
                     <Button
                         Width="100"
                         Height="25"
-                        Command="{Binding GetChannelSakura}"
+                        Command="{Binding GetChannelOpenFrp}"
                         Content="{setting:Localize NetFrpWindow.Tab1.Text6}"
                         DockPanel.Dock="Right" />
                     <Label
@@ -75,7 +75,7 @@
                 </DockPanel>
             </Border>
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding RemotesSakura}">
+                <ItemsControl ItemsSource="{Binding RemotesOpenFrp}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <view:NetFrpRemoteControl Margin="0,0,0,5" DataContext="{Binding}" />
@@ -84,6 +84,5 @@
                 </ItemsControl>
             </ScrollViewer>
         </DockPanel>
-
     </DockPanel>
 </UserControl>

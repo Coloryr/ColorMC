@@ -47,7 +47,7 @@ public partial class NetFrpModel
         {
             if (!BaseBinding.IsGameRun(item))
             {
-                list1.Add(item.UUID);
+                list1.Add(item.Name);
                 list2.Add(item);
             }
         }
@@ -60,6 +60,7 @@ public partial class NetFrpModel
         var item1 = list2[select.Index];
         var item2 = item1.CopyObj();
         item2.UUID = item1.UUID;
+        item2.LaunchData = item1.LaunchData;
         try
         {
             var temp = model.IP.Split(':');

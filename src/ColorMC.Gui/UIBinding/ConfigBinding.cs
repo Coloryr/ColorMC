@@ -595,10 +595,17 @@ public static class ConfigBinding
         StyleSel.Load();
     }
 
-    public static void SetFrpKey1(string key)
+    public static void SetFrpKeySakura(string key)
     {
         FrpConfigUtils.Config.SakuraFrp ??= new();
         FrpConfigUtils.Config.SakuraFrp.Key = key;
+        FrpConfigUtils.Save();
+    }
+
+    public static void SetFrpKeyOpenFrp(string key)
+    {
+        FrpConfigUtils.Config.OpenFrp ??= new();
+        FrpConfigUtils.Config.OpenFrp.Key = key;
         FrpConfigUtils.Save();
     }
 

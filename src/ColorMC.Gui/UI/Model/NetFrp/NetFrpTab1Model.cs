@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Net.Apis;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -13,34 +14,34 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 public partial class NetFrpModel
 {
     [ObservableProperty]
-    private string _key;
+    private string _keySakura;
     [ObservableProperty]
-    private string _user1ID;
+    private string _userSakuraID;
     [ObservableProperty]
-    private string _user1Name;
+    private string _userSakuraName;
 
-    private bool _isLoad1;
+    private bool _isLoadSakura;
 
-    public ObservableCollection<NetFrpRemoteModel> Remotes { get; set; } = [];
+    public ObservableCollection<NetFrpRemoteModel> RemotesSakura { get; set; } = [];
 
-    partial void OnKeyChanged(string value)
+    partial void OnKeySakuraChanged(string value)
     {
-        if (_isLoad1)
+        if (_isLoadSakura)
             return;
 
-        ConfigBinding.SetFrpKey1(Key);
+        ConfigBinding.SetFrpKeySakura(KeySakura);
     }
 
     [RelayCommand]
-    public async Task TestKey1()
+    public async Task TestKeySakura()
     {
-        if (string.IsNullOrWhiteSpace(Key))
+        if (string.IsNullOrWhiteSpace(KeySakura))
         {
             Model.Show(App.Lang("NetFrpWindow.Tab1.Error3"));
             return;
         }
         Model.Progress(App.Lang("NetFrpWindow.Tab1.Info1"));
-        var res = await SakuraFrpAPI.GetUserInfo(Key);
+        var res = await SakuraFrpApi.GetUserInfo(KeySakura);
         Model.ProgressClose();
         if (res == null)
         {
@@ -48,20 +49,20 @@ public partial class NetFrpModel
             return;
         }
 
-        User1ID = res.id.ToString();
-        User1Name = res.name;
+        UserSakuraID = res.id.ToString();
+        UserSakuraName = res.name;
     }
 
     [RelayCommand]
-    public async Task GetChannel1()
+    public async Task GetChannelSakura()
     {
-        if (string.IsNullOrWhiteSpace(Key))
+        if (string.IsNullOrWhiteSpace(KeySakura))
         {
             Model.Show(App.Lang("NetFrpWindow.Tab1.Error3"));
             return;
         }
         Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
-        var res = await SakuraFrpAPI.GetChannel(Key);
+        var res = await SakuraFrpApi.GetChannel(KeySakura);
         Model.ProgressClose();
         if (res == null)
         {
@@ -69,59 +70,57 @@ public partial class NetFrpModel
             return;
         }
 
-        Remotes.Clear();
+        RemotesSakura.Clear();
         foreach (var item in res)
         {
-            Remotes.Add(new(item));
+            RemotesSakura.Add(new(KeySakura, item));
         }
     }
 
     [RelayCommand]
-    public void OpenUrl1()
+    public void OpenUrlSakura()
     {
-        WebBinding.OpenWeb(WebType.NetFrp1);
+        WebBinding.OpenWeb(WebType.NetFrpSakura);
     }
 
-    public async void Load()
+    public async void LoadSakura()
     {
-        _isLoad1 = true;
+        _isLoadSakura = true;
 
         if (FrpConfigUtils.Config.SakuraFrp is { } con)
         {
-            Key = con.Key;
+            KeySakura = con.Key;
         }
 
-        _isLoad1 = false;
+        _isLoadSakura = false;
 
-        if (string.IsNullOrWhiteSpace(Key))
+        if (string.IsNullOrWhiteSpace(KeySakura))
         {
             return;
         }
 
         Model.Progress(App.Lang("NetFrpWindow.Tab1.Info1"));
-        var res = await SakuraFrpAPI.GetUserInfo(Key);
+        var res = await SakuraFrpApi.GetUserInfo(KeySakura);
         if (res == null)
         {
             Model.ProgressClose();
             return;
         }
 
-        User1ID = res.id.ToString();
-        User1Name = res.name;
+        UserSakuraID = res.id.ToString();
+        UserSakuraName = res.name;
         Model.ProgressUpdate(App.Lang("NetFrpWindow.Tab1.Info2"));
-        var res1 = await SakuraFrpAPI.GetChannel(Key);
+        var res1 = await SakuraFrpApi.GetChannel(KeySakura);
         Model.ProgressClose();
         if (res1 == null)
         {
             return;
         }
 
-        Remotes.Clear();
+        RemotesSakura.Clear();
         foreach (var item in res1)
         {
-            Remotes.Add(new(item));
+            RemotesSakura.Add(new(KeySakura, item));
         }
-
-
     }
 }

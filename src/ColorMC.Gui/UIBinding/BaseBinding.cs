@@ -15,6 +15,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI;
@@ -27,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -797,18 +799,18 @@ public static class BaseBinding
         return false;
     }
 
-    public static async Task<bool> StartFrp(string key, NetFrpRemoteModel item1, NetFrpLocalModel model)
+    public static async Task<bool> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
         string file;
         string dir;
         if (SystemInfo.Os == OsType.Android)
         {
-            file = ColorMCGui.PhoneGetFrp.Invoke();
+            file = ColorMCGui.PhoneGetFrp.Invoke(item1.FrpType);
             dir = FrpPath.BaseDir;
         }
-        else
+        else if (item1.FrpType == FrpType.SakuraFrp)
         {
-            var item = await DownloadItemHelper.BuildSakuraFrpItem();
+            var item = await SakuraFrpApi.BuildFrpItem();
             if (item == null)
             {
                 return false;
@@ -825,8 +827,43 @@ public static class BaseBinding
             dir = info2.DirectoryName!;
             file = item.Local;
         }
+        else if (item1.FrpType == FrpType.OpenFrp)
+        {
+            var item = await OpenFrpApi.BuildFrpItem();
+            if (item == null)
+            {
+                return false;
+            }
+            if (!File.Exists(item.Local))
+            {
+                var res = await DownloadManager.Start([item]);
+                if (!res)
+                {
+                    return false;
+                }
+            }
+            var info2 = new FileInfo(item.Local);
+            dir = info2.DirectoryName!;
+            file = item.Local;
+        }
+        else
+        {
+            return false;
+        }
 
-        var info = await SakuraFrpAPI.GetChannelConfig(key, item1.ID);
+        string? info = null;
+        if (item1.FrpType == FrpType.SakuraFrp)
+        {
+            info = await SakuraFrpApi.GetChannelConfig(item1.Key, item1.ID);
+        }
+        else if (item1.FrpType == FrpType.OpenFrp)
+        {
+            var temp = await OpenFrpApi.GetChannelConfig(item1.Key, item1.ID);
+            if (temp != null && temp.proxies?.Count > 0)
+            {
+                info = temp.proxies.Values.First();
+            }
+        }
         if (info == null)
         {
             return false;
@@ -835,45 +872,82 @@ public static class BaseBinding
         var lines = info.Split("\n");
         var builder = new StringBuilder();
 
-        string ip = "";
-
-        foreach (var item2 in lines)
+        if (item1.FrpType == FrpType.SakuraFrp)
         {
-            var item3 = item2.Trim();
-            if (item3.StartsWith("login_fail_exit"))
+            string ip = "";
+
+            foreach (var item2 in lines)
             {
-                builder.AppendLine("login_fail_exit = true");
+                var item3 = item2.Trim();
+                if (item3.StartsWith("login_fail_exit"))
+                {
+                    builder.AppendLine("login_fail_exit = true");
+                }
+                else if (item3.StartsWith("server_addr"))
+                {
+                    ip = item3.Split("=")[1].Trim();
+                    builder.AppendLine(item3);
+                }
+                else if (item3.StartsWith("local_port"))
+                {
+                    builder.AppendLine($"local_port = {model.Port}");
+                }
+                else
+                {
+                    builder.AppendLine(item3);
+                }
             }
-            else if (item3.StartsWith("server_addr"))
+
+            File.WriteAllText(dir + "/server.ini", builder.ToString());
+
+            var p = new Process
             {
-                ip = item3.Split("=")[1].Trim();
-                builder.AppendLine(item3);
-            }
-            else if (item3.StartsWith("local_port"))
-            {
-                builder.AppendLine($"local_port = {model.Port}");
-            }
-            else
-            {
-                builder.AppendLine(item3);
-            }
+                StartInfo = new ProcessStartInfo()
+                {
+                    FileName = file,
+                    WorkingDirectory = dir,
+                    Arguments = "-c server.ini",
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                }
+            };
+            App.ShowNetFrp(p, model, ip + ":" + item1.Remote);
         }
-
-        File.WriteAllText(dir + "/server.ini", builder.ToString());
-
-        var p = new Process
+        else if (item1.FrpType == FrpType.OpenFrp)
         {
-            StartInfo = new ProcessStartInfo()
+            string ip = "";
+
+            foreach (var item2 in lines)
             {
-                FileName = file,
-                WorkingDirectory = dir,
-                Arguments = "-c server.ini",
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                CreateNoWindow = true
+                var item3 = item2.Trim();
+                if (item3.StartsWith("local_port"))
+                {
+                    builder.AppendLine($"local_port = {model.Port}");
+                }
+                else
+                {
+                    builder.AppendLine(item3);
+                }
             }
-        };
-        App.ShowNetFrp(p, model, ip + ":" + item1.Remote);
+
+            File.WriteAllText(dir + "/server.ini", builder.ToString());
+
+            var p = new Process
+            {
+                StartInfo = new ProcessStartInfo()
+                {
+                    FileName = file,
+                    WorkingDirectory = dir,
+                    Arguments = "-c server.ini",
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                }
+            };
+
+            App.ShowNetFrp(p, model, item1.Remote);
+        }
 
         return true;
     }

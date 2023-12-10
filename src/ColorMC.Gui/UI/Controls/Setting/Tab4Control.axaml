@@ -173,6 +173,7 @@
                                 Value="{Binding Height}" />
                         </StackPanel>
                         <ToggleSwitch
+                            Margin="0,0,0,5"
                             IsChecked="{Binding FullScreen}"
                             OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
                             OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />

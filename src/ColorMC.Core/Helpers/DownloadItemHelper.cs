@@ -4,7 +4,6 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Frp;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -20,66 +19,6 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class DownloadItemHelper
 {
-    /// <summary>
-    /// 创建Frp下载项目
-    /// </summary>
-    /// <returns></returns>
-    public static async Task<DownloadItemObj?> BuildSakuraFrpItem()
-    {
-        var data = await SakuraFrpAPI.GetDownload();
-        if (data == null)
-        {
-            return null;
-        }
-
-        SakuraFrpDownloadObj.DownloadItemObj.Arch.ArchItem data1;
-
-        if (SystemInfo.Os == OsType.Windows)
-        {
-            if (SystemInfo.IsArm)
-            {
-                data1 = data.frpc.archs.windows_arm64;
-            }
-            else
-            {
-                data1 = data.frpc.archs.windows_amd64;
-            }
-        }
-        else if (SystemInfo.Os == OsType.Linux)
-        {
-            if (SystemInfo.IsArm)
-            {
-                data1 = data.frpc.archs.linux_arm64;
-            }
-            else
-            {
-                data1 = data.frpc.archs.linux_amd64;
-            }
-        }
-        else if (SystemInfo.Os == OsType.MacOS)
-        {
-            if (SystemInfo.IsArm)
-            {
-                data1 = data.frpc.archs.darwin_arm64;
-            }
-            else
-            {
-                data1 = data.frpc.archs.darwin_amd64;
-            }
-        }
-        else
-        {
-            return null;
-        }
-
-        return new()
-        {
-            Name = $"SakuraFrp {data1.title}",
-            Local = FrpPath.GetSakuraFrpLocal(data.frpc.ver),
-            MD5 = data1.hash,
-            Url = data1.url
-        };
-    }
     /// <summary>
     /// 地图编辑器下载项目
     /// </summary>
