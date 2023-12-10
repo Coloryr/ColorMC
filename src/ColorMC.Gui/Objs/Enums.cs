@@ -138,9 +138,15 @@ public enum WebType
     /// <summary>
     /// 樱花映射
     /// </summary>
-    NetFrp1,
+    NetFrpSakura,
     Apache2_0,
     MIT,
     MiSans,
-    BSD
+    BSD,
+    NetOpenFrp
+}
+
+public enum FrpType
+{ 
+    SakuraFrp, OpenFrp
 }

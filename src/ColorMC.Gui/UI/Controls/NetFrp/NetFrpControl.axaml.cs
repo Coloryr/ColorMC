@@ -14,8 +14,9 @@ public partial class NetFrpControl : MenuControl
     private readonly NetFrpTab2Control _tab2 = new();
     private readonly NetFrpTab3Control _tab3 = new();
     private readonly NetFrpTab4Control _tab4 = new();
+    private readonly NetFrpTab5Control _tab5 = new();
 
-    public override string Title => App.Lang("NetFrpWindow.Ttile");
+    public override string Title => App.Lang("NetFrpWindow.Title");
 
     public override string UseName { get; }
 
@@ -60,12 +61,15 @@ public partial class NetFrpControl : MenuControl
                 model.LoadCloud();
                 return _tab4;
             case 1:
-                model.Load();
+                model.LoadSakura();
                 return _tab1;
             case 2:
+                model.LoadOpenFrp();
+                return _tab5;
+            case 3:
                 model.LoadLocal();
                 return _tab2;
-            case 3:
+            case 4:
                 return _tab3;
             default:
                 throw new InvalidEnumArgumentException();

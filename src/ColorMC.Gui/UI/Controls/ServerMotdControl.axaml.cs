@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -50,6 +51,7 @@ public partial class ServerMotdControl : UserControl
                 var ip = _ip;
                 if (ip == null)
                 {
+                    Button2.IsVisible = false;
                     return;
                 }
                 int index = ip.LastIndexOf(':');
@@ -66,6 +68,7 @@ public partial class ServerMotdControl : UserControl
             }
             _port = data.Item2;
             Update();
+            Button2.IsVisible = true;
         }
     }
 
@@ -79,33 +82,38 @@ public partial class ServerMotdControl : UserControl
         Grid1.IsVisible = true;
 
         _firstLine = true;
-        StackPanel1.Children.Clear();
-        StackPanel2.Children.Clear();
+
+        StackPanel1.Inlines?.Clear();
+        StackPanel2.Inlines?.Clear();
+        StackPanel1.Text = "";
+        StackPanel2.Text = "";
 
         var ip = _ip;
         var port = _port;
         if (ip == null)
-            return;
-
-        var motd = await Task.Run(async () =>
         {
-            return await ServerMotd.GetServerInfo(ip, port);
+            return;
+        }
+
+        var motd = await Task.Run(() =>
+        {
+            return ServerMotd.GetServerInfo(ip, port);
         });
         if (motd.State == StateType.GOOD)
         {
             Grid2.IsVisible = false;
-            await Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                using var stream = new MemoryStream(motd.FaviconByteArray);
-                Image1.Source = new Bitmap(stream);
+            using var stream = new MemoryStream(motd.FaviconByteArray);
+            Image1.Source = new Bitmap(stream);
 
-                Label2.Content = motd.Players.Online;
-                Label3.Content = motd.Players.Max;
-                Label4.Content = motd.Version.Name;
-                Label5.Content = motd.Ping;
+            Label2.Content = motd.Players.Online;
+            Label3.Content = motd.Players.Max;
+            Label4.Content = motd.Version.Name;
+            Label5.Content = motd.Ping;
 
-                MakeText(motd.Description);
-            });
+            MakeText(motd.Description);
+
+            StackPanel1.Inlines?.Add(" ");
+            StackPanel2.Inlines?.Add(" ");
         }
         else
         {
@@ -156,7 +164,7 @@ public partial class ServerMotdControl : UserControl
 
         if (!string.IsNullOrWhiteSpace(chat.Text))
         {
-            TextBlock text = new()
+            var text = new Run()
             {
                 Text = chat.Obfuscated ? " " : chat.Text,
                 Foreground = chat.Color == null ? Brushes.White
@@ -211,15 +219,15 @@ public partial class ServerMotdControl : UserControl
         }
     }
 
-    public void AddText(TextBlock text)
+    public void AddText(Inline text)
     {
         if (_firstLine)
         {
-            StackPanel1.Children.Add(text);
+            StackPanel1.Inlines?.Add(text);
         }
         else
         {
-            StackPanel2.Children.Add(text);
+            StackPanel2.Inlines?.Add(text);
         }
     }
 }

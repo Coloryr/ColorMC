@@ -3,7 +3,7 @@
 /// <summary>
 /// 樱花映射配置
 /// </summary>
-public record SakuraFrpObj
+public record FrpObj
 {
     /// <summary>
     /// 密钥
@@ -19,5 +19,10 @@ public record FrpConfigObj
     /// <summary>
     /// 樱花映射
     /// </summary>
-    public SakuraFrpObj SakuraFrp { get; set; }
+    public FrpObj SakuraFrp { get; set; }
+
+    /// <summary>
+    /// 樱花映射
+    /// </summary>
+    public FrpObj OpenFrp { get; set; }
 }

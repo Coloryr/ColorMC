@@ -27,7 +27,7 @@ public static class ColorMCGui
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
 
     public static Func<Control> PhoneGetSetting { get; set; }
-    public static Func<string> PhoneGetFrp { get; set; }
+    public static Func<FrpType, string> PhoneGetFrp { get; set; }
     public static bool IsAot { get; set; }
 
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";

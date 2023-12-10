@@ -91,7 +91,7 @@ public partial class BaseModel : ObservableObject
     [ObservableProperty]
     private bool _headBack;
     [ObservableProperty]
-    private bool _headBackEnable;
+    private bool _headBackEnable = true;
 
     public SelfPublisher<bool> HeadDisplayObservale = new();
     public SelfPublisher<bool> HeadCloseObservale = new();
@@ -444,6 +444,8 @@ public partial class BaseModel : ObservableObject
 
         _info3.Text1 = "";
         _info3.Text2 = "";
+
+        _info3.Text2Visable = true;
 
         _info3.Watermark1 = title;
         _info3.Watermark2 = title1;

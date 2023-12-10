@@ -24,15 +24,23 @@ public partial class NetFrpModel
 
     public async void StartThisLan(NetFrpLocalModel local)
     {
-        if (Remotes.Count == 0)
+        if (RemotesSakura.Count == 0 || RemotesOpenFrp.Count == 0)
         {
             Model.Show(App.Lang("NetFrpWindow.Tab2.Error2"));
             return;
         }
         var list = new List<string>();
-        foreach (var item in Remotes)
+        var list1 = new List<NetFrpRemoteModel>();
+        foreach (var item in RemotesSakura)
         {
+            list1.Add(item);
             list.Add($"{App.Lang("NetFrpWindow.Tabs.Text1")} {item.Name} {item.ID}");
+        }
+
+        foreach (var item in RemotesOpenFrp)
+        {
+            list1.Add(item);
+            list.Add($"{App.Lang("NetFrpWindow.Tabs.Text14")} {item.Name} {item.ID}");
         }
 
         var (Cancel, Index, _) = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
@@ -41,9 +49,9 @@ public partial class NetFrpModel
             return;
         }
 
-        var item1 = Remotes[Index];
+        var item1 = list1[Index];
         local.IsStart = true;
-        var res1 = await BaseBinding.StartFrp(Key, item1, local);
+        var res1 = await BaseBinding.StartFrp(item1, local);
         if (!res1)
         {
             Model.Show(App.Lang("NetFrpWindow.Tab2.Error1"));

@@ -9,10 +9,12 @@ public partial class NetFrpModel(BaseModel model) : MenuModel(model)
 {
     public override List<MenuObj> TabItems { get; init; } =
     [
-         new() { Icon = "/Resource/Icon/NetFrp/item4.svg",
+        new() { Icon = "/Resource/Icon/NetFrp/item4.svg",
             Text = App.Lang("NetFrpWindow.Tabs.Text4") },
         new() { Icon = "/Resource/Icon/NetFrp/item1.svg",
             Text = App.Lang("NetFrpWindow.Tabs.Text1") },
+        new() { Icon = "/Resource/Icon/NetFrp/item1.svg",
+            Text = App.Lang("NetFrpWindow.Tab1.Text14") },
         new() { Icon = "/Resource/Icon/NetFrp/item2.svg",
             Text = App.Lang("NetFrpWindow.Tabs.Text2") },
         new() { Icon = "/Resource/Icon/NetFrp/item3.svg",
@@ -36,7 +38,7 @@ public partial class NetFrpModel(BaseModel model) : MenuModel(model)
             Model.ShowOk(App.Lang("NetFrpWindow.Tab4.Error2"), WindowClose);
             return;
         }
-        Load();
+        LoadSakura();
         LoadCloud();
     }
 
@@ -44,7 +46,8 @@ public partial class NetFrpModel(BaseModel model) : MenuModel(model)
     {
         _client.Stop();
 
-        Remotes.Clear();
+        RemotesOpenFrp.Clear();
+        RemotesSakura.Clear();
         Locals.Clear();
     }
 }

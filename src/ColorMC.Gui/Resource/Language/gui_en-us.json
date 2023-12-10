@@ -856,7 +856,7 @@
 	"GameCloudWindow.Error7": "Failed to acquire cloud save data",
 	"GameCloudWindow.Error8": "No cloud save",
 	"GameCloudWindow.Error9": "Cloud Archive Extract Failed",
-	"NetFrpWindow.Ttile": "ColorMC Port Mapping",
+	"NetFrpWindow.Title": "ColorMC Port Mapping",
 	"NetFrpWindow.Tabs.Text1": "Cherry Mapping",
 	"NetFrpWindow.Tabs.Text2": "LAN Games",
 	"NetFrpWindow.Tabs.Text3": "Map process",

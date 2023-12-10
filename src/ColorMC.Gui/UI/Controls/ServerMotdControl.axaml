@@ -22,37 +22,45 @@
                     Width="64"
                     Height="64"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    VerticalAlignment="Center"
                     Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
                 <StackPanel Margin="64,0,0,0" VerticalAlignment="Center">
-                    <StackPanel
+					<TextBlock
                         Name="StackPanel1"
                         Margin="3,0,0,0"
-                        Orientation="Horizontal" />
-                    <StackPanel
+                        TextTrimming="CharacterEllipsis" />
+					<TextBlock
                         Name="StackPanel2"
                         Margin="3,0,0,0"
-                        Orientation="Horizontal" />
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="{setting:Localize ServerMotdControl.Text1}" Foreground="{setting:Colors Motd}" />
-                        <Label
-                            Name="Label2"
-                            Content="0"
-                            Foreground="{setting:Colors Motd}" />
-                        <Label Content="/" Foreground="{setting:Colors Motd}" />
-                        <Label
-                            Name="Label3"
-                            Content="0"
-                            Foreground="{setting:Colors Motd}" />
-                        <Label
-                            Margin="10,0,0,0"
-                            Content="{setting:Localize ServerMotdControl.Text2}"
-                            Foreground="{setting:Colors Motd}" />
-                        <Label
-                            Name="Label4"
-                            Content="ServerType"
-                            Foreground="{setting:Colors Motd}" />
-                    </StackPanel>
+                        TextTrimming="CharacterEllipsis" />
+                    <WrapPanel>
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <Label Content="{setting:Localize ServerMotdControl.Text1}" Foreground="{setting:Colors Motd}" />
+                            <Label
+                                Name="Label2"
+                                Content="0"
+                                Foreground="{setting:Colors Motd}" />
+                            <Label Content="/" Foreground="{setting:Colors Motd}" />
+                            <Label
+                                Name="Label3"
+                                Content="0"
+                                Foreground="{setting:Colors Motd}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{setting:Localize ServerMotdControl.Text2}" Foreground="{setting:Colors Motd}" />
+                            <Label
+                                Name="Label4"
+                                Content="0"
+                                Foreground="{setting:Colors Motd}" />
+                        </StackPanel>
+                        <Button
+                            Name="Button2"
+                            Width="80"
+                            Height="20"
+                            Margin="5,0,0,0"
+                            Content="{setting:Localize Button.Refash}"
+                            IsVisible="False" />
+                    </WrapPanel>
                 </StackPanel>
                 <StackPanel
                     Margin="0,0,10,0"
@@ -64,7 +72,7 @@
                         Foreground="{setting:Colors Motd}" />
                     <Label
                         Name="Label5"
-                        Content="ServerType"
+                        Content="999"
                         Foreground="{setting:Colors Motd}" />
                 </StackPanel>
             </Panel>
@@ -92,15 +100,6 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize ServerMotdControl.Text5}" />
             </Panel>
-
-            <Button
-                Name="Button2"
-                Width="80"
-                Height="20"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Content="{setting:Localize Button.Refash}" />
         </Panel>
     </Border>
 </UserControl>

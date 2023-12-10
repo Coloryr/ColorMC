@@ -823,7 +823,7 @@ public static class InstancesPath
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Game.Error8"), e);
-            obj.Mods = new();
+            obj.Mods = [];
             return;
         }
     }

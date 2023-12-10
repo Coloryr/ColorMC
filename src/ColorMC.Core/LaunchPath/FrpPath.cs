@@ -1,4 +1,7 @@
-﻿namespace ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+
+namespace ColorMC.Core.LaunchPath;
 
 public static class FrpPath
 {
@@ -23,6 +26,11 @@ public static class FrpPath
         Directory.CreateDirectory(BaseDir);
     }
 
+    private static string GetFrpcName()
+    {
+        return SystemInfo.Os == OsType.Windows ? "frpc.exe" : "frpc";
+    }
+
     /// <summary>
     /// 获取SakuraFrp文件路径
     /// </summary>
@@ -30,6 +38,16 @@ public static class FrpPath
     /// <returns></returns>
     public static string GetSakuraFrpLocal(string ver)
     {
-        return $"{BaseDir}/SakuraFrp/{ver}/frpc.exe";
+        return $"{BaseDir}/SakuraFrp/{ver}/{GetFrpcName()}";
+    }
+
+    /// <summary>
+    /// 获取SakuraFrp文件路径
+    /// </summary>
+    /// <param name="ver"></param>
+    /// <returns></returns>
+    public static string GetOpenFrpLocal(string ver, bool dir = false)
+    {
+        return dir ? $"{BaseDir}/OpenFrp/{ver}/" : $"{BaseDir}/OpenFrp/{ver}/{GetFrpcName()}";
     }
 }

@@ -19,6 +19,7 @@
                 Width="100"
                 Height="25"
                 VerticalAlignment="Bottom"
+                Command="{Binding Join}"
                 Content="{setting:Localize NetFrpWindow.Tab4.Text3}"
                 DockPanel.Dock="Right" />
             <Button
@@ -26,6 +27,7 @@
                 Height="25"
                 Margin="10,0,5,0"
                 VerticalAlignment="Bottom"
+                Command="{Binding Copy}"
                 Content="{setting:Localize NetFrpWindow.Tab4.Text4}"
                 DockPanel.Dock="Right" />
             <StackPanel Margin="5,0,0,0">

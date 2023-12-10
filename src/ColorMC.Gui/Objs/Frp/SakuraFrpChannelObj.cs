@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Objs.Frp;
+﻿namespace ColorMC.Gui.Objs.Frp;
 
 public record SakuraFrpChannelObj
 {

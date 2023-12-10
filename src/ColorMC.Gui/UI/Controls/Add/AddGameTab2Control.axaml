@@ -82,22 +82,20 @@
                         Content="{setting:Localize AddGameWindow.Tab2.Text2}"
                         FontSize="{setting:Style FontTitle}" />
                 </StackPanel>
-                <Panel>
-                    <ComboBox
-                        Width="200"
-                        Margin="0,0,5,0"
-                        ItemsSource="{Binding PackTypeList}"
-                        SelectedIndex="{Binding Type}" />
-                    <Button
-                        Width="100"
-                        Height="25"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Command="{Binding AddPackGame}"
-                        Content="{setting:Localize AddGameWindow.Text1}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                        ToolTip.VerticalOffset="-30" />
-                </Panel>
+                <ComboBox
+                    Width="200"
+                    Margin="0,0,5,0"
+                    ItemsSource="{Binding PackTypeList}"
+                    SelectedIndex="{Binding Type}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Command="{Binding AddPackGame}"
+                    Content="{setting:Localize AddGameWindow.Text1}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text84}"
+                    ToolTip.VerticalOffset="-30" />
             </StackPanel>
         </Border>
     </StackPanel>
