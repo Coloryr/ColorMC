@@ -17,12 +17,45 @@
         <DockPanel>
             <StackPanel
                 Name="StackPanel1"
-                DockPanel.Dock="Left"
-                Orientation="Horizontal" />
+                DockPanel.Dock="Right"
+                Orientation="Horizontal">
+                <Button
+                    Width="80"
+                    Height="35"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding ChoiseClick}"
+                    Content="{Binding HeadChoiseContent}"
+                    CornerRadius="0"
+                    Foreground="White"
+                    IsVisible="{Binding HeadChoiseDisplay}" />
+                <Button
+                    Width="80"
+                    Height="35"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding Choise1Click}"
+                    Content="{Binding HeadChoise1Content}"
+                    CornerRadius="0"
+                    Foreground="White"
+                    IsVisible="{Binding HeadChoise1Display}" />
+                <Button
+                    Width="80"
+                    Height="35"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding BackClick}"
+                    Content="{setting:Localize Gui.Info31}"
+                    CornerRadius="0"
+                    Foreground="White"
+                    IsEnabled="{Binding HeadBackEnable}"
+                    IsVisible="{Binding HeadBack}" />
+            </StackPanel>
             <Border
                 Name="Icons"
                 Width="25"
                 Height="25"
+                Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 DockPanel.Dock="Left">

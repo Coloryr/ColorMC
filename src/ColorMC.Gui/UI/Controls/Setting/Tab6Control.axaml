@@ -106,26 +106,26 @@
                     </StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <ToggleSwitch
-                            Margin="0,0,20,0"
+                            Margin="0,0,10,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding EnableOneGame}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text7}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text7}" />
                         <ComboBox
-                            Width="200"
+                            Width="175"
                             IsEnabled="{Binding EnableOneGame}"
                             ItemsSource="{Binding GameList}"
                             SelectedIndex="{Binding Game}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <ToggleSwitch
-                            Margin="0,0,20,0"
+                            Margin="0,0,10,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding EnableOneLogin}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text24}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text24}" />
                         <ComboBox
-                            Width="200"
+                            Width="175"
                             IsEnabled="{Binding EnableOneLogin}"
                             ItemsSource="{Binding LoginList}"
                             SelectedIndex="{Binding Login}" />
@@ -177,7 +177,7 @@
                             Text="{Binding FileUI}"
                             Watermark="{setting:Localize SettingWindow.Tab6.Text9}" />
                     </DockPanel>
-                    <WrapPanel HorizontalAlignment="Right">
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             Width="100"
                             Height="25"
@@ -201,7 +201,7 @@
                             Content="{setting:Localize SettingWindow.Tab6.Text11}"
                             DockPanel.Dock="Right"
                             IsEnabled="{Binding FileUI, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                    </WrapPanel>
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <Border
@@ -226,14 +226,14 @@
                             Content="{setting:Localize SettingWindow.Tab6.Text29}"
                             FontSize="{setting:Style FontTitle}" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <WrapPanel>
                         <ToggleSwitch
-                            Margin="0,0,20,0"
+                            Margin="0,0,10,0"
                             IsChecked="{Binding EnableMusic}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text16}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text16}" />
                         <ToggleSwitch
-                            Margin="0,0,20,0"
+                            Margin="0,0,10,0"
                             IsEnabled="{Binding EnableMusic}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text22}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text22}" />
@@ -241,7 +241,7 @@
                             IsEnabled="{Binding RunPause}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text26}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text26}" />
-                    </StackPanel>
+                    </WrapPanel>
                     <DockPanel>
                         <Button
                             Width="100"
@@ -258,8 +258,8 @@
                             Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
                     </DockPanel>
 
-                    <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
+                    <WrapPanel Margin="0,0,0,-5">
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <Label
                                 Margin="5,0,0,0"
                                 VerticalAlignment="Center"
@@ -287,27 +287,28 @@
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="0,0,5,0"
+                            Margin="0,0,5,5"
                             Command="{Binding MusicStart}"
                             Content="{setting:Localize SettingWindow.Tab6.Text19}"
                             IsEnabled="{Binding EnableMusic}" />
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="0,0,5,0"
+                            Margin="0,0,5,5"
                             Command="{Binding MusicPause}"
                             Content="{setting:Localize SettingWindow.Tab6.Text21}"
                             IsEnabled="{Binding EnableMusic}" />
                         <Button
                             Width="100"
                             Height="25"
-                            Margin="0,0,5,0"
+                            Margin="0,0,5,5"
                             Command="{Binding MusicPlay}"
                             Content="{setting:Localize SettingWindow.Tab6.Text23}"
                             IsEnabled="{Binding EnableMusic}" />
                         <Button
                             Width="100"
                             Height="25"
+                            Margin="0,0,5,5"
                             Command="{Binding MusicStop}"
                             Content="{setting:Localize SettingWindow.Tab6.Text20}"
                             IsEnabled="{Binding EnableMusic}" />

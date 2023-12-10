@@ -42,7 +42,8 @@
                             Background="Transparent"
                             BorderThickness="0"
                             Command="{Binding ShowUser}"
-                            DockPanel.Dock="Left">
+                            DockPanel.Dock="Left"
+                            IsVisible="{Binding TopSide1}">
                             <Panel>
                                 <Border
                                     Width="38"
@@ -67,7 +68,8 @@
                         <StackPanel
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
-                            DockPanel.Dock="Left">
+                            DockPanel.Dock="Left"
+                            IsVisible="{Binding TopSide1}">
                             <TextBlock Text="{Binding UserId}" />
                             <TextBlock Text="{Binding UserType}" />
                         </StackPanel>
@@ -75,87 +77,100 @@
                             HorizontalAlignment="Right"
                             DockPanel.Dock="Right"
                             Orientation="Horizontal">
+                            <StackPanel IsVisible="{Binding TopSide}" Orientation="Horizontal">
+                                <Button
+                                    Width="38"
+                                    Height="38"
+                                    Command="{Binding Upgrade}"
+                                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                                    IsVisible="{Binding HaveUpdate}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text73}"
+                                    ToolTip.VerticalOffset="-30">
+                                    <Svg Path="/Resource/Icon/upgrade.svg" />
+                                </Button>
+                                <Button
+                                    Width="38"
+                                    Height="38"
+                                    Margin="3,0,0,0"
+                                    Command="{Binding NewInfo}"
+                                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text74}"
+                                    ToolTip.VerticalOffset="-30">
+                                    <Svg Path="/Resource/Icon/new.svg" />
+                                </Button>
+                                <Button
+                                    Width="38"
+                                    Height="38"
+                                    Margin="3,0,0,0"
+                                    Command="{Binding MusicPause}"
+                                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                                    IsVisible="{Binding MusicDisplay}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text48}"
+                                    ToolTip.VerticalOffset="-30">
+                                    <Svg Path="/Resource/Icon/play.svg" />
+                                </Button>
+                                <Button
+                                    Width="38"
+                                    Height="38"
+                                    Margin="3,0,0,0"
+                                    Command="{Binding OpenNetFrp}"
+                                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text72}"
+                                    ToolTip.VerticalOffset="-30">
+                                    <Svg Path="/Resource/Icon/net.svg" />
+                                </Button>
+                                <Button
+                                    Width="38"
+                                    Height="38"
+                                    Margin="3,0,0,0"
+                                    Command="{Binding OpenGuide}"
+                                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text70}"
+                                    ToolTip.VerticalOffset="-30">
+                                    <Svg Path="/Resource/Icon/book.svg" />
+                                </Button>
+                                <Button
+                                    Width="38"
+                                    Height="38"
+                                    Margin="3,0,0,0"
+                                    Command="{Binding ShowSkin}"
+                                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text9}"
+                                    ToolTip.VerticalOffset="-30">
+                                    <Svg Path="/Resource/Icon/skin.svg" />
+                                </Button>
+                                <Button
+                                    Width="38"
+                                    Height="38"
+                                    Margin="3,0,0,0"
+                                    Command="{Binding ShowCount}"
+                                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                                    IsVisible="{Binding !IsPhone}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text92}"
+                                    ToolTip.VerticalOffset="-30">
+                                    <Svg Path="/Resource/Icon/count.svg" />
+                                </Button>
+                                <Button
+                                    Width="38"
+                                    Height="38"
+                                    Margin="3,0,0,0"
+                                    Command="{Binding ShowSetting}"
+                                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text13}"
+                                    ToolTip.VerticalOffset="-30">
+                                    <Svg Path="/Resource/Icon/setting.svg" />
+                                </Button>
+                            </StackPanel>
                             <Button
                                 Width="38"
                                 Height="38"
-                                Margin="0,0,3,0"
-                                Command="{Binding Upgrade}"
+                                Margin="3,0,0,0"
+                                Command="{Binding OpenSide}"
                                 CornerRadius="{setting:Style ButtonCornerRadius}"
-                                IsVisible="{Binding HaveUpdate}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text73}"
+                                IsVisible="{Binding TopSide2}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text126}"
                                 ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/upgrade.svg" />
-                            </Button>
-                            <Button
-                                Width="38"
-                                Height="38"
-                                Margin="0,0,3,0"
-                                Command="{Binding NewInfo}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text74}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/new.svg" />
-                            </Button>
-                            <Button
-                                Width="38"
-                                Height="38"
-                                Margin="0,0,3,0"
-                                Command="{Binding MusicPause}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
-                                IsVisible="{Binding MusicDisplay}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text48}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/play.svg" />
-                            </Button>
-                            <Button
-                                Width="38"
-                                Height="38"
-                                Margin="0,0,3,0"
-                                Command="{Binding OpenNetFrp}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text72}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/net.svg" />
-                            </Button>
-                            <Button
-                                Width="38"
-                                Height="38"
-                                Margin="0,0,3,0"
-                                Command="{Binding OpenGuide}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text70}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/book.svg" />
-                            </Button>
-                            <Button
-                                Width="38"
-                                Height="38"
-                                Margin="0,0,3,0"
-                                Command="{Binding ShowSkin}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/skin.svg" />
-                            </Button>
-                            <Button
-                                Width="38"
-                                Height="38"
-                                Margin="0,0,3,0"
-                                Command="{Binding ShowCount}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
-                                IsVisible="{Binding !IsPhone}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text92}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/count.svg" />
-                            </Button>
-                            <Button
-                                Width="38"
-                                Height="38"
-                                Command="{Binding ShowSetting}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text13}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/setting.svg" />
+                                <Svg Path="{Binding SidePath}" />
                             </Button>
                         </StackPanel>
                     </DockPanel>

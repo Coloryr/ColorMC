@@ -26,25 +26,26 @@
                     Name="Image1"
                     Width="160"
                     Height="160"
-                    Margin="80,0,10,0"
+                    Margin="60,0,10,0"
                     HorizontalAlignment="Center"
                     Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
 
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <StackPanel Name="StackPanel1">
                         <Label Content="ColorMC" FontSize="60" />
-                        <Label Content="{setting:Localize SettingWindow.Tab7.Text1}" FontSize="25" />
                         <Label Content="{setting:Localize SettingWindow.Tab7.Text2}" FontSize="25" />
                         <StackPanel Orientation="Horizontal">
                             <Label Content="{setting:Localize Text.Version}" FontSize="20" />
                             <Label Content="{Binding Version}" FontSize="20" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
                             <Label Content="{setting:Localize SettingWindow.Tab7.Text10}" FontSize="20" />
                             <Label Content="{Binding RunType}" FontSize="20" />
                         </StackPanel>
                     </StackPanel>
 
                     <StackPanel Name="StackPanel2" MaxWidth="350">
-                        <StackPanel Orientation="Horizontal">
+                        <WrapPanel>
                             <views:HyperLink
                                 Margin="5,0,0,0"
                                 HorizontalAlignment="Stretch"
@@ -65,8 +66,8 @@
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text5}"
                                 Command="{Binding OpenUrl3}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        </WrapPanel>
+                        <WrapPanel>
                             <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
@@ -77,8 +78,8 @@
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text4}"
                                 Command="{Binding OpenUrl6}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        </WrapPanel>
+                        <WrapPanel>
                             <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
@@ -94,7 +95,7 @@
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text14}"
                                 Command="{Binding OpenUrl10}" />
-                        </StackPanel>
+                        </WrapPanel>
                         <StackPanel>
                             <views:HyperLink
                                 Margin="5,0,0,5"

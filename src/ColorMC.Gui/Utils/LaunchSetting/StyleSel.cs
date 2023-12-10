@@ -12,7 +12,7 @@ public static class StyleSel
     private static readonly Dictionary<string, List<WeakReference<IObserver<object?>>>> s_styleList = [];
 
     private static readonly double s_fontTitleSize = 17;
-    private static readonly Thickness s_borderPadding = new(6);
+    private static readonly Thickness s_borderPadding = new(6,6,15,6);
 
     private static CornerRadius s_buttonCornerRadius = new(3);
     private static CornerRadius s_picRadius = new(0);

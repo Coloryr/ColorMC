@@ -1069,6 +1069,7 @@
 	"ToolTip.Text123": "删除所有保存的账户",
 	"ToolTip.Text124": "重置为默认颜色",
 	"ToolTip.Text125": "双击可启动实例，右键可以打开实例下拉菜单\n实例添加于{0}\n最后启动于{1}\n上次游戏时间{2}\n总游戏时间{3}",
+	"ToolTip.Text126": "展示工具栏",
 	"Text.ForgeVersion": "Forge版本",
 	"Text.GameVersion": "游戏版本",
 	"Text.Name": "名字",

@@ -21,36 +21,36 @@
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}"
             DockPanel.Dock="Top">
-            <WrapPanel>
+            <WrapPanel Margin="0,0,0,-5">
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding ShowAddJava}"
                     Content="{setting:Localize SettingWindow.Tab5.Text4}" />
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding OpenJavaFile}"
                     Content="{setting:Localize SettingWindow.Tab5.Text7}"
                     IsEnabled="{Binding !Phone}" />
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding DeleteJava}"
                     Content="{setting:Localize SettingWindow.Tab5.Text5}" />
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding AddJavaZip}"
                     Content="{setting:Localize SettingWindow.Tab5.Text8}" />
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="0,0,5,0"
+                    Margin="0,0,5,5"
                     Command="{Binding LoadJava}"
                     Content="{setting:Localize Button.Refash}" />
             </WrapPanel>

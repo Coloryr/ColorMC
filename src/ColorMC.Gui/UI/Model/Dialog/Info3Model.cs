@@ -58,6 +58,4 @@ public partial class Info3Model(string? name) : ObservableObject
 
         DialogHost.Close(name);
     }
-
-
 }

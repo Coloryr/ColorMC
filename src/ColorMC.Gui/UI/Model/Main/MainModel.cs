@@ -26,6 +26,14 @@ public partial class MainModel : TopModel, IMainTop
     public ObservableCollection<string> GroupList { get; init; } = [];
     public ObservableCollection<GamesModel> GameGroups { get; init; } = [];
 
+    public bool IsPhone { get; } = SystemInfo.Os == OsType.Android;
+
+    private static readonly string[] _side =
+    [
+        "/Resource/Icon/left.svg",
+        "/Resource/Icon/menu.svg"
+    ];
+
     private readonly Semaphore _semaphore = new(0, 2);
     private readonly Dictionary<string, GameItemModel> Launchs = [];
 
@@ -80,18 +88,52 @@ public partial class MainModel : TopModel, IMainTop
     [ObservableProperty]
     private bool _haveUpdate;
 
+    [ObservableProperty]
+    private bool _topSide = true;
+    [ObservableProperty]
+    private bool _topSide1 = true;
+    [ObservableProperty]
+    private bool _topSide2 = false;
+    [ObservableProperty]
+    private string _sidePath = _side[0];
+
     private bool _isNewUpdate;
     private string _updateStr;
 
     private bool _isGetNewInfo;
-
-    public bool IsPhone { get; } = SystemInfo.Os == OsType.Android;
-
+    
     public MainModel(BaseModel model) : base(model)
     {
         App.SkinLoad += App_SkinLoad;
 
         App.UserEdit += LoadUser;
+    }
+
+    partial void OnTopSideChanged(bool value)
+    {
+        if (value)
+        {
+            SidePath = _side[1];
+        }
+        else
+        {
+            SidePath = _side[0];
+        }
+    }
+
+    [RelayCommand]
+    public void OpenSide()
+    {
+        if (TopSide)
+        {
+            TopSide1 = true;
+            TopSide = false;
+        }
+        else
+        {
+            TopSide1 = false;
+            TopSide = true;
+        }
     }
 
     [RelayCommand]
