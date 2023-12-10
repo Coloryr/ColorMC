@@ -58,12 +58,12 @@ public static class OpenFrpApi
     /// 创建Frp下载项目
     /// </summary>
     /// <returns></returns>
-    public static async Task<DownloadItemObj?> BuildFrpItem()
+    public static async Task<(DownloadItemObj?, string?)> BuildFrpItem()
     {
         var data = await GetDownload();
         if (data == null || data.data == null)
         {
-            return null;
+            return (null, null);
         }
 
         string data1;
@@ -103,19 +103,19 @@ public static class OpenFrpApi
         }
         else
         {
-            return null;
+            return (null, null);
         }
 
-        return new()
+        return (new()
         {
             Name = $"OpenFrp {data1}",
             Local = FrpPath.GetOpenFrpLocal(data.data.latest_full, true) + data1,
-            Url = data.data.source[0].value + "/" + data.data.latest + data1,
+            Url = data.data.source[0].value + data.data.latest + data1,
             Later = (stream) => 
             {
                 Unzip(stream, data.data.latest_full, data1);
             }
-        };
+        }, FrpPath.GetOpenFrpLocal(data.data.latest_full));
     }
 
     private static void Unzip(Stream stream, string version, string file)

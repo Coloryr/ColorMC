@@ -80,7 +80,7 @@ public partial class NetFrpModel
     [RelayCommand]
     public void OpenUrlSakura()
     {
-        WebBinding.OpenWeb(WebType.NetFrpSakura);
+        WebBinding.OpenWeb(WebType.SakuraFrp);
     }
 
     public async void LoadSakura()

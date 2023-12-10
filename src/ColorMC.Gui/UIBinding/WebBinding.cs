@@ -745,12 +745,13 @@ public static class WebBinding
             WebType.Github => "https://www.github.com/Coloryr/ColorMC",
             WebType.Sponsor => "https://coloryr.github.io/sponsor.html",
             WebType.Minecraft => "https://www.minecraft.net/",
-            WebType.NetFrpSakura => "https://www.natfrp.com/user/",
+            WebType.SakuraFrp => "https://www.natfrp.com/user/",
             WebType.Apache2_0 => "https://www.apache.org/licenses/LICENSE-2.0.html",
             WebType.MIT => "https://mit-license.org/",
             WebType.MiSans => "https://hyperos.mi.com/font/",
             WebType.BSD => "https://licenses.nuget.org/BSD-2-Clause",
-            WebType.NetOpenFrp => "https://console.openfrp.net/home/",
+            WebType.OpenFrp => "https://console.openfrp.net/home/",
+            WebType.OpenFrpApi=> "https://github.com/ZGIT-Network/OPENFRP-APIDOC",
             _ => "https://colormc.coloryr.com"
         });
     }

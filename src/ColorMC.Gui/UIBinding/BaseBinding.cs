@@ -799,7 +799,7 @@ public static class BaseBinding
         return false;
     }
 
-    public static async Task<bool> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
+    public static async Task<(bool, Process?, string?)> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
         string file;
         string dir;
@@ -808,49 +808,35 @@ public static class BaseBinding
             file = ColorMCGui.PhoneGetFrp.Invoke(item1.FrpType);
             dir = FrpPath.BaseDir;
         }
-        else if (item1.FrpType == FrpType.SakuraFrp)
-        {
-            var item = await SakuraFrpApi.BuildFrpItem();
-            if (item == null)
-            {
-                return false;
-            }
-            if (!File.Exists(item.Local))
-            {
-                var res = await DownloadManager.Start([item]);
-                if (!res)
-                {
-                    return false;
-                }
-            }
-            var info2 = new FileInfo(item.Local);
-            dir = info2.DirectoryName!;
-            file = item.Local;
-        }
-        else if (item1.FrpType == FrpType.OpenFrp)
-        {
-            var item = await OpenFrpApi.BuildFrpItem();
-            if (item == null)
-            {
-                return false;
-            }
-            if (!File.Exists(item.Local))
-            {
-                var res = await DownloadManager.Start([item]);
-                if (!res)
-                {
-                    return false;
-                }
-            }
-            var info2 = new FileInfo(item.Local);
-            dir = info2.DirectoryName!;
-            file = item.Local;
-        }
         else
         {
-            return false;
+            DownloadItemObj? obj = null;
+            string? local = "";
+            if (item1.FrpType == FrpType.SakuraFrp)
+            {
+                obj = await SakuraFrpApi.BuildFrpItem();
+                local = obj?.Local;
+            }
+            else if (item1.FrpType == FrpType.OpenFrp)
+            {
+                (obj, local) = await OpenFrpApi.BuildFrpItem();
+            }
+            if (obj == null)
+            {
+                return (false, null, null);
+            }
+            if (!File.Exists(obj.Local))
+            {
+                var res = await DownloadManager.Start([obj]);
+                if (!res)
+                {
+                    return (false, null, null);
+                }
+            }
+            file = local!;
+            var info2 = new FileInfo(file);
+            dir = info2.DirectoryName!;
         }
-
         string? info = null;
         if (item1.FrpType == FrpType.SakuraFrp)
         {
@@ -866,7 +852,7 @@ public static class BaseBinding
         }
         if (info == null)
         {
-            return false;
+            return (false, null, null);
         }
 
         var lines = info.Split("\n");
@@ -912,12 +898,11 @@ public static class BaseBinding
                     CreateNoWindow = true
                 }
             };
-            App.ShowNetFrp(p, model, ip + ":" + item1.Remote);
+
+            return (true, p, ip + ":" + item1.Remote);
         }
         else if (item1.FrpType == FrpType.OpenFrp)
         {
-            string ip = "";
-
             foreach (var item2 in lines)
             {
                 var item3 = item2.Trim();
@@ -946,10 +931,10 @@ public static class BaseBinding
                 }
             };
 
-            App.ShowNetFrp(p, model, item1.Remote);
+            return (true, p, item1.Remote);
         }
 
-        return true;
+        return (false, null, null);
     }
 
     public static void Clear()

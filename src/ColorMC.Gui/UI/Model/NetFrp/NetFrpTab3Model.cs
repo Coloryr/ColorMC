@@ -34,7 +34,9 @@ public partial class NetFrpModel
     private string _remoteIP;
     private string _localIP;
 
-    public void SetProcess(Process process, NetFrpLocalModel model, string ip)
+    private NetFrpLocalModel _now;
+
+    private void SetProcess(Process process, NetFrpLocalModel model, string ip)
     {
         if (_process != null)
         {
@@ -67,6 +69,8 @@ public partial class NetFrpModel
     private void Process_Exited(object? sender, EventArgs e)
     {
         IsRuning = false;
+
+        _now.IsStart = false;
     }
 
     private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
@@ -78,7 +82,8 @@ public partial class NetFrpModel
     {
         Log(e.Data);
         if (e.Data?.Contains("TCP 类型隧道启动成功") == true
-            || e.Data?.Contains("Your TCP proxy is available now") == true)
+            || e.Data?.Contains("Your TCP proxy is available now") == true
+            || e.Data?.Contains("来连接服务, 或使用IP地址(不推荐)") == true)
         {
             _isOut.Add(_localIP);
             Dispatcher.UIThread.Post(() =>
@@ -103,7 +108,9 @@ public partial class NetFrpModel
             Model.Show(App.Lang("NetFrpWindow.Tab4.Error1"));
             return;
         }
+        Model.Progress(App.Lang("NetFrpWindow.Tab3.Info5"));
         res = await WebBinding.ShareIP(user.AccessToken, _remoteIP);
+        Model.ProgressClose();
         if (!res)
         {
             Model.Show(App.Lang("NetFrpWindow.Tab3.Error1"));
