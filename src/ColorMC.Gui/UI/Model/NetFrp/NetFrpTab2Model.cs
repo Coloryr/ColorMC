@@ -1,5 +1,6 @@
 ﻿using Avalonia.Threading;
 using ColorMC.Core.Game;
+using ColorMC.Gui.UI.Controls.NetFrp;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
@@ -40,7 +41,7 @@ public partial class NetFrpModel
         foreach (var item in RemotesOpenFrp)
         {
             list1.Add(item);
-            list.Add($"{App.Lang("NetFrpWindow.Tabs.Text14")} {item.Name} {item.ID}");
+            list.Add($"{App.Lang("NetFrpWindow.Tabs.Text5")} {item.Name} {item.ID}");
         }
 
         var (Cancel, Index, _) = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
@@ -52,13 +53,16 @@ public partial class NetFrpModel
         var item1 = list1[Index];
         local.IsStart = true;
         var res1 = await BaseBinding.StartFrp(item1, local);
-        if (!res1)
+        if (!res1.Item1)
         {
             Model.Show(App.Lang("NetFrpWindow.Tab2.Error1"));
         }
         else
         {
+            local.IsStart = false;
+            SetProcess(res1.Item2!, local, res1.Item3!);
             Model.Notify(App.Lang("NetFrpWindow.Tab2.Info2"));
+            NowView = 4;
         }
     }
 

@@ -45,13 +45,6 @@ public partial class NetFrpControl : MenuControl
         return new NetFrpModel(model);
     }
 
-    public void SetProcess(Process process, NetFrpLocalModel model1, string ip)
-    {
-        var model = (DataContext as NetFrpModel)!;
-        model.SetProcess(process, model1, ip);
-        model.NowView = 3;
-    }
-
     protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as NetFrpModel)!;

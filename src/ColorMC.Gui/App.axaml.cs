@@ -752,7 +752,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowNetFrp(Process? p = null, NetFrpLocalModel? model = null, string? ip = null)
+    public static void ShowNetFrp(Process? p = null, NetFrpLocalModel? model = null)
     {
         if (NetFrpWindow != null)
         {
@@ -762,11 +762,6 @@ public partial class App : Application
         {
             NetFrpWindow = new();
             AWindow(NetFrpWindow);
-        }
-
-        if (p != null)
-        {
-            NetFrpWindow.SetProcess(p, model!, ip!);
         }
     }
 

@@ -14,7 +14,7 @@ public partial class NetFrpModel(BaseModel model) : MenuModel(model)
         new() { Icon = "/Resource/Icon/NetFrp/item1.svg",
             Text = App.Lang("NetFrpWindow.Tabs.Text1") },
         new() { Icon = "/Resource/Icon/NetFrp/item1.svg",
-            Text = App.Lang("NetFrpWindow.Tab1.Text14") },
+            Text = App.Lang("NetFrpWindow.Tabs.Text5") },
         new() { Icon = "/Resource/Icon/NetFrp/item2.svg",
             Text = App.Lang("NetFrpWindow.Tabs.Text2") },
         new() { Icon = "/Resource/Icon/NetFrp/item3.svg",

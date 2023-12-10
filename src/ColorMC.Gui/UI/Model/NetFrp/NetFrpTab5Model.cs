@@ -57,6 +57,12 @@ public partial class NetFrpModel
     //}
 
     [RelayCommand]
+    public void OpenUrl1()
+    {
+        WebBinding.OpenWeb(WebType.OpenFrpApi);
+    }
+
+    [RelayCommand]
     public async Task GetChannelOpenFrp()
     {
         if (string.IsNullOrWhiteSpace(KeyOpenFrp))
@@ -86,7 +92,7 @@ public partial class NetFrpModel
     [RelayCommand]
     public void OpenUrlOpenFrp()
     {
-        WebBinding.OpenWeb(WebType.NetFrpSakura);
+        WebBinding.OpenWeb(WebType.SakuraFrp);
     }
 
     public async void LoadOpenFrp()

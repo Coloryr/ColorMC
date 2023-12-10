@@ -221,6 +221,8 @@ public static class PathHelper
     /// <returns>流</returns>
     public static Stream OpenWrite(string local)
     {
+        var info = new FileInfo(local);
+        info.Directory?.Create();
         return File.Open(local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
     }
 

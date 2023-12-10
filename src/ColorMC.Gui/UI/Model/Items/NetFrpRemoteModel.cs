@@ -20,12 +20,12 @@ public partial class NetFrpRemoteModel
     public NetFrpRemoteModel(string key, OpenFrpChannelObj.Data data, OpenFrpChannelObj.Proxie obj)
     {
         Key = key;
-        Name = data.name + " " + obj.name;
+        Name = data.name + obj.name;
         ID = obj.id;
         Use = obj.type == "tcp";
         Type = obj.type;
         Remote = obj.remote;
-        FrpType = FrpType.SakuraFrp;
+        FrpType = FrpType.OpenFrp;
     }
 
     public string Name { get; }
