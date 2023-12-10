@@ -23,6 +23,8 @@ public partial class GameItemModel : GameModel
     [ObservableProperty]
     private bool _isLaunch;
     [ObservableProperty]
+    private bool _isLaunching;
+    [ObservableProperty]
     private bool _isLoad;
     [ObservableProperty]
     private bool _isDrop;
@@ -58,6 +60,36 @@ public partial class GameItemModel : GameModel
     {
         _top = top;
         LoadIcon();
+    }
+
+    partial void OnIsLaunchChanged(bool value)
+    {
+        if (value)
+        {
+            IsLaunching = true;
+        }
+        else
+        {
+            if (!IsLoad)
+            {
+                IsLaunching = false;
+            }
+        }
+    }
+
+    partial void OnIsLoadChanged(bool value)
+    {
+        if (value)
+        {
+            IsLaunching = true;
+        }
+        else 
+        {
+            if (!IsLoad)
+            {
+                IsLaunching = false;
+            }
+        }
     }
 
     partial void OnIsSelectChanged(bool value)

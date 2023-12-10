@@ -102,7 +102,7 @@
                         ClipToBounds="False"
                         Command="{Binding Launch}"
                         CornerRadius="20"
-                        IsEnabled="{Binding !IsLaunch}"
+                        IsEnabled="{Binding !IsLaunching}"
                         IsVisible="{Binding IsOver}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text11}"
                         ToolTip.VerticalOffset="-30">
