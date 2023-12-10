@@ -38,6 +38,7 @@ public partial class NetFrpModel
 
     private void SetProcess(Process process, NetFrpLocalModel model, string ip)
     {
+        _now = model;
         if (_process != null)
         {
             Stop();
