@@ -4,7 +4,7 @@
 
 [English](./README_EN.md)
 
-使用dotnet7作为运行环境，XAML作为前端语言，C#作为后端语言
+使用 .NET 8 作为运行环境，XAML作为前端语言，C#作为后端语言
 
 [用户手册](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md)
 
@@ -15,7 +15,7 @@
 ## 支持平台
 - Linux
 - Windows
-- macOs
+- macOS
 
 注意：ARM64平台不能保证其兼容性
 Windows ARM64 可以运行，渲染有问题
@@ -33,12 +33,12 @@ git clone https://github.com/Coloryr/ColorMC.git
 cd ColorMC
 ```
 
-### 安装.Net7
+### 安装 .NET 8
 
-- Windows/macOs
-[下载](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0)里面的SDK安装包安装即可
+- Windows/macOS
+[下载](https://dotnet.microsoft.com/download/dotnet/8.0)里面的SDK安装包安装即可
 - Linux
-[教程](https://learn.microsoft.com/zh-cn/dotnet/core/install/linux?WT.mc_id=dotnet-35129-website)
+[教程](https://learn.microsoft.com/dotnet/core/install/linux)
 
 ```
 # ubuntu
@@ -52,7 +52,7 @@ $ sudo dpkg -i packages-microsoft-prod.deb
 $ rm packages-microsoft-prod.deb
 
 $ sudo apt-get update
-$ sudo apt-get install -y dotnet-sdk-7.0
+$ sudo apt-get install -y dotnet-sdk-8.0
 ```
 
 ### 启动

@@ -12,7 +12,7 @@ https://crowdin.com/project/colormc
 ## Support Platform
 - Linux
 - Windows
-- macOs
+- macOS
 
 Due to the complexity of Linux distribution, everyone's compatibility is different. If it cannot be opened it, you can try modifying `/home/{user}/ColorMC/gui.json`
 
@@ -25,12 +25,12 @@ git clone https://github.com/Coloryr/ColorMC.git
 cd ColorMC
 ```
 
-### Insatll .Net7
+### Insatll .NET 8
 
-- Windows/macOs
-[Download](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0)
+- Windows/macOS
+[Download](https://dotnet.microsoft.com/download/dotnet/8.0)
 - Linux
-[Doc](https://learn.microsoft.com/zh-cn/dotnet/core/install/linux?WT.mc_id=dotnet-35129-website)
+[Doc](https://learn.microsoft.com/dotnet/core/install/linux)
 
 ```
 # ubuntu
@@ -44,7 +44,7 @@ $ sudo dpkg -i packages-microsoft-prod.deb
 $ rm packages-microsoft-prod.deb
 
 $ sudo apt-get update
-$ sudo apt-get install -y dotnet-sdk-7.0
+$ sudo apt-get install -y dotnet-sdk-8.0
 ```
 
 ### Launch
@@ -59,11 +59,11 @@ $ dotnet run
 ```
 
 ## Project description
-- ColorMC.Core 启动器底层核心
-- ColorMC.Cmd CLI模式 (已放弃)
-- ColorMC.Gui Gui模式
-- ColorMC.Launcher 启动器
-- ColorMC.Test 用于启动器核心测试
+- ColorMC.Core : Core
+- ColorMC.Cmd : CLI mode (deprecated)
+- ColorMC.Gui : GUI mode
+- ColorMC.Launcher : Launcher
+- ColorMC.Test : For launcher core testing
 
 ## Skin View
 
@@ -71,17 +71,17 @@ $ dotnet run
 
 ## Referenced
 
-[AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) 跨平台UI框架  
-[Heijden.Dns.Portable](https://github.com/softlion/Heijden.Dns) DNS解析  
-[HtmlAgilityPack](https://html-agility-pack.net/) HTML解析器  
-[Jint](https://github.com/sebastienros/jint) JS解析执行器  
-[Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
-[SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
-[Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
-[OpenTK](https://opentk.net/) openal音频  
-[SixLabors](https://sixlabors.com/) 图片处理  
-[CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM工具  
-[NAudio](https://github.com/naudio/NAudio) Windows音频播放
+[AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) Cross-platform UI framework  
+[Heijden.Dns.Portable](https://github.com/softlion/Heijden.Dns) DNS resolution  
+[HtmlAgilityPack](https://html-agility-pack.net/) HTML parser  
+[Jint](https://github.com/sebastienros/jint) JS interpreter  
+[Newtonsoft.Json](https://www.newtonsoft.com/json) JSON parser  
+[SharpZipLib](https://github.com/icsharpcode/SharpZipLib) Compressed package processing  
+[Tomlyn](https://github.com/xoofx/Tomlyn) TOML parser  
+[OpenTK](https://opentk.net/) openal audio  
+[SixLabors](https://sixlabors.com/) Image processing  
+[CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM tools  
+[NAudio](https://github.com/naudio/NAudio) Windows audio playback
 
 ## Use IDE
 
