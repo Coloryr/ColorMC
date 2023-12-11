@@ -22,8 +22,9 @@ internal static class GuiLoad
         Program.SetAot = ColorMCGui.SetAot;
     }
 
-    public static void Run(string[] args)
+    public static void Run(string[] args, bool crash)
     {
+        ColorMCGui.SetCrash(crash);
         ColorMCGui.SetBaseSha1(Program.BaseSha1);
         ColorMCGui.Main(args);
     }
@@ -60,6 +61,8 @@ public static class Program
     public static IN2 SetAot { get; set; }
 
     public static bool Aot { get; set; }
+
+    private static bool _isDll;
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -102,6 +105,15 @@ public static class Program
         catch (Exception e)
         {
             Console.WriteLine(e);
+            if (_isDll)
+            {
+                File.Delete($"{LoadDir}ColorMC.Gui.dll");
+                File.Delete($"{LoadDir}ColorMC.Gui.pdb");
+                File.Delete($"{LoadDir}ColorMC.Core.dll");
+                File.Delete($"{LoadDir}ColorMC.Core.pdb");
+
+                GuiLoad.Run(args, true);
+            }
         }
     }
 
@@ -183,6 +195,8 @@ public static class Program
 
                 SetAot = (Delegate.CreateDelegate(typeof(IN2),
                        mis1.GetMethod("SetAot")!) as IN2)!;
+
+                _isDll = true;
             }
             catch
             {
