@@ -1,42 +1,44 @@
 using Avalonia;
-using ColorMC.Gui;
 using System;
+#if !DEBUG
 using System.IO;
+using System.Linq;
+using System.Runtime.Loader;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
-#if !DEBUG
-using System.Linq;
-using System.Runtime.Loader;
 #endif
 
 namespace ColorMC.Launcher;
 
+#if !DEBUG
 internal static class GuiLoad
 {
     public static void Load()
     {
-        Program.MainCall = ColorMCGui.Main;
-        Program.BuildApp = ColorMCGui.BuildAvaloniaApp;
-        Program.SetBaseSha1 = ColorMCGui.SetBaseSha1;
-        Program.SetAot = ColorMCGui.SetAot;
+        Program.MainCall = Gui.ColorMCGui.Main;
+        Program.BuildApp = Gui.ColorMCGui.BuildAvaloniaApp;
+        Program.SetBaseSha1 = Gui.ColorMCGui.SetBaseSha1;
+        Program.SetAot = Gui.ColorMCGui.SetAot;
     }
 
     public static void Run(string[] args, bool crash)
     {
-        ColorMCGui.SetCrash(crash);
-        ColorMCGui.SetBaseSha1(Program.BaseSha1);
-        ColorMCGui.Main(args);
-    }
-
-    public static AppBuilder BuildAvaloniaApp()
-    {
-        return ColorMCGui.BuildAvaloniaApp();
+        Gui.ColorMCGui.SetCrash(crash);
+        Gui.ColorMCGui.SetBaseSha1(Program.BaseSha1);
+        Gui.ColorMCGui.Main(args);
     }
 }
+#endif
 
 public static class Program
 {
+#if !DEBUG
+    /// <summary>
+    /// 加载路径
+    /// </summary>
+    public static string LoadDir { get; private set; } = AppContext.BaseDirectory;
+
     public const string TopVersion = "A23";
 
     public static readonly string[] BaseSha1 =
@@ -46,10 +48,6 @@ public static class Program
         "5d5da93be14f65e31c7ef98903aca91d13ba42f2",
         "37bd03c457a44d036f1cadc5ef4fe0e68e400cfe"
     ];
-    /// <summary>
-    /// 加载路径
-    /// </summary>
-    public static string LoadDir { get; private set; } = AppContext.BaseDirectory;
 
     public delegate void IN(string[] args);
     public delegate void IN2(bool aot);
@@ -63,6 +61,7 @@ public static class Program
     public static bool Aot { get; set; }
 
     private static bool _isDll;
+#endif
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -70,6 +69,7 @@ public static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+#if !DEBUG
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             LoadDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/dll/";
@@ -84,6 +84,7 @@ public static class Program
         }
 
         Console.WriteLine($"CheckDir:{LoadDir}");
+
         //Test AOT
         try
         {
@@ -94,17 +95,22 @@ public static class Program
         {
             Aot = true;
         }
-
+#endif
         try
         {
+#if DEBUG
+            Gui.ColorMCGui.Main(args);
+#else
             Load();
             SetAot(Aot);
             SetBaseSha1(BaseSha1);
             MainCall(args);
+#endif
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
+#if !DEBUG
             if (_isDll)
             {
                 File.Delete($"{LoadDir}ColorMC.Gui.dll");
@@ -114,15 +120,15 @@ public static class Program
 
                 GuiLoad.Run(args, true);
             }
+#endif
         }
     }
-
+#if DEBUG
     public static AppBuilder BuildAvaloniaApp()
     {
-        Load();
-        return BuildApp();
+        return Gui.ColorMCGui.BuildAvaloniaApp();
     }
-
+#else
     private static bool NotHaveDll()
     {
         return File.Exists($"{LoadDir}ColorMC.Core.dll")
@@ -133,9 +139,6 @@ public static class Program
 
     private static void Load()
     {
-#if DEBUG
-        GuiLoad.Load();
-#else
         if (Aot)
         {
             GuiLoad.Load();
@@ -208,6 +211,6 @@ public static class Program
         {
             GuiLoad.Load();
         }
-#endif
     }
+#endif
 }
