@@ -1,7 +1,7 @@
 using ColorMC.Core.Objs.Java;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Net.Java;
+namespace ColorMC.Core.Net.Apis;
 
 /// <summary>
 /// Dragonwell下载源

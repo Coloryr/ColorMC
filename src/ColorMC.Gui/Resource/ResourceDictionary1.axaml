@@ -1,0 +1,34 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:icon="using:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:vm="using:ColorMC.Gui.UI.Model.Items">
+    <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
+        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+    </DataTemplate>
+    <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Width="30" VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{x:Static icon:IconConverter.FileIconConverter}">
+                        <Binding Path="IsDirectory" />
+                        <Binding Path="IsExpanded" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Width="30" VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{x:Static icon:IconConverter.NbtIconConverter}">
+                        <Binding Path="NbtType" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

@@ -1,12 +1,12 @@
 using ColorMC.Core.Objs.Java;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Net.Java;
+namespace ColorMC.Core.Net.Apis;
 
 /// <summary>
 /// Zulu下载源
 /// </summary>
-public static class Zulu
+public static class ZuluApi
 {
     /// <summary>
     /// 获取列表
@@ -18,7 +18,7 @@ public static class Zulu
         if (data == null)
             return null;
         var str = await data.Content.ReadAsStringAsync();
-        if (str.StartsWith("<"))
+        if (str.StartsWith('<'))
         {
             ColorMCCore.OnError?.Invoke(str, null, false);
             return null;

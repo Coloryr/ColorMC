@@ -1,0 +1,56 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Dialog.NbtDialogEditControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    x:DataType="vm:NbtDialogEditModel"
+    mc:Ignorable="d">
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <DockPanel DockPanel.Dock="Top">
+            <Button
+                Width="85"
+                Height="25"
+                Margin="5"
+                VerticalAlignment="Center"
+                Command="{Binding DataEditDone}"
+                Content="{setting:Localize ConfigEditWindow.Text2}"
+                DockPanel.Dock="Right"
+                ToolTip.Tip="{setting:Localize ToolTip.Text40}"
+                ToolTip.VerticalOffset="-30" />
+            <ToggleSwitch
+                DockPanel.Dock="Right"
+                IsChecked="{Binding HexEdit}"
+                OffContent="{setting:Localize ConfigEditWindow.Text12}"
+                OnContent="{setting:Localize ConfigEditWindow.Text12}" />
+            <StackPanel
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Label Content="{setting:Localize ConfigEditWindow.Text4}" />
+                <Label Content="{Binding DataType}" />
+            </StackPanel>
+        </DockPanel>
+        <DataGrid
+            Name="DataGrid1"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="True"
+            CanUserSortColumns="False"
+            ItemsSource="{Binding DataList}"
+            SelectedItem="{Binding DataItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Binding="{Binding Key}"
+                    Header="{setting:Localize ConfigEditWindow.DataGrid.Text1}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="500"
+                    Binding="{Binding Value}"
+                    Header="{setting:Localize ConfigEditWindow.DataGrid.Text2}"
+                    IsReadOnly="False" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

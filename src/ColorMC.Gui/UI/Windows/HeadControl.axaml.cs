@@ -31,7 +31,11 @@ public partial class HeadControl : UserControl
 
         Border1.PointerPressed += HeadControl_PointerPressed;
         TitleShow.PointerPressed += HeadControl_PointerPressed;
-        TitleShow1.PointerPressed += HeadControl_PointerPressed;
+        TitleShow.PointerPressed += HeadControl_PointerPressed;
+
+        Border1.DoubleTapped += Border1_DoubleTapped;
+        TitleShow.DoubleTapped += Border1_DoubleTapped;
+        TitleShow.DoubleTapped += Border1_DoubleTapped;
 
         DataContextChanged += HeadControl_DataContextChanged;
 
@@ -75,6 +79,11 @@ public partial class HeadControl : UserControl
         _buttonClose.Click += ButtonClose_Click;
     }
 
+    private void Border1_DoubleTapped(object? sender, TappedEventArgs e)
+    {
+        WindowMax();
+    }
+
     private void HeadControl_DataContextChanged(object? sender, EventArgs e)
     {
         if (DataContext is BaseModel model)
@@ -92,6 +101,11 @@ public partial class HeadControl : UserControl
     }
 
     private void ButtonMax_Click(object? sender, RoutedEventArgs e)
+    {
+        WindowMax();
+    }
+
+    private void WindowMax()
     {
         if (VisualRoot is not Window window)
         {

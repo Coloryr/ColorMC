@@ -36,10 +36,7 @@ public class FilesPageModel
                             CompareDescending = FileTreeNodeModel.SortDescending(x => x.Name),
                             IsTextSearchEnabled = true,
                             TextSearchValueSelector = x => x.Name
-                        })
-                    {
-
-                    },
+                        }),
                     x => x.Children,
                     x => x.HasChildren,
                     x => x.IsExpanded),

@@ -41,3 +41,8 @@ public record AdoptiumObj
     public string vendor { get; set; }
     public Version version { get; set; }
 }
+
+public record AdoptiumJavaVersionObj
+{ 
+    public List<int> available_releases { get; set; }
+}

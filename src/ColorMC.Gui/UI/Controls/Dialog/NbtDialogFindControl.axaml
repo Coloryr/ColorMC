@@ -1,0 +1,93 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Dialog.NbtDialogFindControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    x:DataType="vm:NbtDialogFindModel"
+    mc:Ignorable="d">
+    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock
+                Margin="5"
+                HorizontalAlignment="Center"
+                Text="{Binding FindText1}" />
+            <DockPanel>
+                <TextBlock
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Text="{Binding FindText2}" />
+                <TextBox Classes="input1" Text="{Binding PosName}" />
+            </DockPanel>
+            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Text="X" />
+                <NumericUpDown
+                    Width="140"
+                    FormatString="N0"
+                    Value="{Binding PosX}" />
+                <TextBlock
+                    Margin="5,0,5,0"
+                    VerticalAlignment="Center"
+                    Text="Y" />
+                <NumericUpDown
+                    Width="140"
+                    FormatString="N0"
+                    Value="{Binding PosY}" />
+                <TextBlock
+                    Margin="5,0,5,0"
+                    VerticalAlignment="Center"
+                    Text="Z" />
+                <NumericUpDown
+                    Width="140"
+                    FormatString="N0"
+                    Value="{Binding PosZ}" />
+            </StackPanel>
+
+            <StackPanel
+                Margin="0,5,0,0"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Label
+                    Margin="0,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize ConfigEditWindow.Text8}" />
+                <Label
+                    Margin="0,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{Binding Chunk}" />
+
+                <Label
+                    Margin="0,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize ConfigEditWindow.Text9}" />
+                <Label
+                    Margin="0,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{Binding ChunkFile}" />
+            </StackPanel>
+
+            <StackPanel
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,0,30,0"
+                    Command="{Binding FindStart}"
+                    Content="{setting:Localize ConfigEditWindow.Text10}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Command="{Binding FindCancel}"
+                    Content="{setting:Localize Button.Cancel}" />
+            </StackPanel>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

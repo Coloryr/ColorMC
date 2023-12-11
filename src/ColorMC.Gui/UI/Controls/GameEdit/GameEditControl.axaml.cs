@@ -130,7 +130,7 @@ public partial class GameEditControl : MenuControl
             case 2:
                 model.RemoveBackHead();
                 break;
-            case 7:
+            case 6:
                 model.RemoveBackHeadTab10();
                 break;
         }

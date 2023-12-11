@@ -25,7 +25,7 @@
             RadiusX="{setting:Style Radius}"
             RadiusY="{setting:Style Radius}"
             Stroke="{setting:Colors Main}"
-            StrokeThickness="3" />
+            StrokeThickness="2" />
         <StackPanel Margin="5">
             <Border
                 Width="200"

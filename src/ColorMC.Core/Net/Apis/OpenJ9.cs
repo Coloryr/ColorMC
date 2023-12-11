@@ -3,7 +3,7 @@ using HtmlAgilityPack;
 using Jint;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Net.Java;
+namespace ColorMC.Core.Net.Apis;
 
 /// <summary>
 /// OpenJ9下载源

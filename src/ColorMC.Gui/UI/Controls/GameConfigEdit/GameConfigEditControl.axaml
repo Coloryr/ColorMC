@@ -1,34 +1,39 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.ConfigEdit.GameConfigEditControl"
+    x:Class="ColorMC.Gui.UI.Controls.GameConfigEdit.GameConfigEditControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameConfigEdit"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:vm="using:ColorMC.Gui.UI.Model.Items"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
+    xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.GameConfigEdit"
     d:DesignHeight="450"
-    d:DesignWidth="800"
-    x:DataType="model:GameConfigEditModel"
+    d:DesignWidth="350"
+    x:DataType="vm:GameConfigEditModel"
     mc:Ignorable="d">
-    <Panel Margin="5">
-        <DockPanel>
-            <Border
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
-                DockPanel.Dock="Top">
-                <StackPanel>
-                    <DockPanel>
-                        <Label
-                            Grid.Column="0"
-                            Margin="0,0,5,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize ConfigEditWindow.Text13}" />
-                        <Grid ColumnDefinitions="0.5*,*">
+    <dialog:DialogHost DisableOpeningAnimation="True" Identifier="{Binding UseName}">
+        <dialog:DialogHost.DataTemplates>
+            <DataTemplate DataType="model:NbtDialogAddModel">
+                <view:NbtDialogAddControl DataContext="{Binding}" />
+            </DataTemplate>
+            <DataTemplate DataType="model:NbtDialogEditModel">
+                <view:NbtDialogEditControl DataContext="{Binding}" />
+            </DataTemplate>
+        </dialog:DialogHost.DataTemplates>
+        <Panel Margin="5">
+            <DockPanel>
+                <Border
+                    Padding="{setting:Style BorderPadding}"
+                    Background="{setting:Colors GroupBack}"
+                    BorderBrush="{setting:Colors GroupColor}"
+                    BorderThickness="2"
+                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                    DockPanel.Dock="Top">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,5" ColumnDefinitions="0.8*,*">
                             <ComboBox
                                 Grid.Column="0"
                                 Margin="0,0,5,0"
@@ -45,275 +50,84 @@
                                 Text="{Binding Name}"
                                 Watermark="{setting:Localize ConfigEditWindow.Text1}" />
                         </Grid>
-                    </DockPanel>
-                    <WrapPanel Margin="0,5,0,0">
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
-                            VerticalAlignment="Center"
-                            Command="{Binding Open}"
-                            Content="{setting:Localize Button.OpFile}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
-                            VerticalAlignment="Center"
-                            Command="{Binding Save}"
-                            Content="{setting:Localize ConfigEditWindow.Text2}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text40}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
-                            VerticalAlignment="Center"
-                            Command="{Binding Load}"
-                            Content="{setting:Localize ConfigEditWindow.Text3}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text41}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
-                            VerticalAlignment="Center"
-                            Command="{Binding FindBlock}"
-                            Content="{setting:Localize ConfigEditWindow.Text5}"
-                            IsVisible="{Binding IsWorld}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text97}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            VerticalAlignment="Center"
-                            Command="{Binding FindEntity}"
-                            Content="{setting:Localize ConfigEditWindow.Text6}"
-                            IsVisible="{Binding IsWorld}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text98}"
-                            ToolTip.VerticalOffset="-30" />
-                    </WrapPanel>
-                </StackPanel>
-            </Border>
-            <Border
-                Margin="0,3,0,0"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
-                <Panel>
-                    <ae:TextEditor
-                        Name="TextEditor1"
-                        Document="{Binding Text}"
-                        FontSize="14"
-                        FontWeight="Normal"
-                        Foreground="{setting:Colors Font}"
-                        HorizontalScrollBarVisibility="Auto"
-                        IsVisible="{Binding !NbtEnable}"
-                        ShowLineNumbers="True"
-                        VerticalScrollBarVisibility="Visible"
-                        WordWrap="True" />
-                    <TreeDataGrid
-                        Name="NbtViewer"
-                        IsVisible="{Binding NbtEnable}"
-                        ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                        ScrollViewer.VerticalScrollBarVisibility="Visible"
-                        Source="{Binding Source}">
-                        <TreeDataGrid.Resources>
-                            <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
-                                <StackPanel Orientation="Horizontal">
-                                    <Label
-                                        Width="30"
-                                        VerticalAlignment="Center"
-                                        HorizontalContentAlignment="Center">
-                                        <Label.Content>
-                                            <MultiBinding Converter="{x:Static setting:IconConverter.NbtIconConverter}">
-                                                <Binding Path="NbtType" />
-                                            </MultiBinding>
-                                        </Label.Content>
-                                    </Label>
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </TreeDataGrid.Resources>
-                    </TreeDataGrid>
-                </Panel>
-            </Border>
-        </DockPanel>
-
-        <Panel IsVisible="{Binding DisplayAdd, FallbackValue=false}">
-            <Border Background="{setting:Colors BG1}" />
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label
-                    HorizontalAlignment="Center"
-                    Content="{Binding Title}"
-                    FontSize="20" />
-                <TextBox
-                    Width="300"
-                    Margin="0,10,0,0"
-                    Classes="input1"
-                    Foreground="{setting:Colors Font}"
-                    Text="{Binding Key}"
-                    Watermark="{Binding Title1}" />
-                <ComboBox
-                    Margin="0,10,0,0"
-                    HorizontalAlignment="Stretch"
-                    IsVisible="{Binding DisplayType}"
-                    ItemsSource="{Binding TypeSource}"
-                    SelectedIndex="{Binding Type}" />
-                <StackPanel Margin="0,30,0,0">
-                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                        <Button
-                            Width="100"
-                            Height="30"
-                            Margin="0,0,10,0"
-                            HorizontalAlignment="Center"
-                            Command="{Binding AddConfirm}"
-                            Content="{setting:Localize Button.Confirm}" />
-                        <Button
-                            Width="100"
-                            Height="30"
-                            HorizontalAlignment="Center"
-                            Command="{Binding AddCancel}"
-                            Content="{setting:Localize Button.Cancel}" />
+                        <WrapPanel Margin="0,0,0,-5">
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                VerticalAlignment="Center"
+                                Command="{Binding Open}"
+                                Content="{setting:Localize Button.OpFile}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                                ToolTip.VerticalOffset="-30" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                VerticalAlignment="Center"
+                                Command="{Binding Save}"
+                                Content="{setting:Localize ConfigEditWindow.Text2}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text40}"
+                                ToolTip.VerticalOffset="-30" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                VerticalAlignment="Center"
+                                Command="{Binding Load}"
+                                Content="{setting:Localize ConfigEditWindow.Text3}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text41}"
+                                ToolTip.VerticalOffset="-30" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                VerticalAlignment="Center"
+                                Command="{Binding FindBlock}"
+                                Content="{setting:Localize ConfigEditWindow.Text5}"
+                                IsVisible="{Binding IsWorld}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text97}"
+                                ToolTip.VerticalOffset="-30" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                VerticalAlignment="Center"
+                                Command="{Binding FindEntity}"
+                                Content="{setting:Localize ConfigEditWindow.Text6}"
+                                IsVisible="{Binding IsWorld}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text98}"
+                                ToolTip.VerticalOffset="-30" />
+                        </WrapPanel>
                     </StackPanel>
-                </StackPanel>
-            </StackPanel>
-        </Panel>
-
-        <Panel IsVisible="{Binding DisplayEdit, FallbackValue=false}">
-            <Border Background="{setting:Colors BG1}" />
-            <DockPanel>
-                <DockPanel DockPanel.Dock="Top">
-                    <Button
-                        Width="85"
-                        Height="25"
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Command="{Binding DataEditDone}"
-                        Content="{setting:Localize ConfigEditWindow.Text2}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text40}"
-                        ToolTip.VerticalOffset="-30" />
-                    <CheckBox
-                        Content="{setting:Localize ConfigEditWindow.Text12}"
-                        DockPanel.Dock="Right"
-                        IsChecked="{Binding HexEdit}" />
-                    <StackPanel
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                        <Label Content="{setting:Localize ConfigEditWindow.Text4}" />
-                        <Label Content="{Binding DataType}" />
-                    </StackPanel>
-                </DockPanel>
-                <DataGrid
-                    Name="DataGrid1"
-                    AutoGenerateColumns="False"
-                    CanUserResizeColumns="True"
-                    CanUserSortColumns="False"
-                    ItemsSource="{Binding DataList}"
-                    SelectedItem="{Binding DataItem}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Binding="{Binding Key}"
-                            Header="{setting:Localize ConfigEditWindow.DataGrid.Text1}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Width="500"
-                            Binding="{Binding Value}"
-                            Header="{setting:Localize ConfigEditWindow.DataGrid.Text2}"
-                            IsReadOnly="False" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                </Border>
+                <Border
+                    Margin="0,3,0,0"
+                    Background="{setting:Colors GroupBack}"
+                    BorderBrush="{setting:Colors GroupColor}"
+                    BorderThickness="2"
+                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                    <Panel>
+                        <ae:TextEditor
+                            Name="TextEditor1"
+                            Document="{Binding Text}"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Foreground="{setting:Colors Font}"
+                            HorizontalScrollBarVisibility="Auto"
+                            IsVisible="{Binding !NbtEnable}"
+                            ShowLineNumbers="True"
+                            VerticalScrollBarVisibility="Visible"
+                            WordWrap="True" />
+                        <TreeDataGrid
+                            Name="NbtViewer"
+                            IsVisible="{Binding NbtEnable}"
+                            ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            Source="{Binding Source}" />
+                    </Panel>
+                </Border>
             </DockPanel>
         </Panel>
-        <Panel IsVisible="{Binding DisplayFind, FallbackValue=false}">
-            <Border Background="{setting:Colors BG1}" />
-            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <StackPanel DockPanel.Dock="Top">
-                    <Label
-                        Margin="5"
-                        HorizontalAlignment="Center"
-                        Content="{Binding FindText1}" />
-                    <DockPanel>
-                        <Label
-                            Margin="0,0,5,0"
-                            VerticalAlignment="Center"
-                            Content="{Binding FindText2}" />
-                        <TextBox Classes="input1" Text="{Binding PosName}" />
-                    </DockPanel>
-                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                        <Label
-                            Margin="0,0,5,0"
-                            VerticalAlignment="Center"
-                            Content="X" />
-                        <NumericUpDown
-                            Width="140"
-                            FormatString="N0"
-                            Value="{Binding PosX}" />
-
-                        <Label
-                            Margin="5,0,5,0"
-                            VerticalAlignment="Center"
-                            Content="Y" />
-                        <NumericUpDown
-                            Width="140"
-                            FormatString="N0"
-                            Value="{Binding PosY}" />
-                        <Label
-                            Margin="5,0,5,0"
-                            VerticalAlignment="Center"
-                            Content="Z" />
-                        <NumericUpDown
-                            Width="140"
-                            FormatString="N0"
-                            Value="{Binding PosZ}" />
-                    </StackPanel>
-
-                    <StackPanel
-                        Margin="0,5,0,0"
-                        HorizontalAlignment="Center"
-                        Orientation="Horizontal">
-                        <Label
-                            Margin="0,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize ConfigEditWindow.Text8}" />
-                        <Label
-                            Margin="0,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{Binding Chunk}" />
-
-                        <Label
-                            Margin="0,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize ConfigEditWindow.Text9}" />
-                        <Label
-                            Margin="0,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{Binding ChunkFile}" />
-                    </StackPanel>
-
-                    <StackPanel
-                        Margin="0,10,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="0,0,30,0"
-                            Command="{Binding FindStart}"
-                            Content="{setting:Localize ConfigEditWindow.Text10}" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Command="{Binding FindCancel}"
-                            Content="{setting:Localize Button.Cancel}" />
-                    </StackPanel>
-                </StackPanel>
-            </DockPanel>
-        </Panel>
-    </Panel>
+    </dialog:DialogHost>
 </UserControl>

@@ -8,7 +8,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="350"
     x:DataType="model:CountModel"
     mc:Ignorable="d">
     <ScrollViewer>
@@ -28,40 +28,40 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/GameCount/svg3.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize CountWindow.Text1}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize CountWindow.Text1}" />
                     </StackPanel>
-                    <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="{setting:Localize CountWindow.Text2}" />
-                            <Label Content="{Binding Count}" />
+                    <WrapPanel Margin="0,0,0,5">
+                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                            <TextBlock Text="{setting:Localize CountWindow.Text2}" />
+                            <TextBlock Text="{Binding Count}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                            <TextBlock Text="{setting:Localize CountWindow.Text5}" />
+                            <TextBlock Text="{Binding CountToday}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                            <TextBlock Text="{setting:Localize CountWindow.Text3}" />
+                            <TextBlock Text="{Binding CountDone}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text5}" />
-                            <Label Content="{Binding CountToday}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="{setting:Localize CountWindow.Text3}" />
-                            <Label Content="{Binding CountDone}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text4}" />
-                            <Label Content="{Binding CountError}" />
+                            <TextBlock Text="{setting:Localize CountWindow.Text4}" />
+                            <TextBlock Text="{Binding CountError}" />
                         </StackPanel>
                     </WrapPanel>
-                    <WrapPanel Margin="0,3,0,0">
-                        <StackPanel Orientation="Horizontal">
-                            <Label VerticalAlignment="Center" Content="{setting:Localize CountWindow.Text6}" />
+                    <WrapPanel Margin="0,0,5,0">
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize CountWindow.Text6}" />
                             <CalendarDatePicker SelectedDate="{Binding Date}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label
-                                Margin="3,0,0,0"
+                            <TextBlock
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize CountWindow.Text7}" />
-                            <Label VerticalAlignment="Center" Content="{Binding DateCount}" />
+                                Text="{setting:Localize CountWindow.Text7}" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding DateCount}" />
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
@@ -82,32 +82,38 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/GameCount/svg1.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize CountWindow.Text8}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize CountWindow.Text8}" />
                     </StackPanel>
                     <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="{setting:Localize CountWindow.Text9}" />
-                            <Label Content="{Binding Time}" />
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text9}" />
+                            <TextBlock Text="{Binding Time}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text10}" />
-                            <Label Content="{Binding TimeToday}" />
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text10}" />
+                            <TextBlock Text="{Binding TimeToday}" />
                         </StackPanel>
                     </WrapPanel>
                     <WrapPanel Margin="0,3,0,0">
                         <StackPanel Orientation="Horizontal">
-                            <Label VerticalAlignment="Center" Content="{setting:Localize CountWindow.Text6}" />
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Text="{setting:Localize CountWindow.Text6}" />
                             <CalendarDatePicker SelectedDate="{Binding Date1}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Margin="3,0,0,0"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize CountWindow.Text11}" />
-                            <Label VerticalAlignment="Center" Content="{Binding TimeDate}" />
+                                Text="{setting:Localize CountWindow.Text11}" />
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding TimeDate}" />
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
@@ -128,44 +134,47 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/GameCount/svg2.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize CountWindow.Text12}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize CountWindow.Text12}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,3,0,0" Orientation="Horizontal">
-                        <Label VerticalAlignment="Center" Content="{setting:Localize CountWindow.Text13}" />
+                    <WrapPanel Margin="0,0,5,0" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Text="{setting:Localize CountWindow.Text13}" />
                         <ComboBox
-                            Width="200"
+                            Width="160"
                             ItemsSource="{Binding Game}"
                             SelectedIndex="{Binding GameIndex}" />
                     </WrapPanel>
                     <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="{setting:Localize CountWindow.Text2}" />
-                            <Label Content="{Binding GameCount}" />
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text2}" />
+                            <TextBlock Text="{Binding GameCount}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text5}" />
-                            <Label Content="{Binding GameCountToday}" />
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text5}" />
+                            <TextBlock Text="{Binding GameCountToday}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="{setting:Localize CountWindow.Text3}" />
-                            <Label Content="{Binding GameCountDone}" />
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text3}" />
+                            <TextBlock Text="{Binding GameCountDone}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text4}" />
-                            <Label Content="{Binding GameCountError}" />
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text4}" />
+                            <TextBlock Text="{Binding GameCountError}" />
                         </StackPanel>
                     </WrapPanel>
                     <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="{setting:Localize CountWindow.Text9}" />
-                            <Label Content="{Binding GameTime}" />
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text9}" />
+                            <TextBlock Text="{Binding GameTime}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text10}" />
-                            <Label Content="{Binding GameTime1}" />
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text10}" />
+                            <TextBlock Text="{Binding GameTime1}" />
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
