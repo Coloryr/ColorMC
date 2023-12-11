@@ -32,7 +32,7 @@ public static partial class FuntionUtils
     /// <param name="input"></param>
     /// <returns></returns>
     public static bool CheckIs(string input)
-    { 
+    {
         return Regex2().IsMatch(input);
     }
 

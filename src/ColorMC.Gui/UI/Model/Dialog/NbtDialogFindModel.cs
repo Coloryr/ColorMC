@@ -1,16 +1,7 @@
 ﻿using ColorMC.Core.Chunk;
-using ColorMC.Core.Objs.Chunk;
-using ColorMC.Gui.UI.Model.GameConfigEdit;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 

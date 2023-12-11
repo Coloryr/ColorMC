@@ -9,10 +9,7 @@ using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System;
-using System.Buffers;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -111,7 +108,7 @@ public static class OpenFrpApi
             Name = $"OpenFrp {data1}",
             Local = FrpPath.GetOpenFrpLocal(data.data.latest_full, true) + data1,
             Url = data.data.source[0].value + data.data.latest + data1,
-            Later = (stream) => 
+            Later = (stream) =>
             {
                 Unzip(stream, data.data.latest_full, data1);
             }

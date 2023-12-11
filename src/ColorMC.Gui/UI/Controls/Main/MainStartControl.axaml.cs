@@ -17,7 +17,7 @@ public partial class MainStartControl : UserControl
     {
         InitializeComponent();
 
-        Background = App.NowTheme == PlatformThemeVariant.Light 
+        Background = App.NowTheme == PlatformThemeVariant.Light
             ? Brushes.White : Brushes.Black;
     }
 

@@ -83,7 +83,7 @@ public partial class GameItemModel : GameModel
         {
             IsLaunching = true;
         }
-        else 
+        else
         {
             if (!IsLoad)
             {

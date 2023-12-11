@@ -148,6 +148,6 @@ public enum WebType
 }
 
 public enum FrpType
-{ 
+{
     SakuraFrp, OpenFrp
 }

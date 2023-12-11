@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -60,7 +59,7 @@ public partial class GameConfigEditModel : GameModel
     public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world)
         : base(model, obj)
     {
-        UseName = (ToString() ?? "GameConfigEditModel") 
+        UseName = (ToString() ?? "GameConfigEditModel")
             + " game:" + obj?.UUID + " world:" + world?.LevelName;
         World = world;
 
@@ -321,7 +320,7 @@ public partial class GameConfigEditModel : GameModel
         if (model.NbtType == NbtType.NbtCompound)
         {
             var list = (model.Nbt as NbtCompound)!;
-            
+
             var model1 = new NbtDialogAddModel(UseName)
             {
                 Type = 0,
@@ -570,7 +569,7 @@ public partial class GameConfigEditModel : GameModel
         }
     }
 
-   
+
 
     private void Turn(int value)
     {
@@ -580,6 +579,6 @@ public partial class GameConfigEditModel : GameModel
 
     protected override void Close()
     {
-        
+
     }
 }

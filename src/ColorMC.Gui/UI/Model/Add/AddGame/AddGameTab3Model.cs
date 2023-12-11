@@ -53,7 +53,7 @@ public partial class AddGameModel
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info2"));
             _fileModel = await Task.Run(() =>
             {
-                return new FilesPageModel(SelectPath, true, 
+                return new FilesPageModel(SelectPath, true,
                     ["assets", "libraries", "versions", "launcher_profiles.json"]);
             });
             Model.ProgressClose();

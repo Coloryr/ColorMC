@@ -9,7 +9,6 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using DialogHostAvalonia;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -141,7 +140,7 @@ public partial class MainControl : UserControl, IUserControl
             {
                 Content1.Child = new MainEmptyControl();
             }
-            else if(Content1.Child is not MainGamesControl)
+            else if (Content1.Child is not MainGamesControl)
             {
                 Content1.Child = new MainGamesControl();
             }

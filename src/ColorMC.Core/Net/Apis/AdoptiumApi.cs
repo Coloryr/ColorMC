@@ -39,7 +39,7 @@ public static class AdoptiumApi
     {
         if (_javaVersion != null)
         {
-            return _javaVersion; 
+            return _javaVersion;
         }
         string url = $"{AdoptiumUrl}v3/info/available_releases";
         var data = await BaseClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);

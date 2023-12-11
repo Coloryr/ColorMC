@@ -1,5 +1,4 @@
-﻿using ColorMC.Core.Objs.Frp;
-using ColorMC.Gui.Objs;
+﻿using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Frp;
 
 namespace ColorMC.Gui.UI.Model.Items;

@@ -1,6 +1,5 @@
 ﻿using Avalonia.Threading;
 using ColorMC.Core.Game;
-using ColorMC.Gui.UI.Controls.NetFrp;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;

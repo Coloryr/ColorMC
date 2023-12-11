@@ -1,7 +1,6 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Frp;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs.Frp;
 using Newtonsoft.Json;
