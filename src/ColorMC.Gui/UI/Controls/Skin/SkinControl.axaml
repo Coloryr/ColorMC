@@ -22,7 +22,6 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <Panel>
                     <view2:SkinRender Name="Skin" />
-
                     <Grid
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
@@ -251,7 +250,6 @@
                             <TextBlock Foreground="{setting:Colors Button}" Text="↓" />
                         </RepeatButton>
                     </StackPanel>
-
                     <StackPanel VerticalAlignment="Bottom">
                         <TextBlock
                             Margin="2"
@@ -265,16 +263,14 @@
                             TextWrapping="Wrap" />
                     </StackPanel>
 
-                    <Label
+                    <TextBlock
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
                         Background="{setting:Colors Bottom1}"
-                        Content="{Binding Text}"
                         FontSize="20"
                         Foreground="{setting:Colors Font}"
-                        IsVisible="{Binding !HaveSkin, FallbackValue=false}" />
+                        IsVisible="{Binding !HaveSkin, FallbackValue=false}"
+                        Text="{Binding Text}" />
                 </Panel>
             </Border>
         </Panel>

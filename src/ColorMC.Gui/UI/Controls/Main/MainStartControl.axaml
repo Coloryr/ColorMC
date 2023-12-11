@@ -19,16 +19,16 @@
             HorizontalAlignment="Center"
             Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
         <StackPanel Name="Grid1" ClipToBounds="True">
-            <Label
+            <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="欢迎使用"
-                FontSize="40" />
-            <Label
+                FontSize="40"
+                Text="欢迎使用" />
+            <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="ColorMC"
-                FontSize="40" />
+                FontSize="40"
+                Text="ColorMC" />
         </StackPanel>
     </StackPanel>
 </UserControl>

@@ -20,7 +20,7 @@
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
             <DockPanel>
-                <Label Content="{setting:Localize NetFrpWindow.Tab4.Text1}" />
+                <TextBlock Text="{setting:Localize NetFrpWindow.Tab4.Text1}" />
                 <StackPanel HorizontalAlignment="Right" DockPanel.Dock="Right">
                     <Button
                         Width="100"

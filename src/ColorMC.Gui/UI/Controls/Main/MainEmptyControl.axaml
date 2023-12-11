@@ -18,22 +18,23 @@
         CornerRadius="{setting:Style ButtonCornerRadius}">
         <Panel>
             <StackPanel>
-                <Label
+                <TextBlock
                     Margin="5"
                     HorizontalAlignment="Center"
-                    Content="{setting:Localize MainWindow.Text1}"
-                    FontSize="25" />
-                <Label
-                    Margin="0,5,0,0"
+                    FontSize="25"
+                    Text="{setting:Localize MainWindow.Text1}" />
+                <TextBlock
+                    Margin="0,5,0,5"
                     HorizontalAlignment="Left"
-                    Content="{setting:Localize MainWindow.Text7}"
-                    FontSize="20" />
+                    FontSize="20"
+                    Text="{setting:Localize MainWindow.Text7}" />
                 <StackPanel Orientation="Horizontal">
-                    <Label
+                    <TextBlock
                         Width="120"
                         HorizontalAlignment="Left"
-                        Content="{setting:Localize MainWindow.Text2}"
-                        FontSize="20" />
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Text="{setting:Localize MainWindow.Text2}" />
                     <Button
                         Width="120"
                         Height="35"
@@ -41,11 +42,12 @@
                         Content="{setting:Localize MainWindow.Text3}" />
                 </StackPanel>
                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <Label
+                    <TextBlock
                         Width="120"
                         HorizontalAlignment="Left"
-                        Content="{setting:Localize MainWindow.Text4}"
-                        FontSize="20" />
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Text="{setting:Localize MainWindow.Text4}" />
                     <Button
                         Width="120"
                         Height="35"
@@ -53,11 +55,12 @@
                         Content="{setting:Localize MainWindow.Text5}" />
                 </StackPanel>
                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <Label
+                    <TextBlock
                         Width="120"
                         HorizontalAlignment="Left"
-                        Content="{setting:Localize MainWindow.Text6}"
-                        FontSize="20" />
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Text="{setting:Localize MainWindow.Text6}" />
                     <Button
                         Width="120"
                         Height="35"

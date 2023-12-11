@@ -7,6 +7,7 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     x:DataType="model:NetFrpLocalModel"
+    Design.Width="320"
     mc:Ignorable="d">
     <Border
         Padding="{setting:Style BorderPadding}"
@@ -15,12 +16,17 @@
         BorderThickness="2"
         CornerRadius="{setting:Style ButtonCornerRadius}">
         <DockPanel VerticalAlignment="Top">
-            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                <Label Content="{setting:Localize NetFrpWindow.Tab2.Text3}" />
-                <Label Content="{Binding Port}" />
-                <Label Content="{setting:Localize NetFrpWindow.Tab2.Text4}" />
-                <Label Content="{Binding Motd}" />
-            </StackPanel>
+            <WrapPanel DockPanel.Dock="Left">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{setting:Localize NetFrpWindow.Tab2.Text3}" />
+                    <TextBlock Text="{Binding Port}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{setting:Localize NetFrpWindow.Tab2.Text4}" />
+                    <TextBlock Text="{Binding Motd}" />
+                </StackPanel>
+            </WrapPanel>
+
             <Button
                 Width="100"
                 Height="25"

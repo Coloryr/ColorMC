@@ -29,22 +29,29 @@
                     Margin="60,0,10,0"
                     HorizontalAlignment="Center"
                     Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
-
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <StackPanel Name="StackPanel1">
-                        <Label Content="ColorMC" FontSize="60" />
-                        <Label Content="{setting:Localize SettingWindow.Tab7.Text2}" FontSize="25" />
+                        <TextBlock FontSize="60" Text="ColorMC" />
+                        <TextBlock FontSize="25" Text="{setting:Localize SettingWindow.Tab7.Text2}" />
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="{setting:Localize Text.Version}" FontSize="20" />
-                            <Label Content="{Binding Version}" FontSize="20" />
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                FontSize="20"
+                                Text="{setting:Localize Text.Version}" />
+                            <TextBlock FontSize="20" Text="{Binding Version}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="{setting:Localize SettingWindow.Tab7.Text10}" FontSize="20" />
-                            <Label Content="{Binding RunType}" FontSize="20" />
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                FontSize="20"
+                                Text="{setting:Localize SettingWindow.Tab7.Text10}" />
+                            <TextBlock FontSize="20" Text="{Binding RunType}" />
                         </StackPanel>
                     </StackPanel>
-
-                    <StackPanel Name="StackPanel2" MaxWidth="350">
+                    <StackPanel
+                        Name="StackPanel2"
+                        MaxWidth="350"
+                        Margin="0,5,0,0">
                         <WrapPanel>
                             <views:HyperLink
                                 Margin="5,0,0,0"
@@ -104,7 +111,6 @@
                                 Command="{Binding OpenUrl9}" />
                         </StackPanel>
                     </StackPanel>
-
                 </StackPanel>
             </WrapPanel>
         </Border>

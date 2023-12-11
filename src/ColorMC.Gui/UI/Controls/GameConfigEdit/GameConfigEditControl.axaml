@@ -22,6 +22,9 @@
             <DataTemplate DataType="model:NbtDialogEditModel">
                 <view:NbtDialogEditControl DataContext="{Binding}" />
             </DataTemplate>
+            <DataTemplate DataType="model:NbtDialogFindModel">
+                <view:NbtDialogFindControl DataContext="{Binding}" />
+            </DataTemplate>
         </dialog:DialogHost.DataTemplates>
         <Panel Margin="5">
             <DockPanel>

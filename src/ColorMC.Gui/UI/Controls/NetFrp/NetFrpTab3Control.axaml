@@ -20,24 +20,27 @@
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
             <DockPanel>
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                    <Label Content="{setting:Localize NetFrpWindow.Tab3.Text1}" />
+                <StackPanel
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Top"
+                    Orientation="Horizontal">
                     <Button
                         Width="100"
                         Height="25"
                         Margin="0,0,5,0"
-                        Command="{Binding Stop}"
-                        Content="{setting:Localize NetFrpWindow.Tab3.Text2}"
-                        IsEnabled="{Binding IsRuning}" />
-                    <Button
-                        Width="100"
-                        Height="25"
                         Command="{Binding Share}"
                         Content="{setting:Localize NetFrpWindow.Tab3.Text3}"
                         IsEnabled="{Binding IsOk}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Command="{Binding Stop}"
+                        Content="{setting:Localize NetFrpWindow.Tab3.Text2}"
+                        IsEnabled="{Binding IsRuning}" />
                 </StackPanel>
                 <ae:TextEditor
                     Name="TextEditor1"
+                    Margin="0,5,0,0"
                     Document="{Binding Text}"
                     FontSize="14"
                     FontWeight="Normal"

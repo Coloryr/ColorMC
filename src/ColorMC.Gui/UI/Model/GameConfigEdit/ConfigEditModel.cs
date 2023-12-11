@@ -60,7 +60,8 @@ public partial class GameConfigEditModel : GameModel
     public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world)
         : base(model, obj)
     {
-        UseName = (ToString() ?? "GameConfigEditModel") + " game:" + obj.UUID + " world:" + world?.LevelName;
+        UseName = (ToString() ?? "GameConfigEditModel") 
+            + " game:" + obj?.UUID + " world:" + world?.LevelName;
         World = world;
 
         _isWorld = World != null;
@@ -395,7 +396,7 @@ public partial class GameConfigEditModel : GameModel
             Title = App.Lang("ConfigEditWindow.Info5"),
             Title1 = App.Lang("ConfigEditWindow.Info3")
         };
-        await DialogHost.Show(this, UseName);
+        await DialogHost.Show(model1, UseName);
         if (model1.Cancel)
         {
             return;

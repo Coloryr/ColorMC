@@ -14,17 +14,24 @@
         BorderBrush="{setting:Colors GroupColor}"
         BorderThickness="2"
         CornerRadius="{setting:Style ButtonCornerRadius}">
-        <StackPanel Orientation="Horizontal">
-            <Label Content="{setting:Localize NetFrpWindow.Tab1.Text9}" />
-            <Label Margin="0,0,10,0" Content="{Binding Name}" />
-            <Label Content="{setting:Localize NetFrpWindow.Tab1.Text10}" />
-            <Label Margin="0,0,10,0" Content="{Binding ID}" />
-            <Label Content="{setting:Localize NetFrpWindow.Tab1.Text11}" />
-            <Label Margin="0,0,10,0" Content="{Binding Type}" />
-            <Label Content="{setting:Localize NetFrpWindow.Tab1.Text12}" />
-            <Label Margin="0,0,10,0" Content="{Binding Remote}" />
-            <Label Content="{setting:Localize NetFrpWindow.Tab1.Text13}" />
-            <Label Margin="0,0,10,0" Content="{Binding Use}" />
-        </StackPanel>
+        <WrapPanel>
+            <TextBlock Margin="0,0,5,0" Text="{Binding Name}" />
+            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text10}" />
+                <TextBlock Text="{Binding ID}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text11}" />
+                <TextBlock Text="{Binding Type}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text12}" />
+                <TextBlock Text="{Binding Remote}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text13}" />
+                <TextBlock Text="{Binding Use}" />
+            </StackPanel>
+        </WrapPanel>
     </Border>
 </UserControl>

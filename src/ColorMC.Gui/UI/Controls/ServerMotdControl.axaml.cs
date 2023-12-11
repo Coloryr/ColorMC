@@ -105,10 +105,10 @@ public partial class ServerMotdControl : UserControl
             using var stream = new MemoryStream(motd.FaviconByteArray);
             Image1.Source = new Bitmap(stream);
 
-            Label2.Content = motd.Players.Online;
-            Label3.Content = motd.Players.Max;
-            Label4.Content = motd.Version.Name;
-            Label5.Content = motd.Ping;
+            Label2.Text = motd.Players.Online.ToString();
+            Label3.Text = motd.Players.Max.ToString();
+            Label4.Text = motd.Version.Name;
+            Label5.Text = motd.Ping.ToString();
 
             MakeText(motd.Description);
 

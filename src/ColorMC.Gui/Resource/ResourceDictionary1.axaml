@@ -8,7 +8,11 @@
     </DataTemplate>
     <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Width="30" VerticalAlignment="Center">
+            <TextBlock
+                Width="30"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                TextAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{x:Static icon:IconConverter.FileIconConverter}">
                         <Binding Path="IsDirectory" />
@@ -21,7 +25,11 @@
     </DataTemplate>
     <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Width="30" VerticalAlignment="Center">
+            <TextBlock
+                Width="30"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                TextAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{x:Static icon:IconConverter.NbtIconConverter}">
                         <Binding Path="NbtType" />

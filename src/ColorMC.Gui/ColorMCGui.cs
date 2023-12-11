@@ -103,6 +103,7 @@ public static class ColorMCGui
     {
         if (e.Exception.InnerException is DBusException)
         {
+            Logs.Error(App.Lang("Gui.Error25"), e.Exception);
             return;
         }
         Logs.SaveCrash(App.Lang("Gui.Error25"), e.Exception);

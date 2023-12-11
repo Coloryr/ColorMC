@@ -9,11 +9,11 @@
     x:DataType="dialogmodel:Info6Model"
     mc:Ignorable="d">
     <DockPanel>
-        <Label
-            HorizontalAlignment="Left"
-            Content="{Binding Text1}"
+        <TextBlock
+            Margin="5"
             DockPanel.Dock="Top"
-            FontSize="20" />
+            FontSize="20"
+            Text="{Binding Text1}" />
         <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom">
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button

@@ -52,17 +52,17 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg15.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab2.Text9}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize GameEditWindow.Tab2.Text9}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,-5">
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Width="110"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize GameEditWindow.Tab2.Text10}" />
+                                Text="{setting:Localize GameEditWindow.Tab2.Text10}" />
                             <NumericUpDown
                                 Width="150"
                                 Height="30"
@@ -72,10 +72,10 @@
                                 Value="{Binding Width}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Width="110"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize GameEditWindow.Tab2.Text11}" />
+                                Text="{setting:Localize GameEditWindow.Tab2.Text11}" />
                             <NumericUpDown
                                 Width="150"
                                 Height="30"
@@ -110,16 +110,16 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/GameEdit/svg5.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab2.Text24}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize GameEditWindow.Tab2.Text24}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,5">
-                        <Label
+                        <TextBlock
                             Width="110"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab2.Text22}" />
+                            Text="{setting:Localize GameEditWindow.Tab2.Text22}" />
                         <ComboBox
                             Width="150"
                             IsEnabled="{Binding EnableJvmName}"
@@ -144,10 +144,10 @@
                     </DockPanel>
                     <WrapPanel Margin="0,0,0,-5">
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Width="110"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize GameEditWindow.Tab2.Text4}" />
+                                Text="{setting:Localize GameEditWindow.Tab2.Text4}" />
                             <NumericUpDown
                                 Width="150"
                                 Height="30"
@@ -156,10 +156,10 @@
                                 Value="{Binding MinMem}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Width="110"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize GameEditWindow.Tab2.Text5}" />
+                                Text="{setting:Localize GameEditWindow.Tab2.Text5}" />
                             <NumericUpDown
                                 Width="150"
                                 Height="30"
@@ -188,10 +188,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg12.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab2.Text33}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize GameEditWindow.Tab2.Text33}" />
                     </StackPanel>
                     <CheckBox Content="{setting:Localize GameEditWindow.Tab2.Text31}" IsChecked="{Binding PerRun}" />
                     <TextBox
@@ -232,19 +232,19 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg14.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab2.Text1}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize GameEditWindow.Tab2.Text1}" />
                     </StackPanel>
 
                     <!--  Jvm GC  -->
                     <WrapPanel Orientation="Horizontal">
-                        <Label
+                        <TextBlock
                             Width="110"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab2.Text2}" />
+                            Text="{setting:Localize GameEditWindow.Tab2.Text2}" />
                         <ComboBox
                             Width="200"
                             ItemsSource="{Binding GCTypeList}"
@@ -273,7 +273,7 @@
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text7}" />
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,0"
+                        Margin="0,5,0,5"
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding GameArg}"
@@ -285,7 +285,7 @@
                     <TextBox
                         Name="TextBox13"
                         Height="100"
-                        Margin="0,5,0,0"
+                        Margin="0,5,0,5"
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding ClassPath}"
@@ -296,7 +296,7 @@
 
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,0"
+                        Margin="0,5,0,5"
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding JvmEnv}"
@@ -328,10 +328,10 @@
                             Height="24"
                             Margin="0,0,5,0"
                             Path="/Resource/Icon/GameEdit/svg6.svg" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab2.Text14}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize GameEditWindow.Tab2.Text14}" />
                     </StackPanel>
                     <WrapPanel Orientation="Horizontal">
                         <TextBox
@@ -366,10 +366,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg8.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Tab2.Text17}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize GameEditWindow.Tab2.Text17}" />
                     </StackPanel>
                     <Grid Margin="0,0,5,0" ColumnDefinitions="3*,1*">
                         <TextBox

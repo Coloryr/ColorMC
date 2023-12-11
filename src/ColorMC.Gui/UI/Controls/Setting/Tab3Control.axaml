@@ -32,10 +32,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg7.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab3.Text23}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                     </StackPanel>
                     <WrapPanel>
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
@@ -50,7 +50,6 @@
                                 ItemsSource="{Binding SourceList}"
                                 SelectedIndex="{Binding Source}" />
                         </StackPanel>
-
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
@@ -100,10 +99,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg8.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab3.Text3}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab3.Text3}" />
                     </StackPanel>
                     <Grid Margin="0,0,5,0" ColumnDefinitions="3*,1*">
                         <TextBox
@@ -185,10 +184,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg9.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab3.Text14}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab3.Text14}" />
                     </StackPanel>
                     <WrapPanel>
                         <ToggleSwitch
@@ -229,12 +228,12 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg10.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab3.Text20}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab3.Text20}" />
                     </StackPanel>
-                    <Label Margin="5,0,0,5" Content="{Binding ServerInfo}" />
+                    <TextBlock Margin="5,0,0,5" Text="{Binding ServerInfo}" />
                     <TextBox
                         Height="100"
                         Margin="0,0,0,5"

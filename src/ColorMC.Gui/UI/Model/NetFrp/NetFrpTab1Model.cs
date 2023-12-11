@@ -15,10 +15,6 @@ public partial class NetFrpModel
 {
     [ObservableProperty]
     private string _keySakura;
-    [ObservableProperty]
-    private string _userSakuraID;
-    [ObservableProperty]
-    private string _userSakuraName;
 
     private bool _isLoadSakura;
 
@@ -30,27 +26,6 @@ public partial class NetFrpModel
             return;
 
         ConfigBinding.SetFrpKeySakura(KeySakura);
-    }
-
-    [RelayCommand]
-    public async Task TestKeySakura()
-    {
-        if (string.IsNullOrWhiteSpace(KeySakura))
-        {
-            Model.Show(App.Lang("NetFrpWindow.Tab1.Error3"));
-            return;
-        }
-        Model.Progress(App.Lang("NetFrpWindow.Tab1.Info1"));
-        var res = await SakuraFrpApi.GetUserInfo(KeySakura);
-        Model.ProgressClose();
-        if (res == null)
-        {
-            Model.Show(App.Lang("NetFrpWindow.Tab1.Error1"));
-            return;
-        }
-
-        UserSakuraID = res.id.ToString();
-        UserSakuraName = res.name;
     }
 
     [RelayCommand]
@@ -99,17 +74,7 @@ public partial class NetFrpModel
             return;
         }
 
-        Model.Progress(App.Lang("NetFrpWindow.Tab1.Info1"));
-        var res = await SakuraFrpApi.GetUserInfo(KeySakura);
-        if (res == null)
-        {
-            Model.ProgressClose();
-            return;
-        }
-
-        UserSakuraID = res.id.ToString();
-        UserSakuraName = res.name;
-        Model.ProgressUpdate(App.Lang("NetFrpWindow.Tab1.Info2"));
+        Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
         var res1 = await SakuraFrpApi.GetChannel(KeySakura);
         Model.ProgressClose();
         if (res1 == null)
