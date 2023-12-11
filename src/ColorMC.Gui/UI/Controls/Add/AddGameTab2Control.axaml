@@ -49,10 +49,10 @@
                         Fill="{setting:Colors Font}"
                         Path="/Resource/Icon/GameEdit/svg3.svg"
                         Stroke="{setting:Colors Font}" />
-                    <Label
+                    <TextBlock
                         VerticalAlignment="Center"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text5}"
-                        FontSize="{setting:Style FontTitle}" />
+                        FontSize="{setting:Style FontTitle}"
+                        Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                 </StackPanel>
                 <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                     <ComboBox
@@ -77,10 +77,10 @@
                         Fill="{setting:Colors Font}"
                         Path="/Resource/Icon/AddMenu/svg1.svg"
                         Stroke="{setting:Colors Font}" />
-                    <Label
+                    <TextBlock
                         VerticalAlignment="Center"
-                        Content="{setting:Localize AddGameWindow.Tab2.Text2}"
-                        FontSize="{setting:Style FontTitle}" />
+                        FontSize="{setting:Style FontTitle}"
+                        Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
                 </StackPanel>
                 <ComboBox
                     Width="200"

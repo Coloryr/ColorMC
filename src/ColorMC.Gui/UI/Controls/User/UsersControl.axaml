@@ -10,9 +10,10 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:UsersControlModel"
+    Background="{setting:Colors TranBack}"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel Background="{setting:Colors TranBack}">
+    <Panel>
         <dialog:DialogHost DisableOpeningAnimation="True" Identifier="UsersControl">
             <dialog:DialogHost.DataTemplates>
                 <DataTemplate DataType="model:UsersControlModel">

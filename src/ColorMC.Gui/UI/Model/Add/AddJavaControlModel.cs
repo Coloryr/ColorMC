@@ -46,16 +46,23 @@ public partial class AddJavaControlModel : TopModel
 
     private bool _load = true;
 
+    private readonly string _useName;
+
     public AddJavaControlModel(BaseModel model) : base(model)
     {
         ColorMCCore.JavaUnzip = JavaUnzip;
+
+        _useName = ToString() ?? "AddJavaControlModel";
+
+        Model.SetChoiseContent(_useName, App.Lang("Button.Refash"));
+        Model.SetChoiseCall(_useName, Load);
     }
 
-    async partial void OnJavaTypeChanged(string value)
+    partial void OnJavaTypeChanged(string value)
     {
         _load = true;
         Switch();
-        await Load();
+        Load();
     }
 
     partial void OnArchChanged(string value)
@@ -66,14 +73,14 @@ public partial class AddJavaControlModel : TopModel
         Select();
     }
 
-    async partial void OnSystemChanged(string value)
+    partial void OnSystemChanged(string value)
     {
         if (_load)
             return;
 
         if (TypeIndex == 0)
         {
-            await Load();
+            Load();
         }
         else
         {
@@ -81,14 +88,14 @@ public partial class AddJavaControlModel : TopModel
         }
     }
 
-    async partial void OnVersionChanged(string value)
+    partial void OnVersionChanged(string value)
     {
         if (_load)
             return;
 
         if (TypeIndex == 0)
         {
-            await Load();
+            Load();
         }
         else
         {
@@ -96,8 +103,7 @@ public partial class AddJavaControlModel : TopModel
         }
     }
 
-    [RelayCommand]
-    public async Task Load()
+    public async void Load()
     {
         Model.Progress(App.Lang("AddJavaWindow.Info4"));
 

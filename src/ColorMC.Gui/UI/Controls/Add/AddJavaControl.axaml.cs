@@ -25,11 +25,11 @@ public partial class AddJavaControl : UserControl, IUserControl
         JavaFiles.DoubleTapped += JavaFiles_DoubleTapped;
     }
 
-    public async void OnKeyDown(object? sender, KeyEventArgs e)
+    public void OnKeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.F5)
         {
-            await (DataContext as AddJavaControlModel)!.Load();
+            (DataContext as AddJavaControlModel)!.Load();
         }
     }
 

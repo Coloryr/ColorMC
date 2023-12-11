@@ -112,8 +112,8 @@ public partial class ServerMotdControl : UserControl
 
             MakeText(motd.Description);
 
-            StackPanel1.Inlines?.Add(" ");
-            StackPanel2.Inlines?.Add(" ");
+            StackPanel1.Inlines?.Add(new Run(""));
+            StackPanel2.Inlines?.Add(new Run(""));
         }
         else
         {

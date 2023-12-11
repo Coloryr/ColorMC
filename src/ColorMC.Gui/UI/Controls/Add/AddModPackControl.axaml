@@ -8,7 +8,7 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="350"
     x:DataType="model:AddModPackControlModel"
     mc:Ignorable="d">
     <Panel>
@@ -23,44 +23,35 @@
                 DockPanel.Dock="Top"
                 IsVisible="{Binding DisplayFilter}">
                 <StackPanel>
-                    <WrapPanel>
-                        <DockPanel Width="180">
-                            <Label
-                                Margin="5"
-                                VerticalAlignment="Center"
-                                Content="{setting:Localize Text.DownloadSource}" />
+                    <WrapPanel Margin="0,0,0,-5">
+                        <DockPanel Margin="0,0,5,5">
                             <ComboBox
-                                Width="120"
+                                Width="150"
                                 Height="30"
-                                Margin="2,2,0,0"
                                 IsEnabled="{Binding Enable}"
                                 ItemsSource="{Binding SourceList}"
                                 SelectedIndex="{Binding Source}" />
                         </DockPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                             <Label
-                                Width="50"
-                                Margin="5"
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddModPackWindow.Text1}" />
                             <ComboBox
-                                Width="110"
+                                Width="100"
                                 Height="30"
-                                Margin="0,2,0,0"
                                 IsEnabled="{Binding Enable}"
                                 ItemsSource="{Binding CategorieList}"
                                 SelectedIndex="{Binding Categorie}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                        <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
                             <Label
-                                Width="80"
-                                Margin="5"
+                                Width="65"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize Text.GameVersion}" />
                             <ComboBox
                                 Width="120"
                                 Height="30"
-                                Margin="0,2,0,0"
                                 IsEnabled="{Binding Enable}"
                                 ItemsSource="{Binding GameVersionList}"
                                 SelectedItem="{Binding GameVersion}" />
@@ -68,39 +59,37 @@
                         <Button
                             Width="100"
                             Height="25"
+                            Margin="0,0,0,5"
                             Command="{Binding Reload}"
                             Content="{setting:Localize AddModPackWindow.Text8}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text75}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
-                    <WrapPanel>
+                    <WrapPanel Margin="0,0,0,-5">
                         <TextBox
                             Name="Input1"
-                            Width="170"
+                            Width="150"
                             Height="30"
-                            Margin="10,0,0,0"
+                            Margin="0,0,5,5"
                             Classes="input1"
                             IsEnabled="{Binding TextEnable}"
                             Text="{Binding Text}"
                             Watermark="{setting:Localize Text.Name}" />
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                             <Label
-                                Width="50"
-                                Margin="5"
+                                Margin="0,0,5,0"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddModPackWindow.Text4}" />
                             <ComboBox
-                                Width="110"
+                                Width="100"
                                 Height="30"
-                                Margin="0,2,0,0"
                                 IsEnabled="{Binding Enable}"
                                 ItemsSource="{Binding SortTypeList}"
                                 SelectedIndex="{Binding SortType}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                        <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
                             <Label
-                                Width="80"
-                                Margin="5"
+                                Width="65"
                                 VerticalAlignment="Center"
                                 Content="{setting:Localize AddModPackWindow.Text5}" />
                             <NumericUpDown
@@ -114,6 +103,7 @@
                         <Button
                             Width="100"
                             Height="25"
+                            Margin="0,0,0,5"
                             Command="{Binding Select}"
                             Content="{setting:Localize AddModPackWindow.Text9}"
                             IsEnabled="{Binding IsSelect}"
@@ -156,7 +146,7 @@
         <DockPanel
             Name="ModPackFiles"
             Background="{setting:Colors TopBottom}"
-            IsVisible="False">
+            IsVisible="True">
             <Border
                 Margin="5,5,5,3"
                 Padding="{setting:Style BorderPadding}"
@@ -165,40 +155,35 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 DockPanel.Dock="Top">
-                <WrapPanel>
-                    <Label
-                        Margin="5,0,0,0"
+                <WrapPanel Margin="0,0,0,-5">
+                    <TextBlock
+                        Margin="0,0,5,5"
                         VerticalAlignment="Center"
-                        Content="{setting:Localize AddModPackWindow.Text6}" />
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            Margin="5,0,0,0"
+                        Text="{setting:Localize Text.GameVersion}" />
+                    <ComboBox
+                        Width="100"
+                        Margin="0,0,5,5"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding GameVersionList}"
+                        SelectedItem="{Binding GameVersion1}" />
+                    <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="0,0,5,0"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddModPackWindow.Text5}" />
+                            Text="{setting:Localize AddModPackWindow.Text5}" />
                         <NumericUpDown
-                            Width="120"
+                            Width="100"
                             Height="30"
                             FormatString="N0"
                             IsEnabled="{Binding PageEnable1}"
                             Minimum="0"
                             Value="{Binding Page1}" />
                     </StackPanel>
-                    <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                        <Label
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize Text.GameVersion}" />
-                        <ComboBox
-                            Width="140"
-                            VerticalAlignment="Center"
-                            ItemsSource="{Binding GameVersionList}"
-                            SelectedItem="{Binding GameVersion1}" />
-                    </StackPanel>
 
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="0,0,5,0"
+                        Margin="0,0,5,5"
                         Command="{Binding Search}"
                         Content="{setting:Localize AddModPackWindow.Text10}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text77}"
@@ -207,6 +192,7 @@
                     <Button
                         Width="100"
                         Height="25"
+                        Margin="0,0,0,5"
                         Command="{Binding Download}"
                         Content="{setting:Localize AddModPackWindow.Text12}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text91}"

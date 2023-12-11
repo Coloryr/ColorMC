@@ -84,6 +84,10 @@ public partial class FileItemModel : ObservableObject
 
     private async Task<Bitmap?> GetImage()
     {
+        if (_img != null)
+        {
+            return _img;
+        }
         if (Data?.Logo == null)
         {
             return null;
@@ -128,9 +132,9 @@ public partial class FileItemModel : ObservableObject
         _add.Next();
     }
 
-    public void Close()
+    public async void Close()
     {
-        if (_img != App.GameIcon)
+        if (await GetImage() != App.GameIcon)
         {
             _img?.Dispose();
         }

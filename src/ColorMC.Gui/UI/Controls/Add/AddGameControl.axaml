@@ -35,10 +35,10 @@
                     CornerRadius="{setting:Style ButtonCornerRadius}">
                     <StackPanel>
                         <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item1.svg" />
-                        <Label
+                        <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddGameWindow.Tabs.Text1}" />
+                            Text="{setting:Localize AddGameWindow.Tabs.Text1}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -54,10 +54,10 @@
                     CornerRadius="{setting:Style ButtonCornerRadius}">
                     <StackPanel>
                         <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item2.svg" />
-                        <Label
+                        <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddGameWindow.Tabs.Text2}" />
+                            Text="{setting:Localize AddGameWindow.Tabs.Text2}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -74,10 +74,10 @@
                     IsVisible="{Binding !IsPhone}">
                     <StackPanel>
                         <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item3.svg" />
-                        <Label
+                        <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddGameWindow.Tabs.Text3}" />
+                            Text="{setting:Localize AddGameWindow.Tabs.Text3}" />
                     </StackPanel>
                 </Button>
             </WrapPanel>
@@ -89,11 +89,11 @@
             Name="Grid2"
             Background="{setting:Colors BG1}"
             IsVisible="False">
-            <Label
+            <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="{setting:Localize AddGameWindow.Text1}"
-                FontSize="30" />
+                FontSize="30"
+                Text="{setting:Localize AddGameWindow.Text1}" />
         </Panel>
     </Panel>
 </UserControl>

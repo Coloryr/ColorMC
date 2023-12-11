@@ -103,7 +103,7 @@ public partial class AddControl : UserControl, IUserControl
                 }
             });
         }
-        else if (e.PropertyName == "DisplayList")
+        else if (e.PropertyName == "ScrollToHome")
         {
             ScrollViewer1.ScrollToHome();
         }

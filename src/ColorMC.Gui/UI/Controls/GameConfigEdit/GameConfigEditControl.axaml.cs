@@ -11,11 +11,10 @@ using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.Utils;
 using System.ComponentModel;
 using System.IO;
 
-namespace ColorMC.Gui.UI.Controls.ConfigEdit;
+namespace ColorMC.Gui.UI.Controls.GameConfigEdit;
 
 public partial class GameConfigEditControl : UserControl, IUserControl
 {
@@ -59,9 +58,6 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         TextEditor1.Options.ShowBoxForControlCharacters = true;
         TextEditor1.TextArea.IndentationStrategy =
             new CSharpIndentationStrategy(TextEditor1.Options);
-
-        DataGrid1.CellEditEnded += DataGrid1_CellEditEnded;
-        DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
     }
 
     public GameConfigEditControl(WorldObj world) : this()
@@ -84,26 +80,6 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         if (e.PropertyName == "TurnTo")
         {
             NbtViewer.Scroll!.Offset = new(0, (DataContext as GameConfigEditModel)!.TurnTo * 25);
-        }
-    }
-
-    private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
-    {
-        if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-        {
-            Flyout2((sender as Control)!);
-        }
-        else
-        {
-            LongPressed.Pressed(() => Flyout2((sender as Control)!));
-        }
-    }
-
-    private void DataGrid1_CellEditEnded(object? sender, DataGridCellEditEndedEventArgs e)
-    {
-        if (e.EditAction == DataGridEditAction.Commit)
-        {
-            (DataContext as GameConfigEditModel)!.DataEdit();
         }
     }
 
@@ -140,23 +116,9 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         });
     }
 
-    private void Flyout2(Control control)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            var model = (DataContext as GameConfigEditModel)!;
-            if (model.DataItem != null)
-            {
-                _ = new ConfigFlyout2(control, model, model.DataItem);
-            }
-        });
-    }
-
     public void Opened()
     {
         Window.SetTitle(Title);
-
-        DataGrid1.SetFontColor();
 
         var model = (DataContext as GameConfigEditModel)!;
         model.Load();

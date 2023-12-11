@@ -56,24 +56,12 @@ public class NbtIconConverter : IMultiValueConverter
 
 public static class IconConverter
 {
-    private static FileIconConverter? s_fileIconConverter;
-    public static IMultiValueConverter FileIconConverter
+    static IconConverter()
     {
-        get
-        {
-            s_fileIconConverter ??= new FileIconConverter();
-            return s_fileIconConverter;
-        }
+        FileIconConverter = new FileIconConverter();
+        NbtIconConverter = new NbtIconConverter();
     }
 
-    private static NbtIconConverter? s_nbtIconConverter;
-    public static IMultiValueConverter NbtIconConverter
-    {
-        get
-        {
-            s_nbtIconConverter ??= new NbtIconConverter();
-
-            return s_nbtIconConverter;
-        }
-    }
+    public static IMultiValueConverter FileIconConverter { get; }
+    public static IMultiValueConverter NbtIconConverter { get; }
 }

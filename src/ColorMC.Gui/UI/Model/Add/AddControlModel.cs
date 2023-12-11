@@ -418,7 +418,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         SortTypeList.Clear();
         CategorieList.Clear();
 
-        DisplayList.Clear();
+        ClearList();
         var type = SourceTypeList[DownloadSource];
 
         //CF搜索源
@@ -580,14 +580,12 @@ public partial class AddControlModel : GameModel, IAddWindow
                 return;
             }
 
-            DisplayList.Clear();
+            ClearList();
 
             foreach (var item in data)
             {
                 DisplayList.Add(new(item, this));
             }
-
-            OnPropertyChanged(nameof(DisplayList));
 
             _last = null;
 
@@ -610,7 +608,7 @@ public partial class AddControlModel : GameModel, IAddWindow
                 return;
             }
 
-            DisplayList.Clear();
+            ClearList();
 
             if (_now == FileType.Mod)
             {
@@ -631,14 +629,14 @@ public partial class AddControlModel : GameModel, IAddWindow
                 }
             }
 
-            OnPropertyChanged(nameof(DisplayList));
-
             _last = null;
 
             EmptyDisplay = DisplayList.Count == 0;
 
             Model.ProgressClose();
         }
+
+        OnPropertyChanged("ScrollToHome");
     }
 
     /// <summary>
@@ -1297,6 +1295,15 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
     }
 
+    private void ClearList()
+    {
+        foreach (var item in DisplayList)
+        {
+            item.Close();
+        }
+        DisplayList.Clear();
+    }
+
     protected override void Close()
     {
         _close = true;
@@ -1308,10 +1315,6 @@ public partial class AddControlModel : GameModel, IAddWindow
         DownloadOptifineList.Clear();
         DownloadModList.Clear();
         FileList.Clear();
-        foreach (var item in DisplayList)
-        {
-            item.Close();
-        }
-        DisplayList.Clear();
+        ClearList();
     }
 }

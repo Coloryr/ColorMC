@@ -1,281 +1,287 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <TrimMode>link</TrimMode>
-        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <Platforms>AnyCPU</Platforms>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <SignAssembly>False</SignAssembly>
-        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <Authors>Coloryr</Authors>
-        <Company>Coloryr</Company>
-        <Product>ColorMC</Product>
-        <Title>ColorMC</Title>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DebugType>portable</DebugType>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DebugType>portable</DebugType>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-        <DebugType>portable</DebugType>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-        <DebugType>portable</DebugType>
-    </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <TrimMode>link</TrimMode>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Platforms>AnyCPU</Platforms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <SignAssembly>False</SignAssembly>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <Authors>Coloryr</Authors>
+    <Company>Coloryr</Company>
+    <Product>ColorMC</Product>
+    <Title>ColorMC</Title>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <AvaloniaXaml Remove="Resource\UI\UI.axaml" />
-    </ItemGroup>
+  <ItemGroup>
+    <AvaloniaXaml Remove="Resource\UI\UI.axaml" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <None Remove=".gitignore" />
-        <None Remove="icon.ico" />
-        <None Remove="Resource\Icon\add.svg" />
-        <None Remove="Resource\Icon\add1.svg" />
-        <None Remove="Resource\Icon\AddMenu\item1.svg" />
-        <None Remove="Resource\Icon\AddMenu\item2.svg" />
-        <None Remove="Resource\Icon\AddMenu\item3.svg" />
-        <None Remove="Resource\Icon\AddMenu\svg1.svg" />
-        <None Remove="Resource\Icon\book.svg" />
-        <None Remove="Resource\Icon\count.svg" />
-        <None Remove="Resource\Icon\down.svg" />
-        <None Remove="Resource\Icon\edit.svg" />
-        <None Remove="Resource\Icon\filter.svg" />
-        <None Remove="Resource\Icon\GameCount\svg1.svg" />
-        <None Remove="Resource\Icon\GameCount\svg2.svg" />
-        <None Remove="Resource\Icon\GameCount\svg3.svg" />
-        <None Remove="Resource\Icon\GameEdit\item1.svg" />
-        <None Remove="Resource\Icon\GameEdit\item2.svg" />
-        <None Remove="Resource\Icon\GameEdit\item3.svg" />
-        <None Remove="Resource\Icon\GameEdit\item4.svg" />
-        <None Remove="Resource\Icon\GameEdit\item5.svg" />
-        <None Remove="Resource\Icon\GameEdit\item6.svg" />
-        <None Remove="Resource\Icon\GameEdit\item7.svg" />
-        <None Remove="Resource\Icon\GameEdit\item8.svg" />
-        <None Remove="Resource\Icon\GameEdit\item9.svg" />
-        <None Remove="Resource\Icon\GameEdit\svg1.svg" />
-        <None Remove="Resource\Icon\GameEdit\svg2.svg" />
-        <None Remove="Resource\Icon\GameEdit\svg3.svg" />
-        <None Remove="Resource\Icon\GameEdit\svg4.svg" />
-        <None Remove="Resource\Icon\GameEdit\svg5.svg" />
-        <None Remove="Resource\Icon\GameEdit\svg6.svg" />
-        <None Remove="Resource\Icon\GameExport\item1.svg" />
-        <None Remove="Resource\Icon\GameExport\item2.svg" />
-        <None Remove="Resource\Icon\GameExport\item3.svg" />
-        <None Remove="Resource\Icon\GameExport\item4.svg" />
-        <None Remove="Resource\Icon\Head\close.svg" />
-        <None Remove="Resource\Icon\Head\max.svg" />
-        <None Remove="Resource\Icon\Head\max1.svg" />
-        <None Remove="Resource\Icon\Head\min.svg" />
-        <None Remove="Resource\Icon\Item\download.svg" />
-        <None Remove="Resource\Icon\Item\web.svg" />
-        <None Remove="Resource\Icon\launch.svg" />
-        <None Remove="Resource\Icon\left.svg" />
-        <None Remove="Resource\Icon\left1.svg" />
-        <None Remove="Resource\Icon\menu.svg" />
-        <None Remove="Resource\Icon\net.svg" />
-        <None Remove="Resource\Icon\NetFrp\item1.svg" />
-        <None Remove="Resource\Icon\NetFrp\item2.svg" />
-        <None Remove="Resource\Icon\NetFrp\item3.svg" />
-        <None Remove="Resource\Icon\NetFrp\item4.svg" />
-        <None Remove="Resource\Icon\new.svg" />
-        <None Remove="Resource\Icon\play.svg" />
-        <None Remove="Resource\Icon\resize.svg" />
-        <None Remove="Resource\Icon\setting.svg" />
-        <None Remove="Resource\Icon\Setting\item1.svg" />
-        <None Remove="Resource\Icon\Setting\item2.svg" />
-        <None Remove="Resource\Icon\Setting\item3.svg" />
-        <None Remove="Resource\Icon\Setting\item4.svg" />
-        <None Remove="Resource\Icon\Setting\item5.svg" />
-        <None Remove="Resource\Icon\Setting\item6.svg" />
-        <None Remove="Resource\Icon\Setting\item7.svg" />
-        <None Remove="Resource\Icon\Setting\svg1.svg" />
-        <None Remove="Resource\Icon\Setting\svg10.svg" />
-        <None Remove="Resource\Icon\Setting\svg11.svg" />
-        <None Remove="Resource\Icon\Setting\svg12.svg" />
-        <None Remove="Resource\Icon\Setting\svg13.svg" />
-        <None Remove="Resource\Icon\Setting\svg14.svg" />
-        <None Remove="Resource\Icon\Setting\svg15.svg" />
-        <None Remove="Resource\Icon\Setting\svg16.svg" />
-        <None Remove="Resource\Icon\Setting\svg17.svg" />
-        <None Remove="Resource\Icon\Setting\svg18.svg" />
-        <None Remove="Resource\Icon\Setting\svg19.svg" />
-        <None Remove="Resource\Icon\Setting\svg2.svg" />
-        <None Remove="Resource\Icon\Setting\svg20.svg" />
-        <None Remove="Resource\Icon\Setting\svg21.svg" />
-        <None Remove="Resource\Icon\Setting\svg22.svg" />
-        <None Remove="Resource\Icon\Setting\svg3.svg" />
-        <None Remove="Resource\Icon\Setting\svg4.svg" />
-        <None Remove="Resource\Icon\Setting\svg5.svg" />
-        <None Remove="Resource\Icon\Setting\svg6.svg" />
-        <None Remove="Resource\Icon\Setting\svg7.svg" />
-        <None Remove="Resource\Icon\Setting\svg8.svg" />
-        <None Remove="Resource\Icon\Setting\svg9.svg" />
-        <None Remove="Resource\Icon\size.svg" />
-        <None Remove="Resource\Icon\skin.svg" />
-        <None Remove="Resource\Icon\upgrade.svg" />
-        <None Remove="Resource\Icon\user.svg" />
-        <None Remove="Resource\Language\gui_en-us.json" />
-        <None Remove="Resource\Language\gui_zh-cn.json" />
-        <None Remove="Resource\Pic\bg.jpg" />
-        <None Remove="Resource\Pic\bg1.jpg" />
-        <None Remove="Resource\Pic\game.png" />
-        <None Remove="Resource\Pic\launch.png" />
-        <None Remove="Resource\Pic\load.png" />
-        <None Remove="Resource\Pic\user.png" />
-    </ItemGroup>
-    <ItemGroup>
-        <EmbeddedResource Include="icon.ico" />
-        <AvaloniaResource Include="Resource\Icon\add.svg" />
-        <AvaloniaResource Include="Resource\Icon\add1.svg" />
-        <AvaloniaResource Include="Resource\Icon\AddMenu\item1.svg" />
-        <AvaloniaResource Include="Resource\Icon\AddMenu\item2.svg" />
-        <AvaloniaResource Include="Resource\Icon\AddMenu\item3.svg" />
-        <AvaloniaResource Include="Resource\Icon\AddMenu\svg1.svg" />
-        <AvaloniaResource Include="Resource\Icon\book.svg" />
-        <AvaloniaResource Include="Resource\Icon\count.svg" />
-        <AvaloniaResource Include="Resource\Icon\down.svg" />
-        <AvaloniaResource Include="Resource\Icon\edit.svg" />
-        <AvaloniaResource Include="Resource\Icon\filter.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameCount\svg1.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameCount\svg2.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameCount\svg3.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\item1.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\item2.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\item3.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\item4.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\item5.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\item6.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\item7.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\item8.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\item9.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\svg1.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\svg2.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\svg3.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\svg4.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\svg5.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameEdit\svg6.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameExport\item1.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameExport\item2.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameExport\item3.svg" />
-        <AvaloniaResource Include="Resource\Icon\GameExport\item4.svg" />
-        <AvaloniaResource Include="Resource\Icon\Head\close.svg" />
-        <AvaloniaResource Include="Resource\Icon\Head\max.svg" />
-        <AvaloniaResource Include="Resource\Icon\Head\max1.svg" />
-        <AvaloniaResource Include="Resource\Icon\Head\min.svg" />
-        <AvaloniaResource Include="Resource\Icon\Item\download.svg" />
-        <AvaloniaResource Include="Resource\Icon\Item\web.svg" />
-        <AvaloniaResource Include="Resource\Icon\launch.svg" />
-        <AvaloniaResource Include="Resource\Icon\left.svg" />
-        <AvaloniaResource Include="Resource\Icon\left1.svg" />
-        <AvaloniaResource Include="Resource\Icon\menu.svg" />
-        <AvaloniaResource Include="Resource\Icon\net.svg" />
-        <AvaloniaResource Include="Resource\Icon\NetFrp\item1.svg" />
-        <AvaloniaResource Include="Resource\Icon\NetFrp\item2.svg" />
-        <AvaloniaResource Include="Resource\Icon\NetFrp\item3.svg" />
-        <AvaloniaResource Include="Resource\Icon\NetFrp\item4.svg" />
-        <AvaloniaResource Include="Resource\Icon\new.svg" />
-        <AvaloniaResource Include="Resource\Icon\play.svg" />
-        <AvaloniaResource Include="Resource\Icon\setting.svg" />
-		<AvaloniaResource Include="Resource\Icon\resize.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\item1.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\item2.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\item3.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\item4.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\item5.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\item6.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\item7.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg1.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg10.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg11.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg12.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg13.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg14.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg15.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg16.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg17.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg18.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg19.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg2.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg20.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg21.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg22.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg3.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg4.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg5.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg6.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg7.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg8.svg" />
-        <AvaloniaResource Include="Resource\Icon\Setting\svg9.svg" />
-        <AvaloniaResource Include="Resource\Icon\upgrade.svg" />
-        <AvaloniaResource Include="Resource\Icon\skin.svg" />
-        <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
-        <EmbeddedResource Include="Resource\Language\gui_en-us.json" />
-        <EmbeddedResource Include="Resource\Pic\bg.jpg" />
-        <EmbeddedResource Include="Resource\Pic\bg1.jpg" />
-        <EmbeddedResource Include="Resource\Pic\game.png" />
-        <EmbeddedResource Include="Resource\Pic\launch.png" />
-        <EmbeddedResource Include="Resource\Pic\load.png" />
-        <EmbeddedResource Include="Resource\Pic\user.png" />
-        <EmbeddedResource Include="Resource\UI\UI.axaml" />
-    </ItemGroup>
-    <ItemGroup>
-        <!--This helps with theme dll-s trimming.
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="icon.ico" />
+    <None Remove="Resource\Icon\add.svg" />
+    <None Remove="Resource\Icon\add1.svg" />
+    <None Remove="Resource\Icon\AddMenu\item1.svg" />
+    <None Remove="Resource\Icon\AddMenu\item2.svg" />
+    <None Remove="Resource\Icon\AddMenu\item3.svg" />
+    <None Remove="Resource\Icon\AddMenu\svg1.svg" />
+    <None Remove="Resource\Icon\book.svg" />
+    <None Remove="Resource\Icon\count.svg" />
+    <None Remove="Resource\Icon\down.svg" />
+    <None Remove="Resource\Icon\edit.svg" />
+    <None Remove="Resource\Icon\filter.svg" />
+    <None Remove="Resource\Icon\GameCount\svg1.svg" />
+    <None Remove="Resource\Icon\GameCount\svg2.svg" />
+    <None Remove="Resource\Icon\GameCount\svg3.svg" />
+    <None Remove="Resource\Icon\GameEdit\item1.svg" />
+    <None Remove="Resource\Icon\GameEdit\item2.svg" />
+    <None Remove="Resource\Icon\GameEdit\item3.svg" />
+    <None Remove="Resource\Icon\GameEdit\item4.svg" />
+    <None Remove="Resource\Icon\GameEdit\item5.svg" />
+    <None Remove="Resource\Icon\GameEdit\item6.svg" />
+    <None Remove="Resource\Icon\GameEdit\item7.svg" />
+    <None Remove="Resource\Icon\GameEdit\item8.svg" />
+    <None Remove="Resource\Icon\GameEdit\item9.svg" />
+    <None Remove="Resource\Icon\GameEdit\svg1.svg" />
+    <None Remove="Resource\Icon\GameEdit\svg2.svg" />
+    <None Remove="Resource\Icon\GameEdit\svg3.svg" />
+    <None Remove="Resource\Icon\GameEdit\svg4.svg" />
+    <None Remove="Resource\Icon\GameEdit\svg5.svg" />
+    <None Remove="Resource\Icon\GameEdit\svg6.svg" />
+    <None Remove="Resource\Icon\GameExport\item1.svg" />
+    <None Remove="Resource\Icon\GameExport\item2.svg" />
+    <None Remove="Resource\Icon\GameExport\item3.svg" />
+    <None Remove="Resource\Icon\GameExport\item4.svg" />
+    <None Remove="Resource\Icon\Head\close.svg" />
+    <None Remove="Resource\Icon\Head\max.svg" />
+    <None Remove="Resource\Icon\Head\max1.svg" />
+    <None Remove="Resource\Icon\Head\min.svg" />
+    <None Remove="Resource\Icon\Item\download.svg" />
+    <None Remove="Resource\Icon\Item\web.svg" />
+    <None Remove="Resource\Icon\launch.svg" />
+    <None Remove="Resource\Icon\left.svg" />
+    <None Remove="Resource\Icon\left1.svg" />
+    <None Remove="Resource\Icon\menu.svg" />
+    <None Remove="Resource\Icon\net.svg" />
+    <None Remove="Resource\Icon\NetFrp\item1.svg" />
+    <None Remove="Resource\Icon\NetFrp\item2.svg" />
+    <None Remove="Resource\Icon\NetFrp\item3.svg" />
+    <None Remove="Resource\Icon\NetFrp\item4.svg" />
+    <None Remove="Resource\Icon\new.svg" />
+    <None Remove="Resource\Icon\play.svg" />
+    <None Remove="Resource\Icon\resize.svg" />
+    <None Remove="Resource\Icon\setting.svg" />
+    <None Remove="Resource\Icon\Setting\item1.svg" />
+    <None Remove="Resource\Icon\Setting\item2.svg" />
+    <None Remove="Resource\Icon\Setting\item3.svg" />
+    <None Remove="Resource\Icon\Setting\item4.svg" />
+    <None Remove="Resource\Icon\Setting\item5.svg" />
+    <None Remove="Resource\Icon\Setting\item6.svg" />
+    <None Remove="Resource\Icon\Setting\item7.svg" />
+    <None Remove="Resource\Icon\Setting\svg1.svg" />
+    <None Remove="Resource\Icon\Setting\svg10.svg" />
+    <None Remove="Resource\Icon\Setting\svg11.svg" />
+    <None Remove="Resource\Icon\Setting\svg12.svg" />
+    <None Remove="Resource\Icon\Setting\svg13.svg" />
+    <None Remove="Resource\Icon\Setting\svg14.svg" />
+    <None Remove="Resource\Icon\Setting\svg15.svg" />
+    <None Remove="Resource\Icon\Setting\svg16.svg" />
+    <None Remove="Resource\Icon\Setting\svg17.svg" />
+    <None Remove="Resource\Icon\Setting\svg18.svg" />
+    <None Remove="Resource\Icon\Setting\svg19.svg" />
+    <None Remove="Resource\Icon\Setting\svg2.svg" />
+    <None Remove="Resource\Icon\Setting\svg20.svg" />
+    <None Remove="Resource\Icon\Setting\svg21.svg" />
+    <None Remove="Resource\Icon\Setting\svg22.svg" />
+    <None Remove="Resource\Icon\Setting\svg3.svg" />
+    <None Remove="Resource\Icon\Setting\svg4.svg" />
+    <None Remove="Resource\Icon\Setting\svg5.svg" />
+    <None Remove="Resource\Icon\Setting\svg6.svg" />
+    <None Remove="Resource\Icon\Setting\svg7.svg" />
+    <None Remove="Resource\Icon\Setting\svg8.svg" />
+    <None Remove="Resource\Icon\Setting\svg9.svg" />
+    <None Remove="Resource\Icon\size.svg" />
+    <None Remove="Resource\Icon\skin.svg" />
+    <None Remove="Resource\Icon\upgrade.svg" />
+    <None Remove="Resource\Icon\user.svg" />
+    <None Remove="Resource\Language\gui_en-us.json" />
+    <None Remove="Resource\Language\gui_zh-cn.json" />
+    <None Remove="Resource\Pic\bg.jpg" />
+    <None Remove="Resource\Pic\bg1.jpg" />
+    <None Remove="Resource\Pic\game.png" />
+    <None Remove="Resource\Pic\launch.png" />
+    <None Remove="Resource\Pic\load.png" />
+    <None Remove="Resource\Pic\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="icon.ico" />
+    <AvaloniaResource Include="Resource\Icon\add.svg" />
+    <AvaloniaResource Include="Resource\Icon\add1.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item1.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item2.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item3.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\svg1.svg" />
+    <AvaloniaResource Include="Resource\Icon\book.svg" />
+    <AvaloniaResource Include="Resource\Icon\count.svg" />
+    <AvaloniaResource Include="Resource\Icon\down.svg" />
+    <AvaloniaResource Include="Resource\Icon\edit.svg" />
+    <AvaloniaResource Include="Resource\Icon\filter.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameCount\svg1.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameCount\svg2.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameCount\svg3.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\item1.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\item2.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\item3.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\item4.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\item5.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\item6.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\item7.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\item8.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\item9.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\svg1.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\svg2.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\svg3.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\svg4.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\svg5.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\svg6.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameExport\item1.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameExport\item2.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameExport\item3.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameExport\item4.svg" />
+    <AvaloniaResource Include="Resource\Icon\Head\close.svg" />
+    <AvaloniaResource Include="Resource\Icon\Head\max.svg" />
+    <AvaloniaResource Include="Resource\Icon\Head\max1.svg" />
+    <AvaloniaResource Include="Resource\Icon\Head\min.svg" />
+    <AvaloniaResource Include="Resource\Icon\Item\download.svg" />
+    <AvaloniaResource Include="Resource\Icon\Item\web.svg" />
+    <AvaloniaResource Include="Resource\Icon\launch.svg" />
+    <AvaloniaResource Include="Resource\Icon\left.svg" />
+    <AvaloniaResource Include="Resource\Icon\left1.svg" />
+    <AvaloniaResource Include="Resource\Icon\menu.svg" />
+    <AvaloniaResource Include="Resource\Icon\net.svg" />
+    <AvaloniaResource Include="Resource\Icon\NetFrp\item1.svg" />
+    <AvaloniaResource Include="Resource\Icon\NetFrp\item2.svg" />
+    <AvaloniaResource Include="Resource\Icon\NetFrp\item3.svg" />
+    <AvaloniaResource Include="Resource\Icon\NetFrp\item4.svg" />
+    <AvaloniaResource Include="Resource\Icon\new.svg" />
+    <AvaloniaResource Include="Resource\Icon\play.svg" />
+    <AvaloniaResource Include="Resource\Icon\setting.svg" />
+    <AvaloniaResource Include="Resource\Icon\resize.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\item1.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\item2.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\item3.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\item4.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\item5.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\item6.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\item7.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg1.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg10.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg11.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg12.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg13.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg14.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg15.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg16.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg17.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg18.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg19.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg2.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg20.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg21.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg22.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg3.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg4.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg5.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg6.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg7.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg8.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg9.svg" />
+    <AvaloniaResource Include="Resource\Icon\upgrade.svg" />
+    <AvaloniaResource Include="Resource\Icon\skin.svg" />
+    <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
+    <EmbeddedResource Include="Resource\Language\gui_en-us.json" />
+    <EmbeddedResource Include="Resource\Pic\bg.jpg" />
+    <EmbeddedResource Include="Resource\Pic\bg1.jpg" />
+    <EmbeddedResource Include="Resource\Pic\game.png" />
+    <EmbeddedResource Include="Resource\Pic\launch.png" />
+    <EmbeddedResource Include="Resource\Pic\load.png" />
+    <EmbeddedResource Include="Resource\Pic\user.png" />
+    <EmbeddedResource Include="Resource\UI\UI.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--This helps with theme dll-s trimming.
         If you will publish your application in self-contained mode with p:PublishTrimmed=true and it will use Fluent theme Default theme will be trimmed from the output and vice versa.
         https://github.com/AvaloniaUI/Avalonia/issues/5593 -->
-        <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
-        <TrimmableAssembly Include="Avalonia.Themes.Default" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-		<PackageReference Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
-		<PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
-		<PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-		<PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
-		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-		<PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
-		<PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-		<PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.5" />
-		<PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.7" />
-		<PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.1" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-        <PackageReference Include="DialogHost.Avalonia" Version="0.7.7" />
-        <PackageReference Include="NAudio.Core" Version="2.2.1" />
-        <PackageReference Include="NAudio.WinMM" Version="2.2.1" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="OpenTK.Audio.OpenAL" Version="4.8.2" />
-        <PackageReference Include="SkiaSharp" Version="2.88.6" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
-        <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Compile Update="UI\Controls\Add\AddGameTab1Control.axaml.cs">
-        <DependentUpon>AddGameTab1Control.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="UI\Controls\Add\AddGameTab2Control.axaml.cs">
-        <DependentUpon>AddGameTab2Control.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="UI\Controls\Add\AddGameTab3Control.axaml.cs">
-        <DependentUpon>AddGameTab3Control.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="UI\Controls\Main\MainGroupControl.axaml.cs">
-        <DependentUpon>MainGroupControl.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="UI\Controls\Main\MainStartControl.axaml.cs">
-        <DependentUpon>MainStartControl.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="UI\Controls\NetFrp\NetFrpTab4Control.axaml.cs">
-        <DependentUpon>NetFrpTab4Control.axaml</DependentUpon>
-      </Compile>
-    </ItemGroup>
-    <ItemGroup>
-      <UpToDateCheckInput Remove="UI\Controls\MenuControl.axaml" />
-    </ItemGroup>
+    <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
+    <TrimmableAssembly Include="Avalonia.Themes.Default" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.5" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.7" />
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="DialogHost.Avalonia" Version="0.7.7" />
+    <PackageReference Include="NAudio.Core" Version="2.2.1" />
+    <PackageReference Include="NAudio.WinMM" Version="2.2.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="OpenTK.Audio.OpenAL" Version="4.8.2" />
+    <PackageReference Include="SkiaSharp" Version="2.88.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
+    <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="UI\Controls\Add\AddGameTab1Control.axaml.cs">
+      <DependentUpon>AddGameTab1Control.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\Add\AddGameTab2Control.axaml.cs">
+      <DependentUpon>AddGameTab2Control.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\Add\AddGameTab3Control.axaml.cs">
+      <DependentUpon>AddGameTab3Control.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\Dialog\NbtDialogEditControl.axaml.cs">
+      <DependentUpon>NbtDialogEditControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\Dialog\NbtDialogAddControl.axaml.cs">
+      <DependentUpon>NbtDialogAddControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\Main\MainGroupControl.axaml.cs">
+      <DependentUpon>MainGroupControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\Main\MainStartControl.axaml.cs">
+      <DependentUpon>MainStartControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\NetFrp\NetFrpTab4Control.axaml.cs">
+      <DependentUpon>NetFrpTab4Control.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="UI\Controls\MenuControl.axaml" />
+  </ItemGroup>
 </Project>

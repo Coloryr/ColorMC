@@ -1,6 +1,6 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net.Java;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Utils;
@@ -180,7 +180,8 @@ public static class JavaBinding
         return SystemInfo.Os == OsType.Android ? PhoneJavaType : PCJavaType;
     }
 
-    public static async Task<(bool, List<string>? Arch, List<string>? Os, List<string>? MainVersion, List<JavaDownloadObj>?)> GetJavaList(int type, int os, int mainversion)
+    public static async Task<(bool, List<string>? Arch, List<string>? Os, 
+        List<string>? MainVersion, List<JavaDownloadObj>? Download)> GetJavaList(int type, int os, int mainversion)
     {
         if (SystemInfo.Os == OsType.Android)
         {
@@ -209,7 +210,7 @@ public static class JavaBinding
                     }
                     else
                     {
-                        return (true, res.Arch, Adoptium.SystemType, Adoptium.JavaVersion, res.Item3);
+                        return (true, res.Arch, AdoptiumApi.SystemType, await AdoptiumApi.GetJavaVersion(), res.Item3);
                     }
                 }
             case 1:
@@ -242,7 +243,7 @@ public static class JavaBinding
     {
         try
         {
-            var list = await Zulu.GetJavaList();
+            var list = await ZuluApi.GetJavaList();
             if (list == null)
             {
                 return (false, null, null, null, null);
@@ -278,8 +279,11 @@ public static class JavaBinding
             var list1 = new List<JavaDownloadObj>();
             foreach (var item in list)
             {
-                if (item.name.EndsWith(".deb") || item.name.EndsWith(".rpm") || item.name.EndsWith(".msi") || item.name.EndsWith(".dmg"))
+                if (item.name.EndsWith(".deb") || item.name.EndsWith(".rpm")
+                    || item.name.EndsWith(".msi") || item.name.EndsWith(".dmg"))
+                {
                     continue;
+                }
 
                 list1.Add(new()
                 {
@@ -319,8 +323,13 @@ public static class JavaBinding
     {
         try
         {
-            var version = Adoptium.JavaVersion[mainversion];
-            var list = await Adoptium.GetJavaList(version, os);
+            var versions = await AdoptiumApi.GetJavaVersion();
+            if (versions == null)
+            {
+                return (false, null, null);
+            }
+            var version = versions[mainversion];
+            var list = await AdoptiumApi.GetJavaList(version, os);
             if (list == null)
             {
                 return (false, null, null);

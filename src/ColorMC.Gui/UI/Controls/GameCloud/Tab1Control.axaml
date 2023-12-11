@@ -7,7 +7,7 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameCloud"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="350"
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
     <Panel Name="ScrollViewer1" Margin="5,0,5,2">
@@ -42,20 +42,20 @@
                         ToolTip.VerticalOffset="-30" />
                 </StackPanel>
                 <StackPanel IsEnabled="{Binding Enable}">
-                    <Label Content="{setting:Localize GameCloudWindow.Tab1.Text2}" />
+                    <TextBlock Text="{setting:Localize GameCloudWindow.Tab1.Text2}" />
                     <TextBox
                         Margin="0,5,5,0"
                         Classes="input1"
                         IsEnabled="False"
                         IsReadOnly="True"
                         Text="{Binding UUID}" />
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="{setting:Localize GameCloudWindow.Tab1.Text4}" />
-                        <Label Content="{Binding ConfigTime}" />
+                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameCloudWindow.Tab1.Text4}" />
+                        <TextBlock Text="{Binding ConfigTime}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="{setting:Localize GameCloudWindow.Tab1.Text5}" />
-                        <Label Content="{Binding LocalConfigTime}" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameCloudWindow.Tab1.Text5}" />
+                        <TextBlock Text="{Binding LocalConfigTime}" />
                     </StackPanel>
                 </StackPanel>
 

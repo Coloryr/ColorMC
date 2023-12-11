@@ -7,14 +7,17 @@ using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DialogHostAvalonia;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,18 +25,13 @@ namespace ColorMC.Gui.UI.Model.GameConfigEdit;
 
 public partial class GameConfigEditModel : GameModel
 {
-    private readonly List<string> _items = new();
-    private readonly Semaphore _semaphore = new(0, 2);
+    private readonly List<string> _items = [];
 
     public WorldObj? World { get; init; }
-    public bool Cancel { get; set; }
 
-    public ObservableCollection<string> FileList { get; init; } = new();
-    public ObservableCollection<NbtDataItemModel> DataList { get; init; } = new();
+    public ObservableCollection<string> FileList { get; init; } = [];
 
-    public string[] TypeSource { get; init; } = LanguageBinding.GetNbtName();
-
-    private NbtPageModel _nbtView;
+    public NbtPageModel NbtView;
 
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<NbtNodeModel> _source;
@@ -50,87 +48,24 @@ public partial class GameConfigEditModel : GameModel
     private TextDocument _text;
 
     [ObservableProperty]
-    private string _title;
-    [ObservableProperty]
-    private string _title1;
-    [ObservableProperty]
-    private bool _displayAdd;
-    [ObservableProperty]
-    private bool _displayType;
-    [ObservableProperty]
-    private string _key;
-    [ObservableProperty]
-    private int _type;
-
-    [ObservableProperty]
-    private bool _displayEdit;
-    [ObservableProperty]
-    private string _dataType;
-    [ObservableProperty]
-    private NbtDataItemModel _dataItem;
-    [ObservableProperty]
-    private bool _hexEdit;
-
-    [ObservableProperty]
     private bool _isWorld;
 
     [ObservableProperty]
-    private bool _displayFind;
-    [ObservableProperty]
-    private string _posName;
-    [ObservableProperty]
-    private string _chunk;
-    [ObservableProperty]
-    private string _chunkFile;
-    [ObservableProperty]
-    private int? _posX = 0;
-    [ObservableProperty]
-    private int? _posY = 0;
-    [ObservableProperty]
-    private int? _posZ = 0;
-
-    [ObservableProperty]
-    private string _findText1;
-    [ObservableProperty]
-    private string _findText2;
-
-    private bool _isEntity;
+    private string _useName;
 
     public int TurnTo;
 
-    private ChunkDataObj? _chunkData;
+    public ChunkDataObj? ChunkData;
 
     public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world)
         : base(model, obj)
     {
+        UseName = (ToString() ?? "GameConfigEditModel") + " game:" + obj.UUID + " world:" + world?.LevelName;
         World = world;
 
         _isWorld = World != null;
 
         _text = new();
-    }
-
-    partial void OnHexEditChanged(bool value)
-    {
-        foreach (var item in DataList)
-        {
-            item.ChangeHex(value);
-        }
-    }
-
-    partial void OnPosXChanged(int? value)
-    {
-        PosChange();
-    }
-
-    partial void OnPosYChanged(int? value)
-    {
-        PosChange();
-    }
-
-    partial void OnPosZChanged(int? value)
-    {
-        PosChange();
     }
 
     partial void OnNameChanged(string? value)
@@ -146,7 +81,7 @@ public partial class GameConfigEditModel : GameModel
         }
 
         Model.Progress(App.Lang("ConfigEditWindow.Info7"));
-        _chunkData = null;
+        ChunkData = null;
         var info = new FileInfo(value);
         if (info.Extension is ".dat" or ".dat_old" or ".rio")
         {
@@ -170,8 +105,8 @@ public partial class GameConfigEditModel : GameModel
                 return;
             }
 
-            _nbtView = new(nbt1, Turn);
-            Source = _nbtView.Source;
+            NbtView = new(nbt1, Turn);
+            Source = NbtView.Source;
         }
         else if (info.Extension is ".mca")
         {
@@ -179,23 +114,23 @@ public partial class GameConfigEditModel : GameModel
 
             if (World != null)
             {
-                _chunkData = await GameBinding.ReadMca(World, value);
+                ChunkData = await GameBinding.ReadMca(World, value);
             }
             else
             {
-                _chunkData = await GameBinding.ReadMca(Obj, value);
+                ChunkData = await GameBinding.ReadMca(Obj, value);
             }
 
             Model.ProgressClose();
 
-            if (_chunkData?.Nbt is not NbtList nbt1)
+            if (ChunkData?.Nbt is not NbtList nbt1)
             {
                 Model.Show(App.Lang("ConfigEditWindow.Error10"));
                 return;
             }
 
-            _nbtView = new(nbt1, Turn);
-            Source = _nbtView.Source;
+            NbtView = new(nbt1, Turn);
+            Source = NbtView.Source;
         }
         else
         {
@@ -218,106 +153,29 @@ public partial class GameConfigEditModel : GameModel
     }
 
     [RelayCommand]
-    public void FindEntity()
+    public async Task FindEntity()
     {
-        _isEntity = true;
-        FindText1 = App.Lang("ConfigEditWindow.Text6");
-        FindText2 = App.Lang("ConfigEditWindow.Text11");
-        PosClear();
-        PosChange();
-        DisplayFind = true;
-    }
-
-    [RelayCommand]
-    public void FindBlock()
-    {
-        _isEntity = false;
-        FindText1 = App.Lang("ConfigEditWindow.Text5");
-        FindText2 = App.Lang("ConfigEditWindow.Text7");
-        PosClear();
-        PosChange();
-        DisplayFind = true;
-    }
-
-    [RelayCommand]
-    public void FindCancel()
-    {
-        DisplayFind = false;
-    }
-
-    [RelayCommand]
-    public async Task FindStart()
-    {
-        var chunkflie = (_isEntity ? "entities/" : "region/") + ChunkFile;
-        if (FileList.Contains(chunkflie))
+        var model = new NbtDialogFindModel(UseName)
         {
-            File = chunkflie;
-            var (X, Z) = ChunkUtils.PosToChunk(PosX ?? 0, PosZ ?? 0);
-            await Task.Run(() =>
-            {
-                while (_chunkData == null)
-                {
-                    Thread.Sleep(200);
-                }
-            });
-            ChunkNbt? nbt = null;
-            foreach (ChunkNbt item in _chunkData!.Nbt.Cast<ChunkNbt>())
-            {
-                if (item.X == X && item.Z == Z)
-                {
-                    nbt = item;
-                    break;
-                }
-            }
-            if (nbt == null)
-            {
-                Model.Show(string.Format(App.Lang("ConfigEditWindow.Error4"), Chunk));
-                return;
-            }
+            IsEntity = true,
+            FindText1 = App.Lang("ConfigEditWindow.Text6"),
+            FindText2 = App.Lang("ConfigEditWindow.Text11")
+        };
+        await DialogHost.Show(model, UseName);
+        FindStart(model);
+    }
 
-            var model = _nbtView.Select(nbt);
-            if (model != null)
-            {
-                if (!string.IsNullOrWhiteSpace(PosName))
-                {
-                    NbtBase? nbt2 = null;
-                    if (nbt.TryGet(_isEntity ? "Entities" : "block_entities")
-                        is NbtList nbt1 && nbt1.Count > 0)
-                    {
-                        foreach (NbtCompound item in nbt1.Cast<NbtCompound>())
-                        {
-                            if (item.TryGet("id") is NbtString id && id.Value.Contains(PosName))
-                            {
-                                nbt2 = item;
-                                break;
-                            }
-                        }
-                    }
-                    if (nbt2 != null)
-                    {
-                        model = NbtPageModel.Find(model, nbt2);
-                        if (model != null)
-                        {
-                            _nbtView.Select(model);
-                        }
-                    }
-                    else
-                    {
-                        Model.Show(string.Format(_isEntity
-                            ? App.Lang("ConfigEditWindow.Error8")
-                            : App.Lang("ConfigEditWindow.Error6"), PosName));
-                    }
-                }
-            }
-
-            DisplayFind = false;
-        }
-        else
+    [RelayCommand]
+    public async Task FindBlock()
+    {
+        var model = new NbtDialogFindModel(UseName)
         {
-            Model.Show(string.Format(_isEntity
-                 ? App.Lang("ConfigEditWindow.Error7")
-                 : App.Lang("ConfigEditWindow.Error5"), chunkflie));
-        }
+            IsEntity = false,
+            FindText1 = App.Lang("ConfigEditWindow.Text5"),
+            FindText2 = App.Lang("ConfigEditWindow.Text7")
+        };
+        await DialogHost.Show(model, UseName);
+        FindStart(model);
     }
 
     [RelayCommand]
@@ -335,22 +193,22 @@ public partial class GameConfigEditModel : GameModel
         {
             if (World != null)
             {
-                GameBinding.SaveNbtFile(World, File, _nbtView.Nbt);
+                GameBinding.SaveNbtFile(World, File, NbtView.Nbt);
             }
             else
             {
-                GameBinding.SaveNbtFile(Obj, File, _nbtView.Nbt);
+                GameBinding.SaveNbtFile(Obj, File, NbtView.Nbt);
             }
         }
         else if (info.Extension is ".mca")
         {
             if (World != null)
             {
-                GameBinding.SaveMcaFile(World, File, _chunkData!);
+                GameBinding.SaveMcaFile(World, File, ChunkData!);
             }
             else
             {
-                GameBinding.SaveMcaFile(Obj, File, _chunkData!);
+                GameBinding.SaveMcaFile(Obj, File, ChunkData!);
             }
         }
         else
@@ -385,24 +243,76 @@ public partial class GameConfigEditModel : GameModel
         Load1();
     }
 
-    [RelayCommand]
-    public void AddConfirm()
+    public async void FindStart(NbtDialogFindModel fmodel)
     {
-        Cancel = false;
-        _semaphore.Release();
-    }
+        var chunkflie = (fmodel.IsEntity ? "entities/" : "region/") + fmodel.ChunkFile;
+        if (FileList.Contains(chunkflie))
+        {
+            File = chunkflie;
+            var (X, Z) = ChunkUtils.PosToChunk(fmodel.PosX ?? 0, fmodel.PosZ ?? 0);
+            await Task.Run(() =>
+            {
+                while (ChunkData == null)
+                {
+                    Thread.Sleep(200);
+                }
+            });
+            ChunkNbt? nbt = null;
+            foreach (ChunkNbt item in ChunkData!.Nbt.Cast<ChunkNbt>())
+            {
+                if (item.X == X && item.Z == Z)
+                {
+                    nbt = item;
+                    break;
+                }
+            }
+            if (nbt == null)
+            {
+                Model.Show(string.Format(App.Lang("ConfigEditWindow.Error4"), fmodel.Chunk));
+                return;
+            }
 
-    [RelayCommand]
-    public void AddCancel()
-    {
-        Cancel = true;
-        _semaphore.Release();
-    }
-
-    [RelayCommand]
-    public void DataEditDone()
-    {
-        _semaphore.Release();
+            var model = NbtView.Select(nbt);
+            if (model != null)
+            {
+                if (!string.IsNullOrWhiteSpace(fmodel.PosName))
+                {
+                    NbtBase? nbt2 = null;
+                    if (nbt.TryGet(fmodel.IsEntity ? "Entities" : "block_entities")
+                        is NbtList nbt1 && nbt1.Count > 0)
+                    {
+                        foreach (NbtCompound item in nbt1.Cast<NbtCompound>())
+                        {
+                            if (item.TryGet("id") is NbtString id && id.Value.Contains(fmodel.PosName))
+                            {
+                                nbt2 = item;
+                                break;
+                            }
+                        }
+                    }
+                    if (nbt2 != null)
+                    {
+                        model = NbtPageModel.Find(model, nbt2);
+                        if (model != null)
+                        {
+                            NbtView.Select(model);
+                        }
+                    }
+                    else
+                    {
+                        Model.Show(string.Format(fmodel.IsEntity
+                            ? App.Lang("ConfigEditWindow.Error8")
+                            : App.Lang("ConfigEditWindow.Error6"), fmodel.PosName));
+                    }
+                }
+            }
+        }
+        else
+        {
+            Model.Show(string.Format(fmodel.IsEntity
+                 ? App.Lang("ConfigEditWindow.Error7")
+                 : App.Lang("ConfigEditWindow.Error5"), chunkflie));
+        }
     }
 
     public async void AddItem(NbtNodeModel model)
@@ -410,30 +320,31 @@ public partial class GameConfigEditModel : GameModel
         if (model.NbtType == NbtType.NbtCompound)
         {
             var list = (model.Nbt as NbtCompound)!;
-            Key = "";
-            Type = 0;
-            DisplayType = true;
-            Title = App.Lang("ConfigEditWindow.Info2");
-            Title1 = App.Lang("ConfigEditWindow.Info3");
-            DisplayAdd = true;
-            await Task.Run(_semaphore.WaitOne);
-            DisplayAdd = false;
-            if (Cancel)
+            
+            var model1 = new NbtDialogAddModel(UseName)
+            {
+                Type = 0,
+                DisplayType = true,
+                Title = App.Lang("ConfigEditWindow.Info2"),
+                Title1 = App.Lang("ConfigEditWindow.Info3"),
+            };
+            await DialogHost.Show(model1, UseName);
+            if (model1.Cancel)
             {
                 return;
             }
-            if (string.IsNullOrWhiteSpace(Key))
+            if (string.IsNullOrWhiteSpace(model1.Key))
             {
                 Model.Show(App.Lang("ConfigEditWindow.Error1"));
                 return;
             }
-            else if (list.HaveKey(Key))
+            else if (list.HaveKey(model1.Key))
             {
                 Model.Show(App.Lang("ConfigEditWindow.Error2"));
                 return;
             }
 
-            model.Add(Key, (NbtType)Type);
+            model.Add(model1.Key, model1.Type);
         }
         else if (model.NbtType == NbtType.NbtList)
         {
@@ -477,53 +388,54 @@ public partial class GameConfigEditModel : GameModel
         }
 
         var list = (model.Top.Nbt as NbtCompound)!;
-        Key = model.Key!;
-        DisplayType = false;
-        Title = App.Lang("ConfigEditWindow.Info5");
-        Title1 = App.Lang("ConfigEditWindow.Info3");
-        DisplayAdd = true;
-        await Task.Run(_semaphore.WaitOne);
-        DisplayAdd = false;
-        if (Cancel)
+        var model1 = new NbtDialogAddModel(UseName)
+        {
+            Key = model.Key!,
+            DisplayType = false,
+            Title = App.Lang("ConfigEditWindow.Info5"),
+            Title1 = App.Lang("ConfigEditWindow.Info3")
+        };
+        await DialogHost.Show(this, UseName);
+        if (model1.Cancel)
         {
             return;
         }
-        if (string.IsNullOrWhiteSpace(Key))
+        if (string.IsNullOrWhiteSpace(model1.Key))
         {
             Model.Show(App.Lang("ConfigEditWindow.Error1"));
             return;
         }
-        else if (Key == model.Key)
+        else if (model1.Key == model.Key)
         {
             return;
         }
-        else if (list.HaveKey(Key))
+        else if (list.HaveKey(model1.Key))
         {
             Model.Show(App.Lang("ConfigEditWindow.Error2"));
             return;
         }
 
-        model.EditKey(model.Key!, Key);
+        model.EditKey(model.Key!, model1.Key);
     }
 
     public async void SetValue(NbtNodeModel model)
     {
         if (model.NbtType == NbtType.NbtByteArray)
         {
-            DataList.Clear();
-            DataType = "Byte";
+            var model1 = new NbtDialogEditModel(Model, UseName)
+            {
+                DataType = "Byte"
+            };
             var list = (model.Nbt as NbtByteArray)!;
             for (int a = 0; a < list.Value.Count; a++)
             {
-                DataList.Add(new(a + 1, list.Value[a], HexEdit));
+                model1.DataList.Add(new(a + 1, list.Value[a], model1.HexEdit));
             }
-            DataList.Add(new(0, (byte)0, HexEdit));
-            DisplayEdit = true;
-            await Task.Run(_semaphore.WaitOne);
-            DisplayEdit = false;
+            model1.DataList.Add(new(0, (byte)0, model1.HexEdit));
+            await DialogHost.Show(model1, UseName);
 
             list.Value.Clear();
-            foreach (var item in DataList)
+            foreach (var item in model1.DataList)
             {
                 if (item.Key == 0)
                 {
@@ -535,21 +447,20 @@ public partial class GameConfigEditModel : GameModel
         }
         else if (model.NbtType == NbtType.NbtIntArray)
         {
-            DisplayEdit = true;
-            DataList.Clear();
-            DataType = "Int";
+            var model1 = new NbtDialogEditModel(Model, UseName)
+            {
+                DataType = "Int"
+            };
             var list = (model.Nbt as NbtIntArray)!;
             for (int a = 0; a < list.Value.Count; a++)
             {
-                DataList.Add(new(a + 1, list.Value[a], HexEdit));
+                model1.DataList.Add(new(a + 1, list.Value[a], model1.HexEdit));
             }
-            DataList.Add(new(0, 0, HexEdit));
-            DisplayEdit = true;
-            await Task.Run(_semaphore.WaitOne);
-            DisplayEdit = false;
+            model1.DataList.Add(new(0, 0, model1.HexEdit));
+            await DialogHost.Show(model1, UseName);
 
             list.Value.Clear();
-            foreach (var item in DataList)
+            foreach (var item in model1.DataList)
             {
                 if (item.Key == 0)
                 {
@@ -561,21 +472,20 @@ public partial class GameConfigEditModel : GameModel
         }
         else if (model.NbtType == NbtType.NbtLongArray)
         {
-            DisplayEdit = true;
-            DataList.Clear();
-            DataType = "Long";
+            var model1 = new NbtDialogEditModel(Model, UseName)
+            {
+                DataType = "Long"
+            };
             var list = (model.Nbt as NbtLongArray)!;
             for (int a = 0; a < list.Value.Count; a++)
             {
-                DataList.Add(new(a + 1, list.Value[a], HexEdit));
+                model1.DataList.Add(new(a + 1, list.Value[a], model1.HexEdit));
             }
-            DataList.Add(new(0, (long)0, HexEdit));
-            DisplayEdit = true;
-            await Task.Run(_semaphore.WaitOne);
-            DisplayEdit = false;
+            model1.DataList.Add(new(0, (long)0, model1.HexEdit));
+            await DialogHost.Show(model1, UseName);
 
             list.Value.Clear();
-            foreach (var item in DataList)
+            foreach (var item in model1.DataList)
             {
                 if (item.Key == 0)
                 {
@@ -587,18 +497,19 @@ public partial class GameConfigEditModel : GameModel
         }
         else
         {
-            Key = model.Nbt.Value.ToString();
-            DisplayType = false;
-            Title = App.Lang("ConfigEditWindow.Info6");
-            Title1 = App.Lang("ConfigEditWindow.Info4");
-            DisplayAdd = true;
-            await Task.Run(_semaphore.WaitOne);
-            DisplayAdd = false;
-            if (Cancel)
+            var model1 = new NbtDialogAddModel(UseName)
+            {
+                Key = model.Nbt.Value.ToString(),
+                DisplayType = false,
+                Title = App.Lang("ConfigEditWindow.Info6"),
+                Title1 = App.Lang("ConfigEditWindow.Info4"),
+            };
+            await DialogHost.Show(model1, UseName);
+            if (model1.Cancel)
             {
                 return;
             }
-            if (string.IsNullOrWhiteSpace(Key))
+            if (string.IsNullOrWhiteSpace(model1.Key))
             {
                 Model.Show(App.Lang("ConfigEditWindow.Error1"));
                 return;
@@ -606,7 +517,7 @@ public partial class GameConfigEditModel : GameModel
 
             try
             {
-                model.SetValue(Key);
+                model.SetValue(model1.Key);
             }
             catch
             {
@@ -615,63 +526,6 @@ public partial class GameConfigEditModel : GameModel
         }
 
         model.Update();
-    }
-
-    public void DataEdit()
-    {
-        try
-        {
-            if (DataType == "Byte")
-            {
-                DataItem.Value = (byte)DataItem.GetValue();
-            }
-            else if (DataType == "Int")
-            {
-                DataItem.Value = (int)DataItem.GetValue();
-            }
-            else if (DataType == "Long")
-            {
-                DataItem.Value = (long)DataItem.GetValue();
-            }
-        }
-        catch
-        {
-            Model.Show(App.Lang("ConfigEditWindow.Error3"));
-            DataItem.Value = 0;
-            return;
-        }
-
-        if (DataItem.Key == 0)
-        {
-            DataItem.Key = DataList.Count;
-            if (DataType == "Byte")
-            {
-                DataList.Add(new(0, (byte)0, HexEdit));
-            }
-            else if (DataType == "Int")
-            {
-                DataList.Add(new(0, 0, HexEdit));
-            }
-            else if (DataType == "Long")
-            {
-                DataList.Add(new(0, (long)0, HexEdit));
-            }
-        }
-    }
-
-    public void DeleteItem(NbtDataItemModel item)
-    {
-        if (item.Key == 0)
-        {
-            return;
-        }
-
-        DataList.Remove(item);
-        int a = 1;
-        foreach (var item1 in DataList)
-        {
-            item1.Key = a++;
-        }
     }
 
     public async void Find()
@@ -687,7 +541,7 @@ public partial class GameConfigEditModel : GameModel
             return;
         }
 
-        _nbtView.Find(data.Text);
+        NbtView.Find(data.Text);
     }
 
     private void Load1()
@@ -715,21 +569,7 @@ public partial class GameConfigEditModel : GameModel
         }
     }
 
-    private void PosClear()
-    {
-        PosName = "";
-        PosX = 0;
-        PosY = 0;
-        PosZ = 0;
-    }
-
-    private void PosChange()
-    {
-        var (X, Z) = ChunkUtils.PosToChunk(PosX ?? 0, PosZ ?? 0);
-        Chunk = $"({X},{Z})";
-        (X, Z) = ChunkUtils.ChunkToRegion(X, Z);
-        ChunkFile = $"r.{X}.{Z}.mca";
-    }
+   
 
     private void Turn(int value)
     {
@@ -739,6 +579,6 @@ public partial class GameConfigEditModel : GameModel
 
     protected override void Close()
     {
-        DataList.Clear();
+        
     }
 }
