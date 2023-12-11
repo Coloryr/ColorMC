@@ -180,7 +180,7 @@ public static class JavaBinding
         return SystemInfo.Os == OsType.Android ? PhoneJavaType : PCJavaType;
     }
 
-    public static async Task<(bool, List<string>? Arch, List<string>? Os, 
+    public static async Task<(bool, List<string>? Arch, List<string>? Os,
         List<string>? MainVersion, List<JavaDownloadObj>? Download)> GetJavaList(int type, int os, int mainversion)
     {
         if (SystemInfo.Os == OsType.Android)

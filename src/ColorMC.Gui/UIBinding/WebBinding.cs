@@ -751,7 +751,7 @@ public static class WebBinding
             WebType.MiSans => "https://hyperos.mi.com/font/",
             WebType.BSD => "https://licenses.nuget.org/BSD-2-Clause",
             WebType.OpenFrp => "https://console.openfrp.net/home/",
-            WebType.OpenFrpApi=> "https://github.com/ZGIT-Network/OPENFRP-APIDOC",
+            WebType.OpenFrpApi => "https://github.com/ZGIT-Network/OPENFRP-APIDOC",
             _ => "https://colormc.coloryr.com"
         });
     }

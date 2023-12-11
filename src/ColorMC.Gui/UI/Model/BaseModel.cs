@@ -95,7 +95,7 @@ public partial class BaseModel : ObservableObject
 
     public SelfPublisher<bool> HeadDisplayObservale = new();
     public SelfPublisher<bool> HeadCloseObservale = new();
-    
+
     public bool HeadDisplay
     {
         set

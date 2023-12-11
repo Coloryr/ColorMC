@@ -43,6 +43,6 @@ public record AdoptiumObj
 }
 
 public record AdoptiumJavaVersionObj
-{ 
+{
     public List<int> available_releases { get; set; }
 }

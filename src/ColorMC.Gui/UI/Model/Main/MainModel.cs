@@ -101,7 +101,7 @@ public partial class MainModel : TopModel, IMainTop
     private string _updateStr;
 
     private bool _isGetNewInfo;
-    
+
     public MainModel(BaseModel model) : base(model)
     {
         App.SkinLoad += App_SkinLoad;

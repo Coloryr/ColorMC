@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Dialog;
-using ColorMC.Gui.UI.Model.GameConfigEdit;
 
 namespace ColorMC.Gui.UI.Controls.Dialog;
 

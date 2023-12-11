@@ -4,7 +4,6 @@ using Avalonia.Controls.Documents;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs.Minecraft;
 using System;
