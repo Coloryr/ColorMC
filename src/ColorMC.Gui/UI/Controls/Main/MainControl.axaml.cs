@@ -176,6 +176,12 @@ public partial class MainControl : UserControl, IUserControl
             Start.Child = con1;
             con1.Start(Start);
         }
+
+        if (ColorMCGui.IsCrash)
+        {
+            var model = (DataContext as MainModel)!;
+            model.Model.Show(App.Lang("Gui.Error48"));
+        }
     }
 
     public async Task<bool> Closing()

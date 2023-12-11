@@ -976,6 +976,7 @@
 	"Gui.Error45": "获取图标失败",
 	"Gui.Error46": "获取Java列表错误",
 	"Gui.Error47": "没有找到您的Minecraft账户，请确认你的账户已经购买了Minecraft，并在https://minecraft.net登录并查看皮肤",
+	"Gui.Error48": "启动器更新运行出错，已回到旧版本",
 	"ToolTip.Text5": "打开侧边栏",
 	"ToolTip.Text7": "请选中到bin文件夹内的java",
 	"ToolTip.Text9": "打开皮肤查看窗口",
