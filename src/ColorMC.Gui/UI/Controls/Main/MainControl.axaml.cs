@@ -72,12 +72,12 @@ public partial class MainControl : UserControl, IUserControl
         if (e.Data.Contains(DataFormats.Text))
         {
             Grid2.IsVisible = true;
-            Label1.Content = App.Lang("Gui.Info6");
+            Label1.Text = App.Lang("Gui.Info6");
         }
         else if (e.Data.Contains(DataFormats.Files))
         {
             Grid2.IsVisible = true;
-            Label1.Content = App.Lang("Gui.Info7");
+            Label1.Text = App.Lang("Gui.Info7");
         }
     }
 

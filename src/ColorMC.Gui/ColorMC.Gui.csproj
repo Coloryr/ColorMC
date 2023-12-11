@@ -83,6 +83,7 @@
     <None Remove="Resource\Icon\NetFrp\item2.svg" />
     <None Remove="Resource\Icon\NetFrp\item3.svg" />
     <None Remove="Resource\Icon\NetFrp\item4.svg" />
+    <None Remove="Resource\Icon\NetFrp\item5.svg" />
     <None Remove="Resource\Icon\new.svg" />
     <None Remove="Resource\Icon\play.svg" />
     <None Remove="Resource\Icon\resize.svg" />
@@ -179,6 +180,7 @@
     <AvaloniaResource Include="Resource\Icon\NetFrp\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\NetFrp\item3.svg" />
     <AvaloniaResource Include="Resource\Icon\NetFrp\item4.svg" />
+    <AvaloniaResource Include="Resource\Icon\NetFrp\item5.svg" />
     <AvaloniaResource Include="Resource\Icon\new.svg" />
     <AvaloniaResource Include="Resource\Icon\play.svg" />
     <AvaloniaResource Include="Resource\Icon\setting.svg" />

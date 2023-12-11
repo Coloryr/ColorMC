@@ -27,16 +27,27 @@
                     DockPanel.Dock="Top"
                     Text="{Binding Text}"
                     Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
-                <Button
-                    Width="160"
-                    Height="25"
+                <StackPanel
                     HorizontalAlignment="Right"
-                    Command="{Binding Gen}"
-                    Content="{setting:Localize ServerPackWindow.Tab1.Text10}"
                     DockPanel.Dock="Bottom"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text47}"
-                    ToolTip.VerticalOffset="-30" />
-                <Label Content="{setting:Localize ServerPackWindow.Tab1.Text1}" />
+                    Orientation="Horizontal">
+                    <Button
+                        Width="160"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Command="{Binding GoToNext}"
+                        Content="{setting:Localize ServerPackWindow.Tab1.Text11}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="160"
+                        Height="25"
+                        Command="{Binding Gen}"
+                        Content="{setting:Localize ServerPackWindow.Tab1.Text10}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+                        ToolTip.VerticalOffset="-30" />
+                </StackPanel>
+                <TextBlock Text="{setting:Localize ServerPackWindow.Tab1.Text1}" />
             </DockPanel>
         </Border>
     </ScrollViewer>

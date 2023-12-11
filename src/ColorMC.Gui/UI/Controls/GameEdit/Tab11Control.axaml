@@ -89,11 +89,11 @@
             Name="Grid2"
             Background="{setting:Colors BG1}"
             IsVisible="False">
-            <Label
+            <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="{setting:Localize Gui.Info17}"
-                FontSize="30" />
+                FontSize="30"
+                Text="{setting:Localize Gui.Info17}" />
         </Panel>
     </Panel>
 </UserControl>

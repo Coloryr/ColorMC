@@ -72,10 +72,10 @@
                         Fill="{setting:Colors Font}"
                         Path="/Resource/Icon/Setting/svg16.svg"
                         Stroke="{setting:Colors Font}" />
-                    <Label
+                    <TextBlock
                         VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab5.Text1}"
-                        FontSize="{setting:Style FontTitle}" />
+                        FontSize="{setting:Style FontTitle}"
+                        Text="{setting:Localize SettingWindow.Tab5.Text1}" />
                 </StackPanel>
 
                 <DockPanel Margin="0,5,0,5" IsVisible="{Binding !Phone}">

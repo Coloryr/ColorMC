@@ -49,6 +49,10 @@ public partial class NbtDialogEditModel(BaseModel model, string usename) : Obser
         int a = 1;
         foreach (var item1 in DataList)
         {
+            if (item1.Key == 0)
+            {
+                continue;
+            }
             item1.Key = a++;
         }
     }

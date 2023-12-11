@@ -31,10 +31,11 @@
                     Fill="{setting:Colors Font}"
                     Path="/Resource/Icon/add1.svg"
                     Stroke="{setting:Colors Font}" />
-                <Label
+                <TextBlock
+                    Margin="0,0,0,5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize MainWindow.Text8}" />
+                    Text="{setting:Localize MainWindow.Text8}" />
             </StackPanel>
         </Button>
         <Panel IsVisible="{Binding !IsNew, FallbackValue=false}">

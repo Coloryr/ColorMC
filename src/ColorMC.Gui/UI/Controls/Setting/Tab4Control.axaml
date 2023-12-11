@@ -33,10 +33,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg11.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text24}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab4.Text24}" />
                     </StackPanel>
                     <WrapPanel>
                         <StackPanel>
@@ -140,17 +140,17 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg15.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text9}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab4.Text9}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,-5">
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Width="110"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab4.Text10}" />
+                                Text="{setting:Localize SettingWindow.Tab4.Text10}" />
                             <NumericUpDown
                                 Width="150"
                                 Height="30"
@@ -160,10 +160,10 @@
                                 Value="{Binding Width}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Width="110"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab4.Text11}" />
+                                Text="{setting:Localize SettingWindow.Tab4.Text11}" />
                             <NumericUpDown
                                 Width="150"
                                 Height="30"
@@ -197,17 +197,17 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg14.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text1}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab4.Text1}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,-5">
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Width="110"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab4.Text4}" />
+                                Text="{setting:Localize SettingWindow.Tab4.Text4}" />
                             <NumericUpDown
                                 Width="150"
                                 Height="30"
@@ -216,10 +216,10 @@
                                 Value="{Binding MinMemory}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Width="110"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab4.Text5}" />
+                                Text="{setting:Localize SettingWindow.Tab4.Text5}" />
                             <NumericUpDown
                                 Width="150"
                                 Height="30"
@@ -230,11 +230,11 @@
                     </WrapPanel>
                     <!--  Jvm参数  -->
                     <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                        <Label
+                        <TextBlock
                             Width="110"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text2}" />
+                            Text="{setting:Localize SettingWindow.Tab4.Text2}" />
                         <ComboBox
                             Width="200"
                             ItemsSource="{Binding GCTypeList}"
@@ -275,7 +275,6 @@
                         Text="{Binding JvmEnv}"
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text34}" />
-
                     <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text35}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
@@ -295,10 +294,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg12.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text13}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab4.Text13}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox
@@ -338,10 +337,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg13.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab4.Text19}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab4.Text19}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox

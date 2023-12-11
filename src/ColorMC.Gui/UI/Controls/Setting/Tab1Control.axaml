@@ -20,7 +20,7 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab1.Text4}" />
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab1.Text4}" />
                     <StackPanel>
                         <TextBox
                             Margin="0,0,0,5"
@@ -47,7 +47,7 @@
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab1.Text6}" />
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab1.Text6}" />
                     <StackPanel>
                         <TextBox
                             Margin="0,0,0,5"
@@ -74,7 +74,7 @@
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab1.Text8}" />
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab1.Text8}" />
                     <StackPanel>
                         <TextBox
                             Margin="0,0,0,5"
@@ -101,7 +101,7 @@
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </StackPanel>
-                    <Label Content="{setting:Localize SettingWindow.Tab1.Text10}" />
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab1.Text10}" />
                     <StackPanel>
                         <TextBox
                             Margin="0,0,0,5"
@@ -129,7 +129,6 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-
             </Border>
             <Border
                 Margin="0,0,0,3"
@@ -139,10 +138,10 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <WrapPanel Margin="0,0,0,-5">
-                    <Label
+                    <TextBlock
                         Margin="0,0,10,5"
                         VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab1.Text12}" />
+                        Text="{setting:Localize SettingWindow.Tab1.Text12}" />
                     <Button
                         Width="100"
                         Height="25"
@@ -170,10 +169,10 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 IsVisible="{Binding !Phone}">
                 <WrapPanel Margin="0,0,0,-5">
-                    <Label
+                    <TextBlock
                         Margin="0,0,10,5"
                         VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab1.Text13}" />
+                        Text="{setting:Localize SettingWindow.Tab1.Text13}" />
                     <Button
                         Width="100"
                         Height="25"

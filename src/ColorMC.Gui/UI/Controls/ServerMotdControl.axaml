@@ -25,33 +25,33 @@
                     VerticalAlignment="Center"
                     Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
                 <StackPanel Margin="64,0,0,0" VerticalAlignment="Center">
-					<TextBlock
+                    <TextBlock
                         Name="StackPanel1"
                         Margin="3,0,0,0"
                         TextTrimming="CharacterEllipsis" />
-					<TextBlock
+                    <TextBlock
                         Name="StackPanel2"
                         Margin="3,0,0,0"
                         TextTrimming="CharacterEllipsis" />
                     <WrapPanel>
-                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <Label Content="{setting:Localize ServerMotdControl.Text1}" Foreground="{setting:Colors Motd}" />
-                            <Label
+                        <StackPanel Margin="5,0,5,0" Orientation="Horizontal">
+                            <TextBlock Foreground="{setting:Colors Motd}" Text="{setting:Localize ServerMotdControl.Text1}" />
+                            <TextBlock
                                 Name="Label2"
-                                Content="0"
-                                Foreground="{setting:Colors Motd}" />
-                            <Label Content="/" Foreground="{setting:Colors Motd}" />
-                            <Label
+                                Foreground="{setting:Colors Motd}"
+                                Text="0" />
+                            <TextBlock Foreground="{setting:Colors Motd}" Text="/" />
+                            <TextBlock
                                 Name="Label3"
-                                Content="0"
-                                Foreground="{setting:Colors Motd}" />
+                                Foreground="{setting:Colors Motd}"
+                                Text="0" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="{setting:Localize ServerMotdControl.Text2}" Foreground="{setting:Colors Motd}" />
-                            <Label
+                        <StackPanel Margin="5,0,0,0" Orientation="Horizontal">
+                            <TextBlock Foreground="{setting:Colors Motd}" Text="{setting:Localize ServerMotdControl.Text2}" />
+                            <TextBlock
                                 Name="Label4"
-                                Content="0"
-                                Foreground="{setting:Colors Motd}" />
+                                Foreground="{setting:Colors Motd}"
+                                Text="0" />
                         </StackPanel>
                         <Button
                             Name="Button2"
@@ -66,14 +66,14 @@
                     Margin="0,0,10,0"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
-                    <Label
+                    <TextBlock
                         Margin="10,0,0,0"
-                        Content="{setting:Localize ServerMotdControl.Text3}"
-                        Foreground="{setting:Colors Motd}" />
-                    <Label
+                        Foreground="{setting:Colors Motd}"
+                        Text="{setting:Localize ServerMotdControl.Text3}" />
+                    <TextBlock
                         Name="Label5"
-                        Content="999"
-                        Foreground="{setting:Colors Motd}" />
+                        Foreground="{setting:Colors Motd}"
+                        Text="999" />
                 </StackPanel>
             </Panel>
             <Panel
@@ -81,10 +81,10 @@
                 Background="{setting:Colors Bottom1}"
                 IsVisible="False">
                 <StackPanel VerticalAlignment="Center">
-                    <Label
+                    <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Content="{setting:Localize ServerMotdControl.Text4}" />
+                        Text="{setting:Localize ServerMotdControl.Text4}" />
                     <ProgressBar
                         Height="10"
                         Margin="10,0,10,0"
@@ -95,10 +95,10 @@
                 Name="Grid2"
                 Background="{setting:Colors Bottom1}"
                 IsVisible="False">
-                <Label
+                <TextBlock
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize ServerMotdControl.Text5}" />
+                    Text="{setting:Localize ServerMotdControl.Text5}" />
             </Panel>
         </Panel>
     </Border>

@@ -32,10 +32,10 @@
                         ToolTip.VerticalOffset="-30">
                         <Svg Path="/Resource/Icon/menu.svg" />
                     </Button>
-                    <Label
+                    <TextBlock
                         Margin="20,0,0,0"
-                        Content="{Binding Title}"
-                        FontSize="18" />
+                        FontSize="18"
+                        Text="{Binding Title}" />
                 </StackPanel>
             </Border>
 

@@ -21,10 +21,11 @@
             DockPanel.Dock="Top">
             <StackPanel>
                 <DockPanel>
-                    <Label
+                    <TextBlock
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
-                        Content="{setting:Localize ServerPackWindow.Tab4.Text1}"
-                        DockPanel.Dock="Left" />
+                        DockPanel.Dock="Left"
+                        Text="{setting:Localize ServerPackWindow.Tab4.Text1}" />
                     <Button
                         Width="80"
                         Height="25"
@@ -40,17 +41,21 @@
                         DockPanel.Dock="Right"
                         ItemsSource="{Binding FuntionList}"
                         SelectedIndex="{Binding Funtion}" />
-                    <Label
+                    <TextBlock
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
-                        Content="{setting:Localize ServerPackWindow.Tab4.Text2}"
-                        DockPanel.Dock="Right" />
-
+                        DockPanel.Dock="Right"
+                        Text="{setting:Localize ServerPackWindow.Tab4.Text2}" />
                     <ComboBox
+                        Margin="0,0,5,0"
                         HorizontalAlignment="Stretch"
                         ItemsSource="{Binding NameList}"
                         SelectedItem="{Binding Group}" />
                 </DockPanel>
-                <Label Content="{setting:Localize ServerPackWindow.Tab4.Text3}" DockPanel.Dock="Bottom" />
+                <TextBlock
+                    Margin="0,5,0,0"
+                    DockPanel.Dock="Bottom"
+                    Text="{setting:Localize ServerPackWindow.Tab4.Text3}" />
             </StackPanel>
         </Border>
         <Border

@@ -18,9 +18,9 @@
             <dialog:DialogHost.DataTemplates>
                 <DataTemplate DataType="model:UsersControlModel">
                     <StackPanel Margin="5">
-                        <Label Content="{setting:Localize UserWindow.Text5}" />
+                        <TextBlock Text="{setting:Localize UserWindow.Text5}" />
                         <StackPanel Orientation="Horizontal">
-                            <Label VerticalAlignment="Center" Content="{setting:Localize UserWindow.Text3}" />
+                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize UserWindow.Text3}" />
                             <ComboBox
                                 Width="200"
                                 Margin="5,0,5,0"
@@ -71,7 +71,7 @@
             </dialog:DialogHost.DataTemplates>
             <Panel Margin="5">
                 <Panel>
-                    <Label VerticalAlignment="Bottom" Content="{setting:Localize UserWindow.Text6}" />
+                    <TextBlock VerticalAlignment="Bottom" Text="{setting:Localize UserWindow.Text6}" />
                     <Border
                         Padding="{setting:Style BorderPadding}"
                         Background="{setting:Colors GroupBack}"
@@ -137,11 +137,11 @@
             Name="Grid2"
             Background="{setting:Colors BG1}"
             IsVisible="False">
-            <Label
+            <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="{setting:Localize Gui.Info6}"
-                FontSize="30" />
+                FontSize="30"
+                Text="{setting:Localize Gui.Info6}" />
         </Panel>
     </Panel>
 </UserControl>

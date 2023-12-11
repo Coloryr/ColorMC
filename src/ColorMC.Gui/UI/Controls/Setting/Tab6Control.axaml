@@ -7,7 +7,6 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    d:DesignHeight="800"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -32,10 +31,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg17.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab6.Text1}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab6.Text1}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,5">
                         <ToggleSwitch
@@ -66,17 +65,17 @@
                     </WrapPanel>
                     <WrapPanel>
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Margin="0,0,5,0"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab6.Text6}" />
+                                Text="{setting:Localize SettingWindow.Tab6.Text6}" />
                             <ColorPicker Color="{Binding MotdFontColor}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Margin="0,0,5,0"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab6.Text5}" />
+                                Text="{setting:Localize SettingWindow.Tab6.Text5}" />
                             <ColorPicker Color="{Binding MotdBackColor}" />
                         </StackPanel>
                     </WrapPanel>
@@ -84,7 +83,7 @@
             </Border>
 
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -99,10 +98,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg18.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab6.Text27}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab6.Text27}" />
                     </StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <ToggleSwitch
@@ -139,7 +138,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -155,10 +154,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg19.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab6.Text8}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab6.Text8}" />
                     </StackPanel>
                     <ToggleSwitch
                         IsEnabled="{Binding EnableUI}"
@@ -185,7 +184,6 @@
                             Command="{Binding Save}"
                             Content="{setting:Localize SettingWindow.Tab6.Text10}"
                             DockPanel.Dock="Right" />
-
                         <Button
                             Width="100"
                             Height="25"
@@ -205,7 +203,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,3,0,0"
+                Margin="0,0,0,3"
                 Padding="{setting:Style BorderPadding}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
@@ -221,10 +219,10 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg21.svg"
                             Stroke="{setting:Colors Font}" />
-                        <Label
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab6.Text29}"
-                            FontSize="{setting:Style FontTitle}" />
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab6.Text29}" />
                     </StackPanel>
                     <WrapPanel>
                         <ToggleSwitch
@@ -260,10 +258,10 @@
 
                     <WrapPanel Margin="0,0,0,-5">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Margin="5,0,0,0"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab6.Text18}" />
+                                Text="{setting:Localize SettingWindow.Tab6.Text18}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -278,11 +276,11 @@
                                 SmallChange="1"
                                 TickFrequency="1"
                                 Value="{Binding Volume}" />
-                            <Label
+                            <TextBlock
                                 Width="40"
                                 Margin="0,0,5,0"
                                 VerticalAlignment="Center"
-                                Content="{Binding Volume, StringFormat='{}{0}%'}" />
+                                Text="{Binding Volume, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <Button
                             Width="100"

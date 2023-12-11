@@ -3,7 +3,7 @@ namespace ColorMC.Core.Nbt;
 /// <summary>
 /// NBT类型
 /// </summary>
-public enum NbtType : byte
+public enum NbtType
 {
     NbtEnd = 0,
     NbtByte = 1,

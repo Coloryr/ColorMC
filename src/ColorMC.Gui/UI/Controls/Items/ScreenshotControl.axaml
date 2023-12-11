@@ -35,7 +35,10 @@
                     <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:App.LoadIcon}}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
-            <Label HorizontalAlignment="Center" Content="{Binding Name}" />
+            <TextBlock
+                Margin="5"
+                HorizontalAlignment="Center"
+                Text="{Binding Name}" />
         </StackPanel>
     </Panel>
 </UserControl>

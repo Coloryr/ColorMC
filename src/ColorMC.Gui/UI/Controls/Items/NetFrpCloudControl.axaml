@@ -7,6 +7,7 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     x:DataType="model:CloudServerModel"
+    Design.Width="320"
     mc:Ignorable="d">
     <Border
         Padding="{setting:Style BorderPadding}"
@@ -15,29 +16,32 @@
         BorderThickness="2"
         CornerRadius="{setting:Style ButtonCornerRadius}">
         <DockPanel>
-            <Button
-                Width="100"
-                Height="25"
-                VerticalAlignment="Bottom"
-                Command="{Binding Join}"
-                Content="{setting:Localize NetFrpWindow.Tab4.Text3}"
-                DockPanel.Dock="Right" />
-            <Button
-                Width="100"
-                Height="25"
-                Margin="10,0,5,0"
-                VerticalAlignment="Bottom"
-                Command="{Binding Copy}"
-                Content="{setting:Localize NetFrpWindow.Tab4.Text4}"
-                DockPanel.Dock="Right" />
+            <StackPanel DockPanel.Dock="Right">
+                <Button
+                    Width="100"
+                    Height="25"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding Join}"
+                    Content="{setting:Localize NetFrpWindow.Tab4.Text3}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,5,0,0"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding Copy}"
+                    Content="{setting:Localize NetFrpWindow.Tab4.Text4}" />
+            </StackPanel>
             <StackPanel Margin="5,0,0,0">
-                <Label Content="{Binding Name, FallbackValue=服务器1}" />
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding IP, FallbackValue=127.0.0.1:25565}" />
-                    <Label Content="{Binding Now, FallbackValue=1}" />
-                    <Label Content="/" />
-                    <Label Content="{Binding Max, FallbackValue=8}" />
-                </StackPanel>
+                <TextBlock Text="{Binding Name, FallbackValue=服务器1}" TextTrimming="CharacterEllipsis" />
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding IP, FallbackValue=127.0.0.1:25565}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Now, FallbackValue=1}" />
+                        <TextBlock Text="/" />
+                        <TextBlock Text="{Binding Max, FallbackValue=8}" />
+                    </StackPanel>
+                </WrapPanel>
+
             </StackPanel>
         </DockPanel>
     </Border>

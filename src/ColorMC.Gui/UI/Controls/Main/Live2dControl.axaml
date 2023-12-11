@@ -12,7 +12,7 @@
     mc:Ignorable="d">
     <Panel>
         <Decorator Name="Live2D" />
-        <Label Name="Label1" VerticalAlignment="Bottom" />
+        <TextBlock Name="Label1" VerticalAlignment="Bottom" />
 
         <Border
             Name="Border1"

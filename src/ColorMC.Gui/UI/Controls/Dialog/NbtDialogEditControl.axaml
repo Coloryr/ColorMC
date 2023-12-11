@@ -7,9 +7,13 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     x:DataType="vm:NbtDialogEditModel"
+    Design.Width="350"
     mc:Ignorable="d">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <DockPanel DockPanel.Dock="Top">
+        <DockPanel
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            DockPanel.Dock="Top">
             <Button
                 Width="85"
                 Height="25"
@@ -21,6 +25,7 @@
                 ToolTip.Tip="{setting:Localize ToolTip.Text40}"
                 ToolTip.VerticalOffset="-30" />
             <ToggleSwitch
+                Margin="10,0,0,0"
                 DockPanel.Dock="Right"
                 IsChecked="{Binding HexEdit}"
                 OffContent="{setting:Localize ConfigEditWindow.Text12}"
@@ -29,12 +34,15 @@
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <Label Content="{setting:Localize ConfigEditWindow.Text4}" />
-                <Label Content="{Binding DataType}" />
+                <TextBlock Text="{setting:Localize ConfigEditWindow.Text4}" />
+                <TextBlock Text="{Binding DataType}" />
             </StackPanel>
         </DockPanel>
         <DataGrid
             Name="DataGrid1"
+            MinHeight="350"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
             AutoGenerateColumns="False"
             CanUserResizeColumns="True"
             CanUserSortColumns="False"
@@ -46,7 +54,6 @@
                     Header="{setting:Localize ConfigEditWindow.DataGrid.Text1}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Width="500"
                     Binding="{Binding Value}"
                     Header="{setting:Localize ConfigEditWindow.DataGrid.Text2}"
                     IsReadOnly="False" />

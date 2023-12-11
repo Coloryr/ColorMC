@@ -189,12 +189,12 @@
                 Name="Grid2"
                 Background="{setting:Colors BG1}"
                 IsVisible="False">
-                <Label
+                <TextBlock
                     Name="Label1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="test"
-                    FontSize="30" />
+                    FontSize="30"
+                    Text="test" />
             </Panel>
         </Panel>
     </dialog:DialogHost>

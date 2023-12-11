@@ -28,7 +28,7 @@ public partial class NbtDialogAddModel(string usename) : ObservableObject
     private bool _displayType;
 
     [ObservableProperty]
-    private NbtType _type;
+    private NbtType _type = NbtType.NbtString;
 
     [RelayCommand]
     public void AddConfirm()

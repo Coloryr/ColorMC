@@ -98,7 +98,7 @@
                     TextWrapping="Wrap" />
             </StackPanel>
             <DockPanel Margin="5,95,5,5" IsVisible="{Binding IsSelect}">
-                <Label Content="{setting:Localize GameEditWindow.Control.Text6}" DockPanel.Dock="Top" />
+                <TextBlock DockPanel.Dock="Top" Text="{setting:Localize GameEditWindow.Control.Text6}" />
                 <Panel>
                     <DataGrid
                         Name="DataGridDataPack"
@@ -129,11 +129,11 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <Panel Background="{setting:Colors BG1}" IsVisible="{Binding Empty}">
-                        <Label
+                        <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize GameEditWindow.Control.Text9}"
-                            FontSize="20" />
+                            FontSize="20"
+                            Text="{setting:Localize GameEditWindow.Control.Text9}" />
                     </Panel>
                 </Panel>
             </DockPanel>

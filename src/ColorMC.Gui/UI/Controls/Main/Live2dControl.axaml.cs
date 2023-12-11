@@ -59,7 +59,7 @@ public partial class Live2dControl : UserControl
         {
             if (IsVisible)
             {
-                Label1.Content = $"{fps}Fps";
+                Label1.Text = $"{fps}Fps";
             }
         });
     }

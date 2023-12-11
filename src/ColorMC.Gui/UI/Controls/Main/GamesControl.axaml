@@ -56,11 +56,11 @@
                 VerticalAlignment="Stretch"
                 Background="{setting:Colors TopBottom}"
                 IsVisible="False">
-                <Label
+                <TextBlock
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize MainWindow.Text11}"
-                    FontSize="20" />
+                    FontSize="20"
+                    Text="{setting:Localize MainWindow.Text11}" />
             </Panel>
         </Panel>
     </Expander>
