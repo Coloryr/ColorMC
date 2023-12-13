@@ -146,7 +146,7 @@
         <DockPanel
             Name="ModPackFiles"
             Background="{setting:Colors TopBottom}"
-            IsVisible="True">
+            IsVisible="False">
             <Border
                 Margin="5,5,5,3"
                 Padding="{setting:Style BorderPadding}"
