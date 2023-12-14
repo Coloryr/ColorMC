@@ -1,0 +1,22 @@
+name: .NET构建
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: 设置.NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 8.0.100
+    - name: 构建
+      run: ./build/build-ubuntu.sh
+      shell: bash
+      working-directory: ./
+    - name: 更新构建文件
+      uses: actions/upload-artifact@v2
+      with:
+        name: "ColorMC"
+        path: build_out
