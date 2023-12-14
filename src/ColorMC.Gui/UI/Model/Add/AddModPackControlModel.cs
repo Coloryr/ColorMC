@@ -66,6 +66,8 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     [ObservableProperty]
     private bool _displayFilter = true;
 
+    private double _count;
+
     private readonly string _useName;
 
     public AddModPackControlModel(BaseModel model) : base(model)
@@ -399,14 +401,18 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     public void Back()
     {
         if (Page <= 0)
+        {
             return;
+        }
 
         Page -= 1;
+        _count = 0;
     }
 
     public void Next()
     {
         Page += 1;
+        _count = 0;
     }
 
     public void Reload1()
@@ -418,6 +424,19 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         else
         {
             Load();
+        }
+    }
+
+    public void Wheel(double y)
+    {
+        _count += y;
+        if (_count > 5)
+        {
+            Back();
+        }
+        else if (_count < -5)
+        {
+            Next();
         }
     }
 
