@@ -11,10 +11,18 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 8.0.100
-    - name: 构建
-      run: ./build/build-ubuntu.sh
+    - name: 更新源码
       shell: bash
       working-directory: ./
+      run: |
+       chmod a+x ./build/update.sh
+       ./build/update.sh
+    - name: 构建
+      shell: bash
+      working-directory: ./
+      run: |
+       chmod a+x ./build/build-ubuntu.sh
+       ./build/build-ubuntu.sh
     - name: 更新构建文件
       uses: actions/upload-artifact@v2
       with:
