@@ -10,6 +10,8 @@ done
 # $1 is Linux-x64
 # $2 is amd64
 
+mkdir ./build_out
+
 build_arch() {
     echo "ColorMC build linux-$2 version: $version"
 
@@ -17,11 +19,7 @@ build_arch() {
     base_dir="$base/colormc"
     deb_name="./build_out/colormc-a$version-linux-$2.deb"
 
-    rm -rf $base
-
     dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1
-
-    rm $deb_name
 
     mkdir $base_dir
 
