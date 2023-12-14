@@ -9,6 +9,8 @@ done
 
 echo "ColorMC build macos-amd64 version: $version"
 
+mkdir ./build_out
+
 base=./src/build_out/osx64-dotnet
 base_dir="$base/ColorMC.app/Contents"
 
@@ -42,6 +44,6 @@ zip_name="colormc-a$version-macos-amd64.zip"
 
 cd ./src/build_out/osx64-dotnet
 zip -r $zip_name ./ColorMC.app
-mv $zip_name ../../../$zip_name
+mv $zip_name ../../../build_out/$zip_name
 
 echo "ColorMC macos-amd64 build done"
