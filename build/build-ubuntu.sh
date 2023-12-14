@@ -71,7 +71,7 @@ sed -i "s/%arch%/$arch/g" $build_run/appimg.json
 
 chmod a+x $build_run/deb2appimage.AppImage
 
-sudo .$build_run/deb2appimage.AppImage -j $build_run/appimg.json -o ./
+sudo $build_run/deb2appimage.AppImage -j $build_run/appimg.json -o ./
 
 sudo chown : colormc-a23-x86_64.AppImage
 
