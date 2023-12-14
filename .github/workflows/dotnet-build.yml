@@ -7,7 +7,7 @@ on:
       - 'releases/**'
     # Sequence of patterns matched against refs/tags
     tags:        
-      - *
+      - '*'
 
 jobs:
   build:
