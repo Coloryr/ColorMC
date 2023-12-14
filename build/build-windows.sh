@@ -7,15 +7,11 @@ do
     version=$line
 done
 
+mkdir ./build_out
+
 echo "ColorMC build win64 version: $version"
 
-# sudo apt-get install p7zip-full -y
-
-rm -rf ./src/build_out/win64-dotnet
-
 dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=Win-x64
-
-rm colormc-a$version-win64.7z
 
 mkdir ./src/build_out/win64-dotnet/colormc
 
@@ -28,6 +24,10 @@ do
         ./src/build_out/win64-dotnet/colormc/$line
 done
 
-7z a colormc-a$version-win64.7z ./src/build_out/win64-dotnet/colormc/
+zip_name="colormc-a$version-win64.zip"
+
+cd ./src/build_out/win64-dotnet/
+zip -r $zip_name ./colormc
+mv $zip_name ../../../build_out/$zip_name
 
 echo "ColorMC win64 build done"
