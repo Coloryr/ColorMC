@@ -32,6 +32,8 @@ jobs:
         ./build/build-ubuntu.sh
         chmod a+x ./build/build-windows.sh
         ./build/build-windows.sh
+        chmod a+x ./build/build-macos.sh
+        ./build/build-macos.sh
     - name: 更新构建文件
       uses: actions/upload-artifact@v2
       with:
