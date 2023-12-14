@@ -15,7 +15,7 @@ build_arch() {
 
     base=./src/build_out/linux-$2-dotnet
     base_dir="$base/colormc"
-    deb_name="colormc-a$version-linux-$2.deb"
+    deb_name="./build_out/colormc-a$version-linux-$2.deb"
 
     rm -rf $base
 
