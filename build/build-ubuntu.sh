@@ -55,7 +55,7 @@ build_arch Linux-ARM64 arm64
 
 echo "ColorMC build linux-$2-appimage version: $version"
 
-build_run=$./build_run
+build_run=./build_run
 
 mkdir $build_run
 

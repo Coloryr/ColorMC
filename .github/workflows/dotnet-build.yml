@@ -15,14 +15,14 @@ jobs:
       shell: bash
       working-directory: ./
       run: |
-       chmod a+x ./build/update.sh
-       ./build/update.sh
+        chmod a+x ./build/update.sh
+        ./build/update.sh
     - name: 构建
       shell: bash
       working-directory: ./
       run: |
-       chmod a+x ./build/build-ubuntu.sh
-       ./build/build-ubuntu.sh
+        chmod a+x ./build/build-ubuntu.sh
+        ./build/build-ubuntu.sh
     - name: 更新构建文件
       uses: actions/upload-artifact@v2
       with:
