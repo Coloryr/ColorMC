@@ -29,6 +29,16 @@ public partial class AddModPackControl : UserControl, IUserControl
         ModPackFiles.PointerPressed += ModPackFiles_PointerPressed;
 
         Input1.KeyDown += Input1_KeyDown;
+
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+    }
+
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (DataContext is AddModPackControlModel model)
+        {
+            model.Wheel(e.Delta.Y);
+        }
     }
 
     public void OnKeyDown(object? sender, KeyEventArgs e)

@@ -169,12 +169,9 @@ public static class WebBinding
                     SourceType.Modrinth,
                     SourceType.McMod
                 ],
-            FileType.DataPacks or FileType.Resourcepack =>
-                [
-                    SourceType.CurseForge,
-                    SourceType.Modrinth,
-                ],
-            FileType.Shaderpack =>
+            FileType.DataPacks 
+            or FileType.Resourcepack 
+            or FileType.Shaderpack =>
                 [
                     SourceType.CurseForge,
                     SourceType.Modrinth,

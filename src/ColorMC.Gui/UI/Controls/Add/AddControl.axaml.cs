@@ -40,6 +40,16 @@ public partial class AddControl : UserControl, IUserControl
         VersionDisplay.PointerPressed += VersionDisplay_PointerPressed;
         OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
         ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
+
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+    }
+
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (DataContext is AddControlModel model)
+        {
+            model.Wheel(e.Delta.Y);
+        }
     }
 
     public void SetBaseModel(BaseModel model)

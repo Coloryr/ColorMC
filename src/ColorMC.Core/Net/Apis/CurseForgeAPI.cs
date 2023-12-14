@@ -397,7 +397,7 @@ public static class CurseForgeAPI
 
         list.data.RemoveAll(a =>
         {
-            return a.id is 68441 or 615 or 1 or 3 or 2 or 73247 or 75208;
+            return !a.name.StartsWith("Minecraft ");
         });
 
         var list111 = new List<CurseForgeVersionType.Item>();

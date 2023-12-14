@@ -240,6 +240,8 @@ public partial class AddControlModel : GameModel, IAddWindow
     [ObservableProperty]
     private bool _displayFilter = true;
 
+    private double _count;
+
     private readonly string _useName;
 
     public AddControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
@@ -1220,6 +1222,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
 
         Page -= 1;
+        _count = 0;
     }
 
     /// <summary>
@@ -1233,6 +1236,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
 
         Page += 1;
+        _count = 0;
     }
 
     /// <summary>
@@ -1302,6 +1306,19 @@ public partial class AddControlModel : GameModel, IAddWindow
             item.Close();
         }
         DisplayList.Clear();
+    }
+
+    public void Wheel(double y)
+    {
+        _count += y;
+        if (_count > 5)
+        {
+            Back();
+        }
+        else if (_count < -5)
+        {
+            Next();
+        }
     }
 
     protected override void Close()
