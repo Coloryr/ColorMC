@@ -2,12 +2,12 @@
     "buildinfo": [
         {
             "prerun": [
-                "cp /home/coloryr/Desktop/colormc-A19-linux-amd64.deb ~/.cache/deb2appimage/debs/colormc-A19-linux-amd64.deb"
+                "cp ./colormc-a%version%-linux-%arch%.deb ~/.cache/deb2appimage/debs/colormc-a%version%-linux-%arch%.deb"
             ],
             "name": "colormc",
-            "version": "A19-linux",
+            "version": "a%version%",
             "deps": "",
-            "repoarch": "amd64",
+            "repoarch": "%arch%",
             "distrorepo": "Ubuntu",
             "repoversion": "jessie-backports,jessie,jessie",
             "binarypath": "/usr/share/ColorMC/ColorMC.Launcher",
