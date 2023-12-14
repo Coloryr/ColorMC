@@ -1,0 +1,35 @@
+pkgname="colormc"
+pkgver="a%version%"
+pkgrel="%version%"
+pkgdesc="A Minecraft Launcher"
+url="https://www.github.com/Coloryr/ColorMC"
+packager="colormc"
+arch=("x86_64")
+license=("Apache 2.0")
+install=".INSTALL"
+sha512sums=("SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP")
+options=("!strip" "!libtool" "!staticlibs")
+
+source=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
+    "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "ColorMC.Launcher"
+    "ColorMC.desktop" "colormc.png")
+
+package() {
+    mkdir -p ${pkgdir}/usr/share/ColorMC
+    mkdir -p ${pkgdir}/usr/share/applications
+    mkdir -p ${pkgdir}/usr/share/icons
+
+    dir="${pkgdir}/usr/share/ColorMC"
+
+    pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
+    "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "ColorMC.Launcher")
+
+    for line in ${pdbs[@]}
+    do
+        cp ${srcdir}/$line \
+            $dir/$line
+    done
+
+    cp ${srcdir}/ColorMC.desktop ${pkgdir}/usr/share/applications/ColorMC.desktop
+    cp ${srcdir}/colormc.png ${pkgdir}/usr/share/icons/colormc.png
+}

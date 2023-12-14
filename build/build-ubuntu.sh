@@ -26,7 +26,7 @@ build_arch() {
     mkdir $base_dir
 
     pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
-        "Live2DCSharpSDK.Framework.pdb" ColorMC.Launcher.pdb ColorMC.Launcher)
+        "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "ColorMC.Launcher")
 
     cp -r ./build/info/linux/* $base_dir
     cp -r ./build/info/linux-$2/* $base_dir
