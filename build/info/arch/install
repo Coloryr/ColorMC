@@ -1,0 +1,10 @@
+post_install() {
+    chmod a+x ${pkgdir}/usr/share/applications/ColorMC.desktop
+    chmod a+x ${pkgdir}/usr/share/ColorMC/ColorMC.Launcher
+    rm ${pkgdir}/usr/bin/ColorMC.Launcher
+    ln -s ${pkgdir}/usr/share/ColorMC/ColorMC.Launcher ${pkgdir}/usr/bin/
+}
+
+post_upgrade() {
+    post_install
+}
