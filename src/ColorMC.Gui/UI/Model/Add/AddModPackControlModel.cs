@@ -275,19 +275,20 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
     public void Install1(FileDisplayObj data)
     {
+        var select = _last;
         WindowClose();
         App.ShowAddGame(null);
         if (data.SourceType == SourceType.CurseForge)
         {
             App.AddGameWindow?.Install(
                 (data.Data as CurseForgeModObj.Data)!,
-                (_last!.Data?.Data as CurseForgeObjList.Data)!);
+                (select!.Data?.Data as CurseForgeObjList.Data)!);
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
             App.AddGameWindow?.Install(
                 (data.Data as ModrinthVersionObj)!,
-                (_last!.Data?.Data as ModrinthSearchObj.Hit)!);
+                (select!.Data?.Data as ModrinthSearchObj.Hit)!);
         }
     }
 
