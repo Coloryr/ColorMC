@@ -400,7 +400,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
     public void Back()
     {
-        if (Page <= 0)
+        if (_load || Page <= 0)
         {
             return;
         }
@@ -411,6 +411,11 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
     public void Next()
     {
+        if (_load)
+        {
+            return;
+        }
+
         Page += 1;
         _count = 0;
     }
