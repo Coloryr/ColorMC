@@ -11,7 +11,7 @@
     d:DesignWidth="800"
     x:DataType="model:AddGameModel"
     mc:Ignorable="d">
-    <DockPanel Margin="5,3,5,5">
+    <DockPanel Margin="5,5,5,5">
         <StackPanel DockPanel.Dock="Top">
             <Border
                 Padding="{setting:Style BorderPadding}"
