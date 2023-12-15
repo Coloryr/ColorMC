@@ -1211,12 +1211,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// </summary>
     public void Back()
     {
-        if (IsDownload)
-        {
-            return;
-        }
-
-        if (Page <= 0)
+        if (_load || IsDownload || Page <= 0)
         {
             return;
         }
@@ -1230,7 +1225,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// </summary>
     public void Next()
     {
-        if (IsDownload)
+        if (_load || IsDownload)
         {
             return;
         }
