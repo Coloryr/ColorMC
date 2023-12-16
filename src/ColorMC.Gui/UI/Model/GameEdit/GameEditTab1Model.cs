@@ -638,6 +638,9 @@ public partial class GameEditModel
         }
         else
         {
+            _loaderTypeList.Add(Loaders.Custom);
+            LoaderTypeList.Add(Loaders.Custom.GetName());
+
             LoaderType = 0;
         }
 
