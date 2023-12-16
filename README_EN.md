@@ -1,89 +1,125 @@
-# ColorMC
+# ColorMC A new Minecraft Launcher  
 
 [简体中文](./README.md)
 
-A new Minecraft Launcher  
-
-Notie: Translations from other languages are not yet ready. If possible, welcome to do the translation together
+**The following content is machine translation**  
+**Notie: Translations from other languages are not yet ready. If possible, welcome to do the translation together**  
 https://crowdin.com/project/colormc
 
-![](/image/pic.png)
+Using dotnet8 as the runtime environment, XAML as the front-end language, and C # as the back-end language
 
-## Support Platform
+[User's manual](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md)
+
+![](/image/run.png)  
+
+**Demo animation**
+![](/image/GIF.gif)  
+
+## Supporting platforms
 - Linux
 - Windows
 - macOs
 
-Due to the complexity of Linux distribution, everyone's compatibility is different. If it cannot be opened it, you can try modifying `/home/{user}/ColorMC/gui.json`
+Note: ARM64 platform cannot guarantee its compatibility  
+Windows ARM64 can run, but there are rendering issues  
+Linux ARM64 can run on xx, but it runs slowly  
+Mac ARM64 cannot run, it can run x64 version  
 
-## Development environment
+Due to the complexity of Linux distributions, everyone's computer compatibility is different. If it cannot be opened, it can be resolved on its own
 
-### Clone code
+## Install
+Get the installation package, extract and install it
 
+## Start program
+
+- Start after installation is completed  
+Double click to start after decompressing in Windows/macos  
+Under Linux, you can double-click to start or
+```
+ColorMC.Launcher
+```
+
+- Starting from source code
+```
+git clone https://github.com/Coloryr/ColorMC.git
+cd ColorMC/src/ColorMC.Launcher
+dotnet run
+```
+
+## Build from source code
+
+- Build binary files for `windows`, `ubuntu`, and`macos`  
+**Need to build in Ubuntu system**
 ```
 git clone https://github.com/Coloryr/ColorMC.git
 cd ColorMC
+chmod a+x ./build/update.sh
+chmod a+x ./build/build-macos.sh
+chmod a+x ./build/build-ubuntu.sh
+chmod a+x ./build/build-windows.sh
+
+# Update source code
+./build/update.sh
+
+# Build
+./build/build-windows.sh
+./build/build-macos.sh
+./build/build-ubuntu.sh
 ```
 
-### Insatll .Net7
-
-- Windows/macOs
-[Download](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0)
-- Linux
-[Doc](https://learn.microsoft.com/zh-cn/dotnet/core/install/linux?WT.mc_id=dotnet-35129-website)
-
+- Build binary files for `arch`  
+**Need to build in Arch system**
 ```
-# ubuntu
-$ wget https://packages.microsoft.com/config/ubuntu/22.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-$ sudo dpkg -i packages-microsoft-prod.deb
-$ rm packages-microsoft-prod.deb
+git clone https://github.com/Coloryr/ColorMC.git
+cd ColorMC
+chmod a+x ./build/update.sh
+chmod a+x ./build/build-arch.sh
 
-# debian
-$ wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-$ sudo dpkg -i packages-microsoft-prod.deb
-$ rm packages-microsoft-prod.deb
+# Update source code
+./build/update.sh
 
-$ sudo apt-get update
-$ sudo apt-get install -y dotnet-sdk-7.0
+# Build
+./build/build-arch.sh
 ```
 
-### Launch
+At this point, you can click on the `build_out` folder retrieves all binary files
 
-Goto project `ColorMC.Launcher` directory
+## Development
 
 ```
-$ dotnet build
-```
-```
-$ dotnet run
+git clone https://github.com/Coloryr/ColorMC.git
 ```
 
-## Project description
-- ColorMC.Core 启动器底层核心
-- ColorMC.Cmd CLI模式 (已放弃)
-- ColorMC.Gui Gui模式
-- ColorMC.Launcher 启动器
-- ColorMC.Test 用于启动器核心测试
+Open`./src/ColorMC.sln`using IDE
 
-## Skin View
+## DESCRIPTION
+- ColorMC.Core Core
+- ColorMC.Cmd CLI (已放弃)
+- ColorMC.Gui Gui
+- ColorMC.Launcher Boot
+- ColorMC.Test Core Test's
 
-![](/image/GIF1.gif)  
+## Dependent/Referenced Projects
+[AvaloniaUI](https://github.com/AvaloniaUI/Avalonia)  
+[CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet)  
+[Heijden.Dns.Portable](https://github.com/softlion/Heijden.Dns)  
+[HtmlAgilityPack](https://html-agility-pack.net/)  
+[Jint](https://github.com/sebastienros/jint)
+[NAudio](https://github.com/naudio/NAudio)  
+[Newtonsoft.Json](https://www.newtonsoft.com/json)  
+[OpenTK.OpenAL](https://opentk.net/)  
+[SharpZipLib](https://github.com/icsharpcode/SharpZipLib)  
+[Tomlyn](https://github.com/xoofx/Tomlyn)  
+[ForgeWrapper](https://github.com/ZekerZhayard/ForgeWrapper)  
+[Live2DCSharpSDK](https://github.com/coloryr/Live2DCSharpSDK)  
+[OptifineWrapper](https://github.com/coloryr/OptifineWrapper) 
 
-## Referenced
+## License
+Apache 2.0  
+MIT  
+BSD
 
-[AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) 跨平台UI框架  
-[Heijden.Dns.Portable](https://github.com/softlion/Heijden.Dns) DNS解析  
-[HtmlAgilityPack](https://html-agility-pack.net/) HTML解析器  
-[Jint](https://github.com/sebastienros/jint) JS解析执行器  
-[Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
-[SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
-[Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
-[OpenTK](https://opentk.net/) openal音频  
-[SixLabors](https://sixlabors.com/) 图片处理  
-[CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM工具  
-[NAudio](https://github.com/naudio/NAudio) Windows音频播放
-
-## Use IDE
-
+## Tools and IDE
 [Visual Studio Code](https://code.visualstudio.com/)  
-[Visual Studio](https://visualstudio.microsoft.com/)
+[Visual Studio 2022](https://visualstudio.microsoft.com/)  
+![dotMemory logo](https://resources.jetbrains.com/storage/products/company/brand/logos/dotMemory_icon.svg)

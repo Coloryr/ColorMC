@@ -7,6 +7,8 @@ do
     version=$line
 done
 
+mkdir ./build_out
+
 build_arch() {
     echo "ColorMC build arch linux-$2 version: $version"
 
@@ -30,7 +32,7 @@ build_arch() {
     cd ../../../
 
     mv $base_dir/colormc-a$version-$version-x86_64.pkg.tar.zst \
-        colormc-a$version-$version-x86_64.pkg.tar.zst
+        ./build_out/colormc-a$version-$version-x86_64.pkg.tar.zst
 
     echo "ColorMC arch linux-$2 build done"
 }
