@@ -181,10 +181,10 @@
 
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 MinWidth="70"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab2.Text40}" />
+                                Text="{setting:Localize SettingWindow.Tab2.Text40}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -316,11 +316,11 @@
                                 SmallChange="1"
                                 TickFrequency="1"
                                 Value="{Binding PicEffect}" />
-                            <Label
+                            <TextBlock
                                 Width="40"
                                 Margin="0,0,5,0"
                                 VerticalAlignment="Center"
-                                Content="{Binding PicEffect, StringFormat='{}{0}%'}" />
+                                Text="{Binding PicEffect, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <Button
                             Width="100"
@@ -332,7 +332,7 @@
                     </WrapPanel>
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text5}" />
+                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text5}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -454,10 +454,10 @@
                             Text="{setting:Localize SettingWindow.Tab2.Text10}" />
                         <ColorPicker Margin="0,0,5,0" Color="{Binding LightBackColor}" />
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <Label
+                            <TextBlock
                                 Width="80"
                                 VerticalAlignment="Center"
-                                Content="{setting:Localize SettingWindow.Tab2.Text11}" />
+                                Text="{setting:Localize SettingWindow.Tab2.Text11}" />
                             <ColorPicker Color="{Binding LightTranColor}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
@@ -516,7 +516,7 @@
                         OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text14}" />
+                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text14}" />
                             <Slider
                                 Width="150"
                                 Height="40"

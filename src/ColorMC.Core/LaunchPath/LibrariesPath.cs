@@ -2,9 +2,14 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -16,6 +21,8 @@ public static class LibrariesPath
     public const string Name = "libraries";
     public static string BaseDir { get; private set; }
     public static string NativeDir { get; private set; }
+
+    private readonly static Dictionary<string, object> CustomLoader = [];
 
     /// <summary>
     /// 初始化
@@ -94,7 +101,7 @@ public static class LibrariesPath
     public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLib(this GameSettingObj obj, bool neo, CancellationToken cancel)
     {
         var version1 = VersionPath.GetVersion(obj.Version)!;
-        var v2 = CheckHelpers.ISGameVersionV2(version1);
+        var v2 = CheckHelpers.IsGameVersionV2(version1);
         if (v2)
         {
             GameHelper.ReadyForgeWrapper();
@@ -261,5 +268,173 @@ public static class LibrariesPath
     public static bool CheckOptifineLib(this GameSettingObj obj)
     {
         return File.Exists(GetOptiFineLib(obj));
+    }
+
+    public static async Task<ConcurrentBag<DownloadItemObj>?> DecodeLoaderJar(this GameSettingObj obj, CancellationToken cancel)
+    {
+        using var zFile = new ZipFile(obj.CustomLoader!.Local);
+        using var stream1 = new MemoryStream();
+        using var stream2 = new MemoryStream();
+        var find1 = false;
+        var find2 = false;
+        foreach (ZipEntry e in zFile)
+        {
+            if (e.IsFile && e.Name == "version.json")
+            {
+                using var stream = zFile.GetInputStream(e);
+                await stream.CopyToAsync(stream1, cancel);
+                find1 = true;
+            }
+            else if (e.IsFile && e.Name == "install_profile.json")
+            {
+                using var stream = zFile.GetInputStream(e);
+                await stream.CopyToAsync(stream2, cancel);
+                find2 = true;
+            }
+        }
+
+        if (!find1 || !find2)
+        {
+            return null;
+        }
+
+        var list = new ConcurrentBag<DownloadItemObj>();
+
+        async Task Unpack(ForgeLaunchObj obj1)
+        {
+            foreach (var item in obj1.libraries)
+            {
+                if (cancel.IsCancellationRequested)
+                {
+                    return;
+                }
+                if (!string.IsNullOrWhiteSpace(item.downloads.artifact.url))
+                {
+                    string local = Path.GetFullPath($"{BaseDir}/{item.downloads.artifact.path}");
+                    {
+                        using var read = PathHelper.OpenRead(local);
+                        if (read != null)
+                        {
+                            string sha1 = HashHelper.GenSha1(read);
+                            if (sha1 == item.downloads.artifact.sha1)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+
+                    list.Add(new()
+                    {
+                        Name = item.name,
+                        Local = Path.GetFullPath($"{BaseDir}/{item.downloads.artifact.path}"),
+                        SHA1 = item.downloads.artifact.sha1,
+                        Url = item.downloads.artifact.url
+                    });
+                }
+                else
+                {
+                    var item1 = zFile.GetEntry($"maven/{item.downloads.artifact.path}");
+                    if (item1 != null)
+                    {
+                        string local = Path.GetFullPath($"{BaseDir}/{item.downloads.artifact.path}");
+                        {
+                            using var read = PathHelper.OpenRead(local);
+                            if (read != null)
+                            {
+                                string sha1 = HashHelper.GenSha1(read);
+                                if (sha1 == item.downloads.artifact.sha1)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+
+                        {
+                            using var write = PathHelper.OpenWrite(local);
+                            using var stream3 = zFile.GetInputStream(item1);
+                            await stream3.CopyToAsync(write, cancel);
+                        }
+                    }
+                }
+            }
+        }
+
+        try
+        {
+            byte[] array1 = stream2.ToArray();
+            var data = Encoding.UTF8.GetString(array1);
+            var obj1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
+
+            await Unpack(obj1);
+
+            if (cancel.IsCancellationRequested)
+            {
+                return null;
+            }
+
+            array1 = stream1.ToArray();
+            data = Encoding.UTF8.GetString(array1);
+            obj1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
+
+            await Unpack(obj1);
+
+            if (!CustomLoader.TryAdd(obj.CustomLoader!.Local!, obj1))
+            {
+                CustomLoader[obj.CustomLoader!.Local!] = obj1;
+            }
+
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error3"), e);
+        }
+
+        return list;
+    }
+
+    public static List<(string Name, string Local)> GetCustomLoaderLibs(this GameSettingObj obj)
+    {
+        if (CustomLoader.TryGetValue(obj.CustomLoader!.Local!, out var obj1))
+        {
+            if (obj1 is ForgeLaunchObj obj2)
+            {
+                var list = new List<(string, string)>();
+                foreach (var item in obj2.libraries)
+                {
+
+                    list.Add((item.name, Path.GetFullPath($"{BaseDir}/{item.downloads.artifact.path}")));
+                }
+
+                return list;
+            }
+        }
+
+        return [];
+    }
+
+    public static List<string> GetLoaderGameArg(this GameSettingObj obj)
+    {
+        if (CustomLoader.TryGetValue(obj.CustomLoader!.Local!, out var obj1))
+        {
+            if (obj1 is ForgeLaunchObj obj2)
+            {
+                return new(obj2.minecraftArguments.Split(" "));
+            }
+        }
+
+        return [];
+    }
+
+    public static string GetLoaderMainClass(this GameSettingObj obj)
+    {
+        if (CustomLoader.TryGetValue(obj.CustomLoader!.Local!, out var obj1))
+        {
+            if (obj1 is ForgeLaunchObj obj2)
+            {
+                return obj2.mainClass;
+            }
+        }
+
+        return "";
     }
 }

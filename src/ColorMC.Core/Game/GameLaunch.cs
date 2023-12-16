@@ -254,6 +254,10 @@ public static class Launch
                 arg.Add(item);
             }
         }
+        else if (obj.Loader == Loaders.Custom)
+        {
+            arg.AddRange(obj.GetLoaderGameArg());
+        }
 
         return arg;
     }
@@ -280,6 +284,10 @@ public static class Launch
                 "optifine.OptiFineTweaker"
             };
         }
+        else if (obj.Loader == Loaders.Custom)
+        {
+            return obj.GetLoaderGameArg();
+        }
         else
         {
             var version = VersionPath.GetVersion(obj.Version)!;
@@ -300,7 +308,7 @@ public static class Launch
             return MakeV1GameArg(obj);
         }
 
-        List<string> arg = new();
+        List<string> arg = [];
         foreach (object item in game.arguments.game)
         {
             if (item is string str)
@@ -398,7 +406,7 @@ public static class Launch
             };
         }
 
-        List<string> jvmHead = new();
+        List<string> jvmHead = [];
 
         //javaagent
         if (!string.IsNullOrWhiteSpace(args.JavaAgent))
@@ -532,8 +540,7 @@ public static class Launch
     /// <returns>游戏启动参数</returns>
     private static List<string> GameArg(GameSettingObj obj, bool v2, WorldObj? world)
     {
-        List<string> gameArg = new();
-        gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
+        List<string> gameArg = [.. v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj)];
 
         if (SystemInfo.Os != OsType.Android)
         {
@@ -696,23 +703,8 @@ public static class Launch
     /// <returns>Lib地址列表</returns>
     private static async Task<List<string>> GetLibs(GameSettingObj obj, bool v2)
     {
-        Dictionary<LibVersionObj, string> list = new();
+        Dictionary<LibVersionObj, string> list = [];
         var version = VersionPath.GetVersion(obj.Version)!;
-
-        //GameLib
-        var list1 = await DownloadItemHelper.BuildGameLibs(version);
-        foreach (var item in list1)
-        {
-            if (item.Later == null)
-            {
-                //不添加lwjgl
-                if (item.Name.Contains("org.lwjgl") && SystemInfo.Os == OsType.Android)
-                {
-                    continue;
-                }
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), item.Local);
-            }
-        }
 
         //LoaderLib
         if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
@@ -754,6 +746,32 @@ public static class Launch
         {
             GameHelper.ReadyOptifineWrapper();
             list.AddOrUpdate(new(), GameHelper.OptifineWrapper);
+        }
+        else if (obj.Loader == Loaders.Custom)
+        {
+            var list2 = obj.GetCustomLoaderLibs();
+            foreach (var (Name, Local) in list2)
+            {
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(Name), Local);
+            }
+        }
+
+        //GameLib
+        if (obj.Loader != Loaders.Custom || obj.CustomLoader?.OffLib != true)
+        {
+            var list1 = await DownloadItemHelper.BuildGameLibs(version);
+            foreach (var item in list1)
+            {
+                if (item.Later == null)
+                {
+                    //不添加lwjgl
+                    if (item.Name.Contains("org.lwjgl") && SystemInfo.Os == OsType.Android)
+                    {
+                        continue;
+                    }
+                    list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
+                }
+            }
         }
 
         //游戏核心
@@ -905,6 +923,10 @@ public static class Launch
         {
             return "coloryr.optifinewrapper.Main";
         }
+        else if (obj.Loader == Loaders.Custom)
+        {
+            return obj.GetLoaderMainClass();
+        }
 
         return "";
     }
@@ -919,7 +941,7 @@ public static class Launch
     {
         var list = new List<string>();
         var version = VersionPath.GetVersion(obj.Version)!;
-        var v2 = CheckHelpers.ISGameVersionV2(version);
+        var v2 = CheckHelpers.IsGameVersionV2(version);
         var classpath = await MakeClassPath(obj, v2);
         var jvmarg = await JvmArg(obj, v2, login);
         var gamearg = GameArg(obj, v2, world);
@@ -967,8 +989,9 @@ public static class Launch
         var stopwatch = new Stopwatch();
 
         //版本号检测
-        if (string.IsNullOrWhiteSpace(obj.Version) ||
-            (obj.Loader != Loaders.Normal && string.IsNullOrWhiteSpace(obj.LoaderVersion)))
+        if (string.IsNullOrWhiteSpace(obj.Version) 
+            || (obj.Loader != Loaders.Normal && string.IsNullOrWhiteSpace(obj.LoaderVersion))
+            && (obj.Loader == Loaders.Custom && string.IsNullOrWhiteSpace(obj.CustomLoader?.Local)))
         {
             throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
         }
@@ -1086,7 +1109,7 @@ public static class Launch
                 stopwatch.Restart();
                 stopwatch.Start();
 
-                var ok = await DownloadManager.Start(res.ToList());
+                var ok = await DownloadManager.Start([.. res]);
                 if (!ok)
                 {
                     throw new LaunchException(LaunchState.LostFile,
@@ -1280,7 +1303,7 @@ public static class Launch
         {
             //安装Forge
             var version = VersionPath.GetVersion(obj.Version)!;
-            var v2 = CheckHelpers.ISGameVersionV2(version);
+            var v2 = CheckHelpers.IsGameVersionV2(version);
             if (v2 && obj.Loader is Loaders.Forge or Loaders.NeoForge)
             {
                 var obj1 = obj.Loader is Loaders.Forge

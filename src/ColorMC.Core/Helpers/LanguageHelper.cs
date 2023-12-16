@@ -247,6 +247,7 @@ public static class LanguageHelper
             Loaders.Fabric => "Fabric",
             Loaders.Quilt => "Quilt",
             Loaders.OptiFine => "OptiFine",
+            Loaders.Custom => Get("Loaders.Custom"),
             _ => "Unkown"
         };
     }

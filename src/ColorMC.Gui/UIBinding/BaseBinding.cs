@@ -109,6 +109,7 @@ public static class BaseBinding
             }
         }
 
+        FrpConfigUtils.Init(ColorMCGui.RunDir);
         ImageUtils.Init(ColorMCGui.RunDir);
 
         FontSel.Load();

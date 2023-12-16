@@ -86,6 +86,18 @@ public record LaunchDataObj
     public TimeSpan LastPlay { get; set; }
 }
 
+public record CustomLoader
+{ 
+    /// <summary>
+    /// 加载器位置
+    /// </summary>
+    public string? Local { get; set; }
+    /// <summary>
+    /// 不使用原版运行库
+    /// </summary>
+    public bool OffLib { get; set; }
+}
+
 /// <summary>
 /// 游戏实例
 /// </summary>
@@ -172,6 +184,10 @@ public partial record GameSettingObj
     /// 服务器实例网址
     /// </summary>
     public string ServerUrl { get; set; }
+    /// <summary>
+    /// 自定义模组加载器
+    /// </summary>
+    public CustomLoader? CustomLoader { get; set; }
 
     /// <summary>
     /// Mod信息
