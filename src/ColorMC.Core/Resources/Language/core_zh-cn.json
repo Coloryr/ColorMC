@@ -35,6 +35,7 @@
   "Core.Http.Forge.Error4": "Forge核心下载失败",
   "Core.Http.Forge.Error5": "获取Forge支持版本错误",
   "Core.Http.Forge.Error6": "获取Forge版本错误",
+  "Core.Http.Forge.Error7": "读取自定义加载器信息错误",
   "Core.Http.CurseForge.Error1": "获取CurseForge数据发生错误",
   "Core.Http.CurseForge.Error2": "获取CurseForge的Mod信息发生错误",
   "Core.Http.CurseForge.Error3": "获取CurseForge整合包的Mod文件发生错误",
@@ -279,5 +280,6 @@
   "FileType.Optifne": "高清修复",
   "FileType.Other": "未知的资源类型",
   "AuthlibInjector.Error1": "AuthlibInjector信息获取失败",
-  "Loaders.Normal": "无"
+  "Loaders.Normal": "无",
+  "Loaders.Custom": "自定义"
 }

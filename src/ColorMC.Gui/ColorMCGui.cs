@@ -159,7 +159,6 @@ public static class ColorMCGui
         }
 
         GuiConfigUtils.Init(RunDir);
-        FrpConfigUtils.Init(RunDir);
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();

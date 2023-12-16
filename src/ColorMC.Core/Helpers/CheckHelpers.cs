@@ -89,7 +89,7 @@ public static class CheckHelpers
     /// <summary>
     /// 是否V2版本
     /// </summary>
-    public static bool ISGameVersionV2(GameArgObj version)
+    public static bool IsGameVersionV2(GameArgObj version)
     {
         return version.minimumLauncherVersion > 18;
     }
@@ -283,14 +283,17 @@ public static class CheckHelpers
         {
             list1.Add(Task.Run(async () =>
             {
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
-                var list2 = await game.CheckGameLib(cancel);
-                if (list2.Count != 0)
+                if (obj.Loader != Loaders.Custom || obj.CustomLoader?.OffLib != true)
                 {
-                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
-                    foreach (var item in list2)
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
+                    var list2 = await game.CheckGameLib(cancel);
+                    if (list2.Count != 0)
                     {
-                        list.Add(item);
+                        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
+                        foreach (var item in list2)
+                        {
+                            list.Add(item);
+                        }
                     }
                 }
 
@@ -385,6 +388,31 @@ public static class CheckHelpers
                             LanguageHelper.Get("Core.Launch.Error3"));
 
                         list4.List!.ForEach(list.Add);
+                    }
+                }
+                else if (obj.Loader == Loaders.Custom)
+                {
+                    if (obj.CustomLoader == null || !File.Exists(obj.CustomLoader.Local))
+                    {
+                        throw new LaunchException(LaunchState.LostLoader,
+                                LanguageHelper.Get("Core.Launch.Error3"));
+                    }
+                    var list3 = await obj.DecodeLoaderJar(cancel);
+                    if (cancel.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                    if (list3 == null)
+                    {
+                        throw new LaunchException(LaunchState.LostLoader,
+                                LanguageHelper.Get("Core.Launch.Error3"));
+                    }
+                    else
+                    {
+                        foreach (var item in list3)
+                        {
+                            list.Add(item);
+                        }
                     }
                 }
 

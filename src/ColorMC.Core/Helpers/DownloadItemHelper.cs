@@ -208,7 +208,7 @@ public static class DownloadItemHelper
     public static List<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetVersion(mc)!;
-        var v2 = CheckHelpers.ISGameVersionV2(version1);
+        var v2 = CheckHelpers.IsGameVersionV2(version1);
         var list = new List<DownloadItemObj>();
 
         if (v2)
@@ -515,7 +515,7 @@ public static class DownloadItemHelper
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildForge(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetVersion(mc)!;
-        var v2 = CheckHelpers.ISGameVersionV2(version1);
+        var v2 = CheckHelpers.IsGameVersionV2(version1);
 
         var down = neo ?
             BuildNeoForgeInstaller(mc, version) :
@@ -610,7 +610,7 @@ public static class DownloadItemHelper
                     mainClass = obj.versionInfo.mainClass,
                     inheritsFrom = obj.versionInfo.inheritsFrom,
                     minecraftArguments = obj.versionInfo.minecraftArguments,
-                    libraries = new()
+                    libraries = []
                 };
                 foreach (var item in obj.versionInfo.libraries)
                 {

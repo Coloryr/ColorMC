@@ -519,6 +519,16 @@ public static class PathBinding
                     return res[0].GetPath();
                 }
                 break;
+            case FileType.Loader:
+                res = await SelectFile(top,
+                    App.Lang("SettingWindow.Tab2.Info9"),
+                    JARFILE,
+                    App.Lang("SettingWindow.Tab2.Info10"));
+                if (res?.Any() == true)
+                {
+                    return res[0].GetPath();
+                }
+                break;
         }
 
         return null;
@@ -576,9 +586,9 @@ public static class PathBinding
                 return null;
             case FileType.Resourcepack:
                 res = await SelectFile(top,
-                    App.Lang("GameEditWindow.Tab8.Info2"),
-                    ZIPFILE,
-                    App.Lang("GameEditWindow.Tab8.Info5"), true);
+                    App.Lang("AddGameWindow.Tab1.Info17"),
+                    JARFILE,
+                    App.Lang("AddGameWindow.Tab1.Info18"), true);
                 if (res?.Any() == true)
                 {
                     return await GameBinding.AddResourcepack(obj, res);

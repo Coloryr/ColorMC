@@ -38,6 +38,8 @@ public partial class GameEditModel
     private string? _pID;
     [ObservableProperty]
     private string? _fID;
+    [ObservableProperty]
+    private string? _loaderLocal;
 
     [ObservableProperty]
     private int _versionType = -1;
@@ -48,12 +50,14 @@ public partial class GameEditModel
 
     [ObservableProperty]
     private bool _modPack;
-
     [ObservableProperty]
     private bool _gameRun;
-
     [ObservableProperty]
     private bool _enableLoader;
+    [ObservableProperty]
+    private bool _customLoader;
+    [ObservableProperty]
+    private bool _offLib;
 
     partial void OnLangChanged(int value)
     {
@@ -99,9 +103,11 @@ public partial class GameEditModel
 
             _obj.Loader = loader;
             _obj.LoaderVersion = null;
+            CustomLoader = loader == Loaders.Custom;
         }
         else
         {
+            CustomLoader = false;
             _obj.Loader = Loaders.Normal;
             _obj.LoaderVersion = null;
         }
@@ -168,6 +174,26 @@ public partial class GameEditModel
             return;
 
         _obj.FID = value;
+        _obj.Save();
+    }
+
+    partial void OnLoaderLocalChanged(string? value)
+    {
+        if (_gameLoad)
+            return;
+
+        _obj.CustomLoader ??= new();
+        _obj.CustomLoader.Local = value;
+        _obj.Save();
+    }
+
+    partial void OnOffLibChanged(bool value)
+    {
+        if (_gameLoad)
+            return;
+
+        _obj.CustomLoader ??= new();
+        _obj.CustomLoader.OffLib = value;
         _obj.Save();
     }
 
@@ -399,6 +425,8 @@ public partial class GameEditModel
         LoaderTypeList.Clear();
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
+        _loaderTypeList.Add(Loaders.Custom);
+        LoaderTypeList.Add(Loaders.Custom.GetName());
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info4"));
 
         var loaders = await GameBinding.GetSupportLoader(GameVersion);
@@ -477,6 +505,18 @@ public partial class GameEditModel
     public void OpenConfigEdit()
     {
         App.ShowConfigEdit(_obj);
+    }
+
+    [RelayCommand]
+    public async Task SelectLoader()
+    {
+        var res = await PathBinding.SelectFile(FileType.Loader);
+        if (res == null)
+        {
+            return;
+        }
+
+        LoaderLocal = res;
     }
 
     private async void GameVersionLoad()
@@ -573,7 +613,16 @@ public partial class GameEditModel
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
 
-        if (_obj.Loader != Loaders.Normal)
+        if (_obj.Loader == Loaders.Custom)
+        {
+            _loaderTypeList.Add(Loaders.Custom);
+            LoaderTypeList.Add(Loaders.Custom.GetName());
+
+            LoaderType = 1;
+
+            CustomLoader = true;
+        }
+        else if (_obj.Loader != Loaders.Normal)
         {
             _loaderTypeList.Add(_obj.Loader);
             LoaderTypeList.Add(_obj.Loader.GetName());
@@ -604,6 +653,8 @@ public partial class GameEditModel
         Group = _obj.GroupName;
         FID = _obj.FID;
         PID = _obj.PID;
+        LoaderLocal = _obj.CustomLoader?.Local;
+        OffLib = _obj.CustomLoader?.OffLib ?? false;
 
         GameRun = BaseBinding.IsGameRun(_obj);
 

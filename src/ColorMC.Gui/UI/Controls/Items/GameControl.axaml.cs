@@ -111,6 +111,10 @@ public partial class GameControl : UserControl
         e.Handled = true;
         if (DataContext is GameItemModel model)
         {
+            if (model.IsNew)
+            {
+                return;
+            }
             var select = model.IsSelect;
             model.SetSelect();
 
