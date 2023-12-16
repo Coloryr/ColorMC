@@ -856,7 +856,7 @@ public static class BaseBinding
 
         var lines = info.Split("\n");
         var builder = new StringBuilder();
-
+        string outip = "";
         if (item1.FrpType == FrpType.SakuraFrp)
         {
             string ip = "";
@@ -885,20 +885,7 @@ public static class BaseBinding
 
             File.WriteAllText(dir + "/server.ini", builder.ToString());
 
-            var p = new Process
-            {
-                StartInfo = new ProcessStartInfo()
-                {
-                    FileName = file,
-                    WorkingDirectory = dir,
-                    Arguments = "-c server.ini",
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                }
-            };
-
-            return (true, p, ip + ":" + item1.Remote);
+            outip = ip + ":" + item1.Remote;
         }
         else if (item1.FrpType == FrpType.OpenFrp)
         {
@@ -917,6 +904,16 @@ public static class BaseBinding
 
             File.WriteAllText(dir + "/server.ini", builder.ToString());
 
+            outip = item1.Remote;
+        }
+
+        try
+        {
+            if (SystemInfo.Os != OsType.Windows)
+            {
+                PathUtils.Chmod(file);
+            }
+
             var p = new Process
             {
                 StartInfo = new ProcessStartInfo()
@@ -930,7 +927,11 @@ public static class BaseBinding
                 }
             };
 
-            return (true, p, item1.Remote);
+            return (true, p, outip);
+        }
+        catch (Exception e)
+        {
+            Logs.Error("frp start error", e);
         }
 
         return (false, null, null);

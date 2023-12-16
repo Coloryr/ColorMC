@@ -24,7 +24,7 @@ public partial class NetFrpModel
 
     public async void StartThisLan(NetFrpLocalModel local)
     {
-        if (RemotesSakura.Count == 0 || RemotesOpenFrp.Count == 0)
+        if (RemotesSakura.Count == 0 && RemotesOpenFrp.Count == 0)
         {
             Model.Show(App.Lang("NetFrpWindow.Tab2.Error2"));
             return;
