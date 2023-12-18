@@ -531,7 +531,7 @@
 	"AddGameWindow.Tab1.Text13": "下载云同步实例",
 	"AddGameWindow.Tab1.Text14": "下载服务器实例",
 	"AddGameWindow.Tab1.Text15": "模组加载器的安装器(install.jar)位置",
-	"AddGameWindow.Tab1.Text16": "不使用原版运行库",
+	"AddGameWindow.Tab1.Text16": "后加载原版运行库",
 	"AddGameWindow.Tab1.Info1": "正在获取Forge版本信息",
 	"AddGameWindow.Tab1.Info2": "正在获取Fabric版本信息",
 	"AddGameWindow.Tab1.Info3": "正在获取Quilt版本信息",

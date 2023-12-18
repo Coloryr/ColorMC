@@ -4,7 +4,7 @@ using ColorMC.Core;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Model.Add.AddGame;
+using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using System;

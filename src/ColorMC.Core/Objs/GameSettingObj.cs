@@ -93,7 +93,7 @@ public record CustomLoader
     /// </summary>
     public string? Local { get; set; }
     /// <summary>
-    /// 不使用原版运行库
+    /// 后加载原版运行库
     /// </summary>
     public bool OffLib { get; set; }
 }

@@ -424,6 +424,9 @@ public partial class GameEditModel
     {
         _gameLoad = true;
 
+        LoaderVersion = null;
+        LoaderVersionList.Clear();
+
         _loaderTypeList.Clear();
         LoaderTypeList.Clear();
         _loaderTypeList.Add(Loaders.Normal);

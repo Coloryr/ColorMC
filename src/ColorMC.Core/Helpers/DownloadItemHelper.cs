@@ -11,6 +11,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Text;
+using System.Threading.Channels;
 
 namespace ColorMC.Core.Helpers;
 
@@ -28,7 +29,7 @@ public static class DownloadItemHelper
         return new()
         {
             Name = "mcaselector-2.2.2",
-            Local = $"{ToolPath.BaseDir}/mcaselector-2.2.2.jar",
+            Local = Path.GetFullPath($"{ToolPath.BaseDir}/mcaselector-2.2.2.jar"),
             Url = "https://github.com/Querz/mcaselector/releases/download/2.2.2/mcaselector-2.2.2.jar"
         };
     }
@@ -43,7 +44,7 @@ public static class DownloadItemHelper
         {
             Name = "log4j2-xml",
             Url = obj.logging.client.file.url,
-            Local = $"{VersionPath.BaseDir}/log4j2-xml",
+            Local = Path.GetFullPath($"{VersionPath.BaseDir}/log4j2-xml"),
             SHA1 = obj.logging.client.file.sha1
         };
     }
@@ -60,7 +61,7 @@ public static class DownloadItemHelper
         {
             Name = name,
             Url = UrlHelper.DownloadAssets(hash, BaseClient.Source),
-            Local = $"{AssetsPath.ObjectsDir}/{hash[..2]}/{hash}",
+            Local = Path.GetFullPath($"{AssetsPath.ObjectsDir}/{hash[..2]}/{hash}"),
             SHA1 = hash
         };
     }
@@ -101,7 +102,7 @@ public static class DownloadItemHelper
         {
             Url = url + name + ".jar",
             Name = $"net.minecraftforge:forge:{mc}-{version}-{type}",
-            Local = $"{LibrariesPath.BaseDir}/net/minecraftforge/forge/{mc}-{version}/{name}.jar",
+            Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/net/minecraftforge/forge/{mc}-{version}/{name}.jar"),
         };
     }
 
@@ -124,8 +125,8 @@ public static class DownloadItemHelper
         {
             Url = url + name + ".jar",
             Name = $"net.neoforged:{name}",
-            Local = $"{LibrariesPath.BaseDir}/net/neoforged/" +
-            $"{(v2222 ? $"neoforge/{version}" : $"forge/{mc}-{version}")}/{name}.jar",
+            Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/net/neoforged/" +
+            $"{(v2222 ? $"neoforge/{version}" : $"forge/{mc}-{version}")}/{name}.jar"),
         };
     }
 
@@ -160,6 +161,28 @@ public static class DownloadItemHelper
     public static DownloadItemObj BuildForgeUniversal(string mc, string version)
     {
         return BuildForgeItem(mc, version, "universal");
+    }
+
+    /// <summary>
+    /// 创建Forge安装器下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <returns>下载项目</returns>
+    public static DownloadItemObj BuildNeoForgeClient(string mc, string version)
+    {
+        return BuildNeoForgeItem(mc, version, "client");
+    }
+
+    /// <summary>
+    /// 创建Forge下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <returns>下载项目</returns>
+    public static DownloadItemObj BuildForgeClient(string mc, string version)
+    {
+        return BuildForgeItem(mc, version, "client");
     }
 
     /// <summary>
@@ -205,28 +228,15 @@ public static class DownloadItemHelper
     /// <param name="version">forge版本</param>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>下载项目列表</returns>
-    public static List<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc, string version, bool neo)
+    public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetVersion(mc)!;
         var v2 = CheckHelpers.IsGameVersionV2(version1);
-        var list = new List<DownloadItemObj>();
+        var list = new Dictionary<string, DownloadItemObj>();
 
-        if (v2)
-        {
-            list.Add(neo ?
-                BuildNeoForgeInstaller(mc, version) :
-                BuildForgeInstaller(mc, version));
-            list.Add(neo ?
-                BuildNeoForgeUniversal(mc, version) :
-                BuildForgeUniversal(mc, version));
-
-            if (!CheckHelpers.IsGameVersion117(mc))
-            {
-                list.Add(neo ?
-                    BuildNeoForgeLauncher(mc, version) :
-                    BuildForgeLauncher(mc, version));
-            }
-        }
+        bool universal = false;
+        bool installer = false;
+        bool launcher = false;
 
         //运行库
         foreach (var item1 in info.libraries)
@@ -235,17 +245,23 @@ public static class DownloadItemHelper
                 "net.neoforged.forge:" : "net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
             {
-                //1.12.2及以下
-                if (!v2)
+                string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}");
+
+                var temp = new DownloadItemObj
                 {
-                    var temp = BuildForgeUniversal(mc, version);
-                    temp.SHA1 = item1.downloads.artifact.sha1;
-                    list.Add(temp);
+                    Name = item1.name,
+                    Local = local,
+                    SHA1 = item1!.downloads.artifact.sha1,
+                    Skip = true
+                };
+                if (!list.TryAdd(item1.name, temp))
+                {
+                    list[item1.name] = temp;
                 }
             }
             else
             {
-                list.Add(new()
+                var item2 = new DownloadItemObj()
                 {
                     Url = neo ?
                     UrlHelper.DownloadNeoForgeLib(item1.downloads.artifact.url,
@@ -255,11 +271,50 @@ public static class DownloadItemHelper
                     Name = item1.name,
                     Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}"),
                     SHA1 = item1.downloads.artifact.sha1
-                });
+                };
+                if (!list.TryAdd(item1.name, item2))
+                {
+                    list[item1.name] = item2;
+                }
+            }
+
+            if (item1.name.EndsWith("universal"))
+            {
+                universal = true;
+            }
+            else if (item1.name.EndsWith("installer"))
+            {
+                installer = true;
+            }
+            else if (item1.name.EndsWith("launcher"))
+            {
+                launcher = true;
             }
         }
 
-        return list;
+        if (v2)
+        {
+            if (!installer)
+            {
+                list.Add("installer", neo ?
+                    BuildNeoForgeInstaller(mc, version) :
+                    BuildForgeInstaller(mc, version));
+            }
+            if (!universal)
+            {
+                list.Add("universal", neo ?
+                    BuildNeoForgeUniversal(mc, version) :
+                    BuildForgeUniversal(mc, version));
+            }
+            if (!CheckHelpers.IsGameVersion117(mc) && !launcher)
+            {
+                list.Add("launcher", neo ?
+                    BuildNeoForgeLauncher(mc, version) :
+                    BuildForgeLauncher(mc, version));
+            }
+        }
+
+        return list.Values;
     }
 
     /// <summary>
@@ -522,7 +577,7 @@ public static class DownloadItemHelper
             BuildForgeInstaller(mc, version);
         try
         {
-            var res = await DownloadManager.Start(new() { down });
+            var res = await DownloadManager.Start([down]);
             if (!res)
             {
                 return (GetDownloadState.Init, null);
@@ -829,8 +884,8 @@ public static class DownloadItemHelper
                 {
                     return (GetDownloadState.GetInfo, null);
                 }
-                return (GetDownloadState.End, new()
-                {
+                return (GetDownloadState.End,
+                [
                     new()
                     {
                         Name = item.FileName,
@@ -838,10 +893,132 @@ public static class DownloadItemHelper
                         Overwrite = true,
                         Url = url
                     }
-                });
+                ]);
             }
         }
 
         return (GetDownloadState.Init, null);
+    }
+
+    public static async Task<ConcurrentBag<DownloadItemObj>?> DecodeLoaderJar(this GameSettingObj obj, CancellationToken cancel)
+    {
+        using var zFile = new ZipFile(obj.CustomLoader!.Local);
+        using var stream1 = new MemoryStream();
+        using var stream2 = new MemoryStream();
+        var find1 = false;
+        var find2 = false;
+        foreach (ZipEntry e in zFile)
+        {
+            if (e.IsFile && e.Name == "version.json")
+            {
+                using var stream = zFile.GetInputStream(e);
+                await stream.CopyToAsync(stream1, cancel);
+                find1 = true;
+            }
+            else if (e.IsFile && e.Name == "install_profile.json")
+            {
+                using var stream = zFile.GetInputStream(e);
+                await stream.CopyToAsync(stream2, cancel);
+                find2 = true;
+            }
+        }
+
+        if (!find1 || !find2)
+        {
+            return null;
+        }
+
+        var list = new ConcurrentBag<DownloadItemObj>();
+
+        async Task Unpack(ForgeLaunchObj obj1)
+        {
+            foreach (var item in obj1.libraries)
+            {
+                if (cancel.IsCancellationRequested)
+                {
+                    return;
+                }
+                if (!string.IsNullOrWhiteSpace(item.downloads.artifact.url))
+                {
+                    string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}");
+                    {
+                        using var read = PathHelper.OpenRead(local);
+                        if (read != null)
+                        {
+                            string sha1 = HashHelper.GenSha1(read);
+                            if (sha1 == item.downloads.artifact.sha1)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+
+                    list.Add(new()
+                    {
+                        Name = item.name,
+                        Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}"),
+                        SHA1 = item.downloads.artifact.sha1,
+                        Url = item.downloads.artifact.url
+                    });
+                }
+                else
+                {
+                    var item1 = zFile.GetEntry($"maven/{item.downloads.artifact.path}");
+                    if (item1 != null)
+                    {
+                        string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}");
+                        {
+                            using var read = PathHelper.OpenRead(local);
+                            if (read != null)
+                            {
+                                string sha1 = HashHelper.GenSha1(read);
+                                if (sha1 == item.downloads.artifact.sha1)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+
+                        {
+                            using var write = PathHelper.OpenWrite(local);
+                            using var stream3 = zFile.GetInputStream(item1);
+                            await stream3.CopyToAsync(write, cancel);
+                        }
+                    }
+                }
+            }
+        }
+
+        try
+        {
+            byte[] array1 = stream2.ToArray();
+            var data = Encoding.UTF8.GetString(array1);
+            var obj1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
+
+            await Unpack(obj1);
+
+            if (cancel.IsCancellationRequested)
+            {
+                return null;
+            }
+
+            array1 = stream1.ToArray();
+            data = Encoding.UTF8.GetString(array1);
+            obj1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
+
+            await Unpack(obj1);
+
+            if (!LibrariesPath.CustomLoader.TryAdd(obj.CustomLoader!.Local!, obj1))
+            {
+                LibrariesPath.CustomLoader[obj.CustomLoader!.Local!] = obj1;
+            }
+
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error3"), e);
+        }
+
+        return list;
     }
 }
