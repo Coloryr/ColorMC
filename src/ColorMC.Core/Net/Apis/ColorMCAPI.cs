@@ -1,4 +1,5 @@
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
@@ -164,5 +165,28 @@ public static class ColorMCAPI
             Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error3"), e);
             return false;
         }
+    }
+
+    /// <summary>
+    /// 获取列表
+    /// </summary>
+    /// <param name="version">版本</param>
+    /// <param name="os">系统</param>
+    /// <returns></returns>
+    public static async Task<PojavLauncherTeamObj?> GetJavaList()
+    {
+        string url = BaseUrl + "update/java.json";
+
+        HttpRequestMessage httpRequest = new()
+        {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(url),
+        };
+        httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
+
+        var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
+        var str = await data.Content.ReadAsStringAsync();
+
+        return JsonConvert.DeserializeObject<PojavLauncherTeamObj>(str);
     }
 }
