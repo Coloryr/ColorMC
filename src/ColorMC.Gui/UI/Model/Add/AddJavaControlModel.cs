@@ -25,7 +25,7 @@ public partial class AddJavaControlModel : TopModel
     public ObservableCollection<string> SystemList { get; init; } = [];
     public ObservableCollection<string> VersionList { get; init; } = [];
     public ObservableCollection<string> ArchList { get; init; } = [];
-    public List<string> JavaTypeList { get; init; } = JavaBinding.GetJavaType();
+    public List<string> JavaTypeList { get; init; } = WebBinding.GetJavaType();
 
     [ObservableProperty]
     private string _javaType;
@@ -110,7 +110,7 @@ public partial class AddJavaControlModel : TopModel
         _list1.Clear();
         JavaList.Clear();
 
-        var res = await JavaBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System), VersionList.IndexOf(Version));
+        var res = await WebBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System), VersionList.IndexOf(Version));
 
         if (res.Item1)
         {

@@ -65,7 +65,6 @@
                                 Stroke="{setting:Colors Font}" />
                             <TextBlock
                                 Margin="5,0,0,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize Gui.Info32}" />
                         </StackPanel>
                     </ListBoxItem>
@@ -84,7 +83,6 @@
                                         Stroke="{setting:Colors Font}" />
                                     <TextBlock
                                         Margin="5,0,0,0"
-                                        VerticalAlignment="Center"
                                         Text="{Binding Text}" />
                                 </StackPanel>
                             </DataTemplate>

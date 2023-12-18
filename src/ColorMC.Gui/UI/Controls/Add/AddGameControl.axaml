@@ -37,7 +37,6 @@
                         <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item1.svg" />
                         <TextBlock
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
                             Text="{setting:Localize AddGameWindow.Tabs.Text1}" />
                     </StackPanel>
                 </Button>
@@ -56,7 +55,6 @@
                         <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item2.svg" />
                         <TextBlock
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
                             Text="{setting:Localize AddGameWindow.Tabs.Text2}" />
                     </StackPanel>
                 </Button>
@@ -76,7 +74,6 @@
                         <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item3.svg" />
                         <TextBlock
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
                             Text="{setting:Localize AddGameWindow.Tabs.Text3}" />
                     </StackPanel>
                 </Button>
@@ -91,7 +88,6 @@
             IsVisible="False">
             <TextBlock
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
                 FontSize="30"
                 Text="{setting:Localize AddGameWindow.Text1}" />
         </Panel>

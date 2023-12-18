@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -21,14 +22,12 @@
         <StackPanel Name="Grid1" ClipToBounds="True">
             <TextBlock
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
                 FontSize="40"
-                Text="欢迎使用" />
+                Text="{setting:Localize MainWindow.Text12}" />
             <TextBlock
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
                 FontSize="40"
-                Text="ColorMC" />
+                Text="{setting:Localize Name}" />
         </StackPanel>
     </StackPanel>
 </UserControl>

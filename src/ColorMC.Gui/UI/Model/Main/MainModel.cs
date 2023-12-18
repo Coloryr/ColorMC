@@ -194,13 +194,13 @@ public partial class MainModel : TopModel, IMainTop
         {
             BaseBinding.MusicPause();
 
-            Model.Title = App.Lang("MainWindow.Title");
+            Model.Title = App.Lang("Name");
         }
         else
         {
             BaseBinding.MusicPlay();
 
-            Model.Title = App.Lang("MainWindow.Title") + " " + App.Lang("MainWindow.Info33");
+            Model.Title = App.Lang("Name") + " " + App.Lang("MainWindow.Info33");
         }
 
         _isplay = !_isplay;
@@ -428,7 +428,7 @@ public partial class MainModel : TopModel, IMainTop
 
         if (config.Item2.ServerCustom?.PlayMusic == true)
         {
-            Model.Title = App.Lang("MainWindow.Title") + " " + App.Lang("MainWindow.Info33");
+            Model.Title = App.Lang("Name") + " " + App.Lang("MainWindow.Info33");
             MusicDisplay = true;
         }
         else

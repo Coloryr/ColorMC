@@ -35,7 +35,6 @@
                         <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize AddWindow.Text2}" />
                             <ComboBox
                                 Width="120"
@@ -46,7 +45,6 @@
                         <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize Text.GameVersion}" />
                             <ComboBox
                                 Width="90"
@@ -57,7 +55,6 @@
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize AddModPackWindow.Text5}" />
                             <NumericUpDown
                                 Width="100"
@@ -71,7 +68,6 @@
                         <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize AddWindow.Text4}" />
                             <ComboBox
                                 Width="100"
@@ -82,7 +78,6 @@
                         <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize AddWindow.Text5}" />
                             <ComboBox
                                 Width="110"
@@ -146,7 +141,6 @@
                     <Panel IsVisible="{Binding EmptyDisplay}">
                         <TextBlock
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
                             FontSize="30"
                             Text="{setting:Localize AddModPackWindow.Text13}" />
                     </Panel>
@@ -169,7 +163,6 @@
                 <WrapPanel Margin="0,0,0,-5">
                     <TextBlock
                         Margin="0,0,5,5"
-                        VerticalAlignment="Center"
                         Text="{setting:Localize Text.GameVersion}" />
                     <ComboBox
                         Width="100"
@@ -180,7 +173,6 @@
                     <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                         <TextBlock
                             Margin="0,0,5,0"
-                            VerticalAlignment="Center"
                             Text="{setting:Localize AddModPackWindow.Text5}" />
                         <NumericUpDown
                             Width="100"
@@ -264,17 +256,14 @@
                 <WrapPanel Margin="0,0,0,-5">
                     <TextBlock
                         Margin="0,0,5,5"
-                        VerticalAlignment="Center"
                         Text="{setting:Localize AddWindow.Text10}" />
 
                     <TextBlock
                         Margin="0,0,5,5"
-                        VerticalAlignment="Center"
                         Text="{setting:Localize Text.GameVersion}" />
                     <ComboBox
                         Width="140"
                         Margin="0,0,5,5"
-                        VerticalAlignment="Center"
                         ItemsSource="{Binding GameVersionList}"
                         SelectedItem="{Binding GameVersionOptifine}" />
 
@@ -347,7 +336,6 @@
                 <WrapPanel>
                     <TextBlock
                         Margin="0,0,5,0"
-                        VerticalAlignment="Center"
                         Text="{setting:Localize AddWindow.Text7}" />
                     <ToggleSwitch
                         Margin="0,0,5,0"

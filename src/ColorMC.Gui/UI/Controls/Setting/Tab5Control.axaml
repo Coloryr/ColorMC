@@ -73,7 +73,6 @@
                         Path="/Resource/Icon/Setting/svg16.svg"
                         Stroke="{setting:Colors Font}" />
                     <TextBlock
-                        VerticalAlignment="Center"
                         FontSize="{setting:Style FontTitle}"
                         Text="{setting:Localize SettingWindow.Tab5.Text1}" />
                 </StackPanel>

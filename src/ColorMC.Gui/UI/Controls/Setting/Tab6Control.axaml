@@ -32,7 +32,6 @@
                             Path="/Resource/Icon/Setting/svg17.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab6.Text1}" />
                     </StackPanel>
@@ -67,14 +66,12 @@
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize SettingWindow.Tab6.Text6}" />
                             <ColorPicker Color="{Binding MotdFontColor}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize SettingWindow.Tab6.Text5}" />
                             <ColorPicker Color="{Binding MotdBackColor}" />
                         </StackPanel>
@@ -99,14 +96,12 @@
                             Path="/Resource/Icon/Setting/svg18.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab6.Text27}" />
                     </StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <ToggleSwitch
                             Margin="0,0,10,0"
-                            VerticalAlignment="Center"
                             IsChecked="{Binding EnableOneGame}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text7}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text7}" />
@@ -119,7 +114,6 @@
                     <StackPanel Orientation="Horizontal">
                         <ToggleSwitch
                             Margin="0,0,10,0"
-                            VerticalAlignment="Center"
                             IsChecked="{Binding EnableOneLogin}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text24}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text24}" />
@@ -155,7 +149,6 @@
                             Path="/Resource/Icon/Setting/svg19.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab6.Text8}" />
                     </StackPanel>
@@ -220,7 +213,6 @@
                             Path="/Resource/Icon/Setting/svg21.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab6.Text29}" />
                     </StackPanel>
@@ -260,7 +252,6 @@
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <TextBlock
                                 Margin="5,0,0,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize SettingWindow.Tab6.Text18}" />
                             <Slider
                                 Width="150"
@@ -279,7 +270,6 @@
                             <TextBlock
                                 Width="40"
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{Binding Volume, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <Button

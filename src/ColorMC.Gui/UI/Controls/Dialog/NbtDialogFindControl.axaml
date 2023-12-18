@@ -15,14 +15,13 @@
                 HorizontalAlignment="Center"
                 Text="{Binding FindText1}" />
             <DockPanel Margin="5">
-                <TextBlock VerticalAlignment="Center" Text="{Binding FindText2}" />
+                <TextBlock Text="{Binding FindText2}" />
                 <TextBox Classes="input1" Text="{Binding PosName}" />
             </DockPanel>
             <WrapPanel>
                 <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
                     <TextBlock
                         Margin="0,0,5,0"
-                        VerticalAlignment="Center"
                         Text="X" />
                     <NumericUpDown
                         Width="130"
@@ -32,7 +31,6 @@
                 <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
                     <TextBlock
                         Margin="0,0,5,0"
-                        VerticalAlignment="Center"
                         Text="Y" />
                     <NumericUpDown
                         Width="130"
@@ -42,7 +40,6 @@
                 <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
                     <TextBlock
                         Margin="0,0,5,0"
-                        VerticalAlignment="Center"
                         Text="Z" />
                     <NumericUpDown
                         Width="130"
@@ -57,19 +54,15 @@
                 Orientation="Horizontal">
                 <TextBlock
                     Margin="0,0,0,0"
-                    VerticalAlignment="Center"
                     Text="{setting:Localize ConfigEditWindow.Text8}" />
                 <TextBlock
                     Margin="0,0,0,0"
-                    VerticalAlignment="Center"
                     Text="{Binding Chunk}" />
                 <TextBlock
                     Margin="0,0,0,0"
-                    VerticalAlignment="Center"
                     Text="{setting:Localize ConfigEditWindow.Text9}" />
                 <TextBlock
                     Margin="0,0,0,0"
-                    VerticalAlignment="Center"
                     Text="{Binding ChunkFile}" />
             </StackPanel>
 

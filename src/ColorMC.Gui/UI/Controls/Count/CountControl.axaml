@@ -29,7 +29,6 @@
                             Path="/Resource/Icon/GameCount/svg3.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize CountWindow.Text1}" />
                     </StackPanel>
@@ -53,15 +52,14 @@
                     </WrapPanel>
                     <WrapPanel Margin="0,0,5,0">
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize CountWindow.Text6}" />
+                            <TextBlock  Text="{setting:Localize CountWindow.Text6}" />
                             <CalendarDatePicker SelectedDate="{Binding Date}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize CountWindow.Text7}" />
-                            <TextBlock VerticalAlignment="Center" Text="{Binding DateCount}" />
+                            <TextBlock Text="{Binding DateCount}" />
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
@@ -83,7 +81,6 @@
                             Path="/Resource/Icon/GameCount/svg1.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize CountWindow.Text8}" />
                     </StackPanel>
@@ -101,18 +98,15 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize CountWindow.Text6}" />
                             <CalendarDatePicker SelectedDate="{Binding Date1}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 Margin="3,0,0,0"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize CountWindow.Text11}" />
                             <TextBlock
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{Binding TimeDate}" />
                         </StackPanel>
                     </WrapPanel>
@@ -135,14 +129,12 @@
                             Path="/Resource/Icon/GameCount/svg2.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize CountWindow.Text12}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,5,0" Orientation="Horizontal">
                         <TextBlock
                             Margin="0,0,5,0"
-                            VerticalAlignment="Center"
                             Text="{setting:Localize CountWindow.Text13}" />
                         <ComboBox
                             Width="160"

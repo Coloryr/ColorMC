@@ -23,7 +23,6 @@
                 <DockPanel>
                     <TextBlock
                         Margin="0,0,5,0"
-                        VerticalAlignment="Center"
                         DockPanel.Dock="Left"
                         Text="{setting:Localize ServerPackWindow.Tab4.Text1}" />
                     <Button
@@ -43,7 +42,6 @@
                         SelectedIndex="{Binding Funtion}" />
                     <TextBlock
                         Margin="0,0,5,0"
-                        VerticalAlignment="Center"
                         DockPanel.Dock="Right"
                         Text="{setting:Localize ServerPackWindow.Tab4.Text2}" />
                     <ComboBox

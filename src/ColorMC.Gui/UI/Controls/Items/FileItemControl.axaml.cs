@@ -34,12 +34,18 @@ public partial class FileItemControl : UserControl
 
     private void FileItemControl_PointerExited(object? sender, PointerEventArgs e)
     {
-        (DataContext as FileItemModel)!.Top = false;
+        if (DataContext is FileItemModel model)
+        {
+            model.Top = false;
+        }
     }
 
     private void FileItemControl_PointerEntered(object? sender, PointerEventArgs e)
     {
-        (DataContext as FileItemModel)!.Top = true;
+        if (DataContext is FileItemModel model)
+        {
+            model.Top = true;
+        }
     }
 
     private void FileItemControl_DoubleTapped(object? sender, RoutedEventArgs e)

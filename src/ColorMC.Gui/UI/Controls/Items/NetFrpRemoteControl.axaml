@@ -14,21 +14,30 @@
         BorderBrush="{setting:Colors GroupColor}"
         BorderThickness="2"
         CornerRadius="{setting:Style ButtonCornerRadius}">
-        <WrapPanel>
-            <TextBlock Margin="0,0,5,0" Text="{Binding Name}" />
-            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+        <WrapPanel Margin="0,0,0,-5" VerticalAlignment="Center">
+            <TextBlock Margin="0,0,5,5" Text="{Binding Name}" />
+            <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text10}" />
                 <TextBlock Text="{Binding ID}" />
             </StackPanel>
-            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+            <StackPanel
+                Margin="0,0,5,5"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text11}" />
                 <TextBlock Text="{Binding Type}" />
             </StackPanel>
-            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+            <StackPanel
+                Margin="0,0,5,5"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text12}" />
                 <TextBlock Text="{Binding Remote}" />
             </StackPanel>
-            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+            <StackPanel
+                Margin="0,0,5,5"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text13}" />
                 <TextBlock Text="{Binding Use}" />
             </StackPanel>

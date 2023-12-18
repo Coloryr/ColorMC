@@ -65,9 +65,9 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         _obj = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
         if (_obj == null)
         {
-            Grid1.Children.Add(new Label()
+            Grid1.Children.Add(new TextBlock()
             {
-                Content = App.Lang("MainWindow.Info18"),
+                Text = App.Lang("MainWindow.Info18"),
                 Foreground = Brushes.Black,
                 Background = Brush.Parse("#EEEEEE"),
                 VerticalAlignment = VerticalAlignment.Center,

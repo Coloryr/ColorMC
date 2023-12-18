@@ -34,17 +34,11 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/GameEdit/svg1.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize Text.GameVersion}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize Text.GameVersion}" />
                     </StackPanel>
                     <WrapPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
                                 Width="200"
                                 Margin="0,0,5,0"
@@ -52,10 +46,7 @@
                                 SelectedIndex="{Binding VersionType}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize Text.Version}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
                             <ComboBox
                                 Width="200"
                                 Margin="0,0,5,0"
@@ -81,17 +72,11 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/GameEdit/svg2.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize AddGameWindow.Tab1.Text4}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text4}" />
                     </StackPanel>
                     <WrapPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
                                 Width="200"
                                 Margin="0,0,5,0"
@@ -100,10 +85,7 @@
                                 SelectedIndex="{Binding LoaderType}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize Text.Version}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
                             <ComboBox
                                 Width="200"
                                 Margin="0,0,5,0"
@@ -132,7 +114,27 @@
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </WrapPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Margin="0,0,0,5"
+                        Classes="input1"
+                        IsEnabled="{Binding CustomLoader}"
+                        Text="{Binding LoaderLocal}"
+                        Watermark="{setting:Localize AddGameWindow.Tab1.Text15}" />
+                    <Panel IsEnabled="{Binding CustomLoader}">
+                        <ToggleSwitch
+                            IsChecked="{Binding OffLib}"
+                            OffContent="{setting:Localize AddGameWindow.Tab1.Text16}"
+                            OnContent="{setting:Localize AddGameWindow.Tab1.Text16}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            HorizontalAlignment="Right"
+                            Command="{Binding SelectLoader}"
+                            Content="{setting:Localize Button.Select}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text127}"
+                            ToolTip.VerticalOffset="-30" />
+                    </Panel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
@@ -140,10 +142,7 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/GameEdit/svg3.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                     </StackPanel>
                     <WrapPanel Orientation="Horizontal">
                         <ComboBox

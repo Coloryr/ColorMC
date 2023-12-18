@@ -17,9 +17,9 @@ public record PojavLauncherTeamItem
 public record PojavLauncherTeamObj
 {
     [JsonProperty("jre8")]
-    public PojavLauncherTeamItem Jre8 { get; set; }
+    public List<PojavLauncherTeamItem> Jre8 { get; set; }
     [JsonProperty("jre17")]
-    public PojavLauncherTeamItem Jre17 { get; set; }
+    public List<PojavLauncherTeamItem> Jre17 { get; set; }
     [JsonProperty("jre21")]
-    public PojavLauncherTeamItem Jre21 { get; set; }
+    public List<PojavLauncherTeamItem> Jre21 { get; set; }
 }

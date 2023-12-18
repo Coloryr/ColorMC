@@ -81,7 +81,7 @@ public static class GameBinding
     }
 
     public static async Task<bool> AddGame(string name, string version,
-        Loaders loaders, string? loaderversion = null, string? group = null)
+        Loaders loaders, string? loaderversion, string? group, string? loaderlocal, bool offlib)
     {
         var game = new GameSettingObj()
         {
@@ -89,7 +89,12 @@ public static class GameBinding
             Version = version,
             Loader = loaders,
             LoaderVersion = loaderversion,
-            GroupName = group
+            GroupName = group,
+            CustomLoader = new()
+            { 
+                Local = loaderlocal,
+                OffLib = offlib
+            }
         };
 
         game = await InstancesPath.CreateGame(game);

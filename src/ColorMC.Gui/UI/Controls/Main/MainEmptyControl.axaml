@@ -32,7 +32,6 @@
                     <TextBlock
                         Width="120"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         FontSize="20"
                         Text="{setting:Localize MainWindow.Text2}" />
                     <Button
@@ -45,7 +44,6 @@
                     <TextBlock
                         Width="120"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         FontSize="20"
                         Text="{setting:Localize MainWindow.Text4}" />
                     <Button
@@ -58,7 +56,6 @@
                     <TextBlock
                         Width="120"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         FontSize="20"
                         Text="{setting:Localize MainWindow.Text6}" />
                     <Button

@@ -34,10 +34,7 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg22.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab2.Text43}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text43}" />
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -58,10 +55,7 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg1.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab2.Text46}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text46}" />
                     </StackPanel>
 
                     <StackPanel>
@@ -111,24 +105,18 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg2.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab2.Text47}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text47}" />
                     </StackPanel>
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,5,5"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize SettingWindow.Tab2.Text1}" />
+                    <WrapPanel Margin="0,0,0,-5">
+                        <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text1}" />
                             <ComboBox
                                 Width="150"
-                                Margin="0,0,5,5"
+                                Margin="0,0,5,0"
                                 ItemsSource="{Binding LanguageList}"
                                 SelectedIndex="{Binding Language}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <ToggleSwitch
                                 Margin="0,0,10,0"
                                 IsChecked="{Binding IsDefaultFont}"
@@ -149,7 +137,7 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
                         </StackPanel>
-                    </StackPanel>
+                    </WrapPanel>
 
                     <TextBlock
                         Margin="0,5,0,0"
@@ -173,18 +161,12 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg3.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab2.Text39}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text39}" />
                     </StackPanel>
 
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                MinWidth="70"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize SettingWindow.Tab2.Text40}" />
+                            <TextBlock MinWidth="70" Text="{setting:Localize SettingWindow.Tab2.Text40}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -198,10 +180,7 @@
                                 SmallChange="1"
                                 TickFrequency="1"
                                 Value="{Binding ButtonCornerRadius}" />
-                            <TextBlock
-                                Width="40"
-                                VerticalAlignment="Center"
-                                Text="{Binding ButtonCornerRadius, StringFormat='{}{0}'}" />
+                            <TextBlock Width="40" Text="{Binding ButtonCornerRadius, StringFormat='{}{0}'}" />
                         </StackPanel>
                         <ToggleSwitch
                             Margin="0,0,10,0"
@@ -215,10 +194,7 @@
                     </WrapPanel>
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                MinWidth="70"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize SettingWindow.Tab2.Text41}" />
+                            <TextBlock MinWidth="70" Text="{setting:Localize SettingWindow.Tab2.Text41}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -232,10 +208,7 @@
                                 SmallChange="1"
                                 TickFrequency="1"
                                 Value="{Binding AmTime}" />
-                            <TextBlock
-                                Width="40"
-                                VerticalAlignment="Center"
-                                Text="{Binding AmTime, StringFormat='{}{0}'}" />
+                            <TextBlock Width="40" Text="{Binding AmTime, StringFormat='{}{0}'}" />
                         </StackPanel>
                         <ToggleSwitch
                             IsChecked="{Binding AmFade}"
@@ -261,10 +234,7 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg4.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab2.Text2}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text2}" />
                     </StackPanel>
                     <ToggleSwitch
                         VerticalAlignment="Center"
@@ -302,7 +272,7 @@
                     </WrapPanel>
                     <WrapPanel IsEnabled="{Binding EnableBG}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text4}" />
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text4}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -319,7 +289,6 @@
                             <TextBlock
                                 Width="40"
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{Binding PicEffect, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <Button
@@ -332,7 +301,7 @@
                     </WrapPanel>
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text5}" />
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text5}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -349,7 +318,6 @@
                             <TextBlock
                                 Width="40"
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{Binding PicTran, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <Button
@@ -383,7 +351,6 @@
                             <TextBlock
                                 Width="40"
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{Binding PicResize, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <Button
@@ -414,10 +381,7 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg5.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab2.Text7}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text7}" />
                     </StackPanel>
 
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -427,10 +391,7 @@
                             Content="{setting:Localize SettingWindow.Tab2.Text26}"
                             GroupName="Group1"
                             IsChecked="{Binding IsAutoColor}" />
-                        <TextBlock
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            Text="{setting:Localize SettingWindow.Tab2.Text8}" />
+                        <TextBlock Margin="5,0,0,0" Text="{setting:Localize SettingWindow.Tab2.Text8}" />
                         <ColorPicker Margin="0,0,5,0" Color="{Binding MainColor}" />
                         <Button
                             Width="100"
@@ -448,30 +409,18 @@
                         GroupName="Group1"
                         IsChecked="{Binding IsLightColor}" />
                     <WrapPanel Margin="0,0,0,5">
-                        <TextBlock
-                            Width="80"
-                            VerticalAlignment="Center"
-                            Text="{setting:Localize SettingWindow.Tab2.Text10}" />
+                        <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text10}" />
                         <ColorPicker Margin="0,0,5,0" Color="{Binding LightBackColor}" />
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <TextBlock
-                                Width="80"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize SettingWindow.Tab2.Text11}" />
+                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text11}" />
                             <ColorPicker Color="{Binding LightTranColor}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <TextBlock
-                                Width="80"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize SettingWindow.Tab2.Text16}" />
+                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text16}" />
                             <ColorPicker Color="{Binding LightFont1Color}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                Width="80"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize SettingWindow.Tab2.Text17}" />
+                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text17}" />
                             <ColorPicker Color="{Binding LightFont2Color}" />
                         </StackPanel>
                     </WrapPanel>
@@ -482,30 +431,18 @@
                         GroupName="Group1"
                         IsChecked="{Binding IsDarkColor}" />
                     <WrapPanel Orientation="Horizontal">
-                        <TextBlock
-                            Width="80"
-                            VerticalAlignment="Center"
-                            Text="{setting:Localize SettingWindow.Tab2.Text10}" />
+                        <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text10}" />
                         <ColorPicker Margin="0,0,5,0" Color="{Binding DarkBackColor}" />
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <TextBlock
-                                Width="80"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize SettingWindow.Tab2.Text11}" />
+                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text11}" />
                             <ColorPicker Color="{Binding DarkTranColor}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <TextBlock
-                                Width="80"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize SettingWindow.Tab2.Text16}" />
+                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text16}" />
                             <ColorPicker Color="{Binding DarkFont1Color}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                Width="80"
-                                VerticalAlignment="Center"
-                                Text="{setting:Localize SettingWindow.Tab2.Text17}" />
+                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text17}" />
                             <ColorPicker Color="{Binding DarkFont2Color}" />
                         </StackPanel>
                     </WrapPanel>
@@ -516,7 +453,7 @@
                         OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text14}" />
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text14}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -534,11 +471,10 @@
                             <TextBlock
                                 Width="40"
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{Binding RgbV1, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text15}" />
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text15}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -556,7 +492,6 @@
                             <TextBlock
                                 Width="40"
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{Binding RgbV2, StringFormat='{}{0}%'}" />
                         </StackPanel>
                     </WrapPanel>
@@ -582,18 +517,12 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg6.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab2.Text29}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text29}" />
                     </StackPanel>
 
                     <WrapPanel>
-                        <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text30}" />
-                        <TextBlock
-                            Margin="5,0,5,0"
-                            VerticalAlignment="Center"
-                            Text="{Binding Live2DCoreState}" />
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text30}" />
+                        <TextBlock Margin="5,0,5,0" Text="{Binding Live2DCoreState}" />
                         <StackPanel Orientation="Horizontal">
                             <Button
                                 Width="100"
@@ -652,7 +581,7 @@
                             IsEnabled="{Binding CoreInstall}" />
                     </WrapPanel>
                     <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text52}" />
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text52}" />
                         <ComboBox
                             Width="150"
                             ItemsSource="{Binding PosList}"
@@ -660,7 +589,7 @@
                     </StackPanel>
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text34}" />
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text34}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -677,11 +606,10 @@
                             <TextBlock
                                 Width="40"
                                 Margin="0,0,5,0"
-                                VerticalAlignment="Center"
                                 Text="{Binding L2dWidth, StringFormat='{}{0}%'}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab2.Text35}" />
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text35}" />
                             <Slider
                                 Width="150"
                                 Height="40"
@@ -695,10 +623,7 @@
                                 SmallChange="1"
                                 TickFrequency="1"
                                 Value="{Binding L2dHeight}" />
-                            <TextBlock
-                                Width="40"
-                                VerticalAlignment="Center"
-                                Text="{Binding L2dHeight, StringFormat='{}{0}%'}" />
+                            <TextBlock Width="40" Text="{Binding L2dHeight, StringFormat='{}{0}%'}" />
                         </StackPanel>
                     </WrapPanel>
                     <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text32}" TextWrapping="Wrap" />
