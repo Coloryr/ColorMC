@@ -1321,7 +1321,7 @@ public static class WebBinding
         try
         {
             var list = new List<JavaDownloadObj>();
-            var res = await PojavLauncherTeamFake.GetJavaList();
+            var res = await ColorMCAPI.GetJavaList();
             if (res == null)
             {
                 return null;
