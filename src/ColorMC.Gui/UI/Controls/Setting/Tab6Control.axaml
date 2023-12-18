@@ -256,7 +256,7 @@
                             <Slider
                                 Width="150"
                                 Height="40"
-                                Margin="5,-8,0,0"
+                                Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Colors Main}"
                                 IsEnabled="{Binding EnableMusic}"

@@ -32,15 +32,11 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg7.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab3.Text23}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                     </StackPanel>
                     <WrapPanel>
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="{setting:Localize Text.DownloadSource}" />
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize Text.DownloadSource}" />
                             <ComboBox
                                 Width="100"
                                 Margin="5,0,0,0"
@@ -48,7 +44,7 @@
                                 ItemsSource="{Binding SourceList}"
                                 SelectedIndex="{Binding Source}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,5,0"
                                 HorizontalAlignment="Center"
@@ -96,9 +92,7 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg8.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab3.Text3}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text3}" />
                     </StackPanel>
                     <Grid Margin="0,0,5,0" ColumnDefinitions="3*,1*">
                         <TextBox
@@ -180,9 +174,7 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg9.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab3.Text14}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text14}" />
                     </StackPanel>
                     <WrapPanel>
                         <ToggleSwitch
@@ -223,9 +215,7 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg10.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize SettingWindow.Tab3.Text20}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text20}" />
                     </StackPanel>
                     <TextBlock Margin="5,0,0,5" Text="{Binding ServerInfo}" />
                     <TextBox

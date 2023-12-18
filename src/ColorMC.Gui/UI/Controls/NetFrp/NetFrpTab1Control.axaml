@@ -21,14 +21,14 @@
             CornerRadius="{setting:Style ButtonCornerRadius}"
             DockPanel.Dock="Top">
             <StackPanel>
-                <WrapPanel Orientation="Horizontal">
+                <WrapPanel Margin="0,0,0,-5" Orientation="Horizontal">
                     <TextBox
                         MinWidth="170"
                         Margin="0,0,5,5"
                         Classes="input1"
                         Text="{Binding KeySakura}"
                         Watermark="{setting:Localize NetFrpWindow.Tab1.Text1}" />
-                    <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                    <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                         <Button
                             Width="100"
                             Height="25"
@@ -39,6 +39,7 @@
                         <Button
                             Width="100"
                             Height="25"
+                            Margin="0,0,0,0"
                             Command="{Binding OpenUrlSakura}"
                             Content="{setting:Localize AddWindow.Control.Text3}" />
                     </StackPanel>
@@ -54,7 +55,7 @@
             <ItemsControl ItemsSource="{Binding RemotesSakura}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <view:NetFrpRemoteControl Margin="0,0,0,5" DataContext="{Binding}" />
+                        <view:NetFrpRemoteControl Margin="0,0,0,3" DataContext="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

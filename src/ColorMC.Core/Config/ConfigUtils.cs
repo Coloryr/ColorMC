@@ -114,7 +114,7 @@ public static class ConfigUtils
         return new()
         {
             Version = ColorMCCore.Version,
-            JavaList = new(),
+            JavaList = [],
             Http = MakeHttpConfig(),
             DefaultJvmArg = MakeJvmArgConfig(),
             Window = MakeWindowSettingConfig(),

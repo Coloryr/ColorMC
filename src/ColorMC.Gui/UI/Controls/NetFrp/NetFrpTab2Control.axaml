@@ -34,7 +34,7 @@
             <ItemsControl ItemsSource="{Binding Locals}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <view:NetFrpLocalControl Margin="0,0,0,5" DataContext="{Binding}" />
+                        <view:NetFrpLocalControl Margin="0,0,0,3" DataContext="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
