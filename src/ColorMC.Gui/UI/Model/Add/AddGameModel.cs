@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Model.Add.AddGame;
+namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddGameModel : TopModel
 {
@@ -106,6 +106,11 @@ public partial class AddGameModel : TopModel
         Group = null;
         Version = null;
         LoaderVersion = null;
+        LoaderTypeList.Clear();
+        LoaderType = -1;
+        LoaderLocal = null;
+        _loaderTypeList.Clear();
+        LoaderVersionList.Clear();
         Type = null;
         ZipLocal = null;
         _fileModel = null;

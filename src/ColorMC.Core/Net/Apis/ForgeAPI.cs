@@ -83,7 +83,7 @@ public static class ForgeAPI
     {
         try
         {
-            List<string> list = new();
+            List<string> list = [];
             if (local == SourceLocal.BMCLAPI
                 || local == SourceLocal.MCBBS)
             {
@@ -97,7 +97,7 @@ public static class ForgeAPI
                         new Exception(url), false);
                     return null;
                 }
-                var list1 = new List<Version>();
+                var list1 = new List<string>();
 
                 if (neo)
                 {
@@ -107,7 +107,7 @@ public static class ForgeAPI
 
                     foreach (var item in obj)
                     {
-                        list1.Add(new(item.version));
+                        list1.Add(item.version.Replace("neoforge-", ""));
                     }
                 }
                 else
@@ -118,19 +118,13 @@ public static class ForgeAPI
 
                     foreach (var item in obj)
                     {
-                        list1.Add(new(item.version));
+                        list1.Add(item.version);
                     }
                 }
 
                 list1.Reverse();
 
-                var list2 = new List<string>();
-                foreach (var item in list1)
-                {
-                    list2.Add(item.ToString());
-                }
-
-                return list2;
+                return list1;
             }
             else
             {
@@ -229,6 +223,10 @@ public static class ForgeAPI
         {
             var str = item.InnerText;
             var args = str.Split('-');
+            if (args.Length < 2)
+            {
+                continue;
+            }
             var mc1 = args[0];
             var version = args[1];
 
@@ -265,11 +263,11 @@ public static class ForgeAPI
 
         foreach (var item in s_neoForgeVersion.Values)
         {
-            item.Reverse();
+            //item.Reverse();
         }
         foreach (var item in s_forgeVersion.Values)
         {
-            item.Reverse();
+            //item.Reverse();
         }
 
         if (neo)

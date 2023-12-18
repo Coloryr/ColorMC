@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Model.Add.AddGame;
+namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddGameModel
 {

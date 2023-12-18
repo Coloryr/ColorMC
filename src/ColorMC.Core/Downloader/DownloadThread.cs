@@ -136,6 +136,13 @@ public class DownloadThread
         DownloadItemObj? item;
         while ((item = DownloadManager.GetItem()) != null)
         {
+            if (item.Skip)
+            {
+                item.State = DownloadItemState.Done;
+                item.Update?.Invoke(_index);
+                DownloadManager.Done();
+            }
+
             ChckPause(item);
 
             if (_token.IsCancellationRequested)

@@ -53,4 +53,8 @@ public record DownloadItemObj
     /// 更新操作
     /// </summary>
     public Action<int> Update { get; set; }
+    /// <summary>
+    /// 跳过下载
+    /// </summary>
+    public bool Skip { get; set; }
 }

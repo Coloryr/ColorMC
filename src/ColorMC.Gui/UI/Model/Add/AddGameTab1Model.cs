@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Model.Add.AddGame;
+namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddGameModel
 {

@@ -22,7 +22,7 @@ public static class LibrariesPath
     public static string BaseDir { get; private set; }
     public static string NativeDir { get; private set; }
 
-    private readonly static Dictionary<string, object> CustomLoader = [];
+    public readonly static Dictionary<string, object> CustomLoader = [];
 
     /// <summary>
     /// 初始化
@@ -114,7 +114,7 @@ public static class LibrariesPath
             return null;
 
         //forge本体
-        var list1 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo);
+        var list1 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo).ToList();
 
         var forgeinstall = neo ?
             VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!) :
@@ -185,7 +185,7 @@ public static class LibrariesPath
                 {
                     Url = UrlHelper.DownloadFabric(item.url + name.Path, BaseClient.Source),
                     Name = name.Name,
-                    Local = $"{BaseDir}/{name.Path}"
+                    Local = Path.GetFullPath($"{BaseDir}/{name.Path}")
                 });
                 continue;
             }
@@ -220,7 +220,7 @@ public static class LibrariesPath
                 {
                     Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),
                     Name = name.Name,
-                    Local = $"{BaseDir}/{name.Path}"
+                    Local = Path.GetFullPath($"{BaseDir}/{name.Path}")
                 });
                 continue;
             }
@@ -257,7 +257,7 @@ public static class LibrariesPath
     /// <returns></returns>
     public static string GetOptiFineLib(string mc, string version)
     {
-        return $"{BaseDir}/optifine/installer/OptiFine-{mc}-{version}.jar";
+        return Path.GetFullPath($"{BaseDir}/optifine/installer/OptiFine-{mc}-{version}.jar");
     }
 
     /// <summary>
@@ -268,128 +268,6 @@ public static class LibrariesPath
     public static bool CheckOptifineLib(this GameSettingObj obj)
     {
         return File.Exists(GetOptiFineLib(obj));
-    }
-
-    public static async Task<ConcurrentBag<DownloadItemObj>?> DecodeLoaderJar(this GameSettingObj obj, CancellationToken cancel)
-    {
-        using var zFile = new ZipFile(obj.CustomLoader!.Local);
-        using var stream1 = new MemoryStream();
-        using var stream2 = new MemoryStream();
-        var find1 = false;
-        var find2 = false;
-        foreach (ZipEntry e in zFile)
-        {
-            if (e.IsFile && e.Name == "version.json")
-            {
-                using var stream = zFile.GetInputStream(e);
-                await stream.CopyToAsync(stream1, cancel);
-                find1 = true;
-            }
-            else if (e.IsFile && e.Name == "install_profile.json")
-            {
-                using var stream = zFile.GetInputStream(e);
-                await stream.CopyToAsync(stream2, cancel);
-                find2 = true;
-            }
-        }
-
-        if (!find1 || !find2)
-        {
-            return null;
-        }
-
-        var list = new ConcurrentBag<DownloadItemObj>();
-
-        async Task Unpack(ForgeLaunchObj obj1)
-        {
-            foreach (var item in obj1.libraries)
-            {
-                if (cancel.IsCancellationRequested)
-                {
-                    return;
-                }
-                if (!string.IsNullOrWhiteSpace(item.downloads.artifact.url))
-                {
-                    string local = Path.GetFullPath($"{BaseDir}/{item.downloads.artifact.path}");
-                    {
-                        using var read = PathHelper.OpenRead(local);
-                        if (read != null)
-                        {
-                            string sha1 = HashHelper.GenSha1(read);
-                            if (sha1 == item.downloads.artifact.sha1)
-                            {
-                                continue;
-                            }
-                        }
-                    }
-
-                    list.Add(new()
-                    {
-                        Name = item.name,
-                        Local = Path.GetFullPath($"{BaseDir}/{item.downloads.artifact.path}"),
-                        SHA1 = item.downloads.artifact.sha1,
-                        Url = item.downloads.artifact.url
-                    });
-                }
-                else
-                {
-                    var item1 = zFile.GetEntry($"maven/{item.downloads.artifact.path}");
-                    if (item1 != null)
-                    {
-                        string local = Path.GetFullPath($"{BaseDir}/{item.downloads.artifact.path}");
-                        {
-                            using var read = PathHelper.OpenRead(local);
-                            if (read != null)
-                            {
-                                string sha1 = HashHelper.GenSha1(read);
-                                if (sha1 == item.downloads.artifact.sha1)
-                                {
-                                    continue;
-                                }
-                            }
-                        }
-
-                        {
-                            using var write = PathHelper.OpenWrite(local);
-                            using var stream3 = zFile.GetInputStream(item1);
-                            await stream3.CopyToAsync(write, cancel);
-                        }
-                    }
-                }
-            }
-        }
-
-        try
-        {
-            byte[] array1 = stream2.ToArray();
-            var data = Encoding.UTF8.GetString(array1);
-            var obj1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
-
-            await Unpack(obj1);
-
-            if (cancel.IsCancellationRequested)
-            {
-                return null;
-            }
-
-            array1 = stream1.ToArray();
-            data = Encoding.UTF8.GetString(array1);
-            obj1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
-
-            await Unpack(obj1);
-
-            if (!CustomLoader.TryAdd(obj.CustomLoader!.Local!, obj1))
-            {
-                CustomLoader[obj.CustomLoader!.Local!] = obj1;
-            }
-
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error3"), e);
-        }
-
-        return list;
     }
 
     public static List<(string Name, string Local)> GetCustomLoaderLibs(this GameSettingObj obj)

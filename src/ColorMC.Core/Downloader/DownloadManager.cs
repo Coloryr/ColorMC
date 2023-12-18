@@ -135,7 +135,7 @@ public static class DownloadManager
     /// <returns>结果</returns>
     public static async Task<bool> Start(List<DownloadItemObj> list)
     {
-        List<string> names = new();
+        List<string> names = [];
         //下载器是否在运行
         if (State != CoreRunState.End)
         {
