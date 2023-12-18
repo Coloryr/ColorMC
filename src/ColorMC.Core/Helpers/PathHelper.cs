@@ -1,5 +1,6 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using System.Buffers;
 using System.Text;
 
 namespace ColorMC.Core.Helpers;

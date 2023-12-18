@@ -13,6 +13,7 @@ public static class StyleSel
 
     private static readonly double s_fontTitleSize = 17;
     private static readonly Thickness s_borderPadding = new(6, 6, 15, 6);
+    private static readonly Thickness s_borderPadding1 = new(6);
 
     private static CornerRadius s_buttonCornerRadius = new(3);
     private static CornerRadius s_picRadius = new(0);
@@ -39,6 +40,10 @@ public static class StyleSel
         else if (key == "BorderPadding")
         {
             return s_borderPadding;
+        }
+        else if (key == "BorderPadding1")
+        {
+            return s_borderPadding1;
         }
         return null;
     }

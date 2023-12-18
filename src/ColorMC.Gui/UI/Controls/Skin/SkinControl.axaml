@@ -15,7 +15,7 @@
     <Grid Margin="5" ColumnDefinitions="4*,1.5*">
         <Panel Grid.Column="0">
             <Border
-                Padding="{setting:Style BorderPadding}"
+                Padding="{setting:Style BorderPadding1}"
                 Background="{setting:Colors GroupBack}"
                 BorderBrush="{setting:Colors GroupColor}"
                 BorderThickness="2"
@@ -263,14 +263,14 @@
                             TextWrapping="Wrap" />
                     </StackPanel>
 
-                    <TextBlock
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="{setting:Colors Bottom1}"
-                        FontSize="20"
-                        Foreground="{setting:Colors Font}"
-                        IsVisible="{Binding !HaveSkin, FallbackValue=false}"
-                        Text="{Binding Text}" />
+                    <Panel Background="{setting:Colors Bottom1}" IsVisible="{Binding !HaveSkin, FallbackValue=false}">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            Foreground="{setting:Colors Font}"
+                            Text="{Binding Text}" />
+                    </Panel>
                 </Panel>
             </Border>
         </Panel>

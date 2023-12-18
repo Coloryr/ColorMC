@@ -79,13 +79,13 @@ public partial class App : Application
 
     public static TopLevel? TopLevel { get; set; }
 
-    public readonly static Dictionary<string, GameEditControl> GameEditWindows = new();
-    public readonly static Dictionary<string, GameConfigEditControl> ConfigEditWindows = new();
-    public readonly static Dictionary<string, AddControl> AddWindows = new();
-    public readonly static Dictionary<string, ServerPackControl> ServerPackWindows = new();
-    public readonly static Dictionary<string, GameLogControl> GameLogWindows = new();
-    public readonly static Dictionary<string, GameExportControl> GameExportWindows = new();
-    public readonly static Dictionary<string, GameCloudControl> GameCloudWindows = new();
+    public readonly static Dictionary<string, GameEditControl> GameEditWindows = [];
+    public readonly static Dictionary<string, GameConfigEditControl> ConfigEditWindows = [];
+    public readonly static Dictionary<string, AddControl> AddWindows = [];
+    public readonly static Dictionary<string, ServerPackControl> ServerPackWindows = [];
+    public readonly static Dictionary<string, GameLogControl> GameLogWindows = [];
+    public readonly static Dictionary<string, GameExportControl> GameExportWindows = [];
+    public readonly static Dictionary<string, GameCloudControl> GameCloudWindows = [];
 
     public static readonly SelfCrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));

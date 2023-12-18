@@ -113,13 +113,14 @@ public partial class GameEditModel
         }
         _obj.Save();
         await LoaderVersionLoad();
-
     }
 
     async partial void OnGameVersionChanged(string value)
     {
         if (_gameLoad)
+        {
             return;
+        }
 
         LoaderVersion = null;
         LoaderVersionList.Clear();
@@ -200,6 +201,8 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task LangReload()
     {
+        LangList.Clear();
+        _langList.Clear();
         await LangLoad();
     }
 
@@ -552,7 +555,12 @@ public partial class GameEditModel
 
     public async Task LangLoad()
     {
+        if (LangList.Count > 1)
+        {
+            return;
+        }
         LangList.Clear();
+        _langList.Clear();
         if (_obj.Version == null)
         {
             return;
@@ -661,7 +669,34 @@ public partial class GameEditModel
 
         GameRun = BaseBinding.IsGameRun(_obj);
 
-        await LangLoad();
+        var opt = _obj.GetOptions();
+
+        opt.TryGetValue("lang", out string? lang);
+
+        if (lang != null)
+        {
+            var list = await Task.Run(() =>
+            {
+                var version = VersionPath.GetVersion(_obj.Version);
+                if (version != null)
+                {
+                    var ass = AssetsPath.GetIndex(version);
+                    if (ass != null)
+                    {
+                        return ass.GetLang(lang);
+                    }
+                }
+
+                return (null, null);
+            });
+            if (list.Item1 != null)
+            {
+                LangList.Add(list.Item2);
+                _langList.Add(list.Item1);
+
+                Lang = 0;
+            }
+        }
 
         _gameLoad = false;
     }

@@ -135,7 +135,6 @@ public class SvgControl : Control
             : default;
 
         return Stretch.CalculateSize(availableSize, sourceSize, StretchDirection);
-
     }
 
     protected override Size ArrangeOverride(Size finalSize)
@@ -193,7 +192,6 @@ public class SvgControl : Control
         }
     }
 
-    /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);

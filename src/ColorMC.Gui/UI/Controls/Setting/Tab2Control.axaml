@@ -170,7 +170,7 @@
                             <Slider
                                 Width="150"
                                 Height="40"
-                                Margin="5,-10,0,0"
+                                Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Colors Main}"
                                 IsSnapToTickEnabled="True"
@@ -198,7 +198,7 @@
                             <Slider
                                 Width="150"
                                 Height="40"
-                                Margin="5,-10,0,0"
+                                Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Colors Main}"
                                 IsSnapToTickEnabled="True"
@@ -276,7 +276,7 @@
                             <Slider
                                 Width="150"
                                 Height="40"
-                                Margin="5,-10,0,0"
+                                Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Colors Main}"
                                 IsSnapToTickEnabled="True"
@@ -305,7 +305,7 @@
                             <Slider
                                 Width="150"
                                 Height="40"
-                                Margin="5,-10,0,0"
+                                Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Colors Main}"
                                 IsSnapToTickEnabled="True"
@@ -337,7 +337,7 @@
                             <Slider
                                 Width="150"
                                 Height="40"
-                                Margin="5,-10,0,0"
+                                Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Colors Main}"
                                 IsEnabled="{Binding EnablePicResize}"
@@ -391,7 +391,7 @@
                             Content="{setting:Localize SettingWindow.Tab2.Text26}"
                             GroupName="Group1"
                             IsChecked="{Binding IsAutoColor}" />
-                        <TextBlock Margin="5,0,0,0" Text="{setting:Localize SettingWindow.Tab2.Text8}" />
+                        <TextBlock Margin="5,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text8}" />
                         <ColorPicker Margin="0,0,5,0" Color="{Binding MainColor}" />
                         <Button
                             Width="100"
@@ -457,7 +457,7 @@
                             <Slider
                                 Width="150"
                                 Height="40"
-                                Margin="5,-8,0,0"
+                                Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Colors Main}"
                                 IsEnabled="{Binding EnableRGB}"
@@ -478,7 +478,7 @@
                             <Slider
                                 Width="150"
                                 Height="40"
-                                Margin="5,-8,0,0"
+                                Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Colors Main}"
                                 IsEnabled="{Binding EnableRGB}"
@@ -581,7 +581,7 @@
                             IsEnabled="{Binding CoreInstall}" />
                     </WrapPanel>
                     <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                        <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text52}" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text52}" />
                         <ComboBox
                             Width="150"
                             ItemsSource="{Binding PosList}"
@@ -593,7 +593,7 @@
                             <Slider
                                 Width="150"
                                 Height="40"
-                                Margin="5,-8,0,0"
+                                Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Colors Main}"
                                 IsSnapToTickEnabled="True"
@@ -613,7 +613,7 @@
                             <Slider
                                 Width="150"
                                 Height="40"
-                                Margin="5,-8,0,0"
+                                Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Colors Main}"
                                 IsSnapToTickEnabled="True"

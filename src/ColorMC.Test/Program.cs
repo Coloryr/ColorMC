@@ -12,7 +12,7 @@ namespace ColorMC.Test;
 
 internal class Program
 {
-    public static async void Run()
+    public static void Run()
     {
         using HttpClient client = new HttpClient();
         //var data = await client.GetStringAsync("http://www.baidu.com");
