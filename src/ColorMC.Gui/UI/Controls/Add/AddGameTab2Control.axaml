@@ -50,7 +50,6 @@
                         Path="/Resource/Icon/GameEdit/svg3.svg"
                         Stroke="{setting:Colors Font}" />
                     <TextBlock
-                        VerticalAlignment="Center"
                         FontSize="{setting:Style FontTitle}"
                         Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                 </StackPanel>
@@ -78,7 +77,6 @@
                         Path="/Resource/Icon/AddMenu/svg1.svg"
                         Stroke="{setting:Colors Font}" />
                     <TextBlock
-                        VerticalAlignment="Center"
                         FontSize="{setting:Style FontTitle}"
                         Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
                 </StackPanel>

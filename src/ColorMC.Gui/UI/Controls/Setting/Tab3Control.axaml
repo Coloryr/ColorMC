@@ -33,7 +33,6 @@
                             Path="/Resource/Icon/Setting/svg7.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                     </StackPanel>
@@ -41,7 +40,6 @@
                         <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
                             <TextBlock
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize Text.DownloadSource}" />
                             <ComboBox
                                 Width="100"
@@ -54,7 +52,6 @@
                             <TextBlock
                                 Margin="0,0,5,0"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize SettingWindow.Tab3.Text2}" />
                             <NumericUpDown
                                 Width="105"
@@ -100,7 +97,6 @@
                             Path="/Resource/Icon/Setting/svg8.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab3.Text3}" />
                     </StackPanel>
@@ -185,7 +181,6 @@
                             Path="/Resource/Icon/Setting/svg9.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab3.Text14}" />
                     </StackPanel>
@@ -229,7 +224,6 @@
                             Path="/Resource/Icon/Setting/svg10.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab3.Text20}" />
                     </StackPanel>

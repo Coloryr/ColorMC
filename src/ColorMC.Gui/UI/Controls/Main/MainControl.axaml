@@ -192,7 +192,6 @@
                 <TextBlock
                     Name="Label1"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
                     FontSize="30"
                     Text="test" />
             </Panel>

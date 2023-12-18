@@ -34,7 +34,6 @@
                             Path="/Resource/Icon/Setting/svg11.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab4.Text24}" />
                     </StackPanel>
@@ -141,7 +140,6 @@
                             Path="/Resource/Icon/Setting/svg15.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab4.Text9}" />
                     </StackPanel>
@@ -149,7 +147,6 @@
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <TextBlock
                                 Width="110"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize SettingWindow.Tab4.Text10}" />
                             <NumericUpDown
                                 Width="150"
@@ -162,7 +159,6 @@
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <TextBlock
                                 Width="110"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize SettingWindow.Tab4.Text11}" />
                             <NumericUpDown
                                 Width="150"
@@ -198,7 +194,6 @@
                             Path="/Resource/Icon/Setting/svg14.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab4.Text1}" />
                     </StackPanel>
@@ -206,7 +201,6 @@
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <TextBlock
                                 Width="110"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize SettingWindow.Tab4.Text4}" />
                             <NumericUpDown
                                 Width="150"
@@ -218,7 +212,6 @@
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <TextBlock
                                 Width="110"
-                                VerticalAlignment="Center"
                                 Text="{setting:Localize SettingWindow.Tab4.Text5}" />
                             <NumericUpDown
                                 Width="150"
@@ -233,7 +226,6 @@
                         <TextBlock
                             Width="110"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
                             Text="{setting:Localize SettingWindow.Tab4.Text2}" />
                         <ComboBox
                             Width="200"
@@ -295,7 +287,6 @@
                             Path="/Resource/Icon/Setting/svg12.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab4.Text13}" />
                     </StackPanel>
@@ -338,7 +329,6 @@
                             Path="/Resource/Icon/Setting/svg13.svg"
                             Stroke="{setting:Colors Font}" />
                         <TextBlock
-                            VerticalAlignment="Center"
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab4.Text19}" />
                     </StackPanel>

@@ -16,7 +16,7 @@ public static class PojavLauncherTeamFake
     /// <returns></returns>
     public static async Task<PojavLauncherTeamObj?> GetJavaList()
     {
-        string url = "https://kmy-ap-southeast-1.public-storage.kamiya-external.net/PojavLauncherTeam/android-openjdk-build-multiarch/meta_sa1.json";
+        string url = ColorMCAPI.BaseUrl + "update/java.json";
 
         var data = await BaseClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
         if (data == null)

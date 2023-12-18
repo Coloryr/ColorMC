@@ -66,14 +66,12 @@
             <TextBlock
                 Name="TitleShow"
                 Margin="5,0,0,0"
-                VerticalAlignment="Center"
                 Foreground="#FFF"
                 Text="{Binding Title}"
                 TextTrimming="CharacterEllipsis" />
             <TextBlock
                 Name="TitleShow1"
                 Margin="5,0,0,0"
-                VerticalAlignment="Center"
                 Foreground="#FFF"
                 Text="{Binding Title1}"
                 TextTrimming="CharacterEllipsis" />

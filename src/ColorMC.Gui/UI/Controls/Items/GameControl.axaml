@@ -9,8 +9,6 @@
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     Width="80"
     VerticalAlignment="Top"
-    d:DesignHeight="200"
-    d:DesignWidth="100"
     x:DataType="model:GameItemModel"
     ToolTip.Tip="{Binding Tips}"
     mc:Ignorable="d">
@@ -34,7 +32,6 @@
                 <TextBlock
                     Margin="0,0,0,5"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
                     Text="{setting:Localize MainWindow.Text8}" />
             </StackPanel>
         </Button>

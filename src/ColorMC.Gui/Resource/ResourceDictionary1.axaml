@@ -11,7 +11,6 @@
             <TextBlock
                 Width="30"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
                 TextAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{x:Static icon:IconConverter.FileIconConverter}">
@@ -20,7 +19,7 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+            <TextBlock Text="{Binding Name}" />
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
@@ -28,7 +27,6 @@
             <TextBlock
                 Width="30"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
                 TextAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{x:Static icon:IconConverter.NbtIconConverter}">
@@ -36,7 +34,7 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+            <TextBlock Text="{Binding Name}" />
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>

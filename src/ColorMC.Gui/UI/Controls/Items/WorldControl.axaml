@@ -43,55 +43,45 @@
                     <TextBlock
                         Margin="0,0,20,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{Binding Name}" />
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{setting:Localize GameEditWindow.Control.Text1}" />
                     <TextBlock
                         Margin="0,0,10,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{Binding Mode}" />
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{setting:Localize GameEditWindow.Control.Text3}" />
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{Binding Difficulty}" />
                 </StackPanel>
                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{setting:Localize GameEditWindow.Control.Text4}" />
                     <TextBlock
                         Margin="0,0,10,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{Binding Hardcore}" />
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{setting:Localize GameEditWindow.Control.Text2}" />
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{Binding Time}" />
                 </StackPanel>
                 <TextBlock
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
                     MaxLines="3"
                     Text="{Binding Local}"
                     TextTrimming="CharacterEllipsis"
@@ -131,7 +121,6 @@
                     <Panel Background="{setting:Colors BG1}" IsVisible="{Binding Empty}">
                         <TextBlock
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
                             FontSize="20"
                             Text="{setting:Localize GameEditWindow.Control.Text9}" />
                     </Panel>

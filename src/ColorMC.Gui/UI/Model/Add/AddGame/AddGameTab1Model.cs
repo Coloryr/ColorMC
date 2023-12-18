@@ -46,12 +46,18 @@ public partial class AddGameModel
     /// </summary>
     [ObservableProperty]
     private string? _loaderVersion;
+    [ObservableProperty]
+    private string? _loaderLocal;
 
     /// <summary>
     /// 启用加载器
     /// </summary>
     [ObservableProperty]
     private bool _enableLoader;
+    [ObservableProperty]
+    private bool _offLib;
+    [ObservableProperty]
+    private bool _customLoader;
 
     /// <summary>
     /// 版本类型
@@ -100,6 +106,18 @@ public partial class AddGameModel
     partial void OnVersionTypeChanged(int value)
     {
         GameVersionUpdate();
+    }
+
+    [RelayCommand]
+    public async Task SelectLoader()
+    {
+        var res = await PathBinding.SelectFile(FileType.Loader);
+        if (res == null)
+        {
+            return;
+        }
+
+        LoaderLocal = res;
     }
 
     [RelayCommand]
@@ -214,12 +232,12 @@ public partial class AddGameModel
             return;
         }
 
+        CustomLoader = false;
         var loader = _loaderTypeList[LoaderType];
         LoaderVersionList.Clear();
         switch (loader)
         {
             case Loaders.Normal:
-
                 break;
             case Loaders.Forge:
                 Model.Progress(App.Lang("AddGameWindow.Tab1.Info1"));
@@ -291,6 +309,9 @@ public partial class AddGameModel
                 LoaderVersionList.Clear();
                 LoaderVersionList.AddRange(list);
                 break;
+            case Loaders.Custom:
+                CustomLoader = true;
+                break;
         }
     }
 
@@ -331,7 +352,7 @@ public partial class AddGameModel
         }
 
         var loader = _loaderTypeList[LoaderType];
-        var res = await GameBinding.AddGame(name, version, loader, LoaderVersion?.ToString(), Group);
+        var res = await GameBinding.AddGame(name, version, loader, LoaderVersion?.ToString(), Group, LoaderLocal, OffLib);
         if (!res)
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error5"));
@@ -386,6 +407,9 @@ public partial class AddGameModel
             _loaderTypeList.Add(item);
             LoaderTypeList.Add(item.GetName());
         }
+
+        _loaderTypeList.Add(Loaders.Custom);
+        LoaderTypeList.Add(Loaders.Custom.GetName());
 
         Model.ProgressClose();
         LoaderType = 0;

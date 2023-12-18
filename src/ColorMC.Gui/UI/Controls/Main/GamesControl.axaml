@@ -58,7 +58,6 @@
                 IsVisible="False">
                 <TextBlock
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
                     FontSize="20"
                     Text="{setting:Localize MainWindow.Text11}" />
             </Panel>

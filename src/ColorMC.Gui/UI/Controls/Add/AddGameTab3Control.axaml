@@ -52,7 +52,6 @@
                                 Stroke="{setting:Colors Font}" />
                             <TextBlock
                                 Margin="0,0,0,5"
-                                VerticalAlignment="Center"
                                 FontSize="{setting:Style FontTitle}"
                                 Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                         </StackPanel>

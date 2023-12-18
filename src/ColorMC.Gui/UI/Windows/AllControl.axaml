@@ -57,11 +57,10 @@
                         Name="Grid2"
                         Background="{setting:Colors TopBottom}"
                         IsVisible="False">
-                        <Label
+                        <TextBlock
                             Name="Label1"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="test"
+                            Text="test"
                             FontSize="30" />
                     </Panel>
                 </Panel>

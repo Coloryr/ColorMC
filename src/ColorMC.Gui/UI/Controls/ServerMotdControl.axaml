@@ -83,7 +83,6 @@
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
                         Text="{setting:Localize ServerMotdControl.Text4}" />
                     <ProgressBar
                         Height="10"
@@ -97,7 +96,6 @@
                 IsVisible="False">
                 <TextBlock
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
                     Text="{setting:Localize ServerMotdControl.Text5}" />
             </Panel>
         </Panel>

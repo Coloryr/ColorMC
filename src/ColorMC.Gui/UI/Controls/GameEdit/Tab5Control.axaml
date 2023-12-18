@@ -112,7 +112,6 @@
             IsVisible="False">
             <TextBlock
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
                 FontSize="30"
                 Text="{setting:Localize Gui.Info15}" />
         </Panel>

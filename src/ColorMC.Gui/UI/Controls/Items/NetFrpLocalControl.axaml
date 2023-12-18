@@ -15,15 +15,22 @@
         BorderBrush="{setting:Colors GroupColor}"
         BorderThickness="2"
         CornerRadius="{setting:Style ButtonCornerRadius}">
-        <DockPanel VerticalAlignment="Top">
-            <WrapPanel DockPanel.Dock="Left">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Text="{setting:Localize NetFrpWindow.Tab2.Text3}" />
-                    <TextBlock VerticalAlignment="Center" Text="{Binding Port}" />
+        <DockPanel>
+            <WrapPanel
+                Margin="0,0,0,-5"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Left">
+                <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        Text="{setting:Localize NetFrpWindow.Tab2.Text3}" />
+                    <TextBlock Text="{Binding Port, FallbackValue=123}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Text="{setting:Localize NetFrpWindow.Tab2.Text4}" />
-                    <TextBlock VerticalAlignment="Center" Text="{Binding Motd}" />
+                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        Text="{setting:Localize NetFrpWindow.Tab2.Text4}" />
+                    <TextBlock Text="{Binding Motd, FallbackValue=456}" />
                 </StackPanel>
             </WrapPanel>
 

@@ -92,6 +92,7 @@
 
         <TextBlock
             Margin="3"
+            Padding="3"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Background="{setting:Colors Bottom1}"
