@@ -128,10 +128,10 @@ public partial class GameEditControl : MenuControl
         switch (old)
         {
             case 2:
-                model.RemoveBackHead();
+                model.RemoveChoise();
                 break;
             case 6:
-                model.RemoveBackHeadTab10();
+                model.RemoveChoiseTab10();
                 break;
         }
         switch (index)
@@ -159,7 +159,7 @@ public partial class GameEditControl : MenuControl
                 }
                 return _tab2;
             case 2:
-                model.SetBackHeadTab();
+                model.SetChoise();
                 _ = model.LoadMod();
                 return _tab4;
             case 3:
@@ -172,7 +172,7 @@ public partial class GameEditControl : MenuControl
                 model.LoadScreenshot();
                 return _tab9;
             case 6:
-                model.SetBackHeadTab10();
+                model.SetChoiseTab10();
                 model.LoadServer();
                 return _tab10;
             case 7:

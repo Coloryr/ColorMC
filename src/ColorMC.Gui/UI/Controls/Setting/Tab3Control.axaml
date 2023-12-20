@@ -72,6 +72,10 @@
                     </WrapPanel>
                     <TextBlock
                         Margin="0,2,0,0"
+                        Text="{setting:Localize SettingWindow.Tab3.Text25}"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="0,2,0,0"
                         Text="{setting:Localize SettingWindow.Tab3.Text24}"
                         TextWrapping="Wrap" />
                 </StackPanel>

@@ -7,7 +7,8 @@
             <NumericUpDown
                 Width="150"
                 Height="30"
-                FormatString="N0" />
+                FormatString="N0"
+                Value="20" />
         </Border>
     </Design.PreviewWith>
 
@@ -16,5 +17,9 @@
         <Setter Property="Background" Value="{setting:Colors Back}" />
         <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
         <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style Selector="NumericUpDown /template/ TextBox#TextBox#PART_TextBox">
+        <Setter Property="SelectionBrush" Value="{setting:Colors Main}" />
     </Style>
 </Styles>

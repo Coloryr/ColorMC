@@ -7,6 +7,9 @@
             <StackPanel>
                 <ToggleSwitch />
                 <ToggleSwitch IsChecked="True" />
+
+                <ToggleSwitch IsEnabled="False" />
+                <ToggleSwitch IsChecked="True" IsEnabled="False" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -20,5 +23,9 @@
 
     <Style Selector="ToggleSwitch:checked /template/ Border#SwitchKnobBounds">
         <Setter Property="Background" Value="{setting:Colors Main}" />
+    </Style>
+
+    <Style Selector="ToggleSwitch:disabled /template/ Border#SwitchKnobBounds">
+        <Setter Property="Background" Value="#999999" />
     </Style>
 </Styles>

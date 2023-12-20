@@ -172,8 +172,7 @@ public partial class DownloadModel : TopModel
     {
         _timer.Dispose();
         Model.HeadBackEnable = true;
-        Model.RemoveChoiseCall(_useName);
-        Model.RemoveChoiseContent(_useName);
+        Model.RemoveChoiseData(_useName);
         ItemList.Clear();
         _downloadList.Clear();
     }

@@ -449,8 +449,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     protected override void Close()
     {
         _load = true;
-        Model.RemoveChoiseCall(_useName);
-        Model.RemoveChoiseContent(_useName);
+        Model.RemoveChoiseData(_useName);
         FileList.Clear();
         foreach (var item in DisplayList)
         {

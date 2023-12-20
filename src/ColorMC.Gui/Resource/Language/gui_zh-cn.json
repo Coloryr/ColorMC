@@ -220,6 +220,7 @@
 	"SettingWindow.Tab3.Text22": "验证密钥",
 	"SettingWindow.Tab3.Text23": "下载设置",
 	"SettingWindow.Tab3.Text24": "注意：修改了下载线程数需要重启启动器生效，线程数越大消耗资源越多",
+	"SettingWindow.Tab3.Text25": "注意：推荐使用官方下载源来获取资源，其他下载源不能保证所需文件完整",
 	"SettingWindow.Tab3.Info1": "正在进行更新检查",
 	"SettingWindow.Tab3.Info2": "检测到新版本，是否要更新",
 	"SettingWindow.Tab3.Info3": "已经是最新版了",

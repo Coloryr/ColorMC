@@ -1,0 +1,32 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel>
+                <Slider Width="200" Value="50" />
+                <Slider
+                    Width="200"
+                    IsEnabled="False"
+                    Value="50" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <!--<Style Selector="Slider:horizontal /template/ TickBar#LeftTickBar">
+        <Setter Property="Fill" Value="{setting:Colors Main}" />
+    </Style>-->
+
+    <Style Selector="Slider:horizontal /template/ Thumb#thumb">
+        <Setter Property="Background" Value="{setting:Colors Main}" />
+    </Style>
+
+    <Style Selector="Slider:disabled /template/ Thumb#thumb">
+        <Setter Property="Background" Value="#999999" />
+    </Style>
+
+    <Style Selector="Slider:pointerover /template/ Thumb#thumb">
+        <Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundPointerOver}" />
+    </Style>
+</Styles>
