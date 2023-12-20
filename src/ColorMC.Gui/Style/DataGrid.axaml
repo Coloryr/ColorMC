@@ -23,4 +23,8 @@
         <Setter Property="Background" Value="{setting:Colors TranBack}" />
         <Setter Property="Foreground" Value="{setting:Colors Font}" />
     </Style>
+
+    <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{setting:Colors Main}" />
+    </Style>
 </Styles>

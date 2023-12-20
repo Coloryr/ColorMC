@@ -22,4 +22,8 @@
         <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
         <Setter Property="BorderThickness" Value="1" />
     </Style>
+
+    <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
+        <Setter Property="Background" Value="{setting:Colors Main}" />
+    </Style>
 </Styles>

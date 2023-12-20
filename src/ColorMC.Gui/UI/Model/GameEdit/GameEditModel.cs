@@ -57,16 +57,15 @@ public partial class GameEditModel : MenuModel
         DisplayFilter = !DisplayFilter;
     }
 
-    public void SetBackHeadTab()
+    public void SetChoise()
     {
-        Model.SetChoiseContent(_useName, App.Lang("Button.Refash"));
+        Model.SetChoiseContent(_useName, App.Lang("Button.Filter"));
         Model.SetChoiseCall(_useName, ShowFilter);
     }
 
-    public void RemoveBackHead()
+    public void RemoveChoise()
     {
-        Model.RemoveChoiseContent(_useName);
-        Model.RemoveChoiseCall(_useName);
+        Model.RemoveChoiseData(_useName);
     }
 
     public void OpenLoad()

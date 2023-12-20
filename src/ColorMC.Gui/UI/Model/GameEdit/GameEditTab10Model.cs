@@ -63,15 +63,14 @@ public partial class GameEditModel
         LoadServer();
     }
 
-    public void SetBackHeadTab10()
+    public void SetChoiseTab10()
     {
         Model.SetChoiseContent(_useName, App.Lang("Button.Refash"));
         Model.SetChoiseCall(_useName, choise: LoadServer);
     }
 
-    public void RemoveBackHeadTab10()
+    public void RemoveChoiseTab10()
     {
-        Model.RemoveChoiseContent(_useName);
-        Model.RemoveChoiseCall(_useName);
+        Model.RemoveChoiseData(_useName);
     }
 }

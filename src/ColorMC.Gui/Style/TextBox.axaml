@@ -17,8 +17,9 @@
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="TextBlock">
+    <Style Selector="TextBox">
         <Setter Property="Foreground" Value="{setting:Colors Font}" />
+        <Setter Property="SelectionBrush" Value="{setting:Colors Main}" />
     </Style>
 
     <Style Selector="TextBox:focus.input1">
@@ -29,6 +30,7 @@
         <Setter Property="Foreground" Value="{setting:Colors Font}" />
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="SelectionBrush" Value="{setting:Colors Main}" />
     </Style>
 
     <Style Selector="TextBox:focus.input1 /template/ Border#PART_BorderElement">

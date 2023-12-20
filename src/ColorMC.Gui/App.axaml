@@ -21,6 +21,7 @@
         <StyleInclude Source="/Style/DropDownButton.axaml" />
         <StyleInclude Source="/Style/ToolTip.axaml" />
         <StyleInclude Source="/Style/ListBox.axaml" />
+        <StyleInclude Source="/Style/Slider.axaml" />
         <StyleInclude Source="/Style/ToggleSwitch.axaml" />
         <StyleInclude Source="/Style/ToggleButton.axaml" />
         <StyleInclude Source="/UI/Views/HyperLink.axaml" />

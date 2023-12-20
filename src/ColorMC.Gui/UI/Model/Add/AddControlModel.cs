@@ -1320,8 +1320,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         _close = true;
         _load = true;
-        Model.RemoveChoiseCall(_useName);
-        Model.RemoveChoiseContent(_useName);
+        Model.RemoveChoiseData(_useName);
         ModList.Clear();
         OptifineList.Clear();
         DownloadOptifineList.Clear();

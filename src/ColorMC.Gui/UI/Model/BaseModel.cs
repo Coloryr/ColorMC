@@ -212,21 +212,13 @@ public partial class BaseModel : ObservableObject
         }
     }
 
-    public void RemoveChoiseContent(string now)
+    public void RemoveChoiseData(string now)
     {
         if (_nowChoiseUse == now)
         {
             _nowChoiseUse = null;
             HeadChoiseContent = null;
             HeadChoise1Content = null;
-        }
-    }
-
-    public void RemoveChoiseCall(string now)
-    {
-        if (_nowChoiseUse == now)
-        {
-            _nowChoiseUse = null;
 
             HeadChoiseDisplay = false;
             HeadChoise1Display = false;

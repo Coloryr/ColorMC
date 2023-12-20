@@ -546,7 +546,6 @@ public partial class GameCloudModel : MenuModel
 
     public void RemoveHeadBack()
     {
-        Model.RemoveChoiseCall(_useName);
-        Model.RemoveChoiseContent(_useName);
+        Model.RemoveChoiseData(_useName);
     }
 }

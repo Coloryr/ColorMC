@@ -2,6 +2,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
+using static ColorMC.Core.Objs.CountObj;
 
 namespace ColorMC.Core.Utils;
 
@@ -76,6 +77,7 @@ public static class GameCount
                     LaunchErrorCount = nbt.TryGet<NbtLong>("LaunchErrorCount")!.Value,
                     AllTime = TimeSpan.FromTicks(nbt.TryGet<NbtLong>("AllTime")!.Value),
                     GameRuns = [],
+                    LaunchLogs = []
                 };
 
                 var list = nbt.TryGet<NbtList>("GameRuns")!;
