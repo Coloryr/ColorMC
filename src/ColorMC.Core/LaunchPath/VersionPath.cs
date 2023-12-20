@@ -41,13 +41,13 @@ public static class VersionPath
     /// 获取游戏版本列表
     /// </summary>
     /// <returns></returns>
-    public static async Task<VersionObj?> GetVersions()
+    public static async Task<VersionObj?> GetVersionsAsync()
     {
         try
         {
             if (_version == null)
             {
-                await ReadVersions();
+                await ReadVersionsAsync();
             }
             return _version;
         }
@@ -80,7 +80,7 @@ public static class VersionPath
     /// 从在线获取版本信息
     /// </summary>
     /// <returns></returns>
-    public static async Task GetFromWeb()
+    public static async Task GetFromWebAsync()
     {
         (_version, var data) = await GameAPI.GetVersions();
         if (_version != null)
@@ -103,15 +103,15 @@ public static class VersionPath
     /// 是否存在版本信息
     /// </summary>
     /// <returns>结果</returns>
-    public static async Task<bool> Have()
+    public static async Task<bool> IsHaveVersionInfoAsync()
     {
-        return await GetVersions() != null;
+        return await GetVersionsAsync() != null;
     }
 
     /// <summary>
     /// 读取版本信息
     /// </summary>
-    public static async Task ReadVersions()
+    public static async Task ReadVersionsAsync()
     {
         string file = BaseDir + "/version.json";
         if (File.Exists(file))
@@ -121,7 +121,7 @@ public static class VersionPath
         }
         else
         {
-            await GetFromWeb();
+            await GetFromWebAsync();
         }
     }
 
@@ -138,7 +138,7 @@ public static class VersionPath
     /// 添加版本信息
     /// </summary>
     /// <param name="obj">游戏数据</param>
-    public static async Task<GameArgObj?> AddGame(VersionObj.Versions obj)
+    public static async Task<GameArgObj?> AddGameAsync(VersionObj.Versions obj)
     {
         var url = UrlHelper.DownloadIndex(BaseClient.Source, obj);
         (var obj1, var data) = await GameAPI.GetGame(url);
@@ -273,9 +273,9 @@ public static class VersionPath
     /// 更新json
     /// </summary>
     /// <param name="version">游戏版本</param>
-    public static async Task<GameArgObj?> CheckUpdate(string version)
+    public static async Task<GameArgObj?> CheckUpdateAsync(string version)
     {
-        var ver = await GetVersions();
+        var ver = await GetVersionsAsync();
         if (ver == null)
         {
             return null;
@@ -293,7 +293,7 @@ public static class VersionPath
             temp.Close();
             if (sha1 != data.sha1)
             {
-                return await AddGame(data);
+                return await AddGameAsync(data);
             }
 
             return GetVersion(version);

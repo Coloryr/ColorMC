@@ -220,18 +220,9 @@ public static class DownloadItemHelper
         return BuildNeoForgeItem(mc, version, "launcher");
     }
 
-    /// <summary>
-    /// 获取所有Forge的Lib列表
-    /// </summary>
-    /// <param name="info">forge信息</param>
-    /// <param name="mc">游戏版本</param>
-    /// <param name="version">forge版本</param>
-    /// <param name="neo">是否为NeoForge</param>
-    /// <returns>下载项目列表</returns>
-    public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc, string version, bool neo)
+    public static ICollection<DownloadItemObj> BuildForgeLibs(List<ForgeLaunchObj.Libraries> info, string mc,
+        string version, bool neo, bool v2)
     {
-        var version1 = VersionPath.GetVersion(mc)!;
-        var v2 = CheckHelpers.IsGameVersionV2(version1);
         var list = new Dictionary<string, DownloadItemObj>();
 
         bool universal = false;
@@ -239,11 +230,9 @@ public static class DownloadItemHelper
         bool launcher = false;
 
         //运行库
-        foreach (var item1 in info.libraries)
+        foreach (var item1 in info)
         {
-            if (item1.name.StartsWith(neo ?
-                "net.neoforged.forge:" : "net.minecraftforge:forge:")
-                && string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
+            if (string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
             {
                 string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}");
 
@@ -251,8 +240,7 @@ public static class DownloadItemHelper
                 {
                     Name = item1.name,
                     Local = local,
-                    SHA1 = item1!.downloads.artifact.sha1,
-                    Skip = true
+                    SHA1 = item1!.downloads.artifact.sha1
                 };
                 if (!list.TryAdd(item1.name, temp))
                 {
@@ -306,7 +294,7 @@ public static class DownloadItemHelper
                     BuildNeoForgeUniversal(mc, version) :
                     BuildForgeUniversal(mc, version));
             }
-            if (!CheckHelpers.IsGameVersion117(mc) && !launcher)
+            if (v2 && !CheckHelpers.IsGameVersion117(mc) && !launcher)
             {
                 list.Add("launcher", neo ?
                     BuildNeoForgeLauncher(mc, version) :
@@ -325,49 +313,31 @@ public static class DownloadItemHelper
     /// <param name="version">forge版本</param>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>下载项目列表</returns>
-    public static List<DownloadItemObj> BuildForgeLibs(ForgeInstallObj info, string mc, string version, bool neo)
+    public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc, 
+        string version, bool neo, bool v2)
     {
-        var list = new List<DownloadItemObj>();
+        return BuildForgeLibs(info.libraries, mc, version, neo, v2);
+    }
 
-        foreach (var item in info.libraries)
-        {
-            if (item.name.StartsWith(neo ? "net.neoforged.forge:" : "net.minecraftforge:forge:")
-                && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
-            {
-                var item1 = neo ?
-                    BuildNeoForgeUniversal(mc, version) :
-                    BuildForgeUniversal(mc, version);
-                item1.SHA1 = item.downloads.artifact.sha1;
-                list.Add(item1);
-                continue;
-            }
-
-            if (string.IsNullOrWhiteSpace(item.downloads.artifact.url))
-                continue;
-
-            string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}");
-
-            list.Add(new()
-            {
-                Local = file,
-                Name = item.name,
-                SHA1 = item.downloads.artifact.sha1,
-                Url = neo ?
-                    UrlHelper.DownloadNeoForgeLib(item.downloads.artifact.url,
-                         BaseClient.Source) :
-                    UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
-                         BaseClient.Source)
-            });
-        }
-
-        return list;
+    /// <summary>
+    /// 获取所有Forge的Lib列表
+    /// </summary>
+    /// <param name="info">forge信息</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <param name="neo">是否为NeoForge</param>
+    /// <returns>下载项目列表</returns>
+    public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeInstallObj info, string mc, 
+        string version, bool neo, bool v2)
+    {
+        return BuildForgeLibs(info.libraries, mc, version, neo, v2);
     }
 
     /// <summary>
     /// 创建游戏运行库项目
     /// </summary>
     /// <param name="obj">下载项目列表</param>
-    public static async Task<ConcurrentBag<DownloadItemObj>> BuildGameLibs(GameArgObj obj)
+    public static async Task<ConcurrentBag<DownloadItemObj>> BuildGameLibsAsync(GameArgObj obj)
     {
         var list = new ConcurrentBag<DownloadItemObj>();
         var list1 = new HashSet<string>();
@@ -487,7 +457,7 @@ public static class DownloadItemHelper
                     var name = item + $":{path[1]}-{path[2]}-natives-linux-arm64";
                     var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-linux-arm64.jar";
 
-                    var item3 = await LocalMaven.MakeItem(name, dir);
+                    var item3 = await LocalMaven.MakeItemAsync(name, dir);
                     if (item3 != null)
                     {
                         list.Add(item3);
@@ -497,7 +467,7 @@ public static class DownloadItemHelper
                 {
                     var name = item + $":{path[1]}-{path[2]}-natives-windows-arm64";
                     var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-windows-arm64.jar";
-                    var item3 = await LocalMaven.MakeItem(name, dir);
+                    var item3 = await LocalMaven.MakeItemAsync(name, dir);
                     if (item3 != null)
                     {
                         list.Add(item3);
@@ -515,11 +485,12 @@ public static class DownloadItemHelper
     /// <param name="obj">版本数据</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> Download(VersionObj.Versions obj)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+        DownloadAsync(VersionObj.Versions obj)
     {
         var list = new List<DownloadItemObj>();
 
-        var obj1 = await VersionPath.AddGame(obj);
+        var obj1 = await VersionPath.AddGameAsync(obj);
         if (obj1 == null)
         {
             return (GetDownloadState.Init, null);
@@ -533,7 +504,7 @@ public static class DownloadItemHelper
         obj1.AddIndex(obj2.Item2!);
         list.Add(BuildGameItem(obj.id));
 
-        list.AddRange(await BuildGameLibs(obj1));
+        list.AddRange(await BuildGameLibsAsync(obj1));
 
         foreach (var item1 in obj2.Item1.objects)
         {
@@ -554,9 +525,10 @@ public static class DownloadItemHelper
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildForge(GameSettingObj obj, bool neo)
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+        BuildForge(GameSettingObj obj, bool neo)
     {
-        return BuildForge(obj.Version, obj.LoaderVersion!, neo);
+        return BuildForgeAsync(obj.Version, obj.LoaderVersion!, neo);
     }
 
     /// <summary>
@@ -567,7 +539,8 @@ public static class DownloadItemHelper
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildForge(string mc, string version, bool neo)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+        BuildForgeAsync(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetVersion(mc)!;
         var v2 = CheckHelpers.IsGameVersionV2(version1);
@@ -577,7 +550,7 @@ public static class DownloadItemHelper
             BuildForgeInstaller(mc, version);
         try
         {
-            var res = await DownloadManager.Start([down]);
+            var res = await DownloadManager.StartAsync([down]);
             if (!res)
             {
                 return (GetDownloadState.Init, null);
@@ -628,7 +601,7 @@ public static class DownloadItemHelper
                 return (GetDownloadState.GetInfo, null);
             }
 
-            list.AddRange(BuildForgeLibs(info, mc, version, neo));
+            list.AddRange(BuildForgeLibs(info, mc, version, neo, v2));
 
             ForgeInstallObj info1;
             try
@@ -644,7 +617,7 @@ public static class DownloadItemHelper
                 return (GetDownloadState.GetInfo, null);
             }
 
-            list.AddRange(BuildForgeLibs(info1, mc, version, neo));
+            list.AddRange(BuildForgeLibs(info1, mc, version, neo, v2));
         }
         //旧forge
         else
@@ -695,7 +668,7 @@ public static class DownloadItemHelper
                 VersionPath.AddGame(info,
                     Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(info)), mc, version, neo);
 
-                list.AddRange(BuildForgeLibs(info, mc, version, neo));
+                list.AddRange(BuildForgeLibs(info, mc, version, neo, v2));
             }
             catch (Exception e)
             {
@@ -713,9 +686,10 @@ public static class DownloadItemHelper
     /// <param name="obj">游戏实例</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildFabric(GameSettingObj obj)
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+        BuildFabric(GameSettingObj obj)
     {
-        return BuildFabric(obj.Version, obj.LoaderVersion);
+        return BuildFabricAsync(obj.Version, obj.LoaderVersion!);
     }
 
     /// <summary>
@@ -725,7 +699,8 @@ public static class DownloadItemHelper
     /// <param name="version">fabric版本</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildFabric(string mc, string? version = null)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+        BuildFabricAsync(string mc, string version)
     {
         var list = new List<DownloadItemObj>();
         var meta = await FabricAPI.GetMeta(BaseClient.Source);
@@ -785,9 +760,10 @@ public static class DownloadItemHelper
     /// <param name="obj">游戏实例</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildQuilt(GameSettingObj obj)
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+        BuildQuilt(GameSettingObj obj)
     {
-        return BuildQuilt(obj.Version, obj.LoaderVersion);
+        return BuildQuiltAsync(obj.Version, obj.LoaderVersion);
     }
 
     /// <summary>
@@ -797,7 +773,8 @@ public static class DownloadItemHelper
     /// <param name="version">quilt版本</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildQuilt(string mc, string? version = null)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+        BuildQuiltAsync(string mc, string? version = null)
     {
         var list = new List<DownloadItemObj>();
         var meta = await QuiltAPI.GetMeta(BaseClient.Source);
@@ -856,9 +833,10 @@ public static class DownloadItemHelper
     /// <param name="obj">游戏实例</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildOptifine(GameSettingObj obj)
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+        BuildOptifine(GameSettingObj obj)
     {
-        return BuildOptifine(obj.Version, obj.LoaderVersion);
+        return BuildOptifineAsync(obj.Version, obj.LoaderVersion!);
     }
 
     /// <summary>
@@ -867,7 +845,8 @@ public static class DownloadItemHelper
     /// <param name="mc">游戏版本</param>
     /// <param name="version">optifine版本</param>
     /// <returns></returns>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> BuildOptifine(string mc, string? version = null)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+        BuildOptifineAsync(string mc, string version)
     {
         var list = await OptifineAPI.GetOptifineVersion();
         if (list.Item1 == null)
@@ -900,7 +879,8 @@ public static class DownloadItemHelper
         return (GetDownloadState.Init, null);
     }
 
-    public static async Task<ConcurrentBag<DownloadItemObj>?> DecodeLoaderJar(this GameSettingObj obj, CancellationToken cancel)
+    public static async Task<ConcurrentBag<DownloadItemObj>?> 
+        DecodeLoaderJarAsync(this GameSettingObj obj, CancellationToken cancel)
     {
         using var zFile = new ZipFile(obj.CustomLoader!.Local);
         using var stream1 = new MemoryStream();

@@ -19,10 +19,10 @@ public class ServerDescriptionJsonConverter : JsonConverter<Chat>
         if (string.IsNullOrWhiteSpace(str1))
             return new Chat() { Text = "" };
 
-        var lines = str1.Split("\n");
+        var lines = str1.Split('\n');
         var chat = new Chat()
         {
-            Extra = new()
+            Extra = []
         };
 
         foreach (var item in lines)

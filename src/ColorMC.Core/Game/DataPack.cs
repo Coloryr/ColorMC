@@ -78,9 +78,9 @@ public static class DataPack
             return list;
         }
 
-        var nbt = (world.Nbt.TryGet("Data") as NbtCompound)?.TryGet("DataPacks") as NbtCompound;
-        var ens = nbt?.TryGet("Enabled") as NbtList;
-        var dis = nbt?.TryGet("Disabled") as NbtList;
+        var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
+        var ens = nbt?.TryGet<NbtList>("Enabled");
+        var dis = nbt?.TryGet<NbtList>("Disabled");
 
         var files = Directory.GetFiles(path);
         foreach (var item in files)
@@ -148,12 +148,12 @@ public static class DataPack
     /// <param name="list">数据包列表</param>
     /// <param name="world">世界储存</param>
     /// <returns></returns>
-    public static bool DisE(IEnumerable<DataPackObj> list, WorldObj world)
+    public static bool DisEna(IEnumerable<DataPackObj> list, WorldObj world)
     {
-        var nbt = (world.Nbt.TryGet("Data") as NbtCompound)?.TryGet("DataPacks") as NbtCompound;
+        var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 
-        if (nbt?.TryGet("Enabled") is not NbtList ens
-            || nbt?.TryGet("Disabled") is not NbtList dis)
+        if (nbt?.TryGet<NbtList>("Enabled") is not { } ens
+            || nbt?.TryGet<NbtList>("Disabled") is not { } dis)
         {
             return false;
         }
@@ -222,12 +222,12 @@ public static class DataPack
     /// <param name="list">数据包列表</param>
     /// <param name="world">世界存储</param>
     /// <returns>是否删除</returns>
-    public static async Task<bool> Delete(List<DataPackObj> list, WorldObj world)
+    public static async Task<bool> DeleteAsync(List<DataPackObj> list, WorldObj world)
     {
-        var nbt = (world.Nbt.TryGet("Data") as NbtCompound)?.TryGet("DataPacks") as NbtCompound;
+        var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 
-        if (nbt?.TryGet("Enabled") is not NbtList ens
-            || nbt?.TryGet("Disabled") is not NbtList dis)
+        if (nbt?.TryGet<NbtList>("Enabled") is not { } ens
+            || nbt?.TryGet<NbtList>("Disabled") is not { } dis)
         {
             return false;
         }
@@ -236,7 +236,7 @@ public static class DataPack
         {
             if (Directory.Exists(item.Path))
             {
-                await PathHelper.DeleteFiles(item.Path);
+                await PathHelper.DeleteFilesAsync(item.Path);
             }
             else
             {

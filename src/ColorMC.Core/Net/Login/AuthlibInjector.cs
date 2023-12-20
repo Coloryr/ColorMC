@@ -16,10 +16,10 @@ public static class AuthlibInjector
     /// <param name="pass">密码</param>
     /// <param name="server">服务器地址</param>
     /// <returns></returns>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Authenticate(
+    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> AuthenticateAsync(
          string clientToken, string user, string pass, string server)
     {
-        var obj = await LoginOld.Authenticate(server, clientToken, user, pass);
+        var obj = await LoginOld.AuthenticateAsync(server, clientToken, user, pass);
         if (obj.State != LoginState.Done)
             return obj;
 
@@ -33,12 +33,12 @@ public static class AuthlibInjector
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(LoginObj obj)
+    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> RefreshAsync(LoginObj obj)
     {
-        if (await LoginOld.Validate(obj.Text1 + "/authserver/validate", obj))
+        if (await LoginOld.ValidateAsync(obj.Text1 + "/authserver/validate", obj))
         {
             return (LoginState.Done, obj, null);
         }
-        return await LoginOld.Refresh(obj.Text1, obj);
+        return await LoginOld.RefreshAsync(obj.Text1, obj);
     }
 }

@@ -22,16 +22,13 @@ public static class AuthlibHelper
     /// </summary>
     public static string NowNide8Injector { get; private set; }
 
-    private static AuthlibInjectorObj GetLocalAuthLib()
+    private static AuthlibInjectorObj LocalAuthLib = new()
     {
-        return new()
-        {
-            build_number = 51,
-            checksums = new() { sha256 = "d3ec36486b0a5ab5a16069733cd8d749950c2d62e1bdacaf27864b30b92c1c7f" },
-            download_url = "https://authlib-injector.yushi.moe/artifact/51/authlib-injector-1.2.3.jar",
-            version = "1.2.3"
-        };
-    }
+        build_number = 51,
+        checksums = new() { sha256 = "d3ec36486b0a5ab5a16069733cd8d749950c2d62e1bdacaf27864b30b92c1c7f" },
+        download_url = "https://authlib-injector.yushi.moe/artifact/51/authlib-injector-1.2.3.jar",
+        version = "1.2.3"
+    };
 
     /// <summary>
     /// 创建Nide8Injector下载实例
@@ -69,7 +66,7 @@ public static class AuthlibHelper
     /// <returns>Nide8Injector下载实例</returns>
     public static async Task<(bool, DownloadItemObj?)> ReadyNide8()
     {
-        var data = await BaseClient.GetString($"{UrlHelper.Nide8}00000000000000000000000000000000/");
+        var data = await BaseClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/");
         if (data.Item1 == false)
         {
             return (false, null);
@@ -111,33 +108,33 @@ public static class AuthlibHelper
     /// </summary>
     /// <returns>信息</returns>
     /// <exception cref="Exception">获取失败</exception>
-    private static async Task<AuthlibInjectorObj> GetAuthlibInjectorObj()
+    private static async Task<AuthlibInjectorObj> GetAuthlibInjectorObjAsync()
     {
         try
         {
             string url = UrlHelper.AuthlibInjectorMeta(BaseClient.Source);
-            var meta = await BaseClient.GetString(url);
+            var meta = await BaseClient.GetStringAsync(url);
             if (meta.Item1 == false)
             {
-                return GetLocalAuthLib();
+                return LocalAuthLib;
             }
             var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!);
             if (obj == null)
             {
-                return GetLocalAuthLib();
+                return LocalAuthLib;
             }
             var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).ToList()[0];
 
-            var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
+            var info = await BaseClient.GetStringAsync(UrlHelper.AuthlibInjector(item, BaseClient.Source));
             if (info.Item1 == false)
             {
-                return GetLocalAuthLib();
+                return LocalAuthLib;
             }
-            return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!) ?? GetLocalAuthLib();
+            return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!) ?? LocalAuthLib;
         }
         catch
         {
-            return GetLocalAuthLib();
+            return LocalAuthLib;
         }
     }
 
@@ -145,13 +142,13 @@ public static class AuthlibHelper
     /// 初始化AuthlibInjector，存在不下载
     /// </summary>
     /// <returns>AuthlibInjector下载实例</returns>
-    public static async Task<(bool, DownloadItemObj?)> ReadyAuthlibInjector()
+    public static async Task<(bool, DownloadItemObj?)> ReadyAuthlibInjectorAsync()
     {
         try
         {
             if (string.IsNullOrWhiteSpace(NowAuthlibInjector))
             {
-                var obj1 = await GetAuthlibInjectorObj();
+                var obj1 = await GetAuthlibInjectorObjAsync();
                 var item1 = BuildAuthlibInjectorItem(obj1);
 
                 LocalMaven.AddItem(new()
@@ -194,7 +191,7 @@ public static class AuthlibHelper
                     var sha2561 = await HashHelper.GenSha256Async(stream);
                     if (item.SHA256 != sha2561)
                     {
-                        var obj1 = await GetAuthlibInjectorObj();
+                        var obj1 = await GetAuthlibInjectorObjAsync();
                         return (true, BuildAuthlibInjectorItem(obj1));
                     }
                 }

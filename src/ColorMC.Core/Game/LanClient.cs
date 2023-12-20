@@ -9,12 +9,12 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public class LanClient
 {
-    public Action<string, string, string>? FindLan;
+    public required Action<string, string, string> FindLan;
 
     private readonly UdpClient _socket;
 
     private bool _isRun;
-    private CancellationTokenSource _cancel = new();
+    private readonly CancellationTokenSource _cancel = new();
 
     public LanClient()
     {

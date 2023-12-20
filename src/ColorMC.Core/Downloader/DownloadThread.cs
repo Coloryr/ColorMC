@@ -12,21 +12,17 @@ namespace ColorMC.Core.Downloader;
 public class DownloadThread
 {
     /// <summary>
-    /// 下载线程标号
-    /// </summary>
-    private readonly int _index;
-    /// <summary>
     /// 线程
     /// </summary>
     private readonly Thread _thread;
     /// <summary>
     /// 启动信号量
     /// </summary>
-    private readonly Semaphore _semaphore = new(0, 2);
+    private readonly Semaphore _semaphoreWait = new(0, 2);
     /// <summary>
     /// 暂停信号量
     /// </summary>
-    private readonly Semaphore _semaphore1 = new(0, 2);
+    private readonly Semaphore _semaphorePause = new(0, 2);
     /// <summary>
     /// 是否在暂停
     /// </summary>
@@ -38,7 +34,7 @@ public class DownloadThread
     /// <summary>
     /// 是否被取消
     /// </summary>
-    private CancellationToken _token;
+    private CancellationToken _cancel;
 
     /// <summary>
     /// 初始化下载器
@@ -46,7 +42,6 @@ public class DownloadThread
     /// <param name="index">标号</param>
     public DownloadThread(int index)
     {
-        _index = index;
         _thread = new(() =>
         {
             while (_run)
@@ -55,7 +50,7 @@ public class DownloadThread
             }
         })
         {
-            Name = $"DownloadThread_{index}"
+            Name = $"ColorMC_DownloadThread{index}"
         };
         _run = true;
         _thread.Start();
@@ -67,10 +62,12 @@ public class DownloadThread
     public void Close()
     {
         if (!_run)
+        {
             return;
+        }
 
         _run = false;
-        _semaphore.Release();
+        _semaphoreWait.Release();
     }
 
     /// <summary>
@@ -89,8 +86,8 @@ public class DownloadThread
     /// </summary>
     public void Start(CancellationToken token)
     {
-        _token = token;
-        _semaphore.Release();
+        _cancel = token;
+        _semaphoreWait.Release();
     }
 
     /// <summary>
@@ -107,7 +104,7 @@ public class DownloadThread
     public void Resume()
     {
         _pause = false;
-        _semaphore1.Release();
+        _semaphorePause.Release();
     }
 
     /// <summary>
@@ -118,9 +115,63 @@ public class DownloadThread
         if (_pause)
         {
             item.State = DownloadItemState.Pause;
-            item.Update?.Invoke(_index);
-            _semaphore1.WaitOne();
+            item.Update();
+            _semaphorePause.WaitOne();
         }
+    }
+
+    private static bool CheckFile(DownloadItemObj item)
+    {
+        if (!string.IsNullOrWhiteSpace(item.MD5))
+        {
+            using var stream2 = PathHelper.OpenRead(item.Local)!;
+            if (HashHelper.GenMd5(stream2) == item.MD5)
+            {
+                item.State = DownloadItemState.Action;
+                item.Update();
+                stream2.Seek(0, SeekOrigin.Begin);
+                item.Later?.Invoke(stream2);
+
+                item.State = DownloadItemState.Done;
+                item.Update();
+                DownloadManager.Done();
+                return true;
+            }
+        }
+        if (!string.IsNullOrWhiteSpace(item.SHA1))
+        {
+            using var stream2 = PathHelper.OpenRead(item.Local)!;
+            if (HashHelper.GenSha1(stream2) == item.SHA1)
+            {
+                item.State = DownloadItemState.Action;
+                item.Update();
+                stream2.Seek(0, SeekOrigin.Begin);
+                item.Later?.Invoke(stream2);
+
+                item.State = DownloadItemState.Done;
+                item.Update();
+                DownloadManager.Done();
+                return true;
+            }
+        }
+        if (!string.IsNullOrWhiteSpace(item.SHA256))
+        {
+            using var stream2 = PathHelper.OpenRead(item.Local)!;
+            if (HashHelper.GenSha256(stream2) == item.SHA256)
+            {
+                item.State = DownloadItemState.Action;
+                item.Update();
+                stream2.Seek(0, SeekOrigin.Begin);
+                item.Later?.Invoke(stream2);
+
+                item.State = DownloadItemState.Done;
+                item.Update();
+                DownloadManager.Done();
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -128,7 +179,7 @@ public class DownloadThread
     /// </summary>
     private void Run()
     {
-        _semaphore.WaitOne();
+        _semaphoreWait.WaitOne();
         if (!_run)
         {
             return;
@@ -136,16 +187,9 @@ public class DownloadThread
         DownloadItemObj? item;
         while ((item = DownloadManager.GetItem()) != null)
         {
-            if (item.Skip)
-            {
-                item.State = DownloadItemState.Done;
-                item.Update?.Invoke(_index);
-                DownloadManager.Done();
-            }
-
             ChckPause(item);
 
-            if (_token.IsCancellationRequested)
+            if (_cancel.IsCancellationRequested)
             {
                 break;
             }
@@ -162,59 +206,9 @@ public class DownloadThread
                     {
                         PathHelper.Delete(item.Local);
                     }
-                    else if (ConfigUtils.Config.Http.CheckFile)
+                    else if (ConfigUtils.Config.Http.CheckFile && CheckFile(item))
                     {
-                        if (!string.IsNullOrWhiteSpace(item.MD5))
-                        {
-                            using var stream2 = PathHelper.OpenRead(item.Local)!;
-                            string sha1 = HashHelper.GenMd5(stream2);
-                            if (sha1 == item.MD5)
-                            {
-                                item.State = DownloadItemState.Action;
-                                item.Update?.Invoke(_index);
-                                stream2.Seek(0, SeekOrigin.Begin);
-                                item.Later?.Invoke(stream2);
-
-                                item.State = DownloadItemState.Done;
-                                item.Update?.Invoke(_index);
-                                DownloadManager.Done();
-                                continue;
-                            }
-                        }
-                        if (!string.IsNullOrWhiteSpace(item.SHA1))
-                        {
-                            using var stream2 = PathHelper.OpenRead(item.Local)!;
-                            string sha1 = HashHelper.GenSha1(stream2);
-                            if (sha1 == item.SHA1)
-                            {
-                                item.State = DownloadItemState.Action;
-                                item.Update?.Invoke(_index);
-                                stream2.Seek(0, SeekOrigin.Begin);
-                                item.Later?.Invoke(stream2);
-
-                                item.State = DownloadItemState.Done;
-                                item.Update?.Invoke(_index);
-                                DownloadManager.Done();
-                                continue;
-                            }
-                        }
-                        if (!string.IsNullOrWhiteSpace(item.SHA256))
-                        {
-                            using var stream2 = PathHelper.OpenRead(item.Local)!;
-                            string sha1 = HashHelper.GenSha256(stream2);
-                            if (sha1 == item.SHA256)
-                            {
-                                item.State = DownloadItemState.Action;
-                                item.Update?.Invoke(_index);
-                                stream2.Seek(0, SeekOrigin.Begin);
-                                item.Later?.Invoke(stream2);
-
-                                item.State = DownloadItemState.Done;
-                                item.Update?.Invoke(_index);
-                                DownloadManager.Done();
-                                continue;
-                            }
-                        }
+                        continue;
                     }
 
                 }
@@ -222,13 +216,13 @@ public class DownloadThread
                 {
                     item.State = DownloadItemState.Error;
                     item.ErrorTime++;
-                    item.Update?.Invoke(_index);
-                    DownloadManager.Error(_index, item, e);
+                    item.Update();
+                    DownloadManager.Error(item, e);
                     continue;
                 }
             }
 
-            if (_token.IsCancellationRequested)
+            if (_cancel.IsCancellationRequested)
             {
                 break;
             }
@@ -241,7 +235,7 @@ public class DownloadThread
                 {
                     ChckPause(item);
 
-                    if (_token.IsCancellationRequested)
+                    if (_cancel.IsCancellationRequested)
                     {
                         break;
                     }
@@ -253,43 +247,41 @@ public class DownloadThread
                         req.Headers.Add("ColorMC", ColorMCCore.Version);
                     }
                     var data = BaseClient.DownloadClient.SendAsync(req,
-                        HttpCompletionOption.ResponseHeadersRead,
-                        _token).Result;
+                        HttpCompletionOption.ResponseHeadersRead, _cancel).Result;
                     item.AllSize = (long)data.Content.Headers.ContentLength!;
                     item.State = DownloadItemState.GetInfo;
                     item.NowSize = 0;
-                    item.Update?.Invoke(_index);
-                    using Stream stream1 = data.Content.ReadAsStream(_token);
+                    item.Update();
+                    using var stream1 = data.Content.ReadAsStream(_cancel);
 
                     //获取buffer
                     buffer = ArrayPool<byte>.Shared.Rent(DownloadManager.GetCopyBufferSize(stream1));
 
                     //创建临时文件
-                    string file = Path.GetFullPath(DownloadManager.DownloadDir + '/' + Guid.NewGuid().ToString());
-
+                    var file = Path.GetFullPath(DownloadManager.DownloadDir + '/' + Guid.NewGuid().ToString());
                     using var stream = PathHelper.OpenWrite(file);
 
                     int bytesRead;
                     //写文件
-                    while ((bytesRead = stream1.ReadAsync(buffer, _token).AsTask().Result) != 0)
+                    while ((bytesRead = stream1.ReadAsync(buffer, _cancel).AsTask().Result) != 0)
                     {
-                        stream.WriteAsync(buffer, 0, bytesRead, _token).Wait();
+                        stream.WriteAsync(buffer, 0, bytesRead, _cancel).Wait();
 
                         ChckPause(item);
 
-                        if (_token.IsCancellationRequested)
+                        if (_cancel.IsCancellationRequested)
                         {
                             break;
                         }
 
                         item.State = DownloadItemState.Download;
                         item.NowSize += bytesRead;
-                        item.Update?.Invoke(_index);
+                        item.Update();
                     }
 
                     ChckPause(item);
 
-                    if (_token.IsCancellationRequested)
+                    if (_cancel.IsCancellationRequested)
                     {
                         break;
                     }
@@ -297,51 +289,47 @@ public class DownloadThread
                     //检查文件
                     if (ConfigUtils.Config.Http.CheckFile)
                     {
-                        stream.Seek(0, SeekOrigin.Begin);
                         if (!string.IsNullOrWhiteSpace(item.MD5))
                         {
-                            string sha1 = HashHelper.GenMd5(stream);
-                            if (sha1 != item.MD5)
+                            stream.Seek(0, SeekOrigin.Begin);
+                            if (HashHelper.GenMd5(stream) != item.MD5)
                             {
                                 item.State = DownloadItemState.Error;
-                                item.Update?.Invoke(_index);
-                                DownloadManager.Error(_index, item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
-
+                                item.Update();
+                                DownloadManager.Error(item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
                                 break;
                             }
                         }
                         if (!string.IsNullOrWhiteSpace(item.SHA1))
                         {
-                            string sha1 = HashHelper.GenSha1(stream);
-                            if (sha1 != item.SHA1)
+                            stream.Seek(0, SeekOrigin.Begin);
+                            if (HashHelper.GenSha1(stream) != item.SHA1)
                             {
                                 item.State = DownloadItemState.Error;
-                                item.Update?.Invoke(_index);
-                                DownloadManager.Error(_index, item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
-
+                                item.Update();
+                                DownloadManager.Error(item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
                                 break;
                             }
                         }
                         if (!string.IsNullOrWhiteSpace(item.SHA256))
                         {
-                            string sha1 = HashHelper.GenSha256(stream);
-                            if (sha1 != item.SHA256)
+                            stream.Seek(0, SeekOrigin.Begin);
+                            if (HashHelper.GenSha256(stream) != item.SHA256)
                             {
                                 item.State = DownloadItemState.Error;
-                                item.Update?.Invoke(_index);
-                                DownloadManager.Error(_index, item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
-
+                                item.Update();
+                                DownloadManager.Error(item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
                                 break;
                             }
                         }
                     }
 
                     item.State = DownloadItemState.Action;
-                    item.Update?.Invoke(_index);
+                    item.Update();
 
                     ChckPause(item);
 
-                    if (_token.IsCancellationRequested)
+                    if (_cancel.IsCancellationRequested)
                     {
                         break;
                     }
@@ -359,23 +347,23 @@ public class DownloadThread
                     PathHelper.MoveFile(file, item.Local);
 
                     item.State = DownloadItemState.Done;
-                    item.Update?.Invoke(_index);
+                    item.Update();
                     DownloadManager.Done();
                     break;
                 }
                 catch (Exception e)
                 {
                     //下载发生异常
-                    if (_token.IsCancellationRequested)
+                    if (_cancel.IsCancellationRequested)
                     {
                         break;
                     }
 
                     item.State = DownloadItemState.Error;
                     item.ErrorTime++;
-                    item.Update?.Invoke(_index);
+                    item.Update();
                     time++;
-                    DownloadManager.Error(_index, item, e);
+                    DownloadManager.Error(item, e);
 
                     if (time == 5)
                     {

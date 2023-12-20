@@ -1,3 +1,4 @@
+using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -23,7 +24,7 @@ public static class Options
             return ReadOptions(PathHelper.ReadText(file)!);
         }
 
-        return new();
+        return [];
     }
 
     /// <summary>
@@ -53,26 +54,35 @@ public static class Options
     {
         var options = new Dictionary<string, string>();
 
-        var lines = file.Split("\n");
+        var lines = file.Split('\n');
         foreach (var item in lines)
         {
             if (string.IsNullOrWhiteSpace(item))
             {
                 continue;
             }
-            var temp = item.Trim().Split(sp);
-            options.Remove(temp[0]);
-            if (temp.Length == 1)
+            var item1 = item.Trim();
+            var index = item1.IndexOf(sp);
+            string key, value;
+            if (index == -1)
             {
-                options.Add(temp[0], "");
+                key = item1;
+                value = "";
             }
-            else if (temp.Length > 2)
+            else if (index + 1 == item1.Length)
             {
-                options.Add(temp[0], MakeString(temp, 1, sp));
+                key = item1[..^1];
+                value = "";
             }
             else
             {
-                options.Add(temp[0], temp[1]);
+                key = item1[..index];
+                value = item1[(index + sp.Length)..];
+            }
+
+            if (!options.TryAdd(key, value))
+            {
+                options[key] = value;
             }
         }
 
@@ -86,14 +96,14 @@ public static class Options
     /// <param name="index"></param>
     /// <param name="sp"></param>
     /// <returns></returns>
-    private static string MakeString(string[] input, int index, string sp)
-    {
-        string temp = "";
-        for (int i = index; i < input.Length; i++)
-        {
-            temp += input[i] + sp;
-        }
+    //private static string MakeString(string[] input, int index, string sp)
+    //{
+    //    var temp = "";
+    //    for (int i = index; i < input.Length; i++)
+    //    {
+    //        temp += input[i] + sp;
+    //    }
 
-        return temp[0..^(sp.Length)];
-    }
+    //    return temp[0..^(sp.Length)];
+    //}
 }

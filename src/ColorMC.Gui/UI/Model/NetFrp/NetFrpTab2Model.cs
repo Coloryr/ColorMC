@@ -10,7 +10,7 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel
 {
-    private readonly LanClient _client = new();
+    private LanClient _client;
     private readonly List<string> _have = [];
 
     public ObservableCollection<NetFrpLocalModel> Locals { get; set; } = [];
@@ -67,7 +67,10 @@ public partial class NetFrpModel
 
     public void LoadLocal()
     {
-        _client.FindLan = Find;
+        _client = new()
+        {
+            FindLan = Find
+        };
     }
 
     private void Find(string motd, string ip, string port)

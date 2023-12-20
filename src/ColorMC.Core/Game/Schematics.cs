@@ -21,7 +21,7 @@ public static class Schematic
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>列表</returns>
-    public static async Task<ConcurrentBag<SchematicObj>> GetSchematics(this GameSettingObj obj)
+    public static async Task<ConcurrentBag<SchematicObj>> GetSchematicsAsync(this GameSettingObj obj)
     {
         var list = new ConcurrentBag<SchematicObj>();
         var path = obj.GetSchematicsPath();
@@ -36,13 +36,13 @@ public static class Schematic
         await Parallel.ForEachAsync(items, async (item, cancel) =>
         {
             var info = new FileInfo(item);
-            if (info.Extension.ToLower() == Name1)
+            if (info.Extension.Equals(Name1, StringComparison.OrdinalIgnoreCase))
             {
-                list.Add(await ReadAsLitematic(item));
+                list.Add(await ReadLitematicAsync(item));
             }
-            else if (info.Extension.ToLower() == Name2)
+            else if (info.Extension.Equals(Name2, StringComparison.OrdinalIgnoreCase))
             {
-                list.Add(await ReadAsSchematic(item));
+                list.Add(await ReadSchematicAsync(item));
             }
         });
 
@@ -106,11 +106,11 @@ public static class Schematic
     /// </summary>
     /// <param name="file">文件</param>
     /// <returns>数据</returns>
-    private static async Task<SchematicObj> ReadAsSchematic(string file)
+    private static async Task<SchematicObj> ReadSchematicAsync(string file)
     {
         try
         {
-            if (await NbtBase.Read(file) is not NbtCompound tag)
+            if (await NbtBase.Read<NbtCompound>(file) is not { } tag)
             {
                 return new()
                 {
@@ -122,9 +122,9 @@ public static class Schematic
             return new()
             {
                 Name = Path.GetFileName(file),
-                Height = (tag["Height"] as NbtShort)!.Value,
-                Length = (tag["Length"] as NbtShort)!.Value,
-                Width = (tag["Width"] as NbtShort)!.Value,
+                Height = tag.TryGet<NbtShort>("Height")!.Value,
+                Length = tag.TryGet<NbtShort>("Length")!.Value,
+                Width = tag.TryGet<NbtShort>("Width")!.Value,
                 Broken = false,
                 Local = file
             };
@@ -145,11 +145,11 @@ public static class Schematic
     /// </summary>
     /// <param name="file">文件</param>
     /// <returns>数据</returns>
-    private static async Task<SchematicObj> ReadAsLitematic(string file)
+    private static async Task<SchematicObj> ReadLitematicAsync(string file)
     {
         try
         {
-            if (await NbtBase.Read(file) is not NbtCompound tag)
+            if (await NbtBase.Read<NbtCompound>(file) is not { } tag)
             {
                 return new()
                 {
@@ -158,23 +158,23 @@ public static class Schematic
                 };
             }
 
-            var com1 = (tag["Metadata"] as NbtCompound)!;
+            var com1 = tag.TryGet<NbtCompound>("Metadata")!;
 
             var item = new SchematicObj()
             {
-                Name = (com1["Name"] as NbtString)!.Value,
-                Author = (com1["Author"] as NbtString)!.Value,
-                Description = (com1["Description"] as NbtString)!.Value,
+                Name = com1.TryGet<NbtString>("Name")!.Value,
+                Author = com1.TryGet<NbtString>("Author")!.Value,
+                Description = com1.TryGet<NbtString>("Description")!.Value,
                 Broken = false,
                 Local = file
             };
 
-            var pos = (com1["EnclosingSize"] as NbtCompound)!;
+            var pos = com1.TryGet<NbtCompound>("EnclosingSize")!;
             if (pos != null)
             {
-                item.Height = (pos["y"] as NbtInt)!.Value;
-                item.Length = (pos["x"] as NbtInt)!.Value;
-                item.Width = (pos["z"] as NbtInt)!.Value;
+                item.Height = pos.TryGet<NbtInt>("y")!.Value;
+                item.Length = pos.TryGet<NbtInt>("x")!.Value;
+                item.Width = pos.TryGet<NbtInt>("z")!.Value;
             }
 
             return item;

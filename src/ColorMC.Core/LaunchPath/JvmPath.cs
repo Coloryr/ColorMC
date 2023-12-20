@@ -32,7 +32,7 @@ public static class JvmPath
             BaseDir = dir;
         }
 
-        if (!BaseDir.EndsWith("/") && !BaseDir.EndsWith("\\"))
+        if (!BaseDir.EndsWith('/') && !BaseDir.EndsWith('\\'))
         {
             BaseDir += "/";
         }
@@ -65,18 +65,19 @@ public static class JvmPath
     /// <param name="sha256">验证</param>
     /// <param name="url">地址</param>
     /// <returns>结果</returns>
-    public static async Task<(CoreRunState Res, string? Message)> Install(string file, string name, string sha256, string url)
+    public static async Task<(CoreRunState Res, string? Message)> 
+        InstallAsync(string file, string name, string sha256, string url)
     {
         try
         {
             Remove(name);
-            var res = await Download(file, sha256, url);
+            var res = await DownloadAsync(file, sha256, url);
             if (!res.Res)
             {
                 return (CoreRunState.Error, LanguageHelper.Get("Core.Jvm.Error5"));
             }
             ColorMCCore.JavaUnzip?.Invoke();
-            res = await UnzipJava(name, res.Local!);
+            res = await UnzipJavaAsync(name, res.Local!);
             if (!res.Res)
             {
                 return (CoreRunState.Error, res.Local);
@@ -99,7 +100,8 @@ public static class JvmPath
     /// <param name="sha256">校验</param>
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
-    private static async Task<(bool Res, string? Local)> Download(string name, string sha256, string url)
+    private static async Task<(bool Res, string? Local)> 
+        DownloadAsync(string name, string sha256, string url)
     {
         var item = new DownloadItemObj()
         {
@@ -109,7 +111,7 @@ public static class JvmPath
             Url = url
         };
 
-        var res = await DownloadManager.Start([item]);
+        var res = await DownloadManager.StartAsync([item]);
 
         if (res == false)
         {
@@ -142,7 +144,7 @@ public static class JvmPath
     /// <param name="name">名字</param>
     /// <param name="file">文件</param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> UnzipJava(string name, string file)
+    public static async Task<(bool, string?)> UnzipJavaAsync(string name, string file, Action<string, int, int>? zip = null)
     {
         string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
@@ -174,7 +176,8 @@ public static class JvmPath
             {
                 try
                 {
-                    await new ZipUtils().Unzip(path, file, stream);
+                    await new ZipUtils() { ZipUpdate = zip }
+                    .UnzipAsync(path, file, stream);
                     return (true, null!);
                 }
                 catch (Exception e)

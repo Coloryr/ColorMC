@@ -81,11 +81,11 @@ public static class UserBinding
         }
         var (_, State1, Obj, Message, Ex) = type switch
         {
-            AuthType.OAuth => await GameAuth.LoginWithOAuth(),
-            AuthType.Nide8 => await GameAuth.LoginWithNide8(input1!, input2!, input3!),
-            AuthType.AuthlibInjector => await GameAuth.LoginWithAuthlibInjector(input1!, input2!, input3!),
-            AuthType.LittleSkin => await GameAuth.LoginWithLittleSkin(input1!, input2!),
-            AuthType.SelfLittleSkin => await GameAuth.LoginWithLittleSkin(input1!, input2!, input3!),
+            AuthType.OAuth => await GameAuth.LoginOAuthAsync(),
+            AuthType.Nide8 => await GameAuth.LoginNide8Async(input1!, input2!, input3!),
+            AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(input1!, input2!, input3!),
+            AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!),
+            AuthType.SelfLittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, input3!),
             _ => (AuthState.Profile, LoginState.Error, null, null, null)
         };
 
@@ -148,7 +148,7 @@ public static class UserBinding
 
         obj.AccessToken = "";
 
-        return (await obj.RefreshToken()).LoginState == LoginState.Done;
+        return (await obj.RefreshTokenAsync()).LoginState == LoginState.Done;
     }
 
     public static void SetLastUser(string uuid, AuthType type)
@@ -370,6 +370,6 @@ public static class UserBinding
 
     public static async Task<bool> TestLogin(LoginObj user)
     {
-        return (await user.RefreshToken()).LoginState == LoginState.Done;
+        return (await user.RefreshTokenAsync()).LoginState == LoginState.Done;
     }
 }

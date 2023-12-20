@@ -72,8 +72,12 @@ public partial class GameEditModel
         }
 
         var opt = _obj.GetOptions();
-        if (opt.ContainsKey(GameLang.Name2))
+        if (opt.TryGetValue(GameLang.Name2, out var value1))
         {
+            if (value1 == _langList[value])
+            {
+                return;
+            }
             opt[GameLang.Name2] = _langList[value];
         }
         else
@@ -92,7 +96,9 @@ public partial class GameEditModel
     async partial void OnLoaderTypeChanged(int value)
     {
         if (_gameLoad)
+        {
             return;
+        }
 
         LoaderVersionList.Clear();
         LoaderVersion = null;

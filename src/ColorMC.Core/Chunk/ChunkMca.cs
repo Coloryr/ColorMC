@@ -130,9 +130,9 @@ public static class ChunkMca
     /// </summary>
     /// <param name="file">文件</param>
     /// <returns>区块数据</returns>
-    public static async Task<ChunkDataObj?> Read(string file)
+    public static async Task<ChunkDataObj?> ReadAsync(string file)
     {
-        return await Read(PathHelper.OpenRead(file)!);
+        return await ReadAsync(PathHelper.OpenRead(file)!);
     }
 
     /// <summary>
@@ -140,14 +140,14 @@ public static class ChunkMca
     /// </summary>
     /// <param name="stream">流</param>
     /// <returns>区块数据</returns>
-    private static async Task<ChunkDataObj?> Read(Stream stream)
+    private static async Task<ChunkDataObj?> ReadAsync(Stream stream)
     {
-        var data = await ReadHead(stream);
+        var data = await ReadHeadAsync(stream);
         if (data == null)
         {
             return null;
         }
-        await ReadChunk(data, stream);
+        await ReadChunkAsync(data, stream);
 
         return data;
     }
@@ -157,7 +157,7 @@ public static class ChunkMca
     /// </summary>
     /// <param name="data">区块数据</param>
     /// <param name="stream">流</param>
-    private static async Task ReadChunk(ChunkDataObj data, Stream stream)
+    private static async Task ReadChunkAsync(ChunkDataObj data, Stream stream)
     {
         var list = new NbtList()
         {
@@ -176,15 +176,15 @@ public static class ChunkMca
             //区块大小
             item.Size = temp[0] << 24 | temp[1] << 16
                 | temp[2] << 8 | temp[3];
-            byte type = temp[4];
+            var type = temp[4];
             var buffer = new byte[item.Size - 1];
             await stream.ReadExactlyAsync(buffer);
             using var stream1 = new MemoryStream(buffer);
             //读NBT标签
-            var nbt = (await NbtBase.Read(stream1, true) as ChunkNbt)!;
+            var nbt = await NbtBase.Read<ChunkNbt>(stream1, true);
 
             //获取区块位置
-            if (nbt.TryGet("xPos") is NbtInt value)
+            if (nbt!.TryGet("xPos") is NbtInt value)
             {
                 nbt.X = value.Value;
             }
@@ -208,7 +208,7 @@ public static class ChunkMca
     /// </summary>
     /// <param name="stream">文件流</param>
     /// <returns>区块数据</returns>
-    private static async Task<ChunkDataObj?> ReadHead(Stream stream)
+    private static async Task<ChunkDataObj?> ReadHeadAsync(Stream stream)
     {
         //文件过小
         if (stream.Length < 8192)

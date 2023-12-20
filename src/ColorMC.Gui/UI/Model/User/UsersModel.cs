@@ -42,11 +42,11 @@ public partial class UsersControlModel : TopModel
     [ObservableProperty]
     private string _watermarkName;
     [ObservableProperty]
-    private string _name;
+    private string? _name;
     [ObservableProperty]
-    private string _user;
+    private string? _user;
     [ObservableProperty]
-    private string _password;
+    private string? _password;
 
     private bool _cancel;
     private bool _isOAuth;
@@ -56,9 +56,9 @@ public partial class UsersControlModel : TopModel
         Load();
     }
 
-    partial void OnPasswordChanging(string value)
+    partial void OnPasswordChanging(string? value)
     {
-        if (value.EndsWith(Environment.NewLine))
+        if (value?.EndsWith(Environment.NewLine) == true)
         {
             Password = value.TrimEnd();
 
@@ -66,9 +66,9 @@ public partial class UsersControlModel : TopModel
         }
     }
 
-    partial void OnUserChanging(string value)
+    partial void OnUserChanging(string? value)
     {
-        if (value.EndsWith(Environment.NewLine))
+        if (value?.EndsWith(Environment.NewLine) == true)
         {
             User = value.TrimEnd();
 
@@ -76,9 +76,9 @@ public partial class UsersControlModel : TopModel
         }
     }
 
-    partial void OnNameChanging(string value)
+    partial void OnNameChanging(string? value)
     {
-        if (value.EndsWith(Environment.NewLine))
+        if (value?.EndsWith(Environment.NewLine) == true)
         {
             Name = value.TrimEnd();
 

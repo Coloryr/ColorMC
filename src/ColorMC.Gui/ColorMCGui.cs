@@ -95,7 +95,7 @@ public static class ColorMCGui
         }
         catch (Exception e)
         {
-            PathBinding.OpFile(Logs.SaveCrash("Gui Crash", e));
+            PathBinding.OpFile(Logs.Crash("Gui Crash", e));
             App.Close();
         }
     }
@@ -107,7 +107,7 @@ public static class ColorMCGui
             Logs.Error(App.Lang("Gui.Error25"), e.Exception);
             return;
         }
-        Logs.SaveCrash(App.Lang("Gui.Error25"), e.Exception);
+        Logs.Crash(App.Lang("Gui.Error25"), e.Exception);
     }
 
     public static void StartPhone(string local)

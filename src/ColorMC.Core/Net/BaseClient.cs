@@ -77,7 +77,7 @@ public static class BaseClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> GetString(string url)
+    public static async Task<(bool, string?)> GetStringAsync(string url)
     {
         var data = await DownloadClient.GetAsync(url);
         if (data.StatusCode != HttpStatusCode.OK)
@@ -94,7 +94,7 @@ public static class BaseClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<(bool, byte[]?)> GetBytes(string url)
+    public static async Task<(bool, byte[]?)> GetBytesAsync(string url)
     {
         var data = await DownloadClient.GetAsync(url);
         if (data.StatusCode != HttpStatusCode.OK)
@@ -111,7 +111,7 @@ public static class BaseClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<(bool, Stream?)> GetStream(string url)
+    public static async Task<(bool, Stream?)> GetStreamAsync(string url)
     {
         var data = await DownloadClient.GetAsync(url);
         if (data.StatusCode != HttpStatusCode.OK)

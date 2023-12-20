@@ -35,12 +35,10 @@ public partial class SettingModel
 
         Model.Progress(App.Lang("SettingWindow.Tab5.Info7"));
         string temp = App.Lang("Gui.Info27");
-        ColorMCCore.UnZipItem = (a, b, c) =>
+        var res = await JavaBinding.AddJavaZip(file, (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
-        };
-        var res = await JavaBinding.AddJavaZip(file);
-        ColorMCCore.UnZipItem = null;
+        });
         Model.ProgressClose();
         if (!res.Item1)
         {

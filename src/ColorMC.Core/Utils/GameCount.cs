@@ -67,28 +67,27 @@ public static class GameCount
         }
         try
         {
-            if (await NbtBase.Read(s_local) is NbtCompound nbt)
+            if (await NbtBase.Read<NbtCompound>(s_local) is { } nbt)
             {
                 Count = new()
                 {
-                    LaunchCount = (nbt.TryGet("LaunchCount") as NbtLong)!.Value,
-                    LaunchDoneCount = (nbt.TryGet("LaunchDoneCount") as NbtLong)!.Value,
-                    LaunchErrorCount = (nbt.TryGet("LaunchErrorCount") as NbtLong)!.Value,
-                    AllTime = TimeSpan.FromTicks((nbt.TryGet("AllTime") as NbtLong)!.Value),
-                    GameRuns = new(),
-                    LaunchLogs = new()
+                    LaunchCount = nbt.TryGet<NbtLong>("LaunchCount")!.Value,
+                    LaunchDoneCount = nbt.TryGet<NbtLong>("LaunchDoneCount")!.Value,
+                    LaunchErrorCount = nbt.TryGet<NbtLong>("LaunchErrorCount")!.Value,
+                    AllTime = TimeSpan.FromTicks(nbt.TryGet<NbtLong>("AllTime")!.Value),
+                    GameRuns = [],
                 };
 
-                var list = nbt.TryGet("GameRuns") as NbtList;
-                foreach (var item in list!.Cast<NbtCompound>())
+                var list = nbt.TryGet<NbtList>("GameRuns")!;
+                foreach (var item in list.Cast<NbtCompound>())
                 {
-                    var key = (item.TryGet("Key") as NbtString)!.Value;
-                    var list1 = item.TryGet("List") as NbtList;
+                    var key = item.TryGet<NbtString>("Key")!.Value;
+                    var list1 = item.TryGet<NbtList>("List");
                     var list2 = new List<CountObj.GameTime>();
                     foreach (var item1 in list1!.Cast<NbtCompound>())
                     {
-                        var start = (item1.TryGet("StartTime") as NbtLong)!.Value;
-                        var stop = (item1.TryGet("StopTime") as NbtLong)!.Value;
+                        var start = item1.TryGet<NbtLong>("StartTime")!.Value;
+                        var stop = item1.TryGet<NbtLong>("StopTime")!.Value;
                         list2.Add(new()
                         {
                             StartTime = new DateTime(start),
@@ -98,16 +97,16 @@ public static class GameCount
                     Count.GameRuns.Add(key, list2);
                 }
 
-                list = nbt.TryGet("LaunchLogs") as NbtList;
-                foreach (var item in list!.Cast<NbtCompound>())
+                list = nbt.TryGet<NbtList>("LaunchLogs")!;
+                foreach (var item in list.Cast<NbtCompound>())
                 {
-                    var key = (item.TryGet("Key") as NbtString)!.Value;
-                    var list1 = item.TryGet("List") as NbtList;
+                    var key = item.TryGet<NbtString>("Key")!.Value;
+                    var list1 = item.TryGet<NbtList>("List");
                     var list2 = new List<CountObj.LaunchLog>();
                     foreach (var item1 in list1!.Cast<NbtCompound>())
                     {
-                        var time = (item1.TryGet("Time") as NbtLong)!.Value;
-                        var error = (item1.TryGet("Error") as NbtByte)!.Value;
+                        var time = item1.TryGet<NbtLong>("Time")!.Value;
+                        var error = item1.TryGet<NbtByte>("Error")!.Value;
                         list2.Add(new()
                         {
                             Time = new DateTime(time),

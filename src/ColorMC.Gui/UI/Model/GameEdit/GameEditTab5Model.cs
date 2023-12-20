@@ -112,7 +112,7 @@ public partial class GameEditModel
     public async Task EditWorld()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info13"));
-        var res = await ToolPath.OpenMapEdit();
+        var res = await ToolPath.OpenMapEditAsync();
         Model.ProgressClose();
         if (!res.Item1)
         {

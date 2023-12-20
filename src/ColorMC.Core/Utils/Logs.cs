@@ -135,7 +135,7 @@ public static class Logs
     /// <param name="data">消息</param>
     /// <param name="e">错误内容</param>
     /// <returns></returns>
-    public static string SaveCrash(string data, Exception e)
+    public static string Crash(string data, Exception e)
     {
         var date = DateTime.Now;
         string text = $"[{date}][Error]{data}{Environment.NewLine}{e}";

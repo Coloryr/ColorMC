@@ -19,7 +19,7 @@ public static class Resourcepacks
     /// </summary>
     /// <param name="file">文件流</param>
     /// <returns>资源包</returns>
-    private static async Task<ResourcepackObj?> ReadResourcepack(Stream file)
+    private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream file)
     {
         using var zFile = new ZipFile(file);
         var item1 = zFile.GetEntry("pack.mcmeta");
@@ -73,7 +73,7 @@ public static class Resourcepacks
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>列表</returns>
-    public static async Task<List<ResourcepackObj>> GetResourcepacks(this GameSettingObj game, bool sha256)
+    public static async Task<List<ResourcepackObj>> GetResourcepacksAsync(this GameSettingObj game, bool sha256)
     {
         var list = new List<ResourcepackObj>();
         var dir = game.GetResourcepacksPath();
@@ -96,7 +96,7 @@ public static class Resourcepacks
             try
             {
                 stream.Seek(0, SeekOrigin.Begin);
-                var obj = await ReadResourcepack(stream);
+                var obj = await ReadResourcepackAsync(stream);
                 if (obj != null)
                 {
                     obj.Local = Path.GetFullPath(item.FullName);
@@ -133,7 +133,7 @@ public static class Resourcepacks
     /// <param name="obj">游戏实例</param>
     /// <param name="file">导入列表</param>
     /// <returns>结果</returns>
-    public static async Task<bool> AddResourcepack(this GameSettingObj obj, List<string> file)
+    public static async Task<bool> AddResourcepackAsync(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetResourcepacksPath();
         if (!Directory.Exists(path))
@@ -160,5 +160,10 @@ public static class Resourcepacks
             }, cancel);
         });
         return ok;
+    }
+
+    public static void Delete(this ResourcepackObj obj)
+    {
+        PathHelper.Delete(obj.Local);
     }
 }

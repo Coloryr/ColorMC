@@ -14,7 +14,7 @@ public static class ConfigSave
     /// <summary>
     /// 保存队列
     /// </summary>
-    private static readonly ConcurrentBag<ConfigSaveObj> s_saveQue = new();
+    private static readonly ConcurrentBag<ConfigSaveObj> s_saveQue = [];
 
     /// <summary>
     /// 保存线程

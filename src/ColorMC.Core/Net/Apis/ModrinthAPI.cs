@@ -145,7 +145,7 @@ public static class ModrinthAPI
     {
         try
         {
-            var res = await BaseClient.GetString($"{UrlHelper.Modrinth}project/{id}/version/{version}");
+            var res = await BaseClient.GetStringAsync($"{UrlHelper.Modrinth}project/{id}/version/{version}");
             if (res.Item1 == false)
             {
                 return null;
@@ -168,7 +168,7 @@ public static class ModrinthAPI
     {
         try
         {
-            var res = await BaseClient.GetString($"{UrlHelper.Modrinth}project/{id}");
+            var res = await BaseClient.GetStringAsync($"{UrlHelper.Modrinth}project/{id}");
             if (res.Item1 == false)
             {
                 return null;
