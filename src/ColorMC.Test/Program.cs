@@ -36,7 +36,7 @@ internal class Program
         ColorMCCore.Init1();
 
         ColorMCCore.DownloaderUpdate = Update;
-        ColorMCCore.DownloadItemStateUpdate = Update;
+        ColorMCCore.DownloadItemUpdate = Update;
         ColorMCCore.GameRequest = Download;
         ColorMCCore.GameOverwirte = Overwirte;
         ColorMCCore.PackState = Update;
@@ -138,9 +138,9 @@ internal class Program
         Logs.Info(log);
     }
 
-    public static void Update(int index)
+    public static void Update(DownloadItemObj obj)
     {
-        Console.WriteLine($"下载器{index} 下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
+        Console.WriteLine($"下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
     }
 
     public static void Update(int index, DownloadItemObj item)

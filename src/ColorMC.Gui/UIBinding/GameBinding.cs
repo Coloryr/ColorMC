@@ -46,7 +46,7 @@ public static class GameBinding
     public static async Task<List<string>> GetGameVersion(bool? type1, bool? type2, bool? type3)
     {
         var list = new List<string>();
-        var ver = await VersionPath.GetVersions();
+        var ver = await VersionPath.GetVersionsAsync();
         if (ver == null)
         {
             return list;
@@ -187,9 +187,9 @@ public static class GameBinding
         return true;
     }
 
-    public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type, string? name, string? group)
+    public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type, string? name, string? group, Action<string, int, int> zip)
     {
-        return InstancesPath.InstallZip(dir, type, name, group);
+        return InstallGameHelper.InstallZip(dir, type, name, group, zip);
     }
 
     public static Dictionary<string, List<GameSettingObj>> GetGameGroups()
@@ -270,9 +270,10 @@ public static class GameBinding
     }
 
     public static async Task<bool> InstallCurseForge(CurseForgeModObj.Data data,
-        CurseForgeObjList.Data data1, string? name, string? group)
+        CurseForgeObjList.Data data1, string? name, string? group,
+        Action<string, int, int>? zip = null)
     {
-        var res = await InstancesPath.InstallCurseForge(data, name, group);
+        var res = await InstallGameHelper.InstallCurseForge(data, name, group, zip);
         if (!res.Item1)
         {
             return false;
@@ -286,9 +287,10 @@ public static class GameBinding
     }
 
     public static async Task<bool> InstallModrinth(ModrinthVersionObj data,
-        ModrinthSearchObj.Hit data1, string? name, string? group)
+        ModrinthSearchObj.Hit data1, string? name, string? group,
+        Action<string, int, int>? zip)
     {
-        var res = await InstancesPath.InstallModrinth(data, name, group);
+        var res = await InstallGameHelper.InstallModrinth(data, name, group, zip);
         if (!res.Item1)
         {
             return false;
@@ -305,7 +307,7 @@ public static class GameBinding
     {
         try
         {
-            var data = await BaseClient.GetBytes(url);
+            var data = await BaseClient.GetBytesAsync(url);
             if (data.Item1)
             {
                 await File.WriteAllBytesAsync(obj.GetIconFile(), data.Item2!);
@@ -420,9 +422,9 @@ public static class GameBinding
 
     public static async Task<bool> ReloadVersion()
     {
-        await VersionPath.GetFromWeb();
+        await VersionPath.GetFromWebAsync();
 
-        return await VersionPath.Have();
+        return await VersionPath.IsHaveVersionInfoAsync();
     }
 
     public static async void SaveGame(GameSettingObj obj, string? versi, Loaders loader, string? loadv)
@@ -430,7 +432,7 @@ public static class GameBinding
         if (!string.IsNullOrWhiteSpace(versi))
         {
             obj.Version = versi;
-            var ver = await VersionPath.GetVersions();
+            var ver = await VersionPath.GetVersionsAsync();
             var version1 = ver!.versions.FirstOrDefault(a => a.id == versi);
             if (version1 != null)
             {
@@ -492,7 +494,7 @@ public static class GameBinding
         bool sha256 = false)
     {
         var list = new List<ModDisplayModel>();
-        var list1 = await obj.GetMods(sha256);
+        var list1 = await obj.GetModsAsync(sha256);
         if (list1 == null)
         {
             return list;
@@ -569,7 +571,7 @@ public static class GameBinding
                 list.Add(item1);
             }
         }
-        return obj.AddMods(list);
+        return obj.AddModsAsync(list);
     }
 
     public static List<string> GetAllConfig(GameSettingObj obj)
@@ -638,14 +640,14 @@ public static class GameBinding
     {
         var dir = obj.Local;
 
-        return await ChunkMca.Read(Path.GetFullPath(dir + "/" + name));
+        return await ChunkMca.ReadAsync(Path.GetFullPath(dir + "/" + name));
     }
 
     public static async Task<ChunkDataObj?> ReadMca(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
 
-        return await ChunkMca.Read(Path.GetFullPath(dir + "/" + name));
+        return await ChunkMca.ReadAsync(Path.GetFullPath(dir + "/" + name));
     }
 
     public static async Task<NbtBase?> ReadNbt(WorldObj obj, string name)
@@ -720,7 +722,7 @@ public static class GameBinding
 
     public static Task<List<WorldObj>> GetWorlds(GameSettingObj obj)
     {
-        return obj.GetWorlds();
+        return obj.GetWorldsAsync();
     }
 
     public static async Task<bool> AddWorld(GameSettingObj obj, string? file)
@@ -729,7 +731,7 @@ public static class GameBinding
         {
             return false;
         }
-        var res = await obj.AddWorldZip(file);
+        var res = await obj.AddWorldZipAsync(file);
         if (!res)
         {
             PathBinding.OpFile(file);
@@ -754,12 +756,12 @@ public static class GameBinding
     public static Task<List<ResourcepackObj>> GetResourcepacks(GameSettingObj obj,
         bool sha256 = false)
     {
-        return obj.GetResourcepacks(sha256);
+        return obj.GetResourcepacksAsync(sha256);
     }
 
     public static void DeleteResourcepack(ResourcepackObj obj)
     {
-        PathHelper.Delete(obj.Local);
+        obj.Delete();
     }
 
     public static Task<bool> AddResourcepack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
@@ -773,12 +775,12 @@ public static class GameBinding
                 list.Add(item1);
             }
         }
-        return obj.AddResourcepack(list);
+        return obj.AddResourcepackAsync(list);
     }
 
     public static void DeleteScreenshot(string file)
     {
-        PathHelper.Delete(file);
+        Screenshots.Delete(file);
     }
 
     public static void ClearScreenshots(GameSettingObj obj)
@@ -803,28 +805,22 @@ public static class GameBinding
 
     public static async Task<IEnumerable<ServerInfoObj>> GetServers(GameSettingObj obj)
     {
-        return await obj.GetServerInfos();
+        return await obj.GetServerInfosAsync();
     }
 
     public static Task<List<ShaderpackObj>> GetShaderpacks(GameSettingObj obj)
     {
-        return obj.GetShaderpacks();
+        return obj.GetShaderpacksAsync();
     }
 
     public static Task AddServer(GameSettingObj obj, string name, string ip)
     {
-        return Task.Run(() =>
-        {
-            obj.AddServer(name, ip);
-        });
+        return obj.AddServerAsync(name, ip); 
     }
 
     public static Task DeleteServer(GameSettingObj obj, ServerInfoObj server)
     {
-        return Task.Run(() =>
-        {
-            obj.RemoveServer(server.Name, server.IP);
-        });
+        return obj.RemoveServerAsync(server.Name, server.IP);
     }
 
     public static void DeleteConfig(GameSettingObj obj)
@@ -858,7 +854,7 @@ public static class GameBinding
             }
         }
 
-        return obj.AddShaderpack(list);
+        return obj.AddShaderpackAsync(list);
     }
 
     public static void DeleteShaderpack(ShaderpackObj obj)
@@ -868,7 +864,7 @@ public static class GameBinding
 
     public static async Task<List<SchematicObj>> GetSchematics(GameSettingObj obj)
     {
-        var list = await obj.GetSchematics();
+        var list = await obj.GetSchematicsAsync();
         var list1 = new List<SchematicObj>();
         foreach (var item in list)
         {
@@ -963,7 +959,7 @@ public static class GameBinding
     {
         try
         {
-            await world.Backup();
+            await world.BackupAsync();
             return true;
         }
         catch (Exception e)
@@ -977,7 +973,7 @@ public static class GameBinding
 
     public static Task<bool> BackupWorld(GameSettingObj obj, FileInfo item1)
     {
-        return obj.UnzipBackupWorld(item1);
+        return obj.UnzipBackupWorldAsync(item1);
     }
 
 
@@ -1018,7 +1014,7 @@ public static class GameBinding
 
     public static Task<bool> GenServerPack(ServerPackObj obj, string local)
     {
-        return obj.GenServerPack(local);
+        return obj.GenServerPackAsync(local);
     }
 
     public static async void CopyServer(ServerInfoObj obj)
@@ -1240,7 +1236,7 @@ public static class GameBinding
                     }
                 }
 
-                return await obj.AddMods(list1);
+                return await obj.AddModsAsync(list1);
             case FileType.World:
                 foreach (var item in list)
                 {
@@ -1251,7 +1247,7 @@ public static class GameBinding
                     }
                     if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
                     {
-                        return await obj.AddWorldZip(file);
+                        return await obj.AddWorldZipAsync(file);
                     }
                 }
                 return false;
@@ -1269,7 +1265,7 @@ public static class GameBinding
                         list1.Add(file);
                     }
                 }
-                return await obj.AddResourcepack(list1);
+                return await obj.AddResourcepackAsync(list1);
             case FileType.Shaderpack:
                 list1 = [];
                 foreach (var item in list)
@@ -1282,7 +1278,7 @@ public static class GameBinding
                         list1.Add(file);
                     }
                 }
-                return await obj.AddShaderpack(list1);
+                return await obj.AddShaderpackAsync(list1);
             case FileType.Schematic:
                 list1 = [];
                 foreach (var item in list)
@@ -1440,7 +1436,7 @@ public static class GameBinding
 
             if (list.Count > 0)
             {
-                var res1 = await DownloadManager.Start(list);
+                var res1 = await DownloadManager.StartAsync(list);
                 if (!res1)
                 {
                     return (false, App.Lang("AddGameWindow.Tab1.Error12"));
@@ -1490,7 +1486,7 @@ public static class GameBinding
         InfoBinding.Window = model;
         try
         {
-            var data = await BaseClient.GetString(text + "server.json");
+            var data = await BaseClient.GetStringAsync(text + "server.json");
             if (!data.Item1)
             {
                 return (false, App.Lang("AddGameWindow.Tab1.Error15"));
@@ -1523,7 +1519,7 @@ public static class GameBinding
 
             model.Progress(App.Lang("AddGameWindow.Tab1.Info15"));
 
-            var res1 = await obj.Update(game);
+            var res1 = await obj.UpdateAsync(game);
             if (!res1)
             {
                 model.ProgressClose();
@@ -1553,7 +1549,7 @@ public static class GameBinding
         {
             return false;
         }
-        return DataPack.DisE(new List<DataPackObj>() { obj }, obj.World);
+        return DataPack.DisEna(new List<DataPackObj>() { obj }, obj.World);
     }
 
     public static bool DataPackDisE(IEnumerable<DataPackModel> pack)
@@ -1567,7 +1563,7 @@ public static class GameBinding
         {
             return false;
         }
-        return DataPack.DisE(list, list[0].World);
+        return DataPack.DisEna(list, list[0].World);
     }
 
     public static async Task<bool> DeleteDataPack(DataPackModel item)
@@ -1576,7 +1572,7 @@ public static class GameBinding
         {
             return false;
         }
-        return await DataPack.Delete([item.Pack], item.Pack.World);
+        return await DataPack.DeleteAsync([item.Pack], item.Pack.World);
     }
 
     public static async Task<bool> DeleteDataPack(IEnumerable<DataPackModel> items)
@@ -1590,7 +1586,7 @@ public static class GameBinding
         {
             return false;
         }
-        return await DataPack.Delete(list, list[0].World);
+        return await DataPack.DeleteAsync(list, list[0].World);
     }
 
     public static async Task<List<Loaders>> GetSupportLoader(string version)

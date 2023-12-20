@@ -37,7 +37,7 @@ public partial class DownloadModel : TopModel
 
     public DownloadModel(BaseModel model) : base(model)
     {
-        ColorMCCore.DownloadItemStateUpdate = DownloadItemStateUpdate;
+        ColorMCCore.DownloadItemUpdate = DownloadItemUpdate;
 
         _useName = ToString() ?? "DownloadModel";
 
@@ -115,7 +115,7 @@ public partial class DownloadModel : TopModel
         Speed = UIUtils.MakeSpeedSize(now);
     }
 
-    public void DownloadItemStateUpdate(int index, DownloadItemObj item)
+    public void DownloadItemUpdate(DownloadItemObj item)
     {
         if (item.State == DownloadItemState.Init)
         {

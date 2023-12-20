@@ -20,8 +20,8 @@ public static class LoginOld
     /// <param name="clientToken">客户端代码</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Authenticate(string server, string clientToken,
-        string user, string pass)
+    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> 
+        AuthenticateAsync(string server, string clientToken, string user, string pass)
     {
         var obj = new AuthenticateObj
         {
@@ -96,7 +96,7 @@ public static class LoginOld
     /// </summary>
     /// <param name="server">服务器地址</param>
     /// <param name="obj">保存的账户</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(string server, LoginObj obj)
+    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> RefreshAsync(string server, LoginObj obj)
     {
         var obj1 = new RefreshObj
         {
@@ -140,7 +140,7 @@ public static class LoginOld
     /// <param name="server">检测地址</param>
     /// <param name="obj">保存的账户</param>
     /// <returns>可用性</returns>
-    public static async Task<bool> Validate(string server, LoginObj obj)
+    public static async Task<bool> ValidateAsync(string server, LoginObj obj)
     {
         var obj1 = new RefreshObj
         {

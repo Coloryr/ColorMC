@@ -32,7 +32,7 @@ public static class ServerPack
     /// </summary>
     /// <param name="obj">服务器实例</param>
     /// <returns>结果</returns>
-    public static async Task<bool> Update(this ServerPackObj obj, GameSettingObj game)
+    public static async Task<bool> UpdateAsync(this ServerPackObj obj, GameSettingObj game)
     {
         PathHelper.Delete(game.GetServerPackFile());
         var old = game.GetOldServerPack();
@@ -46,14 +46,14 @@ public static class ServerPack
 
         old ??= new()
         {
-            Mod = new()
+            Mod = []
         };
 
         ColorMCCore.UpdateState?.Invoke(LanguageHelper.Get("Core.ServerPack.Info2"));
 
         //区分新旧mod
-        ServerModItemObj?[] list1 = obj.Mod.ToArray();
-        ServerModItemObj?[] list2 = old.Mod.ToArray();
+        ServerModItemObj?[] list1 = [.. obj.Mod];
+        ServerModItemObj?[] list2 = [.. old.Mod];
 
         for (int a = 0; a < list2.Length; a++)
         {
@@ -109,7 +109,7 @@ public static class ServerPack
             }
         }
 
-        var mods = await game.GetMods(true);
+        var mods = await game.GetModsAsync(true);
 
         //删除旧mod
         foreach (var item in list4)
@@ -157,7 +157,7 @@ public static class ServerPack
                     {
                         if (item.IsZip)
                         {
-                            new ZipUtils().Unzip(Path.GetFullPath(path + "/" + item.Group), "", stream).Wait();
+                            new ZipUtils().UnzipAsync(Path.GetFullPath(path + "/" + item.Group), "", stream).Wait();
                         }
                     }
                 });
@@ -178,7 +178,7 @@ public static class ServerPack
 
         ColorMCCore.UpdateState?.Invoke(LanguageHelper.Get("Core.ServerPack.Info3"));
         //开始下载
-        var res = await DownloadManager.Start(list5);
+        var res = await DownloadManager.StartAsync(list5);
         ColorMCCore.UpdateState?.Invoke(null);
         return res;
     }
@@ -257,13 +257,13 @@ public static class ServerPack
     /// <param name="obj">服务器实例</param>
     /// <param name="local">保存路径</param>
     /// <returns>创建结果</returns>
-    public static async Task<bool> GenServerPack(this ServerPackObj obj, string local)
+    public static async Task<bool> GenServerPackAsync(this ServerPackObj obj, string local)
     {
         var obj1 = new ServerPackObj()
         {
-            Mod = new(),
-            Resourcepack = new(),
-            Config = new(),
+            Mod = [],
+            Resourcepack = [],
+            Config = [],
             Game = obj.Game,
             Text = obj.Text
         };
@@ -277,7 +277,7 @@ public static class ServerPack
 
         local += "files/";
 
-        await PathHelper.DeleteFiles(local);
+        await PathHelper.DeleteFilesAsync(local);
         Directory.CreateDirectory(local);
 
         bool fail = false;
@@ -349,7 +349,7 @@ public static class ServerPack
                         {
                             //打包进压缩包
                             var file = new FileInfo(path2[..^1] + ".zip");
-                            await new ZipUtils().ZipFile(path1, file.FullName);
+                            await new ZipUtils().ZipFileAsync(path1, file.FullName);
                             var stream = PathHelper.OpenRead(file.FullName)!;
 
                             var item1 = new ConfigPackObj()
@@ -459,10 +459,10 @@ public static class ServerPack
     /// <param name="obj">游戏实例</param>
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
-    public static async Task<bool> ServerPackCheck(this GameSettingObj obj)
+    public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj)
     {
         var obj2 = obj.GetServerPack();
-        var res = await BaseClient.GetString(obj.ServerUrl + "sha1");
+        var res = await BaseClient.GetStringAsync(obj.ServerUrl + "sha1");
         if (!res.Item1)
         {
             return false;
@@ -474,7 +474,7 @@ public static class ServerPack
                 return false;
             }
 
-            var res1 = await BaseClient.GetString(obj.ServerUrl + "server.json");
+            var res1 = await BaseClient.GetStringAsync(obj.ServerUrl + "server.json");
             if (!res1.Item1)
             {
                 return false;
@@ -502,7 +502,7 @@ public static class ServerPack
             obj2.Item2?.MoveToOld();
             ColorMCCore.UpdateState?.Invoke(LanguageHelper.Get("Core.ServerPack.Info1"));
 
-            var res2 = await obj1.Update(obj);
+            var res2 = await obj1.UpdateAsync(obj);
             if (res2)
             {
                 File.WriteAllText(obj.GetServerPackFile(), res1.Item2!);

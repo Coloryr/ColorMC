@@ -16,13 +16,13 @@ public static class TestItem
 {
     public static void Item1()
     {
-        VersionPath.CheckUpdate("1.12.2").Wait();
+        VersionPath.CheckUpdateAsync("1.12.2").Wait();
         //AssetsPath.Check("1.12.2").Wait();
     }
 
     public static void Item2()
     {
-        var version = VersionPath.GetVersions().Result;
+        var version = VersionPath.GetVersionsAsync().Result;
         if (version == null)
         {
             Console.WriteLine("版本信息为空");
@@ -30,19 +30,19 @@ public static class TestItem
         else
         {
             //GameDownload.Download(version.versions.First()).Wait();
-            var list = DownloadItemHelper.Download(version.versions.Where(a => a.id == "1.12.2").First()).Result;
+            var list = DownloadItemHelper.DownloadAsync(version.versions.Where(a => a.id == "1.12.2").First()).Result;
             if (list.State != GetDownloadState.End)
             {
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.Start(list.List!).Wait();
+            DownloadManager.StartAsync(list.List!).Wait();
         }
     }
 
     public static void Item3()
     {
-        var list = ModPackHelper.DownloadCurseForgeModPack("H:\\ColonyVenture-1.13.zip", null, null).Result;
+        var list = ModPackHelper.DownloadCurseForgeModPackAsync("H:\\ColonyVenture-1.13.zip", null, null).Result;
     }
 
     public static void Item4()
@@ -55,13 +55,13 @@ public static class TestItem
         else
         {
             var item = res.loader.First();
-            var list = DownloadItemHelper.BuildFabric("1.19.2", item.version).Result;
+            var list = DownloadItemHelper.BuildFabricAsync("1.19.2", item.version).Result;
             if (list.State != GetDownloadState.End)
             {
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.Start(list.List!).Wait();
+            DownloadManager.StartAsync(list.List!).Wait();
         }
     }
 
@@ -99,7 +99,7 @@ public static class TestItem
     public static void Item7()
     {
         var data = InstancesPath.Games.First();
-        var list = CheckHelpers.CheckGameFile(data, new LoginObj(), CancellationToken.None).Result;
+        var list = CheckHelpers.CheckGameFileAsync(data, new LoginObj(), CancellationToken.None).Result;
         if (list == null)
         {
             Console.WriteLine("文件检查失败");
@@ -115,7 +115,7 @@ public static class TestItem
 
     public static void Item8()
     {
-        var login = GameAuth.LoginWithOAuth().Result;
+        var login = GameAuth.LoginOAuthAsync().Result;
         if (login.LoginState != LoginState.Done)
         {
             Console.WriteLine("登录错误");
@@ -130,7 +130,7 @@ public static class TestItem
                 Loader = Loaders.Forge,
                 LoaderVersion = "14.23.5.2860"
             };
-            var process = game.StartGame(login.Obj!, null, CancellationToken.None).Result;
+            var process = game.StartGameAsync(login.Obj!, null, CancellationToken.None).Result;
             process?.WaitForExit();
         }
     }
@@ -145,7 +145,7 @@ public static class TestItem
             UserName = "Test"
         };
 
-        var process = game[0].StartGame(login, null, CancellationToken.None).Result;
+        var process = game[0].StartGameAsync(login, null, CancellationToken.None).Result;
         process?.WaitForExit();
     }
 
@@ -174,7 +174,7 @@ public static class TestItem
 
         game.Version = "1.7.10";
         game.LoaderVersion = "10.13.4.1614";
-        process = game.StartGame(login, null, token).Result;
+        process = game.StartGameAsync(login, null, token).Result;
         process?.WaitForExit();
 
         //game.Version = "1.8";
@@ -288,7 +288,7 @@ public static class TestItem
 
     public static void Item11()
     {
-        var login = GameAuth.LoginWithNide8("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "123456").Result;
+        var login = GameAuth.LoginNide8Async("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "123456").Result;
         if (login.Obj == null)
         {
             Console.WriteLine("登录错误");
@@ -303,7 +303,7 @@ public static class TestItem
                 Loader = Loaders.Forge,
                 LoaderVersion = "40.1.85"
             };
-            var process = game.StartGame(login.Obj, null, CancellationToken.None).Result;
+            var process = game.StartGameAsync(login.Obj, null, CancellationToken.None).Result;
             process?.WaitForExit();
         }
     }
@@ -311,7 +311,7 @@ public static class TestItem
     public static void Item12()
     {
         var games = InstancesPath.Games;
-        var list = games[0].GetMods(false).Result;
+        var list = games[0].GetModsAsync(false).Result;
 
         list[0].Disable();
         Console.ReadLine();
@@ -323,14 +323,14 @@ public static class TestItem
             Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
         }
 
-        list = Mods.GetMods(games[1], false).Result;
+        list = Mods.GetModsAsync(games[1], false).Result;
 
         foreach (var item in list)
         {
             Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
         }
 
-        list = Mods.GetMods(games[2], false).Result;
+        list = Mods.GetModsAsync(games[2], false).Result;
 
         foreach (var item in list)
         {
@@ -341,7 +341,7 @@ public static class TestItem
     public static async void Item13()
     {
         var games = InstancesPath.Games;
-        var list = await Servers.GetServerInfos(games[0]);
+        var list = await Servers.GetServerInfosAsync(games[0]);
 
         foreach (var item in list)
         {
@@ -352,7 +352,7 @@ public static class TestItem
     public static void Item14()
     {
         var games = InstancesPath.Games;
-        var packs = games[0].GetResourcepacks(false).Result;
+        var packs = games[0].GetResourcepacksAsync(false).Result;
 
         foreach (var item in packs)
         {
@@ -367,7 +367,7 @@ public static class TestItem
     public static void Item15()
     {
         var games = InstancesPath.Games;
-        var packs = games[0].GetWorlds().Result;
+        var packs = games[0].GetWorldsAsync().Result;
 
         foreach (var item in packs)
         {
@@ -398,7 +398,7 @@ public static class TestItem
     public static void Item17()
     {
         var game = InstancesPath.Games[0];
-        var list = game.GetWorlds().Result;
+        var list = game.GetWorldsAsync().Result;
         list[0].ExportWorldZip("test.zip").Wait();
     }
 
@@ -418,7 +418,7 @@ public static class TestItem
     {
         var game = InstancesPath.GetGame("test");
 
-        var list = game!.GetSchematics();
+        var list = game!.GetSchematicsAsync();
     }
 
     public static void Item21()
@@ -428,7 +428,8 @@ public static class TestItem
         var list1 = ModrinthAPI.GetFileVersions(item.project_id, "", Loaders.Fabric).Result;
         var item1 = list1!.First();
 
-        InstancesPath.InstallModrinth(item1, null, null).Wait();
+        InstallGameHelper.InstallModrinth(item1, null, null, 
+            (a, b, c) => { }).Wait();
     }
 
     public static void Item22()
@@ -511,13 +512,13 @@ public static class TestItem
 
     public static void Item30()
     {
-        string temp = "H:\\jre17-arm64-20230721-release.tar.xz";
-        new ZipUtils().Unzip("H:\\jre17", temp, File.OpenRead(temp));
+        string temp = "H:\\jre17-arm64-20230721-release.tar.gz";
+        new ZipUtils().UnzipAsync("H:\\jre17", temp, File.OpenRead(temp)).Wait();
     }
 
     public static void Item31()
     {
-        VersionPath.GetFromWeb().Wait();
+        VersionPath.GetFromWebAsync().Wait();
         var game = new GameSettingObj()
         {
             DirName = "test1",
@@ -527,13 +528,13 @@ public static class TestItem
         game.Version = "1.20.1";
         game.Loader = Loaders.NeoForge;
         game.LoaderVersion = "47.1.76";
-        game.MakeInstallForgeArg();
+        game.MakeInstallForgeArg(true);
     }
 
     public static void Item32()
     {
         var obj = VersionPath.GetNeoForgeInstallObj("1.20.1", "47.1.76")!;
-        var res = CheckHelpers.CheckForgeInstall(obj, "47.1.76", true).Result;
+        var res = CheckHelpers.CheckForgeInstall(obj, "47.1.76", true);
     }
 
     public static void Item33()

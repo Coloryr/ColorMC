@@ -145,7 +145,7 @@ public static class PathHelper
     /// <summary>
     /// 删除文件夹
     /// </summary>
-    public static async Task<bool> DeleteFiles(string local, bool req = true)
+    public static async Task<bool> DeleteFilesAsync(string local, bool req = true)
     {
         if (!Directory.Exists(local))
         {

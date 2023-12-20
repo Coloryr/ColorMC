@@ -49,7 +49,7 @@ public static class ImageUtils
         {
             try
             {
-                var data1 = await BaseClient.GetStream(url);
+                var data1 = await BaseClient.GetStreamAsync(url);
                 if (data1.Item1)
                 {
                     using var image1 = SKBitmap.Decode(data1.Item2!);

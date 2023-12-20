@@ -26,14 +26,14 @@ public static class JavaBinding
         };
     }
 
-    public static async Task<(bool, string?)> AddJavaZip(string file)
+    public static async Task<(bool, string?)> AddJavaZip(string file, Action<string, int, int> zip)
     {
         string name = Path.GetFileName(file);
         if (SystemInfo.Os == OsType.Android)
         {
             name = name.Replace("primary%3A", "");
         }
-        return await JvmPath.UnzipJava(name, file);
+        return await JvmPath.UnzipJavaAsync(name, file, zip);
     }
 
     public static List<string> GetJavaName()
@@ -110,7 +110,7 @@ public static class JavaBinding
 
     public static async Task<(bool, string?)> DownloadJava(JavaDownloadObj obj)
     {
-        var (Res, Message) = await JvmPath.Install(obj.File, obj.Name, obj.Sha256, obj.Url);
+        var (Res, Message) = await JvmPath.InstallAsync(obj.File, obj.Name, obj.Sha256, obj.Url);
         if (Res != CoreRunState.Init)
         {
             return (false, Message);

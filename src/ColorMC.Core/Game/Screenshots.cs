@@ -43,4 +43,9 @@ public static class Screenshots
             }
         }
     }
+
+    public static void Delete(string file)
+    {
+        PathHelper.Delete(file);
+    }
 }

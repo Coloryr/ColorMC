@@ -32,7 +32,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public void Closed()
     {
-        ColorMCCore.DownloadItemStateUpdate = null;
+        ColorMCCore.DownloadItemUpdate = null;
 
         App.DownloadWindow = null;
     }

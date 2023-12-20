@@ -43,7 +43,7 @@ public static class ConfigUtils
         {
             try
             {
-                obj = JsonConvert.DeserializeObject<ConfigObj>(data)!;
+                obj = JsonConvert.DeserializeObject<ConfigObj>(data);
             }
             catch (Exception e)
             {

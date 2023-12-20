@@ -159,6 +159,11 @@ public abstract class NbtBase
         return (Activator.CreateInstance(type) as NbtBase)!;
     }
 
+    public static async Task<T?> Read<T>(Stream stream, bool chunk = false) where T: NbtBase
+    {
+        return await Read(stream, chunk) as T;
+    }
+
     public static async Task<NbtBase?> Read(Stream stream, bool chunk = false)
     {
         if (stream.Length < 2)
@@ -225,6 +230,12 @@ public abstract class NbtBase
         stream2.Dispose();
 
         return nbt;
+    }
+
+    public static async Task<T?> Read<T>(string file) where T : NbtBase
+    {
+        using var stream = PathHelper.OpenRead(file)!;
+        return await Read(stream) as T;
     }
 
     /// <summary>

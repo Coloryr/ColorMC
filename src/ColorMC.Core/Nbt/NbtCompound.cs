@@ -22,21 +22,25 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
     /// </summary>
     public NbtBase this[string name]
     {
-        get
-        {
-            return Entries[name];
-        }
         set
         {
-            Entries[name] = value;
+            if (!Entries.TryAdd(name, value))
+            {
+                Entries[name] = value;
+            }
         }
     }
 
-    private readonly Dictionary<string, NbtBase> Entries = new();
+    private readonly Dictionary<string, NbtBase> Entries = [];
 
     public NbtCompound()
     {
         NbtType = NbtType.NbtCompound;
+    }
+
+    public T? TryGet<T>(string key) where T : NbtBase
+    {
+        return TryGet(key) as T;
     }
 
     /// <summary>

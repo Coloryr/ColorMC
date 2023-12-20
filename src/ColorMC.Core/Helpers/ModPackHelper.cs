@@ -23,7 +23,7 @@ public static class ModPackHelper
     /// <param name="obj">游戏实例</param>
     /// <param name="zip">压缩包路径</param>
     /// <returns>结果</returns>
-    public static async Task<bool> UpdateCurseForgeModPack(GameSettingObj obj, string zip)
+    public static async Task<bool> UpdateCurseForgeModPackAsync(GameSettingObj obj, string zip)
     {
         using ZipFile zFile = new(zip);
         using MemoryStream stream1 = new();
@@ -117,8 +117,8 @@ public static class ModPackHelper
         var addlist = new List<ModInfoObj>();
         var removelist = new List<ModInfoObj>();
 
-        ModInfoObj[] temp1 = obj.Mods.Values.ToArray();
-        ModInfoObj?[] temp2 = obj1.Mods.Values.ToArray();
+        ModInfoObj[] temp1 = [.. obj.Mods.Values];
+        ModInfoObj?[] temp2 = [.. obj1.Mods.Values];
 
         foreach (var item in temp1)
         {
@@ -167,7 +167,7 @@ public static class ModPackHelper
             obj.Mods.Add(item.ModId, item);
         }
 
-        await DownloadManager.Start(list1);
+        await DownloadManager.StartAsync(list1);
 
         return true;
     }
@@ -180,7 +180,8 @@ public static class ModPackHelper
     /// <param name="group">实例组</param>
     /// <returns>Res安装结果
     /// Game游戏实例</returns>
-    public static async Task<(bool Res, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip, string? name, string? group)
+    public static async Task<(bool Res, GameSettingObj? Game)> 
+        DownloadCurseForgeModPackAsync(string zip, string? name, string? group)
     {
         ColorMCCore.PackState?.Invoke(CoreRunState.Read);
         using ZipFile zFile = new(PathHelper.OpenRead(zip));
@@ -298,7 +299,7 @@ public static class ModPackHelper
 
         ColorMCCore.PackState?.Invoke(CoreRunState.Download);
 
-        await DownloadManager.Start(list.List.ToList());
+        await DownloadManager.StartAsync(list.List.ToList());
 
         return (true, game);
     }
@@ -423,10 +424,10 @@ public static class ModPackHelper
     /// <param name="obj">游戏实例</param>
     /// <param name="zip">整合包路径</param>
     /// <returns>升级结果</returns>
-    public static async Task<bool> UpdateModrinthModPack(GameSettingObj obj, string zip)
+    public static async Task<bool> UpdateModrinthModPackAsync(GameSettingObj obj, string zip)
     {
-        using ZipFile zFile = new(PathHelper.OpenRead(zip));
-        using MemoryStream stream1 = new();
+        using var zFile = new ZipFile(PathHelper.OpenRead(zip));
+        using var stream1 = new MemoryStream();
         bool find = false;
         //获取主信息
         foreach (ZipEntry e in zFile)
@@ -515,8 +516,8 @@ public static class ModPackHelper
         var addlist = new List<ModInfoObj>();
         var removelist = new List<ModInfoObj>();
 
-        ModInfoObj[] temp1 = obj.Mods.Values.ToArray();
-        ModInfoObj?[] temp2 = obj1.Mods.Values.ToArray();
+        ModInfoObj[] temp1 = [.. obj.Mods.Values];
+        ModInfoObj?[] temp2 = [.. obj1.Mods.Values];
 
         foreach (var item in temp1)
         {
@@ -567,7 +568,7 @@ public static class ModPackHelper
             obj.Mods.Add(item.ModId, item);
         }
 
-        await DownloadManager.Start(list1);
+        await DownloadManager.StartAsync(list1);
 
         return true;
     }
@@ -580,7 +581,8 @@ public static class ModPackHelper
     /// <param name="group">实例组</param>
     /// <returns>Res安装结果
     /// Game游戏实例</returns>
-    public static async Task<(bool Res, GameSettingObj? Game)> DownloadModrinthModPack(string zip, string? name, string? group)
+    public static async Task<(bool Res, GameSettingObj? Game)> 
+        DownloadModrinthModPackAsync(string zip, string? name, string? group)
     {
         ColorMCCore.PackState?.Invoke(CoreRunState.Read);
         using ZipFile zFile = new(PathHelper.OpenRead(zip));
@@ -696,7 +698,7 @@ public static class ModPackHelper
 
         ColorMCCore.PackState?.Invoke(CoreRunState.Download);
 
-        await DownloadManager.Start(list.ToList());
+        await DownloadManager.StartAsync(list.ToList());
 
         return (true, game);
     }

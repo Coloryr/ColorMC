@@ -15,7 +15,7 @@ public static class LocalMaven
 {
     public const string Name1 = "maven.json";
 
-    private static readonly ConcurrentDictionary<string, MavenItemObj> s_items = new();
+    private static readonly ConcurrentDictionary<string, MavenItemObj> s_items = [];
     private static string s_local;
     /// <summary>
     /// 初始化本地缓存
@@ -93,7 +93,7 @@ public static class LocalMaven
     /// <param name="name"></param>
     /// <param name="dir"></param>
     /// <returns></returns>
-    public static async Task<DownloadItemObj?> MakeItem(string name, string dir)
+    public static async Task<DownloadItemObj?> MakeItemAsync(string name, string dir)
     {
         var item2 = GetItem(name);
         if (item2 != null)

@@ -22,7 +22,7 @@ public static class Mods
     /// </summary>
     /// <param name="zFile">Mod压缩包</param>
     /// <returns>游戏Mod</returns>
-    private static async Task<ModObj?> ReadMod(ZipFile zFile)
+    private static async Task<ModObj?> ReadModAsync(ZipFile zFile)
     {
         //forge 1.13以下
         var item1 = zFile.GetEntry("mcmod.info");
@@ -75,7 +75,7 @@ public static class Mods
                 modid = obj2["modId"]?["value"]?.ToString() ?? "",
                 name = obj2["names"]?["value"]?.ToString() ?? "",
                 version = obj2["version"]?["value"]?.ToString(),
-                requiredMods = new() { obj2["dependencies"]?["value"]?.ToString() ?? "" },
+                requiredMods = [obj2["dependencies"]?["value"]?.ToString() ?? ""],
                 CoreMod = true
             };
 
@@ -146,7 +146,7 @@ public static class Mods
             //依赖项
             if (model.TryGetValue("dependencies", out var model3) && model3 is TomlTable model4)
             {
-                obj3.requiredMods = new();
+                obj3.requiredMods = [];
                 if (model4.FirstOrDefault().Value is TomlTableArray model5)
                 {
                     foreach (var item3 in model5)
@@ -162,7 +162,7 @@ public static class Mods
                 }
             }
 
-            obj3.InJar = new();
+            obj3.InJar = [];
             foreach (ZipEntry item3 in zFile)
             {
                 if (item3.Name.EndsWith(".jar") && item3.Name.StartsWith("META-INF/jarjar/"))
@@ -172,7 +172,7 @@ public static class Mods
                     await filestream.CopyToAsync(stream2);
                     stream2.Seek(0, SeekOrigin.Begin);
                     using var zFile1 = new ZipFile(stream2);
-                    var inmod = await ReadMod(zFile1);
+                    var inmod = await ReadModAsync(zFile1);
                     if (inmod != null)
                     {
                         obj3.InJar.Add(inmod);
@@ -208,7 +208,7 @@ public static class Mods
 
             if (obj1.ContainsKey("depends"))
             {
-                obj3.requiredMods = new();
+                obj3.requiredMods = [];
                 if (obj1["depends"] is JObject obj4)
                 {
                     foreach (var item3 in obj4)
@@ -219,7 +219,7 @@ public static class Mods
             }
 
             //JarInJar
-            obj3.InJar = new();
+            obj3.InJar = [];
 
             foreach (ZipEntry item2 in zFile)
             {
@@ -230,7 +230,7 @@ public static class Mods
                     await filestream.CopyToAsync(stream2);
                     stream2.Seek(0, SeekOrigin.Begin);
                     using var zFile1 = new ZipFile(stream2);
-                    var inmod = await ReadMod(zFile1);
+                    var inmod = await ReadModAsync(zFile1);
                     if (inmod != null)
                     {
                         obj3.InJar.Add(inmod);
@@ -268,7 +268,7 @@ public static class Mods
 
             obj3.name ??= "";
 
-            obj3.requiredMods = new();
+            obj3.requiredMods = [];
             if (obj4["depends"] is JArray obj5)
             {
                 foreach (var item3 in obj5)
@@ -281,7 +281,7 @@ public static class Mods
             }
 
             //JarInJar
-            obj3.InJar = new();
+            obj3.InJar = [];
 
             foreach (ZipEntry item2 in zFile)
             {
@@ -289,7 +289,7 @@ public static class Mods
                 {
                     using var filestream = zFile.GetInputStream(item2);
                     using var zFile1 = new ZipFile(filestream);
-                    var inmod = await ReadMod(zFile1);
+                    var inmod = await ReadModAsync(zFile1);
                     if (inmod != null)
                     {
                         obj3.InJar.Add(inmod);
@@ -308,7 +308,7 @@ public static class Mods
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>Mod列表</returns>
-    public static async Task<List<ModObj>> GetMods(this GameSettingObj obj, bool sha256)
+    public static async Task<List<ModObj>> GetModsAsync(this GameSettingObj obj, bool sha256)
     {
         var list = new ConcurrentBag<ModObj>();
         var dir = obj.GetModsPath();
@@ -317,7 +317,7 @@ public static class Mods
         if (!info.Exists)
         {
             info.Create();
-            return list.ToList();
+            return [.. list];
         }
         var files = info.GetFiles();
 
@@ -359,7 +359,7 @@ public static class Mods
                 }
 
                 using var zFile = new ZipFile(filestream);
-                var mod = await ReadMod(zFile);
+                var mod = await ReadModAsync(zFile);
                 if (mod != null)
                 {
                     mod.Local = Path.GetFullPath(item.FullName);
@@ -454,7 +454,7 @@ public static class Mods
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
     /// <returns>是否成功导入</returns>
-    public static async Task<bool> AddMods(this GameSettingObj obj, List<string> file)
+    public static async Task<bool> AddModsAsync(this GameSettingObj obj, List<string> file)
     {
         if (file.Count == 0)
         {
@@ -495,14 +495,11 @@ public static class Mods
     /// <param name="info">信息</param>
     public static void AddModInfo(this GameSettingObj obj, ModInfoObj info)
     {
-        if (obj.Mods.ContainsKey(info.ModId))
+        if (!obj.Mods.TryAdd(info.ModId, info))
         {
             obj.Mods[info.ModId] = info;
         }
-        else
-        {
-            obj.Mods.Add(info.ModId, info);
-        }
+
         obj.SaveModInfo();
     }
 
@@ -539,7 +536,7 @@ public static class Mods
     /// <returns>整理好的作者名</returns>
     private static List<string> ToStringList(this string obj)
     {
-        List<string> list = new();
+        var list = new List<string>();
         if (obj == null)
         {
             return list;
@@ -557,7 +554,7 @@ public static class Mods
     /// <returns>整理好的作者名</returns>
     private static List<string> ToStringList(this JArray array)
     {
-        List<string> list = new();
+        var list = new List<string>();
         foreach (var item in array)
         {
             if (item is JObject obj && obj.ContainsKey("name"))
@@ -579,7 +576,7 @@ public static class Mods
     /// <returns>整理好的作者名</returns>
     private static List<string> ToStringList(this JObject array)
     {
-        List<string> list = new();
+        var list = new List<string>();
         foreach (var item in array)
         {
             list.Add(item.Key.ToString());
@@ -622,7 +619,7 @@ public static class Mods
     /// <param name="obj"></param>
     /// <param name="key">键名</param>
     /// <returns>obj</returns>
-    private static JToken? FindKey(this JArray obj, string key)
+    private static JContainer? FindKey(this JArray obj, string key)
     {
         foreach (var item in obj)
         {

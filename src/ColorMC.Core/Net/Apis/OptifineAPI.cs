@@ -25,7 +25,7 @@ public static class OptifineAPI
         {
             var type = BaseClient.Source;
             var list = new List<OptifineObj>();
-            var data = await BaseClient.GetString(url);
+            var data = await BaseClient.GetStringAsync(url);
             if (data.Item1 == false)
             {
                 ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
@@ -122,8 +122,8 @@ public static class OptifineAPI
         {
             if (obj.Local == SourceLocal.Offical)
             {
-                _ = BaseClient.GetString(obj.Url1);
-                var data = await BaseClient.GetString(obj.Url2);
+                _ = BaseClient.GetStringAsync(obj.Url1);
+                var data = await BaseClient.GetStringAsync(obj.Url2);
                 if (data.Item1 == false)
                 {
                     ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
@@ -173,7 +173,7 @@ public static class OptifineAPI
             Url = data
         };
 
-        var res = await DownloadManager.Start(new() { item1 });
+        var res = await DownloadManager.StartAsync([item1]);
         if (!res)
         {
             return (false, LanguageHelper.Get("Core.Http.OptiFine.Error4"));

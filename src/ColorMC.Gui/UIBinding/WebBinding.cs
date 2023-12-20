@@ -465,7 +465,7 @@ public static class WebBinding
             };
             list1.Add(Item);
         }
-        return await DownloadManager.Start(list1);
+        return await DownloadManager.StartAsync(list1);
     }
 
     public static async Task<bool> DownloadMod(GameSettingObj obj,
@@ -480,7 +480,7 @@ public static class WebBinding
             };
             list1.Add(Item);
         }
-        return await DownloadManager.Start(list1);
+        return await DownloadManager.StartAsync(list1);
     }
 
     public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeModObj.Data? data)
@@ -504,7 +504,7 @@ public static class WebBinding
                     Overwrite = true
                 };
 
-                res = await DownloadManager.Start([item]);
+                res = await DownloadManager.StartAsync([item]);
                 if (!res)
                 {
                     return false;
@@ -512,7 +512,7 @@ public static class WebBinding
 
                 return await GameBinding.AddWorld(obj, item.Local);
             case FileType.Resourcepack:
-                return await DownloadManager.Start([new()
+                return await DownloadManager.StartAsync([new()
                 {
                     Name = data.displayName,
                     Url = data.downloadUrl,
@@ -522,7 +522,7 @@ public static class WebBinding
                     Overwrite = true
                 }]);
             case FileType.Shaderpack:
-                return await DownloadManager.Start([new()
+                return await DownloadManager.StartAsync([new()
                 {
                     Name = data.displayName,
                     Url = data.downloadUrl,
@@ -547,7 +547,7 @@ public static class WebBinding
 
         return type switch
         {
-            FileType.Resourcepack => await DownloadManager.Start([new()
+            FileType.Resourcepack => await DownloadManager.StartAsync([new()
                 {
                     Name = data.name,
                     Url = file.url,
@@ -555,7 +555,7 @@ public static class WebBinding
                     SHA1 = file.hashes.sha1,
                     Overwrite = true
                 }]),
-            FileType.Shaderpack => await DownloadManager.Start([new()
+            FileType.Shaderpack => await DownloadManager.StartAsync([new()
                 {
                     Name = data.name,
                     Url = file.url,
@@ -576,7 +576,7 @@ public static class WebBinding
 
         data.FixDownloadUrl();
 
-        return await DownloadManager.Start([new()
+        return await DownloadManager.StartAsync([new()
         {
             Name = data.displayName,
             Url = data.downloadUrl,
@@ -596,7 +596,7 @@ public static class WebBinding
 
         var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
 
-        return await DownloadManager.Start([new()
+        return await DownloadManager.StartAsync([new()
         {
             Name = data.name,
             Url = file.url,

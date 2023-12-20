@@ -33,11 +33,11 @@ public static class ColorMCCore
     /// <summary>
     /// 下载项目更新回调
     /// </summary>
-    public static Action<int, DownloadItemObj>? DownloadItemStateUpdate { internal get; set; }
+    public static Action<DownloadItemObj>? DownloadItemUpdate { internal get; set; }
     /// <summary>
     /// 下载项目错误回调
     /// </summary>
-    public static Action<int, DownloadItemObj, Exception>? DownloadItemError { internal get; set; }
+    public static Action<DownloadItemObj, Exception>? DownloadItemError { internal get; set; }
 
     /// <summary>
     /// 游戏实例覆盖回调
@@ -111,10 +111,6 @@ public static class ColorMCCore
     /// 启动器加载完毕
     /// </summary>
     public static Action? LoadDone { internal get; set; }
-    /// <summary>
-    /// 文件解压进度条
-    /// </summary>
-    public static Action<string, int, int>? UnZipItem { internal get; set; }
 
     /// <summary>
     /// 手机端启动

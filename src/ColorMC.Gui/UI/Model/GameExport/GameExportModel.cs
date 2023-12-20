@@ -138,7 +138,7 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
     {
         Items.Clear();
 
-        var list = await Obj.GetMods(false);
+        var list = await Obj.GetModsAsync(false);
         if (list == null)
         {
             return;

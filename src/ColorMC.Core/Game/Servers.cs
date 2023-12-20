@@ -18,7 +18,7 @@ public static class Servers
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>服务器列表</returns>
-    public static async Task<ConcurrentBag<ServerInfoObj>> GetServerInfos(this GameSettingObj game)
+    public static async Task<ConcurrentBag<ServerInfoObj>> GetServerInfosAsync(this GameSettingObj game)
     {
         var list = new ConcurrentBag<ServerInfoObj>();
         var file = game.GetServersFile();
@@ -29,12 +29,12 @@ public static class Servers
 
         try
         {
-            if (await NbtBase.Read(file) is not NbtCompound tag)
+            if (await NbtBase.Read<NbtCompound>(file) is not { } tag)
             {
                 return list;
             }
 
-            var nbtList = (tag["servers"] as NbtList)!;
+            var nbtList = tag.TryGet<NbtList>("servers")!;
             foreach (var item in nbtList)
             {
                 if (item is NbtCompound tag1)
@@ -56,9 +56,9 @@ public static class Servers
     /// <param name="game">游戏实例</param>
     /// <param name="name">名字</param>
     /// <param name="ip">地址</param>
-    public static async void AddServer(this GameSettingObj game, string name, string ip)
+    public static async Task AddServerAsync(this GameSettingObj game, string name, string ip)
     {
-        var list = await game.GetServerInfos();
+        var list = await game.GetServerInfosAsync();
         list.Add(new ServerInfoObj()
         {
             Name = name,
@@ -73,9 +73,9 @@ public static class Servers
     /// <param name="game">游戏实例</param>
     /// <param name="name">名字</param>
     /// <param name="ip">地址</param>
-    public static async void RemoveServer(this GameSettingObj game, string name, string ip)
+    public static async Task RemoveServerAsync(this GameSettingObj game, string name, string ip)
     {
-        var list = (await game.GetServerInfos()).ToList();
+        var list = (await game.GetServerInfosAsync()).ToList();
         foreach (var item in list)
         {
             if (item.Name == name && item.IP == ip)
@@ -102,7 +102,7 @@ public static class Servers
         };
         foreach (var item in list)
         {
-            NbtCompound tag1 = new()
+            var tag1 = new NbtCompound()
             {
                 {"name",  new NbtString(){ Value = item.Name } },
                 {"ip",  new NbtString(){ Value = item.IP } }
@@ -118,8 +118,7 @@ public static class Servers
         }
 
         nbtTag.Add("servers", list1);
-        string file = game.GetServersFile();
-        nbtTag.Save(file);
+        nbtTag.Save(game.GetServersFile());
     }
 
     /// <summary>
@@ -131,8 +130,8 @@ public static class Servers
     {
         var info = new ServerInfoObj
         {
-            Name = (tag["name"] as NbtString)!.Value,
-            IP = (tag["ip"] as NbtString)!.Value,
+            Name = tag.TryGet<NbtString>("name")!.Value,
+            IP = tag.TryGet<NbtString>("ip")!.Value,
             Icon = (tag.TryGet("icon") as NbtString)?.Value,
             AcceptTextures = tag.TryGet("acceptTextures") is NbtByte { Value: 1 }
         };

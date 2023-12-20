@@ -485,7 +485,7 @@ public partial class AddGameModel
         ColorMCCore.GameRequest = Tab2GameRequest;
 
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
-        var res = await GameBinding.InstallModrinth(data, data1, Name, Group);
+        var res = await GameBinding.InstallModrinth(data, data1, Name, Group, null);
         Model.ProgressClose();
         if (!res)
         {

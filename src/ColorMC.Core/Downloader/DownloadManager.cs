@@ -36,11 +36,11 @@ public static class DownloadManager
     /// <summary>
     /// 下载项目队列
     /// </summary>
-    private readonly static ConcurrentQueue<DownloadItemObj> s_items = new();
+    private readonly static ConcurrentQueue<DownloadItemObj> s_items = [];
     /// <summary>
     /// 下载线程
     /// </summary>
-    private readonly static List<DownloadThread> s_threads = new();
+    private readonly static List<DownloadThread> s_threads = [];
     /// <summary>
     /// 处理完成信号量
     /// </summary>
@@ -64,16 +64,11 @@ public static class DownloadManager
     {
         Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info1"),
             ConfigUtils.Config.Http.DownloadThread));
-        s_semaphore?.Dispose();
         s_semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
-        s_threads.ForEach(a => a.Close());
-        s_threads.Clear();
         for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
         {
-            DownloadThread thread = new(a);
-            s_threads.Add(thread);
+            s_threads.Add(new(a));
         }
-        Clear();
     }
 
     /// <summary>
@@ -133,9 +128,9 @@ public static class DownloadManager
     /// </summary>
     /// <param name="list">下载列表</param>
     /// <returns>结果</returns>
-    public static async Task<bool> Start(List<DownloadItemObj> list)
+    public static async Task<bool> StartAsync(ICollection<DownloadItemObj> list)
     {
-        List<string> names = [];
+        var names = new List<string>();
         //下载器是否在运行
         if (State != CoreRunState.End)
         {
@@ -148,15 +143,12 @@ public static class DownloadManager
         //装填下载内容
         foreach (var item in list)
         {
-            if (names.Contains(item.Name) || string.IsNullOrWhiteSpace(item.Url))
+            if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url) 
+                || names.Contains(item.Name))
             {
                 continue;
             }
-            ColorMCCore.DownloadItemStateUpdate?.Invoke(-1, item);
-            item.Update = (index) =>
-            {
-                ColorMCCore.DownloadItemStateUpdate?.Invoke(index, item);
-            };
+            ColorMCCore.DownloadItemUpdate?.Invoke(item);
             s_items.Enqueue(item);
             names.Add(item.Name);
         }
@@ -225,10 +217,10 @@ public static class DownloadManager
     /// <param name="index">下载器号</param>
     /// <param name="item">下载项目</param>
     /// <param name="e">错误内容</param>
-    public static void Error(int index, DownloadItemObj item, Exception e)
+    public static void Error(DownloadItemObj item, Exception e)
     {
         Logs.Error(string.Format(LanguageHelper.Get("Core.Http.Error1"), item.Name), e);
-        ColorMCCore.DownloadItemError?.Invoke(index, item, e);
+        ColorMCCore.DownloadItemError?.Invoke(item, e);
     }
 
     /// <summary>
@@ -238,7 +230,7 @@ public static class DownloadManager
     /// <returns>大小</returns>
     public static int GetCopyBufferSize(Stream stream)
     {
-        const int DefaultCopyBufferSize = 81920;
+        int DefaultCopyBufferSize = 81920;
         int bufferSize = DefaultCopyBufferSize;
 
         if (stream.CanSeek)

@@ -454,7 +454,7 @@ public static class BaseBinding
         try
         {
             //启动
-            var p = await obj.StartGame(obj1, world, cancel);
+            var p = await obj.StartGameAsync(obj1, world, cancel);
             if (SystemInfo.Os == OsType.Android)
             {
                 return (new Process(), null);
@@ -827,7 +827,7 @@ public static class BaseBinding
             }
             if (!File.Exists(obj.Local))
             {
-                var res = await DownloadManager.Start([obj]);
+                var res = await DownloadManager.StartAsync([obj]);
                 if (!res)
                 {
                     return (false, null, null);

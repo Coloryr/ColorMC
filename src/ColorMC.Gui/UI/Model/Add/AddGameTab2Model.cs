@@ -123,10 +123,6 @@ public partial class AddGameModel
         ColorMCCore.GameOverwirte = Tab2GameOverwirte;
         ColorMCCore.GameRequest = Tab2GameRequest;
         string temp = App.Lang("Gui.Info27");
-        ColorMCCore.UnZipItem = (a, b, c) =>
-        {
-            Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
-        };
 
         if (string.IsNullOrWhiteSpace(ZipLocal))
         {
@@ -134,7 +130,11 @@ public partial class AddGameModel
             return;
         }
         Model.Progress(App.Lang("AddGameWindow.Tab2.Info6"));
-        var res = await GameBinding.AddPack(ZipLocal, type, Name, Group);
+        var res = await GameBinding.AddPack(ZipLocal, type, Name, Group, 
+        (a, b, c) =>
+        {
+            Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
+        });
         Model.ProgressClose();
         if (!res.Item1)
         {
@@ -142,8 +142,8 @@ public partial class AddGameModel
             return;
         }
 
-        var model = (App.MainWindow?.DataContext as MainModel);
-        model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
+        var model = (App.MainWindow?.DataContext as MainModel)!;
+        model.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
         App.MainWindow?.LoadMain();
 
         if (Type == PackType.ZipPack)

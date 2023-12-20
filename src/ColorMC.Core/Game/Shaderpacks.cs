@@ -16,7 +16,7 @@ public static class Shaderpacks
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>光影包列表</returns>
-    public static async Task<List<ShaderpackObj>> GetShaderpacks(this GameSettingObj game)
+    public static async Task<List<ShaderpackObj>> GetShaderpacksAsync(this GameSettingObj game)
     {
         var list = new List<ShaderpackObj>();
         var dir = game.GetShaderpacksPath();
@@ -63,7 +63,7 @@ public static class Shaderpacks
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
     /// <returns>结果</returns>
-    public static async Task<bool> AddShaderpack(this GameSettingObj obj, List<string> file)
+    public static async Task<bool> AddShaderpackAsync(this GameSettingObj obj, List<string> file)
     {
         var dir = obj.GetShaderpacksPath();
         Directory.CreateDirectory(dir);

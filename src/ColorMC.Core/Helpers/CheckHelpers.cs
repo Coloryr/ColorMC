@@ -1,5 +1,6 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
@@ -184,18 +185,18 @@ public static class CheckHelpers
     /// <param name="login">登录的账户</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns>下载列表</returns>
-    public static async Task<ConcurrentBag<DownloadItemObj>> CheckGameFile(GameSettingObj obj, LoginObj login, CancellationToken cancel)
+    public static async Task<ConcurrentBag<DownloadItemObj>> CheckGameFileAsync(GameSettingObj obj, LoginObj login, CancellationToken cancel)
     {
         var list = new ConcurrentBag<DownloadItemObj>();
 
         //检查游戏启动json
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Check);
-        var game = await VersionPath.CheckUpdate(obj.Version);
+        var game = await VersionPath.CheckUpdateAsync(obj.Version);
         if (game == null)
         {
             //不存在游戏
             ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostVersion);
-            var var = await VersionPath.GetVersions();
+            var var = await VersionPath.GetVersionsAsync();
             var version = var?.versions.Where(a => a.id == obj.Version).FirstOrDefault();
             if (version == null)
             {
@@ -204,7 +205,7 @@ public static class CheckHelpers
                     LanguageHelper.Get("Core.Launch.Error1"));
             }
 
-            var res1 = await DownloadItemHelper.Download(version);
+            var res1 = await DownloadItemHelper.DownloadAsync(version);
             if (res1.State != GetDownloadState.End)
             {
                 throw new LaunchException(LaunchState.VersionError,
@@ -286,7 +287,7 @@ public static class CheckHelpers
                 if (obj.Loader != Loaders.Custom || obj.CustomLoader?.OffLib != true)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
-                    var list2 = await game.CheckGameLib(cancel);
+                    var list2 = await game.CheckGameLibAsync(cancel);
                     if (list2.Count != 0)
                     {
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
@@ -302,7 +303,7 @@ public static class CheckHelpers
                 if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
                 {
                     bool neo = obj.Loader == Loaders.NeoForge;
-                    var list3 = await obj.CheckForgeLib(neo, cancel);
+                    var list3 = await obj.CheckForgeLibAsync(neo, cancel);
                     if (cancel.IsCancellationRequested)
                     {
                         return;
@@ -397,7 +398,7 @@ public static class CheckHelpers
                         throw new LaunchException(LaunchState.LostLoader,
                                 LanguageHelper.Get("Core.Launch.Error3"));
                     }
-                    var list3 = await obj.DecodeLoaderJar(cancel);
+                    var list3 = await obj.DecodeLoaderJarAsync(cancel);
                     if (cancel.IsCancellationRequested)
                     {
                         return;
@@ -422,9 +423,9 @@ public static class CheckHelpers
                 var item1 = login.AuthType switch
                 {
                     AuthType.Nide8 => await AuthlibHelper.ReadyNide8(),
-                    AuthType.AuthlibInjector => await AuthlibHelper.ReadyAuthlibInjector(),
-                    AuthType.LittleSkin => await AuthlibHelper.ReadyAuthlibInjector(),
-                    AuthType.SelfLittleSkin => await AuthlibHelper.ReadyAuthlibInjector(),
+                    AuthType.AuthlibInjector => await AuthlibHelper.ReadyAuthlibInjectorAsync(),
+                    AuthType.LittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(),
+                    AuthType.SelfLittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(),
                     _ => (true, null)
                 };
                 if (!item1.Item1)
@@ -558,58 +559,275 @@ public static class CheckHelpers
     /// <param name="fgversion">Forge版本</param>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>结果</returns>
-    public static async Task<bool> CheckForgeInstall(ForgeInstallObj obj, string fgversion, bool neo)
+    public static bool CheckForgeInstall(ForgeInstallObj obj, string fgversion, bool neo)
     {
         //silm
-        var version = obj.data.MCP_VERSION.client[1..^1];
-        string file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
-            $"{obj.minecraft}-{version}/" +
-            $"client-{obj.minecraft}-{version}-slim.jar";
-        file = Path.GetFullPath(file);
-        if (!File.Exists(file))
-        {
-            return true;
-        }
-        using var stream = PathHelper.OpenRead(file)!;
-        string sha1 = await HashHelper.GenSha1Async(stream);
+        //var version = obj.data.MCP_VERSION.client[1..^1];
+        //string file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
+        //    $"{obj.minecraft}-{version}/" +
+        //    $"client-{obj.minecraft}-{version}-slim.jar";
+        //file = Path.GetFullPath(file);
+        //if (!File.Exists(file))
+        //{
+        //    return true;
+        //}
+        //using var stream = PathHelper.OpenRead(file)!;
+        //string sha1 = await HashHelper.GenSha1Async(stream);
 
-        if (sha1 != obj.data.MC_SLIM_SHA.client[1..^1])
-        {
-            return true;
-        }
+        //if (sha1 != obj.data.MC_SLIM_SHA.client[1..^1])
+        //{
+        //    return true;
+        //}
 
-        //clint
-        //net\neoforged\forge\1.20.1-47.1.76\forge-1.20.1-47.1.76-client.jar
-        file = $"{LibrariesPath.BaseDir}/net/{(neo ? "neoforged" : "minecraftforge")}/forge/" +
+        string file;
+        if (neo)
+        {
+            if (IsGameVersion1202(obj.minecraft))
+            {
+                file = $"{LibrariesPath.BaseDir}/net/neoforged/neoforged/{fgversion}" +
+                    $"neoforge-{fgversion}-client.jar";
+            }
+            else
+            {
+                file = $"{LibrariesPath.BaseDir}/net/neoforged/forge/{fgversion}" +
+                    $"{obj.minecraft}-{fgversion}/" +
+                    $"forge-{obj.minecraft}-{fgversion}-client.jar";
+            }
+        }
+        else
+        {
+            file = $"{LibrariesPath.BaseDir}/net/minecraftforge/forge/" +
             $"{obj.minecraft}-{fgversion}/" +
             $"forge-{obj.minecraft}-{fgversion}-client.jar";
+        }
+        
         file = Path.GetFullPath(file);
         if (!File.Exists(file))
         {
             return true;
         }
-        using var stream2 = PathHelper.OpenRead(file)!;
-        sha1 = await HashHelper.GenSha1Async(stream2);
 
-        if (sha1 != obj.data.PATCHED_SHA.client[1..^1])
-        {
-            return true;
-        }
+        return false;
+        //using var stream2 = PathHelper.OpenRead(file)!;
+        //var sha1 = await HashHelper.GenSha1Async(stream2);
+
+        //if (sha1 != obj.data.PATCHED_SHA.client[1..^1])
+        //{
+        //    return true;
+        //}
 
         //extra
-        file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
-            $"{obj.minecraft}-{version}/" +
-            $"client-{obj.minecraft}-{version}-extra.jar";
-        file = Path.GetFullPath(file);
-        if (!File.Exists(file))
+        //file = $"{LibrariesPath.BaseDir}/net/minecraft/client/" +
+        //    $"{obj.minecraft}-{version}/" +
+        //    $"client-{obj.minecraft}-{version}-extra.jar";
+        //file = Path.GetFullPath(file);
+        //if (!File.Exists(file))
+        //{
+        //    return true;
+        //}
+
+        //using var stream1 = PathHelper.OpenRead(file)!;
+        //sha1 = await HashHelper.GenSha1Async(stream1);
+
+        //return sha1 != obj.data.MC_EXTRA_SHA.client[1..^1];
+    }
+
+    /// <summary>
+    /// 检查Forge的运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>丢失的库</returns>
+    public static async Task<ConcurrentBag<DownloadItemObj>?>
+        CheckForgeLibAsync(this GameSettingObj obj, bool neo, CancellationToken cancel)
+    {
+        var version1 = VersionPath.GetVersion(obj.Version)!;
+        var v2 = IsGameVersionV2(version1);
+        if (v2)
         {
-            return true;
+            GameHelper.ReadyForgeWrapper();
         }
 
-        using var stream1 = PathHelper.OpenRead(file)!;
-        sha1 = await HashHelper.GenSha1Async(stream1);
+        var forge = neo ?
+            VersionPath.GetNeoForgeObj(obj.Version, obj.LoaderVersion!) :
+            VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion!);
+        if (forge == null)
+            return null;
 
-        return sha1 != obj.data.MC_EXTRA_SHA.client[1..^1];
+        //forge本体
+        var list1 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo, v2).ToList();
+
+        var forgeinstall = neo ?
+            VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!) :
+            VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
+        if (forgeinstall == null && v2)
+            return null;
+
+        //forge安装器
+        if (forgeinstall != null)
+        {
+            var list2 = DownloadItemHelper.BuildForgeLibs(forgeinstall, obj.Version,
+                obj.LoaderVersion!, neo, v2);
+            list1.AddRange(list2);
+        }
+
+        var list = new ConcurrentBag<DownloadItemObj>();
+
+        await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
+        {
+            if (cancel.IsCancellationRequested)
+            {
+                return;
+            }
+
+            if (!File.Exists(item.Local))
+            {
+                list.Add(item);
+                return;
+            }
+            if (item.SHA1 == null)
+            {
+                return;
+            }
+
+            if (!ConfigUtils.Config.GameCheck.CheckLibSha1)
+            {
+                return;
+            }
+            using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
+                FileShare.ReadWrite);
+            var sha1 = await HashHelper.GenSha1Async(stream);
+            if (item.SHA1 != sha1)
+            {
+                list.Add(item);
+            }
+        });
+
+        return list;
+    }
+
+    /// <summary>
+    /// 检查Fabric的运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>丢失的库</returns>
+    public static List<DownloadItemObj>? CheckFabricLib(this GameSettingObj obj, CancellationToken cancel)
+    {
+        var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion!);
+        if (fabric == null)
+            return null;
+
+        var list = new List<DownloadItemObj>();
+
+        foreach (var item in fabric.libraries)
+        {
+            if (cancel.IsCancellationRequested)
+                break;
+
+            var name = PathHelper.ToPathAndName(item.name);
+            string file = $"{LibrariesPath.BaseDir}/{name.Path}";
+            if (!File.Exists(file))
+            {
+                list.Add(new()
+                {
+                    Url = UrlHelper.DownloadFabric(item.url + name.Path, BaseClient.Source),
+                    Name = name.Name,
+                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}")
+                });
+                continue;
+            }
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// 检查Quilt的运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>丢失的库</returns>
+    public static List<DownloadItemObj>? CheckQuiltLib(this GameSettingObj obj, CancellationToken cancel)
+    {
+        var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion!);
+        if (quilt == null)
+            return null;
+
+        var list = new List<DownloadItemObj>();
+
+        foreach (var item in quilt.libraries)
+        {
+            if (cancel.IsCancellationRequested)
+                return null;
+
+            var name = PathHelper.ToPathAndName(item.name);
+            string file = $"{LibrariesPath.BaseDir}/{name.Path}";
+            if (!File.Exists(file))
+            {
+                list.Add(new()
+                {
+                    Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),
+                    Name = name.Name,
+                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}")
+                });
+                continue;
+            }
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// 检查游戏运行库
+    /// </summary>
+    /// <param name="obj">游戏数据</param>
+    /// <returns>丢失的库</returns>
+    public static async Task<List<DownloadItemObj>>
+        CheckGameLibAsync(this GameArgObj obj, CancellationToken cancel)
+    {
+        var list = new List<DownloadItemObj>();
+        var list1 = await DownloadItemHelper.BuildGameLibsAsync(obj);
+
+        await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
+        {
+            if (cancel.IsCancellationRequested)
+                return;
+
+            if (!File.Exists(item.Local))
+            {
+                list.Add(item);
+                return;
+            }
+            if (ConfigUtils.Config.GameCheck.CheckLibSha1)
+            {
+                using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
+                    FileShare.Read);
+                var sha1 = await HashHelper.GenSha1Async(stream);
+                if (!string.IsNullOrWhiteSpace(item.SHA1) && item.SHA1 != sha1)
+                {
+                    list.Add(item);
+                    return;
+                }
+            }
+            if (item.Later != null)
+            {
+                using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
+                        FileShare.Read);
+                item.Later.Invoke(stream);
+            }
+
+            return;
+        });
+
+        return list;
+    }
+
+    /// <summary>
+    /// 检测OptiFine是否存在
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool CheckOptifineLib(this GameSettingObj obj)
+    {
+        return File.Exists(LibrariesPath.GetOptiFineLib(obj));
     }
 }
 
