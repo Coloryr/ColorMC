@@ -155,7 +155,6 @@ public partial class MainControl : UserControl, IUserControl
     public void Closed()
     {
         ColorMCCore.GameLaunch = null;
-        ColorMCCore.GameRequest = null;
         ColorMCCore.OfflineLaunch = null;
 
         App.MainWindow = null;

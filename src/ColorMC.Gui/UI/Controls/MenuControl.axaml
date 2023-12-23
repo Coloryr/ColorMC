@@ -63,9 +63,7 @@
                                 Fill="{setting:Colors Font}"
                                 Path="/Resource/Icon/left1.svg"
                                 Stroke="{setting:Colors Font}" />
-                            <TextBlock
-                                Margin="5,0,0,0"
-                                Text="{setting:Localize Gui.Info32}" />
+                            <TextBlock Margin="5,0,0,0" Text="{setting:Localize Gui.Info32}" />
                         </StackPanel>
                     </ListBoxItem>
                     <ListBox
@@ -81,9 +79,7 @@
                                         Fill="{setting:Colors Font}"
                                         Path="{Binding Icon}"
                                         Stroke="{setting:Colors Font}" />
-                                    <TextBlock
-                                        Margin="5,0,0,0"
-                                        Text="{Binding Text}" />
+                                    <TextBlock Margin="5,0,0,0" Text="{Binding Text}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

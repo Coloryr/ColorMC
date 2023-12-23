@@ -14,10 +14,9 @@ public partial class NetFrpModel
 {
     [ObservableProperty]
     private string _keyOpenFrp;
+
     [ObservableProperty]
-    private string _userOpenFrpID;
-    [ObservableProperty]
-    private string _userOpenFrpName;
+    private bool _isOpenFrpEmpty = true;
 
     private bool _isLoadOpenFrp;
 
@@ -31,27 +30,6 @@ public partial class NetFrpModel
         ConfigBinding.SetFrpKeyOpenFrp(KeyOpenFrp);
     }
 
-    //[RelayCommand]
-    //public async Task TestKeyOpenFrp()
-    //{
-    //    if (string.IsNullOrWhiteSpace(KeyOpenFrp))
-    //    {
-    //        Model.Show(App.Lang("NetFrpWindow.Tab1.Error3"));
-    //        return;
-    //    }
-    //    Model.Progress(App.Lang("NetFrpWindow.Tab1.Info1"));
-    //    var res = await OpenFrpApi.GetChannel(KeyOpenFrp);
-    //    Model.ProgressClose();
-    //    if (res == null)
-    //    {
-    //        Model.Show(App.Lang("NetFrpWindow.Tab1.Error1"));
-    //        return;
-    //    }
-
-    //    UserOpenFrpID = res.id.ToString();
-    //    UserOpenFrpName = res.name;
-    //}
-
     [RelayCommand]
     public void OpenUrl1()
     {
@@ -61,6 +39,8 @@ public partial class NetFrpModel
     [RelayCommand]
     public async Task GetChannelOpenFrp()
     {
+        IsOpenFrpEmpty = true;
+
         if (string.IsNullOrWhiteSpace(KeyOpenFrp))
         {
             Model.Show(App.Lang("NetFrpWindow.Tab1.Error3"));
@@ -83,6 +63,8 @@ public partial class NetFrpModel
                 RemotesOpenFrp.Add(new(KeyOpenFrp, item, item1));
             }
         }
+
+        IsOpenFrpEmpty = RemotesOpenFrp.Count == 0;
     }
 
     [RelayCommand]
@@ -108,16 +90,6 @@ public partial class NetFrpModel
         }
 
         Model.Progress(App.Lang("NetFrpWindow.Tab1.Info1"));
-        //var res = await OpenFrpApi.GetUserInfo(KeyOpenFrp);
-        //if (res == null)
-        //{
-        //    Model.ProgressClose();
-        //    return;
-        //}
-
-        //UserOpenFrpID = res.id.ToString();
-        //UserOpenFrpName = res.name;
-        //Model.ProgressUpdate(App.Lang("NetFrpWindow.Tab1.Info2"));
         var res1 = await OpenFrpApi.GetChannel(KeyOpenFrp);
         Model.ProgressClose();
         if (res1 == null || res1.data == null)
@@ -133,5 +105,7 @@ public partial class NetFrpModel
                 RemotesOpenFrp.Add(new(KeyOpenFrp, item, item1));
             }
         }
+
+        IsOpenFrpEmpty = RemotesOpenFrp.Count == 0;
     }
 }

@@ -323,7 +323,7 @@ public partial class AddGameModel
     public async Task AddGame()
     {
         ColorMCCore.GameOverwirte = Tab1GameOverwirte;
-        ColorMCCore.GameRequest = Tab1GameRequest;
+        ColorMCCore.GameAddRequest = Tab1GameRequest;
 
         if (BaseBinding.IsDownload)
         {
@@ -453,7 +453,7 @@ public partial class AddGameModel
         }
 
         ColorMCCore.GameOverwirte = Tab2GameOverwirte;
-        ColorMCCore.GameRequest = Tab2GameRequest;
+        ColorMCCore.GameAddRequest = Tab2GameRequest;
 
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallCurseForge(data, data1, Name, Group);
@@ -482,7 +482,7 @@ public partial class AddGameModel
         }
 
         ColorMCCore.GameOverwirte = Tab2GameOverwirte;
-        ColorMCCore.GameRequest = Tab2GameRequest;
+        ColorMCCore.GameAddRequest = Tab2GameRequest;
 
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallModrinth(data, data1, Name, Group, null);

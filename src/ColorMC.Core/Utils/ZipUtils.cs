@@ -167,11 +167,11 @@ public class ZipUtils
                 {
                     if (PathHelper.FileHasInvalidChars(info.Name))
                     {
-                        if (ColorMCCore.GameRequest == null)
+                        if (ColorMCCore.GameAddRequest == null)
                         {
                             return false;
                         }
-                        var res = await ColorMCCore.GameRequest.Invoke(string.Format(
+                        var res = await ColorMCCore.GameAddRequest.Invoke(string.Format(
                             LanguageHelper.Get("Core.Zip.Info1"), theEntry.Name));
                         if (!res)
                         {

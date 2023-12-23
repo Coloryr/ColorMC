@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
-public partial class NetFrpModel(BaseModel model) : MenuModel(model)
+public partial class NetFrpModel : MenuModel
 {
     public override List<MenuObj> TabItems { get; init; } =
     [
@@ -20,6 +20,13 @@ public partial class NetFrpModel(BaseModel model) : MenuModel(model)
         new() { Icon = "/Resource/Icon/NetFrp/item3.svg",
             Text = App.Lang("NetFrpWindow.Tabs.Text3") }
     ];
+
+    private readonly string _name;
+
+    public NetFrpModel(BaseModel model) : base(model)
+    {
+        _name = ToString() ?? "NetFrpModel";
+    }
 
     public async void Open()
     {
@@ -40,6 +47,12 @@ public partial class NetFrpModel(BaseModel model) : MenuModel(model)
         }
         LoadSakura();
         LoadCloud();
+        SetTab4Click();
+    }
+
+    public void RemoveClick()
+    {
+        Model.RemoveChoiseData(_name);
     }
 
     protected override void Close()

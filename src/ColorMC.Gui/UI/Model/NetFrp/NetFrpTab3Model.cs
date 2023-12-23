@@ -36,6 +36,18 @@ public partial class NetFrpModel
 
     private NetFrpLocalModel _now;
 
+    partial void OnIsOkChanged(bool value)
+    {
+        RemoveClick();
+        SetTab3Click();
+    }
+
+    partial void OnIsRuningChanged(bool value)
+    {
+        RemoveClick();
+        SetTab3Click();
+    }
+
     private void SetProcess(Process process, NetFrpLocalModel model, string ip)
     {
         _now = model;
@@ -95,8 +107,7 @@ public partial class NetFrpModel
         }
     }
 
-    [RelayCommand]
-    public async Task Share()
+    public async void Share()
     {
         var res = await Model.ShowWait(App.Lang("NetFrpWindow.Tab3.Info3"));
         if (!res)
@@ -122,7 +133,6 @@ public partial class NetFrpModel
         }
     }
 
-    [RelayCommand]
     public void Stop()
     {
         IsOk = false;
@@ -168,5 +178,24 @@ public partial class NetFrpModel
         }
 
         return false;
+    }
+
+    public void SetTab3Click()
+    {
+        if (IsOk && IsRuning)
+        {
+            Model.SetChoiseCall(_name, Share, Stop);
+            Model.SetChoiseContent(_name, App.Lang("NetFrpWindow.Tab3.Text3"), App.Lang("NetFrpWindow.Tab3.Text2"));
+        }
+        else if (IsOk)
+        {
+            Model.SetChoiseCall(_name, Share);
+            Model.SetChoiseContent(_name, App.Lang("NetFrpWindow.Tab3.Text3"));
+        }
+        else if (IsRuning)
+        {
+            Model.SetChoiseCall(_name, Stop);
+            Model.SetChoiseContent(_name, App.Lang("NetFrpWindow.Tab3.Text2"));
+        }
     }
 }

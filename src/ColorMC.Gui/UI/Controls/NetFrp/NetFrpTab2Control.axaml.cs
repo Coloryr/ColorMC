@@ -9,6 +9,8 @@ public partial class NetFrpTab2Control : UserControl
     public NetFrpTab2Control()
     {
         InitializeComponent();
+
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)

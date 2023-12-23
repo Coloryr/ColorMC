@@ -14,7 +14,7 @@ public static class BaseClient
     /// <summary>
     /// 下载源
     /// </summary>
-    public static SourceLocal Source { get; private set; }
+    public static SourceLocal Source { get; set; }
 
     public static HttpClient DownloadClient { get; private set; }
     public static HttpClient LoginClient { get; private set; }

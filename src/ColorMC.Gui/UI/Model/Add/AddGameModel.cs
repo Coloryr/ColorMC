@@ -123,7 +123,7 @@ public partial class AddGameModel : TopModel
     protected override void Close()
     {
         ColorMCCore.GameOverwirte = null;
-        ColorMCCore.GameRequest = null;
+        ColorMCCore.GameAddRequest = null;
         _load = true;
         Back();
         GameVersionList.Clear();

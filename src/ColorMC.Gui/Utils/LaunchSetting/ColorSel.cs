@@ -262,8 +262,8 @@ public static class ColorSel
         {
             foreach (var item in observers.ToArray())
             {
-                if (!item.TryGetTarget(out var target)
-                    || target == observer)
+                if (item.TryGetTarget(out var target)
+                    && target == observer)
                 {
                     observers.Remove(item);
                 }

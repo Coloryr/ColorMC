@@ -411,37 +411,6 @@ public partial class App : Application
         }
     }
 
-    public static void AWindow1(IUserControl con)
-    {
-        if (ConfigBinding.WindowMode())
-        {
-            AllWindow?.Add(con);
-        }
-        else
-        {
-            Window? temp = LastWindow;
-            if (temp == null)
-            {
-                if (MainWindow != null && MainWindow?.Window is Window win)
-                {
-                    temp = win;
-                }
-                else if (CustomWindow != null && CustomWindow?.Window is Window win1)
-                {
-                    temp = win1;
-                }
-                else
-                {
-                    temp = AllWindow?.Window as Window;
-                }
-            }
-            if (temp != null)
-            {
-                new SelfBaseWindow(con).ShowDialog(temp);
-            }
-        }
-    }
-
     public static void ShowCustom(string obj)
     {
         if (CustomWindow != null)

@@ -324,6 +324,14 @@ public static class BaseBinding
 
         if (res.Item1 is { } pr)
         {
+            if (obj.LaunchData.LastTime == new DateTime(0))
+            {
+                if (obj.Loader == Loaders.Forge 
+                    && new Version(obj.Version) > new Version(1, 20, 1))
+                {
+                    InfoBinding.Window?.Show(App.Lang("Gui.Info41"));
+                }
+            }
             obj.LaunchData.LastTime = DateTime.Now;
             obj.SaveLaunchData();
 

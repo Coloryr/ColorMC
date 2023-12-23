@@ -15,6 +15,9 @@ public partial class NetFrpModel
     [ObservableProperty]
     private string _keySakura;
 
+    [ObservableProperty]
+    private bool _isSakuraEmpty = true;
+
     private bool _isLoadSakura;
 
     public ObservableCollection<NetFrpRemoteModel> RemotesSakura { get; set; } = [];
@@ -30,6 +33,8 @@ public partial class NetFrpModel
     [RelayCommand]
     public async Task GetChannelSakura()
     {
+        IsSakuraEmpty = true;
+
         if (string.IsNullOrWhiteSpace(KeySakura))
         {
             Model.Show(App.Lang("NetFrpWindow.Tab1.Error3"));
@@ -49,6 +54,8 @@ public partial class NetFrpModel
         {
             RemotesSakura.Add(new(KeySakura, item));
         }
+
+        IsSakuraEmpty = RemotesSakura.Count == 0;
     }
 
     [RelayCommand]
@@ -86,5 +93,7 @@ public partial class NetFrpModel
         {
             RemotesSakura.Add(new(KeySakura, item));
         }
+
+        IsSakuraEmpty = RemotesSakura.Count == 0;
     }
 }

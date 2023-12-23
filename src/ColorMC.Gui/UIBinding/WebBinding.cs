@@ -834,7 +834,7 @@ public static class WebBinding
         return ColorMCAPI.GetNewLog();
     }
 
-    public static async Task<List<CloudServerModel>?> GetCloudServer()
+    public static async Task<List<NetFrpCloudServerModel>?> GetCloudServer()
     {
         var list = await ColorMCAPI.GetCloudServer();
         if (list == null || list?["list"] is not { } list1)
@@ -842,7 +842,7 @@ public static class WebBinding
             return null;
         }
 
-        return list1.ToObject<List<CloudServerModel>>();
+        return list1.ToObject<List<NetFrpCloudServerModel>>();
     }
 
     public static Task<bool> ShareIP(string token, string ip)
