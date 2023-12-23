@@ -65,7 +65,10 @@ public partial class ServerMotdControl : UserControl
                     _port = port;
                 }
             }
-            _port = data.Item2;
+            else
+            {
+                _port = data.Item2;
+            }
             Update();
             Button2.IsVisible = true;
         }

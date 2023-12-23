@@ -13,7 +13,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A23";
-    public const string DateVersion = "20231218";
+    public const string DateVersion = "20231223";
 
     public const string Version = $"{TopVersion}.{DateVersion}";
 
@@ -47,6 +47,10 @@ public static class ColorMCCore
     /// 是否请求回调
     /// </summary>
     public static Func<string, Task<bool>>? GameRequest { internal get; set; }
+    /// <summary>
+    /// 添加游戏请求回调
+    /// </summary>
+    public static Func<string, Task<bool>>? GameAddRequest { internal get; set; }
     /// <summary>
     /// 游戏启动回调
     /// </summary>

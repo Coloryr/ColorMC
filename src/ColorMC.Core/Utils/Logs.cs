@@ -8,7 +8,7 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public static class Logs
 {
-    private static readonly ConcurrentBag<string> s_bags = new();
+    private static readonly ConcurrentBag<string> s_bags = [];
 
     private static string s_local;
     private static StreamWriter s_writer;

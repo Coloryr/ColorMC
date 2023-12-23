@@ -18,7 +18,7 @@ public static class PathHelper
     public static bool FileHasInvalidChars(string name)
     {
         return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0
-            || name.All('.'.Equals) || name.Length > 50;
+            || (name.All('.'.Equals) && name.StartsWith('.') && name.EndsWith('.')) || name.Length > 80;
     }
 
     /// <summary>
@@ -152,11 +152,18 @@ public static class PathHelper
             return true;
         }
 
-        if (req && ColorMCCore.GameRequest != null)
+        if (req)
         {
-            var res = await ColorMCCore.GameRequest.Invoke(
-                string.Format(LanguageHelper.Get("Core.Info2"), local));
-            if (!res)
+            if (ColorMCCore.GameRequest != null)
+            {
+                var res = await ColorMCCore.GameRequest.Invoke(
+                    string.Format(LanguageHelper.Get("Core.Info2"), local));
+                if (!res)
+                {
+                    return false;
+                }
+            }
+            else
             {
                 return false;
             }

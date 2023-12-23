@@ -46,10 +46,19 @@ public partial class NetFrpControl : MenuControl
     protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as NetFrpModel)!;
+        switch(old)
+        {
+            case 0:
+            case 3:
+            case 4:
+                model.RemoveClick();
+                break;
+        }
         switch (index)
         {
             case 0:
                 model.LoadCloud();
+                model.SetTab4Click();
                 return _tab4;
             case 1:
                 model.LoadSakura();
@@ -59,8 +68,10 @@ public partial class NetFrpControl : MenuControl
                 return _tab5;
             case 3:
                 model.LoadLocal();
+                model.SetTab2Click();
                 return _tab2;
             case 4:
+                model.SetTab3Click();
                 return _tab3;
             default:
                 throw new InvalidEnumArgumentException();

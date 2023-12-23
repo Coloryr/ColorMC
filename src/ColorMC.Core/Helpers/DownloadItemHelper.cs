@@ -232,6 +232,10 @@ public static class DownloadItemHelper
         //运行库
         foreach (var item1 in info)
         {
+            if (string.IsNullOrWhiteSpace(item1.downloads.artifact.path))
+            {
+                continue;
+            }
             if (string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
             {
                 string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}");
@@ -280,26 +284,23 @@ public static class DownloadItemHelper
             }
         }
 
-        if (v2)
+        if (!installer)
         {
-            if (!installer)
-            {
-                list.Add("installer", neo ?
-                    BuildNeoForgeInstaller(mc, version) :
-                    BuildForgeInstaller(mc, version));
-            }
-            if (!universal)
-            {
-                list.Add("universal", neo ?
-                    BuildNeoForgeUniversal(mc, version) :
-                    BuildForgeUniversal(mc, version));
-            }
-            if (v2 && !CheckHelpers.IsGameVersion117(mc) && !launcher)
-            {
-                list.Add("launcher", neo ?
-                    BuildNeoForgeLauncher(mc, version) :
-                    BuildForgeLauncher(mc, version));
-            }
+            list.Add("installer", neo ?
+                BuildNeoForgeInstaller(mc, version) :
+                BuildForgeInstaller(mc, version));
+        }
+        if (!universal)
+        {
+            list.Add("universal", neo ?
+                BuildNeoForgeUniversal(mc, version) :
+                BuildForgeUniversal(mc, version));
+        }
+        if (v2 && !CheckHelpers.IsGameVersion117(mc) && !launcher)
+        {
+            list.Add("launcher", neo ?
+                BuildNeoForgeLauncher(mc, version) :
+                BuildForgeLauncher(mc, version));
         }
 
         return list.Values;

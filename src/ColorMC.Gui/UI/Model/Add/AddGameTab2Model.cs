@@ -121,7 +121,7 @@ public partial class AddGameModel
     private async void AddPack(PackType type)
     {
         ColorMCCore.GameOverwirte = Tab2GameOverwirte;
-        ColorMCCore.GameRequest = Tab2GameRequest;
+        ColorMCCore.GameAddRequest = Tab2GameRequest;
         string temp = App.Lang("Gui.Info27");
 
         if (string.IsNullOrWhiteSpace(ZipLocal))

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class CloudServerModel : ObservableObject
+public partial class NetFrpCloudServerModel : ObservableObject
 {
     /// <summary>
     /// 名字
@@ -37,5 +37,11 @@ public partial class CloudServerModel : ObservableObject
     public async Task Copy()
     {
         await BaseBinding.CopyTextClipboard(IP);
+    }
+
+    [RelayCommand]
+    public void Test()
+    {
+        Top.Test(this);
     }
 }

@@ -24,7 +24,7 @@
             <StackPanel>
                 <WrapPanel Margin="0,0,0,-5" Orientation="Horizontal">
                     <TextBox
-                        MinWidth="200"
+                        MinWidth="210"
                         Margin="0,0,5,5"
                         Classes="input1"
                         Text="{Binding KeyOpenFrp}"
@@ -51,14 +51,16 @@
                             Command="{Binding OpenUrl1}" />
                     </StackPanel>
                 </WrapPanel>
-                <WrapPanel Orientation="Horizontal">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text5}" />
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text7}" />
-                </WrapPanel>
             </StackPanel>
         </Border>
 
-        <DockPanel>
+        <Panel>
+            <TextBlock
+                Margin="0,0,0,3"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                IsVisible="{Binding IsOpenFrpEmpty}"
+                Text="{setting:Localize NetFrpWindow.Tab1.Text5}" />
             <ScrollViewer>
                 <ItemsControl ItemsSource="{Binding RemotesOpenFrp}">
                     <ItemsControl.ItemTemplate>
@@ -68,6 +70,6 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-        </DockPanel>
+        </Panel>
     </DockPanel>
 </UserControl>

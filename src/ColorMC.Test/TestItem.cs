@@ -2,6 +2,7 @@
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
@@ -140,7 +141,7 @@ public static class TestItem
         var game = InstancesPath.Games;
         var login = new LoginObj()
         {
-            UUID = "UUID",
+            UUID = Guid.NewGuid().ToString().ToLower(),
             AccessToken = "AccessToken",
             UserName = "Test"
         };
@@ -153,7 +154,7 @@ public static class TestItem
     {
         var login = new LoginObj()
         {
-            UUID = "UUID",
+            UUID = Guid.NewGuid().ToString().ToLower(),
             AccessToken = "AccessToken",
             UserName = "Test"
         };
@@ -168,14 +169,16 @@ public static class TestItem
 
         CancellationToken token = CancellationToken.None;
 
+        BaseClient.Source = SourceLocal.Offical;
+
         Process? process;
         //process = game.StartGame(login).Result;
         //process?.WaitForExit();
 
-        game.Version = "1.7.10";
-        game.LoaderVersion = "10.13.4.1614";
-        process = game.StartGameAsync(login, null, token).Result;
-        process?.WaitForExit();
+        //game.Version = "1.7.10";
+        //game.LoaderVersion = "10.13.4.1614";
+        //process = game.StartGameAsync(login, null, token).Result;
+        //process?.WaitForExit();
 
         //game.Version = "1.8";
         //game.LoaderVersion = "11.14.4.1577";
@@ -199,7 +202,7 @@ public static class TestItem
 
         //game.Version = "1.9.4";
         //game.LoaderVersion = "12.17.0.2317";
-        //process = game.StartGame(login, null, token).Result;
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.10";
@@ -219,22 +222,22 @@ public static class TestItem
 
         //game.Version = "1.11.2";
         //game.LoaderVersion = "13.20.1.2588";
-        //process = game.StartGame(login, null, token).Result;
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.12.2";
         //game.LoaderVersion = "14.23.4.2760";
-        //process = game.StartGame(login, null, token).Result;
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.12.2";
         //game.LoaderVersion = "14.23.5.2860";
-        //process = game.StartGame(login, null, token).Result;
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.13.2";
         //game.LoaderVersion = "25.0.223";
-        //process = game.StartGame(login, null, token).Result;
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.14.4";
@@ -254,36 +257,55 @@ public static class TestItem
 
         //game.Version = "1.17.1";
         //game.LoaderVersion = "37.1.1";
-        //process = game.StartGame(login, null, token).Result;
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.18.2";
         //game.LoaderVersion = "40.1.85";
-        //process = game.StartGame(login, null, token).Result;
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.19.2";
         //game.LoaderVersion = "43.1.52";
-        //process = game.StartGame(login, null, token).Result;
+        //process = game.StartGameAsync(login, null, token).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.20.1";
+        //game.Loader = Loaders.Forge;
+        //game.LoaderVersion = "47.2.18";
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.20.1";
         //game.Loader = Loaders.NeoForge;
-        //game.LoaderVersion = "47.1.71";
-        //process = game.StartGame(login, null, token).Result;
+        //game.LoaderVersion = "47.1.84";
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.20.1";
         //game.Loader = Loaders.Fabric;
         //game.LoaderVersion = "0.14.22";
-        //process = game.StartGame(login, null, token).Result;
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.20.1";
         //game.Loader = Loaders.Quilt;
-        //game.LoaderVersion = "0.14.22";
-        //process = game.StartGame(login, null, token).Result;
+        //game.LoaderVersion = "0.22.0";
+        //process = game.StartGameAsync(login, null, token).Result;
         //process?.WaitForExit();
+
+        game.Version = "1.20.4";
+        game.Loader = Loaders.Forge;
+        game.LoaderVersion = "49.0.11";
+        process = game.StartGameAsync(login, null, token).Result;
+        process?.WaitForExit();
+
+        game.Version = "1.20.4";
+        game.Loader = Loaders.NeoForge;
+        game.LoaderVersion = "20.4.50-beta";
+        process = game.StartGameAsync(login, null, token).Result;
+        process?.WaitForExit();
+
     }
 
     public static void Item11()

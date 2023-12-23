@@ -46,7 +46,7 @@ internal class Program
         ColorMCCore.AuthStateUpdate = AuthStateUpdate;
         ColorMCCore.GameLog = Log;
 
-        //TestItem.Item33();
+        //TestItem.Item10();
 
         GetSha1();
 
@@ -140,7 +140,7 @@ internal class Program
 
     public static void Update(DownloadItemObj obj)
     {
-        Console.WriteLine($"下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
+        Console.WriteLine($"下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize} {obj.Name} {obj.NowSize}/{obj.AllSize}");
     }
 
     public static void Update(int index, DownloadItemObj item)
