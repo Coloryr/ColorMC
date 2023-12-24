@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel(BaseModel model, ServerPackObj obj) : MenuModel(model)
+public partial class ServerPackModel : MenuModel
 {
-    public ServerPackObj Obj { get; } = obj;
+    public ServerPackObj Obj { get; }
 
     public override List<MenuObj> TabItems { get; init; } =
     [
@@ -23,6 +23,15 @@ public partial class ServerPackModel(BaseModel model, ServerPackObj obj) : MenuM
         new() { Icon = "/Resource/Icon/GameExport/item4.svg",
             Text = App.Lang("ServerPackWindow.Tabs.Text4") },
     ];
+
+    private readonly string _name;
+
+    public ServerPackModel(BaseModel model, ServerPackObj obj) : base(model)
+    {
+        _name = ToString() ?? "ServerPackModel";
+
+        Obj = obj;
+    }
 
     [RelayCommand]
     public async Task Gen()
@@ -46,6 +55,11 @@ public partial class ServerPackModel(BaseModel model, ServerPackObj obj) : MenuM
         {
             Model.Show(App.Lang("ServerPackWindow.Tab1.Error3"));
         }
+    }
+
+    public void RemoveChoise()
+    {
+        Model.RemoveChoiseData(_name);
     }
 
     protected override void Close()

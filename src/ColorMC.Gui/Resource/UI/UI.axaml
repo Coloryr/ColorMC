@@ -50,9 +50,9 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Background="#FFEEEEEE"
-            Text="xxx服务器专用客户端"
             FontSize="20"
-            Foreground="#FF000000" />
+            Foreground="#FF000000"
+            Text="xxx服务器专用客户端" />
         <views:ServerMotdControl Margin="5" IPPort="{ReflectionBinding Server}" />
         <views1:GameControl
             HorizontalAlignment="Center"
@@ -71,11 +71,11 @@
                 Source="{ReflectionBinding Head}" />
             <TextBlock
                 Margin="0,5,0,5"
-                HorizontalContentAlignment="Center"
+                HorizontalAlignment="Center"
                 Text="{ReflectionBinding UserName}" />
             <TextBlock
                 Margin="0,5,0,5"
-                HorizontalContentAlignment="Center"
+                HorizontalAlignment="Center"
                 Text="{ReflectionBinding UserType}" />
         </StackPanel>
     </Panel>

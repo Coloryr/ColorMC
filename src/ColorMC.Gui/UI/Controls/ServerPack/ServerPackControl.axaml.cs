@@ -84,6 +84,13 @@ public partial class ServerPackControl : MenuControl
     protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as ServerPackModel)!;
+        switch (old)
+        {
+            case 1:
+            case 2:
+                model.RemoveChoise();
+                break;
+        }
         switch (model.NowView)
         {
             case 0:
@@ -91,9 +98,11 @@ public partial class ServerPackControl : MenuControl
                 return _tab1;
             case 1:
                 model.LoadMod();
+                model.SetTab2Click();
                 return _tab2;
             case 2:
                 model.LoadConfigList();
+                model.SetTab3Click();
                 return _tab3;
             case 3:
                 model.LoadFile();

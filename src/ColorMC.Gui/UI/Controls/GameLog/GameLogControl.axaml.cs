@@ -84,6 +84,7 @@ public partial class GameLogControl : UserControl, IUserControl
         }
 
         (DataContext as GameLogModel)!.Load();
+        (DataContext as GameLogModel)!.Load1();
     }
 
     public void Closed()
