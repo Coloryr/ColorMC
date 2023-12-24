@@ -15,7 +15,7 @@ public partial class Tab1Control : UserControl
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (DataContext is ServerPackModel model && model.NowView == 1)
+        if (DataContext is ServerPackModel model && model.NowView == 0)
         {
             model.WhellChange(e.Delta.Y);
         }

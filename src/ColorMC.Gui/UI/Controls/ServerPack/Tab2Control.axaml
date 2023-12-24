@@ -17,32 +17,6 @@
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
-            DockPanel.Dock="Top">
-            <StackPanel Orientation="Horizontal">
-                <Button
-                    Width="100"
-                    Height="25"
-                    Command="{Binding SelectAllMod}"
-                    Content="{setting:Localize ServerPackWindow.Tab2.Text2}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text115}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    Command="{Binding UnSelectAllMod}"
-                    Content="{setting:Localize ServerPackWindow.Tab2.Text3}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text115}"
-                    ToolTip.VerticalOffset="-30" />
-            </StackPanel>
-        </Border>
-        <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
             <DataGrid
                 Name="DataGrid1"

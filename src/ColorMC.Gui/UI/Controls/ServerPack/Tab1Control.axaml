@@ -19,14 +19,6 @@
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}">
             <DockPanel>
-                <TextBox
-                    Height="60"
-                    Margin="0,0,0,5"
-                    AcceptsReturn="True"
-                    Classes="input2"
-                    DockPanel.Dock="Top"
-                    Text="{Binding Text}"
-                    Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
                 <StackPanel
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Bottom"
@@ -47,7 +39,17 @@
                         ToolTip.Tip="{setting:Localize ToolTip.Text47}"
                         ToolTip.VerticalOffset="-30" />
                 </StackPanel>
-                <TextBlock Text="{setting:Localize ServerPackWindow.Tab1.Text1}" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    DockPanel.Dock="Top"
+                    Text="{setting:Localize ServerPackWindow.Tab1.Text1}" />
+                <TextBox
+                    Margin="0,0,0,5"
+                    AcceptsReturn="True"
+                    Classes="input2"
+                    DockPanel.Dock="Top"
+                    Text="{Binding Text}"
+                    Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
             </DockPanel>
         </Border>
     </ScrollViewer>
