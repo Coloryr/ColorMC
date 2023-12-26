@@ -6,13 +6,14 @@
 **Notie: Translations from other languages are not yet ready. If possible, welcome to do the translation together**  
 https://crowdin.com/project/colormc
 
-Using dotnet8 as the runtime environment, XAML as the front-end language, and C # as the back-end language
+Using dotnet8 as the runtime environment, XAML as the `UI Front` language, and C # as the `Back-End` language
 
 [User's manual](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md)
 
 ![](/image/run.png)  
 
-**Demo animation**
+**Running animation**
+
 ![](/image/GIF.gif)  
 
 ## Supporting platforms
@@ -22,13 +23,20 @@ Using dotnet8 as the runtime environment, XAML as the front-end language, and C 
 
 Note: ARM64 platform cannot guarantee its compatibility  
 Windows ARM64 can run, but there are rendering issues  
-Linux ARM64 can run on xx, but it runs slowly  
+Linux ARM64 can run on `Linux arm development board`, but it runs slowly  
 Mac ARM64 cannot run, it can run x64 version  
 
 Due to the complexity of Linux distributions, everyone's computer compatibility is different. If it cannot be opened, it can be resolved on its own
 
 ## Install
-Get the installation package, extract and install it
+Download the built compressed/installation package from Releases or Actions  
+Extract (zip) \ install (exe, deb, pkg) \ or run (appimage) directly
+
+Under Windows, you can use Winget installation (it should not be ready yet)
+```
+winget install colormc
+```
+Default installation on `D:\ColorMC`
 
 ## Start program
 
@@ -49,7 +57,7 @@ dotnet run
 ## Build from source code
 
 - Build binary files for `windows`, `ubuntu`, and`macos`  
-**Need to build in Ubuntu system**
+**Need to build in Ubuntu system, with git and dotnet-8-sdk**
 ```
 git clone https://github.com/Coloryr/ColorMC.git
 cd ColorMC
@@ -68,7 +76,7 @@ chmod a+x ./build/build-windows.sh
 ```
 
 - Build binary files for `arch`  
-**Need to build in Arch system**
+**Need to build in Arch system, with git and dotnet-8-sdk**
 ```
 git clone https://github.com/Coloryr/ColorMC.git
 cd ColorMC
