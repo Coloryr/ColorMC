@@ -15,43 +15,43 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_013348B6D8D24E949CC7F7DF53C3E2E0"
+        "MsmKey" = "8:_6D72932F3A6F4A9F8990F3834EF3099F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_10D5FBC4652F490287969A4B8783242F"
+        "MsmKey" = "8:_990DA264AEF342AAB1CDFA44F51B2FBF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_3342B33895844CB7A3AD0652D4A2F4C4"
+        "MsmKey" = "8:_A320CEF5B77E4BC783E8E4002468FE24"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_5FD65E1B8A254CE5BFD5E5812D05E473"
+        "MsmKey" = "8:_B56191643DE442EA9C33900E0B9DD1AC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_941E3BE072874299965B82C9DE242F7F"
+        "MsmKey" = "8:_BD752930B6F14528940212D982BFDE9E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C50073A0B5FF4553BC99B8C9A72E4C75"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D8EB78CC32D74C19A28A9F82AC5107D0"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E01B48862E4B4B1F81A69CD22633203A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -73,6 +73,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -89,6 +105,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -110,10 +142,10 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_013348B6D8D24E949CC7F7DF53C3E2E0"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6D72932F3A6F4A9F8990F3834EF3099F"
             {
-            "SourcePath" = "8:..\\build_out\\test\\colormc\\ColorMC.Gui.pdb"
-            "TargetName" = "8:ColorMC.Gui.pdb"
+            "SourcePath" = "8:..\\build_out\\pack\\ColorMC.Launcher.pdb"
+            "TargetName" = "8:ColorMC.Launcher.pdb"
             "Tag" = "8:"
             "Folder" = "8:_60645976005B457BA29777DFF30CE2E3"
             "Condition" = "8:"
@@ -130,9 +162,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_10D5FBC4652F490287969A4B8783242F"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_990DA264AEF342AAB1CDFA44F51B2FBF"
             {
-            "SourcePath" = "8:..\\build_out\\test\\colormc\\Live2DCSharpSDK.App.pdb"
+            "SourcePath" = "8:..\\build_out\\pack\\Live2DCSharpSDK.App.pdb"
             "TargetName" = "8:Live2DCSharpSDK.App.pdb"
             "Tag" = "8:"
             "Folder" = "8:_60645976005B457BA29777DFF30CE2E3"
@@ -150,9 +182,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3342B33895844CB7A3AD0652D4A2F4C4"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A320CEF5B77E4BC783E8E4002468FE24"
             {
-            "SourcePath" = "8:..\\build_out\\test\\colormc\\ColorMC.Launcher.exe"
+            "SourcePath" = "8:..\\build_out\\pack\\ColorMC.Launcher.exe"
             "TargetName" = "8:ColorMC.Launcher.exe"
             "Tag" = "8:"
             "Folder" = "8:_60645976005B457BA29777DFF30CE2E3"
@@ -170,9 +202,29 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5FD65E1B8A254CE5BFD5E5812D05E473"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B56191643DE442EA9C33900E0B9DD1AC"
             {
-            "SourcePath" = "8:..\\build_out\\test\\colormc\\ColorMC.Core.pdb"
+            "SourcePath" = "8:..\\build_out\\pack\\Live2DCSharpSDK.Framework.pdb"
+            "TargetName" = "8:Live2DCSharpSDK.Framework.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_60645976005B457BA29777DFF30CE2E3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BD752930B6F14528940212D982BFDE9E"
+            {
+            "SourcePath" = "8:..\\build_out\\pack\\ColorMC.Core.pdb"
             "TargetName" = "8:ColorMC.Core.pdb"
             "Tag" = "8:"
             "Folder" = "8:_60645976005B457BA29777DFF30CE2E3"
@@ -190,10 +242,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_941E3BE072874299965B82C9DE242F7F"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C50073A0B5FF4553BC99B8C9A72E4C75"
             {
-            "SourcePath" = "8:..\\build_out\\test\\colormc\\ColorMC.Launcher.pdb"
-            "TargetName" = "8:ColorMC.Launcher.pdb"
+            "SourcePath" = "8:..\\build_out\\pack\\ColorMC.Gui.pdb"
+            "TargetName" = "8:ColorMC.Gui.pdb"
             "Tag" = "8:"
             "Folder" = "8:_60645976005B457BA29777DFF30CE2E3"
             "Condition" = "8:"
@@ -212,28 +264,8 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D8EB78CC32D74C19A28A9F82AC5107D0"
             {
-            "SourcePath" = "8:..\\build_out\\test\\colormc\\game.ico"
+            "SourcePath" = "8:..\\build_out\\pack\\game.ico"
             "TargetName" = "8:game.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_60645976005B457BA29777DFF30CE2E3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E01B48862E4B4B1F81A69CD22633203A"
-            {
-            "SourcePath" = "8:..\\build_out\\test\\colormc\\Live2DCSharpSDK.Framework.pdb"
-            "TargetName" = "8:Live2DCSharpSDK.Framework.pdb"
             "Tag" = "8:"
             "Folder" = "8:_60645976005B457BA29777DFF30CE2E3"
             "Condition" = "8:"
@@ -313,7 +345,7 @@
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:FALSE"
-        "InstallAllUsers" = "11:TRUE"
+        "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.23.0"
         "Manufacturer" = "8:Coloryr"
         "ARPHELPTELEPHONE" = "8:"
@@ -505,21 +537,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_01BD056B59F548A9B1659C4E89C22BA2"
-            {
-            "Name" = "8:ColorMC"
-            "Arguments" = "8:"
-            "Description" = "8:A Minecraft Launcher"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_3342B33895844CB7A3AD0652D4A2F4C4"
-            "Folder" = "8:_BF78A53152BC4D81A32F1CA4845C7355"
-            "WorkingFolder" = "8:_60645976005B457BA29777DFF30CE2E3"
-            "Icon" = "8:_D8EB78CC32D74C19A28A9F82AC5107D0"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4A878422EA974F5B8B64164FBD23AA50"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1EF9EEF0600E48D89EEA74502DAD7707"
             {
             "Name" = "8:ColorMC"
             "Arguments" = "8:"
@@ -527,7 +545,21 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_3342B33895844CB7A3AD0652D4A2F4C4"
+            "Target" = "8:_A320CEF5B77E4BC783E8E4002468FE24"
+            "Folder" = "8:_BF78A53152BC4D81A32F1CA4845C7355"
+            "WorkingFolder" = "8:_60645976005B457BA29777DFF30CE2E3"
+            "Icon" = "8:_D8EB78CC32D74C19A28A9F82AC5107D0"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_5125CAE7B4564A98B56C1F46231B15B8"
+            {
+            "Name" = "8:ColorMC"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_A320CEF5B77E4BC783E8E4002468FE24"
             "Folder" = "8:_4F9E9E3430C74F4393E69BA4433256CA"
             "WorkingFolder" = "8:_60645976005B457BA29777DFF30CE2E3"
             "Icon" = "8:_D8EB78CC32D74C19A28A9F82AC5107D0"
