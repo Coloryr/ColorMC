@@ -666,7 +666,7 @@ public static class PathBinding
             {
                 obj.minecraft.modLoaders.Add(new()
                 {
-                    id = $"{model.Obj.Loader.GetName().ToLower()}-{model.Obj.LoaderVersion}",
+                    id = $"{model.Obj.Loader.ToString().ToLower()}-{model.Obj.LoaderVersion}",
                     primary = true
                 });
             }
