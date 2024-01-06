@@ -29,4 +29,5 @@
 		<ProjectReference Include="..\ColorMC.Gui\ColorMC.Gui.csproj" />
 		<ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
 	</ItemGroup>
+
 </Project>

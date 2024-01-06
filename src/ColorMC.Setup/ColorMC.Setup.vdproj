@@ -301,7 +301,7 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_60645976005B457BA29777DFF30CE2E3"
             {
-            "DefaultLocation" = "8:D:\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFiles64Folder][ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -339,7 +339,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ColorMC"
         "ProductCode" = "8:{BA2749D2-BBA4-4ACE-8E06-C4E100343C1A}"
-        "PackageCode" = "8:{83C5BB71-6E6A-44ED-A3F7-193E0F952EF2}"
+        "PackageCode" = "8:{23DC7EB7-B240-49BD-9B76-97845A60B793}"
         "UpgradeCode" = "8:{6A49CB28-A0E2-4D39-9B4B-B3A3A93EA6B4}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
