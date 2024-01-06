@@ -1,5 +1,7 @@
 using Avalonia;
 using System;
+using Avalonia.Media;
+
 #if !DEBUG
 using System.IO;
 using System.Linq;
@@ -33,6 +35,8 @@ internal static class GuiLoad
 
 public static class Program
 {
+    public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
+
 #if !DEBUG
     /// <summary>
     /// 加载路径
@@ -95,6 +99,16 @@ public static class Program
         {
             Aot = true;
         }
+        try
+        {
+            File.Create("temp").Close();
+        }
+        catch
+        {
+            BuildAvaloniaApp()
+                .StartWithClassicDesktopLifetime(args);
+            return;
+        }
 #endif
         try
         {
@@ -129,6 +143,18 @@ public static class Program
         return Gui.ColorMCGui.BuildAvaloniaApp();
     }
 #else
+
+    public static AppBuilder BuildAvaloniaApp()
+    {
+        return AppBuilder.Configure<App>()
+                .With(new FontManagerOptions
+                {
+                    DefaultFamilyName = Font,
+                })
+                .LogToTrace()
+                .UsePlatformDetect();
+    }
+
     private static bool NotHaveDll()
     {
         return File.Exists($"{LoadDir}ColorMC.Core.dll")

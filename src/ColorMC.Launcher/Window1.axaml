@@ -1,0 +1,55 @@
+<Window
+    x:Class="ColorMC.Launcher.Window1"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    Title="{Binding Title}"
+    Width="760"
+    Height="450"
+    MinWidth="335"
+    MinHeight="450"
+    d:DesignHeight="450"
+    d:DesignWidth="760"
+    Background="White"
+    mc:Ignorable="d">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock
+            HorizontalAlignment="Center"
+            FontSize="20"
+            Text="启动器需要管理员方式启动才能正常运行" />
+        <TextBlock HorizontalAlignment="Center" Text="The launcher needs to be started in administrator mode to function properly" />
+        <TextBlock
+            HorizontalAlignment="Center"
+            FontSize="20"
+            Text="你可以将启动器安装在其他位置来解决这个问题" />
+        <TextBlock HorizontalAlignment="Center" Text="You can install the launcher in another location to solve this problem" />
+        <TextBlock
+            HorizontalAlignment="Center"
+            FontSize="20"
+            Text="是否使用管理员方式重启" />
+        <TextBlock HorizontalAlignment="Center" Text="Do you want to restart using administrator mode" />
+        <StackPanel
+            Margin="0,20,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Name="Button1"
+                Width="120"
+                Margin="0,0,20,0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Content="确定(Yes)" />
+            <Button
+                Name="Button2"
+                Width="120"
+                Margin="20,0,0,0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Content="取消(No)" />
+        </StackPanel>
+    </StackPanel>
+
+</Window>
