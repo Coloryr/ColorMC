@@ -256,6 +256,11 @@ public static class BaseBinding
     public static async Task<(bool, string?)> Launch(BaseModel window,
         GameSettingObj obj, LoginObj obj1, WorldObj? world = null, bool wait = false)
     {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            wait = false;
+        }
+
         InfoBinding.Window = window;
         InfoBinding.Launch();
 
@@ -301,21 +306,13 @@ public static class BaseBinding
             GameLogs.Add(obj.UUID, new());
         }
 
-        if (SystemInfo.Os != OsType.Android)
-        {
-            //锁定账户
-            UserBinding.AddLockUser(obj1);
-        }
+        //锁定账户
+        UserBinding.AddLockUser(obj1);
 
         var res = await Task.Run(async () => await Launch(obj, obj1, world, s_launchCancel.Token));
 
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.End);
         FuntionUtils.RunGC();
-
-        if (SystemInfo.Os == OsType.Android && res.Item1 != null)
-        {
-            return (true, null);
-        }
 
         if (s_launchCancel.IsCancellationRequested)
         {
@@ -463,10 +460,6 @@ public static class BaseBinding
         {
             //启动
             var p = await obj.StartGameAsync(obj1, world, cancel);
-            if (SystemInfo.Os == OsType.Android)
-            {
-                return (new Process(), null);
-            }
             if (cancel.IsCancellationRequested)
             {
                 if (p != null && p.Id != 0)

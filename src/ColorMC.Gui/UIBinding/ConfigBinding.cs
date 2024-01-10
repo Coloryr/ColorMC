@@ -386,12 +386,12 @@ public static class ConfigBinding
     /// <param name="value"></param>
     public static void SetWindowMode(bool value)
     {
-        GuiConfigUtils.Config.WindowMode = value;
-
-        GuiConfigUtils.Save();
-
         if (SystemInfo.Os != OsType.Android)
         {
+            GuiConfigUtils.Config.WindowMode = value;
+
+            GuiConfigUtils.Save();
+
             App.Reboot();
         }
     }
