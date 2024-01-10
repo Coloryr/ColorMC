@@ -86,15 +86,24 @@ public static class JavaHelper
     {
         try
         {
-            if (SystemInfo.Os == OsType.Android)
-            {
-                return ColorMCCore.PhoneReadJvm?.Invoke(path);
-            }
-
             if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
             {
-                using var p = new Process();
-                p.StartInfo.FileName = path;
+                Process? p;
+
+                if (SystemInfo.Os == OsType.Android)
+                {
+                    p = ColorMCCore.PhoneStartJvm?.Invoke(path);
+                }
+                else
+                {
+                    p = new Process();
+                    p.StartInfo.FileName = path;
+                }
+                if (p == null)
+                {
+                    return null;
+                }
+
                 p.StartInfo.Arguments = "-version";
                 p.StartInfo.RedirectStandardError = true;
                 p.StartInfo.UseShellExecute = false;

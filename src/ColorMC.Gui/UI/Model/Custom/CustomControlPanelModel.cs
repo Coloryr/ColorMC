@@ -95,10 +95,7 @@ public partial class CustomControlPanelModel : TopModel
         {
             Model.Notify(App.Lang("MainWindow.Info2"));
 
-            if (SystemInfo.Os != OsType.Android)
-            {
-                item.IsLaunch = true;
-            }
+            item.IsLaunch = true;
 
             Model.Progress(App.Lang("MainWindow.Info26"));
         }

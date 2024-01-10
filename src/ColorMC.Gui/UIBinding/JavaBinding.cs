@@ -32,6 +32,8 @@ public static class JavaBinding
         if (SystemInfo.Os == OsType.Android)
         {
             name = name.Replace("primary%3A", "");
+            name = name.Replace("%2F", "/");
+            name = Path.GetFileName(name);
         }
         return await JvmPath.UnzipJavaAsync(name, file, zip);
     }

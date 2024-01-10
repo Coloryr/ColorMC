@@ -1270,7 +1270,7 @@ public static class Launch
                 {
                     if (JvmPath.FindJava(8) is { } jvm1)
                     {
-                        stopwatch.Start();
+                        stopwatch.Start(); 
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
                         start = ReplaceArg(obj, path!, arg, start);
 
@@ -1282,8 +1282,23 @@ public static class Launch
                             arglist.Add(args[a].Trim());
                         }
 
-                        await ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1, obj.GetGamePath(), arglist, env);
+                        var res1 = ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1, obj.GetGamePath(), arglist, env);
+                        res1.StartInfo.RedirectStandardError = true;
+                        res1.StartInfo.RedirectStandardInput = true;
+                        res1.StartInfo.RedirectStandardOutput = true;
+                        res1.OutputDataReceived += (a, b)=> 
+                        {
+                            ColorMCCore.GameLog?.Invoke(obj, b.Data);
+                        };
+                        res1.ErrorDataReceived += (a, b) =>
+                        {
+                            ColorMCCore.GameLog?.Invoke(obj, b.Data);
+                        };
+                        res1.Start();
+                        res1.BeginOutputReadLine();
+                        res1.BeginErrorReadLine();
 
+                        await res1.WaitForExitAsync(s_cancel);
                         stopwatch.Stop();
                         string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                             obj.Name, stopwatch.Elapsed.ToString());
@@ -1335,35 +1350,62 @@ public static class Launch
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.InstallForge);
                     var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
                             LanguageHelper.Get("Core.Launch.Error9"));
-                    var res1 = await ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1,
+                    using var res1 = ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1,
                         obj.GetGamePath(), obj.MakeInstallForgeArg(v2), env);
-                    if (res1 != true)
+                    res1.StartInfo.RedirectStandardError = true;
+                    res1.StartInfo.RedirectStandardInput = true;
+                    res1.StartInfo.RedirectStandardOutput = true;
+                    res1.OutputDataReceived += (a, b) =>
                     {
-                        throw new LaunchException(LaunchState.JavaError,
+                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
+                    };
+                    res1.ErrorDataReceived += (a, b) =>
+                    {
+                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
+                    };
+                    res1.Start();
+                    res1.BeginOutputReadLine();
+                    res1.BeginErrorReadLine();
+
+                    res1.WaitForExit();
+                    if (res1.ExitCode != 0)
+                    {
+                        throw new LaunchException(LaunchState.LoaderError,
                             LanguageHelper.Get("Core.Launch.Error10"));
                     }
                 }
             }
-
-            ColorMCCore.PhoneGameLaunch?.Invoke(obj, jvm!, arg, env);
-            return null;
         }
 
         //启动进程
-        Process process = new()
+        Process? process;
+
+        if (SystemInfo.Os == OsType.Android)
         {
-            EnableRaisingEvents = true
-        };
-        process.StartInfo.FileName = path;
-        process.StartInfo.WorkingDirectory = obj.GetGamePath();
-        Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
-        foreach (var item in arg)
-        {
-            process.StartInfo.ArgumentList.Add(item);
+            process = ColorMCCore.PhoneGameLaunch?.Invoke(obj, jvm!, arg, env);
         }
-        foreach (var item in env)
+        else
         {
-            process.StartInfo.Environment.Add(item.Key, item.Value);
+            process = new()
+            {
+                EnableRaisingEvents = true
+            };
+            process.StartInfo.FileName = path;
+            process.StartInfo.WorkingDirectory = obj.GetGamePath();
+            Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
+            foreach (var item in arg)
+            {
+                process.StartInfo.ArgumentList.Add(item);
+            }
+            foreach (var item in env)
+            {
+                process.StartInfo.Environment.Add(item.Key, item.Value);
+            }
+        }
+
+        if (process == null)
+        {
+            return null;
         }
 
         process.StartInfo.RedirectStandardInput = true;

@@ -572,11 +572,9 @@ public partial class MainModel : TopModel, IMainTop
         else
         {
             Model.Notify(App.Lang("MainWindow.Info2"));
-            if (SystemInfo.Os != OsType.Android)
-            {
-                item.IsLaunch = true;
-                Launchs.Add(game.UUID, item);
-            }
+
+            item.IsLaunch = true;
+            Launchs.Add(game.UUID, item);
 
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {

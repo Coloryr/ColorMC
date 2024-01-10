@@ -119,15 +119,15 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端启动
     /// </summary>
-    public static Action<GameSettingObj, JavaInfo, List<string>, Dictionary<string, string>>? PhoneGameLaunch { internal get; set; }
+    public static Func<GameSettingObj, JavaInfo, List<string>, Dictionary<string, string>, Process>? PhoneGameLaunch { internal get; set; }
     /// <summary>
     /// 手机端Jvm安装
     /// </summary>
-    public static Action<Stream, string>? PhoneJvmInstall { internal get; set; }
+    public static Action<Stream, string, Action<string, int, int>?>? PhoneJvmInstall { internal get; set; }
     /// <summary>
     /// 手机端读Java信息
     /// </summary>
-    public static Func<string, JavaInfo?>? PhoneReadJvm { internal get; set; }
+    public static Func<string, Process?>? PhoneStartJvm { internal get; set; }
     /// <summary>
     /// 手机端读文件
     /// </summary>
@@ -140,7 +140,7 @@ public static class ColorMCCore
     /// 手机端Jvm运行
     /// </summary>
     public static Func<GameSettingObj, JavaInfo, string, List<string>,
-        Dictionary<string, string>, Task<bool>> PhoneJvmRun
+        Dictionary<string, string>, Process> PhoneJvmRun
     { internal get; set; }
     /// <summary>
     /// 手机端打开网页

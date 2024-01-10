@@ -161,7 +161,7 @@ public static class JvmPath
             {
                 try
                 {
-                    ColorMCCore.PhoneJvmInstall?.Invoke(stream, path);
+                    ColorMCCore.PhoneJvmInstall?.Invoke(stream, path, zip);
                     return (true, null!);
                 }
                 catch (Exception e)
@@ -215,7 +215,8 @@ public static class JvmPath
             Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info3"), java));
         }
 
-        if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
+        if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS
+            || SystemInfo.Os == OsType.Android)
         {
             JavaHelper.Per(java);
         }
