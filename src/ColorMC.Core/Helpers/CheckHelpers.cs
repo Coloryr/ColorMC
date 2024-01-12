@@ -293,7 +293,10 @@ public static class CheckHelpers
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
                         foreach (var item in list2)
                         {
-                            list.Add(item);
+                            if (!string.IsNullOrWhiteSpace(item.Url))
+                            {
+                                list.Add(item);
+                            }
                         }
                     }
                 }
@@ -323,7 +326,10 @@ public static class CheckHelpers
                     {
                         foreach (var item in list3)
                         {
-                            list.Add(item);
+                            if (!string.IsNullOrWhiteSpace(item.Url))
+                            {
+                                list.Add(item);
+                            }
                         }
                     }
                 }
@@ -349,7 +355,10 @@ public static class CheckHelpers
                     {
                         foreach (var item in list3)
                         {
-                            list.Add(item);
+                            if (!string.IsNullOrWhiteSpace(item.Url))
+                            {
+                                list.Add(item);
+                            }
                         }
                     }
                 }
@@ -375,7 +384,10 @@ public static class CheckHelpers
                     {
                         foreach (var item in list3)
                         {
-                            list.Add(item);
+                            if (!string.IsNullOrWhiteSpace(item.Url))
+                            {
+                                list.Add(item);
+                            }
                         }
                     }
                 }
@@ -412,7 +424,10 @@ public static class CheckHelpers
                     {
                         foreach (var item in list3)
                         {
-                            list.Add(item);
+                            if (!string.IsNullOrWhiteSpace(item.Url))
+                            {
+                                list.Add(item);
+                            }
                         }
                     }
                 }
@@ -600,7 +615,7 @@ public static class CheckHelpers
             $"{obj.minecraft}-{fgversion}/" +
             $"forge-{obj.minecraft}-{fgversion}-client.jar";
         }
-        
+
         file = Path.GetFullPath(file);
         if (!File.Exists(file))
         {
