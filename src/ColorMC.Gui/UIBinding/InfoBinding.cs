@@ -3,7 +3,6 @@ using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -13,66 +12,7 @@ public static class InfoBinding
 
     public static void Init()
     {
-        ColorMCCore.OfflineLaunch = (login) =>
-        {
-            if (Window == null)
-            {
-                return Task.Run(() => { return false; });
-            }
-            return Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                return Window.ShowWait(string.Format(
-                    App.Lang("MainWindow.Info21"), login.UserName));
-            });
-        };
         ColorMCCore.GameLaunch = GameLunch;
-        ColorMCCore.GameRequest = GameRequest;
-        ColorMCCore.LaunchP = (pre) =>
-        {
-            if (Window == null)
-            {
-                return Task.Run(() => { return false; });
-            }
-
-            return Dispatcher.UIThread.InvokeAsync(() =>
-                Window.ShowWait(pre ? App.Lang("MainWindow.Info29")
-                : App.Lang("MainWindow.Info30")));
-        };
-        ColorMCCore.UpdateState = (info) =>
-        {
-            if (Window is { } win)
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    if (info == null)
-                    {
-                        win.ProgressClose();
-                    }
-                    else
-                    {
-                        win.Progress(info);
-                    }
-                });
-            }
-        };
-    }
-
-    public static void Launch()
-    {
-        ColorMCCore.GameRequest = GameRequest;
-    }
-
-    private static Task<bool> GameRequest(string state)
-    {
-        if (Window == null)
-        {
-            return Task.Run(() => { return false; });
-        }
-
-        return Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            return Window.ShowWait(state);
-        });
     }
 
     private static void GameLunch(GameSettingObj obj, LaunchState state)

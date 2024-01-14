@@ -19,7 +19,7 @@ public partial class Tab1Control : UserControl
     {
         if (DataContext is GameEditModel model)
         {
-           await  model.LangLoad();
+            await model.LangLoad();
         }
     }
 

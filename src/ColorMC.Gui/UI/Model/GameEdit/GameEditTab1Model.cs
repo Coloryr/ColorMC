@@ -254,7 +254,10 @@ public partial class GameEditModel
 
                 Model.Progress(App.Lang("GameEditWindow.Tab1.Info8"));
                 var item = list[0];
-                res = await GameBinding.ModPackUpdate(_obj, item);
+                res = await GameBinding.ModPackUpdate(_obj, item, (size, now) =>
+                {
+                    Model.ProgressUpdate((double)now / size);
+                }, App.DownloaderUpdate, PackState);
                 Model.ProgressClose();
                 if (!res)
                 {
@@ -293,7 +296,10 @@ public partial class GameEditModel
 
                 Model.Progress(App.Lang("GameEditWindow.Tab1.Info8"));
                 var item = list.data[0];
-                res = await GameBinding.ModPackUpdate(_obj, item);
+                res = await GameBinding.ModPackUpdate(_obj, item, (size, now) =>
+                {
+                    Model.ProgressUpdate((double)now / size);
+                }, App.DownloaderUpdate, PackState);
                 Model.ProgressClose();
                 if (!res)
                 {
@@ -493,7 +499,7 @@ public partial class GameEditModel
             return;
 
         Model.Progress(App.Lang("Gui.Info34"));
-        var res1 = await GameBinding.DeleteGame(Model, _obj);
+        var res1 = await GameBinding.DeleteGame(_obj, Model.ShowWait);
         Model.ProgressClose();
         if (!res1)
         {

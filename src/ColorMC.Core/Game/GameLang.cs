@@ -1,7 +1,6 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs.Minecraft;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace ColorMC.Core.Game;
 

@@ -15,8 +15,8 @@ public class ZipUtils
     private int Size = 0;
     private int Now = 0;
 
-    public Action<string, int, int>? ZipUpdate;
-
+    public ColorMCCore.ZipUpdate? ZipUpdate;
+    public ColorMCCore.GameRequest? GameRequest;
     /// <summary>
     /// 压缩文件
     /// </summary>
@@ -167,11 +167,11 @@ public class ZipUtils
                 {
                     if (PathHelper.FileHasInvalidChars(info.Name))
                     {
-                        if (ColorMCCore.GameAddRequest == null)
+                        if (GameRequest == null)
                         {
                             return false;
                         }
-                        var res = await ColorMCCore.GameAddRequest.Invoke(string.Format(
+                        var res = await GameRequest.Invoke(string.Format(
                             LanguageHelper.Get("Core.Zip.Info1"), theEntry.Name));
                         if (!res)
                         {

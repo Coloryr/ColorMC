@@ -1,6 +1,7 @@
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using ColorMC.Core;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
@@ -80,34 +81,99 @@ public static class GameBinding
         return list;
     }
 
-    public static async Task<bool> AddGame(string name, string version,
-        Loaders loaders, string? loaderversion, string? group, string? loaderlocal, bool offlib)
+    public static async Task<bool> AddGame(GameSettingObj game, ColorMCCore.GameRequest request,
+        ColorMCCore.GameOverwirte overwirte)
     {
-        var game = new GameSettingObj()
+        var game1 = await InstancesPath.CreateGame(game, request, overwirte);
+        if (game1 != null)
         {
-            Name = name,
-            Version = version,
-            Loader = loaders,
-            LoaderVersion = loaderversion,
-            GroupName = group,
-            CustomLoader = new()
-            { 
-                Local = loaderlocal,
-                OffLib = offlib
-            }
-        };
-
-        game = await InstancesPath.CreateGame(game);
-
-        if (game != null)
-        {
-            ConfigBinding.SetLastLaunch(game.UUID);
+            ConfigBinding.SetLastLaunch(game1.UUID);
         }
-
-        return game != null;
+        return game1 != null;
     }
 
-    public static async Task<bool> AddGame(string name, string local, List<string> unselect, string? group = null)
+    public static async Task<bool> AddGame(string path, string? group, ColorMCCore.GameRequest request,
+        ColorMCCore.GameOverwirte overwirte)
+    {
+        var files = Directory.GetFiles(path);
+        var game = new GameSettingObj()
+        {
+            Version = (await GetGameVersion(true, false, false))[0],
+            Loader = Loaders.Normal,
+            LoaderVersion = null,
+            GroupName = group
+        };
+
+        foreach (var item in files)
+        {
+            if (item.EndsWith(".json"))
+            {
+                var obj = JObject.Parse(PathHelper.ReadText(item)!);
+                if (obj.TryGetValue("id", out var value))
+                {
+                    game.Name = value.ToString();
+                }
+                if (obj.TryGetValue("patches", out var patch) && patch is JArray array)
+                {
+                    foreach (var item1 in array)
+                    {
+                        var id = item1["id"]?.ToString();
+                        var version = item1["version"]?.ToString() ?? "";
+                        if (id == "game")
+                        {
+                            game.Version = version;
+                        }
+                        else if (id == "forge")
+                        {
+                            game.LoaderVersion = version;
+                            game.Loader = Loaders.Forge;
+                        }
+                        else if (id == "fabric")
+                        {
+                            game.LoaderVersion = version;
+                            game.Loader = Loaders.Fabric;
+                        }
+                        else if (id == "quilt")
+                        {
+                            game.LoaderVersion = version;
+                            game.Loader = Loaders.Quilt;
+                        }
+                        else if (id == "neoforge")
+                        {
+                            game.LoaderVersion = version;
+                            game.Loader = Loaders.NeoForge;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(game.Name))
+        {
+            var info = new DirectoryInfo(path);
+            game.Name = info.Name;
+        }
+
+        game = await InstancesPath.CreateGame(game, request, overwirte);
+        if (game == null)
+        {
+            return false;
+        }
+
+        var res = await game.CopyFile(path, null);
+
+        if (!res.Item1)
+        {
+            await game.Remove(request);
+            App.ShowError(App.Lang("Gui.Error26"), res.Item2);
+        }
+
+        return false;
+    }
+
+    public static async Task<bool> AddGame(string name, string local, List<string> unselect,
+        string? group, ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte)
     {
         var game = new GameSettingObj()
         {
@@ -118,7 +184,7 @@ public static class GameBinding
             GroupName = group
         };
 
-        game = await InstancesPath.CreateGame(game);
+        game = await InstancesPath.CreateGame(game, request, overwirte);
         if (game == null)
         {
             return false;
@@ -128,7 +194,7 @@ public static class GameBinding
 
         if (!res.Item1)
         {
-            await game.Remove();
+            await game.Remove(request);
             App.ShowError(App.Lang("Gui.Error26"), res.Item2);
         }
 
@@ -187,9 +253,13 @@ public static class GameBinding
         return true;
     }
 
-    public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type, string? name, string? group, Action<string, int, int> zip)
+    public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type, string? name,
+        string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.GameRequest request,
+        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update,
+        ColorMCCore.DownloaderUpdate update1, ColorMCCore.PackState update2)
     {
-        return InstallGameHelper.InstallZip(dir, type, name, group, zip);
+        return InstallGameHelper.InstallZip(dir, type, name, group, zip, request, overwirte,
+            update, update1, update2);
     }
 
     public static Dictionary<string, List<GameSettingObj>> GetGameGroups()
@@ -270,10 +340,13 @@ public static class GameBinding
     }
 
     public static async Task<bool> InstallCurseForge(CurseForgeModObj.Data data,
-        CurseForgeObjList.Data data1, string? name, string? group,
-        Action<string, int, int>? zip = null)
+        CurseForgeObjList.Data data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
+        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte,
+        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.PackState update2)
     {
-        var res = await InstallGameHelper.InstallCurseForge(data, name, group, zip);
+        var res = await InstallGameHelper.InstallCurseForge(data, name, group, zip, request, overwirte,
+            update, update1, update2);
         if (!res.Item1)
         {
             return false;
@@ -287,10 +360,13 @@ public static class GameBinding
     }
 
     public static async Task<bool> InstallModrinth(ModrinthVersionObj data,
-        ModrinthSearchObj.Hit data1, string? name, string? group,
-        Action<string, int, int>? zip)
+        ModrinthSearchObj.Hit data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
+        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte,
+        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.PackState update2)
     {
-        var res = await InstallGameHelper.InstallModrinth(data, name, group, zip);
+        var res = await InstallGameHelper.InstallModrinth(data, name, group, zip, request, overwirte,
+            update, update1, update2);
         if (!res.Item1)
         {
             return false;
@@ -382,7 +458,8 @@ public static class GameBinding
         return (login, null);
     }
 
-    public static async Task<(bool, string?)> Launch(BaseModel model, GameSettingObj? obj, WorldObj? world = null, bool wait = false)
+    public static async Task<(bool, string?)> Launch(BaseModel model, GameSettingObj? obj,
+        WorldObj? world = null, bool wait = false)
     {
         if (obj == null)
         {
@@ -815,7 +892,7 @@ public static class GameBinding
 
     public static Task AddServer(GameSettingObj obj, string name, string ip)
     {
-        return obj.AddServerAsync(name, ip); 
+        return obj.AddServerAsync(name, ip);
     }
 
     public static Task DeleteServer(GameSettingObj obj, ServerInfoObj server)
@@ -985,14 +1062,15 @@ public static class GameBinding
         App.MainWindow?.LoadMain();
     }
 
-    public static async Task<bool> CopyGame(GameSettingObj obj, string data)
+    public static async Task<bool> CopyGame(GameSettingObj obj, string data,
+        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte)
     {
         if (BaseBinding.IsGameRun(obj))
         {
             return false;
         }
 
-        if (await obj.Copy(data) == null)
+        if (await obj.Copy(data, request, overwirte) == null)
         {
             return false;
         }
@@ -1012,9 +1090,10 @@ public static class GameBinding
         return obj.GetServerPack().Item2;
     }
 
-    public static Task<bool> GenServerPack(ServerPackObj obj, string local)
+    public static Task<bool> GenServerPack(ServerPackObj obj, string local,
+        ColorMCCore.GameRequest request)
     {
-        return obj.GenServerPackAsync(local);
+        return obj.GenServerPackAsync(local, request);
     }
 
     public static async void CopyServer(ServerInfoObj obj)
@@ -1138,14 +1217,18 @@ public static class GameBinding
         return await Task.Run(() => obj.ReadLog(name));
     }
 
-    public static Task<bool> ModPackUpdate(GameSettingObj obj, CurseForgeModObj.Data fid)
+    public static Task<bool> ModPackUpdate(GameSettingObj obj, CurseForgeModObj.Data fid,
+        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.PackState update2)
     {
-        return obj.UpdateModPack(fid);
+        return obj.UpdateModPack(fid, update, update1, update2);
     }
 
-    public static Task<bool> ModPackUpdate(GameSettingObj obj, ModrinthVersionObj fid)
+    public static Task<bool> ModPackUpdate(GameSettingObj obj, ModrinthVersionObj fid,
+        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.PackState update2)
     {
-        return obj.UpdateModPack(fid);
+        return obj.UpdateModPack(fid, update, update1, update2);
     }
 
     public static List<ModDisplayModel> ModDisable(ModDisplayModel item, List<ModDisplayModel> items)
@@ -1388,14 +1471,16 @@ public static class GameBinding
             return false;
         });
     }
-    public static async Task<(bool, string?)> DownloadCloud(CloundListObj obj, string? group)
+    public static async Task<(bool, string?)> DownloadCloud(CloundListObj obj, string? group,
+        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte,
+        ColorMCCore.DownloaderUpdate update1)
     {
         var game = await InstancesPath.CreateGame(new()
         {
             Name = obj.Name,
             UUID = obj.UUID,
             GroupName = group
-        });
+        }, request, overwirte);
         if (game == null)
         {
             return (false, App.Lang("AddGameWindow.Tab1.Error10"));
@@ -1436,7 +1521,7 @@ public static class GameBinding
 
             if (list.Count > 0)
             {
-                var res1 = await DownloadManager.StartAsync(list);
+                var res1 = await DownloadManager.StartAsync(list, update1);
                 if (!res1)
                 {
                     return (false, App.Lang("AddGameWindow.Tab1.Error12"));
@@ -1464,10 +1549,10 @@ public static class GameBinding
         }
     }
 
-    public static async Task<bool> DeleteGame(BaseModel model, GameSettingObj obj)
+    public static async Task<bool> DeleteGame(GameSettingObj obj,
+        ColorMCCore.GameRequest request)
     {
-        InfoBinding.Window = model;
-        var res = await obj.Remove();
+        var res = await obj.Remove(request);
         App.MainWindow?.LoadMain();
         if (res)
         {
@@ -1481,9 +1566,9 @@ public static class GameBinding
     }
 
     public static async Task<(bool, string?)> DownloadServerPack(BaseModel model,
-        string? name, string? group, string text)
+        string? name, string? group, string text, ColorMCCore.GameOverwirte overwirte,
+        ColorMCCore.DownloaderUpdate update1)
     {
-        InfoBinding.Window = model;
         try
         {
             var data = await BaseClient.GetStringAsync(text + "server.json");
@@ -1510,7 +1595,7 @@ public static class GameBinding
             game.LaunchData = null!;
             game.ServerUrl = text;
             game.ModPackType = SourceType.ColorMC;
-            game = await InstancesPath.CreateGame(game);
+            game = await InstancesPath.CreateGame(game, model.ShowWait, overwirte);
 
             if (game == null)
             {
@@ -1519,13 +1604,23 @@ public static class GameBinding
 
             model.Progress(App.Lang("AddGameWindow.Tab1.Info15"));
 
-            var res1 = await obj.UpdateAsync(game);
+            var res1 = await obj.UpdateAsync(game, (text) =>
+            {
+                if (text == null)
+                {
+                    model.ProgressClose();
+                }
+                else
+                {
+                    model.Progress(text);
+                }
+            }, update1);
             if (!res1)
             {
                 model.ProgressClose();
                 model.ShowOk(App.Lang("AddGameWindow.Tab1.Error12"), async () =>
                 {
-                    await game.Remove();
+                    await game.Remove(model.ShowWait);
                 });
 
                 return (false, null);

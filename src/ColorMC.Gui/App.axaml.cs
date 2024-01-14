@@ -216,7 +216,10 @@ public partial class App : Application
         ShowCustom();
         if (ColorMCGui.RunType != RunType.AppBuilder)
         {
-            Task.Run(ColorMCCore.Init1);
+            Task.Run(() =>
+            {
+                ColorMCCore.Init1(BaseBinding.LoadDone);
+            });
         }
         Dispatcher.UIThread.Post(() => _ = LoadImage());
         if (ConfigBinding.WindowMode())
@@ -843,17 +846,6 @@ public partial class App : Application
                     break;
             }
         }
-    }
-
-    public static Task<bool> HaveUpdate(string? data)
-    {
-        var window = GetMainWindow();
-        if (window == null)
-        {
-            return Task.FromResult(false);
-        }
-        data ??= "";
-        return window.Model.ShowTextWait(Lang("Gui.Info5"), data);
     }
 
     public static void UpdateCheckFail()

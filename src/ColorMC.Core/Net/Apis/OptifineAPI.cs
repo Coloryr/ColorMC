@@ -156,7 +156,8 @@ public static class OptifineAPI
     /// <param name="obj">游戏实例</param>
     /// <param name="item">高清修复信息</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item)
+    public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item,
+        ColorMCCore.DownloaderUpdate update1)
     {
         DownloadItemObj item1;
         var data = await GetOptifineDownloadUrl(item);
@@ -173,7 +174,7 @@ public static class OptifineAPI
             Url = data
         };
 
-        var res = await DownloadManager.StartAsync([item1]);
+        var res = await DownloadManager.StartAsync([item1], update1);
         if (!res)
         {
             return (false, LanguageHelper.Get("Core.Http.OptiFine.Error4"));

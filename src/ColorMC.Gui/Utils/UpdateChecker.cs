@@ -127,7 +127,7 @@ public static class UpdateChecker
             }
         };
 
-        var res = await DownloadManager.StartAsync(list);
+        var res = await DownloadManager.StartAsync(list, App.DownloaderUpdate);
         if (res)
         {
             App.Reboot();

@@ -1,21 +1,17 @@
+using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Utils;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class JavaBinding
-{ 
+{
     private static JavaInfoObj MakeInfo(string name, JavaInfo item)
     {
         return new JavaInfoObj()
@@ -26,7 +22,7 @@ public static class JavaBinding
         };
     }
 
-    public static async Task<(bool, string?)> AddJavaZip(string file, Action<string, int, int> zip)
+    public static async Task<(bool, string?)> AddJavaZip(string file, ColorMCCore.ZipUpdate zip)
     {
         string name = Path.GetFileName(file);
         if (SystemInfo.Os == OsType.Android)
@@ -110,12 +106,14 @@ public static class JavaBinding
         return res;
     }
 
-    public static async Task<(bool, string?)> DownloadJava(JavaDownloadObj obj)
+    public static async Task<(bool, string?)> DownloadJava(JavaDownloadObj obj,
+        ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip, ColorMCCore.DownloaderUpdate update1)
     {
-        var (Res, Message) = await JvmPath.InstallAsync(obj.File, obj.Name, obj.Sha256, obj.Url);
-        if (Res != CoreRunState.Init)
+        var (res, message) =
+            await JvmPath.InstallAsync(obj.File, obj.Name, obj.Sha256, obj.Url, zip, unzip, update1);
+        if (res != CoreRunState.Init)
         {
-            return (false, Message);
+            return (false, message);
         }
 
         return (true, null);

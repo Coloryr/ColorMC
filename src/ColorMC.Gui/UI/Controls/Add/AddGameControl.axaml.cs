@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using ColorMC.Core;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Model;
@@ -101,10 +100,6 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public void Closed()
     {
-        ColorMCCore.PackState = null;
-        ColorMCCore.PackUpdate = null;
-        ColorMCCore.GameOverwirte = null;
-
         App.AddGameWindow = null;
     }
 

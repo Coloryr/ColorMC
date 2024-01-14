@@ -1,4 +1,5 @@
 using Avalonia.Threading;
+using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -179,8 +180,8 @@ public static class WebBinding
                     SourceType.Modrinth,
                     SourceType.McMod
                 ],
-            FileType.DataPacks 
-            or FileType.Resourcepack 
+            FileType.DataPacks
+            or FileType.Resourcepack
             or FileType.Shaderpack =>
                 [
                     SourceType.CurseForge,
@@ -465,7 +466,7 @@ public static class WebBinding
             };
             list1.Add(Item);
         }
-        return await DownloadManager.StartAsync(list1);
+        return await DownloadManager.StartAsync(list1, App.DownloaderUpdate);
     }
 
     public static async Task<bool> DownloadMod(GameSettingObj obj,
@@ -480,7 +481,7 @@ public static class WebBinding
             };
             list1.Add(Item);
         }
-        return await DownloadManager.StartAsync(list1);
+        return await DownloadManager.StartAsync(list1, App.DownloaderUpdate);
     }
 
     public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeModObj.Data? data)
@@ -504,7 +505,7 @@ public static class WebBinding
                     Overwrite = true
                 };
 
-                res = await DownloadManager.StartAsync([item]);
+                res = await DownloadManager.StartAsync([item], App.DownloaderUpdate);
                 if (!res)
                 {
                     return false;
@@ -520,7 +521,7 @@ public static class WebBinding
                     SHA1 = data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault(),
                     Overwrite = true
-                }]);
+                }], App.DownloaderUpdate);
             case FileType.Shaderpack:
                 return await DownloadManager.StartAsync([new()
                 {
@@ -530,7 +531,7 @@ public static class WebBinding
                     SHA1 = data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault(),
                     Overwrite = true
-                }]);
+                }], App.DownloaderUpdate);
             default:
                 return false;
         }
@@ -554,7 +555,7 @@ public static class WebBinding
                     Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + file.filename),
                     SHA1 = file.hashes.sha1,
                     Overwrite = true
-                }]),
+                }], App.DownloaderUpdate),
             FileType.Shaderpack => await DownloadManager.StartAsync([new()
                 {
                     Name = data.name,
@@ -562,7 +563,7 @@ public static class WebBinding
                     Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + file.filename),
                     SHA1 = file.hashes.sha1,
                     Overwrite = true
-                }]),
+                }], App.DownloaderUpdate),
             _ => false,
         };
     }
@@ -584,7 +585,7 @@ public static class WebBinding
             SHA1 = data.hashes.Where(a => a.algo == 1)
                 .Select(a => a.value).FirstOrDefault(),
             Overwrite = true
-        }]);
+        }], App.DownloaderUpdate);
     }
 
     public static async Task<bool> Download(WorldObj obj1, ModrinthVersionObj? data)
@@ -603,7 +604,7 @@ public static class WebBinding
             Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + file.filename),
             SHA1 = file.hashes.sha1,
             Overwrite = true
-        }]);
+        }], App.DownloaderUpdate);
     }
 
     public static string? GetUrl(this FileItemObj obj)
@@ -651,9 +652,10 @@ public static class WebBinding
         return res.Item2;
     }
 
-    public static Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item)
+    public static Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item,
+        ColorMCCore.DownloaderUpdate update1)
     {
-        return OptifineAPI.DownloadOptifine(obj, item);
+        return OptifineAPI.DownloadOptifine(obj, item, update1);
     }
 
     public static async Task<List<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>>

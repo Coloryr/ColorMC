@@ -1,5 +1,6 @@
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -65,8 +66,8 @@ public static class UserBinding
         };
     }
 
-    public static async Task<(bool, string?)> AddUser(AuthType type, string? input1,
-        string? input2 = null, string? input3 = null)
+    public static async Task<(bool, string?)> AddUser(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth,
+        string? input1, string? input2 = null, string? input3 = null)
     {
         if (type == AuthType.Offline)
         {
@@ -81,7 +82,7 @@ public static class UserBinding
         }
         var (_, State1, Obj, Message, Ex) = type switch
         {
-            AuthType.OAuth => await GameAuth.LoginOAuthAsync(),
+            AuthType.OAuth => await GameAuth.LoginOAuthAsync(loginOAuth),
             AuthType.Nide8 => await GameAuth.LoginNide8Async(input1!, input2!, input3!),
             AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(input1!, input2!, input3!),
             AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!),

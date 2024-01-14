@@ -1,5 +1,4 @@
 using Avalonia.Threading;
-using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
@@ -75,16 +74,6 @@ public partial class AddGameModel
     }
 
     /// <summary>
-    /// 解压进度
-    /// </summary>
-    /// <param name="size"></param>
-    /// <param name="now"></param>
-    private void PackUpdate(int size, int now)
-    {
-        Model.ProgressUpdate((double)now / size);
-    }
-
-    /// <summary>
     /// 添加进度
     /// </summary>
     /// <param name="state"></param>
@@ -120,8 +109,6 @@ public partial class AddGameModel
     /// <param name="type">压缩包类型</param>
     private async void AddPack(PackType type)
     {
-        ColorMCCore.GameOverwirte = Tab2GameOverwirte;
-        ColorMCCore.GameAddRequest = Tab2GameRequest;
         string temp = App.Lang("Gui.Info27");
 
         if (string.IsNullOrWhiteSpace(ZipLocal))
@@ -130,11 +117,14 @@ public partial class AddGameModel
             return;
         }
         Model.Progress(App.Lang("AddGameWindow.Tab2.Info6"));
-        var res = await GameBinding.AddPack(ZipLocal, type, Name, Group, 
+        var res = await GameBinding.AddPack(ZipLocal, type, Name, Group,
         (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
-        });
+        }, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
+        {
+            Model.ProgressUpdate((double)now / size);
+        }, App.DownloaderUpdate, PackState);
         Model.ProgressClose();
         if (!res.Item1)
         {

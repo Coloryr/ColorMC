@@ -15,6 +15,13 @@ namespace ColorMC.Test;
 
 public static class TestItem
 {
+    private static Process? Start(GameSettingObj obj, LoginObj obj1)
+    {
+        return obj.StartGameAsync(obj1, null, Program.Download,
+                (_) => Task.FromResult(true), (_) => { }, (_) => Task.FromResult(true), () => { },
+                (_) => Task.FromResult(true), (_) => { }, CancellationToken.None).Result;
+    }
+
     public static void Item1()
     {
         VersionPath.CheckUpdateAsync("1.12.2").Wait();
@@ -37,13 +44,14 @@ public static class TestItem
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.StartAsync(list.List!).Wait();
+            DownloadManager.StartAsync(list.List!, (_) => { }).Wait();
         }
     }
 
     public static void Item3()
     {
-        var list = ModPackHelper.DownloadCurseForgeModPackAsync("H:\\ColonyVenture-1.13.zip", null, null).Result;
+        var list = ModPackHelper.DownloadCurseForgeModPackAsync("H:\\ColonyVenture-1.13.zip", null, null,
+            Program.Download, (_) => Task.FromResult(true), (_, _) => { }, (_) => { }, (_) => { }).Result;
     }
 
     public static void Item4()
@@ -62,7 +70,7 @@ public static class TestItem
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.StartAsync(list.List!).Wait();
+            DownloadManager.StartAsync(list.List!, (_) => { }).Wait();
         }
     }
 
@@ -100,7 +108,7 @@ public static class TestItem
     public static void Item7()
     {
         var data = InstancesPath.Games.First();
-        var list = CheckHelpers.CheckGameFileAsync(data, new LoginObj(), CancellationToken.None).Result;
+        var list = CheckHelpers.CheckGameFileAsync(data, new LoginObj(), (_) => { }, CancellationToken.None).Result;
         if (list == null)
         {
             Console.WriteLine("文件检查失败");
@@ -116,7 +124,7 @@ public static class TestItem
 
     public static void Item8()
     {
-        var login = GameAuth.LoginOAuthAsync().Result;
+        var login = GameAuth.LoginOAuthAsync((_, _) => { }).Result;
         if (login.LoginState != LoginState.Done)
         {
             Console.WriteLine("登录错误");
@@ -131,7 +139,7 @@ public static class TestItem
                 Loader = Loaders.Forge,
                 LoaderVersion = "14.23.5.2860"
             };
-            var process = game.StartGameAsync(login.Obj!, null, CancellationToken.None).Result;
+            var process = Start(game, login.Obj!);
             process?.WaitForExit();
         }
     }
@@ -146,7 +154,7 @@ public static class TestItem
             UserName = "Test"
         };
 
-        var process = game[0].StartGameAsync(login, null, CancellationToken.None).Result;
+        var process = Start(game[0], login);
         process?.WaitForExit();
     }
 
@@ -297,13 +305,13 @@ public static class TestItem
         game.Version = "1.20.4";
         game.Loader = Loaders.Forge;
         game.LoaderVersion = "49.0.11";
-        process = game.StartGameAsync(login, null, token).Result;
+        process = Start(game, login);
         process?.WaitForExit();
 
         game.Version = "1.20.4";
         game.Loader = Loaders.NeoForge;
         game.LoaderVersion = "20.4.50-beta";
-        process = game.StartGameAsync(login, null, token).Result;
+        process = Start(game, login);
         process?.WaitForExit();
 
     }
@@ -325,7 +333,7 @@ public static class TestItem
                 Loader = Loaders.Forge,
                 LoaderVersion = "40.1.85"
             };
-            var process = game.StartGameAsync(login.Obj, null, CancellationToken.None).Result;
+            var process = Start(game, login.Obj);
             process?.WaitForExit();
         }
     }
@@ -450,8 +458,9 @@ public static class TestItem
         var list1 = ModrinthAPI.GetFileVersions(item.project_id, "", Loaders.Fabric).Result;
         var item1 = list1!.First();
 
-        InstallGameHelper.InstallModrinth(item1, null, null, 
-            (a, b, c) => { }).Wait();
+        InstallGameHelper.InstallModrinth(item1, null, null,
+            (a, b, c) => { }, Program.Download, (_) => Task.FromResult(true), (_, _) => { },
+            (_) => { }, (_) => { }).Wait();
     }
 
     public static void Item22()

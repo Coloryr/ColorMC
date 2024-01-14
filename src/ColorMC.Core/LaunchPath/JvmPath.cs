@@ -65,19 +65,20 @@ public static class JvmPath
     /// <param name="sha256">验证</param>
     /// <param name="url">地址</param>
     /// <returns>结果</returns>
-    public static async Task<(CoreRunState Res, string? Message)> 
-        InstallAsync(string file, string name, string sha256, string url)
+    public static async Task<(CoreRunState Res, string? Message)>
+        InstallAsync(string file, string name, string sha256, string url,
+        ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip, ColorMCCore.DownloaderUpdate update1)
     {
         try
         {
             Remove(name);
-            var res = await DownloadAsync(file, sha256, url);
+            var res = await DownloadAsync(file, sha256, url, update1);
             if (!res.Res)
             {
                 return (CoreRunState.Error, LanguageHelper.Get("Core.Jvm.Error5"));
             }
-            ColorMCCore.JavaUnzip?.Invoke();
-            res = await UnzipJavaAsync(name, res.Local!);
+            unzip();
+            res = await UnzipJavaAsync(name, res.Local!, zip);
             if (!res.Res)
             {
                 return (CoreRunState.Error, res.Local);
@@ -100,8 +101,8 @@ public static class JvmPath
     /// <param name="sha256">校验</param>
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
-    private static async Task<(bool Res, string? Local)> 
-        DownloadAsync(string name, string sha256, string url)
+    private static async Task<(bool Res, string? Local)> DownloadAsync(string name, string sha256,
+        string url, ColorMCCore.DownloaderUpdate update1)
     {
         var item = new DownloadItemObj()
         {
@@ -111,7 +112,7 @@ public static class JvmPath
             Url = url
         };
 
-        var res = await DownloadManager.StartAsync([item]);
+        var res = await DownloadManager.StartAsync([item], update1);
 
         if (res == false)
         {
@@ -144,7 +145,8 @@ public static class JvmPath
     /// <param name="name">名字</param>
     /// <param name="file">文件</param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> UnzipJavaAsync(string name, string file, Action<string, int, int>? zip = null)
+    public static async Task<(bool, string?)> UnzipJavaAsync(string name, string file,
+        ColorMCCore.ZipUpdate zip)
     {
         string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
@@ -215,8 +217,7 @@ public static class JvmPath
             Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info3"), java));
         }
 
-        if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS
-            || SystemInfo.Os == OsType.Android)
+        if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
         {
             JavaHelper.Per(java);
         }

@@ -586,6 +586,7 @@
 	"AddGameWindow.Tab3.Info1": "正在导入文件夹",
 	"AddGameWindow.Tab3.Info2": "正在扫描文件",
 	"AddGameWindow.Tab3.Info3": "是否允许扫描文件夹 {0}",
+	"AddGameWindow.Tab3.Info4": "扫描到 {0} 个游戏实例，是否导入他们",
 	"AddGameWindow.Tab3.Error1": "实例新建失败",
 	"AddGameWindow.Tab3.Error2": "路径 {0} 扫描失败",
 	"AddGameWindow.Tab3.Error3": "没有选择导入路径",

@@ -31,12 +31,12 @@ public static class ToolPath
     /// 打开地图编辑器
     /// </summary>
     /// <returns></returns>
-    public static async Task<(bool, string?)> OpenMapEditAsync()
+    public static async Task<(bool, string?)> OpenMapEditAsync(ColorMCCore.DownloaderUpdate update1)
     {
         var item = DownloadItemHelper.BuildMcaselectorItem();
         if (!File.Exists(item.Local))
         {
-            var res = await DownloadManager.StartAsync([item]);
+            var res = await DownloadManager.StartAsync([item], update1);
             if (!res)
             {
                 return (false, LanguageHelper.Get("Core.Tool.Error1"));

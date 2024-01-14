@@ -62,7 +62,7 @@ public static class BaseBinding
     public static void Init()
     {
         ColorMCCore.OnError = App.ShowError;
-        ColorMCCore.DownloaderUpdate = App.DownloaderUpdate;
+        ColorMCCore.LanguageReload = LanguageReload;
         ColorMCCore.ProcessLog = (p, d) =>
         {
             if (p != null && Games.TryGetValue(p, out var uuid))
@@ -86,16 +86,6 @@ public static class BaseBinding
                 win.Log(d);
             }
         };
-        ColorMCCore.LanguageReload = (type) =>
-        {
-            App.LoadLanguage(type);
-            LangSel.Reload();
-
-            App.Reboot();
-        };
-        ColorMCCore.NoJava = NoJava;
-        ColorMCCore.UpdateSelect = PackUpdate;
-        ColorMCCore.LoadDone = LoadDone;
 
         if (ColorMCGui.RunType == RunType.Program && SystemInfo.Os != OsType.Android)
         {
@@ -123,7 +113,15 @@ public static class BaseBinding
         }, handledEventsToo: true);
     }
 
-    private static async void LoadDone()
+    public static void LanguageReload(LanguageType type)
+    {
+        App.LoadLanguage(type);
+        LangSel.Reload();
+
+        App.Reboot();
+    }
+
+    public static async void LoadDone()
     {
         UpdateChecker.Init();
         GameCloudUtils.Init(ColorMCGui.RunDir);
@@ -198,26 +196,6 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 更新整合包状态回调
-    /// </summary>
-    /// <param name="info">状态</param>
-    public static Task<bool> PackUpdate(string info)
-    {
-        return Dispatcher.UIThread.InvokeAsync(() => App.HaveUpdate(info));
-    }
-
-    /// <summary>
-    /// 找不到Java回调
-    /// </summary>
-    public static void NoJava(int version)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            App.ShowSetting(SettingType.SetJava);
-        });
-    }
-
-    /// <summary>
     /// 游戏实例是否在运行
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -253,16 +231,15 @@ public static class BaseBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="obj1">保存的账户</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, string?)> Launch(BaseModel window,
-        GameSettingObj obj, LoginObj obj1, WorldObj? world = null, bool wait = false)
+    public static async Task<(bool, string?)> Launch(BaseModel model, GameSettingObj obj,
+        LoginObj obj1, WorldObj? world = null, bool wait = false)
     {
         if (SystemInfo.Os == OsType.Android)
         {
             wait = false;
         }
 
-        InfoBinding.Window = window;
-        InfoBinding.Launch();
+        InfoBinding.Window = model;
 
         s_launchCancel = new();
 
@@ -283,14 +260,6 @@ public static class BaseBinding
             obj.StartServer.Port = server.ServerPort;
         }
 
-        ColorMCCore.DownloaderUpdate = (state) =>
-        {
-            Dispatcher.UIThread.Invoke(() =>
-            {
-                App.DownloaderUpdate(state);
-            });
-        };
-
         if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
         {
             win.ClearLog();
@@ -309,7 +278,50 @@ public static class BaseBinding
         //锁定账户
         UserBinding.AddLockUser(obj1);
 
-        var res = await Task.Run(async () => await Launch(obj, obj1, world, s_launchCancel.Token));
+        var res = await Task.Run(async () =>
+            await Launch(obj, model.ShowWait, (pre) =>
+            {
+                return Dispatcher.UIThread.InvokeAsync(() =>
+                    model.ShowWait(pre ? App.Lang("MainWindow.Info29") : App.Lang("MainWindow.Info30")));
+            }, (text) =>
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (text == null)
+                    {
+                        model.ProgressClose();
+                    }
+                    else
+                    {
+                        model.Progress(text);
+                    }
+                });
+            }, (text) =>
+            {
+                return Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    return model.ShowTextWait(App.Lang("Gui.Info5"), text ?? "");
+                });
+            }, () =>
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    App.ShowSetting(SettingType.SetJava);
+                });
+            }, (login) =>
+            {
+                return Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    return model.ShowWait(string.Format(
+                        App.Lang("MainWindow.Info21"), login.UserName));
+                });
+            }, (state) =>
+            {
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    App.DownloaderUpdate(state);
+                });
+            }, obj1, world, s_launchCancel.Token));
 
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.End);
         FuntionUtils.RunGC();
@@ -323,7 +335,7 @@ public static class BaseBinding
         {
             if (obj.LaunchData.LastTime == new DateTime(0))
             {
-                if (obj.Loader == Loaders.Forge 
+                if (obj.Loader == Loaders.Forge
                     && new Version(obj.Version) > new Version(1, 20, 1))
                 {
                     InfoBinding.Window?.Show(App.Lang("Gui.Info41"));
@@ -439,8 +451,6 @@ public static class BaseBinding
             UserBinding.UnLockUser(obj1);
         }
 
-        ColorMCCore.DownloaderUpdate = App.DownloaderUpdate;
-
         return (res.Item1 != null, res.Item2);
     }
 
@@ -453,13 +463,18 @@ public static class BaseBinding
     /// <param name="cancel">取消启动</param>
     /// <returns>进程信息</returns>
     private static async Task<(Process?, string?)> Launch(GameSettingObj obj,
+        ColorMCCore.GameRequest request, ColorMCCore.LaunchP pre,
+        ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select,
+        ColorMCCore.NoJava nojava, ColorMCCore.LoginFail loginfail,
+        ColorMCCore.DownloaderUpdate update,
         LoginObj obj1, WorldObj? world, CancellationToken cancel)
     {
         string? temp = null;
         try
         {
             //启动
-            var p = await obj.StartGameAsync(obj1, world, cancel);
+            var p = await obj.StartGameAsync(obj1, world, request, pre, state, select, nojava,
+                loginfail, update, cancel);
             if (cancel.IsCancellationRequested)
             {
                 if (p != null && p.Id != 0)
@@ -828,7 +843,7 @@ public static class BaseBinding
             }
             if (!File.Exists(obj.Local))
             {
-                var res = await DownloadManager.StartAsync([obj]);
+                var res = await DownloadManager.StartAsync([obj], App.DownloaderUpdate);
                 if (!res)
                 {
                     return (false, null, null);

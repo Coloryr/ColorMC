@@ -11,7 +11,6 @@ using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Text;
-using System.Threading.Channels;
 
 namespace ColorMC.Core.Helpers;
 
@@ -314,7 +313,7 @@ public static class DownloadItemHelper
     /// <param name="version">forge版本</param>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>下载项目列表</returns>
-    public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc, 
+    public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc,
         string version, bool neo, bool v2)
     {
         return BuildForgeLibs(info.libraries, mc, version, neo, v2);
@@ -328,7 +327,7 @@ public static class DownloadItemHelper
     /// <param name="version">forge版本</param>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>下载项目列表</returns>
-    public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeInstallObj info, string mc, 
+    public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeInstallObj info, string mc,
         string version, bool neo, bool v2)
     {
         return BuildForgeLibs(info.libraries, mc, version, neo, v2);
@@ -486,7 +485,7 @@ public static class DownloadItemHelper
     /// <param name="obj">版本数据</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)>
         DownloadAsync(VersionObj.Versions obj)
     {
         var list = new List<DownloadItemObj>();
@@ -526,10 +525,10 @@ public static class DownloadItemHelper
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
-        BuildForge(GameSettingObj obj, bool neo)
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)>
+        BuildForge(GameSettingObj obj, bool neo, ColorMCCore.DownloaderUpdate update)
     {
-        return BuildForgeAsync(obj.Version, obj.LoaderVersion!, neo);
+        return BuildForgeAsync(obj.Version, obj.LoaderVersion!, neo, update);
     }
 
     /// <summary>
@@ -540,8 +539,8 @@ public static class DownloadItemHelper
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
-        BuildForgeAsync(string mc, string version, bool neo)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)>
+        BuildForgeAsync(string mc, string version, bool neo, ColorMCCore.DownloaderUpdate update)
     {
         var version1 = VersionPath.GetVersion(mc)!;
         var v2 = CheckHelpers.IsGameVersionV2(version1);
@@ -551,7 +550,7 @@ public static class DownloadItemHelper
             BuildForgeInstaller(mc, version);
         try
         {
-            var res = await DownloadManager.StartAsync([down]);
+            var res = await DownloadManager.StartAsync([down], update);
             if (!res)
             {
                 return (GetDownloadState.Init, null);
@@ -687,7 +686,7 @@ public static class DownloadItemHelper
     /// <param name="obj">游戏实例</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)>
         BuildFabric(GameSettingObj obj)
     {
         return BuildFabricAsync(obj.Version, obj.LoaderVersion!);
@@ -700,7 +699,7 @@ public static class DownloadItemHelper
     /// <param name="version">fabric版本</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)>
         BuildFabricAsync(string mc, string version)
     {
         var list = new List<DownloadItemObj>();
@@ -761,7 +760,7 @@ public static class DownloadItemHelper
     /// <param name="obj">游戏实例</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)>
         BuildQuilt(GameSettingObj obj)
     {
         return BuildQuiltAsync(obj.Version, obj.LoaderVersion);
@@ -774,7 +773,7 @@ public static class DownloadItemHelper
     /// <param name="version">quilt版本</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)>
         BuildQuiltAsync(string mc, string? version = null)
     {
         var list = new List<DownloadItemObj>();
@@ -834,7 +833,7 @@ public static class DownloadItemHelper
     /// <param name="obj">游戏实例</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)>
         BuildOptifine(GameSettingObj obj)
     {
         return BuildOptifineAsync(obj.Version, obj.LoaderVersion!);
@@ -846,7 +845,7 @@ public static class DownloadItemHelper
     /// <param name="mc">游戏版本</param>
     /// <param name="version">optifine版本</param>
     /// <returns></returns>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> 
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)>
         BuildOptifineAsync(string mc, string version)
     {
         var list = await OptifineAPI.GetOptifineVersion();
@@ -880,7 +879,7 @@ public static class DownloadItemHelper
         return (GetDownloadState.Init, null);
     }
 
-    public static async Task<ConcurrentBag<DownloadItemObj>?> 
+    public static async Task<ConcurrentBag<DownloadItemObj>?>
         DecodeLoaderJarAsync(this GameSettingObj obj, CancellationToken cancel)
     {
         using var zFile = new ZipFile(obj.CustomLoader!.Local);

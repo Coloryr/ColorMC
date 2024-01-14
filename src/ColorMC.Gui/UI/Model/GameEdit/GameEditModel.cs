@@ -73,6 +73,30 @@ public partial class GameEditModel : MenuModel
         GameLoad();
         ConfigLoad();
     }
+    private void PackState(CoreRunState state)
+    {
+        if (state == CoreRunState.Read)
+        {
+            Model.Progress(App.Lang("AddGameWindow.Tab2.Info1"));
+        }
+        else if (state == CoreRunState.Init)
+        {
+            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info2"));
+        }
+        else if (state == CoreRunState.GetInfo)
+        {
+            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info3"));
+        }
+        else if (state == CoreRunState.Download)
+        {
+            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info4"));
+            Model.ProgressUpdate(-1);
+        }
+        else if (state == CoreRunState.End)
+        {
+            Group = "";
+        }
+    }
 
     protected override void Close()
     {

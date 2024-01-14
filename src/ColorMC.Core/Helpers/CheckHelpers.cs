@@ -185,7 +185,8 @@ public static class CheckHelpers
     /// <param name="login">登录的账户</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns>下载列表</returns>
-    public static async Task<ConcurrentBag<DownloadItemObj>> CheckGameFileAsync(GameSettingObj obj, LoginObj login, CancellationToken cancel)
+    public static async Task<ConcurrentBag<DownloadItemObj>> CheckGameFileAsync(GameSettingObj obj, LoginObj login,
+        ColorMCCore.DownloaderUpdate update1, CancellationToken cancel)
     {
         var list = new ConcurrentBag<DownloadItemObj>();
 
@@ -315,7 +316,7 @@ public static class CheckHelpers
                     {
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                        var list4 = await DownloadItemHelper.BuildForge(obj, neo);
+                        var list4 = await DownloadItemHelper.BuildForge(obj, neo, update1);
                         if (list4.State != GetDownloadState.End)
                             throw new LaunchException(LaunchState.LostLoader,
                                 LanguageHelper.Get("Core.Launch.Error3"));

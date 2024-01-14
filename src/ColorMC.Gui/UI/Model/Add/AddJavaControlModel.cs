@@ -1,6 +1,5 @@
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
-using ColorMC.Core;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
@@ -48,8 +47,6 @@ public partial class AddJavaControlModel : TopModel
 
     public AddJavaControlModel(BaseModel model) : base(model)
     {
-        ColorMCCore.JavaUnzip = JavaUnzip;
-
         _useName = ToString() ?? "AddJavaControlModel";
 
         Model.SetChoiseContent(_useName, App.Lang("Button.Refash"));
@@ -156,7 +153,17 @@ public partial class AddJavaControlModel : TopModel
         {
             Model.Progress(App.Lang("AddJavaWindow.Info2"));
         }
-        var res1 = await JavaBinding.DownloadJava(obj);
+        string temp = App.Lang("Gui.Info27");
+        var res1 = await JavaBinding.DownloadJava(obj, (a, b, c) =>
+        {
+            Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
+        }, () =>
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                Model.ProgressUpdate(App.Lang("AddJavaWindow.Info5"));
+            });
+        }, App.DownloaderUpdate);
         Model.ProgressClose();
         if (!res1.Item1)
         {
@@ -201,14 +208,6 @@ public partial class AddJavaControlModel : TopModel
             Display = false;
             JavaList.AddRange(list1);
         }
-    }
-
-    private void JavaUnzip()
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            Model.ProgressUpdate(App.Lang("AddJavaWindow.Info5"));
-        });
     }
 
     protected override void Close()

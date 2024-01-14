@@ -13,6 +13,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -235,7 +236,7 @@ public partial class GameItemModel : GameModel
             return;
         }
 
-        var res = await GameBinding.CopyGame(Obj, Text1);
+        var res = await GameBinding.CopyGame(Obj, Text1, Model.ShowWait, GameOverwirte);
         if (!res)
         {
             Model.Show(App.Lang("MainWindow.Error5"));
@@ -256,7 +257,7 @@ public partial class GameItemModel : GameModel
         }
 
         Model.Progress(App.Lang("Gui.Info34"));
-        res = await GameBinding.DeleteGame(Model, Obj);
+        res = await GameBinding.DeleteGame(Obj, Model.ShowWait);
         Model.ProgressClose();
         Model.InputClose();
         if (!res)
@@ -268,6 +269,17 @@ public partial class GameItemModel : GameModel
     public void EditGroup()
     {
         _top.EditGroup(this);
+    }
+
+    /// <summary>
+    /// 请求
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    private async Task<bool> GameOverwirte(GameSettingObj obj)
+    {
+        return await Model.ShowWait(
+            string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
     }
 
     protected override void Close()

@@ -1,6 +1,5 @@
 ﻿using Avalonia.Threading;
 using AvaloniaEdit.Utils;
-using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;

@@ -1,6 +1,5 @@
 using Avalonia;
 using System;
-using Avalonia.Media;
 
 #if !DEBUG
 using System.IO;
