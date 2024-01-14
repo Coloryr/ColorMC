@@ -475,7 +475,7 @@ public partial class UsersControlModel : TopModel
                 _cancel = true;
                 UserBinding.OAuthCancel();
             });
-        BaseBinding.OpUrl(url);
+        BaseBinding.OpUrl($"{url}?otc={code}");
         await BaseBinding.CopyTextClipboard(code);
     }
 
