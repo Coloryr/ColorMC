@@ -67,7 +67,7 @@ public class FilesPageModel
             {
                 foreach (var item1 in _root.Children!)
                 {
-                    if (item1.Path.EndsWith(item))
+                    if (item1.Name == item)
                     {
                         item1.IsChecked = false;
                     }

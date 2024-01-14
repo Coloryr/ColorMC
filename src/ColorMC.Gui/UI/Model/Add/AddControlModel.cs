@@ -828,7 +828,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             return;
         }
         Model.Progress(App.Lang("AddWindow.Info11"));
-        var res1 = await WebBinding.DownloadOptifine(Obj, OptifineItem);
+        var res1 = await WebBinding.DownloadOptifine(Obj, OptifineItem, App.DownloaderUpdate);
         Model.ProgressClose();
         if (res1.Item1 == false)
         {

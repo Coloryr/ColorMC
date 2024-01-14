@@ -16,7 +16,7 @@ public static class Nide8
     /// <param name="clientToken">客户端代码</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> 
+    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)>
         AuthenticateAsync(string server, string clientToken, string user, string pass)
     {
         string url = UrlHelper.Nide8 + server;

@@ -33,17 +33,10 @@ internal class Program
         Console.WriteLine("Hello, World!");
 
         ColorMCCore.Init(AppContext.BaseDirectory);
-        ColorMCCore.Init1();
+        ColorMCCore.Init1(null);
 
-        ColorMCCore.DownloaderUpdate = Update;
         ColorMCCore.DownloadItemUpdate = Update;
-        ColorMCCore.GameRequest = Download;
-        ColorMCCore.GameOverwirte = Overwirte;
-        ColorMCCore.PackState = Update;
-        ColorMCCore.PackUpdate = PackUpdate;
         ColorMCCore.ProcessLog = Log;
-        ColorMCCore.LoginOAuthCode = Login;
-        ColorMCCore.AuthStateUpdate = AuthStateUpdate;
         ColorMCCore.GameLog = Log;
 
         //TestItem.Item10();
@@ -55,7 +48,7 @@ internal class Program
 
     public static void GetSha1()
     {
-        var text = File.Exists("tmp/sha1.json") 
+        var text = File.Exists("tmp/sha1.json")
             ? File.ReadAllText("tmp/sha1.json") : "{\"text\":\"\"}";
         var obj = JObject.Parse(text);
         {
@@ -111,12 +104,6 @@ internal class Program
     public static void AuthStateUpdate(AuthState state)
     {
         Console.WriteLine($"登录状态{state}");
-    }
-
-    public static void Login(string url, string code)
-    {
-        Console.WriteLine(url);
-        Console.WriteLine(code);
     }
 
     public static Task<bool> Download(string state)

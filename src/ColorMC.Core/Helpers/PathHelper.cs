@@ -1,6 +1,5 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using System.Buffers;
 using System.Text;
 
 namespace ColorMC.Core.Helpers;
@@ -145,25 +144,17 @@ public static class PathHelper
     /// <summary>
     /// 删除文件夹
     /// </summary>
-    public static async Task<bool> DeleteFilesAsync(string local, bool req = true)
+    public static async Task<bool> DeleteFilesAsync(string local, ColorMCCore.GameRequest? request)
     {
         if (!Directory.Exists(local))
         {
             return true;
         }
 
-        if (req)
+        if (request != null)
         {
-            if (ColorMCCore.GameRequest != null)
-            {
-                var res = await ColorMCCore.GameRequest.Invoke(
-                    string.Format(LanguageHelper.Get("Core.Info2"), local));
-                if (!res)
-                {
-                    return false;
-                }
-            }
-            else
+            var res = await request(string.Format(LanguageHelper.Get("Core.Info2"), local));
+            if (!res)
             {
                 return false;
             }

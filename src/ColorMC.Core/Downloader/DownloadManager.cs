@@ -128,7 +128,8 @@ public static class DownloadManager
     /// </summary>
     /// <param name="list">下载列表</param>
     /// <returns>结果</returns>
-    public static async Task<bool> StartAsync(ICollection<DownloadItemObj> list)
+    public static async Task<bool> StartAsync(ICollection<DownloadItemObj> list,
+        ColorMCCore.DownloaderUpdate update)
     {
         var names = new List<string>();
         //下载器是否在运行
@@ -139,11 +140,13 @@ public static class DownloadManager
 
         Clear();
         Logs.Info(LanguageHelper.Get("Core.Http.Info4"));
-        ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
+
+        update(State = CoreRunState.Init);
+
         //装填下载内容
         foreach (var item in list)
         {
-            if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url) 
+            if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url)
                 || names.Contains(item.Name))
             {
                 continue;
@@ -156,7 +159,9 @@ public static class DownloadManager
         Logs.Info(LanguageHelper.Get("Core.Http.Info3"));
         DoneSize = 0;
         AllSize = s_items.Count;
-        ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Start);
+
+        update(State = CoreRunState.Start);
+
         s_cancel.Dispose();
         s_cancel = new();
         foreach (var item in s_threads)
@@ -171,7 +176,7 @@ public static class DownloadManager
             }
         });
 
-        ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.End);
+        update(State = CoreRunState.End);
 
         if (s_cancel.IsCancellationRequested)
         {
@@ -220,7 +225,6 @@ public static class DownloadManager
     public static void Error(DownloadItemObj item, Exception e)
     {
         Logs.Error(string.Format(LanguageHelper.Get("Core.Http.Error1"), item.Name), e);
-        ColorMCCore.DownloadItemError?.Invoke(item, e);
     }
 
     /// <summary>

@@ -1,14 +1,9 @@
 using ColorMC.Core.Config;
-using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -500,24 +495,20 @@ public static class InstancesPath
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>结果</returns>
-    public static async Task<GameSettingObj?> CreateGame(this GameSettingObj game)
+    public static async Task<GameSettingObj?> CreateGame(this GameSettingObj game,
+        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte)
     {
         var value = s_installGames.Values.FirstOrDefault(item => item.DirName == game.Name);
         if (value != null)
         {
-            if (ColorMCCore.GameOverwirte == null)
-            {
-                return null;
-            }
-
-            if (await ColorMCCore.GameOverwirte.Invoke(game) == false)
+            if (await overwirte(game) == false)
             {
                 return null;
             }
 
             if (s_installGames.Remove(value.UUID, out var temp))
             {
-                if (!await Remove(temp))
+                if (!await Remove(temp, request))
                 {
                     return null;
                 }
@@ -526,7 +517,7 @@ public static class InstancesPath
         game.DirName = game.Name;
 
         var dir = game.GetBasePath();
-        if (!await PathHelper.DeleteFilesAsync(dir))
+        if (!await PathHelper.DeleteFilesAsync(dir, request))
         {
             return null;
         }
@@ -703,11 +694,12 @@ public static class InstancesPath
     /// <param name="obj">原始实例</param>
     /// <param name="name">新的名字</param>
     /// <returns>复制结果</returns>
-    public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
+    public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name,
+        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte)
     {
         var obj1 = obj.CopyObj();
         obj1.Name = name;
-        obj1 = await CreateGame(obj1);
+        obj1 = await CreateGame(obj1, request, overwirte);
         if (obj1 != null)
         {
             await PathHelper.CopyDir(GetGamePath(obj), GetGamePath(obj1));
@@ -870,11 +862,11 @@ public static class InstancesPath
     /// 删除游戏实例
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static Task<bool> Remove(this GameSettingObj obj)
+    public static Task<bool> Remove(this GameSettingObj obj, ColorMCCore.GameRequest request)
     {
         obj.RemoveFromGroup();
         PathHelper.Delete(obj.GetGameJsonFile());
-        return PathHelper.DeleteFilesAsync(obj.GetBasePath());
+        return PathHelper.DeleteFilesAsync(obj.GetBasePath(), request);
     }
 
     /// <summary>
@@ -884,13 +876,16 @@ public static class InstancesPath
     /// <param name="local">目标地址</param>
     /// <param name="unselect">未选择的文件</param>
     /// <returns></returns>
-    public static async Task<(bool, Exception?)> CopyFile(this GameSettingObj obj, string local, List<string> unselect)
+    public static async Task<(bool, Exception?)> CopyFile(this GameSettingObj obj, string local, List<string>? unselect)
     {
         try
         {
             local = Path.GetFullPath(local);
             var list = PathHelper.GetAllFile(local);
-            list.RemoveAll(item => unselect.Contains(item.FullName));
+            if (unselect != null)
+            {
+                list.RemoveAll(item => unselect.Contains(item.FullName));
+            }
             int basel = local.Length;
             var local1 = obj.GetGamePath();
             await Task.Run(() =>

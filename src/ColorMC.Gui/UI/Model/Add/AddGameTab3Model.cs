@@ -6,6 +6,8 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -59,6 +61,17 @@ public partial class AddGameModel
             Model.ProgressClose();
             Files = _fileModel.Source;
 
+            var list = DoScan();
+            if (list.Count > 0)
+            {
+                res = await Model.ShowWait(string.Format(App.Lang("AddGameWindow.Tab3.Info4"), list.Count));
+                if (res)
+                {
+                    await Import(list);
+                    return;
+                }
+            }
+
             CanInput = true;
         }
         else
@@ -102,7 +115,8 @@ public partial class AddGameModel
         }
 
         Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
-        var res = await GameBinding.AddGame(Name, SelectPath, _fileModel.GetUnSelectItems(), Group);
+        var res = await GameBinding.AddGame(Name, SelectPath, _fileModel.GetUnSelectItems(),
+            Group, Tab2GameRequest, Tab2GameOverwirte);
         Model.ProgressClose();
 
         if (!res)
@@ -139,6 +153,73 @@ public partial class AddGameModel
         else
         {
             Model.Show(string.Format(App.Lang("AddGameWindow.Tab3.Error2"), res));
+        }
+    }
+
+    private List<string> DoScan()
+    {
+        var list = new List<string>();
+        foreach (var item in Files!.Items)
+        {
+            foreach (var item1 in item.Children)
+            {
+                if (item1.Name == "versions")
+                {
+                    foreach (var item2 in item1.Children)
+                    {
+                        bool find = false;
+                        foreach (var item3 in item2.Children)
+                        {
+                            if (find)
+                            {
+                                break;
+                            }
+                            if (item3.Name.EndsWith(".json"))
+                            {
+                                var obj = JObject.Parse(PathHelper.ReadText(item3.Path)!);
+                                if (obj.ContainsKey("id")
+                                    && obj.ContainsKey("arguments")
+                                    && obj.ContainsKey("mainClass"))
+                                {
+                                    list.Add(item2.Path);
+                                    find = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    return list;
+                }
+            }
+        }
+
+        return list;
+    }
+
+    private async Task Import(List<string> list)
+    {
+        bool ok = true;
+        foreach (var item in list)
+        {
+            Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
+            var res = await GameBinding.AddGame(item, Group, Tab2GameRequest, Tab2GameOverwirte);
+            Model.ProgressClose();
+
+            if (!res)
+            {
+                Model.Show(App.Lang("AddGameWindow.Tab3.Error1"));
+                ok = false;
+                return;
+            }
+        }
+
+        if (ok)
+        {
+            var model = (App.MainWindow?.DataContext as MainModel);
+            model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
+            App.MainWindow?.LoadMain();
+            WindowClose();
         }
     }
 }

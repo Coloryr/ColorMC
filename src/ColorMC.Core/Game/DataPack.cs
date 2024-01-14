@@ -236,7 +236,7 @@ public static class DataPack
         {
             if (Directory.Exists(item.Path))
             {
-                await PathHelper.DeleteFilesAsync(item.Path);
+                await PathHelper.DeleteFilesAsync(item.Path, null);
             }
             else
             {

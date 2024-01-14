@@ -1,9 +1,8 @@
 using Avalonia.Platform.Storage;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using System.Diagnostics;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 

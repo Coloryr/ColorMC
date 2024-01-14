@@ -2,7 +2,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
-using static ColorMC.Core.Objs.CountObj;
 
 namespace ColorMC.Core.Utils;
 

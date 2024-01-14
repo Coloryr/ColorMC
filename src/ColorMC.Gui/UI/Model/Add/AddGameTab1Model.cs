@@ -1,6 +1,5 @@
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
-using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -141,7 +140,8 @@ public partial class AddGameModel
         }
 
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info14"));
-        var res1 = await GameBinding.DownloadServerPack(Model, Name, Group, Text);
+        var res1 = await GameBinding.DownloadServerPack(Model, Name, Group, Text,
+            Tab1GameOverwirte, App.DownloaderUpdate);
         Model.ProgressClose();
         if (!res1.Item1 && res1.Item2 != null)
         {
@@ -207,7 +207,8 @@ public partial class AddGameModel
                 break;
             }
         }
-        var res3 = await GameBinding.DownloadCloud(obj, Group);
+        var res3 = await GameBinding.DownloadCloud(obj, Group, Model.ShowWait,
+            Tab1GameOverwirte, App.DownloaderUpdate);
         Model.ProgressClose();
         if (!res3.Item1)
         {
@@ -322,9 +323,6 @@ public partial class AddGameModel
     [RelayCommand]
     public async Task AddGame()
     {
-        ColorMCCore.GameOverwirte = Tab1GameOverwirte;
-        ColorMCCore.GameAddRequest = Tab1GameRequest;
-
         if (BaseBinding.IsDownload)
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error4"));
@@ -352,7 +350,22 @@ public partial class AddGameModel
         }
 
         var loader = _loaderTypeList[LoaderType];
-        var res = await GameBinding.AddGame(name, version, loader, LoaderVersion?.ToString(), Group, LoaderLocal, OffLib);
+
+        var game = new GameSettingObj()
+        {
+            Name = name,
+            Version = version,
+            Loader = loader,
+            LoaderVersion = LoaderVersion?.ToString(),
+            GroupName = Group,
+            CustomLoader = new()
+            {
+                Local = LoaderLocal,
+                OffLib = OffLib
+            }
+        };
+
+        var res = await GameBinding.AddGame(game, Tab1GameRequest, Tab1GameOverwirte);
         if (!res)
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error5"));
@@ -452,12 +465,14 @@ public partial class AddGameModel
             return;
         }
 
-        ColorMCCore.GameOverwirte = Tab2GameOverwirte;
-        ColorMCCore.GameAddRequest = Tab2GameRequest;
-
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
-        var res = await GameBinding.InstallCurseForge(data, data1, Name, Group);
+        var res = await GameBinding.InstallCurseForge(data, data1, Name, Group,
+            ZipUpdate, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
+            {
+                Model.ProgressUpdate((double)now / size);
+            }, App.DownloaderUpdate, PackState);
         Model.ProgressClose();
+
         if (!res)
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
@@ -481,12 +496,14 @@ public partial class AddGameModel
             return;
         }
 
-        ColorMCCore.GameOverwirte = Tab2GameOverwirte;
-        ColorMCCore.GameAddRequest = Tab2GameRequest;
-
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
-        var res = await GameBinding.InstallModrinth(data, data1, Name, Group, null);
+        var res = await GameBinding.InstallModrinth(data, data1, Name, Group,
+            ZipUpdate, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
+            {
+                Model.ProgressUpdate((double)now / size);
+            }, App.DownloaderUpdate, PackState);
         Model.ProgressClose();
+
         if (!res)
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
@@ -542,6 +559,12 @@ public partial class AddGameModel
     {
         Model.ProgressClose();
         return Model.ShowWait(state);
+    }
+
+    private void ZipUpdate(string text, int size, int all)
+    {
+        string temp = App.Lang("Gui.Info27");
+        Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {text} {size}/{all}"));
     }
 
     /// <summary>

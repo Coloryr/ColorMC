@@ -1,5 +1,4 @@
 using AvaloniaEdit.Utils;
-using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
@@ -52,9 +51,6 @@ public partial class AddGameModel : TopModel
         IsPhone = SystemInfo.Os == OsType.Android;
 
         GameVersionUpdate();
-
-        ColorMCCore.PackState = PackState;
-        ColorMCCore.PackUpdate = PackUpdate;
 
         CloudEnable = GameCloudUtils.Connect;
     }
@@ -122,8 +118,6 @@ public partial class AddGameModel : TopModel
 
     protected override void Close()
     {
-        ColorMCCore.GameOverwirte = null;
-        ColorMCCore.GameAddRequest = null;
         _load = true;
         Back();
         GameVersionList.Clear();

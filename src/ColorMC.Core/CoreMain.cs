@@ -13,7 +13,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A23";
-    public const string DateVersion = "20231229";
+    public const string DateVersion = "20240114";
 
     public const string Version = $"{TopVersion}.{DateVersion}";
 
@@ -21,50 +21,34 @@ public static class ColorMCCore
     /// 运行路径
     /// </summary>
     public static string BaseDir { get; private set; }
+
+    public delegate Task<bool> GameRequest(string text);
+    public delegate void ZipUpdate(string text, int size, int all);
+    public delegate Task<bool> LaunchP(bool pre);
+    public delegate void UpdateState(string? text);
+    public delegate Task<bool> UpdateSelect(string? text);
+    public delegate void NoJava();
+    public delegate void JavaUnzip();
+    public delegate Task<bool> LoginFail(LoginObj obj);
+    public delegate void LoginOAuthCode(string url, string code);
+    public delegate Task<bool> GameOverwirte(GameSettingObj obj);
+    public delegate void PackUpdate(int size, int now);
+    public delegate void DownloaderUpdate(CoreRunState state);
+    public delegate void PackState(CoreRunState state);
+
     /// <summary>
     /// 错误显示回调
     /// 标题 错误 关闭程序
     /// </summary>
     public static Action<string?, Exception?, bool>? OnError { internal get; set; }
     /// <summary>
-    /// 下载线程相应回调
-    /// </summary>
-    public static Action<CoreRunState>? DownloaderUpdate { internal get; set; }
-    /// <summary>
     /// 下载项目更新回调
     /// </summary>
     public static Action<DownloadItemObj>? DownloadItemUpdate { internal get; set; }
     /// <summary>
-    /// 下载项目错误回调
-    /// </summary>
-    public static Action<DownloadItemObj, Exception>? DownloadItemError { internal get; set; }
-
-    /// <summary>
-    /// 游戏实例覆盖回调
-    /// </summary>
-    public static Func<GameSettingObj, Task<bool>>? GameOverwirte { internal get; set; }
-    /// <summary>
-    /// 是否请求回调
-    /// </summary>
-    public static Func<string, Task<bool>>? GameRequest { internal get; set; }
-    /// <summary>
-    /// 添加游戏请求回调
-    /// </summary>
-    public static Func<string, Task<bool>>? GameAddRequest { internal get; set; }
-    /// <summary>
     /// 游戏启动回调
     /// </summary>
     public static Action<GameSettingObj, LaunchState>? GameLaunch { get; set; }
-
-    /// <summary>
-    /// 压缩包处理回调
-    /// </summary>
-    public static Action<CoreRunState>? PackState { internal get; set; }
-    /// <summary>
-    /// 压缩包更新回调
-    /// </summary>
-    public static Action<int, int>? PackUpdate { internal get; set; }
-
     /// <summary>
     /// 游戏进程日志回调
     /// </summary>
@@ -73,48 +57,10 @@ public static class ColorMCCore
     /// 游戏日志回调
     /// </summary>
     public static Action<GameSettingObj, string?>? GameLog { internal get; set; }
-
     /// <summary>
-    /// 登录状态回调
-    /// </summary>
-    public static Action<AuthState>? AuthStateUpdate { internal get; set; }
-    /// <summary>
-    /// 登录码回调
-    /// </summary>
-    public static Action<string, string>? LoginOAuthCode { internal get; set; }
-
-    /// <summary>
-    /// 语言更新回调
+    /// 语言重载
     /// </summary>
     public static Action<LanguageType>? LanguageReload { internal get; set; }
-    /// <summary>
-    /// 登录失败是否以离线方式启动
-    /// </summary>
-    public static Func<LoginObj, Task<bool>>? OfflineLaunch { internal get; set; }
-    /// <summary>
-    /// 解压Java时
-    /// </summary>
-    public static Action? JavaUnzip { internal get; set; }
-    /// <summary>
-    /// 没有Java时
-    /// </summary>
-    public static Action<int>? NoJava { internal get; set; }
-    /// <summary>
-    /// 需要更新时
-    /// </summary>
-    public static Func<string, Task<bool>>? UpdateSelect { internal get; set; }
-    /// <summary>
-    /// 更新状态
-    /// </summary>
-    public static Action<string?>? UpdateState { internal get; set; }
-    /// <summary>
-    /// 执行命令
-    /// </summary>
-    public static Func<bool, Task<bool>>? LaunchP { internal get; set; }
-    /// <summary>
-    /// 启动器加载完毕
-    /// </summary>
-    public static Action? LoadDone { internal get; set; }
 
     /// <summary>
     /// 手机端启动
@@ -123,7 +69,7 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端Jvm安装
     /// </summary>
-    public static Action<Stream, string, Action<string, int, int>?>? PhoneJvmInstall { internal get; set; }
+    public static Action<Stream, string, ZipUpdate>? PhoneJvmInstall { internal get; set; }
     /// <summary>
     /// 手机端读Java信息
     /// </summary>
@@ -177,7 +123,7 @@ public static class ColorMCCore
     /// <summary>
     /// 初始化阶段2
     /// </summary>
-    public static void Init1()
+    public static void Init1(Action? done)
     {
         ConfigSave.Init();
         GameCount.Init(BaseDir);
@@ -187,7 +133,7 @@ public static class ColorMCCore
         DownloadManager.Init(BaseDir);
         AuthDatabase.Init();
         MCPath.Init(BaseDir);
-        LoadDone?.Invoke();
+        done?.Invoke();
 
         Logs.Info(LanguageHelper.Get("Core.Info3"));
     }

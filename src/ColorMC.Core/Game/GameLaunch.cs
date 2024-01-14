@@ -339,7 +339,7 @@ public static class Launch
         //Mod加载器参数
         if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
-            var forge = obj.Loader == Loaders.NeoForge 
+            var forge = obj.Loader == Loaders.NeoForge
                 ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
             foreach (var item in forge.arguments.game)
             {
@@ -1006,13 +1006,18 @@ public static class Launch
     /// <param name="jvmCfg">使用的Java</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns></returns>
-    public static async Task<Process?> StartGameAsync(this GameSettingObj obj, LoginObj login, WorldObj? world, CancellationToken token)
+    public static async Task<Process?> StartGameAsync(this GameSettingObj obj, LoginObj login,
+        WorldObj? world, ColorMCCore.GameRequest request, ColorMCCore.LaunchP pre,
+        ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select,
+        ColorMCCore.NoJava nojava, ColorMCCore.LoginFail loginfail,
+        ColorMCCore.DownloaderUpdate update1,
+        CancellationToken token)
     {
         s_cancel = token;
         var stopwatch = new Stopwatch();
 
         //版本号检测
-        if (string.IsNullOrWhiteSpace(obj.Version) 
+        if (string.IsNullOrWhiteSpace(obj.Version)
             || (obj.Loader != Loaders.Normal && string.IsNullOrWhiteSpace(obj.LoaderVersion))
             && (obj.Loader == Loaders.Custom && string.IsNullOrWhiteSpace(obj.CustomLoader?.Local)))
         {
@@ -1028,8 +1033,7 @@ public static class Launch
         {
             if (login.AuthType == AuthType.OAuth
                 && !string.IsNullOrWhiteSpace(login.UUID)
-                && ColorMCCore.OfflineLaunch != null
-                && await ColorMCCore.OfflineLaunch(login) == true)
+                && await loginfail(login) == true)
             {
                 login = new()
                 {
@@ -1068,7 +1072,7 @@ public static class Launch
         {
             stopwatch.Restart();
             stopwatch.Start();
-            var pack = await obj.ServerPackCheckAsync();
+            var pack = await obj.ServerPackCheckAsync(state, select, update1);
             stopwatch.Stop();
             temp = string.Format(LanguageHelper.Get("Core.Launch.Info14"),
                 obj.Name, stopwatch.Elapsed.ToString());
@@ -1076,15 +1080,11 @@ public static class Launch
             Logs.Info(temp);
             if (pack == false)
             {
-                if (ColorMCCore.GameRequest != null)
+                var res1 = await request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
+                if (!res1)
                 {
-                    var res1 = await ColorMCCore.GameRequest.Invoke(
-                        string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
-                    if (!res1)
-                    {
-                        throw new LaunchException(LaunchState.Cancel,
-                                LanguageHelper.Get("Core.Launch.Error8"));
-                    }
+                    throw new LaunchException(LaunchState.Cancel,
+                            LanguageHelper.Get("Core.Launch.Error8"));
                 }
             }
         }
@@ -1092,17 +1092,16 @@ public static class Launch
         //检查游戏文件
         stopwatch.Restart();
         stopwatch.Start();
-        var res = await CheckHelpers.CheckGameFileAsync(obj, login, s_cancel);
+        var res = await CheckHelpers.CheckGameFileAsync(obj, login, update1, s_cancel);
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
 
-        if (ColorMCCore.GameRequest != null && obj.GetModeFast() && obj.Loader == Loaders.Normal)
+        if (obj.GetModeFast() && obj.Loader == Loaders.Normal)
         {
-            var res1 = await ColorMCCore.GameRequest.Invoke(
-                        string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
+            var res1 = await request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
             if (!res1)
             {
                 throw new LaunchException(LaunchState.Cancel,
@@ -1116,13 +1115,7 @@ public static class Launch
             bool download = true;
             if (!ConfigUtils.Config.Http.AutoDownload)
             {
-                if (ColorMCCore.GameRequest == null)
-                {
-                    throw new LaunchException(LaunchState.LostGame,
-                        LanguageHelper.Get("Core.Launch.Error4"));
-                }
-
-                download = await ColorMCCore.GameRequest.Invoke(LanguageHelper.Get("Core.Launch.Info12"));
+                download = await request(LanguageHelper.Get("Core.Launch.Info12"));
             }
 
             if (download)
@@ -1132,7 +1125,7 @@ public static class Launch
                 stopwatch.Restart();
                 stopwatch.Start();
 
-                var ok = await DownloadManager.StartAsync([.. res]);
+                var ok = await DownloadManager.StartAsync([.. res], update1);
                 if (!ok)
                 {
                     throw new LaunchException(LaunchState.LostFile,
@@ -1159,7 +1152,7 @@ public static class Launch
             if (jvm == null)
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
-                ColorMCCore.NoJava?.Invoke(jv);
+                nojava();
                 throw new LaunchException(LaunchState.JavaError,
                         string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv));
             }
@@ -1258,19 +1251,18 @@ public static class Launch
         }
 
         //启动前运行
-        if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
-            || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
+        if ((obj.JvmArg?.LaunchPre == true || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
         {
             var cmd1 = obj.JvmArg?.LaunchPreData;
             var cmd2 = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
             var start = string.IsNullOrWhiteSpace(cmd1) ? cmd2 : cmd1;
-            if (!string.IsNullOrWhiteSpace(start) && await ColorMCCore.LaunchP.Invoke(true))
+            if (!string.IsNullOrWhiteSpace(start) && await pre(true))
             {
                 if (SystemInfo.Os == OsType.Android && start.StartsWith(JAVA_LOCAL))
                 {
                     if (JvmPath.FindJava(8) is { } jvm1)
                     {
-                        stopwatch.Start(); 
+                        stopwatch.Start();
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
                         start = ReplaceArg(obj, path!, arg, start);
 
@@ -1286,7 +1278,7 @@ public static class Launch
                         res1.StartInfo.RedirectStandardError = true;
                         res1.StartInfo.RedirectStandardInput = true;
                         res1.StartInfo.RedirectStandardOutput = true;
-                        res1.OutputDataReceived += (a, b)=> 
+                        res1.OutputDataReceived += (a, b) =>
                         {
                             ColorMCCore.GameLog?.Invoke(obj, b.Data);
                         };
@@ -1425,8 +1417,7 @@ public static class Launch
         Logs.Info(temp);
 
         //启动后执行
-        if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPost == true
-            || ConfigUtils.Config.DefaultJvmArg.LaunchPost))
+        if ((obj.JvmArg?.LaunchPost == true || ConfigUtils.Config.DefaultJvmArg.LaunchPost))
         {
             var start = obj.JvmArg?.LaunchPostData;
             if (string.IsNullOrWhiteSpace(start))
@@ -1435,7 +1426,7 @@ public static class Launch
             }
             if (!string.IsNullOrWhiteSpace(start))
             {
-                var res1 = await ColorMCCore.LaunchP.Invoke(false);
+                var res1 = await pre(false);
                 if (res1)
                 {
                     if (SystemInfo.Os == OsType.Android)

@@ -87,7 +87,7 @@ public record LaunchDataObj
 }
 
 public record CustomLoader
-{ 
+{
     /// <summary>
     /// 加载器位置
     /// </summary>

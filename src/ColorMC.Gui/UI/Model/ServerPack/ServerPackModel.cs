@@ -45,7 +45,7 @@ public partial class ServerPackModel : MenuModel
         Obj.Text = Text;
 
         Model.Progress(App.Lang("ServerPackWindow.Tab1.Info1"));
-        var res = await GameBinding.GenServerPack(Obj, local);
+        var res = await GameBinding.GenServerPack(Obj, local, Model.ShowWait);
         Model.ProgressClose();
         if (res)
         {

@@ -23,7 +23,8 @@ public static class ModPackHelper
     /// <param name="obj">游戏实例</param>
     /// <param name="zip">压缩包路径</param>
     /// <returns>结果</returns>
-    public static async Task<bool> UpdateCurseForgeModPackAsync(GameSettingObj obj, string zip)
+    public static async Task<bool> UpdateCurseForgeModPackAsync(GameSettingObj obj, string zip,
+        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1, ColorMCCore.PackState update2)
     {
         using ZipFile zFile = new(zip);
         using MemoryStream stream1 = new();
@@ -45,7 +46,7 @@ public static class ModPackHelper
             return false;
         }
 
-        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
+        update2(CoreRunState.Init);
         CurseForgePackObj info;
         byte[] array1 = stream1.ToArray();
         try
@@ -108,7 +109,7 @@ public static class ModPackHelper
         obj1.Mods.Clear();
 
         //获取Mod信息
-        var list = await GetCurseForgeModInfo(obj1, info, true);
+        var list = await GetCurseForgeModInfo(obj1, info, true, update);
         if (!list.Res)
         {
             return false;
@@ -167,7 +168,7 @@ public static class ModPackHelper
             obj.Mods.Add(item.ModId, item);
         }
 
-        await DownloadManager.StartAsync(list1);
+        await DownloadManager.StartAsync(list1, update1);
 
         return true;
     }
@@ -180,10 +181,13 @@ public static class ModPackHelper
     /// <param name="group">实例组</param>
     /// <returns>Res安装结果
     /// Game游戏实例</returns>
-    public static async Task<(bool Res, GameSettingObj? Game)> 
-        DownloadCurseForgeModPackAsync(string zip, string? name, string? group)
+    public static async Task<(bool Res, GameSettingObj? Game)>
+        DownloadCurseForgeModPackAsync(string zip, string? name, string? group,
+        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte,
+        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.PackState update2)
     {
-        ColorMCCore.PackState?.Invoke(CoreRunState.Read);
+        update2(CoreRunState.Read);
         using ZipFile zFile = new(PathHelper.OpenRead(zip));
         using MemoryStream stream1 = new();
         bool find = false;
@@ -204,7 +208,7 @@ public static class ModPackHelper
             return (false, null);
         }
 
-        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
+        update2(CoreRunState.Init);
         CurseForgePackObj info;
         byte[] array1 = stream1.ToArray();
         try
@@ -261,7 +265,7 @@ public static class ModPackHelper
             Loader = loaders,
             ModPackType = SourceType.CurseForge,
             LoaderVersion = loaderversion
-        });
+        }, request, overwirte);
 
         if (game == null)
         {
@@ -286,10 +290,10 @@ public static class ModPackHelper
 
         PathHelper.WriteBytes(game.GetModJsonFile(), array1);
 
-        ColorMCCore.PackState?.Invoke(CoreRunState.GetInfo);
+        update2(CoreRunState.GetInfo);
 
         //获取Mod信息
-        var list = await GetCurseForgeModInfo(game, info, true);
+        var list = await GetCurseForgeModInfo(game, info, true, update);
         if (!list.Res)
         {
             return (false, game);
@@ -297,9 +301,9 @@ public static class ModPackHelper
 
         game.SaveModInfo();
 
-        ColorMCCore.PackState?.Invoke(CoreRunState.Download);
+        update2(CoreRunState.Download);
 
-        await DownloadManager.StartAsync(list.List.ToList());
+        await DownloadManager.StartAsync(list.List.ToList(), update1);
 
         return (true, game);
     }
@@ -313,7 +317,8 @@ public static class ModPackHelper
     /// <returns>Res安装结果
     /// Game游戏实例</returns>
     private static async Task<(bool Res, ConcurrentBag<DownloadItemObj> List)>
-        GetCurseForgeModInfo(GameSettingObj game, CurseForgePackObj info, bool notify)
+        GetCurseForgeModInfo(GameSettingObj game, CurseForgePackObj info, bool notify,
+        ColorMCCore.PackUpdate update)
     {
         var size = info.files.Count;
         var now = 0;
@@ -361,7 +366,7 @@ public static class ModPackHelper
                 now++;
                 if (notify)
                 {
-                    ColorMCCore.PackUpdate?.Invoke(size, now);
+                    update(size, now);
                 }
             }
         }
@@ -406,7 +411,7 @@ public static class ModPackHelper
                 now++;
                 if (notify)
                 {
-                    ColorMCCore.PackUpdate?.Invoke(size, now);
+                    update(size, now);
                 }
             });
             if (!done)
@@ -424,7 +429,9 @@ public static class ModPackHelper
     /// <param name="obj">游戏实例</param>
     /// <param name="zip">整合包路径</param>
     /// <returns>升级结果</returns>
-    public static async Task<bool> UpdateModrinthModPackAsync(GameSettingObj obj, string zip)
+    public static async Task<bool> UpdateModrinthModPackAsync(GameSettingObj obj, string zip,
+        ColorMCCore.PackUpdate state, ColorMCCore.DownloaderUpdate update,
+        ColorMCCore.PackState update2)
     {
         using var zFile = new ZipFile(PathHelper.OpenRead(zip));
         using var stream1 = new MemoryStream();
@@ -446,7 +453,7 @@ public static class ModPackHelper
             return false;
         }
 
-        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
+        update2(CoreRunState.Init);
         ModrinthPackObj info;
         byte[] array1 = stream1.ToArray();
         try
@@ -511,7 +518,7 @@ public static class ModPackHelper
         obj1.Mods.Clear();
 
         //获取Mod信息
-        var list = GetModrinthModInfo(obj1, info, true);
+        var list = GetModrinthModInfo(obj1, info, true, state);
 
         var addlist = new List<ModInfoObj>();
         var removelist = new List<ModInfoObj>();
@@ -568,7 +575,7 @@ public static class ModPackHelper
             obj.Mods.Add(item.ModId, item);
         }
 
-        await DownloadManager.StartAsync(list1);
+        await DownloadManager.StartAsync(list1, update);
 
         return true;
     }
@@ -581,10 +588,13 @@ public static class ModPackHelper
     /// <param name="group">实例组</param>
     /// <returns>Res安装结果
     /// Game游戏实例</returns>
-    public static async Task<(bool Res, GameSettingObj? Game)> 
-        DownloadModrinthModPackAsync(string zip, string? name, string? group)
+    public static async Task<(bool Res, GameSettingObj? Game)>
+        DownloadModrinthModPackAsync(string zip, string? name, string? group,
+        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte,
+        ColorMCCore.PackUpdate state, ColorMCCore.DownloaderUpdate update,
+        ColorMCCore.PackState update2)
     {
-        ColorMCCore.PackState?.Invoke(CoreRunState.Read);
+        update2(CoreRunState.Read);
         using ZipFile zFile = new(PathHelper.OpenRead(zip));
         using MemoryStream stream1 = new();
         bool find = false;
@@ -605,7 +615,7 @@ public static class ModPackHelper
             return (false, null);
         }
 
-        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
+        update2(CoreRunState.Init);
         ModrinthPackObj info;
         byte[] array1 = stream1.ToArray();
         try
@@ -661,7 +671,7 @@ public static class ModPackHelper
             ModPackType = SourceType.Modrinth,
             Loader = loaders,
             LoaderVersion = loaderversion
-        });
+        }, request, overwirte);
 
         if (game == null)
         {
@@ -688,17 +698,17 @@ public static class ModPackHelper
 
         PathHelper.WriteBytes(game.GetModJsonFile(), array1);
 
-        ColorMCCore.PackState?.Invoke(CoreRunState.GetInfo);
+        update2(CoreRunState.GetInfo);
 
         //获取Mod信息
 
-        var list = GetModrinthModInfo(game, info, true);
+        var list = GetModrinthModInfo(game, info, true, state);
 
         game.SaveModInfo();
 
-        ColorMCCore.PackState?.Invoke(CoreRunState.Download);
+        update2(CoreRunState.Download);
 
-        await DownloadManager.StartAsync(list.ToList());
+        await DownloadManager.StartAsync(list.ToList(), update);
 
         return (true, game);
     }
@@ -710,7 +720,8 @@ public static class ModPackHelper
     /// <param name="info">信息</param>
     /// <param name="notify">通知</param>
     /// <returns>信息</returns>
-    private static List<DownloadItemObj> GetModrinthModInfo(GameSettingObj obj, ModrinthPackObj info, bool notify)
+    private static List<DownloadItemObj> GetModrinthModInfo(GameSettingObj obj, ModrinthPackObj info,
+        bool notify, ColorMCCore.PackUpdate update)
     {
         var list = new List<DownloadItemObj>();
 
@@ -753,7 +764,7 @@ public static class ModPackHelper
 
             if (notify)
             {
-                ColorMCCore.PackUpdate?.Invoke(size, now);
+                update(size, now);
             }
         }
 

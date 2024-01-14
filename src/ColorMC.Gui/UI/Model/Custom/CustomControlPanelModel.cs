@@ -1,7 +1,6 @@
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Model.Items;

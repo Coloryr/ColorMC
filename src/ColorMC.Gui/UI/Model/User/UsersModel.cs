@@ -1,6 +1,5 @@
 ﻿using Avalonia.Input;
 using Avalonia.Threading;
-using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -196,7 +195,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(App.Lang("Gui.Error8"));
                     break;
                 }
-                var res = await UserBinding.AddUser(AuthType.Offline, name, null);
+                var res = await UserBinding.AddUser(AuthType.Offline, LoginOAuthCode, name, null);
                 if (!res.Item1)
                 {
                     Model.Show(res.Item2!);
@@ -208,10 +207,9 @@ public partial class UsersControlModel : TopModel
                 break;
             case 1:
                 _cancel = false;
-                ColorMCCore.LoginOAuthCode = LoginOAuthCode;
                 _isOAuth = true;
                 Model.Progress(App.Lang("UserWindow.Info1"));
-                res = await UserBinding.AddUser(AuthType.OAuth, null);
+                res = await UserBinding.AddUser(AuthType.OAuth, LoginOAuthCode, null);
                 Model.ProgressClose();
                 if (_cancel)
                 {
@@ -242,7 +240,7 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.Nide8, server,
+                res = await UserBinding.AddUser(AuthType.Nide8, LoginOAuthCode, server,
                     User, Password);
                 Model.ProgressClose();
                 if (!res.Item1)
@@ -269,7 +267,7 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.AuthlibInjector, server,
+                res = await UserBinding.AddUser(AuthType.AuthlibInjector, LoginOAuthCode, server,
                     User, Password);
                 Model.ProgressClose();
                 if (!res.Item1)
@@ -290,7 +288,7 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.LittleSkin,
+                res = await UserBinding.AddUser(AuthType.LittleSkin, LoginOAuthCode,
                     User, Password);
                 Model.ProgressClose();
                 if (!res.Item1)
@@ -316,7 +314,7 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.SelfLittleSkin,
+                res = await UserBinding.AddUser(AuthType.SelfLittleSkin, LoginOAuthCode,
                     User, Password, server);
                 Model.ProgressClose();
                 if (!res.Item1)

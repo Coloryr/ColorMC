@@ -21,18 +21,17 @@ public static class GameAuth
     /// Message错误信息
     /// Ex异常</returns>
     public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
-        string? Message, Exception? Ex)> LoginOAuthAsync()
+        string? Message, Exception? Ex)> LoginOAuthAsync(ColorMCCore.LoginOAuthCode loginOAuth)
     {
         var now = AuthState.OAuth;
         try
         {
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.OAuth);
             var (done, code, url) = await OAuthAPI.GetCodeAsync();
             if (done != LoginState.Done)
             {
                 return (AuthState.OAuth, done, null, url!, null);
             }
-            ColorMCCore.LoginOAuthCode?.Invoke(url!, code!);
+            loginOAuth(url!, code!);
             (done, var obj) = await OAuthAPI.RunGetCodeAsync();
             if (done != LoginState.Done)
             {
@@ -40,7 +39,6 @@ public static class GameAuth
                     LanguageHelper.Get("Core.Login.Error1"), null);
             }
             now = AuthState.XBox;
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XBox);
             (done, var xnlToken, var xblUhs) = await OAuthAPI.GetXBLAsync(obj!.access_token);
             if (done != LoginState.Done)
             {
@@ -48,7 +46,6 @@ public static class GameAuth
                     LanguageHelper.Get("Core.Login.Error2"), null);
             }
             now = AuthState.XSTS;
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XSTS);
             (done, var xsts, var xsts1) = await OAuthAPI.GetXSTSAsync(xnlToken!);
             if (done != LoginState.Done)
             {
@@ -56,7 +53,6 @@ public static class GameAuth
                     LanguageHelper.Get("Core.Login.Error3"), null);
             }
             now = AuthState.Token;
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
             (done, var token) = await OAuthAPI.GetMinecraftAsync(xsts1!, xsts!);
             if (done != LoginState.Done)
             {
@@ -116,29 +112,24 @@ public static class GameAuth
             {
                 return (AuthState.Profile, LoginState.Done, obj, null, null);
             }
-
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.OAuth);
             var (done, auth) = await OAuthAPI.RefreshTokenAsync(obj.Text1);
             if (done != LoginState.Done)
             {
                 return (AuthState.OAuth, done, null,
                     LanguageHelper.Get("Core.Login.Error1"), null);
             }
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XBox);
             (done, var XNLToken, var XBLUhs) = await OAuthAPI.GetXBLAsync(auth!.access_token);
             if (done != LoginState.Done)
             {
                 return (AuthState.XBox, done, null,
                     LanguageHelper.Get("Core.Login.Error2"), null);
             }
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XSTS);
             (done, var XSTSToken, var XSTSUhs) = await OAuthAPI.GetXSTSAsync(XNLToken!);
             if (done != LoginState.Done)
             {
                 return (AuthState.XSTS, done, null,
                     LanguageHelper.Get("Core.Login.Error3"), null);
             }
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
             (done, var token) = await OAuthAPI.GetMinecraftAsync(XSTSUhs!, XSTSToken!);
             if (done != LoginState.Done)
             {
@@ -184,7 +175,6 @@ public static class GameAuth
     {
         try
         {
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
             var (State, Obj, Msg) = await Nide8.AuthenticateAsync(server, FuntionUtils.NewUUID(), user, pass);
             if (State != LoginState.Done)
             {
@@ -249,7 +239,6 @@ public static class GameAuth
     {
         try
         {
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
             var (State, Obj, Msg) = await AuthlibInjector.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server);
             if (State != LoginState.Done)
             {
@@ -315,7 +304,6 @@ public static class GameAuth
     {
         try
         {
-            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
             var (State, Obj, Msg) = await LittleSkin.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server);
             if (State != LoginState.Done)
             {

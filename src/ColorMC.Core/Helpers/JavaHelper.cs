@@ -104,13 +104,17 @@ public static class JavaHelper
                     return null;
                 }
 
-                p.StartInfo.Arguments = "-version";
+                var info1 = new FileInfo(path);
+
+                p.StartInfo.ArgumentList.Add("-version");
                 p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
+                p.StartInfo.WorkingDirectory = info1.Directory?.Parent?.FullName ?? ColorMCCore.BaseDir;
                 p.Start();
                 string result = p.StandardError.ReadToEnd();
+                string result1 = p.StandardOutput.ReadToEnd();
                 string[] lines = result.Split('\n');
 
                 string select = lines[0];

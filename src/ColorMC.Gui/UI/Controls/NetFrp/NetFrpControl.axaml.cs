@@ -46,7 +46,7 @@ public partial class NetFrpControl : MenuControl
     protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as NetFrpModel)!;
-        switch(old)
+        switch (old)
         {
             case 0:
             case 3:

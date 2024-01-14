@@ -16,7 +16,7 @@ public static class LittleSkin
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
     /// <param name="server">服务器地址</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> 
+    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)>
         AuthenticateAsync(string clientToken, string user, string pass, string? server = null)
     {
         var type = AuthType.LittleSkin;

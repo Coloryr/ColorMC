@@ -275,7 +275,7 @@ public static class Worlds
             if (item != null)
             {
                 local = item.Local;
-                await PathHelper.DeleteFilesAsync(item.Local);
+                await PathHelper.DeleteFilesAsync(item.Local, null);
             }
             else
             {

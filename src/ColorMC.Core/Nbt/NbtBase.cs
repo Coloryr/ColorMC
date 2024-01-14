@@ -159,7 +159,7 @@ public abstract class NbtBase
         return (Activator.CreateInstance(type) as NbtBase)!;
     }
 
-    public static async Task<T?> Read<T>(Stream stream, bool chunk = false) where T: NbtBase
+    public static async Task<T?> Read<T>(Stream stream, bool chunk = false) where T : NbtBase
     {
         return await Read(stream, chunk) as T;
     }
