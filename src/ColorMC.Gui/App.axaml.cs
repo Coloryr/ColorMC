@@ -432,12 +432,15 @@ public partial class App : Application
 
     public static Task<bool> StartDownload(ICollection<DownloadItemObj> list)
     {
-        DownloadWindow?.Window.Close();
+        return Dispatcher.UIThread.Invoke(() =>
+        {
+            DownloadWindow?.Window.Close();
 
-        DownloadWindow = new(list);
-        AWindow(DownloadWindow);
+            DownloadWindow = new(list);
+            AWindow(DownloadWindow);
 
-        return DownloadWindow.Start();
+            return DownloadWindow.Start();
+        });
     }
 
     public static void ShowUser(bool add = false, string? url = null)
