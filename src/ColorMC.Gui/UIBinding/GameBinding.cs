@@ -169,7 +169,7 @@ public static class GameBinding
             App.ShowError(App.Lang("Gui.Error26"), res.Item2);
         }
 
-        return false;
+        return true;
     }
 
     public static async Task<bool> AddGame(string name, string local, List<string> unselect,

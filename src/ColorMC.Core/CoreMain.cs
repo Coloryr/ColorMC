@@ -169,7 +169,7 @@ public static class ColorMCCore
         Logs.Error(text, e);
     }
 
-    public static void GameLog(GameSettingObj obj, string text)
+    public static void GameLog(GameSettingObj obj, string? text)
     {
         OnGameLog?.Invoke(obj, text);
     }

@@ -2,6 +2,7 @@ using Avalonia;
 using System;
 
 #if !DEBUG
+using Avalonia.Media;
 using System.IO;
 using System.Linq;
 using System.Runtime.Loader;
@@ -42,7 +43,7 @@ public static class Program
     /// </summary>
     public static string LoadDir { get; private set; } = AppContext.BaseDirectory;
 
-    public const string TopVersion = "A23";
+    public const string TopVersion = "A24";
 
     public static readonly string[] BaseSha1 =
     [
