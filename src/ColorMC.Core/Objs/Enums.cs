@@ -367,3 +367,11 @@ public enum CoreRunState
     Download,
     Error,
 }
+
+/// <summary>
+/// 运行态
+/// </summary>
+public enum DownloadState
+{
+    Init, Start, End
+}

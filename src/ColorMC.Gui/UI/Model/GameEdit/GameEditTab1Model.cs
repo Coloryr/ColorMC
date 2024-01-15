@@ -257,7 +257,7 @@ public partial class GameEditModel
                 res = await GameBinding.ModPackUpdate(_obj, item, (size, now) =>
                 {
                     Model.ProgressUpdate((double)now / size);
-                }, App.DownloaderUpdate, PackState);
+                }, PackState);
                 Model.ProgressClose();
                 if (!res)
                 {
@@ -299,7 +299,7 @@ public partial class GameEditModel
                 res = await GameBinding.ModPackUpdate(_obj, item, (size, now) =>
                 {
                     Model.ProgressUpdate((double)now / size);
-                }, App.DownloaderUpdate, PackState);
+                }, PackState);
                 Model.ProgressClose();
                 if (!res)
                 {

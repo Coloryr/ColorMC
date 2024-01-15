@@ -14,10 +14,10 @@ public partial class ServerPackControl : MenuControl
 {
     private readonly GameSettingObj _obj;
 
-    private readonly Tab1Control _tab1 = new();
-    private readonly Tab2Control _tab2 = new();
-    private readonly Tab3Control _tab3 = new();
-    private readonly Tab4Control _tab4 = new();
+    private Tab1Control _tab1;
+    private Tab2Control _tab2;
+    private Tab3Control _tab3;
+    private Tab4Control _tab4;
 
     private Bitmap _icon;
     public override Bitmap GetIcon() => _icon;
@@ -41,17 +41,16 @@ public partial class ServerPackControl : MenuControl
     {
         Window.SetTitle(Title);
 
-        Content1.Child = _tab1;
-
-        _tab2.Opened();
-        _tab3.Opened();
-        _tab4.Opened();
-
         var icon = _obj.GetIconFile();
         if (File.Exists(icon))
         {
             _icon = new(icon);
             Window.SetIcon(_icon);
+        }
+
+        if (DataContext is ServerPackModel model)
+        {
+            model.NowView = 0;
         }
     }
 
@@ -95,18 +94,18 @@ public partial class ServerPackControl : MenuControl
         {
             case 0:
                 model.LoadConfig();
-                return _tab1;
+                return _tab1 ??= new();
             case 1:
                 model.LoadMod();
                 model.SetTab2Click();
-                return _tab2;
+                return _tab2 ??= new();
             case 2:
                 model.LoadConfigList();
                 model.SetTab3Click();
-                return _tab3;
+                return _tab3 ??= new();
             case 3:
                 model.LoadFile();
-                return _tab4;
+                return _tab4 ??= new();
             default:
                 throw new InvalidEnumArgumentException();
         }

@@ -1,9 +1,11 @@
 using Avalonia.Controls;
-using ColorMC.Core;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Download;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Download;
@@ -16,6 +18,8 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public string UseName { get; }
 
+    private readonly ICollection<DownloadItemObj> _list;
+
     public DownloadControl()
     {
         InitializeComponent();
@@ -23,23 +27,19 @@ public partial class DownloadControl : UserControl, IUserControl
         UseName = ToString() ?? "DownloadControl";
     }
 
+    public DownloadControl(ICollection<DownloadItemObj> list) : this()
+    {
+        _list = list;
+    }
+
     public void Opened()
     {
         Window.SetTitle(Title);
-
-        DataGrid1.SetFontColor();
     }
 
     public void Closed()
     {
-        ColorMCCore.DownloadItemUpdate = null;
-
         App.DownloadWindow = null;
-    }
-
-    public void Load()
-    {
-        (DataContext as DownloadModel)!.Load();
     }
 
     public async Task<bool> Closing()
@@ -49,7 +49,21 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public void SetBaseModel(BaseModel model)
     {
-        var amodel = new DownloadModel(model);
+        var amodel = new DownloadModel(model, _list);
+        amodel.PropertyChanged += Amodel_PropertyChanged;
         DataContext = amodel;
+    }
+
+    private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "WindowClose")
+        {
+            Window?.Close();
+        }
+    }
+
+    public Task<bool> Start()
+    {
+        return (DataContext as DownloadModel)!.Start();
     }
 }

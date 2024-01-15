@@ -48,7 +48,7 @@ public partial class GameEditModel
             return;
 
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info11"));
-        res1 = await GameBinding.BackupWorld(_obj, item1);
+        res1 = await GameBinding.BackupWorld(_obj, item1, Model.ShowWait);
         Model.ProgressClose();
         if (!res1)
         {
@@ -112,7 +112,7 @@ public partial class GameEditModel
     public async Task EditWorld()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info13"));
-        var res = await ToolPath.OpenMapEditAsync(App.DownloaderUpdate);
+        var res = await ToolPath.OpenMapEditAsync();
         Model.ProgressClose();
         if (!res.Item1)
         {

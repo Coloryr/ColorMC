@@ -21,9 +21,9 @@ public static class InstallGameHelper
     /// <param name="type">名字</param>
     /// <param name="type">群组</param>
     public static async Task<(bool, GameSettingObj?)> InstallZip(string dir, PackType type,
-        string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.GameRequest request,
+        string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update,
-        ColorMCCore.DownloaderUpdate update1, ColorMCCore.PackState update2)
+         ColorMCCore.PackState update2)
     {
         GameSettingObj? game = null;
         bool import = false;
@@ -89,14 +89,14 @@ public static class InstallGameHelper
                 //Curseforge压缩包
                 case PackType.CurseForge:
                     (import, game) = await ModPackHelper.DownloadCurseForgeModPackAsync(dir, name,
-                        group, request, overwirte, update, update1, update2);
+                        group, request, overwirte, update, update2);
 
                     update2(CoreRunState.End);
                     break;
                 //Modrinth压缩包
                 case PackType.Modrinth:
                     (import, game) = await ModPackHelper.DownloadModrinthModPackAsync(dir, name,
-                        group, request, overwirte, update, update1, update2);
+                        group, request, overwirte, update, update2);
 
                     update2(CoreRunState.End);
                     break;
@@ -301,8 +301,7 @@ public static class InstallGameHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Pack.Error2"), e, false);
-            Logs.Error(LanguageHelper.Get("Core.Pack.Error2"), e);
+            ColorMCCore.Error(LanguageHelper.Get("Core.Pack.Error2"), e, false);
         }
         finally
         {
@@ -324,9 +323,8 @@ public static class InstallGameHelper
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
     public static async Task<(bool, GameSettingObj?)> InstallModrinth(ModrinthVersionObj data,
-        string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.GameRequest request,
-        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update,
-        ColorMCCore.DownloaderUpdate update1, ColorMCCore.PackState update2)
+        string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
+        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
         var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
         var item = new DownloadItemObj()
@@ -337,12 +335,12 @@ public static class InstallGameHelper
             Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.filename),
         };
 
-        var res1 = await DownloadManager.StartAsync([item], update1);
+        var res1 = await DownloadManager.StartAsync([item]);
         if (!res1)
             return (false, null);
 
         var res2 = await InstallZip(item.Local, PackType.Modrinth, name, group, zip,
-            request, overwirte, update, update1, update2);
+            request, overwirte, update, update2);
         if (res2.Item1)
         {
             res2.Item2!.PID = data.project_id;
@@ -361,9 +359,8 @@ public static class InstallGameHelper
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
     public static async Task<(bool, GameSettingObj?)> InstallCurseForge(CurseForgeModObj.Data data,
-        string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.GameRequest request,
-        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update,
-        ColorMCCore.DownloaderUpdate update1, ColorMCCore.PackState update2)
+        string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
+        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
         data.FixDownloadUrl();
 
@@ -374,12 +371,12 @@ public static class InstallGameHelper
             Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.fileName),
         };
 
-        var res1 = await DownloadManager.StartAsync([item], update1);
+        var res1 = await DownloadManager.StartAsync([item]);
         if (!res1)
             return (false, null);
 
         var res2 = await InstallZip(item.Local, PackType.CurseForge, name, group, zip,
-            request, overwirte, update, update1, update2);
+            request, overwirte, update, update2);
         if (res2.Item1)
         {
             res2.Item2!.PID = data.modId.ToString();
@@ -397,7 +394,7 @@ public static class InstallGameHelper
     /// <param name="data">数据</param>
     /// <returns>结果</returns>
     public static async Task<bool> UpdateModPack(this GameSettingObj obj, CurseForgeModObj.Data data,
-        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
         data.FixDownloadUrl();
@@ -409,11 +406,11 @@ public static class InstallGameHelper
             Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.fileName),
         };
 
-        var res = await DownloadManager.StartAsync([item], update1);
+        var res = await DownloadManager.StartAsync([item]);
         if (!res)
             return false;
 
-        res = await ModPackHelper.UpdateCurseForgeModPackAsync(obj, item.Local, update, update1, update2);
+        res = await ModPackHelper.UpdateCurseForgeModPackAsync(obj, item.Local, update, update2);
         if (res)
         {
             obj.PID = data.modId.ToString();
@@ -432,7 +429,7 @@ public static class InstallGameHelper
     /// <param name="data"></param>
     /// <returns>升级结果</returns>
     public static async Task<bool> UpdateModPack(this GameSettingObj obj, ModrinthVersionObj data,
-        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
         var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
@@ -444,11 +441,11 @@ public static class InstallGameHelper
             Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.filename),
         };
 
-        var res = await DownloadManager.StartAsync([item], update1);
+        var res = await DownloadManager.StartAsync([item]);
         if (!res)
             return false;
 
-        res = await ModPackHelper.UpdateModrinthModPackAsync(obj, item.Local, update, update1, update2);
+        res = await ModPackHelper.UpdateModrinthModPackAsync(obj, item.Local, update, update2);
         if (res)
         {
             obj.PID = data.project_id;

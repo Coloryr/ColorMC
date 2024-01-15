@@ -120,9 +120,7 @@ public static class GameCount
         }
         catch (Exception e)
         {
-            string text = LanguageHelper.Get("Core.GameCount.Error1");
-            Logs.Error(text, e);
-            ColorMCCore.OnError?.Invoke(text, e, false);
+            ColorMCCore.Error(LanguageHelper.Get("Core.GameCount.Error1"), e, false);
         }
 
         if (Count == null)

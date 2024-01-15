@@ -34,9 +34,9 @@ public static class Logs
             s_run = true;
             t_log.Start();
         }
-        catch (Exception e)
+        catch
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Log.Error1"), e, true);
+            
         }
     }
 

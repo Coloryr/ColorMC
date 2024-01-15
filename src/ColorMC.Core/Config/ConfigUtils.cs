@@ -47,9 +47,7 @@ public static class ConfigUtils
             }
             catch (Exception e)
             {
-                string text = LanguageHelper.Get("Core.Config.Error1");
-                ColorMCCore.OnError?.Invoke(text, e, true);
-                Logs.Error(text, e);
+                ColorMCCore.Error(LanguageHelper.Get("Core.Config.Error1"), e, true);
             }
         }
         else if (!quit)

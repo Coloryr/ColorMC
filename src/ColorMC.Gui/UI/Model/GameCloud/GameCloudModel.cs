@@ -223,25 +223,22 @@ public partial class GameCloudModel : MenuModel
         Model.Progress(App.Lang("GameCloudWindow.Info1"));
         var res = await GameCloudUtils.HaveCloud(Obj);
         Model.ProgressClose();
-        if (res.Item1 == 101)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error2"));
-            return;
-        }
         Enable = res.Item2;
         _configHave = res.Item3 != null;
         ConfigTime = res.Item3 ?? App.Lang("GameCloudWindow.Info2");
     }
 
-    public async Task Init()
+    public async Task<bool> Init()
     {
         if (!GameCloudUtils.Connect)
         {
             Model.ShowOk(App.Lang("GameCloudWindow.Erro1"), WindowClose);
-            return;
+            return false;
         }
         await LoadCloud();
         await LoadConfig();
+
+        return true;
     }
 
     /// <summary>

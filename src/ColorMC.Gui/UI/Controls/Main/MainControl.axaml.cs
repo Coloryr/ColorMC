@@ -1,8 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using ColorMC.Core;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
@@ -11,6 +11,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -75,8 +76,23 @@ public partial class MainControl : UserControl, IUserControl
         }
         else if (e.Data.Contains(DataFormats.Files))
         {
-            Grid2.IsVisible = true;
-            Label1.Text = App.Lang("Gui.Info7");
+            var files = e.Data.GetFiles();
+            if (files == null || files.Count() > 1)
+                return;
+
+            var item = files.ToList()[0];
+            if (item == null)
+                return;
+            if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
+            {
+                Grid2.IsVisible = true;
+                Label1.Text = App.Lang("Gui.Info42");
+            }
+            else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
+            {
+                Grid2.IsVisible = true;
+                Label1.Text = App.Lang("Gui.Info7");
+            }
         }
     }
 
@@ -114,12 +130,16 @@ public partial class MainControl : UserControl, IUserControl
             if (files == null || files.Count() > 1)
                 return;
 
-            var item = files.ToList()[0].GetPath();
+            var item = files.ToList()[0];
             if (item == null)
                 return;
-            if (item.EndsWith(".zip") || item.EndsWith(".mrpack"))
+            if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
             {
-                App.ShowAddGame(null, item);
+                App.ShowAddGame(null, true, forder.GetPath());
+            }
+            else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
+            {
+                App.ShowAddGame(null, false, item.GetPath());
             }
         }
     }
@@ -154,8 +174,6 @@ public partial class MainControl : UserControl, IUserControl
 
     public void Closed()
     {
-        ColorMCCore.GameLaunch = null;
-
         App.MainWindow = null;
 
         App.Close();

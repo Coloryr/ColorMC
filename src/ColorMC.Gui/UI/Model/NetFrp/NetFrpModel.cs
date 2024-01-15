@@ -2,6 +2,7 @@
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
@@ -28,14 +29,14 @@ public partial class NetFrpModel : MenuModel
         _name = ToString() ?? "NetFrpModel";
     }
 
-    public async void Open()
+    public async Task<bool> Open()
     {
         var user = UserBinding.GetLastUser();
 
         if (user?.AuthType != AuthType.OAuth)
         {
             Model.ShowOk(App.Lang("NetFrpWindow.Tab4.Error1"), WindowClose);
-            return;
+            return false;
         }
         Model.Progress(App.Lang("NetFrpWindow.Tab4.Info2"));
         var res = await UserBinding.TestLogin(user);
@@ -43,11 +44,10 @@ public partial class NetFrpModel : MenuModel
         if (!res)
         {
             Model.ShowOk(App.Lang("NetFrpWindow.Tab4.Error2"), WindowClose);
-            return;
+            return false;
         }
-        LoadSakura();
-        LoadCloud();
-        SetTab4Click();
+
+        return true;
     }
 
     public void RemoveClick()

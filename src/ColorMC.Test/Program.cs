@@ -35,9 +35,8 @@ internal class Program
         ColorMCCore.Init(AppContext.BaseDirectory);
         ColorMCCore.Init1(null);
 
-        ColorMCCore.DownloadItemUpdate = Update;
-        ColorMCCore.ProcessLog = Log;
-        ColorMCCore.GameLog = Log;
+        ColorMCCore.OnProcessLog += Log;
+        ColorMCCore.OnGameLog += Log;
 
         //TestItem.Item10();
 

@@ -124,7 +124,7 @@ public partial class AddGameModel
         }, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
         {
             Model.ProgressUpdate((double)now / size);
-        }, App.DownloaderUpdate, PackState);
+        }, PackState);
         Model.ProgressClose();
         if (!res.Item1)
         {

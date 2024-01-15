@@ -71,25 +71,25 @@ public static class UIUtils
     /// 设置字体颜色
     /// </summary>
     /// <param name="grid"></param>
-    public static void SetFontColor(this DataGrid grid)
-    {
-        try
-        {
-            var item1 = grid.FindToEnd<DataGridColumnHeadersPresenter>();
-            if (item1 != null)
-            {
-                foreach (var item in item1.GetVisualChildren())
-                {
-                    var item2 = item.FindToEnd<TextBlock>();
-                    item2?.Bind(TextBlock.ForegroundProperty, new ColorObservable("Font").ToBinding());
-                }
-            }
-        }
-        catch
-        {
+    //public static void SetFontColor(this DataGrid grid)
+    //{
+    //    try
+    //    {
+    //        var item1 = grid.FindToEnd<DataGridColumnHeadersPresenter>();
+    //        if (item1 != null)
+    //        {
+    //            foreach (var item in item1.GetVisualChildren())
+    //            {
+    //                var item2 = item.FindToEnd<TextBlock>();
+    //                item2?.Bind(TextBlock.ForegroundProperty, new ColorObservable("Font").ToBinding());
+    //            }
+    //        }
+    //    }
+    //    catch
+    //    {
 
-        }
-    }
+    //    }
+    //}
 
     /// <summary>
     /// 转速度

@@ -14,11 +14,6 @@ public partial class Tab4Control : UserControl
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
-    public void Opened()
-    {
-        DataGrid1.SetFontColor();
-    }
-
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         if (DataContext is GameExportModel model && model.NowView == 3)

@@ -16,7 +16,7 @@ public class ZipUtils
     private int Now = 0;
 
     public ColorMCCore.ZipUpdate? ZipUpdate;
-    public ColorMCCore.GameRequest? GameRequest;
+    public ColorMCCore.Request? GameRequest;
     /// <summary>
     /// 压缩文件
     /// </summary>

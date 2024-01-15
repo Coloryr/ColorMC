@@ -17,11 +17,6 @@ public partial class Tab4Control : UserControl
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
-    public void Opened()
-    {
-        DataGrid1.SetFontColor();
-    }
-
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
     {
         if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)

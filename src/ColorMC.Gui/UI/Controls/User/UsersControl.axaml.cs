@@ -35,8 +35,6 @@ public partial class UsersControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
-
-        DataGrid_User.SetFontColor();
     }
 
     public void Closed()

@@ -45,9 +45,4 @@ public partial class Tab10Control : UserControl
             _ = new GameEditFlyout5(control, (DataContext as GameEditModel)!);
         });
     }
-
-    public void Opened()
-    {
-        DataGrid1.SetFontColor();
-    }
 }

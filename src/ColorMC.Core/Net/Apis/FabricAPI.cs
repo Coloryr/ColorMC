@@ -24,7 +24,7 @@ public static class FabricAPI
             var data = await BaseClient.GetStringAsync(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -50,7 +50,7 @@ public static class FabricAPI
             var data = await BaseClient.GetStringAsync(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -75,7 +75,7 @@ public static class FabricAPI
             var data = await BaseClient.GetStringAsync(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -112,7 +112,7 @@ public static class FabricAPI
             var data = await BaseClient.GetStringAsync(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }

@@ -237,7 +237,8 @@ public static class Worlds
     /// <param name="obj">游戏实例</param>
     /// <param name="item1">文件</param>
     /// <returns>还原结果</returns>
-    public static async Task<bool> UnzipBackupWorldAsync(this GameSettingObj obj, FileInfo item1)
+    public static async Task<bool> UnzipBackupWorldAsync(this GameSettingObj obj, FileInfo item1,
+        ColorMCCore.Request request)
     {
         var local = "";
 
@@ -275,7 +276,7 @@ public static class Worlds
             if (item != null)
             {
                 local = item.Local;
-                await PathHelper.DeleteFilesAsync(item.Local, null);
+                await PathHelper.DeleteFilesAsync(item.Local, request);
             }
             else
             {
@@ -291,9 +292,7 @@ public static class Worlds
         }
         catch (Exception e)
         {
-            string text = LanguageHelper.Get("Core.Game.Error11");
-            Logs.Error(text, e);
-            ColorMCCore.OnError?.Invoke(text, e, false);
+            ColorMCCore.Error(LanguageHelper.Get("Core.Game.Error11"), e, false);
             return false;
         }
     }

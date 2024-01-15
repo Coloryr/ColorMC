@@ -23,7 +23,7 @@ public static class GameAPI
             var data = await BaseClient.GetStringAsync(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return (null, null);
             }
@@ -47,7 +47,7 @@ public static class GameAPI
             var data = await BaseClient.GetBytesAsync(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return (null, null);
             }
@@ -73,7 +73,7 @@ public static class GameAPI
             var data = await BaseClient.GetStringAsync(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return (null, null);
             }

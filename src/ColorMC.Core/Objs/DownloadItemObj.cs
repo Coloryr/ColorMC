@@ -49,11 +49,14 @@ public record DownloadItemObj
     /// 错误次数
     /// </summary>
     public int ErrorTime { get; set; }
+
+    internal ColorMCCore.DownloadItemUpdate? UpdateD;
+
     /// <summary>
     /// 更新操作
     /// </summary>
-    public void Update()
+    internal void Update()
     {
-        ColorMCCore.DownloadItemUpdate?.Invoke(this);
+        UpdateD?.Invoke(this);
     }
 }

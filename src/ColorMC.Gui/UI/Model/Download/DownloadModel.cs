@@ -1,5 +1,5 @@
 ﻿using Avalonia.Threading;
-using ColorMC.Core;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
@@ -23,6 +23,7 @@ public partial class DownloadModel : TopModel
 
     private long _count;
     private readonly Timer _timer;
+    private readonly ICollection<DownloadItemObj> _list;
 
     [ObservableProperty]
     private string _speed;
@@ -35,10 +36,8 @@ public partial class DownloadModel : TopModel
 
     private readonly string _useName;
 
-    public DownloadModel(BaseModel model) : base(model)
+    public DownloadModel(BaseModel model, ICollection<DownloadItemObj> list) : base(model)
     {
-        ColorMCCore.DownloadItemUpdate = DownloadItemUpdate;
-
         _useName = ToString() ?? "DownloadModel";
 
         _timer = new(TimeSpan.FromSeconds(1))
@@ -46,6 +45,7 @@ public partial class DownloadModel : TopModel
             AutoReset = true
         };
         _timer.Elapsed += Timer_Elapsed;
+        _list = list;
 
         Model.SetChoiseContent(_useName,
             App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
@@ -175,5 +175,22 @@ public partial class DownloadModel : TopModel
         Model.RemoveChoiseData(_useName);
         ItemList.Clear();
         _downloadList.Clear();
+    }
+
+    public void DownloaderUpdate(DownloadState state)
+    {
+        if (state == DownloadState.Start)
+        {
+            Load();
+        }
+        else if (state == DownloadState.End)
+        {
+            OnPropertyChanged("WindowClose");
+        }
+    }
+
+    public Task<bool> Start()
+    {
+        return DownloadManager.StartAsync(_list, DownloaderUpdate, DownloadItemUpdate);
     }
 }

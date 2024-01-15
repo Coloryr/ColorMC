@@ -81,7 +81,7 @@ public static class GameBinding
         return list;
     }
 
-    public static async Task<bool> AddGame(GameSettingObj game, ColorMCCore.GameRequest request,
+    public static async Task<bool> AddGame(GameSettingObj game, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte)
     {
         var game1 = await InstancesPath.CreateGame(game, request, overwirte);
@@ -92,7 +92,7 @@ public static class GameBinding
         return game1 != null;
     }
 
-    public static async Task<bool> AddGame(string path, string? group, ColorMCCore.GameRequest request,
+    public static async Task<bool> AddGame(string path, string? group, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte)
     {
         var files = Directory.GetFiles(path);
@@ -173,7 +173,7 @@ public static class GameBinding
     }
 
     public static async Task<bool> AddGame(string name, string local, List<string> unselect,
-        string? group, ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte)
+        string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
         var game = new GameSettingObj()
         {
@@ -254,12 +254,11 @@ public static class GameBinding
     }
 
     public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type, string? name,
-        string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.GameRequest request,
-        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update,
-        ColorMCCore.DownloaderUpdate update1, ColorMCCore.PackState update2)
+        string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
+        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
         return InstallGameHelper.InstallZip(dir, type, name, group, zip, request, overwirte,
-            update, update1, update2);
+            update, update2);
     }
 
     public static Dictionary<string, List<GameSettingObj>> GetGameGroups()
@@ -341,12 +340,12 @@ public static class GameBinding
 
     public static async Task<bool> InstallCurseForge(CurseForgeModObj.Data data,
         CurseForgeObjList.Data data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
-        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte,
-        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
+        ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
         var res = await InstallGameHelper.InstallCurseForge(data, name, group, zip, request, overwirte,
-            update, update1, update2);
+            update, update2);
         if (!res.Item1)
         {
             return false;
@@ -361,12 +360,12 @@ public static class GameBinding
 
     public static async Task<bool> InstallModrinth(ModrinthVersionObj data,
         ModrinthSearchObj.Hit data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
-        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte,
-        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
+        ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
         var res = await InstallGameHelper.InstallModrinth(data, name, group, zip, request, overwirte,
-            update, update1, update2);
+            update, update2);
         if (!res.Item1)
         {
             return false;
@@ -1048,9 +1047,9 @@ public static class GameBinding
         }
     }
 
-    public static Task<bool> BackupWorld(GameSettingObj obj, FileInfo item1)
+    public static Task<bool> BackupWorld(GameSettingObj obj, FileInfo item1, ColorMCCore.Request request)
     {
-        return obj.UnzipBackupWorldAsync(item1);
+        return obj.UnzipBackupWorldAsync(item1, request);
     }
 
 
@@ -1063,7 +1062,7 @@ public static class GameBinding
     }
 
     public static async Task<bool> CopyGame(GameSettingObj obj, string data,
-        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte)
+        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
         if (BaseBinding.IsGameRun(obj))
         {
@@ -1091,7 +1090,7 @@ public static class GameBinding
     }
 
     public static Task<bool> GenServerPack(ServerPackObj obj, string local,
-        ColorMCCore.GameRequest request)
+        ColorMCCore.Request request)
     {
         return obj.GenServerPackAsync(local, request);
     }
@@ -1218,17 +1217,17 @@ public static class GameBinding
     }
 
     public static Task<bool> ModPackUpdate(GameSettingObj obj, CurseForgeModObj.Data fid,
-        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        return obj.UpdateModPack(fid, update, update1, update2);
+        return obj.UpdateModPack(fid, update, update2);
     }
 
     public static Task<bool> ModPackUpdate(GameSettingObj obj, ModrinthVersionObj fid,
-        ColorMCCore.PackUpdate update, ColorMCCore.DownloaderUpdate update1,
+        ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        return obj.UpdateModPack(fid, update, update1, update2);
+        return obj.UpdateModPack(fid, update, update2);
     }
 
     public static List<ModDisplayModel> ModDisable(ModDisplayModel item, List<ModDisplayModel> items)
@@ -1472,8 +1471,7 @@ public static class GameBinding
         });
     }
     public static async Task<(bool, string?)> DownloadCloud(CloundListObj obj, string? group,
-        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte,
-        ColorMCCore.DownloaderUpdate update1)
+        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
         var game = await InstancesPath.CreateGame(new()
         {
@@ -1521,7 +1519,7 @@ public static class GameBinding
 
             if (list.Count > 0)
             {
-                var res1 = await DownloadManager.StartAsync(list, update1);
+                var res1 = await DownloadManager.StartAsync(list);
                 if (!res1)
                 {
                     return (false, App.Lang("AddGameWindow.Tab1.Error12"));
@@ -1550,7 +1548,7 @@ public static class GameBinding
     }
 
     public static async Task<bool> DeleteGame(GameSettingObj obj,
-        ColorMCCore.GameRequest request)
+        ColorMCCore.Request request)
     {
         var res = await obj.Remove(request);
         App.MainWindow?.LoadMain();
@@ -1566,8 +1564,7 @@ public static class GameBinding
     }
 
     public static async Task<(bool, string?)> DownloadServerPack(BaseModel model,
-        string? name, string? group, string text, ColorMCCore.GameOverwirte overwirte,
-        ColorMCCore.DownloaderUpdate update1)
+        string? name, string? group, string text, ColorMCCore.GameOverwirte overwirte)
     {
         try
         {
@@ -1614,7 +1611,7 @@ public static class GameBinding
                 {
                     model.Progress(text);
                 }
-            }, update1);
+            });
             if (!res1)
             {
                 model.ProgressClose();
@@ -1661,16 +1658,16 @@ public static class GameBinding
         return DataPack.DisEna(list, list[0].World);
     }
 
-    public static async Task<bool> DeleteDataPack(DataPackModel item)
+    public static async Task<bool> DeleteDataPack(DataPackModel item, ColorMCCore.Request request)
     {
         if (BaseBinding.IsGameRun(item.Pack.World.Game))
         {
             return false;
         }
-        return await DataPack.DeleteAsync([item.Pack], item.Pack.World);
+        return await DataPack.DeleteAsync([item.Pack], item.Pack.World, request);
     }
 
-    public static async Task<bool> DeleteDataPack(IEnumerable<DataPackModel> items)
+    public static async Task<bool> DeleteDataPack(IEnumerable<DataPackModel> items, ColorMCCore.Request request)
     {
         var list = new List<DataPackObj>();
         foreach (var item in items)
@@ -1681,7 +1678,7 @@ public static class GameBinding
         {
             return false;
         }
-        return await DataPack.DeleteAsync(list, list[0].World);
+        return await DataPack.DeleteAsync(list, list[0].World, request);
     }
 
     public static async Task<List<Loaders>> GetSupportLoader(string version)

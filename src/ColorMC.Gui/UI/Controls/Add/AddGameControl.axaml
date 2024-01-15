@@ -35,9 +35,7 @@
                     CornerRadius="{setting:Style ButtonCornerRadius}">
                     <StackPanel>
                         <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item1.svg" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            Text="{setting:Localize AddGameWindow.Tabs.Text1}" />
+                        <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tabs.Text1}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -53,9 +51,7 @@
                     CornerRadius="{setting:Style ButtonCornerRadius}">
                     <StackPanel>
                         <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item2.svg" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            Text="{setting:Localize AddGameWindow.Tabs.Text2}" />
+                        <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tabs.Text2}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -72,9 +68,7 @@
                     IsVisible="{Binding !IsPhone}">
                     <StackPanel>
                         <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item3.svg" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            Text="{setting:Localize AddGameWindow.Tabs.Text3}" />
+                        <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tabs.Text3}" />
                     </StackPanel>
                 </Button>
             </WrapPanel>
@@ -87,9 +81,9 @@
             Background="{setting:Colors BG1}"
             IsVisible="False">
             <TextBlock
+                Name="Label1"
                 HorizontalAlignment="Center"
-                FontSize="30"
-                Text="{setting:Localize AddGameWindow.Text1}" />
+                FontSize="30" />
         </Panel>
     </Panel>
 </UserControl>

@@ -12,8 +12,8 @@ namespace ColorMC.Core;
 
 public static class ColorMCCore
 {
-    public const string TopVersion = "A23";
-    public const string DateVersion = "20240114";
+    public const string TopVersion = "A24";
+    public const string DateVersion = "20240115";
 
     public const string Version = $"{TopVersion}.{DateVersion}";
 
@@ -22,9 +22,29 @@ public static class ColorMCCore
     /// </summary>
     public static string BaseDir { get; private set; }
 
-    public delegate Task<bool> GameRequest(string text);
+    /// <summary>
+    /// 请求回调
+    /// </summary>
+    /// <param name="text">显示内容</param>
+    /// <returns>是否同意</returns>
+    public delegate Task<bool> Request(string text);
+    /// <summary>
+    /// 压缩包更新
+    /// </summary>
+    /// <param name="text">名字</param>
+    /// <param name="size">目前进度</param>
+    /// <param name="all">总进度</param>
     public delegate void ZipUpdate(string text, int size, int all);
+    /// <summary>
+    /// 请求是否运行程序
+    /// </summary>
+    /// <param name="pre">是否为运行前启动</param>
+    /// <returns>是否同意</returns>
     public delegate Task<bool> LaunchP(bool pre);
+    /// <summary>
+    /// 状态发生改变
+    /// </summary>
+    /// <param name="text">消息</param>
     public delegate void UpdateState(string? text);
     public delegate Task<bool> UpdateSelect(string? text);
     public delegate void NoJava();
@@ -33,34 +53,33 @@ public static class ColorMCCore
     public delegate void LoginOAuthCode(string url, string code);
     public delegate Task<bool> GameOverwirte(GameSettingObj obj);
     public delegate void PackUpdate(int size, int now);
-    public delegate void DownloaderUpdate(CoreRunState state);
+    public delegate void DownloaderUpdate(DownloadState state);
     public delegate void PackState(CoreRunState state);
+    public delegate void GameLaunch(GameSettingObj obj, LaunchState state);
+    public delegate void DownloadItemUpdate(DownloadItemObj obj);
+
+    /// <summary>
+    /// 开始下载
+    /// </summary>
+    public static Func<ICollection<DownloadItemObj>, Task<bool>>? OnStartDownload;
 
     /// <summary>
     /// 错误显示回调
     /// 标题 错误 关闭程序
     /// </summary>
-    public static Action<string?, Exception?, bool>? OnError { internal get; set; }
-    /// <summary>
-    /// 下载项目更新回调
-    /// </summary>
-    public static Action<DownloadItemObj>? DownloadItemUpdate { internal get; set; }
-    /// <summary>
-    /// 游戏启动回调
-    /// </summary>
-    public static Action<GameSettingObj, LaunchState>? GameLaunch { get; set; }
+    public static event Action<string?, Exception?, bool>? OnError;
     /// <summary>
     /// 游戏进程日志回调
     /// </summary>
-    public static Action<Process?, string?>? ProcessLog { internal get; set; }
+    public static event Action<Process?, string?>? OnProcessLog;
     /// <summary>
     /// 游戏日志回调
     /// </summary>
-    public static Action<GameSettingObj, string?>? GameLog { internal get; set; }
+    public static event Action<GameSettingObj, string?>? OnGameLog;
     /// <summary>
     /// 语言重载
     /// </summary>
-    public static Action<LanguageType>? LanguageReload { internal get; set; }
+    public static event Action<LanguageType>? OnLanguageReload;
 
     /// <summary>
     /// 手机端启动
@@ -85,9 +104,7 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端Jvm运行
     /// </summary>
-    public static Func<GameSettingObj, JavaInfo, string, List<string>,
-        Dictionary<string, string>, Process> PhoneJvmRun
-    { internal get; set; }
+    public static Func<GameSettingObj, JavaInfo, string, List<string>, Dictionary<string, string>, Process> PhoneJvmRun { internal get; set; }
     /// <summary>
     /// 手机端打开网页
     /// </summary>
@@ -144,5 +161,26 @@ public static class ColorMCCore
     public static void Close()
     {
         Stop?.Invoke();
+    }
+
+    public static void Error(string text, Exception? e, bool close)
+    {
+        OnError?.Invoke(text, e, close);
+        Logs.Error(text, e);
+    }
+
+    public static void GameLog(GameSettingObj obj, string text)
+    {
+        OnGameLog?.Invoke(obj, text);
+    }
+
+    public static void GameLog(Process? process, string? text)
+    {
+        OnProcessLog?.Invoke(process, text);
+    }
+
+    public static void LanguageReload(LanguageType type)
+    {
+        OnLanguageReload?.Invoke(type);
     }
 }

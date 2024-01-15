@@ -109,9 +109,7 @@ public partial class WorldModel : ObservableObject
             return;
         }
 
-        InfoBinding.Window = Top.Model;
-
-        res = await GameBinding.DeleteDataPack(item);
+        res = await GameBinding.DeleteDataPack(item, Top.Model.ShowWait);
         if (res)
         {
             Load1();
@@ -127,7 +125,7 @@ public partial class WorldModel : ObservableObject
             return;
         }
 
-        res = await GameBinding.DeleteDataPack(items);
+        res = await GameBinding.DeleteDataPack(items, Top.Model.ShowWait);
         if (res)
         {
             Load1();

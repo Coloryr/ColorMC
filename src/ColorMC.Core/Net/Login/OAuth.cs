@@ -94,7 +94,6 @@ public static class OAuthAPI
         var data = await PostStringAsync(OAuthCode, Arg1);
         if (data.Contains("error"))
         {
-            Logs.Error(data);
             return (LoginState.Error,
                 LanguageHelper.Get("Core.Login.Error21"), null);
         }

@@ -18,7 +18,7 @@ public static class DownloadManager
     /// <summary>
     /// 下载状态
     /// </summary>
-    public static CoreRunState State { get; private set; } = CoreRunState.End;
+    public static DownloadState State { get; private set; } = DownloadState.End;
     /// <summary>
     /// 缓存路径
     /// </summary>
@@ -123,17 +123,30 @@ public static class DownloadManager
         DoneSize = 0;
     }
 
+    public static Task<bool> StartAsync(ICollection<DownloadItemObj> list)
+    {
+        if (ColorMCCore.OnStartDownload == null)
+        {
+            return StartAsync(list, null, null);
+        }
+        else
+        {
+            return ColorMCCore.OnStartDownload(list);
+        }
+    }
+
     /// <summary>
     /// 开始下载
     /// </summary>
     /// <param name="list">下载列表</param>
     /// <returns>结果</returns>
     public static async Task<bool> StartAsync(ICollection<DownloadItemObj> list,
-        ColorMCCore.DownloaderUpdate update)
+        ColorMCCore.DownloaderUpdate? update,
+        ColorMCCore.DownloadItemUpdate? update1)
     {
         var names = new List<string>();
         //下载器是否在运行
-        if (State != CoreRunState.End)
+        if (State != DownloadState.End)
         {
             return false;
         }
@@ -141,7 +154,7 @@ public static class DownloadManager
         Clear();
         Logs.Info(LanguageHelper.Get("Core.Http.Info4"));
 
-        update(State = CoreRunState.Init);
+        update?.Invoke(State = DownloadState.Init);
 
         //装填下载内容
         foreach (var item in list)
@@ -151,7 +164,8 @@ public static class DownloadManager
             {
                 continue;
             }
-            ColorMCCore.DownloadItemUpdate?.Invoke(item);
+            item.UpdateD = update1;
+            update1?.Invoke(item);
             s_items.Enqueue(item);
             names.Add(item.Name);
         }
@@ -160,7 +174,7 @@ public static class DownloadManager
         DoneSize = 0;
         AllSize = s_items.Count;
 
-        update(State = CoreRunState.Start);
+        update?.Invoke(State = DownloadState.Start);
 
         s_cancel.Dispose();
         s_cancel = new();
@@ -176,7 +190,7 @@ public static class DownloadManager
             }
         });
 
-        update(State = CoreRunState.End);
+        update?.Invoke(State = DownloadState.End);
 
         if (s_cancel.IsCancellationRequested)
         {

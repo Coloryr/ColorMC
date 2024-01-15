@@ -19,7 +19,7 @@ public static class TestItem
     {
         return obj.StartGameAsync(obj1, null, Program.Download,
                 (_) => Task.FromResult(true), (_) => { }, (_) => Task.FromResult(true), () => { },
-                (_) => Task.FromResult(true), (_) => { }, CancellationToken.None).Result;
+                (_) => Task.FromResult(true), (_, _) => { }, CancellationToken.None).Result;
     }
 
     public static void Item1()
@@ -44,14 +44,14 @@ public static class TestItem
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.StartAsync(list.List!, (_) => { }).Wait();
+            DownloadManager.StartAsync(list.List!).Wait();
         }
     }
 
     public static void Item3()
     {
         var list = ModPackHelper.DownloadCurseForgeModPackAsync("H:\\ColonyVenture-1.13.zip", null, null,
-            Program.Download, (_) => Task.FromResult(true), (_, _) => { }, (_) => { }, (_) => { }).Result;
+            Program.Download, (_) => Task.FromResult(true), (_, _) => { }, (_) => { }).Result;
     }
 
     public static void Item4()
@@ -70,7 +70,7 @@ public static class TestItem
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.StartAsync(list.List!, (_) => { }).Wait();
+            DownloadManager.StartAsync(list.List!).Wait();
         }
     }
 
@@ -108,7 +108,8 @@ public static class TestItem
     public static void Item7()
     {
         var data = InstancesPath.Games.First();
-        var list = CheckHelpers.CheckGameFileAsync(data, new LoginObj(), (_) => { }, CancellationToken.None).Result;
+        var list = CheckHelpers.CheckGameFileAsync(data, new LoginObj(), 
+            (_, _)=> { }, CancellationToken.None).Result;
         if (list == null)
         {
             Console.WriteLine("文件检查失败");
@@ -460,7 +461,7 @@ public static class TestItem
 
         InstallGameHelper.InstallModrinth(item1, null, null,
             (a, b, c) => { }, Program.Download, (_) => Task.FromResult(true), (_, _) => { },
-            (_) => { }, (_) => { }).Wait();
+            (_) => { }).Wait();
     }
 
     public static void Item22()

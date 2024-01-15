@@ -40,8 +40,6 @@ public partial class ServerPackModel : MenuModel
         if (local == null)
             return;
 
-        InfoBinding.Window = Model;
-
         Obj.Text = Text;
 
         Model.Progress(App.Lang("ServerPackWindow.Tab1.Info1"));
