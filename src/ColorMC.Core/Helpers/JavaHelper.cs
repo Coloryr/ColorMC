@@ -113,6 +113,7 @@ public static class JavaHelper
                 p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.WorkingDirectory = info1.Directory?.Parent?.FullName ?? ColorMCCore.BaseDir;
                 p.Start();
+                p.WaitForExit();
                 string result = p.StandardError.ReadToEnd();
                 string result1 = p.StandardOutput.ReadToEnd();
                 string[] lines = result.Split('\n');
