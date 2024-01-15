@@ -9,9 +9,9 @@ namespace ColorMC.Gui.UI.Controls.GameCloud;
 
 public partial class GameCloudControl : MenuControl
 {
-    private readonly Tab1Control _tab1 = new();
-    private readonly Tab2Control _tab2 = new();
-    private readonly Tab3Control _tab3 = new();
+    private Tab1Control _tab1;
+    private Tab2Control _tab2;
+    private Tab3Control _tab3;
 
     public GameSettingObj Obj { get; }
 
@@ -31,8 +31,10 @@ public partial class GameCloudControl : MenuControl
     {
         Window.SetTitle(Title);
 
-        Content1.Child = _tab1;
-        await (DataContext as GameCloudModel)!.Init();
+        if (DataContext is GameCloudModel model && await model.Init())
+        {
+            model.NowView = 0;
+        }
     }
 
     public override void Closed()
@@ -49,9 +51,9 @@ public partial class GameCloudControl : MenuControl
     {
         return index switch
         {
-            0 => _tab1,
-            1 => _tab2,
-            2 => _tab3,
+            0 => _tab1 ??= new(),
+            1 => _tab2 ??= new(),
+            2 => _tab3 ??= new(),
             _ => throw new InvalidEnumArgumentException(),
         };
     }

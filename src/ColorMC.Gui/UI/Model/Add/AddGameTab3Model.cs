@@ -156,6 +156,13 @@ public partial class AddGameModel
         }
     }
 
+    public async void SetPath(string res)
+    {
+        SelectPath = res;
+
+        await RefashFiles();
+    }
+
     private List<string> DoScan()
     {
         var list = new List<string>();

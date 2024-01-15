@@ -222,7 +222,7 @@ public static class DataPack
     /// <param name="list">数据包列表</param>
     /// <param name="world">世界存储</param>
     /// <returns>是否删除</returns>
-    public static async Task<bool> DeleteAsync(List<DataPackObj> list, WorldObj world)
+    public static async Task<bool> DeleteAsync(List<DataPackObj> list, WorldObj world, ColorMCCore.Request request)
     {
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 
@@ -236,7 +236,7 @@ public static class DataPack
         {
             if (Directory.Exists(item.Path))
             {
-                await PathHelper.DeleteFilesAsync(item.Path, null);
+                await PathHelper.DeleteFilesAsync(item.Path, request);
             }
             else
             {

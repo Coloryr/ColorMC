@@ -8,11 +8,11 @@ namespace ColorMC.Gui.UI.Controls.NetFrp;
 
 public partial class NetFrpControl : MenuControl
 {
-    private readonly NetFrpTab1Control _tab1 = new();
-    private readonly NetFrpTab2Control _tab2 = new();
-    private readonly NetFrpTab3Control _tab3 = new();
-    private readonly NetFrpTab4Control _tab4 = new();
-    private readonly NetFrpTab5Control _tab5 = new();
+    private NetFrpTab1Control _tab1;
+    private NetFrpTab2Control _tab2;
+    private NetFrpTab3Control _tab3;
+    private NetFrpTab4Control _tab4;
+    private NetFrpTab5Control _tab5;
 
     public override string Title => App.Lang("NetFrpWindow.Title");
 
@@ -28,14 +28,15 @@ public partial class NetFrpControl : MenuControl
         App.NetFrpWindow = null;
     }
 
-    public override void Opened()
+    public override async void Opened()
     {
         Window.SetTitle(Title);
 
-        Content1.Child = _tab4;
-
         var model = (DataContext as NetFrpModel)!;
-        model.Open();
+        if (await model.Open())
+        {
+            model.NowView = 0;
+        }
     }
 
     protected override MenuModel SetModel(BaseModel model)
@@ -59,20 +60,20 @@ public partial class NetFrpControl : MenuControl
             case 0:
                 model.LoadCloud();
                 model.SetTab4Click();
-                return _tab4;
+                return _tab4 ??= new();
             case 1:
                 model.LoadSakura();
-                return _tab1;
+                return _tab1 ??= new();
             case 2:
                 model.LoadOpenFrp();
-                return _tab5;
+                return _tab5 ??= new();
             case 3:
                 model.LoadLocal();
                 model.SetTab2Click();
-                return _tab2;
+                return _tab2 ??= new();
             case 4:
                 model.SetTab3Click();
-                return _tab3;
+                return _tab3 ??= new();
             default:
                 throw new InvalidEnumArgumentException();
         }

@@ -45,7 +45,7 @@ public static class LanguageHelper
 
         s_nowType = type;
         Load(type);
-        ColorMCCore.LanguageReload?.Invoke(type);
+        ColorMCCore.LanguageReload(type);
     }
 
     /// <summary>

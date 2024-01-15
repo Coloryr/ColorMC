@@ -141,7 +141,7 @@ public partial class AddGameModel
 
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info14"));
         var res1 = await GameBinding.DownloadServerPack(Model, Name, Group, Text,
-            Tab1GameOverwirte, App.DownloaderUpdate);
+            Tab1GameOverwirte);
         Model.ProgressClose();
         if (!res1.Item1 && res1.Item2 != null)
         {
@@ -208,7 +208,7 @@ public partial class AddGameModel
             }
         }
         var res3 = await GameBinding.DownloadCloud(obj, Group, Model.ShowWait,
-            Tab1GameOverwirte, App.DownloaderUpdate);
+            Tab1GameOverwirte);
         Model.ProgressClose();
         if (!res3.Item1)
         {
@@ -470,7 +470,7 @@ public partial class AddGameModel
             ZipUpdate, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
             {
                 Model.ProgressUpdate((double)now / size);
-            }, App.DownloaderUpdate, PackState);
+            }, PackState);
         Model.ProgressClose();
 
         if (!res)
@@ -501,7 +501,7 @@ public partial class AddGameModel
             ZipUpdate, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
             {
                 Model.ProgressUpdate((double)now / size);
-            }, App.DownloaderUpdate, PackState);
+            }, PackState);
         Model.ProgressClose();
 
         if (!res)

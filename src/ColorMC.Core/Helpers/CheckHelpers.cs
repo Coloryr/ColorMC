@@ -186,22 +186,22 @@ public static class CheckHelpers
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns>下载列表</returns>
     public static async Task<ConcurrentBag<DownloadItemObj>> CheckGameFileAsync(GameSettingObj obj, LoginObj login,
-        ColorMCCore.DownloaderUpdate update1, CancellationToken cancel)
+        ColorMCCore.GameLaunch update2, CancellationToken cancel)
     {
         var list = new ConcurrentBag<DownloadItemObj>();
 
         //检查游戏启动json
-        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Check);
+        update2(obj, LaunchState.Check);
         var game = await VersionPath.CheckUpdateAsync(obj.Version);
         if (game == null)
         {
             //不存在游戏
-            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostVersion);
+            update2(obj, LaunchState.LostVersion);
             var var = await VersionPath.GetVersionsAsync();
             var version = var?.versions.Where(a => a.id == obj.Version).FirstOrDefault();
             if (version == null)
             {
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.VersionError);
+                update2(obj, LaunchState.VersionError);
                 throw new LaunchException(LaunchState.VersionError,
                     LanguageHelper.Get("Core.Launch.Error1"));
             }
@@ -230,7 +230,7 @@ public static class CheckHelpers
         {
             list1.Add(Task.Run(() =>
             {
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckVersion);
+                update2(obj, LaunchState.CheckVersion);
                 var obj1 = DownloadItemHelper.BuildGameItem(game.id);
                 if (CheckToAdd(obj1, ConfigUtils.Config.GameCheck.CheckCoreSha1))
                 {
@@ -253,7 +253,7 @@ public static class CheckHelpers
         {
             list1.Add(Task.Run(async () =>
             {
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckAssets);
+                update2(obj, LaunchState.CheckAssets);
                 var assets = game.GetIndex();
                 if (assets == null)
                 {
@@ -261,7 +261,7 @@ public static class CheckHelpers
                     (assets, var data) = await GameAPI.GetAssets(game.assetIndex.url);
                     if (assets == null)
                     {
-                        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
+                        update2(obj, LaunchState.AssetsError);
                         throw new LaunchException(LaunchState.AssetsError,
                             LanguageHelper.Get("Core.Launch.Error2"));
                     }
@@ -287,11 +287,11 @@ public static class CheckHelpers
             {
                 if (obj.Loader != Loaders.Custom || obj.CustomLoader?.OffLib != true)
                 {
-                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
+                    update2(obj, LaunchState.CheckLib);
                     var list2 = await game.CheckGameLibAsync(cancel);
                     if (list2.Count != 0)
                     {
-                        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
+                        update2(obj, LaunchState.LostLib);
                         foreach (var item in list2)
                         {
                             if (!string.IsNullOrWhiteSpace(item.Url))
@@ -303,7 +303,7 @@ public static class CheckHelpers
                 }
 
                 //检查加载器运行库
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
+                update2(obj, LaunchState.CheckLoader);
                 if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
                 {
                     bool neo = obj.Loader == Loaders.NeoForge;
@@ -314,9 +314,9 @@ public static class CheckHelpers
                     }
                     if (list3 == null)
                     {
-                        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
+                        update2(obj, LaunchState.LostLoader);
 
-                        var list4 = await DownloadItemHelper.BuildForge(obj, neo, update1);
+                        var list4 = await DownloadItemHelper.BuildForge(obj, neo);
                         if (list4.State != GetDownloadState.End)
                             throw new LaunchException(LaunchState.LostLoader,
                                 LanguageHelper.Get("Core.Launch.Error3"));
@@ -343,7 +343,7 @@ public static class CheckHelpers
                     }
                     if (list3 == null)
                     {
-                        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
+                        update2(obj, LaunchState.LostLoader);
 
                         var list4 = await DownloadItemHelper.BuildFabric(obj);
                         if (list4.State != GetDownloadState.End)
@@ -372,7 +372,7 @@ public static class CheckHelpers
                     }
                     if (list3 == null)
                     {
-                        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
+                        update2(obj, LaunchState.LostLoader);
 
                         var list4 = await DownloadItemHelper.BuildQuilt(obj);
                         if (list4.State != GetDownloadState.End)
@@ -434,7 +434,7 @@ public static class CheckHelpers
                 }
 
                 //检查外置登录器
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoginCore);
+                update2(obj, LaunchState.CheckLoginCore);
 
                 var item1 = login.AuthType switch
                 {
@@ -461,7 +461,7 @@ public static class CheckHelpers
         {
             list1.Add(Task.Run(() =>
             {
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckMods);
+                update2(obj, LaunchState.CheckMods);
 
                 var mods = PathHelper.GetAllFile(obj.GetModsPath());
                 FileInfo? mod = null;

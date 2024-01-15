@@ -183,10 +183,6 @@ public partial class AddControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        VersionFiles.SetFontColor();
-        OptifineFiles.SetFontColor();
-        ModDownloadFiles.SetFontColor();
-
         (DataContext as AddControlModel)!.Display = true;
     }
 

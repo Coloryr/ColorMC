@@ -107,10 +107,10 @@ public static class JavaBinding
     }
 
     public static async Task<(bool, string?)> DownloadJava(JavaDownloadObj obj,
-        ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip, ColorMCCore.DownloaderUpdate update1)
+        ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip)
     {
         var (res, message) =
-            await JvmPath.InstallAsync(obj.File, obj.Name, obj.Sha256, obj.Url, zip, unzip, update1);
+            await JvmPath.InstallAsync(obj.File, obj.Name, obj.Sha256, obj.Url, zip, unzip);
         if (res != CoreRunState.Init)
         {
             return (false, message);

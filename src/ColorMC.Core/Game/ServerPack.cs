@@ -33,7 +33,7 @@ public static class ServerPack
     /// <param name="obj">服务器实例</param>
     /// <returns>结果</returns>
     public static async Task<bool> UpdateAsync(this ServerPackObj obj, GameSettingObj game,
-        ColorMCCore.UpdateState state, ColorMCCore.DownloaderUpdate update1)
+        ColorMCCore.UpdateState state)
     {
         PathHelper.Delete(game.GetServerPackFile());
         var old = game.GetOldServerPack();
@@ -179,7 +179,7 @@ public static class ServerPack
 
         state(LanguageHelper.Get("Core.ServerPack.Info3"));
         //开始下载
-        var res = await DownloadManager.StartAsync(list5, update1);
+        var res = await DownloadManager.StartAsync(list5);
         state(null);
         return res;
     }
@@ -259,7 +259,7 @@ public static class ServerPack
     /// <param name="local">保存路径</param>
     /// <returns>创建结果</returns>
     public static async Task<bool> GenServerPackAsync(this ServerPackObj obj, string local,
-        ColorMCCore.GameRequest request)
+        ColorMCCore.Request request)
     {
         var obj1 = new ServerPackObj()
         {
@@ -465,8 +465,7 @@ public static class ServerPack
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
     public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj,
-        ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select,
-        ColorMCCore.DownloaderUpdate update1)
+        ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select)
     {
         var obj2 = obj.GetServerPack();
         var res = await BaseClient.GetStringAsync(obj.ServerUrl + "sha1");
@@ -504,7 +503,7 @@ public static class ServerPack
             obj2.Item2?.MoveToOld();
             state(LanguageHelper.Get("Core.ServerPack.Info1"));
 
-            var res2 = await obj1.UpdateAsync(obj, state, update1);
+            var res2 = await obj1.UpdateAsync(obj, state);
             if (res2)
             {
                 File.WriteAllText(obj.GetServerPackFile(), res1.Item2!);

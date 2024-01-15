@@ -50,7 +50,7 @@ public static class BaseBinding
     /// <summary>
     /// 是否正在下载
     /// </summary>
-    public static bool IsDownload => DownloadManager.State != CoreRunState.End;
+    public static bool IsDownload => DownloadManager.State != DownloadState.End;
 
     private static CancellationTokenSource s_launchCancel = new();
 
@@ -61,9 +61,9 @@ public static class BaseBinding
     /// </summary>
     public static void Init()
     {
-        ColorMCCore.OnError = App.ShowError;
-        ColorMCCore.LanguageReload = LanguageReload;
-        ColorMCCore.ProcessLog = (p, d) =>
+        ColorMCCore.OnError += App.ShowError;
+        ColorMCCore.OnLanguageReload += LanguageReload;
+        ColorMCCore.OnProcessLog += (p, d) =>
         {
             if (p != null && Games.TryGetValue(p, out var uuid))
             {
@@ -74,7 +74,7 @@ public static class BaseBinding
                 }
             }
         };
-        ColorMCCore.GameLog = (obj, d) =>
+        ColorMCCore.OnGameLog += (obj, d) =>
         {
             if (GameLogs.TryGetValue(obj.UUID, out var log))
             {
@@ -86,6 +86,7 @@ public static class BaseBinding
                 win.Log(d);
             }
         };
+        ColorMCCore.OnStartDownload = App.StartDownload;
 
         if (ColorMCGui.RunType == RunType.Program && SystemInfo.Os != OsType.Android)
         {
@@ -239,8 +240,6 @@ public static class BaseBinding
             wait = false;
         }
 
-        InfoBinding.Window = model;
-
         s_launchCancel = new();
 
         if (Games.ContainsValue(obj.UUID))
@@ -315,15 +314,59 @@ public static class BaseBinding
                     return model.ShowWait(string.Format(
                         App.Lang("MainWindow.Info21"), login.UserName));
                 });
-            }, (state) =>
+            }, (obj, state) =>
             {
-                Dispatcher.UIThread.Invoke(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
-                    App.DownloaderUpdate(state);
+                    if (GuiConfigUtils.Config.CloseBeforeLaunch)
+                    {
+                        if (state == LaunchState.End)
+                        {
+                            model.ProgressClose();
+                        }
+                        model.ProgressUpdate(App.Lang(state switch
+                        {
+                            LaunchState.Login => "MainWindow.Info8",
+                            LaunchState.Check => "MainWindow.Info9",
+                            LaunchState.CheckVersion => "MainWindow.Info10",
+                            LaunchState.CheckLib => "MainWindow.Info11",
+                            LaunchState.CheckAssets => "MainWindow.Info12",
+                            LaunchState.CheckLoader => "MainWindow.Info13",
+                            LaunchState.CheckLoginCore => "MainWindow.Info14",
+                            LaunchState.CheckMods => "MainWindow.Info17",
+                            LaunchState.Download => "MainWindow.Info15",
+                            LaunchState.JvmPrepare => "MainWindow.Info16",
+                            LaunchState.LaunchPre => "MainWindow.Info31",
+                            LaunchState.LaunchPost => "MainWindow.Info32",
+                            LaunchState.InstallForge => "MainWindow.Info38",
+                            _ => ""
+                        }));
+                    }
+                    else
+                    {
+                        model.Title1 = App.Lang(state switch
+                        {
+                            LaunchState.Login => "MainWindow.Info8",
+                            LaunchState.Check => "MainWindow.Info9",
+                            LaunchState.CheckVersion => "MainWindow.Info10",
+                            LaunchState.CheckLib => "MainWindow.Info11",
+                            LaunchState.CheckAssets => "MainWindow.Info12",
+                            LaunchState.CheckLoader => "MainWindow.Info13",
+                            LaunchState.CheckLoginCore => "MainWindow.Info14",
+                            LaunchState.CheckMods => "MainWindow.Info17",
+                            LaunchState.Download => "MainWindow.Info15",
+                            LaunchState.JvmPrepare => "MainWindow.Info16",
+                            LaunchState.LaunchPre => "MainWindow.Info31",
+                            LaunchState.LaunchPost => "MainWindow.Info32",
+                            LaunchState.InstallForge => "MainWindow.Info38",
+                            _ => ""
+                        });
+                    }
                 });
             }, obj1, world, s_launchCancel.Token));
 
-        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.End);
+        model.ProgressClose();
+        model.Title1 = "";
         FuntionUtils.RunGC();
 
         if (s_launchCancel.IsCancellationRequested)
@@ -338,7 +381,7 @@ public static class BaseBinding
                 if (obj.Loader == Loaders.Forge
                     && new Version(obj.Version) > new Version(1, 20, 1))
                 {
-                    InfoBinding.Window?.Show(App.Lang("Gui.Info41"));
+                    model.Show(App.Lang("Gui.Info41"));
                 }
             }
             obj.LaunchData.LastTime = DateTime.Now;
@@ -463,10 +506,10 @@ public static class BaseBinding
     /// <param name="cancel">取消启动</param>
     /// <returns>进程信息</returns>
     private static async Task<(Process?, string?)> Launch(GameSettingObj obj,
-        ColorMCCore.GameRequest request, ColorMCCore.LaunchP pre,
+        ColorMCCore.Request request, ColorMCCore.LaunchP pre,
         ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select,
         ColorMCCore.NoJava nojava, ColorMCCore.LoginFail loginfail,
-        ColorMCCore.DownloaderUpdate update,
+        ColorMCCore.GameLaunch update2,
         LoginObj obj1, WorldObj? world, CancellationToken cancel)
     {
         string? temp = null;
@@ -474,7 +517,7 @@ public static class BaseBinding
         {
             //启动
             var p = await obj.StartGameAsync(obj1, world, request, pre, state, select, nojava,
-                loginfail, update, cancel);
+                loginfail, update2, cancel);
             if (cancel.IsCancellationRequested)
             {
                 if (p != null && p.Id != 0)
@@ -843,7 +886,7 @@ public static class BaseBinding
             }
             if (!File.Exists(obj.Local))
             {
-                var res = await DownloadManager.StartAsync([obj], App.DownloaderUpdate);
+                var res = await App.StartDownload([obj]);
                 if (!res)
                 {
                     return (false, null, null);

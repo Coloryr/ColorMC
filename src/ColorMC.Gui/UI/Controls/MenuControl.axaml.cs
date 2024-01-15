@@ -17,7 +17,7 @@ public partial class MenuControl : UserControl, IUserControl
     private CancellationTokenSource _cancel = new();
     private CancellationTokenSource _cancel1 = new();
 
-    private int _now;
+    private int _now = -1;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -59,6 +59,12 @@ public partial class MenuControl : UserControl, IUserControl
         _cancel = new();
 
         var model = (DataContext as MenuModel)!;
+
+        if (_now == -1)
+        {
+            Content1.Child = to;
+            return;
+        }
 
         if (!_switch1)
         {

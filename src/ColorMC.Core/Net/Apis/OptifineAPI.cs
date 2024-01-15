@@ -28,7 +28,7 @@ public static class OptifineAPI
             var data = await BaseClient.GetStringAsync(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return (null, null);
             }
@@ -126,7 +126,7 @@ public static class OptifineAPI
                 var data = await BaseClient.GetStringAsync(obj.Url2);
                 if (data.Item1 == false)
                 {
-                    ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
+                    ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
                         new Exception(obj.Url2), false);
                     return null;
                 }
@@ -144,7 +144,7 @@ public static class OptifineAPI
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.OptiFine.Error2"), e, false);
+            ColorMCCore.Error(LanguageHelper.Get("Core.Http.OptiFine.Error2"), e, false);
         }
 
         return null;
@@ -156,8 +156,7 @@ public static class OptifineAPI
     /// <param name="obj">游戏实例</param>
     /// <param name="item">高清修复信息</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item,
-        ColorMCCore.DownloaderUpdate update1)
+    public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item)
     {
         DownloadItemObj item1;
         var data = await GetOptifineDownloadUrl(item);
@@ -174,7 +173,7 @@ public static class OptifineAPI
             Url = data
         };
 
-        var res = await DownloadManager.StartAsync([item1], update1);
+        var res = await DownloadManager.StartAsync([item1]);
         if (!res)
         {
             return (false, LanguageHelper.Get("Core.Http.OptiFine.Error4"));

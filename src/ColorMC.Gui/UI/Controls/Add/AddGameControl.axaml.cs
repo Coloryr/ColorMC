@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Platform.Storage;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Model;
@@ -8,15 +9,17 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddGameControl : UserControl, IUserControl
 {
-    private readonly AddGameTab1Control _tab1 = new();
-    private readonly AddGameTab2Control _tab2 = new();
-    private readonly AddGameTab3Control _tab3 = new();
+    private AddGameTab1Control _tab1;
+    private AddGameTab2Control _tab2;
+    private AddGameTab3Control _tab3;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -39,7 +42,23 @@ public partial class AddGameControl : UserControl, IUserControl
     {
         if (e.Data.Contains(DataFormats.Files))
         {
-            Grid2.IsVisible = true;
+            var files = e.Data.GetFiles();
+            if (files == null || files.Count() > 1)
+                return;
+
+            var item = files.ToList()[0];
+            if (item == null)
+                return;
+            if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
+            {
+                Grid2.IsVisible = true;
+                Label1.Text = App.Lang("Gui.Info42");
+            }
+            else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
+            {
+                Grid2.IsVisible = true;
+                Label1.Text = App.Lang("Gui.Info7");
+            }
         }
     }
 
@@ -57,12 +76,20 @@ public partial class AddGameControl : UserControl, IUserControl
             if (files == null || files.Count() > 1)
                 return;
 
-            var item = files.ToList()[0].GetPath();
-            if (item?.EndsWith(".zip") == true || item?.EndsWith(".mrpack") == true)
+            var item = files.ToList()[0];
+            if (item == null)
+                return;
+            if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
+            {
+                var model = (DataContext as AddGameModel)!;
+                model.GoTab("Tab3");
+                model.SetPath(item.GetPath()!);
+            }
+            else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
             {
                 var model = (DataContext as AddGameModel)!;
                 model.GoTab("Tab2");
-                model.SetFile(item);
+                model.SetFile(item.GetPath()!);
             }
         }
     }
@@ -82,15 +109,15 @@ public partial class AddGameControl : UserControl, IUserControl
         }
         else if (e.PropertyName == "GoTab1")
         {
-            Content1.Child = _tab1;
+            Content1.Child = _tab1 ??= new();
         }
         else if (e.PropertyName == "GoTab2")
         {
-            Content1.Child = _tab2;
+            Content1.Child = _tab2 ??= new();
         }
         else if (e.PropertyName == "GoTab3")
         {
-            Content1.Child = _tab3;
+            Content1.Child = _tab3 ??= new();
         }
         else if (e.PropertyName == "Back")
         {
@@ -118,9 +145,15 @@ public partial class AddGameControl : UserControl, IUserControl
         (DataContext as AddGameModel)?.Install(data, data1);
     }
 
-    public void AddFile(string file)
+    public void AddFile(string file, bool isDir)
     {
-        if (file.EndsWith(".zip") == true || file.EndsWith(".mrpack") == true)
+        if (isDir)
+        {
+            var model = (DataContext as AddGameModel)!;
+            model.GoTab("Tab3");
+            model.SetPath(file);
+        }
+        else 
         {
             var model = (DataContext as AddGameModel)!;
             model.GoTab("Tab2");

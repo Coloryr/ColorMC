@@ -144,20 +144,17 @@ public static class PathHelper
     /// <summary>
     /// 删除文件夹
     /// </summary>
-    public static async Task<bool> DeleteFilesAsync(string local, ColorMCCore.GameRequest? request)
+    public static async Task<bool> DeleteFilesAsync(string local, ColorMCCore.Request request)
     {
         if (!Directory.Exists(local))
         {
             return true;
         }
 
-        if (request != null)
+        var res = await request(string.Format(LanguageHelper.Get("Core.Info2"), local));
+        if (!res)
         {
-            var res = await request(string.Format(LanguageHelper.Get("Core.Info2"), local));
-            if (!res)
-            {
-                return false;
-            }
+            return false;
         }
 
         return await Task.Run(() =>

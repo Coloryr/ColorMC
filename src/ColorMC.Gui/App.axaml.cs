@@ -194,7 +194,6 @@ public partial class App : Application
         ColorChange();
 
         BaseBinding.Init();
-        InfoBinding.Init();
 
         if (ConfigBinding.WindowMode())
         {
@@ -338,22 +337,6 @@ public partial class App : Application
         FuntionUtils.RunGC();
     }
 
-    public static void DownloaderUpdate(CoreRunState state)
-    {
-        if (state == CoreRunState.Init)
-        {
-            ShowDownload();
-        }
-        else if (state == CoreRunState.Start)
-        {
-            DownloadWindow?.Load();
-        }
-        else if (state == CoreRunState.End)
-        {
-            DownloadWindow?.Window.Close();
-        }
-    }
-
     public static void ShowCustom()
     {
         bool ok = true;
@@ -429,7 +412,7 @@ public partial class App : Application
         CustomWindow?.Load(obj);
     }
 
-    public static void ShowAddGame(string? group, string? file = null)
+    public static void ShowAddGame(string? group, bool isDir = false, string? file = null)
     {
         if (AddGameWindow != null)
         {
@@ -443,21 +426,18 @@ public partial class App : Application
         AddGameWindow.SetGroup(group);
         if (!string.IsNullOrWhiteSpace(file))
         {
-            AddGameWindow?.AddFile(file);
+            AddGameWindow?.AddFile(file, isDir);
         }
     }
 
-    public static void ShowDownload()
+    public static Task<bool> StartDownload(ICollection<DownloadItemObj> list)
     {
-        if (DownloadWindow != null)
-        {
-            DownloadWindow.Window.Activate();
-        }
-        else
-        {
-            DownloadWindow = new();
-            AWindow(DownloadWindow);
-        }
+        DownloadWindow?.Window.Close();
+
+        DownloadWindow = new(list);
+        AWindow(DownloadWindow);
+
+        return DownloadWindow.Start();
     }
 
     public static void ShowUser(bool add = false, string? url = null)

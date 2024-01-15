@@ -163,7 +163,7 @@ public partial class AddJavaControlModel : TopModel
             {
                 Model.ProgressUpdate(App.Lang("AddJavaWindow.Info5"));
             });
-        }, App.DownloaderUpdate);
+        });
         Model.ProgressClose();
         if (!res1.Item1)
         {

@@ -3,7 +3,6 @@ using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
-using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
@@ -36,8 +35,6 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
     public void Closed()
     {
-        ColorMCCore.GameLaunch = null;
-
         App.CustomWindow = null;
 
         if (App.MainWindow == null)

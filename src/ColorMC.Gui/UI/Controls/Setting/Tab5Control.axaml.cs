@@ -25,11 +25,6 @@ public partial class Tab5Control : UserControl
         }
     }
 
-    public void Opened()
-    {
-        DataGrid1.SetFontColor();
-    }
-
     private void DataGrid1_CellPointerPressed(object? sender,
         DataGridCellPointerPressedEventArgs e)
     {

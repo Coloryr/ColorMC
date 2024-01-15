@@ -1,5 +1,4 @@
 using ColorMC.Core;
-using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
@@ -127,7 +126,7 @@ public static class UpdateChecker
             }
         };
 
-        var res = await DownloadManager.StartAsync(list, App.DownloaderUpdate);
+        var res = await App.StartDownload(list);
         if (res)
         {
             App.Reboot();

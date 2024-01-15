@@ -15,11 +15,6 @@ public partial class Tab3Control : UserControl
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
-    public void Opened()
-    {
-        DataGrid1.SetFontColor();
-    }
-
     private void DataGrid1_CellEditEnded(object? sender, DataGridCellEditEndedEventArgs e)
     {
         (DataContext as ServerPackModel)?.ConfigItemEdit();

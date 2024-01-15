@@ -526,9 +526,9 @@ public static class DownloadItemHelper
     /// <returns>State下载状态
     /// List下载项目列表</returns>
     public static Task<(GetDownloadState State, List<DownloadItemObj>? List)>
-        BuildForge(GameSettingObj obj, bool neo, ColorMCCore.DownloaderUpdate update)
+        BuildForge(GameSettingObj obj, bool neo)
     {
-        return BuildForgeAsync(obj.Version, obj.LoaderVersion!, neo, update);
+        return BuildForgeAsync(obj.Version, obj.LoaderVersion!, neo);
     }
 
     /// <summary>
@@ -540,7 +540,7 @@ public static class DownloadItemHelper
     /// <returns>State下载状态
     /// List下载项目列表</returns>
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)>
-        BuildForgeAsync(string mc, string version, bool neo, ColorMCCore.DownloaderUpdate update)
+        BuildForgeAsync(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetVersion(mc)!;
         var v2 = CheckHelpers.IsGameVersionV2(version1);
@@ -550,7 +550,7 @@ public static class DownloadItemHelper
             BuildForgeInstaller(mc, version);
         try
         {
-            var res = await DownloadManager.StartAsync([down], update);
+            var res = await DownloadManager.StartAsync([down]);
             if (!res)
             {
                 return (GetDownloadState.Init, null);
@@ -558,7 +558,7 @@ public static class DownloadItemHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Forge.Error4"), e, false);
+            ColorMCCore.Error(LanguageHelper.Get("Core.Http.Forge.Error4"), e, false);
             return (GetDownloadState.Init, null);
         }
 

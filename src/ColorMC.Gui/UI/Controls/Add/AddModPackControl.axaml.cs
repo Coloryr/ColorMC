@@ -107,8 +107,6 @@ public partial class AddModPackControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        PackFiles.SetFontColor();
-
         (DataContext as AddModPackControlModel)!.Source = 0;
     }
 

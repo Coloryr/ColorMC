@@ -496,7 +496,7 @@ public static class InstancesPath
     /// <param name="game">游戏实例</param>
     /// <returns>结果</returns>
     public static async Task<GameSettingObj?> CreateGame(this GameSettingObj game,
-        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte)
+        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
         var value = s_installGames.Values.FirstOrDefault(item => item.DirName == game.Name);
         if (value != null)
@@ -695,7 +695,7 @@ public static class InstancesPath
     /// <param name="name">新的名字</param>
     /// <returns>复制结果</returns>
     public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name,
-        ColorMCCore.GameRequest request, ColorMCCore.GameOverwirte overwirte)
+        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
         var obj1 = obj.CopyObj();
         obj1.Name = name;
@@ -862,7 +862,7 @@ public static class InstancesPath
     /// 删除游戏实例
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static Task<bool> Remove(this GameSettingObj obj, ColorMCCore.GameRequest request)
+    public static Task<bool> Remove(this GameSettingObj obj, ColorMCCore.Request request)
     {
         obj.RemoveFromGroup();
         PathHelper.Delete(obj.GetGameJsonFile());

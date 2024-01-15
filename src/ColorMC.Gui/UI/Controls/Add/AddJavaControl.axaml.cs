@@ -38,8 +38,6 @@ public partial class AddJavaControl : UserControl, IUserControl
         Window.SetTitle(Title);
 
         (DataContext as AddJavaControlModel)!.TypeIndex = 0;
-
-        JavaFiles.SetFontColor();
     }
 
     public void Closed()

@@ -29,11 +29,6 @@ public partial class Tab12Control : UserControl
         }
     }
 
-    public void Opened()
-    {
-        DataGrid1.SetFontColor();
-    }
-
     private void DragEnter(object? sender, DragEventArgs e)
     {
         if (e.Data.Contains(DataFormats.Files))

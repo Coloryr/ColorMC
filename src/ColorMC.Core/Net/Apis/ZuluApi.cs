@@ -20,7 +20,7 @@ public static class ZuluApi
         var str = await data.Content.ReadAsStringAsync();
         if (str.StartsWith('<'))
         {
-            ColorMCCore.OnError?.Invoke(str, null, false);
+            ColorMCCore.Error(str, null, false);
             return null;
         }
         return JsonConvert.DeserializeObject<List<ZuluObj>>(str);

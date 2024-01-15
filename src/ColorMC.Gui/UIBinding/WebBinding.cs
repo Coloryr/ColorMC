@@ -1,5 +1,4 @@
 using Avalonia.Threading;
-using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -466,7 +465,7 @@ public static class WebBinding
             };
             list1.Add(Item);
         }
-        return await DownloadManager.StartAsync(list1, App.DownloaderUpdate);
+        return await App.StartDownload(list1);
     }
 
     public static async Task<bool> DownloadMod(GameSettingObj obj,
@@ -481,7 +480,7 @@ public static class WebBinding
             };
             list1.Add(Item);
         }
-        return await DownloadManager.StartAsync(list1, App.DownloaderUpdate);
+        return await App.StartDownload(list1);
     }
 
     public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeModObj.Data? data)
@@ -505,7 +504,7 @@ public static class WebBinding
                     Overwrite = true
                 };
 
-                res = await DownloadManager.StartAsync([item], App.DownloaderUpdate);
+                res = await App.StartDownload([item]);
                 if (!res)
                 {
                     return false;
@@ -513,7 +512,7 @@ public static class WebBinding
 
                 return await GameBinding.AddWorld(obj, item.Local);
             case FileType.Resourcepack:
-                return await DownloadManager.StartAsync([new()
+                return await App.StartDownload([new()
                 {
                     Name = data.displayName,
                     Url = data.downloadUrl,
@@ -521,9 +520,9 @@ public static class WebBinding
                     SHA1 = data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault(),
                     Overwrite = true
-                }], App.DownloaderUpdate);
+                }]);
             case FileType.Shaderpack:
-                return await DownloadManager.StartAsync([new()
+                return await App.StartDownload([new()
                 {
                     Name = data.displayName,
                     Url = data.downloadUrl,
@@ -531,7 +530,7 @@ public static class WebBinding
                     SHA1 = data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault(),
                     Overwrite = true
-                }], App.DownloaderUpdate);
+                }]);
             default:
                 return false;
         }
@@ -548,22 +547,22 @@ public static class WebBinding
 
         return type switch
         {
-            FileType.Resourcepack => await DownloadManager.StartAsync([new()
+            FileType.Resourcepack => await App.StartDownload([new()
                 {
                     Name = data.name,
                     Url = file.url,
                     Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + file.filename),
                     SHA1 = file.hashes.sha1,
                     Overwrite = true
-                }], App.DownloaderUpdate),
-            FileType.Shaderpack => await DownloadManager.StartAsync([new()
+                }]),
+            FileType.Shaderpack => await App.StartDownload([new()
                 {
                     Name = data.name,
                     Url = file.url,
                     Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + file.filename),
                     SHA1 = file.hashes.sha1,
                     Overwrite = true
-                }], App.DownloaderUpdate),
+                }]),
             _ => false,
         };
     }
@@ -577,7 +576,7 @@ public static class WebBinding
 
         data.FixDownloadUrl();
 
-        return await DownloadManager.StartAsync([new()
+        return await App.StartDownload([new()
         {
             Name = data.displayName,
             Url = data.downloadUrl,
@@ -585,7 +584,7 @@ public static class WebBinding
             SHA1 = data.hashes.Where(a => a.algo == 1)
                 .Select(a => a.value).FirstOrDefault(),
             Overwrite = true
-        }], App.DownloaderUpdate);
+        }]);
     }
 
     public static async Task<bool> Download(WorldObj obj1, ModrinthVersionObj? data)
@@ -597,14 +596,14 @@ public static class WebBinding
 
         var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
 
-        return await DownloadManager.StartAsync([new()
+        return await App.StartDownload([new()
         {
             Name = data.name,
             Url = file.url,
             Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + file.filename),
             SHA1 = file.hashes.sha1,
             Overwrite = true
-        }], App.DownloaderUpdate);
+        }]);
     }
 
     public static string? GetUrl(this FileItemObj obj)
@@ -652,10 +651,9 @@ public static class WebBinding
         return res.Item2;
     }
 
-    public static Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item,
-        ColorMCCore.DownloaderUpdate update1)
+    public static Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item)
     {
-        return OptifineAPI.DownloadOptifine(obj, item, update1);
+        return OptifineAPI.DownloadOptifine(obj, item);
     }
 
     public static async Task<List<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>>

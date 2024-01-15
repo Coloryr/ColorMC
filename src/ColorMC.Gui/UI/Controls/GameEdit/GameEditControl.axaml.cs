@@ -15,15 +15,15 @@ public partial class GameEditControl : MenuControl
 {
     private readonly GameSettingObj _obj;
 
-    private readonly Tab1Control _tab1 = new();
-    private readonly Tab2Control _tab2 = new();
-    private readonly Tab4Control _tab4 = new();
-    private readonly Tab5Control _tab5 = new();
-    private readonly Tab8Control _tab8 = new();
-    private readonly Tab9Control _tab9 = new();
-    private readonly Tab10Control _tab10 = new();
-    private readonly Tab11Control _tab11 = new();
-    private readonly Tab12Control _tab12 = new();
+    private Tab1Control _tab1;
+    private Tab2Control _tab2;
+    private Tab4Control _tab4;
+    private Tab5Control _tab5;
+    private Tab8Control _tab8;
+    private Tab9Control _tab9;
+    private Tab10Control _tab10;
+    private Tab11Control _tab11;
+    private Tab12Control _tab12;
 
     private Bitmap _icon;
     public override Bitmap GetIcon() => _icon;
@@ -75,21 +75,12 @@ public partial class GameEditControl : MenuControl
     {
         Window.SetTitle(Title);
 
-        Content1.Child = _tab1;
-
-        _tab4.Opened();
-        _tab10.Opened();
-        _tab11.Opened();
-        _tab12.Opened();
-
         var icon = _obj.GetIconFile();
         if (File.Exists(icon))
         {
             _icon = new(icon);
             Window.SetIcon(_icon);
         }
-
-        (DataContext as GameEditModel)?.OpenLoad();
     }
 
     public void SetType(GameEditWindowType type)
@@ -97,6 +88,9 @@ public partial class GameEditControl : MenuControl
         var model = (DataContext as GameEditModel)!;
         switch (type)
         {
+            case GameEditWindowType.Normal:
+                model.NowView = 0;
+                break;
             case GameEditWindowType.Mod:
                 model.NowView = 2;
                 break;
@@ -138,6 +132,7 @@ public partial class GameEditControl : MenuControl
         {
             case 0:
                 model.GameLoad();
+                _tab1 ??= new();
                 if (iswhell && old == 1)
                 {
                     _tab1.End();
@@ -149,6 +144,7 @@ public partial class GameEditControl : MenuControl
                 return _tab1;
             case 1:
                 model.ConfigLoad();
+                _tab2 ??= new();
                 if (iswhell && old == 2)
                 {
                     _tab2.End();
@@ -161,26 +157,26 @@ public partial class GameEditControl : MenuControl
             case 2:
                 model.SetChoise();
                 _ = model.LoadMod();
-                return _tab4;
+                return _tab4 ??= new();
             case 3:
                 _ = model.LoadWorld();
-                return _tab5;
+                return _tab5 ??= new();
             case 4:
                 _ = model.LoadResource();
-                return _tab8;
+                return _tab8 ??= new();
             case 5:
                 model.LoadScreenshot();
-                return _tab9;
+                return _tab9 ??= new();
             case 6:
                 model.SetChoiseTab10();
                 model.LoadServer();
-                return _tab10;
+                return _tab10 ??= new();
             case 7:
                 _ = model.LoadShaderpack();
-                return _tab11;
+                return _tab11 ??= new();
             case 8:
                 _ = model.LoadSchematic();
-                return _tab12;
+                return _tab12 ??= new();
             default:
                 throw new InvalidEnumArgumentException();
         }

@@ -67,12 +67,12 @@ public static class JvmPath
     /// <returns>结果</returns>
     public static async Task<(CoreRunState Res, string? Message)>
         InstallAsync(string file, string name, string sha256, string url,
-        ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip, ColorMCCore.DownloaderUpdate update1)
+        ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip)
     {
         try
         {
             Remove(name);
-            var res = await DownloadAsync(file, sha256, url, update1);
+            var res = await DownloadAsync(file, sha256, url);
             if (!res.Res)
             {
                 return (CoreRunState.Error, LanguageHelper.Get("Core.Jvm.Error5"));
@@ -101,8 +101,7 @@ public static class JvmPath
     /// <param name="sha256">校验</param>
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
-    private static async Task<(bool Res, string? Local)> DownloadAsync(string name, string sha256,
-        string url, ColorMCCore.DownloaderUpdate update1)
+    private static async Task<(bool Res, string? Local)> DownloadAsync(string name, string sha256, string url)
     {
         var item = new DownloadItemObj()
         {
@@ -112,7 +111,7 @@ public static class JvmPath
             Url = url
         };
 
-        var res = await DownloadManager.StartAsync([item], update1);
+        var res = await DownloadManager.StartAsync([item]);
 
         if (res == false)
         {
