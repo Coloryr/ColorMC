@@ -73,10 +73,7 @@
                             <TextBlock Text="{Binding UserId}" />
                             <TextBlock Text="{Binding UserType}" />
                         </StackPanel>
-                        <StackPanel
-                            HorizontalAlignment="Right"
-                            DockPanel.Dock="Right"
-                            Orientation="Horizontal">
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <StackPanel IsVisible="{Binding TopSide}" Orientation="Horizontal">
                                 <Button
                                     Width="38"
