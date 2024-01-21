@@ -1,0 +1,7 @@
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="#dbdbdb" />
+    <path fill="#000"
+        d="M49.2,49.4h-0.4h-4v18.7h-5.6V24h9.6c7.8,0,13.3,3.3,13.3,12.4c0,6.4-3,10.4-7.7,12.1L63,68.1h-5.9L49.2,49.4z
+		 M48,44.9c5.5,0,8.6-2.8,8.6-8.5c0-5.8-3.1-7.9-8.6-7.9h-3.2v16.4H48z"
+        style="enable-background:new;stroke:#000;stroke-width:4;stroke-miterlimit:10;" />
+</svg>

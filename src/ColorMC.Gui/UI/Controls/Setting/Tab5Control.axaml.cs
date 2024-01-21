@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Setting;
-using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 

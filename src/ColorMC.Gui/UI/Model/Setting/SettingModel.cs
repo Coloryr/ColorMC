@@ -21,17 +21,19 @@ public partial class SettingModel : MenuModel
             Text = App.Lang("SettingWindow.Tabs.Text6") },
         new() { Icon = "/Resource/Icon/Setting/item6.svg",
             Text = App.Lang("SettingWindow.Tabs.Text1") },
+         new() { Icon = "/Resource/Icon/Setting/item7.svg",
+            Text = App.Lang("SettingWindow.Tabs.Text8") },
         new() { Icon = "/Resource/Icon/Setting/item7.svg",
             Text = App.Lang("SettingWindow.Tabs.Text7") }
     ];
 
     public bool Phone { get; } = false;
 
-    private readonly string _useName;
+    private readonly string _name;
 
     public SettingModel(BaseModel model) : base(model)
     {
-        _useName = ToString() ?? "SettingModel";
+        _name = ToString() ?? "SettingModel";
 
         if (SystemInfo.Os == OsType.Android)
         {
@@ -40,11 +42,17 @@ public partial class SettingModel : MenuModel
         }
     }
 
+    public void RemoveChoise()
+    {
+        Model.RemoveChoiseData(_name);
+    }
+
     protected override void Close()
     {
         FontList.Clear();
         JavaList.Clear();
         _uuids.Clear();
         GameList.Clear();
+        InputClose();
     }
 }

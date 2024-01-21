@@ -100,6 +100,11 @@ public static class GuiConfigUtils
                 Config.Style = MakeStyleSettingConfig();
                 save = true;
             }
+            if (Config.Input == null || Config.Input.Keys == null
+                || Config.Input.AxisKeys == null)
+            {
+                Config.Input = MakeInputControl();
+            }
             if (save)
             {
                 Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
@@ -136,6 +141,15 @@ public static class GuiConfigUtils
             Local = s_local,
             Obj = Config
         });
+    }
+
+    public static InputControlObj MakeInputControl()
+    {
+        return new()
+        {
+            Keys = [],
+            AxisKeys = []
+        };
     }
 
     public static StyleSetting MakeStyleSettingConfig()

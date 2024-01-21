@@ -46,14 +46,14 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             SystemDecorations = SystemDecorations.BorderOnly;
         }
 
-        KeyDown += Window_KeyDown;
-
         Icon = App.Icon;
 
         if (ICon is UserControl con1)
         {
             MainControl.Child = con1;
         }
+
+        AddHandler(KeyDownEvent, Window_KeyDown, RoutingStrategies.Tunnel);
 
         Closed += UserWindow_Closed;
         Opened += UserWindow_Opened;
@@ -62,6 +62,8 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         PropertyChanged += SelfBaseWindow_PropertyChanged;
         ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
         Model.PropertyChanged += Model_PropertyChanged;
+        PointerReleased += SelfBaseWindow_PointerReleased;
+        PointerPressed += SelfBaseWindow_PointerPressed;
 
         App.PicUpdate += Update;
 
@@ -75,6 +77,16 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         }
 
         Update();
+    }
+
+    private void SelfBaseWindow_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        ICon.IPointerPressed(e);
+    }
+
+    private void SelfBaseWindow_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        ICon.IPointerReleased(e);
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -184,8 +196,14 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Position = new(x, y);
     }
 
-    private void Window_KeyDown(object? sender, KeyEventArgs e)
+    private async void Window_KeyDown(object? sender, KeyEventArgs e)
     {
+        if (await ICon.OnKeyDown(sender, e))
+        {
+            e.Handled = true;
+            return;
+        }
+
         if (SystemInfo.Os == OsType.MacOS && e.KeyModifiers == KeyModifiers.Control)
         {
             switch (e.Key)
@@ -204,8 +222,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
                     break;
             }
         }
-
-        ICon.OnKeyDown(sender, e);
     }
 
     private void UserWindow_Opened(object? sender, EventArgs e)
@@ -258,5 +274,11 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     public void SetIcon(Bitmap icon)
     {
         Model.SetIcon(icon);
+    }
+
+    public void SetSize(int width, int height)
+    {
+        Width = width;
+        Height = height;
     }
 }

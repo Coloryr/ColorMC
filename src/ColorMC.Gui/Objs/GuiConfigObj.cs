@@ -1,4 +1,6 @@
+using Avalonia.Input;
 using ColorMC.Core.Objs;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.Objs;
 
@@ -330,7 +332,41 @@ public record GuiConfigObj
     /// </summary>
     public StyleSetting Style { get; set; }
     /// <summary>
+    /// 手柄绑定
+    /// </summary>
+    public InputControlObj Input { get; set; }
+    /// <summary>
     /// 服务器云同步密钥
     /// </summary>
     public string ServerKey { get; set; }
+}
+
+public record InputKeyObj
+{ 
+    public Key Key { get; set; }
+    public KeyModifiers KeyModifiers { get; set; }
+    public MouseButton MouseButton { get; set; }
+}
+
+public record InputAxisObj : InputKeyObj
+{
+    public byte InputKey { get; set; }
+    public short Start { get; set; }
+    public short End { get; set; }
+
+    public InputAxisObj() { }
+
+    public InputAxisObj(InputKeyObj obj)
+    {
+        Key = obj.Key;
+        KeyModifiers = obj.KeyModifiers;
+        MouseButton = obj.MouseButton;
+    }
+}
+
+public record InputControlObj
+{ 
+    public bool Enable { get; set; }
+    public Dictionary<byte, InputKeyObj> Keys { get; set; }
+    public Dictionary<string, InputAxisObj> AxisKeys { get; set; }
 }

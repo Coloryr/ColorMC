@@ -35,10 +35,12 @@ public partial class MenuControl : UserControl, IUserControl
     virtual protected MenuModel SetModel(BaseModel model) { throw new WarningException(); }
     virtual protected Control ViewChange(bool iswhell, int old, int index) { throw new WarningException(); }
 
-    virtual public void OnKeyDown(object? sender, KeyEventArgs e) { }
+    virtual public Task<bool> OnKeyDown(object? sender, KeyEventArgs e) { return Task.FromResult(false); }
     virtual public Bitmap GetIcon() { return App.GameIcon; }
     virtual public void Opened() { }
     virtual public void Closed() { }
+    virtual public void IPointerPressed(PointerPressedEventArgs e) { }
+    virtual public void IPointerReleased(PointerReleasedEventArgs e) { }
     virtual public Task<bool> Closing() { return Task.FromResult(false); }
 
     private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)

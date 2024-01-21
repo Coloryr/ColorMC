@@ -16,6 +16,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Animations;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Count;
 using ColorMC.Gui.UI.Controls.Custom;
@@ -86,6 +87,7 @@ public partial class App : Application
     public readonly static Dictionary<string, GameLogControl> GameLogWindows = [];
     public readonly static Dictionary<string, GameExportControl> GameExportWindows = [];
     public readonly static Dictionary<string, GameCloudControl> GameCloudWindows = [];
+    public readonly static Dictionary<string, GameWindowControl> GameWindows = [];
 
     public static readonly SelfCrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
@@ -707,7 +709,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowNetFrp(Process? p = null, NetFrpLocalModel? model = null)
+    public static void ShowNetFrp()
     {
         if (NetFrpWindow != null)
         {
@@ -717,6 +719,20 @@ public partial class App : Application
         {
             NetFrpWindow = new();
             AWindow(NetFrpWindow);
+        }
+    }
+
+    public static void ShowGameWindow(GameSettingObj obj, Process process, IntPtr handel)
+    {
+        if (GameWindows.TryGetValue(obj.UUID, out var win1))
+        {
+            win1.Window.Activate();
+        }
+        else
+        {
+            var con = new GameWindowControl(process, handel);
+            GameWindows.Add(obj.UUID, con);
+            new SelfBaseWindow(con).Show();
         }
     }
 

@@ -1,8 +1,11 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Setting;
+using ColorMC.Gui.UI.Windows;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -15,6 +18,7 @@ public partial class SettingControl : MenuControl
     private Tab5Control _tab5;
     private Tab6Control _tab6;
     private Tab7Control _tab7;
+    private Tab8Control _tab8;
 
     public override string Title => App.Lang("SettingWindow.Title");
 
@@ -23,6 +27,24 @@ public partial class SettingControl : MenuControl
     public SettingControl()
     {
         UseName = ToString() ?? "SettingControl";
+    }
+
+    public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (DataContext is SettingModel model)
+        {
+            return Task.FromResult(model.InputKey(e.KeyModifiers, e.Key));
+        }
+
+        return Task.FromResult(false);
+    }
+
+    public override void IPointerPressed(PointerPressedEventArgs e)
+    {
+        if (DataContext is SettingModel model)
+        {
+            model.InputMouse(e.KeyModifiers, e.GetCurrentPoint(this).Properties);
+        }
     }
 
     public override void Closed()
@@ -62,6 +84,12 @@ public partial class SettingControl : MenuControl
     protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as SettingModel)!;
+        switch (old)
+        {
+            case 6:
+                model.RemoveChoise();
+                break;
+        }
         switch (index)
         {
             case 0:
@@ -119,8 +147,13 @@ public partial class SettingControl : MenuControl
             case 5:
                 return _tab1 ??= new();
             case 6:
+                model.LoadInput();
+                model.SetTab8Click();
+                return _tab8 ??= new();
+            case 7:
+                _tab7 ??= new();
                 _tab7.Start();
-                return _tab7 ??= new();
+                return _tab7;
             default:
                 throw new InvalidEnumArgumentException();
         }

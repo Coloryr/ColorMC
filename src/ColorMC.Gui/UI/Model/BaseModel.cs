@@ -247,6 +247,14 @@ public partial class BaseModel : ObservableObject
     }
 
     /// <summary>
+    /// 关闭弹窗
+    /// </summary>
+    public void ShowClose()
+    {
+        DClose();
+    }
+
+    /// <summary>
     /// 显示进度条
     /// </summary>
     public void Progress()
@@ -551,6 +559,7 @@ public partial class BaseModel : ObservableObject
     /// <returns>结果</returns>
     public async Task<bool> ShowWait(string data)
     {
+        _info4.EnableVisable = true;
         bool reut = false;
         _info4.Enable = true;
         _info4.Text = data;
@@ -572,12 +581,30 @@ public partial class BaseModel : ObservableObject
         return reut;
     }
 
+    public void ShowCancel(string data, Action action)
+    {
+        _info4.Enable = true;
+        _info4.Text = data;
+        _info4.CancelVisable = true;
+        _info4.EnableVisable = false;
+
+        _info4.Call = (res) =>
+        {
+            _info4.EnableVisable = true;
+            action.Invoke();
+        };
+
+        DClose();
+        DialogHost.Show(_info4, Name);
+    }
+
     /// <summary>
     /// 打开一个对话框，显示内容
     /// </summary>
     /// <param name="data">内容</param>
     public void Show(string data)
     {
+        _info4.EnableVisable = true;
         _info4.Enable = true;
         _info4.CancelVisable = false;
         _info4.Call = null;
@@ -589,6 +616,7 @@ public partial class BaseModel : ObservableObject
 
     public void ShowOk(string data, Action action)
     {
+        _info4.EnableVisable = true;
         _info4.Enable = true;
         _info4.CancelVisable = false;
         _info4.Text = data;

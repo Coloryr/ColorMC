@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -15,12 +16,8 @@ public partial class SingleWindow : Window
         InitializeComponent();
 
         Icon = App.Icon;
-
-        if (SystemInfo.Os == OsType.MacOS)
-        {
-            KeyDown += Window_KeyDown;
-        }
-        else if (SystemInfo.Os == OsType.Linux)
+       
+        if (SystemInfo.Os == OsType.Linux)
         {
             SystemDecorations = SystemDecorations.BorderOnly;
         }
@@ -28,6 +25,9 @@ public partial class SingleWindow : Window
         Closed += UserWindow_Closed;
         Opened += UserWindow_Opened;
         Closing += SingleWindow_Closing;
+
+        AddHandler(KeyDownEvent, Window_KeyDown, RoutingStrategies.Tunnel);
+
         PropertyChanged += SelfBaseWindow_PropertyChanged;
 
         DataContext = Win.DataContext;
@@ -61,9 +61,15 @@ public partial class SingleWindow : Window
         }
     }
 
-    private void Window_KeyDown(object? sender, KeyEventArgs e)
+    private async void Window_KeyDown(object? sender, KeyEventArgs e)
     {
-        if (e.KeyModifiers == KeyModifiers.Control)
+        if (await Win.IKeyDown(sender, e))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        if (SystemInfo.Os == OsType.MacOS && e.KeyModifiers == KeyModifiers.Control)
         {
             switch (e.Key)
             {

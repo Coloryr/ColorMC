@@ -15,6 +15,8 @@ public partial class Info4Model(string? name) : ObservableObject
     private bool _enable;
     [ObservableProperty]
     private bool _cancelVisable;
+    [ObservableProperty]
+    private bool _enableVisable = true;
 
     [RelayCommand]
     public void Cancel()

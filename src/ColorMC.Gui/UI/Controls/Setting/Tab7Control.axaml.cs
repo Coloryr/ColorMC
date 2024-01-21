@@ -23,7 +23,7 @@ public partial class Tab7Control : UserControl
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (DataContext is SettingModel model && model.NowView == 6)
+        if (DataContext is SettingModel model && model.NowView == 7)
         {
             model.WhellChange(e.Delta.Y);
         }
