@@ -1,0 +1,185 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Setting.Tab8Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:SettingModel"
+    mc:Ignorable="d">
+    <ScrollViewer Name="ScrollViewer1" Margin="5,0,5,5">
+        <StackPanel>
+            <Panel Margin="0,0,0,5">
+                <Border
+                    Padding="{setting:Style BorderPadding}"
+                    Background="{setting:Colors GroupBack}"
+                    BorderBrush="{setting:Colors GroupColor}"
+                    BorderThickness="2"
+                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                    <StackPanel>
+                        <ToggleSwitch
+                            Margin="0,0,10,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding InputEnable}"
+                            OffContent="启用游戏内手柄支持"
+                            OnContent="启用游戏内手柄支持" />
+                        <WrapPanel Margin="0,0,0,5">
+                            <TextBlock Text="检测到手柄数量：" />
+                            <TextBlock Text="{Binding InputNum}" />
+                        </WrapPanel>
+
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="手柄列表" />
+                            <ComboBox
+                                Width="200"
+                                Margin="0,0,5,0"
+                                ItemsSource="{Binding InputNames}"
+                                SelectedIndex="{Binding InputIndex}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border
+                    Background="{setting:Colors GroupBack}"
+                    BorderBrush="{setting:Colors GroupColor}"
+                    BorderThickness="2"
+                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                    IsVisible="{Binding !InputInit}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="手柄输入初始化失败" />
+                </Border>
+            </Panel>
+            <Border
+                Margin="0,0,0,5"
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsEnabled="{Binding InputExist}">
+                <StackPanel VerticalAlignment="Top">
+                    <StackPanel>
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Command="{Binding AddInput}"
+                            Content="添加绑定"
+                            Focusable="False" />
+                        <DataGrid
+                            Name="DataGrid1"
+                            Height="200"
+                            AutoGenerateColumns="False"
+                            CanUserResizeColumns="True"
+                            CanUserSortColumns="False"
+                            IsEnabled="{Binding InputExist}"
+                            ItemsSource="{Binding InputList}"
+                            SelectedItem="{Binding InputItem}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Binding="{Binding InputKey}"
+                                    Header="按键值"
+                                    IsReadOnly="True" />
+                                <DataGridTemplateColumn Header="按键">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <Svg MaxHeight="30" Path="{Binding Icon}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn
+                                    Binding="{Binding Bind}"
+                                    Header="绑定值"
+                                    IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsEnabled="{Binding InputExist}">
+                <StackPanel VerticalAlignment="Top">
+                    <StackPanel>
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Command="{Binding AddAxisInput}"
+                            Content="添加扳机"
+                            Focusable="False" />
+                    </StackPanel>
+
+                    <DataGrid
+                        Name="DataGrid2"
+                        Height="100"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="False"
+                        IsEnabled="{Binding InputExist}"
+                        ItemsSource="{Binding InputAxisList}"
+                        SelectedItem="{Binding InputAxisItem}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Binding="{Binding InputKey}"
+                                Header="按键值"
+                                IsReadOnly="True" />
+                            <DataGridTemplateColumn Header="按键">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <Svg MaxHeight="30" Path="{Binding Icon}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding Start}" Header="压力范围" />
+                            <DataGridTextColumn Binding="{Binding End}" />
+                            <DataGridTextColumn
+                                Binding="{Binding Bind}"
+                                Header="绑定值"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn Binding="{Binding NowValue}" IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <Border
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsEnabled="{Binding InputExist}">
+                <StackPanel>
+                    <TextBlock Text="摇杆灵敏度设置" />
+                    <TextBlock Text="移动触发灵敏度" />
+                </StackPanel>
+            </Border>
+
+            <Border
+                Padding="{setting:Style BorderPadding}"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}"
+                IsEnabled="{Binding InputExist}">
+                <StackPanel>
+                    <TextBlock Text="附加功能设置" />
+
+                    <TextBlock Text="物品栏轮询" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

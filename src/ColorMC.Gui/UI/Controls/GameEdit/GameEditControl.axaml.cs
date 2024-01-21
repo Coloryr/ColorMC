@@ -8,6 +8,7 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
 using System.ComponentModel;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -40,7 +41,7 @@ public partial class GameEditControl : MenuControl
         _obj = obj;
     }
 
-    public override async void OnKeyDown(object? sender, KeyEventArgs e)
+    public override async Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.F5)
         {
@@ -69,7 +70,11 @@ public partial class GameEditControl : MenuControl
                     await model.LoadSchematic();
                     break;
             }
+
+            return true;
         }
+
+        return false;
     }
     public override void Opened()
     {

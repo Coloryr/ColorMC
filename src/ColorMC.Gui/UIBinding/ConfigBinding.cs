@@ -7,6 +7,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -90,7 +91,8 @@ public static class ConfigBinding
     /// <summary>
     /// 设置启动器颜色
     /// </summary>
-    public static void SetColor(string main, string back, string back1, string font1, string font2, string back2, string back3, string font3, string font4)
+    public static void SetColor(string main, string back, string back1, string font1, string font2, 
+        string back2, string back3, string font3, string font4)
     {
         GuiConfigUtils.Config.ColorMain = main;
         GuiConfigUtils.Config.ColorLight.ColorBack = back;
@@ -202,7 +204,7 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Http ??= new();
+        ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
         ConfigUtils.Config.Http.Source = value;
         ConfigUtils.Save();
 
@@ -216,7 +218,7 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Http ??= new();
+        ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
         ConfigUtils.Config.Http.DownloadThread = value;
         ConfigUtils.Save();
     }
@@ -228,7 +230,7 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Http ??= new();
+        ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
         ConfigUtils.Config.Http.ProxyIP = ip;
         ConfigUtils.Config.Http.ProxyPort = port;
         ConfigUtils.Config.Http.ProxyUser = user;
@@ -245,7 +247,7 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Http ??= new();
+        ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
         ConfigUtils.Config.Http.LoginProxy = v1;
         ConfigUtils.Config.Http.DownloadProxy = v2;
         ConfigUtils.Config.Http.GameProxy = v3;
@@ -261,7 +263,7 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Http ??= new();
+        ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
         ConfigUtils.Config.Http.CheckFile = v1;
         ConfigUtils.Config.Http.AutoDownload = v2;
         ConfigUtils.Config.Http.CheckUpdate = v3;
@@ -270,7 +272,7 @@ public static class ConfigBinding
 
     public static void SetGc(GCType gc, string? arg)
     {
-        ConfigUtils.Config.DefaultJvmArg ??= new();
+        ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
         ConfigUtils.Config.DefaultJvmArg.GC = gc;
         ConfigUtils.Config.DefaultJvmArg.GCArgument = arg;
         ConfigUtils.Save();
@@ -278,7 +280,7 @@ public static class ConfigBinding
 
     public static void SetRunCommand(bool v1, bool v2, string? v3, string? v4)
     {
-        ConfigUtils.Config.DefaultJvmArg ??= new();
+        ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
         ConfigUtils.Config.DefaultJvmArg.LaunchPre = v1;
         ConfigUtils.Config.DefaultJvmArg.LaunchPost = v2;
         ConfigUtils.Config.DefaultJvmArg.LaunchPreData = v3;
@@ -288,7 +290,7 @@ public static class ConfigBinding
 
     public static void SetRunArg(string? v1, string? v2, string? v3, string? v4)
     {
-        ConfigUtils.Config.DefaultJvmArg ??= new();
+        ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
         ConfigUtils.Config.DefaultJvmArg.JavaAgent = v1;
         ConfigUtils.Config.DefaultJvmArg.JvmArgs = v2;
         ConfigUtils.Config.DefaultJvmArg.GameArgs = v3;
@@ -298,7 +300,7 @@ public static class ConfigBinding
 
     public static void SetGameWindow(bool v1, uint v2, uint v3)
     {
-        ConfigUtils.Config.Window ??= new();
+        ConfigUtils.Config.Window ??= ConfigUtils.MakeWindowSettingConfig();
         ConfigUtils.Config.Window.FullScreen = v1;
         ConfigUtils.Config.Window.Width = v2;
         ConfigUtils.Config.Window.Height = v3;
@@ -307,7 +309,7 @@ public static class ConfigBinding
 
     public static void SetMemory(uint minMemory, uint maxMemory)
     {
-        ConfigUtils.Config.DefaultJvmArg ??= new();
+        ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
         ConfigUtils.Config.DefaultJvmArg.MinMemory = minMemory;
         ConfigUtils.Config.DefaultJvmArg.MaxMemory = maxMemory;
         ConfigUtils.Save();
@@ -332,7 +334,7 @@ public static class ConfigBinding
     public static void SetGameCheckConfig(bool v1, bool v2, bool v3, bool v4,
         bool v5, bool v6, bool v7, bool v8)
     {
-        ConfigUtils.Config.GameCheck ??= new();
+        ConfigUtils.Config.GameCheck ??= ConfigUtils.MakeGameCheckConfig();
         ConfigUtils.Config.GameCheck.CheckCore = v1;
         ConfigUtils.Config.GameCheck.CheckAssets = v2;
         ConfigUtils.Config.GameCheck.CheckLib = v3;
@@ -452,7 +454,7 @@ public static class ConfigBinding
 
     public static void SetMotd(string v1, ushort v2, bool v3, bool v4, string v5, string v6)
     {
-        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.IP = v1;
         GuiConfigUtils.Config.ServerCustom.Port = v2;
         GuiConfigUtils.Config.ServerCustom.Motd = v3;
@@ -468,7 +470,7 @@ public static class ConfigBinding
 
     public static void SetOneGame(bool v1, string? v2)
     {
-        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.LockGame = v1;
         GuiConfigUtils.Config.ServerCustom.GameName = v2;
         GuiConfigUtils.Save();
@@ -478,7 +480,7 @@ public static class ConfigBinding
 
     public static void SetUI(bool enable, string? value)
     {
-        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.EnableUI = enable;
         GuiConfigUtils.Config.ServerCustom.UIFile = value;
         GuiConfigUtils.Save();
@@ -486,7 +488,7 @@ public static class ConfigBinding
 
     public static void SetMusic(bool v1, bool v2, string? v3, int v4, bool v5)
     {
-        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.PlayMusic = v1;
         GuiConfigUtils.Config.ServerCustom.SlowVolume = v2;
         GuiConfigUtils.Config.ServerCustom.Music = v3;
@@ -497,7 +499,7 @@ public static class ConfigBinding
 
     public static void SetLoginLock(bool enableOneLogin, int login, string url)
     {
-        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.LockLogin = enableOneLogin;
         GuiConfigUtils.Config.ServerCustom.LoginType = login;
         GuiConfigUtils.Config.ServerCustom.LoginUrl = url;
@@ -518,7 +520,7 @@ public static class ConfigBinding
 
     public static void DeleteLive2D()
     {
-        GuiConfigUtils.Config.Live2D ??= new();
+        GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
         GuiConfigUtils.Config.Live2D.Model = null;
         GuiConfigUtils.Save();
 
@@ -527,7 +529,7 @@ public static class ConfigBinding
 
     public static void SetLive2D(bool enable)
     {
-        GuiConfigUtils.Config.Live2D ??= new();
+        GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
         GuiConfigUtils.Config.Live2D.Enable = enable;
         GuiConfigUtils.Save();
 
@@ -536,7 +538,7 @@ public static class ConfigBinding
 
     public static void SetLive2D(string? live2DModel)
     {
-        GuiConfigUtils.Config.Live2D ??= new();
+        GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
         GuiConfigUtils.Config.Live2D.Model = live2DModel;
         GuiConfigUtils.Save();
 
@@ -545,7 +547,7 @@ public static class ConfigBinding
 
     public static void SetLive2DSize(int width, int height, int pos)
     {
-        GuiConfigUtils.Config.Live2D ??= new();
+        GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
         GuiConfigUtils.Config.Live2D.Width = width;
         GuiConfigUtils.Config.Live2D.Height = height;
         GuiConfigUtils.Config.Live2D.Pos = pos;
@@ -556,7 +558,7 @@ public static class ConfigBinding
 
     public static void SetStyle(int value)
     {
-        GuiConfigUtils.Config.Style ??= new();
+        GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
         GuiConfigUtils.Config.Style.ButtonCornerRadius = value;
         GuiConfigUtils.Save();
 
@@ -565,7 +567,7 @@ public static class ConfigBinding
 
     public static void SetStyle1(int value, bool value1)
     {
-        GuiConfigUtils.Config.Style ??= new();
+        GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
         GuiConfigUtils.Config.Style.AmTime = value;
         GuiConfigUtils.Config.Style.AmFade = value1;
         GuiConfigUtils.Save();
@@ -587,7 +589,7 @@ public static class ConfigBinding
 
     public static void SetRadiusEnable(bool enablePicRadius, bool enableBorderRadius)
     {
-        GuiConfigUtils.Config.Style ??= new();
+        GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
         GuiConfigUtils.Config.Style.EnablePicRadius = enablePicRadius;
         GuiConfigUtils.Config.Style.EnableBorderRadius = enableBorderRadius;
         GuiConfigUtils.Save();
@@ -612,5 +614,48 @@ public static class ConfigBinding
     public static bool LoadFrpConfig(string local)
     {
         return FrpConfigUtils.Load(local, true);
+    }
+
+    public static void SaveInput(bool enable)
+    {
+        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
+        GuiConfigUtils.Config.Input.Enable = enable;
+        GuiConfigUtils.Save();
+    }
+
+    public static void AddInput(byte key, InputKeyObj obj)
+    {
+        GuiConfigUtils.Config.Input ??= new();
+        if (!GuiConfigUtils.Config.Input.Keys.TryAdd(key, obj))
+        {
+            GuiConfigUtils.Config.Input.Keys[key] = obj;
+        }
+        GuiConfigUtils.Save();
+    }
+
+    public static void DeleteInput(byte key)
+    {
+        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
+        GuiConfigUtils.Config.Input.Keys.Remove(key);
+        GuiConfigUtils.Save();
+    }
+
+    public static void AddAxisInput(string uuid, InputAxisObj obj)
+    {
+        GuiConfigUtils.Config.Input ??= new();
+        if (!GuiConfigUtils.Config.Input.AxisKeys.TryAdd(uuid, obj))
+        {
+            GuiConfigUtils.Config.Input.AxisKeys[uuid] = obj;
+        }
+        GuiConfigUtils.Save();
+    }
+
+    public static void DeleteAxisInput(string key)
+    {
+        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
+        if (GuiConfigUtils.Config.Input.AxisKeys.Remove(key))
+        {
+            GuiConfigUtils.Save();
+        }
     }
 }

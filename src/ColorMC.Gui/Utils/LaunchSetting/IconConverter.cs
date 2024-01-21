@@ -64,4 +64,51 @@ public static class IconConverter
 
     public static IMultiValueConverter FileIconConverter { get; }
     public static IMultiValueConverter NbtIconConverter { get; }
+    public static Dictionary<byte, string> InputKeyIcon { get; } = new()
+    {
+        { 0, "/Resource/Icon/Input/button_a.svg" },
+        { 1, "/Resource/Icon/Input/button_b.svg" },
+        { 2, "/Resource/Icon/Input/button_x.svg" },
+        { 3, "/Resource/Icon/Input/button_y.svg" },
+        { 4, "/Resource/Icon/Input/button_menu1.svg" },
+        { 6, "/Resource/Icon/Input/button_menu.svg" },
+        { 7, "/Resource/Icon/Input/button_l.svg" },
+        { 8, "/Resource/Icon/Input/button_r.svg" },
+        { 9, "/Resource/Icon/Input/button_lb.svg" },
+        { 10, "/Resource/Icon/Input/button_rb.svg" },
+        { 11, "/Resource/Icon/Input/button_up.svg" },
+        { 12, "/Resource/Icon/Input/button_down.svg" },
+        { 13, "/Resource/Icon/Input/button_left.svg" },
+        { 14, "/Resource/Icon/Input/button_right.svg" },
+    };
+
+    public static Dictionary<byte, string> InputAxisIcon { get; } = new()
+    {
+        { 4, "/Resource/Icon/Input/button_lt.svg" },
+        { 5, "/Resource/Icon/Input/button_rt.svg" },
+    };
+
+    public static string GetInputKeyIcon(byte key)
+    {
+        if (InputKeyIcon.TryGetValue(key, out var icon))
+        {
+            return icon;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    public static string GetInputAxisIcon(byte key)
+    {
+        if (InputAxisIcon.TryGetValue(key, out var icon))
+        {
+            return icon;
+        }
+        else
+        {
+            return "";
+        }
+    }
 }

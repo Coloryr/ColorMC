@@ -29,7 +29,8 @@
                 Margin="10,0,10,0"
                 Command="{Binding Confirm}"
                 Content="{setting:Localize Button.Confirm}"
-                IsEnabled="{Binding Enable}" />
+                IsEnabled="{Binding Enable}"
+                IsVisible="{Binding EnableVisable}" />
             <Button
                 Width="100"
                 Height="25"

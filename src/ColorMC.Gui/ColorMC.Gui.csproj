@@ -72,6 +72,22 @@
     <None Remove="Resource\Icon\Head\max.svg" />
     <None Remove="Resource\Icon\Head\max1.svg" />
     <None Remove="Resource\Icon\Head\min.svg" />
+    <None Remove="Resource\Icon\Input\button_a.svg" />
+    <None Remove="Resource\Icon\Input\button_b.svg" />
+    <None Remove="Resource\Icon\Input\button_bottom.svg" />
+    <None Remove="Resource\Icon\Input\button_l.svg" />
+    <None Remove="Resource\Icon\Input\button_lb.svg" />
+    <None Remove="Resource\Icon\Input\button_left.svg" />
+    <None Remove="Resource\Icon\Input\button_lt.svg" />
+    <None Remove="Resource\Icon\Input\button_menu.svg" />
+    <None Remove="Resource\Icon\Input\button_menu1.svg" />
+    <None Remove="Resource\Icon\Input\button_r.svg" />
+    <None Remove="Resource\Icon\Input\button_rb.svg" />
+    <None Remove="Resource\Icon\Input\button_right.svg" />
+    <None Remove="Resource\Icon\Input\button_rt.svg" />
+    <None Remove="Resource\Icon\Input\button_up.svg" />
+    <None Remove="Resource\Icon\Input\button_x.svg" />
+    <None Remove="Resource\Icon\Input\button_y.svg" />
     <None Remove="Resource\Icon\Item\clipboard.svg" />
     <None Remove="Resource\Icon\Item\download.svg" />
     <None Remove="Resource\Icon\Item\ping.svg" />
@@ -172,6 +188,22 @@
     <AvaloniaResource Include="Resource\Icon\Head\max.svg" />
     <AvaloniaResource Include="Resource\Icon\Head\max1.svg" />
     <AvaloniaResource Include="Resource\Icon\Head\min.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_a.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_b.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_bottom.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_l.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_lb.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_left.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_lt.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_menu.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_menu1.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_r.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_rb.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_right.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_rt.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_up.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_x.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_y.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\clipboard.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\download.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\ping.svg" />
@@ -257,39 +289,11 @@
     <PackageReference Include="NAudio.WinMM" Version="2.2.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenTK.Audio.OpenAL" Version="4.8.2" />
+    <PackageReference Include="Silk.NET.SDL" Version="2.20.0" />
     <PackageReference Include="SkiaSharp" Version="2.88.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="UI\Controls\Add\AddGameTab1Control.axaml.cs">
-      <DependentUpon>AddGameTab1Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Add\AddGameTab2Control.axaml.cs">
-      <DependentUpon>AddGameTab2Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Add\AddGameTab3Control.axaml.cs">
-      <DependentUpon>AddGameTab3Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Dialog\NbtDialogEditControl.axaml.cs">
-      <DependentUpon>NbtDialogEditControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Dialog\NbtDialogAddControl.axaml.cs">
-      <DependentUpon>NbtDialogAddControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Main\MainGroupControl.axaml.cs">
-      <DependentUpon>MainGroupControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Main\MainStartControl.axaml.cs">
-      <DependentUpon>MainStartControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\NetFrp\NetFrpTab4Control.axaml.cs">
-      <DependentUpon>NetFrpTab4Control.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="UI\Controls\MenuControl.axaml" />
   </ItemGroup>
 </Project>

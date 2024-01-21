@@ -18,6 +18,7 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
@@ -93,6 +94,7 @@ public static class BaseBinding
             try
             {
                 Media.Init();
+                InputControl.Init();
             }
             catch (Exception e)
             {
@@ -394,27 +396,26 @@ public static class BaseBinding
 
             App.MainWindow?.ShowMessage(App.Lang("Live2D.Text2"));
 
-            //_ = Task.Run(() =>
-            //{
-            //    nint ptr;
-            //    Task.Delay(1000);
-            //    pr.WaitForInputIdle();
-            //    while (true)
-            //    {
-            //        Task.Delay(100);
-            //        ptr = pr.MainWindowHandle;
-            //        if (ptr != IntPtr.Zero)
-            //        {
-            //            break;
-            //        }
-            //    }
-            //    Dispatcher.UIThread.Invoke(() =>
-            //    {
-            //        EmbedSampleWin.WindowHandel = ptr;
-            //        new GameWindow().Show();
-            //        return;
-            //    });
-            //});
+            _ = Task.Run(() =>
+            {
+                nint ptr;
+                Task.Delay(1000);
+                pr.WaitForInputIdle();
+                while (true)
+                {
+                    Task.Delay(100);
+                    ptr = pr.MainWindowHandle;
+                    if (ptr != IntPtr.Zero)
+                    {
+                        break;
+                    }
+                }
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    App.ShowGameWindow(obj, pr,  ptr);
+                    return;
+                });
+            });
 
             pr.Exited += (a, b) =>
             {

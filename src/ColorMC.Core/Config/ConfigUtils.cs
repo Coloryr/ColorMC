@@ -107,7 +107,7 @@ public static class ConfigUtils
         });
     }
 
-    private static ConfigObj MakeDefaultConfig()
+    public static ConfigObj MakeDefaultConfig()
     {
         return new()
         {
@@ -120,7 +120,7 @@ public static class ConfigUtils
         };
     }
 
-    private static HttpObj MakeHttpConfig()
+    public static HttpObj MakeHttpConfig()
     {
         return new()
         {
@@ -134,7 +134,7 @@ public static class ConfigUtils
         };
     }
 
-    private static JvmArgObj MakeJvmArgConfig()
+    public static JvmArgObj MakeJvmArgConfig()
     {
         return new()
         {
@@ -144,7 +144,7 @@ public static class ConfigUtils
         };
     }
 
-    private static WindowSettingObj MakeWindowSettingConfig()
+    public static WindowSettingObj MakeWindowSettingConfig()
     {
         return new()
         {
@@ -153,7 +153,7 @@ public static class ConfigUtils
         };
     }
 
-    private static GameCheckObj MakeGameCheckConfig()
+    public static GameCheckObj MakeGameCheckConfig()
     {
         return new()
         {

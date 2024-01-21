@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
+using System;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -11,7 +12,6 @@ public interface IBaseWindow
     public IUserControl ICon { get; }
     public void SetTitle(string data);
     public void SetIcon(Bitmap icon);
-
     public void Close()
     {
         if (ConfigBinding.WindowMode())
@@ -64,4 +64,6 @@ public interface IBaseWindow
             window.Hide();
         }
     }
+
+    void SetSize(int width, int height);
 }

@@ -45,12 +45,23 @@ public partial class AllControl : UserControl, IBaseWindow
         }
 
         PointerPressed += AllControl_PointerPressed;
+        PointerReleased += AllControl_PointerReleased;
 
         ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
 
         App.PicUpdate += Update;
 
         Update();
+    }
+
+    public Task<bool> IKeyDown(object? sender, KeyEventArgs e)
+    {
+        return ICon.OnKeyDown(sender, e);
+    }
+
+    private void AllControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        ICon.IPointerReleased(e);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -86,6 +97,8 @@ public partial class AllControl : UserControl, IBaseWindow
         {
             Model.BackClick();
         }
+
+        ICon.IPointerPressed(e);
     }
 
     public void Closed()
@@ -239,5 +252,10 @@ public partial class AllControl : UserControl, IBaseWindow
     {
         ICon.WindowStateChange(windowState);
         Head.WindowStateChange(windowState);
+    }
+
+    public void SetSize(int width, int height)
+    {
+        
     }
 }
