@@ -340,11 +340,11 @@ public class TopView : NativeControlHost
     }
 }
 
-internal class Win32WindowControlHandle(IntPtr handle) 
+internal class Win32WindowControlHandle(INative native, IntPtr handle) 
     : PlatformHandle(handle, "HWND"), INativeControlHostDestroyableControlHandle
 {
     public void Destroy()
     {
-        Win32.DestroyWindow(Handle);
+        native.DestroyWindow(Handle);
     }
 }
