@@ -148,7 +148,12 @@ public static class GuiConfigUtils
         return new()
         {
             Keys = [],
-            AxisKeys = []
+            AxisKeys = [],
+            AxisL = 0,
+            AxisR = 1,
+            MoveDeath = 20,
+            RotateDeath = 20,
+            RotateRate = 0.03f
         };
     }
 

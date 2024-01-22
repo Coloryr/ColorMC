@@ -5,6 +5,7 @@ using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -39,6 +40,13 @@ internal class Program
         ColorMCCore.OnGameLog += Log;
 
         //TestItem.Item10();
+
+       var temp =  File.OpenRead("H:/forge-1.20.4-49.0.22-installer.jar");
+
+        if (!File.Exists("H:/forge-1.20.4-49.0.22-installer.jar"))
+        {
+            
+        }
 
         GetSha1();
 

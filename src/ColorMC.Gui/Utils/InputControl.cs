@@ -1,5 +1,4 @@
-﻿using Esprima;
-using Silk.NET.SDL;
+﻿using Silk.NET.SDL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,6 +147,6 @@ public static class InputControl
                     action.Invoke(sdlEvent);
                 }
             }
-        });
+        }, token);
     }
 }

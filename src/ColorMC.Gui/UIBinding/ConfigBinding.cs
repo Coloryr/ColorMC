@@ -91,7 +91,7 @@ public static class ConfigBinding
     /// <summary>
     /// 设置启动器颜色
     /// </summary>
-    public static void SetColor(string main, string back, string back1, string font1, string font2, 
+    public static void SetColor(string main, string back, string back1, string font1, string font2,
         string back2, string back3, string font3, string font4)
     {
         GuiConfigUtils.Config.ColorMain = main;
@@ -298,7 +298,7 @@ public static class ConfigBinding
         ConfigUtils.Save();
     }
 
-    public static void SetGameWindow(bool v1, uint v2, uint v3)
+    public static void SetGameWindow(bool v1, uint? v2, uint? v3)
     {
         ConfigUtils.Config.Window ??= ConfigUtils.MakeWindowSettingConfig();
         ConfigUtils.Config.Window.FullScreen = v1;
@@ -307,7 +307,7 @@ public static class ConfigBinding
         ConfigUtils.Save();
     }
 
-    public static void SetMemory(uint minMemory, uint maxMemory)
+    public static void SetMemory(uint? minMemory, uint? maxMemory)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
         ConfigUtils.Config.DefaultJvmArg.MinMemory = minMemory;
@@ -616,10 +616,11 @@ public static class ConfigBinding
         return FrpConfigUtils.Load(local, true);
     }
 
-    public static void SaveInput(bool enable)
+    public static void SaveInput(bool enable, bool item)
     {
         GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
         GuiConfigUtils.Config.Input.Enable = enable;
+        GuiConfigUtils.Config.Input.ItemCycle = item;
         GuiConfigUtils.Save();
     }
 
@@ -657,5 +658,28 @@ public static class ConfigBinding
         {
             GuiConfigUtils.Save();
         }
+    }
+
+    public static void SaveInput(int inputL, int inputR)
+    {
+        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
+        GuiConfigUtils.Config.Input.AxisL = inputL;
+        GuiConfigUtils.Config.Input.AxisR = inputR;
+        GuiConfigUtils.Save();
+    }
+
+    public static void SetItemCycle(byte left, byte right)
+    {
+        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
+        GuiConfigUtils.Config.Input.ItemCycleLeft = left;
+        GuiConfigUtils.Config.Input.ItemCycleRight = right;
+        GuiConfigUtils.Save();
+    }
+
+    public static void SetRotateRate(float value)
+    {
+        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
+        GuiConfigUtils.Config.Input.RotateRate = value;
+        GuiConfigUtils.Save();
     }
 }

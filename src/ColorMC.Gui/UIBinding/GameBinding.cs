@@ -542,7 +542,7 @@ public static class GameBinding
         obj.Save();
     }
 
-    public static void SetGameJvmArg(GameSettingObj obj, JvmArgObj obj1)
+    public static void SetGameJvmArg(GameSettingObj obj, RunArgObj obj1)
     {
         obj.JvmArg = obj1;
         obj.Save();

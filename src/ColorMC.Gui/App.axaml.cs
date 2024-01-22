@@ -730,7 +730,7 @@ public partial class App : Application
         }
         else
         {
-            var con = new GameWindowControl(process, handel);
+            var con = new GameWindowControl(obj, process, handel);
             GameWindows.Add(obj.UUID, con);
             new SelfBaseWindow(con).Show();
         }

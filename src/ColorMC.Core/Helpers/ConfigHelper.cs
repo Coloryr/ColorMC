@@ -4,7 +4,7 @@ namespace ColorMC.Core.Helpers;
 
 public static class ConfigHelper
 {
-    public static JvmArgObj Copy(this JvmArgObj arg)
+    public static RunArgObj Copy(this RunArgObj arg)
     {
         return new()
         {

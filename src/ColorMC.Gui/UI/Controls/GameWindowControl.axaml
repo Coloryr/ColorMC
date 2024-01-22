@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="Black"
     mc:Ignorable="d">
-    <Panel />
+    <Panel Name="Panel1" />
 
 </UserControl>

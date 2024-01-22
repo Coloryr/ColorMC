@@ -5,10 +5,9 @@
     <Design.PreviewWith>
         <Border Padding="20">
             <ProgressBar
-                Width="80"
-                Height="40"
-                IsIndeterminate="True"
-                Value="20" />
+                MinWidth="100"
+                Maximum="32767"
+                Value="800" />
         </Border>
     </Design.PreviewWith>
 

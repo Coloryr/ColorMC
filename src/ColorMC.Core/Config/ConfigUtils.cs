@@ -134,7 +134,7 @@ public static class ConfigUtils
         };
     }
 
-    public static JvmArgObj MakeJvmArgConfig()
+    public static RunArgObj MakeJvmArgConfig()
     {
         return new()
         {

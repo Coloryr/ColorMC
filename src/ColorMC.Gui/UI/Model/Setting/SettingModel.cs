@@ -21,7 +21,7 @@ public partial class SettingModel : MenuModel
             Text = App.Lang("SettingWindow.Tabs.Text6") },
         new() { Icon = "/Resource/Icon/Setting/item6.svg",
             Text = App.Lang("SettingWindow.Tabs.Text1") },
-         new() { Icon = "/Resource/Icon/Setting/item7.svg",
+         new() { Icon = "/Resource/Icon/Setting/item8.svg",
             Text = App.Lang("SettingWindow.Tabs.Text8") },
         new() { Icon = "/Resource/Icon/Setting/item7.svg",
             Text = App.Lang("SettingWindow.Tabs.Text7") }
