@@ -22,4 +22,5 @@ public interface INative
     IPlatformHandle CreateControl(IntPtr handel);
     void TransferEvent(IntPtr handel1);
     void Close(IntPtr handle);
+    void DestroyWindow(IntPtr handle);
 }

@@ -97,7 +97,7 @@ public class Win32Native : INative
     public IPlatformHandle CreateControl(IntPtr handel)
     {
         NoBorder(handel);
-        return new Win32WindowControlHandle(handel);
+        return new Win32WindowControlHandle(this, handel);
     }
 
     public void SetWindowState(IntPtr handel, WindowState state)
@@ -194,9 +194,14 @@ public class Win32Native : INative
         return null;
     }
 
-    public void Close(nint handle)
+    public void Close(IntPtr handle)
     {
         Win32.SendMessage(handle, Win32.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+    }
+
+    public void DestroyWindow(IntPtr handle)
+    {
+        Win32.DestroyWindow(handle);
     }
 
     internal unsafe class Win32
