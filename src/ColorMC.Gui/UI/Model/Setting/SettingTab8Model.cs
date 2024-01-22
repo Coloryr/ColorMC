@@ -4,6 +4,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Silk.NET.SDL;
@@ -22,6 +23,9 @@ public partial class SettingModel
 
     public ObservableCollection<InputAxisButtonModel> InputAxisList { get; init; } = [];
 
+    public string[] CursorAxisType { get; init; } = ["左摇杆", "右摇杆"];
+    public string[] AxisType { get; init; } = ["移动", "视角"];
+
     [ObservableProperty]
     private InputButtonModel _inputItem;
 
@@ -34,21 +38,119 @@ public partial class SettingModel
     private bool _inputExist;
     [ObservableProperty]
     private bool _inputEnable;
+    [ObservableProperty]
+    private bool _itemCycle;
 
     [ObservableProperty]
     private int _inputNum;
     [ObservableProperty]
     private int _inputIndex = -1;
+    [ObservableProperty]
+    private int _inputAxisL = 0;
+    [ObservableProperty]
+    private int _inputAxisR = 1;
+    [ObservableProperty]
+    private int _moveDeath;
+    [ObservableProperty]
+    private int _rotateDeath;
+    [ObservableProperty]
+    private int _inputCursorAxis = 0;
+
+    [ObservableProperty]
+    private int _nowAxis1;
+    [ObservableProperty]
+    private int _nowAxis2;
+
+    [ObservableProperty]
+    private byte _itemCycleLeft;
+    [ObservableProperty]
+    private byte _itemCycleRight;
+
+    [ObservableProperty]
+    private string _cycleLeftIcon;
+    [ObservableProperty]
+    private string _cycleRightIcon;
+
+    [ObservableProperty]
+    private float _rotateRate;
+    [ObservableProperty]
+    private float _cursorRate;
+
+    private short leftX, leftY, rightX, rightY;
 
     private readonly Semaphore semaphore = new(0, 2);
 
     private InputKeyObj _output;
-    private bool isInput;
 
     private IntPtr ptr;
     private CancellationTokenSource? readCancel;
 
+    private bool isInput;
     private bool isInputLoad;
+
+    partial void OnRotateRateChanged(float value)
+    {
+        if (isInputLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetRotateRate(RotateRate);
+    }
+
+    partial void OnItemCycleChanged(bool value)
+    {
+        if (isInputLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SaveInput(InputEnable, ItemCycle);
+    }
+
+    partial void OnItemCycleLeftChanged(byte value)
+    {
+        CycleLeftIcon = IconConverter.GetInputKeyIcon(ItemCycleLeft);
+
+        if (isInputLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetItemCycle(ItemCycleLeft, ItemCycleRight);
+    }
+
+    partial void OnItemCycleRightChanged(byte value)
+    {
+        CycleRightIcon = IconConverter.GetInputKeyIcon(ItemCycleRight);
+
+        if (isInputLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetItemCycle(ItemCycleLeft, ItemCycleRight);
+    }
+
+    partial void OnInputAxisLChanged(int value)
+    {
+        if (isInputLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SaveInput(InputAxisL, InputAxisR);
+    }
+
+    partial void OnInputAxisRChanged(int value)
+    {
+        if (isInputLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SaveInput(InputAxisL, InputAxisR);
+    }
 
     partial void OnInputIndexChanged(int value)
     {
@@ -78,7 +180,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SaveInput(InputEnable);
+        ConfigBinding.SaveInput(InputEnable, ItemCycle);
     }
 
     [RelayCommand]
@@ -117,8 +219,34 @@ public partial class SettingModel
             End = short.MaxValue
         };
         InputAxisList.Add(item1);
-        ConfigBinding.AddAxisInput(item1.UUID, item1.GenoObj());
+        ConfigBinding.AddAxisInput(item1.UUID, item1.GenObj());
         Model.Notify("已添加");
+    }
+
+    [RelayCommand]
+    public async Task SetItemButton(object? right)
+    {
+        using var cannel = new CancellationTokenSource();
+        Model.ShowCancel("请按下手柄按键来绑定", () =>
+        {
+            cannel.Cancel();
+        });
+        var key = await InputControl.WaitInput(ptr, cannel.Token);
+        Model.ShowClose();
+        if (key == null)
+        {
+            return;
+        }
+        var key1 = (byte)key;
+
+        if (right is bool value && value)
+        {
+            ItemCycleRight = key1;
+        }
+        else
+        {
+            ItemCycleLeft = key1;
+        }
     }
 
     [RelayCommand]
@@ -166,10 +294,45 @@ public partial class SettingModel
         Model.Notify("已添加");
     }
 
+    public void InputSave(InputAxisButtonModel model)
+    {
+        ConfigBinding.AddAxisInput(model.UUID, model.GenObj());
+    }
+
     private void StartRead()
     {
         readCancel = new();
         InputControl.StartRead(ReadData, ptr, readCancel.Token);
+    }
+
+    private void UpdateType1()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (InputAxisL == 0)
+            {
+                NowAxis1 = Math.Max(leftX, leftY);
+            }
+            else
+            {
+                NowAxis2 = Math.Max(leftX, leftY);
+            }
+        });
+    }
+
+    private void UpdateType2()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (InputAxisR == 0)
+            {
+                NowAxis1 = Math.Max(rightX, rightY);
+            }
+            else
+            {
+                NowAxis2 = Math.Max(rightX, rightY);
+            }
+        });
     }
 
     private void ReadData(Event sdlEvent)
@@ -178,6 +341,27 @@ public partial class SettingModel
         {
             var axisEvent = sdlEvent.Caxis;
             var axisValue = axisEvent.Value;
+
+            if (axisEvent.Axis == (uint)GameControllerAxis.Leftx)
+            {
+                leftX = Math.Abs(axisValue);
+                UpdateType1();
+            }
+            else if (axisEvent.Axis == (uint)GameControllerAxis.Lefty)
+            {
+                leftY = Math.Abs(axisValue);
+                UpdateType1();
+            }
+            else if (axisEvent.Axis == (uint)GameControllerAxis.Rightx)
+            {
+                rightX = Math.Abs(axisValue);
+                UpdateType2();
+            }
+            else if (axisEvent.Axis == (uint)GameControllerAxis.Righty)
+            {
+                rightY = Math.Abs(axisValue);
+                UpdateType2();
+            }
 
             Dispatcher.UIThread.Post(() =>
             {
@@ -222,6 +406,20 @@ public partial class SettingModel
             });
         }
 
+        InputAxisL = config.AxisL;
+        InputAxisR = config.AxisR;
+
+        MoveDeath = config.MoveDeath;
+        RotateDeath = config.RotateDeath;
+
+        RotateRate = config.RotateRate;
+
+        ItemCycle = config.ItemCycle;
+        ItemCycleLeft = config.ItemCycleLeft;
+        ItemCycleRight = config.ItemCycleRight;
+
+        InputCursorAxis = config.CursorAxis;
+        CursorRate = config.CursorRate;
 
         isInputLoad = false;
 
@@ -232,13 +430,13 @@ public partial class SettingModel
 
         InputInit = true;
 
-        InputNum = InputControl.Count;
-
         ReloadInput();
     }
 
     public void ReloadInput()
     {
+        InputNum = InputControl.Count;
+
         InputNames.Clear();
         InputControl.GetNames().ForEach(InputNames.Add);
         if (InputNames.Count != 0)
@@ -293,7 +491,7 @@ public partial class SettingModel
 
         if (item is InputAxisButtonModel model)
         {
-            ConfigBinding.AddAxisInput(model.UUID, model.GenoObj());
+            ConfigBinding.AddAxisInput(model.UUID, model.GenObj());
         }
         else
         {

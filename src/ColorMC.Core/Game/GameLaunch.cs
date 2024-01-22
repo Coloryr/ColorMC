@@ -384,7 +384,7 @@ public static class Launch
     /// <returns>Jvm参数</returns>
     private static async Task<List<string>> JvmArgAsync(GameSettingObj obj, bool v2, LoginObj login)
     {
-        JvmArgObj args;
+        RunArgObj args;
 
         if (obj.JvmArg == null)
         {
@@ -441,13 +441,13 @@ public static class Launch
         }
 
         //mem
-        if (args.MinMemory != 0)
+        if (args.MinMemory is { } min && min != 0)
         {
-            jvm.Add($"-Xms{args.MinMemory}m");
+            jvm.Add($"-Xms{min}m");
         }
-        if (args.MaxMemory != 0)
+        if (args.MaxMemory is { } max && max != 0)
         {
-            jvm.Add($"-Xmx{args.MaxMemory}m");
+            jvm.Add($"-Xmx{max}m");
         }
         if (!string.IsNullOrWhiteSpace(args.JvmArgs))
         {
@@ -457,47 +457,50 @@ public static class Launch
             }
         }
 
-        //loader
-        if (v2 && obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
+        if (obj.JvmArg?.RemoveJvmArg != true)
         {
-            jvm.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
-            jvm.Add($"-Dforgewrapper.installer={(obj.Loader == Loaders.NeoForge ?
-                DownloadItemHelper.BuildNeoForgeInstaller(obj.Version, obj.LoaderVersion!).Local :
-                DownloadItemHelper.BuildForgeInstaller(obj.Version, obj.LoaderVersion!).Local)}");
-            jvm.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
-            if (SystemInfo.Os == OsType.Android)
+            //loader
+            if (v2 && obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
             {
-                jvm.Add("-Dforgewrapper.justLaunch=true");
+                jvm.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
+                jvm.Add($"-Dforgewrapper.installer={(obj.Loader == Loaders.NeoForge ?
+                    DownloadItemHelper.BuildNeoForgeInstaller(obj.Version, obj.LoaderVersion!).Local :
+                    DownloadItemHelper.BuildForgeInstaller(obj.Version, obj.LoaderVersion!).Local)}");
+                jvm.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
+                if (SystemInfo.Os == OsType.Android)
+                {
+                    jvm.Add("-Dforgewrapper.justLaunch=true");
+                }
             }
-        }
-        else if (obj.Loader == Loaders.OptiFine)
-        {
-            jvm.Add($"-Dlibdir={LibrariesPath.BaseDir}");
-            jvm.Add($"-Dgamecore={LibrariesPath.GetGameFile(obj.Version)}");
-            jvm.Add($"-Doptifine={Path.GetFullPath(LibrariesPath.GetOptiFineLib(obj))}");
-            if (v2)
+            else if (obj.Loader == Loaders.OptiFine)
             {
-                jvm.Add("--add-opens");
-                jvm.Add("java.base/java.lang=ALL-UNNAMED");
-                jvm.Add("--add-opens");
-                jvm.Add("java.base/java.util=ALL-UNNAMED");
-                jvm.Add("--add-opens");
-                jvm.Add("java.base/java.net=ALL-UNNAMED");
-                jvm.Add("--add-opens");
-                jvm.Add("java.base/jdk.internal.loader=ALL-UNNAMED");
+                jvm.Add($"-Dlibdir={LibrariesPath.BaseDir}");
+                jvm.Add($"-Dgamecore={LibrariesPath.GetGameFile(obj.Version)}");
+                jvm.Add($"-Doptifine={Path.GetFullPath(LibrariesPath.GetOptiFineLib(obj))}");
+                if (v2)
+                {
+                    jvm.Add("--add-opens");
+                    jvm.Add("java.base/java.lang=ALL-UNNAMED");
+                    jvm.Add("--add-opens");
+                    jvm.Add("java.base/java.util=ALL-UNNAMED");
+                    jvm.Add("--add-opens");
+                    jvm.Add("java.base/java.net=ALL-UNNAMED");
+                    jvm.Add("--add-opens");
+                    jvm.Add("java.base/jdk.internal.loader=ALL-UNNAMED");
+                }
             }
+
+            //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");
+            //jvmHead.Add("-XX:+UnlockExperimentalVMOptions");
+            jvm.Add("-Dfml.ignoreInvalidMinecraftCertificates=true");
+            jvm.Add("-Dfml.ignorePatchDiscrepancies=true");
+            jvm.Add("-Dlog4j2.formatMsgNoLookups=true");
+            //jvmHead.Add("-Dcom.sun.jndi.rmi.object.trustURLCodebase=false");
+            //jvmHead.Add("-Dcom.sun.jndi.cosnaming.object.trustURLCodebase=false");
+            //jvmHead.Add($"-Dminecraft.client.jar={VersionPath.BaseDir}/{obj.Version}.jar");
+
+            jvm.AddRange(v2 ? MakeV2JvmArg(obj) : V1JvmArg);
         }
-
-        //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");
-        //jvmHead.Add("-XX:+UnlockExperimentalVMOptions");
-        jvm.Add("-Dfml.ignoreInvalidMinecraftCertificates=true");
-        jvm.Add("-Dfml.ignorePatchDiscrepancies=true");
-        jvm.Add("-Dlog4j2.formatMsgNoLookups=true");
-        //jvmHead.Add("-Dcom.sun.jndi.rmi.object.trustURLCodebase=false");
-        //jvmHead.Add("-Dcom.sun.jndi.cosnaming.object.trustURLCodebase=false");
-        //jvmHead.Add($"-Dminecraft.client.jar={VersionPath.BaseDir}/{obj.Version}.jar");
-
-        jvm.AddRange(v2 ? MakeV2JvmArg(obj) : V1JvmArg);
 
         //auth
         if (login.AuthType == AuthType.Nide8)
@@ -543,7 +546,11 @@ public static class Launch
     /// <returns>游戏启动参数</returns>
     private static List<string> GameArg(GameSettingObj obj, bool v2, WorldObj? world)
     {
-        List<string> gameArg = [.. v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj)];
+        var gameArg = new List<string>();
+        if (obj.JvmArg?.RemoveGameArg != true)
+        {
+            gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
+        }
 
         if (SystemInfo.Os != OsType.Android)
         {
@@ -820,7 +827,7 @@ public static class Launch
         var sep = SystemInfo.Os == OsType.Windows ? ';' : ':';
         ColorMCCore.GameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
 
-        //去除重复的classpath
+        //附加的classpath
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.ClassPath))
         {
             var list = obj.AdvanceJvm.ClassPath.Split(';');
@@ -828,9 +835,11 @@ public static class Launch
             var dir2 = obj.GetBasePath();
             foreach (var item1 in list)
             {
-                var path = Path.GetFullPath(item1
+                var path = item1
                     .Replace(GAME_DIR, dir1)
-                    .Replace(GAME_BASE_DIR, dir2));
+                    .Replace(GAME_BASE_DIR, dir2)
+                    .Trim();
+                path = Path.GetFullPath(path);
                 if (File.Exists(path))
                 {
                     libraries.Add(path);

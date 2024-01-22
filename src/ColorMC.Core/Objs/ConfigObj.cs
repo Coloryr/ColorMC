@@ -75,8 +75,16 @@ public enum GCType
 /// <summary>
 /// 启动参数
 /// </summary>
-public record JvmArgObj
+public record RunArgObj
 {
+    /// <summary>
+    /// 删除原有的Jvm参数
+    /// </summary>
+    public bool? RemoveJvmArg { get; set; }
+    /// <summary>
+    /// 删除原有的游戏参数
+    /// </summary>
+    public bool? RemoveGameArg { get; set; }
     /// <summary>
     /// 自定义Jvm参数
     /// </summary>
@@ -124,7 +132,7 @@ public record ConfigObj
     public List<JvmConfigObj> JavaList { get; set; }
 
     public HttpObj Http { get; set; }
-    public JvmArgObj DefaultJvmArg { get; set; }
+    public RunArgObj DefaultJvmArg { get; set; }
     public WindowSettingObj Window { get; set; }
     public GameCheckObj GameCheck { get; set; }
     public bool SafeLog4j { get; set; }

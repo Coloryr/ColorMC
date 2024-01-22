@@ -198,10 +198,10 @@ public partial class SettingModel
         {
             GC = (con.DefaultJvmArg.GC ?? GCType.G1GC);
 
-            MinMemory = con.DefaultJvmArg.MinMemory ?? 512;
-            MaxMemory = con.DefaultJvmArg.MaxMemory ?? 4096;
-            Width = con.Window.Width ?? 1280;
-            Height = con.Window.Height ?? 720;
+            MinMemory = con.DefaultJvmArg.MinMemory;
+            MaxMemory = con.DefaultJvmArg.MaxMemory;
+            Width = con.Window.Width;
+            Height = con.Window.Height;
 
             GCArg = con.DefaultJvmArg.GCArgument;
             JavaAgent = con.DefaultJvmArg.JavaAgent;
@@ -237,7 +237,7 @@ public partial class SettingModel
         if (_argLoad)
             return;
 
-        ConfigBinding.SetMemory(MinMemory ?? 512, MaxMemory ?? 4096);
+        ConfigBinding.SetMemory(MinMemory, MaxMemory);
     }
 
     private void SetWindow()
@@ -245,7 +245,7 @@ public partial class SettingModel
         if (_argLoad)
             return;
 
-        ConfigBinding.SetGameWindow(FullScreen, Width ?? 1280, Height ?? 720);
+        ConfigBinding.SetGameWindow(FullScreen, Width, Height);
     }
 
     private void SetGc()

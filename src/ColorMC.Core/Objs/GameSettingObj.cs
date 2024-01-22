@@ -131,7 +131,7 @@ public partial record GameSettingObj
     /// <summary>
     /// Jvm参数
     /// </summary>
-    public JvmArgObj? JvmArg { get; set; }
+    public RunArgObj? JvmArg { get; set; }
     /// <summary>
     /// Jvm名字
     /// </summary>

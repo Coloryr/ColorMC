@@ -75,7 +75,32 @@ public partial class GameEditModel
     [ObservableProperty]
     private bool? _maxWindow;
 
+    [ObservableProperty]
+    private bool _removeJvmArg;
+    [ObservableProperty]
+    private bool _removeGameArg;
+
     private bool _configLoad;
+
+    partial void OnRemoveJvmArgChanged(bool value)
+    {
+        if (_configLoad)
+            return;
+
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.RemoveJvmArg = value;
+        _obj.Save();
+    }
+
+    partial void OnRemoveGameArgChanged(bool value)
+    {
+        if (_configLoad)
+            return;
+
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.RemoveGameArg = value;
+        _obj.Save();
+    }
 
     partial void OnJvmEnvChanged(string? value)
     {
@@ -398,6 +423,8 @@ public partial class GameEditModel
             JvmEnv = config.JvmEnv;
             PostRunCmd = config.LaunchPostData;
             PerRunCmd = config.LaunchPreData;
+            RemoveJvmArg = config.RemoveJvmArg ?? false;
+            RemoveGameArg = config.RemoveGameArg ?? false;
 
             PerRun = config.LaunchPre;
             PostRun = config.LaunchPost;

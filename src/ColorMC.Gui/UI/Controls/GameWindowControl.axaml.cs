@@ -1,18 +1,26 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Platform;
+using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Layout;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
-using SkiaSharp;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
+using ColorMC.Gui.UI.Views.Svg;
+using Avalonia.Interactivity;
+using Avalonia.Metadata;
+using Avalonia;
+using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Linq;
+using ColorMC.Gui.Utils.Hook;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -24,49 +32,62 @@ public partial class GameWindowControl : UserControl, IUserControl
 
     public string UseName { get; set; }
 
-    private readonly IntPtr _handel;
-    private readonly INativeControl? _implementation;
-    private EmbedControl _control;
+    private readonly IntPtr _handle;
+    private readonly INative _implementation;
+    private readonly GameSettingObj _obj;
+    private TopView _control;
+
+    private double cursorX;
+    private double cursorY;
 
     public GameWindowControl()
     {
         InitializeComponent();
     }
 
-    public GameWindowControl(Process process, IntPtr handel) : this()
+    public GameWindowControl(GameSettingObj obj, Process process, IntPtr handel) : this()
     {
-        _handel = handel;
+        _obj = obj;
+        _handle = handel;
 
         process.Exited += Process_Exited;
 
         if (SystemInfo.Os == OsType.Windows)
         {
-            _implementation = new Win32NativeControl();
+            _implementation = new Win32Native();
         }
+    }
+
+    public void Closed() 
+    {
+        App.GameWindows.Remove(_obj.UUID);
     }
 
     private void Process_Exited(object? sender, EventArgs e)
     {
-        Window.Close();
+        Window?.Close();
     }
 
     public void Opened()
     {
-        if (_implementation.GetWindowSize(_handel, out var width, out var height))
+        if (_implementation.GetWindowSize(_handle, out var width, out var height))
         {
             Window.SetSize(width, height);
         }
         _implementation.TitleChange += TitleChange;
-        Window.SetTitle(_implementation.GetWindowTitle(_handel));
-        if (_implementation.GetIcon(_handel) is { } icon)
+        Window.SetTitle(_implementation.GetWindowTitle(_handle));
+        if (_implementation.GetIcon(_handle) is { } icon)
         {
             Window.SetIcon(icon);
         }
-        _control = new(this)
+        var handle = _implementation.CreateControl(_handle);
+        _control = new TopView(handle);
+        Panel1.Children.Add(_control);
+        var handle1 = _control.TopWindow.TryGetPlatformHandle();
+        if (handle1 is { })
         {
-            Margin = new(1, 0, 1, 1)
-        };
-        Content = _control;
+            _implementation.TransferEvent(handle1.Handle);
+        }
     }
 
     private void TitleChange(string title)
@@ -81,7 +102,7 @@ public partial class GameWindowControl : UserControl, IUserControl
 
     public void WindowStateChange(WindowState state) 
     {
-        _implementation.SetWindowState(_handel, state);
+        _implementation.SetWindowState(_handle, state);
     }
 
     public void SetBaseModel(BaseModel model)
@@ -89,188 +110,233 @@ public partial class GameWindowControl : UserControl, IUserControl
         
     }
 
-    public Task<bool> Closing()
-    {
-        Win32.SendMessage(_handel, Win32.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-
-        return Task.FromResult(false);
-    }
-
-    public class EmbedControl(GameWindowControl window) : NativeControlHost
+    public class EmbedControl(IPlatformHandle handle) : NativeControlHost
     {
         protected override IPlatformHandle CreateNativeControlCore(IPlatformHandle parent)
         {
-            return window._implementation?.CreateControl(window._handel) ?? base.CreateNativeControlCore(parent);
+            return handle ?? base.CreateNativeControlCore(parent);
         }
 
         protected override void DestroyNativeControlCore(IPlatformHandle control)
         {
-            base.DestroyNativeControlCore(control);
+            if (control is INativeControlHostDestroyableControlHandle)
+            {
+                base.DestroyNativeControlCore(control);
+            }
         }
+    }
+
+    public Task<bool> Closing()
+    {
+        _implementation.Close(_handle);
+
+        return Task.FromResult(false);
     }
 }
 
-public interface INativeControl
+public class TopView : NativeControlHost
 {
-    Bitmap? GetIcon(IntPtr hWnd);
-    event Action<string>? TitleChange;
-    string GetWindowTitle(IntPtr hWnd);
-    void AddHook(IntPtr handel);
-    void SetWindowState(IntPtr handel, WindowState state);
-    bool GetWindowSize(IntPtr handel, out int width, out int height);
-    void NoBorder(IntPtr handel);
-    IPlatformHandle CreateControl(IntPtr handel);
-}
+    private readonly IPlatformHandle _input;
 
-public class Win32NativeControl : INativeControl
-{
-    private IntPtr hWinEventHook;
-    private Win32.WinEventDelegate winEventDelegate;
+    public IPlatformHandle hndl;
 
-    public event Action<string>? TitleChange;
+    public static readonly StyledProperty<object?> ContentProperty =
+        ContentControl.ContentProperty.AddOwner<TopView>();
 
-    public bool GetWindowSize(IntPtr handel, out int width, out int height)
+    public Window TopWindow;
+    private IDisposable _disposables;
+    private bool _isAttached;
+    private IDisposable _isEffectivelyVisible;
+
+    private readonly TranslateTransform transform = new();
+
+    private readonly SvgControl svg;
+
+    private void GameWindowControl_PointerMoved(object? sender, PointerEventArgs e)
     {
-        if (Win32.GetWindowRect(handel, out var rect))
+        var pos = e.GetPosition(this);
+        //cursorX = pos.X;
+        //cursorY = pos.Y;
+
+        transform.X = pos.X - 15;
+        transform.Y = pos.Y - 15;
+    }
+
+    public TopView(IPlatformHandle input)
+    {
+        _input = input;
+
+        svg = new(baseUri: null)
         {
-            width = rect.Right - rect.Left;
-            height = rect.Bottom - rect.Top;
-            return true;
+            Width = 30,
+            Height = 30,
+            RenderTransform = transform,
+            VerticalAlignment = VerticalAlignment.Top,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            Path = "avares://ColorMC.Gui/Resource/Icon/Input/cursor.svg"
+        };
+
+        Content = svg;
+
+        ContentProperty.Changed.AddClassHandler<TopView>((s, e) => s.InitializeNativeOverlay());
+        IsVisibleProperty.Changed.AddClassHandler<TopView>((s, e) => s.ShowNativeOverlay(s.IsVisible));
+    }
+
+    [Content]
+    public object? Content
+    {
+        get => GetValue(ContentProperty);
+        set => SetValue(ContentProperty, value);
+    }
+
+    private void InitializeNativeOverlay()
+    {
+        if (!this.IsAttachedToVisualTree()) return;
+
+        if (TopWindow == null && Content != null)
+        {
+            var rect = Bounds;
+
+            TopWindow = new Window()
+            {
+                SystemDecorations = SystemDecorations.None,
+                TransparencyLevelHint = [WindowTransparencyLevel.Transparent],
+                Background = Brushes.Transparent,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                CanResize = false,
+                ShowInTaskbar = false,
+                ZIndex = int.MaxValue,
+                Opacity = 1,
+            };
+
+            TopWindow.PointerMoved += GameWindowControl_PointerMoved;
+
+            _disposables = new CompositeDisposable()
+                {
+                    TopWindow.Bind(ContentControl.ContentProperty, this.GetObservable(ContentProperty)),
+                    this.GetObservable(ContentProperty).Skip(1).Subscribe(_=> UpdateOverlayPosition()),
+                    this.GetObservable(BoundsProperty).Skip(1).Subscribe(_ => UpdateOverlayPosition()),
+                    Observable.FromEventPattern(VisualRoot, nameof(Window.PositionChanged))
+                    .Subscribe(_ => UpdateOverlayPosition())
+                };
+
+
         }
+
+        ShowNativeOverlay(IsEffectivelyVisible);
+    }
+
+    protected override IPlatformHandle CreateNativeControlCore(IPlatformHandle parent)
+    {
+        return _input;
+    }
+
+    protected override void DestroyNativeControlCore(IPlatformHandle control)
+    {
+        base.DestroyNativeControlCore(control);
+    }
+
+    private void ShowNativeOverlay(bool show)
+    {
+        if (TopWindow == null || TopWindow.IsVisible == show)
+            return;
+
+        if (show && _isAttached)
+            TopWindow.Show(VisualRoot as Window);
         else
-        {
-            width = 0;
-            height = 0;
-            return false;
-        }
+            TopWindow.Hide();
     }
 
-    public void NoBorder(IntPtr handel)
+    private void UpdateOverlayPosition()
     {
-        int wndStyle = Win32.GetWindowLong(handel, Win32.GWL_STYLE);
-        wndStyle &= ~(Win32.WS_CAPTION | Win32.WS_THICKFRAME | Win32.WS_MINIMIZE 
-            | Win32.WS_MAXIMIZE | Win32.WS_SYSMENU);
-        Win32.SetWindowLong(handel, Win32.GWL_STYLE, wndStyle);
-        Win32.SetWindowPos(handel, Win32.HWND_TOP, 0, 0, 0, 0, Win32.SWP_FRAMECHANGED 
-            | Win32.SWP_NOMOVE | Win32.SWP_NOSIZE | Win32.SWP_NOZORDER);
-    }
-
-    public IPlatformHandle CreateControl(IntPtr handel)
-    {
-        NoBorder(handel);
-        return new Win32WindowControlHandle(handel);
-    }
-
-    public void SetWindowState(IntPtr handel, WindowState state)
-    {
-        if (state == WindowState.Minimized)
+        if (TopWindow == null) return;
+        bool forceSetWidth = false, forceSetHeight = false;
+        var topLeft = new Point();
+        var child = TopWindow.Presenter?.Child;
+        if (child?.IsArrangeValid == true)
         {
-            Win32.ShowWindow(handel, Win32.SW_MINIMIZE);
-        }
-        else if (state == WindowState.Maximized)
-        {
-            Win32.ShowWindow(handel, Win32.SW_MAXIMIZE);
-        }
-        else if (state == WindowState.Normal)
-        {
-            Win32.ShowWindow(handel, Win32.SW_RESTORE);
-        }
-    }
-
-    public void AddHook(IntPtr handel)
-    {
-        winEventDelegate = new Win32.WinEventDelegate(WinEventProc);
-        hWinEventHook = Win32.SetWinEventHook(Win32.EVENT_OBJECT_NAMECHANGE, Win32.EVENT_OBJECT_NAMECHANGE, 
-            IntPtr.Zero, winEventDelegate, 0, 0, Win32.WINEVENT_OUTOFCONTEXT);
-    }
-
-    public string GetWindowTitle(IntPtr hWnd)
-    {
-        int length = Win32.GetWindowTextLength(hWnd);
-        var sb = new StringBuilder(length + 1);
-        Win32.GetWindowText(hWnd, sb, sb.Capacity);
-        return sb.ToString();
-    }
-
-    // 事件处理回调函数
-    private void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, 
-        int idChild, uint dwEventThread, uint dwmsEventTime)
-    {
-        if (eventType == Win32.EVENT_OBJECT_NAMECHANGE)
-        {
-            var title = GetWindowTitle(hwnd);
-            TitleChange?.Invoke(title);
-        }
-    }
-
-    private IntPtr GetWindowIcon(IntPtr hWnd, int iconSize = Win32.ICON_SMALL)
-    {
-        IntPtr hIcon = Win32.SendMessage(hWnd, Win32.WM_GETICON, iconSize, 0);
-        if (hIcon == IntPtr.Zero)
-        {
-            hIcon = Win32.SendMessage(hWnd, Win32.WM_GETICON, Win32.ICON_BIG, 0);
-        }
-        if (hIcon == IntPtr.Zero)
-        {
-            hIcon = Win32.SendMessage(hWnd, Win32.WM_GETICON, Win32.ICON_SMALL2, 0);
-        }
-        return hIcon;
-    }
-
-    public Bitmap? GetIcon(IntPtr hWnd)
-    {
-        var ptr = GetWindowIcon(hWnd);
-        if (ptr == IntPtr.Zero)
-        {
-            return null;
-        }
-        if (Win32.GetIconInfo(ptr, out var iconInfo))
-        {
-            try
+            switch (child.HorizontalAlignment)
             {
-                if (Win32.GetObject(iconInfo.hbmColor, Marshal.SizeOf(typeof(Win32.BITMAP)), out var bmpColor) == 0)
-                {
-                    return null;
-                }
-                if (Win32.GetObject(iconInfo.hbmMask, Marshal.SizeOf(typeof(Win32.BITMAP)), out var bmpMask) == 0)
-                {
-                    return null;
-                }
+                case HorizontalAlignment.Right:
+                    topLeft = topLeft.WithX(Bounds.Width - TopWindow.Bounds.Width);
+                    break;
 
-                var bmi = new Win32.BITMAPINFO();
-                bmi.biSize = Marshal.SizeOf(bmi);
-                bmi.biWidth = bmpColor.bmWidth; // Icon width
-                bmi.biHeight = -bmpColor.bmHeight; // Icon height (negative to flip the image)
-                bmi.biPlanes = bmpColor.bmPlanes;
-                bmi.biBitCount = bmpColor.bmBitsPixel;
-                bmi.biCompression = 0; // BI_RGB
+                case HorizontalAlignment.Center:
+                    topLeft = topLeft.WithX((Bounds.Width - TopWindow.Bounds.Width) / 2);
+                    break;
 
-                IntPtr hdc = Win32.CreateCompatibleDC(IntPtr.Zero);
-                byte[] pixelData = new byte[bmpColor.bmWidth * bmpColor.bmHeight * 4];
-                Win32.GetDIBits(hdc, iconInfo.hbmColor, 0, (uint)bmpColor.bmHeight, pixelData, ref bmi, 0);
-
-                using var skBitmap = new SKBitmap(bmpColor.bmWidth, bmpColor.bmHeight, SKColorType.Bgra8888, SKAlphaType.Premul);
-                Marshal.Copy(pixelData, 0, skBitmap.GetPixels(), pixelData.Length);
-
-                // Convert SKBitmap to Avalonia Bitmap
-                using var image = SKImage.FromBitmap(skBitmap);
-                using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                var stream = data.AsStream();
-                var bitmap = new Bitmap(stream);
-                return bitmap;
+                case HorizontalAlignment.Stretch:
+                    forceSetWidth = true;
+                    break;
             }
-            finally
+
+            switch (child.VerticalAlignment)
             {
-                // Clean up GDI and icon objects
-                if (iconInfo.hbmColor != IntPtr.Zero)
-                    Win32.DeleteObject(iconInfo.hbmColor);
-                if (iconInfo.hbmMask != IntPtr.Zero)
-                    Win32.DeleteObject(iconInfo.hbmMask);
-                Win32.DestroyIcon(ptr);
+                case VerticalAlignment.Bottom:
+                    topLeft = topLeft.WithY(Bounds.Height - TopWindow.Bounds.Height);
+                    break;
+
+                case VerticalAlignment.Center:
+                    topLeft = topLeft.WithY((Bounds.Height - TopWindow.Bounds.Height) / 2);
+                    break;
+
+                case VerticalAlignment.Stretch:
+                    forceSetHeight = true;
+                    break;
             }
         }
 
-        return null;
+        if (forceSetWidth && forceSetHeight)
+            TopWindow.SizeToContent = SizeToContent.Manual;
+        else if (forceSetHeight)
+            TopWindow.SizeToContent = SizeToContent.Width;
+        else if (forceSetWidth)
+            TopWindow.SizeToContent = SizeToContent.Height;
+        else
+            TopWindow.SizeToContent = SizeToContent.Manual;
+
+        TopWindow.Width = forceSetWidth ? Bounds.Width : double.NaN;
+        TopWindow.Height = forceSetHeight ? Bounds.Height : double.NaN;
+
+        TopWindow.MaxWidth = Bounds.Width;
+        TopWindow.MaxHeight = Bounds.Height;
+
+        var newPosition = this.PointToScreen(topLeft);
+
+        if (newPosition != TopWindow.Position)
+        {
+            TopWindow.Position = newPosition;
+        }
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        _isAttached = true;
+        InitializeNativeOverlay();
+        _isEffectivelyVisible = this.GetVisualAncestors().OfType<Control>()
+                .Select(v => v.GetObservable(IsVisibleProperty))
+                .CombineLatest(v => !v.Any(o => !o))
+                .DistinctUntilChanged()
+                .Subscribe(v => IsVisible = v);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        _isEffectivelyVisible?.Dispose();
+        ShowNativeOverlay(false);
+        _isAttached = false;
+    }
+
+    protected override void OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromLogicalTree(e);
+
+        _disposables?.Dispose();
+        _disposables = null;
+        TopWindow?.Close();
+        TopWindow = null;
     }
 }
 
@@ -281,165 +347,4 @@ internal class Win32WindowControlHandle(IntPtr handle)
     {
         Win32.DestroyWindow(Handle);
     }
-}
-
-internal unsafe class Win32
-{
-    public const int WM_CLOSE = 0x0010;
-
-    // ShowWindow函数的命令常量
-    public const int SW_MINIMIZE = 6;
-    public const int SW_MAXIMIZE = 3;
-    public const int SW_RESTORE = 9;
-
-    // 窗口样式常量
-    public const int GWL_STYLE = -16;
-    public const int WS_CAPTION = 0x00C00000;
-    public const int WS_THICKFRAME = 0x00040000;
-    public const int WS_MINIMIZE = 0x20000000;
-    public const int WS_MAXIMIZE = 0x01000000;
-    public const int WS_SYSMENU = 0x00080000;
-
-    // 常量用于SetWindowPos函数
-    public static readonly IntPtr HWND_TOP = new(0);
-    public const uint SWP_FRAMECHANGED = 0x0020;
-    public const uint SWP_NOMOVE = 0x0002;
-    public const uint SWP_NOSIZE = 0x0001;
-    public const uint SWP_NOZORDER = 0x0004;
-
-    // 定义事件常量
-    public const uint EVENT_OBJECT_NAMECHANGE = 0x800C;
-    public const uint WINEVENT_OUTOFCONTEXT = 0;
-
-    public const int WM_GETICON = 0x007F;
-    public const int ICON_SMALL = 0;
-    public const int ICON_BIG = 1;
-    public const int ICON_SMALL2 = 2;
-
-    // WinEventHook回调函数的委托定义
-    public delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
-
-    public enum CommonControls : uint
-    {
-        ICC_LISTVIEW_CLASSES = 0x00000001, // listview, header
-        ICC_TREEVIEW_CLASSES = 0x00000002, // treeview, tooltips
-        ICC_BAR_CLASSES = 0x00000004, // toolbar, statusbar, trackbar, tooltips
-        ICC_TAB_CLASSES = 0x00000008, // tab, tooltips
-        ICC_UPDOWN_CLASS = 0x00000010, // updown
-        ICC_PROGRESS_CLASS = 0x00000020, // progress
-        ICC_HOTKEY_CLASS = 0x00000040, // hotkey
-        ICC_ANIMATE_CLASS = 0x00000080, // animate
-        ICC_WIN95_CLASSES = 0x000000FF,
-        ICC_DATE_CLASSES = 0x00000100, // month picker, date picker, time picker, updown
-        ICC_USEREX_CLASSES = 0x00000200, // comboex
-        ICC_COOL_CLASSES = 0x00000400, // rebar (coolbar) control
-        ICC_INTERNET_CLASSES = 0x00000800,
-        ICC_PAGESCROLLER_CLASS = 0x00001000, // page scroller
-        ICC_NATIVEFNTCTL_CLASS = 0x00002000, // native font control
-        ICC_STANDARD_CLASSES = 0x00004000,
-        ICC_LINK_CLASS = 0x00008000
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RECT
-    {
-        public int Left; // x position of upper-left corner
-        public int Top; // y position of upper-left corner
-        public int Right; // x position of lower-right corner
-        public int Bottom; // y position of lower-right corner
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct BITMAPINFO
-    {
-        public int biSize;
-        public int biWidth, biHeight;
-        public short biPlanes, biBitCount;
-        public int biCompression, biSizeImage;
-        public int biXPelsPerMeter, biYPelsPerMeter;
-        public int biClrUsed, biClrImportant;
-        public int colors; // Actually a variable sized array of RGBQUAD
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SETTEXTEX
-    {
-        public uint Flags;
-        public uint Codepage;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct BITMAP
-    {
-        public int bmType;
-        public int bmWidth;
-        public int bmHeight;
-        public int bmWidthBytes;
-        public short bmPlanes;
-        public short bmBitsPixel;
-        public IntPtr bmBits;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ICONINFO
-    {
-        public bool fIcon;
-        public int xHotspot;
-        public int yHotspot;
-        public IntPtr hbmMask;
-        public IntPtr hbmColor;
-    }
-
-
-    [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern int GetObject(IntPtr hgdiobj, int cbBuffer, out BITMAP lpvObject);
-
-    [DllImport("gdi32.dll")]
-    public static extern int GetDIBits(IntPtr hdc, IntPtr hbmp, uint uStartScan,
-       uint cScanLines, [Out] byte[] lpvBits, ref BITMAPINFO lpbmi, uint uUsage);
-
-    [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
-
-    [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern bool DeleteObject(IntPtr hObject);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool GetIconInfo(IntPtr hIcon, out ICONINFO pIconInfo);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool DestroyIcon(IntPtr hIcon);
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
-    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern int GetWindowTextLength(IntPtr hWnd);
-
-    [DllImport("user32.dll")]
-    public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
-
-    [DllImport("user32.dll")]
-    public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
-
-    [DllImport("user32.dll")]
-    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-
-    [DllImport("user32.dll")]
-    public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-    [DllImport("user32.dll")]
-    public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool DestroyWindow(IntPtr hwnd);
-
-    [DllImport("user32.dll", CharSet = CharSet.Unicode, EntryPoint = "SendMessageW")]
-    public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 }
