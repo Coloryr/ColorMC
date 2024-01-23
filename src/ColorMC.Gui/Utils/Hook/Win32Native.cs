@@ -1,61 +1,66 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Controls.Platform;
+using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Win32.Input;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
+using Silk.NET.SDL;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils.Hook;
 
+internal class Win32WindowControlHandle(INative native, IntPtr handle)
+    : PlatformHandle(handle, "HWND"), INativeControlHostDestroyableControlHandle
+{
+    public void Destroy()
+    {
+        native.DestroyWindow();
+    }
+}
+
 public class Win32Native : INative
 {
-    private static Win32.HookProc _tranEventDelegate;
     private static Win32.WinEventDelegate _winEventDelegate;
 
     public event Action<string>? TitleChange;
 
-    private IntPtr hWnd;
+    private IntPtr target;
+    private IntPtr topTarget;
 
     private IntPtr _winEventId;
-    private IntPtr _winTranId;
 
     public Win32Native()
     {
-        _tranEventDelegate = new(WinTranEventProc);
         _winEventDelegate = new(WinEventProc);
-    }
-
-    public void TransferEvent(IntPtr handel)
-    {
-        Win32.GetWindowThreadProcessId(handel, out uint threadId);
-        _winTranId = Win32.SetWindowsHookEx(Win32.WH_CALLWNDPROC, _tranEventDelegate,
-             IntPtr.Zero, threadId);
-        if (_winTranId == 0)
-        {
-            int errorCode = Marshal.GetLastWin32Error();
-        }
     }
 
     public void AddHook(IntPtr handel)
     {
-        hWnd = handel;
+        target = handel;
         _winEventId = Win32.SetWinEventHook(Win32.EVENT_OBJECT_NAMECHANGE, Win32.EVENT_OBJECT_NAMECHANGE,
             IntPtr.Zero, _winEventDelegate, 0, 0, Win32.WINEVENT_OUTOFCONTEXT);
     }
 
-    private IntPtr WinTranEventProc(int nCode, IntPtr wParam, IntPtr lParam)
+    public void TransferEvent(IntPtr handel)
     {
-        if (nCode >= 0)
-        {
-            Win32.SendMessage(hWnd, nCode, wParam, lParam);
-        }
+        topTarget = handel;
 
-        return Win32.CallNextHookEx(_winEventId, nCode, wParam, lParam);
+        if (Win32.IsWindow(topTarget))
+        {
+            int extendedStyle = Win32.GetWindowLong(topTarget, Win32.GWL_EXSTYLE);
+            Win32.SetWindowLong(topTarget, Win32.GWL_EXSTYLE, extendedStyle | Win32.WS_EX_LAYERED | Win32.WS_EX_TRANSPARENT);
+        }
     }
 
     private void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject,
@@ -63,14 +68,14 @@ public class Win32Native : INative
     {
         if (eventType == Win32.EVENT_OBJECT_NAMECHANGE)
         {
-            var title = GetWindowTitle(hwnd);
+            var title = GetWindowTitle();
             TitleChange?.Invoke(title);
         }
     }
 
-    public bool GetWindowSize(IntPtr handel, out int width, out int height)
+    public bool GetWindowSize(out int width, out int height)
     {
-        if (Win32.GetWindowRect(handel, out var rect))
+        if (Win32.GetWindowRect(target, out var rect))
         {
             width = rect.Right - rect.Left;
             height = rect.Bottom - rect.Top;
@@ -84,63 +89,63 @@ public class Win32Native : INative
         }
     }
 
-    public void NoBorder(IntPtr handel)
+    public void NoBorder()
     {
-        int wndStyle = Win32.GetWindowLong(handel, Win32.GWL_STYLE);
+        int wndStyle = Win32.GetWindowLong(target, Win32.GWL_STYLE);
         wndStyle &= ~(Win32.WS_CAPTION | Win32.WS_THICKFRAME | Win32.WS_MINIMIZE
             | Win32.WS_MAXIMIZE | Win32.WS_SYSMENU);
-        Win32.SetWindowLong(handel, Win32.GWL_STYLE, wndStyle);
-        Win32.SetWindowPos(handel, Win32.HWND_TOP, 0, 0, 0, 0, Win32.SWP_FRAMECHANGED
+        Win32.SetWindowLong(target, Win32.GWL_STYLE, wndStyle);
+        Win32.SetWindowPos(target, Win32.HWND_TOP, 0, 0, 0, 0, Win32.SWP_FRAMECHANGED
             | Win32.SWP_NOMOVE | Win32.SWP_NOSIZE | Win32.SWP_NOZORDER);
     }
 
-    public IPlatformHandle CreateControl(IntPtr handel)
+    public IPlatformHandle CreateControl()
     {
-        NoBorder(handel);
-        return new Win32WindowControlHandle(this, handel);
+        NoBorder();
+        return new Win32WindowControlHandle(this, target);
     }
 
-    public void SetWindowState(IntPtr handel, WindowState state)
+    public void SetWindowState(WindowState state)
     {
         if (state == WindowState.Minimized)
         {
-            Win32.ShowWindow(handel, Win32.SW_MINIMIZE);
+            Win32.ShowWindow(target, Win32.SW_MINIMIZE);
         }
         else if (state == WindowState.Maximized)
         {
-            Win32.ShowWindow(handel, Win32.SW_MAXIMIZE);
+            Win32.ShowWindow(target, Win32.SW_MAXIMIZE);
         }
         else if (state == WindowState.Normal)
         {
-            Win32.ShowWindow(handel, Win32.SW_RESTORE);
+            Win32.ShowWindow(target, Win32.SW_RESTORE);
         }
     }
 
-    public string GetWindowTitle(IntPtr hWnd)
+    public string GetWindowTitle()
     {
-        int length = Win32.GetWindowTextLength(hWnd);
+        int length = Win32.GetWindowTextLength(target);
         var sb = new StringBuilder(length + 1);
-        Win32.GetWindowText(hWnd, sb, sb.Capacity);
+        Win32.GetWindowText(target, sb, sb.Capacity);
         return sb.ToString();
     }
 
-    private IntPtr GetWindowIcon(IntPtr hWnd, int iconSize = Win32.ICON_SMALL)
+    private IntPtr GetWindowIcon(int iconSize = Win32.ICON_SMALL)
     {
-        IntPtr hIcon = Win32.SendMessage(hWnd, Win32.WM_GETICON, iconSize, 0);
+        IntPtr hIcon = Win32.SendMessage(target, Win32.WM_GETICON, iconSize, 0);
         if (hIcon == IntPtr.Zero)
         {
-            hIcon = Win32.SendMessage(hWnd, Win32.WM_GETICON, Win32.ICON_BIG, 0);
+            hIcon = Win32.SendMessage(target, Win32.WM_GETICON, Win32.ICON_BIG, 0);
         }
         if (hIcon == IntPtr.Zero)
         {
-            hIcon = Win32.SendMessage(hWnd, Win32.WM_GETICON, Win32.ICON_SMALL2, 0);
+            hIcon = Win32.SendMessage(target, Win32.WM_GETICON, Win32.ICON_SMALL2, 0);
         }
         return hIcon;
     }
 
-    public Bitmap? GetIcon(IntPtr hWnd)
+    public Bitmap? GetIcon()
     {
-        var ptr = GetWindowIcon(hWnd);
+        var ptr = GetWindowIcon();
         if (ptr == IntPtr.Zero)
         {
             return null;
@@ -194,32 +199,207 @@ public class Win32Native : INative
         return null;
     }
 
-    public void Close(IntPtr handle)
+    public void Close()
     {
-        Win32.SendMessage(handle, Win32.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+        Win32.SendMessage(target, Win32.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+        //Win32.SendMessage(target, Win32.WM_DESTROY, IntPtr.Zero, IntPtr.Zero);
     }
 
-    public void DestroyWindow(IntPtr handle)
+    public void DestroyWindow()
     {
-        Win32.DestroyWindow(handle);
+        Win32.DestroyWindow(target);
+    }
+
+    public void Stop()
+    {
+        if (_winEventId != IntPtr.Zero)
+        {
+            Win32.UnhookWinEvent(_winEventId);
+            _winEventId = 0;
+        }
+    }
+
+    public void SendMouse(double cursorX, double cursorY, bool message)
+    {
+        int x = (int)cursorX;
+        int y = (int)cursorY;
+
+        if (message)
+        {
+            IntPtr lParam = ((y << 16) | (x & 0xFFFF));
+            Win32.SendMessage(target, Win32.WM_MOUSEMOVE, IntPtr.Zero, lParam);
+        }
+        else
+        {
+            // 发送鼠标移动事件
+            Win32.INPUT[] inputs = 
+            [
+                new()
+                {
+                    type = Win32.INPUT_MOUSE,
+                    u = new Win32.InputUnion
+                    {
+                        mi = new Win32.MOUSEINPUT
+                        {
+                            dx = x,
+                            dy = y,
+                            mouseData = 0,
+                            dwFlags = Win32.MOUSEEVENTF_MOVE,
+                            time = 0,
+                            dwExtraInfo = IntPtr.Zero
+                        }
+                    }
+                }
+            ];
+            Win32.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32.INPUT)));
+        }
+    }
+
+    private static bool IsCursorShown()
+    {
+        var cursorInfo = new Win32.CURSORINFO();
+        cursorInfo.cbSize = Marshal.SizeOf(cursorInfo);
+        if (Win32.GetCursorInfo(out cursorInfo))
+        {
+            return (cursorInfo.flags & Win32.CURSOR_SHOWING) != 0;
+        }
+        return false; // 如果无法获取光标信息，则默认返回false
+    }
+
+    private static bool IsCursorClippedToWindow(IntPtr hwnd)
+    {
+        if (Win32.GetClipCursor(out var clipRect))
+        {
+            if (Win32.GetWindowRect(hwnd, out var windowRect))
+            {
+                // 比较剪辑矩形和窗口矩形
+                return clipRect.Left >= windowRect.Left &&
+                       clipRect.Top >= windowRect.Top &&
+                       clipRect.Right <= windowRect.Right &&
+                       clipRect.Bottom <= windowRect.Bottom;
+            }
+        }
+        return false;
+    }
+
+    public bool GetMouseMode()
+    {
+        return IsCursorShown() || !IsCursorClippedToWindow(target);
+    }
+
+    public void SendKey(InputKeyObj key, bool down)
+    {
+        if (InputControlUtils.IsEditMode)
+        {
+            return;
+        }
+
+        int key1 = 0;
+        if (key.KeyModifiers == KeyModifiers.Alt)
+        {
+            KeyInterop.VirtualKeyFromKey(Key.LeftAlt);
+        }
+        else if (key.KeyModifiers == KeyModifiers.Control)
+        {
+            key1 = KeyInterop.VirtualKeyFromKey(Key.LeftCtrl);
+        }
+        else if (key.KeyModifiers == KeyModifiers.Shift)
+        {
+            key1 = KeyInterop.VirtualKeyFromKey(Key.LeftShift);
+        }
+
+        if (key1 != 0)
+        {
+            Win32.SendMessage(target, down ? Win32.WM_KEYDOWN : Win32.WM_KEYUP, key1, IntPtr.Zero);
+        }
+
+        if (key.MouseButton != MouseButton.None)
+        {
+            key1 = key.MouseButton switch
+            {
+                MouseButton.Left => down ? Win32.WM_LBUTTONDOWN : Win32.WM_LBUTTONUP,
+                MouseButton.Right => down ? Win32.WM_RBUTTONDOWN : Win32.WM_RBUTTONUP,
+                MouseButton.Middle => down ? Win32.WM_MBUTTONDOWN : Win32.WM_MBUTTONDOWN,
+                MouseButton.XButton1 or MouseButton.XButton2 =>
+                    down ? Win32.WM_XBUTTONDOWN : Win32.WM_XBUTTONUP,
+                _ => throw new Exception()
+            };
+            int key2 = key.MouseButton switch
+            {
+                MouseButton.XButton1 => Win32.MK_XBUTTON1,
+                MouseButton.XButton2 => Win32.MK_XBUTTON2,
+                _ => 0
+            };
+            Win32.SendMessage(target, key1, key2, IntPtr.Zero);
+        }
+        else
+        {
+            key1 = KeyInterop.VirtualKeyFromKey(key.Key);
+            Win32.INPUT[] inputs =
+            [
+                new()
+                {
+                    type = Win32.INPUT_KEYBOARD,
+                    u = new Win32.InputUnion
+                    {
+                        ki = new Win32.KEYBDINPUT
+                        {
+                            wVk = (ushort)key1,
+                            wScan = 0,
+                            dwFlags = down ? 0 : Win32.KEYEVENTF_KEYUP,
+                            time = 0,
+                            dwExtraInfo = IntPtr.Zero,
+                        }
+                    }
+                }
+            ];
+            Win32.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32.INPUT)));
+        }
     }
 
     internal unsafe class Win32
     {
         public const int WM_CLOSE = 0x0010;
+        public const int WM_DESTROY = 0x0002;
+        public const int WH_GETMESSAGE = 3;
+        public const int WH_CALLWNDPROC = 4;
+        public const int WM_GETICON = 0x007F;
 
-        // ShowWindow函数的命令常量
-        public const int SW_MINIMIZE = 6;
-        public const int SW_MAXIMIZE = 3;
-        public const int SW_RESTORE = 9;
+        public const int WM_KEYDOWN = 0x0100;
+        public const int WM_KEYUP = 0x0101;
+        public const int WM_MOUSEMOVE = 0x0200;
+        public const int WM_LBUTTONDOWN = 0x0201;
+        public const int WM_LBUTTONUP = 0x0202;
+        public const int WM_LBUTTONDBLCLK = 0x0203;
+        public const int WM_RBUTTONDOWN = 0x0204;
+        public const int WM_RBUTTONUP = 0x0205;
+        public const int WM_RBUTTONDBLCLK = 0x0206;
+        public const int WM_MBUTTONDOWN = 0x0207;
+        public const int WM_MBUTTONUP = 0x0208;
+        public const int WM_MBUTTONDBLCLK = 0x0209;
+        public const int WM_XBUTTONDOWN = 0x020B;
+        public const int WM_XBUTTONUP = 0x020C;
+        public const int WM_XBUTTONDBLCLK = 0x020D;
 
-        // 窗口样式常量
-        public const int GWL_STYLE = -16;
+        public const int INPUT_KEYBOARD = 1;
+        public const uint KEYEVENTF_KEYUP = 0x0002;
+
         public const int WS_CAPTION = 0x00C00000;
         public const int WS_THICKFRAME = 0x00040000;
         public const int WS_MINIMIZE = 0x20000000;
         public const int WS_MAXIMIZE = 0x01000000;
         public const int WS_SYSMENU = 0x00080000;
+
+        public const int MK_LBUTTON = 0x0001;
+        public const int MK_MBUTTON = 0x0010;
+        public const int MK_RBUTTON = 0x0002;
+        public const int MK_XBUTTON1 = 0x0020;
+        public const int MK_XBUTTON2 = 0x0040;
+
+        // ShowWindow函数的命令常量
+        public const int SW_MINIMIZE = 6;
+        public const int SW_MAXIMIZE = 3;
+        public const int SW_RESTORE = 9;
 
         // 常量用于SetWindowPos函数
         public static readonly IntPtr HWND_TOP = new(0);
@@ -230,35 +410,80 @@ public class Win32Native : INative
 
         // 定义事件常量
         public const uint EVENT_OBJECT_NAMECHANGE = 0x800C;
+
         public const uint WINEVENT_OUTOFCONTEXT = 0;
 
-        public const int WM_GETICON = 0x007F;
         public const int ICON_SMALL = 0;
         public const int ICON_BIG = 1;
         public const int ICON_SMALL2 = 2;
 
-        public const int WH_GETMESSAGE = 3;
-        public const int WH_CALLWNDPROC = 4;
+        public const int GWL_WNDPROC = -4;
+        public const int GWL_STYLE = -16;
+        public const int GWL_EXSTYLE = -20;
 
-        public enum CommonControls : uint
+        public const int WS_EX_LAYERED = 0x80000;
+        public const int WS_EX_TRANSPARENT = 0x20;
+
+        public const uint LWA_COLORKEY = 0x00000001;
+        public const uint LWA_ALPHA = 0x00000002;
+
+        public const int CURSOR_SHOWING = 0x00000001;
+
+        public const int INPUT_MOUSE = 0;
+        public const uint MOUSEEVENTF_MOVE = 0x0001;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct INPUT
         {
-            ICC_LISTVIEW_CLASSES = 0x00000001, // listview, header
-            ICC_TREEVIEW_CLASSES = 0x00000002, // treeview, tooltips
-            ICC_BAR_CLASSES = 0x00000004, // toolbar, statusbar, trackbar, tooltips
-            ICC_TAB_CLASSES = 0x00000008, // tab, tooltips
-            ICC_UPDOWN_CLASS = 0x00000010, // updown
-            ICC_PROGRESS_CLASS = 0x00000020, // progress
-            ICC_HOTKEY_CLASS = 0x00000040, // hotkey
-            ICC_ANIMATE_CLASS = 0x00000080, // animate
-            ICC_WIN95_CLASSES = 0x000000FF,
-            ICC_DATE_CLASSES = 0x00000100, // month picker, date picker, time picker, updown
-            ICC_USEREX_CLASSES = 0x00000200, // comboex
-            ICC_COOL_CLASSES = 0x00000400, // rebar (coolbar) control
-            ICC_INTERNET_CLASSES = 0x00000800,
-            ICC_PAGESCROLLER_CLASS = 0x00001000, // page scroller
-            ICC_NATIVEFNTCTL_CLASS = 0x00002000, // native font control
-            ICC_STANDARD_CLASSES = 0x00004000,
-            ICC_LINK_CLASS = 0x00008000
+            public int type;
+            public InputUnion u;
+        }
+
+        [StructLayout(LayoutKind.Explicit)]
+        public struct InputUnion
+        {
+            [FieldOffset(0)]
+            public MOUSEINPUT mi;
+
+            [FieldOffset(0)]
+            public KEYBDINPUT ki;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MOUSEINPUT
+        {
+            public int dx;
+            public int dy;
+            public uint mouseData;
+            public uint dwFlags;
+            public uint time;
+            public IntPtr dwExtraInfo;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct KEYBDINPUT
+        {
+            public ushort wVk;
+            public ushort wScan;
+            public uint dwFlags;
+            public uint time;
+            public IntPtr dwExtraInfo;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int x;
+            public int y;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct CURSORINFO
+        {
+            public int cbSize;
+            public int flags;
+            public IntPtr hCursor;
+            public POINT ptScreenPos;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -311,6 +536,7 @@ public class Win32Native : INative
             public IntPtr hbmColor;
         }
 
+        public delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         public delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
         public delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
@@ -328,6 +554,21 @@ public class Win32Native : INative
         public static extern bool DeleteObject(IntPtr hObject);
 
         [DllImport("user32.dll", SetLastError = true)]
+        public static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
+
+        [DllImport("user32.dll")]
+        public static extern bool GetCursorInfo(out CURSORINFO pci);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool GetIconInfo(IntPtr hIcon, out ICONINFO pIconInfo);
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -339,8 +580,11 @@ public class Win32Native : INative
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern int GetWindowTextLength(IntPtr hWnd);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
+
+        [DllImport("user32.dll")]
+        public static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
         [DllImport("user32.dll")]
         public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
@@ -375,7 +619,22 @@ public class Win32Native : INative
         [DllImport("user32.dll")]
         public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern bool IsWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern bool GetClipCursor(out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        public static extern int ShowCursor(bool bShow);
+
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        [DllImport("kernel32.dll")]
+        public static extern uint GetCurrentThreadId();
     }
 }

@@ -12,7 +12,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using Semaphore = System.Threading.Semaphore;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -23,8 +22,7 @@ public partial class SettingModel
 
     public ObservableCollection<InputAxisButtonModel> InputAxisList { get; init; } = [];
 
-    public string[] CursorAxisType { get; init; } = ["左摇杆", "右摇杆"];
-    public string[] AxisType { get; init; } = ["移动", "视角"];
+    public string[] AxisType { get; init; } = ["左摇杆", "右摇杆"];
 
     [ObservableProperty]
     private InputButtonModel _inputItem;
@@ -46,11 +44,9 @@ public partial class SettingModel
     [ObservableProperty]
     private int _inputIndex = -1;
     [ObservableProperty]
-    private int _inputAxisL = 0;
+    private int _inputRotateAxis = 0;
     [ObservableProperty]
-    private int _inputAxisR = 1;
-    [ObservableProperty]
-    private int _moveDeath;
+    private int _cursorDeath;
     [ObservableProperty]
     private int _rotateDeath;
     [ObservableProperty]
@@ -78,15 +74,44 @@ public partial class SettingModel
 
     private short leftX, leftY, rightX, rightY;
 
-    private readonly Semaphore semaphore = new(0, 2);
+    private Action<byte>? input;
+    private Action<byte, bool>? inputAxis;
+    private Action<InputKeyObj>? inputKey;
 
-    private InputKeyObj _output;
+    private IntPtr controlPtr;
+    private int joystickID;
 
-    private IntPtr ptr;
-    private CancellationTokenSource? readCancel;
-
-    private bool isInput;
     private bool isInputLoad;
+
+    partial void OnRotateDeathChanged(int value)
+    {
+        if (isInputLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetInputDeath(RotateDeath, CursorDeath);
+    }
+
+    partial void OnCursorDeathChanged(int value)
+    {
+        if (isInputLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetInputDeath(RotateDeath, CursorDeath);
+    }
+
+    partial void OnCursorRateChanged(float value)
+    {
+        if (isInputLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetInputRate(RotateRate, CursorRate);
+    }
 
     partial void OnRotateRateChanged(float value)
     {
@@ -95,7 +120,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SetRotateRate(RotateRate);
+        ConfigBinding.SetInputRate(RotateRate, CursorRate);
     }
 
     partial void OnItemCycleChanged(bool value)
@@ -132,43 +157,44 @@ public partial class SettingModel
         ConfigBinding.SetItemCycle(ItemCycleLeft, ItemCycleRight);
     }
 
-    partial void OnInputAxisLChanged(int value)
+    partial void OnInputCursorAxisChanged(int value)
     {
         if (isInputLoad)
         {
             return;
         }
 
-        ConfigBinding.SaveInput(InputAxisL, InputAxisR);
+        ConfigBinding.SetInputAxis(InputRotateAxis, InputCursorAxis);
     }
 
-    partial void OnInputAxisRChanged(int value)
+    partial void OnInputRotateAxisChanged(int value)
     {
         if (isInputLoad)
         {
             return;
         }
 
-        ConfigBinding.SaveInput(InputAxisL, InputAxisR);
+        ConfigBinding.SetInputAxis(InputRotateAxis, InputCursorAxis);
     }
 
     partial void OnInputIndexChanged(int value)
     {
         InputExist = value != -1;
+
         InputClose();
         if (value != -1)
         {
             unsafe
             {
-                ptr = new(InputControl.Open(InputIndex));
+                controlPtr = new(InputControlUtils.Open(InputIndex));
             }
-            if (ptr == IntPtr.Zero)
+            if (controlPtr == IntPtr.Zero)
             {
                 Model.Show("手柄打开失败");
             }
             else
             {
-                StartRead();
+                joystickID = InputControlUtils.GetJoystickID(controlPtr);
             }
         }
     }
@@ -191,20 +217,18 @@ public partial class SettingModel
         {
             cannel.Cancel();
         });
-        var key = await InputControl.WaitAxis(ptr, cannel.Token);
+        var key = await WaitAxis(cannel.Token);
         Model.ShowClose();
         if (key == null)
         {
             return;
         }
-        var key1 = (byte)key;
+        var key1 = ((byte, bool))key;
         Model.ShowCancel("请按下键盘或鼠标按键来绑定", () =>
         {
-            isInput = false;
             cannel.Cancel();
-            semaphore.Release();
         });
-        var key2 = await ReadKey(cannel.Token);
+        var key2 = await WaitKey(cannel.Token);
         Model.ShowClose();
         if (key2 == null)
         {
@@ -213,40 +237,14 @@ public partial class SettingModel
         var item1 = new InputAxisButtonModel(this)
         {
             UUID = Guid.NewGuid().ToString().ToLower(),
-            InputKey = key1,
+            InputKey = key1.Item1,
             Obj = key2,
-            Start = 0,
-            End = short.MaxValue
+            Start = key1.Item2 ? (short)2000 : (short)-2000,
+            End = key1.Item2 ? short.MaxValue : short.MinValue
         };
         InputAxisList.Add(item1);
         ConfigBinding.AddAxisInput(item1.UUID, item1.GenObj());
         Model.Notify("已添加");
-    }
-
-    [RelayCommand]
-    public async Task SetItemButton(object? right)
-    {
-        using var cannel = new CancellationTokenSource();
-        Model.ShowCancel("请按下手柄按键来绑定", () =>
-        {
-            cannel.Cancel();
-        });
-        var key = await InputControl.WaitInput(ptr, cannel.Token);
-        Model.ShowClose();
-        if (key == null)
-        {
-            return;
-        }
-        var key1 = (byte)key;
-
-        if (right is bool value && value)
-        {
-            ItemCycleRight = key1;
-        }
-        else
-        {
-            ItemCycleLeft = key1;
-        }
     }
 
     [RelayCommand]
@@ -257,7 +255,7 @@ public partial class SettingModel
         {
             cannel.Cancel();
         });
-        var key = await InputControl.WaitInput(ptr, cannel.Token);
+        var key = await WaitInput(cannel.Token);
         Model.ShowClose();
         if (key == null)
         {
@@ -266,11 +264,9 @@ public partial class SettingModel
         var key1 = (byte)key;
         Model.ShowCancel("请按下键盘或鼠标按键来绑定", () =>
         {
-            isInput = false;
             cannel.Cancel();
-            semaphore.Release();
         });
-        var key2 = await ReadKey(cannel.Token);
+        var key2 = await WaitKey(cannel.Token);
         Model.ShowClose();
         if (key2 == null)
         {
@@ -294,6 +290,32 @@ public partial class SettingModel
         Model.Notify("已添加");
     }
 
+    [RelayCommand]
+    public async Task SetItemButton(object? right)
+    {
+        using var cannel = new CancellationTokenSource();
+        Model.ShowCancel("请按下手柄按键来绑定", () =>
+        {
+            cannel.Cancel();
+        });
+        var key = await WaitInput(cannel.Token);
+        Model.ShowClose();
+        if (key == null)
+        {
+            return;
+        }
+        var key1 = (byte)key;
+
+        if (right is bool value && value)
+        {
+            ItemCycleRight = key1;
+        }
+        else
+        {
+            ItemCycleLeft = key1;
+        }
+    }
+
     public void InputSave(InputAxisButtonModel model)
     {
         ConfigBinding.AddAxisInput(model.UUID, model.GenObj());
@@ -301,21 +323,23 @@ public partial class SettingModel
 
     private void StartRead()
     {
-        readCancel = new();
-        InputControl.StartRead(ReadData, ptr, readCancel.Token);
+        if (InputControlUtils.IsInit)
+        {
+            InputControlUtils.OnEvent += InputControl_OnEvent;
+        }
     }
 
     private void UpdateType1()
     {
         Dispatcher.UIThread.Post(() =>
         {
-            if (InputAxisL == 0)
+            if (InputCursorAxis == 0)
             {
                 NowAxis1 = Math.Max(leftX, leftY);
             }
             else
             {
-                NowAxis2 = Math.Max(leftX, leftY);
+                NowAxis1 = Math.Max(rightX, rightY);
             }
         });
     }
@@ -324,56 +348,15 @@ public partial class SettingModel
     {
         Dispatcher.UIThread.Post(() =>
         {
-            if (InputAxisR == 0)
+            if (InputRotateAxis == 0)
             {
-                NowAxis1 = Math.Max(rightX, rightY);
+                NowAxis2 = Math.Max(leftX, leftY);
             }
             else
             {
                 NowAxis2 = Math.Max(rightX, rightY);
             }
         });
-    }
-
-    private void ReadData(Event sdlEvent)
-    {
-        if (sdlEvent.Type == (uint)EventType.Controlleraxismotion)
-        {
-            var axisEvent = sdlEvent.Caxis;
-            var axisValue = axisEvent.Value;
-
-            if (axisEvent.Axis == (uint)GameControllerAxis.Leftx)
-            {
-                leftX = Math.Abs(axisValue);
-                UpdateType1();
-            }
-            else if (axisEvent.Axis == (uint)GameControllerAxis.Lefty)
-            {
-                leftY = Math.Abs(axisValue);
-                UpdateType1();
-            }
-            else if (axisEvent.Axis == (uint)GameControllerAxis.Rightx)
-            {
-                rightX = Math.Abs(axisValue);
-                UpdateType2();
-            }
-            else if (axisEvent.Axis == (uint)GameControllerAxis.Righty)
-            {
-                rightY = Math.Abs(axisValue);
-                UpdateType2();
-            }
-
-            Dispatcher.UIThread.Post(() =>
-            {
-                foreach (var item in InputAxisList)
-                {
-                    if (item.InputKey == axisEvent.Axis)
-                    {
-                        item.NowValue = axisValue;
-                    }
-                }
-            });
-        }
     }
 
     public void LoadInput()
@@ -406,24 +389,22 @@ public partial class SettingModel
             });
         }
 
-        InputAxisL = config.AxisL;
-        InputAxisR = config.AxisR;
+        InputCursorAxis = config.CursorAxis;
+        InputRotateAxis = config.RotateAxis;
 
-        MoveDeath = config.MoveDeath;
+        CursorDeath = config.CursorDeath;
         RotateDeath = config.RotateDeath;
 
+        CursorRate = config.CursorRate;
         RotateRate = config.RotateRate;
 
         ItemCycle = config.ItemCycle;
         ItemCycleLeft = config.ItemCycleLeft;
         ItemCycleRight = config.ItemCycleRight;
 
-        InputCursorAxis = config.CursorAxis;
-        CursorRate = config.CursorRate;
-
         isInputLoad = false;
 
-        if (!InputControl.IsInit)
+        if (!InputControlUtils.IsInit)
         {
             InputInit = false;
         }
@@ -435,10 +416,10 @@ public partial class SettingModel
 
     public void ReloadInput()
     {
-        InputNum = InputControl.Count;
+        InputNum = InputControlUtils.Count;
 
         InputNames.Clear();
-        InputControl.GetNames().ForEach(InputNames.Add);
+        InputControlUtils.GetNames().ForEach(InputNames.Add);
         if (InputNames.Count != 0)
         {
             InputIndex = 0;
@@ -455,32 +436,14 @@ public partial class SettingModel
         Model.SetChoiseContent(_name, "刷新手柄");
     }
 
-    private async Task<InputKeyObj?> ReadKey(CancellationToken token)
-    {
-        await Task.Run(() =>
-        {
-            isInput = true;
-            semaphore.WaitOne();
-        }, token);
-
-        if (token.IsCancellationRequested)
-        {
-            return null;
-        }
-
-        return _output;
-    }
-
-    public async void BindInput(InputButtonModel item)
+    public async void SetKeyButton(InputButtonModel item)
     {
         using var cannel = new CancellationTokenSource();
         Model.ShowCancel("请按下键盘或鼠标按键来绑定", () =>
         {
-            isInput = false;
             cannel.Cancel();
-            semaphore.Release();
         });
-        var key2 = await ReadKey(cannel.Token);
+        var key2 = await WaitKey(cannel.Token);
         Model.ShowClose();
         if (key2 == null)
         {
@@ -517,88 +480,250 @@ public partial class SettingModel
 
     public void InputMouse(KeyModifiers modifiers, PointerPointProperties properties)
     {
-        if (!isInput)
+        if (inputKey == null)
         {
             return;
         }
-        isInput = false;
 
         if (properties.IsMiddleButtonPressed)
         {
-            _output = new()
+            inputKey.Invoke(new()
             {
                 MouseButton = MouseButton.Middle,
                 KeyModifiers = modifiers
-            };
+            });
         }
         else if (properties.IsRightButtonPressed)
         {
-            _output = new()
+            inputKey.Invoke(new()
             {
                 MouseButton = MouseButton.Right,
                 KeyModifiers = modifiers
-            };
+            });
         }
         else if (properties.IsLeftButtonPressed)
         {
-            _output = new()
+            inputKey.Invoke(new()
             {
                 MouseButton = MouseButton.Left,
                 KeyModifiers = modifiers
-            };
+            });
         }
         else if (properties.IsXButton1Pressed)
         {
-            _output = new()
+            inputKey.Invoke(new()
             {
                 MouseButton = MouseButton.XButton1,
                 KeyModifiers = modifiers
-            };
+            });
         }
         else if (properties.IsXButton2Pressed)
         {
-            _output = new()
+            inputKey.Invoke(new()
             {
                 MouseButton = MouseButton.XButton2,
                 KeyModifiers = modifiers
-            };
+            });
         }
-
-        semaphore.Release();
     }
 
     public bool InputKey(KeyModifiers modifiers, Key key)
     {
-        if (!isInput)
+        if (inputKey == null)
         {
             return false;
         }
-        isInput = false;
 
-        _output = new()
+        if (key is Key.LeftShift or Key.RightShift && modifiers == KeyModifiers.Shift)
+        {
+            modifiers = KeyModifiers.None;
+        }
+        else if (key is Key.LeftCtrl or Key.RightCtrl && modifiers == KeyModifiers.Control)
+        {
+            modifiers = KeyModifiers.None;
+        }
+        else if (key is Key.LeftAlt or Key.RightAlt && modifiers == KeyModifiers.Alt)
+        {
+            modifiers = KeyModifiers.None;
+        }
+
+        inputKey?.Invoke(new()
         {
             Key = key,
             KeyModifiers = modifiers
-        };
-
-        semaphore.Release();
+        });
 
         return true;
     }
 
+    private Task<InputKeyObj?> WaitKey(CancellationToken token)
+    {
+        InputControlUtils.IsEditMode = true;
+        InputKeyObj? keys = null;
+        bool output = false;
+        inputKey = (key) =>
+        {
+            inputKey = null;
+            keys = key;
+            output = true;
+        };
+        return Task.Run(() =>
+        {
+            while (!output)
+            {
+                if (token.IsCancellationRequested)
+                {
+                    return null;
+                }
+                System.Threading.Thread.Sleep(100);
+            }
+
+            InputControlUtils.IsEditMode = false;
+
+            return keys;
+        });
+    }
+
+    private Task<byte?> WaitInput(CancellationToken token)
+    {
+        byte? keys = null;
+        bool output = false;
+        input = (key) =>
+        {
+            input = null;
+            keys = key;
+            output = true;
+        };
+        return Task.Run(() =>
+        {
+            while (!output)
+            {
+                if (token.IsCancellationRequested)
+                {
+                    return null;
+                }
+                System.Threading.Thread.Sleep(100);
+            }
+
+            return keys;
+        });
+    }
+
+    public Task<(byte, bool)?> WaitAxis(CancellationToken token)
+    {
+        byte keys = 0;
+        bool output = false;
+        bool positives = false;
+        inputAxis = (key, positive) =>
+        {
+            inputAxis = null;
+            positives = positive;
+            keys = key;
+            output = true;
+        };
+        return Task.Run<(byte, bool)?>(() =>
+        {
+            while (!output)
+            {
+                if (token.IsCancellationRequested)
+                {
+                    return null;
+                }
+                System.Threading.Thread.Sleep(100);
+            }
+
+            return (keys, positives);
+        });
+    }
+
+    private void InputControl_OnEvent(Event sdlEvent)
+    {
+        EventType type = (EventType)sdlEvent.Type;
+        if (type is EventType.Controllerdeviceadded
+            or EventType.Controllerdeviceremoved)
+        {
+            ReloadInput();
+            return;
+        }
+
+        if (sdlEvent.Cbutton.Which != joystickID)
+        {
+            return;
+        }
+
+        if (type == EventType.Controlleraxismotion)
+        {
+            var axisEvent = sdlEvent.Caxis;
+            var axisValue = axisEvent.Value;
+
+            short axisFixValue;
+            if (axisValue == short.MinValue)
+            {
+                axisFixValue = short.MaxValue;
+            }
+            else
+            {
+                axisFixValue = Math.Abs(axisValue);
+            }
+
+            if (axisEvent.Axis == (uint)GameControllerAxis.Leftx)
+            {
+                leftX = axisFixValue;
+                UpdateType1();
+            }
+            else if (axisEvent.Axis == (uint)GameControllerAxis.Lefty)
+            {
+                leftY = axisFixValue;
+                UpdateType1();
+            }
+            else if (axisEvent.Axis == (uint)GameControllerAxis.Rightx)
+            {
+                rightX = axisFixValue;
+                UpdateType2();
+            }
+            else if (axisEvent.Axis == (uint)GameControllerAxis.Righty)
+            {
+                rightY = axisFixValue;
+                UpdateType2();
+            }
+
+            if (axisFixValue > 2000)
+            {
+                inputAxis?.Invoke(sdlEvent.Caxis.Axis, axisValue > 0);
+            }
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                foreach (var item in InputAxisList)
+                {
+                    if (item.InputKey == axisEvent.Axis)
+                    {
+                        item.NowValue = axisValue;
+                    }
+                }
+            });
+        }
+        else if (type == EventType.Controllerbuttondown)
+        {
+            input?.Invoke(sdlEvent.Cbutton.Button);
+        }
+    }
+
     private void InputClose()
     {
-        readCancel?.Cancel();
-        readCancel?.Dispose();
-
-        readCancel = null;
-        if (ptr != IntPtr.Zero)
+        joystickID = 0;
+        if (controlPtr != IntPtr.Zero)
         {
-            unsafe
-            {
-                InputControl.Close(ptr);
-            }
-            ptr = IntPtr.Zero;
+            InputControlUtils.Close(controlPtr);
+            controlPtr = IntPtr.Zero;
+        }
+    }
+
+    private void StopRead()
+    {
+        if (InputControlUtils.IsInit)
+        {
+            InputControlUtils.OnEvent -= InputControl_OnEvent;
         }
     }
 }

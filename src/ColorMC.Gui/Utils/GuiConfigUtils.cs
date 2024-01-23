@@ -149,10 +149,11 @@ public static class GuiConfigUtils
         {
             Keys = [],
             AxisKeys = [],
-            AxisL = 0,
-            AxisR = 1,
-            MoveDeath = 20,
+            CursorAxis = 0,
+            RotateAxis = 1,
+            CursorDeath = 20,
             RotateDeath = 20,
+            CursorRate = 0.03f,
             RotateRate = 0.03f
         };
     }

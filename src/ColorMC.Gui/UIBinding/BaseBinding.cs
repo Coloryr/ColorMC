@@ -94,7 +94,7 @@ public static class BaseBinding
             try
             {
                 Media.Init();
-                InputControl.Init();
+                InputControlUtils.Init();
             }
             catch (Exception e)
             {

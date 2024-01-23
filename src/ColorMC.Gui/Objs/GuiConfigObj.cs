@@ -368,15 +368,14 @@ public record InputAxisObj : InputKeyObj
 public record InputControlObj
 {
     public bool Enable { get; set; }
-    public int AxisL { get; set; }
-    public int AxisR { get; set; }
-    public int MoveDeath { get; set; }
+    public int RotateAxis { get; set; }
     public int RotateDeath { get; set; }
     public float RotateRate { get; set; }
     public bool ItemCycle { get; set; }
     public byte ItemCycleLeft { get; set; }
     public byte ItemCycleRight { get; set; }
     public int CursorAxis { get; set; }
+    public int CursorDeath { get; set; }
     public float CursorRate { get; set; }
     public Dictionary<byte, InputKeyObj> Keys { get; set; }
     public Dictionary<string, InputAxisObj> AxisKeys { get; set; }

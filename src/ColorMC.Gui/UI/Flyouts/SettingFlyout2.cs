@@ -18,7 +18,7 @@ public class SettingFlyout2
             {
                 if(data is InputButtonModel key)
                 {
-                    model.BindInput(key);
+                    model.SetKeyButton(key);
                 }
             }),
             (App.Lang("SettingWindow.Flyouts.Text3"), true, ()=>

@@ -660,14 +660,6 @@ public static class ConfigBinding
         }
     }
 
-    public static void SaveInput(int inputL, int inputR)
-    {
-        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
-        GuiConfigUtils.Config.Input.AxisL = inputL;
-        GuiConfigUtils.Config.Input.AxisR = inputR;
-        GuiConfigUtils.Save();
-    }
-
     public static void SetItemCycle(byte left, byte right)
     {
         GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
@@ -676,10 +668,27 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
-    public static void SetRotateRate(float value)
+    public static void SetInputRate(float value, float value1)
     {
         GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
         GuiConfigUtils.Config.Input.RotateRate = value;
+        GuiConfigUtils.Config.Input.CursorRate = value1;
+        GuiConfigUtils.Save();
+    }
+
+    public static void SetInputAxis(int inputRotateAxis, int inputCursorAxis)
+    {
+        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
+        GuiConfigUtils.Config.Input.RotateAxis = inputRotateAxis;
+        GuiConfigUtils.Config.Input.CursorAxis = inputCursorAxis;
+        GuiConfigUtils.Save();
+    }
+
+    public static void SetInputDeath(int inputRotate, int inputCursor)
+    {
+        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
+        GuiConfigUtils.Config.Input.RotateDeath = inputRotate;
+        GuiConfigUtils.Config.Input.CursorDeath = inputCursor;
         GuiConfigUtils.Save();
     }
 }

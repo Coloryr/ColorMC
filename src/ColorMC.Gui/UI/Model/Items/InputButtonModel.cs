@@ -19,7 +19,7 @@ public partial class InputButtonModel(SettingModel setting) : ObservableObject
 
     public void Setting()
     {
-        setting.BindInput(this);
+        setting.SetKeyButton(this);
     }
 
     public void Delete()

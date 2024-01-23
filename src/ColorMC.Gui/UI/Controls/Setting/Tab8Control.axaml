@@ -9,7 +9,7 @@
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
     d:DesignHeight="900"
-    d:DesignWidth="800"
+    d:DesignWidth="1000"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer Name="ScrollViewer1" Margin="5,0,5,5">
@@ -95,7 +95,6 @@
                     </StackPanel>
                     <DataGrid
                         Name="DataGrid1"
-                        Height="200"
                         AutoGenerateColumns="False"
                         CanUserResizeColumns="True"
                         CanUserSortColumns="False"
@@ -158,7 +157,6 @@
 
                     <DataGrid
                         Name="DataGrid2"
-                        Height="120"
                         AutoGenerateColumns="False"
                         CanUserResizeColumns="True"
                         CanUserSortColumns="False"
@@ -186,7 +184,7 @@
                             <DataGridTextColumn Binding="{Binding End}" />
                             <DataGridTextColumn
                                 Binding="{Binding Bind}"
-                                Header="绑定值"
+                                Header="绑定按键值"
                                 IsReadOnly="True" />
                             <DataGridTextColumn Binding="{Binding NowValue}" IsReadOnly="True" />
                             <DataGridTemplateColumn Header="回弹取消">
@@ -220,28 +218,21 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg24.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="按键绑定" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="摇杆设置" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,-5">
                         <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="左摇杆功能" />
+                            <TextBlock Margin="0,0,5,0" Text="视角摇杆" />
                             <ComboBox
                                 Width="150"
                                 ItemsSource="{Binding AxisType}"
-                                SelectedIndex="{Binding InputAxisL}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="右摇杆功能" />
-                            <ComboBox
-                                Width="150"
-                                ItemsSource="{Binding AxisType}"
-                                SelectedIndex="{Binding InputAxisR}" />
+                                SelectedIndex="{Binding InputRotateAxis}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="光标摇杆" />
                             <ComboBox
                                 Width="150"
-                                ItemsSource="{Binding CursorAxisType}"
+                                ItemsSource="{Binding AxisType}"
                                 SelectedIndex="{Binding InputCursorAxis}" />
                         </StackPanel>
                     </WrapPanel>
@@ -249,82 +240,99 @@
                     <WrapPanel>
                         <StackPanel
                             Width="250"
-                            Margin="0,0,10,0"
+                            Margin="0,0,15,0"
                             Orientation="Horizontal">
-                            <TextBlock Margin="0,-10,5,0" Text="移动阈值" />
+                            <TextBlock Margin="0,-10,5,0" Text="光标阈值" />
                             <Panel>
-                                <Slider
-                                    Width="150"
-                                    Margin="0,-10,5,0"
-                                    Maximum="32767"
-                                    Value="{Binding MoveDeath}" />
-                                <ProgressBar
-                                    Width="150"
-                                    Height="4"
-                                    MinWidth="150"
-                                    MaxWidth="150"
-                                    Margin="0,15,0,-5"
-                                    BorderBrush="Transparent"
-                                    Maximum="32767"
-                                    Value="{Binding NowAxis1, FallbackValue=600}" />
+                                <StackPanel Margin="0,-10,0,0" Orientation="Horizontal">
+                                    <Slider
+                                        Width="150"
+                                        Margin="0,0,5,0"
+                                        LargeChange="10"
+                                        Maximum="32767"
+                                        SmallChange="1"
+                                        Value="{Binding CursorDeath, FallbackValue=20000}" />
+                                    <TextBlock Width="50" Text="{Binding CursorDeath, FallbackValue=20000}" />
+                                </StackPanel>
+                                <StackPanel Margin="0,15,0,-5" Orientation="Horizontal">
+                                    <ProgressBar
+                                        Width="150"
+                                        Height="4"
+                                        MinWidth="150"
+                                        MaxWidth="150"
+                                        Margin="0,0,5,0"
+                                        BorderBrush="Transparent"
+                                        Maximum="32767"
+                                        Value="{Binding NowAxis1, FallbackValue=20000}" />
+                                    <TextBlock Width="50" Text="{Binding NowAxis1, FallbackValue=20000}" />
+                                </StackPanel>
                             </Panel>
-                            <TextBlock
-                                Width="40"
-                                Margin="0,-10,0,0"
-                                Text="{Binding MoveDeath}" />
                         </StackPanel>
                         <StackPanel
                             Width="250"
-                            Margin="0,0,10,0"
+                            Margin="0,0,15,0"
                             Orientation="Horizontal">
                             <TextBlock Margin="0,-10,5,0" Text="视角转动阈值" />
                             <Panel>
-                                <Slider
-                                    Width="150"
-                                    Margin="0,-10,5,0"
-                                    Maximum="32767"
-                                    Value="{Binding RotateDeath}" />
-                                <ProgressBar
-                                    Width="150"
-                                    Height="4"
-                                    MinWidth="150"
-                                    MaxWidth="150"
-                                    Margin="0,15,0,-5"
-                                    Classes="type1"
-                                    Maximum="32767"
-                                    Value="{Binding NowAxis2}" />
+                                <StackPanel Margin="0,-10,0,0" Orientation="Horizontal">
+                                    <Slider
+                                        Width="150"
+                                        Margin="0,0,5,0"
+                                        LargeChange="10"
+                                        Maximum="32767"
+                                        SmallChange="1"
+                                        Value="{Binding RotateDeath, FallbackValue=20000}" />
+                                    <TextBlock Width="50" Text="{Binding RotateDeath, FallbackValue=20000}" />
+                                </StackPanel>
+                                <StackPanel Margin="0,15,0,-5" Orientation="Horizontal">
+                                    <ProgressBar
+                                        Width="150"
+                                        Height="4"
+                                        MinWidth="150"
+                                        MaxWidth="150"
+                                        Margin="0,0,5,0"
+                                        BorderBrush="Transparent"
+                                        Maximum="32767"
+                                        Value="{Binding NowAxis2, FallbackValue=20000}" />
+                                    <TextBlock Width="50" Text="{Binding NowAxis2, FallbackValue=20000}" />
+                                </StackPanel>
                             </Panel>
-                            <TextBlock
-                                Width="40"
-                                Margin="0,-10,0,0"
-                                Text="{Binding RotateDeath}" />
                         </StackPanel>
+                    </WrapPanel>
+                    <WrapPanel>
                         <StackPanel
                             Width="250"
-                            Margin="0,0,10,0"
+                            Margin="0,0,15,0"
                             Orientation="Horizontal">
                             <TextBlock Margin="0,-10,5,0" Text="转动倍率" />
                             <Slider
                                 Width="150"
                                 Margin="0,-10,5,0"
+                                LargeChange="0.1"
                                 Maximum="1"
                                 Minimum="0.01"
+                                SmallChange="0.01"
                                 Value="{Binding RotateRate}" />
                             <TextBlock
-                                Width="40"
+                                Width="50"
                                 Margin="0,-10,0,0"
                                 Text="{Binding RotateRate, StringFormat='{}{0:0.00}'}" />
                         </StackPanel>
-                        <StackPanel Width="250" Orientation="Horizontal">
+                        <StackPanel
+                            Width="250"
+                            Margin="0,0,15,0"
+                            Orientation="Horizontal">
                             <TextBlock Margin="0,-10,5,0" Text="光标倍率" />
                             <Slider
                                 Width="150"
                                 Margin="0,-10,5,0"
+                                LargeChange="0.1"
                                 Maximum="1"
                                 Minimum="0.01"
+                                SmallChange="0.01"
                                 Value="{Binding CursorRate}" />
                             <TextBlock
-                                Width="40"
+                                Width="50"
                                 Margin="0,-10,0,0"
                                 Text="{Binding CursorRate, StringFormat='{}{0:0.00}'}" />
                         </StackPanel>
@@ -369,6 +377,8 @@
                             <Button
                                 Width="100"
                                 Height="25"
+                                Command="{Binding SetItemButton}"
+                                CommandParameter="{x:False}"
                                 Content="设置按钮" />
                         </StackPanel>
                         <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
@@ -382,6 +392,8 @@
                             <Button
                                 Width="100"
                                 Height="25"
+                                Command="{Binding SetItemButton}"
+                                CommandParameter="{x:True}"
                                 Content="设置按钮" />
                         </StackPanel>
                     </WrapPanel>

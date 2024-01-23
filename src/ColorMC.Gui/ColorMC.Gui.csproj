@@ -75,6 +75,7 @@
     <None Remove="Resource\Icon\Input\button_a.svg" />
     <None Remove="Resource\Icon\Input\button_b.svg" />
     <None Remove="Resource\Icon\Input\button_bottom.svg" />
+    <None Remove="Resource\Icon\Input\button_down.svg" />
     <None Remove="Resource\Icon\Input\button_l.svg" />
     <None Remove="Resource\Icon\Input\button_lb.svg" />
     <None Remove="Resource\Icon\Input\button_left.svg" />
@@ -197,6 +198,7 @@
     <AvaloniaResource Include="Resource\Icon\Input\button_a.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_b.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_bottom.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_down.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_l.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_lb.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_left.svg" />

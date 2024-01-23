@@ -68,7 +68,7 @@ public partial class InputAxisButtonModel(SettingModel setting)
             BackCancel = BackCancel,
             Start = Start == null ? (short)0 : (short)Start,
             End = End == null ? short.MaxValue : (short)End,
-            InputKey = InputKey,
+            InputKey = InputKey
         };
     }
 }
