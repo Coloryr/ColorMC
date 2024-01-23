@@ -21,6 +21,13 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Linq;
 using ColorMC.Gui.Utils.Hook;
+using System.Threading;
+using ColorMC.Gui.Utils;
+using Avalonia.Threading;
+using Event = Silk.NET.SDL.Event;
+using EventType = Silk.NET.SDL.EventType;
+using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
+using Tmds.DBus.Protocol;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -36,9 +43,24 @@ public partial class GameWindowControl : UserControl, IUserControl
     private readonly INative _implementation;
     private readonly GameSettingObj _obj;
     private TopView _control;
+    private Process _process;
+
+    private bool isClose;
+    private bool isExit;
 
     private double cursorX;
     private double cursorY;
+
+    private double cursorNowX;
+    private double cursorNowY;
+
+    private IntPtr control;
+    private int joystickID;
+
+    private bool isMouseMode;
+    private bool oldMouseMode;
+
+    private int[] lastAxisMax = new int[100];
 
     public GameWindowControl()
     {
@@ -49,6 +71,7 @@ public partial class GameWindowControl : UserControl, IUserControl
     {
         _obj = obj;
         _handle = handel;
+        _process = process;
 
         process.Exited += Process_Exited;
 
@@ -65,44 +88,249 @@ public partial class GameWindowControl : UserControl, IUserControl
 
     private void Process_Exited(object? sender, EventArgs e)
     {
+        isClose = true;
         Window?.Close();
+    }
+
+    private readonly int DownRate = 800;
+
+    private void Event(Event sdlEvent)
+    {
+        var config = GuiConfigUtils.Config.Input;
+        if (!config.Enable)
+        {
+            return;
+        }
+
+        var type = (EventType)sdlEvent.Type;
+        if (type == EventType.Controlleraxismotion)
+        {
+            var axisEvent = sdlEvent.Caxis;
+            var axisValue = axisEvent.Value;
+
+            var axis = (GameControllerAxis)axisEvent.Axis;
+
+            var axisFixValue = (float)axisValue / DownRate * (isMouseMode ? config.CursorRate : config.RotateRate);
+            var deathSize = isMouseMode ? config.CursorDeath : config.RotateDeath;
+            var check = isMouseMode ? config.CursorAxis : config.RotateAxis;
+            //左摇杆
+            if (check == 0)
+            {
+                if (axis == GameControllerAxis.Leftx)
+                {
+                    if (axisValue >= deathSize || axisValue <= -deathSize)
+                    {
+                        cursorNowX = axisFixValue;
+                    }
+                    else
+                    {
+                        cursorNowX = 0;
+                    }
+                }
+                else if (axis == GameControllerAxis.Lefty)
+                {
+                    if (axisValue >= deathSize || axisValue <= -deathSize)
+                    {
+                        cursorNowY = axisFixValue;
+                    }
+                    else
+                    {
+                        cursorNowY = 0;
+                    }
+                }
+            }
+            //右摇杆
+            else if (check == 1)
+            {
+                if (axis == GameControllerAxis.Rightx)
+                {
+                    if (axisValue >= deathSize || axisValue <= -deathSize)
+                    {
+                        cursorNowX = axisFixValue;
+                    }
+                    else
+                    {
+                        cursorNowX = 0;
+                    }
+                }
+                else if (axis == GameControllerAxis.Righty)
+                {
+                    if (axisValue >= deathSize || axisValue <= -deathSize)
+                    {
+                        cursorNowY = axisFixValue;
+                    }
+                    else
+                    {
+                        cursorNowY = 0;
+                    }
+                }
+            }
+
+            if (lastAxisMax[axisEvent.Axis] < axisValue)
+            {
+                lastAxisMax[axisEvent.Axis] = axisValue;
+            }
+
+            foreach (var item in config.AxisKeys.Values)
+            {
+                //光标模式跳过光标摇杆
+                if (isMouseMode && check == item.InputKey)
+                {
+                    continue;
+                }
+                if (item.InputKey == axisEvent.Axis)
+                {
+                    bool down;
+                    if (axisValue <= 0 && item.Start <= 0 && item.End <= 0)
+                    {
+                        down = item.Start >= axisValue && item.End <= axisValue;
+                    }
+                    else
+                    {
+                        down = item.Start <= axisValue && item.End >= axisValue;
+                    }
+
+                    _implementation.SendKey(item, down);
+                }
+            }
+        }
+        else if (type == EventType.Controllerbuttondown)
+        {
+            var button = sdlEvent.Cbutton.Button;
+            foreach (var item in config.Keys)
+            {
+                if (item.Key == button)
+                {
+                    _implementation.SendKey(item.Value, true);
+                }
+            }
+        }
+        else if (type == EventType.Controllerbuttonup)
+        {
+            var button = sdlEvent.Cbutton.Button;
+            foreach (var item in config.Keys)
+            {
+                if (item.Key == button)
+                {
+                    _implementation.SendKey(item.Value, false);
+                }
+            }
+        }
     }
 
     public void Opened()
     {
-        if (_implementation.GetWindowSize(_handle, out var width, out var height))
+        unsafe
         {
-            Window.SetSize(width, height);
+            control = new(InputControlUtils.Open(0));
         }
+
+        if (control != IntPtr.Zero)
+        {
+            InputControlUtils.OnEvent += Event;
+            joystickID = InputControlUtils.GetJoystickID(control);
+        }
+
+        _implementation.AddHook(_handle);
         _implementation.TitleChange += TitleChange;
-        Window.SetTitle(_implementation.GetWindowTitle(_handle));
-        if (_implementation.GetIcon(_handle) is { } icon)
+
+        if (_implementation.GetWindowSize(out var width, out var height))
+        {
+            Window.SetSize(width + 2, height + 31);
+        }
+        if (_implementation.GetIcon() is { } icon)
         {
             Window.SetIcon(icon);
         }
-        var handle = _implementation.CreateControl(_handle);
-        _control = new TopView(handle);
+
+        Window.SetTitle(_implementation.GetWindowTitle());
+
+        _control = new TopView(_implementation.CreateControl());
         Panel1.Children.Add(_control);
+
         var handle1 = _control.TopWindow.TryGetPlatformHandle();
+
         if (handle1 is { })
         {
             _implementation.TransferEvent(handle1.Handle);
         }
+
+
+        cursorX = width / 2;
+        cursorY = height / 2;
+        _control.SendMouse(cursorX, cursorY);
+
+        new Thread(() =>
+        {
+            while (!isExit)
+            {
+                isMouseMode = _implementation.GetMouseMode();
+                if (isMouseMode != oldMouseMode)
+                {
+                    oldMouseMode = isMouseMode;
+                    _control.ChangeCursorDisplay(isMouseMode);
+                    if (isMouseMode)
+                    {
+                        var size = _control.Bounds;
+
+                        if (size.Width != 0 && size.Height != 0)
+                        {
+                            cursorX = size.Width / 2;
+                            cursorY = size.Height / 2;
+                            _control.SendMouse(cursorX, cursorY);
+                        }
+                    }
+                }
+
+                if (cursorNowX != 0 || cursorNowY != 0)
+                {
+                    if (isMouseMode)
+                    {
+                        var size = _control.Bounds;
+
+                        cursorX += cursorNowX;
+                        cursorY += cursorNowY;
+
+                        if (cursorX < 0)
+                        {
+                            cursorX = 0;
+                        }
+                        else if (cursorX > size.Width)
+                        {
+                            cursorX = size.Width;
+                        }
+
+                        if (cursorY < 0)
+                        {
+                            cursorY = 0;
+                        }
+                        else if (cursorY > size.Height)
+                        {
+                            cursorY = size.Height;
+                        }
+
+                        _control.SendMouse(cursorX, cursorY);
+                        _implementation.SendMouse(cursorX, cursorY, true);
+                    }
+                    else
+                    {
+                        _implementation.SendMouse(cursorNowX, cursorNowY, false);
+                    }
+                }
+
+                Thread.Sleep(10);
+            }
+        }).Start();
     }
 
     private void TitleChange(string title)
     {
-        Window.SetTitle(title);
-    }
-
-    public override void Render(DrawingContext context)
-    {
-        base.Render(context);
+        Window?.SetTitle(title);
     }
 
     public void WindowStateChange(WindowState state) 
     {
-        _implementation.SetWindowState(_handle, state);
+        _implementation.SetWindowState(state);
     }
 
     public void SetBaseModel(BaseModel model)
@@ -110,25 +338,30 @@ public partial class GameWindowControl : UserControl, IUserControl
         
     }
 
-    public class EmbedControl(IPlatformHandle handle) : NativeControlHost
-    {
-        protected override IPlatformHandle CreateNativeControlCore(IPlatformHandle parent)
-        {
-            return handle ?? base.CreateNativeControlCore(parent);
-        }
-
-        protected override void DestroyNativeControlCore(IPlatformHandle control)
-        {
-            if (control is INativeControlHostDestroyableControlHandle)
-            {
-                base.DestroyNativeControlCore(control);
-            }
-        }
-    }
-
     public Task<bool> Closing()
     {
-        _implementation.Close(_handle);
+        isExit = true;
+
+        InputControlUtils.OnEvent -= Event;
+
+        _implementation.Stop();
+        _implementation.Close();
+
+        Task.Run(() =>
+        {
+            Thread.Sleep(2000);
+            try
+            {
+                if (isClose == false && !_process.HasExited)
+                {
+                    _process.Kill();
+                }
+            }
+            catch
+            { 
+                
+            }
+        });
 
         return Task.FromResult(false);
     }
@@ -152,16 +385,6 @@ public class TopView : NativeControlHost
 
     private readonly SvgControl svg;
 
-    private void GameWindowControl_PointerMoved(object? sender, PointerEventArgs e)
-    {
-        var pos = e.GetPosition(this);
-        //cursorX = pos.X;
-        //cursorY = pos.Y;
-
-        transform.X = pos.X - 15;
-        transform.Y = pos.Y - 15;
-    }
-
     public TopView(IPlatformHandle input)
     {
         _input = input;
@@ -180,6 +403,14 @@ public class TopView : NativeControlHost
 
         ContentProperty.Changed.AddClassHandler<TopView>((s, e) => s.InitializeNativeOverlay());
         IsVisibleProperty.Changed.AddClassHandler<TopView>((s, e) => s.ShowNativeOverlay(s.IsVisible));
+    }
+
+    public void ChangeCursorDisplay(bool enable)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            svg.IsVisible = enable;
+        });
     }
 
     [Content]
@@ -209,8 +440,6 @@ public class TopView : NativeControlHost
                 Opacity = 1,
             };
 
-            TopWindow.PointerMoved += GameWindowControl_PointerMoved;
-
             _disposables = new CompositeDisposable()
                 {
                     TopWindow.Bind(ContentControl.ContentProperty, this.GetObservable(ContentProperty)),
@@ -219,8 +448,6 @@ public class TopView : NativeControlHost
                     Observable.FromEventPattern(VisualRoot, nameof(Window.PositionChanged))
                     .Subscribe(_ => UpdateOverlayPosition())
                 };
-
-
         }
 
         ShowNativeOverlay(IsEffectivelyVisible);
@@ -229,11 +456,6 @@ public class TopView : NativeControlHost
     protected override IPlatformHandle CreateNativeControlCore(IPlatformHandle parent)
     {
         return _input;
-    }
-
-    protected override void DestroyNativeControlCore(IPlatformHandle control)
-    {
-        base.DestroyNativeControlCore(control);
     }
 
     private void ShowNativeOverlay(bool show)
@@ -245,6 +467,15 @@ public class TopView : NativeControlHost
             TopWindow.Show(VisualRoot as Window);
         else
             TopWindow.Hide();
+    }
+
+    public void SendMouse(double cursorX, double cursorY)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            transform.X = cursorX - 15;
+            transform.Y = cursorY - 15;
+        });
     }
 
     private void UpdateOverlayPosition()
@@ -337,14 +568,5 @@ public class TopView : NativeControlHost
         _disposables = null;
         TopWindow?.Close();
         TopWindow = null;
-    }
-}
-
-internal class Win32WindowControlHandle(INative native, IntPtr handle) 
-    : PlatformHandle(handle, "HWND"), INativeControlHostDestroyableControlHandle
-{
-    public void Destroy()
-    {
-        native.DestroyWindow(Handle);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Utils;
 using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Setting;
@@ -40,6 +41,8 @@ public partial class SettingModel : MenuModel
             Phone = true;
             _enableWindowMode = false;
         }
+
+        StartRead();
     }
 
     public void RemoveChoise()
@@ -54,5 +57,6 @@ public partial class SettingModel : MenuModel
         _uuids.Clear();
         GameList.Clear();
         InputClose();
+        StopRead();
     }
 }
