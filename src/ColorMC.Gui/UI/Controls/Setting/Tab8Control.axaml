@@ -98,6 +98,7 @@
                         AutoGenerateColumns="False"
                         CanUserResizeColumns="True"
                         CanUserSortColumns="False"
+                        HorizontalScrollBarVisibility="Disabled"
                         IsEnabled="{Binding InputExist}"
                         ItemsSource="{Binding InputList}"
                         SelectedItem="{Binding InputItem}">
@@ -160,6 +161,7 @@
                         AutoGenerateColumns="False"
                         CanUserResizeColumns="True"
                         CanUserSortColumns="False"
+                        HorizontalScrollBarVisibility="Disabled"
                         IsEnabled="{Binding InputExist}"
                         ItemsSource="{Binding InputAxisList}"
                         SelectedItem="{Binding InputAxisItem}">

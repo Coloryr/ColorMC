@@ -28,6 +28,7 @@ using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
 using Tmds.DBus.Protocol;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -56,6 +57,7 @@ public partial class GameWindowControl : UserControl, IUserControl
 
     private IntPtr control;
     private int joystickID;
+    private int nowItem = 1;
 
     private bool isMouseMode;
     private bool oldMouseMode;
@@ -113,7 +115,7 @@ public partial class GameWindowControl : UserControl, IUserControl
             var axisFixValue = (float)axisValue / DownRate * (isMouseMode ? config.CursorRate : config.RotateRate);
             var deathSize = isMouseMode ? config.CursorDeath : config.RotateDeath;
             var check = isMouseMode ? config.CursorAxis : config.RotateAxis;
-            //◊Û“°∏À
+            //Â∑¶ÊëáÊùÜ
             if (check == 0)
             {
                 if (axis == GameControllerAxis.Leftx)
@@ -139,7 +141,7 @@ public partial class GameWindowControl : UserControl, IUserControl
                     }
                 }
             }
-            //”““°∏À
+            //Âè≥ÊëáÊùÜ
             else if (check == 1)
             {
                 if (axis == GameControllerAxis.Rightx)
@@ -171,26 +173,46 @@ public partial class GameWindowControl : UserControl, IUserControl
                 lastAxisMax[axisEvent.Axis] = axisValue;
             }
 
-            foreach (var item in config.AxisKeys.Values)
+            bool skip = false;
+            if (isMouseMode)
             {
-                //π‚±Íƒ£ ΩÃ¯π˝π‚±Í“°∏À
-                if (isMouseMode && check == item.InputKey)
+                if (check == 0)
                 {
-                    continue;
+                    if (axis is GameControllerAxis.Leftx
+                        or GameControllerAxis.Lefty)
+                    {
+                        skip = true;
+                    }
                 }
-                if (item.InputKey == axisEvent.Axis)
+                else if (check == 1)
                 {
-                    bool down;
-                    if (axisValue <= 0 && item.Start <= 0 && item.End <= 0)
+                    if (axis is GameControllerAxis.Rightx
+                        or GameControllerAxis.Righty)
                     {
-                        down = item.Start >= axisValue && item.End <= axisValue;
+                        skip = false;
                     }
-                    else
-                    {
-                        down = item.Start <= axisValue && item.End >= axisValue;
-                    }
+                }
+            }
 
-                    _implementation.SendKey(item, down);
+            if (!skip)
+            {
+                foreach (var item in config.AxisKeys.Values)
+                {
+                    //ÂÖâÊ†áÊ®°ÂºèË∑≥ËøáÂÖâÊ†áÊëáÊùÜ
+                    if (item.InputKey == axisEvent.Axis)
+                    {
+                        bool down;
+                        if (axisValue <= 0 && item.Start <= 0 && item.End <= 0)
+                        {
+                            down = item.Start >= axisValue && item.End <= axisValue;
+                        }
+                        else
+                        {
+                            down = item.Start <= axisValue && item.End >= axisValue;
+                        }
+
+                        _implementation.SendKey(item, down);
+                    }
                 }
             }
         }
@@ -202,6 +224,40 @@ public partial class GameWindowControl : UserControl, IUserControl
                 if (item.Key == button)
                 {
                     _implementation.SendKey(item.Value, true);
+                }
+            }
+            if (config.ItemCycle)
+            {
+                bool send = false;
+                if (button == config.ItemCycleLeft)
+                {
+                    nowItem--;
+                    if (nowItem <= 0)
+                    {
+                        nowItem = 9;
+                    }
+
+                    send = true;
+                }
+                else if (button == config.ItemCycleRight)
+                {
+                    nowItem++;
+                    if (nowItem >= 10)
+                    {
+                        nowItem = 1;
+                    }
+
+                    send = true;
+                }
+                if (send)
+                {
+                    var key = new InputKeyObj()
+                    {
+                        Key = Key.D0 + nowItem
+                    };
+
+                    _implementation.SendKey(key, true);
+                    _implementation.SendKey(key, false);
                 }
             }
         }

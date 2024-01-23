@@ -1,4 +1,4 @@
-﻿using Silk.NET.SDL;
+using Silk.NET.SDL;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;

@@ -1,4 +1,4 @@
-﻿using Avalonia.Input;
+using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
