@@ -217,6 +217,12 @@ public record Live2DSetting
     public int Pos { get; set; }
 }
 
+public record InputObj
+{
+    public bool Enable { get; set; }
+    public string? NowConfig { get; set; }
+}
+
 /// <summary>
 /// Gui配置文件
 /// </summary>
@@ -334,49 +340,10 @@ public record GuiConfigObj
     /// <summary>
     /// 手柄绑定
     /// </summary>
-    public InputControlObj Input { get; set; }
+    public InputObj Input { get; set; }
     /// <summary>
     /// 服务器云同步密钥
     /// </summary>
     public string ServerKey { get; set; }
 }
 
-public record InputKeyObj
-{ 
-    public Key Key { get; set; }
-    public KeyModifiers KeyModifiers { get; set; }
-    public MouseButton MouseButton { get; set; }
-}
-
-public record InputAxisObj : InputKeyObj
-{
-    public byte InputKey { get; set; }
-    public short Start { get; set; }
-    public short End { get; set; }
-    public bool BackCancel { get; set; }
-
-    public InputAxisObj() { }
-
-    public InputAxisObj(InputKeyObj obj)
-    {
-        Key = obj.Key;
-        KeyModifiers = obj.KeyModifiers;
-        MouseButton = obj.MouseButton;
-    }
-}
-
-public record InputControlObj
-{
-    public bool Enable { get; set; }
-    public int RotateAxis { get; set; }
-    public int RotateDeath { get; set; }
-    public float RotateRate { get; set; }
-    public bool ItemCycle { get; set; }
-    public byte ItemCycleLeft { get; set; }
-    public byte ItemCycleRight { get; set; }
-    public int CursorAxis { get; set; }
-    public int CursorDeath { get; set; }
-    public float CursorRate { get; set; }
-    public Dictionary<byte, InputKeyObj> Keys { get; set; }
-    public Dictionary<string, InputAxisObj> AxisKeys { get; set; }
-}

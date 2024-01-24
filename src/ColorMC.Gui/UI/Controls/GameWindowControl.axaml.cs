@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Platform;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -27,8 +26,8 @@ using Avalonia.Threading;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
-using Tmds.DBus.Protocol;
 using ColorMC.Gui.Objs;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -43,8 +42,8 @@ public partial class GameWindowControl : UserControl, IUserControl
     private readonly IntPtr _handle;
     private readonly INative _implementation;
     private readonly GameSettingObj _obj;
-    private TopView _control;
-    private Process _process;
+    private readonly TopView _control;
+    private readonly Process _process;
 
     private bool isClose;
     private bool isExit;
@@ -55,14 +54,15 @@ public partial class GameWindowControl : UserControl, IUserControl
     private double cursorNowX;
     private double cursorNowY;
 
-    private IntPtr control;
+    private IntPtr gameController;
     private int joystickID;
-    private int nowItem = 1;
 
     private bool isMouseMode;
     private bool oldMouseMode;
+    private bool _cursorHidden = false;
 
-    private int[] lastAxisMax = new int[100];
+    private readonly short[] lastAxisMax = new short[10];
+    private readonly Dictionary<InputKeyObj, bool> lastKeyState = [];
 
     public GameWindowControl()
     {
@@ -81,6 +81,16 @@ public partial class GameWindowControl : UserControl, IUserControl
         {
             _implementation = new Win32Native();
         }
+
+        _implementation.AddHook(_handle);
+        _control = new TopView(_implementation.CreateControl());
+        _control.GotFocus += Control_GotFocus;
+        Panel1.Children.Add(_control);
+    }
+
+    private void Control_GotFocus(object? sender, GotFocusEventArgs e)
+    {
+        (Window as Window)?.Activate();
     }
 
     public void Closed() 
@@ -98,8 +108,9 @@ public partial class GameWindowControl : UserControl, IUserControl
 
     private void Event(Event sdlEvent)
     {
-        var config = GuiConfigUtils.Config.Input;
-        if (!config.Enable)
+        var config = InputConfigUtils.NowConfig;
+        if (config == null || !GuiConfigUtils.Config.Input.Enable 
+            || sdlEvent.Cbutton.Which != joystickID)
         {
             return;
         }
@@ -168,50 +179,64 @@ public partial class GameWindowControl : UserControl, IUserControl
                 }
             }
 
-            if (lastAxisMax[axisEvent.Axis] < axisValue)
-            {
-                lastAxisMax[axisEvent.Axis] = axisValue;
-            }
-
             bool skip = false;
             if (isMouseMode)
             {
-                if (check == 0)
-                {
-                    if (axis is GameControllerAxis.Leftx
+                if (check == 0 && axis is GameControllerAxis.Leftx
                         or GameControllerAxis.Lefty)
-                    {
-                        skip = true;
-                    }
-                }
-                else if (check == 1)
                 {
-                    if (axis is GameControllerAxis.Rightx
+                    skip = true;
+                }
+                else if (check == 1 && axis is GameControllerAxis.Rightx
                         or GameControllerAxis.Righty)
-                    {
-                        skip = false;
-                    }
+                {
+                    skip = true;
                 }
             }
 
             if (!skip)
             {
+                if (axisValue < config.ToBackValue)
+                {
+                    lastAxisMax[axisEvent.Axis] = 0;
+                }
+                else if (lastAxisMax[axisEvent.Axis] < axisValue)
+                {
+                    lastAxisMax[axisEvent.Axis] = axisValue;
+                }
+
+                var nowMaxValue = lastAxisMax[axisEvent.Axis];
+
                 foreach (var item in config.AxisKeys.Values)
                 {
                     //光标模式跳过光标摇杆
                     if (item.InputKey == axisEvent.Axis)
                     {
                         bool down;
-                        if (axisValue <= 0 && item.Start <= 0 && item.End <= 0)
+                        if (!item.BackCancel)
                         {
-                            down = item.Start >= axisValue && item.End <= axisValue;
+                            if (axisValue <= 0 && item.Start <= 0 && item.End <= 0)
+                            {
+                                down = item.Start >= axisValue && item.End <= axisValue;
+                            }
+                            else
+                            {
+                                down = item.Start <= axisValue && item.End >= axisValue;
+                            }
                         }
                         else
                         {
-                            down = item.Start <= axisValue && item.End >= axisValue;
+                            if (axisValue <= 0 && item.Start <= 0 && item.End <= 0)
+                            {
+                                down = item.Start >= nowMaxValue && item.End <= nowMaxValue;
+                            }
+                            else
+                            {
+                                down = item.Start <= nowMaxValue && item.End >= nowMaxValue;
+                            }
                         }
 
-                        _implementation.SendKey(item, down);
+                        CheckKeyAndSend(item, down);
                     }
                 }
             }
@@ -223,41 +248,18 @@ public partial class GameWindowControl : UserControl, IUserControl
             {
                 if (item.Key == button)
                 {
-                    _implementation.SendKey(item.Value, true);
+                    CheckKeyAndSend(item.Value, true);
                 }
             }
             if (config.ItemCycle)
             {
-                bool send = false;
                 if (button == config.ItemCycleLeft)
                 {
-                    nowItem--;
-                    if (nowItem <= 0)
-                    {
-                        nowItem = 9;
-                    }
-
-                    send = true;
+                    _implementation.SendScoll(1, false);
                 }
                 else if (button == config.ItemCycleRight)
                 {
-                    nowItem++;
-                    if (nowItem >= 10)
-                    {
-                        nowItem = 1;
-                    }
-
-                    send = true;
-                }
-                if (send)
-                {
-                    var key = new InputKeyObj()
-                    {
-                        Key = Key.D0 + nowItem
-                    };
-
-                    _implementation.SendKey(key, true);
-                    _implementation.SendKey(key, false);
+                    _implementation.SendScoll(1, true);
                 }
             }
         }
@@ -268,7 +270,7 @@ public partial class GameWindowControl : UserControl, IUserControl
             {
                 if (item.Key == button)
                 {
-                    _implementation.SendKey(item.Value, false);
+                    CheckKeyAndSend(item.Value, false);
                 }
             }
         }
@@ -278,16 +280,15 @@ public partial class GameWindowControl : UserControl, IUserControl
     {
         unsafe
         {
-            control = new(InputControlUtils.Open(0));
+            gameController = new(InputControlUtils.Open(0));
         }
 
-        if (control != IntPtr.Zero)
+        if (gameController != IntPtr.Zero)
         {
             InputControlUtils.OnEvent += Event;
-            joystickID = InputControlUtils.GetJoystickID(control);
+            joystickID = InputControlUtils.GetJoystickID(gameController);
         }
 
-        _implementation.AddHook(_handle);
         _implementation.TitleChange += TitleChange;
 
         if (_implementation.GetWindowSize(out var width, out var height))
@@ -301,16 +302,12 @@ public partial class GameWindowControl : UserControl, IUserControl
 
         Window.SetTitle(_implementation.GetWindowTitle());
 
-        _control = new TopView(_implementation.CreateControl());
-        Panel1.Children.Add(_control);
-
         var handle1 = _control.TopWindow.TryGetPlatformHandle();
 
         if (handle1 is { })
         {
             _implementation.TransferEvent(handle1.Handle);
         }
-
 
         cursorX = width / 2;
         cursorY = height / 2;
@@ -377,6 +374,57 @@ public partial class GameWindowControl : UserControl, IUserControl
                 Thread.Sleep(10);
             }
         }).Start();
+    }
+
+    //private void HideCursor()
+    //{
+    //    var window = Window as Window;
+    //    // 设置光标为无
+    //    _control.Cursor = new Cursor(StandardCursorType.None);
+    //    _cursorHidden = true;
+
+    //    // 监听鼠标移动事件
+    //    _control.PointerMoved += OnPointerMoved;
+    //}
+
+    //private void ShowCursor()
+    //{
+    //    var window = Window as Window;
+    //    // 设置光标为箭头
+    //    _control.Cursor = new Cursor(StandardCursorType.Arrow);
+    //    _cursorHidden = false;
+
+    //    // 移除鼠标移动事件监听
+    //    _control.PointerMoved -= OnPointerMoved;
+    //}
+
+    //private void OnPointerMoved(object? sender, PointerEventArgs e)
+    //{
+    //    if (_cursorHidden)
+    //    {
+    //        // 由于鼠标移动事件可能频繁触发，你可能想要添加一些逻辑来决定何时显示光标
+    //        // 例如，可以设置一个计时器，在鼠标移动后一段时间后再显示光标
+
+    //        // 显示光标
+    //        ShowCursor();
+    //    }
+    //}
+
+    private void CheckKeyAndSend(InputKeyObj obj, bool down)
+    {
+        if (lastKeyState.TryGetValue(obj, out var state))
+        {
+            if (state != down)
+            {
+                lastKeyState[obj] = down;
+                _implementation.SendKey(obj, down);
+            }
+        }
+        else
+        {
+            lastKeyState.Add(obj, down);
+            _implementation.SendKey(obj, down);
+        }
     }
 
     private void TitleChange(string title)

@@ -7,16 +7,20 @@ using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Silk.NET.SDL;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using Event = Silk.NET.SDL.Event;
+using EventType = Silk.NET.SDL.EventType;
+using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel
 {
+    public ObservableCollection<string> Configs { get; init; } = [];
     public ObservableCollection<InputButtonModel> InputList { get; init; } =[];
     public ObservableCollection<string> InputNames { get; init; } = [];
 
@@ -51,6 +55,13 @@ public partial class SettingModel
     private int _rotateDeath;
     [ObservableProperty]
     private int _inputCursorAxis = 0;
+    [ObservableProperty]
+    private int _toBackValue;
+
+    [ObservableProperty]
+    private int _nowConfig = -1;
+    [ObservableProperty]
+    private int _selectConfig = -1;
 
     [ObservableProperty]
     private int _nowAxis1;
@@ -72,6 +83,7 @@ public partial class SettingModel
     [ObservableProperty]
     private float _cursorRate;
 
+    private readonly List<string> UUIDs = [];
     private short leftX, leftY, rightX, rightY;
 
     private Action<byte>? input;
@@ -81,106 +93,150 @@ public partial class SettingModel
     private IntPtr controlPtr;
     private int joystickID;
 
+    private InputControlObj? Obj;
+
+    private bool isInputConfigLoad;
     private bool isInputLoad;
 
-    partial void OnRotateDeathChanged(int value)
+    partial void OnNowConfigChanged(int value)
     {
         if (isInputLoad)
         {
             return;
         }
+        else if (value == -1)
+        {
+            ConfigBinding.SaveNowInputConfig(null);
+            return;
+        }
+        else if (UUIDs.Count <= value)
+        {
+            NowConfig = -1;
+            return;
+        }
 
-        ConfigBinding.SetInputDeath(RotateDeath, CursorDeath);
+        var uuid = UUIDs[value];
+
+        ConfigBinding.SaveNowInputConfig(uuid);
+    }
+
+    partial void OnSelectConfigChanged(int value)
+    {
+        InputExist = value != -1;
+        if (isInputLoad || value == -1)
+        {
+            return;
+        }
+        else if (UUIDs.Count <= value)
+        {
+            SelectConfig = -1;
+        }
+
+        string uuid = UUIDs[value];
+
+        InputConfigUtils.Configs.TryGetValue(uuid, out Obj);
+        if (Obj != null)
+        {
+            LoadInputConfig(Obj);
+        }
+    }
+
+    partial void OnRotateDeathChanged(int value)
+    {
+        if (isInputConfigLoad || Obj == null)
+        {
+            return;
+        }
+
+        ConfigBinding.SetInputDeath(Obj, RotateDeath, CursorDeath);
     }
 
     partial void OnCursorDeathChanged(int value)
     {
-        if (isInputLoad)
+        if (isInputConfigLoad || Obj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputDeath(RotateDeath, CursorDeath);
+        ConfigBinding.SetInputDeath(Obj, RotateDeath, CursorDeath);
     }
 
     partial void OnCursorRateChanged(float value)
     {
-        if (isInputLoad)
+        if (isInputConfigLoad || Obj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputRate(RotateRate, CursorRate);
+        ConfigBinding.SetInputRate(Obj, RotateRate, CursorRate);
     }
 
     partial void OnRotateRateChanged(float value)
     {
-        if (isInputLoad)
+        if (isInputConfigLoad || Obj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputRate(RotateRate, CursorRate);
+        ConfigBinding.SetInputRate(Obj, RotateRate, CursorRate);
     }
 
     partial void OnItemCycleChanged(bool value)
     {
-        if (isInputLoad)
+        if (isInputConfigLoad || Obj == null)
         {
             return;
         }
 
-        ConfigBinding.SaveInput(InputEnable, ItemCycle);
+        ConfigBinding.SaveInput(Obj, InputEnable, ItemCycle);
     }
 
     partial void OnItemCycleLeftChanged(byte value)
     {
         CycleLeftIcon = IconConverter.GetInputKeyIcon(ItemCycleLeft);
 
-        if (isInputLoad)
+        if (isInputConfigLoad || Obj == null)
         {
             return;
         }
 
-        ConfigBinding.SetItemCycle(ItemCycleLeft, ItemCycleRight);
+        ConfigBinding.SetItemCycle(Obj, ItemCycleLeft, ItemCycleRight);
     }
 
     partial void OnItemCycleRightChanged(byte value)
     {
         CycleRightIcon = IconConverter.GetInputKeyIcon(ItemCycleRight);
 
-        if (isInputLoad)
+        if (isInputConfigLoad || Obj == null)
         {
             return;
         }
 
-        ConfigBinding.SetItemCycle(ItemCycleLeft, ItemCycleRight);
+        ConfigBinding.SetItemCycle(Obj, ItemCycleLeft, ItemCycleRight);
     }
 
     partial void OnInputCursorAxisChanged(int value)
     {
-        if (isInputLoad)
+        if (isInputConfigLoad || Obj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputAxis(InputRotateAxis, InputCursorAxis);
+        ConfigBinding.SetInputAxis(Obj, InputRotateAxis, InputCursorAxis);
     }
 
     partial void OnInputRotateAxisChanged(int value)
     {
-        if (isInputLoad)
+        if (isInputConfigLoad || Obj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputAxis(InputRotateAxis, InputCursorAxis);
+        ConfigBinding.SetInputAxis(Obj, InputRotateAxis, InputCursorAxis);
     }
 
     partial void OnInputIndexChanged(int value)
     {
-        InputExist = value != -1;
-
         InputClose();
         if (value != -1)
         {
@@ -201,17 +257,91 @@ public partial class SettingModel
 
     partial void OnInputEnableChanged(bool value)
     {
-        if (isInputLoad)
+        if (isInputConfigLoad || Obj == null)
         {
             return;
         }
 
-        ConfigBinding.SaveInput(InputEnable, ItemCycle);
+        ConfigBinding.SaveInput(Obj, InputEnable, ItemCycle);
+    }
+
+    [RelayCommand]
+    public async Task DeleteInputConfig()
+    {
+        if (Obj == null)
+        {
+            return;
+        }
+
+        var res = await Model.ShowWait(string.Format("是否要删除手柄方案 {0}", Obj.Name));
+        if (!res)
+        {
+            return;
+        }
+
+        ConfigBinding.RemoveInputConfig(Obj);
+
+        var index = UUIDs.IndexOf(Obj.UUID);
+
+        UUIDs.Remove(Obj.UUID);
+        Configs.Remove(Obj.Name);
+
+        if (Configs.Count > 0)
+        {
+            SelectConfig = 0;
+        }
+    }
+
+    [RelayCommand]
+    public async Task RenameInputConfig()
+    {
+        if (Obj == null)
+        {
+            return;
+        }
+
+        var (Cancel, Text1) = await Model.ShowEdit("配置名字", Obj.Name);
+        if (Cancel || string.IsNullOrWhiteSpace(Text1))
+        {
+            return;
+        }
+
+        Obj.Name = Text1;
+        var last = SelectConfig;
+        var now = NowConfig == last;
+        Configs[SelectConfig] = Text1;
+        SelectConfig = last;
+        if (now)
+        {
+            NowConfig = last;
+        }
+
+        ConfigBinding.SaveInputConfig(Obj);
+    }
+
+    [RelayCommand]
+    public async Task NewInputConfig()
+    {
+        var (Cancel, Text) = await Model.ShowInputOne("配置名字", false);
+        if (Cancel || string.IsNullOrWhiteSpace(Text))
+        {
+            return;
+        }
+
+        var obj = ConfigBinding.NewInput(Text);
+        UUIDs.Add(obj.UUID);
+        Configs.Add(obj.Name);
+
+        SelectConfig = Configs.Count - 1;
     }
 
     [RelayCommand]
     public async Task AddAxisInput()
     {
+        if (Obj == null)
+        {
+            return;
+        }
         using var cannel = new CancellationTokenSource();
         Model.ShowCancel("请按下手柄扳机来绑定", () =>
         {
@@ -243,13 +373,18 @@ public partial class SettingModel
             End = key1.Item2 ? short.MaxValue : short.MinValue
         };
         InputAxisList.Add(item1);
-        ConfigBinding.AddAxisInput(item1.UUID, item1.GenObj());
+        ConfigBinding.AddAxisInput(Obj, item1.UUID, item1.GenObj());
         Model.Notify("已添加");
     }
 
     [RelayCommand]
     public async Task AddInput()
     {
+        if (Obj == null)
+        {
+            return;
+        }
+
         using var cannel = new CancellationTokenSource();
         Model.ShowCancel("请按下手柄按键来绑定", () => 
         {
@@ -286,7 +421,7 @@ public partial class SettingModel
             Obj = key2
         };
         InputList.Add(item1);
-        ConfigBinding.AddInput(item1.InputKey, item1.Obj);
+        ConfigBinding.AddInput(Obj, item1.InputKey, item1.Obj);
         Model.Notify("已添加");
     }
 
@@ -318,7 +453,12 @@ public partial class SettingModel
 
     public void InputSave(InputAxisButtonModel model)
     {
-        ConfigBinding.AddAxisInput(model.UUID, model.GenObj());
+        if (Obj == null)
+        {
+            return;
+        }
+
+        ConfigBinding.AddAxisInput(Obj, model.UUID, model.GenObj());
     }
 
     private void StartRead()
@@ -362,11 +502,32 @@ public partial class SettingModel
     public void LoadInput()
     {
         isInputLoad = true;
+        Configs.Clear();
+        UUIDs.Clear();
+        InputEnable = GuiConfigUtils.Config.Input.Enable;
 
-        var config = GuiConfigUtils.Config.Input;
-        InputEnable = config.Enable;
+        foreach (var item in InputConfigUtils.Configs)
+        {
+            UUIDs.Add(item.Key);
+            Configs.Add(item.Value.Name);
+        }
 
+        NowConfig = UUIDs.IndexOf(GuiConfigUtils.Config.Input.NowConfig);
+
+        isInputLoad = false;
+
+        if (Configs.Count > 0)
+        {
+            SelectConfig = 0;
+        }
+    }
+
+    private void LoadInputConfig(InputControlObj config)
+    {
+        isInputConfigLoad = true;
         InputList.Clear();
+        InputAxisList.Clear();
+
         foreach (var item in config.Keys)
         {
             InputList.Add(new(this)
@@ -376,7 +537,6 @@ public partial class SettingModel
             });
         }
 
-        InputAxisList.Clear();
         foreach (var item in config.AxisKeys)
         {
             InputAxisList.Add(new(this)
@@ -397,21 +557,13 @@ public partial class SettingModel
 
         CursorRate = config.CursorRate;
         RotateRate = config.RotateRate;
+        ToBackValue = config.ToBackValue;
 
         ItemCycle = config.ItemCycle;
         ItemCycleLeft = config.ItemCycleLeft;
         ItemCycleRight = config.ItemCycleRight;
 
-        isInputLoad = false;
-
-        if (!InputControlUtils.IsInit)
-        {
-            InputInit = false;
-        }
-
-        InputInit = true;
-
-        ReloadInput();
+        isInputConfigLoad = false;
     }
 
     public void ReloadInput()
@@ -438,6 +590,10 @@ public partial class SettingModel
 
     public async void SetKeyButton(InputButtonModel item)
     {
+        if (Obj == null)
+        {
+            return;
+        }
         using var cannel = new CancellationTokenSource();
         Model.ShowCancel("请按下键盘或鼠标按键来绑定", () =>
         {
@@ -454,26 +610,30 @@ public partial class SettingModel
 
         if (item is InputAxisButtonModel model)
         {
-            ConfigBinding.AddAxisInput(model.UUID, model.GenObj());
+            ConfigBinding.AddAxisInput(Obj, model.UUID, model.GenObj());
         }
         else
         {
-            ConfigBinding.AddInput(item.InputKey, item.Obj);
+            ConfigBinding.AddInput(Obj, item.InputKey, item.Obj);
         }
         Model.Notify("已修改");
     }
 
     public void DeleteInput(InputButtonModel item)
     {
+        if (Obj == null)
+        {
+            return;
+        }
         if (item is InputAxisButtonModel model)
         {
             InputAxisList.Remove(model);
-            ConfigBinding.DeleteAxisInput(model.UUID);
+            ConfigBinding.DeleteAxisInput(Obj, model.UUID);
         }
         else
         {
             InputList.Remove(item);
-            ConfigBinding.DeleteInput(item.InputKey);
+            ConfigBinding.DeleteInput(Obj, item.InputKey);
         }
         Model.Notify("已删除");
     }

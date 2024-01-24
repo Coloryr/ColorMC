@@ -389,10 +389,10 @@ public partial class BaseModel : ObservableObject
     }
 
     /// <summary>
-    /// 打开一个对话框，显示只读内容
+    /// 打开一个对话框，输入内容
     /// </summary>
     /// <param name="title"></param>
-    /// <param name="lock1">是否不等待用户确认</param>
+    /// <param name="lock1">是否为只读</param>
     /// <returns></returns>
     public async Task<(bool Cancel, string? Text)> ShowInputOne(string title, bool lock1)
     {
@@ -428,6 +428,7 @@ public partial class BaseModel : ObservableObject
 
         DClose();
         Work();
+
         await DialogHost.Show(_info3, Name);
 
         NoWork();

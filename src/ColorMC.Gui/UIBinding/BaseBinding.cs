@@ -104,6 +104,7 @@ public static class BaseBinding
 
         FrpConfigUtils.Init(ColorMCGui.RunDir);
         ImageUtils.Init(ColorMCGui.RunDir);
+        InputConfigUtils.Init(ColorMCGui.RunDir);
 
         FontSel.Load();
         ColorSel.Load();
@@ -396,26 +397,38 @@ public static class BaseBinding
 
             App.MainWindow?.ShowMessage(App.Lang("Live2D.Text2"));
 
-            _ = Task.Run(() =>
+            if (GuiConfigUtils.Config.Input.Enable)
             {
-                nint ptr;
-                Task.Delay(1000);
-                pr.WaitForInputIdle();
-                while (true)
+                _ = Task.Run(() =>
                 {
-                    Task.Delay(100);
-                    ptr = pr.MainWindowHandle;
-                    if (ptr != IntPtr.Zero)
+                    IntPtr ptr = IntPtr.Zero;
+                    try
                     {
-                        break;
+                        pr.WaitForInputIdle();
+                        while (!pr.HasExited)
+                        {
+                            Task.Delay(100);
+                            ptr = pr.MainWindowHandle;
+                            if (ptr != IntPtr.Zero)
+                            {
+                                break;
+                            }
+                        }
                     }
-                }
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    App.ShowGameWindow(obj, pr,  ptr);
-                    return;
+                    catch
+                    { 
+                        
+                    }
+                    if (ptr == IntPtr.Zero)
+                    {
+                        return;
+                    }
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        App.ShowGameWindow(obj, pr, ptr);
+                    });
                 });
-            });
+            }
 
             pr.Exited += (a, b) =>
             {

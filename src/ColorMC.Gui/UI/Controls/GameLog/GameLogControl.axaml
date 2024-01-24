@@ -40,11 +40,11 @@
                         ItemsSource="{Binding FileList}"
                         SelectedItem="{Binding File}" />
                 </WrapPanel>
-                <WrapPanel Margin="0,5,0,0">
+                <WrapPanel Margin="0,5,0,-5">
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="0,0,5,0"
+                        Margin="0,0,5,5"
                         VerticalAlignment="Center"
                         Command="{Binding Launch}"
                         Content="{setting:Localize GameLogWindow.Text4}"
@@ -54,7 +54,7 @@
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="0,0,5,0"
+                        Margin="0,0,5,5"
                         VerticalAlignment="Center"
                         Command="{Binding Stop}"
                         Content="{setting:Localize GameLogWindow.Text3}"
@@ -64,7 +64,7 @@
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="0,0,5,0"
+                        Margin="0,0,5,5"
                         VerticalAlignment="Center"
                         Command="{Binding Load1}"
                         Content="{setting:Localize GameLogWindow.Text6}"
@@ -72,7 +72,7 @@
                     <Button
                         Width="100"
                         Height="25"
-                        Margin="0,0,5,0"
+                        Margin="0,0,5,5"
                         VerticalAlignment="Center"
                         Command="{Binding Search}"
                         Content="{setting:Localize GameLogWindow.Text7}"
@@ -80,6 +80,7 @@
                     <Button
                         Width="100"
                         Height="25"
+                        Margin="0,0,0,5"
                         VerticalAlignment="Center"
                         Command="{Binding Push}"
                         Content="{setting:Localize GameLogWindow.Text8}"

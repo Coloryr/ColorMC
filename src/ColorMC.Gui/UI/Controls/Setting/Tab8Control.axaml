@@ -39,18 +39,70 @@
                             OffContent="启用游戏内手柄支持"
                             OnContent="启用游戏内手柄支持" />
                         <WrapPanel Margin="0,0,0,5">
-                            <TextBlock Text="检测到手柄数量：" />
-                            <TextBlock Text="{Binding InputNum}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="手柄数量：" />
+                                <TextBlock Margin="0,0,5,0" Text="{Binding InputNum}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="0,0,5,0" Text="手柄列表" />
+                                <ComboBox
+                                    Width="200"
+                                    Margin="0,0,5,0"
+                                    ItemsSource="{Binding InputNames}"
+                                    SelectedIndex="{Binding InputIndex}" />
+                            </StackPanel>
                         </WrapPanel>
-
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="手柄列表" />
-                            <ComboBox
-                                Width="200"
-                                Margin="0,0,5,0"
-                                ItemsSource="{Binding InputNames}"
-                                SelectedIndex="{Binding InputIndex}" />
-                        </StackPanel>
+                        <WrapPanel Margin="0,0,0,5">
+                            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                                <TextBlock Margin="0,0,5,0" Text="手柄配置" />
+                                <ComboBox
+                                    Width="200"
+                                    Margin="0,0,5,0"
+                                    ItemsSource="{Binding Configs}"
+                                    SelectedIndex="{Binding SelectConfig}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="0,0,5,0" Text="默认配置" />
+                                <ComboBox
+                                    Width="200"
+                                    Margin="0,0,5,0"
+                                    ItemsSource="{Binding Configs}"
+                                    SelectedIndex="{Binding NowConfig}" />
+                            </StackPanel>
+                        </WrapPanel>
+                        <WrapPanel Margin="0,0,0,-5">
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                Command="{Binding NewInputConfig}"
+                                Content="添加" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                Command="{Binding RenameInputConfig}"
+                                Content="重命名"
+                                IsEnabled="{Binding InputExist}" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                Command="{Binding DeleteInputConfig}"
+                                Content="删除"
+                                IsEnabled="{Binding InputExist}" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                Content="导入" />
+                            <Button
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,5,5"
+                                Content="导出"
+                                IsEnabled="{Binding InputExist}" />
+                        </WrapPanel>
                     </StackPanel>
                 </Border>
                 <Border
@@ -125,6 +177,7 @@
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>
+                    <TextBlock Text="注意：一个按钮只可以绑定一个按键，按键可以是组合键，例如Alt+F4，也可以是鼠标按键，但不能是鼠标滚轮" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border
@@ -147,7 +200,7 @@
                         <TextBlock
                             Margin="0,0,10,0"
                             FontSize="{setting:Style FontTitle}"
-                            Text="扳机绑定" />
+                            Text="扳机与摇杆绑定" />
                         <Button
                             Width="100"
                             Height="25"
@@ -158,6 +211,7 @@
 
                     <DataGrid
                         Name="DataGrid2"
+                        Margin="0,0,0,5"
                         AutoGenerateColumns="False"
                         CanUserResizeColumns="True"
                         CanUserSortColumns="False"
@@ -192,14 +246,25 @@
                             <DataGridTemplateColumn Header="回弹取消">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel>
-                                            <CheckBox IsChecked="{Binding BackCancel}" />
-                                        </StackPanel>
+                                        <CheckBox
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            IsChecked="{Binding BackCancel}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="0,0,5,0" Text="回弹阈值" />
+                        <Slider
+                            Width="150"
+                            Margin="0,-10,5,-10"
+                            Maximum="1"
+                            Value="{Binding ToBackValue}" />
+                        <TextBlock Width="50" Text="{Binding ToBackValue}" />
+                    </StackPanel>
+                    <TextBlock Text="注意：绑定按键可设置触发力度，一个扳机或摇杆可以设置多个触发力度绑定不同按键使用\n回弹取消开启时，只有真正松开扳机或摇杆，才能重新触发该按键，否则只要处于触发力度内，都会发送按键" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
 
@@ -250,7 +315,7 @@
                                     <Slider
                                         Width="150"
                                         Margin="0,0,5,0"
-                                        LargeChange="10"
+                                        LargeChange="100"
                                         Maximum="32767"
                                         SmallChange="1"
                                         Value="{Binding CursorDeath, FallbackValue=20000}" />
@@ -280,7 +345,7 @@
                                     <Slider
                                         Width="150"
                                         Margin="0,0,5,0"
-                                        LargeChange="10"
+                                        LargeChange="100"
                                         Maximum="32767"
                                         SmallChange="1"
                                         Value="{Binding RotateDeath, FallbackValue=20000}" />
@@ -311,7 +376,7 @@
                                 Width="150"
                                 Margin="0,-10,5,0"
                                 LargeChange="0.1"
-                                Maximum="1"
+                                Maximum="2"
                                 Minimum="0.01"
                                 SmallChange="0.01"
                                 Value="{Binding RotateRate}" />
@@ -329,7 +394,7 @@
                                 Width="150"
                                 Margin="0,-10,5,0"
                                 LargeChange="0.1"
-                                Maximum="1"
+                                Maximum="2"
                                 Minimum="0.01"
                                 SmallChange="0.01"
                                 Value="{Binding CursorRate}" />
@@ -365,16 +430,16 @@
                         Margin="0,0,10,0"
                         VerticalAlignment="Center"
                         IsChecked="{Binding ItemCycle}"
-                        OffContent="启用物品循环"
-                        OnContent="启用物品循环" />
-                    <WrapPanel IsEnabled="{Binding ItemCycle}">
-                        <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
-                            <TextBlock Text="上一个物品" />
-                            <TextBlock Text="绑定按键值：" />
+                        OffContent="启用物品循环（发送上下滚轮）"
+                        OnContent="启用物品循环（发送上下滚轮）" />
+                    <WrapPanel Margin="0,0,0,-5" IsEnabled="{Binding ItemCycle}">
+                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
+                            <TextBlock Text="上一个物品绑定按键值：" />
                             <TextBlock Text="{Binding ItemCycleLeft}" />
                             <Svg
                                 Width="30"
                                 Height="30"
+                                Margin="0,0,5,0"
                                 Path="{Binding CycleLeftIcon}" />
                             <Button
                                 Width="100"
@@ -383,13 +448,13 @@
                                 CommandParameter="{x:False}"
                                 Content="设置按钮" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
-                            <TextBlock Text="下一个物品" />
-                            <TextBlock Text="绑定按键值：" />
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <TextBlock Text="下一个物品绑定按键值：" />
                             <TextBlock Text="{Binding ItemCycleRight}" />
                             <Svg
                                 Width="30"
                                 Height="30"
+                                Margin="0,0,5,0"
                                 Path="{Binding CycleRightIcon}" />
                             <Button
                                 Width="100"
