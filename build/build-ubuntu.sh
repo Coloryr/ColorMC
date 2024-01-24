@@ -49,10 +49,46 @@ build_deb() {
     echo "ColorMC $1 build done"
 }
 
+build_deb_aot() {
+
+    echo "ColorMC build $1-aot version: $version"
+
+    base=./src/build_out/$1-aot
+    base_dir="$base/colormc"
+    deb_name="./build_out/colormc-a$version-$1-aot.deb"
+
+    dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1-aot
+
+    mkdir $base_dir
+
+    pdbs=("libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher")
+
+    cp -r ./build/info/linux/* $base_dir
+    cp -r ./build/info/$1/* $base_dir
+
+    sed -i "s/%version%/$version/g" $base_dir/DEBIAN/control
+
+    dir=usr/share/ColorMC
+
+    mkdir $base_dir/$dir
+
+    for line in ${pdbs[@]}
+    do
+        cp $base/$line \
+            $base_dir/$dir/$line
+    done
+
+    chmod -R 775 $base_dir/DEBIAN/postinst
+
+    dpkg -b $base_dir $deb_name
+
+    echo "ColorMC $1-aot build done"
+}
+
 build_deb linux-x64
 build_deb linux-arm64
-build_deb linux-x64-aot
-build_deb linux-arm64-aot
+build_deb_aot linux-x64
+build_deb_aot linux-arm64
 
 echo "ColorMC build linux-x64-appimage version: $version"
 
