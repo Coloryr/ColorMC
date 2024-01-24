@@ -28,4 +28,5 @@ public interface INative
     void SendMouse(double cursorX, double cursorY, bool message);
     bool GetMouseMode();
     void SendKey(InputKeyObj key, bool down);
+    void SendScoll(int count, bool up);
 }

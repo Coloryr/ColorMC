@@ -100,11 +100,11 @@ public static class GuiConfigUtils
                 Config.Style = MakeStyleSettingConfig();
                 save = true;
             }
-            if (Config.Input == null || Config.Input.Keys == null
-                || Config.Input.AxisKeys == null)
+            if (Config.Input == null)
             {
-                Config.Input = MakeInputControl();
+                Config.Input = new();
             }
+            
             if (save)
             {
                 Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
@@ -141,21 +141,6 @@ public static class GuiConfigUtils
             Local = s_local,
             Obj = Config
         });
-    }
-
-    public static InputControlObj MakeInputControl()
-    {
-        return new()
-        {
-            Keys = [],
-            AxisKeys = [],
-            CursorAxis = 0,
-            RotateAxis = 1,
-            CursorDeath = 20,
-            RotateDeath = 20,
-            CursorRate = 0.03f,
-            RotateRate = 0.03f
-        };
     }
 
     public static StyleSetting MakeStyleSettingConfig()

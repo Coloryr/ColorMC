@@ -25,6 +25,11 @@ public partial class InputAxisButtonModel(SettingModel setting)
 
     private bool _changeStart;
 
+    partial void OnBackCancelChanged(bool value)
+    {
+        setting.InputSave(this);
+    }
+
     partial void OnStartChanged(short? value)
     {
         if (_changeStart)

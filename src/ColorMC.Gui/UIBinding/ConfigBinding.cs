@@ -616,79 +616,109 @@ public static class ConfigBinding
         return FrpConfigUtils.Load(local, true);
     }
 
-    public static void SaveInput(bool enable, bool item)
+    public static InputControlObj NewInput(string name)
     {
-        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
-        GuiConfigUtils.Config.Input.Enable = enable;
-        GuiConfigUtils.Config.Input.ItemCycle = item;
-        GuiConfigUtils.Save();
+        var obj = InputConfigUtils.MakeInputControl();
+        obj.Name = name;
+        InputConfigUtils.PutConfig(obj);
+        InputConfigUtils.Save(obj);
+
+        return obj;
     }
 
-    public static void AddInput(byte key, InputKeyObj obj)
+    public static void SaveInput(InputControlObj obj,
+        bool enable, bool item)
+    {
+        obj.Enable = enable;
+        obj.ItemCycle = item;
+        InputConfigUtils.Save(obj);
+    }
+
+    public static void AddInput(InputControlObj obj, byte key, InputKeyObj obj1)
+    {
+        if (!obj.Keys.TryAdd(key, obj1))
+        {
+            obj.Keys[key] = obj1;
+        }
+        InputConfigUtils.Save(obj);
+    }
+
+    public static void DeleteInput(InputControlObj obj, byte key)
+    {
+        obj.Keys.Remove(key);
+        InputConfigUtils.Save(obj);
+    }
+
+    public static void AddAxisInput(InputControlObj obj, string uuid, InputAxisObj obj1)
+    {
+        if (!obj.AxisKeys.TryAdd(uuid, obj1))
+        {
+            obj.AxisKeys[uuid] = obj1;
+        }
+        InputConfigUtils.Save(obj);
+    }
+
+    public static void DeleteAxisInput(InputControlObj obj, string key)
+    {
+        if (obj.AxisKeys.Remove(key))
+        {
+            InputConfigUtils.Save(obj);
+        }
+    }
+
+    public static void SetItemCycle(InputControlObj obj, byte left, byte right)
+    {
+        obj.ItemCycleLeft = left;
+        obj.ItemCycleRight = right;
+        InputConfigUtils.Save(obj);
+    }
+
+    public static void SetInputRate(InputControlObj obj, float value, float value1)
+    {
+        obj.RotateRate = value;
+        obj.CursorRate = value1;
+        InputConfigUtils.Save(obj);
+    }
+
+    public static void SetInputAxis(InputControlObj obj, int inputRotateAxis, int inputCursorAxis)
+    {
+        obj.RotateAxis = inputRotateAxis;
+        obj.CursorAxis = inputCursorAxis;
+        InputConfigUtils.Save(obj);
+    }
+
+    public static void SetInputDeath(InputControlObj obj, int inputRotate, int inputCursor)
+    {
+        obj.RotateDeath = inputRotate;
+        obj.CursorDeath = inputCursor;
+        InputConfigUtils.Save(obj);
+    }
+
+    public static void SaveNowInputConfig(string? uuid)
     {
         GuiConfigUtils.Config.Input ??= new();
-        if (!GuiConfigUtils.Config.Input.Keys.TryAdd(key, obj))
+        GuiConfigUtils.Config.Input.NowConfig = uuid;
+        GuiConfigUtils.Save();
+
+        if (uuid != null &&
+            InputConfigUtils.Configs.TryGetValue(uuid, out var config))
         {
-            GuiConfigUtils.Config.Input.Keys[key] = obj;
+            InputConfigUtils.NowConfig = config;
         }
-        GuiConfigUtils.Save();
-    }
-
-    public static void DeleteInput(byte key)
-    {
-        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
-        GuiConfigUtils.Config.Input.Keys.Remove(key);
-        GuiConfigUtils.Save();
-    }
-
-    public static void AddAxisInput(string uuid, InputAxisObj obj)
-    {
-        GuiConfigUtils.Config.Input ??= new();
-        if (!GuiConfigUtils.Config.Input.AxisKeys.TryAdd(uuid, obj))
+        else
         {
-            GuiConfigUtils.Config.Input.AxisKeys[uuid] = obj;
-        }
-        GuiConfigUtils.Save();
-    }
-
-    public static void DeleteAxisInput(string key)
-    {
-        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
-        if (GuiConfigUtils.Config.Input.AxisKeys.Remove(key))
-        {
-            GuiConfigUtils.Save();
+            InputConfigUtils.NowConfig = null;
         }
     }
 
-    public static void SetItemCycle(byte left, byte right)
+    public static void SaveInputConfig(InputControlObj obj)
     {
-        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
-        GuiConfigUtils.Config.Input.ItemCycleLeft = left;
-        GuiConfigUtils.Config.Input.ItemCycleRight = right;
-        GuiConfigUtils.Save();
+        InputConfigUtils.PutConfig(obj);
+        InputConfigUtils.Save(obj);
     }
 
-    public static void SetInputRate(float value, float value1)
+    public static void RemoveInputConfig(InputControlObj obj)
     {
-        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
-        GuiConfigUtils.Config.Input.RotateRate = value;
-        GuiConfigUtils.Config.Input.CursorRate = value1;
-        GuiConfigUtils.Save();
-    }
-
-    public static void SetInputAxis(int inputRotateAxis, int inputCursorAxis)
-    {
-        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
-        GuiConfigUtils.Config.Input.RotateAxis = inputRotateAxis;
-        GuiConfigUtils.Config.Input.CursorAxis = inputCursorAxis;
-        GuiConfigUtils.Save();
-    }
-
-    public static void SetInputDeath(int inputRotate, int inputCursor)
-    {
-        GuiConfigUtils.Config.Input ??= GuiConfigUtils.MakeInputControl();
-        GuiConfigUtils.Config.Input.RotateDeath = inputRotate;
-        GuiConfigUtils.Config.Input.CursorDeath = inputCursor;
-        GuiConfigUtils.Save();
+        InputConfigUtils.Remove(obj);
     }
 }

@@ -724,6 +724,11 @@ public partial class App : Application
 
     public static void ShowGameWindow(GameSettingObj obj, Process process, IntPtr handel)
     {
+        if (SystemInfo.Os != OsType.Windows)
+        {
+            return;
+        }
+
         if (GameWindows.TryGetValue(obj.UUID, out var win1))
         {
             win1.Window.Activate();

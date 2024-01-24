@@ -4,20 +4,11 @@ using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Win32.Input;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls;
-using Silk.NET.SDL;
 using SkiaSharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace ColorMC.Gui.Utils.Hook;
 
 internal class Win32WindowControlHandle(INative native, IntPtr handle)
@@ -95,7 +86,7 @@ public class Win32Native : INative
         wndStyle &= ~(Win32.WS_CAPTION | Win32.WS_THICKFRAME | Win32.WS_MINIMIZE
             | Win32.WS_MAXIMIZE | Win32.WS_SYSMENU);
         Win32.SetWindowLong(target, Win32.GWL_STYLE, wndStyle);
-        Win32.SetWindowPos(target, Win32.HWND_TOP, 0, 0, 0, 0, Win32.SWP_FRAMECHANGED
+        Win32.SetWindowPos(target, IntPtr.Zero, 0, 0, 0, 0, Win32.SWP_FRAMECHANGED
             | Win32.SWP_NOMOVE | Win32.SWP_NOSIZE | Win32.SWP_NOZORDER);
     }
 
@@ -187,7 +178,6 @@ public class Win32Native : INative
             }
             finally
             {
-                // Clean up GDI and icon objects
                 if (iconInfo.hbmColor != IntPtr.Zero)
                     Win32.DeleteObject(iconInfo.hbmColor);
                 if (iconInfo.hbmMask != IntPtr.Zero)
@@ -202,7 +192,6 @@ public class Win32Native : INative
     public void Close()
     {
         Win32.SendMessage(target, Win32.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-        //Win32.SendMessage(target, Win32.WM_DESTROY, IntPtr.Zero, IntPtr.Zero);
     }
 
     public void DestroyWindow()
@@ -310,7 +299,7 @@ public class Win32Native : INative
 
         if (key1 != 0)
         {
-            Win32.SendMessage(target, down ? Win32.WM_KEYDOWN : Win32.WM_KEYUP, key1, IntPtr.Zero);
+            SendKey(key1, down);
         }
 
         if (key.MouseButton != MouseButton.None)
@@ -335,9 +324,15 @@ public class Win32Native : INative
         else
         {
             key1 = KeyInterop.VirtualKeyFromKey(key.Key);
-            Win32.INPUT[] inputs =
-            [
-                new()
+            SendKey(key1, down);
+        }
+    }
+
+    private void SendKey(int key1, bool down)
+    {
+        Win32.INPUT[] inputs =
+        [
+            new()
                 {
                     type = Win32.INPUT_KEYBOARD,
                     u = new Win32.InputUnion
@@ -352,9 +347,36 @@ public class Win32Native : INative
                         }
                     }
                 }
-            ];
-            Win32.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32.INPUT)));
-        }
+        ];
+        Win32.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32.INPUT)));
+    }
+
+    public void SendScoll(int count, bool up)
+    {
+        // 正数滚动向上，负数滚动向下，WHEEL_DELTA通常是120的倍数
+        int wheelAmount = 120 * count * (up ? 1 : -1); // 滚动一次滚轮的距离
+
+        Win32.INPUT[] inputs =
+        [
+            new()
+            {
+                type = Win32.INPUT_MOUSE,
+                u = new Win32.InputUnion
+                {
+                    mi = new Win32.MOUSEINPUT
+                    {
+                        dx = 0,
+                        dy = 0,
+                        mouseData = (uint)wheelAmount,
+                        dwFlags = Win32.MOUSEEVENTF_WHEEL,
+                        time = 0,
+                        dwExtraInfo = IntPtr.Zero
+                    }
+                }
+            }
+        ];
+
+        Win32.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32.INPUT)));
     }
 
     internal unsafe class Win32
@@ -381,7 +403,10 @@ public class Win32Native : INative
         public const int WM_XBUTTONUP = 0x020C;
         public const int WM_XBUTTONDBLCLK = 0x020D;
 
+        public const int INPUT_MOUSE = 0;
         public const int INPUT_KEYBOARD = 1;
+        public const uint MOUSEEVENTF_WHEEL = 0x0800;
+        public const uint MOUSEEVENTF_MOVE = 0x0001;
         public const uint KEYEVENTF_KEYUP = 0x0002;
 
         public const int WS_CAPTION = 0x00C00000;
@@ -402,7 +427,6 @@ public class Win32Native : INative
         public const int SW_RESTORE = 9;
 
         // 常量用于SetWindowPos函数
-        public static readonly IntPtr HWND_TOP = new(0);
         public const uint SWP_FRAMECHANGED = 0x0020;
         public const uint SWP_NOMOVE = 0x0002;
         public const uint SWP_NOSIZE = 0x0001;
@@ -428,9 +452,6 @@ public class Win32Native : INative
         public const uint LWA_ALPHA = 0x00000002;
 
         public const int CURSOR_SHOWING = 0x00000001;
-
-        public const int INPUT_MOUSE = 0;
-        public const uint MOUSEEVENTF_MOVE = 0x0001;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct INPUT
@@ -559,14 +580,14 @@ public class Win32Native : INative
         [DllImport("user32.dll")]
         public static extern bool GetCursorInfo(out CURSORINFO pci);
 
-        [DllImport("user32.dll")]
-        public static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+        //[DllImport("user32.dll")]
+        //public static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        //[DllImport("user32.dll", SetLastError = true)]
+        //public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+        //[DllImport("user32.dll", SetLastError = true)]
+        //public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool GetIconInfo(IntPtr hIcon, out ICONINFO pIconInfo);
@@ -580,11 +601,11 @@ public class Win32Native : INative
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern int GetWindowTextLength(IntPtr hWnd);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
+        //[DllImport("user32.dll", SetLastError = true)]
+        //public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
 
-        [DllImport("user32.dll")]
-        public static extern bool UnhookWindowsHookEx(IntPtr hhk);
+        //[DllImport("user32.dll")]
+        //public static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
         [DllImport("user32.dll")]
         public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
@@ -610,17 +631,17 @@ public class Win32Native : INative
         [DllImport("user32.dll", CharSet = CharSet.Unicode, EntryPoint = "SendMessageW")]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+        //[DllImport("user32.dll")]
+        //public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        //[DllImport("user32.dll", SetLastError = true)]
+        //public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         [DllImport("user32.dll")]
         public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        //[DllImport("user32.dll", SetLastError = true)]
+        //public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
@@ -628,13 +649,13 @@ public class Win32Native : INative
         [DllImport("user32.dll")]
         public static extern bool GetClipCursor(out RECT lpRect);
 
-        [DllImport("user32.dll")]
-        public static extern int ShowCursor(bool bShow);
+        //[DllImport("user32.dll")]
+        //public static extern int ShowCursor(bool bShow);
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern IntPtr GetModuleHandle(string lpModuleName);
+        //[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        //public static extern IntPtr GetModuleHandle(string lpModuleName);
 
-        [DllImport("kernel32.dll")]
-        public static extern uint GetCurrentThreadId();
+        //[DllImport("kernel32.dll")]
+        //public static extern uint GetCurrentThreadId();
     }
 }

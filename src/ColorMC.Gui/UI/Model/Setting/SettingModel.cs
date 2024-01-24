@@ -42,7 +42,16 @@ public partial class SettingModel : MenuModel
             _enableWindowMode = false;
         }
 
-        StartRead();
+        if (!InputControlUtils.IsInit)
+        {
+            InputInit = false;
+        }
+        else
+        {
+            InputInit = true;
+            StartRead();
+            ReloadInput();
+        }
     }
 
     public void RemoveChoise()
