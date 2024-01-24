@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,6 +18,44 @@ public partial class SettingModel
     private string? _local3;
     [ObservableProperty]
     private string? _local4;
+
+    public string RunDir => ColorMCGui.RunDir;
+
+    [RelayCommand]
+    public async Task ChangeBackRunDir()
+    {
+        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info16"));
+        if (!res)
+        {
+            return;
+        }
+
+        var path1 = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/run";
+        PathHelper.Delete(path1);
+
+        App.Reboot();
+    }
+
+    [RelayCommand]
+    public async Task ChangeRunDir()
+    {
+        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info13"));
+        if (!res)
+        {
+            return;
+        }
+
+        var path = await PathBinding.SelectPath(FileType.RunDir);
+        if (path == null)
+        {
+            return;
+        }
+
+        var path1 = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/run";
+        PathHelper.WriteText(path1, path);
+
+        App.Reboot();
+    }
 
     [RelayCommand]
     public async Task Open1()

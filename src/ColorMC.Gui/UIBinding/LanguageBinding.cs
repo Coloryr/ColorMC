@@ -7,6 +7,15 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class LanguageBinding
 {
+    public static string[] GetAxisTypeName()
+    {
+        return
+        [
+            App.Lang("AxisType.Item1"),
+            App.Lang("AxisType.Item2")
+        ];
+    }
+
     /// <summary>
     /// 获取过滤器选项
     /// </summary>

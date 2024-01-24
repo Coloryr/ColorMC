@@ -195,7 +195,8 @@ public static class GuiConfigUtils
             BackImage = "",
             Live2D = MakeLive2DConfig(),
             Gui = MakeGuiSettingConfig(),
-            Style = MakeStyleSettingConfig()
+            Style = MakeStyleSettingConfig(),
+            Input = new()
         };
     }
 
