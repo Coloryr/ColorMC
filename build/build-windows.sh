@@ -9,25 +9,33 @@ done
 
 mkdir ./build_out
 
-echo "ColorMC build win64 version: $version"
+build_win() {
 
-dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=Win-x64
+	echo "ColorMC build $1 version: $version"
 
-mkdir ./src/build_out/win64-dotnet/colormc
+	dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1
 
-pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
-    "Live2DCSharpSDK.Framework.pdb" ColorMC.Launcher.pdb "ColorMC.Launcher.exe")
+	mkdir ./src/build_out/$1-dotnet/colormc
 
-for line in ${pdbs[@]}
-do
-    mv ./src/build_out/win64-dotnet/$line \
-        ./src/build_out/win64-dotnet/colormc/$line
-done
+	files=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
+	    "Live2DCSharpSDK.Framework.pdb" ColorMC.Launcher.pdb "ColorMC.Launcher.exe")
 
-zip_name="colormc-a$version-win64.zip"
+	for line in ${files[@]}
+	do
+	    mv ./src/build_out/$1-dotnet/$line \
+		./src/build_out/$1-dotnet/colormc/$line
+	done
 
-cd ./src/build_out/win64-dotnet/
-zip -r $zip_name ./colormc
-mv $zip_name ../../../build_out/$zip_name
+	zip_name="colormc-a$version-$1.zip"
 
-echo "ColorMC win64 build done"
+	cd ./src/build_out/$1-dotnet/
+	zip -r $zip_name ./colormc
+	mv $zip_name ../../../build_out/$zip_name
+
+	cd ../../../
+
+	echo "ColorMC $1 build done"
+}
+
+build_win win-x64
+build_win win-arm64
