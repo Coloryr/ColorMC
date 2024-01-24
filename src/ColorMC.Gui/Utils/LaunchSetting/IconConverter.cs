@@ -84,6 +84,10 @@ public static class IconConverter
 
     public static Dictionary<byte, string> InputAxisIcon { get; } = new()
     {
+        { 1, "/Resource/Icon/Input/button_xz.svg" },
+        { 0, "/Resource/Icon/Input/button_xy.svg" },
+        { 3, "/Resource/Icon/Input/button_xz.svg" },
+        { 2, "/Resource/Icon/Input/button_xy.svg" },
         { 4, "/Resource/Icon/Input/button_lt.svg" },
         { 5, "/Resource/Icon/Input/button_rt.svg" },
     };
