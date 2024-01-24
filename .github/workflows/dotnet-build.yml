@@ -35,39 +35,41 @@ jobs:
         chmod a+x ./build/build-macos.sh
         ./build/build-macos.sh
 
-    - name: Upload DEB Files
+    - name: 上传DEB文件
       run: |
         for deb_file in ./build_out/colormc-*.deb; do
-          echo "Uploading $deb_file..."
+          echo "上传文件 $deb_file"
           artifact_name=$(basename "$deb_file" .deb)
           echo "Artifact $artifact_name will be uploaded."
-          echo "${artifact_name}=${deb_file}" >> $GITHUB_OUTPUT
+          echo "artifact_name=$artifact_name" >> $GITHUB_ENV
+          echo "deb_file=$deb_file" >> $GITHUB_ENV
         done
       id: find-deb
 
-    - name: Upload Artifact deb
-      if: steps.find-deb.outputs.artifact_name_1
+    - name: 上传 DEB
+      if: env.artifact_name && env.deb_file
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ steps.find-deb.outputs.artifact_name_1 }}
-        path: ${{ steps.find-deb.outputs.artifact_name_1 }}
+        name: ${{ env.artifact_name }}
+        path: ${{ env.deb_file }}
 
-    - name: Upload ZIP Files
+    - name: 上传ZIP文件
       run: |
         for zip_file in ./build_out/colormc-*.zip; do
-          echo "Uploading $zip_file..."
+          echo "上传文件 $zip_file"
           artifact_name=$(basename "$zip_file" .zip)
           echo "Artifact $artifact_name will be uploaded."
-          echo "${artifact_name}=${zip_file}" >> $GITHUB_OUTPUT
+          echo "artifact_name_zip=$artifact_name" >> $GITHUB_ENV
+          echo "zip_file=$zip_file" >> $GITHUB_ENV
         done
       id: find-zip
 
-    - name: Upload Artifact zip
-      if: steps.find-zip.outputs.artifact_name_1
+    - name: 上传 ZIP
+      if: env.artifact_name_zip && env.zip_file
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ steps.find-zip.outputs.artifact_name_1 }}
-        path: ${{ steps.find-zip.outputs.artifact_name_1 }}
+        name: ${{ env.artifact_name_zip }}
+        path: ${{ env.zip_file }}
 
   build-in-windows:
     runs-on: windows-latest
@@ -79,28 +81,28 @@ jobs:
         dotnet-version: 8.0.100
 
     - name: 更新源码
-      shell: bash
+      shell: cmd
       working-directory: ./
       run: ./build/update.cmd
 
     - name: 构建
-      shell: bash
+      shell: cmd
       working-directory: ./
       run: ./build/build-windows.cmd
 
-    - name: Upload ZIP Files
+    - name: 上传ZIP文件
       run: |
         $zip_files = Get-ChildItem -Path . -Filter ".\build_out\colormc-*.zip"
-        foreach ($zip_file in $zip_files) {
-          echo "Uploading $($zip_file.Name)..."
-          $artifact_name = $zip_file.BaseName
-          echo "artifact_name=$artifact_name" >> $GITHUB_OUTPUT
-          echo "zip_file=$($zip_file.FullName)" >> $GITHUB_OUTPUT
+        if ($zip_files.Length -gt 0) {
+          $zip_file = $zip_files[0]
+          echo "找到ZIP文件: $($zip_file.Name)"
+          echo "artifact_name=$($zip_file.BaseName)" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "zip_file=$($zip_file.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append
         }
       id: find-zip
       shell: pwsh
 
-    - name: Upload Artifact zip
+    - name: 上传 ZIP
       if: steps.find-zip.outputs.artifact_name
       uses: actions/upload-artifact@v4
       with:
