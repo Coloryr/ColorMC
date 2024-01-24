@@ -21,7 +21,7 @@ namespace ColorMC.Gui.UI.Model.Setting;
 public partial class SettingModel
 {
     public ObservableCollection<string> Configs { get; init; } = [];
-    public ObservableCollection<InputButtonModel> InputList { get; init; } =[];
+    public ObservableCollection<InputButtonModel> InputList { get; init; } = [];
     public ObservableCollection<string> InputNames { get; init; } = [];
 
     public ObservableCollection<InputAxisButtonModel> InputAxisList { get; init; } = [];
@@ -386,7 +386,7 @@ public partial class SettingModel
         }
 
         using var cannel = new CancellationTokenSource();
-        Model.ShowCancel("请按下手柄按键来绑定", () => 
+        Model.ShowCancel("请按下手柄按键来绑定", () =>
         {
             cannel.Cancel();
         });

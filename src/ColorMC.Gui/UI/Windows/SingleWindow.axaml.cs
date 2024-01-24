@@ -16,7 +16,7 @@ public partial class SingleWindow : Window
         InitializeComponent();
 
         Icon = App.Icon;
-       
+
         if (SystemInfo.Os == OsType.Linux)
         {
             SystemDecorations = SystemDecorations.BorderOnly;

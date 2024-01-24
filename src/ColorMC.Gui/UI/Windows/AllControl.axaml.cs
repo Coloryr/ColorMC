@@ -256,6 +256,6 @@ public partial class AllControl : UserControl, IBaseWindow
 
     public void SetSize(int width, int height)
     {
-        
+
     }
 }

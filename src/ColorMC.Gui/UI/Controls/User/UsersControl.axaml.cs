@@ -6,7 +6,6 @@ using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.User;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.User;
 

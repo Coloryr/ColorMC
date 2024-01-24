@@ -104,7 +104,7 @@ public static class GuiConfigUtils
             {
                 Config.Input = new();
             }
-            
+
             if (save)
             {
                 Logs.Info(LanguageHelper.Get("Core.Config.Info2"));

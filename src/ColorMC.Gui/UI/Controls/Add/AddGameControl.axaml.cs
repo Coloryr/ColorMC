@@ -11,7 +11,6 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -153,7 +152,7 @@ public partial class AddGameControl : UserControl, IUserControl
             model.GoTab("Tab3");
             model.SetPath(file);
         }
-        else 
+        else
         {
             var model = (DataContext as AddGameModel)!;
             model.GoTab("Tab2");

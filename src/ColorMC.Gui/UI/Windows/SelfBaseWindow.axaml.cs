@@ -21,7 +21,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 {
     private WindowNotificationManager windowNotification;
 
-    public IUserControl ICon { get; set; } 
+    public IUserControl ICon { get; set; }
 
     public BaseModel Model => (DataContext as BaseModel)!;
 
