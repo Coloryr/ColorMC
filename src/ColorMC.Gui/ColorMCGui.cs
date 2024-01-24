@@ -60,7 +60,7 @@ public static class ColorMCGui
             }
             else
             {
-                RunDir = InputDir + "/";
+                RunDir = InputDir;
             }
 
             Console.WriteLine($"RunDir:{RunDir}");
