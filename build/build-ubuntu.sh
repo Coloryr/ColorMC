@@ -7,9 +7,6 @@ do
     version=$line
 done
 
-# $1 is Linux-x64
-# $2 is amd64
-
 mkdir ./build_out
 
 build_deb() {

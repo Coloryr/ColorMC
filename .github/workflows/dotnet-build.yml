@@ -10,7 +10,7 @@ on:
       - '*'
 
 jobs:
-  build:
+  build-in-ubuntu:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -18,20 +18,20 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 8.0.100
+
     - name: 更新源码
       shell: bash
       working-directory: ./
       run: |
         chmod a+x ./build/update.sh
         ./build/update.sh
+
     - name: 构建
       shell: bash
       working-directory: ./
       run: |
         chmod a+x ./build/build-ubuntu.sh
         ./build/build-ubuntu.sh
-        chmod a+x ./build/build-windows.sh
-        ./build/build-windows.sh
         chmod a+x ./build/build-macos.sh
         ./build/build-macos.sh
 
@@ -68,3 +68,41 @@ jobs:
       with:
         name: ${{ steps.find-zip.outputs.artifact_name_1 }}
         path: ${{ steps.find-zip.outputs.artifact_name_1 }}
+
+  build-in-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: 设置.NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 8.0.100
+
+    - name: 更新源码
+      shell: bash
+      working-directory: ./
+      run: ./build/update.cmd
+
+    - name: 构建
+      shell: bash
+      working-directory: ./
+      run: ./build/build-windows.cmd
+
+    - name: Upload ZIP Files
+      run: |
+        $zip_files = Get-ChildItem -Path . -Filter "colormc-*.zip"
+        foreach ($zip_file in $zip_files) {
+          echo "Uploading $($zip_file.Name)..."
+          $artifact_name = $zip_file.BaseName
+          echo "::set-output name=artifact_name::$artifact_name"
+          echo "::set-output name=zip_file::$($zip_file.FullName)"
+        }
+      id: find-zip
+      shell: pwsh
+
+    - name: Upload Artifact zip
+      if: steps.find-zip.outputs.artifact_name
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ steps.find-zip.outputs.artifact_name }}
+        path: ${{ steps.find-zip.outputs.zip_file }}
