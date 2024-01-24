@@ -51,6 +51,8 @@ build_deb() {
 
 build_deb linux-x64
 build_deb linux-arm64
+build_deb linux-x64-aot
+build_deb linux-arm64-aot
 
 echo "ColorMC build linux-x64-appimage version: $version"
 
