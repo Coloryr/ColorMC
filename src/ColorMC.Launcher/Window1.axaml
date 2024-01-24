@@ -8,10 +8,10 @@
     Title="{Binding Title}"
     Width="760"
     Height="450"
-    MinWidth="335"
-    MinHeight="450"
-    d:DesignHeight="450"
-    d:DesignWidth="760"
+    MinWidth="500"
+    MinHeight="300"
+    d:DesignHeight="300"
+    d:DesignWidth="500"
     Background="White"
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -30,6 +30,15 @@
             FontSize="20"
             Text="是否使用管理员方式重启" />
         <TextBlock HorizontalAlignment="Center" Text="Do you want to restart using administrator mode" />
+        <Button
+            Name="Button3"
+            Width="200"
+            Margin="0,20,0,0"
+            HorizontalAlignment="Center"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Content="调整运行目录(Change Dir)" />
+
         <StackPanel
             Margin="0,20,0,0"
             HorizontalAlignment="Center"

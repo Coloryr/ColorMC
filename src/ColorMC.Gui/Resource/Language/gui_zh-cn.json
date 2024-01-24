@@ -123,6 +123,10 @@
 	"SettingWindow.Tab1.Text11": "配置文件路径",
 	"SettingWindow.Tab1.Text12": "清空内容",
 	"SettingWindow.Tab1.Text13": "打开目录",
+	"SettingWindow.Tab1.Text14": "运行路径",
+	"SettingWindow.Tab1.Text15": "更改目录",
+	"SettingWindow.Tab1.Text16": "注意：该目录为启动器运行目录，是游戏文件、启动器配置、启动器参数等文件存放的目录，修改该目录后，若有多个启动器副本（将ColorMC复制粘贴，放在多个地方运行），都会在该目录进行工作",
+	"SettingWindow.Tab1.Text17": "还原目录",
 	"SettingWindow.Tab1.Info1": "是否重置所有配置",
 	"SettingWindow.Tab1.Info2": "已重置",
 	"SettingWindow.Tab1.Info3": "是否删除所有账户",
@@ -135,6 +139,10 @@
 	"SettingWindow.Tab1.Info10": "选择账户数据库",
 	"SettingWindow.Tab1.Info11": "配置文件",
 	"SettingWindow.Tab1.Info12": "账户数据库",
+	"SettingWindow.Tab1.Info13": "旧目录的文件不会复制文件到新目录，需要你手动复制，是否继续",
+	"SettingWindow.Tab1.Info14": "启动器运行目录",
+	"SettingWindow.Tab1.Info15": "已还原设置",
+	"SettingWindow.Tab1.Info16": "还原旧目录不会复制文件到旧目录，需要你手动复制，是否继续",
 	"SettingWindow.Tab1.Error1": "输入文件为空",
 	"SettingWindow.Tab1.Error2": "配置文件读取错误",
 	"SettingWindow.Tab1.Error3": "配置文件读取失败",
@@ -1142,6 +1150,7 @@
 	"ToolTip.Text128": "启动游戏实例并加入服务器",
 	"ToolTip.Text129": "复制地址到剪贴板",
 	"ToolTip.Text130": "获取服务器展示信息",
+	"ToolTip.Text131": "更改当前启动器运行目录",
 	"Text.ForgeVersion": "Forge版本",
 	"Text.GameVersion": "游戏版本",
 	"Text.Name": "名字",
@@ -1188,5 +1197,7 @@
 	"Postion.Item6": "右",
 	"Postion.Item7": "左下",
 	"Postion.Item8": "下",
-	"Postion.Item9": "右下"
+	"Postion.Item9": "右下",
+	"AxisType.Item1": "左摇杆",
+	"AxisType.Item2": "右摇杆"
 }

@@ -191,6 +191,16 @@ public static class PathBinding
                     return res[0].GetPath();
                 }
                 break;
+            case FileType.RunDir:
+                res = await top.StorageProvider.OpenFolderPickerAsync(new()
+                {
+                    Title = App.Lang("SettingWindow.Tab1.Info14")
+                });
+                if (res?.Any() == true)
+                {
+                    return res[0].GetPath();
+                }
+                break;
         }
 
         return null;

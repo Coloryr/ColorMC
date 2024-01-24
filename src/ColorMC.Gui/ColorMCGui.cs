@@ -21,8 +21,8 @@ namespace ColorMC.Gui;
 public static class ColorMCGui
 {
     public static string RunDir { get; private set; }
-
     public static string[] BaseSha1 { get; private set; }
+    public static string InputDir { get; private set; }
 
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
 
@@ -49,12 +49,19 @@ public static class ColorMCGui
 
             RunType = RunType.Program;
 
-            RunDir = SystemInfo.Os switch
+            if (string.IsNullOrWhiteSpace(InputDir))
             {
-                OsType.Linux => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/",
-                OsType.MacOS => "/Users/shared/ColorMC/",
-                _ => AppContext.BaseDirectory
-            };
+                RunDir = SystemInfo.Os switch
+                {
+                    OsType.Linux => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/",
+                    OsType.MacOS => "/Users/shared/ColorMC/",
+                    _ => AppContext.BaseDirectory
+                };
+            }
+            else
+            {
+                RunDir = InputDir + "/";
+            }
 
             Console.WriteLine($"RunDir:{RunDir}");
 
@@ -149,6 +156,11 @@ public static class ColorMCGui
     public static void SetBaseSha1(string[] data)
     {
         BaseSha1 = data;
+    }
+
+    public static void SetInputDir(string dir)
+    {
+        InputDir = dir;
     }
 
     public static AppBuilder BuildAvaloniaApp()

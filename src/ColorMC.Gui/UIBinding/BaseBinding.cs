@@ -396,7 +396,8 @@ public static class BaseBinding
 
             App.MainWindow?.ShowMessage(App.Lang("Live2D.Text2"));
 
-            if (GuiConfigUtils.Config.Input.Enable)
+            if (SystemInfo.Os == OsType.Windows &&
+                GuiConfigUtils.Config.Input.Enable)
             {
                 _ = Task.Run(() =>
                 {

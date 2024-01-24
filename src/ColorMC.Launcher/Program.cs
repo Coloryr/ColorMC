@@ -1,5 +1,7 @@
 using Avalonia;
 using System;
+using ColorMC.Gui.Objs;
+
 
 #if !DEBUG
 using Avalonia.Media;
@@ -22,12 +24,12 @@ internal static class GuiLoad
         Program.BuildApp = Gui.ColorMCGui.BuildAvaloniaApp;
         Program.SetBaseSha1 = Gui.ColorMCGui.SetBaseSha1;
         Program.SetAot = Gui.ColorMCGui.SetAot;
+        Program.SetInputDir = Gui.ColorMCGui.SetInputDir;
     }
 
     public static void Run(string[] args, bool crash)
     {
         Gui.ColorMCGui.SetCrash(crash);
-        Gui.ColorMCGui.SetBaseSha1(Program.BaseSha1);
         Gui.ColorMCGui.Main(args);
     }
 }
@@ -41,8 +43,6 @@ public static class Program
     /// <summary>
     /// 加载路径
     /// </summary>
-    public static string LoadDir { get; private set; } = AppContext.BaseDirectory;
-
     public const string TopVersion = "A24";
 
     public static readonly string[] BaseSha1 =
@@ -56,15 +56,21 @@ public static class Program
     public delegate void IN(string[] args);
     public delegate void IN2(bool aot);
     public delegate AppBuilder IN1();
+    public delegate void IN3(string dir);
 
     public static IN MainCall { get; set; }
     public static IN1 BuildApp { get; set; }
     public static IN SetBaseSha1 { get; set; }
     public static IN2 SetAot { get; set; }
-
+    public static IN3 SetInputDir { get; set; }
+    
     public static bool Aot { get; set; }
 
+    private static string _loadDir;
+    private static string _inputDir;
+
     private static bool _isDll;
+    private static bool _isError;
 #endif
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
@@ -74,20 +80,37 @@ public static class Program
     public static void Main(string[] args)
     {
 #if !DEBUG
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/run";
+        if (File.Exists(path))
         {
-            LoadDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/dll/";
+            var dir = File.ReadAllText(path);
+            if (Directory.Exists(dir))
+            {
+                _inputDir = dir;
+            }
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+
+        if (string.IsNullOrWhiteSpace(_inputDir))
         {
-            LoadDir = "/Users/shared/ColorMC/dll/";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                _loadDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/dll";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                _loadDir = "/Users/shared/ColorMC/dll";
+            }
+            else
+            {
+                _loadDir = AppContext.BaseDirectory + "dll";
+            }
         }
         else
         {
-            LoadDir = AppContext.BaseDirectory + "dll/";
+            _loadDir = _inputDir + "/dll";
         }
 
-        Console.WriteLine($"CheckDir:{LoadDir}");
+        Console.WriteLine($"LoadDir: {_loadDir}");
 
         //Test AOT
         try
@@ -99,9 +122,11 @@ public static class Program
         {
             Aot = true;
         }
+
+        //有没有权限写文件
         try
         {
-            File.Create("temp").Close();
+            File.Create(_inputDir + "/temp").Close();
         }
         catch
         {
@@ -116,6 +141,10 @@ public static class Program
             Gui.ColorMCGui.Main(args);
 #else
             Load();
+            if (!string.IsNullOrWhiteSpace(_inputDir))
+            {
+                SetInputDir(_inputDir);
+            }
             SetAot(Aot);
             SetBaseSha1(BaseSha1);
             MainCall(args);
@@ -127,12 +156,13 @@ public static class Program
 #if !DEBUG
             if (_isDll)
             {
-                File.Delete($"{LoadDir}ColorMC.Gui.dll");
-                File.Delete($"{LoadDir}ColorMC.Gui.pdb");
-                File.Delete($"{LoadDir}ColorMC.Core.dll");
-                File.Delete($"{LoadDir}ColorMC.Core.pdb");
+                _isError = true;
+                File.Delete($"{_loadDir}/ColorMC.Gui.dll");
+                File.Delete($"{_loadDir}/ColorMC.Gui.pdb");
+                File.Delete($"{_loadDir}/ColorMC.Core.dll");
+                File.Delete($"{_loadDir}/ColorMC.Core.pdb");
 
-                GuiLoad.Run(args, true);
+                GuiLoad.Run(args, _isError);
             }
 #endif
         }
@@ -157,10 +187,10 @@ public static class Program
 
     private static bool NotHaveDll()
     {
-        return File.Exists($"{LoadDir}ColorMC.Core.dll")
-            && File.Exists($"{LoadDir}ColorMC.Core.pdb")
-            && File.Exists($"{LoadDir}ColorMC.Gui.dll")
-            && File.Exists($"{LoadDir}ColorMC.Gui.pdb");
+        return File.Exists($"{_loadDir}/ColorMC.Core.dll")
+            && File.Exists($"{_loadDir}/ColorMC.Core.pdb")
+            && File.Exists($"{_loadDir}/ColorMC.Gui.dll")
+            && File.Exists($"{_loadDir}/ColorMC.Gui.pdb");
     }
 
     private static void Load()
@@ -176,13 +206,13 @@ public static class Program
             {
                 var context = new AssemblyLoadContext("ColorMC", true);
                 {
-                    using var file = File.OpenRead($"{LoadDir}ColorMC.Core.dll");
-                    using var file1 = File.OpenRead($"{LoadDir}ColorMC.Core.pdb");
+                    using var file = File.OpenRead($"{_loadDir}/ColorMC.Core.dll");
+                    using var file1 = File.OpenRead($"{_loadDir}/ColorMC.Core.pdb");
                     context.LoadFromStream(file, file1);
                 }
                 {
-                    using var file = File.OpenRead($"{LoadDir}ColorMC.Gui.dll");
-                    using var file1 = File.OpenRead($"{LoadDir}ColorMC.Gui.pdb");
+                    using var file = File.OpenRead($"{_loadDir}/ColorMC.Gui.dll");
+                    using var file1 = File.OpenRead($"{_loadDir}/ColorMC.Gui.pdb");
                     context.LoadFromStream(file, file1);
                 }
 
@@ -199,10 +229,10 @@ public static class Program
                     context.Unload();
                     GuiLoad.Load();
 
-                    File.Delete($"{LoadDir}ColorMC.Gui.dll");
-                    File.Delete($"{LoadDir}ColorMC.Gui.pdb");
-                    File.Delete($"{LoadDir}ColorMC.Core.dll");
-                    File.Delete($"{LoadDir}ColorMC.Core.pdb");
+                    File.Delete($"{_loadDir}/ColorMC.Gui.dll");
+                    File.Delete($"{_loadDir}/ColorMC.Gui.pdb");
+                    File.Delete($"{_loadDir}/ColorMC.Core.dll");
+                    File.Delete($"{_loadDir}/ColorMC.Core.pdb");
 
                     return;
                 }
@@ -225,11 +255,14 @@ public static class Program
                 SetAot = (Delegate.CreateDelegate(typeof(IN2),
                        mis1.GetMethod("SetAot")!) as IN2)!;
 
+                SetInputDir = (Delegate.CreateDelegate(typeof(IN3),
+                       mis1.GetMethod("SetInputDir")!) as IN3)!;
+
                 _isDll = true;
             }
             catch
             {
-                Aot = true;
+                _isError = true;
                 GuiLoad.Load();
             }
         }
