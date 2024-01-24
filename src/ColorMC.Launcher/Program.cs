@@ -106,6 +106,12 @@ public static class Program
             }
         }
 
+        if (!_inputDir.EndsWith('/'))
+        {
+            _inputDir += "/";
+            _inputDir = Path.GetFullPath(_inputDir);
+        }
+
         try
         {
             File.Create(_inputDir + "temp").Close();
@@ -116,6 +122,7 @@ public static class Program
                 .StartWithClassicDesktopLifetime(args);
             return;
         }
+
 
         _loadDir = _inputDir + "dll";
 
