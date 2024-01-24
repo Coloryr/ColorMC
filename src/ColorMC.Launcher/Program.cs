@@ -94,21 +94,30 @@ public static class Program
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                _loadDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/dll";
+                _inputDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                _loadDir = "/Users/shared/ColorMC/dll";
+                _inputDir = "/Users/shared/ColorMC/";
             }
             else
             {
-                _loadDir = AppContext.BaseDirectory + "dll";
+                _inputDir = AppContext.BaseDirectory;
             }
         }
-        else
+
+        try
         {
-            _loadDir = _inputDir + "/dll";
+            File.Create(_inputDir + "temp").Close();
         }
+        catch
+        {
+            BuildAvaloniaApp()
+                .StartWithClassicDesktopLifetime(args);
+            return;
+        }
+
+        _loadDir = _inputDir + "dll";
 
         Console.WriteLine($"LoadDir: {_loadDir}");
 
@@ -124,16 +133,7 @@ public static class Program
         }
 
         //有没有权限写文件
-        try
-        {
-            File.Create(_loadDir + "/temp").Close();
-        }
-        catch
-        {
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
-            return;
-        }
+        
 #endif
         try
         {
@@ -141,10 +141,7 @@ public static class Program
             Gui.ColorMCGui.Main(args);
 #else
             Load();
-            if (!string.IsNullOrWhiteSpace(_inputDir))
-            {
-                SetInputDir(_inputDir);
-            }
+            SetInputDir(_inputDir);
             SetAot(Aot);
             SetBaseSha1(BaseSha1);
             MainCall(args);
