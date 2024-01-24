@@ -54,7 +54,7 @@
                         Margin="0,5,0,0">
                         <WrapPanel>
                             <views:HyperLink
-                                Margin="5,0,0,0"
+                                Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text3}"
                                 Command="{Binding OpenUrl1}" />
@@ -83,7 +83,7 @@
                             <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text4}"
+                                Alias="{setting:Localize SettingWindow.Tab7.Text9}"
                                 Command="{Binding OpenUrl6}" />
                         </WrapPanel>
                         <WrapPanel>
