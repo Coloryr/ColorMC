@@ -34,8 +34,37 @@ jobs:
         ./build/build-windows.sh
         chmod a+x ./build/build-macos.sh
         ./build/build-macos.sh
-    - name: 更新构建文件
-      uses: actions/upload-artifact@v4
+
+    - name: Upload DEB Files
+      run: |
+        for deb_file in colormc-*.deb; do
+          echo "Uploading $deb_file..."
+          artifact_name=$(basename "$deb_file" .deb)
+          echo "Artifact $artifact_name will be uploaded."
+          echo "::set-output name=${artifact_name}::${deb_file}"
+        done
+      id: find-deb
+
+    - name: Upload Artifact deb
+      if: steps.find-deb.outputs.artifact_name_1
+      uses: actions/upload-artifact@v2
       with:
-        name: "colormc"
-        path: build_out/
+        name: ${{ steps.find-deb.outputs.artifact_name_1 }}
+        path: ${{ steps.find-deb.outputs.artifact_name_1 }}
+
+    - name: Upload ZIP Files
+      run: |
+        for zip_file in colormc-*.zip; do
+          echo "Uploading $zip_file..."
+          artifact_name=$(basename "$zip_file" .zip)
+          echo "Artifact $artifact_name will be uploaded."
+          echo "::set-output name=${artifact_name}::${zip_file}"
+        done
+      id: find-zip
+
+    - name: Upload Artifact zip
+      if: steps.find-zip.outputs.artifact_name_1
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ steps.find-zip.outputs.artifact_name_1 }}
+        path: ${{ steps.find-zip.outputs.artifact_name_1 }}
