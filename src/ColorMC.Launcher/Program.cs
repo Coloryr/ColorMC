@@ -126,7 +126,7 @@ public static class Program
         //有没有权限写文件
         try
         {
-            File.Create(_inputDir + "/temp").Close();
+            File.Create(_loadDir + "/temp").Close();
         }
         catch
         {
