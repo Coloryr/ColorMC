@@ -49,8 +49,8 @@ build_deb() {
     echo "ColorMC $1 build done"
 }
 
-# build_deb linux-x64
-# build_deb linux-arm64
+build_deb linux-x64
+build_deb linux-arm64
 
 echo "ColorMC build linux-x64-appimage version: $version"
 
@@ -65,10 +65,12 @@ fi
 
 cp ./build/info/appimg.json $build_run/appimg.json
 
-arch=x64
+file_name=linux-x64
+arch=amd64
 
 sed -i "s/%version%/$version/g" $build_run/appimg.json
 sed -i "s/%arch%/$arch/g" $build_run/appimg.json
+sed -i "s/%file_name%/$file_name/g" $build_run/appimg.json
 
 chmod a+x $build_run/deb2appimage.AppImage
 
