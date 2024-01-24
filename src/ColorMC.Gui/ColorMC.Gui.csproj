@@ -88,6 +88,8 @@
     <None Remove="Resource\Icon\Input\button_rt.svg" />
     <None Remove="Resource\Icon\Input\button_up.svg" />
     <None Remove="Resource\Icon\Input\button_x.svg" />
+    <None Remove="Resource\Icon\Input\button_xy.svg" />
+    <None Remove="Resource\Icon\Input\button_xz.svg" />
     <None Remove="Resource\Icon\Input\button_y.svg" />
     <None Remove="Resource\Icon\Input\cursor.svg" />
     <None Remove="Resource\Icon\Item\clipboard.svg" />
@@ -211,6 +213,8 @@
     <AvaloniaResource Include="Resource\Icon\Input\button_rt.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_up.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_x.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_xy.svg" />
+    <AvaloniaResource Include="Resource\Icon\Input\button_xz.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_y.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\cursor.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\clipboard.svg" />
