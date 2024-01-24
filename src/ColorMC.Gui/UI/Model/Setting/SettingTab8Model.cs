@@ -1,5 +1,6 @@
 using Avalonia.Input;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -130,6 +131,7 @@ public partial class SettingModel
         else if (UUIDs.Count <= value)
         {
             SelectConfig = -1;
+            return;
         }
 
         string uuid = UUIDs[value];
@@ -246,7 +248,7 @@ public partial class SettingModel
             }
             if (controlPtr == IntPtr.Zero)
             {
-                Model.Show("手柄打开失败");
+                Model.Show(App.Lang("SettingWindow.Tab8.Error1"));
             }
             else
             {
@@ -266,6 +268,52 @@ public partial class SettingModel
     }
 
     [RelayCommand]
+    public async Task ExportInputConfig()
+    {
+        if (Obj == null)
+        {
+            return;
+        }
+        var res = await PathBinding.SaveFile(FileType.InputConfig, [Obj.Name, Obj]);
+        if (res == null)
+        {
+            return;
+        }
+        else if (res != true)
+        {
+            Model.Show(App.Lang("SettingWindow.Tab8.Error4"));
+            return;
+        }
+
+        Model.Notify(App.Lang("SettingWindow.Tab8.Info14"));
+    }
+
+    [RelayCommand]
+    public async Task ImportInputConfig()
+    {
+        var file = await PathBinding.SelectFile(FileType.InputConfig);
+        if (file == null)
+        {
+            return;
+        }
+
+        var obj = InputConfigUtils.Load(file);
+        if (obj == null)
+        {
+            Model.Show(App.Lang("SettingWindow.Tab8.Error2"));
+            return;
+        }
+
+        obj.UUID = Guid.NewGuid().ToString().ToLower();
+
+        ConfigBinding.SaveInputConfig(obj);
+        Configs.Add(obj.Name);
+        UUIDs.Add(obj.UUID);
+
+        Model.Notify(App.Lang("SettingWindow.Tab8.Info15"));
+    }
+
+    [RelayCommand]
     public async Task DeleteInputConfig()
     {
         if (Obj == null)
@@ -273,15 +321,13 @@ public partial class SettingModel
             return;
         }
 
-        var res = await Model.ShowWait(string.Format("是否要删除手柄方案 {0}", Obj.Name));
+        var res = await Model.ShowWait(string.Format(App.Lang("SettingWindow.Tab8.Info1"), Obj.Name));
         if (!res)
         {
             return;
         }
 
         ConfigBinding.RemoveInputConfig(Obj);
-
-        var index = UUIDs.IndexOf(Obj.UUID);
 
         UUIDs.Remove(Obj.UUID);
         Configs.Remove(Obj.Name);
@@ -300,7 +346,7 @@ public partial class SettingModel
             return;
         }
 
-        var (Cancel, Text1) = await Model.ShowEdit("配置名字", Obj.Name);
+        var (Cancel, Text1) = await Model.ShowEdit(App.Lang("SettingWindow.Tab8.Info2"), Obj.Name);
         if (Cancel || string.IsNullOrWhiteSpace(Text1))
         {
             return;
@@ -322,7 +368,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task NewInputConfig()
     {
-        var (Cancel, Text) = await Model.ShowInputOne("配置名字", false);
+        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("SettingWindow.Tab8.Info2"), false);
         if (Cancel || string.IsNullOrWhiteSpace(Text))
         {
             return;
@@ -343,7 +389,7 @@ public partial class SettingModel
             return;
         }
         using var cannel = new CancellationTokenSource();
-        Model.ShowCancel("请按下手柄扳机来绑定", () =>
+        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info3"), () =>
         {
             cannel.Cancel();
         });
@@ -354,7 +400,7 @@ public partial class SettingModel
             return;
         }
         var key1 = ((byte, bool))key;
-        Model.ShowCancel("请按下键盘或鼠标按键来绑定", () =>
+        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info4"), () =>
         {
             cannel.Cancel();
         });
@@ -374,7 +420,7 @@ public partial class SettingModel
         };
         InputAxisList.Add(item1);
         ConfigBinding.AddAxisInput(Obj, item1.UUID, item1.GenObj());
-        Model.Notify("已添加");
+        Model.Notify(App.Lang("SettingWindow.Tab8.Info5"));
     }
 
     [RelayCommand]
@@ -386,7 +432,7 @@ public partial class SettingModel
         }
 
         using var cannel = new CancellationTokenSource();
-        Model.ShowCancel("请按下手柄按键来绑定", () =>
+        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info6"), () =>
         {
             cannel.Cancel();
         });
@@ -397,7 +443,7 @@ public partial class SettingModel
             return;
         }
         var key1 = (byte)key;
-        Model.ShowCancel("请按下键盘或鼠标按键来绑定", () =>
+        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info4"), () =>
         {
             cannel.Cancel();
         });
@@ -422,14 +468,14 @@ public partial class SettingModel
         };
         InputList.Add(item1);
         ConfigBinding.AddInput(Obj, item1.InputKey, item1.Obj);
-        Model.Notify("已添加");
+        Model.Notify(App.Lang("SettingWindow.Tab8.Info7"));
     }
 
     [RelayCommand]
     public async Task SetItemButton(object? right)
     {
         using var cannel = new CancellationTokenSource();
-        Model.ShowCancel("请按下手柄按键来绑定", () =>
+        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info6"), () =>
         {
             cannel.Cancel();
         });
@@ -512,7 +558,10 @@ public partial class SettingModel
             Configs.Add(item.Value.Name);
         }
 
-        NowConfig = UUIDs.IndexOf(GuiConfigUtils.Config.Input.NowConfig);
+        if (GuiConfigUtils.Config.Input.NowConfig != null)
+        {
+            NowConfig = UUIDs.IndexOf(GuiConfigUtils.Config.Input.NowConfig);
+        }
 
         isInputLoad = false;
 
@@ -585,7 +634,7 @@ public partial class SettingModel
     public void SetTab8Click()
     {
         Model.SetChoiseCall(_name, ReloadInput);
-        Model.SetChoiseContent(_name, "刷新手柄");
+        Model.SetChoiseContent(_name, App.Lang("SettingWindow.Tab8.Info8"));
     }
 
     public async void SetKeyButton(InputButtonModel item)
@@ -595,7 +644,7 @@ public partial class SettingModel
             return;
         }
         using var cannel = new CancellationTokenSource();
-        Model.ShowCancel("请按下键盘或鼠标按键来绑定", () =>
+        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info4"), () =>
         {
             cannel.Cancel();
         });
@@ -616,7 +665,7 @@ public partial class SettingModel
         {
             ConfigBinding.AddInput(Obj, item.InputKey, item.Obj);
         }
-        Model.Notify("已修改");
+        Model.Notify(App.Lang("SettingWindow.Tab8.Info9"));
     }
 
     public void DeleteInput(InputButtonModel item)
@@ -635,7 +684,7 @@ public partial class SettingModel
             InputList.Remove(item);
             ConfigBinding.DeleteInput(Obj, item.InputKey);
         }
-        Model.Notify("已删除");
+        Model.Notify(App.Lang("SettingWindow.Tab8.Info10"));
     }
 
     public void InputMouse(KeyModifiers modifiers, PointerPointProperties properties)

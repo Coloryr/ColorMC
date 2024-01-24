@@ -30,21 +30,21 @@
                                 Fill="{setting:Colors Font}"
                                 Path="/Resource/Icon/Setting/item8.svg"
                                 Stroke="{setting:Colors Font}" />
-                            <TextBlock FontSize="{setting:Style FontTitle}" Text="手柄支持" />
+                            <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab8.Text1}" />
                         </StackPanel>
                         <ToggleSwitch
                             Margin="0,0,10,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding InputEnable}"
-                            OffContent="启用游戏内手柄支持"
-                            OnContent="启用游戏内手柄支持" />
+                            OffContent="{setting:Localize SettingWindow.Tab8.Text2}"
+                            OnContent="{setting:Localize SettingWindow.Tab8.Text2}" />
                         <WrapPanel Margin="0,0,0,5">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="手柄数量：" />
+                                <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text3}" />
                                 <TextBlock Margin="0,0,5,0" Text="{Binding InputNum}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="0,0,5,0" Text="手柄列表" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
                                 <ComboBox
                                     Width="200"
                                     Margin="0,0,5,0"
@@ -54,7 +54,7 @@
                         </WrapPanel>
                         <WrapPanel Margin="0,0,0,5">
                             <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                                <TextBlock Margin="0,0,5,0" Text="手柄配置" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
                                 <ComboBox
                                     Width="200"
                                     Margin="0,0,5,0"
@@ -62,7 +62,7 @@
                                     SelectedIndex="{Binding SelectConfig}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="0,0,5,0" Text="默认配置" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text6}" />
                                 <ComboBox
                                     Width="200"
                                     Margin="0,0,5,0"
@@ -76,31 +76,33 @@
                                 Height="25"
                                 Margin="0,0,5,5"
                                 Command="{Binding NewInputConfig}"
-                                Content="添加" />
+                                Content="{setting:Localize Button.Add}" />
                             <Button
                                 Width="100"
                                 Height="25"
                                 Margin="0,0,5,5"
                                 Command="{Binding RenameInputConfig}"
-                                Content="重命名"
+                                Content="{setting:Localize Button.Rename}"
                                 IsEnabled="{Binding InputExist}" />
                             <Button
                                 Width="100"
                                 Height="25"
                                 Margin="0,0,5,5"
                                 Command="{Binding DeleteInputConfig}"
-                                Content="删除"
+                                Content="{setting:Localize Button.Delete}"
                                 IsEnabled="{Binding InputExist}" />
                             <Button
                                 Width="100"
                                 Height="25"
                                 Margin="0,0,5,5"
-                                Content="导入" />
+                                Command="{Binding ImportInputConfig}"
+                                Content="{setting:Localize Button.Input}" />
                             <Button
                                 Width="100"
                                 Height="25"
                                 Margin="0,0,5,5"
-                                Content="导出"
+                                Command="{Binding ExportInputConfig}"
+                                Content="{setting:Localize Button.Output}"
                                 IsEnabled="{Binding InputExist}" />
                         </WrapPanel>
                     </StackPanel>
@@ -114,7 +116,7 @@
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Text="手柄输入初始化失败" />
+                        Text="{setting:Localize SettingWindow.Tab8.Text7}" />
                 </Border>
             </Panel>
             <Border
@@ -137,12 +139,12 @@
                         <TextBlock
                             Margin="0,0,10,0"
                             FontSize="{setting:Style FontTitle}"
-                            Text="按键绑定" />
+                            Text="{setting:Localize SettingWindow.Tab8.Text8}" />
                         <Button
                             Width="100"
                             Height="25"
                             Command="{Binding AddInput}"
-                            Content="添加"
+                            Content="{setting:Localize Add}"
                             Focusable="False" />
                     </StackPanel>
                     <DataGrid
@@ -157,9 +159,9 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Binding="{Binding InputKey}"
-                                Header="按键值"
+                                Header="{setting:Localize SettingWindow.Tab8.Text9}"
                                 IsReadOnly="True" />
-                            <DataGridTemplateColumn Header="按键">
+                            <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel>
@@ -173,11 +175,11 @@
                             </DataGridTemplateColumn>
                             <DataGridTextColumn
                                 Binding="{Binding Bind}"
-                                Header="绑定值"
+                                Header="{setting:Localize SettingWindow.Tab8.Text10}"
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TextBlock Text="注意：一个按钮只可以绑定一个按键，按键可以是组合键，例如Alt+F4，也可以是鼠标按键，但不能是鼠标滚轮" TextWrapping="Wrap" />
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text11}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border
@@ -200,12 +202,12 @@
                         <TextBlock
                             Margin="0,0,10,0"
                             FontSize="{setting:Style FontTitle}"
-                            Text="扳机与摇杆绑定" />
+                            Text="{setting:Localize SettingWindow.Tab8.Text12}" />
                         <Button
                             Width="100"
                             Height="25"
                             Command="{Binding AddAxisInput}"
-                            Content="添加"
+                            Content="{setting:Localize Add}"
                             Focusable="False" />
                     </StackPanel>
 
@@ -222,9 +224,9 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Binding="{Binding InputKey}"
-                                Header="按键值"
+                                Header="{setting:Localize SettingWindow.Tab8.Text9}"
                                 IsReadOnly="True" />
-                            <DataGridTemplateColumn Header="按键">
+                            <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel>
@@ -236,14 +238,14 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Binding="{Binding Start}" Header="压力范围" />
+                            <DataGridTextColumn Binding="{Binding Start}" Header="{setting:Localize SettingWindow.Tab8.Text13}" />
                             <DataGridTextColumn Binding="{Binding End}" />
                             <DataGridTextColumn
                                 Binding="{Binding Bind}"
-                                Header="绑定按键值"
+                                Header="{setting:Localize SettingWindow.Tab8.Text10}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn Binding="{Binding NowValue}" IsReadOnly="True" />
-                            <DataGridTemplateColumn Header="回弹取消">
+                            <DataGridTemplateColumn Header="{setting:Localize SettingWindow.Tab8.Text14}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <CheckBox
@@ -256,7 +258,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="0,0,5,0" Text="回弹阈值" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text15}" />
                         <Slider
                             Width="150"
                             Margin="0,-10,5,-10"
@@ -264,7 +266,7 @@
                             Value="{Binding ToBackValue}" />
                         <TextBlock Width="50" Text="{Binding ToBackValue}" />
                     </StackPanel>
-                    <TextBlock Text="注意：绑定按键可设置触发力度，一个扳机或摇杆可以设置多个触发力度绑定不同按键使用\n回弹取消开启时，只有真正松开扳机或摇杆，才能重新触发该按键，否则只要处于触发力度内，都会发送按键" TextWrapping="Wrap" />
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text16}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
 
@@ -285,31 +287,31 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg24.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="摇杆设置" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab8.Text17}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,-5">
                         <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="视角摇杆" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text18}" />
                             <ComboBox
                                 Width="150"
                                 ItemsSource="{Binding AxisType}"
                                 SelectedIndex="{Binding InputRotateAxis}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="光标摇杆" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text19}" />
                             <ComboBox
                                 Width="150"
                                 ItemsSource="{Binding AxisType}"
                                 SelectedIndex="{Binding InputCursorAxis}" />
                         </StackPanel>
                     </WrapPanel>
-                    <TextBlock Text="灵敏度调节" />
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text20}" />
                     <WrapPanel>
                         <StackPanel
                             Width="250"
                             Margin="0,0,15,0"
                             Orientation="Horizontal">
-                            <TextBlock Margin="0,-10,5,0" Text="光标阈值" />
+                            <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text21}" />
                             <Panel>
                                 <StackPanel Margin="0,-10,0,0" Orientation="Horizontal">
                                     <Slider
@@ -339,7 +341,7 @@
                             Width="250"
                             Margin="0,0,15,0"
                             Orientation="Horizontal">
-                            <TextBlock Margin="0,-10,5,0" Text="视角转动阈值" />
+                            <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text22}" />
                             <Panel>
                                 <StackPanel Margin="0,-10,0,0" Orientation="Horizontal">
                                     <Slider
@@ -371,7 +373,7 @@
                             Width="250"
                             Margin="0,0,15,0"
                             Orientation="Horizontal">
-                            <TextBlock Margin="0,-10,5,0" Text="转动倍率" />
+                            <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text23}" />
                             <Slider
                                 Width="150"
                                 Margin="0,-10,5,0"
@@ -389,7 +391,7 @@
                             Width="250"
                             Margin="0,0,15,0"
                             Orientation="Horizontal">
-                            <TextBlock Margin="0,-10,5,0" Text="光标倍率" />
+                            <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text24}" />
                             <Slider
                                 Width="150"
                                 Margin="0,-10,5,0"
@@ -423,18 +425,18 @@
                             Fill="{setting:Colors Font}"
                             Path="/Resource/Icon/Setting/svg26.svg"
                             Stroke="{setting:Colors Font}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="附加功能设置" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab8.Text25}" />
                     </StackPanel>
 
                     <ToggleSwitch
                         Margin="0,0,10,0"
                         VerticalAlignment="Center"
                         IsChecked="{Binding ItemCycle}"
-                        OffContent="启用物品循环（发送上下滚轮）"
-                        OnContent="启用物品循环（发送上下滚轮）" />
+                        OffContent="{setting:Localize SettingWindow.Tab8.Text26}"
+                        OnContent="{setting:Localize SettingWindow.Tab8.Text26}" />
                     <WrapPanel Margin="0,0,0,-5" IsEnabled="{Binding ItemCycle}">
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <TextBlock Text="上一个物品绑定按键值：" />
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text27}" />
                             <TextBlock Text="{Binding ItemCycleLeft}" />
                             <Svg
                                 Width="30"
@@ -446,10 +448,10 @@
                                 Height="25"
                                 Command="{Binding SetItemButton}"
                                 CommandParameter="{x:False}"
-                                Content="设置按钮" />
+                                Content="{setting:Localize SettingWindow.Tab8.Text28}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <TextBlock Text="下一个物品绑定按键值：" />
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text29}" />
                             <TextBlock Text="{Binding ItemCycleRight}" />
                             <Svg
                                 Width="30"
@@ -461,7 +463,7 @@
                                 Height="25"
                                 Command="{Binding SetItemButton}"
                                 CommandParameter="{x:True}"
-                                Content="设置按钮" />
+                                Content="{setting:Localize SettingWindow.Tab8.Text28}" />
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
