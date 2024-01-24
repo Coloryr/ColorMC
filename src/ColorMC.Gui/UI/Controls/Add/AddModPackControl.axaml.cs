@@ -5,7 +5,6 @@ using Avalonia.Threading;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.Utils;
 using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Add;

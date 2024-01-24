@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class InputAxisButtonModel(SettingModel setting) 
+public partial class InputAxisButtonModel(SettingModel setting)
     : InputButtonModel(setting)
 {
     [ObservableProperty]

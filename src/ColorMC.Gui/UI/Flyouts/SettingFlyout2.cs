@@ -1,10 +1,6 @@
 ﻿using Avalonia.Controls;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Setting;
-using ColorMC.Gui.UIBinding;
-using System.Collections;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

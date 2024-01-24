@@ -221,7 +221,7 @@ public class Win32Native : INative
         else
         {
             // 发送鼠标移动事件
-            Win32.INPUT[] inputs = 
+            Win32.INPUT[] inputs =
             [
                 new()
                 {

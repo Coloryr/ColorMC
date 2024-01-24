@@ -3,7 +3,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Download;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;

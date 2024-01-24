@@ -1,33 +1,33 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media;
-using Avalonia.Platform;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.LogicalTree;
+using Avalonia.Media;
+using Avalonia.Metadata;
+using Avalonia.Platform;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Windows;
-using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using ColorMC.Gui.UI.Views.Svg;
-using Avalonia.Interactivity;
-using Avalonia.Metadata;
-using Avalonia;
-using Avalonia.LogicalTree;
-using Avalonia.VisualTree;
+using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.Utils;
+using ColorMC.Gui.Utils.Hook;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Linq;
-using ColorMC.Gui.Utils.Hook;
 using System.Threading;
-using ColorMC.Gui.Utils;
-using Avalonia.Threading;
+using System.Threading.Tasks;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
-using ColorMC.Gui.Objs;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -93,7 +93,7 @@ public partial class GameWindowControl : UserControl, IUserControl
         (Window as Window)?.Activate();
     }
 
-    public void Closed() 
+    public void Closed()
     {
         App.GameWindows.Remove(_obj.UUID);
     }
@@ -109,7 +109,7 @@ public partial class GameWindowControl : UserControl, IUserControl
     private void Event(Event sdlEvent)
     {
         var config = InputConfigUtils.NowConfig;
-        if (config == null || !GuiConfigUtils.Config.Input.Enable 
+        if (config == null || !GuiConfigUtils.Config.Input.Enable
             || sdlEvent.Cbutton.Which != joystickID)
         {
             return;
@@ -432,14 +432,14 @@ public partial class GameWindowControl : UserControl, IUserControl
         Window?.SetTitle(title);
     }
 
-    public void WindowStateChange(WindowState state) 
+    public void WindowStateChange(WindowState state)
     {
         _implementation.SetWindowState(state);
     }
 
     public void SetBaseModel(BaseModel model)
     {
-        
+
     }
 
     public Task<bool> Closing()
@@ -462,8 +462,8 @@ public partial class GameWindowControl : UserControl, IUserControl
                 }
             }
             catch
-            { 
-                
+            {
+
             }
         });
 

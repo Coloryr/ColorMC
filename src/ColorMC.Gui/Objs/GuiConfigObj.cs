@@ -1,6 +1,4 @@
-using Avalonia.Input;
 using ColorMC.Core.Objs;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.Objs;
 

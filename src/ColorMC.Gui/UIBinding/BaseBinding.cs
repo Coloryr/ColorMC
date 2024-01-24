@@ -18,7 +18,6 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI;
-using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
@@ -416,8 +415,8 @@ public static class BaseBinding
                         }
                     }
                     catch
-                    { 
-                        
+                    {
+
                     }
                     if (ptr == IntPtr.Zero)
                     {
