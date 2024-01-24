@@ -37,34 +37,34 @@ jobs:
 
     - name: Upload DEB Files
       run: |
-        for deb_file in colormc-*.deb; do
+        for deb_file in ./build_out/colormc-*.deb; do
           echo "Uploading $deb_file..."
           artifact_name=$(basename "$deb_file" .deb)
           echo "Artifact $artifact_name will be uploaded."
-          echo "::set-output name=${artifact_name}::${deb_file}"
+          echo "${artifact_name}=${deb_file}" >> $GITHUB_OUTPUT
         done
       id: find-deb
 
     - name: Upload Artifact deb
       if: steps.find-deb.outputs.artifact_name_1
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.find-deb.outputs.artifact_name_1 }}
         path: ${{ steps.find-deb.outputs.artifact_name_1 }}
 
     - name: Upload ZIP Files
       run: |
-        for zip_file in colormc-*.zip; do
+        for zip_file in ./build_out/colormc-*.zip; do
           echo "Uploading $zip_file..."
           artifact_name=$(basename "$zip_file" .zip)
           echo "Artifact $artifact_name will be uploaded."
-          echo "::set-output name=${artifact_name}::${zip_file}"
+          echo "${artifact_name}=${zip_file}" >> $GITHUB_OUTPUT
         done
       id: find-zip
 
     - name: Upload Artifact zip
       if: steps.find-zip.outputs.artifact_name_1
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.find-zip.outputs.artifact_name_1 }}
         path: ${{ steps.find-zip.outputs.artifact_name_1 }}
@@ -90,19 +90,19 @@ jobs:
 
     - name: Upload ZIP Files
       run: |
-        $zip_files = Get-ChildItem -Path . -Filter "colormc-*.zip"
+        $zip_files = Get-ChildItem -Path . -Filter ".\build_out\colormc-*.zip"
         foreach ($zip_file in $zip_files) {
           echo "Uploading $($zip_file.Name)..."
           $artifact_name = $zip_file.BaseName
-          echo "::set-output name=artifact_name::$artifact_name"
-          echo "::set-output name=zip_file::$($zip_file.FullName)"
+          echo "artifact_name=$artifact_name" >> $GITHUB_OUTPUT
+          echo "zip_file=$($zip_file.FullName)" >> $GITHUB_OUTPUT
         }
       id: find-zip
       shell: pwsh
 
     - name: Upload Artifact zip
       if: steps.find-zip.outputs.artifact_name
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.find-zip.outputs.artifact_name }}
         path: ${{ steps.find-zip.outputs.zip_file }}
