@@ -103,8 +103,8 @@ public static class InputConfigUtils
             AxisKeys = [],
             CursorAxis = 0,
             RotateAxis = 1,
-            CursorDeath = 200,
-            RotateDeath = 200,
+            CursorDeath = 2000,
+            RotateDeath = 2000,
             CursorRate = 0.5f,
             RotateRate = 0.5f
         };

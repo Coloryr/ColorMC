@@ -312,6 +312,25 @@ public static class PathBinding
                     Logs.Error(App.Lang("SettingWindow.Tab6.Error3"), e);
                     return false;
                 }
+            case FileType.InputConfig:
+                file = await SaveFile(top,
+                    App.Lang("SettingWindow.Tab8.Info13"), ".json", arg![0] + ".json");
+                if (file == null)
+                    break;
+
+                try
+                {
+                    var name = file.GetPath();
+                    if (name == null)
+                        return false;
+                    await File.WriteAllTextAsync(name, JsonConvert.SerializeObject(arg![1]));
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.Lang("SettingWindow.Tab8.Error3"), e);
+                    return false;
+                }
         }
 
         return null;
@@ -524,6 +543,16 @@ public static class PathBinding
                     App.Lang("AddGameWindow.Tab1.Info17"),
                     JARFILE,
                     App.Lang("AddGameWindow.Tab1.Info18"));
+                if (res?.Any() == true)
+                {
+                    return res[0].GetPath();
+                }
+                break;
+            case FileType.InputConfig:
+                res = await SelectFile(top,
+                    App.Lang("SettingWindow.Tab8.Info11"),
+                    JSON,
+                    App.Lang("SettingWindow.Tab8.Info12"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
