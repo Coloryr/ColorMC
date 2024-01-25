@@ -1,5 +1,12 @@
 #!/bin/bash
 
+version=""
+
+for line in `cat ./build/version`
+do
+    version=$line
+done
+
 build_arch() {
     echo "build ColorMC-$1.pkg.tar.zst version: $version"
 
@@ -51,6 +58,6 @@ build_arch_aot() {
 }
 
 build_arch linux-x64 x86_64
-build_arch linux-arm64 aarch64
+# build_arch linux-arm64 aarch64
 build_arch_aot linux-x64 x86_64
-build_arch_aot linux-arm64 aarch64
+# build_arch_aot linux-arm64 aarch64
