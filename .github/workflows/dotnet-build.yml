@@ -173,8 +173,10 @@ jobs:
         pacman -Syu --noconfirm base-devel git && \
         pacman -Sy --noconfirm dotnet-sdk-8.0 && \
         useradd -m builder && \
+        cd /github/workspace && \
+        chmod a+x ./build/build-arch.sh && \
         echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder && \
-        su -c 'cd /github/workspace && chmod a+x ./build/build-arch.sh && ./build/build-arch.sh' builder"
+        su -c './build/build-arch.sh' builder"
 
     - name: 上传
       uses: actions/upload-artifact@v4
