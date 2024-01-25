@@ -58,7 +58,7 @@ build_deb_aot() {
 
     mkdir $base_dir
 
-    pdbs=("libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher")
+    files=("libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher")
 
     cp -r ./build/info/linux/* $base_dir
     cp -r ./build/info/$1/* $base_dir
@@ -69,7 +69,7 @@ build_deb_aot() {
 
     mkdir $base_dir/$dir
 
-    for line in ${pdbs[@]}
+    for line in ${files[@]}
     do
         cp $base/$line \
             $base_dir/$dir/$line
