@@ -160,8 +160,9 @@ jobs:
 
     # 构建 MSI
     - name: Build MSI with MSBuild
+      working-directory: ./
       run: |
-        cd src/ColorMC.Setup
+        cd .\src\ColorMC.Setup\
         msbuild "ColorMC.Setup.vdproj" /p:Configuration=Release /p:Platform="x86_64"
       shell: pwsh
 
