@@ -7,43 +7,44 @@ do
     version=$line
 done
 
-echo "ColorMC build osx-x64 version: $version"
+build_osx ()
+{
+    echo "ColorMC build $1 version: $version"
 
-mkdir ./build_out
+    mkdir ./build_out
 
-base=./src/build_out/osx-x64-dotnet
-base_dir="$base/ColorMC.app/Contents"
+    base=./src/build_out/$1-dotnet
+    base_dir="$base/ColorMC.app/Contents"
+    zip_name="colormc-a$version-$1.zip"
 
-rm $zip_name
-rm -rf $base
+    dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1
 
-dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=osx-x64
+    mkdir $base/ColorMC.app
+    mkdir $base_dir
 
-mkdir $base/ColorMC.app
-mkdir $base_dir
+    files=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
+        "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "ColorMC.Launcher"
+        "libAvaloniaNative.dylib" "libHarfBuzzSharp.dylib" "libSkiaSharp.dylib")
 
-pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
-    "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "ColorMC.Launcher"
-    "libAvaloniaNative.dylib" "libHarfBuzzSharp.dylib" "libSkiaSharp.dylib")
+    cp -r ./build/info/$1/* $base_dir
 
-cp -r ./build/info/osx64/* $base_dir
+    dir=$base_dir/MacOS
 
-dir=MacOS
+    mkdir $dir
 
-mkdir $base_dir/$dir
+    for line in ${files[@]}
+    do
+        cp $base/$line \
+            $dir/$line
+    done
 
-for line in ${pdbs[@]}
-do
-    cp $base/$line \
-        $base_dir/$dir/$line
-done
+    chmod a+x $dir/ColorMC.Launcher
 
-chmod a+x $base_dir/$dir/ColorMC.Launcher
+    cd ./src/build_out/$1-dotnet
+    zip -r $zip_name ./ColorMC.app
+    mv $zip_name ../../../build_out/$zip_name
 
-zip_name="colormc-a$version-osx-x64.zip"
+    echo "ColorMC $1 build done"
+}
 
-cd ./src/build_out/osx-x64-dotnet
-zip -r $zip_name ./ColorMC.app
-mv $zip_name ../../../build_out/$zip_name
-
-echo "ColorMC osx-x64 build done"
+build_osx osx-x64
