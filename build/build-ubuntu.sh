@@ -11,7 +11,7 @@ mkdir ./build_out
 
 build_deb() {
 
-    echo "ColorMC build $1 version: $version"
+    echo "ColorMC build $1 deb version: $version"
 
     base=./src/build_out/$1-dotnet
     base_dir="$base/colormc"
@@ -43,7 +43,7 @@ build_deb() {
 
     dpkg -b $base_dir $deb_name
 
-    echo "ColorMC $1 build done"
+    echo "ColorMC $1 build deb done"
 }
 
 build_deb_aot() {
