@@ -156,10 +156,11 @@ jobs:
       run: ./build/build-windows.cmd
 
     # 构建 MSI
-    - name: Build MSI
+    - name: Build MSI with MSBuild
       run: |
-        cd src/ColorMC.Setup
-        msbuild ColorMC.Setup.vdproj /p:Configuration=Release /p:Platform="x86_64"
+        $msBuildPath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+        & $msBuildPath "ColorMC.Setup.vdproj" /p:Configuration=Release /p:Platform="x86_64"
+      shell: pwsh
 
     - name: 上传
       uses: actions/upload-artifact@v4
