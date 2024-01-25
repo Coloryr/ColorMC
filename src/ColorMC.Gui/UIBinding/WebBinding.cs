@@ -29,7 +29,7 @@ namespace ColorMC.Gui.UIBinding;
 public static class WebBinding
 {
     private readonly static List<string> PCJavaType =
-    ["Adoptium", "Zulu", "Dragonwell", "OpenJ9"];
+    ["Adoptium", "Zulu", "Dragonwell", "OpenJ9", "Graalvm"];
 
     private readonly static List<string> PhoneJavaType =
         ["PojavLauncherTeam"];
@@ -903,6 +903,10 @@ public static class WebBinding
                 {
                     return await GetOpenJ9List();
                 }
+            case 4:
+                {
+                    return (true, null, null, null, GetGraalvmList());
+                }
             default:
                 return (false, null, null, null, null);
         }
@@ -976,6 +980,104 @@ public static class WebBinding
             App.ShowError(App.Lang("Gui.Error46"), e);
             return (false, null, null, null, null);
         }
+    }
+
+    private static List<JavaDownloadObj> GetGraalvmList()
+    {
+        return new List<JavaDownloadObj>()
+            {
+                new()
+                {
+                    File = "graalvm-jdk-17_macos-aarch64_bin.tar.gz",
+                    Name = "17_macOS_ARM",
+                    Url = "https://download.oracle.com/graalvm/17/latest/graalvm-jdk-17_macos-aarch64_bin.tar.gz",
+                    Arch = "aarch64",
+                    MainVersion = "17",
+                    Os = "macos",
+                },
+                new()
+                {
+                    File = "graalvm-jdk-17_macos-x64_bin.tar.gz",
+                    Name = "17_macOS_x64",
+                    Url = "https://download.oracle.com/graalvm/17/latest/graalvm-jdk-17_macos-x64_bin.tar.gz",
+                    Arch = "x64",
+                    MainVersion = "17",
+                    Os = "macos",
+                },
+                new()
+                {
+                    File = "graalvm-jdk-17_linux-aarch64_bin.tar.gz",
+                    Name = "17_Linux_ARM",
+                    Url = "https://download.oracle.com/graalvm/17/latest/graalvm-jdk-17_linux-aarch64_bin.tar.gz",
+                    Arch = "aarch64",
+                    MainVersion = "17",
+                    Os = "linux",
+                },
+                new()
+                {
+                    File = "graalvm-jdk-17_linux-x64_bin.tar.gz",
+                    Name = "17_Linux_x64",
+                    Url = "https://download.oracle.com/graalvm/17/latest/graalvm-jdk-17_linux-x64_bin.tar.gz",
+                    Arch = "x64",
+                    MainVersion = "17",
+                    Os = "linux",
+                },
+                new()
+                {
+                    File = "graalvm-jdk-17_windows-x64_bin.zip",
+                    Name = "17_Windows_x64",
+                    Url = "https://download.oracle.com/graalvm/17/latest/graalvm-jdk-17_windows-x64_bin.zip",
+                    Arch = "x64",
+                    MainVersion = "17",
+                    Os = "windows",
+                },
+
+                new()
+                {
+                    File = "graalvm-jdk-21_macos-aarch64_bin.tar.gz",
+                    Name = "21_macOS_ARM",
+                    Url = "https://download.oracle.com/graalvm/21/latest/graalvm-jdk-21_macos-aarch64_bin.tar.gz",
+                    Arch = "aarch64",
+                    MainVersion = "21",
+                    Os = "macos",
+                },
+                new()
+                {
+                    File = "graalvm-jdk-21_macos-x64_bin.tar.gz",
+                    Name = "21_macOS_x64",
+                    Url = "https://download.oracle.com/graalvm/21/latest/graalvm-jdk-21_macos-x64_bin.tar.gz",
+                    Arch = "x64",
+                    MainVersion = "21",
+                    Os = "macos",
+                },
+                new()
+                {
+                    File = "graalvm-jdk-21_linux-aarch64_bin.tar.gz",
+                    Name = "21_Linux_ARM",
+                    Url = "https://download.oracle.com/graalvm/21/latest/graalvm-jdk-21_linux-aarch64_bin.tar.gz",
+                    Arch = "aarch64",
+                    MainVersion = "21",
+                    Os = "linux",
+                },
+                new()
+                {
+                    File = "graalvm-jdk-21_linux-x64_bin.tar.gz",
+                    Name = "21_Linux_x64",
+                    Url = "https://download.oracle.com/graalvm/21/latest/graalvm-jdk-21_linux-x64_bin.tar.gz",
+                    Arch = "x64",
+                    MainVersion = "21",
+                    Os = "linux",
+                },
+                new()
+                {
+                    File = "graalvm-jdk-21_windows-x64_bin.zip",
+                    Name = "21_Windows_x64",
+                    Url = "https://download.oracle.com/graalvm/21/latest/graalvm-jdk-21_windows-x64_bin.zip",
+                    Arch = "x64",
+                    MainVersion = "21",
+                    Os = "windows",
+                }
+            };
     }
 
     private static string ToStr(List<int> list)
@@ -1264,7 +1366,7 @@ public static class WebBinding
     {
         try
         {
-            var (Arch, Os, MainVersion, Data) = await OpenJ9.GetJavaList();
+            var (Arch, Os, MainVersion, Data) = await OpenJ9Api.GetJavaList();
             if (Os == null)
             {
                 return (false, null, null, null, null);

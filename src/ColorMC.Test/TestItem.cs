@@ -442,7 +442,7 @@ public static class TestItem
 
     public static void Item19()
     {
-        var res = OpenJ9.GetJavaList().Result;
+        var res = OpenJ9Api.GetJavaList().Result;
     }
 
     public static void Item20()
@@ -579,6 +579,12 @@ public static class TestItem
             }
         };
         var server = new LanServer("25565", "测试服务器");
+
+    }
+
+    public static void Item34()
+    {
+        
 
     }
 }
