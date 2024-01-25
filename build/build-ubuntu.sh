@@ -113,7 +113,7 @@ sudo apt-get install libfuse2 curl -y
 
 sudo $build_run/deb2appimage.AppImage -j $build_run/appimg.json -o ./build_out
 
-sudo chown : ./build_out/colormc-a$version-x86_64.AppImage
+sudo chown $USER:$USER ./build_out/colormc-a$version-x86_64.AppImage
 chmod a+x build_out/colormc-a$version-x86_64.AppImage
 
 echo "ColorMC linux-appimage build done"
