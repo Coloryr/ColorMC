@@ -159,7 +159,7 @@ jobs:
     - name: Build MSI
       run: |
         cd src/ColorMC.Setup
-        $msBuildPath ColorMC.Setup.vdproj /p:Configuration=Release /p:Platform="x86_64"
+        msbuild ColorMC.Setup.vdproj /p:Configuration=Release /p:Platform="x86_64"
 
     - name: 上传
       uses: actions/upload-artifact@v4
