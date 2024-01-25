@@ -168,19 +168,19 @@ jobs:
       with:
         dotnet-version: 8.0.100
 
-    - name: 更新源码
-      shell: bash
-      working-directory: ./
-      run: |
-        chmod a+x ./build/update.sh
-        ./build/update.sh
-
     - name: 初始化
       run: |
         pacman -Syu --noconfirm base-devel git
         # pacman -Sy --noconfirm dotnet-sdk-8.0
         useradd -m builder
         echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder
+
+    - name: 更新源码
+      shell: bash
+      working-directory: ./
+      run: |
+        chmod a+x ./build/update.sh
+        ./build/update.sh
 
     - name: 构建
       run: |
