@@ -1,0 +1,141 @@
+<wixsharp:WpfDialog
+    x:Class="ColorMC.Setup.Wix.MaintenanceTypeDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wixsharp="clr-namespace:WixSharp.UI.WPF;assembly=WixSharp.UI.WPF"
+    d:DesignHeight="408"
+    d:DesignWidth="512"
+    DialogTitle="ColorMC 安装"
+    mc:Ignorable="d">
+    <wixsharp:WpfDialog.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Content}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </wixsharp:WpfDialog.Resources>
+    <Grid x:Name="Root">
+        <TextBlock
+            x:Name="DialogTitleLabel"
+            Margin="20,20,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontSize="20"
+            FontWeight="Bold">
+            ColorMC 卸载
+        </TextBlock>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button
+                    x:Name="Repair"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent">
+                    <Border
+                        Padding="2"
+                        Background="Transparent"
+                        BorderThickness="3">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#f3f3f3" />
+                                        <Setter Property="BorderBrush" Value="#FF5ABED6" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel>
+                            <Image
+                                x:Name="Banner"
+                                Width="80"
+                                Height="80" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                Foreground="Black"
+                                Text="修复ColorMC" />
+                        </StackPanel>
+                    </Border>
+                </Button>
+
+                <Button
+                    x:Name="Remove"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent">
+                    <Border
+                        Padding="2"
+                        Background="Transparent"
+                        BorderThickness="3">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#f3f3f3" />
+                                        <Setter Property="BorderBrush" Value="#FF5ABED6" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel>
+                            <Image
+                                x:Name="Banner1"
+                                Width="80"
+                                Height="80" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                Foreground="Black"
+                                Text="卸载ColorMC" />
+                        </StackPanel>
+                    </Border>
+                </Button>
+
+            </StackPanel>
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="卸载不会删除游戏文件！" />
+        </StackPanel>
+
+        <Button
+            x:Name="Cancel"
+            Margin="20"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            BorderThickness="0">
+            <Border
+                Width="100"
+                Height="25"
+                Background="#FF5ABED6"
+                BorderBrush="#FFb7bac1"
+                CornerRadius="3">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="White"
+                    Text="退出" />
+            </Border>
+        </Button>
+    </Grid>
+</wixsharp:WpfDialog>

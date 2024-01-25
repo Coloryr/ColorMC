@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Live2DCSharpSDK.Framework",
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ColorMC.Setup", "ColorMC.Setup\ColorMC.Setup.vdproj", "{C28973E2-0973-4819-A365-081C280A817D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorMC.Setup.Wix", "ColorMC.Setup.Wix\ColorMC.Setup.Wix.csproj", "{7169B43D-C8CD-431E-965A-274F154BA9AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +169,26 @@ Global
 		{C28973E2-0973-4819-A365-081C280A817D}.Release|ARM64.ActiveCfg = Release
 		{C28973E2-0973-4819-A365-081C280A817D}.Release|x64.ActiveCfg = Release
 		{C28973E2-0973-4819-A365-081C280A817D}.Release|x86.ActiveCfg = Release
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|ARM.Build.0 = Debug|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|x64.Build.0 = Debug|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|x86.Build.0 = Debug|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Release|ARM.Build.0 = Release|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Release|ARM64.Build.0 = Release|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Release|x64.ActiveCfg = Release|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Release|x64.Build.0 = Release|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Release|x86.ActiveCfg = Release|Any CPU
+		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
