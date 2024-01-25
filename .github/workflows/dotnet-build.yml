@@ -155,11 +155,13 @@ jobs:
       working-directory: ./
       run: ./build/build-windows.cmd
 
+    - name: Set up MSBuild path
+      uses: microsoft/setup-msbuild@v1.3.1
+
     # 构建 MSI
     - name: Build MSI with MSBuild
       run: |
-        $msBuildPath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
-        & $msBuildPath "ColorMC.Setup.vdproj" /p:Configuration=Release /p:Platform="x86_64"
+        msbuild "ColorMC.Setup.vdproj" /p:Configuration=Release /p:Platform="x86_64"
       shell: pwsh
 
     - name: 上传
