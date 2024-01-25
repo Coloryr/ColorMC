@@ -47,7 +47,7 @@ build_arch_aot() {
 
     dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1-aot
 
-    cp ./build/info/arch/PKGBUILD $base_dir/PKGBUILD
+    cp ./build/info/arch/PKGBUILD-AOT $base_dir/PKGBUILD
     cp ./build/info/arch/install $base_dir/.INSTALL
     cp $info/applications/ColorMC.desktop $base_dir/ColorMC.desktop
     cp $info/icons/colormc.png $base_dir/colormc.png
