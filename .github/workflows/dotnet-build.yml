@@ -11,64 +11,91 @@ on:
       - '*'
 
 jobs:
-  # build-ubuntu:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: 设置.NET Core
-  #     uses: actions/setup-dotnet@v4
-  #     with:
-  #       dotnet-version: 8.0.100
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: 设置.NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.100
 
-  #   - name: Read version number
-  #     id: version
-  #     run: |
-  #       VERSION=$(cat ./build/version)
-  #       echo "VERSION=$VERSION" >> $GITHUB_ENV  
+    - name: Read version number
+      id: version
+      run: |
+        VERSION=$(cat ./build/version)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV  
 
-  #   - name: 更新源码
-  #     shell: bash
-  #     working-directory: ./
-  #     run: |
-  #       chmod a+x ./build/update.sh
-  #       ./build/update.sh
+    - name: 更新源码
+      shell: bash
+      working-directory: ./
+      run: |
+        chmod a+x ./build/update.sh
+        ./build/update.sh
 
-  #   - name: 构建
-  #     shell: bash
-  #     working-directory: ./
-  #     run: |
-  #       chmod a+x ./build/build-ubuntu.sh
-  #       ./build/build-ubuntu.sh
+    - name: 构建源码
+      shell: bash
+      working-directory: ./
+      run: |
+        chmod a+x ./build/build-linux.sh
+        ./build/build-linux.sh
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-ubuntu-x64"
-  #       path: build_out/colormc-a${{ env.VERSION }}-linux-x64.deb
+    # - name: 构建 deb
+    #   shell: bash
+    #   working-directory: ./
+    #   run: |
+    #     chmod a+x ./build/build-ubuntu.sh
+    #     ./build/build-ubuntu.sh
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-ubuntu-arm64"
-  #       path: build_out/colormc-a${{ env.VERSION }}-linux-arm64.deb
+    - name: 构建 pkg
+      run: |
+        docker run --name build-container -v "${{ github.workspace }}:/github/workspace" archlinux:latest /bin/bash -c "\
+        useradd -m builder && \
+        cd /github/workspace && \
+        echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder && \
+        ./build/build-arch.sh"
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-ubuntu-x64-aot"
-  #       path: build_out/colormc-a${{ env.VERSION }}-linux-x64-aot.deb
+    - name: 上传 linux-x86.pkg.tar.zst
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-arch-x86"
+        path: build_out/colormc-a${{ env.VERSION }}-1-x86_64.pkg.tar.zst
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-ubuntu-arm64-aot"
-  #       path: build_out/colormc-a${{ env.VERSION }}-linux-arm64-aot.deb
+    - name: 上传 linux-x86-aot.pkg.tar.zst
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-arch-x86-aot"
+        path: build_out/colormc-a${{ env.VERSION }}-1-x86_64-aot.pkg.tar.zst
+
+    - name: 上传 linux-x64.deb
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-ubuntu-x64"
+        path: build_out/colormc-a${{ env.VERSION }}-linux-x64.deb
+
+    - name: 上传 linux-arm64.deb
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-ubuntu-arm64"
+        path: build_out/colormc-a${{ env.VERSION }}-linux-arm64.deb
+
+    - name: 上传 linux-x64-aot.deb
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-ubuntu-x64-aot"
+        path: build_out/colormc-a${{ env.VERSION }}-linux-x64-aot.deb
+
+    - name: 上传 linux-arm64-aot.deb
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-ubuntu-arm64-aot"
+        path: build_out/colormc-a${{ env.VERSION }}-linux-arm64-aot.deb
     
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-ubuntu-x64-appimage"
-  #       path: build_out/colormc-a${{ env.VERSION }}-x86_64.AppImage
+    - name: 上传 linux-x64-appimage.deb
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-linux-x64-appimage"
+        path: build_out/colormc-a${{ env.VERSION }}-x86_64.AppImage
 
   # build-macos:
   #   runs-on: ubuntu-latest
@@ -148,53 +175,3 @@ jobs:
   #     with:
   #       name: "colormc-windows-arm64-aot"
   #       path: build_out/colormc-a${{ env.VERSION }}-win-arm64-aot.zip
-
-  build-arch:
-    runs-on: ubuntu-latest
-    container:
-      image: archlinux:latest
-    
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Read version number
-      id: version
-      run: |
-        VERSION=$(cat ./build/version)
-        echo "VERSION=$VERSION" >> $GITHUB_ENV  
-
-    - name: 设置.NET Core
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.100
-
-    - name: 初始化
-      run: |
-        pacman -Syu --noconfirm base-devel git
-        # pacman -Sy --noconfirm dotnet-sdk-8.0
-        useradd -m builder
-        echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder
-
-    - name: 更新源码
-      working-directory: ${{ github.workspace }}
-      run: |
-        chmod a+x ./build/update.sh
-        ./build/update.sh
-
-    - name: 构建
-      working-directory: ${{ github.workspace }}
-      run: |
-        chmod a+x ./build/build-arch.sh
-        ./build/build-arch.sh
-
-    - name: 上传
-      uses: actions/upload-artifact@v4
-      with:
-        name: "colormc-arch-x86"
-        path: build_out/colormc-a${{ env.VERSION }}-a${{ env.VERSION }}-x86_64.pkg.tar.zst
-
-    - name: 上传
-      uses: actions/upload-artifact@v4
-      with:
-        name: "colormc-arch-x86-aot"
-        path: build_out/colormc-a${{ env.VERSION }}-aot-a${{ env.VERSION }}-aot-x86_64.pkg.tar.zst
