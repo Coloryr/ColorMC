@@ -5,6 +5,7 @@ on:
     # Sequence of patterns matched against refs/heads
     branches:    
       - 'releases/**'
+      - 'master'
     # Sequence of patterns matched against refs/tags
     tags:        
       - '*'
@@ -18,6 +19,12 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.100
+
+    - name: Read version number
+      id: version
+      run: |
+        VERSION=$(cat ./build/version)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV  
 
     - name: 更新源码
       shell: bash
@@ -56,6 +63,12 @@ jobs:
       with:
         name: "colormc-ubuntu-arm64-aot"
         path: build_out/colormc-a${{ env.VERSION }}-linux-arm64-aot.deb
+    
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-ubuntu-x64-appimage"
+        path: build_out/colormc-a${{ env.VERSION }}-x86_64.AppImage
 
   build-macos:
     runs-on: ubuntu-latest
@@ -94,8 +107,8 @@ jobs:
     - name: Read version number
       id: version
       run: |
-        VERSION=$(cat ./build/version)
-        echo "VERSION=$VERSION" >> $GITHUB_ENV  
+        $version = Get-Content ./build/version
+        echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
@@ -159,11 +172,8 @@ jobs:
         docker run --name build-container -v "${{ github.workspace }}:/github/workspace" archlinux:latest /bin/bash -c "\
         pacman -Syu --noconfirm base-devel git && \
         pacman -Sy --noconfirm dotnet-sdk-8.0 && \
-        # 创建一个普通用户 'builder'
-        useradd -m builder && \
-        # 给 'builder' 用户 sudo 权限
-        echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder && \
-        # 切换到 'builder' 用户并运行构建脚本
+        # useradd -m builder && \
+        # echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder && \
         su -c 'cd /github/workspace && chmod a+x ./build/build-arch.sh && ./build/build-arch.sh' builder"
 
     - name: 上传
