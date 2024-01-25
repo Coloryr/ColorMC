@@ -633,6 +633,9 @@ public partial class GameEditModel
             VersionType = 0;
         }
 
+        _loaderTypeList.Clear();
+        LoaderTypeList.Clear();
+
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
 

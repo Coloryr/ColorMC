@@ -15,7 +15,7 @@
 ![](/image/GIF.gif)  
 
 ## 支持平台
-- Linux
+- Linux(ubuntu 与 arch)
 - Windows
 - macOs
 
@@ -28,13 +28,13 @@ Linux由于发行版过于复杂，每个人的电脑兼容性都不一样，如
 
 ## 安装 
 在Releases或者Actions里面下载构建好的压缩包/安装包  
-解压(zip)\安装(exe,deb,pkg)\或直接运行(appimage)即可
+解压(zip)\安装(msi,deb,pkg)\或直接运行(appimage)即可
 
-Windows下，可以使用winget安装（现在应该还没好）
+Windows下，可以使用winget安装
 ```
 winget install colormc
 ```
-默认安装在`D:\ColorMC`
+默认安装在`C:\Program Files\ColorMC`
 
 ## 启动
 
@@ -54,38 +54,64 @@ dotnet run
 
 ## 从源码构建
 
-- 构建`windows`, `ubuntu`, `macos`的二进制文件  
-**需要在Ubuntu系统中构建，并安装git与dotnet-8-sdk**
+- 构建`windows`的二进制文件  
+**需要在Windows系统中构建，并安装git与dotnet-8-sdk**
+
+```cmd
+git clone https://github.com/Coloryr/ColorMC.git
+cd ColorMC
+
+@REM 更新源码
+.\build\update.cmd
+
+@REM 构建
+.\build\build-windows.cmd
 ```
+
+- 构建`linux`的二进制文件  
+**需要在Linux系统中构建，并安装git与dotnet-8-sdk**
+```bash
+git clone https://github.com/Coloryr/ColorMC.git
+cd ColorMC
+chmod a+x ./build/update.sh
+chmod a+x ./build/build-linux.sh
+
+# 更新源码
+./build/update.sh
+
+# 构建
+./build/build-linux.sh
+```
+
+打包ubuntu镜像  
+**需要在Ubunt系统中操作**
+```bash
+chmod a+x ./build/build-ubuntu.sh
+
+./build/build-ubuntu.sh
+```
+
+打包Arch镜像  
+**需要在Arch系统中操作**
+```bash
+chmod a+x ./build/build-arch.sh
+
+./build/build-arch.sh
+```
+
+- 构建`macos`的二进制文件  
+**需要在Ubuntu系统或macos系统中构建，并安装git与dotnet-8-sdk**
+```bash
 git clone https://github.com/Coloryr/ColorMC.git
 cd ColorMC
 chmod a+x ./build/update.sh
 chmod a+x ./build/build-macos.sh
-chmod a+x ./build/build-ubuntu.sh
-chmod a+x ./build/build-windows.sh
 
 # 更新源码
 ./build/update.sh
 
 # 构建
-./build/build-windows.sh
 ./build/build-macos.sh
-./build/build-ubuntu.sh
-```
-
-- 构建`arch`的二进制文件  
-**需要在Arch系统中构建，并安装git与dotnet-8-sdk**
-```
-git clone https://github.com/Coloryr/ColorMC.git
-cd ColorMC
-chmod a+x ./build/update.sh
-chmod a+x ./build/build-arch.sh
-
-# 更新源码
-./build/update.sh
-
-# 构建
-./build/build-arch.sh
 ```
 
 此时可以在`built_out`文件夹获取所有二进制文件
@@ -104,12 +130,13 @@ git clone https://github.com/Coloryr/ColorMC.git
 - ColorMC.Gui Gui模式
 - ColorMC.Launcher 启动器
 - ColorMC.Test 用于启动器核心测试
+- ColorMC.Setup 用于构建windows的msi安装包
 
 ## 依赖/引用的项目
 [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) 跨平台UI框架  
 [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM工具  
 [Svg.Skia](https://github.com/wieslawsoltes/Svg.Skia) Svg图像显示  
-[SkiaSharp](https://github.com/mono/SkiaSharp) Skia图像库
+[SkiaSharp](https://github.com/mono/SkiaSharp) Skia图像库  
 [Heijden.Dns.Portable](https://github.com/softlion/Heijden.Dns) DNS解析  
 [HtmlAgilityPack](https://html-agility-pack.net/) HTML解析器  
 [Jint](https://github.com/sebastienros/jint) JS解析执行器  
@@ -124,6 +151,24 @@ git clone https://github.com/Coloryr/ColorMC.git
 
 ## 开源协议
 Apache 2.0  
+
+```
+Copyright 2024 coloryr
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+附属的开源协议  
 MIT  
 BSD
 
