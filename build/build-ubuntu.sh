@@ -1,5 +1,12 @@
 #!/bin/bash
 
+version=""
+
+for line in `cat ./build/version`
+do
+    version=$line
+done
+
 build_deb() {
     echo "ColorMC build $1.deb version: $version"
 
