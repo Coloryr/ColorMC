@@ -8,7 +8,7 @@ namespace ColorMC.Core.Net.Apis;
 /// <summary>
 /// OpenJ9下载源
 /// </summary>
-public static class OpenJ9
+public static class OpenJ9Api
 {
     /// <summary>
     /// 获取列表

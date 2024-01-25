@@ -39,14 +39,7 @@ internal class Program
         ColorMCCore.OnProcessLog += Log;
         ColorMCCore.OnGameLog += Log;
 
-        //TestItem.Item10();
-
-       var temp =  File.OpenRead("H:/forge-1.20.4-49.0.22-installer.jar");
-
-        if (!File.Exists("H:/forge-1.20.4-49.0.22-installer.jar"))
-        {
-            
-        }
+        TestItem.Item34();
 
         GetSha1();
 
