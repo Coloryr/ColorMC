@@ -2,7 +2,7 @@
     "buildinfo": [
         {
             "prerun": [
-                "cp ./build_out/colormc-a%version%-%file_name%.deb ~/.cache/deb2appimage/debs/colormc-a%version%-%file_name%.deb"
+                "cp ./build_out/%deb_name% ~/.cache/deb2appimage/debs/%deb_name%"
             ],
             "name": "colormc",
             "version": "a%version%",

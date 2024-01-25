@@ -1,23 +1,11 @@
 #!/bin/bash
 
-version=""
-
-for line in `cat ./build/version`
-do
-    version=$line
-done
-
-mkdir ./build_out
-
 build_deb() {
-
-    echo "ColorMC build $1 deb version: $version"
+    echo "ColorMC build $1.deb version: $version"
 
     base=./src/build_out/$1-dotnet
-    base_dir="$base/colormc"
+    base_dir="$base/colormc_deb"
     deb_name="./build_out/colormc-a$version-$1.deb"
-
-    dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1
 
     mkdir $base_dir
 
@@ -43,18 +31,16 @@ build_deb() {
 
     dpkg -b $base_dir $deb_name
 
-    echo "ColorMC $1 build deb done"
+    echo "ColorMC $1.deb build done"
 }
 
 build_deb_aot() {
 
-    echo "ColorMC build $1-aot version: $version"
+    echo "ColorMC build $1-aot.deb version: $version"
 
     base=./src/build_out/$1-aot
-    base_dir="$base/colormc"
+    base_dir="$base/colormc_deb"
     deb_name="./build_out/colormc-a$version-$1-aot.deb"
-
-    dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1-aot
 
     mkdir $base_dir
 
@@ -79,7 +65,7 @@ build_deb_aot() {
 
     dpkg -b $base_dir $deb_name
 
-    echo "ColorMC $1-aot build done"
+    echo "ColorMC-$1-aot.deb build done"
 }
 
 build_deb linux-x64
@@ -102,10 +88,11 @@ cp ./build/info/appimg.json $build_run/appimg.json
 
 file_name=linux-x64
 arch=amd64
+deb_name=colormc-a$version-linux-x64.deb
 
 sed -i "s/%version%/$version/g" $build_run/appimg.json
 sed -i "s/%arch%/$arch/g" $build_run/appimg.json
-sed -i "s/%file_name%/$file_name/g" $build_run/appimg.json
+sed -i "s/%deb_name%/$deb_name/g" $build_run/appimg.json
 
 chmod a+x $build_run/deb2appimage.AppImage
 
