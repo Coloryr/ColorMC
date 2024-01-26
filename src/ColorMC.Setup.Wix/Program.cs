@@ -111,8 +111,8 @@ namespace ColorMC.Setup.Wix
         {
             Build(BuildX64(), "colormc-x64", Platform.x64);
             Build(BuildX64AOT(), "colormc-x64-aot", Platform.x64);
-            Build(BuildArm64(), "colormc-arm64", Platform.arm64);
-            Build(BuildArm64AOT(), "colormc-arm64-aot", Platform.arm64);
+            //Build(BuildArm64(), "colormc-arm64", Platform.arm64);
+            //Build(BuildArm64AOT(), "colormc-arm64-aot", Platform.arm64);
         }
     }
 }
