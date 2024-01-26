@@ -57,7 +57,7 @@ namespace ColorMC.Setup.Wix
                             new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
         }
 
-        private static void Build(Dir dir, string file)
+        private static void Build(Dir dir, string file, Platform platform)
         {
             var project = new ManagedProject("ColorMC",
                         dir,
@@ -74,7 +74,7 @@ namespace ColorMC.Setup.Wix
                         new Property("REMOVE_ALL_FILE", "false"))
             {
                 GUID = new Guid("BA2749D2-BBA4-4ACE-8E06-C4E100343C1A"),
-                Platform = Platform.x64,
+                Platform = platform,
                 BannerImage = "game.png",
                 BackgroundImage = "game.png",
                 Version = new Version(1, 24),
@@ -105,10 +105,10 @@ namespace ColorMC.Setup.Wix
 
         static void Main()
         {
-            Build(BuildX64(), "colormc-x64");
-            Build(BuildX64AOT(), "colormc-x64-aot");
-            Build(BuildArm64(), "colormc-arm64");
-            Build(BuildArm64AOT(), "colormc-arm64-aot");
+            Build(BuildX64(), "colormc-x64", Platform.x64);
+            Build(BuildX64AOT(), "colormc-x64-aot", Platform.x64);
+            Build(BuildArm64(), "colormc-arm64", Platform.arm64);
+            Build(BuildArm64AOT(), "colormc-arm64-aot", Platform.arm64);
         }
     }
 }
