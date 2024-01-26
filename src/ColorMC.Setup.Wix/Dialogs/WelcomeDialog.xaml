@@ -111,5 +111,31 @@
                 </Button>
             </Grid>
         </StackPanel>
+
+        <StackPanel
+            Margin="20"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="Cancel"
+                HorizontalAlignment="Right"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0">
+                <Border
+                    Width="100"
+                    Height="25"
+                    Background="#FF5ABED6"
+                    BorderBrush="#FFb7bac1"
+                    CornerRadius="3">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        Text="取消安装" />
+                </Border>
+            </Button>
+        </StackPanel>
     </Grid>
 </wixsharp:WpfDialog>
