@@ -150,27 +150,32 @@ jobs:
       working-directory: ./
       run: ./build/update.cmd
 
-    - name: 构建
+    - name: 构建 源码
       shell: cmd
       working-directory: ./
       run: ./build/build-windows.cmd
+    
+    - name: Install WiX Toolset
+      run: |
+        choco install wixtoolset
 
-    - name: Set up MSBuild path
-      uses: microsoft/setup-msbuild@v1.3.1
-
-    # 构建 MSI
     - name: Build MSI with MSBuild
       working-directory: ./
       run: |
-        cd .\src\ColorMC.Setup\
-        msbuild "ColorMC.Setup.vdproj" /p:Configuration=Release /p:Platform="x86_64"
-      shell: pwsh
+        cd .\src\ColorMC.Setup.Wix
+        dotnet build
 
     - name: 上传
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-x64-msi"
-        path: src/build_out/ColorMC.Setup.msi
+        path: src/ColorMC.Setup.Wix/ColorMC.msi
+
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x64-aot-msi"
+        path: src/ColorMC.Setup.Wix/ColorMC-aot.msi
 
     - name: 上传
       uses: actions/upload-artifact@v4
