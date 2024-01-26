@@ -11,7 +11,7 @@ mkdir .\build_out
 
 call :build_win win-x64
 @REM call :build_win win-arm64
-call :build_win_aot win-x64
+@REM call :build_win_aot win-x64
 @REM call :build_win_aot win-arm64
 goto :eof
 

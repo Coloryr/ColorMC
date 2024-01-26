@@ -158,6 +158,7 @@ jobs:
     - name: Install WiX Toolset
       run: |
         choco install wixtoolset
+        dotnet tool install --global wix
 
     - name: Build MSI with MSBuild
       working-directory: ./
