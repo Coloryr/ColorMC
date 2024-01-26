@@ -83,6 +83,10 @@ namespace ColorMC.Setup.Wix
 
             project.Scope = InstallScope.perMachine;
 
+            if (platform == Platform.arm64)
+            {
+                project.InstallerVersion = 500;
+            }
             project.ControlPanelInfo.Comments = "ColorMC";
             project.ControlPanelInfo.HelpLink = "https://github.com/Coloryr/ColorMC";
             project.ControlPanelInfo.UrlInfoAbout = "https://github.com/Coloryr/ColorMC";
