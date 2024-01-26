@@ -170,13 +170,25 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-x64-msi"
-        path: src/ColorMC.Setup.Wix/ColorMC.msi
+        path: src/ColorMC.Setup.Wix/colormc-x64.msi
 
     - name: 上传
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-x64-aot-msi"
-        path: src/ColorMC.Setup.Wix/ColorMC-aot.msi
+        path: src/ColorMC.Setup.Wix/colormc-x64-aot.msi
+
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-arm64-msi"
+        path: src/ColorMC.Setup.Wix/colormc-arm64.msi
+
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-arm64-aot-msi"
+        path: src/ColorMC.Setup.Wix/colormc-arm64-aot.msi
 
     - name: 上传
       uses: actions/upload-artifact@v4
