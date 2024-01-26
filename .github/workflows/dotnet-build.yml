@@ -193,22 +193,22 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-x64"
-        path: build_out/win-x64-dotnet/colormc/**
+        path: src/build_out/win-x64-dotnet/colormc/**
 
     - name: 上传
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-arm64"
-        path: build_out/win-arm64-dotnet/colormc/**
+        path: src/build_out/win-arm64-dotnet/colormc/**
 
     - name: 上传
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-x64-aot"
-        path: build_out/win-x64-aot/colormc/**
+        path: src/build_out/win-x64-aot/colormc/**
 
     - name: 上传
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-arm64-aot"
-        path: build_out/win-arm64-aot/colormc/**
+        path: src/build_out/win-arm64-aot/colormc/**
