@@ -5,6 +5,7 @@ on:
     # Sequence of patterns matched against refs/heads
     branches:    
       - 'releases/**'
+      - 'build_test'
     # Sequence of patterns matched against refs/tags
     tags:        
       - '*'
