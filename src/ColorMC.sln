@@ -21,9 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Live2DCSharpSDK.App", "..\L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Live2DCSharpSDK.Framework", "..\Live2DCSharpSDK\Live2DCSharpSDK.Framework\Live2DCSharpSDK.Framework.csproj", "{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ColorMC.Setup", "ColorMC.Setup\ColorMC.Setup.vdproj", "{C28973E2-0973-4819-A365-081C280A817D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorMC.Setup.Wix", "ColorMC.Setup.Wix\ColorMC.Setup.Wix.csproj", "{7169B43D-C8CD-431E-965A-274F154BA9AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorMC.Setup.Wix", "ColorMC.Setup.Wix\ColorMC.Setup.Wix.csproj", "{7169B43D-C8CD-431E-965A-274F154BA9AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,16 +157,6 @@ Global
 		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Release|x64.Build.0 = Release|Any CPU
 		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Release|x86.ActiveCfg = Release|Any CPU
 		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Release|x86.Build.0 = Release|Any CPU
-		{C28973E2-0973-4819-A365-081C280A817D}.Debug|Any CPU.ActiveCfg = Debug
-		{C28973E2-0973-4819-A365-081C280A817D}.Debug|ARM.ActiveCfg = Debug
-		{C28973E2-0973-4819-A365-081C280A817D}.Debug|ARM64.ActiveCfg = Debug
-		{C28973E2-0973-4819-A365-081C280A817D}.Debug|x64.ActiveCfg = Debug
-		{C28973E2-0973-4819-A365-081C280A817D}.Debug|x86.ActiveCfg = Debug
-		{C28973E2-0973-4819-A365-081C280A817D}.Release|Any CPU.ActiveCfg = Release
-		{C28973E2-0973-4819-A365-081C280A817D}.Release|ARM.ActiveCfg = Release
-		{C28973E2-0973-4819-A365-081C280A817D}.Release|ARM64.ActiveCfg = Release
-		{C28973E2-0973-4819-A365-081C280A817D}.Release|x64.ActiveCfg = Release
-		{C28973E2-0973-4819-A365-081C280A817D}.Release|x86.ActiveCfg = Release
 		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7169B43D-C8CD-431E-965A-274F154BA9AE}.Debug|ARM.ActiveCfg = Debug|Any CPU
