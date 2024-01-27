@@ -55,6 +55,7 @@ public partial class GameWindowControl : UserControl, IUserControl
     private double cursorNowY;
 
     private IntPtr gameController;
+    private Point point;
     private int joystickID;
 
     private bool isMouseMode;
@@ -82,16 +83,9 @@ public partial class GameWindowControl : UserControl, IUserControl
             _implementation = new Win32Native();
         }
 
-        _implementation.AddHook(_handle);
+        _implementation.AddHook((uint)process.Id, _handle);
         _control = new TopView(_implementation.CreateControl());
-        _control.GotFocus += Control_GotFocus;
         Panel1.Children.Add(_control);
-        _control.PointerMoved += OnPointerMoved;
-    }
-
-    private void Control_GotFocus(object? sender, GotFocusEventArgs e)
-    {
-        (Window as Window)?.Activate();
     }
 
     public void Closed()
@@ -277,6 +271,20 @@ public partial class GameWindowControl : UserControl, IUserControl
         }
     }
 
+    private void PostTestMouse()
+    {
+        if (isMouseMode)
+        {
+            _implementation.TransferTop();
+            Thread.Sleep(50);
+            if (isMouseMode)
+            {
+                _implementation.NoTranferTop();
+                _implementation.SendMouse(cursorX, cursorY, true);
+            }
+        }
+    }
+
     public void Opened()
     {
         unsafe
@@ -307,12 +315,16 @@ public partial class GameWindowControl : UserControl, IUserControl
 
         if (handle1 is { })
         {
-            _implementation.TransferEvent(handle1.Handle);
+            _implementation.AddHookTop(handle1.Handle);
+            _implementation.TransferTop();
         }
 
         cursorX = width / 2;
         cursorY = height / 2;
         _control.SendMouse(cursorX, cursorY);
+        _control.TopWindow.PointerMoved += OnPointerMoved;
+        _control.TopWindow.PointerExited += TopWindow_PointerExited;
+        _control.TopWindow.PointerEntered += TopWindow_PointerEntered;
 
         new Thread(() =>
         {
@@ -378,34 +390,44 @@ public partial class GameWindowControl : UserControl, IUserControl
         }).Start();
     }
 
+    private void TopWindow_PointerEntered(object? sender, PointerEventArgs e)
+    {
+        point = e.GetPosition(_control.TopWindow);
+    }
+
+    private void TopWindow_PointerExited(object? sender, PointerEventArgs e)
+    {
+        point = e.GetPosition(_control.TopWindow);
+    }
+
     private void HideCursor()
     {
-        // 设置光标为无
-        Dispatcher.UIThread.Post(() =>
+        if (_cursorHidden == false)
         {
-            _control.Cursor = new Cursor(StandardCursorType.None);
-        });
-        _cursorHidden = true;
+            _implementation.NoTranferTop();
+            _cursorHidden = true;
+        }
     }
 
     private void ShowCursor()
     {
-        // 设置光标为箭头
-        Dispatcher.UIThread.Post(() => 
+        if (_cursorHidden)
         {
-            _control.Cursor = new Cursor(StandardCursorType.Arrow);
-        });
-        _cursorHidden = false;
+            _implementation.TransferTop();
+            _cursorHidden = false;
+        }
     }
 
     private void OnPointerMoved(object? sender, PointerEventArgs e)
     {
+        var pos = e.GetPosition(_control.TopWindow);
+        if (pos.NearlyEquals(point))
+        {
+            return;
+        }
+        point = pos;
         if (_cursorHidden)
         {
-            // 由于鼠标移动事件可能频繁触发，你可能想要添加一些逻辑来决定何时显示光标
-            // 例如，可以设置一个计时器，在鼠标移动后一段时间后再显示光标
-
-            // 显示光标
             ShowCursor();
         }
     }
@@ -417,13 +439,17 @@ public partial class GameWindowControl : UserControl, IUserControl
             if (state != down)
             {
                 lastKeyState[obj] = down;
-                _implementation.SendKey(obj, down);
+                _implementation.SendKey(obj, down, !_cursorHidden);
             }
         }
         else
         {
             lastKeyState.Add(obj, down);
-            _implementation.SendKey(obj, down);
+            _implementation.SendKey(obj, down, !_cursorHidden);
+        }
+        if (down)
+        {
+            PostTestMouse();
         }
     }
 
@@ -542,6 +568,7 @@ public class TopView : NativeControlHost
                 ShowInTaskbar = false,
                 ZIndex = int.MaxValue,
                 Opacity = 1,
+                Cursor = new Cursor(StandardCursorType.None)
             };
 
             _disposables = new CompositeDisposable()
