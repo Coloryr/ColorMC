@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Win32.Input;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using SkiaSharp;
 using System;
@@ -25,32 +26,52 @@ public class Win32Native : INative
     private static Win32.WinEventDelegate _winEventDelegate;
 
     public event Action<string>? TitleChange;
+    public event Action<bool>? IsFocus;
 
     private IntPtr target;
     private IntPtr topTarget;
 
     private IntPtr _winEventId;
+    private IntPtr hHook;
 
     public Win32Native()
     {
         _winEventDelegate = new(WinEventProc);
     }
 
-    public void AddHook(IntPtr handel)
+    public void AddHook(uint id, IntPtr handel)
     {
         target = handel;
+
+        uint processId;
+        uint threadId = Win32.GetWindowThreadProcessId(target, out processId);
+
         _winEventId = Win32.SetWinEventHook(Win32.EVENT_OBJECT_NAMECHANGE, Win32.EVENT_OBJECT_NAMECHANGE,
-            IntPtr.Zero, _winEventDelegate, 0, 0, Win32.WINEVENT_OUTOFCONTEXT);
+            IntPtr.Zero, _winEventDelegate, id, 0, Win32.WINEVENT_OUTOFCONTEXT);
+
+        hHook = Win32.SetWindowsHookEx(Win32.WH_CALLWNDPROC, CallWndProc, IntPtr.Zero, threadId);
     }
 
-    public void TransferEvent(IntPtr handel)
+    public void AddHookTop(IntPtr top)
     {
-        topTarget = handel;
+        topTarget = top;
+    }
 
+    public void TransferTop()
+    {
         if (Win32.IsWindow(topTarget))
         {
             int extendedStyle = Win32.GetWindowLong(topTarget, Win32.GWL_EXSTYLE);
             Win32.SetWindowLong(topTarget, Win32.GWL_EXSTYLE, extendedStyle | Win32.WS_EX_LAYERED | Win32.WS_EX_TRANSPARENT);
+        }
+    }
+    public void NoTranferTop()
+    {
+        if (Win32.IsWindow(topTarget))
+        {
+            int extendedStyle = Win32.GetWindowLong(topTarget, Win32.GWL_EXSTYLE);
+            extendedStyle &= ~(Win32.WS_EX_LAYERED | Win32.WS_EX_TRANSPARENT);
+            Win32.SetWindowLong(topTarget, Win32.GWL_EXSTYLE, extendedStyle);
         }
     }
 
@@ -62,6 +83,19 @@ public class Win32Native : INative
             var title = GetWindowTitle();
             TitleChange?.Invoke(title);
         }
+    }
+
+    // 钩子回调函数
+    private IntPtr CallWndProc(int nCode, IntPtr wParam, IntPtr lParam)
+    {
+        if (nCode >= 0)
+        {
+            Win32.CWPSTRUCT msg = (Win32.CWPSTRUCT)Marshal.PtrToStructure(lParam, typeof(Win32.CWPSTRUCT));
+
+            // 在这里处理您感兴趣的消息
+            Logs.Info($"Message: {msg.message} HWND: {msg.hwnd}");
+        }
+        return Win32.CallNextHookEx(hHook, nCode, wParam, lParam);
     }
 
     public bool GetWindowSize(out int width, out int height)
@@ -276,7 +310,7 @@ public class Win32Native : INative
         return IsCursorShown() || !IsCursorClippedToWindow(target);
     }
 
-    public void SendKey(InputKeyObj key, bool down)
+    public void SendKey(InputKeyObj key, bool down, bool message)
     {
         if (InputControlUtils.IsEditMode)
         {
@@ -324,6 +358,15 @@ public class Win32Native : INative
         else
         {
             key1 = KeyInterop.VirtualKeyFromKey(key.Key);
+            if (message)
+            {
+                //Win32.SendMessage(target, down ? Win32.WM_KEYDOWN : Win32.WM_KEYUP, key1, IntPtr.Zero);
+            }
+            else
+            {
+                
+            }
+
             SendKey(key1, down);
         }
     }
@@ -557,6 +600,16 @@ public class Win32Native : INative
             public IntPtr hbmColor;
         }
 
+        // 定义CWPSTRUCT结构体，用于处理消息参数
+        [StructLayout(LayoutKind.Sequential)]
+        public struct CWPSTRUCT
+        {
+            public IntPtr lParam;
+            public IntPtr wParam;
+            public uint message;
+            public IntPtr hwnd;
+        }
+
         public delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         public delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
         public delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
@@ -601,11 +654,11 @@ public class Win32Native : INative
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern int GetWindowTextLength(IntPtr hWnd);
 
-        //[DllImport("user32.dll", SetLastError = true)]
-        //public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
 
-        //[DllImport("user32.dll")]
-        //public static extern bool UnhookWindowsHookEx(IntPtr hhk);
+        [DllImport("user32.dll")]
+        public static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
         [DllImport("user32.dll")]
         public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
@@ -631,11 +684,11 @@ public class Win32Native : INative
         [DllImport("user32.dll", CharSet = CharSet.Unicode, EntryPoint = "SendMessageW")]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 
-        //[DllImport("user32.dll")]
-        //public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll")]
+        public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
-        //[DllImport("user32.dll", SetLastError = true)]
-        //public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         [DllImport("user32.dll")]
         public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
