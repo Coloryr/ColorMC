@@ -86,6 +86,7 @@ public partial class GameWindowControl : UserControl, IUserControl
         _control = new TopView(_implementation.CreateControl());
         _control.GotFocus += Control_GotFocus;
         Panel1.Children.Add(_control);
+        _control.PointerMoved += OnPointerMoved;
     }
 
     private void Control_GotFocus(object? sender, GotFocusEventArgs e)
@@ -255,11 +256,11 @@ public partial class GameWindowControl : UserControl, IUserControl
             {
                 if (button == config.ItemCycleLeft)
                 {
-                    _implementation.SendScoll(1, false);
+                    _implementation.SendScoll(1, true);
                 }
                 else if (button == config.ItemCycleRight)
                 {
-                    _implementation.SendScoll(1, true);
+                    _implementation.SendScoll(1, false);
                 }
             }
         }
@@ -339,6 +340,7 @@ public partial class GameWindowControl : UserControl, IUserControl
                 {
                     if (isMouseMode)
                     {
+                        HideCursor();
                         var size = _control.Bounds;
 
                         cursorX += cursorNowX;
@@ -376,39 +378,37 @@ public partial class GameWindowControl : UserControl, IUserControl
         }).Start();
     }
 
-    //private void HideCursor()
-    //{
-    //    var window = Window as Window;
-    //    // 设置光标为无
-    //    _control.Cursor = new Cursor(StandardCursorType.None);
-    //    _cursorHidden = true;
+    private void HideCursor()
+    {
+        // 设置光标为无
+        Dispatcher.UIThread.Post(() =>
+        {
+            _control.Cursor = new Cursor(StandardCursorType.None);
+        });
+        _cursorHidden = true;
+    }
 
-    //    // 监听鼠标移动事件
-    //    _control.PointerMoved += OnPointerMoved;
-    //}
+    private void ShowCursor()
+    {
+        // 设置光标为箭头
+        Dispatcher.UIThread.Post(() => 
+        {
+            _control.Cursor = new Cursor(StandardCursorType.Arrow);
+        });
+        _cursorHidden = false;
+    }
 
-    //private void ShowCursor()
-    //{
-    //    var window = Window as Window;
-    //    // 设置光标为箭头
-    //    _control.Cursor = new Cursor(StandardCursorType.Arrow);
-    //    _cursorHidden = false;
+    private void OnPointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (_cursorHidden)
+        {
+            // 由于鼠标移动事件可能频繁触发，你可能想要添加一些逻辑来决定何时显示光标
+            // 例如，可以设置一个计时器，在鼠标移动后一段时间后再显示光标
 
-    //    // 移除鼠标移动事件监听
-    //    _control.PointerMoved -= OnPointerMoved;
-    //}
-
-    //private void OnPointerMoved(object? sender, PointerEventArgs e)
-    //{
-    //    if (_cursorHidden)
-    //    {
-    //        // 由于鼠标移动事件可能频繁触发，你可能想要添加一些逻辑来决定何时显示光标
-    //        // 例如，可以设置一个计时器，在鼠标移动后一段时间后再显示光标
-
-    //        // 显示光标
-    //        ShowCursor();
-    //    }
-    //}
+            // 显示光标
+            ShowCursor();
+        }
+    }
 
     private void CheckKeyAndSend(InputKeyObj obj, bool down)
     {
