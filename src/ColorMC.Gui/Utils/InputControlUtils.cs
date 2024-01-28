@@ -14,6 +14,7 @@ public static class InputControlUtils
 
     public static bool IsInit { get; private set; }
     public static event Action<Event>? OnEvent;
+    public static bool IsEditMode = false;
 
     public static void Init()
     {

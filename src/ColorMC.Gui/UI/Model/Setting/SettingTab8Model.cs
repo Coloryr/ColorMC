@@ -767,6 +767,7 @@ public partial class SettingModel
 
     private Task<InputKeyObj?> WaitKey(CancellationToken token)
     {
+        InputControlUtils.IsEditMode = true;
         InputKeyObj? keys = null;
         bool output = false;
         inputKey = (key) =>
@@ -784,6 +785,8 @@ public partial class SettingModel
                     return null;
                 }
                 System.Threading.Thread.Sleep(100);
+
+                InputControlUtils.IsEditMode = false;
             }
 
             return keys;
