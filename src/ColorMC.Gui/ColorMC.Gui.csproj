@@ -317,4 +317,9 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="UI\Controls\ControlSelectControl.axaml" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="X11">
+      <HintPath>..\libs\x11\X11.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

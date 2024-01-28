@@ -29,7 +29,7 @@ public partial class SettingModel : MenuModel
     ];
 
     public bool Phone { get; } = false;
-    public bool IsWindows { get; }
+    public bool IsInputEnable { get; }
 
     private readonly string _name;
 
@@ -42,9 +42,9 @@ public partial class SettingModel : MenuModel
             Phone = true;
             _enableWindowMode = false;
         }
-        else if (SystemInfo.Os == OsType.Windows)
+        else if (SystemInfo.Os is OsType.Windows or OsType.Linux)
         {
-            IsWindows = true;
+            IsInputEnable = true;
         }
 
         if (!InputControlUtils.IsInit)

@@ -1,25 +1,16 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Platform;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.Win32.Input;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using SkiaSharp;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-namespace ColorMC.Gui.Utils.Hook;
 
-internal class Win32WindowControlHandle(INative native, IntPtr handle)
-    : PlatformHandle(handle, "HWND"), INativeControlHostDestroyableControlHandle
-{
-    public void Destroy()
-    {
-        native.DestroyWindow();
-    }
-}
+namespace ColorMC.Gui.Utils.Hook;
 
 public class Win32Native : INative
 {
@@ -39,7 +30,7 @@ public class Win32Native : INative
         _winEventDelegate = new(WinEventProc);
     }
 
-    public void AddHook(uint id, IntPtr handel)
+    public void AddHook(Process process, IntPtr handel)
     {
         target = handel;
 
@@ -47,7 +38,7 @@ public class Win32Native : INative
         uint threadId = Win32.GetWindowThreadProcessId(target, out processId);
 
         _winEventId = Win32.SetWinEventHook(Win32.EVENT_OBJECT_NAMECHANGE, Win32.EVENT_OBJECT_NAMECHANGE,
-            IntPtr.Zero, _winEventDelegate, id, 0, Win32.WINEVENT_OUTOFCONTEXT);
+            IntPtr.Zero, _winEventDelegate, (uint)process.Id, 0, Win32.WINEVENT_OUTOFCONTEXT);
 
         hHook = Win32.SetWindowsHookEx(Win32.WH_CALLWNDPROC, CallWndProc, IntPtr.Zero, threadId);
     }
@@ -85,7 +76,6 @@ public class Win32Native : INative
         }
     }
 
-    // 钩子回调函数
     private IntPtr CallWndProc(int nCode, IntPtr wParam, IntPtr lParam)
     {
         if (nCode >= 0)
@@ -122,12 +112,6 @@ public class Win32Native : INative
         Win32.SetWindowLong(target, Win32.GWL_STYLE, wndStyle);
         Win32.SetWindowPos(target, IntPtr.Zero, 0, 0, 0, 0, Win32.SWP_FRAMECHANGED
             | Win32.SWP_NOMOVE | Win32.SWP_NOSIZE | Win32.SWP_NOZORDER);
-    }
-
-    public IPlatformHandle CreateControl()
-    {
-        NoBorder();
-        return new Win32WindowControlHandle(this, target);
     }
 
     public void SetWindowState(WindowState state)
@@ -358,14 +342,6 @@ public class Win32Native : INative
         else
         {
             key1 = KeyInterop.VirtualKeyFromKey(key.Key);
-            if (message)
-            {
-                //Win32.SendMessage(target, down ? Win32.WM_KEYDOWN : Win32.WM_KEYUP, key1, IntPtr.Zero);
-            }
-            else
-            {
-                
-            }
 
             SendKey(key1, down);
         }
@@ -394,10 +370,10 @@ public class Win32Native : INative
         Win32.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32.INPUT)));
     }
 
-    public void SendScoll(int count, bool up)
+    public void SendScoll(bool up)
     {
         // 正数滚动向上，负数滚动向下，WHEEL_DELTA通常是120的倍数
-        int wheelAmount = 120 * count * (up ? 1 : -1); // 滚动一次滚轮的距离
+        int wheelAmount = 120 * (up ? 1 : -1); // 滚动一次滚轮的距离
 
         Win32.INPUT[] inputs =
         [
