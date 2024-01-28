@@ -264,11 +264,11 @@ public partial class GameWindowControl : UserControl, IUserControl
             {
                 if (button == config.ItemCycleLeft)
                 {
-                    _implementation.SendScoll(1, true);
+                    _implementation.SendScoll(true);
                 }
                 else if (button == config.ItemCycleRight)
                 {
-                    _implementation.SendScoll(1, false);
+                    _implementation.SendScoll(false);
                 }
             }
         }
