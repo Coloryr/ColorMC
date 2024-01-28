@@ -31,7 +31,6 @@ public record InputControlObj
 {
     public string Name { get; set; }
     public string UUID { get; set; }
-    public bool Enable { get; set; }
     public int RotateAxis { get; set; }
     public int RotateDeath { get; set; }
     public float RotateRate { get; set; }

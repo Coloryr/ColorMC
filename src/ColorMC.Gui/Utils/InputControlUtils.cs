@@ -10,14 +10,10 @@ namespace ColorMC.Gui.Utils;
 public static class InputControlUtils
 {
     private static Sdl sdl;
+    private static bool _isRun;
+
     public static bool IsInit { get; private set; }
-    public static bool _isRun;
-
-    public static bool IsEditMode = false;
-
     public static event Action<Event>? OnEvent;
-
-    public static readonly Dictionary<int, IntPtr> Controllers = [];
 
     public static void Init()
     {

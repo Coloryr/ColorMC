@@ -190,7 +190,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SaveInput(Obj, InputEnable, ItemCycle);
+        ConfigBinding.SaveInput(Obj, ItemCycle);
     }
 
     partial void OnItemCycleLeftChanged(byte value)
@@ -264,7 +264,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SaveInput(Obj, InputEnable, ItemCycle);
+        ConfigBinding.SaveInputInfo(InputEnable);
     }
 
     [RelayCommand]
@@ -767,7 +767,6 @@ public partial class SettingModel
 
     private Task<InputKeyObj?> WaitKey(CancellationToken token)
     {
-        InputControlUtils.IsEditMode = true;
         InputKeyObj? keys = null;
         bool output = false;
         inputKey = (key) =>
@@ -786,8 +785,6 @@ public partial class SettingModel
                 }
                 System.Threading.Thread.Sleep(100);
             }
-
-            InputControlUtils.IsEditMode = false;
 
             return keys;
         });

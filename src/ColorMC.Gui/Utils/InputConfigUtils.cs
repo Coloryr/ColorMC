@@ -13,8 +13,6 @@ public static class InputConfigUtils
 {
     public static readonly Dictionary<string, InputControlObj> Configs = [];
 
-    public static InputControlObj? NowConfig;
-
     private static string s_local;
 
     /// <summary>
@@ -35,12 +33,6 @@ public static class InputConfigUtils
             {
                 Configs.TryAdd(obj.UUID, obj);
             }
-        }
-
-        var uuid = GuiConfigUtils.Config.Input.NowConfig;
-        if (!string.IsNullOrWhiteSpace(uuid))
-        {
-            Configs.TryGetValue(uuid, out NowConfig);
         }
     }
 

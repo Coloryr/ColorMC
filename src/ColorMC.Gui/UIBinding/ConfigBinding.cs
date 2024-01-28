@@ -625,12 +625,17 @@ public static class ConfigBinding
         return obj;
     }
 
-    public static void SaveInput(InputControlObj obj,
-        bool enable, bool item)
+    public static void SaveInput(InputControlObj obj, bool item)
     {
-        obj.Enable = enable;
         obj.ItemCycle = item;
         InputConfigUtils.Save(obj);
+    }
+
+    public static void SaveInputInfo(bool item)
+    {
+        GuiConfigUtils.Config.Input ??= new();
+        GuiConfigUtils.Config.Input.Enable = item;
+        GuiConfigUtils.Save();
     }
 
     public static void AddInput(InputControlObj obj, byte key, InputKeyObj obj1)
@@ -698,16 +703,6 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Input ??= new();
         GuiConfigUtils.Config.Input.NowConfig = uuid;
         GuiConfigUtils.Save();
-
-        if (uuid != null &&
-            InputConfigUtils.Configs.TryGetValue(uuid, out var config))
-        {
-            InputConfigUtils.NowConfig = config;
-        }
-        else
-        {
-            InputConfigUtils.NowConfig = null;
-        }
     }
 
     public static void SaveInputConfig(InputControlObj obj)
