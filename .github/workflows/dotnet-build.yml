@@ -60,13 +60,13 @@ jobs:
     - name: 上传 linux-x86.pkg.tar.zst
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-arch-x86"
+        name: "colormc-arch-x86_64"
         path: build_out/colormc-a${{ env.VERSION }}-1-x86_64.pkg.tar.zst
 
     - name: 上传 linux-x86-aot.pkg.tar.zst
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-arch-x86-aot"
+        name: "colormc-arch-x86_64-aot"
         path: build_out/colormc-a${{ env.VERSION }}-1-x86_64-aot.pkg.tar.zst
 
     - name: 上传 linux-x64.deb

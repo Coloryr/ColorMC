@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Platform;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -92,8 +93,10 @@ public partial class GameWindowControl : UserControl, IUserControl
             _implementation = new Win32Native();
         }
 
-        _implementation.AddHook((uint)process.Id, _handle);
-        _control = new TopView(_implementation.CreateControl());
+        _implementation.AddHook(process, _handle);
+        _implementation.NoBorder();
+        var chandle = new WindowControlHandle(_implementation, handel);
+        _control = new TopView(chandle);
         Panel1.Children.Add(_control);
 
         controlIndex = 0;
@@ -574,6 +577,15 @@ public partial class GameWindowControl : UserControl, IUserControl
         });
 
         return Task.FromResult(false);
+    }
+}
+
+internal class WindowControlHandle(INative native, IntPtr handle)
+    : PlatformHandle(handle, "HWND"), INativeControlHostDestroyableControlHandle
+{
+    public void Destroy()
+    {
+        native.DestroyWindow();
     }
 }
 

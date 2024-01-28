@@ -15,7 +15,7 @@
     <ScrollViewer
         Name="ScrollViewer1"
         Margin="5,0,5,5"
-        IsEnabled="{Binding IsWindows}">
+        IsEnabled="{Binding IsInputEnable}">
         <StackPanel>
             <Panel Margin="0,0,0,5">
                 <Border
