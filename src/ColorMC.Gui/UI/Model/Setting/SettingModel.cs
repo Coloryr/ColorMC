@@ -42,7 +42,7 @@ public partial class SettingModel : MenuModel
             Phone = true;
             _enableWindowMode = false;
         }
-        else if (SystemInfo.Os is OsType.Windows or OsType.Linux)
+        else if (SystemInfo.Os is OsType.Windows)
         {
             IsInputEnable = true;
         }
