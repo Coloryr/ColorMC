@@ -57,17 +57,26 @@ public partial class GameWindowControl : UserControl, IUserControl
     private IntPtr gameController;
     private Point point;
     private int joystickID;
+    private int controlIndex;
+    private string? configUUID;
 
     private bool isMouseMode;
     private bool oldMouseMode;
+    private bool isEdit;
     private bool _cursorHidden = false;
 
     private readonly short[] lastAxisMax = new short[10];
     private readonly Dictionary<InputKeyObj, bool> lastKeyState = [];
 
+    private readonly int DownRate = 800;
+
+    private readonly string _name;
+
     public GameWindowControl()
     {
         InitializeComponent();
+
+        _name = ToString() ?? "GameWindowControl";
     }
 
     public GameWindowControl(GameSettingObj obj, Process process, IntPtr handel) : this()
@@ -86,6 +95,9 @@ public partial class GameWindowControl : UserControl, IUserControl
         _implementation.AddHook((uint)process.Id, _handle);
         _control = new TopView(_implementation.CreateControl());
         Panel1.Children.Add(_control);
+
+        controlIndex = 0;
+        configUUID = GuiConfigUtils.Config.Input.NowConfig;
     }
 
     public void Closed()
@@ -99,13 +111,12 @@ public partial class GameWindowControl : UserControl, IUserControl
         Window?.Close();
     }
 
-    private readonly int DownRate = 800;
-
     private void Event(Event sdlEvent)
     {
-        var config = InputConfigUtils.NowConfig;
-        if (config == null || !GuiConfigUtils.Config.Input.Enable
-            || sdlEvent.Cbutton.Which != joystickID)
+        if (isEdit || !GuiConfigUtils.Config.Input.Enable
+            || sdlEvent.Cbutton.Which != joystickID
+            || string.IsNullOrWhiteSpace(configUUID)
+            || !InputConfigUtils.Configs.TryGetValue(configUUID, out var config))
         {
             return;
         }
@@ -289,7 +300,7 @@ public partial class GameWindowControl : UserControl, IUserControl
     {
         unsafe
         {
-            gameController = new(InputControlUtils.Open(0));
+            gameController = new(InputControlUtils.Open(controlIndex));
         }
 
         if (gameController != IntPtr.Zero)
@@ -463,11 +474,80 @@ public partial class GameWindowControl : UserControl, IUserControl
         _implementation.SetWindowState(state);
     }
 
+    private BaseModel _model;
+
     public void SetBaseModel(BaseModel model)
     {
-
+        _model = model;
+        SetChoise();
     }
 
+    private void SetChoise()
+    {
+        _model.SetChoiseCall(_name, SelectConfig);
+        _model.SetChoiseContent(_name, App.Lang("GameWindow.Text1"));
+    }
+
+    private void RemoveChoise()
+    {
+        _model.RemoveChoiseData(_name);
+    }
+
+    private void EditClose()
+    {
+        _implementation.TransferTop();
+        _control.Edit(false);
+        SetChoise();
+        isEdit = false;
+    }
+
+    private void SelectConfig()
+    {
+        if (isEdit)
+        {
+            return;
+        }
+        isEdit = true;
+        RemoveChoise();
+        _control.Edit(true);
+        _implementation.NoTranferTop();
+        var model = new ControlSelectModel(controlIndex, configUUID, (model) =>
+        {
+            ChangeConfig(model);
+            EditClose();
+        }, () => 
+        {
+            EditClose();
+        });
+        _control.TopWindow.Content = new ControlSelectControl()
+        { 
+            DataContext = model
+        };
+    }
+
+    private void ChangeConfig(ControlSelectModel model)
+    {
+        if (gameController != IntPtr.Zero)
+        {
+            InputControlUtils.Close(gameController);
+            gameController = IntPtr.Zero;
+            joystickID = 0;
+        }
+
+        controlIndex = model.ControlIndex;
+        configUUID = model.GetUUID();
+
+        unsafe
+        {
+            gameController = new(InputControlUtils.Open(controlIndex));
+        }
+
+        if (gameController != IntPtr.Zero)
+        {
+            joystickID = InputControlUtils.GetJoystickID(gameController);
+        }
+    }
+    
     public Task<bool> Closing()
     {
         isExit = true;
@@ -543,6 +623,19 @@ public class TopView : NativeControlHost
         });
     }
 
+    public void Edit(bool enable)
+    {
+        svg.IsVisible = !enable;
+        if (!enable)
+        {
+            TopWindow.Content = svg;
+        }
+        else
+        {
+            TopWindow.Content = null;
+        }
+    }
+
     [Content]
     public object? Content
     {
@@ -567,8 +660,7 @@ public class TopView : NativeControlHost
                 CanResize = false,
                 ShowInTaskbar = false,
                 ZIndex = int.MaxValue,
-                Opacity = 1,
-                Cursor = new Cursor(StandardCursorType.None)
+                Opacity = 1
             };
 
             _disposables = new CompositeDisposable()

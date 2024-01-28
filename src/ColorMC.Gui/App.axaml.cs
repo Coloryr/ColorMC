@@ -737,7 +737,7 @@ public partial class App : Application
         {
             var con = new GameWindowControl(obj, process, handel);
             GameWindows.Add(obj.UUID, con);
-            new SelfBaseWindow(con).Show();
+            AWindow(con);
         }
     }
 

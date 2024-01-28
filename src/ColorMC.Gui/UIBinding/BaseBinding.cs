@@ -399,35 +399,44 @@ public static class BaseBinding
             if (SystemInfo.Os == OsType.Windows &&
                 GuiConfigUtils.Config.Input.Enable)
             {
-                _ = Task.Run(() =>
+                var run = true;
+                var uuid = GuiConfigUtils.Config.Input.NowConfig;
+                if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
                 {
-                    IntPtr ptr = IntPtr.Zero;
-                    try
+                    run = await model.ShowWait(App.Lang("Gui.Error51"));
+                }
+                if (run)
+                {
+                    _ = Task.Run(() =>
                     {
-                        pr.WaitForInputIdle();
-                        while (!pr.HasExited)
+                        IntPtr ptr = IntPtr.Zero;
+                        try
                         {
-                            Task.Delay(100);
-                            ptr = pr.MainWindowHandle;
-                            if (ptr != IntPtr.Zero)
+                            pr.WaitForInputIdle();
+                            while (!pr.HasExited)
                             {
-                                break;
+                                Task.Delay(100);
+                                ptr = pr.MainWindowHandle;
+                                if (ptr != IntPtr.Zero)
+                                {
+                                    break;
+                                }
                             }
                         }
-                    }
-                    catch
-                    {
+                        catch
+                        {
 
-                    }
-                    if (ptr == IntPtr.Zero)
-                    {
-                        return;
-                    }
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        App.ShowGameWindow(obj, pr, ptr);
+                        }
+                        if (ptr == IntPtr.Zero)
+                        {
+                            return;
+                        }
+                        Dispatcher.UIThread.Invoke(() =>
+                        {
+                            App.ShowGameWindow(obj, pr, ptr);
+                        });
                     });
-                });
+                }
             }
 
             pr.Exited += (a, b) =>

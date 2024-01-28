@@ -1,4 +1,5 @@
-using OpenTK.Audio.OpenAL;
+using Avalonia.Controls.Shapes;
+using Silk.NET.OpenAL;
 using System;
 using System.Threading;
 
@@ -9,30 +10,37 @@ namespace ColorMC.Gui.Player;
 /// </summary>
 public class OpenalPlayer : IPlayer
 {
-    private readonly int _alSource;
-    private ALDevice _device;
-    private ALContext _context;
+    private readonly uint _alSource;
+    private readonly IntPtr _device;
+    private readonly IntPtr _context;
+    private readonly AL al;
+    private readonly ALContext alc;
+
     private bool _isPlay = false;
 
     public float Volume
     {
         set
         {
-            AL.Source(_alSource, ALSourcef.Gain, value);
+            al.SetSourceProperty(_alSource, SourceFloat.Gain, value);
         }
     }
 
     public OpenalPlayer()
     {
+        alc = ALContext.GetApi();
+        al = AL.GetApi();
         // Get the default device, then go though all devices and select the AL soft device if it exists.
-        string deviceName = ALC.GetString(ALDevice.Null, AlcGetString.DefaultDeviceSpecifier);
+        unsafe
+        {
+            string deviceName = alc.GetContextProperty(null, GetContextString.DeviceSpecifier);
 
-        _device = ALC.OpenDevice(deviceName);
-        int temp = 0;
-        _context = ALC.CreateContext(_device, ref temp);
-        ALC.MakeContextCurrent(_context);
+            _device = new(alc.OpenDevice(deviceName));
+            _context = new(alc.CreateContext((Device*)_device, null));
+            alc.MakeContextCurrent(_context);
 
-        AL.GenSource(out _alSource);
+            _alSource = al.GenSource();
+        }
 
         CheckALError();
 
@@ -40,17 +48,21 @@ public class OpenalPlayer : IPlayer
         {
             while (!App.IsClose)
             {
-                AL.GetSource(_alSource, ALGetSourcei.BuffersQueued, out int value);
-                AL.GetSource(_alSource, ALGetSourcei.BuffersProcessed, out int value1);
+                al.GetSourceProperty(_alSource, GetSourceInteger.BuffersQueued, out int value);
+                al.GetSourceProperty(_alSource, GetSourceInteger.BuffersProcessed, out int value1);
                 if (value - value1 > 100)
                 {
-                    int temp = AL.SourceUnqueueBuffer(_alSource);
-                    AL.DeleteBuffer(temp);
+                    uint temp;
+                    unsafe
+                    {
+                        al.SourceUnqueueBuffers(_alSource, 1, &temp);
+                        al.DeleteBuffer(temp);
+                    }
                     Thread.Sleep(10);
                 }
-                AL.GetSource(_alSource, ALGetSourcei.SourceState, out int state);
+                al.GetSourceProperty(_alSource, GetSourceInteger.SourceState, out int state);
                 if (_isPlay && value == 0 && Media.Decoding == false &&
-                    (ALSourceState)state == ALSourceState.Stopped)
+                    (SourceState)state == SourceState.Stopped)
                 {
                     _isPlay = false;
                     Media.PlayEnd();
@@ -64,56 +76,63 @@ public class OpenalPlayer : IPlayer
 
     public void Close()
     {
-        AL.DeleteSource(_alSource);
+        al.DeleteSource(_alSource);
 
-        ALC.MakeContextCurrent(ALContext.Null);
-        ALC.DestroyContext(_context);
-        ALC.CloseDevice(_device);
+        unsafe
+        {
+            alc.MakeContextCurrent(null);
+            alc.DestroyContext((Context*)_context);
+            alc.CloseDevice((Device*)_device);
+        }
     }
 
-    public static void CheckALError()
+    public void CheckALError()
     {
-        ALError error = AL.GetError();
-        if (error != ALError.NoError)
+        AudioError error = al.GetError();
+        if (error != AudioError.NoError)
         {
-            App.ShowError($"ALError", new Exception(AL.GetErrorString(error)));
+            App.ShowError($"ALError", new Exception(error.ToString()));
         }
     }
 
     public void Pause()
     {
-        AL.SourcePause(_alSource);
+        al.SourcePause(_alSource);
     }
 
     public void Play()
     {
-        AL.SourcePlay(_alSource);
+        al.SourcePlay(_alSource);
     }
 
     public void Stop()
     {
-        AL.Source(_alSource, ALSourcef.Gain, 0);
-        AL.SourceStop(_alSource);
+        al.SetSourceProperty(_alSource, SourceFloat.Gain, 0);
+        al.SourceStop(_alSource);
 
-        AL.GetSource(_alSource, ALGetSourcei.BuffersQueued, out int value);
+        al.GetSourceProperty(_alSource, GetSourceInteger.BuffersQueued, out int value);
         while (value > 0)
         {
-            int temp = AL.SourceUnqueueBuffer(_alSource);
-            AL.DeleteBuffer(temp);
-            value--;
+            unsafe
+            {
+                uint temp;
+                al.SourceUnqueueBuffers(_alSource, 1, &temp);
+                al.DeleteBuffer(temp);
+                value--;
+            }
         }
     }
 
     public void Write(int numChannels, int bitsPerSample, byte[] buff, int length, int sampleRate)
     {
-        ALFormat format;
+        BufferFormat format;
 
         if (numChannels == 1)
         {
             if (bitsPerSample == 8)
-                format = ALFormat.Mono8;
+                format = BufferFormat.Mono8;
             else if (bitsPerSample == 16)
-                format = ALFormat.Mono16;
+                format = BufferFormat.Mono16;
             else
             {
                 return;
@@ -122,9 +141,9 @@ public class OpenalPlayer : IPlayer
         else if (numChannels == 2)
         {
             if (bitsPerSample == 8)
-                format = ALFormat.Stereo8;
+                format = BufferFormat.Stereo8;
             else if (bitsPerSample == 16)
-                format = ALFormat.Stereo16;
+                format = BufferFormat.Stereo16;
             else
             {
                 return;
@@ -135,14 +154,20 @@ public class OpenalPlayer : IPlayer
             return;
         }
 
-        AL.GenBuffer(out int alBuffer);
-        AL.BufferData(alBuffer, format, new ReadOnlySpan<byte>(buff, 0, length), sampleRate);
-        AL.SourceQueueBuffer(_alSource, alBuffer);
-        AL.GetSource(_alSource, ALGetSourcei.SourceState, out int state);
-        if ((ALSourceState)state != ALSourceState.Playing)
+        unsafe
         {
-            AL.SourcePlay(_alSource);
-            _isPlay = true;
+            var alBuffer = al.GenBuffer();
+            fixed (void* ptr = buff)
+            {
+                al.BufferData(alBuffer, format, ptr, length, sampleRate);
+            }
+            al.SourceQueueBuffers(_alSource, 1, &alBuffer);
+            al.GetSourceProperty(_alSource, GetSourceInteger.SourceState, out int state);
+            if ((SourceState)state != SourceState.Playing)
+            {
+                al.SourcePlay(_alSource);
+                _isPlay = true;
+            }
         }
     }
 }
