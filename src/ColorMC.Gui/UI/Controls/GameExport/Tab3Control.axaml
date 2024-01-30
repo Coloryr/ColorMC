@@ -14,7 +14,8 @@
     mc:Ignorable="d">
     <Border
         Name="ScrollViewer1"
-        Margin="5"
+        Margin="5,0,5,5"
+        Padding="{setting:Style BorderPadding}"
         Background="{setting:Colors GroupBack}"
         BorderBrush="{setting:Colors GroupColor}"
         BorderThickness="2"

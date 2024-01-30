@@ -12,15 +12,17 @@
     mc:Ignorable="d">
     <DockPanel
         Name="ScrollViewer1"
-        Margin="5,3,5,5"
-        IsEnabled="{Binding MoEx}">
+        Margin="5,0,5,2"
+        Background="Transparent">
         <Border
+            Margin="0,0,0,3"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
             CornerRadius="{setting:Style ButtonCornerRadius}"
-            DockPanel.Dock="Top">
+            DockPanel.Dock="Top"
+            IsEnabled="{Binding MoEx}">
             <DockPanel>
                 <Button
                     Width="100"
@@ -39,11 +41,12 @@
             </DockPanel>
         </Border>
         <Border
-            Margin="0,3,0,0"
+            Margin="0,0,0,3"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
             BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+            CornerRadius="{setting:Style ButtonCornerRadius}"
+            IsEnabled="{Binding MoEx}">
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"

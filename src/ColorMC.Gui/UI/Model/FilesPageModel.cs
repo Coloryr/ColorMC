@@ -67,12 +67,20 @@ public class FilesPageModel
             {
                 foreach (var item1 in _root.Children!)
                 {
-                    if (item1.Name == item)
+                    if (item1.Name == item || item1.Path == item)
                     {
                         item1.IsChecked = false;
                     }
                 }
             }
+        }
+    }
+
+    public void SetUnSelectItems(List<string> config) 
+    {
+        foreach (var item in config)
+        {
+            _root.UnSelect(item);
         }
     }
 
@@ -92,5 +100,15 @@ public class FilesPageModel
         {
             _root.Select(item);
         }
+    }
+
+    public void SetSelectItems()
+    {
+        _root.Select();
+    }
+
+    public void SetUnSelectItems()
+    {
+        _root.UnSelect();
     }
 }

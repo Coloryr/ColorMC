@@ -694,7 +694,7 @@
 	"ServerPackWindow.Tab1.Error3": "Generation failed, please check the log for details",
 	"ServerPackWindow.Tab1.Info1": "Generating server instance",
 	"ServerPackWindow.Tab1.Info2": "Generation complete",
-	"ServerPackWindow.Tab2.Text2": "Select All",
+	"Button.SelectAll": "Select All",
 	"ServerPackWindow.Tab2.Text3": "Clear Selection",
 	"ServerPackWindow.Tab2.DataGrid.Text1": "Synchronize",
 	"ServerPackWindow.Tab2.DataGrid.Text3": "Project ID",

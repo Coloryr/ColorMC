@@ -49,7 +49,6 @@ public partial class GameExportControl : MenuControl
             Window.SetIcon(_icon);
         }
         model.Model.ProgressClose();
-
         model.NowView = 0;
     }
 
@@ -67,6 +66,21 @@ public partial class GameExportControl : MenuControl
 
     protected override Control ViewChange(bool iswhell, int old, int index)
     {
+        var model = (DataContext as GameExportModel)!;
+        if (old == 1 || old == 2)
+        {
+            model.RemoveChoise();
+        }
+
+        if (index == 1)
+        {
+            model.SetTab2Choise();
+        }
+        else if (index == 2)
+        {
+            model.SetTab3Choise();
+        }
+
         return index switch
         {
             0 => _tab1 ??= new(),

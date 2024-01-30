@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
@@ -660,8 +661,29 @@ public static class PathBinding
 
             try
             {
+                var list = model.Files.GetUnSelectItems();
+                list.Add(model.Obj.GetModInfoJsonFile());
+
+                var obj1 = new Dictionary<string, ModInfoObj>();
+                foreach (var item in model.Mods)
+                {
+                    if (item.Export && item.Obj1 != null)
+                    {
+                        obj1.Add(item.Obj1.ModId, item.Obj1);
+                    }
+                }
+
                 await new ZipUtils().ZipFileAsync(model.Obj.GetBasePath(),
-                    name, model.Files.GetUnSelectItems());
+                    name, list);
+
+                using var s = new ZipFile(PathHelper.OpenRead(name));
+                var data = JsonConvert.SerializeObject(obj1);
+                var data1 = Encoding.UTF8.GetBytes(data);
+                using var stream = new ZipFileStream(data1);
+                s.BeginUpdate();
+                s.Add(stream, InstancesPath.Name14);
+                s.CommitUpdate();
+
                 OpFile(name);
                 return true;
             }

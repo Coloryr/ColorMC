@@ -103,7 +103,7 @@ public static class ModPackHelper
             }
         }
 
-        PathHelper.WriteBytes(obj.GetModJsonFile(), array1);
+        PathHelper.WriteBytes(obj.GetModPackJsonFile(), array1);
 
         var obj1 = obj.CopyObj();
         obj1.Mods.Clear();
@@ -288,7 +288,7 @@ public static class ModPackHelper
             }
         }
 
-        PathHelper.WriteBytes(game.GetModJsonFile(), array1);
+        PathHelper.WriteBytes(game.GetModPackJsonFile(), array1);
 
         update2(CoreRunState.GetInfo);
 
@@ -512,7 +512,7 @@ public static class ModPackHelper
             }
         }
 
-        PathHelper.WriteBytes(obj.GetModJsonFile(), array1);
+        PathHelper.WriteBytes(obj.GetModPackJsonFile(), array1);
 
         var obj1 = obj.CopyObj();
         obj1.Mods.Clear();
@@ -696,7 +696,7 @@ public static class ModPackHelper
             }
         }
 
-        PathHelper.WriteBytes(game.GetModJsonFile(), array1);
+        PathHelper.WriteBytes(game.GetModPackJsonFile(), array1);
 
         update2(CoreRunState.GetInfo);
 

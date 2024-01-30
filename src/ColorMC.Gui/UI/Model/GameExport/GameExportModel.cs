@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameExport;
 
-public partial class GameExportModel(BaseModel model, GameSettingObj obj) : MenuModel(model)
+public partial class GameExportModel: MenuModel
 {
     /// <summary>
     /// 导出的文件列表
@@ -91,7 +91,16 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
 
     public readonly List<ModExportModel> Items = [];
 
-    public GameSettingObj Obj { get; init; } = obj;
+    public GameSettingObj Obj { get; init; }
+
+    private readonly string _use;
+
+    public GameExportModel(BaseModel model, GameSettingObj obj) : base(model)
+    {
+        Obj = obj;
+
+        _use = ToString() ?? "GameExportModel";
+    }
 
     async partial void OnTypeChanged(PackType value)
     {
@@ -108,7 +117,6 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
         };
 
         LoadFile();
-        await LoadMod();
         if (MoEx)
         {
             await Load2();
@@ -157,7 +165,7 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
             var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
             if (item1 != null)
             {
-                obj1 = new ModExportModel(item1.ModId, item1.FileId)
+                obj1 = new ModExportModel(Model, item1.ModId, item1.FileId)
                 {
                     Type = Type,
                     Obj = item,
@@ -172,7 +180,7 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
             }
             else
             {
-                obj1 = new ModExportModel(null, null)
+                obj1 = new ModExportModel(Model, null, null)
                 {
                     Type = Type,
                     Obj = item
@@ -299,6 +307,55 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
         }
     }
 
+    public void SetTab3Choise()
+    {
+        Model.SetChoiseCall(_use, SelectAllFile, UnSelectAllFile);
+        Model.SetChoiseContent(_use, App.Lang("Button.SelectAll"), App.Lang("Button.UnSelectAll"));
+    }
+
+    public void SetTab2Choise()
+    {
+        Model.SetChoiseCall(_use, SelectAllMod, UnSelectAllMod);
+        Model.SetChoiseContent(_use, App.Lang("Button.SelectAll"), App.Lang("Button.UnSelectAll"));
+    }
+
+    public void RemoveChoise()
+    {
+        Model.RemoveChoiseData(_use);
+    }
+
+    private void SelectAllFile()
+    {
+        Files.SetSelectItems();
+    }
+
+    private void UnSelectAllFile()
+    {
+        Files.SetUnSelectItems();
+    }
+
+    private void SelectAllMod()
+    {
+        foreach (var item in Mods)
+        {
+            if (item.Export == false && item.Obj1 != null)
+            {
+                item.Export = true;
+            }
+        }
+    }
+
+    private void UnSelectAllMod()
+    {
+        foreach (var item in Mods)
+        {
+            if (item.Export == true)
+            {
+                item.Export = false;
+            }
+        }
+    }
+
     public void LoadFile()
     {
         if (Type == PackType.CurseForge || Type == PackType.Modrinth)
@@ -307,7 +364,17 @@ public partial class GameExportModel(BaseModel model, GameSettingObj obj) : Menu
         }
         else
         {
+            var list = new List<string>();
+            foreach (var item in Items)
+            {
+                if (item.Obj1 != null)
+                {
+                    item.Export = true;
+                    list.Add(item.Obj.Local);
+                }
+            }
             Files = new FilesPageModel(Obj.GetBasePath(), true);
+            Files.SetUnSelectItems(list);
         }
 
         Source = Files.Source;
