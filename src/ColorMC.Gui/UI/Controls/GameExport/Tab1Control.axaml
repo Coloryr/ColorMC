@@ -51,7 +51,7 @@
                     ToolTip.VerticalOffset="-30" />
                 <StackPanel>
                     <TextBox
-                        Margin="0,5,5,0"
+                        Margin="0,5,0,0"
                         Classes="input1"
                         IsEnabled="{Binding EnableInput1}"
                         Text="{Binding Name}"

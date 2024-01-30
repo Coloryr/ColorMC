@@ -201,6 +201,50 @@ public partial class FileTreeNodeModel : ObservableObject
         return false;
     }
 
+    public void Select()
+    {
+        IsChecked = true;
+        if (Children != null)
+        {
+            foreach (var item1 in Children)
+            {
+                item1.Select();
+            }
+        }
+    }
+
+    public bool UnSelect(string item)
+    {
+        if (Path == item)
+        {
+            IsChecked = false;
+            return true;
+        }
+        if (Children != null)
+        {
+            foreach (var item1 in Children)
+            {
+                if (item1.UnSelect(item))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void UnSelect()
+    {
+        IsChecked = false;
+        if (Children != null)
+        {
+            foreach (var item1 in Children)
+            {
+                item1.UnSelect();
+            }
+        }
+    }
+
     public void IsAllCheck()
     {
         if (Children == null)

@@ -257,7 +257,6 @@ public partial class GameCloudModel : MenuModel
             Obj.GetModInfoJsonFile(),
             Obj.GetIconFile(),
             Obj.GetLaunchFile(),
-            Obj.GetModJsonFile(),
             Obj.GetModPackJsonFile()
         };
         _files.SetSelectItems(list);

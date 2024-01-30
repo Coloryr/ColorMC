@@ -15,7 +15,6 @@ public static class InstancesPath
     public const string Name = "instances";
     public const string Name1 = "game.json";
     public const string Name2 = ".minecraft";
-    public const string Name3 = "modinfo.json";
     public const string Name4 = "modpack.json";
     public const string Name5 = "options.txt";
     public const string Name6 = "servers.dat";
@@ -266,17 +265,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取游戏实例mod信息文件
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns>文件路径</returns>
-    public static string GetModJsonFile(this GameSettingObj obj)
-    {
-        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name3}");
-    }
-
-    /// <summary>
-    /// 获取游戏实例整合包文件
+    /// 获取游戏实例整合包信息文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>文件路径</returns>
@@ -708,10 +697,10 @@ public static class InstancesPath
             {
                 PathHelper.CopyFile(file, obj1.GetIconFile());
             }
-            file = obj.GetModJsonFile();
+            file = obj.GetModPackJsonFile();
             if (File.Exists(file))
             {
-                PathHelper.CopyFile(file, obj1.GetModJsonFile());
+                PathHelper.CopyFile(file, obj1.GetModPackJsonFile());
             }
             file = obj.GetModInfoJsonFile();
             if (File.Exists(file))

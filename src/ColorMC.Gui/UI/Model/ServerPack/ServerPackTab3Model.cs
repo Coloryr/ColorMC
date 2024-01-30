@@ -122,6 +122,6 @@ public partial class ServerPackModel
     public void SetTab3Click()
     {
         Model.SetChoiseCall(_name, SelectAllConfig, UnSelectAllConfig);
-        Model.SetChoiseContent(_name, App.Lang("ServerPackWindow.Tab2.Text2"), App.Lang("ServerPackWindow.Tab2.Text3"));
+        Model.SetChoiseContent(_name, App.Lang("Button.SelectAll"), App.Lang("ServerPackWindow.Tab2.Text3"));
     }
 }
