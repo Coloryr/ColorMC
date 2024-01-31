@@ -236,6 +236,8 @@
 	"SettingWindow.Tab3.Info1": "正在进行更新检查",
 	"SettingWindow.Tab3.Info2": "检测到新版本，是否要更新",
 	"SettingWindow.Tab3.Info3": "已经是最新版了",
+	"SettingWindow.Tab3.Info4": "云同步密钥验证成功",
+	"SettingWindow.Tab3.Error1": "云同步密钥验证失败",
 	"SettingWindow.Tab4.Text1": "Jvm参数设置",
 	"SettingWindow.Tab4.Text2": "垃圾回收器设置",
 	"SettingWindow.Tab4.Text3": "手动GC参数",

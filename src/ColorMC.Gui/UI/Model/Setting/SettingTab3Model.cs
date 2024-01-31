@@ -105,6 +105,14 @@ public partial class SettingModel
     {
         await GameCloudUtils.StartConnect();
         ServerInfo = GameCloudUtils.Info;
+        if (GameCloudUtils.Connect)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab3.Info4"));
+        }
+        else
+        {
+            Model.Show(App.Lang("SettingWindow.Tab3.Error1"));
+        }
     }
 
     [RelayCommand]
