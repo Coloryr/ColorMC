@@ -123,6 +123,7 @@ public enum WebType
     /// 用户手册
     /// </summary>
     Guide,
+    Guide1,
     /// <summary>
     /// 赞助
     /// </summary>

@@ -288,9 +288,10 @@ public partial class MainModel : TopModel, IMainTop
     }
 
     [RelayCommand]
-    public void OpenGuide()
+    public async Task OpenGuide()
     {
-        WebBinding.OpenWeb(WebType.Guide);
+        var res = await Model.ShowWait(App.Lang("Gui.Info43"));
+        WebBinding.OpenWeb(res ? WebType.Guide1 : WebType.Guide);
     }
 
     [RelayCommand]

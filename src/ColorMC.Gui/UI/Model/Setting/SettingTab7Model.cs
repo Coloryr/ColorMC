@@ -3,6 +3,7 @@ using ColorMC.Core;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -37,9 +38,10 @@ public partial class SettingModel
     }
 
     [RelayCommand]
-    public void OpenUrl5()
+    public async Task OpenUrl5()
     {
-        WebBinding.OpenWeb(WebType.Guide);
+        var res = await Model.ShowWait(App.Lang("Gui.Info43"));
+        WebBinding.OpenWeb(res ? WebType.Guide1 : WebType.Guide);
     }
 
     [RelayCommand]

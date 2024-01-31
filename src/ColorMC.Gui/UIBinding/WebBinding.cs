@@ -748,6 +748,7 @@ public static class WebBinding
         BaseBinding.OpUrl(type switch
         {
             WebType.Guide => "https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md",
+            WebType.Guide1 => "https://gitee.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md",
             WebType.Mcmod => "https://www.mcmod.cn/",
             WebType.Github => "https://www.github.com/Coloryr/ColorMC",
             WebType.Sponsor => "https://coloryr.github.io/sponsor.html",

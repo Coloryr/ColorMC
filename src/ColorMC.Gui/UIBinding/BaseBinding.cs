@@ -458,7 +458,7 @@ public static class BaseBinding
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        App.ShowGameLog(obj, true);
+                        App.ShowGameLog(obj);
                         App.MainWindow?.ShowMessage(App.Lang("Live2D.Text3"));
                     });
                 }
