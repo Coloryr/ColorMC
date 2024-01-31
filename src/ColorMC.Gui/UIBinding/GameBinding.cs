@@ -1492,13 +1492,24 @@ public static class GameBinding
         GameCloudUtils.SetCloudData(game, cloud);
         string local = Path.GetFullPath(game.GetBasePath() + "/config.zip");
         var res = await GameCloudUtils.DownloadConfig(obj, local);
-        if (res != 100)
+        if (res == 100)
         {
-            return (false, App.Lang("AddGameWindow.Tab1.Error11"));
+            await UnZipCloudConfig(game, cloud, local);
         }
-        await UnZipCloudConfig(game, cloud, local);
+        else
+        {
+            //return (false, App.Lang("AddGameWindow.Tab1.Error11"));
+        }
+
         var temp = await GameCloudUtils.HaveCloud(game);
-        cloud.ConfigTime = DateTime.Parse(temp.Item3!);
+        try
+        {
+            cloud.ConfigTime = DateTime.Parse(temp.Item3!);
+        }
+        catch
+        { 
+        
+        }
         GameCloudUtils.SetCloudData(game, cloud);
 
         game = game.Reload();

@@ -765,6 +765,10 @@ public partial class App : Application
         {
             Dispatcher.UIThread.Post(win.Window.Close);
         }
+        if (GameLogWindows.TryGetValue(obj.UUID, out var win5))
+        {
+            Dispatcher.UIThread.Post(win5.Window.Close);
+        }
         if (AddWindows.TryGetValue(obj.UUID, out var win1))
         {
             Dispatcher.UIThread.Post(win1.Window.Close);
