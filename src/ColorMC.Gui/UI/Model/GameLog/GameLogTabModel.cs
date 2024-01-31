@@ -160,6 +160,7 @@ public partial class GameLogModel : GameModel
         if (IsGameRun)
         {
             Model.Title1 = App.Lang("GameLogWindow.Info3");
+            LoadLast();
         }
         else
         {
