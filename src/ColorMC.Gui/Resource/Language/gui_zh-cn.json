@@ -776,7 +776,7 @@
 	"ConfigEditWindow.Title": "游戏实例修改配置 {0} ",
 	"ConfigEditWindow.Title1": "游戏实例修改配置 {0} 世界 {1} ",
 	"ConfigEditWindow.Text1": "过滤器",
-	"ConfigEditWindow.Text2": "关闭修改",
+	"ConfigEditWindow.Text2": "保存文件",
 	"ConfigEditWindow.Text3": "刷新列表",
 	"ConfigEditWindow.Text4": "数据类型：",
 	"ConfigEditWindow.Text5": "查找方块",

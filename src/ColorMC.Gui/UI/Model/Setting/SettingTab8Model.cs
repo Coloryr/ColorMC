@@ -259,7 +259,7 @@ public partial class SettingModel
 
     partial void OnInputEnableChanged(bool value)
     {
-        if (isInputConfigLoad || Obj == null)
+        if (isInputConfigLoad)
         {
             return;
         }
