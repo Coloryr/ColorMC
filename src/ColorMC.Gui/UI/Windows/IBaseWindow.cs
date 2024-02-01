@@ -35,7 +35,7 @@ public interface IBaseWindow
         }
     }
 
-    virtual public void Activate()
+    virtual public void TopActivate()
     {
         if (ConfigBinding.WindowMode())
         {

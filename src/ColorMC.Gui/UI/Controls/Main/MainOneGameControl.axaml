@@ -12,19 +12,19 @@
     x:DataType="model:MainModel"
     mc:Ignorable="d">
     <Panel>
-        <ContentControl Background="{setting:Colors BG1}">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="25"
-                    Text="{setting:Localize MainWindow.Info18}"
-                    TextWrapping="Wrap" />
-            </StackPanel>
-        </ContentControl>
-        <ContentControl Background="{setting:Colors TranBack}">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <views1:GameControl DataContext="{Binding OneGame}" />
-            </StackPanel>
-        </ContentControl>
+        <Border Background="{setting:Colors BG1}" IsVisible="{Binding IsGameError}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="25"
+                Text="{setting:Localize MainWindow.Info18}"
+                TextWrapping="Wrap" />
+        </Border>
+        <Decorator
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsVisible="{Binding IsOneGame}">
+            <views1:GameControl DataContext="{Binding OneGame}" />
+        </Decorator>
     </Panel>
 </UserControl>

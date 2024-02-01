@@ -32,7 +32,10 @@ public partial class CustomControlPanelModel : TopModel
     public CustomControlPanelModel(CustomControl con, BaseModel model, GameSettingObj obj) : base(model)
     {
         _top = con;
-        _game = new(model, con, obj);
+        _game = new(model, con, obj)
+        {
+            OneGame = true
+        };
 
         App.UserEdit += App_UserEdit;
         App.SkinLoad += App_SkinLoad;

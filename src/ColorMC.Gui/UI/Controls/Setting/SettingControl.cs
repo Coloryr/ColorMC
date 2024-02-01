@@ -105,7 +105,7 @@ public partial class SettingControl : MenuControl
                 return _tab2;
             case 1:
                 model.LoadHttpSetting();
-                _ = model.GameCloudConnect();
+                model.TestGameCloudConnect();
                 _tab3 ??= new();
                 if (iswhell && old == 2)
                 {

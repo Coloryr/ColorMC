@@ -451,7 +451,10 @@ public partial class MainModel : TopModel, IMainTop
             else
             {
                 IsGameError = false;
-                OneGame = new(Model, this, game);
+                OneGame = new(Model, this, game)
+                {
+                    OneGame = true
+                };
                 IsOneGame = true;
             }
         }

@@ -164,6 +164,16 @@ public partial class SettingModel
         ConfigBinding.SetDownloadProxy(IP, Port ?? 1080, User, Password);
     }
 
+    public async void TestGameCloudConnect()
+    {
+        await GameCloudUtils.StartConnect();
+        ServerInfo = GameCloudUtils.Info;
+        if (GameCloudUtils.Connect)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab3.Info4"));
+        }
+    }
+
     public void LoadHttpSetting()
     {
         _httpLoad = true;
