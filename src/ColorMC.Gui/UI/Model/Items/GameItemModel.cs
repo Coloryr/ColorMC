@@ -47,6 +47,9 @@ public partial class GameItemModel : GameModel
     public string Name => Obj.Name;
 
     [ObservableProperty]
+    private bool _oneGame;
+
+    [ObservableProperty]
     private Bitmap _pic;
 
     private readonly string? _group;
@@ -61,6 +64,14 @@ public partial class GameItemModel : GameModel
     {
         _top = top;
         LoadIcon();
+    }
+
+    partial void OnOneGameChanged(bool value)
+    {
+        if (value)
+        {
+            IsSelect = true;
+        }
     }
 
     partial void OnIsLaunchChanged(bool value)
@@ -95,6 +106,10 @@ public partial class GameItemModel : GameModel
 
     partial void OnIsSelectChanged(bool value)
     {
+        if (value == false && OneGame)
+        {
+            return;
+        }
         Wrap = value ? TextWrapping.Wrap : TextWrapping.NoWrap;
         Trim = value ? TextTrimming.None : TextTrimming.CharacterEllipsis;
         IsDrop = false;

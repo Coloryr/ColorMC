@@ -93,9 +93,10 @@ public partial class NetFrpModel
     private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         Log(e.Data);
-        if (e.Data?.Contains("TCP 类型隧道启动成功") == true
+        if (e.Data?.Contains("TCP 隧道启动成功") == true
             || e.Data?.Contains("Your TCP proxy is available now") == true
-            || e.Data?.Contains("来连接服务, 或使用IP地址(不推荐)") == true)
+            || e.Data?.Contains("来连接服务, 或使用IP地址(不推荐)") == true
+            || e.Data?.Contains("或使用 IP 地址连接") == true)
         {
             _isOut.Add(_localIP);
             Dispatcher.UIThread.Post(() =>

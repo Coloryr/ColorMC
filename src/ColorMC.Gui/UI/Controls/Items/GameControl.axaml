@@ -86,6 +86,7 @@
                         ClipToBounds="False"
                         Command="{Binding EditGame}"
                         CornerRadius="20"
+                        IsEnabled="{Binding !OneGame}"
                         IsVisible="{Binding IsOver}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text12}"
                         ToolTip.VerticalOffset="-30">

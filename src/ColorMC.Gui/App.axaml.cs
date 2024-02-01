@@ -403,7 +403,7 @@ public partial class App : Application
     {
         if (CustomWindow != null)
         {
-            CustomWindow.Window.Activate();
+            CustomWindow.Window.TopActivate();
         }
         else
         {
@@ -418,7 +418,7 @@ public partial class App : Application
     {
         if (AddGameWindow != null)
         {
-            AddGameWindow.Window.Activate();
+            AddGameWindow.Window.TopActivate();
         }
         else
         {
@@ -449,7 +449,7 @@ public partial class App : Application
     {
         if (UserWindow != null)
         {
-            UserWindow.Window.Activate();
+            UserWindow.Window.TopActivate();
         }
         else
         {
@@ -471,7 +471,7 @@ public partial class App : Application
     {
         if (MainWindow != null)
         {
-            MainWindow.Window.Activate();
+            MainWindow.Window.TopActivate();
         }
         else
         {
@@ -484,7 +484,7 @@ public partial class App : Application
     {
         if (AddModPackWindow != null)
         {
-            AddModPackWindow.Window.Activate();
+            AddModPackWindow.Window.TopActivate();
         }
         else
         {
@@ -497,7 +497,7 @@ public partial class App : Application
     {
         if (SettingWindow != null)
         {
-            SettingWindow.Window.Activate();
+            SettingWindow.Window.TopActivate();
         }
         else
         {
@@ -512,7 +512,7 @@ public partial class App : Application
     {
         if (SkinWindow != null)
         {
-            SkinWindow.Window.Activate();
+            SkinWindow.Window.TopActivate();
         }
         else
         {
@@ -526,7 +526,7 @@ public partial class App : Application
     {
         if (GameEditWindows.TryGetValue(obj.UUID, out var win1))
         {
-            win1.Window.Activate();
+            win1.Window.TopActivate();
             win1.SetType(type);
         }
         else
@@ -542,7 +542,7 @@ public partial class App : Application
     {
         if (AddJavaWindow != null)
         {
-            AddJavaWindow.Window.Activate();
+            AddJavaWindow.Window.TopActivate();
         }
         else
         {
@@ -558,7 +558,7 @@ public partial class App : Application
 
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.Activate();
+            value.Window.TopActivate();
             value.GoFile(type1, obj1.PID!);
         }
         else
@@ -574,7 +574,7 @@ public partial class App : Application
     {
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.Activate();
+            value.Window.TopActivate();
             return value.GoSet();
         }
         else
@@ -590,7 +590,7 @@ public partial class App : Application
     {
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.Activate();
+            value.Window.TopActivate();
             value.GoTo(type);
         }
         else
@@ -606,7 +606,7 @@ public partial class App : Application
     {
         if (ServerPackWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.Activate();
+            value.Window.TopActivate();
         }
         else
         {
@@ -620,7 +620,7 @@ public partial class App : Application
     {
         if (GameLogWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.Activate();
+            value.Window.TopActivate();
         }
         else
         {
@@ -634,7 +634,7 @@ public partial class App : Application
     {
         if (ConfigEditWindows.TryGetValue(obj.UUID, out var win1))
         {
-            win1.Window.Activate();
+            win1.Window.TopActivate();
         }
         else
         {
@@ -649,7 +649,7 @@ public partial class App : Application
         string key = obj.Game.UUID + ":" + obj.LevelName;
         if (ConfigEditWindows.TryGetValue(key, out var win1))
         {
-            win1.Window.Activate();
+            win1.Window.TopActivate();
         }
         else
         {
@@ -664,7 +664,7 @@ public partial class App : Application
         string key = obj.UUID;
         if (GameCloudWindows.TryGetValue(key, out var win1))
         {
-            win1.Window.Activate();
+            win1.Window.TopActivate();
             if (world)
             {
                 win1.GoWorld();
@@ -686,7 +686,7 @@ public partial class App : Application
     {
         if (CountWindow != null)
         {
-            CountWindow.Window.Activate();
+            CountWindow.Window.TopActivate();
         }
         else
         {
@@ -699,7 +699,7 @@ public partial class App : Application
     {
         if (GameExportWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.Activate();
+            value.Window.TopActivate();
         }
         else
         {
@@ -713,7 +713,7 @@ public partial class App : Application
     {
         if (NetFrpWindow != null)
         {
-            NetFrpWindow.Window.Activate();
+            NetFrpWindow.Window.TopActivate();
         }
         else
         {
@@ -731,7 +731,7 @@ public partial class App : Application
 
         if (GameWindows.TryGetValue(obj.UUID, out var win1))
         {
-            win1.Window.Activate();
+            win1.Window.TopActivate();
         }
         else
         {
@@ -797,11 +797,18 @@ public partial class App : Application
 
     public static void Close()
     {
-        FrpProcess?.Kill(true);
         IsClose = true;
         OnClose?.Invoke();
         CloseAllWindow();
         ColorMCCore.Close();
+        try
+        {
+            FrpProcess?.Kill(true);
+        }
+        catch
+        { 
+            
+        }
         (Life as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
         Environment.Exit(Environment.ExitCode);
     }
@@ -944,6 +951,7 @@ public partial class App : Application
 
     public static void CloseAllWindow()
     {
+        (NetFrpWindow?.GetVisualRoot() as Window)?.Close();
         (CountWindow?.GetVisualRoot() as Window)?.Close();
         (AddJavaWindow?.GetVisualRoot() as Window)?.Close();
         (SkinWindow?.GetVisualRoot() as Window)?.Close();

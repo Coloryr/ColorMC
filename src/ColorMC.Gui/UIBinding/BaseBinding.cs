@@ -280,7 +280,13 @@ public static class BaseBinding
         UserBinding.AddLockUser(obj1);
 
         var res = await Task.Run(async () =>
-            await Launch(obj, model.ShowWait, (pre) =>
+            await Launch(obj, (a) => 
+            {
+                return Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    return model.ShowWait(a);
+                });
+            }, (pre) =>
             {
                 return Dispatcher.UIThread.InvokeAsync(() =>
                     model.ShowWait(pre ? App.Lang("MainWindow.Info29") : App.Lang("MainWindow.Info30")));

@@ -147,7 +147,7 @@ public partial class MainControl : UserControl, IUserControl
     private void SwitchView()
     {
         var model = (DataContext as MainModel)!;
-        if (model.IsOneGame)
+        if (model.IsOneGame || model.IsGameError)
         {
             if (Content1.Child is not MainOneGameControl)
             {
