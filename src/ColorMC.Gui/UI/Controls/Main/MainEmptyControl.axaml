@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:MainModel"
@@ -17,53 +18,65 @@
         BorderThickness="2"
         CornerRadius="{setting:Style ButtonCornerRadius}">
         <Panel>
-            <StackPanel>
-                <TextBlock
-                    Margin="5"
-                    HorizontalAlignment="Center"
-                    FontSize="25"
-                    Text="{setting:Localize MainWindow.Text1}" />
+            <TextBlock
+                Margin="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontSize="25"
+                Text="{setting:Localize MainWindow.Text1}" />
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock
                     Margin="0,5,0,5"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     FontSize="20"
                     Text="{setting:Localize MainWindow.Text7}" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock
-                        Width="120"
-                        HorizontalAlignment="Left"
-                        FontSize="20"
-                        Text="{setting:Localize MainWindow.Text2}" />
+                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button
-                        Width="120"
-                        Height="35"
+                        Width="100"
+                        Height="130"
+                        Margin="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Transparent"
+                        BorderThickness="0"
                         Command="{Binding AddUser}"
-                        Content="{setting:Localize MainWindow.Text3}" />
-                </StackPanel>
-                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <TextBlock
-                        Width="120"
-                        HorizontalAlignment="Left"
-                        FontSize="20"
-                        Text="{setting:Localize MainWindow.Text4}" />
+                        CornerRadius="{setting:Style ButtonCornerRadius}">
+                        <StackPanel>
+                            <svg:SvgControl Path="/Resource/Icon/Main/svg1.svg" Stroke="{setting:Colors Font}" />
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text2}" />
+                        </StackPanel>
+                    </Button>
                     <Button
-                        Width="120"
-                        Height="35"
+                        Width="100"
+                        Height="130"
+                        Margin="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Transparent"
+                        BorderThickness="0"
                         Command="{Binding SetJava}"
-                        Content="{setting:Localize MainWindow.Text5}" />
-                </StackPanel>
-                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <TextBlock
-                        Width="120"
-                        HorizontalAlignment="Left"
-                        FontSize="20"
-                        Text="{setting:Localize MainWindow.Text6}" />
+                        CornerRadius="{setting:Style ButtonCornerRadius}">
+                        <StackPanel>
+                            <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/Main/svg2.svg" />
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text4}" />
+                        </StackPanel>
+                    </Button>
                     <Button
-                        Width="120"
-                        Height="35"
+                        Width="100"
+                        Height="130"
+                        Margin="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Transparent"
+                        BorderThickness="0"
                         Command="{Binding AddGame}"
-                        Content="{setting:Localize MainWindow.Text8}" />
-                </StackPanel>
+                        CornerRadius="{setting:Style ButtonCornerRadius}">
+                        <StackPanel>
+                            <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item1.svg" />
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text6}" />
+                        </StackPanel>
+                    </Button>
+                </WrapPanel>
             </StackPanel>
             <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
                 <Button
@@ -77,6 +90,12 @@
                     Margin="5,0,0,0"
                     Command="{Binding OpenWeb2}"
                     Content="{setting:Localize SettingWindow.Tab7.Text4}" />
+                <Button
+                    Width="120"
+                    Height="35"
+                    Margin="5,0,0,0"
+                    Command="{Binding ShowSetting}"
+                    Content="{setting:Localize SettingWindow.Title}" />
             </StackPanel>
         </Panel>
     </Border>
