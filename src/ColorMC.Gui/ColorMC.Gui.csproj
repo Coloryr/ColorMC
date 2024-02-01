@@ -99,6 +99,8 @@
     <None Remove="Resource\Icon\launch.svg" />
     <None Remove="Resource\Icon\left.svg" />
     <None Remove="Resource\Icon\left1.svg" />
+    <None Remove="Resource\Icon\Main\svg1.svg" />
+    <None Remove="Resource\Icon\Main\svg2.svg" />
     <None Remove="Resource\Icon\menu.svg" />
     <None Remove="Resource\Icon\net.svg" />
     <None Remove="Resource\Icon\NetFrp\item1.svg" />
@@ -224,6 +226,8 @@
     <AvaloniaResource Include="Resource\Icon\launch.svg" />
     <AvaloniaResource Include="Resource\Icon\left.svg" />
     <AvaloniaResource Include="Resource\Icon\left1.svg" />
+    <AvaloniaResource Include="Resource\Icon\Main\svg1.svg" />
+    <AvaloniaResource Include="Resource\Icon\Main\svg2.svg" />
     <AvaloniaResource Include="Resource\Icon\menu.svg" />
     <AvaloniaResource Include="Resource\Icon\net.svg" />
     <AvaloniaResource Include="Resource\Icon\NetFrp\item1.svg" />
