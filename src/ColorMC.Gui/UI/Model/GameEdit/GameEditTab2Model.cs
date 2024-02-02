@@ -47,6 +47,8 @@ public partial class GameEditModel
     private string? _proxyPassword;
     [ObservableProperty]
     private string? _jvmEnv;
+    [ObservableProperty]
+    private string? _gameTitle;
 
     [ObservableProperty]
     private ushort? _proxyPort;
@@ -81,6 +83,16 @@ public partial class GameEditModel
     private bool _removeGameArg;
 
     private bool _configLoad;
+
+    partial void OnGameTitleChanged(string? value)
+    {
+        if (_configLoad)
+            return;
+
+        _obj.Window ??= new();
+        _obj.Window.GameTitle = value;
+        _obj.Save();
+    }
 
     partial void OnRemoveJvmArgChanged(bool value)
     {
@@ -451,12 +463,14 @@ public partial class GameEditModel
             Width = config1.Width;
             Height = config1.Height;
             MaxWindow = config1.FullScreen;
+            GameTitle = config1.GameTitle;
         }
         else
         {
             Width = null;
             Height = null;
             MaxWindow = false;
+            GameTitle = null;
         }
 
         var config2 = _obj.StartServer;

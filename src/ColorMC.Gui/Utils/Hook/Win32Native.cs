@@ -619,6 +619,9 @@ public class Win32Native : INative
         //public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
         [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool SetWindowText(IntPtr hWnd, string lpString);
+
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool GetIconInfo(IntPtr hIcon, out ICONINFO pIconInfo);
 
         [DllImport("user32.dll", SetLastError = true)]

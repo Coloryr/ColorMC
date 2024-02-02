@@ -81,6 +81,10 @@
                             OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
                             OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
                     </WrapPanel>
+                    <TextBox
+                        Classes="input1"
+                        Text="{Binding GameTitle}"
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text38}" />
                 </StackPanel>
             </Border>
 
