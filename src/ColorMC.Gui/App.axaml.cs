@@ -183,7 +183,7 @@ public partial class App : Application
             GameIcon = new Bitmap(asset);
         }
         {
-            using var asset1 = AssetLoader.Open(new Uri("resm:ColorMC.Gui.icon.ico"));
+            using var asset1 = AssetLoader.Open(new Uri(SystemInfo.Os == OsType.MacOS ? "resm:ColorMC.Gui.macicon.ico" : "resm:ColorMC.Gui.icon.ico"));
             Icon = new(asset1!);
         }
         {
