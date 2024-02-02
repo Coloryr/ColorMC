@@ -1,8 +1,11 @@
-﻿using Silk.NET.Core;
+﻿using Jint.Runtime;
+using Silk.NET.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
+using System.Text;
 using System.Threading;
 using X11;
 
@@ -126,6 +129,24 @@ internal partial class X11Hook
         if (window != IntPtr.Zero)
         {
             Xlib.XStoreName(display, window, title);
+
+            Atom _NET_WM_NAME = XInternAtom(display, "_NET_WM_NAME", false);
+            Atom UTF8_STRING = XInternAtom(display, "UTF8_STRING", false);
+
+            var temp = Encoding.UTF8.GetBytes(title);
+
+            GCHandle handle = GCHandle.Alloc(temp, GCHandleType.Pinned);
+            try
+            {
+                IntPtr pointer = handle.AddrOfPinnedObject();
+                Xlib.XChangeProperty(display, window, _NET_WM_NAME, UTF8_STRING, 8,
+                           (int)PropertyMode.Replace, pointer, temp.Length);
+            }
+            finally
+            {
+                if (handle.IsAllocated)
+                    handle.Free(); // 一定要释放句柄
+            }
         }
         Xlib.XCloseDisplay(display);
     }
