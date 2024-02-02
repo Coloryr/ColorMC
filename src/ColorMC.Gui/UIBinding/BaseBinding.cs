@@ -21,6 +21,7 @@ using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
+using ColorMC.Gui.Utils.Hook;
 using ColorMC.Gui.Utils.LaunchSetting;
 using ICSharpCode.SharpZipLib.Zip;
 using System;
@@ -402,48 +403,60 @@ public static class BaseBinding
 
             App.MainWindow?.ShowMessage(App.Lang("Live2D.Text2"));
 
-            if (SystemInfo.Os == OsType.Windows &&
-                GuiConfigUtils.Config.Input.Enable)
+            _ = Task.Run(async () =>
             {
-                var run = true;
-                var uuid = GuiConfigUtils.Config.Input.NowConfig;
-                if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
+                IntPtr ptr = IntPtr.Zero;
+                try
                 {
-                    run = await model.ShowWait(App.Lang("Gui.Error51"));
-                }
-                if (run)
-                {
-                    _ = Task.Run(() =>
+                    pr.WaitForInputIdle();
+                    while (!pr.HasExited)
                     {
-                        IntPtr ptr = IntPtr.Zero;
-                        try
+                        await Task.Delay(100);
+                        ptr = pr.MainWindowHandle;
+                        if (ptr != IntPtr.Zero)
                         {
-                            pr.WaitForInputIdle();
-                            while (!pr.HasExited)
-                            {
-                                Task.Delay(100);
-                                ptr = pr.MainWindowHandle;
-                                if (ptr != IntPtr.Zero)
-                                {
-                                    break;
-                                }
-                            }
+                            break;
                         }
-                        catch
-                        {
+                    }
 
-                        }
-                        if (ptr == IntPtr.Zero)
+                    if (pr.HasExited)
+                    {
+                        return;
+                    }
+
+                    if (obj.Window?.GameTitle is { } title)
+                    {
+                        Win32Native.Win32.SetWindowText(ptr, title);
+                    }
+
+                    if (SystemInfo.Os == OsType.Windows &&
+           GuiConfigUtils.Config.Input.Enable)
+                    {
+                        var run = true;
+                        var uuid = GuiConfigUtils.Config.Input.NowConfig;
+                        if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
                         {
-                            return;
+                            run = await model.ShowWait(App.Lang("Gui.Error51"));
                         }
-                        Dispatcher.UIThread.Invoke(() =>
+                        if (run)
                         {
-                            App.ShowGameWindow(obj, pr, ptr);
-                        });
-                    });
+                            Dispatcher.UIThread.Invoke(() =>
+                            {
+                                App.ShowGameWindow(obj, pr, ptr);
+                            });
+                        }
+                    }
                 }
-            }
+                catch
+                {
+
+                }
+                if (ptr == IntPtr.Zero)
+                {
+                    return;
+                }
+
+            });
 
             pr.Exited += (a, b) =>
             {

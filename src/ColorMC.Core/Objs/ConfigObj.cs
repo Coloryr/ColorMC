@@ -41,6 +41,10 @@ public record WindowSettingObj
     /// 宽
     /// </summary>
     public uint? Width { get; set; }
+    /// <summary>
+    /// 游戏标题
+    /// </summary>
+    public string? GameTitle { get; set; }
 }
 
 
