@@ -94,15 +94,12 @@ internal partial class X11Hook
         }
 
         bool windowFound = false;
-        int attempt = 0;
-        // 获取 _NET_WM_PID 属性的原子
         var atom = Xlib.XInternAtom(display, "_NET_WM_PID", false);
-        while (!windowFound && attempt < 50 && !pr.HasExited) // 尝试50次
+        while (!windowFound && !pr.HasExited)
         {
             if (FindWindow(display, atom, pr.Id) == IntPtr.Zero)
             {
-                Thread.Sleep(100); // 等待100毫秒
-                attempt++;
+                Thread.Sleep(500);
             }
             else
             {
@@ -124,8 +121,12 @@ internal partial class X11Hook
             return;
         }
 
-        var window = new IntPtr(pr.Id);
-        Xlib.XStoreName(display, window, title);
+        var atom = Xlib.XInternAtom(display, "_NET_WM_PID", false);
+        var window = FindWindow(display, atom, pr.Id);
+        if (window != IntPtr.Zero)
+        {
+            Xlib.XStoreName(display, window, title);
+        }
         Xlib.XCloseDisplay(display);
     }
 
