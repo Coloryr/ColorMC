@@ -99,11 +99,15 @@ internal partial class X11Hook
         var atom = Xlib.XInternAtom(display, "_NET_WM_PID", false);
         while (!windowFound && attempt < 50 && !pr.HasExited) // 尝试50次
         {
-            windowFound = CheckForWindow(display, atom, pr.Id);
-            if (!windowFound)
+            if (FindWindow(display, atom, pr.Id) == IntPtr.Zero)
             {
                 Thread.Sleep(100); // 等待100毫秒
                 attempt++;
+            }
+            else
+            {
+                windowFound = true;
+                break;
             }
         }
 
@@ -135,6 +139,14 @@ internal partial class X11Hook
         }
 
         return childWindows;
+    }
+
+    private static IntPtr FindWindow(IntPtr display, Atom atom, int pid)
+    {
+        // 获取根窗口的 ID
+        IntPtr rootWindow = Xlib.XDefaultRootWindow(display);
+
+        return FindWindow(display, rootWindow, atom, pid);
     }
 
     private static IntPtr FindWindow(IntPtr display, IntPtr windows, Atom atom, int pid)
@@ -171,15 +183,5 @@ internal partial class X11Hook
         }
 
         return IntPtr.Zero;
-    }
-
-    public static bool CheckForWindow(IntPtr display, Atom atom, int pid)
-    {
-        // 获取根窗口的 ID
-        IntPtr rootWindow = Xlib.XDefaultRootWindow(display);
-
-        FindWindow(display, rootWindow, atom, pid);
-
-        return false;
     }
 }
