@@ -27,6 +27,7 @@ using ColorMC.Gui.UI.Controls.GameConfigEdit;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.GameExport;
 using ColorMC.Gui.UI.Controls.GameLog;
+using ColorMC.Gui.UI.Controls.GameWindow;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.NetFrp;
 using ColorMC.Gui.UI.Controls.ServerPack;
@@ -112,8 +113,6 @@ public partial class App : Application
     public static bool IsClose { get; set; }
 
     public static PlatformThemeVariant NowTheme { get; private set; }
-
-    public static Process? FrpProcess;
 
     private static readonly Language s_language = new();
 
@@ -802,14 +801,6 @@ public partial class App : Application
         OnClose?.Invoke();
         CloseAllWindow();
         ColorMCCore.Close();
-        try
-        {
-            FrpProcess?.Kill(true);
-        }
-        catch
-        { 
-            
-        }
         (Life as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
         Environment.Exit(Environment.ExitCode);
     }
