@@ -422,76 +422,6 @@ public static class BaseBinding
 
             App.MainWindow?.ShowMessage(App.Lang("Live2D.Text2"));
 
-            _ = Task.Run(() =>
-            {
-                IntPtr ptr = IntPtr.Zero;
-                try
-                {
-                    pr.WaitForInputIdle();
-                    while (!pr.HasExited)
-                    {
-                        Task.Delay(100);
-                        ptr = pr.MainWindowHandle;
-                        if (ptr != IntPtr.Zero)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (pr.HasExited)
-                    {
-                        return;
-                    }
-
-                    if (obj.Window?.GameTitle is { } title)
-                    {
-                        if (SystemInfo.Os == OsType.Windows)
-                        {
-                            Win32Native.Win32.SetWindowText(ptr, title);
-                        }
-                        else if (SystemInfo.Os == OsType.Linux)
-                        {
-                            IntPtr display = Xlib.XOpenDisplay(null);
-                            if (display == IntPtr.Zero)
-                            {
-                                return;
-                            }
-
-                            var window = new IntPtr(pr.Id);
-                            Xlib.XStoreName(display, window, title);
-                            Xlib.XCloseDisplay(display);
-                        }
-                        else if (SystemInfo.Os == OsType.MacOS)
-                        {
-                            string cmd = $"osascript -e 'tell application \"System Events\" " +
-                            $"to set title of windows of process \"{pr.ProcessName}\" to \"{title}\"'";
-                            ExecuteBashCommand(cmd);
-                        }
-                    }
-
-                    if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
-                    {
-                        var run = true;
-                        var uuid = GuiConfigUtils.Config.Input.NowConfig;
-                        Dispatcher.UIThread.Invoke(async () =>
-                        {
-                            if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
-                            {
-                                run = await model.ShowWait(App.Lang("Gui.Error51"));
-                            }
-                            if (run)
-                            {
-                                App.ShowGameWindow(obj, pr, ptr);
-                            }
-                        });
-                    }
-                }
-                catch(Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
-            });
-
             pr.Exited += (a, b) =>
             {
                 GameCount.GameClose(obj);
@@ -560,6 +490,78 @@ public static class BaseBinding
                     catch
                     {
 
+                    }
+                });
+            }
+            else
+            {
+                await Task.Run(() =>
+                {
+                    IntPtr ptr = IntPtr.Zero;
+                    try
+                    {
+                        pr.WaitForInputIdle();
+                        while (!pr.HasExited)
+                        {
+                            Task.Delay(100);
+                            ptr = pr.MainWindowHandle;
+                            if (ptr != IntPtr.Zero)
+                            {
+                                break;
+                            }
+                        }
+
+                        if (pr.HasExited)
+                        {
+                            return;
+                        }
+
+                        if (obj.Window?.GameTitle is { } title)
+                        {
+                            if (SystemInfo.Os == OsType.Windows)
+                            {
+                                Win32Native.Win32.SetWindowText(ptr, title);
+                            }
+                            else if (SystemInfo.Os == OsType.Linux)
+                            {
+                                IntPtr display = Xlib.XOpenDisplay(null);
+                                if (display == IntPtr.Zero)
+                                {
+                                    return;
+                                }
+
+                                var window = new IntPtr(pr.Id);
+                                Xlib.XStoreName(display, window, title);
+                                Xlib.XCloseDisplay(display);
+                            }
+                            else if (SystemInfo.Os == OsType.MacOS)
+                            {
+                                string cmd = $"osascript -e 'tell application \"System Events\" " +
+                                $"to set title of windows of process \"{pr.ProcessName}\" to \"{title}\"'";
+                                ExecuteBashCommand(cmd);
+                            }
+                        }
+
+                        if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
+                        {
+                            var run = true;
+                            var uuid = GuiConfigUtils.Config.Input.NowConfig;
+                            Dispatcher.UIThread.Invoke(async () =>
+                            {
+                                if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
+                                {
+                                    run = await model.ShowWait(App.Lang("Gui.Error51"));
+                                }
+                                if (run)
+                                {
+                                    App.ShowGameWindow(obj, pr, ptr);
+                                }
+                            });
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
                     }
                 });
             }
