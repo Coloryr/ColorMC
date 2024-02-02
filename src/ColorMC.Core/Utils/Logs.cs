@@ -36,7 +36,7 @@ public static class Logs
         }
         catch
         {
-            
+
         }
     }
 

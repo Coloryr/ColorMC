@@ -1,16 +1,10 @@
 using Caliburn.Micro;
-using System.IO;
 using System.Security.Principal;
 using WixSharp;
 using WixSharp.CommonTasks;
 using WixSharp.UI.Forms;
 using WixSharp.UI.WPF;
-using System.Windows.Forms;
 using WixToolset.Dtf.WindowsInstaller;
-using System;
-using System.Windows.Shapes;
-using Microsoft.Win32;
-using System.Collections;
 
 namespace ColorMC.Setup.Wix
 {

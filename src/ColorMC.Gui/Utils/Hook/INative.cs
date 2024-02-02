@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using ColorMC.Gui.Objs;
 using System;
 using System.Diagnostics;

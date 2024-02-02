@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;

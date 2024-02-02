@@ -280,7 +280,7 @@ public static class BaseBinding
         UserBinding.AddLockUser(obj1);
 
         var res = await Task.Run(async () =>
-            await Launch(obj, (a) => 
+            await Launch(obj, (a) =>
             {
                 return Dispatcher.UIThread.InvokeAsync(() =>
                 {

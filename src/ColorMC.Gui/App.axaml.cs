@@ -16,7 +16,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Animations;
-using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Count;
 using ColorMC.Gui.UI.Controls.Custom;
@@ -182,7 +181,7 @@ public partial class App : Application
             GameIcon = new Bitmap(asset);
         }
         {
-            using var asset1 = AssetLoader.Open(new Uri(SystemInfo.Os == OsType.MacOS 
+            using var asset1 = AssetLoader.Open(new Uri(SystemInfo.Os == OsType.MacOS
                 ? "resm:ColorMC.Gui.macicon.ico" : "resm:ColorMC.Gui.icon.ico"));
             Icon = new(asset1!);
         }
