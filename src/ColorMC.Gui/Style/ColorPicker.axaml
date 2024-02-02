@@ -1,0 +1,20 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <ColorPicker />
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="ColorPicker DropDownButton">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Background" Value="#f4f4f4" />
+
+        <Style Selector="^:pointerover">
+            <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        </Style>
+    </Style>
+</Styles>

@@ -4,14 +4,17 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
         <Border Padding="20">
-            <StackPanel Background="Black">
+            <StackPanel>
                 <Button
                     Width="80"
                     Height="40"
+                    Margin="20"
+                    Classes="top"
                     Content="123" />
                 <Button
                     Width="80"
                     Height="40"
+                    Margin="20"
                     Content="123"
                     IsEnabled="False" />
             </StackPanel>
@@ -27,23 +30,50 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
         <Setter Property="Padding" Value="0" />
+
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.95)" />
+        </Style>
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{setting:Colors Back1}" />
+            <Setter Property="Foreground" Value="{setting:Colors Font}" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#FFAAAAAA" />
+        </Style>
+        <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#FF666666" />
+            <Setter Property="Foreground" Value="#FFCDCDCD" />
+        </Style>
     </Style>
 
-    <Style Selector="Button:pressed">
-        <Setter Property="RenderTransform" Value="scale(0.95)" />
-    </Style>
+    <Style Selector="Button.top">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Decorator Padding="2">
+                    <Border x:Name="PART_Border" CornerRadius="{TemplateBinding CornerRadius}">
+                        <ContentPresenter
+                            x:Name="PART_ContentPresenter"
+                            Padding="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            RecognizesAccessKey="True" />
+                    </Border>
+                </Decorator>
+            </ControlTemplate>
+        </Setter>
 
-    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="{setting:Colors Back1}" />
-        <Setter Property="Foreground" Value="{setting:Colors Font}" />
-    </Style>
-
-    <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#FFAAAAAA" />
-    </Style>
-
-    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#FF666666" />
-        <Setter Property="Foreground" Value="#FFCDCDCD" />
+        <Style Selector="^ /template/ Border#PART_Border">
+            <Setter Property="BoxShadow" Value="0 1 3 0 #aaaaaa" />
+        </Style>
+        <Style Selector="^:pointerover /template/ Border#PART_Border">
+            <Setter Property="BoxShadow" Value="0 1 4 0 #aaaaaa" />
+        </Style>
     </Style>
 </Styles>

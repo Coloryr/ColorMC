@@ -11,6 +11,10 @@
                     <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text3}" />
                 </ListBox>
                 <ListBoxItem Content="test" IsEnabled="False" />
+                <ListBoxItem
+                    Classes="down"
+                    Content="test"
+                    IsEnabled="False" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -25,13 +29,12 @@
         <Setter Property="Margin" Value="20,2,0,2" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-    </Style>
 
-    <Style Selector="ListBoxItem:selected /template/ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="{setting:Colors Bottom2}" />
-    </Style>
-
-    <Style Selector="ListBoxItem:disabled /template/ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#EEAAAAAA" />
+        <Style Selector="^:selected /template/ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{setting:Colors Bottom2}" />
+        </Style>
+        <Style Selector="^:disabled /template/ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#EEAAAAAA" />
+        </Style>
     </Style>
 </Styles>
