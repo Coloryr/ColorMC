@@ -55,7 +55,6 @@ public partial class NetFrpModel
             Stop();
         }
 
-        App.FrpProcess = process;
         _process = process;
         _remoteIP = ip;
         _localIP = model.Port;
@@ -146,7 +145,6 @@ public partial class NetFrpModel
         _process.Kill(true);
         _process.Close();
         _process.Dispose();
-        App.FrpProcess = null;
         _process = null;
     }
 
@@ -167,7 +165,7 @@ public partial class NetFrpModel
     {
         if (_process != null)
         {
-            var res = await Model.ShowWait(App.Lang(App.Lang("NetFrpWindow.Tab3.Info2")));
+            var res = await Model.ShowWait(App.Lang("NetFrpWindow.Tab3.Info2"));
             if (res)
             {
                 Stop();
