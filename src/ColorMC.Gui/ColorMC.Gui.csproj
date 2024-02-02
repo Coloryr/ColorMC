@@ -320,4 +320,9 @@
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="X11">
+      <HintPath>..\libs\X11.Net\X11.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
