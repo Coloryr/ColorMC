@@ -494,20 +494,24 @@ public static class BaseBinding
 
                     if (obj.Window?.GameTitle is { } title)
                     {
-                        if (SystemInfo.Os == OsType.Windows)
+                        Task.Run(() =>
                         {
-                            Win32Native.Win32.SetTitle(pr, title);
-                        }
-                        else if (SystemInfo.Os == OsType.Linux)
-                        {
-                            X11Hook.SetTitle(pr, title);
-                        }
-                        else if (SystemInfo.Os == OsType.MacOS)
-                        {
-                            string cmd = $"osascript -e 'tell application \"System Events\" " +
-                            $"to set title of windows of process \"{pr.ProcessName}\" to \"{title}\"'";
-                            ExecuteBashCommand(cmd);
-                        }
+                            Thread.Sleep(2000);
+                            if (SystemInfo.Os == OsType.Windows)
+                            {
+                                Win32Native.Win32.SetTitle(pr, title);
+                            }
+                            else if (SystemInfo.Os == OsType.Linux)
+                            {
+                                X11Hook.SetTitle(pr, title);
+                            }
+                            else if (SystemInfo.Os == OsType.MacOS)
+                            {
+                                string cmd = $"osascript -e 'tell application \"System Events\" " +
+                                $"to set title of windows of process \"{pr.ProcessName}\" to \"{title}\"'";
+                                ExecuteBashCommand(cmd);
+                            }
+                        });
                     }
 
                     if (wait)

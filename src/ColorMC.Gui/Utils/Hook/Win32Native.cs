@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils.Hook;
@@ -598,7 +599,7 @@ public class Win32Native : INative
             while (!process.HasExited)
             {
                 process.WaitForInputIdle();
-                Task.Delay(500);
+                Thread.Sleep(500);
                 if (process.MainWindowHandle != IntPtr.Zero)
                 {
                     break;
