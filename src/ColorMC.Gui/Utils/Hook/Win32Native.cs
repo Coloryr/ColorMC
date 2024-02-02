@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Win32.Input;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using SkiaSharp;
@@ -9,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils.Hook;
 
@@ -30,9 +32,9 @@ public class Win32Native : INative
         _winEventDelegate = new(WinEventProc);
     }
 
-    public void AddHook(Process process, IntPtr handel)
+    public void AddHook(Process process)
     {
-        target = handel;
+        target = process.MainWindowHandle;
 
         uint processId;
         uint threadId = Win32.GetWindowThreadProcessId(target, out processId);
@@ -41,6 +43,11 @@ public class Win32Native : INative
             IntPtr.Zero, _winEventDelegate, (uint)process.Id, 0, Win32.WINEVENT_OUTOFCONTEXT);
 
         hHook = Win32.SetWindowsHookEx(Win32.WH_CALLWNDPROC, CallWndProc, IntPtr.Zero, threadId);
+    }
+
+    public IntPtr GetHandel()
+    {
+        return target;
     }
 
     public void AddHookTop(IntPtr top)
@@ -584,6 +591,24 @@ public class Win32Native : INative
             public IntPtr wParam;
             public uint message;
             public IntPtr hwnd;
+        }
+
+        internal static void WaitWindowDisplay(Process process)
+        {
+            while (!process.HasExited)
+            {
+                process.WaitForInputIdle();
+                Task.Delay(100);
+                if (process.MainWindowHandle != IntPtr.Zero)
+                {
+                    break;
+                }
+            }
+        }
+
+        internal static void SetTitle(Process process, string title)
+        {
+            SetWindowText(process.MainWindowHandle, title);
         }
 
         public delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);

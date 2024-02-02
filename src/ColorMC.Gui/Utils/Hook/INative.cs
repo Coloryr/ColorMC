@@ -10,7 +10,7 @@ public interface INative
 {
     event Action<string>? TitleChange;
     event Action<bool>? IsFocus;
-    void AddHook(Process id, IntPtr handel);
+    void AddHook(Process id);
     void AddHookTop(IntPtr top);
     void SetWindowState(WindowState state);
     Bitmap? GetIcon();
@@ -26,4 +26,5 @@ public interface INative
     bool GetMouseMode();
     void SendKey(InputKeyObj key, bool down, bool message);
     void SendScoll(bool up);
+    IntPtr GetHandel();
 }

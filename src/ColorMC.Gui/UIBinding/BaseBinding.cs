@@ -468,100 +468,78 @@ public static class BaseBinding
             GameCount.LaunchDone(obj);
             GameBinding.GameStateUpdate(obj);
 
-            if (wait)
+
+            _ = Task.Run(() =>
             {
-                await Task.Run(() =>
+
+                try
                 {
-                    Task.Delay(1000);
-                    try
+                    if (SystemInfo.Os == OsType.Windows)
                     {
-                        pr.WaitForInputIdle();
+                        Win32Native.Win32.WaitWindowDisplay(pr);
+                    }
+                    else if (SystemInfo.Os == OsType.Linux)
+                    {
+                        X11Hook.WaitWindowDisplay(pr);
+                    }
+                    else if (SystemInfo.Os == OsType.MacOS)
+                    {
 
-                        if (pr.HasExited)
+                    }
+
+                    if (pr.HasExited)
+                    {
+                        return;
+                    }
+
+                    if (obj.Window?.GameTitle is { } title)
+                    {
+                        if (SystemInfo.Os == OsType.Windows)
                         {
-                            return;
+                            Win32Native.Win32.SetTitle(pr, title);
                         }
-
-                        Dispatcher.UIThread.Post(() =>
+                        else if (SystemInfo.Os == OsType.Linux)
                         {
-                            App.Hide();
+                            X11Hook.SetTitle(pr, title);
+                        }
+                        else if (SystemInfo.Os == OsType.MacOS)
+                        {
+                            string cmd = $"osascript -e 'tell application \"System Events\" " +
+                            $"to set title of windows of process \"{pr.ProcessName}\" to \"{title}\"'";
+                            ExecuteBashCommand(cmd);
+                        }
+                    }
+
+                    if (wait)
+                    {
+                        Dispatcher.UIThread.Post(() =>
+                                {
+                                    App.Hide();
+                                });
+                    }
+
+                    if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
+                    {
+                        var run = true;
+                        var uuid = GuiConfigUtils.Config.Input.NowConfig;
+                        Dispatcher.UIThread.Invoke(async () =>
+                        {
+                            if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
+                            {
+                                run = await model.ShowWait(App.Lang("Gui.Error51"));
+                            }
+                            if (run)
+                            {
+                                App.ShowGameWindow(obj, pr);
+                            }
                         });
                     }
-                    catch
-                    {
+                }
+                catch (Exception e)
+                {
 
-                    }
-                });
-            }
-            _ = Task.Run(() =>
-           {
-               IntPtr ptr = IntPtr.Zero;
-               try
-               {
-                   pr.WaitForInputIdle();
-                   while (!pr.HasExited)
-                   {
-                       Task.Delay(100);
-                       ptr = pr.MainWindowHandle;
-                       if (ptr != IntPtr.Zero)
-                       {
-                           break;
-                       }
-                   }
-
-                   if (pr.HasExited)
-                   {
-                       return;
-                   }
-
-                   if (obj.Window?.GameTitle is { } title)
-                   {
-                       if (SystemInfo.Os == OsType.Windows)
-                       {
-                           Win32Native.Win32.SetWindowText(ptr, title);
-                       }
-                       else if (SystemInfo.Os == OsType.Linux)
-                       {
-                           IntPtr display = Xlib.XOpenDisplay(null);
-                           if (display == IntPtr.Zero)
-                           {
-                               return;
-                           }
-
-                           var window = new IntPtr(pr.Id);
-                           Xlib.XStoreName(display, window, title);
-                           Xlib.XCloseDisplay(display);
-                       }
-                       else if (SystemInfo.Os == OsType.MacOS)
-                       {
-                           string cmd = $"osascript -e 'tell application \"System Events\" " +
-                           $"to set title of windows of process \"{pr.ProcessName}\" to \"{title}\"'";
-                           ExecuteBashCommand(cmd);
-                       }
-                   }
-
-                   if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
-                   {
-                       var run = true;
-                       var uuid = GuiConfigUtils.Config.Input.NowConfig;
-                       Dispatcher.UIThread.Invoke(async () =>
-                       {
-                           if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
-                           {
-                               run = await model.ShowWait(App.Lang("Gui.Error51"));
-                           }
-                           if (run)
-                           {
-                               App.ShowGameWindow(obj, pr, ptr);
-                           }
-                       });
-                   }
-               }
-               catch (Exception e)
-               {
-                   
-               }
-           });
+                }
+            });
         }
         else
         {
