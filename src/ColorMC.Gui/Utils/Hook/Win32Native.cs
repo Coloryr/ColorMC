@@ -598,7 +598,7 @@ public class Win32Native : INative
             while (!process.HasExited)
             {
                 process.WaitForInputIdle();
-                Task.Delay(100);
+                Task.Delay(500);
                 if (process.MainWindowHandle != IntPtr.Zero)
                 {
                     break;
