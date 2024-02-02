@@ -422,7 +422,7 @@ public static class BaseBinding
 
             App.MainWindow?.ShowMessage(App.Lang("Live2D.Text2"));
 
-            _ = Task.Run(async () =>
+            _ = Task.Run(() =>
             {
                 IntPtr ptr = IntPtr.Zero;
                 try
@@ -430,7 +430,7 @@ public static class BaseBinding
                     pr.WaitForInputIdle();
                     while (!pr.HasExited)
                     {
-                        await Task.Delay(100);
+                        Task.Delay(100);
                         ptr = pr.MainWindowHandle;
                         if (ptr != IntPtr.Zero)
                         {
@@ -443,7 +443,6 @@ public static class BaseBinding
                         return;
                     }
 
-                   
                     if (obj.Window?.GameTitle is { } title)
                     {
                         if (SystemInfo.Os == OsType.Windows)
@@ -470,33 +469,27 @@ public static class BaseBinding
                         }
                     }
 
-                    if (SystemInfo.Os == OsType.Windows &&
-           GuiConfigUtils.Config.Input.Enable)
+                    if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
                     {
                         var run = true;
                         var uuid = GuiConfigUtils.Config.Input.NowConfig;
-                        if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
+                        Dispatcher.UIThread.Invoke(async () =>
                         {
-                            run = await model.ShowWait(App.Lang("Gui.Error51"));
-                        }
-                        if (run)
-                        {
-                            Dispatcher.UIThread.Invoke(() =>
+                            if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
+                            {
+                                run = await model.ShowWait(App.Lang("Gui.Error51"));
+                            }
+                            if (run)
                             {
                                 App.ShowGameWindow(obj, pr, ptr);
-                            });
-                        }
+                            }
+                        });
                     }
                 }
-                catch
+                catch(Exception e)
                 {
-
+                    Console.WriteLine(e.ToString());
                 }
-                if (ptr == IntPtr.Zero)
-                {
-                    return;
-                }
-
             });
 
             pr.Exited += (a, b) =>
