@@ -345,7 +345,7 @@
 //            Xlib.XSendEvent(display, target, false, (long)(EventMask.SubstructureRedirectMask | EventMask.SubstructureNotifyMask), new IntPtr(&xev));
 //        }
 //    }
-    
+
 //    public void SetWindowState(Avalonia.Controls.WindowState state)
 //    {
 //        var stateAtom = (IntPtr)Xlib.XInternAtom(display, "_NET_WM_STATE_MAXIMIZED_HORZ", false);
@@ -362,7 +362,7 @@
 //        {
 //            ChangeState(stateAtom, false);
 //            ChangeState(stateAtom1, false);
-            
+
 //            ChangeState(stateAtom2, true);
 //        }
 //        else if (state == Avalonia.Controls.WindowState.Maximized)

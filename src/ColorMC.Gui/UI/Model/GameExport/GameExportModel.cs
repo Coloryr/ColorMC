@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameExport;
 
-public partial class GameExportModel: MenuModel
+public partial class GameExportModel : MenuModel
 {
     /// <summary>
     /// 导出的文件列表

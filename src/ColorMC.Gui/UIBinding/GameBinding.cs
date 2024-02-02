@@ -1507,8 +1507,8 @@ public static class GameBinding
             cloud.ConfigTime = DateTime.Parse(temp.Item3!);
         }
         catch
-        { 
-        
+        {
+
         }
         GameCloudUtils.SetCloudData(game, cloud);
 

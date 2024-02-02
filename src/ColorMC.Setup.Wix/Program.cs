@@ -1,7 +1,5 @@
 using System;
-using System.Windows.Forms;
 using WixSharp;
-using WixToolset.Dtf.WindowsInstaller;
 
 namespace ColorMC.Setup.Wix
 {

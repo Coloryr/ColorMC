@@ -1,7 +1,6 @@
 using Caliburn.Micro;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Media.Imaging;
 using WixSharp;
 using WixSharp.UI.Forms;
 using WixSharp.UI.WPF;

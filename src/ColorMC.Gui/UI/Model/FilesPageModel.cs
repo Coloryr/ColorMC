@@ -76,7 +76,7 @@ public class FilesPageModel
         }
     }
 
-    public void SetUnSelectItems(List<string> config) 
+    public void SetUnSelectItems(List<string> config)
     {
         foreach (var item in config)
         {

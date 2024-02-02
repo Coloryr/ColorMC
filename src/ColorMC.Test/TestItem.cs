@@ -108,8 +108,8 @@ public static class TestItem
     public static void Item7()
     {
         var data = InstancesPath.Games.First();
-        var list = CheckHelpers.CheckGameFileAsync(data, new LoginObj(), 
-            (_, _)=> { }, CancellationToken.None).Result;
+        var list = CheckHelpers.CheckGameFileAsync(data, new LoginObj(),
+            (_, _) => { }, CancellationToken.None).Result;
         if (list == null)
         {
             Console.WriteLine("文件检查失败");
@@ -584,7 +584,7 @@ public static class TestItem
 
     public static void Item34()
     {
-        
+
 
     }
 }

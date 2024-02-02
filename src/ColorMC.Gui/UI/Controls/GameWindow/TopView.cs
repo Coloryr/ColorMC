@@ -1,20 +1,17 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.LogicalTree;
 using Avalonia.Media;
+using Avalonia.Metadata;
 using Avalonia.Platform;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 using ColorMC.Gui.UI.Views.Svg;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
-using System.Text;
-using System.Threading.Tasks;
-using Avalonia.Layout;
-using Avalonia.Threading;
-using Avalonia.Metadata;
-using Avalonia.VisualTree;
 using System.Reactive.Linq;
-using Avalonia.LogicalTree;
 
 namespace ColorMC.Gui.UI.Controls.GameWindow;
 

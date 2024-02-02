@@ -4,9 +4,6 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 
@@ -14,7 +11,7 @@ namespace ColorMC.Gui.UI.Model;
 
 public partial class ControlSelectModel : ObservableObject
 {
-    public ObservableCollection<string> Controls { get; init; } =[];
+    public ObservableCollection<string> Controls { get; init; } = [];
 
     public ObservableCollection<string> Configs { get; set; } = [];
 
@@ -75,7 +72,7 @@ public partial class ControlSelectModel : ObservableObject
             Load();
             return;
         }
-    } 
+    }
 
     private void Load()
     {

@@ -1,4 +1,3 @@
-using Avalonia.Controls.Shapes;
 using Silk.NET.OpenAL;
 using System;
 using System.Threading;
