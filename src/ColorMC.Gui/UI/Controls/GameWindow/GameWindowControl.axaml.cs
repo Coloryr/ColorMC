@@ -38,7 +38,6 @@ public partial class GameWindowControl : UserControl, IUserControl
 
     public string UseName { get; set; }
 
-    private readonly IntPtr _handle;
     private readonly INative _implementation;
     private readonly GameSettingObj _obj;
     private readonly TopView _control;
@@ -65,10 +64,9 @@ public partial class GameWindowControl : UserControl, IUserControl
         _name = ToString() ?? "GameWindowControl";
     }
 
-    public GameWindowControl(GameSettingObj obj, Process process, IntPtr handel) : this()
+    public GameWindowControl(GameSettingObj obj, Process process) : this()
     {
         _obj = obj;
-        _handle = handel;
         _process = process;
 
         process.Exited += Process_Exited;
@@ -78,9 +76,9 @@ public partial class GameWindowControl : UserControl, IUserControl
             _implementation = new Win32Native();
         }
 
-        _implementation.AddHook(process, _handle);
+        _implementation.AddHook(process);
         _implementation.NoBorder();
-        _control = new TopView(new WindowControlHandle(_implementation, handel));
+        _control = new TopView(new WindowControlHandle(_implementation, _implementation.GetHandel()));
         Panel1.Children.Add(_control);
 
         _controlIndex = 0;

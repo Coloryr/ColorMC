@@ -721,7 +721,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowGameWindow(GameSettingObj obj, Process process, IntPtr handel)
+    public static void ShowGameWindow(GameSettingObj obj, Process process)
     {
         if (SystemInfo.Os != OsType.Windows)
         {
@@ -734,7 +734,7 @@ public partial class App : Application
         }
         else
         {
-            var con = new GameWindowControl(obj, process, handel);
+            var con = new GameWindowControl(obj, process);
             GameWindows.Add(obj.UUID, con);
             AWindow(con);
         }
