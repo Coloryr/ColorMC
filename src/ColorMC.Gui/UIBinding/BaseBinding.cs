@@ -33,6 +33,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using X11;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -227,6 +228,24 @@ public static class BaseBinding
         {
             Task.Run(() => item.Kill(true));
         }
+    }
+
+    // 执行 Bash 命令的辅助方法
+    private static void ExecuteBashCommand(string command)
+    {
+        var proc = new Process
+        {
+            StartInfo = new()
+            {
+                FileName = "/bin/bash",
+                Arguments = $"-c \"{command}\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            }
+        };
+        proc.Start();
+        proc.WaitForExit();
     }
 
     /// <summary>
@@ -424,9 +443,31 @@ public static class BaseBinding
                         return;
                     }
 
+                   
                     if (obj.Window?.GameTitle is { } title)
                     {
-                        Win32Native.Win32.SetWindowText(ptr, title);
+                        if (SystemInfo.Os == OsType.Windows)
+                        {
+                            Win32Native.Win32.SetWindowText(ptr, title);
+                        }
+                        else if (SystemInfo.Os == OsType.Linux)
+                        {
+                            IntPtr display = Xlib.XOpenDisplay(null);
+                            if (display == IntPtr.Zero)
+                            {
+                                return;
+                            }
+
+                            var window = new IntPtr(pr.Id);
+                            Xlib.XStoreName(display, window, title);
+                            Xlib.XCloseDisplay(display);
+                        }
+                        else if (SystemInfo.Os == OsType.MacOS)
+                        {
+                            string cmd = $"osascript -e 'tell application \"System Events\" " +
+                            $"to set title of windows of process \"{pr.ProcessName}\" to \"{title}\"'";
+                            ExecuteBashCommand(cmd);
+                        }
                     }
 
                     if (SystemInfo.Os == OsType.Windows &&
