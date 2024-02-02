@@ -322,7 +322,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="X11">
-      <HintPath>..\libs\X11.Net\X11.dll</HintPath>
+      <HintPath>..\Lib\X11.Net\X11.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
