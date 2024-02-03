@@ -54,7 +54,7 @@
                             Stroke="{setting:Colors Font}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text9}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,-5">
+                    <WrapPanel Margin="0,0,0,0">
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <TextBlock Width="110" Text="{setting:Localize GameEditWindow.Tab2.Text10}" />
                             <NumericUpDown
@@ -82,9 +82,40 @@
                             OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
                     </WrapPanel>
                     <TextBox
-                        Classes="input1"
+                        Height="100"
+                        AcceptsReturn="True"
+                        Classes="input"
                         Text="{Binding GameTitle}"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text38}" />
+                    <WrapPanel>
+                        <ToggleSwitch
+                            Margin="0,0,5,0"
+                            IsChecked="{Binding RandomTitle}"
+                            OffContent="{setting:Localize GameEditWindow.Tab2.Text41}"
+                            OnContent="{setting:Localize GameEditWindow.Tab2.Text41}" />
+                        <ToggleSwitch
+                            Margin="0,0,5,0"
+                            IsChecked="{Binding CycTitle}"
+                            OffContent="{setting:Localize GameEditWindow.Tab2.Text39}"
+                            OnContent="{setting:Localize GameEditWindow.Tab2.Text39}" />
+                        <StackPanel IsEnabled="{Binding CycTitle}" Orientation="Horizontal">
+                            <TextBlock MinWidth="70" Text="{setting:Localize SettingWindow.Tab2.Text40}" />
+                            <Slider
+                                Width="150"
+                                Height="40"
+                                Margin="5,-10,5,0"
+                                HorizontalAlignment="Left"
+                                Foreground="{setting:Colors Main}"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="500"
+                                Maximum="5000"
+                                Minimum="0"
+                                SmallChange="100"
+                                TickFrequency="100"
+                                Value="{Binding TitleDelay}" />
+                            <TextBlock Width="40" Text="{Binding TitleDelay, StringFormat='{}{0}'}" />
+                        </StackPanel>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
 

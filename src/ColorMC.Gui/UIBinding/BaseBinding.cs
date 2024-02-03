@@ -33,7 +33,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using X11;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -494,32 +493,84 @@ public static class BaseBinding
 
                     if (obj.Window?.GameTitle is { } title)
                     {
+                        var conf = obj.Window!;
+                        var ran = new Random();
                         Task.Run(() =>
                         {
-                            Thread.Sleep(2000);
-                            if (SystemInfo.Os == OsType.Windows)
+                            int i = 0;
+                            var list = new List<string>();
+                            var list1 = title.Split('\n');
+
+                            foreach (var item in list1)
                             {
-                                Win32Native.Win32.SetTitle(pr, title);
+                                var temp = item.Trim();
+                                if (string.IsNullOrWhiteSpace(temp))
+                                {
+                                    continue;
+                                }
+
+                                list.Add(temp);
                             }
-                            else if (SystemInfo.Os == OsType.Linux)
+
+                            Thread.Sleep(1000);
+
+                            do
                             {
-                                X11Hook.SetTitle(pr, title);
+                                string title1 = "";
+                                if (conf.RandomTitle)
+                                {
+                                    title1 = list[ran.Next(list.Count)];
+                                }
+                                else
+                                {
+                                    i++;
+                                    if (i >= list.Count)
+                                    {
+                                        i = 0;
+                                    }
+                                    title1 = list[i];
+                                }
+                                
+                                if (SystemInfo.Os == OsType.Windows)
+                                {
+                                    Win32Native.Win32.SetTitle(pr, title1);
+                                }
+                                else if (SystemInfo.Os == OsType.Linux)
+                                {
+                                    X11Hook.SetTitle(pr, title1);
+                                }
+                                else if (SystemInfo.Os == OsType.MacOS)
+                                {
+                                    break;
+                                    //string cmd = $"osascript -e 'tell application \"System Events\" " +
+                                    //$"to set title of windows of process \"{pr.ProcessName}\" to \"{title1}\"'";
+                                    //ExecuteBashCommand(cmd);
+                                }
+
+                                try
+                                {
+                                    if (!conf.CycTitle || conf.TitleDelay <= 0 || pr.HasExited)
+                                    {
+                                        break;
+                                    }
+
+                                    Thread.Sleep(conf.TitleDelay);
+                                }
+                                catch
+                                { 
+                                    
+                                }
                             }
-                            else if (SystemInfo.Os == OsType.MacOS)
-                            {
-                                string cmd = $"osascript -e 'tell application \"System Events\" " +
-                                $"to set title of windows of process \"{pr.ProcessName}\" to \"{title}\"'";
-                                ExecuteBashCommand(cmd);
-                            }
+                            while (true);
                         });
                     }
 
                     if (wait)
                     {
                         Dispatcher.UIThread.Post(() =>
-                                {
-                                    App.Hide();
-                                });
+                        {
+                            App.Hide();
+                        });
                     }
 
                     if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
