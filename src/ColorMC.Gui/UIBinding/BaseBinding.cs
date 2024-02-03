@@ -483,7 +483,7 @@ public static class BaseBinding
                     }
                     else if (SystemInfo.Os == OsType.MacOS)
                     {
-
+                        return;
                     }
 
                     if (pr.HasExited)
@@ -530,7 +530,7 @@ public static class BaseBinding
                                     }
                                     title1 = list[i];
                                 }
-                                
+
                                 if (SystemInfo.Os == OsType.Windows)
                                 {
                                     Win32Native.Win32.SetTitle(pr, title1);
@@ -557,14 +557,13 @@ public static class BaseBinding
                                     Thread.Sleep(conf.TitleDelay);
                                 }
                                 catch
-                                { 
-                                    
+                                {
+
                                 }
                             }
                             while (true);
                         });
                     }
-
                     if (wait)
                     {
                         Dispatcher.UIThread.Post(() =>
@@ -592,7 +591,7 @@ public static class BaseBinding
                 }
                 catch (Exception e)
                 {
-
+                    Logs.Crash("game", e);
                 }
             });
         }

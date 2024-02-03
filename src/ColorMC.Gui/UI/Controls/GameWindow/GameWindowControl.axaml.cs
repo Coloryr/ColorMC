@@ -298,7 +298,7 @@ public partial class GameWindowControl : UserControl, IUserControl
 
         if (_implementation.GetWindowSize(out var width, out var height))
         {
-            Window.SetSize(width + 2, height + 31);
+            Window.SetSize(width - 16, height - 4);
         }
         if (_implementation.GetIcon() is { } icon)
         {

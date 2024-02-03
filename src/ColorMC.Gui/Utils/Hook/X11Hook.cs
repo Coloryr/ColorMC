@@ -1,10 +1,7 @@
-﻿using Jint.Runtime;
-using Silk.NET.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Threading;
 using X11;

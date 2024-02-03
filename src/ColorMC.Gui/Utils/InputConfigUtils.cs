@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Config;
+﻿using Avalonia.Input;
+using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -91,14 +92,42 @@ public static class InputConfigUtils
         return new()
         {
             UUID = Guid.NewGuid().ToString().ToLower(),
-            Keys = [],
-            AxisKeys = [],
+            Keys = new()
+            {
+                { 0, new() { Key = Key.Q } },
+                { 1, new() { Key = Key.F3 } },
+                { 2, new() { Key = Key.F } },
+                { 3, new() { Key = Key.E } },
+                { 4, new() { Key = Key.Escape } },
+                { 7, new() { Key = Key.LeftShift } },
+                { 8, new() { MouseButton = MouseButton.Middle } },
+                { 9, new() { Key = Key.Space } },
+                { 10, new() { MouseButton = MouseButton.Left } }
+            },
+            AxisKeys = new()
+            {
+                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                    { InputKey = 1, Start = -4000, End = -32768, BackCancel = false, Key = Key.W } },
+                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                    { InputKey = 1, Start = 4000, End = 32767, BackCancel = false, Key = Key.S } },
+                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                    { InputKey = 0, Start = -4000, End = -32768, BackCancel = false, Key = Key.A } },
+                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                    { InputKey = 0, Start = 4000, End = 32767, BackCancel = false, Key = Key.D } },
+                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                    { InputKey = 5, Start = 2000, End = 32767, BackCancel = false, MouseButton = MouseButton.Right } },
+                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                    { InputKey = 4, Start = 2000, End = 32767, BackCancel = false, Key = Key.LeftCtrl } },
+            },
             CursorAxis = 0,
             RotateAxis = 1,
-            CursorDeath = 2000,
-            RotateDeath = 2000,
+            CursorDeath = 3000,
+            RotateDeath = 3000,
             CursorRate = 0.5f,
-            RotateRate = 0.5f
+            RotateRate = 0.5f,
+            ItemCycle = true,
+            ItemCycleLeft = 13,
+            ItemCycleRight = 14
         };
     }
 

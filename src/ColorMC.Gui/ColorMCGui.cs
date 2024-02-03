@@ -206,7 +206,7 @@ public static class ColorMCGui
             .With(opt)
             .With(opt1)
             .With(new MacOSPlatformOptions()
-            { 
+            {
                 DisableDefaultApplicationMenuItems = true
             })
             .LogToTrace()
