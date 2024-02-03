@@ -64,25 +64,60 @@ public partial class GameEditModel
     private uint? _width;
     [ObservableProperty]
     private uint? _height;
+    [ObservableProperty]
+    private int _titleDelay;
 
     [ObservableProperty]
     private bool _enableGc;
     [ObservableProperty]
     private bool _enableJvmName;
-
     [ObservableProperty]
     private bool _perRun;
     [ObservableProperty]
     private bool _postRun;
     [ObservableProperty]
     private bool? _maxWindow;
-
     [ObservableProperty]
     private bool _removeJvmArg;
     [ObservableProperty]
     private bool _removeGameArg;
+    [ObservableProperty]
+    private bool _randomTitle;
+    [ObservableProperty]
+    private bool _cycTitle;
 
     private bool _configLoad;
+
+
+    partial void OnCycTitleChanged(bool value)
+    {
+        if (_configLoad)
+            return;
+
+        _obj.Window ??= new();
+        _obj.Window.CycTitle = value;
+        _obj.Save();
+    }
+
+    partial void OnRandomTitleChanged(bool value)
+    {
+        if (_configLoad)
+            return;
+
+        _obj.Window ??= new();
+        _obj.Window.RandomTitle = value;
+        _obj.Save();
+    }
+
+    partial void OnTitleDelayChanged(int value)
+    {
+        if (_configLoad)
+            return;
+
+        _obj.Window ??= new();
+        _obj.Window.TitleDelay = value;
+        _obj.Save();
+    }
 
     partial void OnGameTitleChanged(string? value)
     {
@@ -464,6 +499,9 @@ public partial class GameEditModel
             Height = config1.Height;
             MaxWindow = config1.FullScreen;
             GameTitle = config1.GameTitle;
+            RandomTitle = config1.RandomTitle;
+            CycTitle = config1.CycTitle;
+            TitleDelay = config1.TitleDelay;
         }
         else
         {
