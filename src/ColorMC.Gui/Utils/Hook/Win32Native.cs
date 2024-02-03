@@ -594,14 +594,21 @@ public class Win32Native : INative
 
         internal static void WaitWindowDisplay(Process process)
         {
-            while (!process.HasExited)
+            try
             {
-                process.WaitForInputIdle();
-                Thread.Sleep(500);
-                if (process.MainWindowHandle != IntPtr.Zero)
+                while (!process.HasExited)
                 {
-                    break;
+                    process.WaitForInputIdle();
+                    Thread.Sleep(500);
+                    if (process.MainWindowHandle != IntPtr.Zero)
+                    {
+                        break;
+                    }
                 }
+            }
+            catch
+            { 
+                
             }
         }
 

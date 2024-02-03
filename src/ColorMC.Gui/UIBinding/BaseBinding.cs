@@ -591,7 +591,7 @@ public static class BaseBinding
                 }
                 catch (Exception e)
                 {
-                    Logs.Crash("game", e);
+                    
                 }
             });
         }
