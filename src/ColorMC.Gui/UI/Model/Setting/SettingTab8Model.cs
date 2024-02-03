@@ -412,7 +412,7 @@ public partial class SettingModel
         }
         var item1 = new InputAxisButtonModel(this)
         {
-            UUID = Guid.NewGuid().ToString().ToLower(),
+            UUID = Guid.NewGuid().ToString().ToLower()[..8],
             InputKey = key1.Item1,
             Obj = key2,
             Start = key1.Item2 ? (short)2000 : (short)-2000,
