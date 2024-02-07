@@ -81,6 +81,7 @@
 	"UserWindow.Text3": "账户类型",
 	"UserWindow.Text5": "添加账户",
 	"UserWindow.Text6": "双击可切换账户，右键可以打开账户菜单",
+	"UserWindow.Text7": "注册账户",
 	"UserWindow.Error1": "请先选择账户",
 	"UserWindow.Error3": "服务器UUID错误",
 	"UserWindow.Error4": "服务器地址错误",

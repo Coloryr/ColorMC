@@ -1487,4 +1487,20 @@ public static class WebBinding
     {
         return SystemInfo.Os == OsType.Android ? PhoneJavaType : PCJavaType;
     }
+
+    public static void OpenRegister(AuthType type, string? name)
+    {
+        switch (type)
+        {
+            case AuthType.OAuth:
+                BaseBinding.OpUrl("https://www.minecraft.net/zh-hans/login");
+                break;
+            case AuthType.Nide8:
+                BaseBinding.OpUrl($"https://login.mc-user.com:233/{name}/loginreg");
+                break;
+            case AuthType.LittleSkin:
+                BaseBinding.OpUrl("https://littleskin.cn/auth/register");
+                break;
+        }
+    }
 }

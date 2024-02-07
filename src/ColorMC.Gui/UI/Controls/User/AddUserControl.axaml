@@ -1,0 +1,70 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.User.AddUserControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.User"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    x:DataType="model:UsersControlModel"
+    Design.Width="400"
+    mc:Ignorable="d">
+    <StackPanel Margin="5">
+        <TextBlock Text="{setting:Localize UserWindow.Text5}" />
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{setting:Localize UserWindow.Text3}" />
+            <ComboBox
+                Width="200"
+                Margin="5,0,5,0"
+                IsEnabled="{Binding EnableType}"
+                ItemsSource="{Binding UserTypeList}"
+                SelectedIndex="{Binding Type}" />
+        </StackPanel>
+        <TextBox
+            Margin="5"
+            AcceptsReturn="True"
+            Classes="input1"
+            IsEnabled="{Binding EnableName}"
+            Text="{Binding Name}"
+            Watermark="{Binding WatermarkName}" />
+        <TextBox
+            Margin="5"
+            AcceptsReturn="True"
+            Classes="input1"
+            IsEnabled="{Binding EnableUser}"
+            Text="{Binding User}"
+            Watermark="{setting:Localize Text.UserName}" />
+        <TextBox
+            Margin="5"
+            AcceptsReturn="True"
+            Classes="input1"
+            IsEnabled="{Binding EnablePassword}"
+            PasswordChar="*"
+            Text="{Binding Password}"
+            Watermark="{setting:Localize UserWindow.Text2}" />
+        <DockPanel HorizontalAlignment="Stretch">
+            <Button
+                Width="80"
+                Height="25"
+                Margin="5"
+                Command="{Binding Add}"
+                Content="{setting:Localize Button.Add}"
+                DockPanel.Dock="Right"
+                IsEnabled="{Binding !IsAdding}" />
+            <Button
+                Width="80"
+                Height="25"
+                Margin="5"
+                Command="{Binding Cancel}"
+                Content="{setting:Localize Button.Cancel}"
+                DockPanel.Dock="Right" />
+            <Button
+                Width="80"
+                Height="25"
+                Margin="5"
+                Command="{Binding Register}"
+                Content="{setting:Localize UserWindow.Text7}"
+                IsEnabled="{Binding CanRegister}" />
+        </DockPanel>
+    </StackPanel>
+</UserControl>
