@@ -20,11 +20,9 @@
     <Style Selector="ToggleSwitch:pointerover /template/ Border#OuterBorder">
         <Setter Property="Background" Value="{setting:Colors Back1}" />
     </Style>
-
     <Style Selector="ToggleSwitch:checked /template/ Border#SwitchKnobBounds">
         <Setter Property="Background" Value="{setting:Colors Main}" />
     </Style>
-
     <Style Selector="ToggleSwitch:disabled /template/ Border#SwitchKnobBounds">
         <Setter Property="Background" Value="#999999" />
     </Style>
