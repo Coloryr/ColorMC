@@ -25,16 +25,18 @@
                     Background="Transparent"
                     Orientation="Horizontal">
                     <Button
-                        Width="25"
-                        Height="25"
+                        Width="36"
+                        Height="36"
+                        Margin="-3"
+                        Classes="top"
                         Command="{Binding OpenSide}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text5}"
                         ToolTip.VerticalOffset="-30">
                         <Svg Path="/Resource/Icon/menu.svg" />
                     </Button>
                     <TextBlock
-                        Margin="20,0,0,0"
-                        FontSize="18"
+                        Margin="10,0,0,0"
+                        FontSize="20"
                         Text="{Binding Title}" />
                 </StackPanel>
             </Border>

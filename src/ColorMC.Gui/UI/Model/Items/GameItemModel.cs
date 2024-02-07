@@ -35,6 +35,9 @@ public partial class GameItemModel : GameModel
     private bool _isNew;
 
     [ObservableProperty]
+    private bool _buttonShow;
+
+    [ObservableProperty]
     private string _tips;
 
     [ObservableProperty]
@@ -104,6 +107,11 @@ public partial class GameItemModel : GameModel
         }
     }
 
+    partial void OnIsOverChanged(bool value)
+    {
+        ButtonShow = value || IsSelect;
+    }
+
     partial void OnIsSelectChanged(bool value)
     {
         if (value == false && OneGame)
@@ -117,6 +125,8 @@ public partial class GameItemModel : GameModel
         {
             IsOver = value;
         }
+
+        ButtonShow = value || IsOver;
     }
 
     [RelayCommand]

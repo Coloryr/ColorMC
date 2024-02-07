@@ -19,7 +19,7 @@
         <Setter Property="MaxDropDownHeight" Value="300" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Background" Value="{setting:Colors Back}" />
-        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="#44808080" />
         <Setter Property="BorderThickness" Value="1" />
 
         <Style Selector="^:pointerover /template/ Border#Background">

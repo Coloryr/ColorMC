@@ -22,8 +22,9 @@ public partial class GameControl : UserControl
         PointerEntered += GameControl_PointerEntered;
         PointerExited += GameControl_PointerExited;
 
-        PointerPressed += GameControl_PointerPressed;
-        PointerReleased += GameControl_PointerReleased;
+        AddHandler(PointerPressedEvent, GameControl_PointerPressed, Avalonia.Interactivity.RoutingStrategies.Tunnel);
+        AddHandler(PointerReleasedEvent, GameControl_PointerReleased, Avalonia.Interactivity.RoutingStrategies.Tunnel);
+
         PointerMoved += GameControl_PointerMoved;
         DoubleTapped += GameControl_DoubleTapped;
     }
@@ -71,13 +72,14 @@ public partial class GameControl : UserControl
         {
             return;
         }
-        LongPressed.Cancel();
+        
         var pro = e.GetCurrentPoint(this);
         if (pro.Properties.IsLeftButtonPressed && DataContext is GameItemModel model && !model.IsNew)
         {
             var pos = pro.Position;
             if (Math.Sqrt(Math.Pow(Math.Abs(pos.X - point.X), 2) + Math.Pow(Math.Abs(pos.Y - point.Y), 2)) > 30)
             {
+                LongPressed.Cancel();
                 model.Move(e);
                 e.Handled = true;
             }
@@ -98,9 +100,9 @@ public partial class GameControl : UserControl
 
     private void GameControl_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        e.Handled = true;
         if (DataContext is GameItemModel model)
         {
+            e.Handled = true;
             model.Launch();
         }
     }
@@ -108,7 +110,6 @@ public partial class GameControl : UserControl
     private void GameControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         press = true;
-        e.Handled = true;
         if (DataContext is GameItemModel model)
         {
             if (model.IsNew)
@@ -123,6 +124,7 @@ public partial class GameControl : UserControl
 
             if (pro.Properties.IsRightButtonPressed)
             {
+                e.Handled = true;
                 Flyout((sender as Control)!);
             }
             else
@@ -131,6 +133,8 @@ public partial class GameControl : UserControl
                 {
                     return;
                 }
+
+                e.Handled = true;
                 LongPressed.Pressed(() => Flyout((sender as Control)!));
             }
         }

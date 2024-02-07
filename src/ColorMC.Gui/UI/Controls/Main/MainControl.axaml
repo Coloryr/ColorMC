@@ -76,8 +76,9 @@
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <StackPanel IsVisible="{Binding TopSide}" Orientation="Horizontal">
                                 <Button
-                                    Width="38"
-                                    Height="38"
+                                    Width="42"
+                                    Height="42"
+                                    Margin="-1,-4,-1,-4"
                                     Classes="top"
                                     Command="{Binding Upgrade}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
@@ -87,8 +88,9 @@
                                     <Svg Path="/Resource/Icon/upgrade.svg" />
                                 </Button>
                                 <Button
-                                    Width="38"
-                                    Height="38"
+                                    Width="42"
+                                    Height="42"
+                                    Margin="-1,-4,-1,-4"
                                     Classes="top"
                                     Command="{Binding NewInfo}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
@@ -97,8 +99,9 @@
                                     <Svg Path="/Resource/Icon/new.svg" />
                                 </Button>
                                 <Button
-                                    Width="38"
-                                    Height="38"
+                                    Width="42"
+                                    Height="42"
+                                    Margin="-1,-4,-1,-4"
                                     Classes="top"
                                     Command="{Binding MusicPause}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
@@ -108,8 +111,9 @@
                                     <Svg Path="/Resource/Icon/play.svg" />
                                 </Button>
                                 <Button
-                                    Width="38"
-                                    Height="38"
+                                    Width="42"
+                                    Height="42"
+                                    Margin="-1,-4,-1,-4"
                                     Classes="top"
                                     Command="{Binding OpenNetFrp}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
@@ -118,8 +122,9 @@
                                     <Svg Path="/Resource/Icon/net.svg" />
                                 </Button>
                                 <Button
-                                    Width="38"
-                                    Height="38"
+                                    Width="42"
+                                    Height="42"
+                                    Margin="-1,-4,-1,-4"
                                     Classes="top"
                                     Command="{Binding OpenGuide}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
@@ -128,8 +133,9 @@
                                     <Svg Path="/Resource/Icon/book.svg" />
                                 </Button>
                                 <Button
-                                    Width="38"
-                                    Height="38"
+                                    Width="42"
+                                    Height="42"
+                                    Margin="-1,-4,-1,-4"
                                     Classes="top"
                                     Command="{Binding ShowSkin}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
@@ -138,8 +144,9 @@
                                     <Svg Path="/Resource/Icon/skin.svg" />
                                 </Button>
                                 <Button
-                                    Width="38"
-                                    Height="38"
+                                    Width="42"
+                                    Height="42"
+                                    Margin="-1,-4,-1,-4"
                                     Classes="top"
                                     Command="{Binding ShowCount}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
@@ -149,8 +156,9 @@
                                     <Svg Path="/Resource/Icon/count.svg" />
                                 </Button>
                                 <Button
-                                    Width="38"
-                                    Height="38"
+                                    Width="42"
+                                    Height="42"
+                                    Margin="-1,-4,-2,-4"
                                     Classes="top"
                                     Command="{Binding ShowSetting}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
@@ -160,8 +168,9 @@
                                 </Button>
                             </StackPanel>
                             <Button
-                                Width="38"
-                                Height="38"
+                                Width="42"
+                                Height="42"
+                                Margin="0,-4,-2,-4"
                                 Classes="top"
                                 Command="{Binding OpenSide}"
                                 CornerRadius="{setting:Style ButtonCornerRadius}"

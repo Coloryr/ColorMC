@@ -12,7 +12,7 @@
     x:DataType="model:GameItemModel"
     ToolTip.Tip="{Binding Tips}"
     mc:Ignorable="d">
-    <Panel>
+    <Panel Background="Transparent">
         <Button
             Width="78"
             HorizontalAlignment="Center"
@@ -22,7 +22,7 @@
             Command="{Binding AddGame}"
             CornerRadius="{setting:Style ButtonCornerRadius}"
             IsVisible="{Binding IsNew}">
-            <StackPanel>
+            <StackPanel Margin="5">
                 <svg:SvgControl
                     Width="70"
                     Height="70"
@@ -35,24 +35,13 @@
                     Text="{setting:Localize MainWindow.Text8}" />
             </StackPanel>
         </Button>
-        <Panel IsVisible="{Binding !IsNew, FallbackValue=false}">
-            <Rectangle
-                Fill="{setting:Colors Back}"
-                IsVisible="{Binding IsOver}"
-                RadiusX="{setting:Style Radius}"
-                RadiusY="{setting:Style Radius}" />
-            <Rectangle
-                Name="Rectangle1"
-                Fill="{setting:Colors TranBack}"
-                IsVisible="{Binding IsSelect}"
-                RadiusX="{setting:Style Radius}"
-                RadiusY="{setting:Style Radius}"
-                Stroke="{setting:Colors Main}"
-                StrokeThickness="3" />
+        <Button
+            Background="Transparent"
+            BorderThickness="0"
+            IsVisible="{Binding !IsNew, FallbackValue=false}">
             <StackPanel Margin="5">
                 <Panel>
                     <Border
-                        Name="Icons"
                         Width="70"
                         Height="70"
                         VerticalAlignment="Center"
@@ -78,8 +67,8 @@
                         Source="resm:ColorMC.Gui.Resource.Pic.load.png"
                         Stretch="UniformToFill" />
                     <Button
-                        Width="30"
-                        Height="30"
+                        Width="32"
+                        Height="32"
                         Margin="34,0,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -87,14 +76,14 @@
                         Command="{Binding EditGame}"
                         CornerRadius="20"
                         IsEnabled="{Binding !OneGame}"
-                        IsVisible="{Binding IsOver}"
+                        IsVisible="{Binding ButtonShow}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text12}"
                         ToolTip.VerticalOffset="-30">
                         <Svg Path="/Resource/Icon/edit.svg" />
                     </Button>
                     <Button
-                        Width="30"
-                        Height="30"
+                        Width="32"
+                        Height="32"
                         Margin="0,0,34,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -102,15 +91,13 @@
                         Command="{Binding Launch}"
                         CornerRadius="20"
                         IsEnabled="{Binding !IsLaunching}"
-                        IsVisible="{Binding IsOver}"
+                        IsVisible="{Binding ButtonShow}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text11}"
                         ToolTip.VerticalOffset="-30">
                         <Svg Path="/Resource/Icon/launch.svg" />
                     </Button>
                 </Panel>
-
                 <TextBlock
-                    Name="TextBlock1"
                     HorizontalAlignment="Center"
                     FontSize="13"
                     Text="{Binding Name, FallbackValue=1234}"
@@ -118,8 +105,6 @@
                     TextTrimming="{Binding Trim}"
                     TextWrapping="{Binding Wrap}" />
             </StackPanel>
-        </Panel>
-
+        </Button>
     </Panel>
-
 </UserControl>

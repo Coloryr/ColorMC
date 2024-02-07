@@ -20,13 +20,6 @@
             IsVisible="{Binding Top}"
             RadiusX="{setting:Style Radius}"
             RadiusY="{setting:Style Radius}" />
-        <Rectangle
-            Fill="{setting:Colors TranBack}"
-            IsVisible="{Binding IsSelect}"
-            RadiusX="{setting:Style Radius}"
-            RadiusY="{setting:Style Radius}"
-            Stroke="{setting:Colors Main}"
-            StrokeThickness="2" />
         <Panel Margin="5">
             <Border
                 Width="90"

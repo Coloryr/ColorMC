@@ -21,6 +21,10 @@
         <Setter Property="Foreground" Value="{setting:Colors Font}" />
         <Setter Property="SelectionBrush" Value="{setting:Colors Main}" />
 
+        <Style Selector="^:pointerover Border#PART_BorderElement">
+            <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        </Style>
+
         <Style Selector="^:focus /template/ Border#PART_BorderElement">
             <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
         </Style>
@@ -31,6 +35,10 @@
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="SelectionBrush" Value="{setting:Colors Main}" />
+
+        <Style Selector="^:pointerover Border#PART_BorderElement">
+            <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        </Style>
 
         <Style Selector="^:focus">
             <Setter Property="Background" Value="#44bdf2ff" />
