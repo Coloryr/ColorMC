@@ -160,12 +160,13 @@ public partial class GameLogModel : GameModel
         if (IsGameRun)
         {
             Model.Title1 = App.Lang("GameLogWindow.Info3");
-            LoadLast();
         }
         else
         {
             Model.Title1 = "";
         }
+
+        LoadLast();
     }
 
     public void SetNotAuto()
@@ -223,6 +224,9 @@ public partial class GameLogModel : GameModel
 
     public void LoadLast()
     {
-        Text = new(BaseBinding.GameLogs[Obj.UUID].ToString());
+        if (BaseBinding.GameLogs.TryGetValue(Obj.UUID, out var temp))
+        {
+            Text = new(temp.ToString());
+        }
     }
 }
