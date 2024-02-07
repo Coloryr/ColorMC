@@ -25,7 +25,7 @@ public partial class UsersControlModel : TopModel
     private UserDisplayObj? _item;
 
     [ObservableProperty]
-    private int _type;
+    private AuthType _type;
 
     [ObservableProperty]
     private bool _enableName;
@@ -37,6 +37,8 @@ public partial class UsersControlModel : TopModel
     private bool _enableType;
     [ObservableProperty]
     private bool _isAdding;
+    [ObservableProperty]
+    private bool _canRegister;
 
     [ObservableProperty]
     private string _watermarkName;
@@ -85,11 +87,11 @@ public partial class UsersControlModel : TopModel
         }
     }
 
-    partial void OnTypeChanged(int value)
+    partial void OnTypeChanged(AuthType value)
     {
         switch (value)
         {
-            case 0:
+            case AuthType.Offline:
                 EnableName = false;
                 WatermarkName = "";
                 Name = "";
@@ -97,8 +99,9 @@ public partial class UsersControlModel : TopModel
                 User = "";
                 EnablePassword = false;
                 Password = "";
+                CanRegister = false;
                 break;
-            case 1:
+            case AuthType.OAuth:
                 EnableName = false;
                 WatermarkName = "";
                 Name = "";
@@ -106,8 +109,9 @@ public partial class UsersControlModel : TopModel
                 User = "";
                 EnablePassword = false;
                 Password = "";
+                CanRegister = true;
                 break;
-            case 2:
+            case AuthType.Nide8:
                 EnableName = true;
                 WatermarkName = App.Lang("UserWindow.Info9");
                 Name = "";
@@ -115,8 +119,9 @@ public partial class UsersControlModel : TopModel
                 User = "";
                 EnablePassword = true;
                 Password = "";
+                CanRegister = true;
                 break;
-            case 3:
+            case AuthType.AuthlibInjector:
                 EnableName = true;
                 WatermarkName = App.Lang("UserWindow.Info10");
                 Name = "";
@@ -124,8 +129,9 @@ public partial class UsersControlModel : TopModel
                 User = "";
                 EnablePassword = true;
                 Password = "";
+                CanRegister = false;
                 break;
-            case 4:
+            case AuthType.LittleSkin:
                 EnableName = false;
                 WatermarkName = "";
                 Name = "";
@@ -133,8 +139,9 @@ public partial class UsersControlModel : TopModel
                 User = "";
                 EnablePassword = true;
                 Password = "";
+                CanRegister = true;
                 break;
-            case 5:
+            case AuthType.SelfLittleSkin:
                 EnableName = true;
                 WatermarkName = App.Lang("UserWindow.Info11");
                 Name = "";
@@ -142,6 +149,7 @@ public partial class UsersControlModel : TopModel
                 User = "";
                 EnablePassword = true;
                 Password = "";
+                CanRegister = false;
                 break;
             default:
                 EnableName = false;
@@ -151,6 +159,20 @@ public partial class UsersControlModel : TopModel
                 User = "";
                 EnablePassword = false;
                 Password = "";
+                CanRegister = false;
+                break;
+        }
+    }
+
+    [RelayCommand]
+    public void Register()
+    {
+        switch (Type)
+        {
+            case AuthType.OAuth:
+            case AuthType.Nide8:
+            case AuthType.LittleSkin:
+                WebBinding.OpenRegister(Type, Name);
                 break;
         }
     }
@@ -163,14 +185,14 @@ public partial class UsersControlModel : TopModel
         if (ConfigBinding.IsLockLogin())
         {
             ConfigBinding.GetLockLogin(out var type, out var url);
-            Type = type + 1;
+            Type = (AuthType)(type + 1);
             Name = url;
             EnableType = false;
         }
         else
         {
             Name = "";
-            Type = -1;
+            Type = (AuthType)(-1);
             EnableType = true;
         }
 
@@ -187,7 +209,7 @@ public partial class UsersControlModel : TopModel
         IsAdding = true;
         switch (Type)
         {
-            case 0:
+            case AuthType.Offline:
                 var name = User;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(name))
@@ -205,7 +227,7 @@ public partial class UsersControlModel : TopModel
                 Name = "";
                 ok = true;
                 break;
-            case 1:
+            case AuthType.OAuth:
                 _cancel = false;
                 _isOAuth = true;
                 Model.Progress(App.Lang("UserWindow.Info1"));
@@ -225,7 +247,7 @@ public partial class UsersControlModel : TopModel
                 _isOAuth = false;
                 ok = true;
                 break;
-            case 2:
+            case AuthType.Nide8:
                 var server = Name;
                 _isOAuth = false;
                 if (server?.Length != 32)
@@ -252,7 +274,7 @@ public partial class UsersControlModel : TopModel
                 Name = "";
                 ok = true;
                 break;
-            case 3:
+            case AuthType.AuthlibInjector:
                 server = Name;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
@@ -279,7 +301,7 @@ public partial class UsersControlModel : TopModel
                 Name = "";
                 ok = true;
                 break;
-            case 4:
+            case AuthType.LittleSkin:
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
@@ -299,7 +321,7 @@ public partial class UsersControlModel : TopModel
                 Model.Notify(App.Lang("Gui.Info4"));
                 ok = true;
                 break;
-            case 5:
+            case AuthType.SelfLittleSkin:
                 server = Name;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
@@ -391,7 +413,7 @@ public partial class UsersControlModel : TopModel
             return;
 
         SetAdd();
-        Type = 3;
+        Type = AuthType.AuthlibInjector;
         Name = HttpUtility.UrlDecode(url.Replace("authlib-injector:yggdrasil-server:", ""));
     }
 
@@ -409,15 +431,15 @@ public partial class UsersControlModel : TopModel
 
             switch (Type)
             {
-                case 2:
-                case 3:
-                case 5:
+                case AuthType.Nide8:
+                case AuthType.AuthlibInjector:
+                case AuthType.SelfLittleSkin:
                     OnTypeChanged(Type);
                     SetAdd();
                     User = user.Text2;
                     Name = user.Text1;
                     break;
-                case 4:
+                case AuthType.LittleSkin:
                     OnTypeChanged(Type);
                     SetAdd();
                     User = user.Text2;
@@ -432,7 +454,7 @@ public partial class UsersControlModel : TopModel
 
     public void ReLogin(UserDisplayObj obj)
     {
-        Type = obj.AuthType.ToInt();
+        Type = obj.AuthType;
 
         EnableType = false;
         EnableName = false;
