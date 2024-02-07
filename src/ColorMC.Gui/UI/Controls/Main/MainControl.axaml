@@ -78,6 +78,7 @@
                                 <Button
                                     Width="38"
                                     Height="38"
+                                    Classes="top"
                                     Command="{Binding Upgrade}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
                                     IsVisible="{Binding HaveUpdate}"
@@ -88,7 +89,7 @@
                                 <Button
                                     Width="38"
                                     Height="38"
-                                    Margin="3,0,0,0"
+                                    Classes="top"
                                     Command="{Binding NewInfo}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text74}"
@@ -98,7 +99,7 @@
                                 <Button
                                     Width="38"
                                     Height="38"
-                                    Margin="3,0,0,0"
+                                    Classes="top"
                                     Command="{Binding MusicPause}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
                                     IsVisible="{Binding MusicDisplay}"
@@ -109,7 +110,7 @@
                                 <Button
                                     Width="38"
                                     Height="38"
-                                    Margin="3,0,0,0"
+                                    Classes="top"
                                     Command="{Binding OpenNetFrp}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text72}"
@@ -119,7 +120,7 @@
                                 <Button
                                     Width="38"
                                     Height="38"
-                                    Margin="3,0,0,0"
+                                    Classes="top"
                                     Command="{Binding OpenGuide}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text70}"
@@ -129,7 +130,7 @@
                                 <Button
                                     Width="38"
                                     Height="38"
-                                    Margin="3,0,0,0"
+                                    Classes="top"
                                     Command="{Binding ShowSkin}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text9}"
@@ -139,7 +140,7 @@
                                 <Button
                                     Width="38"
                                     Height="38"
-                                    Margin="3,0,0,0"
+                                    Classes="top"
                                     Command="{Binding ShowCount}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
                                     IsVisible="{Binding !IsPhone}"
@@ -150,7 +151,7 @@
                                 <Button
                                     Width="38"
                                     Height="38"
-                                    Margin="3,0,0,0"
+                                    Classes="top"
                                     Command="{Binding ShowSetting}"
                                     CornerRadius="{setting:Style ButtonCornerRadius}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text13}"
@@ -161,7 +162,7 @@
                             <Button
                                 Width="38"
                                 Height="38"
-                                Margin="3,0,0,0"
+                                Classes="top"
                                 Command="{Binding OpenSide}"
                                 CornerRadius="{setting:Style ButtonCornerRadius}"
                                 IsVisible="{Binding TopSide2}"

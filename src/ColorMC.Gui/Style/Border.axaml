@@ -11,10 +11,11 @@
     <Style Selector="Border.t1">
         <Setter Property="Background" Value="{setting:Colors GroupBack}" />
         <Setter Property="BorderBrush" Value="{setting:Colors GroupColor1}" />
+        <Style Selector="^:pointerover">
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrushPointerOver}" />
+        </Style>
     </Style>
-    <Style Selector="Border.t1:pointerover">
-        <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrushPointerOver}" />
-    </Style>
+
 </Styles>

@@ -4,7 +4,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
         <Border Padding="20">
-            <StackPanel Background="Black">
+            <StackPanel>
                 <RepeatButton
                     Width="80"
                     Height="40"
@@ -26,27 +26,25 @@
         <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="BorderBrush" Value="{setting:Colors Bottom}" />
+
+        <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.95)" />
+        </Style>
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#FFDDDDDD" />
+            <Setter Property="Foreground" Value="{setting:Colors Font}" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#FFAAAAAA" />
+        </Style>
+        <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#FF666666" />
+            <Setter Property="Foreground" Value="#FFCDCDCD" />
+        </Style>
     </Style>
 
-    <Style Selector="RepeatButton /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
-    </Style>
 
-    <Style Selector="RepeatButton:pressed">
-        <Setter Property="RenderTransform" Value="scale(0.95)" />
-    </Style>
-
-    <Style Selector="RepeatButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#FFDDDDDD" />
-        <Setter Property="Foreground" Value="{setting:Colors Font}" />
-    </Style>
-
-    <Style Selector="RepeatButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#FFAAAAAA" />
-    </Style>
-
-    <Style Selector="RepeatButton:disabled /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#FF666666" />
-        <Setter Property="Foreground" Value="#FFCDCDCD" />
-    </Style>
 </Styles>

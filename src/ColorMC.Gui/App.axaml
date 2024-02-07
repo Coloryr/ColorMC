@@ -9,7 +9,6 @@
         <StyleInclude Source="/Style/Button.axaml" />
         <StyleInclude Source="/Style/Border.axaml" />
         <StyleInclude Source="/Style/RepeatButton.axaml" />
-        <StyleInclude Source="/Style/Tab.axaml" />
         <StyleInclude Source="/Style/TextBox.axaml" />
         <StyleInclude Source="/Style/ComboBox.axaml" />
         <StyleInclude Source="/Style/NumericUpDown.axaml" />
@@ -18,16 +17,15 @@
         <StyleInclude Source="/Style/CheckBox.axaml" />
         <StyleInclude Source="/Style/TextBlock.axaml" />
         <StyleInclude Source="/Style/DataGrid.axaml" />
-        <StyleInclude Source="/Style/DropDownButton.axaml" />
         <StyleInclude Source="/Style/ToolTip.axaml" />
         <StyleInclude Source="/Style/ListBox.axaml" />
         <StyleInclude Source="/Style/Slider.axaml" />
         <StyleInclude Source="/Style/ToggleSwitch.axaml" />
-        <StyleInclude Source="/Style/ToggleButton.axaml" />
         <StyleInclude Source="/UI/Views/HyperLink.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+        <StyleInclude Source="/Style/ColorPicker.axaml" />
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     </Application.Styles>
     <Application.Resources>
