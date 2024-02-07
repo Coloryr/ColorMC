@@ -251,21 +251,24 @@
                     <WrapPanel HorizontalAlignment="Right" IsEnabled="{Binding EnableBG}">
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
+                            Height="30"
+                            Margin="-2,-2,3,-2"
+                            Classes="top"
                             Command="{Binding DeletePic}"
                             Content="{setting:Localize Button.Delete}" />
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
+                            Height="30"
+                            Margin="-2,-2,3,-2"
+                            Classes="top"
                             Command="{Binding OpenPic}"
                             Content="{setting:Localize Button.Select}"
                             DockPanel.Dock="Right" />
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
+                            Height="30"
+                            Margin="-2,-2,3,-2"
+                            Classes="top"
                             Command="{Binding SetPic}"
                             Content="{setting:Localize Button.Use}"
                             DockPanel.Dock="Right" />
@@ -293,9 +296,10 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
+                            Height="30"
+                            Margin="-2"
                             VerticalAlignment="Center"
+                            Classes="top"
                             Command="{Binding SetPic}"
                             Content="{setting:Localize Button.Set}" />
                     </WrapPanel>
@@ -322,8 +326,10 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="25"
+                            Height="30"
+                            Margin="-2"
                             VerticalAlignment="Center"
+                            Classes="top"
                             Command="{Binding SetPicTran}"
                             Content="{setting:Localize Button.Set}" />
                     </WrapPanel>
@@ -355,8 +361,10 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="25"
+                            Height="30"
+                            Margin="-2"
                             VerticalAlignment="Center"
+                            Classes="top"
                             Command="{Binding SetPicSize}"
                             Content="{setting:Localize Button.Set}"
                             IsEnabled="{Binding EnablePicResize}" />
@@ -395,8 +403,10 @@
                         <ColorPicker Margin="0,0,5,0" Color="{Binding MainColor}" />
                         <Button
                             Width="100"
-                            Height="25"
+                            Height="30"
+                            Margin="-2"
                             VerticalAlignment="Center"
+                            Classes="top"
                             Command="{Binding ColorReset}"
                             Content="{setting:Localize SettingWindow.Tab2.Text12}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text124}"
@@ -526,17 +536,19 @@
                         <StackPanel Orientation="Horizontal">
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,0"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
                                 HorizontalAlignment="Right"
+                                Classes="top"
                                 Command="{Binding DownloadCore}"
                                 Content="{setting:Localize SettingWindow.Tab2.Text31}"
                                 IsEnabled="{Binding !CoreInstall}" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,0"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
                                 HorizontalAlignment="Right"
+                                Classes="top"
                                 Command="{Binding InstallCore}"
                                 Content="{setting:Localize SettingWindow.Tab2.Text49}"
                                 IsEnabled="{Binding !CoreInstall}" />
@@ -561,22 +573,25 @@
                             IsEnabled="{Binding EnableLive2D}">
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,0"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding DeleteLive2D}"
                                 Content="{setting:Localize Button.Delete}"
                                 DockPanel.Dock="Right" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,0"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding OpenLive2D}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,0"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding SetLive2D}"
                                 Content="{setting:Localize Button.Use}"
                                 DockPanel.Dock="Right" />

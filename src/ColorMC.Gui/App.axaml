@@ -7,6 +7,7 @@
         <FluentTheme />
         <dialog:DialogHostStyles />
         <StyleInclude Source="/Style/Button.axaml" />
+        <StyleInclude Source="/Style/RadioButton.axaml" />
         <StyleInclude Source="/Style/Border.axaml" />
         <StyleInclude Source="/Style/RepeatButton.axaml" />
         <StyleInclude Source="/Style/TextBox.axaml" />

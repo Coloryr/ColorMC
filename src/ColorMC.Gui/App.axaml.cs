@@ -272,6 +272,7 @@ public partial class App : Application
             NowTheme = PlatformSettings!.GetColorValues().ThemeVariant;
 
             ColorSel.Load();
+            StyleSel.Load();
             await LoadImage();
         }
     }

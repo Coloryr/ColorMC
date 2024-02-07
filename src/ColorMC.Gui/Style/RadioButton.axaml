@@ -1,0 +1,23 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel>
+                <RadioButton Content="1 23" IsChecked="True" />
+                <RadioButton Content="1 23" />
+                <RadioButton Content="1 23" IsEnabled="False" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="RadioButton">
+        <Style Selector="^:checked /template/ Ellipse#CheckGlyph" />
+
+        <Style Selector="^:checked /template/ Ellipse#CheckOuterEllipse">
+            <Setter Property="Fill" Value="{setting:Colors Main}" />
+            <Setter Property="Stroke" Value="{setting:Colors Main}" />
+        </Style>
+    </Style>
+</Styles>

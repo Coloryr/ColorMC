@@ -15,10 +15,10 @@
     </Design.PreviewWith>
 
     <Style Selector="ToggleSwitch:pointerover /template/ Border#SwitchKnobBounds">
-        <Setter Property="Background" Value="{setting:Colors Back1}" />
+        <Setter Property="Background" Value="{setting:Colors Main}" />
     </Style>
     <Style Selector="ToggleSwitch:pointerover /template/ Border#OuterBorder">
-        <Setter Property="Background" Value="{setting:Colors Back1}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
     </Style>
     <Style Selector="ToggleSwitch:checked /template/ Border#SwitchKnobBounds">
         <Setter Property="Background" Value="{setting:Colors Main}" />

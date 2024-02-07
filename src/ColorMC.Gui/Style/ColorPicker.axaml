@@ -9,11 +9,11 @@
     </Design.PreviewWith>
 
     <Style Selector="ColorPicker DropDownButton">
+        <Setter Property="Background" Value="{setting:Colors Back}" />
+        <Setter Property="BorderBrush" Value="#44808080" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="Background" Value="#f4f4f4" />
 
-        <Style Selector="^:pointerover">
+        <Style Selector="^:pointerover /template/ Border#RootBorder">
             <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
         </Style>
     </Style>

@@ -15,8 +15,12 @@
     <Style Selector="NumericUpDown">
         <Setter Property="Foreground" Value="{setting:Colors Font}" />
         <Setter Property="Background" Value="{setting:Colors Back}" />
-        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="#44808080" />
+        <Setter Property="BorderThickness" Value="1" />
+
+        <Style Selector="^:pointerover Border#PART_BorderElement">
+            <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        </Style>
 
         <Style Selector="^ /template/ TextBox#TextBox#PART_TextBox">
             <Setter Property="SelectionBrush" Value="{setting:Colors Main}" />
