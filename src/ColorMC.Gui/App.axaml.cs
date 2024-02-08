@@ -209,7 +209,7 @@ public partial class App : Application
             {
                 var win = new SingleWindow();
                 AllWindow = win.Win;
-                win.Show();
+                (Life as IClassicDesktopStyleApplicationLifetime)!.MainWindow = win;
             }
         }
 
@@ -365,7 +365,7 @@ public partial class App : Application
 
                 if (ok)
                 {
-                    ShowCustom(file);
+                    ShowCustom(file, true);
                 }
             }
             catch (Exception e)
@@ -383,7 +383,7 @@ public partial class App : Application
         }
     }
 
-    public static void AWindow(IUserControl con)
+    public static void AWindow(IUserControl con, bool isroot = false)
     {
         if (ConfigBinding.WindowMode())
         {
@@ -395,11 +395,18 @@ public partial class App : Application
             var win = new SelfBaseWindow(con);
             TopLevel ??= win;
             con.SetBaseModel(win.Model);
-            win.Show();
+            if (isroot && Life is IClassicDesktopStyleApplicationLifetime life)
+            {
+                life.MainWindow = win;
+            }
+            else
+            {
+                win.Show();
+            }
         }
     }
 
-    public static void ShowCustom(string obj)
+    public static void ShowCustom(string obj, bool isroot)
     {
         if (CustomWindow != null)
         {
@@ -408,10 +415,10 @@ public partial class App : Application
         else
         {
             CustomWindow = new();
-            AWindow(CustomWindow);
+            AWindow(CustomWindow, isroot);
         }
 
-        CustomWindow?.Load(obj);
+        CustomWindow.Load(obj);
     }
 
     public static void ShowAddGame(string? group, bool isDir = false, string? file = null)
@@ -428,7 +435,7 @@ public partial class App : Application
         AddGameWindow.SetGroup(group);
         if (!string.IsNullOrWhiteSpace(file))
         {
-            AddGameWindow?.AddFile(file, isDir);
+            AddGameWindow.AddFile(file, isDir);
         }
     }
 
@@ -476,7 +483,7 @@ public partial class App : Application
         else
         {
             MainWindow = new();
-            AWindow(MainWindow);
+            AWindow(MainWindow, true);
         }
     }
 

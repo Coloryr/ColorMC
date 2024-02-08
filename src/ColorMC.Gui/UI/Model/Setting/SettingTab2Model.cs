@@ -392,7 +392,7 @@ public partial class SettingModel
     [RelayCommand]
     public void DownloadCore()
     {
-        BaseBinding.OpenLive2DCore();
+        WebBinding.OpenWeb(WebType.Live2DCore);
     }
 
     [RelayCommand]
