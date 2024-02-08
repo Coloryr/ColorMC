@@ -99,6 +99,8 @@ public static class ColorMCGui
 
             BuildAvaloniaApp()
                  .StartWithClassicDesktopLifetime(args);
+
+            Console.WriteLine();
         }
         catch (Exception e)
         {

@@ -933,7 +933,7 @@ public static class BaseBinding
         using var stream = PathHelper.OpenRead(local);
         using var zip = new ZipFile(stream);
         string file = "";
-        string file1 = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName!;
+        string file1 = Directory.GetCurrentDirectory();
         switch (SystemInfo.Os)
         {
             case OsType.Windows:
@@ -950,6 +950,8 @@ public static class BaseBinding
                 file1 += "/Live2DCubismCore.so";
                 break;
         }
+
+        file1 = Path.GetFullPath(file1);
 
         foreach (ZipEntry item in zip)
         {
