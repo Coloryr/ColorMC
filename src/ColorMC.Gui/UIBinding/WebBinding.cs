@@ -28,11 +28,9 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class WebBinding
 {
-    private readonly static List<string> PCJavaType =
-    ["Adoptium", "Zulu", "Dragonwell", "OpenJ9", "Graalvm"];
+    private readonly static List<string> PCJavaType = ["Adoptium", "Zulu", "Dragonwell", "OpenJ9", "Graalvm"];
 
-    private readonly static List<string> PhoneJavaType =
-        ["PojavLauncherTeam"];
+    private readonly static List<string> PhoneJavaType = ["PojavLauncherTeam"];
 
     private const string Android = "Android";
     private const string Arm64 = "Arm64";

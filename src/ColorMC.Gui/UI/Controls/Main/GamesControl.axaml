@@ -17,21 +17,37 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Top"
         Background="{setting:Colors GroupBack}"
-        BorderBrush="{setting:Colors GroupColor1}"
+        BorderBrush="{setting:Colors GroupColor}"
         BorderThickness="1"
         CornerRadius="{setting:Style ButtonCornerRadius}"
         Header="{Binding Header}"
-        IsExpanded="{Binding Expander}">
+        IsExpanded="{Binding Expander, FallbackValue=true}">
         <Expander.Styles>
+            <Style Selector="Expander:pointerover /template/ Border#ExpanderContent">
+                <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
+            </Style>
+
+            <Style Selector="Expander:pointerover /template/ ToggleButton#ExpanderHeader">
+                <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
+            </Style>
+
             <Style Selector="Expander /template/ ToggleButton#ExpanderHeader">
                 <Setter Property="Background" Value="{setting:Colors GroupBack}" />
-                <Setter Property="BorderBrush" Value="{setting:Colors GroupColor1}" />
-                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+                <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
+
+                <Style Selector="^:checked">
+                    <Setter Property="BorderThickness" Value="1,1,1,0" />
+                </Style>
+
+                <Style Selector="^:pointerover /template/ Border#ToggleButtonBackground">
+                    <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+                </Style>
             </Style>
 
             <Style Selector="Expander /template/ Border#ExpanderContent">
-                <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
-                <Setter Property="BorderThickness" Value="2,0,2,2" />
+                <Setter Property="Background" Value="{setting:Colors GroupBack}" />
+                <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
             </Style>
         </Expander.Styles>
         <Panel>
