@@ -758,6 +758,7 @@ public static class WebBinding
             WebType.BSD => "https://licenses.nuget.org/BSD-2-Clause",
             WebType.OpenFrp => "https://console.openfrp.net/home/",
             WebType.OpenFrpApi => "https://github.com/ZGIT-Network/OPENFRP-APIDOC",
+            WebType.Live2DCore => "https://www.live2d.com/download/cubism-sdk/download-native/",
             _ => "https://colormc.coloryr.com"
         });
     }

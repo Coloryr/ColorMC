@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -858,11 +857,6 @@ public static class BaseBinding
         Media.Pause();
     }
 
-    public static void OpenLive2DCore()
-    {
-        OpUrl("https://www.live2d.com/download/cubism-sdk/download-native/");
-    }
-
     public static (bool, string?) TestCustomWindow(string file)
     {
         if (!File.Exists(file))
@@ -876,7 +870,7 @@ public static class BaseBinding
 
         try
         {
-            App.ShowCustom(file);
+            App.ShowCustom(file, false);
             App.CustomWindow?.Load1();
         }
         catch (Exception ex)

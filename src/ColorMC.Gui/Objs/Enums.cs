@@ -145,7 +145,8 @@ public enum WebType
     MiSans,
     BSD,
     OpenFrp,
-    OpenFrpApi
+    OpenFrpApi, 
+    Live2DCore
 }
 
 public enum FrpType
