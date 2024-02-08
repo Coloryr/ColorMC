@@ -1,5 +1,6 @@
 using ColorMC.Core.Helpers;
 using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 
 namespace ColorMC.Core.Utils;
 
@@ -138,7 +139,11 @@ public static class Logs
     public static string Crash(string data, Exception e)
     {
         var date = DateTime.Now;
-        string text = $"[{date}][Error]{data}{Environment.NewLine}{e}";
+        string text = $"Version:{ColorMCCore.Version}{Environment.NewLine}" +
+            $"System:{SystemInfo.System}{Environment.NewLine}" +
+            $"SystemName:{SystemInfo.SystemName}" +
+            $"{data}" +
+            $"{Environment.NewLine}{e}";
 
         var file = $"{s_local}{date.Year}_{date.Month}_{date.Day}_" +
             $"{date.Hour}_{date.Minute}_{date.Second}_crash.log";
