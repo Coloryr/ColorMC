@@ -14,7 +14,7 @@
     ToolTip.Tip="{setting:Localize ToolTip.Text49}"
     ToolTip.VerticalOffset="-30"
     mc:Ignorable="d">
-    <Panel Margin="1" Background="{setting:Colors TranBack}">
+    <Panel>
         <Rectangle
             Fill="{setting:Colors Back}"
             IsVisible="{Binding Top}"

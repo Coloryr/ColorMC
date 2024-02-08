@@ -69,7 +69,6 @@ public static class ColorSel
     public static IBrush BGColor1 { get; private set; } = AppLightBackColor7;
     public static IBrush GroupBackColor { get; private set; } = Brush.Parse(GroupLightColorStr);
     public static IBrush GroupBackColor1 { get; private set; } = Brush.Parse(GroupLightColor1Str);
-    public static IBrush GroupBackColor2 { get; private set; } = Brush.Parse(GroupLightColor1Str);
     public static IBrush ButtonBorder { get; private set; } = AppLightBackColor8;
 
 
@@ -149,21 +148,21 @@ public static class ColorSel
             ButtonBorder = App.NowTheme == PlatformThemeVariant.Light
                 ? AppLightBackColor8 : AppDarkBackColor8;
 
-            if (App.NowTheme == PlatformThemeVariant.Light)
-            {
-                GroupBackColor2 = Brush.Parse(GroupLightColor1Str);
-            }
-            else
-            {
-                GroupBackColor2 = Brush.Parse(GroupDarkColor1Str);
-            }
+            
             if (App.BackBitmap != null)
             {
                 GroupBackColor1 = Brushes.Transparent;
             }
             else
             {
-                GroupBackColor1 = GroupBackColor2;
+                if (App.NowTheme == PlatformThemeVariant.Light)
+                {
+                    GroupBackColor1 = Brush.Parse(GroupLightColor1Str);
+                }
+                else
+                {
+                    GroupBackColor1 = Brush.Parse(GroupDarkColor1Str);
+                }
             }
 
             MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
@@ -332,8 +331,6 @@ public static class ColorSel
             return GroupBackColor;
         else if (key == "GroupColor")
             return GroupBackColor1;
-        else if (key == "GroupColor1")
-            return GroupBackColor2;
         else if (key == "BG")
             return BGColor;
         else if (key == "BG1")

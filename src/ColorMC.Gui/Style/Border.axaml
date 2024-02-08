@@ -3,18 +3,24 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
-        <Border Padding="20">
-            <!--  Add Controls for Previewer Here  -->
-        </Border>
+        <StackPanel>
+            <Border
+                Width="200"
+                Height="200"
+                Margin="5"
+                Classes="t2" />
+        </StackPanel>
     </Design.PreviewWith>
 
-    <Style Selector="Border.t1">
+    <Style Selector="Border.t2">
         <Setter Property="Background" Value="{setting:Colors GroupBack}" />
-        <Setter Property="BorderBrush" Value="{setting:Colors GroupColor1}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+        <Setter Property="Padding" Value="{setting:Style BorderPadding}" />
+        <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
+        <Setter Property="BorderThickness" Value="1" />
         <Style Selector="^:pointerover">
-            <Setter Property="BorderThickness" Value="2" />
             <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ExpanderHeaderBorderBrushPointerOver}" />
+            <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
         </Style>
     </Style>
 
