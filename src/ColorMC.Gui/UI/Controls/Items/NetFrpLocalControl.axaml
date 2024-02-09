@@ -9,35 +9,28 @@
     x:DataType="model:NetFrpLocalModel"
     Design.Width="320"
     mc:Ignorable="d">
-    <Border
-        Padding="{setting:Style BorderPadding}"
-        Background="{setting:Colors GroupBack}"
-        BorderBrush="{setting:Colors GroupColor}"
-        BorderThickness="2"
-        CornerRadius="{setting:Style ButtonCornerRadius}">
+    <Border Classes="t2">
         <DockPanel>
             <WrapPanel
                 Margin="0,0,0,-5"
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left">
                 <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
-                    <TextBlock
-                        Margin="0,0,5,0"
-                        Text="{setting:Localize NetFrpWindow.Tab2.Text3}" />
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab2.Text3}" />
                     <TextBlock Text="{Binding Port, FallbackValue=123}" />
                 </StackPanel>
                 <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                    <TextBlock
-                        Margin="0,0,5,0"
-                        Text="{setting:Localize NetFrpWindow.Tab2.Text4}" />
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab2.Text4}" />
                     <TextBlock Text="{Binding Motd, FallbackValue=456}" />
                 </StackPanel>
             </WrapPanel>
 
             <Button
                 Width="100"
-                Height="25"
+                Height="30"
+                Margin="-2,-3,0,-2"
                 HorizontalAlignment="Right"
+                Classes="top"
                 Command="{Binding Start}"
                 Content="{setting:Localize NetFrpWindow.Tab2.Text5}"
                 IsEnabled="{Binding !IsStart}" />

@@ -43,18 +43,20 @@
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button
                     Width="100"
-                    Height="25"
+                    Height="30"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
+                    Classes="top"
                     Command="{Binding Confirm}"
                     Content="{setting:Localize Button.Confirm}"
                     IsEnabled="{Binding ConfirmEnable}"
                     IsVisible="{Binding ConfirmEnable}" />
                 <Button
                     Width="100"
-                    Height="25"
+                    Height="30"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
+                    Classes="top"
                     Command="{Binding Cancel}"
                     Content="{setting:Localize Button.Cancel}"
                     IsEnabled="{Binding CancelEnable}"

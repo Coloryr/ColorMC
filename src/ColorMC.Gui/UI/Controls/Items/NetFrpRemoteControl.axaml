@@ -8,12 +8,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     x:DataType="model:NetFrpRemoteModel"
     mc:Ignorable="d">
-    <Border
-        Padding="{setting:Style BorderPadding}"
-        Background="{setting:Colors GroupBack}"
-        BorderBrush="{setting:Colors GroupColor}"
-        BorderThickness="2"
-        CornerRadius="{setting:Style ButtonCornerRadius}">
+    <Border Classes="t2">
         <WrapPanel Margin="0,0,0,-5" VerticalAlignment="Center">
             <TextBlock Margin="0,0,5,5" Text="{Binding Name}" />
             <StackPanel Margin="0,0,5,5" Orientation="Horizontal">

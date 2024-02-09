@@ -21,7 +21,7 @@
             BorderThickness="0"
             Command="{Binding AddGame}"
             CornerRadius="{setting:Style ButtonCornerRadius}"
-            IsVisible="{Binding IsNew}">
+            IsVisible="{Binding IsNew, FallbackValue=False}">
             <StackPanel Margin="5">
                 <svg:SvgControl
                     Width="70"
@@ -38,7 +38,7 @@
         <Button
             Background="Transparent"
             BorderThickness="0"
-            IsVisible="{Binding !IsNew, FallbackValue=false}">
+            IsVisible="{Binding !IsNew, FallbackValue=True}">
             <StackPanel Margin="5">
                 <Panel>
                     <Border
@@ -67,11 +67,12 @@
                         Source="resm:ColorMC.Gui.Resource.Pic.load.png"
                         Stretch="UniformToFill" />
                     <Button
-                        Width="32"
-                        Height="32"
+                        Width="36"
+                        Height="36"
                         Margin="34,0,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
+                        Classes="top"
                         ClipToBounds="False"
                         Command="{Binding EditGame}"
                         CornerRadius="20"
@@ -82,11 +83,12 @@
                         <Svg Path="/Resource/Icon/edit.svg" />
                     </Button>
                     <Button
-                        Width="32"
-                        Height="32"
+                        Width="36"
+                        Height="36"
                         Margin="0,0,34,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
+                        Classes="top"
                         ClipToBounds="False"
                         Command="{Binding Launch}"
                         CornerRadius="20"

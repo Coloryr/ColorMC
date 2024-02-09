@@ -176,12 +176,6 @@ public partial class MainModel : TopModel, IMainTop
     }
 
     [RelayCommand]
-    public void AddGame()
-    {
-        App.ShowAddGame(null);
-    }
-
-    [RelayCommand]
     public void ShowCount()
     {
         App.ShowCount();
@@ -261,30 +255,6 @@ public partial class MainModel : TopModel, IMainTop
     {
         _isCancel = true;
         _semaphore.Release();
-    }
-
-    [RelayCommand]
-    public void AddUser()
-    {
-        App.ShowUser(true);
-    }
-
-    [RelayCommand]
-    public void SetJava()
-    {
-        App.ShowSetting(SettingType.SetJava);
-    }
-
-    [RelayCommand]
-    public void OpenWeb1()
-    {
-        WebBinding.OpenWeb(WebType.Web);
-    }
-
-    [RelayCommand]
-    public void OpenWeb2()
-    {
-        WebBinding.OpenWeb(WebType.Minecraft);
     }
 
     [RelayCommand]

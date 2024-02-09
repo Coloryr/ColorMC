@@ -7,14 +7,13 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.User"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     x:DataType="model:UsersControlModel"
-    Design.Width="400"
     mc:Ignorable="d">
     <StackPanel Margin="5">
         <TextBlock Text="{setting:Localize UserWindow.Text5}" />
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{setting:Localize UserWindow.Text3}" />
             <ComboBox
-                Width="200"
+                Width="300"
                 Margin="5,0,5,0"
                 IsEnabled="{Binding EnableType}"
                 ItemsSource="{Binding UserTypeList}"
@@ -44,24 +43,27 @@
             Watermark="{setting:Localize UserWindow.Text2}" />
         <DockPanel HorizontalAlignment="Stretch">
             <Button
-                Width="80"
-                Height="25"
-                Margin="5"
+                Width="100"
+                Height="30"
+                Margin="-2,-2,3,-2"
+                Classes="top"
                 Command="{Binding Add}"
                 Content="{setting:Localize Button.Add}"
                 DockPanel.Dock="Right"
                 IsEnabled="{Binding !IsAdding}" />
             <Button
-                Width="80"
-                Height="25"
-                Margin="5"
+                Width="100"
+                Height="30"
+                Margin="-2,-2,3,-2"
+                Classes="top"
                 Command="{Binding Cancel}"
                 Content="{setting:Localize Button.Cancel}"
                 DockPanel.Dock="Right" />
             <Button
-                Width="80"
-                Height="25"
-                Margin="5"
+                Width="100"
+                Height="30"
+                Margin="-2,-2,3,-2"
+                Classes="top"
                 Command="{Binding Register}"
                 Content="{setting:Localize UserWindow.Text7}"
                 IsEnabled="{Binding CanRegister}" />

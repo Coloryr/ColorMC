@@ -13,16 +13,10 @@
     mc:Ignorable="d">
     <ScrollViewer
         Name="ScrollViewer1"
-        Margin="5,0,5,2"
+        Margin="5,0,5,0"
         HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <!--  运行前检查  -->
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -120,12 +114,8 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="0,0,0,5"
+                Classes="t2"
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <!--  分辨率  -->
@@ -168,13 +158,7 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <!--  Jvm内存  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -256,13 +240,7 @@
                     <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text35}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -295,12 +273,8 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="0,0,0,5"
+                Classes="t2"
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <!--  运行后  -->

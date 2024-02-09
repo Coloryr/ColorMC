@@ -10,47 +10,45 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <ScrollViewer Name="ScrollViewer1">
-        <Border
-            Margin="5,0,5,5"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
-            <DockPanel>
-                <StackPanel
-                    HorizontalAlignment="Right"
-                    DockPanel.Dock="Bottom"
-                    Orientation="Horizontal">
-                    <Button
-                        Width="160"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Command="{Binding GoToNext}"
-                        Content="{setting:Localize ServerPackWindow.Tab1.Text11}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text47}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="160"
-                        Height="25"
-                        Command="{Binding Gen}"
-                        Content="{setting:Localize ServerPackWindow.Tab1.Text10}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text47}"
-                        ToolTip.VerticalOffset="-30" />
-                </StackPanel>
-                <TextBlock
-                    Margin="0,0,0,5"
-                    DockPanel.Dock="Top"
-                    Text="{setting:Localize ServerPackWindow.Tab1.Text1}" />
-                <TextBox
-                    Margin="0,0,0,5"
-                    AcceptsReturn="True"
-                    Classes="input2"
-                    DockPanel.Dock="Top"
-                    Text="{Binding Text}"
-                    Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
-            </DockPanel>
-        </Border>
-    </ScrollViewer>
+    <Border
+        Name="ScrollViewer1"
+        Margin="5,0,5,5"
+        Classes="t2">
+        <DockPanel>
+            <StackPanel
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Bottom"
+                Orientation="Horizontal">
+                <Button
+                    Width="160"
+                    Height="30"
+                    Margin="-2,-2,3,-2"
+                    Classes="top"
+                    Command="{Binding GoToNext}"
+                    Content="{setting:Localize ServerPackWindow.Tab1.Text11}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="160"
+                    Height="30"
+                    Margin="-2,-2,0,-2"
+                    Classes="top"
+                    Command="{Binding Gen}"
+                    Content="{setting:Localize ServerPackWindow.Tab1.Text10}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+                    ToolTip.VerticalOffset="-30" />
+            </StackPanel>
+            <TextBlock
+                Margin="0,0,0,5"
+                DockPanel.Dock="Top"
+                Text="{setting:Localize ServerPackWindow.Tab1.Text1}" />
+            <TextBox
+                Margin="0,0,0,5"
+                AcceptsReturn="True"
+                Classes="input2"
+                DockPanel.Dock="Top"
+                Text="{Binding Text}"
+                Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
+        </DockPanel>
+    </Border>
 </UserControl>

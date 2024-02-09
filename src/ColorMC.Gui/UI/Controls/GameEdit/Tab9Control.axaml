@@ -11,36 +11,35 @@
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,2">
+    <DockPanel Name="ScrollViewer1" Margin="5,0,5,0">
         <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
+            Margin="0,0,0,5"
+            Classes="t2"
             DockPanel.Dock="Top">
             <WrapPanel Margin="0,0,0,-5">
                 <Button
                     Width="100"
-                    Height="25"
-                    Margin="0,0,5,5"
+                    Height="30"
+                    Margin="-2,-3,3,2"
+                    Classes="top"
                     Command="{Binding LoadScreenshot}"
                     Content="{setting:Localize Button.Refash}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text109}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
                     Width="100"
-                    Height="25"
-                    Margin="0,0,5,5"
+                    Height="30"
+                    Margin="-2,-3,3,2"
+                    Classes="top"
                     Command="{Binding ClearScreenshot}"
                     Content="{setting:Localize GameEditWindow.Flyouts4.Text1}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text110}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
                     Width="100"
-                    Height="25"
-                    Margin="0,0,5,5"
+                    Height="30"
+                    Margin="-2,-3,3,2"
+                    Classes="top"
                     Command="{Binding OpenScreenshot}"
                     Content="{setting:Localize Button.OpFile}"
                     IsEnabled="{Binding !Phone}"
@@ -48,13 +47,7 @@
                     ToolTip.VerticalOffset="-30" />
             </WrapPanel>
         </Border>
-        <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+        <Border Margin="0,0,0,5" Classes="t2">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
                 <ItemsControl ItemsSource="{Binding ScreenshotList}">
                     <ItemsControl.ItemTemplate>

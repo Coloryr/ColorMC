@@ -7,17 +7,11 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameCloud"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
-    d:DesignWidth="350"
+    d:DesignWidth="800"
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
-    <Panel Name="ScrollViewer1" Margin="5,0,5,2">
-        <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+    <Panel Name="ScrollViewer1" Margin="5,0,5,5">
+        <Border Classes="t2">
             <DockPanel>
                 <StackPanel
                     HorizontalAlignment="Right"

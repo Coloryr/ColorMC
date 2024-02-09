@@ -154,8 +154,7 @@
     <None Remove="Resource\Icon\user.svg" />
     <None Remove="Resource\Language\gui_en-us.json" />
     <None Remove="Resource\Language\gui_zh-cn.json" />
-    <None Remove="Resource\Pic\bg.jpg" />
-    <None Remove="Resource\Pic\bg1.jpg" />
+    <None Remove="Resource\Pic\bg.jpeg" />
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\load.png" />
@@ -280,8 +279,7 @@
     <EmbeddedResource Include="macicon.ico" />
     <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
     <EmbeddedResource Include="Resource\Language\gui_en-us.json" />
-    <EmbeddedResource Include="Resource\Pic\bg.jpg" />
-    <EmbeddedResource Include="Resource\Pic\bg1.jpg" />
+    <EmbeddedResource Include="Resource\Pic\bg.jpeg" />
     <EmbeddedResource Include="Resource\Pic\game.png" />
     <EmbeddedResource Include="Resource\Pic\launch.png" />
     <EmbeddedResource Include="Resource\Pic\load.png" />

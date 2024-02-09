@@ -15,10 +15,11 @@
             VerticalAlignment="Stretch"
             DockPanel.Dock="Top">
             <Button
-                Width="85"
-                Height="25"
-                Margin="5"
+                Width="100"
+                Height="30"
+                Margin="3,-2,3,-2"
                 VerticalAlignment="Center"
+                Classes="top"
                 Command="{Binding DataEditDone}"
                 Content="{setting:Localize ConfigEditWindow.Text2}"
                 DockPanel.Dock="Right"

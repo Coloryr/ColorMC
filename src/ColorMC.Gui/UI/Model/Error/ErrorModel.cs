@@ -29,8 +29,13 @@ public partial class ErrorModel : TopModel
 
     public ErrorModel(BaseModel model, string data, string e, bool close) : base(model)
     {
+        _useName = ToString() ?? "ErrorModel";
         _text = new TextDocument($"{data}{Environment.NewLine}{e}");
+
         NeedClose = close;
+
+        Model.SetChoiseContent(_useName, App.Lang("ErrorWindow.Text1"), App.Lang("ErrorWindow.Text2"));
+        Model.SetChoiseCall(_useName, Save, Push);
     }
 
     public async void Save()

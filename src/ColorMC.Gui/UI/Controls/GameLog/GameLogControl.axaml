@@ -12,13 +12,10 @@
     x:DataType="model:GameLogModel"
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
-    <DockPanel Margin="5">
+    <DockPanel Margin="5,5,5,0">
         <Border
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
+            Margin="0,0,0,5"
+            Classes="t2"
             DockPanel.Dock="Top">
             <StackPanel>
                 <WrapPanel>
@@ -43,9 +40,10 @@
                 <WrapPanel Margin="0,5,0,-5">
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
                         VerticalAlignment="Center"
+                        Classes="top"
                         Command="{Binding Launch}"
                         Content="{setting:Localize GameLogWindow.Text4}"
                         IsEnabled="{Binding !IsGameRun}"
@@ -53,9 +51,10 @@
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
                         VerticalAlignment="Center"
+                        Classes="top"
                         Command="{Binding Stop}"
                         Content="{setting:Localize GameLogWindow.Text3}"
                         IsEnabled="{Binding IsGameRun}"
@@ -63,37 +62,35 @@
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
                         VerticalAlignment="Center"
+                        Classes="top"
                         Command="{Binding Load1}"
                         Content="{setting:Localize GameLogWindow.Text6}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
                         VerticalAlignment="Center"
+                        Classes="top"
                         Command="{Binding Search}"
                         Content="{setting:Localize GameLogWindow.Text7}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,0,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
                         VerticalAlignment="Center"
+                        Classes="top"
                         Command="{Binding Push}"
                         Content="{setting:Localize GameLogWindow.Text8}"
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </StackPanel>
         </Border>
-        <Border
-            Margin="0,3,0,0"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+        <Border Classes="t1">
             <ae:TextEditor
                 Name="TextEditor1"
                 Document="{Binding Text}"

@@ -11,16 +11,13 @@
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,2">
-        <view:ServerMotdControl DockPanel.Dock="Top" IPPort="{Binding IPPort}" />
+    <DockPanel Name="ScrollViewer1" Margin="5,0,5,0">
+        <view:ServerMotdControl
+            Margin="0,0,0,5"
+            DockPanel.Dock="Top"
+            IPPort="{Binding IPPort}" />
         <Panel>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t1">
                 <DataGrid
                     Name="DataGrid1"
                     AutoGenerateColumns="False"
@@ -41,11 +38,12 @@
                 </DataGrid>
             </Border>
             <Button
-                Width="40"
-                Height="40"
-                Margin="10"
+                Width="45"
+                Height="45"
+                Margin="8,8,4,8"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
+                Classes="top"
                 Command="{Binding AddServer}"
                 CornerRadius="20"
                 ToolTip.Tip="{setting:Localize ToolTip.Text58}"

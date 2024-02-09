@@ -6,8 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     VerticalAlignment="Top"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     mc:Ignorable="d">
     <Border
         Padding="1"
@@ -55,9 +53,10 @@
                         </StackPanel>
                         <Button
                             Name="Button2"
-                            Width="80"
-                            Height="20"
-                            Margin="5,0,0,0"
+                            Width="100"
+                            Height="30"
+                            Margin="2,-2,0,-2"
+                            Classes="top"
                             Content="{setting:Localize Button.Refash}"
                             IsVisible="False" />
                     </WrapPanel>
@@ -81,9 +80,7 @@
                 Background="{setting:Colors Bottom1}"
                 IsVisible="False">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Text="{setting:Localize ServerMotdControl.Text4}" />
+                    <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text4}" />
                     <ProgressBar
                         Height="10"
                         Margin="10,0,10,0"
@@ -94,9 +91,7 @@
                 Name="Grid2"
                 Background="{setting:Colors Bottom1}"
                 IsVisible="False">
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    Text="{setting:Localize ServerMotdControl.Text5}" />
+                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text5}" />
             </Panel>
         </Panel>
     </Border>

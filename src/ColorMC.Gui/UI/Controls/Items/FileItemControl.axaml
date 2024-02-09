@@ -66,16 +66,19 @@
             VerticalAlignment="Top"
             Orientation="Horizontal">
             <Button
-                Width="25"
-                Height="25"
-                Margin="0,0,3,0"
+                Width="30"
+                Height="30"
+                Margin="-2,-3,3,-2"
+                Classes="top"
                 Command="{Binding OpenWeb}"
                 IsVisible="{Binding EnableButton}">
                 <Svg Path="/Resource/Icon/Item/web.svg" />
             </Button>
             <Button
-                Width="25"
-                Height="25"
+                Width="30"
+                Height="30"
+                Margin="-2,-3,-2,-2"
+                Classes="top"
                 Command="{Binding Install}"
                 IsEnabled="{Binding HaveDownload}"
                 IsVisible="{Binding EnableButton, FallbackValue=true}">

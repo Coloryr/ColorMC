@@ -134,7 +134,6 @@ public partial class GameControl : UserControl
                     return;
                 }
 
-                e.Handled = true;
                 LongPressed.Pressed(() => Flyout((sender as Control)!));
             }
         }

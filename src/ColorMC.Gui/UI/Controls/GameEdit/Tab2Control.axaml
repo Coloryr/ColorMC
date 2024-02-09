@@ -11,14 +11,8 @@
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
     <ScrollViewer Name="ScrollViewer1">
-        <StackPanel Margin="5,0,5,2">
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+        <StackPanel Margin="5,0,5,0">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <TextBlock
                         HorizontalAlignment="Center"
@@ -26,8 +20,10 @@
                         TextTrimming="CharacterEllipsis" />
                     <Button
                         Width="100"
-                        Height="25"
+                        Height="30"
+                        Margin="-2,-2,0,-2"
                         HorizontalAlignment="Right"
+                        Classes="top"
                         Command="{Binding DeleteConfig}"
                         Content="{setting:Localize GameEditWindow.Tab2.Text28}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text38}"
@@ -36,13 +32,7 @@
             </Border>
 
             <!--  分辨率  -->
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -120,13 +110,7 @@
             </Border>
 
             <!--  指定Java  -->
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -149,9 +133,10 @@
                     <DockPanel Margin="0,0,0,5" IsEnabled="{Binding !Phone}">
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="5,0,0,0"
+                            Height="30"
+                            Margin="3,-3,0,-2"
                             VerticalAlignment="Center"
+                            Classes="top"
                             Command="{Binding OpenJava}"
                             Content="{setting:Localize Button.Select}"
                             DockPanel.Dock="Right"
@@ -186,13 +171,7 @@
             </Border>
 
             <!--  执行程序  -->
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -226,13 +205,7 @@
                 </StackPanel>
             </Border>
             <!--  Jvm参数  -->
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <!--  Jvm内存  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -335,13 +308,7 @@
             </Border>
 
             <!--  自动加入  -->
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -368,13 +335,7 @@
                 </StackPanel>
             </Border>
             <!--  代理  -->
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl

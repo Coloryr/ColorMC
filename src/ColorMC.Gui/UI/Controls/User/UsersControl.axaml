@@ -22,60 +22,52 @@
                 </DataTemplate>
             </dialog:DialogHost.DataTemplates>
             <Panel Margin="5">
-                <Panel>
-                    <TextBlock VerticalAlignment="Bottom" Text="{setting:Localize UserWindow.Text6}" />
-                    <Border
-                        Padding="{setting:Style BorderPadding}"
-                        Background="{setting:Colors GroupBack}"
-                        BorderBrush="{setting:Colors GroupColor}"
-                        BorderThickness="2"
-                        CornerRadius="{setting:Style ButtonCornerRadius}"
-                        DockPanel.Dock="Bottom">
-                        <DataGrid
-                            Name="DataGrid_User"
-                            AutoGenerateColumns="False"
-                            CanUserResizeColumns="True"
-                            CanUserSortColumns="False"
-                            HorizontalScrollBarVisibility="Visible"
-                            ItemsSource="{Binding UserList}"
-                            SelectedItem="{Binding Item}"
-                            VerticalScrollBarVisibility="Visible">
-                            <DataGrid.Columns>
-                                <DataGridCheckBoxColumn
-                                    Binding="{Binding Use}"
-                                    Header="{setting:Localize UserWindow.DataGrid.Text1}"
-                                    IsReadOnly="True" />
-                                <DataGridTextColumn
-                                    Binding="{Binding Type}"
-                                    Header="{setting:Localize UserWindow.DataGrid.Text3}"
-                                    IsReadOnly="True" />
-                                <DataGridTextColumn
-                                    Binding="{Binding Name}"
-                                    Header="{setting:Localize Text.UserName}"
-                                    IsReadOnly="True" />
-                                <DataGridTextColumn
-                                    Binding="{Binding UUID}"
-                                    Header="{setting:Localize UserWindow.DataGrid.Text4}"
-                                    IsReadOnly="True" />
-                                <DataGridTextColumn
-                                    Binding="{Binding Text1}"
-                                    Header="{setting:Localize UserWindow.DataGrid.Text5}"
-                                    IsReadOnly="True" />
-                                <DataGridTextColumn
-                                    Binding="{Binding Text2}"
-                                    Header="{setting:Localize UserWindow.DataGrid.Text6}"
-                                    IsReadOnly="True" />
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </Border>
-                </Panel>
+                <Border Classes="t1" DockPanel.Dock="Bottom">
+                    <DataGrid
+                        Name="DataGrid_User"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="False"
+                        HorizontalScrollBarVisibility="Visible"
+                        ItemsSource="{Binding UserList}"
+                        SelectedItem="{Binding Item}"
+                        VerticalScrollBarVisibility="Visible">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn
+                                Binding="{Binding Use}"
+                                Header="{setting:Localize UserWindow.DataGrid.Text1}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Type}"
+                                Header="{setting:Localize UserWindow.DataGrid.Text3}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Name}"
+                                Header="{setting:Localize Text.UserName}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding UUID}"
+                                Header="{setting:Localize UserWindow.DataGrid.Text4}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Text1}"
+                                Header="{setting:Localize UserWindow.DataGrid.Text5}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Text2}"
+                                Header="{setting:Localize UserWindow.DataGrid.Text6}"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
 
                 <Button
-                    Width="40"
-                    Height="40"
-                    Margin="10"
+                    Width="44"
+                    Height="44"
+                    Margin="6"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
+                    Classes="top"
                     Command="{Binding SetAdd}"
                     CornerRadius="20"
                     ToolTip.Tip="{setting:Localize ToolTip.Text26}"

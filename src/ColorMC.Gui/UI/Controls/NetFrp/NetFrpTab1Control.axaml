@@ -11,9 +11,9 @@
     d:DesignWidth="800"
     x:DataType="model:NetFrpModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,2">
+    <DockPanel Name="ScrollViewer1" Margin="5,0,5,0">
         <Border
-            Margin="0,0,0,3"
+            Margin="0,0,0,5"
             Padding="{setting:Style BorderPadding}"
             Background="{setting:Colors GroupBack}"
             BorderBrush="{setting:Colors GroupColor}"
@@ -31,15 +31,17 @@
                     <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
+                            Height="30"
+                            Margin="-2,-2,3,-2"
+                            Classes="top"
                             Command="{Binding GetChannelSakura}"
                             Content="{setting:Localize NetFrpWindow.Tab1.Text6}"
                             DockPanel.Dock="Right" />
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,0,0"
+                            Height="30"
+                            Margin="-2,-2,3,-2"
+                            Classes="top"
                             Command="{Binding OpenUrlSakura}"
                             Content="{setting:Localize AddWindow.Control.Text3}" />
                     </StackPanel>
@@ -49,7 +51,7 @@
         </Border>
         <Panel>
             <TextBlock
-                Margin="0,0,0,3"
+                Margin="0,0,0,5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 IsVisible="{Binding IsSakuraEmpty}"

@@ -508,6 +508,14 @@ public partial class GameEditModel
     }
 
     [RelayCommand]
+    public async Task GenGameInfo()
+    {
+        Model.Progress(App.Lang("GameEditWindow.Tab1.Info10"));
+        await GameBinding.GenGameInfo(_obj);
+        Model.ProgressClose();
+    }
+
+    [RelayCommand]
     public void Open()
     {
         PathBinding.OpPath(_obj, PathType.BasePath);

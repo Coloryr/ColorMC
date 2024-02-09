@@ -23,9 +23,10 @@
                     SelectedItem="{Binding GroupItem}" />
                 <Button
                     Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
+                    Height="30"
+                    Margin="0,-2,3,-2"
                     VerticalAlignment="Center"
+                    Classes="top"
                     Command="{Binding AddGroup}"
                     Content="{setting:Localize MainWindow.Text10}" />
             </StackPanel>
@@ -35,15 +36,18 @@
                 Orientation="Horizontal">
                 <Button
                     Width="100"
-                    Height="25"
-                    Margin="0,0,30,0"
+                    Height="30"
+                    Margin="10,0,10,0"
                     HorizontalAlignment="Center"
+                    Classes="top"
                     Command="{Binding Confirm}"
                     Content="{setting:Localize Button.Confirm}" />
                 <Button
                     Width="100"
-                    Height="25"
+                    Height="30"
+                    Margin="10,0,10,0"
                     HorizontalAlignment="Center"
+                    Classes="top"
                     Command="{Binding Cancel}"
                     Content="{setting:Localize Button.Cancel}" />
             </StackPanel>

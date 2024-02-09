@@ -13,45 +13,45 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel Name="ScrollViewer1">
-        <DockPanel Margin="5,0,5,2">
+        <DockPanel Margin="5,0,5,0">
             <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="0,0,0,5"
+                Classes="t2"
                 DockPanel.Dock="Top">
                 <WrapPanel Margin="0,0,0,-5">
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
+                        Classes="top"
                         Command="{Binding ImportResource}"
                         Content="{setting:Localize Button.Input}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text105}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
+                        Classes="top"
                         Command="{Binding AddResource}"
                         Content="{setting:Localize Button.NetDownload}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text106}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
+                        Classes="top"
                         Command="{Binding LoadResource}"
                         Content="{setting:Localize Button.Refash}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text107}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
                         HorizontalAlignment="Right"
+                        Classes="top"
                         Command="{Binding OpenResource}"
                         Content="{setting:Localize Button.OpFile}"
                         IsEnabled="{Binding !Phone}"
@@ -59,13 +59,7 @@
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t1">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <ItemsControl
                         HorizontalAlignment="Stretch"

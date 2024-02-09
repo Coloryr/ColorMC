@@ -11,7 +11,7 @@ public partial class ErrorControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.Lang("ErrorWindow.Title");
+    public string Title { get; init; }
 
     private readonly string? _data;
     private readonly Exception? _e;
@@ -34,6 +34,8 @@ public partial class ErrorControl : UserControl, IUserControl
         _e = e;
         _close = close;
         _type = true;
+
+        Title = data ?? App.Lang("ErrorWindow.Title");
     }
 
     public ErrorControl(string data, string e, bool close) : this()
@@ -41,6 +43,8 @@ public partial class ErrorControl : UserControl, IUserControl
         _data = data;
         _e1 = e;
         _close = close;
+
+        Title = data;
     }
 
     public void Opened()

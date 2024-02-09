@@ -12,14 +12,10 @@
     x:DataType="model:AddControlModel"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Margin="5,2,5,5">
+        <DockPanel Margin="5,5,5,0">
             <Border
-                Margin="0,3,0,0"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="0,0,0,5"
+                Classes="t2"
                 DockPanel.Dock="Top"
                 IsEnabled="{Binding !IsDownload}"
                 IsVisible="{Binding DisplayFilter}">
@@ -91,16 +87,18 @@
                         <StackPanel Orientation="Horizontal">
                             <Button
                                 Width="80"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-3,3,-2"
+                                Classes="top"
                                 Command="{Binding GetList}"
                                 Content="{setting:Localize AddModPackWindow.Text8}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text75}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="80"
-                                Height="25"
-                                Margin="0,0,0,5"
+                                Height="30"
+                                Margin="-2,-3,3,-2"
+                                Classes="top"
                                 Command="{Binding GoInstall}"
                                 Content="{setting:Localize AddModPackWindow.Text9}"
                                 IsEnabled="{Binding IsSelect}"
@@ -110,15 +108,12 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border
-                Margin="0,3,0,0"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t1">
                 <Panel>
-                    <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
+                    <ScrollViewer
+                        Name="ScrollViewer1"
+                        Padding="{setting:Style BorderPadding}"
+                        VerticalScrollBarVisibility="Visible">
                         <ItemsControl
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
@@ -145,12 +140,8 @@
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
             <Border
-                Margin="5,5,5,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors BG1}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="5"
+                Classes="t2"
                 DockPanel.Dock="Top">
                 <WrapPanel Margin="0,0,0,-5">
                     <TextBlock Margin="0,0,5,5" Text="{setting:Localize Text.GameVersion}" />
@@ -163,7 +154,7 @@
                     <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text5}" />
                         <NumericUpDown
-                            Width="100"
+                            Width="110"
                             Height="30"
                             VerticalAlignment="Center"
                             FormatString="N0"
@@ -174,29 +165,25 @@
 
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-7,3,-2"
+                        Classes="top"
                         Command="{Binding Refresh1}"
                         Content="{setting:Localize AddModPackWindow.Text10}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text77}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,0,5"
+                        Height="30"
+                        Margin="-2,-7,3,-2"
+                        Classes="top"
                         Command="{Binding GoFile}"
                         Content="{setting:Localize AddModPackWindow.Text12}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text78}"
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
-            <Border
-                Margin="5,0,5,5"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors BG1}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="5,0,5,5" Classes="t1">
                 <DataGrid
                     Name="VersionFiles"
                     Background="{setting:Colors TranBack}"
@@ -234,12 +221,8 @@
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
             <Border
-                Margin="5,5,5,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors BG1}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="5"
+                Classes="t2"
                 DockPanel.Dock="Top">
                 <WrapPanel Margin="0,0,0,-5">
                     <TextBlock Margin="0,0,5,5" Text="{setting:Localize AddWindow.Text10}" />
@@ -253,8 +236,9 @@
 
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-7,3,-2"
+                        Classes="top"
                         Command="{Binding LoadOptifineList}"
                         Content="{setting:Localize AddModPackWindow.Text10}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text77}"
@@ -262,21 +246,16 @@
 
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-7,3,-2"
+                        Classes="top"
                         Command="{Binding DownloadOptifine}"
                         Content="{setting:Localize AddModPackWindow.Text12}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text78}"
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
-            <Border
-                Margin="5,0,5,5"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors BG1}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="5,0,5,5" Classes="t1">
                 <DataGrid
                     Name="OptifineFiles"
                     Background="{setting:Colors TranBack}"
@@ -310,45 +289,38 @@
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
             <Border
-                Margin="5,5,5,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors BG1}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="5"
+                Classes="t2"
                 DockPanel.Dock="Top">
                 <WrapPanel>
                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text7}" />
                     <ToggleSwitch
-                        Margin="0,0,5,0"
+                        Margin="0,0,10,0"
                         Command="{Binding ModsLoad}"
                         IsChecked="{Binding LoadMoreMod}"
                         OffContent="{setting:Localize AddWindow.Text9}"
                         OnContent="{setting:Localize AddWindow.Text9}" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,0"
+                        Height="30"
+                        Margin="-2,-3,3,-2"
+                        Classes="top"
                         Command="{Binding DownloadAllMod}"
                         Content="{setting:Localize AddWindow.Text6}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text79}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
+                        Height="30"
+                        Margin="-2,-3,3,-2"
+                        Classes="top"
                         Command="{Binding DownloadMod}"
                         Content="{setting:Localize AddModPackWindow.Text12}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text80}"
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
-            <Border
-                Margin="5,0,5,5"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors BG1}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="5,0,5,5" Classes="t1">
                 <DataGrid
                     Name="ModDownloadFiles"
                     Background="{setting:Colors TranBack}"

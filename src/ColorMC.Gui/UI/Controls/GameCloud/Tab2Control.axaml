@@ -15,27 +15,26 @@
     <Border
         Name="ScrollViewer1"
         Margin="5,0,5,5"
-        Padding="{setting:Style BorderPadding}"
-        Background="{setting:Colors GroupBack}"
-        BorderBrush="{setting:Colors GroupColor}"
-        BorderThickness="2"
-        CornerRadius="{setting:Style ButtonCornerRadius}">
-        <DockPanel IsEnabled="{Binding Enable}">
+        Classes="t1">
+        <DockPanel Margin="5" IsEnabled="{Binding Enable}">
             <StackPanel
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Bottom"
                 Orientation="Horizontal">
                 <Button
                     Width="100"
-                    Height="25"
+                    Height="30"
+                    Margin="-2,-2,3,-2"
+                    Classes="top"
                     Command="{Binding UploadConfig}"
                     Content="{setting:Localize GameCloudWindow.Tab2.Text1}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text95}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
                     Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
+                    Height="30"
+                    Margin="-2,-2,0,-2"
+                    Classes="top"
                     Command="{Binding DownloadConfig}"
                     Content="{setting:Localize GameCloudWindow.Tab2.Text2}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text96}"

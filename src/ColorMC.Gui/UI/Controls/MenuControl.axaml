@@ -38,7 +38,7 @@
                 </StackPanel>
             </Border>
 
-            <Panel Margin="0,3,0,0" ClipToBounds="True">
+            <Panel Margin="0,5,0,0" ClipToBounds="True">
                 <Decorator Name="Content1" />
                 <Decorator Name="Content2" />
             </Panel>
