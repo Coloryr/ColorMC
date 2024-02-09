@@ -1745,4 +1745,62 @@ public static class GameBinding
 
         return loaders;
     }
+
+    private static string MakeString(this List<string> list)
+    {
+        var str = new StringBuilder();
+        foreach (var item in list)
+        {
+            str.Append(item).Append(", ");
+        }
+
+        if (str.Length > 0)
+        {
+            return str.ToString()[..^1];
+        }
+
+        return "";
+    }
+
+    public static async Task GenGameInfo(GameSettingObj obj)
+    {
+        var list = await obj.GetModsAsync(false);
+        var info = new StringBuilder();
+        await Task.Run(() =>
+        {
+            info.AppendLine($"ColorMC:{ColorMCCore.Version}")
+                .AppendLine($"{App.Lang("Gui.Info44")}{obj.Name}")
+                .AppendLine($"{App.Lang("Gui.Info45")}{obj.Version}");
+            if (obj.ModPack)
+            { 
+                info.AppendLine(string.Format(App.Lang("Gui.Info51"), obj.ModPackType.GetName(), obj.PID, obj.FID));
+            }
+            if (obj.Loader != Loaders.Normal)
+            {
+                if (obj.Loader == Loaders.Custom)
+                {
+                    info.AppendLine(string.Format(App.Lang("Gui.Info47"), Path.GetFileName(obj.CustomLoader?.Local), obj.CustomLoader?.OffLib));
+                }
+                else
+                {
+                    info.AppendLine(string.Format(App.Lang("Gui.Info46"), obj.Loader.GetName(), obj.LoaderVersion));
+                }
+
+                if (list.Count != 0)
+                {
+                    info.AppendLine(App.Lang("Gui.Info48"));
+
+                    foreach (var item in list)
+                    {
+                        info.AppendLine(string.Format(App.Lang("Gui.Info49"), item.name, item.modid, item.authorList?.MakeString(), Path.GetFileName(item.Local), item.Disable, item.CoreMod, item.Sha1, item.Loader.GetName()));
+                        if (obj.Mods.Values.FirstOrDefault(item => item.SHA1 == item.SHA1) is { } item1)
+                        {
+                            info.AppendLine(string.Format(App.Lang("Gui.Info50"), item1.Type.GetName(), item1.ModId, item1.FileId));
+                        }
+                    }
+                }
+            }
+        });
+        App.ShowError(App.Lang("Gui.Info52"), info.ToString(), false);
+    }
 }

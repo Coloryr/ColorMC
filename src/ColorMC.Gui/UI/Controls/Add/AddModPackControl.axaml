@@ -12,14 +12,9 @@
     x:DataType="model:AddModPackControlModel"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Margin="5,2,5,5">
+        <DockPanel Margin="5">
             <Border
-                Margin="0,3,0,0"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Classes="t2"
                 DockPanel.Dock="Top"
                 IsVisible="{Binding DisplayFilter}">
                 <StackPanel>
@@ -33,9 +28,7 @@
                                 SelectedIndex="{Binding Source}" />
                         </DockPanel>
                         <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                Text="{setting:Localize AddModPackWindow.Text1}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text1}" />
                             <ComboBox
                                 Width="100"
                                 Height="30"
@@ -44,9 +37,7 @@
                                 SelectedIndex="{Binding Categorie}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
-                            <TextBlock
-                                Width="65"
-                                Text="{setting:Localize Text.GameVersion}" />
+                            <TextBlock Width="65" Text="{setting:Localize Text.GameVersion}" />
                             <ComboBox
                                 Width="120"
                                 Height="30"
@@ -56,8 +47,9 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,0,5"
+                            Height="30"
+                            Margin="-2,-7,3,-2"
+                            Classes="top"
                             Command="{Binding Reload}"
                             Content="{setting:Localize AddModPackWindow.Text8}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text75}"
@@ -74,9 +66,7 @@
                             Text="{Binding Text}"
                             Watermark="{setting:Localize Text.Name}" />
                         <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                Text="{setting:Localize AddModPackWindow.Text4}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text4}" />
                             <ComboBox
                                 Width="100"
                                 Height="30"
@@ -85,9 +75,7 @@
                                 SelectedIndex="{Binding SortType}" />
                         </StackPanel>
                         <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
-                            <TextBlock
-                                Width="65"
-                                Text="{setting:Localize AddModPackWindow.Text5}" />
+                            <TextBlock Width="65" Text="{setting:Localize AddModPackWindow.Text5}" />
                             <NumericUpDown
                                 Width="120"
                                 Height="30"
@@ -98,8 +86,9 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,0,5"
+                            Height="30"
+                            Margin="-2,-7,3,-2"
+                            Classes="top"
                             Command="{Binding Select}"
                             Content="{setting:Localize AddModPackWindow.Text9}"
                             IsEnabled="{Binding IsSelect}"
@@ -108,19 +97,13 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border
-                Margin="0,3,0,0"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,5,0,0" Classes="t1">
                 <Panel>
                     <DockPanel Background="{setting:Colors TranBack}" IsVisible="{Binding EmptyDisplay}">
                         <TextBlock
                             HorizontalAlignment="Center"
-                            Text="{setting:Localize AddModPackWindow.Text13}"
-                            FontSize="30" />
+                            FontSize="30"
+                            Text="{setting:Localize AddModPackWindow.Text13}" />
                     </DockPanel>
                     <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
                         <ItemsControl
@@ -151,9 +134,7 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 DockPanel.Dock="Top">
                 <WrapPanel Margin="0,0,0,-5">
-                    <TextBlock
-                        Margin="0,0,5,5"
-                        Text="{setting:Localize Text.GameVersion}" />
+                    <TextBlock Margin="0,0,5,5" Text="{setting:Localize Text.GameVersion}" />
                     <ComboBox
                         Width="100"
                         Margin="0,0,5,5"
@@ -161,9 +142,7 @@
                         ItemsSource="{Binding GameVersionList}"
                         SelectedItem="{Binding GameVersion1}" />
                     <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
-                        <TextBlock
-                            Margin="0,0,5,0"
-                            Text="{setting:Localize AddModPackWindow.Text5}" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text5}" />
                         <NumericUpDown
                             Width="100"
                             Height="30"

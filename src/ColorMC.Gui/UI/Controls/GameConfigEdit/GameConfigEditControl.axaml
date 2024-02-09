@@ -11,7 +11,7 @@
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.GameConfigEdit"
     d:DesignHeight="450"
-    d:DesignWidth="350"
+    d:DesignWidth="800"
     x:DataType="vm:GameConfigEditModel"
     mc:Ignorable="d">
     <dialog:DialogHost DisableOpeningAnimation="True" Identifier="{Binding UseName}">
@@ -28,13 +28,7 @@
         </dialog:DialogHost.DataTemplates>
         <Panel Margin="5">
             <DockPanel>
-                <Border
-                    Padding="{setting:Style BorderPadding}"
-                    Background="{setting:Colors GroupBack}"
-                    BorderBrush="{setting:Colors GroupColor}"
-                    BorderThickness="2"
-                    CornerRadius="{setting:Style ButtonCornerRadius}"
-                    DockPanel.Dock="Top">
+                <Border Classes="t2" DockPanel.Dock="Top">
                     <StackPanel>
                         <Grid Margin="0,0,0,5" ColumnDefinitions="0.8*,*">
                             <ComboBox
@@ -53,39 +47,43 @@
                                 Text="{Binding Name}"
                                 Watermark="{setting:Localize ConfigEditWindow.Text1}" />
                         </Grid>
-                        <WrapPanel Margin="0,0,0,-5">
+                        <WrapPanel Margin="0,0,0,-5" HorizontalAlignment="Right">
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-2,3,2"
                                 VerticalAlignment="Center"
+                                Classes="top"
                                 Command="{Binding Open}"
                                 Content="{setting:Localize Button.OpFile}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-2,3,2"
                                 VerticalAlignment="Center"
+                                Classes="top"
                                 Command="{Binding Save}"
                                 Content="{setting:Localize ConfigEditWindow.Text2}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text40}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-2,3,2"
                                 VerticalAlignment="Center"
+                                Classes="top"
                                 Command="{Binding Load}"
                                 Content="{setting:Localize ConfigEditWindow.Text3}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text41}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-2,3,2"
                                 VerticalAlignment="Center"
+                                Classes="top"
                                 Command="{Binding FindBlock}"
                                 Content="{setting:Localize ConfigEditWindow.Text5}"
                                 IsVisible="{Binding IsWorld}"
@@ -93,9 +91,10 @@
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-2,0,2"
                                 VerticalAlignment="Center"
+                                Classes="top"
                                 Command="{Binding FindEntity}"
                                 Content="{setting:Localize ConfigEditWindow.Text6}"
                                 IsVisible="{Binding IsWorld}"
@@ -104,12 +103,7 @@
                         </WrapPanel>
                     </StackPanel>
                 </Border>
-                <Border
-                    Margin="0,3,0,0"
-                    Background="{setting:Colors GroupBack}"
-                    BorderBrush="{setting:Colors GroupColor}"
-                    BorderThickness="2"
-                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                <Border Margin="0,5,0,0" Classes="t1">
                     <Panel>
                         <ae:TextEditor
                             Name="TextEditor1"

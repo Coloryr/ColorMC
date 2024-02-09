@@ -9,21 +9,17 @@
     x:DataType="model:NetFrpCloudServerModel"
     Design.Width="320"
     mc:Ignorable="d">
-    <Border
-        Padding="{setting:Style BorderPadding}"
-        Background="{setting:Colors GroupBack}"
-        BorderBrush="{setting:Colors GroupColor}"
-        BorderThickness="2"
-        CornerRadius="{setting:Style ButtonCornerRadius}">
+    <Border Classes="t2">
         <DockPanel>
             <StackPanel
                 VerticalAlignment="Center"
                 DockPanel.Dock="Right"
                 Orientation="Horizontal">
                 <Button
-                    Width="38"
-                    Height="38"
-                    Margin="0,0,5,0"
+                    Width="40"
+                    Height="40"
+                    Margin="-2,-2,3,-2"
+                    Classes="top"
                     Command="{Binding Join}"
                     CornerRadius="{setting:Style ButtonCornerRadius}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text128}"
@@ -31,9 +27,10 @@
                     <Svg Path="/Resource/Icon/Item/join.svg" />
                 </Button>
                 <Button
-                    Width="38"
-                    Height="38"
-                    Margin="0,0,5,0"
+                    Width="40"
+                    Height="40"
+                    Margin="-2,-2,3,-2"
+                    Classes="top"
                     Command="{Binding Copy}"
                     CornerRadius="{setting:Style ButtonCornerRadius}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text129}"
@@ -41,8 +38,10 @@
                     <Svg Path="/Resource/Icon/Item/clipboard.svg" />
                 </Button>
                 <Button
-                    Width="38"
-                    Height="38"
+                    Width="40"
+                    Height="40"
+                    Margin="-2,-2,0,-2"
+                    Classes="top"
                     Command="{Binding Test}"
                     CornerRadius="{setting:Style ButtonCornerRadius}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text130}"

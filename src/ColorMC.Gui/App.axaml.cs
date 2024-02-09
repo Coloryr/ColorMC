@@ -209,7 +209,6 @@ public partial class App : Application
             {
                 var win = new SingleWindow();
                 AllWindow = win.Win;
-                (Life as IClassicDesktopStyleApplicationLifetime)!.MainWindow = win;
             }
         }
 
@@ -323,8 +322,7 @@ public partial class App : Application
         var file = GuiConfigUtils.Config.BackImage;
         if (string.IsNullOrWhiteSpace(file))
         {
-            file = NowTheme == PlatformThemeVariant.Light ? "ColorMC.Gui.Resource.Pic.bg.jpg"
-                : "ColorMC.Gui.Resource.Pic.bg1.jpg";
+            file = "ColorMC.Gui.Resource.Pic.bg.jpeg";
         }
 
         if (GuiConfigUtils.Config.EnableBG)
@@ -395,14 +393,7 @@ public partial class App : Application
             var win = new SelfBaseWindow(con);
             TopLevel ??= win;
             con.SetBaseModel(win.Model);
-            if (isroot && Life is IClassicDesktopStyleApplicationLifetime life)
-            {
-                life.MainWindow = win;
-            }
-            else
-            {
-                win.Show();
-            }
+            win.Show();
         }
     }
 

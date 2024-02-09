@@ -7,23 +7,17 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    d:DesignHeight="600"
+    d:DesignHeight="700"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer
         Name="ScrollViewer1"
-        Margin="5,0,5,2"
+        Margin="5,0,5,0"
         HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
-            <Panel Margin="0,0,0,3">
-                <Border
-                    Padding="{setting:Style BorderPadding}"
-                    Background="{setting:Colors GroupBack}"
-                    BorderBrush="{setting:Colors GroupColor}"
-                    BorderThickness="2"
-                    CornerRadius="{setting:Style ButtonCornerRadius}"
-                    IsEnabled="{Binding !IsDownload}">
+            <Panel Margin="0,0,0,5">
+                <Border Classes="t2" IsEnabled="{Binding !IsDownload}">
                     <StackPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <svg:SvgControl
@@ -77,26 +71,15 @@
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Border
-                    Background="{setting:Colors GroupBack}"
-                    BorderBrush="{setting:Colors GroupColor}"
-                    BorderThickness="2"
-                    CornerRadius="{setting:Style ButtonCornerRadius}"
-                    IsVisible="{Binding IsDownload}">
+                <Border Classes="t1" IsVisible="{Binding IsDownload}">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Text="{setting:Localize SettingWindow.Tab3.Text26}" />
                 </Border>
             </Panel>
-            <Panel Margin="0,0,0,3">
-                <Border
-                    Padding="{setting:Style BorderPadding}"
-                    Background="{setting:Colors GroupBack}"
-                    BorderBrush="{setting:Colors GroupColor}"
-                    BorderThickness="2"
-                    CornerRadius="{setting:Style ButtonCornerRadius}"
-                    IsEnabled="{Binding !IsDownload}">
+            <Panel Margin="0,0,0,5">
+                <Border Classes="t2" IsEnabled="{Binding !IsDownload}">
                     <StackPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <svg:SvgControl
@@ -140,9 +123,10 @@
                         </Grid>
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
+                            Height="30"
+                            Margin="-2,-2,3,-2"
                             HorizontalAlignment="Right"
+                            Classes="top"
                             Command="{Binding SetProxy}"
                             Content="{setting:Localize Button.Set}" />
                         <WrapPanel Margin="0,5,0,0">
@@ -164,12 +148,7 @@
                         <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Border
-                    Background="{setting:Colors GroupBack}"
-                    BorderBrush="{setting:Colors GroupColor}"
-                    BorderThickness="2"
-                    CornerRadius="{setting:Style ButtonCornerRadius}"
-                    IsVisible="{Binding IsDownload}">
+                <Border Classes="t1" IsVisible="{Binding IsDownload}">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -177,12 +156,8 @@
                 </Border>
             </Panel>
             <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="0,0,0,5"
+                Classes="t2"
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -197,34 +172,30 @@
                     </StackPanel>
                     <WrapPanel>
                         <ToggleSwitch
-                            Margin="0,0,10,0"
+                            Margin="0,0,10,-4"
                             IsChecked="{Binding CheckUpdate}"
                             OffContent="{setting:Localize SettingWindow.Tab3.Text15}"
                             OnContent="{setting:Localize SettingWindow.Tab3.Text15}" />
                         <StackPanel Margin="0,0,0,-5" Orientation="Horizontal">
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-6,3,-2"
+                                Classes="top"
                                 Command="{Binding StartCheck}"
                                 Content="{setting:Localize SettingWindow.Tab3.Text16}" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-6,3,-2"
+                                Classes="top"
                                 Command="{Binding StartUpdate}"
                                 Content="{setting:Localize SettingWindow.Tab3.Text17}" />
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -248,8 +219,10 @@
                         Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
                     <Button
                         Width="100"
-                        Height="25"
+                        Height="30"
+                        Margin="-2,-2,3,-2"
                         HorizontalAlignment="Right"
+                        Classes="top"
                         Command="{Binding GameCloudConnect}"
                         Content="{setting:Localize SettingWindow.Tab3.Text22}" />
                 </StackPanel>

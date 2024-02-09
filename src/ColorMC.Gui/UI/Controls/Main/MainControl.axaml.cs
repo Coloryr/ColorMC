@@ -158,7 +158,10 @@ public partial class MainControl : UserControl, IUserControl
         {
             if (model.IsNotGame && Content1.Child is not MainEmptyControl)
             {
-                Content1.Child = new MainEmptyControl();
+                Content1.Child = new MainEmptyControl()
+                {
+                    DataContext = new MainEmptyModel(model.Model)
+                };
             }
             else if (Content1.Child is not MainGamesControl)
             {

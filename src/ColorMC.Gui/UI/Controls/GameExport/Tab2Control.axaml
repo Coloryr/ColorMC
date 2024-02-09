@@ -12,17 +12,15 @@
     mc:Ignorable="d">
     <DockPanel Name="ScrollViewer1" Margin="5,0,5,2">
         <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
+            Margin="0,0,0,5"
+            Classes="t2"
             DockPanel.Dock="Top">
             <DockPanel>
                 <Button
                     Width="100"
-                    Height="25"
+                    Height="30"
+                    Margin="-2,-3,0,-2"
+                    Classes="top"
                     Command="{Binding OpenMod}"
                     Content="{setting:Localize Button.OpFile}"
                     DockPanel.Dock="Right"
@@ -30,8 +28,9 @@
                     ToolTip.VerticalOffset="-30" />
                 <Button
                     Width="100"
-                    Height="25"
-                    Margin="0,0,5,0"
+                    Height="30"
+                    Margin="-2,-3,3,-2"
+                    Classes="top"
                     Command="{Binding LoadMod}"
                     Content="{setting:Localize Button.Refash}"
                     DockPanel.Dock="Right"
@@ -44,12 +43,7 @@
                     Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
             </DockPanel>
         </Border>
-        <Border
-            Margin="0,0,0,3"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+        <Border Margin="0,0,0,5" Classes="t1">
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"

@@ -15,11 +15,7 @@
     <Border
         Name="ScrollViewer1"
         Margin="5,0,5,5"
-        Padding="{setting:Style BorderPadding}"
-        Background="{setting:Colors GroupBack}"
-        BorderBrush="{setting:Colors GroupColor}"
-        BorderThickness="2"
-        CornerRadius="{setting:Style ButtonCornerRadius}">
+        Classes="t1">
         <TreeDataGrid Source="{Binding Source}" />
     </Border>
 </UserControl>

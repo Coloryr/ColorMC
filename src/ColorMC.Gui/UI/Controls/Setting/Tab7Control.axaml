@@ -12,12 +12,7 @@
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer Name="ScrollViewer1" Margin="5,0,5,5">
-        <Border
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+        <Border Classes="t1">
             <WrapPanel
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"

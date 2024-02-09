@@ -11,13 +11,8 @@
     d:DesignWidth="800"
     x:DataType="model:AddGameModel"
     mc:Ignorable="d">
-    <StackPanel Margin="5,5,5,5">
-        <Border
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+    <StackPanel Margin="5">
+        <Border Classes="t2">
             <StackPanel>
                 <TextBox
                     Margin="0,0,0,5"
@@ -27,9 +22,11 @@
                 <DockPanel Margin="0,0,0,5">
                     <Button
                         Width="100"
-                        Height="25"
+                        Height="30"
+                        Margin="-2,-2,0,-2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
+                        Classes="top"
                         Command="{Binding SelectPack}"
                         Content="{setting:Localize AddGameWindow.Tab2.Text3}"
                         DockPanel.Dock="Right"
@@ -49,9 +46,7 @@
                         Fill="{setting:Colors Font}"
                         Path="/Resource/Icon/GameEdit/svg3.svg"
                         Stroke="{setting:Colors Font}" />
-                    <TextBlock
-                        FontSize="{setting:Style FontTitle}"
-                        Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                    <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                 </StackPanel>
                 <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                     <ComboBox
@@ -61,8 +56,10 @@
                         SelectedItem="{Binding Group}" />
                     <Button
                         Width="100"
-                        Height="25"
+                        Height="30"
+                        Margin="-2,-2,3,-2"
                         VerticalAlignment="Center"
+                        Classes="top"
                         Command="{Binding AddGroup}"
                         Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text84}"
@@ -76,9 +73,7 @@
                         Fill="{setting:Colors Font}"
                         Path="/Resource/Icon/AddMenu/svg1.svg"
                         Stroke="{setting:Colors Font}" />
-                    <TextBlock
-                        FontSize="{setting:Style FontTitle}"
-                        Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
+                    <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
                 </StackPanel>
                 <ComboBox
                     Width="200"
@@ -87,9 +82,11 @@
                     SelectedIndex="{Binding Type}" />
                 <Button
                     Width="100"
-                    Height="25"
+                    Height="30"
+                    Margin="-2,-2,0,-2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
+                    Classes="top"
                     Command="{Binding AddPackGame}"
                     Content="{setting:Localize AddGameWindow.Text1}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text84}"

@@ -6,19 +6,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="450"
+    d:DesignHeight="600"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer Name="ScrollViewer1" Margin="5,0,5,2">
+    <ScrollViewer Name="ScrollViewer1" Margin="5,0,5,0">
         <StackPanel>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <TextBlock Text="{setting:Localize SettingWindow.Tab1.Text14}" />
                     <StackPanel>
@@ -31,7 +25,9 @@
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button
                                 Width="100"
-                                Height="25"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding ChangeRunDir}"
                                 Content="{setting:Localize SettingWindow.Tab1.Text15}"
                                 DockPanel.Dock="Right"
@@ -39,8 +35,9 @@
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="5,0,0,0"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding ChangeBackRunDir}"
                                 Content="{setting:Localize SettingWindow.Tab1.Text17}"
                                 DockPanel.Dock="Right"
@@ -48,7 +45,7 @@
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                         <TextBlock
-                            Margin="0,0,0,5"
+                            Margin="0,2,0,5"
                             Text="{setting:Localize SettingWindow.Tab1.Text16}"
                             TextWrapping="Wrap" />
                     </StackPanel>
@@ -62,7 +59,9 @@
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button
                                 Width="100"
-                                Height="25"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding Open1}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
@@ -70,8 +69,9 @@
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="5,0,0,0"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding Import1}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
@@ -89,7 +89,9 @@
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button
                                 Width="100"
-                                Height="25"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding Open2}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
@@ -97,8 +99,9 @@
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="5,0,0,0"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding Import2}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
@@ -116,7 +119,9 @@
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button
                                 Width="100"
-                                Height="25"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding Open3}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
@@ -124,8 +129,9 @@
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="5,0,0,0"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding Import3}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
@@ -143,7 +149,9 @@
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button
                                 Width="100"
-                                Height="25"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding Open4}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
@@ -151,8 +159,9 @@
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="5,0,0,0"
+                                Height="30"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
                                 Command="{Binding Import3}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
@@ -162,27 +171,23 @@
                     </StackPanel>
                 </StackPanel>
             </Border>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <WrapPanel Margin="0,0,0,-5">
                     <TextBlock Margin="0,0,10,5" Text="{setting:Localize SettingWindow.Tab1.Text12}" />
                     <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Width="110"
+                        Height="30"
+                        Margin="-2,-7,3,-2"
+                        Classes="top"
                         Command="{Binding Reset}"
                         Content="{setting:Localize SettingWindow.Tab1.Text1}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text122}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Width="110"
+                        Height="30"
+                        Margin="-2,-7,3,-2"
+                        Classes="top"
                         Command="{Binding ClearUser}"
                         Content="{setting:Localize SettingWindow.Tab1.Text2}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text123}"
@@ -190,37 +195,37 @@
                 </WrapPanel>
             </Border>
             <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="0,0,0,5"
+                Classes="t2"
                 IsVisible="{Binding !Phone}">
                 <WrapPanel Margin="0,0,0,-5">
                     <TextBlock Margin="0,0,10,5" Text="{setting:Localize SettingWindow.Tab1.Text13}" />
                     <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Width="110"
+                        Height="30"
+                        Margin="-2,-7,3,-2"
+                        Classes="top"
                         Command="{Binding Open}"
                         Content="{setting:Localize SettingWindow.Tab1.Text3}" />
                     <Button
-                        Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Width="110"
+                        Height="30"
+                        Margin="-2,-7,3,-2"
+                        Classes="top"
                         Command="{Binding OpenJavaPath}"
                         Content="{setting:Localize SettingWindow.Tab5.Text6}" />
                     <Button
                         Width="120"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-7,3,-2"
+                        Classes="top"
                         Command="{Binding OpenDownloadPath}"
                         Content="{setting:Localize SettingWindow.Tab3.Text13}" />
                     <Button
                         Width="120"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-7,3,-2"
+                        Classes="top"
                         Command="{Binding OpenPicPath}"
                         Content="{setting:Localize SettingWindow.Tab3.Text18}" />
                 </WrapPanel>

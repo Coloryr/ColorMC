@@ -13,9 +13,9 @@
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="5,0,5,2">
+        <StackPanel Margin="5,0,5,0">
             <Border
-                Margin="0,0,0,3"
+                Margin="0,0,0,5"
                 Classes="t2"
                 IsVisible="{Binding Phone}">
                 <StackPanel Name="PhoneSetting">
@@ -32,7 +32,7 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,0,0,3"
+                Margin="0,0,0,5"
                 Classes="t2"
                 IsEnabled="{Binding !Phone}">
                 <StackPanel>
@@ -77,7 +77,7 @@
                         TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,3" Classes="t2">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <!--  语言  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -128,7 +128,7 @@
                         TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,3" Classes="t2">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -194,7 +194,7 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,3" Classes="t2">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <!--  背景图  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -343,7 +343,7 @@
                     <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text18}" />
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,3" Classes="t2">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <!--  颜色设置  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -474,7 +474,7 @@
             </Border>
 
             <Border
-                Margin="0,0,0,3"
+                Margin="0,0,0,5"
                 Classes="t2"
                 IsEnabled="{Binding !Phone}"
                 IsVisible="{Binding !Phone}">

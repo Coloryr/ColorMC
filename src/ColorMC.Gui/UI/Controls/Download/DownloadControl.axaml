@@ -7,18 +7,12 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Download"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
-    d:DesignWidth="350"
+    d:DesignWidth="800"
     x:DataType="model:DownloadModel"
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
     <DockPanel Margin="5">
-        <Border
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
-            DockPanel.Dock="Top">
+        <Border Classes="t1" DockPanel.Dock="Top">
             <WrapPanel>
                 <ProgressBar
                     Height="20"
@@ -45,11 +39,8 @@
             </WrapPanel>
         </Border>
         <Border
-            Margin="0,3,0,0"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
+            Margin="0,5,0,0"
+            Classes="t1"
             DockPanel.Dock="Top">
             <DataGrid
                 Name="DataGrid1"

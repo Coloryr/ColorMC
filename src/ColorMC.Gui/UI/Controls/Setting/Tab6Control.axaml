@@ -12,16 +12,10 @@
     mc:Ignorable="d">
     <ScrollViewer
         Name="ScrollViewer1"
-        Margin="5,0,5,2"
+        Margin="5,0,5,0"
         HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -73,13 +67,7 @@
                 </StackPanel>
             </Border>
 
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t2">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -124,12 +112,8 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="0,0,0,5"
+                Classes="t2"
                 IsVisible="{Binding !Phone}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -146,52 +130,51 @@
                         IsChecked="{Binding EnableUI}"
                         OffContent="{setting:Localize SettingWindow.Tab6.Text30}"
                         OnContent="{setting:Localize SettingWindow.Tab6.Text30}" />
-                    <DockPanel Margin="0,5,0,5">
+                    <TextBox
+                        Margin="0,5,0,5"
+                        Classes="input1"
+                        Text="{Binding FileUI}"
+                        Watermark="{setting:Localize SettingWindow.Tab6.Text9}" />
+                    <WrapPanel HorizontalAlignment="Right">
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="5,0,0,0"
+                            Height="30"
+                            Margin="-2,-2,3,-2"
+                            Classes="top"
                             Command="{Binding SelectUI}"
                             Content="{setting:Localize Button.Select}"
                             DockPanel.Dock="Right" />
-                        <TextBox
-                            Classes="input1"
-                            Text="{Binding FileUI}"
-                            Watermark="{setting:Localize SettingWindow.Tab6.Text9}" />
-                    </DockPanel>
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
+                            Height="30"
+                            Margin="-2,-2,3,-2"
+                            Classes="top"
                             Command="{Binding Save}"
                             Content="{setting:Localize SettingWindow.Tab6.Text10}"
                             DockPanel.Dock="Right" />
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,0"
+                            Height="30"
+                            Margin="-2,-2,3,-2"
+                            Classes="top"
                             Command="{Binding Delete}"
                             Content="{setting:Localize Button.Delete}"
                             DockPanel.Dock="Right"
                             IsEnabled="{Binding FileUI, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                         <Button
                             Width="100"
-                            Height="25"
+                            Height="30"
+                            Margin="-2"
+                            Classes="top"
                             Command="{Binding Test}"
                             Content="{setting:Localize SettingWindow.Tab6.Text11}"
-                            DockPanel.Dock="Right"
                             IsEnabled="{Binding FileUI, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                    </StackPanel>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="0,0,0,5"
+                Classes="t2"
                 IsVisible="{Binding !Phone}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -220,22 +203,21 @@
                             OffContent="{setting:Localize SettingWindow.Tab6.Text26}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text26}" />
                     </WrapPanel>
-                    <DockPanel>
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="5,0,0,0"
-                            Command="{Binding SelectMusic}"
-                            Content="{setting:Localize Button.Select}"
-                            DockPanel.Dock="Right"
-                            IsEnabled="{Binding EnableMusic}" />
-                        <TextBox
-                            Classes="input1"
-                            IsEnabled="{Binding EnableMusic}"
-                            Text="{Binding Music}"
-                            Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
-                    </DockPanel>
-
+                    <TextBox
+                        Margin="0,5,0,5"
+                        Classes="input1"
+                        IsEnabled="{Binding EnableMusic}"
+                        Text="{Binding Music}"
+                        Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="-2"
+                        HorizontalAlignment="Right"
+                        Classes="top"
+                        Command="{Binding SelectMusic}"
+                        Content="{setting:Localize Button.Select}"
+                        IsEnabled="{Binding EnableMusic}" />
                     <WrapPanel Margin="0,5,0,-5">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <TextBlock Margin="5,0,0,0" Text="{setting:Localize SettingWindow.Tab6.Text18}" />
@@ -260,29 +242,33 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,5"
+                            Height="30"
+                            Margin="-2,-6,3,-2"
+                            Classes="top"
                             Command="{Binding MusicStart}"
                             Content="{setting:Localize SettingWindow.Tab6.Text19}"
                             IsEnabled="{Binding EnableMusic}" />
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,5"
+                            Height="30"
+                            Margin="-2,-6,3,-2"
+                            Classes="top"
                             Command="{Binding MusicPause}"
                             Content="{setting:Localize SettingWindow.Tab6.Text21}"
                             IsEnabled="{Binding EnableMusic}" />
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,5"
+                            Height="30"
+                            Margin="-2,-6,3,-2"
+                            Classes="top"
                             Command="{Binding MusicPlay}"
                             Content="{setting:Localize SettingWindow.Tab6.Text23}"
                             IsEnabled="{Binding EnableMusic}" />
                         <Button
                             Width="100"
-                            Height="25"
-                            Margin="0,0,5,5"
+                            Height="30"
+                            Margin="-2,-6,3,-2"
+                            Classes="top"
                             Command="{Binding MusicStop}"
                             Content="{setting:Localize SettingWindow.Tab6.Text20}"
                             IsEnabled="{Binding EnableMusic}" />

@@ -14,60 +14,62 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel Name="ScrollViewer1">
-        <DockPanel Margin="5,0,5,2">
+        <DockPanel Margin="5,0,5,0">
             <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="0,0,0,5"
+                Classes="t2"
                 DockPanel.Dock="Top">
                 <WrapPanel Margin="0,0,0,-5">
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
+                        Classes="top"
                         Command="{Binding ImportWorld}"
                         Content="{setting:Localize Button.Input}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text100}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
+                        Classes="top"
                         Command="{Binding AddWorld}"
                         Content="{setting:Localize Button.NetDownload}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text101}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
+                        Classes="top"
                         Command="{Binding LoadWorld}"
                         Content="{setting:Localize Button.Refash}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text102}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
+                        Classes="top"
                         Command="{Binding EditWorld}"
                         Content="{setting:Localize GameEditWindow.Tab5.Text3}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text103}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
+                        Classes="top"
                         Command="{Binding BackupWorld}"
                         Content="{setting:Localize GameEditWindow.Tab5.Text2}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text42}"
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
+                        Classes="top"
                         Command="{Binding OpenBackupWorld}"
                         Content="{setting:Localize GameEditWindow.Tab5.Text1}"
                         IsEnabled="{Binding !Phone}"
@@ -75,8 +77,9 @@
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
-                        Margin="0,0,5,5"
+                        Height="30"
+                        Margin="-2,-3,3,2"
+                        Classes="top"
                         Command="{Binding OpenWorld}"
                         Content="{setting:Localize Button.OpFile}"
                         IsEnabled="{Binding !Phone}"
@@ -84,13 +87,7 @@
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
-            <Border
-                Margin="0,0,0,3"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}">
+            <Border Margin="0,0,0,5" Classes="t1">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <ItemsControl
                         HorizontalAlignment="Stretch"

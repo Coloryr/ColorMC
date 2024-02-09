@@ -12,14 +12,10 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,2">
+    <DockPanel Name="ScrollViewer1" Margin="5,0,5,0">
         <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
+            Margin="0,0,0,5"
+            Classes="t2"
             DockPanel.Dock="Top"
             IsVisible="{Binding !Phone}">
             <StackPanel>
@@ -34,8 +30,6 @@
                     <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab5.Text1}" />
                 </StackPanel>
 
-
-
                 <DockPanel Margin="0,5,0,5">
                     <TextBox
                         Width="130"
@@ -49,11 +43,14 @@
                         Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
                 </DockPanel>
 
-                <DockPanel>
+                <StackPanel
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
                     <Button
                         Width="100"
                         Height="30"
-                        Margin="-3"
+                        Margin="-2,-2,3,-2"
                         Classes="top"
                         Command="{Binding AddJava}"
                         Content="{setting:Localize Button.Add}"
@@ -61,62 +58,55 @@
                     <Button
                         Width="100"
                         Height="30"
-                        Margin="-3,-3,3,-3"
+                        Margin="-2"
                         Classes="top"
                         Command="{Binding SelectJava}"
                         Content="{setting:Localize Button.Select}"
                         DockPanel.Dock="Right" />
 
-                    <WrapPanel Margin="0,0,0,-5">
-                        <Button
-                            Width="100"
-                            Height="30"
-                            Margin="-3,-3,3,2"
-                            Classes="top"
-                            Command="{Binding ShowAddJava}"
-                            Content="{setting:Localize SettingWindow.Tab5.Text4}" />
-                        <Button
-                            Width="100"
-                            Height="30"
-                            Margin="-3,-3,3,2"
-                            Classes="top"
-                            Command="{Binding OpenJavaFile}"
-                            Content="{setting:Localize SettingWindow.Tab5.Text7}"
-                            IsEnabled="{Binding !Phone}" />
-                        <Button
-                            Width="100"
-                            Height="30"
-                            Margin="-3,-3,3,2"
-                            Classes="top"
-                            Command="{Binding DeleteJava}"
-                            Content="{setting:Localize SettingWindow.Tab5.Text5}" />
-                        <Button
-                            Width="100"
-                            Height="30"
-                            Margin="-3,-3,3,2"
-                            Classes="top"
-                            Command="{Binding AddJavaZip}"
-                            Content="{setting:Localize SettingWindow.Tab5.Text8}" />
-                        <Button
-                            Width="100"
-                            Height="30"
-                            Margin="-3,-3,3,2"
-                            Classes="top"
-                            Command="{Binding LoadJava}"
-                            Content="{setting:Localize Button.Refash}" />
-                    </WrapPanel>
-                </DockPanel>
+
+                </StackPanel>
+                <WrapPanel Margin="0,0,0,-5">
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="-3,-3,3,2"
+                        Classes="top"
+                        Command="{Binding ShowAddJava}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text4}" />
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="-3,-3,3,2"
+                        Classes="top"
+                        Command="{Binding OpenJavaFile}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text7}"
+                        IsEnabled="{Binding !Phone}" />
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="-3,-3,3,2"
+                        Classes="top"
+                        Command="{Binding DeleteJava}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text5}" />
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="-3,-3,3,2"
+                        Classes="top"
+                        Command="{Binding AddJavaZip}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text8}" />
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="-3,-3,3,2"
+                        Classes="top"
+                        Command="{Binding LoadJava}"
+                        Content="{setting:Localize Button.Refash}" />
+                </WrapPanel>
             </StackPanel>
-
-
         </Border>
-
-        <Border
-            Margin="0,0,0,3"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+        <Border Margin="0,0,0,5" Classes="t2">
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"

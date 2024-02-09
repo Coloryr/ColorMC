@@ -8,22 +8,17 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
-    d:DesignHeight="1200"
+    d:DesignHeight="1300"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer
         Name="ScrollViewer1"
-        Margin="5,0,5,5"
+        Margin="5,0,5,0"
         IsEnabled="{Binding IsInputEnable}">
         <StackPanel>
             <Panel Margin="0,0,0,5">
-                <Border
-                    Padding="{setting:Style BorderPadding}"
-                    Background="{setting:Colors GroupBack}"
-                    BorderBrush="{setting:Colors GroupColor}"
-                    BorderThickness="2"
-                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                <Border Classes="t2">
                     <StackPanel>
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <svg:SvgControl
@@ -76,46 +71,46 @@
                         <WrapPanel Margin="0,0,0,-5">
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-2,3,3"
+                                Classes="top"
                                 Command="{Binding NewInputConfig}"
                                 Content="{setting:Localize Button.Add}" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-2,3,3"
+                                Classes="top"
                                 Command="{Binding RenameInputConfig}"
                                 Content="{setting:Localize Button.Rename}"
                                 IsEnabled="{Binding InputExist}" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-2,3,3"
+                                Classes="top"
                                 Command="{Binding DeleteInputConfig}"
                                 Content="{setting:Localize Button.Delete}"
                                 IsEnabled="{Binding InputExist}" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-2,3,3"
+                                Classes="top"
                                 Command="{Binding ImportInputConfig}"
                                 Content="{setting:Localize Button.Input}" />
                             <Button
                                 Width="100"
-                                Height="25"
-                                Margin="0,0,5,5"
+                                Height="30"
+                                Margin="-2,-2,3,3"
+                                Classes="top"
                                 Command="{Binding ExportInputConfig}"
                                 Content="{setting:Localize Button.Output}"
                                 IsEnabled="{Binding InputExist}" />
                         </WrapPanel>
                     </StackPanel>
                 </Border>
-                <Border
-                    Background="{setting:Colors GroupBack}"
-                    BorderBrush="{setting:Colors GroupColor}"
-                    BorderThickness="2"
-                    CornerRadius="{setting:Style ButtonCornerRadius}"
-                    IsVisible="{Binding !InputInit}">
+                <Border Classes="t2" IsVisible="{Binding !InputInit}">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -148,7 +143,9 @@
                             Text="{setting:Localize SettingWindow.Tab8.Text8}" />
                         <Button
                             Width="100"
-                            Height="25"
+                            Height="30"
+                            Margin="-2,-3,3,-2"
+                            Classes="top"
                             Command="{Binding AddInput}"
                             Content="{setting:Localize Button.Add}"
                             Focusable="False" />
@@ -194,11 +191,7 @@
             </Border>
             <Border
                 Margin="0,0,0,5"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Classes="t2"
                 IsEnabled="{Binding InputExist}">
                 <DockPanel>
                     <StackPanel
@@ -218,7 +211,9 @@
                             Text="{setting:Localize SettingWindow.Tab8.Text12}" />
                         <Button
                             Width="100"
-                            Height="25"
+                            Height="30"
+                            Margin="-2,-3,3,-2"
+                            Classes="top"
                             Command="{Binding AddAxisInput}"
                             Content="{setting:Localize Button.Add}"
                             Focusable="False" />
@@ -290,11 +285,7 @@
 
             <Border
                 Margin="0,0,0,5"
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Classes="t2"
                 IsEnabled="{Binding InputExist}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -308,7 +299,7 @@
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab8.Text17}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,-5">
-                        <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                        <StackPanel Margin="0,0,60,5" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text18}" />
                             <ComboBox
                                 Width="150"
@@ -327,7 +318,7 @@
                     <WrapPanel>
                         <StackPanel
                             Width="250"
-                            Margin="0,0,15,0"
+                            Margin="0,0,20,0"
                             Orientation="Horizontal">
                             <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text22}" />
                             <Panel>
@@ -389,7 +380,7 @@
                     <WrapPanel>
                         <StackPanel
                             Width="250"
-                            Margin="0,0,15,0"
+                            Margin="0,0,20,0"
                             Orientation="Horizontal">
                             <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text23}" />
                             <Slider
@@ -428,11 +419,8 @@
             </Border>
 
             <Border
-                Padding="{setting:Style BorderPadding}"
-                Background="{setting:Colors GroupBack}"
-                BorderBrush="{setting:Colors GroupColor}"
-                BorderThickness="2"
-                CornerRadius="{setting:Style ButtonCornerRadius}"
+                Margin="0,0,0,5"
+                Classes="t2"
                 IsEnabled="{Binding InputExist}">
                 <StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -463,7 +451,9 @@
                                 Path="{Binding CycleLeftIcon}" />
                             <Button
                                 Width="100"
-                                Height="25"
+                                Height="30"
+                                Margin="-2,-3,3,-2"
+                                Classes="top"
                                 Command="{Binding SetItemButton}"
                                 CommandParameter="{x:False}"
                                 Content="{setting:Localize SettingWindow.Tab8.Text28}" />
@@ -478,7 +468,9 @@
                                 Path="{Binding CycleRightIcon}" />
                             <Button
                                 Width="100"
-                                Height="25"
+                                Height="30"
+                                Margin="-2,-3,3,-2"
+                                Classes="top"
                                 Command="{Binding SetItemButton}"
                                 CommandParameter="{x:True}"
                                 Content="{setting:Localize SettingWindow.Tab8.Text28}" />

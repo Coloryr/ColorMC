@@ -12,23 +12,20 @@
     mc:Ignorable="d">
     <DockPanel
         Name="ScrollViewer1"
-        Margin="5,0,5,2"
+        Margin="5,0,5,0"
         Background="Transparent">
         <Border
-            Margin="0,0,0,3"
-            Padding="{setting:Style BorderPadding}"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
+            Margin="0,0,0,5"
+            Classes="t2"
             DockPanel.Dock="Top"
             IsEnabled="{Binding MoEx}">
             <DockPanel>
                 <Button
                     Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
+                    Height="30"
+                    Margin="3,-3,0,-2"
                     VerticalAlignment="Center"
+                    Classes="top"
                     Command="{Binding AddFile}"
                     Content="{setting:Localize Button.Add}"
                     DockPanel.Dock="Right"
@@ -41,11 +38,8 @@
             </DockPanel>
         </Border>
         <Border
-            Margin="0,0,0,3"
-            Background="{setting:Colors GroupBack}"
-            BorderBrush="{setting:Colors GroupColor}"
-            BorderThickness="2"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
+            Margin="0,0,0,5"
+            Classes="t1"
             IsEnabled="{Binding MoEx}">
             <DataGrid
                 Name="DataGrid1"

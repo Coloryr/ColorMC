@@ -12,6 +12,13 @@
         </StackPanel>
     </Design.PreviewWith>
 
+    <Style Selector="Border.t1">
+        <Setter Property="Background" Value="{setting:Colors GroupBack}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+        <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
     <Style Selector="Border.t2">
         <Setter Property="Background" Value="{setting:Colors GroupBack}" />
         <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />

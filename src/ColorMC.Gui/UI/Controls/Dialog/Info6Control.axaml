@@ -21,6 +21,7 @@
                     Height="30"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
+                    Classes="top"
                     Command="{Binding Confirm}"
                     Content="{setting:Localize Button.Confirm}" />
                 <Button
@@ -28,6 +29,7 @@
                     Height="30"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
+                    Classes="top"
                     Command="{Binding Cancel}"
                     Content="{setting:Localize Button.Cancel}"
                     IsVisible="{Binding NeedCancel}" />

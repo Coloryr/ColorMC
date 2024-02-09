@@ -10,5 +10,4 @@
     Background="Black"
     mc:Ignorable="d">
     <Panel Name="Panel1" />
-
 </UserControl>
