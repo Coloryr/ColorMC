@@ -185,9 +185,9 @@
                     DockPanel.Dock="Top"
                     IPPort="{Binding Server}"
                     IsVisible="{Binding MotdDisplay, FallbackValue=true}" />
+                <Decorator Name="Content1" />
             </DockPanel>
             <Decorator Name="Start" IsVisible="False" />
-            <Decorator Name="Content1" />
             <Panel
                 Name="Grid2"
                 Background="{setting:Colors BG1}"
