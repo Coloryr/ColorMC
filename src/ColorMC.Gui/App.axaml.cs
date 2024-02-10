@@ -322,7 +322,7 @@ public partial class App : Application
         var file = GuiConfigUtils.Config.BackImage;
         if (string.IsNullOrWhiteSpace(file))
         {
-            file = "ColorMC.Gui.Resource.Pic.bg.jpeg";
+            file = "https://www.todaybing.com/api/today/cn";
         }
 
         if (GuiConfigUtils.Config.EnableBG)
