@@ -12,6 +12,21 @@
     x:DataType="model:MainEmptyModel"
     mc:Ignorable="d">
     <Panel>
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Background="{setting:Colors MainButtonBG}">
+            <TextBlock
+                Margin="0,5,0,5"
+                FontSize="26"
+                Text="{setting:Localize MainWindow.Text1}" />
+            <TextBlock
+                Margin="0,5,0,5"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                Text="{setting:Localize MainWindow.Text7}" />
+        </StackPanel>
+
         <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button
                 Width="100"
@@ -19,7 +34,7 @@
                 Margin="20"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Background="{setting:Colors GroupBack}"
+                Background="{setting:Colors MainButtonBG}"
                 BorderThickness="0"
                 Command="{Binding AddUser}"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
@@ -34,7 +49,7 @@
                 Margin="20"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Background="{setting:Colors GroupBack}"
+                Background="{setting:Colors MainButtonBG}"
                 BorderThickness="0"
                 Command="{Binding SetJava}"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
@@ -49,7 +64,7 @@
                 Margin="20"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Background="{setting:Colors GroupBack}"
+                Background="{setting:Colors MainButtonBG}"
                 BorderThickness="0"
                 Command="{Binding AddGame}"
                 CornerRadius="{setting:Style ButtonCornerRadius}">
