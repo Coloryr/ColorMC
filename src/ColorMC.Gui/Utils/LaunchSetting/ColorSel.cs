@@ -23,6 +23,7 @@ public static class ColorSel
     public static readonly IBrush AppLightBackColor6 = Brush.Parse("#FFDDDDDD");
     public static readonly IBrush AppLightBackColor7 = Brush.Parse("#DDFFFFFF");
     public static readonly IBrush AppLightBackColor8 = Brush.Parse("#FFb7bac1"); //button boder
+    public static readonly IBrush AppLightBackColor9 = Brush.Parse("#AAFFFFFF");
 
     public static readonly IBrush AppDarkBackColor = Brush.Parse("#FF202020");
     public static readonly IBrush AppDarkBackColor1 = Brush.Parse("#CC3A3A3A");
@@ -33,6 +34,7 @@ public static class ColorSel
     public static readonly IBrush AppDarkBackColor6 = Brush.Parse("#FF333333");
     public static readonly IBrush AppDarkBackColor7 = Brush.Parse("#EE000000");
     public static readonly IBrush AppDarkBackColor8 = Brush.Parse("#FFEEEEEE"); //button boder
+    public static readonly IBrush AppDarkBackColor9 = Brush.Parse("#EE000000");
 
     public const string MainColorStr = "#FF5ABED6";
 
@@ -70,6 +72,7 @@ public static class ColorSel
     public static IBrush GroupBackColor { get; private set; } = Brush.Parse(GroupLightColorStr);
     public static IBrush GroupBackColor1 { get; private set; } = Brush.Parse(GroupLightColor1Str);
     public static IBrush ButtonBorder { get; private set; } = AppLightBackColor8;
+    public static IBrush MainButtonBG { get; private set; } = AppLightBackColor9;
 
 
     private static int s_now;
@@ -148,13 +151,15 @@ public static class ColorSel
             ButtonBorder = App.NowTheme == PlatformThemeVariant.Light
                 ? AppLightBackColor8 : AppDarkBackColor8;
 
-            
             if (App.BackBitmap != null)
             {
                 GroupBackColor1 = Brushes.Transparent;
+                MainButtonBG = App.NowTheme == PlatformThemeVariant.Light
+                    ? AppLightBackColor9 : AppDarkBackColor9;
             }
             else
             {
+                MainButtonBG = Brushes.Transparent;
                 if (App.NowTheme == PlatformThemeVariant.Light)
                 {
                     GroupBackColor1 = Brush.Parse(GroupLightColor1Str);
@@ -339,6 +344,8 @@ public static class ColorSel
             return Back2Color;
         else if (key == "ButtonBorder")
             return ButtonBorder;
+        else if (key == "MainButtonBG")
+            return MainButtonBG;
 
         return Brushes.White;
     }

@@ -2,6 +2,9 @@
 
 交流QQ群：571239090
 
+多语言  
+https://crowdin.com/project/colormc
+
 [English](./README_EN.md)
 
 使用dotnet8作为运行环境，XAML作为前端语言，C#作为后端语言
