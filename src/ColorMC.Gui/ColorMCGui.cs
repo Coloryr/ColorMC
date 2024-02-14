@@ -200,6 +200,11 @@ public static class ColorMCGui
             opt1.OverlayPopups = config1.OverlayPopups == true;
         }
 
+        var opt2 = new MacOSPlatformOptions()
+        {
+            DisableDefaultApplicationMenuItems = true,
+        };
+
         return AppBuilder.Configure<App>()
             .With(new FontManagerOptions
             {
@@ -207,10 +212,7 @@ public static class ColorMCGui
             })
             .With(opt)
             .With(opt1)
-            .With(new MacOSPlatformOptions()
-            {
-                DisableDefaultApplicationMenuItems = true
-            })
+            .With(opt2)
             .LogToTrace()
             .UsePlatformDetect();
     }

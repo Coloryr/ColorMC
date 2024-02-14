@@ -184,8 +184,7 @@ public static class ModPackHelper
     public static async Task<(bool Res, GameSettingObj? Game)>
         DownloadCurseForgeModPackAsync(string zip, string? name, string? group,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
-        ColorMCCore.PackUpdate update,
-        ColorMCCore.PackState update2)
+        ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
         update2(CoreRunState.Read);
         using ZipFile zFile = new(PathHelper.OpenRead(zip));
@@ -250,6 +249,13 @@ public static class ModPackHelper
                 loaderversion = item.id.Replace("quilt-", "");
             }
         }
+
+        if (loaderversion.StartsWith(info.minecraft.version + "-")
+            && loaderversion.Length > info.minecraft.version.Length + 1)
+        {
+            loaderversion = loaderversion[(info.minecraft.version.Length + 1)..];
+        }
+
         if (string.IsNullOrWhiteSpace(name))
         {
             name = $"{info.name}-{info.version}";
@@ -430,8 +436,7 @@ public static class ModPackHelper
     /// <param name="zip">整合包路径</param>
     /// <returns>升级结果</returns>
     public static async Task<bool> UpdateModrinthModPackAsync(GameSettingObj obj, string zip,
-        ColorMCCore.PackUpdate state,
-        ColorMCCore.PackState update2)
+        ColorMCCore.PackUpdate state, ColorMCCore.PackState update2)
     {
         using var zFile = new ZipFile(PathHelper.OpenRead(zip));
         using var stream1 = new MemoryStream();
