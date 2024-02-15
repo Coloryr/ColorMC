@@ -598,7 +598,7 @@ public static class GameBinding
         return list;
     }
 
-    public static (bool, string?) ModEnDi(ModObj obj)
+    public static (bool, string?) ModEnableDisable(ModObj obj)
     {
         try
         {
