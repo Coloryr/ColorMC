@@ -590,7 +590,7 @@ public static class BaseBinding
                 }
                 catch (Exception e)
                 {
-                    
+
                 }
             });
         }

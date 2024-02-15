@@ -3,11 +3,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -84,6 +79,6 @@ public partial class MainEmptyModel : TopModel
 
     protected override void Close()
     {
-        
+
     }
 }

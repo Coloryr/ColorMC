@@ -1772,7 +1772,7 @@ public static class GameBinding
                 .AppendLine($"{App.Lang("Gui.Info44")}{obj.Name}")
                 .AppendLine($"{App.Lang("Gui.Info45")}{obj.Version}");
             if (obj.ModPack)
-            { 
+            {
                 info.AppendLine(string.Format(App.Lang("Gui.Info51"), obj.ModPackType.GetName(), obj.PID, obj.FID));
             }
             if (obj.Loader != Loaders.Normal)
