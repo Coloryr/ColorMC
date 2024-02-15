@@ -21,8 +21,8 @@ public static class LibrariesPath
     /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
-        BaseDir = dir + "/" + Name;
-        NativeDir = $"{BaseDir}" + $"/native-{SystemInfo.Os}-{SystemInfo.SystemArch}".ToLower();
+        BaseDir = Path.GetFullPath(dir + "/" + Name);
+        NativeDir = Path.GetFullPath($"{BaseDir}" + $"/native-{SystemInfo.Os}-{SystemInfo.SystemArch}".ToLower());
 
         Directory.CreateDirectory(BaseDir);
         Directory.CreateDirectory(NativeDir);

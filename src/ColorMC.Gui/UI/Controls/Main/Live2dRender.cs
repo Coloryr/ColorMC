@@ -136,17 +136,13 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
     {
         _lapp.Live2dManager.ReleaseAllModel();
         var model = GuiConfigUtils.Config.Live2D.Model;
-        if (string.IsNullOrWhiteSpace(model))
+        if (!GuiConfigUtils.Config.Live2D.Enable || string.IsNullOrWhiteSpace(model))
         {
             return;
         }
         if (!File.Exists(model))
         {
             (DataContext as MainModel)!.Model.Show(App.Lang("MainWindow.Live2d.Error1"));
-            return;
-        }
-        if (!GuiConfigUtils.Config.Live2D.Enable)
-        {
             return;
         }
         var info = new FileInfo(model);

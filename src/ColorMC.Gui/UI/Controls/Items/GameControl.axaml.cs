@@ -72,7 +72,7 @@ public partial class GameControl : UserControl
         {
             return;
         }
-        
+
         var pro = e.GetCurrentPoint(this);
         if (pro.Properties.IsLeftButtonPressed && DataContext is GameItemModel model && !model.IsNew)
         {

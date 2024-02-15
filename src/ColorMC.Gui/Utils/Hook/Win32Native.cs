@@ -607,8 +607,8 @@ public class Win32Native : INative
                 }
             }
             catch
-            { 
-                
+            {
+
             }
         }
 
