@@ -17,7 +17,7 @@ jobs:
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.100
+        dotnet-version: 8.0.201
 
     - name: Read version number
       id: version
