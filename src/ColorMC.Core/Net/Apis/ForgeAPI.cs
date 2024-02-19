@@ -29,8 +29,7 @@ public static class ForgeAPI
             if ((neo ? s_neoSupportVersion : s_supportVersion) != null)
                 return neo ? s_neoSupportVersion : s_supportVersion;
 
-            if (local == SourceLocal.BMCLAPI
-                || local == SourceLocal.MCBBS)
+            if (local == SourceLocal.BMCLAPI)
             {
                 if (neo)
                 {
@@ -84,8 +83,7 @@ public static class ForgeAPI
         try
         {
             List<string> list = [];
-            if (local == SourceLocal.BMCLAPI
-                || local == SourceLocal.MCBBS)
+            if (local == SourceLocal.BMCLAPI)
             {
                 string url = neo
                     ? UrlHelper.NeoForgeVersions(mc, local)

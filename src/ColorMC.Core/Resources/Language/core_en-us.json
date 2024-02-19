@@ -226,7 +226,6 @@
   "Release.Other": "Unknown release type",
   "SourceLocal.Offical": "Official",
   "SourceLocal.BMCLAPI": "BmclApi",
-  "SourceLocal.MCBBS": "Mcbbs",
   "SourceLocal.Other": "Unknown download source",
   "GCType.G1GC": "G1 Garbage Collector",
   "GCType.SerialGC": "Serial Garbage Collector",
