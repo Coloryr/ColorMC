@@ -75,8 +75,7 @@ public static class LanguageBinding
         return
         [
             SourceLocal.Offical.GetName(),
-            SourceLocal.BMCLAPI.GetName(),
-            SourceLocal.MCBBS.GetName()
+            SourceLocal.BMCLAPI.GetName()
         ];
     }
 

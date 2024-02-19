@@ -91,8 +91,7 @@ public enum LanguageType
 public enum SourceLocal
 {
     Offical = 0,
-    BMCLAPI = 1,
-    MCBBS = 2
+    BMCLAPI = 1
 }
 
 /// <summary>

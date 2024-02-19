@@ -226,7 +226,6 @@
   "Release.Other": "未知的发布类型",
   "SourceLocal.Offical": "官方",
   "SourceLocal.BMCLAPI": "BmclApi",
-  "SourceLocal.MCBBS": "Mcbbs",
   "SourceLocal.Other": "未知的下载源",
   "GCType.G1GC": "G1垃圾回收器",
   "GCType.SerialGC": "串行垃圾回收器",

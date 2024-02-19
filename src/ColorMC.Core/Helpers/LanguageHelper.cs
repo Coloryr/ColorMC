@@ -186,7 +186,6 @@ public static class LanguageHelper
         {
             SourceLocal.Offical => Get("SourceLocal.Offical"),
             SourceLocal.BMCLAPI => Get("SourceLocal.BMCLAPI"),
-            SourceLocal.MCBBS => Get("SourceLocal.MCBBS"),
             _ => Get("SourceLocal.Other")
         };
     }
