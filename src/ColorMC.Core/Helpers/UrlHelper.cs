@@ -246,7 +246,7 @@ public static class UrlHelper
     {
         string? url = local switch
         {
-            //SourceLocal.BMCLAPI => $"{BMCLAPI}fabric-meta/v2/versions",
+            SourceLocal.BMCLAPI => $"{BMCLAPI}fabric-meta/v2/versions",
             _ => $"{FabricMeta}v2/versions"
         };
 
