@@ -22,19 +22,10 @@
                 <Button
                     Width="160"
                     Height="30"
-                    Margin="-2,-2,3,-2"
+                    Margin="-2"
                     Classes="top"
                     Command="{Binding GoToNext}"
                     Content="{setting:Localize ServerPackWindow.Tab1.Text11}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text47}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="160"
-                    Height="30"
-                    Margin="-2,-2,0,-2"
-                    Classes="top"
-                    Command="{Binding Gen}"
-                    Content="{setting:Localize ServerPackWindow.Tab1.Text10}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text47}"
                     ToolTip.VerticalOffset="-30" />
             </StackPanel>

@@ -22,6 +22,8 @@ public partial class ServerPackModel
         NowView++;
     }
 
+
+
     public void LoadConfig()
     {
         _loadConfig = true;

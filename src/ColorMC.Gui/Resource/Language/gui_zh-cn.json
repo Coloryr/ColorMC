@@ -760,7 +760,7 @@
 	"ServerPackWindow.Tabs.Text4": "配置文件选择",
 	"ServerPackWindow.Tab1.Text1": "服务器包会复制游戏实例的所有设置，包括JVM参数，运行前启动等数据",
 	"ServerPackWindow.Tab1.Text6": "更新说明",
-	"ServerPackWindow.Tab1.Text10": "生成服务器实例",
+	"ServerPackWindow.Tab1.Text10": "开始生成",
 	"ServerPackWindow.Tab1.Text11": "转到下一个设置",
 	"ServerPackWindow.Tab1.Error3": "生成失败，请查看日志获取详细信息",
 	"ServerPackWindow.Tab1.Info1": "正在生成服务器实例",

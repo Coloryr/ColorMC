@@ -510,6 +510,10 @@ public static class BaseBinding
 
                                 list.Add(temp);
                             }
+                            if (list.Count == 0)
+                            {
+                                return;
+                            }
 
                             Thread.Sleep(1000);
 

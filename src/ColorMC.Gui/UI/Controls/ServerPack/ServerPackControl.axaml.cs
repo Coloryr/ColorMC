@@ -87,6 +87,7 @@ public partial class ServerPackControl : MenuControl
         {
             case 1:
             case 2:
+            case 4:
                 model.RemoveChoise();
                 break;
         }
@@ -105,6 +106,7 @@ public partial class ServerPackControl : MenuControl
                 return _tab3 ??= new();
             case 3:
                 model.LoadFile();
+                model.SetTab4Click();
                 return _tab4 ??= new();
             default:
                 throw new InvalidEnumArgumentException();
