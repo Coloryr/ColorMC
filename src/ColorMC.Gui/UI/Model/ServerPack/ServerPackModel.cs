@@ -33,8 +33,7 @@ public partial class ServerPackModel : MenuModel
         Obj = obj;
     }
 
-    [RelayCommand]
-    public async Task Gen()
+    public async void Gen()
     {
         var local = await PathBinding.SelectPath(FileType.ServerPack);
         if (local == null)

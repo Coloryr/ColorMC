@@ -3,6 +3,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System.Net;
+using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net;
 
@@ -47,13 +48,17 @@ public static class BaseClient
         {
             DownloadClient = new(new HttpClientHandler()
             {
-                Proxy = new WebProxy(ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort)
+                Proxy = new WebProxy(ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort),
             });
         }
         else
         {
             DownloadClient = new();
         }
+
+        DownloadClient.DefaultRequestHeaders.UserAgent.Clear();
+        DownloadClient.DefaultRequestHeaders.UserAgent
+            .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
 
         if (ConfigUtils.Config.Http.LoginProxy
              && !string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
@@ -67,6 +72,10 @@ public static class BaseClient
         {
             LoginClient = new();
         }
+
+        LoginClient.DefaultRequestHeaders.UserAgent.Clear();
+        LoginClient.DefaultRequestHeaders.UserAgent
+            .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
 
         LoginClient.Timeout = TimeSpan.FromSeconds(10);
         DownloadClient.Timeout = TimeSpan.FromSeconds(10);
