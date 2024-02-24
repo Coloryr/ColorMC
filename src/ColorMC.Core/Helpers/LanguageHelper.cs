@@ -241,7 +241,7 @@ public static class LanguageHelper
         return type switch
         {
             Loaders.Normal => Get("Loaders.Normal"),
-            Loaders.Forge => "Forge(Lex)",
+            Loaders.Forge => "Forge",
             Loaders.NeoForge => "NeoForge",
             Loaders.Fabric => "Fabric",
             Loaders.Quilt => "Quilt",

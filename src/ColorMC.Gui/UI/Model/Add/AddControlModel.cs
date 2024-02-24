@@ -339,6 +339,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
         _load = true;
 
+        IsSelect = false;
         _now = (FileType)(Type + 1);
         GameVersionList.Clear();
         SortTypeList.Clear();
