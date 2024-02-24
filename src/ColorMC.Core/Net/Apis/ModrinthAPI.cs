@@ -99,7 +99,7 @@ public static class ModrinthAPI
         string categoryId = "", Loaders loader = Loaders.Normal)
     {
         return Search(version, filter, sortOrder, page * pagesize,
-            pagesize, categoryId, ClassMod, loader == Loaders.Normal ? "" :
+            pagesize, categoryId, ClassMod, loader is Loaders.Normal or Loaders.Custom ? "" :
             loader.GetName().ToLower());
     }
 
