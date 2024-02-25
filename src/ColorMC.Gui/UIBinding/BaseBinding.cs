@@ -469,7 +469,6 @@ public static class BaseBinding
             GameCount.LaunchDone(obj);
             GameBinding.GameStateUpdate(obj);
 
-
             _ = Task.Run(() =>
             {
 

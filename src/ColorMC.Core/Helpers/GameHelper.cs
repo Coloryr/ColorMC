@@ -26,6 +26,11 @@ public static class GameHelper
     public static string OptifineWrapper { get; private set; }
 
     /// <summary>
+    /// ColorMCASM位置
+    /// </summary>
+    public static string ColorMCASM { get; private set; }
+
+    /// <summary>
     /// Forge运行库修改映射
     /// </summary>
     public static ForgeLaunchObj.Libraries? MakeLibObj(ForgeInstallObj1.VersionInfo.Libraries item)
@@ -247,6 +252,24 @@ public static class GameHelper
                 Directory.CreateDirectory(file.DirectoryName!);
             }
             PathHelper.WriteBytes(file.FullName, Resource1.OptifineWrapper_1_0);
+        }
+    }
+
+    /// <summary>
+    /// Optifine加载器
+    /// </summary>
+    public static void ReadyColorMCASM()
+    {
+        ColorMCASM = Path.GetFullPath(LibrariesPath.BaseDir +
+            "/coloryr/colormc/ColorMCASM/1.0/ColorMCASM-1.0.jar");
+        var file = new FileInfo(ColorMCASM);
+        if (!file.Exists)
+        {
+            if (!Directory.Exists(file.DirectoryName))
+            {
+                Directory.CreateDirectory(file.DirectoryName!);
+            }
+            PathHelper.WriteBytes(file.FullName, Resource1.ColorMCASM_1_0);
         }
     }
 

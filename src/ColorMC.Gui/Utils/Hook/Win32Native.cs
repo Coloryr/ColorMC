@@ -19,36 +19,15 @@ public class Win32Native : INative
     private IntPtr target;
 
     private IntPtr _winEventId;
-    private IntPtr hHook;
 
     public void AddHook(Process process)
     {
         target = process.MainWindowHandle;
-
-        uint processId;
-        uint threadId = Win32.GetWindowThreadProcessId(target, out processId);
-
-        //_winEventId = Win32.SetWinEventHook(Win32.EVENT_OBJECT_NAMECHANGE, Win32.EVENT_OBJECT_NAMECHANGE,
-        //    IntPtr.Zero, _winEventDelegate, (uint)process.Id, 0, Win32.WINEVENT_OUTOFCONTEXT);
-
-        hHook = Win32.SetWindowsHookEx(Win32.WH_CALLWNDPROC, CallWndProc, IntPtr.Zero, threadId);
     }
 
     public IntPtr GetHandel()
     {
         return target;
-    }
-
-    private IntPtr CallWndProc(int nCode, IntPtr wParam, IntPtr lParam)
-    {
-        if (nCode >= 0)
-        {
-            Win32.CWPSTRUCT msg = (Win32.CWPSTRUCT)Marshal.PtrToStructure(lParam, typeof(Win32.CWPSTRUCT));
-
-            // 在这里处理您感兴趣的消息
-            Logs.Info($"Message: {msg.message} HWND: {msg.hwnd}");
-        }
-        return Win32.CallNextHookEx(hHook, nCode, wParam, lParam);
     }
 
     public bool GetWindowSize(out int width, out int height)

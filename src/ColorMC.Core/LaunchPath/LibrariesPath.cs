@@ -35,7 +35,7 @@ public static class LibrariesPath
     /// <returns>路径</returns>
     public static string GetNativeDir(string version)
     {
-        string dir = $"{NativeDir}/{version}";
+        var dir = Path.GetFullPath($"{NativeDir}/{version}");
         Directory.CreateDirectory(dir);
         return dir;
     }
