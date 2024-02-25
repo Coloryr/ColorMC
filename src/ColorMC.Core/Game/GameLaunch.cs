@@ -419,8 +419,10 @@ public static class Launch
 
         if (mixinport > 0)
         {
+            GameHelper.ReadyColorMCASM();
             jvm.Add("-Dcolormc.mixin.port=" + mixinport);
             jvm.Add("-Dcolormc.mixin.uuid=" + obj.UUID);
+            jvm.Add($"-javaagent:{GameHelper.ColorMCASM}");
         }
 
         //gc

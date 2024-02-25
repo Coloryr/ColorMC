@@ -63,6 +63,16 @@ namespace ColorMC.Core {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
+        internal static byte[] ColorMCASM_1_0 {
+            get {
+                object obj = ResourceManager.GetObject("ColorMCASM_1_0", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
         internal static byte[] ForgeWrapper_colormc_1_5_9 {
             get {
                 object obj = ResourceManager.GetObject("ForgeWrapper_colormc_1_5_9", resourceCulture);
