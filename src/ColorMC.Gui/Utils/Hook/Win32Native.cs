@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Win32.Input;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
 using SkiaSharp;
 using System;
@@ -15,21 +16,10 @@ namespace ColorMC.Gui.Utils.Hook;
 
 public class Win32Native : INative
 {
-    private static Win32.WinEventDelegate _winEventDelegate;
-
-    public event Action<string>? TitleChange;
-    public event Action<bool>? IsFocus;
-
     private IntPtr target;
-    private IntPtr topTarget;
 
     private IntPtr _winEventId;
     private IntPtr hHook;
-
-    public Win32Native()
-    {
-        _winEventDelegate = new(WinEventProc);
-    }
 
     public void AddHook(Process process)
     {
@@ -38,8 +28,8 @@ public class Win32Native : INative
         uint processId;
         uint threadId = Win32.GetWindowThreadProcessId(target, out processId);
 
-        _winEventId = Win32.SetWinEventHook(Win32.EVENT_OBJECT_NAMECHANGE, Win32.EVENT_OBJECT_NAMECHANGE,
-            IntPtr.Zero, _winEventDelegate, (uint)process.Id, 0, Win32.WINEVENT_OUTOFCONTEXT);
+        //_winEventId = Win32.SetWinEventHook(Win32.EVENT_OBJECT_NAMECHANGE, Win32.EVENT_OBJECT_NAMECHANGE,
+        //    IntPtr.Zero, _winEventDelegate, (uint)process.Id, 0, Win32.WINEVENT_OUTOFCONTEXT);
 
         hHook = Win32.SetWindowsHookEx(Win32.WH_CALLWNDPROC, CallWndProc, IntPtr.Zero, threadId);
     }
@@ -47,39 +37,6 @@ public class Win32Native : INative
     public IntPtr GetHandel()
     {
         return target;
-    }
-
-    public void AddHookTop(IntPtr top)
-    {
-        topTarget = top;
-    }
-
-    public void TransferTop()
-    {
-        if (Win32.IsWindow(topTarget))
-        {
-            int extendedStyle = Win32.GetWindowLong(topTarget, Win32.GWL_EXSTYLE);
-            Win32.SetWindowLong(topTarget, Win32.GWL_EXSTYLE, extendedStyle | Win32.WS_EX_LAYERED | Win32.WS_EX_TRANSPARENT);
-        }
-    }
-    public void NoTranferTop()
-    {
-        if (Win32.IsWindow(topTarget))
-        {
-            int extendedStyle = Win32.GetWindowLong(topTarget, Win32.GWL_EXSTYLE);
-            extendedStyle &= ~(Win32.WS_EX_LAYERED | Win32.WS_EX_TRANSPARENT);
-            Win32.SetWindowLong(topTarget, Win32.GWL_EXSTYLE, extendedStyle);
-        }
-    }
-
-    private void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject,
-        int idChild, uint dwEventThread, uint dwmsEventTime)
-    {
-        if (eventType == Win32.EVENT_OBJECT_NAMECHANGE)
-        {
-            var title = GetWindowTitle();
-            TitleChange?.Invoke(title);
-        }
     }
 
     private IntPtr CallWndProc(int nCode, IntPtr wParam, IntPtr lParam)
@@ -108,119 +65,6 @@ public class Win32Native : INative
             height = 0;
             return false;
         }
-    }
-
-    public void NoBorder()
-    {
-        int wndStyle = Win32.GetWindowLong(target, Win32.GWL_STYLE);
-        wndStyle &= ~(Win32.WS_CAPTION | Win32.WS_THICKFRAME | Win32.WS_MINIMIZE
-            | Win32.WS_MAXIMIZE | Win32.WS_SYSMENU);
-        Win32.SetWindowLong(target, Win32.GWL_STYLE, wndStyle);
-        Win32.SetWindowPos(target, IntPtr.Zero, 0, 0, 0, 0, Win32.SWP_FRAMECHANGED
-            | Win32.SWP_NOMOVE | Win32.SWP_NOSIZE | Win32.SWP_NOZORDER);
-    }
-
-    public void SetWindowState(WindowState state)
-    {
-        if (state == WindowState.Minimized)
-        {
-            Win32.ShowWindow(target, Win32.SW_MINIMIZE);
-        }
-        else if (state == WindowState.Maximized)
-        {
-            Win32.ShowWindow(target, Win32.SW_MAXIMIZE);
-        }
-        else if (state == WindowState.Normal)
-        {
-            Win32.ShowWindow(target, Win32.SW_RESTORE);
-        }
-    }
-
-    public string GetWindowTitle()
-    {
-        int length = Win32.GetWindowTextLength(target);
-        var sb = new StringBuilder(length + 1);
-        Win32.GetWindowText(target, sb, sb.Capacity);
-        return sb.ToString();
-    }
-
-    private IntPtr GetWindowIcon(int iconSize = Win32.ICON_SMALL)
-    {
-        IntPtr hIcon = Win32.SendMessage(target, Win32.WM_GETICON, iconSize, 0);
-        if (hIcon == IntPtr.Zero)
-        {
-            hIcon = Win32.SendMessage(target, Win32.WM_GETICON, Win32.ICON_BIG, 0);
-        }
-        if (hIcon == IntPtr.Zero)
-        {
-            hIcon = Win32.SendMessage(target, Win32.WM_GETICON, Win32.ICON_SMALL2, 0);
-        }
-        return hIcon;
-    }
-
-    public Bitmap? GetIcon()
-    {
-        var ptr = GetWindowIcon();
-        if (ptr == IntPtr.Zero)
-        {
-            return null;
-        }
-        if (Win32.GetIconInfo(ptr, out var iconInfo))
-        {
-            try
-            {
-                if (Win32.GetObject(iconInfo.hbmColor, Marshal.SizeOf(typeof(Win32.BITMAP)), out var bmpColor) == 0)
-                {
-                    return null;
-                }
-                if (Win32.GetObject(iconInfo.hbmMask, Marshal.SizeOf(typeof(Win32.BITMAP)), out var bmpMask) == 0)
-                {
-                    return null;
-                }
-
-                var bmi = new Win32.BITMAPINFO();
-                bmi.biSize = Marshal.SizeOf(bmi);
-                bmi.biWidth = bmpColor.bmWidth; // Icon width
-                bmi.biHeight = -bmpColor.bmHeight; // Icon height (negative to flip the image)
-                bmi.biPlanes = bmpColor.bmPlanes;
-                bmi.biBitCount = bmpColor.bmBitsPixel;
-                bmi.biCompression = 0; // BI_RGB
-
-                IntPtr hdc = Win32.CreateCompatibleDC(IntPtr.Zero);
-                byte[] pixelData = new byte[bmpColor.bmWidth * bmpColor.bmHeight * 4];
-                Win32.GetDIBits(hdc, iconInfo.hbmColor, 0, (uint)bmpColor.bmHeight, pixelData, ref bmi, 0);
-
-                using var skBitmap = new SKBitmap(bmpColor.bmWidth, bmpColor.bmHeight, SKColorType.Bgra8888, SKAlphaType.Premul);
-                Marshal.Copy(pixelData, 0, skBitmap.GetPixels(), pixelData.Length);
-
-                // Convert SKBitmap to Avalonia Bitmap
-                using var image = SKImage.FromBitmap(skBitmap);
-                using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                var stream = data.AsStream();
-                var bitmap = new Bitmap(stream);
-                return bitmap;
-            }
-            finally
-            {
-                if (iconInfo.hbmColor != IntPtr.Zero)
-                    Win32.DeleteObject(iconInfo.hbmColor);
-                if (iconInfo.hbmMask != IntPtr.Zero)
-                    Win32.DeleteObject(iconInfo.hbmMask);
-                Win32.DestroyIcon(ptr);
-            }
-        }
-
-        return null;
-    }
-
-    public void Close()
-    {
-        Win32.SendMessage(target, Win32.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-    }
-
-    public void DestroyWindow()
-    {
-        Win32.DestroyWindow(target);
     }
 
     public void Stop()
@@ -268,41 +112,9 @@ public class Win32Native : INative
         }
     }
 
-    private static bool IsCursorShown()
-    {
-        var cursorInfo = new Win32.CURSORINFO();
-        cursorInfo.cbSize = Marshal.SizeOf(cursorInfo);
-        if (Win32.GetCursorInfo(out cursorInfo))
-        {
-            return (cursorInfo.flags & Win32.CURSOR_SHOWING) != 0;
-        }
-        return false; // 如果无法获取光标信息，则默认返回false
-    }
-
-    private static bool IsCursorClippedToWindow(IntPtr hwnd)
-    {
-        if (Win32.GetClipCursor(out var clipRect))
-        {
-            if (Win32.GetWindowRect(hwnd, out var windowRect))
-            {
-                // 比较剪辑矩形和窗口矩形
-                return clipRect.Left >= windowRect.Left &&
-                       clipRect.Top >= windowRect.Top &&
-                       clipRect.Right <= windowRect.Right &&
-                       clipRect.Bottom <= windowRect.Bottom;
-            }
-        }
-        return false;
-    }
-
-    public bool GetMouseMode()
-    {
-        return IsCursorShown() || !IsCursorClippedToWindow(target);
-    }
-
     public void SendKey(InputKeyObj key, bool down, bool message)
     {
-        if (InputControlUtils.IsEditMode)
+        if (InputControl.IsEditMode)
         {
             return;
         }

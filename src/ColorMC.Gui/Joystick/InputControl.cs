@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Thread = System.Threading.Thread;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.Joystick;
 
-public static class InputControlUtils
+public static class InputControl
 {
     private static Sdl sdl;
     private static bool _isRun;
@@ -76,21 +76,21 @@ public static class InputControlUtils
         }
         int length = (int)(tempPointer - bytePointer);
         byte[] byteArray = new byte[length];
-        Marshal.Copy((IntPtr)bytePointer, byteArray, 0, length);
+        Marshal.Copy((nint)bytePointer, byteArray, 0, length);
 
         string result = Encoding.Default.GetString(byteArray);
         return result;
     }
 
-    public static IntPtr Open(int index)
+    public static nint Open(int index)
     {
         unsafe
         {
-            return new IntPtr(sdl.GameControllerOpen(index));
+            return new nint(sdl.GameControllerOpen(index));
         }
     }
 
-    public static void Close(IntPtr index)
+    public static void Close(nint index)
     {
         unsafe
         {
@@ -98,7 +98,7 @@ public static class InputControlUtils
         }
     }
 
-    public static unsafe int GetJoystickID(IntPtr ptr)
+    public static unsafe int GetJoystickID(nint ptr)
     {
         var instanceID = sdl.GameControllerGetJoystick((GameController*)ptr);
         return sdl.JoystickInstanceID(instanceID);

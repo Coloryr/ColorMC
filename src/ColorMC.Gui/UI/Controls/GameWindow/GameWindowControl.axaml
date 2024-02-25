@@ -5,9 +5,47 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ColorMC.Gui.UI.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    Background="Black"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    x:DataType="model:ControlSelectModel"
+    Background="{setting:Colors TopBottom}"
     mc:Ignorable="d">
-    <Panel Name="Panel1" />
+    <Border
+        Padding="{setting:Style BorderPadding}"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Background="{setting:Colors GroupBack}"
+        BorderBrush="{setting:Colors GroupColor}"
+        BorderThickness="2"
+        CornerRadius="{setting:Style ButtonCornerRadius}">
+        <StackPanel>
+            <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameWindow.Text2}" />
+                <ComboBox
+                    Width="200"
+                    ItemsSource="{Binding Controls}"
+                    SelectedIndex="{Binding ControlIndex}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameWindow.Text3}" />
+                <ComboBox
+                    Width="200"
+                    ItemsSource="{Binding Configs}"
+                    SelectedIndex="{Binding ConfigUUID}" />
+            </StackPanel>
+            <StackPanel
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Width="100"
+                    Height="30"
+                    Margin="10,0,10,0"
+                    Classes="top"
+                    Command="{Binding Confirm}"
+                    Content="{setting:Localize Button.Confirm}" />
+            </StackPanel>
+        </StackPanel>
+    </Border>
 </UserControl>

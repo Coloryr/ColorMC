@@ -38,7 +38,7 @@ internal class Program
         ColorMCCore.OnProcessLog += Log;
         ColorMCCore.OnGameLog += Log;
 
-        TestItem.Item34();
+        TestItem.Item35();
 
         //GetSha1();
 

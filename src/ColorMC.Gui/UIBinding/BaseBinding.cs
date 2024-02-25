@@ -14,6 +14,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
@@ -93,7 +94,7 @@ public static class BaseBinding
             try
             {
                 Media.Init();
-                InputControlUtils.Init();
+                InputControl.Init();
             }
             catch (Exception e)
             {
@@ -294,6 +295,8 @@ public static class BaseBinding
             GameLogs.Add(obj.UUID, new());
         }
 
+        var port = await NettyServer.RunServerAsync();
+
         //锁定账户
         UserBinding.AddLockUser(obj1);
 
@@ -389,7 +392,7 @@ public static class BaseBinding
                         });
                     }
                 });
-            }, obj1, world, s_launchCancel.Token));
+            }, obj1, world, port, s_launchCancel.Token));
 
         model.ProgressClose();
         model.Title1 = "";
@@ -620,14 +623,14 @@ public static class BaseBinding
         ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select,
         ColorMCCore.NoJava nojava, ColorMCCore.LoginFail loginfail,
         ColorMCCore.GameLaunch update2,
-        LoginObj obj1, WorldObj? world, CancellationToken cancel)
+        LoginObj obj1, WorldObj? world, int? mixinport, CancellationToken cancel)
     {
         string? temp = null;
         try
         {
             //启动
             var p = await obj.StartGameAsync(obj1, world, request, pre, state, select, nojava,
-                loginfail, update2, cancel);
+                loginfail, update2, mixinport, cancel);
             if (cancel.IsCancellationRequested)
             {
                 if (p != null && p.Id != 0)

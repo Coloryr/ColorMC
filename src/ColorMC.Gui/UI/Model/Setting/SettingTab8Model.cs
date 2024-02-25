@@ -1,6 +1,7 @@
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -244,7 +245,7 @@ public partial class SettingModel
         {
             unsafe
             {
-                controlPtr = new(InputControlUtils.Open(InputIndex));
+                controlPtr = new(InputControl.Open(InputIndex));
             }
             if (controlPtr == IntPtr.Zero)
             {
@@ -252,7 +253,7 @@ public partial class SettingModel
             }
             else
             {
-                joystickID = InputControlUtils.GetJoystickID(controlPtr);
+                joystickID = InputControl.GetJoystickID(controlPtr);
             }
         }
     }
@@ -509,9 +510,9 @@ public partial class SettingModel
 
     private void StartRead()
     {
-        if (InputControlUtils.IsInit)
+        if (InputControl.IsInit)
         {
-            InputControlUtils.OnEvent += InputControl_OnEvent;
+            InputControl.OnEvent += InputControl_OnEvent;
         }
     }
 
@@ -617,10 +618,10 @@ public partial class SettingModel
 
     public void ReloadInput()
     {
-        InputNum = InputControlUtils.Count;
+        InputNum = InputControl.Count;
 
         InputNames.Clear();
-        InputControlUtils.GetNames().ForEach(InputNames.Add);
+        InputControl.GetNames().ForEach(InputNames.Add);
         if (InputNames.Count != 0)
         {
             InputIndex = 0;
@@ -767,7 +768,7 @@ public partial class SettingModel
 
     private Task<InputKeyObj?> WaitKey(CancellationToken token)
     {
-        InputControlUtils.IsEditMode = true;
+        InputControl.IsEditMode = true;
         InputKeyObj? keys = null;
         bool output = false;
         inputKey = (key) =>
@@ -786,7 +787,7 @@ public partial class SettingModel
                 }
                 System.Threading.Thread.Sleep(100);
 
-                InputControlUtils.IsEditMode = false;
+                InputControl.IsEditMode = false;
             }
 
             return keys;
@@ -923,16 +924,16 @@ public partial class SettingModel
         joystickID = 0;
         if (controlPtr != IntPtr.Zero)
         {
-            InputControlUtils.Close(controlPtr);
+            InputControl.Close(controlPtr);
             controlPtr = IntPtr.Zero;
         }
     }
 
     private void StopRead()
     {
-        if (InputControlUtils.IsInit)
+        if (InputControl.IsInit)
         {
-            InputControlUtils.OnEvent -= InputControl_OnEvent;
+            InputControl.OnEvent -= InputControl_OnEvent;
         }
     }
 }

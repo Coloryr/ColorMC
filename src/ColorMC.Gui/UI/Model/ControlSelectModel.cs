@@ -1,4 +1,5 @@
-﻿using ColorMC.Gui.Utils;
+﻿using ColorMC.Gui.Joystick;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -23,12 +24,10 @@ public partial class ControlSelectModel : ObservableObject
     private readonly List<string> UUIDs = [];
 
     private Action<ControlSelectModel> _confirm;
-    private Action _cancel;
 
-    public ControlSelectModel(int now, string? config, Action<ControlSelectModel> confirm, Action cancel)
+    public ControlSelectModel(int now, string? config, Action<ControlSelectModel> confirm)
     {
         _confirm = confirm;
-        _cancel = cancel;
 
         Load();
         Load1();
@@ -43,19 +42,13 @@ public partial class ControlSelectModel : ObservableObject
             ConfigUUID = UUIDs.IndexOf(config);
         }
 
-        InputControlUtils.OnEvent += Event;
+        InputControl.OnEvent += Event;
     }
 
     [RelayCommand]
     public void Confirm()
     {
         _confirm(this);
-    }
-
-    [RelayCommand]
-    public void Cancel()
-    {
-        _cancel();
     }
 
     public string GetUUID()
@@ -77,7 +70,7 @@ public partial class ControlSelectModel : ObservableObject
     private void Load()
     {
         Controls.Clear();
-        foreach (var item in InputControlUtils.GetNames())
+        foreach (var item in InputControl.GetNames())
         {
             Controls.Add(item);
         }
