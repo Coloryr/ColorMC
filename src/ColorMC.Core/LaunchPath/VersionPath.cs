@@ -140,7 +140,7 @@ public static class VersionPath
     /// <param name="obj">游戏数据</param>
     public static async Task<GameArgObj?> AddGameAsync(VersionObj.Versions obj)
     {
-        var url = UrlHelper.DownloadIndex(BaseClient.Source, obj);
+        var url = UrlHelper.Download(obj.url, BaseClient.Source);
         (var obj1, var data) = await GameAPI.GetGame(url);
         if (obj1 == null)
         {

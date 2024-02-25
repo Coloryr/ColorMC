@@ -584,7 +584,12 @@ public static class TestItem
 
     public static void Item34()
     {
+        var regex = StringHelper.VersionRegex();
+        var version = regex.Match("15.0.1");
+        Version version1;
+        version1 = new Version(version.Groups[0].Value + version.Groups[1].Value);
 
-
+        version = regex.Match("0.10.6+build.214");
+        version1 = new Version(version.Groups[0].Value + version.Groups[1].Value);
     }
 }

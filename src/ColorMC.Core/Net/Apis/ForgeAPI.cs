@@ -3,6 +3,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace ColorMC.Core.Net.Apis;
@@ -13,10 +14,10 @@ namespace ColorMC.Core.Net.Apis;
 public static class ForgeAPI
 {
     private static List<string>? s_supportVersion;
-    private static readonly Dictionary<string, List<string>> s_forgeVersion = new();
+    private static readonly Dictionary<string, List<string>> s_forgeVersion = [];
 
     private static List<string>? s_neoSupportVersion;
-    private static readonly Dictionary<string, List<string>> s_neoForgeVersion = new();
+    private static readonly Dictionary<string, List<string>> s_neoForgeVersion = [];
 
     /// <summary>
     /// 获取支持的版本
@@ -35,7 +36,7 @@ public static class ForgeAPI
                 {
                     if (s_neoSupportVersion == null)
                     {
-                        await LoadFromSource(true);
+                        await LoadFromSource("", true);
                     }
                     return s_neoSupportVersion;
                 }
@@ -51,6 +52,8 @@ public static class ForgeAPI
                 if (obj == null)
                     return null;
 
+                StringHelper.VersionSort(obj);
+
                 if (neo)
                     s_neoSupportVersion = obj;
                 else
@@ -60,7 +63,7 @@ public static class ForgeAPI
             }
             else
             {
-                await LoadFromSource(neo);
+                await LoadFromSource("", neo);
 
                 return neo ? s_neoSupportVersion : s_supportVersion;
             }
@@ -82,11 +85,12 @@ public static class ForgeAPI
     {
         try
         {
+            bool v222 = CheckHelpers.IsGameVersion1202(mc);
             List<string> list = [];
             if (local == SourceLocal.BMCLAPI)
             {
                 string url = neo
-                    ? UrlHelper.NeoForgeVersions(mc, local)
+                    ? UrlHelper.NeoForgeVersions(mc, local, v222)
                     : UrlHelper.ForgeVersions(mc, local);
                 var data = await BaseClient.GetStringAsync(url);
                 if (data.Item1 == false)
@@ -120,7 +124,7 @@ public static class ForgeAPI
                     }
                 }
 
-                list1.Reverse();
+                StringHelper.VersionSort(list1);
 
                 return list1;
             }
@@ -145,7 +149,7 @@ public static class ForgeAPI
                     return list2;
                 }
 
-                await LoadFromSource(neo);
+                await LoadFromSource(mc, neo);
 
                 if (neo)
                 {
@@ -186,9 +190,9 @@ public static class ForgeAPI
     /// </summary>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns></returns>
-    public static async Task LoadFromSource(bool neo)
+    public static async Task LoadFromSource(string mc, bool neo)
     {
-        var url = neo ? UrlHelper.NeoForgeVersion(SourceLocal.Offical) :
+        var url = neo ? UrlHelper.NeoForgeVersions(mc, SourceLocal.Offical, false) :
                     UrlHelper.ForgeVersion(SourceLocal.Offical);
         var html = await BaseClient.GetStringAsync(url);
         if (html.Item1 == false)
@@ -261,11 +265,11 @@ public static class ForgeAPI
 
         foreach (var item in s_neoForgeVersion.Values)
         {
-            //item.Reverse();
+            StringHelper.VersionSort(item);
         }
         foreach (var item in s_forgeVersion.Values)
         {
-            //item.Reverse();
+            StringHelper.VersionSort(item);
         }
 
         if (neo)
@@ -279,7 +283,7 @@ public static class ForgeAPI
 
         if (neo)
         {
-            url = UrlHelper.NeoForgeNewVersion(SourceLocal.Offical);
+            url = UrlHelper.NeoForgeVersions(mc, SourceLocal.Offical, true);
 
             html = await BaseClient.GetStringAsync(url);
             if (html.Item1 == false)
@@ -320,9 +324,11 @@ public static class ForgeAPI
 
                 foreach (var item in s_neoForgeVersion.Values)
                 {
-                    item.Reverse();
+                    StringHelper.VersionSort(item);
                 }
             }
         }
     }
+
+
 }
