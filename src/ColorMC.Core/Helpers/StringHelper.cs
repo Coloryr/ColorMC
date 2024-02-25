@@ -1,11 +1,14 @@
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ColorMC.Core.Helpers;
 
 /// <summary>
 /// 文本处理
 /// </summary>
-public static class StringHelper
+public static partial class StringHelper
 {
     /// <summary>
     /// 截取字符串
@@ -192,4 +195,31 @@ public static class StringHelper
 
         return builder.ToString();
     }
+
+    public static void VersionSort(List<string> list)
+    {
+        var regex = VersionRegex();
+        var list1 = new List<VersionStrObj>();
+        foreach (var item in list)
+        {
+            var version = regex.Match(item.Replace("+build", ""));
+            var version1 = new Version(version.Groups[0].Value);
+            list1.Add(new()
+            {
+                Version = version1,
+                VersionStr = item
+            });
+        }
+
+        list1.Sort(VersionStrObjComparer.Instance);
+
+        list.Clear();
+        foreach (var item in list1)
+        {
+            list.Add(item.VersionStr);
+        }
+    }
+
+    [GeneratedRegex("\\b\\d+(.\\d+)+\\b")]
+    public static partial Regex VersionRegex();
 }

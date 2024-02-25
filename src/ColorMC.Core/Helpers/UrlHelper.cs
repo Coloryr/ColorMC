@@ -45,7 +45,8 @@ public static class UrlHelper
     [
         "https://launchermeta.mojang.com/",
         "https://launcher.mojang.com/",
-        "https://piston-data.mojang.com/"
+        "https://piston-data.mojang.com/",
+        "https://piston-meta.mojang.com/"
     ];
 
     public static readonly string[] MavenUrl =
@@ -364,24 +365,12 @@ public static class UrlHelper
     /// <summary>
     /// NeoForge版本地址
     /// </summary>
-    public static string NeoForgeVersion(SourceLocal? local)
+    public static string NeoForgeVersion(SourceLocal? local, string version)
     {
         return local switch
         {
-            //SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
+            SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{version}",
             _ => $"{NeoForge}releases/net/neoforged/forge/maven-metadata.xml"
-        };
-    }
-
-    /// <summary>
-    /// NeoForge版本地址
-    /// </summary>
-    public static string NeoForgeNewVersion(SourceLocal? local)
-    {
-        return local switch
-        {
-            //SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
-            _ => $"{NeoForge}releases/net/neoforged/neoforge/maven-metadata.xml"
         };
     }
 
@@ -389,13 +378,24 @@ public static class UrlHelper
     /// NeoForge版本地址
     /// </summary>
     /// <param name="mc">游戏版本</param>
-    public static string NeoForgeVersions(string mc, SourceLocal? local)
+    public static string NeoForgeVersions(string mc, SourceLocal? local, bool v222)
     {
-        return local switch
+        if (v222)
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
-            _ => $"{NeoForge}releases/net/neoforged/forge/maven-metadata.xml"
-        };
+            return local switch
+            {
+                SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
+                _ => $"{NeoForge}releases/net/neoforged/neoforge/maven-metadata.xml"
+            };
+        }
+        else
+        {
+            return local switch
+            {
+                SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
+                _ => $"{NeoForge}releases/net/neoforged/forge/maven-metadata.xml"
+            };
+        }
     }
 
     /// <summary>
@@ -405,7 +405,7 @@ public static class UrlHelper
     /// <returns></returns>
     public static (bool, string?) UrlChange(string old)
     {
-        var random = new Random();
+        //var random = new Random();
         if (BaseClient.Source == SourceLocal.Offical)
         {
             if (old.StartsWith(Forge))
@@ -501,20 +501,5 @@ public static class UrlHelper
             return MakeDownloadUrl(SourceType.CurseForge, item.Projcet,
                 item.FileId, item.File);
         }
-    }
-
-    /// <summary>
-    /// 游戏版本数据
-    /// </summary>
-    /// <param name="local">下载源</param>
-    /// <param name="obj">版本</param>
-    /// <returns></returns>
-    public static string DownloadIndex(SourceLocal? local, VersionObj.Versions obj)
-    {
-        return local switch
-        {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}version/{obj.id}/json",
-            _ => obj.url
-        };
     }
 }

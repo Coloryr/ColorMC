@@ -89,6 +89,9 @@ public static class FabricAPI
             {
                 list1.Add(item.loader.version);
             }
+
+            StringHelper.VersionSort(list1);
+
             return list1;
         }
         catch (Exception e)

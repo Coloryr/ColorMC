@@ -1,8 +1,26 @@
+using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ColorMC.Core.Utils;
+
+/// <summary>
+/// CurseForge比较器
+/// </summary>
+public class VersionStrObjComparer : IComparer<VersionStrObj>
+{
+    public readonly static VersionStrObjComparer Instance = new();
+    public int Compare(VersionStrObj? x, VersionStrObj? y)
+    {
+        if (x == null || y == null)
+        {
+            return 0;
+        }
+        return y.Version.CompareTo(x.Version);
+    }
+}
 
 /// <summary>
 /// CurseForge比较器
