@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Utils;
 using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Setting;
@@ -47,7 +47,7 @@ public partial class SettingModel : MenuModel
             IsInputEnable = true;
         }
 
-        if (!InputControlUtils.IsInit)
+        if (!InputControl.IsInit)
         {
             InputInit = false;
         }

@@ -1,10 +1,7 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Platform;
-using Avalonia.Input;
-using Avalonia.Platform;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
@@ -23,45 +20,32 @@ namespace ColorMC.Gui.UI.Controls.GameWindow;
 
 public partial class GameWindowControl : UserControl, IUserControl
 {
-    internal class WindowControlHandle(INative native, IntPtr handle)
-    : PlatformHandle(handle, "HWND"), INativeControlHostDestroyableControlHandle
-    {
-        public void Destroy()
-        {
-            native.DestroyWindow();
-        }
-    }
-
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public string Title { get; set; }
 
     public string UseName { get; set; }
 
+    public bool MouseMode { get; set; } = true;
+
     private readonly INative _implementation;
     private readonly GameSettingObj _obj;
-    private readonly TopView _control;
     private readonly Process _process;
 
     private readonly short[] _lastAxisMax = new short[10];
     private readonly Dictionary<InputKeyObj, bool> _lastKeyState = [];
-    private readonly string _name;
 
-    private BaseModel _model;
-    private double _cursorX, _cursorY, _cursorNowX, _cursorNowY;
+    private double _cursorNowX, _cursorNowY;
     private IntPtr _gameController;
-    private Point _lastPoint;
     private int _joystickID, _controlIndex;
     private string? _configUUID;
-    private bool _isClose, _isExit, _isMouseMode, _oldMouseMode, _isEdit, _cursorHidden;
+    private bool _isMouseMode = true, _isExit, _isEdit;
 
     private const int DownRate = 800;
 
     public GameWindowControl()
     {
         InitializeComponent();
-
-        _name = ToString() ?? "GameWindowControl";
     }
 
     public GameWindowControl(GameSettingObj obj, Process process) : this()
@@ -77,9 +61,6 @@ public partial class GameWindowControl : UserControl, IUserControl
         }
 
         _implementation.AddHook(process);
-        _implementation.NoBorder();
-        _control = new TopView(new WindowControlHandle(_implementation, _implementation.GetHandel()));
-        Panel1.Children.Add(_control);
 
         _controlIndex = 0;
         _configUUID = GuiConfigUtils.Config.Input.NowConfig;
@@ -88,11 +69,13 @@ public partial class GameWindowControl : UserControl, IUserControl
     public void Closed()
     {
         App.GameWindows.Remove(_obj.UUID);
+
+        _implementation.Stop();
     }
 
     private void Process_Exited(object? sender, EventArgs e)
     {
-        _isClose = true;
+        _isExit = true;
         Window?.Close();
     }
 
@@ -116,9 +99,9 @@ public partial class GameWindowControl : UserControl, IUserControl
 
             var axisFixValue = (float)axisValue / DownRate * (_isMouseMode ? config.CursorRate : config.RotateRate);
             var deathSize = _isMouseMode ? config.CursorDeath : config.RotateDeath;
-            var check = _isMouseMode ? config.CursorAxis : config.RotateAxis;
+            var choiseAxis = _isMouseMode ? config.CursorAxis : config.RotateAxis;
             //左摇杆
-            if (check == 0)
+            if (choiseAxis == 0)
             {
                 if (axis == GameControllerAxis.Leftx)
                 {
@@ -144,7 +127,7 @@ public partial class GameWindowControl : UserControl, IUserControl
                 }
             }
             //右摇杆
-            else if (check == 1)
+            else if (choiseAxis == 1)
             {
                 if (axis == GameControllerAxis.Rightx)
                 {
@@ -173,12 +156,12 @@ public partial class GameWindowControl : UserControl, IUserControl
             bool skip = false;
             if (_isMouseMode)
             {
-                if (check == 0 && axis is GameControllerAxis.Leftx
+                if (choiseAxis == 0 && axis is GameControllerAxis.Leftx
                         or GameControllerAxis.Lefty)
                 {
                     skip = true;
                 }
-                else if (check == 1 && axis is GameControllerAxis.Rightx
+                else if (choiseAxis == 1 && axis is GameControllerAxis.Rightx
                         or GameControllerAxis.Righty)
                 {
                     skip = true;
@@ -267,165 +250,35 @@ public partial class GameWindowControl : UserControl, IUserControl
         }
     }
 
-    private void PostTestMouse()
-    {
-        if (_isMouseMode)
-        {
-            _implementation.TransferTop();
-            Thread.Sleep(50);
-            if (_isMouseMode)
-            {
-                _implementation.NoTranferTop();
-                _implementation.SendMouse(_cursorX, _cursorY, true);
-            }
-        }
-    }
-
     public void Opened()
     {
         unsafe
         {
-            _gameController = new(InputControlUtils.Open(_controlIndex));
+            _gameController = new(InputControl.Open(_controlIndex));
         }
 
         if (_gameController != IntPtr.Zero)
         {
-            InputControlUtils.OnEvent += Event;
-            _joystickID = InputControlUtils.GetJoystickID(_gameController);
+            InputControl.OnEvent += Event;
+            _joystickID = InputControl.GetJoystickID(_gameController);
         }
 
-        _implementation.TitleChange += TitleChange;
-
-        if (_implementation.GetWindowSize(out var width, out var height))
-        {
-            Window.SetSize(width - 16, height - 4);
-        }
-        if (_implementation.GetIcon() is { } icon)
-        {
-            Window.SetIcon(icon);
-        }
-
-        Window.SetTitle(_implementation.GetWindowTitle());
-
-        var handle1 = _control.TopWindow.TryGetPlatformHandle();
-
-        if (handle1 is { })
-        {
-            _implementation.AddHookTop(handle1.Handle);
-            _implementation.TransferTop();
-        }
-
-        _cursorX = width / 2;
-        _cursorY = height / 2;
-        _control.SendMouse(_cursorX, _cursorY);
-        _control.TopWindow.PointerMoved += OnPointerMoved;
-        _control.TopWindow.PointerExited += TopWindow_PointerExited;
-        _control.TopWindow.PointerEntered += TopWindow_PointerEntered;
+        _implementation.GetWindowSize(out var width, out var height);
 
         new Thread(() =>
         {
             while (!_isExit)
             {
-                _isMouseMode = _implementation.GetMouseMode();
-                if (_isMouseMode != _oldMouseMode)
-                {
-                    _oldMouseMode = _isMouseMode;
-                    _control.ChangeCursorDisplay(_isMouseMode);
-                    if (_isMouseMode)
-                    {
-                        var size = _control.Bounds;
-
-                        if (size.Width != 0 && size.Height != 0)
-                        {
-                            _cursorX = size.Width / 2;
-                            _cursorY = size.Height / 2;
-                            _control.SendMouse(_cursorX, _cursorY);
-                        }
-                    }
-                }
+                _isMouseMode = MouseMode;
 
                 if (_cursorNowX != 0 || _cursorNowY != 0)
                 {
-                    if (_isMouseMode)
-                    {
-                        HideCursor();
-                        var size = _control.Bounds;
-
-                        _cursorX += _cursorNowX;
-                        _cursorY += _cursorNowY;
-
-                        if (_cursorX < 0)
-                        {
-                            _cursorX = 0;
-                        }
-                        else if (_cursorX > size.Width)
-                        {
-                            _cursorX = size.Width;
-                        }
-
-                        if (_cursorY < 0)
-                        {
-                            _cursorY = 0;
-                        }
-                        else if (_cursorY > size.Height)
-                        {
-                            _cursorY = size.Height;
-                        }
-
-                        _control.SendMouse(_cursorX, _cursorY);
-                        _implementation.SendMouse(_cursorX, _cursorY, true);
-                    }
-                    else
-                    {
-                        _implementation.SendMouse(_cursorNowX, _cursorNowY, false);
-                    }
+                    _implementation.SendMouse(_cursorNowX, _cursorNowY, false);
                 }
 
                 Thread.Sleep(10);
             }
         }).Start();
-    }
-
-    private void TopWindow_PointerEntered(object? sender, PointerEventArgs e)
-    {
-        _lastPoint = e.GetPosition(_control.TopWindow);
-    }
-
-    private void TopWindow_PointerExited(object? sender, PointerEventArgs e)
-    {
-        _lastPoint = e.GetPosition(_control.TopWindow);
-    }
-
-    private void HideCursor()
-    {
-        if (_cursorHidden == false)
-        {
-            _implementation.NoTranferTop();
-            _cursorHidden = true;
-        }
-    }
-
-    private void ShowCursor()
-    {
-        if (_cursorHidden)
-        {
-            _implementation.TransferTop();
-            _cursorHidden = false;
-        }
-    }
-
-    private void OnPointerMoved(object? sender, PointerEventArgs e)
-    {
-        var pos = e.GetPosition(_control.TopWindow);
-        if (pos.NearlyEquals(_lastPoint))
-        {
-            return;
-        }
-        _lastPoint = pos;
-        if (_cursorHidden)
-        {
-            ShowCursor();
-        }
     }
 
     private void CheckKeyAndSend(InputKeyObj obj, bool down)
@@ -435,84 +288,26 @@ public partial class GameWindowControl : UserControl, IUserControl
             if (state != down)
             {
                 _lastKeyState[obj] = down;
-                _implementation.SendKey(obj, down, !_cursorHidden);
+                _implementation.SendKey(obj, down, _isMouseMode);
             }
         }
         else
         {
             _lastKeyState.Add(obj, down);
-            _implementation.SendKey(obj, down, !_cursorHidden);
+            _implementation.SendKey(obj, down, _isMouseMode);
         }
-        if (down)
-        {
-            PostTestMouse();
-        }
-    }
-
-    private void TitleChange(string title)
-    {
-        Window?.SetTitle(title);
-    }
-
-    public void WindowStateChange(WindowState state)
-    {
-        _implementation.SetWindowState(state);
     }
 
     public void SetBaseModel(BaseModel model)
     {
-        _model = model;
-        SetChoise();
-    }
-
-    private void SetChoise()
-    {
-        _model.SetChoiseCall(_name, SelectConfig);
-        _model.SetChoiseContent(_name, App.Lang("GameWindow.Text1"));
-    }
-
-    private void RemoveChoise()
-    {
-        _model.RemoveChoiseData(_name);
-    }
-
-    private void EditClose()
-    {
-        _implementation.TransferTop();
-        _control.Edit(false);
-        SetChoise();
-        _isEdit = false;
-    }
-
-    private void SelectConfig()
-    {
-        if (_isEdit)
-        {
-            return;
-        }
-        _isEdit = true;
-        RemoveChoise();
-        _control.Edit(true);
-        _implementation.NoTranferTop();
-        var model = new ControlSelectModel(_controlIndex, _configUUID, (model) =>
-        {
-            ChangeConfig(model);
-            EditClose();
-        }, () =>
-        {
-            EditClose();
-        });
-        _control.TopWindow.Content = new ControlSelectControl()
-        {
-            DataContext = model
-        };
+        DataContext = new ControlSelectModel(_controlIndex, _configUUID, ChangeConfig);
     }
 
     private void ChangeConfig(ControlSelectModel model)
     {
         if (_gameController != IntPtr.Zero)
         {
-            InputControlUtils.Close(_gameController);
+            InputControl.Close(_gameController);
             _gameController = IntPtr.Zero;
             _joystickID = 0;
         }
@@ -522,40 +317,19 @@ public partial class GameWindowControl : UserControl, IUserControl
 
         unsafe
         {
-            _gameController = new(InputControlUtils.Open(_controlIndex));
+            _gameController = new(InputControl.Open(_controlIndex));
         }
 
         if (_gameController != IntPtr.Zero)
         {
-            _joystickID = InputControlUtils.GetJoystickID(_gameController);
+            _joystickID = InputControl.GetJoystickID(_gameController);
         }
     }
 
     public Task<bool> Closing()
     {
-        _isExit = true;
+        Window.Hide();
 
-        InputControlUtils.OnEvent -= Event;
-
-        _implementation.Stop();
-        _implementation.Close();
-
-        Task.Run(() =>
-        {
-            Thread.Sleep(2000);
-            try
-            {
-                if (_isClose == false && !_process.HasExited)
-                {
-                    _process.Kill();
-                }
-            }
-            catch
-            {
-
-            }
-        });
-
-        return Task.FromResult(false);
+        return Task.FromResult(true);
     }
 }

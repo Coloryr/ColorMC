@@ -382,7 +382,7 @@ public static class Launch
     /// <param name="v2">V2模式</param>
     /// <param name="login">登录的账户</param>
     /// <returns>Jvm参数</returns>
-    private static async Task<List<string>> JvmArgAsync(GameSettingObj obj, bool v2, LoginObj login)
+    private static async Task<List<string>> JvmArgAsync(GameSettingObj obj, bool v2, LoginObj login, int? mixinport)
     {
         RunArgObj args;
 
@@ -415,6 +415,12 @@ public static class Launch
         if (!string.IsNullOrWhiteSpace(args.JavaAgent))
         {
             jvm.Add($"-javaagent:{args.JavaAgent.Trim()}");
+        }
+
+        if (mixinport > 0)
+        {
+            jvm.Add("-Dcolormc.mixin.port=" + mixinport);
+            jvm.Add("-Dcolormc.mixin.uuid=" + obj.UUID);
         }
 
         //gc
@@ -969,13 +975,13 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="login">登录的账户</param>
     /// <returns></returns>
-    private static async Task<List<string>> MakeArgAsync(GameSettingObj obj, LoginObj login, WorldObj? world)
+    private static async Task<List<string>> MakeArgAsync(GameSettingObj obj, LoginObj login, WorldObj? world, int? mixinport)
     {
         var list = new List<string>();
         var version = VersionPath.GetVersion(obj.Version)!;
         var v2 = CheckHelpers.IsGameVersionV2(version);
         var classpath = await MakeClassPathAsync(obj, v2);
-        var jvmarg = await JvmArgAsync(obj, v2, login);
+        var jvmarg = await JvmArgAsync(obj, v2, login, mixinport);
         var gamearg = GameArg(obj, v2, world);
         ReplaceAll(obj, login, jvmarg, classpath);
         ReplaceAll(obj, login, gamearg, classpath);
@@ -1019,7 +1025,7 @@ public static class Launch
         WorldObj? world, ColorMCCore.Request request, ColorMCCore.LaunchP pre,
         ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select,
         ColorMCCore.NoJava nojava, ColorMCCore.LoginFail loginfail,
-        ColorMCCore.GameLaunch update2,
+        ColorMCCore.GameLaunch update2, int? mixinport,
         CancellationToken token)
     {
         s_cancel = token;
@@ -1175,7 +1181,7 @@ public static class Launch
 
         //准备Jvm参数
         update2(obj, LaunchState.JvmPrepare);
-        var arg = await MakeArgAsync(obj, login, world);
+        var arg = await MakeArgAsync(obj, login, world, mixinport);
         ColorMCCore.GameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
         bool hidenext = false;
         if (SystemInfo.Os != OsType.Android)
