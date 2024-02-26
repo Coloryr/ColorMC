@@ -309,7 +309,7 @@ public static class ModPackHelper
 
         update2(CoreRunState.Download);
 
-        await DownloadManager.StartAsync(list.List.ToList());
+        await DownloadManager.StartAsync([.. list.List]);
 
         return (true, game);
     }
@@ -352,12 +352,14 @@ public static class ModPackHelper
                     var info1 = await CurseForgeAPI.GetModInfo(item.modId);
                     if (info1 != null)
                     {
-                        if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack))
+                        if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack)
+                            || info1.Data.classId == CurseForgeAPI.ClassResourcepack)
                         {
                             path = respath;
                             path1 = respath1;
                         }
-                        else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack))
+                        else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassShaderpack)
+                            || info1.Data.classId == CurseForgeAPI.ClassShaderpack)
                         {
                             path = shapath;
                             path1 = shapath1;
