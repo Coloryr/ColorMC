@@ -243,7 +243,7 @@ public static class GameHelper
     public static void ReadyOptifineWrapper()
     {
         OptifineWrapper = Path.GetFullPath(LibrariesPath.BaseDir +
-            "/coloryr/OptifineWrapper/1.0/OptifineWrapper-1.0.jar");
+            "/com/coloryr/OptifineWrapper/1.0/OptifineWrapper-1.0.jar");
         var file = new FileInfo(OptifineWrapper);
         if (!file.Exists)
         {
@@ -251,7 +251,7 @@ public static class GameHelper
             {
                 Directory.CreateDirectory(file.DirectoryName!);
             }
-            PathHelper.WriteBytes(file.FullName, Resource1.OptifineWrapper_1_0);
+            PathHelper.WriteBytes(file.FullName, Resource1.OptifineWrapper_1_1);
         }
     }
 
@@ -261,7 +261,7 @@ public static class GameHelper
     public static void ReadyColorMCASM()
     {
         ColorMCASM = Path.GetFullPath(LibrariesPath.BaseDir +
-            "/coloryr/colormc/ColorMCASM/1.0/ColorMCASM-1.0.jar");
+            "/com/coloryr/colormc/ColorMCASM/1.0/ColorMCASM-1.0-all.jar");
         var file = new FileInfo(ColorMCASM);
         if (!file.Exists)
         {
@@ -269,7 +269,7 @@ public static class GameHelper
             {
                 Directory.CreateDirectory(file.DirectoryName!);
             }
-            PathHelper.WriteBytes(file.FullName, Resource1.ColorMCASM_1_0);
+            PathHelper.WriteBytes(file.FullName, Resource1.ColorMCASM_1_0_all);
         }
     }
 

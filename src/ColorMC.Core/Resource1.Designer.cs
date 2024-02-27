@@ -63,9 +63,9 @@ namespace ColorMC.Core {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
-        internal static byte[] ColorMCASM_1_0 {
+        internal static byte[] ColorMCASM_1_0_all {
             get {
-                object obj = ResourceManager.GetObject("ColorMCASM_1_0", resourceCulture);
+                object obj = ResourceManager.GetObject("ColorMCASM_1_0_all", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace ColorMC.Core {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
-        internal static byte[] OptifineWrapper_1_0 {
+        internal static byte[] OptifineWrapper_1_1 {
             get {
-                object obj = ResourceManager.GetObject("OptifineWrapper_1_0", resourceCulture);
+                object obj = ResourceManager.GetObject("OptifineWrapper_1_1", resourceCulture);
                 return ((byte[])(obj));
             }
         }

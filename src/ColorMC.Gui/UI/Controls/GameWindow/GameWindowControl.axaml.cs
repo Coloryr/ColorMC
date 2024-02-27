@@ -64,6 +64,8 @@ public partial class GameWindowControl : UserControl, IUserControl
 
         _controlIndex = 0;
         _configUUID = GuiConfigUtils.Config.Input.NowConfig;
+
+        Title = string.Format(App.Lang("GameWindow.Title"), obj.Name);
     }
 
     public void Closed()

@@ -11,6 +11,7 @@ using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Text;
+using static ColorMC.Core.Objs.Minecraft.GameArgObj.Arguments;
 
 namespace ColorMC.Core.Game;
 
@@ -828,12 +829,17 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="v2">是否为v2版本</param>
     /// <returns>结果</returns>
-    private static async Task<string> MakeClassPathAsync(GameSettingObj obj, bool v2)
+    private static async Task<string> MakeClassPathAsync(GameSettingObj obj, bool v2, bool enableasm)
     {
         var libraries = await GetLibsAsync(obj, v2);
         var classpath = new StringBuilder();
         var sep = SystemInfo.Os == OsType.Windows ? ';' : ':';
         ColorMCCore.GameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
+
+        if (enableasm)
+        {
+            libraries.Add(GameHelper.ColorMCASM);
+        }
 
         //附加的classpath
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.ClassPath))
@@ -982,8 +988,8 @@ public static class Launch
         var list = new List<string>();
         var version = VersionPath.GetVersion(obj.Version)!;
         var v2 = CheckHelpers.IsGameVersionV2(version);
-        var classpath = await MakeClassPathAsync(obj, v2);
         var jvmarg = await JvmArgAsync(obj, v2, login, mixinport);
+        var classpath = await MakeClassPathAsync(obj, v2, mixinport > 0);
         var gamearg = GameArg(obj, v2, world);
         ReplaceAll(obj, login, jvmarg, classpath);
         ReplaceAll(obj, login, gamearg, classpath);
