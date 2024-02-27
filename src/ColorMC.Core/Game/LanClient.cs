@@ -11,16 +11,18 @@ public class LanClient
 {
     public required Action<string, string, string> FindLan;
 
-    private readonly UdpClient _socket;
+    private readonly UdpClient _socketV4;
+    private readonly UdpClient _socketV6;
 
     private bool _isRun;
     private readonly CancellationTokenSource _cancel = new();
 
     public LanClient()
     {
-        var ipep = new IPEndPoint(IPAddress.Any, 4445);
-        _socket = new(ipep);
-        _socket.JoinMulticastGroup(IPAddress.Parse("224.0.2.60"));
+        _socketV4 = new(new IPEndPoint(IPAddress.Any, 4445));
+        _socketV4.JoinMulticastGroup(IPAddress.Parse("224.0.2.60"));
+        _socketV6 = new(new IPEndPoint(IPAddress.IPv6Any, 4445));
+        _socketV6.JoinMulticastGroup(IPAddress.Parse("FF75:230::60"));
 
         _isRun = true;
 
@@ -30,7 +32,37 @@ public class LanClient
             {
                 try
                 {
-                    var data = await _socket.ReceiveAsync(_cancel.Token);
+                    var data = await _socketV4.ReceiveAsync(_cancel.Token);
+                    if (!_isRun)
+                    {
+                        return;
+                    }
+
+                    string temp = Encoding.UTF8.GetString(data.Buffer);
+                    var point = data.RemoteEndPoint;
+
+                    string motd = GetMotd(temp);
+                    string? ad = GetAd(temp);
+
+                    if (ad != null)
+                    {
+                        FindLan?.Invoke(motd, point.ToString(), ad);
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+        }).Start();
+
+        new Thread(async () =>
+        {
+            while (_isRun)
+            {
+                try
+                {
+                    var data = await _socketV6.ReceiveAsync(_cancel.Token);
                     if (!_isRun)
                     {
                         return;
@@ -64,8 +96,8 @@ public class LanClient
 
         _cancel.Cancel();
 
-        _socket.Close();
-        _socket.Dispose();
+        _socketV4.Close();
+        _socketV4.Dispose();
     }
 
     /// <summary>
