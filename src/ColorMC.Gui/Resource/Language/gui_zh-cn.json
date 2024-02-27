@@ -954,6 +954,7 @@
 	"NetFrpWindow.Tab4.Error3": "线上服务器列表获取失败",
 	"NetFrpWindow.Tab4.Error4": "加入时发生错误",
 	"NetFrpWindow.Tab5.Text1": "OpenFrp OPENAPI",
+	"GameWindow.Title": "游戏实例手柄设置 {0}",
 	"GameWindow.Text1": "调整手柄",
 	"GameWindow.Text2": "选择手柄",
 	"GameWindow.Text3": "选择配置",
