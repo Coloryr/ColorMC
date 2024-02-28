@@ -33,6 +33,9 @@
         <PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
         <PackageReference Include="Jint" Version="3.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="DotNetty.Buffers" Version="0.7.5" />
+		<PackageReference Include="DotNetty.Common" Version="0.7.5" />
+		<PackageReference Include="DotNetty.Handlers" Version="0.7.5" />
         <PackageReference Include="SharpZipLib" Version="1.4.2" />
         <PackageReference Include="Tomlyn" Version="0.17.0" />
     </ItemGroup>

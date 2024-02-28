@@ -423,6 +423,7 @@ public static class Launch
             GameHelper.ReadyColorMCASM();
             jvm.Add("-Dcolormc.mixin.port=" + mixinport);
             jvm.Add("-Dcolormc.mixin.uuid=" + obj.UUID);
+            jvm.Add("-Dcolormc.mixin.jar=" + GameHelper.ColorMCASM);
             jvm.Add($"-javaagent:{GameHelper.ColorMCASM}");
         }
 
