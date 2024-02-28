@@ -17,10 +17,10 @@ public class LanServer
     private IPEndPoint _port;
     public LanServer(string ip, string? motd)
     {
-        _motd = motd ?? "ColorMC NetFrp";
+        _motd = motd ?? "ColorMC";
         _ip = ip;
 
-        _data = Encoding.UTF8.GetBytes(MakeMotd());
+        _data = Encoding.UTF8.GetBytes(MakeMotd(_motd, _ip));
 
         _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         _port = new IPEndPoint(IPAddress.Parse("224.0.2.60"), 4445);
@@ -36,9 +36,9 @@ public class LanServer
         _isRun = false;
     }
 
-    private string MakeMotd()
+    public static string MakeMotd(string motd, string ip)
     {
-        return $"[MOTD]{_motd}[/MOTD][AD]{_ip}[/AD]";
+        return $"[MOTD]{motd}[/MOTD][AD]{ip}[/AD]";
     }
 
     private void Run()

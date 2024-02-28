@@ -13,6 +13,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
@@ -842,7 +843,11 @@ public static class WebBinding
             return null;
         }
 
-        return list1.ToObject<List<NetFrpCloudServerModel>>();
+        GameSocket.Clear();
+        var list2 = list1.ToObject<List<NetFrpCloudServerModel>>();
+        list2?.ForEach(GameSocket.AddServerInfo);
+
+        return list2;
     }
 
     public static Task<bool> ShareIP(string token, string ip)

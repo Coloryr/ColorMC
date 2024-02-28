@@ -2,6 +2,7 @@
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -25,6 +26,7 @@ public partial class NetFrpCloudServerModel : ObservableObject
     /// </summary>
     public string Max { get; set; }
 
+    [JsonIgnore]
     public NetFrpModel Top;
 
     [RelayCommand]

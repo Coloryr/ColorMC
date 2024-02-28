@@ -102,6 +102,7 @@ public static class BaseBinding
             }
         }
 
+        GameSocket.Init();
         FrpConfigUtils.Init(ColorMCGui.RunDir);
         ImageUtils.Init(ColorMCGui.RunDir);
         InputConfigUtils.Init(ColorMCGui.RunDir);
@@ -295,7 +296,7 @@ public static class BaseBinding
             GameLogs.Add(obj.UUID, new());
         }
 
-        var port = await NettyServer.RunServerAsync();
+        var port = GameSocket.Port;
 
         //锁定账户
         UserBinding.AddLockUser(obj1);

@@ -2,14 +2,11 @@
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
-using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ColorMC.Gui.Joystick;
+namespace ColorMC.Core.Asm;
 
 public static class NettyServer
 {
@@ -17,6 +14,10 @@ public static class NettyServer
     private static IEventLoopGroup workerGroup;
     private static ServerBootstrap bootstrap;
     private static IChannel boundChannel;
+
+    private static List<IChannel> channels = [];
+
+    public static Action<IByteBuffer>? GetPack;
 
     /// <summary>
     /// 获取操作系统已用的端口号
@@ -85,13 +86,13 @@ public static class NettyServer
 
             int port = GetFirstAvailablePort();
             boundChannel = await bootstrap.BindAsync(port);
-            App.OnClose += Stop;
+            ColorMCCore.Stop += Stop;
 
             return port;
         }
         finally
         {
-            
+
         }
     }
 
@@ -102,34 +103,16 @@ public static class NettyServer
                 bossGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)),
                 workerGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)));
     }
-}
 
-public class EchoServerHandler : ChannelHandlerAdapter
-{
-    private static string ReadString(IByteBuffer buf)
+    public static void SendMessage(IByteBuffer byteBuffer)
     {
-        int size = buf.ReadInt();
-        var datas = new byte[size];
-        buf.ReadBytes(datas);
-        return Encoding.UTF8.GetString(datas);
-    }
-
-    public override void ChannelRead(IChannelHandlerContext context, object message)
-    {
-        if (message is IByteBuffer buffer)
+        foreach (var item in channels.ToArray())
         {
             try
             {
-                int type = buffer.ReadInt();
-                string uuid = ReadString(buffer);
-
-                if (type == 1)
+                if (item.IsWritable)
                 {
-                    var value = buffer.ReadBoolean();
-                    if (App.GameWindows.TryGetValue(uuid, out var window))
-                    {
-                        window.MouseMode = !value;
-                    }
+                    item.WriteAndFlushAsync(byteBuffer.RetainedDuplicate());
                 }
             }
             catch
@@ -139,10 +122,32 @@ public class EchoServerHandler : ChannelHandlerAdapter
         }
     }
 
-    public override void ChannelReadComplete(IChannelHandlerContext context) => context.Flush();
-
-    public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
+    public class EchoServerHandler : ChannelHandlerAdapter
     {
-        context.CloseAsync();
+        public override void ChannelActive(IChannelHandlerContext ctx)
+        {
+            channels.Add(ctx.Channel);
+        }
+
+        public override void ChannelInactive(IChannelHandlerContext ctx)
+        {
+            channels.Remove(ctx.Channel);
+        }
+
+        public override void ChannelRead(IChannelHandlerContext context, object message)
+        {
+            if (message is IByteBuffer buffer)
+            {
+                GetPack?.Invoke(buffer);
+            }
+        }
+
+        public override void ChannelReadComplete(IChannelHandlerContext context) => context.Flush();
+
+        public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
+        {
+            context.CloseAsync();
+        }
     }
 }
+
