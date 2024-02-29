@@ -255,7 +255,12 @@ public partial class GameItemModel : GameModel
         {
             var model = value.MakeConfig();
             model.TopCancel = () => { DialogHost.Close("MainCon"); };
-            model.TopConfirm = () => { DialogHost.Close("MainCon"); value.ChangeConfig(model); };
+            model.TopConfirm = () => 
+            { 
+                DialogHost.Close("MainCon"); 
+                value.ChangeConfig(model);
+                Model.Notify(App.Lang("GameWindow.Info1"));
+            };
             DialogHost.Show(model, "MainCon");
         }
     }

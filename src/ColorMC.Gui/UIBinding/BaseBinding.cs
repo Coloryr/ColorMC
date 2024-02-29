@@ -452,24 +452,9 @@ public static class BaseBinding
             GameCount.LaunchDone(obj);
             GameBinding.GameStateUpdate(obj);
 
-            if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
+            if (pr is DesktopGameHandel handel)
             {
-                var run = true;
-                var uuid = GuiConfigUtils.Config.Input.NowConfig;
-
-                if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
-                {
-                    run = await model.ShowWait(App.Lang("Gui.Error51"));
-                }
-                if (run)
-                {
-                    GameJoystick.Start(obj, pr);
-                }
-            }
-
-            if (hide)
-            {
-                Dispatcher.UIThread.Post(App.Hide);
+                GameWait(model, obj, handel, hide);
             }
         }
         else
@@ -481,13 +466,14 @@ public static class BaseBinding
         return (res.Item1 != null, res.Item2);
     }
 
-    private static void GameTitleChange(WindowSettingObj conf, DesktopGameHandel handel)
+    private static void GameWait(BaseModel model, GameSettingObj obj, DesktopGameHandel handel, bool hide)
     {
         var pr = handel.Process;
-        Task.Run(() =>
+        Task.Run(async () =>
         {
             try
             {
+                var conf = obj.Window;
                 if (SystemInfo.Os == OsType.Windows)
                 {
                     Win32Native.Win32.WaitWindowDisplay(pr);
@@ -506,81 +492,98 @@ public static class BaseBinding
                     return;
                 }
 
-                if (!string.IsNullOrWhiteSpace(conf.GameTitle))
+                if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
+                {
+                    var run = true;
+                    var uuid = GuiConfigUtils.Config.Input.NowConfig;
+
+                    if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
+                    {
+                        run = await model.ShowWait(App.Lang("Gui.Error51"));
+                    }
+                    if (run)
+                    {
+                        GameJoystick.Start(obj, handel);
+                    }
+                }
+
+                if (hide)
+                {
+                    Dispatcher.UIThread.Post(App.Hide);
+                }
+
+                if (!string.IsNullOrWhiteSpace(conf?.GameTitle))
                 {
                     var ran = new Random();
-                    Task.Run(() =>
+                    int i = 0;
+                    var list = new List<string>();
+                    var list1 = conf.GameTitle.Split('\n');
+
+                    foreach (var item in list1)
                     {
-                        int i = 0;
-                        var list = new List<string>();
-                        var list1 = conf.GameTitle.Split('\n');
-
-                        foreach (var item in list1)
+                        var temp = item.Trim();
+                        if (string.IsNullOrWhiteSpace(temp))
                         {
-                            var temp = item.Trim();
-                            if (string.IsNullOrWhiteSpace(temp))
-                            {
-                                continue;
-                            }
-
-                            list.Add(temp);
-                        }
-                        if (list.Count == 0)
-                        {
-                            return;
+                            continue;
                         }
 
-                        Thread.Sleep(1000);
+                        list.Add(temp);
+                    }
+                    if (list.Count == 0)
+                    {
+                        return;
+                    }
 
-                        do
+                    Thread.Sleep(1000);
+
+                    do
+                    {
+                        string title1 = "";
+                        if (conf.RandomTitle)
                         {
-                            string title1 = "";
-                            if (conf.RandomTitle)
+                            title1 = list[ran.Next(list.Count)];
+                        }
+                        else
+                        {
+                            i++;
+                            if (i >= list.Count)
                             {
-                                title1 = list[ran.Next(list.Count)];
+                                i = 0;
                             }
-                            else
-                            {
-                                i++;
-                                if (i >= list.Count)
-                                {
-                                    i = 0;
-                                }
-                                title1 = list[i];
-                            }
+                            title1 = list[i];
+                        }
 
-                            if (SystemInfo.Os == OsType.Windows)
-                            {
-                                Win32Native.Win32.SetTitle(pr, title1);
-                            }
-                            else if (SystemInfo.Os == OsType.Linux)
-                            {
-                                X11Hook.SetTitle(pr, title1);
-                            }
-                            else if (SystemInfo.Os == OsType.MacOS)
+                        if (SystemInfo.Os == OsType.Windows)
+                        {
+                            Win32Native.Win32.SetTitle(pr, title1);
+                        }
+                        else if (SystemInfo.Os == OsType.Linux)
+                        {
+                            X11Hook.SetTitle(pr, title1);
+                        }
+                        else if (SystemInfo.Os == OsType.MacOS)
+                        {
+                            break;
+                            //string cmd = $"osascript -e 'tell application \"System Events\" " +
+                            //$"to set title of windows of process \"{pr.ProcessName}\" to \"{title1}\"'";
+                            //ExecuteBashCommand(cmd);
+                        }
+
+                        try
+                        {
+                            if (!conf.CycTitle || conf.TitleDelay <= 0 || pr.HasExited)
                             {
                                 break;
-                                //string cmd = $"osascript -e 'tell application \"System Events\" " +
-                                //$"to set title of windows of process \"{pr.ProcessName}\" to \"{title1}\"'";
-                                //ExecuteBashCommand(cmd);
                             }
 
-                            try
-                            {
-                                if (!conf.CycTitle || conf.TitleDelay <= 0 || pr.HasExited)
-                                {
-                                    break;
-                                }
-
-                                Thread.Sleep(conf.TitleDelay);
-                            }
-                            catch
-                            {
-
-                            }
+                            Thread.Sleep(conf.TitleDelay);
                         }
-                        while (true);
-                    });
+                        catch
+                        {
+
+                        }
+                    }
+                    while (true);
                 }
             }
             catch
