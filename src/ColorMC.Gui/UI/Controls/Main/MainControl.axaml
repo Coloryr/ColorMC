@@ -21,6 +21,9 @@
             <DataTemplate DataType="model:MainModel">
                 <views2:MainGroupControl DataContext="{Binding}" />
             </DataTemplate>
+            <DataTemplate DataType="model:JoystickSettingModel">
+                <views2:JoystickSettingControl DataContext="{Binding}" />
+            </DataTemplate>
         </dialog:DialogHost.DataTemplates>
         <Panel>
             <views2:Live2dControl

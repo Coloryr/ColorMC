@@ -1,13 +1,13 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.GameWindow.GameWindowControl"
+    x:Class="ColorMC.Gui.UI.Controls.Main.JoystickSettingControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ColorMC.Gui.UI.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    x:DataType="model:ControlSelectModel"
+    x:DataType="model:JoystickSettingModel"
     Background="{setting:Colors TopBottom}"
     mc:Ignorable="d">
     <Border
@@ -45,6 +45,13 @@
                     Classes="top"
                     Command="{Binding Confirm}"
                     Content="{setting:Localize Button.Confirm}" />
+                <Button
+                    Width="100"
+                    Height="30"
+                    Margin="10,0,10,0"
+                    Classes="top"
+                    Command="{Binding Cancel}"
+                    Content="{setting:Localize Button.Cancel}" />
             </StackPanel>
         </StackPanel>
     </Border>

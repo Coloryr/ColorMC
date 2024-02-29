@@ -9,8 +9,10 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DialogHostAvalonia;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -245,6 +247,17 @@ public partial class GameItemModel : GameModel
         }
 
         GameBinding.SetGameName(Obj, Text1);
+    }
+
+    public void SetJoystick()
+    {
+        if (GameJoystick.NowGameJoystick.TryGetValue(Obj.UUID, out var value))
+        {
+            var model = value.MakeConfig();
+            model.TopCancel = () => { DialogHost.Close("MainCon"); };
+            model.TopConfirm = () => { DialogHost.Close("MainCon"); value.ChangeConfig(model); };
+            DialogHost.Show(model, "MainCon");
+        }
     }
 
     public async void Copy()

@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class InputAxisButtonModel(SettingModel setting)
-    : InputButtonModel(setting)
+        : InputButtonModel(setting)
 {
     [ObservableProperty]
     private short? _start;
@@ -25,9 +25,11 @@ public partial class InputAxisButtonModel(SettingModel setting)
 
     private bool _changeStart;
 
+    private readonly SettingModel _setting = setting;
+
     partial void OnBackCancelChanged(bool value)
     {
-        setting.InputSave(this);
+        _setting.InputSave(this);
     }
 
     partial void OnStartChanged(short? value)
@@ -45,7 +47,7 @@ public partial class InputAxisButtonModel(SettingModel setting)
 
         _changeStart = false;
 
-        setting.InputSave(this);
+        _setting.InputSave(this);
     }
 
     partial void OnEndChanged(short? value)
@@ -63,7 +65,7 @@ public partial class InputAxisButtonModel(SettingModel setting)
 
         _changeStart = false;
 
-        setting.InputSave(this);
+        _setting.InputSave(this);
     }
 
     public InputAxisObj GenObj()

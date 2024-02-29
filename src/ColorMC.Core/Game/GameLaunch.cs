@@ -11,7 +11,6 @@ using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Text;
-using static ColorMC.Core.Objs.Minecraft.GameArgObj.Arguments;
 
 namespace ColorMC.Core.Game;
 
@@ -27,11 +26,6 @@ public static class Launch
     public const string GAME_UUID = "%GAME_UUID%";
     public const string GAME_DIR = "%GAME_DIR%";
     public const string GAME_BASE_DIR = "%GAME_BASE_DIR%";
-
-    /// <summary>
-    /// 取消启动
-    /// </summary>
-    private static CancellationToken s_cancel;
 
     /// <summary>
     /// 获取Forge安装参数
@@ -80,7 +74,7 @@ public static class Launch
         jvm.Add("-cp");
         jvm.Add(cp);
 
-        var arg = MakeV2GameArg(obj);
+        //var arg = MakeV2GameArg(obj);
 
         jvm.Add("io.github.zekerzhayard.forgewrapper.installer.Main");
         var forge1 = obj.Loader == Loaders.NeoForge
@@ -423,7 +417,6 @@ public static class Launch
             GameHelper.ReadyColorMCASM();
             jvm.Add("-Dcolormc.mixin.port=" + mixinport);
             jvm.Add("-Dcolormc.mixin.uuid=" + obj.UUID);
-            jvm.Add("-Dcolormc.mixin.jar=" + GameHelper.ColorMCASM);
             jvm.Add($"-javaagent:{GameHelper.ColorMCASM}");
         }
 
@@ -1007,22 +1000,6 @@ public static class Launch
     }
 
     /// <summary>
-    /// 进程日志
-    /// </summary>
-    private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        ColorMCCore.GameLog(sender as Process, e.Data);
-    }
-
-    /// <summary>
-    /// 进程日志
-    /// </summary>
-    private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        ColorMCCore.GameLog(sender as Process, e.Data);
-    }
-
-    /// <summary>
     /// 启动游戏
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -1030,14 +1007,13 @@ public static class Launch
     /// <param name="jvmCfg">使用的Java</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns></returns>
-    public static async Task<Process?> StartGameAsync(this GameSettingObj obj, LoginObj login,
+    public static async Task<IGameHandel?> StartGameAsync(this GameSettingObj obj, LoginObj login,
         WorldObj? world, ColorMCCore.Request request, ColorMCCore.LaunchP pre,
         ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select,
         ColorMCCore.NoJava nojava, ColorMCCore.LoginFail loginfail,
         ColorMCCore.GameLaunch update2, int? mixinport,
         CancellationToken token)
     {
-        s_cancel = token;
         var stopwatch = new Stopwatch();
 
         //版本号检测
@@ -1081,7 +1057,7 @@ public static class Launch
             login.Save();
         }
 
-        if (s_cancel.IsCancellationRequested)
+        if (token.IsCancellationRequested)
         {
             return null;
         }
@@ -1116,7 +1092,7 @@ public static class Launch
         //检查游戏文件
         stopwatch.Restart();
         stopwatch.Start();
-        var res = await CheckHelpers.CheckGameFileAsync(obj, login, update2, s_cancel);
+        var res = await CheckHelpers.CheckGameFileAsync(obj, login, update2, token);
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
             obj.Name, stopwatch.Elapsed.ToString());
@@ -1183,7 +1159,7 @@ public static class Launch
 
             path = jvm.GetPath();
         }
-        if (s_cancel.IsCancellationRequested)
+        if (token.IsCancellationRequested)
         {
             return null;
         }
@@ -1217,7 +1193,7 @@ public static class Launch
         ColorMCCore.GameLog(obj, LanguageHelper.Get("Core.Launch.Info3"));
         ColorMCCore.GameLog(obj, path);
 
-        if (s_cancel.IsCancellationRequested)
+        if (token.IsCancellationRequested)
         {
             return null;
         }
@@ -1269,7 +1245,7 @@ public static class Launch
             }
         }
 
-        if (s_cancel.IsCancellationRequested)
+        if (token.IsCancellationRequested)
         {
             return null;
         }
@@ -1314,7 +1290,7 @@ public static class Launch
                         res1.BeginOutputReadLine();
                         res1.BeginErrorReadLine();
 
-                        await res1.WaitForExitAsync(s_cancel);
+                        await res1.WaitForExitAsync(token);
                         stopwatch.Stop();
                         string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                             obj.Name, stopwatch.Elapsed.ToString());
@@ -1344,7 +1320,7 @@ public static class Launch
             }
         }
 
-        if (s_cancel.IsCancellationRequested)
+        if (token.IsCancellationRequested)
         {
             return null;
         }
@@ -1393,6 +1369,11 @@ public static class Launch
             }
         }
 
+        if (token.IsCancellationRequested)
+        {
+            return null;
+        }
+
         //启动进程
         Process? process;
 
@@ -1428,8 +1409,19 @@ public static class Launch
         process.StartInfo.RedirectStandardOutput = true;
         process.StartInfo.RedirectStandardError = true;
 
-        process.OutputDataReceived += Process_OutputDataReceived;
-        process.ErrorDataReceived += Process_ErrorDataReceived;
+        process.OutputDataReceived += (a, b) =>
+        {
+            ColorMCCore.GameLog(obj, b.Data);
+        };
+        process.ErrorDataReceived += (a, b) =>
+        {
+            ColorMCCore.GameLog(obj, b.Data);
+        };
+        process.Exited += (a, b) =>
+        {
+            ColorMCCore.OnGameExit(obj, login, process.ExitCode);
+            process.Dispose();
+        };
         process.Start();
         process.BeginOutputReadLine();
         process.BeginErrorReadLine();
@@ -1439,6 +1431,9 @@ public static class Launch
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.GameLog(obj, temp);
         Logs.Info(temp);
+
+        var handel = new DesktopGameHandel(process, obj.UUID);
+        ColorMCCore.AddGame(obj.UUID, handel);
 
         //启动后执行
         if ((obj.JvmArg?.LaunchPost == true || ConfigUtils.Config.DefaultJvmArg.LaunchPost))
@@ -1474,88 +1469,6 @@ public static class Launch
             }
         }
 
-        return process;
+        return handel;
     }
-
-    //public delegate int DLaunch(int argc,
-    //    string[] argv, /* main argc, argc */
-    //    int jargc, string[] jargv,          /* java args */
-    //    int appclassc, string[] appclassv,  /* app classpath */
-    //    string fullversion,                 /* full version defined */
-    //    string dotversion,                  /* dot version defined */
-    //    string pname,                       /* program name */
-    //    string lname,                       /* launcher name */
-    //    bool javaargs,                      /* JAVA_ARGS */
-    //    bool cpwildcard,                    /* classpath wildcard*/
-    //    bool javaw,                         /* windows-only javaw */
-    //    int ergo                            /* ergonomics class policy */
-    //);
-
-    //private static int s_argLength;
-    //private static string[] s_args;
-
-    ///// <summary>
-    ///// native启动
-    ///// </summary>
-    ///// <param name="info">Java信息</param>
-    ///// <param name="args">启动参数</param>
-    //public static int NativeLaunch(JavaInfo info, List<string> args)
-    //{
-    //    string path;
-    //    if (SystemInfo.Os == OsType.Android)
-    //    {
-    //        path = info.Path;
-    //    }
-    //    else
-    //    {
-    //        var info1 = new FileInfo(info.Path);
-    //        path = info1.Directory?.Parent?.FullName!;
-    //    }
-
-    //    var local = SystemInfo.Os switch
-    //    {
-    //        OsType.Windows => PathHelper.GetFile(path, "jli.dll"),
-    //        OsType.Linux => PathHelper.GetFile(path, "libjli.so"),
-    //        OsType.MacOS => PathHelper.GetFile(path, "libjli.dylib"),
-    //        OsType.Android => PathHelper.GetFile(path, "libjli.so"),
-    //        _ => throw new NotImplementedException(),
-    //    };
-    //    if (File.Exists(local))
-    //    {
-    //        local = Path.GetFullPath(local);
-    //    }
-
-    //    //加载运行库
-    //    var temp = NativeLoader.Loader.LoadLibrary(local);
-    //    var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
-    //    var inv = Marshal.GetDelegateForFunctionPointer<DLaunch>(temp1);
-
-    //    var args1 = new string[args.Count + 1];
-    //    args1[0] = "java";
-
-    //    for (int i = 1; i < args1.Length; i++)
-    //    {
-    //        args1[i] = args[i - 1];
-    //    }
-
-    //    s_argLength = args1.Length;
-    //    s_args = args1;
-
-    //    //启动游戏
-    //    try
-    //    {
-    //        var res = inv(s_argLength, s_args, 0, null!, 0, null!,
-    //            info.Version, "1.8", "java", "java", false, true, false, 0);
-
-    //        var res1 = NativeLoader.Loader.CloseLibrary(temp);
-
-    //        return res;
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        ColorMCCore.OnError?.Invoke("Error", e, false);
-    //    }
-
-    //    return -1;
-    //}
 }

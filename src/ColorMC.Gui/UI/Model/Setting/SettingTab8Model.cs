@@ -1,7 +1,6 @@
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;

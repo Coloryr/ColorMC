@@ -3,7 +3,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace ColorMC.Core.Net.Apis;

@@ -1,11 +1,15 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using DotNetty.Buffers;
+using DotNetty.Transport.Channels;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 
 namespace ColorMC.Core;
@@ -69,10 +73,6 @@ public static class ColorMCCore
     /// </summary>
     public static event Action<string?, Exception?, bool>? OnError;
     /// <summary>
-    /// 游戏进程日志回调
-    /// </summary>
-    public static event Action<Process?, string?>? OnProcessLog;
-    /// <summary>
     /// 游戏日志回调
     /// </summary>
     public static event Action<GameSettingObj, string?>? OnGameLog;
@@ -80,6 +80,16 @@ public static class ColorMCCore
     /// 语言重载
     /// </summary>
     public static event Action<LanguageType>? OnLanguageReload;
+
+    /// <summary>
+    /// 收到游戏数据包
+    /// </summary>
+    public static Action<IChannel, IByteBuffer>? NettyPack;
+
+    /// <summary>
+    /// 游戏退出事件
+    /// </summary>
+    public static event Action<GameSettingObj, LoginObj, int> GameExit;
 
     /// <summary>
     /// 手机端启动
@@ -119,6 +129,9 @@ public static class ColorMCCore
     /// 停止事件
     /// </summary>
     internal static event Action? Stop;
+
+    internal static ConcurrentDictionary<string, IGameHandel> Games = [];
+
 
     /// <summary>
     /// 初始化阶段1
@@ -174,13 +187,30 @@ public static class ColorMCCore
         OnGameLog?.Invoke(obj, text);
     }
 
-    public static void GameLog(Process? process, string? text)
-    {
-        OnProcessLog?.Invoke(process, text);
-    }
-
     public static void LanguageReload(LanguageType type)
     {
         OnLanguageReload?.Invoke(type);
+    }
+
+    public static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
+    {
+        Games.TryRemove(obj.UUID, out _);
+        GameExit?.Invoke(obj, obj1, code);
+    }
+
+    public static void KillGame(string uuid)
+    {
+        if (Games.TryGetValue(uuid, out var handel))
+        {
+            handel.Kill();
+        }
+    }
+
+    internal static void AddGame(string uuid, IGameHandel handel)
+    {
+        if (!Games.TryAdd(uuid, handel))
+        {
+            Games[uuid] = handel;
+        }
     }
 }

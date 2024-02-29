@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Thread = System.Threading.Thread;
 
-namespace ColorMC.Gui.Joystick;
+namespace ColorMC.Gui.Utils;
 
 public static class InputControl
 {

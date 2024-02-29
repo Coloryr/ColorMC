@@ -458,7 +458,7 @@ public static class GameBinding
     }
 
     public static async Task<(bool, string?)> Launch(BaseModel model, GameSettingObj? obj,
-        WorldObj? world = null, bool wait = false)
+        WorldObj? world = null, bool hide = false)
     {
         if (obj == null)
         {
@@ -476,7 +476,7 @@ public static class GameBinding
             return (false, user.Item2);
         }
 
-        var res1 = await BaseBinding.Launch(model, obj, user.Item1, world, wait);
+        var res1 = await BaseBinding.Launch(model, obj, user.Item1, world, hide);
         if (res1.Item1)
         {
             ConfigBinding.SetLastLaunch(obj.UUID);
