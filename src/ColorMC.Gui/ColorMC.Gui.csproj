@@ -325,7 +325,4 @@
       <DependentUpon>AddUserControl.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UI\Controls\GameWindow\" />
-  </ItemGroup>
 </Project>

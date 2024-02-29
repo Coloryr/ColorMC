@@ -31,7 +31,7 @@ public class GameJoystick
     private IntPtr _gameController;
     private int _joystickID, _controlIndex;
     private string? _configUUID;
-    private bool _isMouseMode = true, _isExit;
+    private bool _isExit;
 
     public bool MouseMode { get; set; } = true;
 
@@ -39,7 +39,7 @@ public class GameJoystick
     {
         if (NowGameJoystick.TryGetValue(uuid, out var value))
         {
-            value.MouseMode = temp;
+            value.MouseMode = !temp;
         }
     }
 
@@ -82,8 +82,6 @@ public class GameJoystick
         {
             while (!_isExit)
             {
-                _isMouseMode = MouseMode;
-
                 if (_cursorNowX != 0 || _cursorNowY != 0)
                 {
                     _implementation.SendMouse(_cursorNowX, _cursorNowY, false);
@@ -116,13 +114,13 @@ public class GameJoystick
             if (state != down)
             {
                 _lastKeyState[obj] = down;
-                _implementation.SendKey(obj, down, _isMouseMode);
+                _implementation.SendKey(obj, down, MouseMode);
             }
         }
         else
         {
             _lastKeyState.Add(obj, down);
-            _implementation.SendKey(obj, down, _isMouseMode);
+            _implementation.SendKey(obj, down, MouseMode);
         }
     }
 
@@ -144,9 +142,9 @@ public class GameJoystick
 
             var axis = (GameControllerAxis)axisEvent.Axis;
 
-            var axisFixValue = (float)axisValue / DownRate * (_isMouseMode ? config.CursorRate : config.RotateRate);
-            var deathSize = _isMouseMode ? config.CursorDeath : config.RotateDeath;
-            var choiseAxis = _isMouseMode ? config.CursorAxis : config.RotateAxis;
+            var axisFixValue = (float)axisValue / DownRate * (MouseMode ? config.CursorRate : config.RotateRate);
+            var deathSize = MouseMode ? config.CursorDeath : config.RotateDeath;
+            var choiseAxis = MouseMode ? config.CursorAxis : config.RotateAxis;
             //左摇杆
             if (choiseAxis == 0)
             {
@@ -201,7 +199,7 @@ public class GameJoystick
             }
 
             bool skip = false;
-            if (_isMouseMode)
+            if (MouseMode)
             {
                 if (choiseAxis == 0 && axis is GameControllerAxis.Leftx
                         or GameControllerAxis.Lefty)
