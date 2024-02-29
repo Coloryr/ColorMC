@@ -1,11 +1,6 @@
-using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media.Imaging;
 using Avalonia.Win32.Input;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
-using SkiaSharp;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -20,9 +15,9 @@ public class Win32Native : INative
 
     private IntPtr _winEventId;
 
-    public void AddHook(Process process)
+    public void AddHook(IntPtr handel)
     {
-        target = process.MainWindowHandle;
+        target = handel;
     }
 
     public IntPtr GetHandel()

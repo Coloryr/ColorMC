@@ -318,8 +318,14 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UI\Controls\Main\JoystickSettingControl.axaml.cs">
+      <DependentUpon>JoystickSettingControl.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\User\AddUserControl.axaml.cs">
       <DependentUpon>AddUserControl.axaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\Controls\GameWindow\" />
   </ItemGroup>
 </Project>

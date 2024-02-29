@@ -35,7 +35,6 @@ internal class Program
         ColorMCCore.Init(AppContext.BaseDirectory);
         ColorMCCore.Init1(null);
 
-        ColorMCCore.OnProcessLog += Log;
         ColorMCCore.OnGameLog += Log;
 
         TestItem.Item35();

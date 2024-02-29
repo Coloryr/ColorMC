@@ -1,7 +1,6 @@
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;

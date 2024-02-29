@@ -15,11 +15,11 @@ namespace ColorMC.Test;
 
 public static class TestItem
 {
-    private static Process? Start(GameSettingObj obj, LoginObj obj1)
+    private static DesktopGameHandel? Start(GameSettingObj obj, LoginObj obj1)
     {
         return obj.StartGameAsync(obj1, null, Program.Download,
                 (_) => Task.FromResult(true), (_) => { }, (_) => Task.FromResult(true), () => { },
-                (_) => Task.FromResult(true), (_, _) => { }, CancellationToken.None).Result;
+                (_) => Task.FromResult(true), (_, _) => { }, 0, CancellationToken.None).Result as DesktopGameHandel;
     }
 
     public static void Item1()
@@ -141,7 +141,7 @@ public static class TestItem
                 LoaderVersion = "14.23.5.2860"
             };
             var process = Start(game, login.Obj!);
-            process?.WaitForExit();
+            process?.Process.WaitForExit();
         }
     }
 
@@ -156,7 +156,7 @@ public static class TestItem
         };
 
         var process = Start(game[0], login);
-        process?.WaitForExit();
+        process?.Process.WaitForExit();
     }
 
     public static void Item10()
@@ -180,7 +180,7 @@ public static class TestItem
 
         BaseClient.Source = SourceLocal.Offical;
 
-        Process? process;
+        DesktopGameHandel? process;
         //process = game.StartGame(login).Result;
         //process?.WaitForExit();
 
@@ -307,13 +307,13 @@ public static class TestItem
         game.Loader = Loaders.Forge;
         game.LoaderVersion = "49.0.11";
         process = Start(game, login);
-        process?.WaitForExit();
+        process?.Process.WaitForExit();
 
         game.Version = "1.20.4";
         game.Loader = Loaders.NeoForge;
         game.LoaderVersion = "20.4.50-beta";
         process = Start(game, login);
-        process?.WaitForExit();
+        process?.Process.WaitForExit();
 
     }
 
@@ -335,7 +335,7 @@ public static class TestItem
                 LoaderVersion = "40.1.85"
             };
             var process = Start(game, login.Obj);
-            process?.WaitForExit();
+            process?.Process.WaitForExit();
         }
     }
 

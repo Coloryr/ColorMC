@@ -1,5 +1,4 @@
-﻿using ColorMC.Gui.Joystick;
-using ColorMC.Gui.Utils;
+﻿using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -8,9 +7,9 @@ using System.Collections.ObjectModel;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 
-namespace ColorMC.Gui.UI.Model;
+namespace ColorMC.Gui.UI.Model.Main;
 
-public partial class ControlSelectModel : ObservableObject
+public partial class JoystickSettingModel : ObservableObject
 {
     public ObservableCollection<string> Controls { get; init; } = [];
 
@@ -23,12 +22,10 @@ public partial class ControlSelectModel : ObservableObject
 
     private readonly List<string> UUIDs = [];
 
-    private Action<ControlSelectModel> _confirm;
+    public Action TopConfirm, TopCancel;
 
-    public ControlSelectModel(int now, string? config, Action<ControlSelectModel> confirm)
+    public JoystickSettingModel(int now, string? config)
     {
-        _confirm = confirm;
-
         Load();
         Load1();
 
@@ -48,7 +45,13 @@ public partial class ControlSelectModel : ObservableObject
     [RelayCommand]
     public void Confirm()
     {
-        _confirm(this);
+        TopConfirm();
+    }
+
+    [RelayCommand]
+    public void Cancel()
+    {
+        TopCancel();
     }
 
     public string GetUUID()

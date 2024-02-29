@@ -1,13 +1,14 @@
-﻿using ColorMC.Core.Asm;
+﻿using ColorMC.Core;
+using ColorMC.Core.Asm;
 using ColorMC.Core.Game;
 using ColorMC.Gui.UI.Model.Items;
 using DotNetty.Buffers;
+using DotNetty.Transport.Channels;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading;
 
-namespace ColorMC.Gui.Joystick;
+namespace ColorMC.Gui.Utils;
 
 public static class GameSocket
 {
@@ -17,7 +18,7 @@ public static class GameSocket
     private static bool s_isRun;
     public static async void Init()
     {
-        NettyServer.GetPack = ReadPack;
+        ColorMCCore.NettyPack = ReadPack;
         Port = await NettyServer.RunServerAsync();
         App.OnClose += App_OnClose;
         s_isRun = true;
@@ -50,7 +51,7 @@ public static class GameSocket
         return Encoding.UTF8.GetString(datas);
     }
 
-    private static void ReadPack(IByteBuffer buffer) 
+    private static void ReadPack(IChannel channel, IByteBuffer buffer)
     {
         try
         {
@@ -60,10 +61,7 @@ public static class GameSocket
             if (type == 1)
             {
                 var value = buffer.ReadBoolean();
-                if (App.GameWindows.TryGetValue(uuid, out var window))
-                {
-                    window.MouseMode = !value;
-                }
+                GameJoystick.SetMouse(uuid, value);
             }
         }
         catch

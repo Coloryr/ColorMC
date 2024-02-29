@@ -85,7 +85,7 @@ public partial class CustomControlPanelModel : TopModel
         item.IsLaunch = false;
         item.IsLoad = true;
         Model.Notify(App.Lang(string.Format(App.Lang("MainWindow.Info28"), game.Name)));
-        var res = await GameBinding.Launch(Model, game, wait: GuiConfigUtils.Config.CloseBeforeLaunch);
+        var res = await GameBinding.Launch(Model, game, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
         Model.Title1 = null;
         item.IsLoad = false;
         Model.ProgressClose();

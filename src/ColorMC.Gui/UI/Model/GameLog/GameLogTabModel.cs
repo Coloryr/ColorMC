@@ -135,7 +135,7 @@ public partial class GameLogModel : GameModel
 
         IsGameRun = true;
 
-        var res = await GameBinding.Launch(Model, Obj, wait: GuiConfigUtils.Config.CloseBeforeLaunch);
+        var res = await GameBinding.Launch(Model, Obj, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
         if (!res.Item1)
         {
             Model.Show(res.Item2!);

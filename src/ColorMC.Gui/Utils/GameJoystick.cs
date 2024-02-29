@@ -1,89 +1,134 @@
-using Avalonia.Controls;
+﻿using ColorMC.Core;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.Utils;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils.Hook;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
+
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
 
-namespace ColorMC.Gui.UI.Controls.GameWindow;
+namespace ColorMC.Gui.Utils;
 
-public partial class GameWindowControl : UserControl, IUserControl
+public class GameJoystick
 {
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
+    private const int DownRate = 800;
 
-    public string Title { get; set; }
-
-    public string UseName { get; set; }
-
-    public bool MouseMode { get; set; } = true;
+    public static readonly Dictionary<string, GameJoystick> NowGameJoystick = [];
 
     private readonly INative _implementation;
-    private readonly GameSettingObj _obj;
-    private readonly Process _process;
-
     private readonly short[] _lastAxisMax = new short[10];
     private readonly Dictionary<InputKeyObj, bool> _lastKeyState = [];
+    private readonly GameSettingObj _obj;
 
     private double _cursorNowX, _cursorNowY;
     private IntPtr _gameController;
     private int _joystickID, _controlIndex;
     private string? _configUUID;
-    private bool _isMouseMode = true, _isExit, _isEdit;
+    private bool _isMouseMode = true, _isExit;
 
-    private const int DownRate = 800;
+    public bool MouseMode { get; set; } = true;
 
-    public GameWindowControl()
+    public static void SetMouse(string uuid, bool temp)
     {
-        InitializeComponent();
+        if (NowGameJoystick.TryGetValue(uuid, out var value))
+        {
+            value.MouseMode = temp;
+        }
     }
 
-    public GameWindowControl(GameSettingObj obj, Process process) : this()
+    public static void Start(GameSettingObj obj, IGameHandel handel)
     {
-        _obj = obj;
-        _process = process;
+        if (NowGameJoystick.Remove(obj.UUID, out var value))
+        {
+            value.Stop();
+        }
+        NowGameJoystick.Add(obj.UUID, new(obj, handel));
+    }
 
-        process.Exited += Process_Exited;
+    private GameJoystick(GameSettingObj obj, IGameHandel handel)
+    {
+        ColorMCCore.GameExit += GameExit;
 
         if (SystemInfo.Os == OsType.Windows)
         {
             _implementation = new Win32Native();
         }
 
-        _implementation.AddHook(process);
+        _implementation.AddHook(handel.Handel);
 
+        _obj = obj;
         _controlIndex = 0;
         _configUUID = GuiConfigUtils.Config.Input.NowConfig;
 
-        Title = string.Format(App.Lang("GameWindow.Title"), obj.Name);
+        unsafe
+        {
+            _gameController = new(InputControl.Open(_controlIndex));
+        }
+
+        if (_gameController != IntPtr.Zero)
+        {
+            InputControl.OnEvent += Event;
+            _joystickID = InputControl.GetJoystickID(_gameController);
+        }
+
+        new Thread(() =>
+        {
+            while (!_isExit)
+            {
+                _isMouseMode = MouseMode;
+
+                if (_cursorNowX != 0 || _cursorNowY != 0)
+                {
+                    _implementation.SendMouse(_cursorNowX, _cursorNowY, false);
+                }
+
+                Thread.Sleep(10);
+            }
+        }).Start();
     }
 
-    public void Closed()
+    private void GameExit(GameSettingObj obj, LoginObj arg2, int arg3)
     {
-        App.GameWindows.Remove(_obj.UUID);
+        if (obj.UUID == _obj.UUID)
+        {
+            Stop();
+        }
+    }
 
+    public void Stop()
+    {
+        _isExit = true;
+        ColorMCCore.GameExit -= GameExit;
         _implementation.Stop();
     }
 
-    private void Process_Exited(object? sender, EventArgs e)
+    private void CheckKeyAndSend(InputKeyObj obj, bool down)
     {
-        _isExit = true;
-        Window?.Close();
+        if (_lastKeyState.TryGetValue(obj, out var state))
+        {
+            if (state != down)
+            {
+                _lastKeyState[obj] = down;
+                _implementation.SendKey(obj, down, _isMouseMode);
+            }
+        }
+        else
+        {
+            _lastKeyState.Add(obj, down);
+            _implementation.SendKey(obj, down, _isMouseMode);
+        }
     }
 
     private void Event(Event sdlEvent)
     {
-        if (_isEdit || !GuiConfigUtils.Config.Input.Enable
+        if (!GuiConfigUtils.Config.Input.Enable
             || sdlEvent.Cbutton.Which != _joystickID
             || string.IsNullOrWhiteSpace(_configUUID)
             || !InputConfigUtils.Configs.TryGetValue(_configUUID, out var config))
@@ -252,61 +297,12 @@ public partial class GameWindowControl : UserControl, IUserControl
         }
     }
 
-    public void Opened()
+    public void ChangeConfig(JoystickSettingModel model)
     {
-        unsafe
+        if (_isExit)
         {
-            _gameController = new(InputControl.Open(_controlIndex));
+            return;
         }
-
-        if (_gameController != IntPtr.Zero)
-        {
-            InputControl.OnEvent += Event;
-            _joystickID = InputControl.GetJoystickID(_gameController);
-        }
-
-        _implementation.GetWindowSize(out var width, out var height);
-
-        new Thread(() =>
-        {
-            while (!_isExit)
-            {
-                _isMouseMode = MouseMode;
-
-                if (_cursorNowX != 0 || _cursorNowY != 0)
-                {
-                    _implementation.SendMouse(_cursorNowX, _cursorNowY, false);
-                }
-
-                Thread.Sleep(10);
-            }
-        }).Start();
-    }
-
-    private void CheckKeyAndSend(InputKeyObj obj, bool down)
-    {
-        if (_lastKeyState.TryGetValue(obj, out var state))
-        {
-            if (state != down)
-            {
-                _lastKeyState[obj] = down;
-                _implementation.SendKey(obj, down, _isMouseMode);
-            }
-        }
-        else
-        {
-            _lastKeyState.Add(obj, down);
-            _implementation.SendKey(obj, down, _isMouseMode);
-        }
-    }
-
-    public void SetBaseModel(BaseModel model)
-    {
-        DataContext = new ControlSelectModel(_controlIndex, _configUUID, ChangeConfig);
-    }
-
-    private void ChangeConfig(ControlSelectModel model)
-    {
         if (_gameController != IntPtr.Zero)
         {
             InputControl.Close(_gameController);
@@ -328,10 +324,8 @@ public partial class GameWindowControl : UserControl, IUserControl
         }
     }
 
-    public Task<bool> Closing()
+    public JoystickSettingModel MakeConfig()
     {
-        Window.Hide();
-
-        return Task.FromResult(true);
+        return new JoystickSettingModel(_controlIndex, _configUUID);
     }
 }
