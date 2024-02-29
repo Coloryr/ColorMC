@@ -42,7 +42,7 @@ public static class Program
     /// <summary>
     /// 加载路径
     /// </summary>
-    public const string TopVersion = "A24.1";
+    public const string TopVersion = "A25";
 
     public static readonly string[] BaseSha1 =
     [
