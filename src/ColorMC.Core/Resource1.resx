@@ -121,8 +121,8 @@
   <data name="ColorMCASM_1_0_all" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\ColorMCASM-1.0-all.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ForgeWrapper_colormc_1_5_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\ForgeWrapper-colormc-1.5.10.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="ForgeWrapper_colormc_1_6_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ForgeWrapper-colormc-1.6.0.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="OptifineWrapper_1_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\OptifineWrapper-1.1.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

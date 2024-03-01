@@ -7,7 +7,7 @@ namespace ColorMC.Gui.Player;
 /// <summary>
 /// OpenAl输出
 /// </summary>
-public class OpenalPlayer : IPlayer
+public class OpenALPlayer : IPlayer
 {
     private readonly uint _alSource;
     private readonly IntPtr _device;
@@ -25,7 +25,7 @@ public class OpenalPlayer : IPlayer
         }
     }
 
-    public OpenalPlayer()
+    public OpenALPlayer()
     {
         alc = ALContext.GetApi();
         al = AL.GetApi();

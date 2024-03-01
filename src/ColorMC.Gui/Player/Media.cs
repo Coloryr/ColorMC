@@ -57,7 +57,7 @@ public static class Media
         }
         else
         {
-            s_player = new OpenalPlayer();
+            s_player = new OpenALPlayer();
         }
         App.OnClose += Close;
     }
