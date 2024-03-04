@@ -45,7 +45,7 @@ public static class LanguageHelper
 
         s_nowType = type;
         Load(type);
-        ColorMCCore.LanguageReload(type);
+        ColorMCCore.OnLanguageReload(type);
     }
 
     /// <summary>
@@ -62,13 +62,13 @@ public static class LanguageHelper
     {
         return type switch
         {
-            AuthType.Offline => Get("AuthType.Offline"),
-            AuthType.OAuth => Get("AuthType.OAuth"),
-            AuthType.Nide8 => Get("AuthType.Nide8"),
-            AuthType.AuthlibInjector => Get("AuthType.AuthlibInjector"),
-            AuthType.LittleSkin => Get("AuthType.LittleSkin"),
-            AuthType.SelfLittleSkin => Get("AuthType.SelfLittleSkin"),
-            _ => Get("AuthType.Other")
+            AuthType.Offline => Get("Type.AuthType.Offline"),
+            AuthType.OAuth => Get("Type.AuthType.OAuth"),
+            AuthType.Nide8 => Get("Type.AuthType.Nide8"),
+            AuthType.AuthlibInjector => Get("Type.AuthType.AuthlibInjector"),
+            AuthType.LittleSkin => Get("Type.AuthType.LittleSkin"),
+            AuthType.SelfLittleSkin => Get("Type.AuthType.SelfLittleSkin"),
+            _ => Get("Type.AuthType.Other")
         };
     }
 
@@ -76,12 +76,12 @@ public static class LanguageHelper
     {
         return state switch
         {
-            AuthState.OAuth => Get("AuthType.Other"),
-            AuthState.XBox => Get("AuthType.XBox"),
-            AuthState.XSTS => Get("AuthType.XSTS"),
-            AuthState.Token => Get("AuthType.Token"),
-            AuthState.Profile => Get("AuthType.Profile"),
-            _ => Get("AuthType.Other")
+            AuthState.OAuth => Get("Type.AuthType.Other"),
+            AuthState.XBox => Get("Type.AuthType.XBox"),
+            AuthState.XSTS => Get("Type.AuthType.XSTS"),
+            AuthState.Token => Get("Type.AuthType.Token"),
+            AuthState.Profile => Get("Type.AuthType.Profile"),
+            _ => Get("Type.AuthType.Other")
         };
     }
 
@@ -89,12 +89,12 @@ public static class LanguageHelper
     {
         return state switch
         {
-            LoginState.Done => Get("LoginState.Done"),
-            LoginState.TimeOut => Get("LoginState.TimeOut"),
-            LoginState.JsonError => Get("LoginState.JsonError"),
-            LoginState.Error => Get("LoginState.Error"),
-            LoginState.Crash => Get("LoginState.Crash"),
-            _ => Get("LoginState.Other")
+            LoginState.Done => Get("Type.LoginState.Done"),
+            LoginState.TimeOut => Get("Type.LoginState.TimeOut"),
+            LoginState.JsonError => Get("Type.LoginState.JsonError"),
+            LoginState.Error => Get("Type.LoginState.Error"),
+            LoginState.Crash => Get("Type.LoginState.Crash"),
+            _ => Get("Type.LoginState.Other")
         };
     }
 
@@ -102,27 +102,27 @@ public static class LanguageHelper
     {
         return state switch
         {
-            LaunchState.Check => Get("LaunchState.Check"),
-            LaunchState.CheckVersion => Get("LaunchState.CheckVersion"),
-            LaunchState.CheckLib => Get("LaunchState.CheckLib"),
-            LaunchState.CheckAssets => Get("LaunchState.CheckAssets"),
-            LaunchState.CheckLoader => Get("LaunchState.CheckLoader"),
-            LaunchState.CheckLoginCore => Get("LaunchState.CheckLoginCore"),
-            LaunchState.LostVersion => Get("LaunchState.LostVersion"),
-            LaunchState.LostLib => Get("LaunchState.LostLib"),
-            LaunchState.LostLoader => Get("LaunchState.LostLoader"),
-            LaunchState.LostLoginCore => Get("LaunchState.LostLoginCore"),
-            LaunchState.Download => Get("LaunchState.Download"),
-            LaunchState.JvmPrepare => Get("LaunchState.JvmPrepare"),
-            LaunchState.VersionError => Get("LaunchState.VersionError"),
-            LaunchState.AssetsError => Get("LaunchState.AssetsError"),
-            LaunchState.LoaderError => Get("LaunchState.LoaderError"),
-            LaunchState.LostFile => Get("LaunchState.LostFile"),
-            LaunchState.DownloadFail => Get("LaunchState.DownloadFail"),
-            LaunchState.JavaError => Get("LaunchState.JvmError"),
-            LaunchState.LaunchPre => Get("LaunchState.LaunchPre"),
-            LaunchState.LaunchPost => Get("LaunchState.LaunchPost"),
-            _ => Get("LaunchState.Other")
+            LaunchState.Check => Get("Type.LaunchState.Check"),
+            LaunchState.CheckVersion => Get("Type.LaunchState.CheckVersion"),
+            LaunchState.CheckLib => Get("Type.LaunchState.CheckLib"),
+            LaunchState.CheckAssets => Get("Type.LaunchState.CheckAssets"),
+            LaunchState.CheckLoader => Get("Type.LaunchState.CheckLoader"),
+            LaunchState.CheckLoginCore => Get("Type.LaunchState.CheckLoginCore"),
+            LaunchState.LostVersion => Get("Type.LaunchState.LostVersion"),
+            LaunchState.LostLib => Get("Type.LaunchState.LostLib"),
+            LaunchState.LostLoader => Get("Type.LaunchState.LostLoader"),
+            LaunchState.LostLoginCore => Get("Type.LaunchState.LostLoginCore"),
+            LaunchState.Download => Get("Type.LaunchState.Download"),
+            LaunchState.JvmPrepare => Get("Type.LaunchState.JvmPrepare"),
+            LaunchState.VersionError => Get("Type.LaunchState.VersionError"),
+            LaunchState.AssetsError => Get("Type.LaunchState.AssetsError"),
+            LaunchState.LoaderError => Get("Type.LaunchState.LoaderError"),
+            LaunchState.LostFile => Get("Type.LaunchState.LostFile"),
+            LaunchState.DownloadFail => Get("Type.LaunchState.DownloadFail"),
+            LaunchState.JavaError => Get("Type.LaunchState.JvmError"),
+            LaunchState.LaunchPre => Get("Type.LaunchState.LaunchPre"),
+            LaunchState.LaunchPost => Get("Type.LaunchState.LaunchPost"),
+            _ => Get("Type.LaunchState.Other")
         };
     }
 
@@ -130,10 +130,10 @@ public static class LanguageHelper
     {
         return state switch
         {
-            GetDownloadState.Init => Get("DownloadState.Init"),
-            GetDownloadState.GetInfo => Get("DownloadState.GetInfo"),
-            GetDownloadState.End => Get("DownloadState.End"),
-            _ => Get("DownloadState.Other")
+            GetDownloadState.Init => Get("Type.DownloadState.Init"),
+            GetDownloadState.GetInfo => Get("Type.DownloadState.GetInfo"),
+            GetDownloadState.End => Get("Type.DownloadState.End"),
+            _ => Get("Type.DownloadState.Other")
         };
     }
 
@@ -141,15 +141,15 @@ public static class LanguageHelper
     {
         return state switch
         {
-            DownloadItemState.Wait => Get("DownloadItemState.Wait"),
-            DownloadItemState.GetInfo => Get("DownloadItemState.GetInfo"),
-            DownloadItemState.Download => Get("DownloadItemState.Download"),
-            DownloadItemState.Init => Get("DownloadItemState.Init"),
-            DownloadItemState.Pause => Get("DownloadItemState.Pause"),
-            DownloadItemState.Action => Get("DownloadItemState.Action"),
-            DownloadItemState.Done => Get("DownloadItemState.Done"),
-            DownloadItemState.Error => Get("DownloadItemState.Error"),
-            _ => Get("DownloadItemState.Other")
+            DownloadItemState.Wait => Get("Type.DownloadItemState.Wait"),
+            DownloadItemState.GetInfo => Get("Type.DownloadItemState.GetInfo"),
+            DownloadItemState.Download => Get("Type.DownloadItemState.Download"),
+            DownloadItemState.Init => Get("Type.DownloadItemState.Init"),
+            DownloadItemState.Pause => Get("Type.DownloadItemState.Pause"),
+            DownloadItemState.Action => Get("Type.DownloadItemState.Action"),
+            DownloadItemState.Done => Get("Type.DownloadItemState.Done"),
+            DownloadItemState.Error => Get("Type.DownloadItemState.Error"),
+            _ => Get("Type.DownloadItemState.Other")
         };
     }
 
@@ -157,15 +157,15 @@ public static class LanguageHelper
     {
         return state switch
         {
-            CurseForgeSortField.Featured => Get("CurseForgeSortField.Featured"),
-            CurseForgeSortField.Popularity => Get("CurseForgeSortField.Popularity"),
-            CurseForgeSortField.LastUpdated => Get("CurseForgeSortField.LastUpdated"),
-            CurseForgeSortField.Name => Get("CurseForgeSortField.Name"),
-            CurseForgeSortField.Author => Get("CurseForgeSortField.Author"),
-            CurseForgeSortField.TotalDownloads => Get("CurseForgeSortField.TotalDownloads"),
-            CurseForgeSortField.Category => Get("CurseForgeSortField.Category"),
-            CurseForgeSortField.GameVersion => Get("CurseForgeSortField.GameVersion"),
-            _ => Get("CurseForgeSortField.Other")
+            CurseForgeSortField.Featured => Get("Type.CurseForge.SortField.Featured"),
+            CurseForgeSortField.Popularity => Get("Type.CurseForge.SortField.Popularity"),
+            CurseForgeSortField.LastUpdated => Get("Type.CurseForge.SortField.LastUpdated"),
+            CurseForgeSortField.Name => Get("Type.CurseForge.SortField.Name"),
+            CurseForgeSortField.Author => Get("Type.CurseForge.SortField.Author"),
+            CurseForgeSortField.TotalDownloads => Get("Type.CurseForge.SortField.TotalDownloads"),
+            CurseForgeSortField.Category => Get("Type.CurseForge.SortField.Category"),
+            CurseForgeSortField.GameVersion => Get("Type.CurseForge.SortField.GameVersion"),
+            _ => Get("Type.CurseForge.SortField.Other")
         };
     }
 
@@ -173,10 +173,10 @@ public static class LanguageHelper
     {
         return type switch
         {
-            1 => Get("Release.Release"),
-            2 => Get("Release.Beta"),
-            3 => Get("Release.Alpha"),
-            _ => Get("Release.Other")
+            1 => Get("Type.Release.Release"),
+            2 => Get("Type.Release.Beta"),
+            3 => Get("Type.Release.Alpha"),
+            _ => Get("Type.Release.Other")
         };
     }
 
@@ -184,9 +184,9 @@ public static class LanguageHelper
     {
         return state switch
         {
-            SourceLocal.Offical => Get("SourceLocal.Offical"),
-            SourceLocal.BMCLAPI => Get("SourceLocal.BMCLAPI"),
-            _ => Get("SourceLocal.Other")
+            SourceLocal.Offical => Get("Type.SourceLocal.Offical"),
+            SourceLocal.BMCLAPI => Get("Type.SourceLocal.BMCLAPI"),
+            _ => Get("Type.SourceLocal.Other")
         };
     }
 
@@ -194,12 +194,12 @@ public static class LanguageHelper
     {
         return state switch
         {
-            GCType.G1GC => Get("GCType.G1GC"),
-            GCType.SerialGC => Get("GCType.SerialGC"),
-            GCType.ParallelGC => Get("GCType.ParallelGC"),
-            GCType.CMSGC => Get("GCType.CMSGC"),
-            GCType.User => Get("GCType.User"),
-            _ => Get("GCType.Other")
+            GCType.G1GC => Get("Type.GCType.G1GC"),
+            GCType.SerialGC => Get("Type.GCType.SerialGC"),
+            GCType.ParallelGC => Get("Type.GCType.ParallelGC"),
+            GCType.CMSGC => Get("Type.GCType.CMSGC"),
+            GCType.User => Get("Type.GCType.User"),
+            _ => Get("Type.GCType.Other")
         };
     }
 
@@ -207,11 +207,11 @@ public static class LanguageHelper
     {
         return arch switch
         {
-            ArchEnum.x86_64 => Get("ArchEnum.x64"),
-            ArchEnum.x86 => Get("ArchEnum.x32"),
-            ArchEnum.aarch64 => Get("ArchEnum.aarch64"),
-            ArchEnum.arm => Get("ArchEnum.armV7"),
-            _ => Get("ArchEnum.Other")
+            ArchEnum.x86_64 => Get("Type.ArchEnum.x64"),
+            ArchEnum.x86 => Get("Type.ArchEnum.x32"),
+            ArchEnum.aarch64 => Get("Type.ArchEnum.aarch64"),
+            ArchEnum.arm => Get("Type.ArchEnum.armV7"),
+            _ => Get("Type.ArchEnum.Other")
         };
     }
 
@@ -219,10 +219,10 @@ public static class LanguageHelper
     {
         return arch switch
         {
-            OsType.Windows => Get("OsType.Windows"),
-            OsType.Linux => Get("OsType.Linux"),
-            OsType.MacOS => Get("OsType.MacOS"),
-            _ => Get("OsType.Other")
+            OsType.Windows => Get("Type.OsType.Windows"),
+            OsType.Linux => Get("Type.OsType.Linux"),
+            OsType.MacOS => Get("Type.OsType.MacOS"),
+            _ => Get("Type.OsType.Other")
         };
     }
 
@@ -240,13 +240,13 @@ public static class LanguageHelper
     {
         return type switch
         {
-            Loaders.Normal => Get("Loaders.Normal"),
+            Loaders.Normal => Get("Type.Loaders.Normal"),
             Loaders.Forge => "Forge",
             Loaders.NeoForge => "NeoForge",
             Loaders.Fabric => "Fabric",
             Loaders.Quilt => "Quilt",
             Loaders.OptiFine => "OptiFine",
-            Loaders.Custom => Get("Loaders.Custom"),
+            Loaders.Custom => Get("Type.Loaders.Custom"),
             _ => "Unkown"
         };
     }
@@ -255,11 +255,11 @@ public static class LanguageHelper
     {
         return type switch
         {
-            0 => Get("GameType.Survival"),
-            1 => Get("GameType.Creative"),
-            2 => Get("GameType.Adventure"),
-            3 => Get("GameType.Spectator"),
-            _ => Get("GameType.Other")
+            0 => Get("Type.GameType.Survival"),
+            1 => Get("Type.GameType.Creative"),
+            2 => Get("Type.GameType.Adventure"),
+            3 => Get("Type.GameType.Spectator"),
+            _ => Get("Type.GameType.Other")
         };
     }
 
@@ -267,11 +267,11 @@ public static class LanguageHelper
     {
         return type switch
         {
-            0 => Get("Difficulty.Peaceful"),
-            1 => Get("Difficulty.Easy"),
-            2 => Get("Difficulty.Normal"),
-            3 => Get("Difficulty.Hard"),
-            _ => Get("Difficulty.Other")
+            0 => Get("Type.Difficulty.Peaceful"),
+            1 => Get("Type.Difficulty.Easy"),
+            2 => Get("Type.Difficulty.Normal"),
+            3 => Get("Type.Difficulty.Hard"),
+            _ => Get("Type.Difficulty.Other")
         };
     }
 
@@ -279,10 +279,10 @@ public static class LanguageHelper
     {
         return type switch
         {
-            SourceType.CurseForge => Get("SourceType.CurseForge"),
-            SourceType.Modrinth => Get("SourceType.Modrinth"),
-            SourceType.McMod => Get("SourceType.McMod"),
-            _ => Get("SourceType.Other")
+            SourceType.CurseForge => Get("Type.SourceType.CurseForge"),
+            SourceType.Modrinth => Get("Type.SourceType.Modrinth"),
+            SourceType.McMod => Get("Type.SourceType.McMod"),
+            _ => Get("Type.SourceType.Other")
         };
     }
 
@@ -290,13 +290,13 @@ public static class LanguageHelper
     {
         return type switch
         {
-            PackType.ColorMC => Get("PackType.ColorMC"),
-            PackType.CurseForge => Get("PackType.CurseForge"),
-            PackType.Modrinth => Get("PackType.Modrinth"),
-            PackType.MMC => Get("PackType.MMC"),
-            PackType.HMCL => Get("PackType.HMCL"),
-            PackType.ZipPack => Get("PackType.ZipPack"),
-            _ => Get("PackType.Other")
+            PackType.ColorMC => Get("Type.PackType.ColorMC"),
+            PackType.CurseForge => Get("Type.PackType.CurseForge"),
+            PackType.Modrinth => Get("Type.PackType.Modrinth"),
+            PackType.MMC => Get("Type.PackType.MMC"),
+            PackType.HMCL => Get("Type.PackType.HMCL"),
+            PackType.ZipPack => Get("Type.PackType.ZipPack"),
+            _ => Get("Type.PackType.Other")
         };
     }
 
@@ -304,14 +304,14 @@ public static class LanguageHelper
     {
         return type switch
         {
-            FileType.ModPack => Get("FileType.ModPack"),
-            FileType.Mod => Get("FileType.Mod"),
-            FileType.World => Get("FileType.World"),
-            FileType.Shaderpack => Get("FileType.Shaderpack"),
-            FileType.Resourcepack => Get("FileType.Resourcepack"),
-            FileType.DataPacks => Get("FileType.DataPacks"),
-            FileType.Optifne => Get("FileType.Optifne"),
-            _ => Get("FileType.Other")
+            FileType.ModPack => Get("Type.FileType.ModPack"),
+            FileType.Mod => Get("Type.FileType.Mod"),
+            FileType.World => Get("Type.FileType.World"),
+            FileType.Shaderpack => Get("Type.FileType.Shaderpack"),
+            FileType.Resourcepack => Get("Type.FileType.Resourcepack"),
+            FileType.DataPacks => Get("Type.FileType.DataPacks"),
+            FileType.Optifne => Get("Type.FileType.Optifne"),
+            _ => Get("Type.FileType.Other")
         };
     }
 }

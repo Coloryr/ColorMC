@@ -67,7 +67,7 @@ public partial class SettingModel
     {
         if (string.IsNullOrWhiteSpace(JavaName) || string.IsNullOrWhiteSpace(JavaLocal))
         {
-            Model.Show(App.Lang("Gui.Error8"));
+            Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
             return;
         }
 

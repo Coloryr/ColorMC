@@ -42,7 +42,7 @@ public partial class GameEditModel
 
         if (res == false)
         {
-            Model.Show(App.Lang("Gui.Error12"));
+            Model.Show(App.Lang("GameEditWindow.Tab11.Error1"));
             return;
         }
 

@@ -138,7 +138,7 @@ public partial class AddGameModel
     [RelayCommand]
     public async Task SelectLocal()
     {
-        var res = await PathBinding.SelectPath(FileType.Game);
+        var res = await PathBinding.SelectPath(PathType.GamePath);
         if (string.IsNullOrWhiteSpace(res))
         {
             return;

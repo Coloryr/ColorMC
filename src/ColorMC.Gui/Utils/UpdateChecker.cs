@@ -75,7 +75,7 @@ public static class UpdateChecker
         catch (Exception e)
         {
             App.UpdateCheckFail();
-            Logs.Error(App.Lang("Gui.Error21"), e);
+            Logs.Error(App.Lang("SettingWindow.Tab3.Error2"), e);
         }
 
         return (false, false, null);
@@ -149,7 +149,7 @@ public static class UpdateChecker
             var obj = await ColorMCAPI.GetUpdateSha1();
             if (obj == null || obj.TryGetValue("res", out _))
             {
-                App.ShowError(App.Lang("Gui.Error21"), "Json Error");
+                App.ShowError(App.Lang("SettingWindow.Tab3.Error2"), "Json Error");
                 return (false, null);
             }
 
@@ -176,7 +176,7 @@ public static class UpdateChecker
         }
         catch (Exception e)
         {
-            App.ShowError(App.Lang("Gui.Error21"), e);
+            App.ShowError(App.Lang("SettingWindow.Tab3.Error2"), e);
         }
 
         return (null, null);

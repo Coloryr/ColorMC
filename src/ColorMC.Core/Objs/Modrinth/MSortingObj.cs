@@ -7,7 +7,7 @@ public record MSortingObj
     public string Data { get; init; }
     public string GetName()
     {
-        return LanguageHelper.Get($"MSortingType.{Data}");
+        return LanguageHelper.Get($"Type.Modrinth.SortingType.{Data}");
     }
 
     public static readonly MSortingObj Relevance = new() { Data = "relevance" };

@@ -11,14 +11,14 @@
     mc:Ignorable="d">
     <StackPanel>
         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameWindow.Text2}" />
+            <TextBlock Margin="0,0,5,0" Text="{setting:Localize JoystickSettingControl.Text2}" />
             <ComboBox
                 Width="200"
                 ItemsSource="{Binding Controls}"
                 SelectedIndex="{Binding ControlIndex}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameWindow.Text3}" />
+            <TextBlock Margin="0,0,5,0" Text="{setting:Localize JoystickSettingControl.Text3}" />
             <ComboBox
                 Width="200"
                 ItemsSource="{Binding Configs}"

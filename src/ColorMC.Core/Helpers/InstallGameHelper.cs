@@ -301,7 +301,7 @@ public static class InstallGameHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.Error(LanguageHelper.Get("Core.Pack.Error2"), e, false);
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Pack.Error2"), e, false);
         }
         finally
         {

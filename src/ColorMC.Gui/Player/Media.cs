@@ -132,6 +132,8 @@ public static class Media
 
         s_cancel = new();
 
+        Decoding = true;
+
         var file = File.OpenRead(filePath);
         var temp = new byte[4];
         file.Read(temp);
@@ -223,6 +225,8 @@ public static class Media
                 index += size;
             }
         }
+
+        Decoding = false;
 
         return (true, null);
     }

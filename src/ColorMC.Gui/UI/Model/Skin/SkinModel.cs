@@ -284,7 +284,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
         var res = await PathBinding.SaveFile(FileType.Skin, null);
         if (res == true)
         {
-            Model.Notify(App.Lang("Gui.Info10"));
+            Model.Notify(App.Lang("Text.Saved"));
         }
     }
 

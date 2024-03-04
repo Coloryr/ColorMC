@@ -60,9 +60,9 @@ public static class BaseBinding
     /// </summary>
     public static void Init()
     {
-        ColorMCCore.OnError += App.ShowError;
-        ColorMCCore.OnLanguageReload += LanguageReload;
-        ColorMCCore.OnGameLog += (obj, d) =>
+        ColorMCCore.Error += App.ShowError;
+        ColorMCCore.LanguageReload += LanguageReload;
+        ColorMCCore.GameLog += (obj, d) =>
         {
             if (GameLogs.TryGetValue(obj.UUID, out var log))
             {
@@ -74,7 +74,7 @@ public static class BaseBinding
                 win.Log(d);
             }
         };
-        ColorMCCore.OnStartDownload = App.StartDownload;
+        ColorMCCore.TopDownload = App.StartDownload;
         ColorMCCore.GameExit += GameExit;
 
         if (ColorMCGui.RunType == RunType.Program && SystemInfo.Os != OsType.Android)
@@ -125,7 +125,7 @@ public static class BaseBinding
             Dispatcher.UIThread.Post(() =>
             {
                 App.ShowGameLog(obj);
-                App.MainWindow?.ShowMessage(App.Lang("Live2D.Text3"));
+                App.MainWindow?.ShowMessage(App.Lang("MainWindow.Live2D.Text3"));
             });
         }
         else
@@ -353,7 +353,7 @@ public static class BaseBinding
             {
                 return Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    return model.ShowTextWait(App.Lang("Gui.Info5"), text ?? "");
+                    return model.ShowTextWait(App.Lang("Text.Update"), text ?? "");
                 });
             }, () =>
             {
@@ -446,7 +446,7 @@ public static class BaseBinding
                 Media.Pause();
             }
 
-            App.MainWindow?.ShowMessage(App.Lang("Live2D.Text2"));
+            App.MainWindow?.ShowMessage(App.Lang("MainWindow.Live2D.Text2"));
 
             RunGames.Add(obj.UUID);
             GameCount.LaunchDone(obj);
@@ -603,8 +603,8 @@ public static class BaseBinding
     /// <returns>进程信息</returns>
     private static async Task<(IGameHandel?, string?)> Launch(GameSettingObj obj,
         ColorMCCore.Request request, ColorMCCore.LaunchP pre,
-        ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select,
-        ColorMCCore.NoJava nojava, ColorMCCore.LoginFail loginfail,
+        ColorMCCore.UpdateState state, ColorMCCore.ChoiseCall select,
+        ColorMCCore.NoJava nojava, ColorMCCore.LoginFailRun loginfail,
         ColorMCCore.GameLaunch update2,
         LoginObj obj1, WorldObj? world, int? mixinport, CancellationToken cancel)
     {

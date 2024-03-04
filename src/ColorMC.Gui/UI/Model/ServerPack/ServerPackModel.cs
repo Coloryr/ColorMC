@@ -33,7 +33,7 @@ public partial class ServerPackModel : MenuModel
 
     public async void Gen()
     {
-        var local = await PathBinding.SelectPath(FileType.ServerPack);
+        var local = await PathBinding.SelectPath(PathType.ServerPackPath);
         if (local == null)
             return;
 

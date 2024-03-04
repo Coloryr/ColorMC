@@ -96,15 +96,15 @@ public class ConfigFlyout1
                     _model.Delete(_item!);
                 }
             }),
-            (App.Lang("ConfigEditWindow.Flyouts1.Text3"), editKey, () =>
+            (App.Lang("ConfigEditWindow.Flyouts.Text3"), editKey, () =>
             {
                 _model.SetKey(_item!);
             }),
-            (App.Lang("ConfigEditWindow.Flyouts1.Text4"), editValue, () =>
+            (App.Lang("ConfigEditWindow.Flyouts.Text4"), editValue, () =>
             {
                 _model.SetValue(_item!);
             }),
-            (App.Lang("ConfigEditWindow.Flyouts1.Text5"), true, _model.Find),
+            (App.Lang("ConfigEditWindow.Flyouts.Text5"), true, _model.Find),
         ], con);
     }
 }

@@ -21,7 +21,7 @@ public partial class MainControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => App.Lang("Name");
+    public string Title => "ColorMC";
 
     public readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
@@ -72,7 +72,7 @@ public partial class MainControl : UserControl, IUserControl
         if (e.Data.Contains(DataFormats.Text))
         {
             Grid2.IsVisible = true;
-            Label1.Text = App.Lang("Gui.Info6");
+            Label1.Text = App.Lang("UserWindow.Text8");
         }
         else if (e.Data.Contains(DataFormats.Files))
         {
@@ -86,12 +86,12 @@ public partial class MainControl : UserControl, IUserControl
             if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
             {
                 Grid2.IsVisible = true;
-                Label1.Text = App.Lang("Gui.Info42");
+                Label1.Text = App.Lang("AddGameWindow.Text2");
             }
             else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
             {
                 Grid2.IsVisible = true;
-                Label1.Text = App.Lang("Gui.Info7");
+                Label1.Text = App.Lang("Text.Import");
             }
         }
     }
@@ -198,7 +198,7 @@ public partial class MainControl : UserControl, IUserControl
         if (ColorMCGui.IsCrash)
         {
             var model = (DataContext as MainModel)!;
-            model.Model.Show(App.Lang("Gui.Error48"));
+            model.Model.Show(App.Lang("MainWindow.Error2"));
         }
     }
 

@@ -45,7 +45,7 @@
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding BackClick}"
-                    Content="{setting:Localize Gui.Info31}"
+                    Content="{setting:Localize Gui.Text1}"
                     CornerRadius="0"
                     Foreground="White"
                     IsEnabled="{Binding HeadBackEnable}"

@@ -148,11 +148,11 @@ public partial class MainModel : TopModel, IMainTop
         var data = await WebBinding.GetNewLog();
         if (data == null)
         {
-            Model.Show(App.Lang("Gui.Error38"));
+            Model.Show(App.Lang("MainWindow.Error1"));
         }
         else
         {
-            Model.ShowText(App.Lang("Gui.Info35"), data);
+            Model.ShowText(App.Lang("MainWindow.Info40"), data);
         }
 
         _isGetNewInfo = false;
@@ -161,7 +161,7 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public async Task Upgrade()
     {
-        var res = await Model.ShowTextWait(App.Lang("Gui.Info5"), _updateStr);
+        var res = await Model.ShowTextWait(App.Lang("Text.Update"), _updateStr);
         if (res)
         {
             if (_isNewUpdate)
@@ -260,7 +260,7 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public async Task OpenGuide()
     {
-        var res = await Model.ShowWait(App.Lang("Gui.Info43"));
+        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab7.Info3"));
         WebBinding.OpenWeb(res ? WebType.Guide1 : WebType.Guide);
     }
 

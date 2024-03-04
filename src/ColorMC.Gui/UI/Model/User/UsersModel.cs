@@ -214,7 +214,7 @@ public partial class UsersControlModel : TopModel
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    Model.Show(App.Lang("Gui.Error8"));
+                    Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
                 var res = await UserBinding.AddUser(AuthType.Offline, LoginOAuthCode, name, null);
@@ -223,7 +223,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.Lang("Gui.Info4"));
+                Model.Notify(App.Lang("UserWindow.Info12"));
                 Name = "";
                 ok = true;
                 break;
@@ -242,7 +242,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.Lang("Gui.Info4"));
+                Model.Notify(App.Lang("UserWindow.Info12"));
                 Name = "";
                 _isOAuth = false;
                 ok = true;
@@ -258,7 +258,7 @@ public partial class UsersControlModel : TopModel
                 if (string.IsNullOrWhiteSpace(User) ||
                     string.IsNullOrWhiteSpace(Password))
                 {
-                    Model.Show(App.Lang("Gui.Error8"));
+                    Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
@@ -270,7 +270,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.Lang("Gui.Info4"));
+                Model.Notify(App.Lang("UserWindow.Info12"));
                 Name = "";
                 ok = true;
                 break;
@@ -285,7 +285,7 @@ public partial class UsersControlModel : TopModel
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
                 {
-                    Model.Show(App.Lang("Gui.Error8"));
+                    Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
@@ -297,7 +297,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.Lang("Gui.Info4"));
+                Model.Notify(App.Lang("UserWindow.Info12"));
                 Name = "";
                 ok = true;
                 break;
@@ -306,7 +306,7 @@ public partial class UsersControlModel : TopModel
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
                 {
-                    Model.Show(App.Lang("Gui.Error8"));
+                    Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
@@ -318,7 +318,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.Lang("Gui.Info4"));
+                Model.Notify(App.Lang("UserWindow.Info12"));
                 ok = true;
                 break;
             case AuthType.SelfLittleSkin:
@@ -332,7 +332,7 @@ public partial class UsersControlModel : TopModel
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
                 {
-                    Model.Show(App.Lang("Gui.Error8"));
+                    Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
@@ -344,7 +344,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(res.Item2!);
                     break;
                 }
-                Model.Notify(App.Lang("Gui.Info4"));
+                Model.Notify(App.Lang("UserWindow.Info12"));
                 Name = "";
                 ok = true;
                 break;

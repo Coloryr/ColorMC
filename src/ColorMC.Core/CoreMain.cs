@@ -50,42 +50,88 @@ public static class ColorMCCore
     /// </summary>
     /// <param name="text">消息</param>
     public delegate void UpdateState(string? text);
-    public delegate Task<bool> UpdateSelect(string? text);
+    /// <summary>
+    /// 启动选择框
+    /// </summary>
+    /// <param name="text">消息</param>
+    /// <returns>是否确定</returns>
+    public delegate Task<bool> ChoiseCall(string? text);
+    /// <summary>
+    /// 没有Java
+    /// </summary>
     public delegate void NoJava();
+    /// <summary>
+    /// Java解压
+    /// </summary>
     public delegate void JavaUnzip();
-    public delegate Task<bool> LoginFail(LoginObj obj);
+    /// <summary>
+    /// 登录失败是否继续运行
+    /// </summary>
+    /// <param name="obj">账户</param>
+    /// <returns>是否继续运行</returns>
+    public delegate Task<bool> LoginFailRun(LoginObj obj);
+    /// <summary>
+    /// OAuth登录
+    /// </summary>
+    /// <param name="url">网址</param>
+    /// <param name="code">登陆码</param>
     public delegate void LoginOAuthCode(string url, string code);
+    /// <summary>
+    /// 游戏复写
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>是否复写</returns>
     public delegate Task<bool> GameOverwirte(GameSettingObj obj);
+    /// <summary>
+    /// 整合包进度更新
+    /// </summary>
+    /// <param name="size">总进度</param>
+    /// <param name="now">目前进度</param>
     public delegate void PackUpdate(int size, int now);
+    /// <summary>
+    /// 下载器状态更新
+    /// </summary>
+    /// <param name="state">状态</param>
     public delegate void DownloaderUpdate(DownloadState state);
-    public delegate void PackState(CoreRunState state);
-    public delegate void GameLaunch(GameSettingObj obj, LaunchState state);
+    /// <summary>
+    /// 下载项目状态更新
+    /// </summary>
+    /// <param name="obj">项目</param>
     public delegate void DownloadItemUpdate(DownloadItemObj obj);
+    /// <summary>
+    /// 压缩包导入状态改变
+    /// </summary>
+    /// <param name="state">状态</param>
+    public delegate void PackState(CoreRunState state);
+    /// <summary>
+    /// 游戏启动信息更新
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="state">当前状态</param>
+    public delegate void GameLaunch(GameSettingObj obj, LaunchState state);
 
     /// <summary>
-    /// 开始下载
+    /// 下载用的回调
     /// </summary>
-    public static Func<ICollection<DownloadItemObj>, Task<bool>>? OnStartDownload;
+    public static Func<ICollection<DownloadItemObj>, Task<bool>>? TopDownload;
 
     /// <summary>
     /// 错误显示回调
     /// 标题 错误 关闭程序
     /// </summary>
-    public static event Action<string?, Exception?, bool>? OnError;
+    public static event Action<string?, Exception?, bool>? Error;
     /// <summary>
     /// 游戏日志回调
     /// </summary>
-    public static event Action<GameSettingObj, string?>? OnGameLog;
+    public static event Action<GameSettingObj, string?>? GameLog;
     /// <summary>
     /// 语言重载
     /// </summary>
-    public static event Action<LanguageType>? OnLanguageReload;
-
+    public static event Action<LanguageType>? LanguageReload;
     /// <summary>
     /// 收到游戏数据包
     /// </summary>
-    public static Action<IChannel, IByteBuffer>? NettyPack;
-
+    public static event Action<IChannel, IByteBuffer>? NettyPack;
     /// <summary>
     /// 游戏退出事件
     /// </summary>
@@ -132,7 +178,6 @@ public static class ColorMCCore
 
     internal static ConcurrentDictionary<string, IGameHandel> Games = [];
 
-
     /// <summary>
     /// 初始化阶段1
     /// </summary>
@@ -176,28 +221,6 @@ public static class ColorMCCore
         Stop?.Invoke();
     }
 
-    public static void Error(string text, Exception? e, bool close)
-    {
-        OnError?.Invoke(text, e, close);
-        Logs.Error(text, e);
-    }
-
-    public static void GameLog(GameSettingObj obj, string? text)
-    {
-        OnGameLog?.Invoke(obj, text);
-    }
-
-    public static void LanguageReload(LanguageType type)
-    {
-        OnLanguageReload?.Invoke(type);
-    }
-
-    public static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
-    {
-        Games.TryRemove(obj.UUID, out _);
-        GameExit?.Invoke(obj, obj1, code);
-    }
-
     public static void KillGame(string uuid)
     {
         if (Games.TryGetValue(uuid, out var handel))
@@ -206,11 +229,38 @@ public static class ColorMCCore
         }
     }
 
+    internal static void OnError(string text, Exception? e, bool close)
+    {
+        Error?.Invoke(text, e, close);
+        Logs.Error(text, e);
+    }
+
+    internal static void OnGameLog(GameSettingObj obj, string? text)
+    {
+        GameLog?.Invoke(obj, text);
+    }
+
+    internal static void OnLanguageReload(LanguageType type)
+    {
+        LanguageReload?.Invoke(type);
+    }
+
+    internal static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
+    {
+        Games.TryRemove(obj.UUID, out _);
+        GameExit?.Invoke(obj, obj1, code);
+    }
+
     internal static void AddGame(string uuid, IGameHandel handel)
     {
         if (!Games.TryAdd(uuid, handel))
         {
             Games[uuid] = handel;
         }
+    }
+
+    internal static void OnNettyPack(IChannel channel, IByteBuffer buffer)
+    {
+        NettyPack?.Invoke(channel, buffer);
     }
 }

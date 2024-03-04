@@ -167,7 +167,7 @@
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="30"
-                Text="{setting:Localize Gui.Info14}" />
+                Text="{setting:Localize GameEditWindow.Tab4.Text6}" />
         </Panel>
     </Panel>
 </UserControl>

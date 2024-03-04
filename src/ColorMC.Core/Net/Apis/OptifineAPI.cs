@@ -28,7 +28,7 @@ public static class OptifineAPI
             var data = await BaseClient.GetStringAsync(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
+                ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return (null, null);
             }
@@ -127,7 +127,7 @@ public static class OptifineAPI
                 var data = await BaseClient.GetStringAsync(obj.Url2);
                 if (data.Item1 == false)
                 {
-                    ColorMCCore.Error(LanguageHelper.Get("Core.Http.Error7"),
+                    ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                         new Exception(obj.Url2), false);
                     return null;
                 }
@@ -145,7 +145,7 @@ public static class OptifineAPI
         }
         catch (Exception e)
         {
-            ColorMCCore.Error(LanguageHelper.Get("Core.Http.OptiFine.Error2"), e, false);
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Http.OptiFine.Error2"), e, false);
         }
 
         return null;
