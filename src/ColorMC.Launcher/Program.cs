@@ -113,6 +113,10 @@ public static class Program
 
         try
         {
+            if (!Directory.Exists(_inputDir))
+            {
+                Directory.CreateDirectory(_inputDir);
+            }
             File.Create(_inputDir + "temp").Close();
         }
         catch

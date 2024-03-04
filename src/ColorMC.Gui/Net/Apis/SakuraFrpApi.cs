@@ -57,7 +57,7 @@ public static class SakuraFrpApi
 
             var data = await BaseClient.LoginClient.PostAsync($"{Url}tunnel/config?token={key}", content);
             var str = await data.Content.ReadAsStringAsync();
-            if (str.StartsWith("{"))
+            if (str.StartsWith('{'))
             {
                 return null;
             }
