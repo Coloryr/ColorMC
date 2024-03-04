@@ -377,7 +377,8 @@ public static class Launch
     /// <param name="v2">V2模式</param>
     /// <param name="login">登录的账户</param>
     /// <returns>Jvm参数</returns>
-    private static async Task<List<string>> JvmArgAsync(GameSettingObj obj, bool v2, LoginObj login, int? mixinport)
+    private static async Task<List<string>> JvmArgAsync(GameSettingObj obj, bool v2, 
+        LoginObj login, JavaInfo jvm1, int? mixinport)
     {
         RunArgObj args;
 
@@ -412,7 +413,7 @@ public static class Launch
             jvm.Add($"-javaagent:{args.JavaAgent.Trim()}");
         }
 
-        if (mixinport > 0)
+        if (mixinport > 0 && jvm1.MajorVersion > 8)
         {
             GameHelper.ReadyColorMCASM();
             jvm.Add("-Dcolormc.mixin.port=" + mixinport);
@@ -977,12 +978,13 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="login">登录的账户</param>
     /// <returns></returns>
-    private static async Task<List<string>> MakeArgAsync(GameSettingObj obj, LoginObj login, WorldObj? world, int? mixinport)
+    private static async Task<List<string>> MakeArgAsync(GameSettingObj obj, LoginObj login, 
+        WorldObj? world, JavaInfo jvm, int? mixinport)
     {
         var list = new List<string>();
         var version = VersionPath.GetVersion(obj.Version)!;
         var v2 = CheckHelpers.IsGameVersionV2(version);
-        var jvmarg = await JvmArgAsync(obj, v2, login, mixinport);
+        var jvmarg = await JvmArgAsync(obj, v2, login, jvm, mixinport);
         var classpath = await MakeClassPathAsync(obj, v2, mixinport > 0);
         var gamearg = GameArg(obj, v2, world);
         ReplaceAll(obj, login, jvmarg, classpath);
@@ -1166,7 +1168,7 @@ public static class Launch
 
         //准备Jvm参数
         update2(obj, LaunchState.JvmPrepare);
-        var arg = await MakeArgAsync(obj, login, world, mixinport);
+        var arg = await MakeArgAsync(obj, login, world, jvm!, mixinport);
         ColorMCCore.GameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
         bool hidenext = false;
         if (SystemInfo.Os != OsType.Android)
