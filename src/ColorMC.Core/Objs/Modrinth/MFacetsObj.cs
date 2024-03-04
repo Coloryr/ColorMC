@@ -10,7 +10,7 @@ public record MFacetsObj
 
     public string GetName()
     {
-        return LanguageHelper.Get($"MFacets.{Data}");
+        return LanguageHelper.Get($"Type.Modrinth.Facets.{Data}");
     }
 
     public static string Build(List<MFacetsObj> list)

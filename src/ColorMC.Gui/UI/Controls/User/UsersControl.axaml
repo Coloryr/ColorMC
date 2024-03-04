@@ -84,7 +84,7 @@
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="30"
-                Text="{setting:Localize Gui.Info6}" />
+                Text="{setting:Localize UserWindow.Text8}" />
         </Panel>
     </Panel>
 </UserControl>

@@ -558,7 +558,7 @@ public static class DownloadItemHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.Error(LanguageHelper.Get("Core.Http.Forge.Error4"), e, false);
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Forge.Error4"), e, false);
             return (GetDownloadState.Init, null);
         }
 

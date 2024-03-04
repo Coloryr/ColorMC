@@ -51,12 +51,12 @@ public partial class AddGameControl : UserControl, IUserControl
             if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
             {
                 Grid2.IsVisible = true;
-                Label1.Text = App.Lang("Gui.Info42");
+                Label1.Text = App.Lang("AddGameWindow.Text2");
             }
             else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
             {
                 Grid2.IsVisible = true;
-                Label1.Text = App.Lang("Gui.Info7");
+                Label1.Text = App.Lang("Text.Import");
             }
         }
     }

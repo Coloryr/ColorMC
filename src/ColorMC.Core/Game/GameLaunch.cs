@@ -62,7 +62,7 @@ public static class Launch
         var libraries = new List<string>(list.Values);
         var classpath = new StringBuilder();
         var sep = SystemInfo.Os == OsType.Windows ? ';' : ':';
-        ColorMCCore.GameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
+        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
 
         //添加lib路径到classpath
         foreach (var item in libraries)
@@ -149,11 +149,11 @@ public static class Launch
         };
         p.OutputDataReceived += (a, b) =>
         {
-            ColorMCCore.GameLog(obj, b.Data);
+            ColorMCCore.OnGameLog(obj, b.Data);
         };
         p.ErrorDataReceived += (a, b) =>
         {
-            ColorMCCore.GameLog(obj, b.Data);
+            ColorMCCore.OnGameLog(obj, b.Data);
         };
 
         p.Start();
@@ -829,7 +829,7 @@ public static class Launch
         var libraries = await GetLibsAsync(obj, v2);
         var classpath = new StringBuilder();
         var sep = SystemInfo.Os == OsType.Windows ? ';' : ':';
-        ColorMCCore.GameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
+        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
 
         if (enableasm)
         {
@@ -860,7 +860,7 @@ public static class Launch
         foreach (var item in libraries)
         {
             classpath.Append($"{item}{sep}");
-            ColorMCCore.GameLog(obj, $"    {item}");
+            ColorMCCore.OnGameLog(obj, $"    {item}");
         }
         classpath.Remove(classpath.Length - 1, 1);
 
@@ -1011,8 +1011,8 @@ public static class Launch
     /// <returns></returns>
     public static async Task<IGameHandel?> StartGameAsync(this GameSettingObj obj, LoginObj login,
         WorldObj? world, ColorMCCore.Request request, ColorMCCore.LaunchP pre,
-        ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select,
-        ColorMCCore.NoJava nojava, ColorMCCore.LoginFail loginfail,
+        ColorMCCore.UpdateState state, ColorMCCore.ChoiseCall select,
+        ColorMCCore.NoJava nojava, ColorMCCore.LoginFailRun loginfail,
         ColorMCCore.GameLaunch update2, int? mixinport,
         CancellationToken token)
     {
@@ -1067,7 +1067,7 @@ public static class Launch
         stopwatch.Stop();
         string temp = string.Format(LanguageHelper.Get("Core.Launch.Info4"),
             obj.Name, stopwatch.Elapsed.ToString());
-        ColorMCCore.GameLog(obj, temp);
+        ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
 
         if (obj.ModPackType == SourceType.ColorMC && !string.IsNullOrWhiteSpace(obj.ServerUrl))
@@ -1078,7 +1078,7 @@ public static class Launch
             stopwatch.Stop();
             temp = string.Format(LanguageHelper.Get("Core.Launch.Info14"),
                 obj.Name, stopwatch.Elapsed.ToString());
-            ColorMCCore.GameLog(obj, temp);
+            ColorMCCore.OnGameLog(obj, temp);
             Logs.Info(temp);
             if (pack == false)
             {
@@ -1098,7 +1098,7 @@ public static class Launch
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
             obj.Name, stopwatch.Elapsed.ToString());
-        ColorMCCore.GameLog(obj, temp);
+        ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
 
         if (obj.GetModeFast() && obj.Loader == Loaders.Normal)
@@ -1136,7 +1136,7 @@ public static class Launch
                 stopwatch.Stop();
                 temp = string.Format(LanguageHelper.Get("Core.Launch.Info7"),
                     obj.Name, stopwatch.Elapsed.ToString());
-                ColorMCCore.GameLog(obj, temp);
+                ColorMCCore.OnGameLog(obj, temp);
                 Logs.Info(temp);
             }
         }
@@ -1169,7 +1169,7 @@ public static class Launch
         //准备Jvm参数
         update2(obj, LaunchState.JvmPrepare);
         var arg = await MakeArgAsync(obj, login, world, jvm!, mixinport);
-        ColorMCCore.GameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
+        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
         bool hidenext = false;
         if (SystemInfo.Os != OsType.Android)
         {
@@ -1178,11 +1178,11 @@ public static class Launch
                 if (hidenext)
                 {
                     hidenext = false;
-                    ColorMCCore.GameLog(obj, "******");
+                    ColorMCCore.OnGameLog(obj, "******");
                 }
                 else
                 {
-                    ColorMCCore.GameLog(obj, item);
+                    ColorMCCore.OnGameLog(obj, item);
                 }
                 var low = item.ToLower();
                 if (low.StartsWith("--uuid") || low.StartsWith("--accesstoken"))
@@ -1192,8 +1192,8 @@ public static class Launch
             }
         }
 
-        ColorMCCore.GameLog(obj, LanguageHelper.Get("Core.Launch.Info3"));
-        ColorMCCore.GameLog(obj, path);
+        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info3"));
+        ColorMCCore.OnGameLog(obj, path);
 
         if (token.IsCancellationRequested)
         {
@@ -1282,11 +1282,11 @@ public static class Launch
                         res1.StartInfo.RedirectStandardOutput = true;
                         res1.OutputDataReceived += (a, b) =>
                         {
-                            ColorMCCore.GameLog(obj, b.Data);
+                            ColorMCCore.OnGameLog(obj, b.Data);
                         };
                         res1.ErrorDataReceived += (a, b) =>
                         {
-                            ColorMCCore.GameLog(obj, b.Data);
+                            ColorMCCore.OnGameLog(obj, b.Data);
                         };
                         res1.Start();
                         res1.BeginOutputReadLine();
@@ -1296,7 +1296,7 @@ public static class Launch
                         stopwatch.Stop();
                         string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                             obj.Name, stopwatch.Elapsed.ToString());
-                        ColorMCCore.GameLog(obj, temp1);
+                        ColorMCCore.OnGameLog(obj, temp1);
                         Logs.Info(temp1);
                     }
                 }
@@ -1309,7 +1309,7 @@ public static class Launch
                     stopwatch.Stop();
                     string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                         obj.Name, stopwatch.Elapsed.ToString());
-                    ColorMCCore.GameLog(obj, temp1);
+                    ColorMCCore.OnGameLog(obj, temp1);
                     Logs.Info(temp1);
                 }
             }
@@ -1317,7 +1317,7 @@ public static class Launch
             {
                 string temp2 = string.Format(LanguageHelper.Get("Core.Launch.Info10"),
                 obj.Name);
-                ColorMCCore.GameLog(obj, temp2);
+                ColorMCCore.OnGameLog(obj, temp2);
                 Logs.Info(temp2);
             }
         }
@@ -1351,11 +1351,11 @@ public static class Launch
                     res1.StartInfo.RedirectStandardOutput = true;
                     res1.OutputDataReceived += (a, b) =>
                     {
-                        ColorMCCore.GameLog(obj, b.Data);
+                        ColorMCCore.OnGameLog(obj, b.Data);
                     };
                     res1.ErrorDataReceived += (a, b) =>
                     {
-                        ColorMCCore.GameLog(obj, b.Data);
+                        ColorMCCore.OnGameLog(obj, b.Data);
                     };
                     res1.Start();
                     res1.BeginOutputReadLine();
@@ -1413,11 +1413,11 @@ public static class Launch
 
         process.OutputDataReceived += (a, b) =>
         {
-            ColorMCCore.GameLog(obj, b.Data);
+            ColorMCCore.OnGameLog(obj, b.Data);
         };
         process.ErrorDataReceived += (a, b) =>
         {
-            ColorMCCore.GameLog(obj, b.Data);
+            ColorMCCore.OnGameLog(obj, b.Data);
         };
         process.Exited += (a, b) =>
         {
@@ -1431,7 +1431,7 @@ public static class Launch
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info6"),
             obj.Name, stopwatch.Elapsed.ToString());
-        ColorMCCore.GameLog(obj, temp);
+        ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
 
         var handel = new DesktopGameHandel(process, obj.UUID);
@@ -1459,14 +1459,14 @@ public static class Launch
                         start = ReplaceArg(obj, path!, arg, start);
                         CmdRun(obj, start, env);
                         stopwatch.Stop();
-                        ColorMCCore.GameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
+                        ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
                             obj.Name, stopwatch.Elapsed.ToString()));
                     }
                 }
             }
             else
             {
-                ColorMCCore.GameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info11"),
+                ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info11"),
                 obj.Name));
             }
         }

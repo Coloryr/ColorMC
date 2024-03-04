@@ -45,7 +45,7 @@ public partial class SettingModel
             return;
         }
 
-        var path = await PathBinding.SelectPath(FileType.RunDir);
+        var path = await PathBinding.SelectPath(PathType.RunDir);
         if (path == null)
         {
             return;

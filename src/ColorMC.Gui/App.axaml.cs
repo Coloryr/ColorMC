@@ -839,7 +839,7 @@ public partial class App : Application
         {
             return;
         }
-        window.Model.Show(Lang("Gui.Error21"));
+        window.Model.Show(Lang("SettingWindow.Tab3.Error2"));
     }
 
     public static IBaseWindow? GetMainWindow()

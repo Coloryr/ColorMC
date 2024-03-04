@@ -140,7 +140,7 @@ public static class GameCloudUtils
     public static async Task StartConnect()
     {
         Connect = false;
-        Info = App.Lang("GameCloud.Error2");
+        Info = App.Lang("Utils.GameCloud.Error2");
         var config = GuiConfigUtils.Config.ServerKey;
         if (string.IsNullOrWhiteSpace(config))
         {
@@ -204,12 +204,12 @@ public static class GameCloudUtils
                 var value = (int)res1!;
                 if (value == 300)
                 {
-                    Info = App.Lang("GameCloud.Error3");
+                    Info = App.Lang("Utils.GameCloud.Error3");
                     return;
                 }
                 else if (value != 100)
                 {
-                    Info = App.Lang("GameCloud.Error1");
+                    Info = App.Lang("Utils.GameCloud.Error1");
                     return;
                 }
             }
@@ -494,10 +494,10 @@ public static class GameCloudUtils
                 var obj = JObject.Parse(data);
                 if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
                 {
-                    Info = App.Lang("GameCloud.Error1");
+                    Info = App.Lang("Utils.GameCloud.Error1");
                     return;
                 }
-                Info = string.Format(App.Lang("GameCloud.Info1"), obj["use"], obj["size"]);
+                Info = string.Format(App.Lang("Utils.GameCloud.Info1"), obj["use"], obj["size"]);
             }
         }
         catch (Exception e)

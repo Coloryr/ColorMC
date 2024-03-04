@@ -14,8 +14,15 @@ public static class NettyServer
     private static ServerBootstrap s_bootstrap;
     private static IChannel s_channel;
 
+    /// <summary>
+    /// 客户端信道
+    /// </summary>
     private static readonly List<IChannel> s_channels = [];
 
+    /// <summary>
+    /// 获取所有正在使用的端口
+    /// </summary>
+    /// <returns>端口列表</returns>
     private static List<int> PortIsUsed()
     {
         var ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
@@ -31,10 +38,14 @@ public static class NettyServer
         return allPorts;
     }
 
+    /// <summary>
+    /// 获取一个没有使用的端口
+    /// </summary>
+    /// <returns>端口</returns>
     private static int GetFirstAvailablePort()
     {
         var portUsed = PortIsUsed();
-        if (portUsed.Count > 50000)
+        if (portUsed.Count > 5000)
         {
             return -1;
         }
@@ -50,6 +61,10 @@ public static class NettyServer
         while (true);
     }
 
+    /// <summary>
+    /// 启动游戏端口服务器
+    /// </summary>
+    /// <returns></returns>
     public static async Task<int> RunServerAsync()
     {
         if (s_channel != null)
@@ -66,8 +81,7 @@ public static class NettyServer
             s_bootstrap
                 .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
                 {
-                    IChannelPipeline pipeline = channel.Pipeline;
-                    pipeline.AddLast("echo", new EchoServerHandler());
+                    channel.Pipeline.AddLast("colormc", new EchoServerHandler());
                 }));
 
             int port = GetFirstAvailablePort();
@@ -82,6 +96,9 @@ public static class NettyServer
         }
     }
 
+    /// <summary>
+    /// 停止游戏端口服务器
+    /// </summary>
     private static async void Stop()
     {
         await s_channel.CloseAsync();
@@ -128,7 +145,7 @@ public static class NettyServer
         {
             if (message is IByteBuffer buffer)
             {
-                ColorMCCore.NettyPack?.Invoke(context.Channel, buffer);
+                ColorMCCore.OnNettyPack(context.Channel, buffer);
             }
         }
 

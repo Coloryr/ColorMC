@@ -125,13 +125,13 @@ public static class DownloadManager
 
     public static Task<bool> StartAsync(ICollection<DownloadItemObj> list)
     {
-        if (ColorMCCore.OnStartDownload == null)
+        if (ColorMCCore.TopDownload == null)
         {
             return StartAsync(list, null, null);
         }
         else
         {
-            return ColorMCCore.OnStartDownload(list);
+            return ColorMCCore.TopDownload(list);
         }
     }
 
@@ -141,8 +141,7 @@ public static class DownloadManager
     /// <param name="list">下载列表</param>
     /// <returns>结果</returns>
     public static async Task<bool> StartAsync(ICollection<DownloadItemObj> list,
-        ColorMCCore.DownloaderUpdate? update,
-        ColorMCCore.DownloadItemUpdate? update1)
+        ColorMCCore.DownloaderUpdate? update, ColorMCCore.DownloadItemUpdate? update1)
     {
         var names = new List<string>();
         //下载器是否在运行

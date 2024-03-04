@@ -259,7 +259,7 @@ public partial class GameItemModel : GameModel
             { 
                 DialogHost.Close("MainCon"); 
                 value.ChangeConfig(model);
-                Model.Notify(App.Lang("GameWindow.Info1"));
+                Model.Notify(App.Lang("MainWindow.Info39"));
             };
             DialogHost.Show(model, "MainCon");
         }
@@ -299,7 +299,7 @@ public partial class GameItemModel : GameModel
             return;
         }
 
-        Model.Progress(App.Lang("Gui.Info34"));
+        Model.Progress(App.Lang("GameEditWindow.Tab1.Info11"));
         res = await GameBinding.DeleteGame(Obj, Model.ShowWait);
         Model.ProgressClose();
         Model.InputClose();

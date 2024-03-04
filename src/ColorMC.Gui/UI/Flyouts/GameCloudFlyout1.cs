@@ -18,9 +18,9 @@ public class GameCloudFlyout1
             {
                 PathBinding.OpPath(_model.World);
             }),
-            (App.Lang("GameCloudWindow.Flyouts1.Text1"), model.HaveLocal, _model.Upload),
-            (App.Lang("GameCloudWindow.Flyouts1.Text2"), model.HaveCloud, _model.Download),
-            (App.Lang("GameCloudWindow.Flyouts1.Text3"), model.HaveCloud, _model.DeleteCloud),
+            (App.Lang("GameCloudWindow.Flyouts.Text1"), model.HaveLocal, _model.Upload),
+            (App.Lang("GameCloudWindow.Flyouts.Text2"), model.HaveCloud, _model.Download),
+            (App.Lang("GameCloudWindow.Flyouts.Text3"), model.HaveCloud, _model.DeleteCloud),
         ], con);
     }
 }

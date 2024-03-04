@@ -11,8 +11,8 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("AxisType.Item1"),
-            App.Lang("AxisType.Item2")
+            App.Lang("Type.AxisType.Item1"),
+            App.Lang("Type.AxisType.Item2")
         ];
     }
 
@@ -27,7 +27,7 @@ public static class LanguageBinding
             App.Lang("Text.Name"),
             App.Lang("Text.FileName"),
             App.Lang("Text.Author"),
-            App.Lang("ModFilter.Item4")
+            "modid"
         ];
     }
 
@@ -35,11 +35,11 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("ExportPack.Item1"),
-            App.Lang("ExportPack.Item2"),
-            App.Lang("ExportPack.Item3"),
-            //App.GetLanguage("ExportPack.Item4"),
-            //App.GetLanguage("ExportPack.Item5")
+            App.Lang("Type.ExportPack.Item1"),
+            App.Lang("Type.ExportPack.Item2"),
+            App.Lang("Type.ExportPack.Item3"),
+            //App.GetLanguage("Type.ExportPack.Item4"),
+            //App.GetLanguage("Type.ExportPack.Item5")
         ];
     }
 
@@ -47,9 +47,9 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("SkinType.Old"),
-            App.Lang("SkinType.New"),
-            App.Lang("SkinType.New_Slim")
+            App.Lang("Type.SkinType.Old"),
+            App.Lang("Type.SkinType.New"),
+            App.Lang("Type.SkinType.New_Slim")
         ];
     }
     /// <summary>
@@ -60,9 +60,9 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("SkinRotate.Item1"),
-            App.Lang("SkinRotate.Item2"),
-            App.Lang("SkinRotate.Item3")
+            App.Lang("Type.SkinRotate.Item1"),
+            App.Lang("Type.SkinRotate.Item2"),
+            App.Lang("Type.SkinRotate.Item3")
         ];
     }
 
@@ -87,11 +87,11 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("TranTypes.Item1"),
-            App.Lang("TranTypes.Item2"),
-            App.Lang("TranTypes.Item3"),
-            App.Lang("TranTypes.Item4"),
-            App.Lang("TranTypes.Item5")
+            App.Lang("Type.TranTypes.Item1"),
+            App.Lang("Type.TranTypes.Item2"),
+            App.Lang("Type.TranTypes.Item3"),
+            App.Lang("Type.TranTypes.Item4"),
+            App.Lang("Type.TranTypes.Item5")
         ];
     }
     /// <summary>
@@ -135,8 +135,8 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("SortOrder.Item1"),
-            App.Lang("SortOrder.Item2")
+            App.Lang("Type.SortOrder.Item1"),
+            App.Lang("Type.SortOrder.Item2")
         ];
     }
 
@@ -208,9 +208,9 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("VersionType.Item1"),
-            App.Lang("VersionType.Item2"),
-            App.Lang("VersionType.Item3")
+            App.Lang("Type.VersionType.Item1"),
+            App.Lang("Type.VersionType.Item2"),
+            App.Lang("Type.VersionType.Item3")
         ];
     }
 
@@ -218,15 +218,15 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Postion.Item1"),
-            App.Lang("Postion.Item2"),
-            App.Lang("Postion.Item3"),
-            App.Lang("Postion.Item4"),
-            App.Lang("Postion.Item5"),
-            App.Lang("Postion.Item6"),
-            App.Lang("Postion.Item7"),
-            App.Lang("Postion.Item8"),
-            App.Lang("Postion.Item9"),
+            App.Lang("Type.Postion.Item1"),
+            App.Lang("Type.Postion.Item2"),
+            App.Lang("Type.Postion.Item3"),
+            App.Lang("Type.Postion.Item4"),
+            App.Lang("Type.Postion.Item5"),
+            App.Lang("Type.Postion.Item6"),
+            App.Lang("Type.Postion.Item7"),
+            App.Lang("Type.Postion.Item8"),
+            App.Lang("Type.Postion.Item9"),
         ];
     }
 }

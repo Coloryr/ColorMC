@@ -465,7 +465,7 @@ public static class ServerPack
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
     public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj,
-        ColorMCCore.UpdateState state, ColorMCCore.UpdateSelect select)
+        ColorMCCore.UpdateState state, ColorMCCore.ChoiseCall select)
     {
         var obj2 = obj.GetServerPack();
         var res = await BaseClient.GetStringAsync(obj.ServerUrl + "sha1");

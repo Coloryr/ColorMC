@@ -3,16 +3,16 @@ using ColorMC.Core.Objs.ServerPack;
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
-/// 服务器包配置显示
+/// 鏈嶅姟鍣ㄥ寘閰嶇疆鏄剧ず
 /// </summary>
 public record ServerPackConfigModel
 {
     /// <summary>
-    /// 组名
+    /// 缁勫悕
     /// </summary>
     public string Group => Obj.Group;
     /// <summary>
-    /// 类型
+    /// 绫诲瀷
     /// </summary>
     public string Type => GetType(Obj);
 

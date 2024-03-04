@@ -18,7 +18,7 @@ public static class GameSocket
     private static bool s_isRun;
     public static async void Init()
     {
-        ColorMCCore.NettyPack = ReadPack;
+        ColorMCCore.NettyPack += ReadPack;
         Port = await NettyServer.RunServerAsync();
         App.OnClose += App_OnClose;
         s_isRun = true;

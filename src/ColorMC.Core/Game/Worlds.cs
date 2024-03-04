@@ -269,7 +269,7 @@ public static class Worlds
         }
         catch (Exception e)
         {
-            ColorMCCore.Error(LanguageHelper.Get("Core.Game.Error11"), e, false);
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Game.Error11"), e, false);
             return false;
         }
     }

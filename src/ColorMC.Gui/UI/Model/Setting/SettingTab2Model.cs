@@ -420,14 +420,14 @@ public partial class SettingModel
         await ConfigBinding.SetBackLimit(EnablePicResize, PicResize);
         Model.ProgressClose();
 
-        Model.Notify(App.Lang("Gui.Info3"));
+        Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
     }
 
     [RelayCommand]
     public void SetPicTran()
     {
         ConfigBinding.SetBackTran(PicTran);
-        Model.Notify(App.Lang("Gui.Info3"));
+        Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
     }
 
     [RelayCommand]
@@ -468,7 +468,7 @@ public partial class SettingModel
         await ConfigBinding.SetBackPic(EnableBG, Pic, PicEffect);
         Model.ProgressClose();
 
-        Model.Notify(App.Lang("Gui.Info3"));
+        Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
     }
 
     [RelayCommand]
@@ -510,7 +510,7 @@ public partial class SettingModel
         ConfigBinding.SetLive2D(Live2DModel);
         Model.ProgressClose();
 
-        Model.Notify(App.Lang("Gui.Info3"));
+        Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
     }
 
     public void LoadUISetting()

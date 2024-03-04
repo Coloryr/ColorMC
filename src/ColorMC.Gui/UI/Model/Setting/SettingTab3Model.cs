@@ -141,7 +141,7 @@ public partial class SettingModel
         Model.ProgressClose();
         if (res.Item1 == null)
         {
-            Model.Show(App.Lang("Gui.Error21"));
+            Model.Show(App.Lang("SettingWindow.Tab3.Error2"));
             return;
         }
         else if (res.Item1 == true)

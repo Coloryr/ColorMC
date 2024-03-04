@@ -162,7 +162,7 @@ public static class PathBinding
     /// <param name="window">窗口</param>
     /// <param name="type">类型</param>
     /// <returns>路径</returns>
-    public static async Task<string?> SelectPath(FileType type)
+    public static async Task<string?> SelectPath(PathType type)
     {
         var top = App.TopLevel;
         if (top == null)
@@ -171,7 +171,7 @@ public static class PathBinding
         }
         switch (type)
         {
-            case FileType.ServerPack:
+            case PathType.ServerPackPath:
                 var res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
                     Title = App.Lang("Gui.Info11")
@@ -181,7 +181,7 @@ public static class PathBinding
                     return res[0].GetPath();
                 }
                 break;
-            case FileType.Game:
+            case PathType.GamePath:
                 res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
                     Title = App.Lang("Gui.Info24")
@@ -191,7 +191,7 @@ public static class PathBinding
                     return res[0].GetPath();
                 }
                 break;
-            case FileType.RunDir:
+            case PathType.RunDir:
                 res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
                     Title = App.Lang("SettingWindow.Tab1.Info14")
@@ -585,7 +585,7 @@ public static class PathBinding
         {
             case FileType.Schematic:
                 var res = await SelectFile(top,
-                      App.Lang("GameEditWindow.Tab12.Info1"),
+                      App.Lang("GameEditWindow.Tab12.Text1"),
                       ["*" + Schematic.Name1, "*" + Schematic.Name2],
                       App.Lang("GameEditWindow.Tab12.Info2"), true);
                 if (res?.Any() == true)

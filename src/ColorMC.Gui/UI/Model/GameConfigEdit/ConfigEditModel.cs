@@ -223,7 +223,7 @@ public partial class GameConfigEditModel : GameModel
             }
         }
 
-        Model.Notify(App.Lang("Gui.Info10"));
+        Model.Notify(App.Lang("Text.Saved"));
     }
 
     [RelayCommand]
