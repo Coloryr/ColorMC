@@ -67,7 +67,10 @@ public static class Launch
         //添加lib路径到classpath
         foreach (var item in libraries)
         {
-            classpath.Append($"{item}{sep}");
+            if (File.Exists(item))
+            {
+                classpath.Append($"{item}{sep}");
+            }
         }
 
         var cp = classpath.ToString()[..^1].Trim();
@@ -377,7 +380,7 @@ public static class Launch
     /// <param name="v2">V2模式</param>
     /// <param name="login">登录的账户</param>
     /// <returns>Jvm参数</returns>
-    private static async Task<List<string>> JvmArgAsync(GameSettingObj obj, bool v2, 
+    private static async Task<List<string>> JvmArgAsync(GameSettingObj obj, bool v2,
         LoginObj login, JavaInfo jvm1, int? mixinport)
     {
         RunArgObj args;
@@ -859,8 +862,11 @@ public static class Launch
         //添加lib路径到classpath
         foreach (var item in libraries)
         {
-            classpath.Append($"{item}{sep}");
-            ColorMCCore.OnGameLog(obj, $"    {item}");
+            if (File.Exists(item))
+            {
+                classpath.Append($"{item}{sep}");
+                ColorMCCore.OnGameLog(obj, $"    {item}");
+            }
         }
         classpath.Remove(classpath.Length - 1, 1);
 
@@ -978,7 +984,7 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="login">登录的账户</param>
     /// <returns></returns>
-    private static async Task<List<string>> MakeArgAsync(GameSettingObj obj, LoginObj login, 
+    private static async Task<List<string>> MakeArgAsync(GameSettingObj obj, LoginObj login,
         WorldObj? world, JavaInfo jvm, int? mixinport)
     {
         var list = new List<string>();
@@ -1021,7 +1027,7 @@ public static class Launch
         //版本号检测
         if (string.IsNullOrWhiteSpace(obj.Version)
             || (obj.Loader != Loaders.Normal && string.IsNullOrWhiteSpace(obj.LoaderVersion))
-            && (obj.Loader == Loaders.Custom && string.IsNullOrWhiteSpace(obj.CustomLoader?.Local)))
+            || (obj.Loader == Loaders.Custom && string.IsNullOrWhiteSpace(obj.CustomLoader?.Local)))
         {
             throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
         }

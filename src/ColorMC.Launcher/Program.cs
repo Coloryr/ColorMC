@@ -1,7 +1,6 @@
 using Avalonia;
 using System;
 
-
 #if !DEBUG
 using Avalonia.Media;
 using System.IO;
@@ -62,7 +61,7 @@ public static class Program
     public static IN SetBaseSha1 { get; set; }
     public static IN2 SetAot { get; set; }
     public static IN3 SetInputDir { get; set; }
-    
+
     public static bool Aot { get; set; }
 
     private static string _loadDir;
@@ -121,11 +120,11 @@ public static class Program
         }
         catch
         {
+            //有没有权限写文件
             BuildAvaloniaApp()
                 .StartWithClassicDesktopLifetime(args);
             return;
         }
-
 
         _loadDir = _inputDir + "dll";
 
@@ -142,8 +141,6 @@ public static class Program
             Aot = true;
         }
 
-        //有没有权限写文件
-        
 #endif
         try
         {
@@ -202,12 +199,11 @@ public static class Program
 
     private static void Load()
     {
-        if (Aot)
+        if (!NotHaveDll() || Aot)
         {
             GuiLoad.Load();
-            return;
         }
-        else if (NotHaveDll())
+        else
         {
             try
             {
@@ -272,10 +268,6 @@ public static class Program
                 _isError = true;
                 GuiLoad.Load();
             }
-        }
-        else
-        {
-            GuiLoad.Load();
         }
     }
 #endif
