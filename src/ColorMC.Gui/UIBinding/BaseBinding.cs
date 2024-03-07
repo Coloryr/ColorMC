@@ -430,14 +430,6 @@ public static class BaseBinding
 
         if (res.Item1 is { } pr)
         {
-            if (obj.LaunchData.LastTime == new DateTime(0))
-            {
-                if (obj.Loader == Loaders.Forge
-                    && new Version(obj.Version) > new Version(1, 20, 1))
-                {
-                    model.Show(App.Lang("Gui.Info41"));
-                }
-            }
             obj.LaunchData.LastTime = DateTime.Now;
             obj.SaveLaunchData();
 
@@ -583,7 +575,7 @@ public static class BaseBinding
 
                         }
                     }
-                    while (true);
+                    while (!App.IsClose && !handel.IsExit);
                 }
             }
             catch
@@ -605,8 +597,8 @@ public static class BaseBinding
         ColorMCCore.Request request, ColorMCCore.LaunchP pre,
         ColorMCCore.UpdateState state, ColorMCCore.ChoiseCall select,
         ColorMCCore.NoJava nojava, ColorMCCore.LoginFailRun loginfail,
-        ColorMCCore.GameLaunch update2,
-        LoginObj obj1, WorldObj? world, int? mixinport, CancellationToken cancel)
+        ColorMCCore.GameLaunch update2, LoginObj obj1, WorldObj? world, 
+        int? mixinport, CancellationToken cancel)
     {
         string? temp = null;
         try
