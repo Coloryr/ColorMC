@@ -40,6 +40,7 @@ public static class UrlHelper
     public const string Minecraft = "https://www.minecraft.net/";
     public const string MinecraftLib = "https://libraries.minecraft.net/";
     public const string MinecraftResources = "https://resources.download.minecraft.net/";
+
     public static readonly string[] Mojang =
     [
         "https://launchermeta.mojang.com/",
