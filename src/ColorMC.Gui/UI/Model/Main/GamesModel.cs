@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -98,27 +99,62 @@ public partial class GamesModel : TopModel
 
     public void SetItems(List<GameSettingObj> list)
     {
-        foreach (var item in GameList)
+        var remove = new List<string>();
+        var ins = new List<GameSettingObj>();
+
+        foreach (var item in list)
         {
-            item.TopClose();
+            if (_items.ContainsKey(item.UUID))
+            {
+                continue;
+            }
+            ins.Add(item);
         }
-        GameList.Clear();
-        _items.Clear();
+
+        foreach (var item in _items.Keys)
+        {
+            if (list.Any(item1 => item1.UUID == item))
+            {
+                continue;
+            }
+            remove.Add(item);
+        }
+
+        GameList.RemoveAt(GameList.Count - 1);
+
+        foreach (var item in remove)
+        {
+            _items.Remove(item);
+            var model = GameList.FirstOrDefault(item1 => item1.Obj.UUID == item);
+            if (model != null)
+            {
+                model.TopClose();
+                GameList.Remove(model);
+            }
+        }
+
+        foreach (var item in ins)
+        {
+            var model1 = new GameItemModel(Model, _top, item);
+            _items.Add(item.UUID, model1);
+        }
+
         Task.Run(() =>
         {
-            Thread.Sleep(2000);
-            foreach (var item in list)
+            foreach (var item in ins)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(50);
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    var model = new GameItemModel(Model, _top, item);
-                    _items.Add(item.UUID, model);
-                    GameList.Add(model);
+                    GameList.Add(_items[item.UUID]);
                 });
             }
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                GameList.Add(new(Model, Key));
+            });
         });
-        GameList.Add(new(Model, Key));
     }
 
     protected override void Close()
