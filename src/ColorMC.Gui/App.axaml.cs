@@ -207,6 +207,7 @@ public partial class App : Application
             {
                 var win = new SingleWindow();
                 AllWindow = win.Win;
+                win.Show();
             }
         }
 

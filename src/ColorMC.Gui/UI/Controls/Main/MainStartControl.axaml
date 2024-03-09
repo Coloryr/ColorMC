@@ -27,7 +27,7 @@
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="40"
-                Text="{setting:Localize Name}" />
+                Text="ColorMC" />
         </StackPanel>
     </StackPanel>
 </UserControl>
