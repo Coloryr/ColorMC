@@ -40,6 +40,9 @@ public partial class GameItemModel : GameModel
     private bool _buttonShow;
 
     [ObservableProperty]
+    private bool _isDisplay = true;
+
+    [ObservableProperty]
     private string _tips;
 
     [ObservableProperty]

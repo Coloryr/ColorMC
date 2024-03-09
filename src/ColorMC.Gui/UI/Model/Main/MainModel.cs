@@ -97,6 +97,11 @@ public partial class MainModel : TopModel, IMainTop
     [ObservableProperty]
     private string _sidePath = _side[0];
 
+    [ObservableProperty]
+    private string _gameSearchText;
+    [ObservableProperty]
+    private bool _gameSearch;
+
     private bool _isNewUpdate;
     private string _updateStr;
 
@@ -107,6 +112,24 @@ public partial class MainModel : TopModel, IMainTop
         App.SkinLoad += App_SkinLoad;
 
         App.UserEdit += LoadUser;
+    }
+
+    partial void OnGameSearchTextChanged(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            foreach (var item in GameGroups)
+            {
+                item.DisplayAll();
+            }
+        }
+        else
+        {
+            foreach (var item in GameGroups)
+            {
+                item.Display(value);
+            }
+        }
     }
 
     partial void OnTopSideChanged(bool value)
@@ -282,6 +305,18 @@ public partial class MainModel : TopModel, IMainTop
         Head = UserBinding.HeadBitmap!;
 
         IsHeadLoad = false;
+    }
+
+    public void Search()
+    {
+        GameSearch = true;
+        GameSearchText = "";
+    }
+
+    public void SearchClose()
+    {
+        GameSearch = false;
+        GameSearchText = "";
     }
 
     public Task<(bool, string?)> Set(GameItemModel obj)

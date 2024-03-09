@@ -10,6 +10,7 @@
     Width="80"
     VerticalAlignment="Top"
     x:DataType="model:GameItemModel"
+    IsVisible="{Binding IsDisplay}"
     ToolTip.Tip="{Binding Tips}"
     mc:Ignorable="d">
     <Panel Background="Transparent">

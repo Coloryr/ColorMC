@@ -11,13 +11,33 @@
     d:DesignWidth="800"
     x:DataType="model:MainModel"
     mc:Ignorable="d">
-    <ScrollViewer Name="ScrollViewer1" VerticalAlignment="Top">
-        <ItemsControl ItemsSource="{Binding GameGroups}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <views2:GamesControl Margin="0,0,0,3" DataContext="{Binding}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+    <Panel>
+        <ScrollViewer Name="ScrollViewer1" VerticalAlignment="Top">
+            <ItemsControl ItemsSource="{Binding GameGroups}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <views2:GamesControl Margin="0,0,0,3" DataContext="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <Border
+            Margin="5"
+            Padding="5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            BoxShadow="0 2 8 #22000000"
+            Classes="t1"
+            IsVisible="{Binding GameSearch}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="搜索：" />
+                <TextBox
+                    Name="Search"
+                    Width="200"
+                    Height="20"
+                    Classes="input1"
+                    Text="{Binding GameSearchText}" />
+            </StackPanel>
+        </Border>
+    </Panel>
 </UserControl>
