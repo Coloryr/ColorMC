@@ -1,7 +1,11 @@
 using Avalonia;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -27,6 +31,74 @@ public partial class GameControl : UserControl
 
         PointerMoved += GameControl_PointerMoved;
         DoubleTapped += GameControl_DoubleTapped;
+    }
+
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+        Opacity = 0;
+        Dispatcher.UIThread.Post(FadeIn);
+    }
+
+    private void FadeIn()
+    {
+        var animation = new Animation
+        {
+            FillMode = FillMode.Forward,
+            Easing = new CircularEaseInOut(),
+            Children =
+            {
+                new KeyFrame
+                {
+                    Setters =
+                    {
+                        new Setter
+                        {
+                            Property = OpacityProperty,
+                            Value = 0.0d
+                        },
+                        new Setter
+                        {
+                            Property = TranslateTransform.YProperty,
+                            Value = 10d
+                        }
+                    },
+                    Cue = new Cue(0d)
+                },
+                new KeyFrame
+                {
+                    Setters =
+                    {
+                        new Setter
+                        {
+                            Property = OpacityProperty,
+                            Value = 1.0d
+                        },
+                        new Setter
+                        {
+                            Property = TranslateTransform.YProperty,
+                            Value = 10d
+                        }
+                    },
+                    Cue = new Cue(0.5d)
+                },
+                new KeyFrame
+                {
+                    Setters =
+                    {
+                        new Setter
+                        {
+                            Property = TranslateTransform.YProperty,
+                            Value = 0d
+                        }
+                    },
+                    Cue = new Cue(1d)
+                }
+            },
+            Duration = TimeSpan.FromMilliseconds(500)
+        };
+
+        animation.RunAsync(this);
     }
 
     private void GameModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)

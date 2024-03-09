@@ -1,11 +1,15 @@
 ﻿using Avalonia.Input;
+using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -30,14 +34,28 @@ public partial class GamesModel : TopModel
         _items.Clear();
         foreach (var item in list)
         {
-            var model1 = new GameItemModel(model, _top, item);
+            var model1 = new GameItemModel(Model, _top, item);
             _items.Add(item.UUID, model1);
-            GameList.Add(model1);
         }
+        Task.Run(() =>
+        {
+            foreach (var item in _items)
+            {
+                Thread.Sleep(50);
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    GameList.Add(item.Value);
+                });
+            }
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                GameList.Add(new(model, Key == InstancesPath.DefaultGroup ? null : Key));
+            });
+        });
 
         Header = name;
         Key = key;
-        GameList.Add(new(model, Key == InstancesPath.DefaultGroup ? null : Key));
     }
 
     public bool DropIn(IDataObject data)
@@ -86,12 +104,20 @@ public partial class GamesModel : TopModel
         }
         GameList.Clear();
         _items.Clear();
-        foreach (var item in list)
+        Task.Run(() =>
         {
-            var model = new GameItemModel(Model, _top, item);
-            _items.Add(item.UUID, model);
-            GameList.Add(model);
-        }
+            Thread.Sleep(2000);
+            foreach (var item in list)
+            {
+                Thread.Sleep(1000);
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    var model = new GameItemModel(Model, _top, item);
+                    _items.Add(item.UUID, model);
+                    GameList.Add(model);
+                });
+            }
+        });
         GameList.Add(new(Model, Key));
     }
 
@@ -103,5 +129,25 @@ public partial class GamesModel : TopModel
         }
         GameList.Clear();
         _items.Clear();
+    }
+
+    public void DisplayAll()
+    {
+        foreach (var item in GameList)
+        {
+            item.IsDisplay = true;
+        }
+    }
+
+    public void Display(string value)
+    {
+        foreach (var item in GameList)
+        {
+            if (item.IsNew)
+            {
+                continue;
+            }
+            item.IsDisplay = item.Name.Contains(value);
+        }
     }
 }

@@ -40,6 +40,26 @@ public partial class MainControl : UserControl, IUserControl
         SizeChanged += MainControl_SizeChanged;
     }
 
+    public Task<bool> OnKeyDown(object? sender, KeyEventArgs e) 
+    {
+        if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control)
+        {
+            if (DataContext is MainModel model)
+            {
+                model.Search();
+                if (Content1.Child is MainGamesControl con)
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        con.Search.Focus();
+                    });
+                }
+            }
+        }
+
+        return Task.FromResult(false); 
+    }
+
     private void MainControl_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
         var config = GuiConfigUtils.Config.Live2D;
