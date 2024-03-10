@@ -115,7 +115,8 @@ public static class ColorMCAPI
         var req = new HttpRequestMessage(HttpMethod.Get, CheckUrl + "sha1.json");
         req.Headers.Add("ColorMC", ColorMCCore.Version);
         var data = await BaseClient.DownloadClient.SendAsync(req);
-        return JObject.Parse(await data.Content.ReadAsStringAsync());
+        string text = await data.Content.ReadAsStringAsync();
+        return JObject.Parse(text);
     }
 
     public static async Task<JObject?> GetCloudServer()
