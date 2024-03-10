@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ public static class ColorMCGui
     public static void Main(string[] args)
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
         try
         {
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
@@ -138,7 +139,8 @@ public static class ColorMCGui
     {
         string name = RunDir + "lock";
         using var temp = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-        using var file = MemoryMappedFile.CreateFromFile(temp, null, 100, MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, false);
+        using var file = MemoryMappedFile.CreateFromFile(temp, null, 100, 
+            MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, false);
         using var reader = file.CreateViewAccessor();
         reader.Write(0, false);
         while (!App.IsClose)
@@ -178,7 +180,7 @@ public static class ColorMCGui
         var opt = new Win32PlatformOptions();
         if (SystemInfo.IsArm)
         {
-            opt.RenderingMode = new List<Win32RenderingMode>() { Win32RenderingMode.Wgl };
+            opt.RenderingMode = [Win32RenderingMode.Wgl];
         }
         if (config.ShouldRenderOnUIThread != null)
         {
