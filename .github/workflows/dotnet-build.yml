@@ -158,6 +158,10 @@ jobs:
       run: |
         choco install wixtoolset
         dotnet tool install --global wix
+        dotnet new console
+        dotnet add package WixToolset.UI.wixext --version 4.0.2
+        md "%userprofile%\.wix\extensions\wixtoolset.ui.wixext\4.0.2"
+        xcopy "%userprofile%\.nuget\packages\wixtoolset.ui.wixext\4.0.2\wixext4" "%userprofile%\.wix\extensions\wixtoolset.ui.wixext\4.0.2\wixext4\" /S
 
     - name: Build MSI with MSBuild
       working-directory: ./

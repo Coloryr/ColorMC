@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <PackageReference Include="WixSharp-wix4.WPF" Version="2.1.2" />
+    <PackageReference Include="WixToolset.UI.wixext" Version="4.0.4" />
   </ItemGroup>
 
 
