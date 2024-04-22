@@ -73,4 +73,10 @@ public partial class SettingModel
     {
         WebBinding.OpenWeb(WebType.BSD);
     }
+
+    [RelayCommand]
+    public void OpenUrl11() 
+    {
+        WebBinding.OpenWeb(WebType.OpenFrpApi);
+    }
 }

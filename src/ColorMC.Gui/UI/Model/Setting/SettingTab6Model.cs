@@ -183,10 +183,10 @@ public partial class SettingModel
     [RelayCommand]
     public async Task SelectUI()
     {
-        var res = await PathBinding.SelectFile(FileType.UI);
-        if (res != null)
+        var file = await PathBinding.SelectFile(FileType.UI);
+        if (file.Item1 != null)
         {
-            FileUI = res;
+            FileUI = file.Item1;
         }
     }
 
@@ -255,12 +255,12 @@ public partial class SettingModel
     public async Task SelectMusic()
     {
         var file = await PathBinding.SelectFile(FileType.Music);
-        if (file == null)
+        if (file.Item1 == null)
         {
             return;
         }
 
-        Music = file;
+        Music = file.Item1;
     }
 
     public void LoadServer()

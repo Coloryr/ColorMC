@@ -27,14 +27,14 @@ public partial class SettingModel
     public async Task AddJavaZip()
     {
         var file = await PathBinding.SelectFile(FileType.JavaZip);
-        if (file == null)
+        if (file.Item1 == null || file.Item2 == null)
         {
             return;
         }
 
         Model.Progress(App.Lang("SettingWindow.Tab5.Info7"));
         string temp = App.Lang("Gui.Info27");
-        var res = await JavaBinding.AddJavaZip(file, (a, b, c) =>
+        var res = await JavaBinding.AddJavaZip(file.Item1, file.Item2, (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
         });
@@ -91,11 +91,10 @@ public partial class SettingModel
     public async Task SelectJava()
     {
         var file = await PathBinding.SelectFile(FileType.Java);
-
-        if (file != null)
+        if (file.Item1 != null)
         {
-            JavaLocal = file;
-            var info = JavaBinding.GetJavaInfo(file);
+            JavaLocal = file.Item1;
+            var info = JavaBinding.GetJavaInfo(file.Item1);
             if (info != null)
             {
                 JavaName = info.Type + "_" + info.Version;

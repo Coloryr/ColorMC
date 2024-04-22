@@ -301,7 +301,7 @@
     <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.13" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.18" />
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="DialogHost.Avalonia" Version="0.7.7" />
@@ -310,19 +310,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Silk.NET.OpenAL" Version="2.20.0" />
     <PackageReference Include="Silk.NET.SDL" Version="2.20.0" />
-    <PackageReference Include="SkiaSharp" Version="2.88.7" />
+    <PackageReference Include="SkiaSharp" Version="2.88.8" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
     <ProjectReference Include="..\..\X11.Net\X11\X11.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="UI\Controls\Main\JoystickSettingControl.axaml.cs">
-      <DependentUpon>JoystickSettingControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\User\AddUserControl.axaml.cs">
-      <DependentUpon>AddUserControl.axaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>

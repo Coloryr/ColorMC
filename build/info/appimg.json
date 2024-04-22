@@ -5,7 +5,7 @@
                 "cp ./build_out/%deb_name% ~/.cache/deb2appimage/debs/%deb_name%"
             ],
             "name": "colormc",
-            "version": "a%version%",
+            "version": "%version%",
             "deps": "",
             "repoarch": "%arch%",
             "distrorepo": "Ubuntu",

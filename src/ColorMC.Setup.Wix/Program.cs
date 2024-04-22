@@ -57,6 +57,7 @@ namespace ColorMC.Setup.Wix
 
         private static void Build(Dir dir, string file, Platform platform)
         {
+            WixExtension.UI.PreferredVersion = "4.0.4"; // or any other working version
             var project = new ManagedProject("ColorMC",
                         dir,
                         new Dir(@"%ProgramMenu%\ColorMC",

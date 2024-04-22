@@ -66,10 +66,10 @@ public partial class AddGameModel
     [RelayCommand]
     public async Task SelectPack()
     {
-        var res = await PathBinding.SelectFile(FileType.ModPack);
-        if (!string.IsNullOrWhiteSpace(res))
+        var file = await PathBinding.SelectFile(FileType.ModPack);
+        if (file.Item1 != null)
         {
-            ZipLocal = res;
+            ZipLocal = file.Item1;
         }
     }
 

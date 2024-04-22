@@ -41,12 +41,6 @@
                             Classes="top"
                             Command="{Binding OpenUrlOpenFrp}"
                             Content="{setting:Localize AddWindow.Control.Text3}" />
-                        <views:HyperLink
-                            Margin="5,0,0,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            Alias="{setting:Localize NetFrpWindow.Tab5.Text1}"
-                            Command="{Binding OpenUrl1}" />
                     </StackPanel>
                 </WrapPanel>
             </StackPanel>

@@ -7,7 +7,7 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
 using System;
 
-namespace ColorMC.Gui.UI.Windows;
+namespace ColorMC.Gui.UI.Controls;
 
 public partial class HeadControl : UserControl
 {

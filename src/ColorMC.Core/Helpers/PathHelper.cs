@@ -200,7 +200,7 @@ public static class PathHelper
     {
         if (SystemInfo.Os == OsType.Android && local.StartsWith("content://"))
         {
-            return ColorMCCore.PhoneReadFile?.Invoke(local);
+            return ColorMCCore.PhoneReadFile(local);
         }
         if (File.Exists(local))
         {

@@ -15,20 +15,19 @@
         Margin="5,0,5,5"
         Classes="t2">
         <DockPanel>
-            <StackPanel
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Bottom"
-                Orientation="Horizontal">
+            <DockPanel DockPanel.Dock="Bottom">
                 <Button
-                    Width="160"
+                    Width="100"
                     Height="30"
                     Margin="-2"
                     Classes="top"
                     Command="{Binding GoToNext}"
                     Content="{setting:Localize ServerPackWindow.Tab1.Text11}"
+                    DockPanel.Dock="Right"
                     ToolTip.Tip="{setting:Localize ToolTip.Text47}"
                     ToolTip.VerticalOffset="-30" />
-            </StackPanel>
+                <TextBlock Text="{setting:Localize ServerPackWindow.Tab1.Text12}" />
+            </DockPanel>
             <TextBlock
                 Margin="0,0,0,5"
                 DockPanel.Dock="Top"

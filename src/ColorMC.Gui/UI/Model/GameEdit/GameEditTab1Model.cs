@@ -39,7 +39,7 @@ public partial class GameEditModel
     [ObservableProperty]
     private string? _fID;
     [ObservableProperty]
-    private string? _loaderLocal;
+    private string? _loaderInfo;
 
     [ObservableProperty]
     private int _versionType = -1;
@@ -181,16 +181,6 @@ public partial class GameEditModel
             return;
 
         _obj.FID = value;
-        _obj.Save();
-    }
-
-    partial void OnLoaderLocalChanged(string? value)
-    {
-        if (_gameLoad)
-            return;
-
-        _obj.CustomLoader ??= new();
-        _obj.CustomLoader.Local = value;
         _obj.Save();
     }
 
@@ -536,13 +526,26 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task SelectLoader()
     {
-        var res = await PathBinding.SelectFile(FileType.Loader);
-        if (res == null)
+        var file = await PathBinding.SelectFile(FileType.Loader);
+        if (file.Item1 == null)
         {
             return;
         }
 
-        LoaderLocal = res;
+        var res = await GameBinding.SetGameLoader(_obj, file.Item1);
+        if (res.Item1)
+        {
+            ReadCustomLoader();
+        }
+        else
+        {
+            Model.Show(res.Item2!);
+        }
+    }
+
+    private async void ReadCustomLoader()
+    {
+        LoaderInfo = await GameBinding.GetGameLoader(_obj);
     }
 
     private async void GameVersionLoad()
@@ -690,7 +693,12 @@ public partial class GameEditModel
         Group = _obj.GroupName;
         FID = _obj.FID;
         PID = _obj.PID;
-        LoaderLocal = _obj.CustomLoader?.Local;
+
+        if (_obj.Loader == Loaders.Custom)
+        {
+            ReadCustomLoader();
+        }
+
         OffLib = _obj.CustomLoader?.OffLib ?? false;
 
         GameRun = BaseBinding.IsGameRun(_obj);

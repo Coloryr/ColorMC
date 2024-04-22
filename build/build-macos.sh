@@ -1,21 +1,27 @@
 #!/bin/bash
 
 version=""
+main_version=""
 
 for line in `cat ./build/version`
 do
     version=$line
 done
 
-build_osx ()
+for line in `cat ./build/main_version`
+do
+    main_version=$line
+done
+
+build_osx()
 {
-    echo "ColorMC build $1 version: $version"
+    echo "build colormc-$main_version$version-$1-macos.zip"
 
     mkdir ./build_out
 
     base=./src/build_out/$1-dotnet
     base_dir="$base/ColorMC.app/Contents"
-    zip_name="colormc-a$version-$1.zip"
+    zip_name="colormc-$main_version$version-$1.zip"
 
     dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1
 
@@ -44,7 +50,7 @@ build_osx ()
     zip -r $zip_name ./ColorMC.app
     mv $zip_name ../../../build_out/$zip_name
 
-    echo "ColorMC $1 build done"
+    echo "colormc-$main_version$version-$1-macos.zip build done"
 }
 
 build_osx osx-x64

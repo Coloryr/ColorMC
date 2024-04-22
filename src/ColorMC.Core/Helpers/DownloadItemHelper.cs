@@ -879,10 +879,22 @@ public static class DownloadItemHelper
         return (GetDownloadState.Init, null);
     }
 
-    public static async Task<ConcurrentBag<DownloadItemObj>?>
-        DecodeLoaderJarAsync(this GameSettingObj obj, CancellationToken cancel)
+    public static Task<(ConcurrentBag<DownloadItemObj>?, string? name)>
+       DecodeLoaderJarAsync(GameSettingObj obj)
     {
-        using var zFile = new ZipFile(obj.CustomLoader!.Local);
+        return DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), CancellationToken.None);
+    }
+
+    public static Task<(ConcurrentBag<DownloadItemObj>?, string? name)>
+        DecodeLoaderJarAsync(GameSettingObj obj, string path)
+    {
+        return DecodeLoaderJarAsync(obj, path, CancellationToken.None);
+    }
+
+    public static async Task<(ConcurrentBag<DownloadItemObj>?, string? name)>
+        DecodeLoaderJarAsync(GameSettingObj obj, string path, CancellationToken cancel)
+    {
+        using var zFile = new ZipFile(path);
         using var stream1 = new MemoryStream();
         using var stream2 = new MemoryStream();
         var find1 = false;
@@ -905,12 +917,12 @@ public static class DownloadItemHelper
 
         if (!find1 || !find2)
         {
-            return null;
+            return (null, null);
         }
 
         var list = new ConcurrentBag<DownloadItemObj>();
 
-        async Task Unpack(ForgeLaunchObj obj1)
+        async Task Unpack(ForgeInstallObj obj1)
         {
             foreach (var item in obj1.libraries)
             {
@@ -969,36 +981,46 @@ public static class DownloadItemHelper
             }
         }
 
+        string name = "";
+
         try
         {
             byte[] array1 = stream2.ToArray();
             var data = Encoding.UTF8.GetString(array1);
-            var obj1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
+            var obj1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
 
             await Unpack(obj1);
 
             if (cancel.IsCancellationRequested)
             {
-                return null;
+                return (null, null);
             }
 
             array1 = stream1.ToArray();
             data = Encoding.UTF8.GetString(array1);
-            obj1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
+            var obj2 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
 
             await Unpack(obj1);
 
-            if (!LibrariesPath.CustomLoader.TryAdd(obj.CustomLoader!.Local!, obj1))
+            name = obj1.version;
+            if (!obj1.version.StartsWith(obj1.profile))
             {
-                LibrariesPath.CustomLoader[obj.CustomLoader!.Local!] = obj1;
+                name = $"{obj1.profile}-{obj1.version}";
             }
 
+            obj.CustomLoader ??= new();
+
+            VersionPath.AddGame(new CustomLoaderObj()
+            {
+                Type = CustomLoaderType.ForgeLaunch,
+                Loader = obj2
+            }, obj.UUID);
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error3"), e);
         }
 
-        return list;
+        return (list, name);
     }
 }

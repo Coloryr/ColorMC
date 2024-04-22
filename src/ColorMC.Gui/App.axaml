@@ -6,6 +6,7 @@
     <Application.Styles>
         <FluentTheme />
         <dialog:DialogHostStyles />
+        <StyleInclude Source="/Style/Svg.axaml" />
         <StyleInclude Source="/Style/Button.axaml" />
         <StyleInclude Source="/Style/RadioButton.axaml" />
         <StyleInclude Source="/Style/Border.axaml" />

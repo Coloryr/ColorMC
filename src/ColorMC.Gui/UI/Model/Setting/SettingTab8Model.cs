@@ -292,12 +292,12 @@ public partial class SettingModel
     public async Task ImportInputConfig()
     {
         var file = await PathBinding.SelectFile(FileType.InputConfig);
-        if (file == null)
+        if (file.Item1 == null)
         {
             return;
         }
 
-        var obj = InputConfigUtils.Load(file);
+        var obj = InputConfigUtils.Load(file.Item1);
         if (obj == null)
         {
             Model.Show(App.Lang("SettingWindow.Tab8.Error2"));

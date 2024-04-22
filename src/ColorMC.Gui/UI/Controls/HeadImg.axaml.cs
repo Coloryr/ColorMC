@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 
-namespace ColorMC.Gui.UI.Windows;
+namespace ColorMC.Gui.UI.Controls;
 
 public partial class HeadImg : Panel
 {

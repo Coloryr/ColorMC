@@ -123,11 +123,10 @@
                         </StackPanel>
                     </WrapPanel>
                     <StackPanel IsEnabled="{Binding CustomLoader}">
-                        <TextBox
-                            Margin="0,0,0,5"
-                            Classes="input1"
-                            Text="{Binding LoaderLocal}"
-                            Watermark="{setting:Localize AddGameWindow.Tab1.Text15}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="0,0,0,5" Text="{setting:Localize GameEditWindow.Tab1.Text15}" />
+                            <TextBlock Margin="0,0,0,5" Text="{Binding LoaderInfo}" />
+                        </StackPanel>
                         <Panel>
                             <ToggleSwitch
                                 IsChecked="{Binding OffLib}"

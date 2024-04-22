@@ -13,8 +13,6 @@ public static class LibrariesPath
     public static string BaseDir { get; private set; }
     public static string NativeDir { get; private set; }
 
-    public readonly static Dictionary<string, object> CustomLoader = [];
-
     /// <summary>
     /// 初始化
     /// </summary>
@@ -73,9 +71,9 @@ public static class LibrariesPath
 
     public static List<(string Name, string Local)> GetCustomLoaderLibs(this GameSettingObj obj)
     {
-        if (CustomLoader.TryGetValue(obj.CustomLoader!.Local!, out var obj1))
+        if (VersionPath.GetCustomLoaderObj(obj.UUID) is { } obj1)
         {
-            if (obj1 is ForgeLaunchObj obj2)
+            if (obj1.Loader is ForgeLaunchObj obj2)
             {
                 var list = new List<(string, string)>();
                 foreach (var item in obj2.libraries)
@@ -93,9 +91,9 @@ public static class LibrariesPath
 
     public static List<string> GetLoaderGameArg(this GameSettingObj obj)
     {
-        if (CustomLoader.TryGetValue(obj.CustomLoader!.Local!, out var obj1))
+        if (VersionPath.GetCustomLoaderObj(obj.UUID) is { } obj1)
         {
-            if (obj1 is ForgeLaunchObj obj2)
+            if (obj1.Loader is ForgeLaunchObj obj2)
             {
                 return new(obj2.minecraftArguments.Split(" "));
             }
@@ -106,9 +104,9 @@ public static class LibrariesPath
 
     public static string GetLoaderMainClass(this GameSettingObj obj)
     {
-        if (CustomLoader.TryGetValue(obj.CustomLoader!.Local!, out var obj1))
+        if (VersionPath.GetCustomLoaderObj(obj.UUID) is { } obj1)
         {
-            if (obj1 is ForgeLaunchObj obj2)
+            if (obj1.Loader is ForgeLaunchObj obj2)
             {
                 return obj2.mainClass;
             }

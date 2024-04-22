@@ -425,9 +425,9 @@ public partial class GameEditModel
     public async Task OpenJava()
     {
         var file = await PathBinding.SelectFile(FileType.Java);
-        if (file != null)
+        if (file.Item1 != null)
         {
-            JvmLocal = file;
+            JvmLocal = file.Item1;
         }
     }
 

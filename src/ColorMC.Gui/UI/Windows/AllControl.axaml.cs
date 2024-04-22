@@ -10,6 +10,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.Collections.Generic;
 using System.ComponentModel;

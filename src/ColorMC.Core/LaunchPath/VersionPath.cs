@@ -22,13 +22,14 @@ public static class VersionPath
     public const string Name4 = "neoforged";
 
     //版本缓存
-    private readonly static Dictionary<string, GameArgObj> s_gameArgs = new();
-    private readonly static Dictionary<string, ForgeInstallObj> s_forgeInstalls = new();
-    private readonly static Dictionary<string, ForgeInstallObj> s_neoForgeInstalls = new();
-    private readonly static Dictionary<string, ForgeLaunchObj> s_forgeLaunchs = new();
-    private readonly static Dictionary<string, ForgeLaunchObj> s_neoForgeLaunchs = new();
-    private readonly static Dictionary<string, FabricLoaderObj> s_fabricLoaders = new();
-    private readonly static Dictionary<string, QuiltLoaderObj> s_quiltLoaders = new();
+    private readonly static Dictionary<string, GameArgObj> s_gameArgs = [];
+    private readonly static Dictionary<string, ForgeInstallObj> s_forgeInstalls = [];
+    private readonly static Dictionary<string, ForgeInstallObj> s_neoForgeInstalls = [];
+    private readonly static Dictionary<string, ForgeLaunchObj> s_forgeLaunchs = [];
+    private readonly static Dictionary<string, ForgeLaunchObj> s_neoForgeLaunchs = [];
+    private readonly static Dictionary<string, FabricLoaderObj> s_fabricLoaders = [];
+    private readonly static Dictionary<string, QuiltLoaderObj> s_quiltLoaders = [];
+    private readonly static Dictionary<string, CustomLoaderObj> s_customLoader = [];
 
     private static VersionObj? _version;
 
@@ -161,7 +162,10 @@ public static class VersionPath
         PathHelper.WriteText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"), array);
 
         var key = $"{mc}-{version}";
-        s_fabricLoaders.Add(key, obj);
+        if (!s_fabricLoaders.TryAdd(key, obj))
+        {
+            s_fabricLoaders[key] = obj;
+        }
     }
 
     /// <summary>
@@ -189,11 +193,17 @@ public static class VersionPath
         var key = $"{mc}-{version}";
         if (neo)
         {
-            s_neoForgeLaunchs.Add(key, obj);
+            if (!s_neoForgeLaunchs.TryAdd(key, obj))
+            {
+                s_neoForgeLaunchs[key] = obj;
+            }
         }
         else
         {
-            s_forgeLaunchs.Add(key, obj);
+            if (!s_forgeLaunchs.TryAdd(key, obj))
+            {
+                s_forgeLaunchs[key] = obj;
+            }
         }
     }
 
@@ -223,11 +233,17 @@ public static class VersionPath
         var key = $"{mc}-{version}";
         if (neo)
         {
-            s_neoForgeInstalls.Add(key, obj);
+            if (!s_neoForgeInstalls.TryAdd(key, obj))
+            {
+                s_neoForgeInstalls[key] = obj;
+            }
         }
         else
         {
-            s_forgeInstalls.Add(key, obj);
+            if (!s_forgeInstalls.TryAdd(key, obj))
+            {
+                s_forgeInstalls[key] = obj;
+            }
         }
     }
 
@@ -243,7 +259,23 @@ public static class VersionPath
         PathHelper.WriteText(Path.GetFullPath($"{QuiltDir}/{obj.id}.json"), data);
 
         var key = $"{mc}-{version}";
-        s_quiltLoaders.Add(key, obj);
+        if (!s_quiltLoaders.TryAdd(key, obj))
+        {
+            s_quiltLoaders[key] = obj;
+        }
+    }
+
+    /// <summary>
+    /// 添加自定义加载器信息
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="uuid"></param>
+    public static void AddGame(CustomLoaderObj obj, string uuid)
+    {
+        if (!s_customLoader.TryAdd(uuid, obj))
+        {
+            s_customLoader[uuid] = obj;
+        }
     }
 
     /// <summary>
@@ -497,5 +529,20 @@ public static class VersionPath
         var obj = JsonConvert.DeserializeObject<QuiltLoaderObj>(PathHelper.ReadText(file)!)!;
         s_quiltLoaders.Add(key, obj);
         return obj;
+    }
+
+    /// <summary>
+    /// 获取自定义加载器数据
+    /// </summary>
+    /// <param name="uuid"></param>
+    /// <returns></returns>
+    public static CustomLoaderObj? GetCustomLoaderObj(string uuid)
+    {
+        if (s_customLoader.TryGetValue(uuid, out var temp))
+        {
+            return temp;
+        }
+
+        return null;
     }
 }
