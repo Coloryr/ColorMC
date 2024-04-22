@@ -11,7 +11,7 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    xmlns:windows="clr-namespace:ColorMC.Gui.UI.Windows"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:BaseModel"
@@ -22,7 +22,7 @@
     </Design.DataContext>
 
     <DockPanel>
-        <windows:HeadControl
+        <view:HeadControl
             Name="Head"
             DockPanel.Dock="Top"
             IsVisible="{Binding EnableHead}" />
@@ -60,8 +60,8 @@
                         <TextBlock
                             Name="Label1"
                             HorizontalAlignment="Center"
-                            Text="test"
-                            FontSize="30" />
+                            FontSize="30"
+                            Text="test" />
                     </Panel>
                 </Panel>
             </dialog:DialogHost>

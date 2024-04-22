@@ -1,13 +1,13 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.User;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class UserFlyout
 {
-    private readonly UserDisplayObj _obj;
+    private readonly UserDisplayModel _obj;
     private readonly UsersControlModel _model;
     public UserFlyout(Control con, UsersControlModel model)
     {

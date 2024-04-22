@@ -21,7 +21,7 @@ public partial class MainControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => "ColorMC";
+    public string Title => "ColorMC2";
 
     public readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 

@@ -110,13 +110,13 @@ public partial class AddGameModel
     [RelayCommand]
     public async Task SelectLoader()
     {
-        var res = await PathBinding.SelectFile(FileType.Loader);
-        if (res == null)
+        var file = await PathBinding.SelectFile(FileType.Loader);
+        if (file.Item1 == null)
         {
             return;
         }
 
-        LoaderLocal = res;
+        LoaderLocal = file.Item1;
     }
 
     [RelayCommand]
@@ -360,7 +360,6 @@ public partial class AddGameModel
             GroupName = Group,
             CustomLoader = new()
             {
-                Local = LoaderLocal,
                 OffLib = OffLib
             }
         };
@@ -372,6 +371,16 @@ public partial class AddGameModel
         }
         else
         {
+            if (game.Loader == Loaders.Custom && !string.IsNullOrWhiteSpace(LoaderLocal))
+            {
+                var res1 = await GameBinding.SetGameLoader(game, LoaderLocal);
+                if (!res1.Item1)
+                {
+                    Model.ShowOk(App.Lang("AddGameWindow.Tab1.Error18"), Done);
+                    return;
+                }
+            }
+
             Done();
         }
     }

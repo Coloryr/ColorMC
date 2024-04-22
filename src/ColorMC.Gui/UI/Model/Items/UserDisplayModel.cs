@@ -1,11 +1,11 @@
 using ColorMC.Core.Objs;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 账户显示
 /// </summary>
-public record UserDisplayObj
+public record UserDisplayModel
 {
     /// <summary>
     /// 是否启用

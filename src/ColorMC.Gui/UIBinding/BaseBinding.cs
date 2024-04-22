@@ -843,7 +843,7 @@ public static class BaseBinding
 
         try
         {
-            App.ShowCustom(file, false);
+            App.ShowCustom(file, true);
             App.CustomWindow?.Load1();
         }
         catch (Exception ex)

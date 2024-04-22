@@ -16,6 +16,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Animations;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Count;
 using ColorMC.Gui.UI.Controls.Custom;
@@ -362,7 +363,7 @@ public partial class App : Application
 
                 if (ok)
                 {
-                    ShowCustom(file, true);
+                    ShowCustom(file, false);
                 }
             }
             catch (Exception e)
@@ -380,12 +381,26 @@ public partial class App : Application
         }
     }
 
-    public static void AWindow(IUserControl con, bool isroot = false)
+    public static void AWindow(IUserControl con, bool newwindow = false)
     {
         if (ConfigBinding.WindowMode())
         {
-            con.SetBaseModel(AllWindow!.Model);
-            AllWindow.Add(con);
+            if (newwindow)
+            {
+                if (SystemInfo.Os == OsType.Android)
+                {
+                    return;
+                }
+
+                var win = new SelfBaseWindow(con);
+                con.SetBaseModel(win.Model);
+                win.Show();
+            }
+            else
+            {
+                con.SetBaseModel(AllWindow!.Model);
+                AllWindow.Add(con);
+            }
         }
         else
         {
@@ -396,7 +411,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowCustom(string obj, bool isroot)
+    public static void ShowCustom(string obj, bool newwindow)
     {
         if (CustomWindow != null)
         {
@@ -405,7 +420,7 @@ public partial class App : Application
         else
         {
             CustomWindow = new();
-            AWindow(CustomWindow, isroot);
+            AWindow(CustomWindow, newwindow);
         }
 
         CustomWindow.Load(obj);
@@ -473,7 +488,7 @@ public partial class App : Application
         else
         {
             MainWindow = new();
-            AWindow(MainWindow, true);
+            AWindow(MainWindow);
         }
     }
 

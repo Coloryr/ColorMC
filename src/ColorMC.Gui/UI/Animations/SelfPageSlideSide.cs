@@ -75,6 +75,18 @@ public class SelfPageSlideSide
                             }
                         },
                         Cue = new Cue(1d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter
+                            {
+                                Property = Visual.IsVisibleProperty,
+                                Value = false
+                            }
+                        },
+                        Cue = new Cue(1d)
                     }
                 },
                 Duration = Duration
@@ -85,6 +97,7 @@ public class SelfPageSlideSide
         if (to != null)
         {
             double end = to.Bounds.Width;
+            to.IsVisible = true;
             var animation = new Animation
             {
                 FillMode = FillMode.Forward,

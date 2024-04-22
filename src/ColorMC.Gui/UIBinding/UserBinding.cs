@@ -300,9 +300,9 @@ public static class UserBinding
         {
             case AuthType.Offline:
                 var file = await PathBinding.SelectFile(FileType.Head);
-                if (file != null)
+                if (file.Item1 != null)
                 {
-                    obj.SaveSkin(file);
+                    obj.SaveSkin(file.Item1);
                 }
                 break;
             case AuthType.OAuth:

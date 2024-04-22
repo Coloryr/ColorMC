@@ -31,12 +31,6 @@ public partial class NetFrpModel
     }
 
     [RelayCommand]
-    public void OpenUrl1()
-    {
-        WebBinding.OpenWeb(WebType.OpenFrpApi);
-    }
-
-    [RelayCommand]
     public async Task GetChannelOpenFrp()
     {
         IsOpenFrpEmpty = true;

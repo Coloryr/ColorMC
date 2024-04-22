@@ -1027,7 +1027,7 @@ public static class Launch
         //版本号检测
         if (string.IsNullOrWhiteSpace(obj.Version)
             || (obj.Loader != Loaders.Normal && string.IsNullOrWhiteSpace(obj.LoaderVersion))
-            || (obj.Loader == Loaders.Custom && string.IsNullOrWhiteSpace(obj.CustomLoader?.Local)))
+            || (obj.Loader == Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
         {
             throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
         }
@@ -1282,7 +1282,7 @@ public static class Launch
                             arglist.Add(args[a].Trim());
                         }
 
-                        var res1 = ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1, obj.GetGamePath(), arglist, env);
+                        var res1 = ColorMCCore.PhoneJvmRun(obj, jvm1, obj.GetGamePath(), arglist, env);
                         res1.StartInfo.RedirectStandardError = true;
                         res1.StartInfo.RedirectStandardInput = true;
                         res1.StartInfo.RedirectStandardOutput = true;
@@ -1350,7 +1350,7 @@ public static class Launch
                     update2(obj, LaunchState.InstallForge);
                     var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
                             LanguageHelper.Get("Core.Launch.Error9"));
-                    using var res1 = ColorMCCore.PhoneJvmRun.Invoke(obj, jvm1,
+                    using var res1 = ColorMCCore.PhoneJvmRun(obj, jvm1,
                         obj.GetGamePath(), obj.MakeInstallForgeArg(v2), env);
                     res1.StartInfo.RedirectStandardError = true;
                     res1.StartInfo.RedirectStandardInput = true;
@@ -1387,7 +1387,7 @@ public static class Launch
 
         if (SystemInfo.Os == OsType.Android)
         {
-            process = ColorMCCore.PhoneGameLaunch?.Invoke(obj, jvm!, arg, env);
+            process = ColorMCCore.PhoneGameLaunch(obj, jvm!, arg, env);
         }
         else
         {

@@ -2,9 +2,14 @@
 setlocal enabledelayedexpansion
 
 set "version="
+set "main_version="
 
 for /f %%i in ('type .\build\version') do (
     set "version=%%i"
+)
+
+for /f %%i in ('type .\build\main_version') do (
+    set "main_version=%%i"
 )
 
 mkdir .\build_out
@@ -18,7 +23,7 @@ call :build_win_aot win-arm64
 goto :eof
 
 :build_win
-echo ColorMC build %1 version: %version%
+echo build colormc-%main_version%%version%-%1.zip
 
 dotnet publish .\src\ColorMC.Launcher -p:PublishProfile=%1
 
@@ -37,11 +42,11 @@ for %%f in (%files%) do (
 
 @REM cd ..\..\..\
 
-echo ColorMC %1 build done
+echo colormc-%main_version%%version%-%1.zip build done
 goto :eof
 
 :build_win_aot
-echo ColorMC build %1-aot version: %version%
+echo build colormc-%main_version%%version%-%1-aot.zip
 
 dotnet publish .\src\ColorMC.Launcher -p:PublishProfile=%1-aot
 
@@ -60,5 +65,5 @@ for %%f in (%files%) do (
 
 @REM cd ..\..\..\
 
-echo ColorMC %1-aot build done
+echo colormc-%main_version%%version%-%1-aot.zip build done
 goto :eof

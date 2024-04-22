@@ -1,4 +1,6 @@
-﻿using DotNetty.Buffers;
+﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using DotNetty.Buffers;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
@@ -84,7 +86,16 @@ public static class NettyServer
                     channel.Pipeline.AddLast("colormc", new EchoServerHandler());
                 }));
 
-            int port = GetFirstAvailablePort();
+            int port = 0;
+
+            if (SystemInfo.Os == OsType.Android)
+            {
+                port = ColorMCCore.GetFreePort();
+            }
+            else
+            {
+                port = GetFirstAvailablePort();
+            }
             s_channel = await s_bootstrap.BindAsync(port);
             ColorMCCore.Stop += Stop;
 

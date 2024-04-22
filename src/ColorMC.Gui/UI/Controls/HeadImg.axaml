@@ -1,5 +1,5 @@
 <Panel
-    x:Class="ColorMC.Gui.UI.Windows.HeadImg"
+    x:Class="ColorMC.Gui.UI.Controls.HeadImg"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
