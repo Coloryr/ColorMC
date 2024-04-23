@@ -58,6 +58,20 @@ public partial class GameEditModel
     private bool _customLoader;
     [ObservableProperty]
     private bool _offLib;
+    [ObservableProperty]
+    private bool _isLoad;
+
+    partial void OnIsLoadChanged(bool value)
+    {
+        if (value)
+        {
+            Model.Work();
+        }
+        else
+        {
+            Model.NoWork();
+        }
+    }
 
     partial void OnLangChanged(int value)
     {
@@ -349,9 +363,11 @@ public partial class GameEditModel
                 LoaderVersionList.Clear();
                 break;
             case Loaders.Forge:
-                Model.Progress(App.Lang("AddGameWindow.Tab1.Info1"));
+                IsLoad = true;
+                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info1");
                 var list = await WebBinding.GetForgeVersion(_obj.Version);
-                Model.ProgressClose();
+                IsLoad = false;
+                Model.Title1 = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -363,9 +379,11 @@ public partial class GameEditModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.NeoForge:
-                Model.Progress(App.Lang("AddGameWindow.Tab1.Info1"));
+                IsLoad = true;
+                Model.Title1 =  App.Lang("AddGameWindow.Tab1.Info19");
                 list = await WebBinding.GetNeoForgeVersion(_obj.Version);
-                Model.ProgressClose();
+                IsLoad = false;
+                Model.Title1 = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -377,9 +395,11 @@ public partial class GameEditModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.Fabric:
-                Model.Progress(App.Lang("AddGameWindow.Tab1.Info2"));
+                IsLoad = true;
+                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info2");
                 list = await WebBinding.GetFabricVersion(_obj.Version);
-                Model.ProgressClose();
+                IsLoad = false;
+                Model.Title1 = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -391,9 +411,11 @@ public partial class GameEditModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.Quilt:
-                Model.Progress(App.Lang("AddGameWindow.Tab1.Info3"));
+                IsLoad = true;
+                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info3");
                 list = await WebBinding.GetQuiltVersion(_obj.Version);
-                Model.ProgressClose();
+                IsLoad = false;
+                Model.Title1 = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -405,9 +427,11 @@ public partial class GameEditModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.OptiFine:
-                Model.Progress(App.Lang("AddGameWindow.Tab1.Info16"));
+                IsLoad = true;
+                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info16");
                 list = await WebBinding.GetOptifineVersion(_obj.Version);
-                Model.ProgressClose();
+                IsLoad = false;
+                Model.Title1 = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -435,7 +459,9 @@ public partial class GameEditModel
         LoaderTypeList.Add(Loaders.Normal.GetName());
         _loaderTypeList.Add(Loaders.Custom);
         LoaderTypeList.Add(Loaders.Custom.GetName());
-        Model.Progress(App.Lang("AddGameWindow.Tab1.Info4"));
+
+        IsLoad = true;
+        Model.Title1 = App.Lang("AddGameWindow.Tab1.Info4");
 
         var loaders = await GameBinding.GetSupportLoader(GameVersion);
         foreach (var item in loaders)
@@ -444,7 +470,8 @@ public partial class GameEditModel
             LoaderTypeList.Add(item.GetName());
         }
 
-        Model.ProgressClose();
+        IsLoad = false;
+        Model.Title1 = "";
 
         _gameLoad = false;
     }
@@ -457,9 +484,11 @@ public partial class GameEditModel
         _loaderTypeList.Clear();
         LoaderTypeList.Clear();
         EnableLoader = false;
-        Model.Progress(App.Lang("GameEditWindow.Info1"));
+        IsLoad = true;
+        Model.Title1 = App.Lang("GameEditWindow.Info1");
         var res = await GameBinding.ReloadVersion();
-        Model.ProgressClose();
+        IsLoad = false;
+        Model.Title1 = "";
         if (!res)
         {
             Model.Show(App.Lang("GameEditWindow.Error1"));
@@ -592,7 +621,8 @@ public partial class GameEditModel
             return;
         }
 
-        Model.Progress(App.Lang("GameEditWindow.Tab1.Info9"));
+        IsLoad = true;
+        Model.Title1 = App.Lang("GameEditWindow.Tab1.Info9");
         var list = await Task.Run(() =>
         {
             var version = VersionPath.GetVersion(_obj.Version);
@@ -624,7 +654,8 @@ public partial class GameEditModel
             }
             a++;
         }
-        Model.ProgressClose();
+        IsLoad = false;
+        Model.Title1 = "";
     }
 
     public async void GameLoad()

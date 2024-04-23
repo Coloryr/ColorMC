@@ -173,19 +173,22 @@ public partial class BaseModel : ObservableObject
         }
     }
 
-    private void Work()
+    public void Work()
     {
-        HeadBackDisplay = false;
+        if (!_listBack.IsEmpty)
+        {
+            HeadBackEnable = false;
+        }
         HeadCloseDisplay = false;
         _isWork = true;
     }
 
-    private void NoWork()
+    public void NoWork()
     {
         _isWork = false;
         if (SystemInfo.Os != OsType.Android && !_listBack.IsEmpty)
         {
-            HeadBackDisplay = true;
+            HeadBackEnable = true;
         }
         HeadCloseDisplay = true;
     }

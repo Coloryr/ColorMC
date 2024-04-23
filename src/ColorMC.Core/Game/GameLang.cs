@@ -26,22 +26,55 @@ public static class GameLang
             {
                 if (item.Key.StartsWith(Name1) && AssetsPath.ReadAsset(item.Value.hash) is { } str)
                 {
-                    try
+                    if (str.StartsWith('{'))
                     {
-                        var data = JsonConvert.DeserializeObject<LangObj>(str)!;
-                        list.Add(item.Key.Replace(Name1, "").Replace(".json", ""),
-                                data.Name + "-" + data.Region);
-                    }
-                    catch
-                    {
+                        try
+                        {
+                            var data = JsonConvert.DeserializeObject<LangObj>(str)!;
+                            list.Add(item.Key.Replace(Name1, "").Replace(".json", ""),
+                                    data.Name + "-" + data.Region);
+                        }
+                        catch
+                        {
 
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var temp1 = str.Split("\n");
+                            string? name = null, region = null;
+                            foreach (var item1 in temp1)
+                            {
+                                if (item1.StartsWith("language.name="))
+                                {
+                                    name = item1[14..];
+                                }
+                                else if (item1.StartsWith("language.region="))
+                                {
+                                    region = item1[16..];
+                                }
+                                if (name != null && region != null)
+                                {
+                                    break;
+                                }
+                            }
+
+                            list.Add(item.Key.Replace(Name1, "").Replace(".lang", ""),
+                                       (name ?? "") + "-" + (region ?? ""));
+                        }
+                        catch
+                        { 
+                            
+                        }
                     }
                 }
             }
         }
 
-        list.TryAdd("zh_cn", "简体中文");
-        list.TryAdd("en_us", "English");
+        list.TryAdd("zh_cn", "简体中文-中国大陆");
+        list.TryAdd("en_us", "English-United States");
 
         return list;
     }
