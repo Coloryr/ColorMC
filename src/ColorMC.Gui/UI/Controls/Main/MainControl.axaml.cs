@@ -301,6 +301,14 @@ public partial class MainControl : UserControl, IUserControl
         model.L2dPos1 = (VerticalAlignment)((config.Pos / 3) + 1);
     }
 
+    public void ChangeLive2DMode()
+    {
+        var config = GuiConfigUtils.Config.Live2D;
+        var model = (DataContext as MainModel)!;
+
+        model.LowFps = config.LowFps;
+    }
+
     public void ShowMessage(string message)
     {
         (DataContext as MainModel)!.ShowMessage(message);
