@@ -76,6 +76,8 @@ public partial class SettingModel
     private bool _enablePicRadius;
     [ObservableProperty]
     private bool _enableBorderRadius;
+    [ObservableProperty]
+    private bool _lowFps;
 
     [ObservableProperty]
     private LanguageType _language;
@@ -111,6 +113,15 @@ public partial class SettingModel
     private string _live2DCoreState;
 
     private bool _load = true;
+
+
+    partial void OnLowFpsChanged(bool value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetLive2DMode(value);
+    }
 
     partial void OnL2dPosChanged(int value)
     {
@@ -575,6 +586,7 @@ public partial class SettingModel
             L2dWidth = con.Live2D.Width;
             EnableLive2D = con.Live2D.Enable;
             L2dPos = con.Live2D.Pos;
+            LowFps = con.Live2D.LowFps;
         }
         if (config.Item1 is { } con1)
         {

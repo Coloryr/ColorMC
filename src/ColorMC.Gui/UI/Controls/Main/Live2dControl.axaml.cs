@@ -101,6 +101,11 @@ public partial class Live2dControl : UserControl
                 _renderTimer.Pause = false;
             }
         }
+        else if (e.PropertyName == "LowFps")
+        {
+            var model = (sender as MainModel)!;
+            _renderTimer.LowFps = model.LowFps;
+        }
     }
 
     private async void ShowMessage()

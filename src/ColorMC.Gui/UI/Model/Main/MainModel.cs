@@ -101,6 +101,8 @@ public partial class MainModel : TopModel, IMainTop
     private string _gameSearchText;
     [ObservableProperty]
     private bool _gameSearch;
+    [ObservableProperty]
+    private bool _lowFps;
 
     private bool _isNewUpdate;
     private string _updateStr;
