@@ -1,6 +1,8 @@
+using Avalonia.Threading;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Model.Skin;
+using System;
 using System.Numerics;
 
 namespace ColorMC.Gui.UI.Animations;
@@ -12,6 +14,7 @@ public class SkinAnimation
 {
     private int _frame = 0;
     private readonly SkinRender _render;
+    private bool _close = false;
 
     public bool Run { get; set; }
 
@@ -24,12 +27,20 @@ public class SkinAnimation
         _render = render;
 
         Arm.X = 40;
+
+        DispatcherTimer.Run(Tick, TimeSpan.FromMilliseconds(20));
+    }
+
+    public void Close()
+    {
+        Run = false;
+        _close = true;
     }
 
     /// <summary>
     /// 进行动画演算
     /// </summary>
-    public void Tick()
+    private bool Tick()
     {
         if (Run)
         {
@@ -81,5 +92,7 @@ public class SkinAnimation
                 }
             }
         }
+
+        return !_close;
     }
 }

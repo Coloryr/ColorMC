@@ -804,8 +804,6 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
     protected override unsafe void OnOpenGlRender(GlInterface gl, int fb)
     {
-        _skina.Tick();
-
         var model = (DataContext as SkinModel)!;
         if (_switchSkin)
         {
@@ -871,7 +869,6 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
             _rotXY.Y = 0;
         }
 
-
         var modelMat = _last
                     * Matrix4x4.CreateTranslation(new(_xy.X, _xy.Y, 0))
                     * Matrix4x4.CreateScale(_dis);
@@ -936,7 +933,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
     protected override void OnOpenGlDeinit(GlInterface gl)
     {
-        _skina.Run = false;
+        _skina.Close();
 
         // Unbind everything
         gl.BindBuffer(GlConsts.GL_ARRAY_BUFFER, 0);
