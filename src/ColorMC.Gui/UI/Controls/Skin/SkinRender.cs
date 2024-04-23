@@ -45,6 +45,12 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
     private int _fragmentShader;
     private int _shaderProgram;
 
+    private int _colorRenderBuffer;
+    private int _depthRenderBuffer;
+    private int _frameBufferObj;
+
+    private int _width, _height;
+
     private readonly ModelVAO _normalVAO = new();
     private readonly ModelVAO _topVAO = new();
 
@@ -55,6 +61,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
     private delegate void GlFunc3(float v1);
     private delegate void GlFunc4(bool v1);
     private delegate void GlFunc6(int v1, float v2, float v3, float v4);
+    private delegate void GlFunc7(int v1, int v2, int v3, int v4, int v5);
 
     private GlFunc2 glDepthFunc;
     private GlFunc1 glBlendFunc;
@@ -63,6 +70,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
     private GlFunc2 glDisableVertexAttribArray;
     private GlFunc6 glUniform3f;
     private GlFunc2 glCullFace;
+    private GlFunc7 glRenderbufferStorageMultisample;
 
     public SkinRender()
     {
@@ -203,6 +211,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         glDisable = Marshal.GetDelegateForFunctionPointer<GlFunc2>(gl.GetProcAddress("glDisable"));
         glDisableVertexAttribArray = Marshal.GetDelegateForFunctionPointer<GlFunc2>(gl.GetProcAddress("glDisableVertexAttribArray"));
         glUniform3f = Marshal.GetDelegateForFunctionPointer<GlFunc6>(gl.GetProcAddress("glUniform3f"));
+        glRenderbufferStorageMultisample = Marshal.GetDelegateForFunctionPointer<GlFunc7>(gl.GetProcAddress("glRenderbufferStorageMultisample"));
 
         gl.ClearColor(0, 0, 0, 1);
         //GL_BLEND
@@ -261,6 +270,55 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         model.SkinLoadDone();
 
         model.IsLoad = true;
+    }
+
+    private void InitFrameBuffer(GlInterface gl)
+    {
+        _colorRenderBuffer = gl.GenRenderbuffer();
+        gl.BindRenderbuffer(GlConsts.GL_RENDERBUFFER, _colorRenderBuffer);
+        glRenderbufferStorageMultisample(GlConsts.GL_RENDERBUFFER, 8, GlConsts.GL_RGBA8, _width, _height);
+
+        _depthRenderBuffer = gl.GenRenderbuffer();
+        gl.BindRenderbuffer(GlConsts.GL_RENDERBUFFER, _depthRenderBuffer);
+        //GlConsts.GL_DEPTH_COMPONENT24
+        glRenderbufferStorageMultisample(GlConsts.GL_RENDERBUFFER, 8, 0x81A6, _width, _height);
+
+        _frameBufferObj = gl.GenFramebuffer();
+        gl.BindFramebuffer(GlConsts.GL_FRAMEBUFFER, _frameBufferObj);
+
+        gl.FramebufferRenderbuffer(GlConsts.GL_FRAMEBUFFER, 
+            GlConsts.GL_COLOR_ATTACHMENT0, GlConsts.GL_RENDERBUFFER, _colorRenderBuffer);
+
+        gl.FramebufferRenderbuffer(GlConsts.GL_FRAMEBUFFER, 
+            GlConsts.GL_DEPTH_ATTACHMENT, GlConsts.GL_RENDERBUFFER, _depthRenderBuffer);
+
+        if (gl.CheckFramebufferStatus(GlConsts.GL_FRAMEBUFFER) != GlConsts.GL_FRAMEBUFFER_COMPLETE)
+        {
+            throw new Exception("glCheckFramebufferStatus status != GL_FRAMEBUFFER_COMPLETE");
+        }
+        gl.BindRenderbuffer(GlConsts.GL_RENDERBUFFER, 0);
+        gl.BindFramebuffer(GlConsts.GL_FRAMEBUFFER, 0);
+    }
+
+    private void DeleteFrameBuffer(GlInterface gl)
+    {
+        if (_frameBufferObj != 0)
+        {
+            gl.DeleteFramebuffer(_frameBufferObj);
+            _frameBufferObj = 0;
+        }
+
+        if (_colorRenderBuffer != 0)
+        {
+            gl.DeleteRenderbuffer(_colorRenderBuffer);
+            _colorRenderBuffer = 0;
+        }
+
+        if (_depthRenderBuffer != 0)
+        {
+            gl.DeleteRenderbuffer(_depthRenderBuffer);
+            _depthRenderBuffer = 0;
+        }
     }
 
     private static void InitVAOItem(GlInterface gl, VAOItem item)
@@ -524,8 +582,8 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
         if (po.Properties.IsLeftButtonPressed)
         {
-            _diffXY.X = (float)pos.X - _rotXY.Y;
-            _diffXY.Y = -(float)pos.Y + _rotXY.X;
+            _diffXY.X = (float)pos.X;
+            _diffXY.Y = -(float)pos.Y;
         }
         else if (po.Properties.IsRightButtonPressed)
         {
@@ -564,6 +622,10 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
             var point = e.GetPosition(this);
             _rotXY.Y = (float)point.X - _diffXY.X;
             _rotXY.X = (float)point.Y + _diffXY.Y;
+            _rotXY.Y *= 2;
+            _rotXY.X *= 2;
+            _diffXY.X = (float)point.X;
+            _diffXY.Y = -(float)point.Y;
         }
         else if (po.Properties.IsRightButtonPressed)
         {
@@ -829,7 +891,21 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
             x = (int)(Bounds.Width * screen);
             y = (int)(Bounds.Height * screen);
         }
-        gl.Viewport(0, 0, x, y);
+
+        if (x != _width || y != _height)
+        {
+            _width = x;
+            _height = y;
+            DeleteFrameBuffer(gl);
+            InitFrameBuffer(gl);
+        }
+
+        if (model.EnableMSAA)
+        {
+            gl.BindFramebuffer(GlConsts.GL_FRAMEBUFFER, _frameBufferObj);
+        }
+
+        gl.Viewport(0, 0, _width, _height);
 
         if (App.BackBitmap != null)
         {
@@ -880,7 +956,6 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         CheckError(gl);
 
         DrawNormal(gl);
-
         DrawCape(gl);
 
         if (model.EnableTop)
@@ -896,6 +971,15 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
             //GL_BLEND
             glDisable(0x0BE2);
             glDepthMask(true);
+        }
+        if (model.EnableMSAA)
+        {
+            gl.BindFramebuffer(GlConsts.GL_DRAW_FRAMEBUFFER, fb);
+            //GL_READ_BUFFER
+            gl.BindFramebuffer(0x0C02, _frameBufferObj);
+            gl.BlitFramebuffer(0, 0, x, y, 0, 0, x, y,
+                GlConsts.GL_COLOR_BUFFER_BIT, GlConsts.GL_NEAREST
+            );
         }
 
         CheckError(gl);
@@ -948,6 +1032,8 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         gl.DeleteProgram(_shaderProgram);
         gl.DeleteShader(_fragmentShader);
         gl.DeleteShader(_vertexShader);
+
+        DeleteFrameBuffer(gl);
     }
 
     public void SetAnimation()
