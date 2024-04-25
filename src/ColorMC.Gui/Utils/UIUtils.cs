@@ -1,9 +1,9 @@
+using System;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System;
 
 namespace ColorMC.Gui.Utils;
 

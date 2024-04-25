@@ -1,3 +1,8 @@
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
@@ -9,11 +14,6 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -21,7 +21,7 @@ public partial class MainControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public string Title => "ColorMC2";
+    public string Title => "ColorMC";
 
     public readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
@@ -40,7 +40,7 @@ public partial class MainControl : UserControl, IUserControl
         SizeChanged += MainControl_SizeChanged;
     }
 
-    public Task<bool> OnKeyDown(object? sender, KeyEventArgs e) 
+    public Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control)
         {
@@ -57,7 +57,7 @@ public partial class MainControl : UserControl, IUserControl
             }
         }
 
-        return Task.FromResult(false); 
+        return Task.FromResult(false);
     }
 
     private void MainControl_SizeChanged(object? sender, SizeChangedEventArgs e)

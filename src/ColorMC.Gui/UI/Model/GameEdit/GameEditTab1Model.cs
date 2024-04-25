@@ -1,4 +1,7 @@
-﻿using AvaloniaEdit.Utils;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -8,9 +11,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -380,7 +380,7 @@ public partial class GameEditModel
                 break;
             case Loaders.NeoForge:
                 IsLoad = true;
-                Model.Title1 =  App.Lang("AddGameWindow.Tab1.Info19");
+                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info19");
                 list = await WebBinding.GetNeoForgeVersion(_obj.Version);
                 IsLoad = false;
                 Model.Title1 = "";

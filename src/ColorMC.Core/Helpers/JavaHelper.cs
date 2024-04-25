@@ -1,7 +1,6 @@
-using ColorMC.Core.LaunchPath;
+using System.Diagnostics;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using System.Diagnostics;
 
 namespace ColorMC.Core.Helpers;
 

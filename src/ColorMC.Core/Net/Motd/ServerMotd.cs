@@ -1,10 +1,10 @@
+using System.Diagnostics;
+using System.Net.Sockets;
+using System.Text;
 using ColorMC.Core.Objs.Minecraft;
 using Heijden.Dns.Portable;
 using Heijden.DNS;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
-using System.Net.Sockets;
-using System.Text;
 
 namespace ColorMC.Core.Net.Motd;
 

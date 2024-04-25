@@ -26,7 +26,7 @@
                     Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <StackPanel Name="StackPanel1">
-                        <TextBlock FontSize="60" Text="ColorMC2" />
+                        <TextBlock FontSize="60" Text="ColorMC" />
                         <TextBlock FontSize="25" Text="{setting:Localize SettingWindow.Tab7.Text2}" />
                         <StackPanel Orientation="Horizontal">
                             <TextBlock

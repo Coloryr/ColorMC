@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.IO;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -8,8 +10,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameLog;
 using ColorMC.Gui.UI.Windows;
-using System.ComponentModel;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.GameLog;
 

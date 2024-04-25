@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.IO;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
@@ -5,8 +7,6 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameCloud;
-using System.ComponentModel;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.GameCloud;
 

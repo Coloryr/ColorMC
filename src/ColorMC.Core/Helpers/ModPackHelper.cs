@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.Text;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
@@ -7,8 +9,6 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System.Collections.Concurrent;
-using System.Text;
 
 namespace ColorMC.Core.Helpers;
 

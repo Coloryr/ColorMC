@@ -1,5 +1,5 @@
-﻿using ColorMC.Core.Helpers;
-using System.Text;
+﻿using System.Text;
+using ColorMC.Core.Helpers;
 
 namespace ColorMC.Core.Objs.Modrinth;
 

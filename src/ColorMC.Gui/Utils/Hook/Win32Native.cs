@@ -1,11 +1,11 @@
-using Avalonia.Input;
-using Avalonia.Win32.Input;
-using ColorMC.Gui.Objs;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using Avalonia.Input;
+using Avalonia.Win32.Input;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Utils.Hook;
 

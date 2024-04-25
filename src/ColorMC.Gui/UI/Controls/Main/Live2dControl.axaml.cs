@@ -1,12 +1,12 @@
+using System;
+using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Main;
-using System;
-using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 

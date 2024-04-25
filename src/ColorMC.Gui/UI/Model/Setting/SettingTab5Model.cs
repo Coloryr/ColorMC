@@ -1,4 +1,6 @@
-﻿using Avalonia.Threading;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -6,8 +8,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 

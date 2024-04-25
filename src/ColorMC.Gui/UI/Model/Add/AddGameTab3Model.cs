@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -7,9 +10,6 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -183,14 +183,21 @@ public partial class AddGameModel
                             }
                             if (item3.Name.EndsWith(".json"))
                             {
-                                var obj = JObject.Parse(PathHelper.ReadText(item3.Path)!);
-                                if (obj.ContainsKey("id")
-                                    && obj.ContainsKey("arguments")
-                                    && obj.ContainsKey("mainClass"))
+                                try
                                 {
-                                    list.Add(item2.Path);
-                                    find = true;
-                                    break;
+                                    var obj = JObject.Parse(PathHelper.ReadText(item3.Path)!);
+                                    if (obj.ContainsKey("id")
+                                        && obj.ContainsKey("arguments")
+                                        && obj.ContainsKey("mainClass"))
+                                    {
+                                        list.Add(item2.Path);
+                                        find = true;
+                                        break;
+                                    }
+                                }
+                                catch
+                                {
+                                    
                                 }
                             }
                         }

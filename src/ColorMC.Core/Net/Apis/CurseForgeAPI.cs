@@ -1,10 +1,10 @@
+using System.Collections.Concurrent;
+using System.Net.Http.Headers;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System.Collections.Concurrent;
-using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net.Apis;
 

@@ -1,5 +1,5 @@
-using NAudio.Wave;
 using System.Threading;
+using NAudio.Wave;
 
 namespace ColorMC.Gui.Player;
 

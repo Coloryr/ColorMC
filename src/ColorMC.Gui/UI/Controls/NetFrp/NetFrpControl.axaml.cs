@@ -1,8 +1,8 @@
+using System.ComponentModel;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.NetFrp;
-using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.NetFrp;
 

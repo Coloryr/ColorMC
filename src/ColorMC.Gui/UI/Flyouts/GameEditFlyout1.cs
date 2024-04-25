@@ -1,12 +1,12 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

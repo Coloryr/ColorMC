@@ -27,7 +27,7 @@
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="40"
-                Text="ColorMC2" />
+                Text="ColorMC" />
         </StackPanel>
     </StackPanel>
 </UserControl>

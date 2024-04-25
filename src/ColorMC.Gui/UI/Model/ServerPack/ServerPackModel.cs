@@ -1,8 +1,8 @@
-﻿using ColorMC.Core.Objs;
+﻿using System.Collections.Generic;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 

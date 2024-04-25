@@ -1,8 +1,8 @@
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.UI.Model;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
 
