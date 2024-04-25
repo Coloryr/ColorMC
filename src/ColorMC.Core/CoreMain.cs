@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
@@ -9,15 +11,13 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using DotNetty.Buffers;
 using DotNetty.Transport.Channels;
-using System.Collections.Concurrent;
-using System.Diagnostics;
 
 namespace ColorMC.Core;
 
 public static class ColorMCCore
 {
-    public const string TopVersion = "B0";
-    public const string DateVersion = "20240422";
+    public const string TopVersion = "A25";
+    public const string DateVersion = "20240425";
 
     public const string Version = $"{TopVersion}.{DateVersion}";
 

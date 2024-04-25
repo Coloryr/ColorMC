@@ -1,8 +1,8 @@
+using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
-using System;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 

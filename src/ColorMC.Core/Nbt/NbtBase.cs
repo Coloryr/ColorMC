@@ -1,6 +1,6 @@
+using System.IO.Compression;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Helpers;
-using System.IO.Compression;
 
 namespace ColorMC.Core.Nbt;
 

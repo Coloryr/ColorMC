@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.IO;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
@@ -6,9 +9,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
-using System.ComponentModel;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

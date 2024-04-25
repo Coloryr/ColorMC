@@ -1,11 +1,11 @@
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Download;
 using ColorMC.Gui.UI.Windows;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Download;
 

@@ -1,10 +1,10 @@
-﻿using ColorMC.Core.Config;
+﻿using System;
+using System.IO;
+using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
-using System;
-using System.IO;
 
 namespace ColorMC.Gui.Utils;
 

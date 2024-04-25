@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -7,7 +8,6 @@ using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Helpers;
 

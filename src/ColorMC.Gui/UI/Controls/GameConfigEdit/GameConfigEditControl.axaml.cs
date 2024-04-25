@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.IO;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -11,8 +13,6 @@ using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
 using ColorMC.Gui.UI.Windows;
-using System.ComponentModel;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.GameConfigEdit;
 

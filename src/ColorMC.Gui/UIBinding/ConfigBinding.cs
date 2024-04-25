@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
@@ -7,8 +8,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 

@@ -1,6 +1,6 @@
+using System.Diagnostics;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
-using System.Diagnostics;
 
 namespace ColorMC.Core.LaunchPath;
 

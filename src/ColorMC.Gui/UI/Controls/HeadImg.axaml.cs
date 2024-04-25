@@ -3,7 +3,7 @@ using Avalonia.Controls;
 
 namespace ColorMC.Gui.UI.Controls;
 
-public partial class HeadImg : Panel
+public partial class HeadImg : Decorator
 {
     /// <summary>
     /// Defines the <see cref="Path"/> property.

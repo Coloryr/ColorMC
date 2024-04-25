@@ -1,6 +1,6 @@
-﻿using ColorMC.Core.Objs;
+﻿using System.Collections.Generic;
+using ColorMC.Core.Objs;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

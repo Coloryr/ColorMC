@@ -1,4 +1,8 @@
-﻿using Avalonia;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.OpenGL;
@@ -12,10 +16,6 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
 using Live2DCSharpSDK.App;
 using Live2DCSharpSDK.Framework.Motion;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 

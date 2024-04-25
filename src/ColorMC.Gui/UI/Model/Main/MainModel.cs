@@ -1,4 +1,8 @@
-﻿using Avalonia.Layout;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
+using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
@@ -11,10 +15,6 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -415,6 +415,10 @@ public partial class MainModel : TopModel, IMainTop
         BaseBinding.LoadMusic();
 
         var config = ConfigBinding.GetAllConfig();
+        if (config.Item2?.Live2D.LowFps == true)
+        {
+            LowFps = true;
+        }
         if (config.Item1?.Http?.CheckUpdate == true)
         {
             var data = await UpdateChecker.Check();

@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Platform;
@@ -5,8 +7,6 @@ using Avalonia.Svg.Skia;
 using Svg;
 using Svg.Model;
 using Svg.Skia;
-using System;
-using System.ComponentModel;
 using Color = System.Drawing.Color;
 
 namespace ColorMC.Gui.UI.Views.Svg;

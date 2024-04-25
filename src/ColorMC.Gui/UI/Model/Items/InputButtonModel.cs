@@ -1,9 +1,9 @@
-﻿using Avalonia.Input;
+﻿using System.Text;
+using Avalonia.Input;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Text;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

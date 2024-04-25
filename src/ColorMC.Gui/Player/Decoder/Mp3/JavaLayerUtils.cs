@@ -1,6 +1,6 @@
-﻿using Avalonia.Platform;
-using System;
+﻿using System;
 using System.IO;
+using Avalonia.Platform;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 

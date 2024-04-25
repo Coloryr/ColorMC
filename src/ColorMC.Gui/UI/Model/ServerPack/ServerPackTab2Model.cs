@@ -1,12 +1,12 @@
-﻿using ColorMC.Core.Helpers;
+﻿using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 

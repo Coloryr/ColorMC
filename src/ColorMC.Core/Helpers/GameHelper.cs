@@ -1,3 +1,4 @@
+using System.Text;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -6,7 +7,6 @@ using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OtherLaunch;
 using ICSharpCode.SharpZipLib.Zip;
-using System.Text;
 
 namespace ColorMC.Core.Helpers;
 

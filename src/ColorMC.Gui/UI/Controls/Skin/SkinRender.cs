@@ -1,4 +1,8 @@
-﻿using Avalonia;
+﻿using System;
+using System.ComponentModel;
+using System.Numerics;
+using System.Runtime.InteropServices;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.OpenGL;
@@ -12,10 +16,6 @@ using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using SkiaSharp;
-using System;
-using System.ComponentModel;
-using System.Numerics;
-using System.Runtime.InteropServices;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 
@@ -286,10 +286,10 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         _frameBufferObj = gl.GenFramebuffer();
         gl.BindFramebuffer(GlConsts.GL_FRAMEBUFFER, _frameBufferObj);
 
-        gl.FramebufferRenderbuffer(GlConsts.GL_FRAMEBUFFER, 
+        gl.FramebufferRenderbuffer(GlConsts.GL_FRAMEBUFFER,
             GlConsts.GL_COLOR_ATTACHMENT0, GlConsts.GL_RENDERBUFFER, _colorRenderBuffer);
 
-        gl.FramebufferRenderbuffer(GlConsts.GL_FRAMEBUFFER, 
+        gl.FramebufferRenderbuffer(GlConsts.GL_FRAMEBUFFER,
             GlConsts.GL_DEPTH_ATTACHMENT, GlConsts.GL_RENDERBUFFER, _depthRenderBuffer);
 
         if (gl.CheckFramebufferStatus(GlConsts.GL_FRAMEBUFFER) != GlConsts.GL_FRAMEBUFFER_COMPLETE)
@@ -666,8 +666,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
             var mat = Matrix4x4.CreateTranslation(0, -2f * CubeModel.Value, -CubeModel.Value * 0.1f) *
                Matrix4x4.CreateRotationX((float)(10.8 * Math.PI / 180)) *
-               Matrix4x4.CreateTranslation(0, 1.6f * CubeModel.Value,
-               -CubeModel.Value * 0.5f);
+               Matrix4x4.CreateTranslation(0, 1.6f * CubeModel.Value, -CubeModel.Value * 0.5f);
             gl.UniformMatrix4fv(modelLoc, 1, false, &mat);
 
             gl.BindVertexArray(_normalVAO.Cape.VertexArrayObject);
@@ -685,7 +684,6 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         var modelLoc = GL.GetUniformLocationString(_shaderProgram, "self");
         var modelMat = Matrix4x4.Identity;
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
-
         GL.BindVertexArray(_normalVAO.Body.VertexArrayObject);
         GL.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
             GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
@@ -699,51 +697,28 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
                Matrix4x4.CreateRotationY((enable ? _skina.Head.Z : model.HeadRotate.Z) / 360) *
                Matrix4x4.CreateTranslation(0, CubeModel.Value * 1.5f, 0);
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
-
         GL.BindVertexArray(_normalVAO.Head.VertexArrayObject);
         GL.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        if (model.SteveModelType == SkinType.NewSlim)
-        {
-            modelMat = Matrix4x4.CreateTranslation(CubeModel.Value / 2, -(1.375f * CubeModel.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
-                Matrix4x4.CreateTranslation(
-                    (1.375f * CubeModel.Value) - (CubeModel.Value / 2), 1.375f * CubeModel.Value, 0);
-        }
-        else
-        {
-            modelMat = Matrix4x4.CreateTranslation(CubeModel.Value / 2, -(1.5f * CubeModel.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
-                Matrix4x4.CreateTranslation(
-                    (1.5f * CubeModel.Value) - (CubeModel.Value / 2), 1.5f * CubeModel.Value, 0);
-        }
-        GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
+        var value = model.SteveModelType == SkinType.NewSlim ? 1.375f : 1.5f;
 
+        modelMat = Matrix4x4.CreateTranslation(CubeModel.Value / 2, -(value * CubeModel.Value), 0) *
+                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
+                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
+                Matrix4x4.CreateTranslation(
+                    (value * CubeModel.Value) - (CubeModel.Value / 2), value * CubeModel.Value, 0);
+        GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
         GL.BindVertexArray(_normalVAO.LeftArm.VertexArrayObject);
         GL.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                 GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        if (model.SteveModelType == SkinType.NewSlim)
-        {
-            modelMat = Matrix4x4.CreateTranslation(-CubeModel.Value / 2, -(1.375f * CubeModel.Value), 0) *
+        modelMat = Matrix4x4.CreateTranslation(-CubeModel.Value / 2, -(value * CubeModel.Value), 0) *
                 Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
                 Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
-                    (-1.375f * CubeModel.Value) + (CubeModel.Value / 2), 1.375f * CubeModel.Value, 0);
-        }
-        else
-        {
-            modelMat = Matrix4x4.CreateTranslation(-CubeModel.Value / 2, -(1.5f * CubeModel.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
-                Matrix4x4.CreateTranslation(
-                    (-1.5f * CubeModel.Value) + (CubeModel.Value / 2), 1.5f * CubeModel.Value, 0);
-        }
+                    (-value * CubeModel.Value) + (CubeModel.Value / 2), value * CubeModel.Value, 0);
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
-
         GL.BindVertexArray(_normalVAO.RightArm.VertexArrayObject);
         GL.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
@@ -778,7 +753,6 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         var modelLoc = gl.GetUniformLocationString(_shaderProgram, "self");
         var modelMat = Matrix4x4.Identity;
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
-
         gl.BindVertexArray(_topVAO.Body.VertexArrayObject);
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
@@ -792,51 +766,28 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
                Matrix4x4.CreateRotationY((enable ? _skina.Head.Z : model.HeadRotate.Z) / 360) *
                Matrix4x4.CreateTranslation(0, CubeModel.Value * 1.5f, 0);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
-
         gl.BindVertexArray(_topVAO.Head.VertexArrayObject);
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        if (model.SteveModelType == SkinType.NewSlim)
-        {
-            modelMat = Matrix4x4.CreateTranslation(CubeModel.Value / 2, -(1.375f * CubeModel.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
-                Matrix4x4.CreateTranslation(
-                    (1.375f * CubeModel.Value) - (CubeModel.Value / 2), 1.375f * CubeModel.Value, 0);
-        }
-        else
-        {
-            modelMat = Matrix4x4.CreateTranslation(CubeModel.Value / 2, -(1.5f * CubeModel.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
-                Matrix4x4.CreateTranslation(
-                    (1.5f * CubeModel.Value) - (CubeModel.Value / 2), 1.5f * CubeModel.Value, 0);
-        }
-        gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
+        var value = model.SteveModelType == SkinType.NewSlim ? 1.375f : 1.5f;
 
+        modelMat = Matrix4x4.CreateTranslation(CubeModel.Value / 2, -(value * CubeModel.Value), 0) *
+                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
+                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
+                Matrix4x4.CreateTranslation(
+                    (value * CubeModel.Value) - (CubeModel.Value / 2), value * CubeModel.Value, 0);
+        gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
         gl.BindVertexArray(_topVAO.LeftArm.VertexArrayObject);
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                 GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        if (model.SteveModelType == SkinType.NewSlim)
-        {
-            modelMat = Matrix4x4.CreateTranslation(-CubeModel.Value / 2, -(1.375f * CubeModel.Value), 0) *
+        modelMat = Matrix4x4.CreateTranslation(-CubeModel.Value / 2, -(value * CubeModel.Value), 0) *
                 Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
                 Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
-                    (-1.375f * CubeModel.Value) + (CubeModel.Value / 2), 1.375f * CubeModel.Value, 0);
-        }
-        else
-        {
-            modelMat = Matrix4x4.CreateTranslation(-CubeModel.Value / 2, -(1.5f * CubeModel.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
-                Matrix4x4.CreateTranslation(
-                    (-1.5f * CubeModel.Value) + (CubeModel.Value / 2), 1.5f * CubeModel.Value, 0);
-        }
+                    (-value * CubeModel.Value) + (CubeModel.Value / 2), value * CubeModel.Value, 0);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
-
         gl.BindVertexArray(_topVAO.RightArm.VertexArrayObject);
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                 GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
@@ -846,7 +797,6 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
                Matrix4x4.CreateRotationX((enable ? _skina.Leg.Y : model.LegRotate.Y) / 360) *
                Matrix4x4.CreateTranslation(CubeModel.Value * 0.5f, -CubeModel.Value * 1.5f, 0);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
-
         gl.BindVertexArray(_topVAO.LeftLeg.VertexArrayObject);
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
@@ -856,7 +806,6 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
                Matrix4x4.CreateRotationX((enable ? -_skina.Leg.Y : -model.LegRotate.Y) / 360) *
                Matrix4x4.CreateTranslation(-CubeModel.Value * 0.5f, -CubeModel.Value * 1.5f, 0);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
-
         gl.BindVertexArray(_topVAO.RightLeg.VertexArrayObject);
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                 GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
@@ -946,8 +895,8 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         }
 
         var modelMat = _last
-                    * Matrix4x4.CreateTranslation(new(_xy.X, _xy.Y, 0))
-                    * Matrix4x4.CreateScale(_dis);
+            * Matrix4x4.CreateTranslation(new(_xy.X, _xy.Y, 0))
+            * Matrix4x4.CreateScale(_dis);
 
         gl.UniformMatrix4fv(viewLoc, 1, false, &view);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
@@ -972,14 +921,14 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
             glDisable(0x0BE2);
             glDepthMask(true);
         }
+
         if (model.EnableMSAA)
         {
             gl.BindFramebuffer(GlConsts.GL_DRAW_FRAMEBUFFER, fb);
             //GL_READ_BUFFER
             gl.BindFramebuffer(0x0C02, _frameBufferObj);
             gl.BlitFramebuffer(0, 0, x, y, 0, 0, x, y,
-                GlConsts.GL_COLOR_BUFFER_BIT, GlConsts.GL_NEAREST
-            );
+                GlConsts.GL_COLOR_BUFFER_BIT, GlConsts.GL_NEAREST);
         }
 
         CheckError(gl);

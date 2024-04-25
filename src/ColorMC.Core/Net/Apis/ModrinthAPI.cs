@@ -1,9 +1,9 @@
+using System.Collections.Concurrent;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Net.Apis;
 

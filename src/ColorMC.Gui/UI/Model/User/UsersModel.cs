@@ -1,4 +1,9 @@
-﻿using Avalonia.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Web;
+using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -8,11 +13,6 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace ColorMC.Gui.UI.Model.User;
 

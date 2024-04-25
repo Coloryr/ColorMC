@@ -1,6 +1,6 @@
-﻿using ColorMC.Core.Helpers;
+﻿using System;
+using ColorMC.Core.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

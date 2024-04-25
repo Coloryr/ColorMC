@@ -1,7 +1,7 @@
-using Avalonia.Controls;
-using Avalonia.OpenGL.Controls;
 using System;
 using System.Timers;
+using Avalonia.Controls;
+using Avalonia.OpenGL.Controls;
 using Timer = System.Timers.Timer;
 
 namespace ColorMC.Gui.UI;
@@ -82,7 +82,7 @@ public class FpsTimer
                 Go();
             });
         }
-    }   
+    }
 
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
@@ -95,10 +95,8 @@ public class FpsTimer
 
     public void Close()
     {
-        if (Pause)
-        {
-            Pause = false;
-        }
+        _pause = true;
+        _timer.Stop();
         _timer.Close();
         _timer.Dispose();
     }

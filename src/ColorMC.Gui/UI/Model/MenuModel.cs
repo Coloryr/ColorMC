@@ -1,7 +1,7 @@
-﻿using ColorMC.Gui.Objs;
+﻿using System.Collections.Generic;
+using ColorMC.Gui.Objs;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model;
 

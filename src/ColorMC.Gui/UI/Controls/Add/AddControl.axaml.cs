@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -6,8 +8,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
-using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 

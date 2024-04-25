@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Text;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
@@ -9,8 +11,6 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
-using System.Text;
 
 namespace ColorMC.Core.Game;
 
