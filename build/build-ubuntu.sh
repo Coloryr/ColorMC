@@ -24,7 +24,8 @@ build_deb()
     mkdir $base_dir
 
     pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
-        "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "ColorMC.Launcher")
+        "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "X11.pdb"
+        "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher")
 
     cp -r ./build/info/linux/* $base_dir
     cp -r ./build/info/$1/* $base_dir
