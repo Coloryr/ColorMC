@@ -15,7 +15,7 @@ done
 
 build_deb() 
 {
-    echo "build colormc-$main_version$version-linux-$1.deb"
+    echo "build colormc-$main_version$version-$1.deb"
 
     base=./src/build_out/$1-dotnet
     base_dir="$base/colormc_deb"
@@ -84,9 +84,9 @@ build_deb_aot() {
 }
 
 build_deb linux-x64
-build_deb linux-arm64
+build_deb linux-aarch64
 build_deb_aot linux-x64
-build_deb_aot linux-arm64
+build_deb_aot linux-aarch64
 
 echo "build colormc-$main_version$version-linux-x86_64.AppImage"
 
