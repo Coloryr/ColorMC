@@ -1,5 +1,5 @@
 pkgname="colormc"
-pkgver="a%version%"
+pkgver="%version%"
 pkgrel="1"
 pkgdesc="A Minecraft Launcher"
 url="https://www.github.com/Coloryr/ColorMC"

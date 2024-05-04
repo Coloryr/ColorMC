@@ -24,6 +24,8 @@ jobs:
       run: |
         VERSION=$(cat ./build/version)
         echo "VERSION=$VERSION" >> $GITHUB_ENV  
+        MAINVERSION=$(cat ./build/main_version)
+        echo "MAINVERSION=$MAINVERSION" >> $GITHUB_ENV  
 
     - name: 更新源码
       shell: bash
@@ -61,43 +63,43 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-arch-x86_64"
-        path: build_out/colormc-a${{ env.VERSION }}-1-x86_64.pkg.tar.zst
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-1-x86_64.pkg.tar.zst
 
     - name: 上传 linux-x86-aot.pkg.tar.zst
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-arch-x86_64-aot"
-        path: build_out/colormc-a${{ env.VERSION }}-1-x86_64-aot.pkg.tar.zst
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-1-x86_64-aot.pkg.tar.zst
 
     - name: 上传 linux-x64.deb
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-ubuntu-x64"
-        path: build_out/colormc-a${{ env.VERSION }}-linux-x64.deb
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x64.deb
 
     - name: 上传 linux-arm64.deb
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-ubuntu-arm64"
-        path: build_out/colormc-a${{ env.VERSION }}-linux-arm64.deb
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-arm64.deb
 
     - name: 上传 linux-x64-aot.deb
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-ubuntu-x64-aot"
-        path: build_out/colormc-a${{ env.VERSION }}-linux-x64-aot.deb
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x64-aot.deb
 
     - name: 上传 linux-arm64-aot.deb
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-ubuntu-arm64-aot"
-        path: build_out/colormc-a${{ env.VERSION }}-linux-arm64-aot.deb
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-arm64-aot.deb
     
     - name: 上传 linux-x64-appimage.deb
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-linux-x64-appimage"
-        path: build_out/colormc-a${{ env.VERSION }}-x86_64.AppImage
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x86_64.AppImage
 
   build-macos:
     runs-on: ubuntu-latest
