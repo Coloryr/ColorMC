@@ -1,9 +1,9 @@
+using System;
 using Avalonia.Controls;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Error;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using System;
 
 namespace ColorMC.Gui.UI.Controls.Error;
 

@@ -1,12 +1,12 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -22,15 +22,8 @@ public static class JavaBinding
         };
     }
 
-    public static async Task<(bool, string?)> AddJavaZip(string file, ColorMCCore.ZipUpdate zip)
+    public static async Task<(bool, string?)> AddJavaZip(string file, string name, ColorMCCore.ZipUpdate zip)
     {
-        string name = Path.GetFileName(file);
-        if (SystemInfo.Os == OsType.Android)
-        {
-            name = name.Replace("primary%3A", "");
-            name = name.Replace("%2F", "/");
-            name = Path.GetFileName(name);
-        }
         return await JvmPath.UnzipJavaAsync(name, file, zip);
     }
 

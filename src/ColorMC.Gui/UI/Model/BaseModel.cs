@@ -1,4 +1,8 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
@@ -10,10 +14,6 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model;
 
@@ -173,19 +173,22 @@ public partial class BaseModel : ObservableObject
         }
     }
 
-    private void Work()
+    public void Work()
     {
-        HeadBackDisplay = false;
+        if (!_listBack.IsEmpty)
+        {
+            HeadBackEnable = false;
+        }
         HeadCloseDisplay = false;
         _isWork = true;
     }
 
-    private void NoWork()
+    public void NoWork()
     {
         _isWork = false;
         if (SystemInfo.Os != OsType.Android && !_listBack.IsEmpty)
         {
-            HeadBackDisplay = true;
+            HeadBackEnable = true;
         }
         HeadCloseDisplay = true;
     }

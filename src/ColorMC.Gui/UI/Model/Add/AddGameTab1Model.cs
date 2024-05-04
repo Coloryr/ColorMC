@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
@@ -9,9 +12,6 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -57,6 +57,8 @@ public partial class AddGameModel
     private bool _offLib;
     [ObservableProperty]
     private bool _customLoader;
+    [ObservableProperty]
+    private bool _isLoad;
 
     /// <summary>
     /// 版本类型
@@ -73,6 +75,18 @@ public partial class AddGameModel
     /// 加载器类型列表
     /// </summary>
     private readonly List<Loaders> _loaderTypeList = [];
+
+    partial void OnIsLoadChanged(bool value)
+    {
+        if (value)
+        {
+            Model.Work();
+        }
+        else
+        {
+            Model.NoWork();
+        }
+    }
 
     /// <summary>
     /// 游戏版本修改
@@ -110,13 +124,13 @@ public partial class AddGameModel
     [RelayCommand]
     public async Task SelectLoader()
     {
-        var res = await PathBinding.SelectFile(FileType.Loader);
-        if (res == null)
+        var file = await PathBinding.SelectFile(FileType.Loader);
+        if (file.Item1 == null)
         {
             return;
         }
 
-        LoaderLocal = res;
+        LoaderLocal = file.Item1;
     }
 
     [RelayCommand]
@@ -241,9 +255,11 @@ public partial class AddGameModel
             case Loaders.Normal:
                 break;
             case Loaders.Forge:
-                Model.Progress(App.Lang("AddGameWindow.Tab1.Info1"));
+                IsLoad = true;
+                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info1");
                 var list = await WebBinding.GetForgeVersion(Version);
-                Model.ProgressClose();
+                IsLoad = false;
+                Model.Title1 = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -255,9 +271,11 @@ public partial class AddGameModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.NeoForge:
-                Model.Progress(App.Lang("AddGameWindow.Tab1.Info1"));
+                IsLoad = true;
+                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info19");
                 list = await WebBinding.GetNeoForgeVersion(Version);
-                Model.ProgressClose();
+                IsLoad = false;
+                Model.Title1 = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -269,9 +287,11 @@ public partial class AddGameModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.Fabric:
-                Model.Progress(App.Lang("AddGameWindow.Tab1.Info2"));
+                IsLoad = true;
+                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info2");
                 list = await WebBinding.GetFabricVersion(Version);
-                Model.ProgressClose();
+                IsLoad = false;
+                Model.Title1 = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -283,9 +303,11 @@ public partial class AddGameModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.Quilt:
-                Model.Progress(App.Lang("AddGameWindow.Tab1.Info3"));
+                IsLoad = true;
+                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info3");
                 list = await WebBinding.GetQuiltVersion(Version);
-                Model.ProgressClose();
+                IsLoad = false;
+                Model.Title1 = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -297,9 +319,11 @@ public partial class AddGameModel
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.OptiFine:
-                Model.Progress(App.Lang("AddGameWindow.Tab1.Info16"));
+                IsLoad = true;
+                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info16");
                 list = await WebBinding.GetOptifineVersion(Version);
-                Model.ProgressClose();
+                IsLoad = false;
+                Model.Title1 = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -360,7 +384,6 @@ public partial class AddGameModel
             GroupName = Group,
             CustomLoader = new()
             {
-                Local = LoaderLocal,
                 OffLib = OffLib
             }
         };
@@ -372,6 +395,16 @@ public partial class AddGameModel
         }
         else
         {
+            if (game.Loader == Loaders.Custom && !string.IsNullOrWhiteSpace(LoaderLocal))
+            {
+                var res1 = await GameBinding.SetGameLoader(game, LoaderLocal);
+                if (!res1.Item1)
+                {
+                    Model.ShowOk(App.Lang("AddGameWindow.Tab1.Error18"), Done);
+                    return;
+                }
+            }
+
             Done();
         }
     }
@@ -412,7 +445,8 @@ public partial class AddGameModel
             Name = Version;
         }
 
-        Model.Progress(App.Lang("AddGameWindow.Tab1.Info4"));
+        IsLoad = true;
+        Model.Title1 = App.Lang("AddGameWindow.Tab1.Info4");
 
         var loaders = await GameBinding.GetSupportLoader(Version);
         foreach (var item in loaders)
@@ -424,7 +458,9 @@ public partial class AddGameModel
         _loaderTypeList.Add(Loaders.Custom);
         LoaderTypeList.Add(Loaders.Custom.GetName());
 
-        Model.ProgressClose();
+        IsLoad = false;
+        Model.Title1 = "";
+
         LoaderType = 0;
         _load = false;
     }
@@ -440,9 +476,11 @@ public partial class AddGameModel
         LoaderTypeList.Clear();
         EnableLoader = false;
         LoaderVersion = null;
-        Model.Progress(App.Lang("GameEditWindow.Info1"));
+        IsLoad = true;
+        Model.Title1 = App.Lang("GameEditWindow.Info1");
         var res = await GameBinding.ReloadVersion();
-        Model.ProgressClose();
+        IsLoad = false;
+        Model.Title1 = "";
         if (!res)
         {
             Model.Show(App.Lang("GameEditWindow.Error1"));

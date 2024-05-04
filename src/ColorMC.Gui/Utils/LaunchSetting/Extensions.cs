@@ -1,7 +1,7 @@
+using System;
 using Avalonia;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using System;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 

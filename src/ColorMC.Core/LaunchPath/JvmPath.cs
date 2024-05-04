@@ -11,7 +11,6 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class JvmPath
 {
-    public const string Unknow = "unknow";
     public const string Name1 = "java";
     public static Dictionary<string, JavaInfo> Jvms { get; } = [];
 
@@ -25,7 +24,7 @@ public static class JvmPath
     {
         if (SystemInfo.Os == OsType.Android)
         {
-            BaseDir = ColorMCCore.PhoneGetDataDir?.Invoke()!;
+            BaseDir = ColorMCCore.PhoneGetDataDir();
         }
         else
         {
@@ -162,7 +161,7 @@ public static class JvmPath
             {
                 try
                 {
-                    ColorMCCore.PhoneJvmInstall?.Invoke(stream, path, zip);
+                    ColorMCCore.PhoneJvmInstall(stream, path, zip);
                     return (true, null!);
                 }
                 catch (Exception e)
@@ -178,7 +177,7 @@ public static class JvmPath
                 try
                 {
                     await new ZipUtils() { ZipUpdate = zip }
-                    .UnzipAsync(path, file, stream);
+                        .UnzipAsync(path, file, stream);
                     return (true, null!);
                 }
                 catch (Exception e)
@@ -216,7 +215,8 @@ public static class JvmPath
             Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info3"), java));
         }
 
-        if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
+        if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS
+            || SystemInfo.Os == OsType.Android)
         {
             JavaHelper.Per(java);
         }
@@ -317,8 +317,10 @@ public static class JvmPath
                     {
                         Name = a.Name,
                         Path = a.Local,
-                        Type = Unknow,
-                        Version = Unknow
+                        Type = LanguageHelper.Get("Core.Jvm.Info7"),
+                        Version = LanguageHelper.Get("Core.Jvm.Info6"),
+                        MajorVersion = -1,
+                        Arch = ArchEnum.unknow
                     });
                 }
             });

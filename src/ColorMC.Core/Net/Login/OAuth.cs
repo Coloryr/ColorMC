@@ -1,9 +1,9 @@
+using System.Net.Http.Headers;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net.Login;
 

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -5,7 +6,6 @@ using Avalonia.Threading;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UI.Windows;
-using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 

@@ -1,12 +1,12 @@
-﻿using ColorMC.Core;
+﻿using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using ColorMC.Core;
 using ColorMC.Core.Asm;
 using ColorMC.Core.Game;
 using ColorMC.Gui.UI.Model.Items;
 using DotNetty.Buffers;
 using DotNetty.Transport.Channels;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 
 namespace ColorMC.Gui.Utils;
 

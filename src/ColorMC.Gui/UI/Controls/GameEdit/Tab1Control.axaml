@@ -31,6 +31,7 @@
                             <ComboBox
                                 Width="200"
                                 Margin="0,0,5,0"
+                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding VersionTypeList}"
                                 SelectedIndex="{Binding VersionType}" />
                         </StackPanel>
@@ -39,6 +40,7 @@
                             <ComboBox
                                 Width="200"
                                 Margin="0,0,5,0"
+                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding GameVersionList}"
                                 SelectedItem="{Binding GameVersion}" />
                         </StackPanel>
@@ -49,6 +51,7 @@
                             Classes="top"
                             Command="{Binding GameVersionReload}"
                             Content="{setting:Localize GameEditWindow.Tab1.Text2}"
+                            IsEnabled="{Binding !IsLoad}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
@@ -59,6 +62,7 @@
                                 Name="ComboBox1"
                                 Width="180"
                                 Margin="0,0,5,0"
+                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding LangList}"
                                 SelectedIndex="{Binding Lang}" />
                         </StackPanel>
@@ -69,6 +73,7 @@
                             Classes="top"
                             Command="{Binding LangReload}"
                             Content="{setting:Localize Button.Refash}"
+                            IsEnabled="{Binding !IsLoad}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text99}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
@@ -88,10 +93,14 @@
                             <ComboBox
                                 Width="200"
                                 Margin="0,0,5,0"
+                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding LoaderTypeList}"
                                 SelectedIndex="{Binding LoaderType}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <StackPanel
+                            Margin="0,0,0,5"
+                            IsEnabled="{Binding !IsLoad}"
+                            Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
                             <ComboBox
                                 Width="200"
@@ -123,11 +132,10 @@
                         </StackPanel>
                     </WrapPanel>
                     <StackPanel IsEnabled="{Binding CustomLoader}">
-                        <TextBox
-                            Margin="0,0,0,5"
-                            Classes="input1"
-                            Text="{Binding LoaderLocal}"
-                            Watermark="{setting:Localize AddGameWindow.Tab1.Text15}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="0,0,0,5" Text="{setting:Localize GameEditWindow.Tab1.Text15}" />
+                            <TextBlock Margin="0,0,0,5" Text="{Binding LoaderInfo}" />
+                        </StackPanel>
                         <Panel>
                             <ToggleSwitch
                                 IsChecked="{Binding OffLib}"

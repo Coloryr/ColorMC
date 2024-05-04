@@ -11,7 +11,7 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    xmlns:windows="clr-namespace:ColorMC.Gui.UI.Windows"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="{Binding Title}"
     Width="760"
     Height="450"
@@ -35,7 +35,7 @@
     </Design.DataContext>
 
     <DockPanel>
-        <windows:HeadControl
+		<view:HeadControl
             Name="Head"
             DockPanel.Dock="Top"
             IsVisible="{Binding EnableHead}" />

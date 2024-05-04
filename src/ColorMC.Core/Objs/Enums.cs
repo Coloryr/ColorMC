@@ -35,11 +35,34 @@ public enum Loaders
     Custom
 }
 
+/// <summary>
+/// 游戏版本类型
+/// </summary>
 public enum GameType
 {
+    /// <summary>
+    /// 发布版
+    /// </summary>
     Release,
+    /// <summary>
+    /// 快照版
+    /// </summary>
     Snapshot,
+    /// <summary>
+    /// 其他版本
+    /// </summary>
     Other
+}
+
+/// <summary>
+/// 自定义加载器类型
+/// </summary>
+public enum CustomLoaderType
+{
+    /// <summary>
+    /// 类Forge加载器
+    /// </summary>
+    ForgeLaunch
 }
 
 /// <summary>

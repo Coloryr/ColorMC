@@ -1,13 +1,13 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
-using System;
 
-namespace ColorMC.Gui.UI.Windows;
+namespace ColorMC.Gui.UI.Controls;
 
 public partial class HeadControl : UserControl
 {

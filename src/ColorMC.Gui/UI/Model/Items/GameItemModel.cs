@@ -1,4 +1,7 @@
-﻿using Avalonia.Controls;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -13,9 +16,6 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

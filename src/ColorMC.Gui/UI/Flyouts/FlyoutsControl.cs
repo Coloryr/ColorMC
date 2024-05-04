@@ -1,6 +1,6 @@
-using Avalonia.Controls;
 using System;
 using System.Collections.Generic;
+using Avalonia.Controls;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

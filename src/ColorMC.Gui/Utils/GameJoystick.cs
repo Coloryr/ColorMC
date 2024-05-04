@@ -1,4 +1,7 @@
-﻿using ColorMC.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -6,10 +9,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils.Hook;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;

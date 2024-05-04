@@ -1,12 +1,12 @@
+using System;
+using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Main;
-using System;
-using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -100,6 +100,11 @@ public partial class Live2dControl : UserControl
             {
                 _renderTimer.Pause = false;
             }
+        }
+        else if (e.PropertyName == "LowFps")
+        {
+            var model = (sender as MainModel)!;
+            _renderTimer.LowFps = model.LowFps;
         }
     }
 

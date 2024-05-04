@@ -1,7 +1,6 @@
-using ColorMC.Core.LaunchPath;
+using System.Diagnostics;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using System.Diagnostics;
 
 namespace ColorMC.Core.Helpers;
 
@@ -52,10 +51,6 @@ public static class JavaHelper
     /// <returns>主版本</returns>
     private static int GetMajorVersion(string version)
     {
-        if (version == JvmPath.Unknow)
-        {
-            return -1;
-        }
         string[] vers = version.Trim().Split('.', '_', '-', '+', 'u', 'U');
         if (vers[0] == "1")
         {
@@ -92,7 +87,7 @@ public static class JavaHelper
 
                 if (SystemInfo.Os == OsType.Android)
                 {
-                    p = ColorMCCore.PhoneStartJvm?.Invoke(path);
+                    p = ColorMCCore.PhoneStartJvm(path);
                 }
                 else
                 {
@@ -114,22 +109,24 @@ public static class JavaHelper
                 p.StartInfo.WorkingDirectory = info1.Directory?.Parent?.FullName ?? ColorMCCore.BaseDir;
                 p.Start();
                 p.WaitForExit();
-                string result = p.StandardError.ReadToEnd();
-                string result1 = p.StandardOutput.ReadToEnd();
-                string[] lines = result.Split('\n');
+                var result = p.StandardError.ReadToEnd();
+                var result1 = p.StandardOutput.ReadToEnd();
+                var lines = result.Split('\n');
 
-                string select = lines[0];
+                var select = lines[0];
 
                 foreach (var item in lines)
                 {
-                    string[] firstL = item.Trim().Split(' ');
+                    var firstL = item.Trim().Split(' ');
                     if (firstL[1] == "version")
                     {
-                        string type = firstL[0];
-                        string version = firstL[2].Trim('\"');
-                        bool is64 = result.Contains("64-Bit");
-                        ArchEnum arch = is64 ? ArchEnum.x86_64 : ArchEnum.x86;
-                        JavaInfo info = new()
+                        var type = firstL[0];
+                        var version = firstL[2].Trim('\"');
+                        var is64 = result.Contains("64-Bit");
+                        var arch = SystemInfo.IsArm
+                            ? (is64 ? ArchEnum.aarch64 : ArchEnum.arm)
+                            : (is64 ? ArchEnum.x86_64 : ArchEnum.x86);
+                        var info = new JavaInfo()
                         {
                             Path = path,
                             Version = version,
@@ -183,7 +180,7 @@ public static class JavaHelper
             }
             p.Start();
 
-            string result = p.StandardOutput.ReadToEnd();
+            var result = p.StandardOutput.ReadToEnd();
             var list1 = result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
             foreach (var item in list1)

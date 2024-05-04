@@ -1,14 +1,21 @@
 #!/bin/bash
 
 version=""
+main_version=""
 
 for line in `cat ./build/version`
 do
     version=$line
 done
 
-build_arch() {
-    echo "build ColorMC-$1.pkg.tar.zst version: $version"
+for line in `cat ./build/main_version`
+do
+    main_version=$line
+done
+
+build_arch() 
+{
+    echo "build colormc-$main_version$version-$1.pkg.tar.zst"
 
     base_dir=./src/build_out/$1-dotnet
     info=./build/info/linux/usr/share
@@ -26,14 +33,15 @@ build_arch() {
 
     cd ../../../
 
-    mv $base_dir/colormc-a$version-1-$2.pkg.tar.zst \
-        ./build_out/colormc-a$version-1-$2.pkg.tar.zst
+    mv $base_dir/colormc-$version-1-$2.pkg.tar.zst \
+        ./build_out/colormc-$main_version$version-1-$2.pkg.tar.zst
 
-    echo "ColorMC-$1.pkg.tar.zst build done"
+    echo "colormc-$main_version$version-$1.pkg.tar.zst build done"
 }
 
-build_arch_aot() {
-    echo "build ColorMC-$1-aot.pkg.tar.zst version: $version"
+build_arch_aot() 
+{
+    echo "build colormc-$main_version$version-$1-aot.pkg.tar.zst"
 
     base_dir=./src/build_out/$1-aot
     info=./build/info/linux/usr/share
@@ -51,10 +59,10 @@ build_arch_aot() {
 
     cd ../../../
 
-    mv $base_dir/colormc-a$version-1-$2.pkg.tar.zst \
-        ./build_out/colormc-a$version-1-$2-aot.pkg.tar.zst
+    mv $base_dir/colormc-$version-1-$2.pkg.tar.zst \
+        ./build_out/colormc-$main_version$version-1-$2-aot.pkg.tar.zst
 
-    echo "ColorMC-$1-aot.pkg.tar.zst build done"
+    echo "colormc-$main_version$version-$1-aot.pkg.tar.zst build done"
 }
 
 build_arch linux-x64 x86_64

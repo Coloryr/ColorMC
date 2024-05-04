@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.Text;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
@@ -7,8 +9,6 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System.Collections.Concurrent;
-using System.Text;
 
 namespace ColorMC.Core.Helpers;
 
@@ -18,7 +18,7 @@ namespace ColorMC.Core.Helpers;
 public static class ModPackHelper
 {
     /// <summary>
-    /// 升级游戏整合包
+    /// 升级CurseForge整合包
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="zip">压缩包路径</param>
@@ -103,70 +103,146 @@ public static class ModPackHelper
             }
         }
 
-        PathHelper.WriteBytes(obj.GetModPackJsonFile(), array1);
-
-        var obj1 = obj.CopyObj();
-        obj1.Mods.Clear();
-
-        //获取Mod信息
-        var list = await GetCurseForgeModInfo(obj1, info, true, update);
-        if (!list.Res)
+        CurseForgePackObj? info3 = null;
+        var json = obj.GetModPackJsonFile();
+        if (File.Exists(json))
         {
-            return false;
+            try
+            {
+                info3 = JsonConvert.DeserializeObject<CurseForgePackObj>(PathHelper.ReadText(json)!);
+            }
+            catch
+            {
+
+            }
         }
 
-        var addlist = new List<ModInfoObj>();
-        var removelist = new List<ModInfoObj>();
+        var path = obj.GetGamePath();
 
-        ModInfoObj[] temp1 = [.. obj.Mods.Values];
-        ModInfoObj?[] temp2 = [.. obj1.Mods.Values];
+        var list1 = new List<DownloadItemObj>();
 
-        foreach (var item in temp1)
+        if (info3 != null)
         {
-            for (int a = 0; a < temp2.Length; a++)
+            var addlist = new List<CurseForgePackObj.Files>();
+            var removelist = new List<CurseForgePackObj.Files>();
+
+            CurseForgePackObj.Files[] temp1 = [.. info.files];
+            CurseForgePackObj.Files?[] temp2 = [.. info3.files];
+
+            foreach (var item in temp1)
             {
-                var item1 = temp2[a];
-                if (item1 == null)
-                    continue;
-                if (item.ModId == item1.ModId)
+                for (int a = 0; a < temp2.Length; a++)
                 {
-                    temp2[a] = null;
-                    if (item.FileId != item1.FileId
-                        || item.SHA1 != item1.SHA1)
+                    var item1 = temp2[a];
+                    if (item1 == null)
+                        continue;
+                    if (item.projectID == item1.projectID)
                     {
-                        addlist.Add(item1);
-                        removelist.Add(item);
-                        break;
+                        temp2[a] = null;
+                        if (item.fileID != item1.fileID)
+                        {
+                            addlist.Add(item1);
+                            removelist.Add(item);
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        foreach (var item in temp2)
-        {
-            if (item != null)
+            foreach (var item in temp2)
             {
-                addlist.Add(item);
+                if (item != null)
+                {
+                    addlist.Add(item);
+                }
+            }
+
+            foreach (var item in removelist)
+            {
+                if (obj.Mods.Remove(item.projectID.ToString(), out var mod))
+                {
+                    PathHelper.Delete(Path.GetFullPath($"{path}/{mod.Path}/{mod.File}"));
+                }
+            }
+
+            foreach (var item in addlist)
+            {
+                var res = await CurseForgeAPI.GetMod(item);
+                if (res == null || res.data == null)
+                {
+                    return false;
+                }
+
+                var path1 = await GetCurseForgeItemPath(obj, res.data);
+                var modid = res.data.modId.ToString();
+                list1.Add(res.data.MakeModDownloadObj(obj, path1.Item1));
+                obj.Mods.Add(modid, res.data.MakeModInfo(path1.Item2));
+            }
+        }
+        else
+        {
+            var addlist = new List<ModInfoObj>();
+            var removelist = new List<ModInfoObj>();
+
+            var obj1 = obj.CopyObj();
+            obj1.Mods.Clear();
+
+            var list = await GetCurseForgeModInfo(obj1, info, true, update);
+            if (!list.Res)
+            {
+                return false;
+            }
+
+            ModInfoObj[] temp1 = [.. obj.Mods.Values];
+            ModInfoObj?[] temp2 = [.. obj1.Mods.Values];
+
+            foreach (var item in temp1)
+            {
+                for (int a = 0; a < temp2.Length; a++)
+                {
+                    var item1 = temp2[a];
+                    if (item1 == null)
+                        continue;
+                    if (item.ModId == item1.ModId)
+                    {
+                        temp2[a] = null;
+                        if (item.FileId != item1.FileId
+                            || item.SHA1 != item1.SHA1)
+                        {
+                            addlist.Add(item1);
+                            removelist.Add(item);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            foreach (var item in temp2)
+            {
+                if (item != null)
+                {
+                    addlist.Add(item);
+                }
+            }
+
+            foreach (var item in removelist)
+            {
+                var local = Path.GetFullPath($"{path}/{item.Path}/{item.File}");
+                if (File.Exists(local))
+                {
+                    PathHelper.Delete(local);
+                }
+                obj.Mods.Remove(item.ModId);
+            }
+
+            foreach (var item in addlist)
+            {
+                list1.Add(list.List.First(a => a.SHA1 == item.SHA1));
+                obj.Mods.Add(item.ModId, item);
             }
         }
 
-        foreach (var item in removelist)
-        {
-            var local = Path.GetFullPath($"{obj.GetGamePath()}/{item.Path}/{item.File}");
-            if (File.Exists(local))
-            {
-                PathHelper.Delete(local);
-            }
-            obj.Mods.Remove(item.ModId);
-        }
-
-
-        var list1 = new List<DownloadItemObj>();
-        foreach (var item in addlist)
-        {
-            list1.Add(list.List.First(a => a.SHA1 == item.SHA1));
-            obj.Mods.Add(item.ModId, item);
-        }
+        PathHelper.WriteBytes(json, array1);
 
         await DownloadManager.StartAsync(list1);
 
@@ -330,13 +406,6 @@ public static class ModPackHelper
         var now = 0;
         var list = new ConcurrentBag<DownloadItemObj>();
 
-        var modpath = game.GetModsPath();
-        var respath = game.GetResourcepacksPath();
-        var shapath = game.GetShaderpacksPath();
-        var modpath1 = InstancesPath.Name11;
-        var respath1 = InstancesPath.Name8;
-        var shapath1 = InstancesPath.Name9;
-
         //获取Mod信息
         var res = await CurseForgeAPI.GetMods(info.files);
         if (res != null)
@@ -345,31 +414,11 @@ public static class ModPackHelper
 
             foreach (var item in res1)
             {
-                var path = modpath;
-                var path1 = modpath1;
-                if (!item.fileName.EndsWith(".jar"))
-                {
-                    var info1 = await CurseForgeAPI.GetModInfo(item.modId);
-                    if (info1 != null)
-                    {
-                        if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack)
-                            || info1.Data.classId == CurseForgeAPI.ClassResourcepack)
-                        {
-                            path = respath;
-                            path1 = respath1;
-                        }
-                        else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassShaderpack)
-                            || info1.Data.classId == CurseForgeAPI.ClassShaderpack)
-                        {
-                            path = shapath;
-                            path1 = shapath1;
-                        }
-                    }
-                }
-                list.Add(item.MakeModDownloadObj(game, path));
+                var path = await GetCurseForgeItemPath(game, item);
+                list.Add(item.MakeModDownloadObj(game, path.Item1));
                 var modid = item.modId.ToString();
                 game.Mods.Remove(modid);
-                game.Mods.Add(modid, item.MakeModInfo(path1));
+                game.Mods.Add(modid, item.MakeModInfo(path.Item2));
 
                 now++;
                 if (notify)
@@ -391,30 +440,12 @@ public static class ModPackHelper
                     return;
                 }
 
-                var path = modpath;
-                var path1 = modpath1;
-                if (!res.data.fileName.EndsWith(".jar"))
-                {
-                    var info1 = await CurseForgeAPI.GetModInfo(res.data.modId);
-                    if (info1 != null)
-                    {
-                        if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack))
-                        {
-                            path = respath;
-                            path1 = respath1;
-                        }
-                        else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack))
-                        {
-                            path = shapath;
-                            path1 = shapath1;
-                        }
-                    }
-                }
+                var path = await GetCurseForgeItemPath(game, res.data);
 
-                list.Add(res.data.MakeModDownloadObj(game, path));
+                list.Add(res.data.MakeModDownloadObj(game, path.Item1));
                 var modid = res.data.modId.ToString();
                 game.Mods.Remove(modid);
-                game.Mods.Add(modid, res.data.MakeModInfo(path1));
+                game.Mods.Add(modid, res.data.MakeModInfo(path.Item2));
 
                 now++;
                 if (notify)
@@ -429,6 +460,39 @@ public static class ModPackHelper
         }
 
         return (true, list);
+    }
+
+    /// <summary>
+    /// 构建CurseForge资源所在的文件夹
+    /// </summary>
+    /// <param name="game"></param>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    private static async Task<(string, string)> GetCurseForgeItemPath(GameSettingObj game, CurseForgeModObj.Data item)
+    {
+        var path = game.GetModsPath();
+        var path1 = InstancesPath.Name11;
+        if (!item.fileName.EndsWith(".jar"))
+        {
+            var info1 = await CurseForgeAPI.GetModInfo(item.modId);
+            if (info1 != null)
+            {
+                if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack)
+                    || info1.Data.classId == CurseForgeAPI.ClassResourcepack)
+                {
+                    path = game.GetResourcepacksPath();
+                    path1 = InstancesPath.Name8;
+                }
+                else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassShaderpack)
+                    || info1.Data.classId == CurseForgeAPI.ClassShaderpack)
+                {
+                    path = game.GetShaderpacksPath();
+                    path1 = InstancesPath.Name9;
+                }
+            }
+        }
+
+        return (path, path1);
     }
 
     /// <summary>
@@ -519,68 +583,161 @@ public static class ModPackHelper
             }
         }
 
-        PathHelper.WriteBytes(obj.GetModPackJsonFile(), array1);
+        //获取当前整合包数据
+        ModrinthPackObj? info3 = null;
+        var json = obj.GetModPackJsonFile();
+        if (File.Exists(json))
+        {
+            try
+            {
+                info3 = JsonConvert.DeserializeObject<ModrinthPackObj>(PathHelper.ReadText(json)!);
+            }
+            catch
+            {
+
+            }
+        }
 
         var obj1 = obj.CopyObj();
         obj1.Mods.Clear();
 
         //获取Mod信息
         var list = GetModrinthModInfo(obj1, info, true, state);
-
-        var addlist = new List<ModInfoObj>();
-        var removelist = new List<ModInfoObj>();
-
-        ModInfoObj[] temp1 = [.. obj.Mods.Values];
-        ModInfoObj?[] temp2 = [.. obj1.Mods.Values];
-
-        foreach (var item in temp1)
-        {
-            for (int a = 0; a < temp2.Length; a++)
-            {
-                var item1 = temp2[a];
-                if (item1 == null)
-                    continue;
-                if (item.ModId == item1.ModId)
-                {
-                    temp2[a] = null;
-                    if (item.FileId != item1.FileId
-                        || item.SHA1 != item1.SHA1)
-                    {
-                        addlist.Add(item1);
-                        removelist.Add(item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        foreach (var item in temp2)
-        {
-            if (item != null)
-            {
-                addlist.Add(item);
-            }
-        }
-
         var list1 = new List<DownloadItemObj>();
 
         string path = obj.GetGamePath();
 
-        foreach (var item in removelist)
+        if (info3 != null)
         {
-            string local = Path.GetFullPath(path + "/" + item.File);
-            if (File.Exists(local))
+            //筛选新旧整合包文件差距
+            var addlist = new List<ModrinthPackObj.File>();
+            var removelist = new List<ModrinthPackObj.File>();
+
+            ModrinthPackObj.File?[] temp1 = [.. info.files];
+            ModrinthPackObj.File?[] temp2 = [.. info3.files];
+
+            for (int b = 0; b < temp1.Length; b++)
             {
-                PathHelper.Delete(local);
+                var item = temp1[b];
+                if (item == null)
+                    continue;
+                for (int a = 0; a < temp2.Length; a++)
+                {
+                    var item1 = temp2[a];
+                    if (item1 == null)
+                        continue;
+                    if (item.hashes.sha1 == item1.hashes.sha1)
+                    {
+                        temp1[b] = null;
+                        temp2[a] = null;
+                    }
+                }
             }
-            obj.Mods.Remove(item.ModId);
+
+            foreach (var item in temp1)
+            {
+                if (item != null)
+                {
+                    removelist.Add(item);
+                }
+            }
+
+            foreach (var item in temp2)
+            {
+                if (item != null)
+                {
+                    addlist.Add(item);
+                }
+            }
+
+            foreach (var item in removelist)
+            {
+                PathHelper.Delete(Path.GetFullPath($"{path}/{item.path}"));
+
+                var url = item.downloads.FirstOrDefault(a => a.StartsWith($"{UrlHelper.ModrinthDownload}data/"));
+                if (url is { })
+                {
+                    var modid = StringHelper.GetString(url, "data/", "/ver");
+                    obj.Mods.Remove(modid);
+                }
+            }
+
+            foreach (var item in addlist)
+            {
+                var item11 = list.First(a => a.SHA1 == item.hashes.sha1);
+                list1.Add(item11);
+                var url = item.downloads.FirstOrDefault(a => a.StartsWith($"{UrlHelper.ModrinthDownload}data/"));
+                if (url != null)
+                {
+                    var modid = StringHelper.GetString(url, "data/", "/ver");
+                    var fileid = StringHelper.GetString(url, "versions/", "/");
+
+                    obj.Mods.Remove(modid);
+                    obj.Mods.Add(modid, new()
+                    {
+                        Path = item.path[..item.path.IndexOf('/')],
+                        Name = item.path,
+                        File = item.path,
+                        SHA1 = item11.SHA1!,
+                        ModId = modid,
+                        FileId = fileid,
+                        Url = url
+                    });
+                }
+            }
+        }
+        else
+        {
+            //没有整合包信息
+            var addlist = new List<ModInfoObj>();
+            var removelist = new List<ModInfoObj>();
+
+            ModInfoObj[] temp1 = [.. obj.Mods.Values];
+            ModInfoObj?[] temp2 = [.. obj1.Mods.Values];
+
+            foreach (var item in temp1)
+            {
+                for (int a = 0; a < temp2.Length; a++)
+                {
+                    var item1 = temp2[a];
+                    if (item1 == null)
+                        continue;
+                    if (item.ModId == item1.ModId)
+                    {
+                        temp2[a] = null;
+                        if (item.FileId != item1.FileId
+                            || item.SHA1 != item1.SHA1)
+                        {
+                            addlist.Add(item1);
+                            removelist.Add(item);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            foreach (var item in temp2)
+            {
+                if (item != null)
+                {
+                    addlist.Add(item);
+                }
+            }
+
+            foreach (var item in removelist)
+            {
+                PathHelper.Delete(Path.GetFullPath($"{path}/{item.File}"));
+                obj.Mods.Remove(item.ModId);
+            }
+
+            foreach (var item in addlist)
+            {
+                list1.Add(list.First(a => a.SHA1 == item.SHA1));
+                obj.Mods.Add(item.ModId, item);
+            }
         }
 
-        foreach (var item in addlist)
-        {
-            list1.Add(list.First(a => a.SHA1 == item.SHA1));
-            obj.Mods.Add(item.ModId, item);
-        }
+        PathHelper.WriteBytes(json, array1);
 
         await DownloadManager.StartAsync(list1);
 
@@ -715,7 +872,7 @@ public static class ModPackHelper
 
         update2(CoreRunState.Download);
 
-        await DownloadManager.StartAsync(list.ToList());
+        await DownloadManager.StartAsync([.. list]);
 
         return (true, game);
     }
@@ -736,36 +893,32 @@ public static class ModPackHelper
         var now = 0;
         foreach (var item in info.files)
         {
-            string? modid, fileid;
+            var item11 = item.MakeDownloadObj(obj);
+            list.Add(item11);
+
             var url = item.downloads
                 .FirstOrDefault(a => a.StartsWith($"{UrlHelper.ModrinthDownload}data/"));
             if (url == null)
             {
                 url = item.downloads[0];
-                modid = "";
-                fileid = "";
             }
             else
             {
-                modid = StringHelper.GetString(url, "data/", "/ver");
-                fileid = StringHelper.GetString(url, "versions/", "/");
+                var modid = StringHelper.GetString(url, "data/", "/ver");
+                var fileid = StringHelper.GetString(url, "versions/", "/");
+
+                obj.Mods.Remove(modid);
+                obj.Mods.Add(modid, new()
+                {
+                    Path = item.path[..item.path.IndexOf('/')],
+                    Name = item.path,
+                    File = item.path,
+                    SHA1 = item11.SHA1!,
+                    ModId = modid,
+                    FileId = fileid,
+                    Url = url
+                });
             }
-
-            var item11 = item.MakeDownloadObj(obj);
-
-            list.Add(item11);
-
-            obj.Mods.Remove(modid);
-            obj.Mods.Add(modid, new()
-            {
-                Path = item.path[..item.path.IndexOf('/')],
-                Name = item.path,
-                File = item.path,
-                SHA1 = item11.SHA1!,
-                ModId = modid,
-                FileId = fileid,
-                Url = url
-            });
 
             now++;
 

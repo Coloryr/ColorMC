@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using ColorMC.Core;
@@ -10,12 +16,6 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Utils;
 using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -300,9 +300,9 @@ public static class UserBinding
         {
             case AuthType.Offline:
                 var file = await PathBinding.SelectFile(FileType.Head);
-                if (file != null)
+                if (file.Item1 != null)
                 {
-                    obj.SaveSkin(file);
+                    obj.SaveSkin(file.Item1);
                 }
                 break;
             case AuthType.OAuth:

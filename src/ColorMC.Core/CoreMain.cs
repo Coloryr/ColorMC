@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
@@ -9,15 +11,13 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using DotNetty.Buffers;
 using DotNetty.Transport.Channels;
-using System.Collections.Concurrent;
-using System.Diagnostics;
 
 namespace ColorMC.Core;
 
 public static class ColorMCCore
 {
     public const string TopVersion = "A25";
-    public const string DateVersion = "20240309";
+    public const string DateVersion = "20240425";
 
     public const string Version = $"{TopVersion}.{DateVersion}";
 
@@ -140,23 +140,23 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端启动
     /// </summary>
-    public static Func<GameSettingObj, JavaInfo, List<string>, Dictionary<string, string>, Process>? PhoneGameLaunch { internal get; set; }
+    public static Func<GameSettingObj, JavaInfo, List<string>, Dictionary<string, string>, Process> PhoneGameLaunch { internal get; set; }
     /// <summary>
     /// 手机端Jvm安装
     /// </summary>
-    public static Action<Stream, string, ZipUpdate>? PhoneJvmInstall { internal get; set; }
+    public static Action<Stream, string, ZipUpdate> PhoneJvmInstall { internal get; set; }
     /// <summary>
     /// 手机端读Java信息
     /// </summary>
-    public static Func<string, Process?>? PhoneStartJvm { internal get; set; }
+    public static Func<string, Process?> PhoneStartJvm { internal get; set; }
     /// <summary>
     /// 手机端读文件
     /// </summary>
-    public static Func<string, Stream?>? PhoneReadFile { get; set; }
+    public static Func<string, Stream?> PhoneReadFile { get; set; }
     /// <summary>
     /// 手机端获取运行路径
     /// </summary>
-    public static Func<string>? PhoneGetDataDir { internal get; set; }
+    public static Func<string> PhoneGetDataDir { internal get; set; }
     /// <summary>
     /// 手机端Jvm运行
     /// </summary>
@@ -165,9 +165,13 @@ public static class ColorMCCore
     /// 手机端打开网页
     /// </summary>
     public static Action<string?> PhoneOpenUrl { get; set; }
+    /// <summary>
+    /// 获取一个空闲端口
+    /// </summary>
+    public static Func<int> GetFreePort { get; set; }
 
     /// <summary>
-    /// 新运行
+    /// 是否为新运行
     /// </summary>
     public static bool NewStart { get; internal set; }
 

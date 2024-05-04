@@ -36,6 +36,7 @@ public static class InstancesPath
     public const string Name22 = "log4j-rce-patch.xml";
     public const string Name23 = "temp";
     public const string Name24 = "cache";
+    public const string Name25 = "loader.jar";
 
     public const string DefaultGroup = " ";
 
@@ -480,6 +481,16 @@ public static class InstancesPath
     }
 
     /// <summary>
+    /// 获取自定义加载器路径
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static string GetGameLoaderFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name25}");
+    }
+
+    /// <summary>
     /// 新建游戏版本
     /// </summary>
     /// <param name="game">游戏实例</param>
@@ -865,7 +876,8 @@ public static class InstancesPath
     /// <param name="local">目标地址</param>
     /// <param name="unselect">未选择的文件</param>
     /// <returns></returns>
-    public static async Task<(bool, Exception?)> CopyFile(this GameSettingObj obj, string local, List<string>? unselect)
+    public static async Task<(bool, Exception?)> CopyFile(this GameSettingObj obj,
+        string local, List<string>? unselect)
     {
         try
         {
@@ -895,5 +907,63 @@ public static class InstancesPath
             Logs.Error(temp, e);
             return (false, e);
         }
+    }
+
+    /// <summary>
+    /// 获取自定义加载器数据
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static async Task<string?> GetGameLoaderInfo(this GameSettingObj obj)
+    {
+        var file = obj.GetGameLoaderFile();
+        if (File.Exists(file))
+        {
+            var res = await DownloadItemHelper.DecodeLoaderJarAsync(obj);
+
+            var name = res.name;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+
+            if (VersionPath.GetCustomLoaderObj(obj.UUID) == null)
+            {
+                return null;
+            }
+
+            return name;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 设置游戏实例自定义加载器
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="path">自定义加载器路径</param>
+    /// <returns></returns>
+    public static async Task<(bool, string?)> SetGameLoader(this GameSettingObj obj, string path)
+    {
+        if (!File.Exists(path))
+        {
+            return (false, LanguageHelper.Get("Core.Game.Error16"));
+        }
+
+        var list = await DownloadItemHelper.DecodeLoaderJarAsync(obj, path);
+
+        if (list.Item1 == null)
+        {
+            return (false, LanguageHelper.Get("Core.Game.Error17"));
+        }
+
+        var local = obj.GetGameLoaderFile();
+        PathHelper.Delete(local);
+
+        PathHelper.CopyFile(path, local);
+
+        return (true, null);
     }
 }

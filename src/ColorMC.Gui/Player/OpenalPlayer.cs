@@ -1,6 +1,6 @@
-using Silk.NET.OpenAL;
 using System;
 using System.Threading;
+using Silk.NET.OpenAL;
 
 namespace ColorMC.Gui.Player;
 

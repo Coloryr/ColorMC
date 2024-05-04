@@ -15,6 +15,11 @@ namespace ColorMC.Setup.Wix
                             new File(@"..\build_out\win-x64-dotnet\Live2DCSharpSDK.App.pdb"),
                             new File(@"..\build_out\win-x64-dotnet\Live2DCSharpSDK.Framework.pdb"),
                             new File(@"..\build_out\win-x64-dotnet\ColorMC.Launcher.pdb"),
+                            new File(@"..\build_out\win-x64-dotnet\av_libglesv2.dll"),
+                            new File(@"..\build_out\win-x64-dotnet\libHarfBuzzSharp.dll"),
+                            new File(@"..\build_out\win-x64-dotnet\libSkiaSharp.dll"),
+                            new File(@"..\build_out\win-x64-dotnet\SDL2.dll"),
+                            new File(@"..\build_out\win-x64-dotnet\X11.pdb"),
                             new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
         }
 
@@ -30,33 +35,34 @@ namespace ColorMC.Setup.Wix
                             new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
         }
 
-        private static Dir BuildArm64()
-        {
-            return new Dir(@"%ProgramFiles%\ColorMC",
-                            new File(@"..\build_out\win-arm64-dotnet\ColorMC.Launcher.exe",
-                                new FileShortcut("ColorMC") { WorkingDirectory = "[INSTALLDIR]" }),
-                            new File(@"..\build_out\win-arm64-dotnet\ColorMC.Core.pdb"),
-                            new File(@"..\build_out\win-arm64-dotnet\ColorMC.Gui.pdb"),
-                            new File(@"..\build_out\win-arm64-dotnet\Live2DCSharpSDK.App.pdb"),
-                            new File(@"..\build_out\win-arm64-dotnet\Live2DCSharpSDK.Framework.pdb"),
-                            new File(@"..\build_out\win-arm64-dotnet\ColorMC.Launcher.pdb"),
-                            new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
-        }
+        //private static Dir BuildArm64()
+        //{
+        //    return new Dir(@"%ProgramFiles%\ColorMC",
+        //                    new File(@"..\build_out\win-arm64-dotnet\ColorMC.Launcher.exe",
+        //                        new FileShortcut("ColorMC") { WorkingDirectory = "[INSTALLDIR]" }),
+        //                    new File(@"..\build_out\win-arm64-dotnet\ColorMC.Core.pdb"),
+        //                    new File(@"..\build_out\win-arm64-dotnet\ColorMC.Gui.pdb"),
+        //                    new File(@"..\build_out\win-arm64-dotnet\Live2DCSharpSDK.App.pdb"),
+        //                    new File(@"..\build_out\win-arm64-dotnet\Live2DCSharpSDK.Framework.pdb"),
+        //                    new File(@"..\build_out\win-arm64-dotnet\ColorMC.Launcher.pdb"),
+        //                    new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
+        //}
 
-        private static Dir BuildArm64AOT()
-        {
-            return new Dir(@"%ProgramFiles%\ColorMC",
-                            new File(@"..\build_out\win-arm64-aot\ColorMC.Launcher.exe",
-                                new FileShortcut("ColorMC") { WorkingDirectory = "[INSTALLDIR]" }),
-                            new File(@"..\build_out\win-arm64-aot\av_libglesv2.dll"),
-                            new File(@"..\build_out\win-arm64-aot\libHarfBuzzSharp.dll"),
-                            new File(@"..\build_out\win-arm64-aot\libSkiaSharp.dll"),
-                            new File(@"..\build_out\win-arm64-aot\SDL2.dll"),
-                            new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
-        }
+        //private static Dir BuildArm64AOT()
+        //{
+        //    return new Dir(@"%ProgramFiles%\ColorMC",
+        //                    new File(@"..\build_out\win-arm64-aot\ColorMC.Launcher.exe",
+        //                        new FileShortcut("ColorMC") { WorkingDirectory = "[INSTALLDIR]" }),
+        //                    new File(@"..\build_out\win-arm64-aot\av_libglesv2.dll"),
+        //                    new File(@"..\build_out\win-arm64-aot\libHarfBuzzSharp.dll"),
+        //                    new File(@"..\build_out\win-arm64-aot\libSkiaSharp.dll"),
+        //                    new File(@"..\build_out\win-arm64-aot\SDL2.dll"),
+        //                    new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
+        //}
 
         private static void Build(Dir dir, string file, Platform platform)
         {
+            WixExtension.UI.PreferredVersion = "4.0.4"; // or any other working version
             var project = new ManagedProject("ColorMC",
                         dir,
                         new Dir(@"%ProgramMenu%\ColorMC",
@@ -75,7 +81,7 @@ namespace ColorMC.Setup.Wix
                 Platform = platform,
                 BannerImage = "game.png",
                 BackgroundImage = "game.png",
-                Version = new Version(1, 24),
+                Version = new Version(1, 25),
                 Description = "A Minecraft Launcher"
             };
 

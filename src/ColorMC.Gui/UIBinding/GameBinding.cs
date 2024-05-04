@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -26,13 +33,6 @@ using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SkiaSharp;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -89,6 +89,7 @@ public static class GameBinding
         {
             ConfigBinding.SetLastLaunch(game1.UUID);
         }
+
         return game1 != null;
     }
 
@@ -400,10 +401,10 @@ public static class GameBinding
         try
         {
             var file = await PathBinding.SelectFile(FileType.Icon);
-            if (file != null)
+            if (file.Item1 != null)
             {
                 model.Progress(App.Lang("Gui.Info30"));
-                using var info = SKBitmap.Decode(PathHelper.OpenRead(file)!);
+                using var info = SKBitmap.Decode(PathHelper.OpenRead(file.Item1)!);
                 if (info.Width > 200 || info.Height > 200)
                 {
                     using var image = await Task.Run(() =>
@@ -1779,7 +1780,7 @@ public static class GameBinding
             {
                 if (obj.Loader == Loaders.Custom)
                 {
-                    info.AppendLine(string.Format(App.Lang("Gui.Info47"), Path.GetFileName(obj.CustomLoader?.Local), obj.CustomLoader?.OffLib));
+                    info.AppendLine(string.Format(App.Lang("Gui.Info47"), GameBinding.GetGameLoader(obj), obj.CustomLoader?.OffLib));
                 }
                 else
                 {
@@ -1802,5 +1803,23 @@ public static class GameBinding
             }
         });
         App.ShowError(App.Lang("Gui.Info52"), info.ToString(), false);
+    }
+
+    public static async Task<string> GetGameLoader(GameSettingObj obj)
+    {
+        var res = await obj.GetGameLoaderInfo();
+        if (res != null)
+        {
+            return res;
+        }
+        else
+        {
+            return App.Lang("GameEditWindow.Tab1.Error4");
+        }
+    }
+
+    public static Task<(bool, string?)> SetGameLoader(GameSettingObj obj, string path)
+    {
+        return obj.SetGameLoader(path);
     }
 }

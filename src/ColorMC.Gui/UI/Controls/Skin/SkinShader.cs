@@ -1,5 +1,5 @@
-﻿using Avalonia.OpenGL;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using Avalonia.OpenGL;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 

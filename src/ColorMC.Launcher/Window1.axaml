@@ -18,8 +18,8 @@
         <TextBlock
             HorizontalAlignment="Center"
             FontSize="20"
-            Text="启动器需要管理员方式启动才能正常运行" />
-        <TextBlock HorizontalAlignment="Center" Text="The launcher needs to be started in administrator mode to function properly" />
+            Text="启动器所在没有根目录没有读写权限" />
+        <TextBlock HorizontalAlignment="Center" Text="The launcher is located without a root directory or read/write permissions" />
         <TextBlock
             HorizontalAlignment="Center"
             FontSize="20"
@@ -32,12 +32,12 @@
         <TextBlock HorizontalAlignment="Center" Text="Do you want to restart using administrator mode" />
         <Button
             Name="Button3"
-            Width="200"
+            Width="250"
             Margin="0,20,0,0"
             HorizontalAlignment="Center"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
-            Content="调整运行目录(Change Dir)" />
+            Content="调整运行目录(Change Run Dir)" />
 
         <StackPanel
             Margin="0,20,0,0"

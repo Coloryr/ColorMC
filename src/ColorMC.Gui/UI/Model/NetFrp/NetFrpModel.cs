@@ -1,8 +1,8 @@
-﻿using ColorMC.Core.Objs;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 

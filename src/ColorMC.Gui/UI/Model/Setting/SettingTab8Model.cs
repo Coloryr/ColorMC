@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
@@ -8,11 +13,6 @@ using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
@@ -292,12 +292,12 @@ public partial class SettingModel
     public async Task ImportInputConfig()
     {
         var file = await PathBinding.SelectFile(FileType.InputConfig);
-        if (file == null)
+        if (file.Item1 == null)
         {
             return;
         }
 
-        var obj = InputConfigUtils.Load(file);
+        var obj = InputConfigUtils.Load(file.Item1);
         if (obj == null)
         {
             Model.Show(App.Lang("SettingWindow.Tab8.Error2"));

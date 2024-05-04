@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.McMod;
@@ -8,8 +10,6 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

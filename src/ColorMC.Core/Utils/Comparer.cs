@@ -1,7 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ColorMC.Core.Utils;
 

@@ -8,7 +8,7 @@
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<Platforms>AnyCPU</Platforms>
 		<ApplicationIcon>icon.ico</ApplicationIcon>
-		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
 	</PropertyGroup>
 	
 	<PropertyGroup>

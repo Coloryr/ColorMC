@@ -1,13 +1,13 @@
-using ColorMC.Core.Net;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.Player.Decoder.Mp3;
 using System;
 using System.Buffers.Binary;
 using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using ColorMC.Core.Net;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.Player.Decoder.Mp3;
 
 namespace ColorMC.Gui.Player;
 

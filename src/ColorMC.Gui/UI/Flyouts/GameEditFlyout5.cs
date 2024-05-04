@@ -1,7 +1,7 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using Avalonia.Controls;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
-using System;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

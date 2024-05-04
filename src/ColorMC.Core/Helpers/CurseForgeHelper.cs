@@ -1,6 +1,6 @@
+using System.Text;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using System.Text;
 
 namespace ColorMC.Core.Helpers;
 

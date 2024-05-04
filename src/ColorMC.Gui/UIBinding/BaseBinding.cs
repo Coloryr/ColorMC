@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -24,14 +32,6 @@ using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.Hook;
 using ColorMC.Gui.Utils.LaunchSetting;
 using ICSharpCode.SharpZipLib.Zip;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -597,7 +597,7 @@ public static class BaseBinding
         ColorMCCore.Request request, ColorMCCore.LaunchP pre,
         ColorMCCore.UpdateState state, ColorMCCore.ChoiseCall select,
         ColorMCCore.NoJava nojava, ColorMCCore.LoginFailRun loginfail,
-        ColorMCCore.GameLaunch update2, LoginObj obj1, WorldObj? world, 
+        ColorMCCore.GameLaunch update2, LoginObj obj1, WorldObj? world,
         int? mixinport, CancellationToken cancel)
     {
         string? temp = null;
@@ -843,7 +843,7 @@ public static class BaseBinding
 
         try
         {
-            App.ShowCustom(file, false);
+            App.ShowCustom(file, true);
             App.CustomWindow?.Load1();
         }
         catch (Exception ex)

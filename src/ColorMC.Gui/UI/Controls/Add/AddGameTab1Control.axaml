@@ -37,6 +37,7 @@
                             <ComboBox
                                 Width="200"
                                 Margin="0,0,5,0"
+                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding VersionTypeList}"
                                 SelectedIndex="{Binding VersionType}" />
                         </StackPanel>
@@ -46,6 +47,7 @@
                                 Width="200"
                                 Margin="0,0,5,0"
                                 VerticalContentAlignment="Center"
+                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding GameVersionList}"
                                 SelectedItem="{Binding Version}" />
                         </StackPanel>
@@ -57,6 +59,7 @@
                             Classes="top"
                             Command="{Binding LoadVersion}"
                             Content="{setting:Localize GameEditWindow.Tab1.Text2}"
+                            IsEnabled="{Binding !IsLoad}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
@@ -77,10 +80,14 @@
                                 Width="200"
                                 Margin="0,0,5,0"
                                 VerticalContentAlignment="Center"
+                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding LoaderTypeList}"
                                 SelectedIndex="{Binding LoaderType}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <StackPanel
+                            Margin="0,0,0,5"
+                            IsEnabled="{Binding !IsLoad}"
+                            Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
                             <ComboBox
                                 Width="200"
