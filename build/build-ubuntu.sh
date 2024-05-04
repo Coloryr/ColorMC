@@ -119,4 +119,4 @@ sudo chown $USER:$USER ./build_out/colormc-$main_version$version-x86_64.AppImage
 chmod a+x build_out/colormc-$main_version$version-x86_64.AppImage
 mv build_out/colormc-$main_version$version-x86_64.AppImage build_out/colormc-$main_version$version-linux-x86_64.AppImage
 
-echo "ColorMC-b$version-linux-x64-appimage build done"
+echo "ColorMC-$main_version$version-linux-x64-appimage build done"
