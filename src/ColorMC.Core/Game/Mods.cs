@@ -86,7 +86,14 @@ public static class Mods
         }
 
         //forge 1.13及以上
+        bool neoforge = false;
         item1 = zFile.GetEntry("META-INF/mods.toml");
+        if (item1 == null)
+        {
+            //neoforge1.20.5
+            item1 = zFile.GetEntry("META-INF/neoforge.mods.toml");
+            neoforge = true;
+        }
         if (item1 != null)
         {
             using var stream1 = zFile.GetInputStream(item1);
@@ -105,7 +112,7 @@ public static class Mods
             var obj3 = new ModObj
             {
                 V2 = true,
-                Loader = Loaders.Forge,
+                Loader = neoforge ? Loaders.NeoForge : Loaders.Forge,
             };
             if (model2.TryGetValue("modId", out object item2))
             {
