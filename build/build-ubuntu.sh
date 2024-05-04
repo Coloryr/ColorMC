@@ -84,9 +84,9 @@ build_deb_aot() {
 }
 
 build_deb linux-x64
-build_deb linux-aarch64
+build_deb linux-arm64
 build_deb_aot linux-x64
-build_deb_aot linux-aarch64
+build_deb_aot linux-arm64
 
 echo "build colormc-$main_version$version-linux-x86_64.AppImage"
 
