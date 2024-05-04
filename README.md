@@ -1,4 +1,6 @@
-# ColorMC 全新的MC启动器
+# ColorMC2 一个全平台Minecraft PC启动器
+
+**该仓库为ColorMC的新UI及下一代产品**
 
 交流QQ群：571239090
 

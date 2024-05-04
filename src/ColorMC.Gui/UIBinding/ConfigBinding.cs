@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
@@ -7,7 +8,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -714,5 +714,14 @@ public static class ConfigBinding
     public static void RemoveInputConfig(InputControlObj obj)
     {
         InputConfigUtils.Remove(obj);
+    }
+
+    public static void SetLive2DMode(bool value)
+    {
+        GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
+        GuiConfigUtils.Config.Live2D.LowFps = value;
+        GuiConfigUtils.Save();
+
+        App.MainWindow?.ChangeLive2DMode();
     }
 }

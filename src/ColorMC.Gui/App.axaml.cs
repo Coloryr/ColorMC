@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -38,13 +45,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
 
@@ -362,7 +362,7 @@ public partial class App : Application
 
                 if (ok)
                 {
-                    ShowCustom(file, true);
+                    ShowCustom(file, false);
                 }
             }
             catch (Exception e)
@@ -380,12 +380,26 @@ public partial class App : Application
         }
     }
 
-    public static void AWindow(IUserControl con, bool isroot = false)
+    public static void AWindow(IUserControl con, bool newwindow = false)
     {
         if (ConfigBinding.WindowMode())
         {
-            con.SetBaseModel(AllWindow!.Model);
-            AllWindow.Add(con);
+            if (newwindow)
+            {
+                if (SystemInfo.Os == OsType.Android)
+                {
+                    return;
+                }
+
+                var win = new SelfBaseWindow(con);
+                con.SetBaseModel(win.Model);
+                win.Show();
+            }
+            else
+            {
+                con.SetBaseModel(AllWindow!.Model);
+                AllWindow.Add(con);
+            }
         }
         else
         {
@@ -396,7 +410,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowCustom(string obj, bool isroot)
+    public static void ShowCustom(string obj, bool newwindow)
     {
         if (CustomWindow != null)
         {
@@ -405,7 +419,7 @@ public partial class App : Application
         else
         {
             CustomWindow = new();
-            AWindow(CustomWindow, isroot);
+            AWindow(CustomWindow, newwindow);
         }
 
         CustomWindow.Load(obj);
@@ -473,7 +487,7 @@ public partial class App : Application
         else
         {
             MainWindow = new();
-            AWindow(MainWindow, true);
+            AWindow(MainWindow);
         }
     }
 

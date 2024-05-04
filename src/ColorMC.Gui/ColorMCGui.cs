@@ -1,3 +1,10 @@
+using System;
+using System.IO;
+using System.IO.MemoryMappedFiles;
+using System.Net;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -7,14 +14,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.MemoryMappedFiles;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Tmds.DBus.Protocol;
 
 namespace ColorMC.Gui;
@@ -41,7 +40,8 @@ public static class ColorMCGui
     public static void Main(string[] args)
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 |
+            SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
         try
         {
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
@@ -78,7 +78,7 @@ public static class ColorMCGui
                 }
             }
 
-            string name = RunDir + "lock";
+            var name = RunDir + "lock";
             if (File.Exists(name))
             {
                 try
@@ -139,7 +139,7 @@ public static class ColorMCGui
     {
         string name = RunDir + "lock";
         using var temp = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-        using var file = MemoryMappedFile.CreateFromFile(temp, null, 100, 
+        using var file = MemoryMappedFile.CreateFromFile(temp, null, 100,
             MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, false);
         using var reader = file.CreateViewAccessor();
         reader.Write(0, false);

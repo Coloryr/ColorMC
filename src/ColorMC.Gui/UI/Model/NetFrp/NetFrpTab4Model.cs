@@ -1,12 +1,12 @@
-﻿using ColorMC.Core.LaunchPath;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 

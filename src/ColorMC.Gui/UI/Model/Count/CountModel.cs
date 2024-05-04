@@ -1,10 +1,10 @@
-﻿using ColorMC.Core.Objs;
-using ColorMC.Gui.UIBinding;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ColorMC.Core.Objs;
+using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Count;
 

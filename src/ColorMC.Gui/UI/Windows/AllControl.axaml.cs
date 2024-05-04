@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
@@ -11,10 +15,6 @@ using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
 

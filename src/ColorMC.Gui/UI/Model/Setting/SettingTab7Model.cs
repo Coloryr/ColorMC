@@ -1,9 +1,9 @@
-﻿using Avalonia.Media.Imaging;
+﻿using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -72,5 +72,11 @@ public partial class SettingModel
     public void OpenUrl10()
     {
         WebBinding.OpenWeb(WebType.BSD);
+    }
+
+    [RelayCommand]
+    public void OpenUrl11()
+    {
+        WebBinding.OpenWeb(WebType.OpenFrpApi);
     }
 }

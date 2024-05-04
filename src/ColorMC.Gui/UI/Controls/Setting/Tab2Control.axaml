@@ -566,6 +566,11 @@
                                 Width="150"
                                 ItemsSource="{Binding PosList}"
                                 SelectedIndex="{Binding L2dPos}" />
+                            <ToggleSwitch
+                                Margin="10,0,5,0"
+                                IsChecked="{Binding LowFps}"
+                                OffContent="{setting:Localize SettingWindow.Tab2.Text53}"
+                                OnContent="{setting:Localize SettingWindow.Tab2.Text53}" />
                         </StackPanel>
                         <WrapPanel IsEnabled="{Binding EnableLive2D}">
                             <StackPanel Orientation="Horizontal">

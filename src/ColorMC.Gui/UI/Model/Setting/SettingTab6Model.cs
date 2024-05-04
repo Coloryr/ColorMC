@@ -1,4 +1,8 @@
-﻿using Avalonia.Media;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using Avalonia.Media;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
@@ -6,10 +10,6 @@ using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -183,10 +183,10 @@ public partial class SettingModel
     [RelayCommand]
     public async Task SelectUI()
     {
-        var res = await PathBinding.SelectFile(FileType.UI);
-        if (res != null)
+        var file = await PathBinding.SelectFile(FileType.UI);
+        if (file.Item1 != null)
         {
-            FileUI = res;
+            FileUI = file.Item1;
         }
     }
 
@@ -255,12 +255,12 @@ public partial class SettingModel
     public async Task SelectMusic()
     {
         var file = await PathBinding.SelectFile(FileType.Music);
-        if (file == null)
+        if (file.Item1 == null)
         {
             return;
         }
 
-        Music = file;
+        Music = file.Item1;
     }
 
     public void LoadServer()

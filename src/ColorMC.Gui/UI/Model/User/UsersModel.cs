@@ -1,28 +1,28 @@
-﻿using Avalonia.Input;
-using Avalonia.Threading;
-using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UIBinding;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Web;
+using Avalonia.Input;
+using Avalonia.Threading;
+using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.User;
 
 public partial class UsersControlModel : TopModel
 {
     public List<string> UserTypeList { get; init; } = UserBinding.GetUserTypes();
-    public ObservableCollection<UserDisplayObj> UserList { get; init; } = [];
+    public ObservableCollection<UserDisplayModel> UserList { get; init; } = [];
 
     [ObservableProperty]
-    private UserDisplayObj? _item;
+    private UserDisplayModel? _item;
 
     [ObservableProperty]
     private AuthType _type;
@@ -367,7 +367,7 @@ public partial class UsersControlModel : TopModel
         CloseShow();
     }
 
-    public void Remove(UserDisplayObj item)
+    public void Remove(UserDisplayModel item)
     {
         UserBinding.Remove(item.UUID, item.AuthType);
         Load();
@@ -384,7 +384,7 @@ public partial class UsersControlModel : TopModel
         Select(Item);
     }
 
-    public void Select(UserDisplayObj item)
+    public void Select(UserDisplayModel item)
     {
         UserBinding.SetLastUser(item.UUID, item.AuthType);
 
@@ -417,7 +417,7 @@ public partial class UsersControlModel : TopModel
         Name = HttpUtility.UrlDecode(url.Replace("authlib-injector:yggdrasil-server:", ""));
     }
 
-    public async void Refresh(UserDisplayObj obj)
+    public async void Refresh(UserDisplayModel obj)
     {
         Model.Progress(App.Lang("UserWindow.Info3"));
         var res = await UserBinding.ReLogin(obj.UUID, obj.AuthType);
@@ -452,7 +452,7 @@ public partial class UsersControlModel : TopModel
         }
     }
 
-    public void ReLogin(UserDisplayObj obj)
+    public void ReLogin(UserDisplayModel obj)
     {
         Type = obj.AuthType;
 
@@ -508,7 +508,7 @@ public partial class UsersControlModel : TopModel
         }
     }
 
-    public async void Edit(UserDisplayObj obj)
+    public async void Edit(UserDisplayModel obj)
     {
         if (obj.AuthType != AuthType.Offline)
         {

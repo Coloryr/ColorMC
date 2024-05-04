@@ -1,13 +1,3 @@
-using ColorMC.Core;
-using ColorMC.Core.Config;
-using ColorMC.Core.Helpers;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +8,16 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using ColorMC.Core;
+using ColorMC.Core.Config;
+using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Gui.Utils;
 

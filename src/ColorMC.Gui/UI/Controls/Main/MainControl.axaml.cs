@@ -1,3 +1,8 @@
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
@@ -9,11 +14,6 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -40,7 +40,7 @@ public partial class MainControl : UserControl, IUserControl
         SizeChanged += MainControl_SizeChanged;
     }
 
-    public Task<bool> OnKeyDown(object? sender, KeyEventArgs e) 
+    public Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control)
         {
@@ -57,7 +57,7 @@ public partial class MainControl : UserControl, IUserControl
             }
         }
 
-        return Task.FromResult(false); 
+        return Task.FromResult(false);
     }
 
     private void MainControl_SizeChanged(object? sender, SizeChangedEventArgs e)
@@ -299,6 +299,14 @@ public partial class MainControl : UserControl, IUserControl
         model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
         model.L2dPos = (HorizontalAlignment)((config.Pos % 3) + 1);
         model.L2dPos1 = (VerticalAlignment)((config.Pos / 3) + 1);
+    }
+
+    public void ChangeLive2DMode()
+    {
+        var config = GuiConfigUtils.Config.Live2D;
+        var model = (DataContext as MainModel)!;
+
+        model.LowFps = config.LowFps;
     }
 
     public void ShowMessage(string message)

@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -5,7 +6,6 @@ using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using System;
 
 namespace ColorMC.Gui.UI.Windows;
 

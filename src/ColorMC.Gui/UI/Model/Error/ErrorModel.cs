@@ -1,8 +1,8 @@
-﻿using AvaloniaEdit.Document;
+﻿using System;
+using AvaloniaEdit.Document;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 
 namespace ColorMC.Gui.UI.Model.Error;
 

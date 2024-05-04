@@ -1,7 +1,7 @@
-﻿using Avalonia.Controls;
+﻿using System.Collections.Generic;
+using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using ColorMC.Gui.UI.Model.Items;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model;
 

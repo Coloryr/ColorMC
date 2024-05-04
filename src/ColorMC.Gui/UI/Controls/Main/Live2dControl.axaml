@@ -12,8 +12,10 @@
     mc:Ignorable="d">
     <Panel>
         <Decorator Name="Live2D" />
-        <TextBlock Name="Label1" VerticalAlignment="Bottom" />
-
+        <TextBlock
+            Name="Label1"
+            VerticalAlignment="Bottom"
+            RenderOptions.TextRenderingMode="Antialias" />
         <Border
             Name="Border1"
             Margin="0,0,0,50"

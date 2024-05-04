@@ -1,5 +1,5 @@
-using ColorMC.Core.Objs;
 using System.Text.RegularExpressions;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.Utils;
 

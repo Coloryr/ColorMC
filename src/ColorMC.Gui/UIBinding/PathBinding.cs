@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
@@ -17,14 +25,6 @@ using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -397,12 +397,12 @@ public static class PathBinding
     /// <param name="window">窗口</param>
     /// <param name="type">类型</param>
     /// <returns>路径</returns>
-    public static async Task<string?> SelectFile(FileType type)
+    public static async Task<(string?, string?)> SelectFile(FileType type)
     {
         var top = App.TopLevel;
         if (top == null)
         {
-            return null;
+            return (null, null);
         }
 
         switch (type)
@@ -417,15 +417,15 @@ public static class PathBinding
                 {
                     var file = res[0].GetPath();
                     if (file == null)
-                        return null;
+                        return (null, null);
                     if (SystemInfo.Os == OsType.Windows && file.EndsWith("java.exe"))
                     {
                         var file1 = file[..^4] + "w.exe";
                         if (File.Exists(file1))
-                            return file1;
+                            return (file1, "javaw.exe");
                     }
 
-                    return file;
+                    return (file, res[0].Name);
                 }
                 break;
             case FileType.JavaZip:
@@ -435,17 +435,7 @@ public static class PathBinding
                     App.Lang("SettingWindow.Tab5.Info5"));
                 if (res?.Any() == true)
                 {
-                    var file = res[0].GetPath();
-                    if (file == null)
-                        return null;
-                    if (SystemInfo.Os == OsType.Windows && file.EndsWith("java.exe"))
-                    {
-                        var file1 = file[..^4] + "w.exe";
-                        if (File.Exists(file1))
-                            return file1;
-                    }
-
-                    return file;
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.Config:
@@ -455,7 +445,7 @@ public static class PathBinding
                     App.Lang("SettingWindow.Tab1.Info11"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.AuthConfig:
@@ -465,7 +455,7 @@ public static class PathBinding
                     App.Lang("SettingWindow.Tab1.Info12"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.ModPack:
@@ -475,7 +465,7 @@ public static class PathBinding
                     App.Lang("Gui.Info23"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.Pic:
@@ -485,7 +475,7 @@ public static class PathBinding
                     App.Lang("SettingWindow.Tab2.Info6"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.UI:
@@ -495,7 +485,7 @@ public static class PathBinding
                     App.Lang("SettingWindow.Tab6.Info3"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.Music:
@@ -505,7 +495,7 @@ public static class PathBinding
                     App.Lang("SettingWindow.Tab6.Info6"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.Live2D:
@@ -515,7 +505,7 @@ public static class PathBinding
                     App.Lang("SettingWindow.Tab2.Info8"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.Icon:
@@ -525,7 +515,7 @@ public static class PathBinding
                     App.Lang("Gui.Info38"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.Head:
@@ -535,7 +525,7 @@ public static class PathBinding
                     App.Lang("Gui.Info40"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.Live2DCore:
@@ -545,7 +535,7 @@ public static class PathBinding
                     App.Lang("SettingWindow.Tab2.Info10"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.Loader:
@@ -555,7 +545,7 @@ public static class PathBinding
                     App.Lang("AddGameWindow.Tab1.Info18"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
             case FileType.InputConfig:
@@ -565,12 +555,12 @@ public static class PathBinding
                     App.Lang("SettingWindow.Tab8.Info12"));
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    return (res[0].GetPath(), res[0].Name);
                 }
                 break;
         }
 
-        return null;
+        return (null, null);
     }
 
     public static async Task<bool?> AddFile(GameSettingObj obj, FileType type)
@@ -966,7 +956,7 @@ public static class PathBinding
     {
         try
         {
-            using var stream = ColorMCCore.PhoneReadFile?.Invoke(pic);
+            using var stream = ColorMCCore.PhoneReadFile(pic);
             if (stream == null)
                 return;
             string file = ColorMCGui.RunDir + "BG";

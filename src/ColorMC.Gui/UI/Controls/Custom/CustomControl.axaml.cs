@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
@@ -10,7 +11,6 @@ using ColorMC.Gui.UI.Model.Custom;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Custom;
 

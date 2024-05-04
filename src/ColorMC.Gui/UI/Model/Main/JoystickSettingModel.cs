@@ -1,9 +1,9 @@
-﻿using ColorMC.Gui.Utils;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using ColorMC.Gui.Utils;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 

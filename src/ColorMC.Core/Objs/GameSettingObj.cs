@@ -89,10 +89,6 @@ public record LaunchDataObj
 public record CustomLoader
 {
     /// <summary>
-    /// 加载器位置
-    /// </summary>
-    public string? Local { get; set; }
-    /// <summary>
     /// 后加载原版运行库
     /// </summary>
     public bool OffLib { get; set; }

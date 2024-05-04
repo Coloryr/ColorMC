@@ -1,12 +1,12 @@
-﻿using Avalonia.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Avalonia.Input;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace ColorMC.Gui.Utils;
 

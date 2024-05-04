@@ -1,8 +1,7 @@
-using Avalonia.OpenGL.Controls;
-using Avalonia.Threading;
 using System;
-using System.Threading;
 using System.Timers;
+using Avalonia.Controls;
+using Avalonia.OpenGL.Controls;
 using Timer = System.Timers.Timer;
 
 namespace ColorMC.Gui.UI;
@@ -13,11 +12,12 @@ namespace ColorMC.Gui.UI;
 public class FpsTimer
 {
     private readonly OpenGlControlBase _render;
+    private TopLevel _top;
     private readonly Timer _timer;
-    private readonly Semaphore _semaphore = new(0, 2);
     private bool _pause = true;
+    private bool _last;
 
-    public int Fps { get; set; } = 60;
+    public bool LowFps { get; set; }
     public Action<int>? FpsTick { private get; init; }
     public bool Pause
     {
@@ -35,9 +35,10 @@ public class FpsTimer
             //暂停 -> 继续
             if (_pause && value == false)
             {
+                _top ??= TopLevel.GetTopLevel(_render) ?? throw new Exception();
                 _pause = false;
                 _timer.Start();
-                _semaphore.Release();
+                Go();
             }
             else //暂停
             {
@@ -48,71 +49,54 @@ public class FpsTimer
     }
     public int NowFps { get; private set; }
 
-    private int _time;
-    private bool _run;
-
     public FpsTimer(OpenGlControlBase render)
     {
         _render = render;
-        _run = true;
-        _time = (int)((double)1000 / Fps);
         _timer = new(TimeSpan.FromSeconds(1));
         _timer.BeginInit();
         _timer.AutoReset = true;
         _timer.Elapsed += Timer_Elapsed;
         _timer.EndInit();
-        new Thread(() =>
+    }
+
+    private void Go()
+    {
+        if (!_pause)
         {
-            while (_run)
+            _top.RequestAnimationFrame((t) =>
             {
-                if (Pause)
+                if (LowFps)
                 {
-                    _semaphore.WaitOne();
+                    _last = !_last;
+                    if (_last)
+                    {
+                        _render.RequestNextFrameRendering();
+                        NowFps++;
+                    }
                 }
-                if (!_run)
-                {
-                    return;
-                }
-                Dispatcher.UIThread.Post(() =>
+                else
                 {
                     _render.RequestNextFrameRendering();
                     NowFps++;
-                });
-                Thread.Sleep(_time);
-            }
-        })
-        {
-            Name = "ColorMC_Render_Timer"
-        }.Start();
+                }
+                Go();
+            });
+        }
     }
 
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
         if (!Pause)
         {
-            if (NowFps != Fps && _time > 1)
-            {
-                if (NowFps > Fps)
-                {
-                    _time++;
-                }
-                else
-                {
-                    _time--;
-                }
-            }
+            FpsTick?.Invoke(NowFps);
         }
-        FpsTick?.Invoke(NowFps);
         NowFps = 0;
     }
 
     public void Close()
     {
-        _run = false;
-        if (Pause)
-        {
-            Pause = false;
-        }
+        _pause = true;
+        _timer.Stop();
         _timer.Close();
         _timer.Dispose();
     }

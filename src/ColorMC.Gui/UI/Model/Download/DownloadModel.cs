@@ -1,4 +1,9 @@
-﻿using Avalonia.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Timers;
+using Avalonia.Threading;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -6,11 +11,6 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Timers;
 using Timer = System.Timers.Timer;
 
 namespace ColorMC.Gui.UI.Model.Download;

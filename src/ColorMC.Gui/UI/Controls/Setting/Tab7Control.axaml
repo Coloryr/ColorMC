@@ -98,13 +98,19 @@
                                 Alias="{setting:Localize SettingWindow.Tab7.Text14}"
                                 Command="{Binding OpenUrl10}" />
                         </WrapPanel>
-                        <StackPanel>
+                        <WrapPanel>
                             <views:HyperLink
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Stretch"
                                 Alias="{setting:Localize SettingWindow.Tab7.Text13}"
                                 Command="{Binding OpenUrl9}" />
-                        </StackPanel>
+                            <views:HyperLink
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Alias="{setting:Localize NetFrpWindow.Tab5.Text1}"
+                                Command="{Binding OpenUrl11}" />
+                        </WrapPanel>
                     </StackPanel>
                 </StackPanel>
             </WrapPanel>

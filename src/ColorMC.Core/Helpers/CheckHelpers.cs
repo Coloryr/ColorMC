@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -7,7 +8,6 @@ using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Helpers;
 
@@ -406,24 +406,24 @@ public static class CheckHelpers
                 }
                 else if (obj.Loader == Loaders.Custom)
                 {
-                    if (obj.CustomLoader == null || !File.Exists(obj.CustomLoader.Local))
+                    if (obj.CustomLoader == null || !File.Exists(obj.GetGameLoaderFile()))
                     {
                         throw new LaunchException(LaunchState.LostLoader,
                                 LanguageHelper.Get("Core.Launch.Error3"));
                     }
-                    var list3 = await obj.DecodeLoaderJarAsync(cancel);
+                    var list3 = await DownloadItemHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel);
                     if (cancel.IsCancellationRequested)
                     {
                         return;
                     }
-                    if (list3 == null)
+                    if (list3.Item1 == null)
                     {
                         throw new LaunchException(LaunchState.LostLoader,
                                 LanguageHelper.Get("Core.Launch.Error3"));
                     }
                     else
                     {
-                        foreach (var item in list3)
+                        foreach (var item in list3.Item1)
                         {
                             if (!string.IsNullOrWhiteSpace(item.Url))
                             {
@@ -466,7 +466,7 @@ public static class CheckHelpers
                 var mods = PathHelper.GetAllFile(obj.GetModsPath());
                 FileInfo? mod = null;
                 int find = 0;
-                ModInfoObj?[] array = obj.Mods.Values.ToArray();
+                ModInfoObj?[] array = [.. obj.Mods.Values];
                 for (int a = 0; a < array.Length; a++)
                 {
                     if (cancel.IsCancellationRequested)

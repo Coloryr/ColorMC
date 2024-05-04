@@ -1,10 +1,10 @@
+using System;
+using System.Threading;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Media;
 using Avalonia.Styling;
-using System;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Animations;
 
@@ -75,6 +75,18 @@ public class SelfPageSlideSide
                             }
                         },
                         Cue = new Cue(1d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter
+                            {
+                                Property = Visual.IsVisibleProperty,
+                                Value = false
+                            }
+                        },
+                        Cue = new Cue(1d)
                     }
                 },
                 Duration = Duration
@@ -85,6 +97,7 @@ public class SelfPageSlideSide
         if (to != null)
         {
             double end = to.Bounds.Width;
+            to.IsVisible = true;
             var animation = new Animation
             {
                 FillMode = FillMode.Forward,

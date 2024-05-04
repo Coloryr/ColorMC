@@ -34,17 +34,19 @@
                         ItemsSource="{Binding ExportTypes}"
                         SelectedIndex="{Binding Type}" />
                 </StackPanel>
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="-2,-3,0,-2"
-                    HorizontalAlignment="Right"
-                    Classes="top"
-                    Command="{Binding Export}"
-                    Content="{setting:Localize GameExportWindow.Tab1.Text2}"
-                    DockPanel.Dock="Bottom"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text112}"
-                    ToolTip.VerticalOffset="-30" />
+                <DockPanel DockPanel.Dock="Bottom">
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="-2,-3,0,-2"
+                        Classes="top"
+                        Command="{Binding Export}"
+                        Content="{setting:Localize GameExportWindow.Tab1.Text2}"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text112}"
+                        ToolTip.VerticalOffset="-30" />
+                    <TextBlock Text="{setting:Localize GameExportWindow.Tabs.Text5}" />
+                </DockPanel>
                 <StackPanel>
                     <TextBox
                         Margin="0,5,0,0"
