@@ -29,7 +29,7 @@ dotnet publish .\src\ColorMC.Launcher -p:PublishProfile=%1
 
 mkdir .\src\build_out\%1-dotnet\colormc
 
-set "files=ColorMC.Gui.pdb ColorMC.Core.pdb Live2DCSharpSDK.App.pdb Live2DCSharpSDK.Framework.pdb ColorMC.Launcher.pdb ColorMC.Launcher.exe"
+set "files=ColorMC.Gui.pdb ColorMC.Core.pdb Live2DCSharpSDK.App.pdb Live2DCSharpSDK.Framework.pdb ColorMC.Launcher.pdb ColorMC.Launcher.exe av_libglesv2.dll libHarfBuzzSharp.dll libSkiaSharp.dll SDL2.dll"
 
 for %%f in (%files%) do (
     copy .\src\build_out\%1-dotnet\%%f .\src\build_out\%1-dotnet\colormc\%%f
