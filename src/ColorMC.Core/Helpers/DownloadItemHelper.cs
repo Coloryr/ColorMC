@@ -220,7 +220,7 @@ public static class DownloadItemHelper
     }
 
     public static ICollection<DownloadItemObj> BuildForgeLibs(List<ForgeLaunchObj.Libraries> info, string mc,
-        string version, bool neo, bool v2)
+        string version, bool neo, bool v2, bool install)
     {
         var list = new Dictionary<string, DownloadItemObj>();
 
@@ -283,7 +283,7 @@ public static class DownloadItemHelper
             }
         }
 
-        if (!installer)
+        if (!installer && install)
         {
             list.Add("installer", neo ?
                 BuildNeoForgeInstaller(mc, version) :
@@ -314,9 +314,9 @@ public static class DownloadItemHelper
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>下载项目列表</returns>
     public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc,
-        string version, bool neo, bool v2)
+        string version, bool neo, bool v2, bool install)
     {
-        return BuildForgeLibs(info.libraries, mc, version, neo, v2);
+        return BuildForgeLibs(info.libraries, mc, version, neo, v2, install);
     }
 
     /// <summary>
@@ -330,7 +330,7 @@ public static class DownloadItemHelper
     public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeInstallObj info, string mc,
         string version, bool neo, bool v2)
     {
-        return BuildForgeLibs(info.libraries, mc, version, neo, v2);
+        return BuildForgeLibs(info.libraries, mc, version, neo, v2, true);
     }
 
     /// <summary>
@@ -341,7 +341,7 @@ public static class DownloadItemHelper
     {
         var list = new ConcurrentBag<DownloadItemObj>();
         var list1 = new HashSet<string>();
-        var natives = new ConcurrentDictionary<string, string>();
+        var natives = new ConcurrentDictionary<string, bool>();
         Parallel.ForEach(obj.libraries, (item1) =>
         {
             bool download = CheckHelpers.CheckAllow(item1.rules);
@@ -372,7 +372,25 @@ public static class DownloadItemHelper
                 {
                     var index = item1.name.LastIndexOf(':');
                     string key = item1.name[..index];
-                    natives.TryAdd(key, key);
+                    if (item1.name.EndsWith("arm64"))
+                    {
+                        natives.TryRemove(key, out _);
+                        //if (!SystemInfo.IsArm)
+                        //{
+                        //    return;
+                        //}
+                    }
+                    else if (item1.name.EndsWith("x86"))
+                    {
+                        if (SystemInfo.IsArm && !natives.ContainsKey(key))
+                        {
+                            natives.TryAdd(key, true);
+                        }
+                        //if (SystemInfo.Is64Bit)
+                        //{
+                        //    return;
+                        //}
+                    }
                 }
 
                 string file = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}";
@@ -420,7 +438,7 @@ public static class DownloadItemHelper
                     if (list1.Contains(lib.sha1))
                         return;
 
-                    natives.TryAdd(item1.name, item1.name);
+                    natives.TryAdd(item1.name, true);
 
                     var obj1 = new DownloadItemObj()
                     {
@@ -452,26 +470,19 @@ public static class DownloadItemHelper
                 {
                     basedir += $"{item1}/";
                 }
-                if (SystemInfo.Os == OsType.Linux)
+                string system = SystemInfo.Os switch
                 {
-                    var name = item + $":{path[1]}-{path[2]}-natives-linux-arm64";
-                    var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-linux-arm64.jar";
+                    OsType.Linux => "linux",
+                    OsType.MacOS => "macos",
+                    _ => "windows"
+                };
+                var name = item + $":{path[1]}-{path[2]}-natives-{system}-arm64";
+                var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-{system}-arm64.jar";
 
-                    var item3 = await LocalMaven.MakeItemAsync(name, dir);
-                    if (item3 != null)
-                    {
-                        list.Add(item3);
-                    }
-                }
-                else if (SystemInfo.Os == OsType.Windows)
+                var item3 = await LocalMaven.MakeItemAsync(name, dir);
+                if (item3 != null)
                 {
-                    var name = item + $":{path[1]}-{path[2]}-natives-windows-arm64";
-                    var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-windows-arm64.jar";
-                    var item3 = await LocalMaven.MakeItemAsync(name, dir);
-                    if (item3 != null)
-                    {
-                        list.Add(item3);
-                    }
+                    list.Add(item3);
                 }
             }
         }
@@ -601,7 +612,7 @@ public static class DownloadItemHelper
                 return (GetDownloadState.GetInfo, null);
             }
 
-            list.AddRange(BuildForgeLibs(info, mc, version, neo, v2));
+            list.AddRange(BuildForgeLibs(info, mc, version, neo, v2, true));
 
             ForgeInstallObj info1;
             try
@@ -668,7 +679,7 @@ public static class DownloadItemHelper
                 VersionPath.AddGame(info,
                     Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(info)), mc, version, neo);
 
-                list.AddRange(BuildForgeLibs(info, mc, version, neo, v2));
+                list.AddRange(BuildForgeLibs(info, mc, version, neo, v2, true));
             }
             catch (Exception e)
             {

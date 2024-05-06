@@ -723,23 +723,6 @@ public static class Launch
         var list = new Dictionary<LibVersionObj, string>();
         var version = VersionPath.GetVersion(obj.Version)!;
 
-        if (obj.Loader != Loaders.Custom || obj.CustomLoader?.OffLib != true)
-        {
-            var list1 = await DownloadItemHelper.BuildGameLibsAsync(version);
-            foreach (var item in list1)
-            {
-                if (item.Later == null)
-                {
-                    //不添加lwjgl
-                    if (item.Name.Contains("org.lwjgl") && SystemInfo.Os == OsType.Android)
-                    {
-                        continue;
-                    }
-                    list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
-                }
-            }
-        }
-
         //LoaderLib
         if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
@@ -747,7 +730,7 @@ public static class Launch
                 obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
 
             var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
-                obj.Loader == Loaders.NeoForge, v2);
+                obj.Loader == Loaders.NeoForge, v2, false);
 
             foreach (var item in list2)
             {
@@ -795,6 +778,22 @@ public static class Launch
 
         //GameLib
         if (obj.Loader == Loaders.Custom && obj.CustomLoader?.OffLib == true)
+        {
+            var list1 = await DownloadItemHelper.BuildGameLibsAsync(version);
+            foreach (var item in list1)
+            {
+                if (item.Later == null)
+                {
+                    //不添加lwjgl
+                    if (item.Name.Contains("org.lwjgl") && SystemInfo.Os == OsType.Android)
+                    {
+                        continue;
+                    }
+                    list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
+                }
+            }
+        }
+        else
         {
             var list1 = await DownloadItemHelper.BuildGameLibsAsync(version);
             foreach (var item in list1)
