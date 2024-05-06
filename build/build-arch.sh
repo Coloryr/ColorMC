@@ -59,7 +59,7 @@ build_arch_aot()
 
     cd ../../../
 
-    mv $base_dir/colormc-$version-1-$2.pkg.tar.zst \
+    mv $base_dir/colormc-$version-1-$2-aot.pkg.tar.zst \
         ./build_out/colormc-$main_version$version-1-$2-aot.pkg.tar.zst
 
     echo "colormc-$main_version$version-$1-aot.pkg.tar.zst build done"
