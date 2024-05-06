@@ -71,7 +71,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-arch-x86_64"
-        path: src/build_out
+        path: src/build_out/**
 
     # - name: 上传 linux-x86-aot.pkg.tar.zst
     #   uses: actions/upload-artifact@v4
