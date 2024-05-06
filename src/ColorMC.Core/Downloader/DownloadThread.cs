@@ -248,7 +248,7 @@ public class DownloadThread
                     }
                     var data = BaseClient.DownloadClient.SendAsync(req,
                         HttpCompletionOption.ResponseHeadersRead, _cancel).Result;
-                    item.AllSize = (long)data.Content.Headers.ContentLength!;
+                    item.AllSize = (data.Content.Headers.ContentLength ?? 0);
                     item.State = DownloadItemState.GetInfo;
                     item.NowSize = 0;
                     item.Update();

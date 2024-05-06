@@ -968,7 +968,7 @@ public static class Launch
         //optifinewrapper
         else if (obj.Loader == Loaders.OptiFine)
         {
-            return "coloryr.optifinewrapper.Main";
+            return "com.coloryr.optifinewrapper.OptifineWrapper";
         }
         else if (obj.Loader == Loaders.Custom)
         {
