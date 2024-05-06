@@ -125,13 +125,13 @@ public static class DownloadManager
 
     public static Task<bool> StartAsync(ICollection<DownloadItemObj> list)
     {
-        if (ColorMCCore.TopDownload == null)
+        if (ColorMCCore.OnDownload == null)
         {
             return StartAsync(list, null, null);
         }
         else
         {
-            return ColorMCCore.TopDownload(list);
+            return ColorMCCore.OnDownload(list);
         }
     }
 

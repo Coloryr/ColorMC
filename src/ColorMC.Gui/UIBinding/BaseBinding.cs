@@ -74,7 +74,7 @@ public static class BaseBinding
                 win.Log(d);
             }
         };
-        ColorMCCore.TopDownload = App.StartDownload;
+        ColorMCCore.OnDownload = App.StartDownload;
         ColorMCCore.GameExit += GameExit;
 
         if (ColorMCGui.RunType == RunType.Program && SystemInfo.Os != OsType.Android)

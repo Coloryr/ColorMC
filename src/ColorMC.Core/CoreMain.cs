@@ -116,7 +116,7 @@ public static class ColorMCCore
     /// <summary>
     /// 下载用的回调
     /// </summary>
-    public static Func<ICollection<DownloadItemObj>, Task<bool>>? TopDownload;
+    public static Func<ICollection<DownloadItemObj>, Task<bool>>? OnDownload { get; set; }
 
     /// <summary>
     /// 错误显示回调
