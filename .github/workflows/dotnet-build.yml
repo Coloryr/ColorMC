@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
@@ -57,7 +58,7 @@ jobs:
         chown -R builder:builder /github/workspace/ && \
         chmod -R 777 /github/workspace/ && \
         echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder && \
-        ./build/build-linux.sh && \
+        sudo -u builder ./build/build-linux.sh && \
         sudo -u builder ./build/build-arch.sh"
 
     - name: 上传 linux-x86.pkg.tar.zst
@@ -106,6 +107,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #   - uses: actions/checkout@v3
+  
   #   - name: 设置.NET Core
   #     uses: actions/setup-dotnet@v4
   #     with:
