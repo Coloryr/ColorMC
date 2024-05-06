@@ -1440,7 +1440,7 @@ public static class Launch
         Logs.Info(temp);
 
         var handel = new DesktopGameHandel(process, obj.UUID);
-        ColorMCCore.AddGame(obj.UUID, handel);
+        ColorMCCore.AddGameHandel(obj.UUID, handel);
 
         //启动后执行
         if ((obj.JvmArg?.LaunchPost == true || ConfigUtils.Config.DefaultJvmArg.LaunchPost))

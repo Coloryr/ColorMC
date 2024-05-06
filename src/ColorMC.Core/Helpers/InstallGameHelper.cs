@@ -288,10 +288,7 @@ public static class InstallGameHelper
 
                         if (game != null)
                         {
-                            await new ZipUtils()
-                            {
-                                ZipUpdate = zip
-                            }.UnzipAsync(game!.GetGamePath(), dir, stream4!);
+                            await new ZipUtils(ZipUpdate: zip).UnzipAsync(game!.GetGamePath(), dir, stream4!);
                             update2(CoreRunState.End);
                             import = true;
                         }

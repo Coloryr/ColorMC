@@ -60,7 +60,7 @@ public class GameJoystick
             _implementation = new Win32Native();
         }
 
-        _implementation.AddHook(handel.Handel);
+        _implementation!.AddHook(handel.Handel);
 
         _obj = obj;
         _controlIndex = 0;

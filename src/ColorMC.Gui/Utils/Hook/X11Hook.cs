@@ -87,7 +87,7 @@ internal partial class X11Hook
 
     internal static bool WaitWindowDisplay(Process pr)
     {
-        IntPtr display = Xlib.XOpenDisplay(null);
+        IntPtr display = Xlib.XOpenDisplay(null!);
         if (display == IntPtr.Zero)
         {
             return false;
@@ -115,7 +115,7 @@ internal partial class X11Hook
 
     internal static void SetTitle(Process pr, string title)
     {
-        IntPtr display = Xlib.XOpenDisplay(null);
+        IntPtr display = Xlib.XOpenDisplay(null!);
         if (display == IntPtr.Zero)
         {
             return;

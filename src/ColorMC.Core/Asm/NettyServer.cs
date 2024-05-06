@@ -9,6 +9,9 @@ using DotNetty.Transport.Channels.Sockets;
 
 namespace ColorMC.Core.Asm;
 
+/// <summary>
+/// 启动器与游戏通信
+/// </summary>
 public static class NettyServer
 {
     private static IEventLoopGroup s_bossGroup;
@@ -83,7 +86,7 @@ public static class NettyServer
             s_bootstrap
                 .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
                 {
-                    channel.Pipeline.AddLast("colormc", new EchoServerHandler());
+                    channel.Pipeline.AddLast("colormc", new GameServerHandler());
                 }));
 
             int port = 0;
@@ -101,9 +104,10 @@ public static class NettyServer
 
             return port;
         }
-        finally
+        catch(Exception e)
         {
-
+            Logs.Crash("netty error", e);
+            return 0;
         }
     }
 
@@ -140,7 +144,7 @@ public static class NettyServer
         }
     }
 
-    private class EchoServerHandler : ChannelHandlerAdapter
+    private class GameServerHandler : ChannelHandlerAdapter
     {
         public override void ChannelActive(IChannelHandlerContext ctx)
         {
