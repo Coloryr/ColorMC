@@ -254,24 +254,6 @@ public static class BaseBinding
         ColorMCCore.KillGame(obj.UUID);
     }
 
-    // 执行 Bash 命令的辅助方法
-    private static void ExecuteBashCommand(string command)
-    {
-        var proc = new Process
-        {
-            StartInfo = new()
-            {
-                FileName = "/bin/bash",
-                Arguments = $"-c \"{command}\"",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                CreateNoWindow = true
-            }
-        };
-        proc.Start();
-        proc.WaitForExit();
-    }
-
     /// <summary>
     /// 启动游戏
     /// </summary>
@@ -456,6 +438,23 @@ public static class BaseBinding
         }
 
         return (res.Item1 != null, res.Item2);
+    }
+
+    private static void ExecuteBashCommand(string command)
+    {
+        var proc = new Process
+        {
+            StartInfo = new()
+            {
+                FileName = "/bin/bash",
+                Arguments = $"-c \"{command}\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            }
+        };
+        proc.Start();
+        proc.WaitForExit();
     }
 
     private static void GameWait(BaseModel model, GameSettingObj obj, DesktopGameHandel handel, bool hide)

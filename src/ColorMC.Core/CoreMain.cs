@@ -19,6 +19,9 @@ public static class ColorMCCore
     public const string TopVersion = "A25";
     public const string DateVersion = "20240506";
 
+    /// <summary>
+    /// 版本号
+    /// </summary>
     public const string Version = $"{TopVersion}.{DateVersion}";
 
     /// <summary>
@@ -180,6 +183,9 @@ public static class ColorMCCore
     /// </summary>
     internal static event Action? Stop;
 
+    /// <summary>
+    /// 游戏窗口句柄
+    /// </summary>
     internal static ConcurrentDictionary<string, IGameHandel> Games = [];
 
     /// <summary>
@@ -225,6 +231,10 @@ public static class ColorMCCore
         Stop?.Invoke();
     }
 
+    /// <summary>
+    /// 强制关闭游戏
+    /// </summary>
+    /// <param name="uuid"></param>
     public static void KillGame(string uuid)
     {
         if (Games.TryGetValue(uuid, out var handel))
@@ -233,29 +243,55 @@ public static class ColorMCCore
         }
     }
 
+    /// <summary>
+    /// 启动器产生错误
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="e"></param>
+    /// <param name="close"></param>
     internal static void OnError(string text, Exception? e, bool close)
     {
         Error?.Invoke(text, e, close);
         Logs.Error(text, e);
     }
 
+    /// <summary>
+    /// 游戏日志
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="text"></param>
     internal static void OnGameLog(GameSettingObj obj, string? text)
     {
         GameLog?.Invoke(obj, text);
     }
 
+    /// <summary>
+    /// 语言重载
+    /// </summary>
+    /// <param name="type"></param>
     internal static void OnLanguageReload(LanguageType type)
     {
         LanguageReload?.Invoke(type);
     }
 
+    /// <summary>
+    /// 游戏推出
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="obj1"></param>
+    /// <param name="code"></param>
     internal static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
     {
         Games.TryRemove(obj.UUID, out _);
         GameExit?.Invoke(obj, obj1, code);
     }
 
-    internal static void AddGame(string uuid, IGameHandel handel)
+    /// <summary>
+    /// 添加游戏窗口句柄
+    /// </summary>
+    /// <param name="uuid"></param>
+    /// <param name="handel"></param>
+    internal static void AddGameHandel(string uuid, IGameHandel handel)
     {
         if (!Games.TryAdd(uuid, handel))
         {
@@ -263,6 +299,11 @@ public static class ColorMCCore
         }
     }
 
+    /// <summary>
+    /// 游戏发送消息给启动器
+    /// </summary>
+    /// <param name="channel"></param>
+    /// <param name="buffer"></param>
     internal static void OnNettyPack(IChannel channel, IByteBuffer buffer)
     {
         NettyPack?.Invoke(channel, buffer);

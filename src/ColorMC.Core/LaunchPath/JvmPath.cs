@@ -176,8 +176,7 @@ public static class JvmPath
             {
                 try
                 {
-                    await new ZipUtils() { ZipUpdate = zip }
-                        .UnzipAsync(path, file, stream);
+                    await new ZipUtils(ZipUpdate: zip).UnzipAsync(path, file, stream);
                     return (true, null!);
                 }
                 catch (Exception e)

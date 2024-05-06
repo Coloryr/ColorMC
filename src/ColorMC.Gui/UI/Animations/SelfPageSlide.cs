@@ -14,22 +14,17 @@ namespace ColorMC.Gui.UI.Animations;
 /// <summary>
 /// Transitions between two pages by sliding them horizontally or vertically.
 /// </summary>
-public class SelfPageSlide : IPageTransition
+/// <remarks>
+/// Initializes a new instance of the <see cref="SelfPageSlide"/> class.
+/// </remarks>
+/// <param name="duration">The duration of the animation.</param>
+/// <param name="orientation">The axis on which the animation should occur</param>
+public class SelfPageSlide(TimeSpan duration) : IPageTransition
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SelfPageSlide"/> class.
-    /// </summary>
-    /// <param name="duration">The duration of the animation.</param>
-    /// <param name="orientation">The axis on which the animation should occur</param>
-    public SelfPageSlide(TimeSpan duration)
-    {
-        Duration = duration;
-    }
-
     /// <summary>
     /// Gets the duration of the animation.
     /// </summary>
-    public TimeSpan Duration { get; set; }
+    public TimeSpan Duration { get; set; } = duration;
 
     /// <summary>
     /// Gets or sets element entrance easing.

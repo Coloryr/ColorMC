@@ -270,7 +270,7 @@ public static class ServerPack
             Text = obj.Text
         };
 
-        if (!local.EndsWith("/"))
+        if (!local.EndsWith('/') && !local.EndsWith('\\'))
         {
             local += "/";
         }
@@ -351,10 +351,7 @@ public static class ServerPack
                         {
                             //打包进压缩包
                             var file = new FileInfo(path2[..^1] + ".zip");
-                            await new ZipUtils()
-                            {
-                                GameRequest = request
-                            }.ZipFileAsync(path1, file.FullName);
+                            await new ZipUtils(GameRequest: request).ZipFileAsync(path1, file.FullName);
                             var stream = PathHelper.OpenRead(file.FullName)!;
 
                             var item1 = new ConfigPackObj()
