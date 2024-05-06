@@ -39,7 +39,7 @@ internal class Program
 
         TestItem.Item35();
 
-        //GetSha1();
+        GetSha1();
 
         Console.ReadLine();
     }
