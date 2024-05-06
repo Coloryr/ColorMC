@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
@@ -35,186 +34,178 @@ jobs:
         chmod a+x ./build/update.sh
         ./build/update.sh
 
-    # - name: 构建源码
-    #   shell: bash
-    #   working-directory: ./
-    #   run: |
-    #     chmod a+x ./build/build-linux.sh
-    #     ./build/build-linux.sh
+    - name: 构建源码
+      shell: bash
+      working-directory: ./
+      run: |
+        chmod a+x ./build/build-linux.sh
+        ./build/build-linux.sh
 
-    # - name: 构建 deb
-    #   shell: bash
-    #   working-directory: ./
-    #   run: |
-    #     chmod a+x ./build/build-ubuntu.sh
-    #     ./build/build-ubuntu.sh
+    - name: 构建 deb
+      shell: bash
+      working-directory: ./
+      run: |
+        chmod a+x ./build/build-ubuntu.sh
+        ./build/build-ubuntu.sh
 
     - name: 构建 pkg
       run: |
         docker run --name build-container -v "${{ github.workspace }}:/github/workspace" archlinux:latest /bin/bash -c "\
-        pacman -Syu --noconfirm base-devel git dotnet-sdk-8.0 && \
+        pacman -Syu --noconfirm base-devel git && \
         useradd -m builder && \
         cd /github/workspace && \
         chown -R builder:builder /github/workspace/ && \
         chmod -R 777 /github/workspace/ && \
         echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder && \
-        sudo -u builder ./build/build-linux.sh && \
         sudo -u builder ./build/build-arch.sh"
 
-    # - name: 上传 linux-x86_64.pkg.tar.zst
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: "colormc-arch-x86_64"
-    #     path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-1-x86_64.pkg.tar.zst
-    
-    - name: 上传 linux-x86_64
+    - name: 上传 linux-x86.pkg.tar.zst
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-build"
-        path: src/build_out/**
+        name: "colormc-arch-x86_64"
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-1-x86_64.pkg.tar.zst
 
-    # - name: 上传 linux-x86-aot.pkg.tar.zst
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: "colormc-arch-x86_64-aot"
-    #     path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-1-x86_64-aot.pkg.tar.zst
+    - name: 上传 linux-x86-aot.pkg.tar.zst
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-arch-x86_64-aot"
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-1-x86_64-aot.pkg.tar.zst
 
-    # - name: 上传 linux-x64.deb
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: "colormc-ubuntu-x64"
-    #     path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x64.deb
+    - name: 上传 linux-x64.deb
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-ubuntu-x64"
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x64.deb
 
-    # - name: 上传 linux-arm64.deb
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: "colormc-ubuntu-arm64"
-    #     path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-arm64.deb
+    - name: 上传 linux-arm64.deb
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-ubuntu-arm64"
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-arm64.deb
 
-    # - name: 上传 linux-x64-aot.deb
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: "colormc-ubuntu-x64-aot"
-    #     path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x64-aot.deb
+    - name: 上传 linux-x64-aot.deb
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-ubuntu-x64-aot"
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x64-aot.deb
 
-    # - name: 上传 linux-arm64-aot.deb
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: "colormc-ubuntu-arm64-aot"
-    #     path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-arm64-aot.deb
+    - name: 上传 linux-arm64-aot.deb
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-ubuntu-arm64-aot"
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-arm64-aot.deb
     
-    # - name: 上传 linux-x64-appimage.deb
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: "colormc-linux-x64-appimage"
-    #     path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x86_64.AppImage
+    - name: 上传 linux-x64-appimage.deb
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-linux-x64-appimage"
+        path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x86_64.AppImage
 
-  # build-macos:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v3
-  
-  #   - name: 设置.NET Core
-  #     uses: actions/setup-dotnet@v4
-  #     with:
-  #       dotnet-version: 8.0.100
+  build-macos:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: 设置.NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.100
 
-  #   - name: 更新源码
-  #     shell: bash
-  #     working-directory: ./
-  #     run: |
-  #       chmod a+x ./build/update.sh
-  #       ./build/update.sh
+    - name: 更新源码
+      shell: bash
+      working-directory: ./
+      run: |
+        chmod a+x ./build/update.sh
+        ./build/update.sh
 
-  #   - name: 构建
-  #     shell: bash
-  #     working-directory: ./
-  #     run: |
-  #       chmod a+x ./build/build-macos.sh
-  #       ./build/build-macos.sh
+    - name: 构建
+      shell: bash
+      working-directory: ./
+      run: |
+        chmod a+x ./build/build-macos.sh
+        ./build/build-macos.sh
 
-  #   - name: 上传 ZIP
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-macos-x64"
-  #       path: build_out/
+    - name: 上传 ZIP
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-macos-x64"
+        path: build_out/
 
-  # build-windows:
-  #   runs-on: windows-latest
-  #   steps:
-  #   - uses: actions/checkout@v3
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
 
-  #   - name: Read version number
-  #     id: version
-  #     run: |
-  #       $version = Get-Content ./build/version
-  #       echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+    - name: Read version number
+      id: version
+      run: |
+        $version = Get-Content ./build/version
+        echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-  #   - name: 设置.NET Core
-  #     uses: actions/setup-dotnet@v4
-  #     with:
-  #       dotnet-version: 8.0.100
+    - name: 设置.NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.100
 
-  #   - name: 更新源码
-  #     shell: cmd
-  #     working-directory: ./
-  #     run: ./build/update.cmd
+    - name: 更新源码
+      shell: cmd
+      working-directory: ./
+      run: ./build/update.cmd
 
-  #   - name: 构建 源码
-  #     shell: cmd
-  #     working-directory: ./
-  #     run: ./build/build-windows.cmd
+    - name: 构建 源码
+      shell: cmd
+      working-directory: ./
+      run: ./build/build-windows.cmd
     
-  #   - name: Install WiX Toolset
-  #     run: |
-  #       choco install wixtoolset
-  #       dotnet tool install --global wix --version 4.0.4
-  #       wix extension add -g WixToolset.UI.wixext/4.0.4
+    - name: Install WiX Toolset
+      run: |
+        choco install wixtoolset
+        dotnet tool install --global wix --version 4.0.4
+        wix extension add -g WixToolset.UI.wixext/4.0.4
 
-  #   - name: Build MSI with MSBuild
-  #     working-directory: ./
-  #     run: |
-  #       cd .\src\ColorMC.Setup.Wix
-  #       dotnet build
+    - name: Build MSI with MSBuild
+      working-directory: ./
+      run: |
+        cd .\src\ColorMC.Setup.Wix
+        dotnet build
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-x64-msi"
-  #       path: src/ColorMC.Setup.Wix/colormc-x64.msi
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x64-msi"
+        path: src/ColorMC.Setup.Wix/colormc-x64.msi
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-x64-aot-msi"
-  #       path: src/ColorMC.Setup.Wix/colormc-x64-aot.msi
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x64-aot-msi"
+        path: src/ColorMC.Setup.Wix/colormc-x64-aot.msi
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-x64"
-  #       path: src/build_out/win-x64-dotnet/colormc/**
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x64"
+        path: src/build_out/win-x64-dotnet/colormc/**
     
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-x86"
-  #       path: src/build_out/win-x86-dotnet/colormc/**
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x86"
+        path: src/build_out/win-x86-dotnet/colormc/**
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-arm64"
-  #       path: src/build_out/win-arm64-dotnet/colormc/**
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-arm64"
+        path: src/build_out/win-arm64-dotnet/colormc/**
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-x64-aot"
-  #       path: src/build_out/win-x64-aot/colormc/**
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x64-aot"
+        path: src/build_out/win-x64-aot/colormc/**
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-arm64-aot"
-  #       path: src/build_out/win-arm64-aot/colormc/**
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-arm64-aot"
+        path: src/build_out/win-arm64-aot/colormc/**
