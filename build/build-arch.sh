@@ -93,5 +93,5 @@ build_arch_aot()
 
 build_arch linux-x64 x86_64
 # build_arch linux-arm64 aarch64
-# build_arch_aot linux-x64 x86_64
+build_arch_aot linux-x64 x86_64
 # build_arch_aot linux-arm64 aarch64
