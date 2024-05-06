@@ -101,111 +101,111 @@ jobs:
         name: "colormc-linux-x64-appimage"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x86_64.AppImage
 
-  # build-macos:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: 设置.NET Core
-  #     uses: actions/setup-dotnet@v4
-  #     with:
-  #       dotnet-version: 8.0.100
+  build-macos:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: 设置.NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.100
 
-  #   - name: 更新源码
-  #     shell: bash
-  #     working-directory: ./
-  #     run: |
-  #       chmod a+x ./build/update.sh
-  #       ./build/update.sh
+    - name: 更新源码
+      shell: bash
+      working-directory: ./
+      run: |
+        chmod a+x ./build/update.sh
+        ./build/update.sh
 
-  #   - name: 构建
-  #     shell: bash
-  #     working-directory: ./
-  #     run: |
-  #       chmod a+x ./build/build-macos.sh
-  #       ./build/build-macos.sh
+    - name: 构建
+      shell: bash
+      working-directory: ./
+      run: |
+        chmod a+x ./build/build-macos.sh
+        ./build/build-macos.sh
 
-  #   - name: 上传 ZIP
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-macos-x64"
-  #       path: build_out/
+    - name: 上传 ZIP
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-macos-x64"
+        path: build_out/
 
-  # build-windows:
-  #   runs-on: windows-latest
-  #   steps:
-  #   - uses: actions/checkout@v3
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
 
-  #   - name: Read version number
-  #     id: version
-  #     run: |
-  #       $version = Get-Content ./build/version
-  #       echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+    - name: Read version number
+      id: version
+      run: |
+        $version = Get-Content ./build/version
+        echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-  #   - name: 设置.NET Core
-  #     uses: actions/setup-dotnet@v4
-  #     with:
-  #       dotnet-version: 8.0.100
+    - name: 设置.NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.100
 
-  #   - name: 更新源码
-  #     shell: cmd
-  #     working-directory: ./
-  #     run: ./build/update.cmd
+    - name: 更新源码
+      shell: cmd
+      working-directory: ./
+      run: ./build/update.cmd
 
-  #   - name: 构建 源码
-  #     shell: cmd
-  #     working-directory: ./
-  #     run: ./build/build-windows.cmd
+    - name: 构建 源码
+      shell: cmd
+      working-directory: ./
+      run: ./build/build-windows.cmd
     
-  #   - name: Install WiX Toolset
-  #     run: |
-  #       choco install wixtoolset
-  #       dotnet tool install --global wix --version 4.0.4
-  #       wix extension add -g WixToolset.UI.wixext/4.0.4
+    - name: Install WiX Toolset
+      run: |
+        choco install wixtoolset
+        dotnet tool install --global wix --version 4.0.4
+        wix extension add -g WixToolset.UI.wixext/4.0.4
 
-  #   - name: Build MSI with MSBuild
-  #     working-directory: ./
-  #     run: |
-  #       cd .\src\ColorMC.Setup.Wix
-  #       dotnet build
+    - name: Build MSI with MSBuild
+      working-directory: ./
+      run: |
+        cd .\src\ColorMC.Setup.Wix
+        dotnet build
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-x64-msi"
-  #       path: src/ColorMC.Setup.Wix/colormc-x64.msi
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x64-msi"
+        path: src/ColorMC.Setup.Wix/colormc-x64.msi
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-x64-aot-msi"
-  #       path: src/ColorMC.Setup.Wix/colormc-x64-aot.msi
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x64-aot-msi"
+        path: src/ColorMC.Setup.Wix/colormc-x64-aot.msi
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-x64"
-  #       path: src/build_out/win-x64-dotnet/colormc/**
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x64"
+        path: src/build_out/win-x64-dotnet/colormc/**
     
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-x86"
-  #       path: src/build_out/win-x86-dotnet/colormc/**
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x86"
+        path: src/build_out/win-x86-dotnet/colormc/**
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-arm64"
-  #       path: src/build_out/win-arm64-dotnet/colormc/**
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-arm64"
+        path: src/build_out/win-arm64-dotnet/colormc/**
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-x64-aot"
-  #       path: src/build_out/win-x64-aot/colormc/**
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x64-aot"
+        path: src/build_out/win-x64-aot/colormc/**
 
-  #   - name: 上传
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: "colormc-windows-arm64-aot"
-  #       path: src/build_out/win-arm64-aot/colormc/**
+    - name: 上传
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-arm64-aot"
+        path: src/build_out/win-arm64-aot/colormc/**
