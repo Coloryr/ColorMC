@@ -10,11 +10,11 @@ install=".INSTALL"
 sha512sums=("SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" 
             "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP")
 options=("!strip" "libtool" "staticlibs")
-
 source=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
         "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "X11.pdb"
         "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher"
         "ColorMC.desktop" "colormc.png")
+install=colormc.install
 
 package() {
     mkdir -p ${pkgdir}/usr/share/ColorMC

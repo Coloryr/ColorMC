@@ -1,3 +1,9 @@
+post_remove() {
+    echo "Removing colormc desktop icon..."
+    rm -f ${pkgdir}/usr/share/icons/colormc.png
+    rm -f ${pkgdir}/usr/share/applications/ColorMC.desktop
+}
+
 post_install() {
     chmod a+x ${pkgdir}/usr/share/applications/ColorMC.desktop
     chmod a+x ${pkgdir}/usr/share/ColorMC/ColorMC.Launcher
