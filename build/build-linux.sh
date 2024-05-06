@@ -36,6 +36,6 @@ build_linux_aot()
 }
 
 build_linux linux-x64
-build_linux linux-arm64
-build_linux_aot linux-x64
-build_linux_aot linux-arm64
+# build_linux linux-arm64
+# build_linux_aot linux-x64
+# build_linux_aot linux-arm64
