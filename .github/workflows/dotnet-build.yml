@@ -34,12 +34,12 @@ jobs:
         chmod a+x ./build/update.sh
         ./build/update.sh
 
-    - name: 构建源码
-      shell: bash
-      working-directory: ./
-      run: |
-        chmod a+x ./build/build-linux.sh
-        ./build/build-linux.sh
+    # - name: 构建源码
+    #   shell: bash
+    #   working-directory: ./
+    #   run: |
+    #     chmod a+x ./build/build-linux.sh
+    #     ./build/build-linux.sh
 
     # - name: 构建 deb
     #   shell: bash
@@ -51,12 +51,13 @@ jobs:
     - name: 构建 pkg
       run: |
         docker run --name build-container -v "${{ github.workspace }}:/github/workspace" archlinux:latest /bin/bash -c "\
-        pacman -Syu --noconfirm base-devel git && \
+        pacman -Syu --noconfirm base-devel git dotnet-sdk-8.0 && \
         useradd -m builder && \
         cd /github/workspace && \
         chown -R builder:builder /github/workspace/ && \
         chmod -R 777 /github/workspace/ && \
         echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder && \
+        ./build/build-linux.sh && \
         sudo -u builder ./build/build-arch.sh"
 
     - name: 上传 linux-x86.pkg.tar.zst
