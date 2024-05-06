@@ -19,7 +19,7 @@ internal partial class X11Hook
     public const long SubstructureNotifyMask = 0x00000002L;
     public const long StructureNotifyMask = 0x00000004L;
 
-    public const ulong MWM_HINTS_DECORATIONS = (1L << 1);
+    public const ulong MWM_HINTS_DECORATIONS = 1L << 1;
 
     public const int KeyPress = 2;
     public const int KeyRelease = 3;
@@ -78,9 +78,6 @@ internal partial class X11Hook
            int n_rects, ShapeOp op, int ordering);
 
     [LibraryImport("libX11", StringMarshalling = StringMarshalling.Utf8)]
-    public static partial Atom XInternAtom(IntPtr display, string name, [MarshalAs(UnmanagedType.Bool)] bool only_if_exists);
-
-    [LibraryImport("libX11", StringMarshalling = StringMarshalling.Utf8)]
     public static partial int XGetWindowProperty(IntPtr display, IntPtr w, Atom property, long long_offset,
         long long_length, [MarshalAs(UnmanagedType.Bool)] bool delete, Atom req_type, out Atom actual_type_return,
         out int actual_format_return, out long nitems_return, out long bytes_after_return, out IntPtr prop_return);
@@ -127,8 +124,8 @@ internal partial class X11Hook
         {
             Xlib.XStoreName(display, window, title);
 
-            Atom _NET_WM_NAME = XInternAtom(display, "_NET_WM_NAME", false);
-            Atom UTF8_STRING = XInternAtom(display, "UTF8_STRING", false);
+            Atom _NET_WM_NAME = Xlib.XInternAtom(display, "_NET_WM_NAME", false);
+            Atom UTF8_STRING = Xlib.XInternAtom(display, "UTF8_STRING", false);
 
             var temp = Encoding.UTF8.GetBytes(title);
 
