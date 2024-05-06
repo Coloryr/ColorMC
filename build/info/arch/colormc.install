@@ -1,14 +1,14 @@
 post_remove() {
     echo "Removing colormc desktop icon..."
-    rm -f ${pkgdir}/usr/share/icons/colormc.png
-    rm -f ${pkgdir}/usr/share/applications/ColorMC.desktop
+    rm -f /usr/share/icons/colormc.png
+    rm -f /usr/share/applications/ColorMC.desktop
 }
 
 post_install() {
-    chmod a+x ${pkgdir}/usr/share/applications/ColorMC.desktop
-    chmod a+x ${pkgdir}/usr/share/ColorMC/ColorMC.Launcher
-    rm ${pkgdir}/usr/bin/ColorMC.Launcher
-    ln -s ${pkgdir}/usr/share/ColorMC/ColorMC.Launcher ${pkgdir}/usr/bin/
+    chmod a+x /usr/share/applications/ColorMC.desktop
+    chmod a+x /usr/share/ColorMC/ColorMC.Launcher
+    rm /usr/bin/ColorMC.Launcher
+    ln -s /usr/share/ColorMC/ColorMC.Launcher /usr/bin/
 }
 
 post_upgrade() {

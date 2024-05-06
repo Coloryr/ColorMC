@@ -6,9 +6,8 @@ url="https://www.github.com/Coloryr/ColorMC"
 packager="colormc"
 arch=("%arch%")
 license=("Apache 2.0")
-install=".INSTALL"
 sha512sums=("SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP")
-options=("!strip" "!libtool" "!staticlibs")
+OPTIONS=(!strip)
 source=("libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" 
         "ColorMC.Launcher" "ColorMC.desktop" "colormc.png")
 install=colormc.install
