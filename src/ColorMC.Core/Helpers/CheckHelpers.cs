@@ -670,7 +670,7 @@ public static class CheckHelpers
             return null;
 
         //forge本体
-        var list1 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo, v2).ToList();
+        var list1 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo, v2, true).ToList();
 
         var forgeinstall = neo ?
             VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!) :

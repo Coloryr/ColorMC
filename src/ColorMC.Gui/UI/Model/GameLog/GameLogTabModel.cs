@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -192,17 +193,17 @@ public partial class GameLogModel : GameModel
 
     private void Run()
     {
-        string? temp = null;
+        var temp = new StringBuilder();
         while (!_queue.IsEmpty)
         {
             if (_queue.TryDequeue(out var temp1) && !string.IsNullOrWhiteSpace(temp1))
             {
-                temp += temp1;
+                temp.Append(temp1);
             }
         }
         if (temp != null)
         {
-            Temp = temp;
+            Temp = temp.ToString();
             Dispatcher.UIThread.Invoke(() =>
             {
                 OnPropertyChanged("Insert");
