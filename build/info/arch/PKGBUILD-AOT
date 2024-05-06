@@ -8,7 +8,7 @@ arch=("%arch%")
 license=("Apache 2.0")
 install=".INSTALL"
 sha512sums=("SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP")
-options=("!strip" "!libtool" "!staticlibs")
+options=("!strip" "libtool" "staticlibs")
 
 source=("libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher" "ColorMC.desktop" "colormc.png")
 

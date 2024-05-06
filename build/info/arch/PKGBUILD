@@ -9,7 +9,7 @@ license=("Apache 2.0")
 install=".INSTALL"
 sha512sums=("SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" 
             "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP")
-options=("!strip" "!libtool" "!staticlibs")
+options=("!strip" "libtool" "staticlibs")
 
 source=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
         "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "X11.pdb"
