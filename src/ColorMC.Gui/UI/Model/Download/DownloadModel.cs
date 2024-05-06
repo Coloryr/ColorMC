@@ -151,7 +151,14 @@ public partial class DownloadModel : TopModel
         else if (item.State == DownloadItemState.Download)
         {
             long temp = value.Last;
-            value.NowSize = $"{(double)item.NowSize / item.AllSize * 100:0.##} %";
+            if (item.AllSize != 0)
+            {
+                value.NowSize = $"{(double)item.NowSize / item.AllSize * 100:0.##} %";
+            }
+            else
+            {
+                value.NowSize = $"{item.NowSize / 1000 / 1000}:0.## MB";
+            }
             value.Last = item.NowSize;
             _count += item.NowSize - temp;
         }
