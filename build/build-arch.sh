@@ -57,7 +57,7 @@ build_arch_aot()
 {
     echo "build colormc-$main_version$version-$1-aot.pkg.tar.zst"
 
-    base=./src/build_out/$1-dotnet-aot
+    base=./src/build_out/$1-aot
     base_dir="$base/colormc_arch"
 
     mkdir $base_dir
