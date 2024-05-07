@@ -99,7 +99,7 @@ public static class CurseForgeAPI
         return loader switch
         {
             Loaders.Forge => 1,
-            Loaders.NeoForge => 1,
+            Loaders.NeoForge => 6,
             Loaders.Fabric => 4,
             Loaders.Quilt => 5,
             _ => 0
