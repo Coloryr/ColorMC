@@ -216,7 +216,8 @@ public partial class App : Application
         {
             Task.Run(() =>
             {
-                ColorMCCore.Init1(BaseBinding.LoadDone);
+                ColorMCCore.Init1();
+                BaseBinding.LoadDone();
             });
         }
         Dispatcher.UIThread.Post(() => _ = LoadImage());
@@ -227,6 +228,26 @@ public partial class App : Application
                 TopLevel ??= TopLevel.GetTopLevel(AllWindow);
             });
         }
+    }
+
+    /// <summary>
+    /// 加载样式
+    /// </summary>
+    public static void LoadPageSlide()
+    {
+        PageSlide500.Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime);
+        PageSlide500.Fade = GuiConfigUtils.Config.Style.AmFade;
+    }
+
+    /// <summary>
+    /// 清理Gui缓存
+    /// </summary>
+    public static void Clear()
+    {
+        ColorSel.Remove();
+        FontSel.Remove();
+        LangSel.Remove();
+        StyleSel.Remove();
     }
 
     public static void StartLock()

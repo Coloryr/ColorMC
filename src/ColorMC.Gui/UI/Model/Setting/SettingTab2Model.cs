@@ -168,7 +168,7 @@ public partial class SettingModel
         if (_load)
             return;
 
-        ConfigBinding.SetStyle1(AmTime, AmFade);
+        ConfigBinding.SetStyle(AmTime, AmFade);
     }
 
     partial void OnAmTimeChanged(int value)
@@ -176,7 +176,7 @@ public partial class SettingModel
         if (_load)
             return;
 
-        ConfigBinding.SetStyle1(AmTime, AmFade);
+        ConfigBinding.SetStyle(AmTime, AmFade);
     }
 
     partial void OnButtonCornerRadiusChanged(int value)

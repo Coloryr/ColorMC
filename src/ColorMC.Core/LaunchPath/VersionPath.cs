@@ -33,6 +33,8 @@ public static class VersionPath
 
     private static VersionObj? _version;
 
+    public static string BaseDir { get; private set; }
+
     private static string ForgeDir => BaseDir + "/" + Name1;
     private static string FabricDir => BaseDir + "/" + Name2;
     private static string QuiltDir => BaseDir + "/" + Name3;
@@ -58,8 +60,6 @@ public static class VersionPath
             return null;
         }
     }
-
-    public static string BaseDir { get; private set; }
 
     /// <summary>
     /// 初始化

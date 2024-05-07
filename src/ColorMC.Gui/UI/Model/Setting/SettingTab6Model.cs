@@ -346,6 +346,6 @@ public partial class SettingModel
         if (_serverLoad)
             return;
 
-        ConfigBinding.SetOneGame(EnableOneGame, Game == -1 ? null : _uuids[Game]);
+        ConfigBinding.SetLockGame(EnableOneGame, Game == -1 ? null : _uuids[Game]);
     }
 }

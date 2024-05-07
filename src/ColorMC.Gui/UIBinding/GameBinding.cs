@@ -38,12 +38,27 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class GameBinding
 {
+    /// <summary>
+    /// 是否不存在游戏
+    /// </summary>
     public static bool IsNotGame => InstancesPath.IsNotGame;
+
+    /// <summary>
+    /// 获取游戏实例列表
+    /// </summary>
+    /// <returns></returns>
     public static List<GameSettingObj> GetGames()
     {
         return InstancesPath.Games;
     }
 
+    /// <summary>
+    /// 获取游戏版本号
+    /// </summary>
+    /// <param name="type1"></param>
+    /// <param name="type2"></param>
+    /// <param name="type3"></param>
+    /// <returns></returns>
     public static async Task<List<string>> GetGameVersion(bool? type1, bool? type2, bool? type3)
     {
         var list = new List<string>();
@@ -81,6 +96,13 @@ public static class GameBinding
         return list;
     }
 
+    /// <summary>
+    /// 添加游戏实例
+    /// </summary>
+    /// <param name="game"></param>
+    /// <param name="request"></param>
+    /// <param name="overwirte"></param>
+    /// <returns></returns>
     public static async Task<bool> AddGame(GameSettingObj game, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte)
     {
@@ -93,6 +115,14 @@ public static class GameBinding
         return game1 != null;
     }
 
+    /// <summary>
+    /// 添加文件夹
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="group"></param>
+    /// <param name="request"></param>
+    /// <param name="overwirte"></param>
+    /// <returns></returns>
     public static async Task<bool> AddGame(string path, string? group, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte)
     {
@@ -173,6 +203,16 @@ public static class GameBinding
         return true;
     }
 
+    /// <summary>
+    /// 导入文件夹
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="local"></param>
+    /// <param name="unselect"></param>
+    /// <param name="group"></param>
+    /// <param name="request"></param>
+    /// <param name="overwirte"></param>
+    /// <returns></returns>
     public static async Task<bool> AddGame(string name, string local, List<string> unselect,
         string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
@@ -254,6 +294,19 @@ public static class GameBinding
         return true;
     }
 
+    /// <summary>
+    /// 导入压缩包
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <param name="type"></param>
+    /// <param name="name"></param>
+    /// <param name="group"></param>
+    /// <param name="zip"></param>
+    /// <param name="request"></param>
+    /// <param name="overwirte"></param>
+    /// <param name="update"></param>
+    /// <param name="update2"></param>
+    /// <returns></returns>
     public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type, string? name,
         string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
@@ -262,83 +315,67 @@ public static class GameBinding
             update, update2);
     }
 
+    /// <summary>
+    /// 获取游戏分组
+    /// </summary>
+    /// <returns></returns>
     public static Dictionary<string, List<GameSettingObj>> GetGameGroups()
     {
         return InstancesPath.Groups;
     }
 
+    /// <summary>
+    /// 获取CF支持的游戏版本
+    /// </summary>
+    /// <returns></returns>
     public static Task<List<string>?> GetCurseForgeGameVersions()
     {
-        return CurseForgeAPI.GetGameVersions();
+        return CurseForgeHelper.GetGameVersions();
     }
 
+    /// <summary>
+    /// 获取MO支持的游戏版本
+    /// </summary>
+    /// <returns></returns>
     public static Task<List<string>?> GetModrinthGameVersions()
     {
-        return ModrinthAPI.GetGameVersion();
+        return ModrinthHelper.GetGameVersion();
     }
 
-    private static CurseForgeCategoriesObj? CurseForgeCategories;
-
-    public static async Task<Dictionary<string, string>?> GetCurseForgeCategories(
+    /// <summary>
+    /// 获取CF分组
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static Task<Dictionary<string, string>?> GetCurseForgeCategories(
         FileType type = FileType.ModPack)
     {
-        if (CurseForgeCategories == null)
-        {
-            var list6 = await CurseForgeAPI.GetCategories();
-            if (list6 == null)
-            {
-                return null;
-            }
-
-            CurseForgeCategories = list6;
-        }
-
-        var list7 = from item2 in CurseForgeCategories.data
-                    where item2.classId == type switch
-                    {
-                        FileType.Mod => CurseForgeAPI.ClassMod,
-                        FileType.World => CurseForgeAPI.ClassWorld,
-                        FileType.Resourcepack => CurseForgeAPI.ClassResourcepack,
-                        FileType.Shaderpack => CurseForgeAPI.ClassShaderpack,
-                        _ => CurseForgeAPI.ClassModPack
-                    }
-                    orderby item2.name descending
-                    select (item2.name, item2.id);
-
-        return list7.ToDictionary(a => a.id.ToString(), a => a.name);
+        return CurseForgeHelper.GetCurseForgeCategories(type);
     }
 
-    private static List<ModrinthCategoriesObj>? ModrinthCategories;
-
-    public static async Task<Dictionary<string, string>?> GetModrinthCategories(
-        FileType type = FileType.ModPack)
+    /// <summary>
+    /// 获取MO分组
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static Task<Dictionary<string, string>?> GetModrinthCategories(FileType type = FileType.ModPack)
     {
-        if (ModrinthCategories == null)
-        {
-            var list6 = await ModrinthAPI.GetCategories();
-            if (list6 == null)
-            {
-                return null;
-            }
-
-            ModrinthCategories = list6;
-        }
-
-        var list7 = from item2 in ModrinthCategories
-                    where item2.project_type == type switch
-                    {
-                        FileType.Shaderpack => ModrinthAPI.ClassShaderpack,
-                        FileType.Resourcepack => ModrinthAPI.ClassResourcepack,
-                        FileType.ModPack => ModrinthAPI.ClassModPack,
-                        _ => ModrinthAPI.ClassMod
-                    }
-                    && item2.header == "categories"
-                    orderby item2.name descending
-                    select item2.name;
-
-        return list7.ToDictionary(a => a);
+        return ModrinthHelper.GetModrinthCategories(type);
     }
 
+    /// <summary>
+    /// 安装CF整合包
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="data1"></param>
+    /// <param name="name"></param>
+    /// <param name="group"></param>
+    /// <param name="zip"></param>
+    /// <param name="request"></param>
+    /// <param name="overwirte"></param>
+    /// <param name="update"></param>
+    /// <param name="update2"></param>
+    /// <returns></returns>
     public static async Task<bool> InstallCurseForge(CurseForgeModObj.Data data,
         CurseForgeObjList.Data data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
@@ -359,6 +396,19 @@ public static class GameBinding
         return true;
     }
 
+    /// <summary>
+    /// 安装MO整合包
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="data1"></param>
+    /// <param name="name"></param>
+    /// <param name="group"></param>
+    /// <param name="zip"></param>
+    /// <param name="request"></param>
+    /// <param name="overwirte"></param>
+    /// <param name="update"></param>
+    /// <param name="update2"></param>
+    /// <returns></returns>
     public static async Task<bool> InstallModrinth(ModrinthVersionObj data,
         ModrinthSearchObj.Hit data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
@@ -379,6 +429,12 @@ public static class GameBinding
         return true;
     }
 
+    /// <summary>
+    /// 设置游戏实例图标
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="url"></param>
+    /// <returns></returns>
     public static async Task SetGameIconFromUrl(GameSettingObj obj, string url)
     {
         try
@@ -396,6 +452,12 @@ public static class GameBinding
         }
     }
 
+    /// <summary>
+    /// 设置游戏实例图标
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static async Task SetGameIconFromFile(BaseModel model, GameSettingObj obj)
     {
         try
@@ -431,6 +493,11 @@ public static class GameBinding
         }
     }
 
+    /// <summary>
+    /// 获取选中的账户
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     private static async Task<(LoginObj?, string?)> GetUser(BaseModel model)
     {
         var login = UserBinding.GetLastUser();
@@ -458,6 +525,14 @@ public static class GameBinding
         return (login, null);
     }
 
+    /// <summary>
+    /// 启动游戏
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="obj"></param>
+    /// <param name="world"></param>
+    /// <param name="hide"></param>
+    /// <returns></returns>
     public static async Task<(bool, string?)> Launch(BaseModel model, GameSettingObj? obj,
         WorldObj? world = null, bool hide = false)
     {
@@ -485,18 +560,31 @@ public static class GameBinding
         return res1;
     }
 
-
+    /// <summary>
+    /// 添加游戏分组
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static bool AddGameGroup(string name)
     {
         return InstancesPath.AddGroup(name);
     }
 
+    /// <summary>
+    /// 移动游戏到分组
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="now"></param>
     public static void MoveGameGroup(GameSettingObj obj, string? now)
     {
         obj.MoveGameGroup(now);
         App.MainWindow?.LoadMain();
     }
 
+    /// <summary>
+    /// 重新获取游戏版本
+    /// </summary>
+    /// <returns></returns>
     public static async Task<bool> ReloadVersion()
     {
         await VersionPath.GetFromWebAsync();
@@ -504,37 +592,43 @@ public static class GameBinding
         return await VersionPath.IsHaveVersionInfoAsync();
     }
 
-    public static async void SaveGame(GameSettingObj obj, string? versi, Loaders loader, string? loadv)
-    {
-        if (!string.IsNullOrWhiteSpace(versi))
-        {
-            obj.Version = versi;
-            var ver = await VersionPath.GetVersionsAsync();
-            var version1 = ver!.versions.FirstOrDefault(a => a.id == versi);
-            if (version1 != null)
-            {
-                if (version1.type == "release")
-                {
-                    obj.GameType = GameType.Release;
-                }
-                else if (version1.type == "snapshot")
-                {
-                    obj.GameType = GameType.Snapshot;
-                }
-                else
-                {
-                    obj.GameType = GameType.Other;
-                }
-            }
-        }
-        obj.Loader = loader;
-        if (!string.IsNullOrWhiteSpace(loadv))
-        {
-            obj.LoaderVersion = loadv;
-        }
-        obj.Save();
-    }
+    //public static async void SaveGame(GameSettingObj obj, string? versi, Loaders loader, string? loadv)
+    //{
+    //    if (!string.IsNullOrWhiteSpace(versi))
+    //    {
+    //        obj.Version = versi;
+    //        var ver = await VersionPath.GetVersionsAsync();
+    //        var version1 = ver!.versions.FirstOrDefault(a => a.id == versi);
+    //        if (version1 != null)
+    //        {
+    //            if (version1.type == "release")
+    //            {
+    //                obj.GameType = GameType.Release;
+    //            }
+    //            else if (version1.type == "snapshot")
+    //            {
+    //                obj.GameType = GameType.Snapshot;
+    //            }
+    //            else
+    //            {
+    //                obj.GameType = GameType.Other;
+    //            }
+    //        }
+    //    }
+    //    obj.Loader = loader;
+    //    if (!string.IsNullOrWhiteSpace(loadv))
+    //    {
+    //        obj.LoaderVersion = loadv;
+    //    }
+    //    obj.Save();
+    //}
 
+    /// <summary>
+    /// 设置游戏Jvm参数
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
     public static void SetGameJvmMemArg(GameSettingObj obj, uint? min, uint? max)
     {
         obj.JvmArg ??= new();
@@ -543,30 +637,56 @@ public static class GameBinding
         obj.Save();
     }
 
+    /// <summary>
+    /// 设置游戏Jvm参数
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="obj1"></param>
     public static void SetGameJvmArg(GameSettingObj obj, RunArgObj obj1)
     {
         obj.JvmArg = obj1;
         obj.Save();
     }
 
+    /// <summary>
+    /// 设置游戏窗口
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="obj1"></param>
     public static void SetGameWindow(GameSettingObj obj, WindowSettingObj obj1)
     {
         obj.Window = obj1;
         obj.Save();
     }
 
+    /// <summary>
+    /// 设置游戏加入的服务器
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="obj1"></param>
     public static void SetGameServer(GameSettingObj obj, ServerObj obj1)
     {
         obj.StartServer = obj1;
         obj.Save();
     }
 
+    /// <summary>
+    /// 设置游戏端口代理
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="obj1"></param>
     public static void SetGameProxy(GameSettingObj obj, ProxyHostObj obj1)
     {
         obj.ProxyHost = obj1;
         obj.Save();
     }
 
+    /// <summary>
+    /// 获取游戏的模组列表
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="sha256"></param>
+    /// <returns></returns>
     public static async Task<List<ModDisplayModel>> GetGameMods(GameSettingObj obj,
         bool sha256 = false)
     {
@@ -599,6 +719,11 @@ public static class GameBinding
         return list;
     }
 
+    /// <summary>
+    /// 启用/禁用模组
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static (bool, string?) ModEnableDisable(ModObj obj)
     {
         try
@@ -622,6 +747,10 @@ public static class GameBinding
         }
     }
 
+    /// <summary>
+    /// 删除模组
+    /// </summary>
+    /// <param name="mod"></param>
     public static void DeleteMod(ModObj mod)
     {
         string name = new FileInfo(mod.Local).Name;
@@ -637,6 +766,12 @@ public static class GameBinding
         mod.Delete();
     }
 
+    /// <summary>
+    /// 添加模组
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public static Task<bool> AddMods(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
@@ -651,6 +786,11 @@ public static class GameBinding
         return obj.AddModsAsync(list);
     }
 
+    /// <summary>
+    /// 获取所有配置文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static List<string> GetAllConfig(GameSettingObj obj)
     {
         var list = new List<string>();
@@ -674,6 +814,11 @@ public static class GameBinding
         return list;
     }
 
+    /// <summary>
+    /// 获取世界所有配置文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static List<string> GetAllConfig(WorldObj obj)
     {
         var list = new List<string>();
@@ -690,6 +835,11 @@ public static class GameBinding
         return list;
     }
 
+    /// <summary>
+    /// 获取根目录所有配置文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static List<string> GetAllTopConfig(GameSettingObj obj)
     {
         var list = new List<string>();
@@ -713,6 +863,12 @@ public static class GameBinding
         return list;
     }
 
+    /// <summary>
+    /// 读取区块信息
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static async Task<ChunkDataObj?> ReadMca(WorldObj obj, string name)
     {
         var dir = obj.Local;
@@ -720,6 +876,12 @@ public static class GameBinding
         return await ChunkMca.ReadAsync(Path.GetFullPath(dir + "/" + name));
     }
 
+    /// <summary>
+    /// 读取区块信息
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static async Task<ChunkDataObj?> ReadMca(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
@@ -727,6 +889,12 @@ public static class GameBinding
         return await ChunkMca.ReadAsync(Path.GetFullPath(dir + "/" + name));
     }
 
+    /// <summary>
+    /// 读取Nbt信息
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static async Task<NbtBase?> ReadNbt(WorldObj obj, string name)
     {
         var dir = obj.Local;
@@ -734,6 +902,12 @@ public static class GameBinding
         return await NbtBase.Read(Path.GetFullPath(dir + "/" + name));
     }
 
+    /// <summary>
+    /// 读取Nbt信息
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static async Task<NbtBase?> ReadNbt(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
@@ -741,6 +915,12 @@ public static class GameBinding
         return await NbtBase.Read(Path.GetFullPath(dir + "/" + name));
     }
 
+    /// <summary>
+    /// 读取配置文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static string ReadConfigFile(WorldObj obj, string name)
     {
         var dir = obj.Local;
@@ -748,6 +928,12 @@ public static class GameBinding
         return File.ReadAllText(Path.GetFullPath(dir + "/" + name));
     }
 
+    /// <summary>
+    /// 读取配置文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static string ReadConfigFile(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
@@ -755,6 +941,12 @@ public static class GameBinding
         return File.ReadAllText(Path.GetFullPath(dir + "/" + name));
     }
 
+    /// <summary>
+    /// 保存配置文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <param name="text"></param>
     public static void SaveConfigFile(WorldObj obj, string name, string? text)
     {
         var dir = obj.Local;
@@ -762,6 +954,12 @@ public static class GameBinding
         File.WriteAllText(Path.GetFullPath(dir + "/" + name), text);
     }
 
+    /// <summary>
+    /// 保存配置文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <param name="text"></param>
     public static void SaveConfigFile(GameSettingObj obj, string name, string? text)
     {
         var dir = obj.GetGamePath();
@@ -769,6 +967,12 @@ public static class GameBinding
         File.WriteAllText(Path.GetFullPath(dir + "/" + name), text);
     }
 
+    /// <summary>
+    /// 保存Nbt文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    /// <param name="nbt"></param>
     public static void SaveNbtFile(WorldObj obj, string file, NbtBase nbt)
     {
         var dir = obj.Local;
@@ -776,6 +980,12 @@ public static class GameBinding
         nbt.Save(Path.GetFullPath(dir + "/" + file));
     }
 
+    /// <summary>
+    /// 保存Nbt文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    /// <param name="nbt"></param>
     public static void SaveNbtFile(GameSettingObj obj, string file, NbtBase nbt)
     {
         var dir = obj.GetGamePath();
@@ -783,6 +993,12 @@ public static class GameBinding
         nbt.Save(Path.GetFullPath(dir + "/" + file));
     }
 
+    /// <summary>
+    /// 保存区块文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    /// <param name="data"></param>
     public static void SaveMcaFile(WorldObj obj, string file, ChunkDataObj data)
     {
         var dir = obj.Local;
@@ -790,6 +1006,12 @@ public static class GameBinding
         data.Save(Path.GetFullPath(dir + "/" + file));
     }
 
+    /// <summary>
+    /// 保存区块文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    /// <param name="data"></param>
     public static void SaveMcaFile(GameSettingObj obj, string file, ChunkDataObj data)
     {
         var dir = obj.GetGamePath();
@@ -797,11 +1019,22 @@ public static class GameBinding
         data.Save(Path.GetFullPath(dir + "/" + file));
     }
 
+    /// <summary>
+    /// 获取世界列表
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static Task<List<WorldObj>> GetWorlds(GameSettingObj obj)
     {
         return obj.GetWorldsAsync();
     }
 
+    /// <summary>
+    /// 添加世界
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public static async Task<bool> AddWorld(GameSettingObj obj, string? file)
     {
         if (string.IsNullOrWhiteSpace(file))
@@ -817,11 +1050,21 @@ public static class GameBinding
         return res;
     }
 
+    /// <summary>
+    /// 删除世界
+    /// </summary>
+    /// <param name="world"></param>
     public static void DeleteWorld(WorldObj world)
     {
         world.Remove();
     }
 
+    /// <summary>
+    /// 导出世界
+    /// </summary>
+    /// <param name="world"></param>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public static Task ExportWorld(WorldObj world, string? file)
     {
         if (file == null)
@@ -830,17 +1073,33 @@ public static class GameBinding
         return world.ExportWorldZip(file);
     }
 
+    /// <summary>
+    /// 获取资源包列表
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="sha256"></param>
+    /// <returns></returns>
     public static Task<List<ResourcepackObj>> GetResourcepacks(GameSettingObj obj,
         bool sha256 = false)
     {
         return obj.GetResourcepacksAsync(sha256);
     }
 
+    /// <summary>
+    /// 删除资源包
+    /// </summary>
+    /// <param name="obj"></param>
     public static void DeleteResourcepack(ResourcepackObj obj)
     {
         obj.Delete();
     }
 
+    /// <summary>
+    /// 导入资源包
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public static Task<bool> AddResourcepack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
@@ -1283,6 +1542,10 @@ public static class GameBinding
         return list;
     }
 
+    /// <summary>
+    /// 游戏实例状态发生改变
+    /// </summary>
+    /// <param name="obj"></param>
     public static void GameStateUpdate(GameSettingObj obj)
     {
         if (App.GameLogWindows.TryGetValue(obj.UUID, out var win1))
@@ -1291,6 +1554,13 @@ public static class GameBinding
         }
     }
 
+    /// <summary>
+    /// 拖拽添加文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="data"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public static async Task<bool> AddFile(GameSettingObj obj, IDataObject data, FileType type)
     {
         if (!data.Contains(DataFormats.Files))

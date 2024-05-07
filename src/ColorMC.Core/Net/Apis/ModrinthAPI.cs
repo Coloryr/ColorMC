@@ -215,8 +215,6 @@ public static class ModrinthAPI
         }
     }
 
-    private static List<string>? ModrinthGameVersions;
-
     /// <summary>
     /// 获取所有游戏版本
     /// </summary>
@@ -250,34 +248,6 @@ public static class ModrinthAPI
             Logs.Error(LanguageHelper.Get("Core.Http.Modrinth.Error5"), e);
             return null;
         }
-    }
-
-    /// <summary>
-    /// 获取所有游戏版本
-    /// </summary>
-    public static async Task<List<string>?> GetGameVersion()
-    {
-        if (ModrinthGameVersions != null)
-        {
-            return ModrinthGameVersions;
-        }
-
-        var list = await GetGameVersions();
-        if (list == null)
-        {
-            return null;
-        }
-
-        var list1 = new List<string>
-        {
-            ""
-        };
-
-        list1.AddRange(from item in list select item.version);
-
-        ModrinthGameVersions = list1;
-
-        return list1;
     }
 
     /// <summary>

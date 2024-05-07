@@ -197,7 +197,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
         Model.RemoveBack();
 
-        BaseBinding.Clear();
+        App.Clear();
     }
 
     private void Back()
