@@ -10,6 +10,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
@@ -181,12 +182,11 @@ public partial class UsersControlModel : TopModel
     public void SetAdd()
     {
         EnableType = true;
-
-        if (ConfigBinding.IsLockLogin())
+        var server = ConfigBinding.GetAllConfig().Item2.ServerCustom;
+        if (server.LockLogin)
         {
-            ConfigBinding.GetLockLogin(out var type, out var url);
-            Type = (AuthType)(type + 1);
-            Name = url;
+            Type = (AuthType)(server.LoginType + 1);
+            Name = server.LoginUrl;
             EnableType = false;
         }
         else

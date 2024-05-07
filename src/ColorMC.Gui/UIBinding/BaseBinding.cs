@@ -39,7 +39,13 @@ public static class BaseBinding
 {
     public const string DrapType = "Game";
 
+    /// <summary>
+    /// 正在运行的游戏
+    /// </summary>
     public readonly static List<string> RunGames = [];
+    /// <summary>
+    /// 游戏日志
+    /// </summary>
     public readonly static Dictionary<string, StringBuilder> GameLogs = [];
 
     /// <summary>
@@ -51,8 +57,13 @@ public static class BaseBinding
     /// </summary>
     public static bool IsDownload => DownloadManager.State != DownloadState.End;
 
+    /// <summary>
+    /// 停止启动游戏
+    /// </summary>
     private static CancellationTokenSource s_launchCancel = new();
-
+    /// <summary>
+    /// 快捷启动
+    /// </summary>
     private static string s_launch;
 
     /// <summary>
@@ -98,7 +109,7 @@ public static class BaseBinding
         FontSel.Load();
         ColorSel.Load();
         StyleSel.Load();
-        LoadStyle();
+        App.LoadPageSlide();
 
         InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>
         {
@@ -106,6 +117,12 @@ public static class BaseBinding
         }, handledEventsToo: true);
     }
 
+    /// <summary>
+    /// 游戏退出时
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="obj1"></param>
+    /// <param name="code"></param>
     private static void GameExit(GameSettingObj obj, LoginObj obj1, int code)
     {
         GameCount.GameClose(obj);
@@ -113,11 +130,6 @@ public static class BaseBinding
         UserBinding.UnLockUser(obj1);
         Dispatcher.UIThread.Post(() =>
         {
-            if (s_launch != null)
-            {
-                App.Close();
-                return;
-            }
             App.MainWindow?.GameClose(obj.UUID);
         });
         if (code != 0 && !App.IsClose)
@@ -145,7 +157,11 @@ public static class BaseBinding
         GameBinding.GameStateUpdate(obj);
     }
 
-    public static void LanguageReload(LanguageType type)
+    /// <summary>
+    /// 语言重载
+    /// </summary>
+    /// <param name="type"></param>
+    private static void LanguageReload(LanguageType type)
     {
         App.LoadLanguage(type);
         LangSel.Reload();
@@ -153,6 +169,9 @@ public static class BaseBinding
         App.Reboot();
     }
 
+    /// <summary>
+    /// 核心初始化完成
+    /// </summary>
     public static async void LoadDone()
     {
         UpdateChecker.Init();
@@ -193,12 +212,6 @@ public static class BaseBinding
                 }
             });
         }
-    }
-
-    public static void LoadStyle()
-    {
-        App.PageSlide500.Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime);
-        App.PageSlide500.Fade = GuiConfigUtils.Config.Style.AmFade;
     }
 
     /// <summary>
@@ -428,7 +441,7 @@ public static class BaseBinding
 
             if (pr is DesktopGameHandel handel)
             {
-                GameWait(model, obj, handel, hide);
+                GameHandel(model, obj, handel, hide);
             }
         }
         else
@@ -440,24 +453,31 @@ public static class BaseBinding
         return (res.Item1 != null, res.Item2);
     }
 
-    private static void ExecuteBashCommand(string command)
-    {
-        var proc = new Process
-        {
-            StartInfo = new()
-            {
-                FileName = "/bin/bash",
-                Arguments = $"-c \"{command}\"",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                CreateNoWindow = true
-            }
-        };
-        proc.Start();
-        proc.WaitForExit();
-    }
+    //private static void ExecuteBashCommand(string command)
+    //{
+    //    var proc = new Process
+    //    {
+    //        StartInfo = new()
+    //        {
+    //            FileName = "/bin/bash",
+    //            Arguments = $"-c \"{command}\"",
+    //            UseShellExecute = false,
+    //            RedirectStandardOutput = true,
+    //            CreateNoWindow = true
+    //        }
+    //    };
+    //    proc.Start();
+    //    proc.WaitForExit();
+    //}
 
-    private static void GameWait(BaseModel model, GameSettingObj obj, DesktopGameHandel handel, bool hide)
+    /// <summary>
+    /// 游戏进程启动后
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="obj"></param>
+    /// <param name="handel"></param>
+    /// <param name="hide"></param>
+    private static void GameHandel(BaseModel model, GameSettingObj obj, DesktopGameHandel handel, bool hide)
     {
         var pr = handel.Process;
         Task.Run(async () =>
@@ -829,6 +849,11 @@ public static class BaseBinding
         Media.Pause();
     }
 
+    /// <summary>
+    /// 测试启动自定义窗口
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public static (bool, string?) TestCustomWindow(string file)
     {
         if (!File.Exists(file))
@@ -857,6 +882,10 @@ public static class BaseBinding
         return (true, null);
     }
 
+    /// <summary>
+    /// 创建快捷方式
+    /// </summary>
+    /// <param name="obj"></param>
     public static void CreateLaunch(GameSettingObj obj)
     {
 #pragma warning disable CA1416 // 验证平台兼容性
@@ -883,17 +912,30 @@ public static class BaseBinding
 #pragma warning restore CA1416 // 验证平台兼容性
     }
 
+    /// <summary>
+    /// 设置快捷启动
+    /// </summary>
+    /// <param name="uuid"></param>
     public static void SetLaunch(string uuid)
     {
         s_launch = uuid;
     }
 
+    /// <summary>
+    /// 设置服务器密钥
+    /// </summary>
+    /// <param name="str"></param>
     public static void SetCloudKey(string str)
     {
         GuiConfigUtils.Config.ServerKey = str[9..];
         App.ShowSetting(SettingType.Net);
     }
 
+    /// <summary>
+    /// 导入Live2D核心
+    /// </summary>
+    /// <param name="local"></param>
+    /// <returns></returns>
     public static async Task<bool> SetLive2DCore(string local)
     {
         using var stream = PathHelper.OpenRead(local);
@@ -933,6 +975,12 @@ public static class BaseBinding
         return false;
     }
 
+    /// <summary>
+    /// 启动Frp
+    /// </summary>
+    /// <param name="item1"></param>
+    /// <param name="model"></param>
+    /// <returns></returns>
     public static async Task<(bool, Process?, string?)> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
         string file;
@@ -1070,13 +1118,5 @@ public static class BaseBinding
         }
 
         return (false, null, null);
-    }
-
-    public static void Clear()
-    {
-        ColorSel.Remove();
-        FontSel.Remove();
-        LangSel.Remove();
-        StyleSel.Remove();
     }
 }

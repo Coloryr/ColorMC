@@ -13,8 +13,6 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class CurseForgeAPI
 {
-    private static List<string>? s_supportVersion;
-
     private const string CurseForgeKEY = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m";
 
     public const int GameID = 432;
@@ -377,64 +375,6 @@ public static class CurseForgeAPI
             Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error6"), e);
             return null;
         }
-    }
-
-    /// <summary>
-    /// 获取CurseForge支持的游戏版本
-    /// </summary>
-    /// <returns>游戏版本</returns>
-    public static async Task<List<string>?> GetGameVersions()
-    {
-        if (s_supportVersion != null)
-        {
-            return s_supportVersion;
-        }
-        var list = await GetCurseForgeVersionType();
-        if (list == null)
-        {
-            return null;
-        }
-
-        list.data.RemoveAll(a =>
-        {
-            return !a.name.StartsWith("Minecraft ");
-        });
-
-        var list111 = new List<CurseForgeVersionType.Item>();
-        list111.AddRange(from item in list.data
-                         where item.id > 17
-                         orderby item.id descending
-                         select item);
-        list111.AddRange(from item in list.data
-                         where item.id < 18
-                         orderby item.id ascending
-                         select item);
-
-        var list2 = await GetCurseForgeVersion();
-        if (list2 == null)
-        {
-            return null;
-        }
-
-        var list3 = new List<string>
-        {
-            ""
-        };
-        foreach (var item in list111)
-        {
-            var list4 = from item1 in list2.data
-                        where item1.type == item.id
-                        select item1.versions;
-            var list5 = list4.FirstOrDefault();
-            if (list5 != null)
-            {
-                list3.AddRange(list5);
-            }
-        }
-
-        s_supportVersion = list3;
-
-        return list3;
     }
 
     /// <summary>

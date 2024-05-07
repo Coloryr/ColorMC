@@ -69,6 +69,11 @@ public static class LibrariesPath
         return Path.GetFullPath($"{BaseDir}/optifine/installer/OptiFine-{mc}-{version}.jar");
     }
 
+    /// <summary>
+    /// 获取自定义加载器运行库
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static List<(string Name, string Local)> GetCustomLoaderLibs(this GameSettingObj obj)
     {
         if (VersionPath.GetCustomLoaderObj(obj.UUID) is { } obj1)
@@ -89,6 +94,11 @@ public static class LibrariesPath
         return [];
     }
 
+    /// <summary>
+    /// 获取自定义加载器游戏参数
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static List<string> GetLoaderGameArg(this GameSettingObj obj)
     {
         if (VersionPath.GetCustomLoaderObj(obj.UUID) is { } obj1)

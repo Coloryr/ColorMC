@@ -208,7 +208,7 @@ public static class ColorMCCore
     /// <summary>
     /// 初始化阶段2
     /// </summary>
-    public static void Init1(Action? done)
+    public static void Init1()
     {
         ConfigSave.Init();
         GameCount.Init(BaseDir);
@@ -218,7 +218,6 @@ public static class ColorMCCore
         DownloadManager.Init(BaseDir);
         AuthDatabase.Init();
         MCPath.Init(BaseDir);
-        done?.Invoke();
 
         Logs.Info(LanguageHelper.Get("Core.Info3"));
     }

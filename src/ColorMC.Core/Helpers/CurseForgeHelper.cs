@@ -1,4 +1,5 @@
 using System.Text;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 
@@ -9,6 +10,8 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class CurseForgeHelper
 {
+    private static CurseForgeCategoriesObj? s_categories;
+    private static List<string>? s_supportVersion;
     /// <summary>
     /// 修正下载地址
     /// </summary>
@@ -78,5 +81,96 @@ public static class CurseForgeHelper
         }
 
         return builder.ToString()[..^1];
+    }
+
+    /// <summary>
+    /// 获取CF分组
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static async Task<Dictionary<string, string>?> GetCurseForgeCategories(FileType type)
+    {
+        if (s_categories == null)
+        {
+            var list6 = await CurseForgeAPI.GetCategories();
+            if (list6 == null)
+            {
+                return null;
+            }
+
+            s_categories = list6;
+        }
+
+        var list7 = from item2 in s_categories.data
+                    where item2.classId == type switch
+                    {
+                        FileType.Mod => CurseForgeAPI.ClassMod,
+                        FileType.World => CurseForgeAPI.ClassWorld,
+                        FileType.Resourcepack => CurseForgeAPI.ClassResourcepack,
+                        FileType.Shaderpack => CurseForgeAPI.ClassShaderpack,
+                        _ => CurseForgeAPI.ClassModPack
+                    }
+                    orderby item2.name descending
+                    select (item2.name, item2.id);
+
+        return list7.ToDictionary(a => a.id.ToString(), a => a.name);
+    }
+
+    /// <summary>
+    /// 获取CurseForge支持的游戏版本
+    /// </summary>
+    /// <returns>游戏版本</returns>
+    public static async Task<List<string>?> GetGameVersions()
+    {
+        if (s_supportVersion != null)
+        {
+            return s_supportVersion;
+        }
+        var list = await CurseForgeAPI.GetCurseForgeVersionType();
+        if (list == null)
+        {
+            return null;
+        }
+
+        list.data.RemoveAll(a =>
+        {
+            return !a.name.StartsWith("Minecraft ");
+        });
+
+        var list111 = new List<CurseForgeVersionType.Item>();
+        list111.AddRange(from item in list.data
+                         where item.id > 17
+                         orderby item.id descending
+                         select item);
+        list111.AddRange(from item in list.data
+                         where item.id < 18
+                         orderby item.id ascending
+                         select item);
+
+        var list2 = await CurseForgeAPI.GetCurseForgeVersion();
+        if (list2 == null)
+        {
+            return null;
+        }
+
+        var list3 = new List<string>
+        {
+            ""
+        };
+        foreach (var item in list111)
+        {
+            var list4 = from item1 in list2.data
+                        where item1.type == item.id
+                        select item1.versions;
+            var list5 = list4.FirstOrDefault();
+            if (list5 != null)
+            {
+                list3.AddRange(list5);
+            }
+        }
+
+        s_supportVersion = list3;
+
+        return list3;
     }
 }

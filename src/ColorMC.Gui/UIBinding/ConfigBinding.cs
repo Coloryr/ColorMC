@@ -57,6 +57,16 @@ public static class ConfigBinding
     }
 
     /// <summary>
+    /// 加载Frp配置文件
+    /// </summary>
+    /// <param name="local"></param>
+    /// <returns></returns>
+    public static bool LoadFrpConfig(string local)
+    {
+        return FrpConfigUtils.Load(local, true);
+    }
+
+    /// <summary>
     /// 获取所有配置文件
     /// </summary>
     /// <returns></returns>
@@ -196,6 +206,10 @@ public static class ConfigBinding
         App.OnPicUpdate();
     }
 
+    /// <summary>
+    /// 设置下载源
+    /// </summary>
+    /// <param name="value"></param>
     public static void SetDownloadSource(SourceLocal value)
     {
         if (DownloadManager.State != DownloadState.End)
@@ -210,6 +224,10 @@ public static class ConfigBinding
         BaseClient.Init();
     }
 
+    /// <summary>
+    /// 设置下载线程数
+    /// </summary>
+    /// <param name="value"></param>
     public static void SetDownloadThread(int value)
     {
         if (DownloadManager.State != DownloadState.End)
@@ -222,6 +240,13 @@ public static class ConfigBinding
         ConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置代理
+    /// </summary>
+    /// <param name="ip"></param>
+    /// <param name="port"></param>
+    /// <param name="user"></param>
+    /// <param name="password"></param>
     public static void SetDownloadProxy(string ip, ushort port, string user, string password)
     {
         if (DownloadManager.State != DownloadState.End)
@@ -239,6 +264,12 @@ public static class ConfigBinding
         BaseClient.Init();
     }
 
+    /// <summary>
+    /// 设置代理开关
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <param name="v3"></param>
     public static void SetDownloadProxyEnable(bool v1, bool v2, bool v3)
     {
         if (DownloadManager.State != DownloadState.End)
@@ -255,6 +286,12 @@ public static class ConfigBinding
         BaseClient.Init();
     }
 
+    /// <summary>
+    /// 设置下载验证
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <param name="v3"></param>
     public static void SetDownloadCheck(bool v1, bool v2, bool v3)
     {
         if (DownloadManager.State != DownloadState.End)
@@ -269,6 +306,11 @@ public static class ConfigBinding
         ConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置GC
+    /// </summary>
+    /// <param name="gc"></param>
+    /// <param name="arg"></param>
     public static void SetGc(GCType gc, string? arg)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
@@ -277,6 +319,13 @@ public static class ConfigBinding
         ConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置运行指令
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <param name="v3"></param>
+    /// <param name="v4"></param>
     public static void SetRunCommand(bool v1, bool v2, string? v3, string? v4)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
@@ -287,6 +336,13 @@ public static class ConfigBinding
         ConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置运行参数
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <param name="v3"></param>
+    /// <param name="v4"></param>
     public static void SetRunArg(string? v1, string? v2, string? v3, string? v4)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
@@ -297,6 +353,12 @@ public static class ConfigBinding
         ConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置游戏窗口参数
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <param name="v3"></param>
     public static void SetGameWindow(bool v1, uint? v2, uint? v3)
     {
         ConfigUtils.Config.Window ??= ConfigUtils.MakeWindowSettingConfig();
@@ -306,6 +368,11 @@ public static class ConfigBinding
         ConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置内存大小
+    /// </summary>
+    /// <param name="minMemory"></param>
+    /// <param name="maxMemory"></param>
     public static void SetMemory(uint? minMemory, uint? maxMemory)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
@@ -451,6 +518,15 @@ public static class ConfigBinding
         return GuiConfigUtils.Config.LastLaunch;
     }
 
+    /// <summary>
+    /// 设置主界面服务器Motd
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <param name="v3"></param>
+    /// <param name="v4"></param>
+    /// <param name="v5"></param>
+    /// <param name="v6"></param>
     public static void SetMotd(string v1, ushort v2, bool v3, bool v4, string v5, string v6)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
@@ -467,7 +543,12 @@ public static class ConfigBinding
         ColorSel.Load();
     }
 
-    public static void SetOneGame(bool v1, string? v2)
+    /// <summary>
+    /// 设置锁定游戏实例
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    public static void SetLockGame(bool v1, string? v2)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.LockGame = v1;
@@ -477,6 +558,11 @@ public static class ConfigBinding
         App.MainWindow?.LoadMain();
     }
 
+    /// <summary>
+    /// 设置自定义UI
+    /// </summary>
+    /// <param name="enable"></param>
+    /// <param name="value"></param>
     public static void SetUI(bool enable, string? value)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
@@ -485,6 +571,14 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置背景音乐
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <param name="v3"></param>
+    /// <param name="v4"></param>
+    /// <param name="v5"></param>
     public static void SetMusic(bool v1, bool v2, string? v3, int v4, bool v5)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
@@ -496,6 +590,12 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置登录锁定
+    /// </summary>
+    /// <param name="enableOneLogin"></param>
+    /// <param name="login"></param>
+    /// <param name="url"></param>
     public static void SetLoginLock(bool enableOneLogin, int login, string url)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
@@ -505,18 +605,18 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 是否锁定了登录
+    /// </summary>
+    /// <returns></returns>
     public static bool IsLockLogin()
     {
         return GuiConfigUtils.Config.ServerCustom.LockLogin;
     }
 
-    public static void GetLockLogin(out int type, out string url)
-    {
-        var config = GuiConfigUtils.Config.ServerCustom;
-        type = config.LoginType;
-        url = config.LoginUrl;
-    }
-
+    /// <summary>
+    /// 删除Live2D模型
+    /// </summary>
     public static void DeleteLive2D()
     {
         GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
@@ -526,6 +626,10 @@ public static class ConfigBinding
         App.MainWindow?.DeleteModel();
     }
 
+    /// <summary>
+    /// 设置启用Live2D模型
+    /// </summary>
+    /// <param name="enable"></param>
     public static void SetLive2D(bool enable)
     {
         GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
@@ -535,6 +639,10 @@ public static class ConfigBinding
         App.MainWindow?.ChangeModel();
     }
 
+    /// <summary>
+    /// 设置Live2D模型
+    /// </summary>
+    /// <param name="live2DModel"></param>
     public static void SetLive2D(string? live2DModel)
     {
         GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
@@ -544,6 +652,12 @@ public static class ConfigBinding
         App.MainWindow?.ChangeModel();
     }
 
+    /// <summary>
+    /// 设置Live2D界面大小
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="pos"></param>
     public static void SetLive2DSize(int width, int height, int pos)
     {
         GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
@@ -555,6 +669,23 @@ public static class ConfigBinding
         App.MainWindow?.ChangeLive2DSize();
     }
 
+    /// <summary>
+    /// 设置启用Live2D低帧率
+    /// </summary>
+    /// <param name="value"></param>
+    public static void SetLive2DMode(bool value)
+    {
+        GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
+        GuiConfigUtils.Config.Live2D.LowFps = value;
+        GuiConfigUtils.Save();
+
+        App.MainWindow?.ChangeLive2DMode();
+    }
+
+    /// <summary>
+    /// 设置圆角样式
+    /// </summary>
+    /// <param name="value"></param>
     public static void SetStyle(int value)
     {
         GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
@@ -564,28 +695,45 @@ public static class ConfigBinding
         StyleSel.Load();
     }
 
-    public static void SetStyle1(int value, bool value1)
+    /// <summary>
+    /// 设置动画样式
+    /// </summary>
+    /// <param name="value"></param>
+    public static void SetStyle(int value, bool value1)
     {
         GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
         GuiConfigUtils.Config.Style.AmTime = value;
         GuiConfigUtils.Config.Style.AmFade = value1;
         GuiConfigUtils.Save();
 
-        BaseBinding.LoadStyle();
+        App.LoadPageSlide();
     }
 
+    /// <summary>
+    /// 设置服务器密钥
+    /// </summary>
+    /// <param name="value"></param>
     public static void SetServerKey(string value)
     {
         GuiConfigUtils.Config.ServerKey = value;
         GuiConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 启用安全log4j
+    /// </summary>
+    /// <param name="value"></param>
     public static void SetSafeLog4j(bool value)
     {
         ConfigUtils.Config.SafeLog4j = value;
         ConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置圆角样式
+    /// </summary>
+    /// <param name="enablePicRadius"></param>
+    /// <param name="enableBorderRadius"></param>
     public static void SetRadiusEnable(bool enablePicRadius, bool enableBorderRadius)
     {
         GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
@@ -596,6 +744,10 @@ public static class ConfigBinding
         StyleSel.Load();
     }
 
+    /// <summary>
+    /// 设置Frp密钥
+    /// </summary>
+    /// <param name="key"></param>
     public static void SetFrpKeySakura(string key)
     {
         FrpConfigUtils.Config.SakuraFrp ??= new();
@@ -603,6 +755,10 @@ public static class ConfigBinding
         FrpConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置Frp密钥
+    /// </summary>
+    /// <param name="key"></param>
     public static void SetFrpKeyOpenFrp(string key)
     {
         FrpConfigUtils.Config.OpenFrp ??= new();
@@ -610,11 +766,11 @@ public static class ConfigBinding
         FrpConfigUtils.Save();
     }
 
-    public static bool LoadFrpConfig(string local)
-    {
-        return FrpConfigUtils.Load(local, true);
-    }
-
+    /// <summary>
+    /// 新建输入配置
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static InputControlObj NewInput(string name)
     {
         var obj = InputConfigUtils.MakeInputControl();
@@ -625,12 +781,21 @@ public static class ConfigBinding
         return obj;
     }
 
+    /// <summary>
+    /// 设置手柄配置
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="item"></param>
     public static void SaveInput(InputControlObj obj, bool item)
     {
         obj.ItemCycle = item;
         InputConfigUtils.Save(obj);
     }
 
+    /// <summary>
+    /// 设置启用手柄支持
+    /// </summary>
+    /// <param name="item"></param>
     public static void SaveInputInfo(bool item)
     {
         GuiConfigUtils.Config.Input ??= new();
@@ -638,6 +803,12 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 添加手柄按钮配置
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="key"></param>
+    /// <param name="obj1"></param>
     public static void AddInput(InputControlObj obj, byte key, InputKeyObj obj1)
     {
         if (!obj.Keys.TryAdd(key, obj1))
@@ -647,12 +818,23 @@ public static class ConfigBinding
         InputConfigUtils.Save(obj);
     }
 
+    /// <summary>
+    /// 删除手柄按键配置
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="key"></param>
     public static void DeleteInput(InputControlObj obj, byte key)
     {
         obj.Keys.Remove(key);
         InputConfigUtils.Save(obj);
     }
 
+    /// <summary>
+    /// 添加遥感配置
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="uuid"></param>
+    /// <param name="obj1"></param>
     public static void AddAxisInput(InputControlObj obj, string uuid, InputAxisObj obj1)
     {
         if (!obj.AxisKeys.TryAdd(uuid, obj1))
@@ -662,6 +844,11 @@ public static class ConfigBinding
         InputConfigUtils.Save(obj);
     }
 
+    /// <summary>
+    /// 删除摇杆设置
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="key"></param>
     public static void DeleteAxisInput(InputControlObj obj, string key)
     {
         if (obj.AxisKeys.Remove(key))
@@ -670,6 +857,12 @@ public static class ConfigBinding
         }
     }
 
+    /// <summary>
+    /// 设置物品栏循环按钮
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
     public static void SetItemCycle(InputControlObj obj, byte left, byte right)
     {
         obj.ItemCycleLeft = left;
@@ -677,6 +870,12 @@ public static class ConfigBinding
         InputConfigUtils.Save(obj);
     }
 
+    /// <summary>
+    /// 设置移动倍率
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    /// <param name="value1"></param>
     public static void SetInputRate(InputControlObj obj, float value, float value1)
     {
         obj.RotateRate = value;
@@ -684,6 +883,12 @@ public static class ConfigBinding
         InputConfigUtils.Save(obj);
     }
 
+    /// <summary>
+    /// 设置输入摇杆
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="inputRotateAxis"></param>
+    /// <param name="inputCursorAxis"></param>
     public static void SetInputAxis(InputControlObj obj, int inputRotateAxis, int inputCursorAxis)
     {
         obj.RotateAxis = inputRotateAxis;
@@ -691,6 +896,12 @@ public static class ConfigBinding
         InputConfigUtils.Save(obj);
     }
 
+    /// <summary>
+    /// 设置死区大小
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="inputRotate"></param>
+    /// <param name="inputCursor"></param>
     public static void SetInputDeath(InputControlObj obj, int inputRotate, int inputCursor)
     {
         obj.RotateDeath = inputRotate;
@@ -698,30 +909,33 @@ public static class ConfigBinding
         InputConfigUtils.Save(obj);
     }
 
+    /// <summary>
+    /// 设置目前手柄的配置文件
+    /// </summary>
+    /// <param name="uuid"></param>
     public static void SaveNowInputConfig(string? uuid)
     {
         GuiConfigUtils.Config.Input ??= new();
         GuiConfigUtils.Config.Input.NowConfig = uuid;
         GuiConfigUtils.Save();
     }
-
+    
+    /// <summary>
+    /// 保存手柄配置
+    /// </summary>
+    /// <param name="obj"></param>
     public static void SaveInputConfig(InputControlObj obj)
     {
         InputConfigUtils.PutConfig(obj);
         InputConfigUtils.Save(obj);
     }
 
+    /// <summary>
+    /// 删除手柄配置
+    /// </summary>
+    /// <param name="obj"></param>
     public static void RemoveInputConfig(InputControlObj obj)
     {
         InputConfigUtils.Remove(obj);
-    }
-
-    public static void SetLive2DMode(bool value)
-    {
-        GuiConfigUtils.Config.Live2D ??= GuiConfigUtils.MakeLive2DConfig();
-        GuiConfigUtils.Config.Live2D.LowFps = value;
-        GuiConfigUtils.Save();
-
-        App.MainWindow?.ChangeLive2DMode();
     }
 }
