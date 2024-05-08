@@ -39,12 +39,12 @@ namespace ColorMC.Gui.UIBinding;
 public static class GameBinding
 {
     /// <summary>
-    /// ÊÇ·ñ²»´æÔÚÓÎÏ·
+    /// æ˜¯å¦ä¸å­˜åœ¨æ¸¸æˆ
     /// </summary>
     public static bool IsNotGame => InstancesPath.IsNotGame;
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀıÁĞ±í
+    /// è·å–æ¸¸æˆå®ä¾‹åˆ—è¡¨
     /// </summary>
     /// <returns></returns>
     public static List<GameSettingObj> GetGames()
@@ -53,7 +53,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·°æ±¾ºÅ
+    /// è·å–æ¸¸æˆç‰ˆæœ¬å·
     /// </summary>
     /// <param name="type1"></param>
     /// <param name="type2"></param>
@@ -97,7 +97,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// Ìí¼ÓÓÎÏ·ÊµÀı
+    /// æ·»åŠ æ¸¸æˆå®ä¾‹
     /// </summary>
     /// <param name="game"></param>
     /// <param name="request"></param>
@@ -116,7 +116,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// Ìí¼ÓÎÄ¼ş¼Ğ
+    /// æ·»åŠ æ–‡ä»¶å¤¹
     /// </summary>
     /// <param name="path"></param>
     /// <param name="group"></param>
@@ -204,7 +204,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// µ¼ÈëÎÄ¼ş¼Ğ
+    /// å¯¼å…¥æ–‡ä»¶å¤¹
     /// </summary>
     /// <param name="name"></param>
     /// <param name="local"></param>
@@ -295,7 +295,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// µ¼ÈëÑ¹Ëõ°ü
+    /// å¯¼å…¥å‹ç¼©åŒ…
     /// </summary>
     /// <param name="dir"></param>
     /// <param name="type"></param>
@@ -316,7 +316,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ··Ö×é
+    /// è·å–æ¸¸æˆåˆ†ç»„
     /// </summary>
     /// <returns></returns>
     public static Dictionary<string, List<GameSettingObj>> GetGameGroups()
@@ -325,7 +325,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡CFÖ§³ÖµÄÓÎÏ·°æ±¾
+    /// è·å–CFæ”¯æŒçš„æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     /// <returns></returns>
     public static Task<List<string>?> GetCurseForgeGameVersions()
@@ -334,7 +334,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡MOÖ§³ÖµÄÓÎÏ·°æ±¾
+    /// è·å–MOæ”¯æŒçš„æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     /// <returns></returns>
     public static Task<List<string>?> GetModrinthGameVersions()
@@ -343,7 +343,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡CF·Ö×é
+    /// è·å–CFåˆ†ç»„
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
@@ -354,7 +354,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡MO·Ö×é
+    /// è·å–MOåˆ†ç»„
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
@@ -364,7 +364,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// °²×°CFÕûºÏ°ü
+    /// å®‰è£…CFæ•´åˆåŒ…
     /// </summary>
     /// <param name="data"></param>
     /// <param name="data1"></param>
@@ -397,7 +397,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// °²×°MOÕûºÏ°ü
+    /// å®‰è£…MOæ•´åˆåŒ…
     /// </summary>
     /// <param name="data"></param>
     /// <param name="data1"></param>
@@ -430,7 +430,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÉèÖÃÓÎÏ·ÊµÀıÍ¼±ê
+    /// è®¾ç½®æ¸¸æˆå®ä¾‹å›¾æ ‡
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="url"></param>
@@ -453,7 +453,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÉèÖÃÓÎÏ·ÊµÀıÍ¼±ê
+    /// è®¾ç½®æ¸¸æˆå®ä¾‹å›¾æ ‡
     /// </summary>
     /// <param name="model"></param>
     /// <param name="obj"></param>
@@ -494,7 +494,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡Ñ¡ÖĞµÄÕË»§
+    /// è·å–é€‰ä¸­çš„è´¦æˆ·
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -526,7 +526,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// Æô¶¯ÓÎÏ·
+    /// å¯åŠ¨æ¸¸æˆ
     /// </summary>
     /// <param name="model"></param>
     /// <param name="obj"></param>
@@ -561,7 +561,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// Ìí¼ÓÓÎÏ··Ö×é
+    /// æ·»åŠ æ¸¸æˆåˆ†ç»„
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
@@ -571,7 +571,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÒÆ¶¯ÓÎÏ·µ½·Ö×é
+    /// ç§»åŠ¨æ¸¸æˆåˆ°åˆ†ç»„
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="now"></param>
@@ -582,7 +582,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÖØĞÂ»ñÈ¡ÓÎÏ·°æ±¾
+    /// é‡æ–°è·å–æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     /// <returns></returns>
     public static async Task<bool> ReloadVersion()
@@ -624,7 +624,7 @@ public static class GameBinding
     //}
 
     /// <summary>
-    /// ÉèÖÃÓÎÏ·Jvm²ÎÊı
+    /// è®¾ç½®æ¸¸æˆJvmå‚æ•°
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="min"></param>
@@ -638,7 +638,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÉèÖÃÓÎÏ·Jvm²ÎÊı
+    /// è®¾ç½®æ¸¸æˆJvmå‚æ•°
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="obj1"></param>
@@ -649,7 +649,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÉèÖÃÓÎÏ·´°¿Ú
+    /// è®¾ç½®æ¸¸æˆçª—å£
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="obj1"></param>
@@ -660,7 +660,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÉèÖÃÓÎÏ·¼ÓÈëµÄ·şÎñÆ÷
+    /// è®¾ç½®æ¸¸æˆåŠ å…¥çš„æœåŠ¡å™¨
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="obj1"></param>
@@ -671,7 +671,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÉèÖÃÓÎÏ·¶Ë¿Ú´úÀí
+    /// è®¾ç½®æ¸¸æˆç«¯å£ä»£ç†
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="obj1"></param>
@@ -682,7 +682,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·µÄÄ£×éÁĞ±í
+    /// è·å–æ¸¸æˆçš„æ¨¡ç»„åˆ—è¡¨
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="sha256"></param>
@@ -720,7 +720,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÆôÓÃ/½ûÓÃÄ£×é
+    /// å¯ç”¨/ç¦ç”¨æ¨¡ç»„
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
@@ -748,7 +748,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// É¾³ıÄ£×é
+    /// åˆ é™¤æ¨¡ç»„
     /// </summary>
     /// <param name="mod"></param>
     public static void DeleteMod(ModObj mod)
@@ -767,7 +767,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// Ìí¼ÓÄ£×é
+    /// æ·»åŠ æ¨¡ç»„
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="file"></param>
@@ -787,7 +787,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ËùÓĞÅäÖÃÎÄ¼ş
+    /// è·å–æ‰€æœ‰é…ç½®æ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
@@ -815,7 +815,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ÊÀ½çËùÓĞÅäÖÃÎÄ¼ş
+    /// è·å–ä¸–ç•Œæ‰€æœ‰é…ç½®æ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
@@ -836,7 +836,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡¸ùÄ¿Â¼ËùÓĞÅäÖÃÎÄ¼ş
+    /// è·å–æ ¹ç›®å½•æ‰€æœ‰é…ç½®æ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
@@ -864,7 +864,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ¶ÁÈ¡Çø¿éĞÅÏ¢
+    /// è¯»å–åŒºå—ä¿¡æ¯
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="name"></param>
@@ -877,7 +877,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ¶ÁÈ¡Çø¿éĞÅÏ¢
+    /// è¯»å–åŒºå—ä¿¡æ¯
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="name"></param>
@@ -890,7 +890,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ¶ÁÈ¡NbtĞÅÏ¢
+    /// è¯»å–Nbtä¿¡æ¯
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="name"></param>
@@ -903,7 +903,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ¶ÁÈ¡NbtĞÅÏ¢
+    /// è¯»å–Nbtä¿¡æ¯
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="name"></param>
@@ -916,7 +916,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ¶ÁÈ¡ÅäÖÃÎÄ¼ş
+    /// è¯»å–é…ç½®æ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="name"></param>
@@ -929,7 +929,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ¶ÁÈ¡ÅäÖÃÎÄ¼ş
+    /// è¯»å–é…ç½®æ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="name"></param>
@@ -942,7 +942,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ±£´æÅäÖÃÎÄ¼ş
+    /// ä¿å­˜é…ç½®æ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="name"></param>
@@ -955,7 +955,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ±£´æÅäÖÃÎÄ¼ş
+    /// ä¿å­˜é…ç½®æ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="name"></param>
@@ -968,7 +968,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ±£´æNbtÎÄ¼ş
+    /// ä¿å­˜Nbtæ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="file"></param>
@@ -981,7 +981,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ±£´æNbtÎÄ¼ş
+    /// ä¿å­˜Nbtæ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="file"></param>
@@ -994,7 +994,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ±£´æÇø¿éÎÄ¼ş
+    /// ä¿å­˜åŒºå—æ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="file"></param>
@@ -1007,7 +1007,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ±£´æÇø¿éÎÄ¼ş
+    /// ä¿å­˜åŒºå—æ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="file"></param>
@@ -1020,7 +1020,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ÊÀ½çÁĞ±í
+    /// è·å–ä¸–ç•Œåˆ—è¡¨
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
@@ -1030,7 +1030,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// Ìí¼ÓÊÀ½ç
+    /// æ·»åŠ ä¸–ç•Œ
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="file"></param>
@@ -1051,7 +1051,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// É¾³ıÊÀ½ç
+    /// åˆ é™¤ä¸–ç•Œ
     /// </summary>
     /// <param name="world"></param>
     public static void DeleteWorld(WorldObj world)
@@ -1060,7 +1060,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// µ¼³öÊÀ½ç
+    /// å¯¼å‡ºä¸–ç•Œ
     /// </summary>
     /// <param name="world"></param>
     /// <param name="file"></param>
@@ -1074,7 +1074,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// »ñÈ¡×ÊÔ´°üÁĞ±í
+    /// è·å–èµ„æºåŒ…åˆ—è¡¨
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="sha256"></param>
@@ -1086,7 +1086,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// É¾³ı×ÊÔ´°ü
+    /// åˆ é™¤èµ„æºåŒ…
     /// </summary>
     /// <param name="obj"></param>
     public static void DeleteResourcepack(ResourcepackObj obj)
@@ -1095,7 +1095,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// µ¼Èë×ÊÔ´°ü
+    /// å¯¼å…¥èµ„æºåŒ…
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="file"></param>
@@ -1114,51 +1114,81 @@ public static class GameBinding
         return obj.AddResourcepackAsync(list);
     }
 
+    /// <summary>
+    /// åˆ é™¤æˆªå›¾
+    /// </summary>
+    /// <param name="file"></param>
     public static void DeleteScreenshot(string file)
     {
         Screenshots.Delete(file);
     }
 
+    /// <summary>
+    /// åˆ é™¤æ‰€æœ‰æˆªå›¾
+    /// </summary>
+    /// <param name="obj"></param>
     public static void ClearScreenshots(GameSettingObj obj)
     {
         obj.ClearScreenshots();
     }
 
+    /// <summary>
+    /// è·å–æ‰€æœ‰æˆªå›¾
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static List<string> GetScreenshots(GameSettingObj obj)
     {
         return obj.GetScreenshots();
     }
 
+    /// <summary>
+    /// è·å–æ¸¸æˆå®ä¾‹
+    /// </summary>
+    /// <param name="uuid"></param>
+    /// <returns></returns>
     public static GameSettingObj? GetGame(string? uuid)
     {
         return InstancesPath.GetGame(uuid);
     }
-
-    public static void OpPath(GameSettingObj obj)
-    {
-        PathBinding.OpPath(obj, PathType.GamePath);
-    }
-
+        
+    /// <summary>
+    /// è·å–æœåŠ¡å™¨åˆ—è¡¨
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static async Task<IEnumerable<ServerInfoObj>> GetServers(GameSettingObj obj)
     {
         return await obj.GetServerInfosAsync();
     }
 
-    public static Task<List<ShaderpackObj>> GetShaderpacks(GameSettingObj obj)
-    {
-        return obj.GetShaderpacksAsync();
-    }
-
+    /// <summary>
+    /// æ·»åŠ æœåŠ¡å™¨
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <param name="ip"></param>
+    /// <returns></returns>
     public static Task AddServer(GameSettingObj obj, string name, string ip)
     {
         return obj.AddServerAsync(name, ip);
     }
 
+    /// <summary>
+    /// åˆ é™¤æœåŠ¡å™¨
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="server"></param>
+    /// <returns></returns>
     public static Task DeleteServer(GameSettingObj obj, ServerInfoObj server)
     {
         return obj.RemoveServerAsync(server.Name, server.IP);
     }
 
+    /// <summary>
+    /// åˆ é™¤é…ç½®æ–‡ä»¶
+    /// </summary>
+    /// <param name="obj"></param>
     public static void DeleteConfig(GameSettingObj obj)
     {
         obj.JvmArg = null;
@@ -1171,13 +1201,29 @@ public static class GameBinding
         obj.Save();
     }
 
-    public static void SetAdvanceJvmArg(GameSettingObj obj, AdvanceJvmObj obj1)
-    {
-        obj.AdvanceJvm = obj1;
+    //public static void SetAdvanceJvmArg(GameSettingObj obj, AdvanceJvmObj obj1)
+    //{
+    //    obj.AdvanceJvm = obj1;
 
-        obj.Save();
+    //    obj.Save();
+    //}
+
+    /// <summary>
+    /// è·å–å…‰å½±åŒ…åˆ—è¡¨
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static Task<List<ShaderpackObj>> GetShaderpacks(GameSettingObj obj)
+    {
+        return obj.GetShaderpacksAsync();
     }
 
+    /// <summary>
+    /// æ·»åŠ å…‰å½±åŒ…
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public static Task<bool> AddShaderpack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
@@ -1193,11 +1239,20 @@ public static class GameBinding
         return obj.AddShaderpackAsync(list);
     }
 
+    /// <summary>
+    /// åˆ é™¤å…‰å½±åŒ…
+    /// </summary>
+    /// <param name="obj"></param>
     public static void DeleteShaderpack(ShaderpackObj obj)
     {
         obj.Delete();
     }
 
+    /// <summary>
+    /// è·å–ç»“æ„æ–‡ä»¶åˆ—è¡¨
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static async Task<List<SchematicObj>> GetSchematics(GameSettingObj obj)
     {
         var list = await obj.GetSchematicsAsync();
@@ -1221,6 +1276,12 @@ public static class GameBinding
         return list1;
     }
 
+    /// <summary>
+    /// æ·»åŠ ç»“æ„æ–‡ä»¶
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public static bool AddSchematic(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
@@ -1236,11 +1297,20 @@ public static class GameBinding
         return obj.AddSchematic(list);
     }
 
+    /// <summary>
+    /// åˆ é™¤ç»“æ„æ–‡ä»¶
+    /// </summary>
+    /// <param name="obj"></param>
     public static void DeleteSchematic(SchematicObj obj)
     {
         obj.Delete();
     }
 
+    /// <summary>
+    /// è®¾ç½®æ¨¡ç»„ä¿¡æ¯
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="data"></param>
     public static void SetModInfo(GameSettingObj obj, CurseForgeModObj.Data? data)
     {
         if (data == null)
@@ -1266,6 +1336,11 @@ public static class GameBinding
         obj.SaveModInfo();
     }
 
+    /// <summary>
+    /// è®¾ç½®æ¨¡ç»„ä¿¡æ¯
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="data"></param>
     public static void SetModInfo(GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
@@ -1291,6 +1366,11 @@ public static class GameBinding
         obj.SaveModInfo();
     }
 
+    /// <summary>
+    /// å¤‡ä»½ä¸–ç•Œ
+    /// </summary>
+    /// <param name="world"></param>
+    /// <returns></returns>
     public static async Task<bool> BackupWorld(WorldObj world)
     {
         try
@@ -1307,12 +1387,23 @@ public static class GameBinding
         }
     }
 
+    /// <summary>
+    /// è¿˜åŸä¸–ç•Œ
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="item1"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
     public static Task<bool> BackupWorld(GameSettingObj obj, FileInfo item1, ColorMCCore.Request request)
     {
         return obj.UnzipBackupWorldAsync(item1, request);
     }
 
-
+    /// <summary>
+    /// è®¾ç½®æ¸¸æˆåå­—
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="data"></param>
     public static void SetGameName(GameSettingObj obj, string data)
     {
         obj.Name = data;
@@ -1321,6 +1412,14 @@ public static class GameBinding
         App.MainWindow?.LoadMain();
     }
 
+    /// <summary>
+    /// å¤åˆ¶æ¸¸æˆå®ä¾‹
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="data"></param>
+    /// <param name="request"></param>
+    /// <param name="overwirte"></param>
+    /// <returns></returns>
     public static async Task<bool> CopyGame(GameSettingObj obj, string data,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
@@ -1339,27 +1438,52 @@ public static class GameBinding
         return true;
     }
 
+    /// <summary>
+    /// ä¿å­˜æœåŠ¡å™¨åŒ…
+    /// </summary>
+    /// <param name="obj1"></param>
     public static void SaveServerPack(ServerPackObj obj1)
     {
         obj1.Save();
     }
 
+    /// <summary>
+    /// è·å–æœåŠ¡å™¨åŒ…
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static ServerPackObj? GetServerPack(GameSettingObj obj)
     {
         return obj.GetServerPack().Item2;
     }
 
+    /// <summary>
+    /// ç”ŸæˆæœåŠ¡å™¨åŒ…
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="local"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
     public static Task<bool> GenServerPack(ServerPackObj obj, string local,
         ColorMCCore.Request request)
     {
         return obj.GenServerPackAsync(local, request);
     }
 
+    /// <summary>
+    /// å¤åˆ¶æœåŠ¡å™¨åœ°å€åˆ°å‰ªè´´æ¿
+    /// </summary>
+    /// <param name="obj"></param>
     public static async void CopyServer(ServerInfoObj obj)
     {
         await BaseBinding.CopyTextClipboard($"{obj.Name}\n{obj.IP}");
     }
 
+    /// <summary>
+    /// æ¨¡ç»„æ£€æµ‹
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
     public static Task<bool> ModCheck(List<ModDisplayModel> list)
     {
         return Task.Run(() =>
@@ -1461,11 +1585,22 @@ public static class GameBinding
         });
     }
 
+    /// <summary>
+    /// è·å–æ—¥å¿—æ–‡ä»¶åˆ—è¡¨
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static List<string> GetLogList(GameSettingObj obj)
     {
         return obj.GetLogFiles();
     }
 
+    /// <summary>
+    /// è¯»å–æ—¥å¿—æ–‡ä»¶
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static async Task<string?> ReadLog(GameSettingObj obj, string name)
     {
         if (BaseBinding.IsGameRun(obj))
@@ -1543,7 +1678,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÓÎÏ·ÊµÀı×´Ì¬·¢Éú¸Ä±ä
+    /// æ¸¸æˆå®ä¾‹çŠ¶æ€å‘ç”Ÿæ”¹å˜
     /// </summary>
     /// <param name="obj"></param>
     public static void GameStateUpdate(GameSettingObj obj)
@@ -1555,7 +1690,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// ÍÏ×§Ìí¼ÓÎÄ¼ş
+    /// æ‹–æ‹½æ·»åŠ æ–‡ä»¶
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="data"></param>
@@ -1923,7 +2058,7 @@ public static class GameBinding
         {
             return false;
         }
-        return DataPack.DisEna(new List<DataPackObj>() { obj }, obj.World);
+        return DataPack.DisEna([obj], obj.World);
     }
 
     public static bool DataPackDisE(IEnumerable<DataPackModel> pack)

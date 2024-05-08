@@ -38,7 +38,7 @@ public class MainFlyout
             }),
             (App.Lang("Button.OpFile"), true, ()=>
             {
-                GameBinding.OpPath(obj.Obj);
+                PathBinding.OpPath(obj.Obj, PathType.GamePath);
             }),
             (App.Lang("MainWindow.Flyouts.Text7"), true, obj.EditGroup),
             (App.Lang("MainWindow.Flyouts.Text8"), true, async ()=>
