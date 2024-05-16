@@ -1,6 +1,7 @@
-# ColorMC2 一个全平台Minecraft PC启动器
+# ColorMC 一个全平台Minecraft PC启动器
 
-**该仓库为ColorMC的新UI及下一代产品**
+**ColorMC2 正在制作中，尽情期待**
+
 
 交流QQ群：571239090
 
@@ -94,6 +95,14 @@ chmod a+x ./build/build-linux.sh
 chmod a+x ./build/build-ubuntu.sh
 
 ./build/build-ubuntu.sh
+```
+
+打包rpm镜像  
+**需要在Ubunt系统中操作**
+```bash
+chmod a+x ./build/build-rpm.sh
+
+./build/build-rpm.sh
 ```
 
 打包Arch镜像  
