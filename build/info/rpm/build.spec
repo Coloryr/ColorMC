@@ -22,6 +22,3 @@ sudo update-desktop-database /usr/share/applications
 /usr/share/applications/ColorMC.desktop
 /usr/share/colormc/
 /usr/share/icons/colormc.png
-
-%changelog
-- A25 update
