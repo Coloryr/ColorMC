@@ -88,7 +88,7 @@ build_rpm_aot()
             $bindir/colormc/$line
     done
 
-    rpmbuild -bb --target=$2 $base_dir/SPECS/build.spec --define "_topdir %{getenv:PWD}/src/build_out/$1-dotnet/colormc_rpm"
+    rpmbuild -bb --target=$2 $base_dir/SPECS/build.spec --define "_topdir %{getenv:PWD}/src/build_out/$1-aot/colormc_rpm"
 
     cp $base_dir/RPMS/$2/colormc-$version-1.$2.rpm ./build_out/colormc-$main_version$version-$2-aot.rpm
 
