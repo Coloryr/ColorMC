@@ -284,7 +284,7 @@ public static class JavaHelper
                     var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
                     if (info != null)
                     {
-                        list.Add(info );
+                        list.Add(info);
                     }
                 }
                 foreach (var item in GetAdoptiumJavaInstallPath(@"SOFTWARE\Eclipse Adoptium\JDK\"))
@@ -309,6 +309,34 @@ public static class JavaHelper
                     if (info != null)
                     {
                         list.Add(info);
+                    }
+                }
+            }
+            else if (SystemInfo.Os == OsType.Linux)
+            {
+                if (SystemInfo.System.Contains("Ubuntu") ||
+                    SystemInfo.System.Contains("Debian"))
+                {
+                    using var p1 = new Process();
+                    p.StartInfo.RedirectStandardInput = true;
+                    p.StartInfo.RedirectStandardOutput = true;
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.CreateNoWindow = true;
+                    p.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
+                    p.StartInfo.FileName = "update-alternatives";
+                    p.StartInfo.Arguments = "--list java";
+                    p.Start();
+
+                    result = p.StandardOutput.ReadToEnd();
+                    list1 = result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+                    foreach (var item in list1)
+                    {
+                        var info = GetJavaInfo(item);
+                        if (info != null)
+                        {
+                            list.Add(info);
+                        }
                     }
                 }
             }
