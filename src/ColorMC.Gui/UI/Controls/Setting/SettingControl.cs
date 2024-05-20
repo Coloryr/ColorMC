@@ -23,9 +23,16 @@ public partial class SettingControl : MenuControl
 
     public override string UseName { get; }
 
+    private readonly int _needJava;
+
     public SettingControl()
     {
         UseName = ToString() ?? "SettingControl";
+    }
+
+    public SettingControl(int mainversion) : base()
+    {
+        _needJava = mainversion;
     }
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
@@ -129,7 +136,7 @@ public partial class SettingControl : MenuControl
                 }
                 return _tab4;
             case 3:
-                model.LoadJava();
+                model.Load(_needJava);
                 return _tab5 ??= new();
             case 4:
                 model.LoadServer();

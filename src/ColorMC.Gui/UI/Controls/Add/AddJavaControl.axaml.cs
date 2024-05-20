@@ -15,9 +15,13 @@ public partial class AddJavaControl : UserControl, IUserControl
 
     public string UseName { get; }
 
-    public AddJavaControl()
+    private int _needJava;
+
+    public AddJavaControl(int version)
     {
         InitializeComponent();
+
+        _needJava = version;
 
         UseName = ToString() ?? "AddJavaControl";
 
@@ -54,6 +58,6 @@ public partial class AddJavaControl : UserControl, IUserControl
 
     public void SetBaseModel(BaseModel model)
     {
-        DataContext = new AddJavaControlModel(model);
+        DataContext = new AddJavaControlModel(model, _needJava);
     }
 }

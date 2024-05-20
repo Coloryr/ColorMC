@@ -1154,12 +1154,17 @@ public static class Launch
         var game = VersionPath.GetVersion(obj.Version)!;
         if (string.IsNullOrWhiteSpace(path))
         {
+            if (JvmPath.Jvms.Count == 0)
+            {
+                var list1 = JavaHelper.FindJava();
+                list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
+            }
             var jv = game.javaVersion.majorVersion;
             jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
             if (jvm == null)
             {
                 update2(obj, LaunchState.JavaError);
-                nojava();
+                nojava(jv);
                 throw new LaunchException(LaunchState.JavaError,
                         string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv));
             }

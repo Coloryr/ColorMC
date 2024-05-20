@@ -290,6 +290,7 @@
 	"SettingWindow.Tab5.Info5": "选择Java压缩包",
 	"SettingWindow.Tab5.Info6": "Java导入完成",
 	"SettingWindow.Tab5.Info7": "正在导入Java压缩包",
+	"SettingWindow.Tab5.Info8": "正在扫描Java",
 	"SettingWindow.Tab5.Error1": "无法检测Java",
 	"SettingWindow.Tab5.Error2": "请输入必要信息",
 	"SettingWindow.Tab6.Text1": "服务器信息与自动进服设置",

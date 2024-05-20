@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
@@ -45,10 +48,12 @@ public partial class AddJavaControlModel : TopModel
 
     private readonly string _useName;
 
-    public AddJavaControlModel(BaseModel model) : base(model)
+    private int _needJava;
+
+    public AddJavaControlModel(BaseModel model, int version) : base(model)
     {
         _useName = ToString() ?? "AddJavaControlModel";
-
+        _needJava = version;
         Model.SetChoiseContent(_useName, App.Lang("Button.Refash"));
         Model.SetChoiseCall(_useName, Load);
     }
@@ -114,18 +119,98 @@ public partial class AddJavaControlModel : TopModel
             if (res.Os != null && SystemList.Count == 0)
             {
                 SystemList.AddRange(res.Os);
+                if (SystemInfo.Os == OsType.Windows)
+                {
+                    var item = res.Os.FirstOrDefault(item => item.Equals("windows", StringComparison.CurrentCultureIgnoreCase));
+                    if (item != null)
+                    {
+                        System = item;
+                    }
+                }
+                else if (SystemInfo.Os == OsType.Linux)
+                {
+                    var item = res.Os.FirstOrDefault(item => item.Equals("linux", StringComparison.CurrentCultureIgnoreCase));
+                    if (item != null)
+                    {
+                        System = item;
+                    }
+                }
+                else if (SystemInfo.Os == OsType.MacOS)
+                {
+                    var item = res.Os.FirstOrDefault(item => item.Equals("macos", StringComparison.CurrentCultureIgnoreCase));
+                    if (item != null)
+                    {
+                        System = item;
+                    }
+                }
             }
             if (res.MainVersion != null && VersionList.Count == 0)
             {
                 VersionList.AddRange(res.MainVersion);
-                Version = res.MainVersion[0];
+
+                if (_needJava != 0
+                    && res.MainVersion.Contains(_needJava.ToString()))
+                {
+                    Version = _needJava.ToString();
+                }
+                else
+                {
+                    Version = res.MainVersion[0];
+                }
             }
             if (res.Arch != null && ArchList.Count == 0)
             {
                 ArchList.AddRange(res.Arch);
+                if (SystemInfo.IsArm)
+                {
+                    if (SystemInfo.Is64Bit)
+                    {
+                        var item = res.Arch.FirstOrDefault(item => item.Equals("aarch64", StringComparison.CurrentCultureIgnoreCase)
+                        || item.Equals("arm_64", StringComparison.CurrentCultureIgnoreCase));
+                        if (item != null)
+                        {
+                            Arch = item;
+                        }
+                    }
+                    else
+                    {
+                        var item = res.Arch.FirstOrDefault(item => item.Equals("arm", StringComparison.CurrentCultureIgnoreCase)
+                        || item.Equals("arm_32", StringComparison.CurrentCultureIgnoreCase));
+                        if (item != null)
+                        {
+                            Arch = item;
+                        }
+                    }
+                }
+                else
+                {
+                    if (SystemInfo.Is64Bit)
+                    {
+                        var item = res.Arch.FirstOrDefault(item => item.Equals("x64", StringComparison.CurrentCultureIgnoreCase)
+                        || item.Equals("x86_64", StringComparison.CurrentCultureIgnoreCase));
+                        if (item != null)
+                        {
+                            Arch = item;
+                        }
+                    }
+                    else
+                    {
+                        var item = res.Arch.FirstOrDefault(item => item.Equals("x32", StringComparison.CurrentCultureIgnoreCase)
+                        || item.Equals("x86_32", StringComparison.CurrentCultureIgnoreCase));
+                        if (item != null)
+                        {
+                            Arch = item;
+                        }
+                    }
+                }
             }
 
-            _list1.AddRange(res.Item5!);
+            if (Arch != null || Version != null || System != null)
+            {
+                res = await WebBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System), VersionList.IndexOf(Version));
+            }
+
+            _list1.AddRange(res.Download!);
 
             Select();
 

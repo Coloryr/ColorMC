@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using Microsoft.Win32;
 
 namespace ColorMC.Core.Helpers;
 
@@ -148,6 +149,81 @@ public static class JavaHelper
         }
     }
 
+    private static List<string> GetOracleJavaInstallPath(string javaKeyPath)
+    {
+        var path = new List<string>();
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(javaKeyPath);
+            if (key != null)
+            {
+                foreach (var item in key.GetSubKeyNames())
+                {
+                    using var key1 = key.OpenSubKey(item);
+                    if (key != null && key1.GetValue("JavaHome")?.ToString() is { } home)
+                    {
+                        path.Add(home);
+                    }
+                }
+            }
+        }
+        catch
+        {
+            
+        }
+        return path;
+    }
+
+    private static List<string> GetAdoptiumJavaInstallPath(string javaKeyPath)
+    {
+        var path = new List<string>();
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(javaKeyPath);
+            if (key != null)
+            {
+                foreach (var item in key.GetSubKeyNames())
+                {
+                    using var key1 = key.OpenSubKey(item + @"\hotspot\MSI");
+                    if (key != null && key1.GetValue("Path")?.ToString() is { } home)
+                    {
+                        path.Add(home);
+                    }
+                }
+            }
+        }
+        catch
+        {
+
+        }
+        return path;
+    }
+
+    private static List<string> GetZuluJavaInstallPath(string javaKeyPath)
+    {
+        var path = new List<string>();
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(javaKeyPath);
+            if (key != null)
+            {
+                foreach (var item in key.GetSubKeyNames())
+                {
+                    using var key1 = key.OpenSubKey(item);
+                    if (key != null && key1.GetValue("InstallationPath")?.ToString() is { } home)
+                    {
+                        path.Add(home);
+                    }
+                }
+            }
+        }
+        catch
+        {
+
+        }
+        return path;
+    }
+
     /// <summary>
     /// 查找本机所有Java
     /// </summary>
@@ -189,6 +265,51 @@ public static class JavaHelper
                 if (info != null)
                 {
                     list.Add(info);
+                }
+            }
+
+            //扫描注册表
+            if (SystemInfo.Os == OsType.Windows)
+            {
+                foreach (var item in GetOracleJavaInstallPath(@"SOFTWARE\JavaSoft\Java Runtime Environment\"))
+                {
+                    var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                    if (info != null)
+                    {
+                        list.Add(info);
+                    }
+                }
+                foreach (var item in GetOracleJavaInstallPath(@"SOFTWARE\JavaSoft\JDK\"))
+                {
+                    var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                    if (info != null)
+                    {
+                        list.Add(info );
+                    }
+                }
+                foreach (var item in GetAdoptiumJavaInstallPath(@"SOFTWARE\Eclipse Adoptium\JDK\"))
+                {
+                    var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                    if (info != null)
+                    {
+                        list.Add(info);
+                    }
+                }
+                foreach (var item in GetAdoptiumJavaInstallPath(@"SOFTWARE\Eclipse Adoptium\JDK\"))
+                {
+                    var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                    if (info != null)
+                    {
+                        list.Add(info);
+                    }
+                }
+                foreach (var item in GetZuluJavaInstallPath(@"SOFTWARE\Azul Systems\Zulu\"))
+                {
+                    var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                    if (info != null)
+                    {
+                        list.Add(info);
+                    }
                 }
             }
 

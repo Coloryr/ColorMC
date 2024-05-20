@@ -350,11 +350,11 @@ public static class BaseBinding
                 {
                     return model.ShowTextWait(App.Lang("Text.Update"), text ?? "");
                 });
-            }, () =>
+            }, (version) =>
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    App.ShowSetting(SettingType.SetJava);
+                    App.ShowSetting(SettingType.SetJava, version);
                 });
             }, (login) =>
             {
