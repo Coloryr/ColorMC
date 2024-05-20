@@ -40,6 +40,7 @@ public record InputControlObj
     public int CursorAxis { get; set; }
     public int CursorDeath { get; set; }
     public float CursorRate { get; set; }
+    public float DownRate { get; set; }
     public int ToBackValue { get; set; }
     public Dictionary<byte, InputKeyObj> Keys { get; set; }
     public Dictionary<string, InputAxisObj> AxisKeys { get; set; }

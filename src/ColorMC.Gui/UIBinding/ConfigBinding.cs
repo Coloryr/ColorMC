@@ -876,10 +876,11 @@ public static class ConfigBinding
     /// <param name="obj"></param>
     /// <param name="value"></param>
     /// <param name="value1"></param>
-    public static void SetInputRate(InputControlObj obj, float value, float value1)
+    public static void SetInputRate(InputControlObj obj, float value, float value1, float value2)
     {
         obj.RotateRate = value;
         obj.CursorRate = value1;
+        obj.DownRate = value2;
         InputConfigUtils.Save(obj);
     }
 
