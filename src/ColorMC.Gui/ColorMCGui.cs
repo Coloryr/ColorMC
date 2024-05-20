@@ -182,24 +182,36 @@ public static class ColorMCGui
         {
             opt.RenderingMode = [Win32RenderingMode.Wgl];
         }
-        if (config.ShouldRenderOnUIThread != null)
+        if (config.ShouldRenderOnUIThread is { } value)
         {
-            opt.ShouldRenderOnUIThread = config.ShouldRenderOnUIThread == true;
+            opt.ShouldRenderOnUIThread = value;
+        }
+        if (config.OverlayPopups is { } value1)
+        {
+            opt.OverlayPopups = value1;
         }
 
         var config1 = GuiConfigUtils.Config.Render.X11;
         var opt1 = new X11PlatformOptions();
-        if (config1.UseDBusMenu != null)
+        if (config1.UseDBusMenu is { } value2)
         {
-            opt1.UseDBusMenu = config1.UseDBusMenu == true;
+            opt1.UseDBusMenu = value2;
         }
-        if (config1.UseDBusFilePicker != null)
+        if (config1.UseDBusFilePicker is { } value3)
         {
-            opt1.UseDBusFilePicker = config1.UseDBusFilePicker == true;
+            opt1.UseDBusFilePicker = value3;
         }
-        if (config1.OverlayPopups != null)
+        if (config1.OverlayPopups is { } value4)
         {
-            opt1.OverlayPopups = config1.OverlayPopups == true;
+            opt1.OverlayPopups = value4;
+        }
+        if (SystemInfo.IsArm)
+        {
+            opt1.RenderingMode = [X11RenderingMode.Egl];
+        }
+        else if (config1.SoftwareRender == true)
+        {
+            opt1.RenderingMode = [X11RenderingMode.Software];   
         }
 
         var opt2 = new MacOSPlatformOptions()
