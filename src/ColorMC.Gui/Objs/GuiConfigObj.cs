@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
@@ -141,6 +142,7 @@ public record ServerCustom
 public record WindowsRender
 {
     public bool? ShouldRenderOnUIThread { get; set; }
+    public bool? OverlayPopups { get; set; }
 }
 
 /// <summary>
@@ -151,6 +153,7 @@ public record X11Render
     public bool? UseDBusMenu { get; set; }
     public bool? UseDBusFilePicker { get; set; }
     public bool? OverlayPopups { get; set; }
+    public bool? SoftwareRender { get; set; }
 }
 
 /// <summary>
