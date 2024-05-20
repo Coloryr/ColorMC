@@ -83,6 +83,8 @@ public partial class SettingModel
     private float _rotateRate;
     [ObservableProperty]
     private float _cursorRate;
+    [ObservableProperty]
+    private float _downRate;
 
     private readonly List<string> UUIDs = [];
     private short leftX, leftY, rightX, rightY;
@@ -163,6 +165,16 @@ public partial class SettingModel
         ConfigBinding.SetInputDeath(Obj, RotateDeath, CursorDeath);
     }
 
+    partial void OnDownRateChanged(float value)
+    {
+        if (isInputConfigLoad || Obj == null)
+        {
+            return;
+        }
+
+        ConfigBinding.SetInputRate(Obj, RotateRate, CursorRate, DownRate);
+    }
+
     partial void OnCursorRateChanged(float value)
     {
         if (isInputConfigLoad || Obj == null)
@@ -170,7 +182,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SetInputRate(Obj, RotateRate, CursorRate);
+        ConfigBinding.SetInputRate(Obj, RotateRate, CursorRate, DownRate);
     }
 
     partial void OnRotateRateChanged(float value)
@@ -180,7 +192,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SetInputRate(Obj, RotateRate, CursorRate);
+        ConfigBinding.SetInputRate(Obj, RotateRate, CursorRate, DownRate);
     }
 
     partial void OnItemCycleChanged(bool value)
@@ -606,6 +618,7 @@ public partial class SettingModel
 
         CursorRate = config.CursorRate;
         RotateRate = config.RotateRate;
+        DownRate = config.DownRate;
         ToBackValue = config.ToBackValue;
 
         ItemCycle = config.ItemCycle;

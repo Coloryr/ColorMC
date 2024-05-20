@@ -125,6 +125,7 @@ public static class InputConfigUtils
             RotateDeath = 3000,
             CursorRate = 0.5f,
             RotateRate = 0.5f,
+            DownRate = 800f,
             ItemCycle = true,
             ItemCycleLeft = 13,
             ItemCycleRight = 14

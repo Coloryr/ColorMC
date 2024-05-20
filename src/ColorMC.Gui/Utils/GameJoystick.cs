@@ -17,8 +17,6 @@ namespace ColorMC.Gui.Utils;
 
 public class GameJoystick
 {
-    private const int DownRate = 800;
-
     public static readonly Dictionary<string, GameJoystick> NowGameJoystick = [];
 
     private readonly INative _implementation;
@@ -141,7 +139,7 @@ public class GameJoystick
 
             var axis = (GameControllerAxis)axisEvent.Axis;
 
-            var axisFixValue = (float)axisValue / DownRate * (MouseMode ? config.CursorRate : config.RotateRate);
+            var axisFixValue = (float)axisValue / config.DownRate * (MouseMode ? config.CursorRate : config.RotateRate);
             var deathSize = MouseMode ? config.CursorDeath : config.RotateDeath;
             var choiseAxis = MouseMode ? config.CursorAxis : config.RotateAxis;
             //左摇杆
