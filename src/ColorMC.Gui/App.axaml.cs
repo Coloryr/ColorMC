@@ -525,7 +525,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowSetting(SettingType type)
+    public static void ShowSetting(SettingType type, int value = 0)
     {
         if (SettingWindow != null)
         {
@@ -533,7 +533,7 @@ public partial class App : Application
         }
         else
         {
-            SettingWindow = new();
+            SettingWindow = new(value);
             AWindow(SettingWindow);
         }
 
@@ -570,7 +570,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowAddJava()
+    public static void ShowAddJava(int version)
     {
         if (AddJavaWindow != null)
         {
@@ -578,7 +578,7 @@ public partial class App : Application
         }
         else
         {
-            AddJavaWindow = new();
+            AddJavaWindow = new(version);
             AWindow(AddJavaWindow);
         }
     }

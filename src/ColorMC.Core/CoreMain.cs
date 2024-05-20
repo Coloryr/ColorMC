@@ -62,7 +62,7 @@ public static class ColorMCCore
     /// <summary>
     /// 没有Java
     /// </summary>
-    public delegate void NoJava();
+    public delegate void NoJava(int version);
     /// <summary>
     /// Java解压
     /// </summary>

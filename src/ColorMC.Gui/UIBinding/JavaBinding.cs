@@ -141,8 +141,8 @@ public static class JavaBinding
         JvmPath.RemoveAll();
     }
 
-    public static List<JavaInfo>? FindJava()
+    public static Task<List<JavaInfo>?> FindJava()
     {
-        return JavaHelper.FindJava();
+        return Task.Run(JavaHelper.FindJava);
     }
 }

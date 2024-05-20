@@ -21,7 +21,13 @@ public partial class SettingModel
     [ObservableProperty]
     private JavaDisplayObj _javaItem;
 
+    [ObservableProperty]
+    private bool _javaFinding;
+
     public ObservableCollection<JavaDisplayObj> JavaList { get; init; } = [];
+
+    private bool _javaLoaded;
+    private int _needJava;
 
     [RelayCommand]
     public async Task AddJavaZip()
@@ -53,7 +59,7 @@ public partial class SettingModel
     [RelayCommand]
     public void ShowAddJava()
     {
-        App.ShowAddJava();
+        App.ShowAddJava(_needJava);
     }
 
     [RelayCommand]
@@ -103,9 +109,13 @@ public partial class SettingModel
     }
 
     [RelayCommand]
-    public void OpenJavaFile()
+    public async Task OpenJavaFile()
     {
-        var list = JavaBinding.FindJava();
+        JavaFinding = true;
+        Model.Title1 = App.Lang("SettingWindow.Tab5.Info8");
+        var list = await JavaBinding.FindJava();
+        Model.Title1 = null;
+        JavaFinding = false;
         if (list == null)
         {
             Model.Show(App.Lang("SettingWindow.Tab5.Error1"));
@@ -133,5 +143,16 @@ public partial class SettingModel
 
         JavaBinding.RemoveAllJava();
         LoadJava();
+    }
+
+    public async void Load(int mainversion)
+    {
+        _needJava = mainversion;
+        LoadJava();
+        if (!_javaLoaded && JavaList.Count == 0)
+        {
+            _javaLoaded = true;
+            await OpenJavaFile();
+        }
     }
 }

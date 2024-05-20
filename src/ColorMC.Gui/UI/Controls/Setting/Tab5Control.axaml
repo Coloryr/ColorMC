@@ -17,6 +17,7 @@
             Margin="0,0,0,5"
             Classes="t2"
             DockPanel.Dock="Top"
+            IsEnabled="{Binding !JavaFinding}"
             IsVisible="{Binding !Phone}">
             <StackPanel>
                 <StackPanel Margin="0,0,0,5" Orientation="Horizontal">

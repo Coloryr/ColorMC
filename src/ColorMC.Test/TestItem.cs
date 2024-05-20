@@ -18,7 +18,7 @@ public static class TestItem
     private static DesktopGameHandel? Start(GameSettingObj obj, LoginObj obj1)
     {
         return obj.StartGameAsync(obj1, null, Program.Download,
-                (_) => Task.FromResult(true), (_) => { }, (_) => Task.FromResult(true), () => { },
+                (_) => Task.FromResult(true), (_) => { }, (_) => Task.FromResult(true), (_) => { },
                 (_) => Task.FromResult(true), (_, _) => { }, 0, CancellationToken.None).Result as DesktopGameHandel;
     }
 
