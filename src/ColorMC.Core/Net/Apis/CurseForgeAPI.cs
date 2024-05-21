@@ -388,7 +388,7 @@ public static class CurseForgeAPI
         List<CurseForgeModObj.Data> List)>>
        GetModDependencies(CurseForgeModObj.Data data, string mc, Loaders loader, bool dep, ConcurrentBag<long>? ids = null)
     {
-        ids ??= new();
+        ids ??= [];
         var list = new ConcurrentBag<((string Name, string ModId, bool Opt) Info,
         List<CurseForgeModObj.Data> List)>();
         if (data.dependencies == null || data.dependencies.Count == 0)

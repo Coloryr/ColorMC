@@ -153,7 +153,7 @@ public partial class AddJavaControlModel : TopModel
                 {
                     Version = _needJava.ToString();
                 }
-                else
+                else if (res.MainVersion.Count > 0)
                 {
                     Version = res.MainVersion[0];
                 }
@@ -207,7 +207,8 @@ public partial class AddJavaControlModel : TopModel
 
             if (Arch != null || Version != null || System != null)
             {
-                res = await WebBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System), VersionList.IndexOf(Version));
+                res = await WebBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System), 
+                    VersionList.IndexOf(Version!));
             }
 
             _list1.AddRange(res.Download!);
