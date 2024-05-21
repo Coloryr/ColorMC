@@ -149,21 +149,24 @@ public static class JavaHelper
         }
     }
 
+#pragma warning disable CA1416 // 验证平台兼容性
     private static List<string> GetOracleJavaInstallPath(string javaKeyPath)
     {
-        var path = new List<string>();
         try
         {
             using var key = Registry.LocalMachine.OpenSubKey(javaKeyPath);
-            if (key != null)
+            if (key == null)
             {
-                foreach (var item in key.GetSubKeyNames())
+                return [];
+            }
+
+            var path = new List<string>();
+            foreach (var item in key.GetSubKeyNames())
+            {
+                using var key1 = key!.OpenSubKey(item);
+                if (key != null && key1?.GetValue("JavaHome")?.ToString() is { } home)
                 {
-                    using var key1 = key.OpenSubKey(item);
-                    if (key != null && key1.GetValue("JavaHome")?.ToString() is { } home)
-                    {
-                        path.Add(home);
-                    }
+                    path.Add(home);
                 }
             }
         }
@@ -171,24 +174,26 @@ public static class JavaHelper
         {
             
         }
-        return path;
+        return [];
     }
 
     private static List<string> GetAdoptiumJavaInstallPath(string javaKeyPath)
     {
-        var path = new List<string>();
         try
         {
             using var key = Registry.LocalMachine.OpenSubKey(javaKeyPath);
-            if (key != null)
+            if (key == null)
             {
-                foreach (var item in key.GetSubKeyNames())
+                return [];
+            }
+
+            var path = new List<string>();
+            foreach (var item in key.GetSubKeyNames())
+            {
+                using var key1 = key!.OpenSubKey(item + @"\hotspot\MSI");
+                if (key != null && key1?.GetValue("Path")?.ToString() is { } home)
                 {
-                    using var key1 = key.OpenSubKey(item + @"\hotspot\MSI");
-                    if (key != null && key1.GetValue("Path")?.ToString() is { } home)
-                    {
-                        path.Add(home);
-                    }
+                    path.Add(home);
                 }
             }
         }
@@ -196,24 +201,26 @@ public static class JavaHelper
         {
 
         }
-        return path;
+        return [];
     }
 
     private static List<string> GetZuluJavaInstallPath(string javaKeyPath)
     {
-        var path = new List<string>();
         try
         {
             using var key = Registry.LocalMachine.OpenSubKey(javaKeyPath);
-            if (key != null)
+            if (key == null)
             {
-                foreach (var item in key.GetSubKeyNames())
+                return [];
+            }
+
+            var path = new List<string>();
+            foreach (var item in key.GetSubKeyNames())
+            {
+                using var key1 = key!.OpenSubKey(item);
+                if (key != null && key1?.GetValue("InstallationPath")?.ToString() is { } home)
                 {
-                    using var key1 = key.OpenSubKey(item);
-                    if (key != null && key1.GetValue("InstallationPath")?.ToString() is { } home)
-                    {
-                        path.Add(home);
-                    }
+                    path.Add(home);
                 }
             }
         }
@@ -221,8 +228,9 @@ public static class JavaHelper
         {
 
         }
-        return path;
+        return [];
     }
+#pragma warning restore CA1416
 
     /// <summary>
     /// 查找本机所有Java

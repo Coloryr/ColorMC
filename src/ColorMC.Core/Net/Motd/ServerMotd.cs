@@ -92,17 +92,22 @@ public static class ServerMotd
         var info = new ServerMotdObj(ip, port);
         try
         {
+            Stopwatch pingWatcher = new();
             TcpClient tcp;
             try
             {
+                pingWatcher.Start();
                 tcp = new TcpClient(ip, port);
+                pingWatcher.Stop();
             }
             catch (SocketException ex)
             {
                 var data = await new Resolver().Query("_minecraft._tcp." + ip, QType.SRV);
                 if (data.Answers?.FirstOrDefault()?.RECORD is RecordSRV result)
                 {
+                    pingWatcher.Restart();
                     tcp = new TcpClient(result.TARGET, result.PORT);
+                    pingWatcher.Stop();
                     ip = result.TARGET;
                     port = result.PORT;
                 }
@@ -115,7 +120,7 @@ public static class ServerMotd
             }
 
             tcp.ReceiveBufferSize = 1024 * 1024;
-
+            info.Ping = pingWatcher.ElapsedMilliseconds;
             try
             {
                 /*
@@ -182,40 +187,6 @@ public static class ServerMotd
                             }
                         }
                     }
-                }
-
-                byte[] ping_id = ProtocolHandler.GetVarInt(1);
-                byte[] ping_content = BitConverter.GetBytes((long)233);
-                byte[] ping_packet = ProtocolHandler.ConcatBytes(ping_id, ping_content);
-                byte[] ping_tosend = ProtocolHandler.ConcatBytes(ProtocolHandler.GetVarInt(ping_packet.Length), ping_packet);
-
-                try
-                {
-                    tcp.ReceiveTimeout = 1000;
-
-                    Stopwatch pingWatcher = new();
-
-                    pingWatcher.Start();
-                    tcp.Client.Send(ping_tosend, SocketFlags.None);
-
-                    int pingLenghth = handler.ReadNextVarIntRAW();
-                    pingWatcher.Stop();
-                    if (pingLenghth > 0)
-                    {
-                        List<byte> packetData = new(handler.ReadDataRAW(pingLenghth));
-                        if (ProtocolHandler.ReadNextVarInt(packetData) == 0x01) //Read Packet ID
-                        {
-                            long content = ProtocolHandler.ReadNextByte(packetData); //Get the Json data
-                            if (content == 233)
-                            {
-                                info.Ping = pingWatcher.ElapsedMilliseconds;
-                            }
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    info.Ping = 0;
                 }
             }
             catch (SocketException)
