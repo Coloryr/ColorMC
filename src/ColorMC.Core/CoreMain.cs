@@ -143,7 +143,7 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端启动
     /// </summary>
-    public static Func<GameSettingObj, JavaInfo, List<string>, Dictionary<string, string>, Process> PhoneGameLaunch { internal get; set; }
+    public static Func<LoginObj, GameSettingObj, JavaInfo, List<string>, Dictionary<string, string>, IGameHandel> PhoneGameLaunch { internal get; set; }
     /// <summary>
     /// 手机端Jvm安装
     /// </summary>
@@ -248,7 +248,7 @@ public static class ColorMCCore
     /// <param name="text"></param>
     /// <param name="e"></param>
     /// <param name="close"></param>
-    internal static void OnError(string text, Exception? e, bool close)
+    public static void OnError(string text, Exception? e, bool close)
     {
         Error?.Invoke(text, e, close);
         Logs.Error(text, e);
@@ -259,7 +259,7 @@ public static class ColorMCCore
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="text"></param>
-    internal static void OnGameLog(GameSettingObj obj, string? text)
+    public static void OnGameLog(GameSettingObj obj, string? text)
     {
         GameLog?.Invoke(obj, text);
     }
@@ -268,7 +268,7 @@ public static class ColorMCCore
     /// 语言重载
     /// </summary>
     /// <param name="type"></param>
-    internal static void OnLanguageReload(LanguageType type)
+    public static void OnLanguageReload(LanguageType type)
     {
         LanguageReload?.Invoke(type);
     }
@@ -279,7 +279,7 @@ public static class ColorMCCore
     /// <param name="obj"></param>
     /// <param name="obj1"></param>
     /// <param name="code"></param>
-    internal static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
+    public static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
     {
         Games.TryRemove(obj.UUID, out _);
         GameExit?.Invoke(obj, obj1, code);

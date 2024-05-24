@@ -1387,15 +1387,15 @@ public static class Launch
         }
 
         //启动进程
-        Process? process;
+        IGameHandel? handel;
 
         if (SystemInfo.Os == OsType.Android)
         {
-            process = ColorMCCore.PhoneGameLaunch(obj, jvm!, arg, env);
+            handel = ColorMCCore.PhoneGameLaunch(login, obj, jvm!, arg, env);
         }
         else
         {
-            process = new()
+            var process = new Process()
             {
                 EnableRaisingEvents = true
             };
@@ -1410,33 +1410,33 @@ public static class Launch
             {
                 process.StartInfo.Environment.Add(item.Key, item.Value);
             }
+            if (process == null)
+            {
+                return null;
+            }
+
+            process.StartInfo.RedirectStandardInput = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+
+            process.OutputDataReceived += (a, b) =>
+            {
+                ColorMCCore.OnGameLog(obj, b.Data);
+            };
+            process.ErrorDataReceived += (a, b) =>
+            {
+                ColorMCCore.OnGameLog(obj, b.Data);
+            };
+            process.Exited += (a, b) =>
+            {
+                ColorMCCore.OnGameExit(obj, login, process.ExitCode);
+                process.Dispose();
+            };
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            handel = new DesktopGameHandel(process, obj.UUID);
         }
-
-        if (process == null)
-        {
-            return null;
-        }
-
-        process.StartInfo.RedirectStandardInput = true;
-        process.StartInfo.RedirectStandardOutput = true;
-        process.StartInfo.RedirectStandardError = true;
-
-        process.OutputDataReceived += (a, b) =>
-        {
-            ColorMCCore.OnGameLog(obj, b.Data);
-        };
-        process.ErrorDataReceived += (a, b) =>
-        {
-            ColorMCCore.OnGameLog(obj, b.Data);
-        };
-        process.Exited += (a, b) =>
-        {
-            ColorMCCore.OnGameExit(obj, login, process.ExitCode);
-            process.Dispose();
-        };
-        process.Start();
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
 
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info6"),
@@ -1444,7 +1444,6 @@ public static class Launch
         ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
 
-        var handel = new DesktopGameHandel(process, obj.UUID);
         ColorMCCore.AddGameHandel(obj.UUID, handel);
 
         //启动后执行
