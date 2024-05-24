@@ -17,8 +17,7 @@
             Margin="0,0,0,5"
             Classes="t2"
             DockPanel.Dock="Top"
-            IsEnabled="{Binding !JavaFinding}"
-            IsVisible="{Binding !Phone}">
+            IsEnabled="{Binding !JavaFinding}">
             <StackPanel>
                 <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                     <svg:SvgControl
@@ -31,7 +30,7 @@
                     <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab5.Text1}" />
                 </StackPanel>
 
-                <DockPanel Margin="0,5,0,5">
+                <DockPanel Margin="0,5,0,5" IsVisible="{Binding !Phone}">
                     <TextBox
                         Width="130"
                         Margin="0,0,10,0"
@@ -64,8 +63,6 @@
                         Command="{Binding SelectJava}"
                         Content="{setting:Localize Button.Select}"
                         DockPanel.Dock="Right" />
-
-
                 </StackPanel>
                 <WrapPanel Margin="0,0,0,-5">
                     <Button
@@ -80,7 +77,7 @@
                         Height="30"
                         Margin="-3,-3,3,2"
                         Classes="top"
-                        Command="{Binding OpenJavaFile}"
+                        Command="{Binding FindJava}"
                         Content="{setting:Localize SettingWindow.Tab5.Text7}"
                         IsEnabled="{Binding !Phone}" />
                     <Button
