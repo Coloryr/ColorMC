@@ -4,6 +4,7 @@ using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -109,8 +110,12 @@ public partial class SettingModel
     }
 
     [RelayCommand]
-    public async Task OpenJavaFile()
+    public async Task FindJava()
     {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            return;
+        }
         JavaFinding = true;
         Model.Title1 = App.Lang("SettingWindow.Tab5.Info8");
         var list = await JavaBinding.FindJava();
