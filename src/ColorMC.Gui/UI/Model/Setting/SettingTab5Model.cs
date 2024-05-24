@@ -157,7 +157,7 @@ public partial class SettingModel
         if (!_javaLoaded && JavaList.Count == 0)
         {
             _javaLoaded = true;
-            await OpenJavaFile();
+            await FindJava();
         }
     }
 }
