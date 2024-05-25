@@ -1,9 +1,12 @@
 using System.ComponentModel;
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
@@ -18,6 +21,9 @@ public partial class AddControl : UserControl, IUserControl
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public string Title => string.Format(App.Lang("AddWindow.Title"), _obj.Name);
+
+    private Bitmap _icon;
+    public Bitmap GetIcon() => _icon;
 
     public string UseName { get; }
 
@@ -170,6 +176,8 @@ public partial class AddControl : UserControl, IUserControl
 
     public void Closed()
     {
+        _icon?.Dispose();
+
         App.AddWindows.Remove(_obj.UUID);
     }
 
@@ -181,6 +189,13 @@ public partial class AddControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+
+        var icon = _obj.GetIconFile();
+        if (File.Exists(icon))
+        {
+            _icon = new(icon);
+            Window.SetIcon(_icon);
+        }
 
         (DataContext as AddControlModel)!.Display = true;
     }
