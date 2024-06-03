@@ -30,8 +30,14 @@
                     ShowProgressText="{Binding !IsNotSize}"
                     SmallChange="0.01"
                     Value="{Binding NowProgress}" />
-                <TextBlock Margin="0,0,20,0" Text="{Binding NowTemp}" />
-                <TextBlock Margin="0,0,20,0" Text="{Binding State}" />
+                <TextBlock
+                    Width="100"
+                    Margin="0,0,20,0"
+                    Text="{Binding NowTemp}" />
+                <TextBlock
+                    Width="100"
+                    Margin="0,0,20,0"
+                    Text="{Binding State}" />
                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize DownloadWindow.DataGrid.Text5}" />
                 <TextBlock Text="{Binding ErrorTime}" />
             </WrapPanel>
