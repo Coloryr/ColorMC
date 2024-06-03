@@ -35,12 +35,16 @@ public partial class AddModPackControl : UserControl, IUserControl
 
     private void ScrollViewer1_ScrollChanged(object? sender, ScrollChangedEventArgs e)
     {
-        if (e.ExtentDelta == e.OffsetDelta)
+        if (e.ExtentDelta == e.OffsetDelta || e.ExtentDelta.Y < 0)
         {
             return;
         }
         if (DataContext is AddModPackControlModel model)
         {
+            if (model.EmptyDisplay)
+            {
+                return;
+            }
             model.DisplayFilter = false;
         }
     }

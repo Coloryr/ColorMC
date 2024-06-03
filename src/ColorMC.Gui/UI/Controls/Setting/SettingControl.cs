@@ -30,7 +30,7 @@ public partial class SettingControl : MenuControl
         UseName = ToString() ?? "SettingControl";
     }
 
-    public SettingControl(int mainversion) : base()
+    public SettingControl(int mainversion) : this()
     {
         _needJava = mainversion;
     }

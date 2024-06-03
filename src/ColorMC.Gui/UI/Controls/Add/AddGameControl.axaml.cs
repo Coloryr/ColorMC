@@ -169,7 +169,7 @@ public partial class AddGameControl : UserControl, IUserControl
     {
         if (DataContext is AddGameModel model)
         {
-            model.Group = group;
+            model.Group ??= group;
         }
     }
 }

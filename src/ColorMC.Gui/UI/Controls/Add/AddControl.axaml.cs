@@ -52,12 +52,16 @@ public partial class AddControl : UserControl, IUserControl
 
     private void ScrollViewer1_ScrollChanged(object? sender, ScrollChangedEventArgs e)
     {
-        if (e.ExtentDelta == e.OffsetDelta)
+        if (e.ExtentDelta == e.OffsetDelta || e.ExtentDelta.Y < 0)
         {
             return;
         }
         if (DataContext is AddControlModel model)
         {
+            if (model.EmptyDisplay)
+            {
+                return;
+            }
             model.DisplayFilter = false;
         }
     }
