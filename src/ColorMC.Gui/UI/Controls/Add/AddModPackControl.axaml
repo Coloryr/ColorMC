@@ -100,15 +100,6 @@
             </Border>
 
             <Panel Margin="0,5,0,0">
-                <Border
-                    Margin="0,0,0,5"
-                    Classes="t1"
-                    IsVisible="{Binding EmptyDisplay}">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="30"
-                        Text="{setting:Localize AddModPackWindow.Text13}" />
-                </Border>
                 <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
                     <ItemsControl
                         HorizontalAlignment="Stretch"
@@ -121,6 +112,15 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
+                <Border
+                    Margin="0,0,0,5"
+                    Classes="t1"
+                    IsVisible="{Binding EmptyDisplay}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="30"
+                        Text="{setting:Localize AddModPackWindow.Text13}" />
+                </Border>
             </Panel>
         </DockPanel>
 

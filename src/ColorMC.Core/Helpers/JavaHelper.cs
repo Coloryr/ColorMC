@@ -169,6 +169,8 @@ public static class JavaHelper
                     path.Add(home);
                 }
             }
+
+            return path;
         }
         catch
         {
@@ -196,6 +198,8 @@ public static class JavaHelper
                     path.Add(home);
                 }
             }
+
+            return path;
         }
         catch
         {
@@ -223,6 +227,8 @@ public static class JavaHelper
                     path.Add(home);
                 }
             }
+
+            return path;
         }
         catch
         {

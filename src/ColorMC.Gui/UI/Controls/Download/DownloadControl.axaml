@@ -13,7 +13,10 @@
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
     <DockPanel Margin="5">
-        <Border Classes="t1" DockPanel.Dock="Top">
+        <Border
+            Margin="5"
+            Classes="t1"
+            DockPanel.Dock="Top">
             <WrapPanel>
                 <ProgressBar
                     Height="20"
