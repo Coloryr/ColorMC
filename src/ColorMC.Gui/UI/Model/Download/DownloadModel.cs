@@ -17,9 +17,9 @@ namespace ColorMC.Gui.UI.Model.Download;
 
 public partial class DownloadModel : TopModel
 {
-    public ObservableCollection<DownloadItemModel> ItemList { get; init; } = [];
+    public ObservableCollection<DownloadItemModel> DisplayList { get; init; } = [];
 
-    private readonly Dictionary<string, DownloadItemModel> _downloadList = [];
+    private readonly Dictionary<int, DownloadItemModel> _downloadList = [];
 
     private long _count;
     private readonly Timer _timer;
@@ -93,7 +93,7 @@ public partial class DownloadModel : TopModel
         var res = await Model.ShowWait(App.Lang("DownloadWindow.Info1"));
         if (res)
         {
-            ItemList.Clear();
+            DisplayList.Clear();
             _downloadList.Clear();
             BaseBinding.DownloadStop();
 
@@ -115,51 +115,44 @@ public partial class DownloadModel : TopModel
         Speed = UIUtils.MakeSpeedSize(now);
     }
 
-    public void DownloadItemUpdate(DownloadItemObj item)
+    public void DownloadItemUpdate(int thread, DownloadItemObj item)
     {
         if (item.State == DownloadItemState.Init)
         {
-            var item11 = new DownloadItemModel()
+            if (_downloadList.Count == 0 || _downloadList.Count != thread)
             {
-                Name = item.Name,
-                State = item.State.GetName(),
-            };
-            Dispatcher.UIThread.Post(() => ItemList.Add(item11));
-            _downloadList.Add(item.Name, item11);
-            _timer.Start();
+                for (int a = 0; a < thread; a++)
+                {
+                    var item11 = new DownloadItemModel(a + 1);
+                    Dispatcher.UIThread.Post(() => DisplayList.Add(item11));
+                    _downloadList.Add(a, item11);
+                }
+            }
 
             return;
         }
 
-        if (!_downloadList.TryGetValue(item.Name, out DownloadItemModel? value))
+        if (!_downloadList.TryGetValue(thread, out DownloadItemModel? value))
         {
             return;
         }
+
         value.State = item.State.GetName();
+        value.Name = item.Name;
 
-        if (item.State == DownloadItemState.Done
-            && _downloadList.TryGetValue(item.Name, out var item1))
+        if (item.State == DownloadItemState.Done)
         {
-            var data = BaseBinding.GetDownloadSize();
-            Load();
-            Dispatcher.UIThread.Post(() => ItemList.Remove(item1));
+            Update();
+            value.Clear();
         }
         else if (item.State == DownloadItemState.GetInfo)
         {
-            value.AllSize = $"{(double)item.AllSize / 1000 / 1000:0.##}";
+            value.AllSize = item.AllSize;
         }
         else if (item.State == DownloadItemState.Download)
         {
-            long temp = value.Last;
-            if (item.AllSize != 0)
-            {
-                value.NowSize = $"{(double)item.NowSize / item.AllSize * 100:0.##} %";
-            }
-            else
-            {
-                value.NowSize = $"{item.NowSize / 1000 / 1000}:0.## MB";
-            }
-            value.Last = item.NowSize;
+            long temp = value.NowSize;
+            value.NowSize = item.NowSize;
             _count += item.NowSize - temp;
         }
         else if (item.State == DownloadItemState.Error)
@@ -168,7 +161,7 @@ public partial class DownloadModel : TopModel
         }
     }
 
-    public void Load()
+    public void Update()
     {
         var data = BaseBinding.GetDownloadSize();
         Value = (double)data.Item2 / data.Item1 * 100;
@@ -180,7 +173,7 @@ public partial class DownloadModel : TopModel
         _timer.Dispose();
         Model.HeadBackEnable = true;
         Model.RemoveChoiseData(_useName);
-        ItemList.Clear();
+        DisplayList.Clear();
         _downloadList.Clear();
     }
 
@@ -188,7 +181,8 @@ public partial class DownloadModel : TopModel
     {
         if (state == DownloadState.Start)
         {
-            Load();
+            _timer.Start();
+            Update();
         }
         else if (state == DownloadState.End)
         {

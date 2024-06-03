@@ -122,6 +122,11 @@ public partial class AddGameControl : UserControl, IUserControl
         {
             Content1.Child = null;
         }
+        else if (e.PropertyName == "GoModPack")
+        {
+            Content1.Child = _tab1 ??= new();
+            App.ShowAddModPack();
+        }
     }
 
     public void Closed()

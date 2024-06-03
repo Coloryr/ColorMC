@@ -1,0 +1,40 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.DownloadItemControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    x:DataType="model:DownloadItemModel"
+    mc:Ignorable="d">
+    <Border Classes="t1">
+        <StackPanel Margin="5">
+            <WrapPanel>
+                <TextBlock Text="{setting:Localize DownloadWindow.Text5}" />
+                <TextBlock Margin="0,0,10,0" Text="{Binding Index}" />
+                <TextBlock Text="{Binding Name}" />
+            </WrapPanel>
+
+            <WrapPanel>
+                <ProgressBar
+                    Height="20"
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    BorderBrush="White"
+                    BorderThickness="1"
+                    Foreground="#FF5EBDD3"
+                    IsIndeterminate="{Binding IsNotSize}"
+                    Maximum="1"
+                    Minimum="0"
+                    ShowProgressText="{Binding !IsNotSize}"
+                    SmallChange="0.01"
+                    Value="{Binding NowProgress}" />
+                <TextBlock Margin="0,0,20,0" Text="{Binding NowTemp}" />
+                <TextBlock Margin="0,0,20,0" Text="{Binding State}" />
+                <TextBlock Margin="0,0,5,0" Text="{setting:Localize DownloadWindow.DataGrid.Text5}" />
+                <TextBlock Text="{Binding ErrorTime}" />
+            </WrapPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

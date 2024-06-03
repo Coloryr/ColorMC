@@ -47,6 +47,22 @@
                     Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding GoTab}"
+                    CommandParameter="ModPack"
+                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                    <StackPanel>
+                        <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item4.svg" />
+                        <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tab1.Text19}" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Width="100"
+                    Height="130"
+                    Margin="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding GoTab}"
                     CommandParameter="Tab2"
                     CornerRadius="{setting:Style ButtonCornerRadius}">
                     <StackPanel>

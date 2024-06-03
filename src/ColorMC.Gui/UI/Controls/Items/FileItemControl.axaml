@@ -14,96 +14,97 @@
     ToolTip.Tip="{setting:Localize ToolTip.Text49}"
     ToolTip.VerticalOffset="-30"
     mc:Ignorable="d">
-    <Panel>
-        <Rectangle
-            Fill="{setting:Colors Back}"
-            IsVisible="{Binding Top}"
-            RadiusX="{setting:Style Radius}"
-            RadiusY="{setting:Style Radius}" />
-        <Panel Margin="5">
-            <Border
-                Width="90"
-                Height="90"
+    <Border Classes="t1">
+        <Panel>
+            <Rectangle
+                IsVisible="{Binding Top}"
+                RadiusX="{setting:Style Radius}"
+                RadiusY="{setting:Style Radius}" />
+            <Panel Margin="5">
+                <Border
+                    Width="90"
+                    Height="90"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    CornerRadius="{setting:Style PicRadius}">
+                    <Border.Background>
+                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:App.LoadIcon}}" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+                <StackPanel Margin="100,0,0,0">
+                    <WrapPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                        <TextBlock Margin="0,0,10,0" Text="{Binding Name}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text1}" />
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                Text="{Binding Author}"
+                                TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </WrapPanel>
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        MaxLines="2"
+                        Text="{Binding Summary}"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="Wrap" />
+                    <WrapPanel>
+                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                            <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text2}" />
+                            <TextBlock Text="{Binding DownloadCount}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text3}" />
+                            <TextBlock Text="{Binding ModifiedDate}" />
+                        </StackPanel>
+                    </WrapPanel>
+                </StackPanel>
+            </Panel>
+            <StackPanel
+                Margin="5"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Orientation="Horizontal">
+                <Button
+                    Width="30"
+                    Height="30"
+                    Margin="-2,-3,3,-2"
+                    Classes="top"
+                    Command="{Binding OpenWeb}"
+                    IsVisible="{Binding EnableButton}">
+                    <Svg Path="/Resource/Icon/Item/web.svg" />
+                </Button>
+                <Button
+                    Width="30"
+                    Height="30"
+                    Margin="-2,-3,-2,-2"
+                    Classes="top"
+                    Command="{Binding Install}"
+                    IsEnabled="{Binding HaveDownload}"
+                    IsVisible="{Binding EnableButton, FallbackValue=true}">
+                    <Svg Path="/Resource/Icon/Item/download.svg" />
+                </Button>
+            </StackPanel>
+
+            <TextBlock
+                Margin="3"
+                Padding="3"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                CornerRadius="{setting:Style PicRadius}">
-                <Border.Background>
-                    <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:App.LoadIcon}}" Stretch="UniformToFill" />
-                </Border.Background>
-            </Border>
-            <StackPanel Margin="100,0,0,0">
-                <WrapPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                    <TextBlock Margin="0,0,10,0" Text="{Binding Name}" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text1}" />
-                        <TextBlock
-                            Margin="0,0,5,0"
-                            Text="{Binding Author}"
-                            TextTrimming="CharacterEllipsis" />
-                    </StackPanel>
-                </WrapPanel>
-                <TextBlock
-                    Margin="0,0,5,0"
-                    MaxLines="2"
-                    Text="{Binding Summary}"
-                    TextTrimming="CharacterEllipsis"
-                    TextWrapping="Wrap" />
-                <WrapPanel>
-                    <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                        <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text2}" />
-                        <TextBlock Text="{Binding DownloadCount}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text3}" />
-                        <TextBlock Text="{Binding ModifiedDate}" />
-                    </StackPanel>
-                </WrapPanel>
-            </StackPanel>
-        </Panel>
-        <StackPanel
-            Margin="5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Orientation="Horizontal">
-            <Button
-                Width="30"
-                Height="30"
-                Margin="-2,-3,3,-2"
-                Classes="top"
-                Command="{Binding OpenWeb}"
-                IsVisible="{Binding EnableButton}">
-                <Svg Path="/Resource/Icon/Item/web.svg" />
-            </Button>
-            <Button
-                Width="30"
-                Height="30"
-                Margin="-2,-3,-2,-2"
-                Classes="top"
-                Command="{Binding Install}"
-                IsEnabled="{Binding HaveDownload}"
-                IsVisible="{Binding EnableButton, FallbackValue=true}">
-                <Svg Path="/Resource/Icon/Item/download.svg" />
-            </Button>
-        </StackPanel>
+                VerticalAlignment="Bottom"
+                Background="{setting:Colors Bottom1}"
+                Foreground="{setting:Colors Font}"
+                IsVisible="{Binding IsDownload, FallbackValue=true}"
+                Text="{setting:Localize Text.Downloaded}" />
 
-        <TextBlock
-            Margin="3"
-            Padding="3"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Background="{setting:Colors Bottom1}"
-            Foreground="{setting:Colors Font}"
-            IsVisible="{Binding IsDownload, FallbackValue=true}"
-            Text="{setting:Localize Text.Downloaded}" />
-
-        <Panel Background="{setting:Colors Bottom1}" IsVisible="{Binding NowDownload, FallbackValue=false}">
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddWindow.Control.Text1}" />
-                <ProgressBar
-                    Height="20"
-                    Margin="10"
-                    IsIndeterminate="{Binding NowDownload}" />
-            </StackPanel>
+            <Panel Background="{setting:Colors Bottom1}" IsVisible="{Binding NowDownload, FallbackValue=false}">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddWindow.Control.Text1}" />
+                    <ProgressBar
+                        Height="20"
+                        Margin="10"
+                        IsIndeterminate="{Binding NowDownload}" />
+                </StackPanel>
+            </Panel>
         </Panel>
-    </Panel>
+    </Border>
 </UserControl>

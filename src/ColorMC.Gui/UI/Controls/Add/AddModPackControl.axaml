@@ -12,8 +12,9 @@
     x:DataType="model:AddModPackControlModel"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Margin="5">
+        <DockPanel Margin="5,0,5,0">
             <Border
+                Margin="0,5,0,0"
                 Classes="t2"
                 DockPanel.Dock="Top"
                 IsVisible="{Binding DisplayFilter}">
@@ -97,28 +98,30 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border Margin="0,5,0,0" Classes="t1">
-                <Panel>
-                    <DockPanel Background="{setting:Colors TranBack}" IsVisible="{Binding EmptyDisplay}">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="30"
-                            Text="{setting:Localize AddModPackWindow.Text13}" />
-                    </DockPanel>
-                    <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
-                        <ItemsControl
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            ItemsSource="{Binding DisplayList}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <item:FileItemControl DataContext="{Binding}" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </Panel>
-            </Border>
+
+            <Panel Margin="0,5,0,0">
+                <Border
+                    Margin="0,0,0,5"
+                    Classes="t1"
+                    IsVisible="{Binding EmptyDisplay}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="30"
+                        Text="{setting:Localize AddModPackWindow.Text13}" />
+                </Border>
+                <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
+                    <ItemsControl
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{Binding DisplayList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <item:FileItemControl Margin="0,0,0,5" DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Panel>
         </DockPanel>
 
         <DockPanel
