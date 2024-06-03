@@ -12,9 +12,9 @@
     x:DataType="model:AddControlModel"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Margin="5,5,5,0">
+        <DockPanel Margin="5,0,5,0">
             <Border
-                Margin="0,0,0,5"
+                Margin="0,5,0,0"
                 Classes="t2"
                 DockPanel.Dock="Top"
                 IsEnabled="{Binding !IsDownload}"
@@ -108,31 +108,30 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,5" Classes="t1">
-                <Panel>
-                    <ScrollViewer
-                        Name="ScrollViewer1"
-                        Padding="{setting:Style BorderPadding}"
-                        VerticalScrollBarVisibility="Visible">
-                        <ItemsControl
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            ItemsSource="{Binding DisplayList}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <item:FileItemControl DataContext="{Binding}" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                    <Panel IsVisible="{Binding EmptyDisplay}">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="30"
-                            Text="{setting:Localize AddModPackWindow.Text13}" />
-                    </Panel>
-                </Panel>
-            </Border>
+
+            <Panel Margin="0,5,0,0">
+                <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
+                    <ItemsControl
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{Binding DisplayList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <item:FileItemControl Margin="0,0,0,5" DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <Border
+                    Margin="0,0,0,5"
+                    Classes="t1"
+                    IsVisible="{Binding EmptyDisplay}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="30"
+                        Text="{setting:Localize AddModPackWindow.Text13}" />
+                </Border>
+            </Panel>
         </DockPanel>
 
         <DockPanel

@@ -55,8 +55,8 @@ public record DownloadItemObj
     /// <summary>
     /// 更新操作
     /// </summary>
-    internal void Update()
+    internal void Update(int thread)
     {
-        UpdateD?.Invoke(this);
+        UpdateD?.Invoke(thread, this);
     }
 }

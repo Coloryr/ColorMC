@@ -30,6 +30,19 @@ public partial class AddModPackControl : UserControl, IUserControl
         Input1.KeyDown += Input1_KeyDown;
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+        ScrollViewer1.ScrollChanged += ScrollViewer1_ScrollChanged;
+    }
+
+    private void ScrollViewer1_ScrollChanged(object? sender, ScrollChangedEventArgs e)
+    {
+        if (e.ExtentDelta == e.OffsetDelta)
+        {
+            return;
+        }
+        if (DataContext is AddModPackControlModel model)
+        {
+            model.DisplayFilter = false;
+        }
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)

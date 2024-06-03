@@ -41,6 +41,7 @@
     <None Remove="Resource\Icon\AddMenu\item1.svg" />
     <None Remove="Resource\Icon\AddMenu\item2.svg" />
     <None Remove="Resource\Icon\AddMenu\item3.svg" />
+    <None Remove="Resource\Icon\AddMenu\item4.svg" />
     <None Remove="Resource\Icon\AddMenu\svg1.svg" />
     <None Remove="Resource\Icon\book.svg" />
     <None Remove="Resource\Icon\count.svg" />
@@ -166,6 +167,7 @@
     <AvaloniaResource Include="Resource\Icon\AddMenu\item1.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item3.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item4.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\svg1.svg" />
     <AvaloniaResource Include="Resource\Icon\book.svg" />
     <AvaloniaResource Include="Resource\Icon\count.svg" />

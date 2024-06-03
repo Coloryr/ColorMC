@@ -100,7 +100,7 @@ public static class ColorMCCore
     /// 下载项目状态更新
     /// </summary>
     /// <param name="obj">项目</param>
-    public delegate void DownloadItemUpdate(DownloadItemObj obj);
+    public delegate void DownloadItemUpdate(int thread, DownloadItemObj obj);
     /// <summary>
     /// 压缩包导入状态改变
     /// </summary>

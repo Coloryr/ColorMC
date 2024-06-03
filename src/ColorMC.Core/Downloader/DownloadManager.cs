@@ -164,7 +164,7 @@ public static class DownloadManager
                 continue;
             }
             item.UpdateD = update1;
-            update1?.Invoke(item);
+            update1?.Invoke(ConfigUtils.Config.Http.DownloadThread, item);
             s_items.Enqueue(item);
             names.Add(item.Name);
         }

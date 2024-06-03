@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:items="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Download"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
@@ -21,7 +22,7 @@
                     BorderBrush="White"
                     BorderThickness="1"
                     Foreground="#FF5EBDD3"
-                    Maximum="120"
+                    Maximum="100"
                     ShowProgressText="True"
                     Value="{Binding Value}" />
                 <StackPanel Orientation="Horizontal">
@@ -38,38 +39,18 @@
                 </StackPanel>
             </WrapPanel>
         </Border>
-        <Border
-            Margin="0,5,0,0"
-            Classes="t1"
-            DockPanel.Dock="Top">
-            <DataGrid
-                Name="DataGrid1"
-                AutoGenerateColumns="False"
-                CanUserResizeColumns="True"
-                ItemsSource="{Binding ItemList}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding NowSize}"
-                        Header="{setting:Localize Text.Downloaded}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="{setting:Localize Text.Name}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding State}"
-                        Header="{setting:Localize DownloadWindow.DataGrid.Text2}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding AllSize}"
-                        Header="{setting:Localize DownloadWindow.DataGrid.Text4}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding ErrorTime}"
-                        Header="{setting:Localize DownloadWindow.DataGrid.Text5}"
-                        IsReadOnly="True" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </Border>
+
+        <ScrollViewer Margin="0,5,0,0" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                ItemsSource="{Binding DisplayList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <items:DownloadItemControl Margin="0,0,0,5" DataContext="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </DockPanel>
 </UserControl>

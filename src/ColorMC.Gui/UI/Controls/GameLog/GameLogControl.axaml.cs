@@ -42,7 +42,14 @@ public partial class GameLogControl : UserControl, IUserControl
 
         TextEditor1.PointerWheelChanged += TextEditor1_PointerWheelChanged;
         TextEditor1.TextArea.PointerWheelChanged += TextEditor1_PointerWheelChanged;
+        TextEditor1.TextArea.TextView.ScrollOffsetChanged += TextView_ScrollOffsetChanged;
     }
+
+    private void TextView_ScrollOffsetChanged(object? sender, System.EventArgs e)
+    {
+        (DataContext as GameLogModel)?.SetNotAuto();
+    }
+
     public void ClearLog()
     {
         Dispatcher.UIThread.Post(() =>

@@ -410,15 +410,6 @@ public partial class AddGameModel
     }
 
     /// <summary>
-    /// 添加整合包
-    /// </summary>
-    [RelayCommand]
-    public void AddOnlinePack()
-    {
-        App.ShowAddModPack();
-    }
-
-    /// <summary>
     /// 游戏版本刷新
     /// </summary>
     /// <returns></returns>

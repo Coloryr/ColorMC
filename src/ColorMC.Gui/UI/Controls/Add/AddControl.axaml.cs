@@ -47,6 +47,19 @@ public partial class AddControl : UserControl, IUserControl
         ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+        ScrollViewer1.ScrollChanged += ScrollViewer1_ScrollChanged;
+    }
+
+    private void ScrollViewer1_ScrollChanged(object? sender, ScrollChangedEventArgs e)
+    {
+        if (e.ExtentDelta == e.OffsetDelta)
+        {
+            return;
+        }
+        if (DataContext is AddControlModel model)
+        {
+            model.DisplayFilter = false;
+        }
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
