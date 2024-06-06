@@ -69,67 +69,67 @@ jobs:
     - name: 上传 linux-x64.rpm
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-rpm-x86_64"
+        name: "colormc-linux-rpm-x86_64"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-x86_64.rpm
 
     - name: 上传 linux-x64-aot.rpm
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-rpm-x86_64-aot"
+        name: "colormc-linux-rpm-x86_64-aot"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-x86_64-aot.rpm
     
     - name: 上传 linux-arm64.rpm
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-rpm-arm64"
+        name: "colormc-linux-rpm-arm64"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-aarch64.rpm
 
     - name: 上传 linux-arm64-aot.rpm
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-rpm-arm64-aot"
+        name: "colormc-linux-rpm-arm64-aot"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-aarch64-aot.rpm
 
     - name: 上传 linux-x86.pkg.tar.zst
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-arch-x86_64"
+        name: "colormc-linux-pkg-x86_64"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-1-x86_64.pkg.tar.zst
 
     - name: 上传 linux-x86-aot.pkg.tar.zst
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-arch-x86_64-aot"
+        name: "colormc-linux-pkg-x86_64-aot"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-1-x86_64-aot.pkg.tar.zst
 
     - name: 上传 linux-x64.deb
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-ubuntu-x64"
+        name: "colormc-linux-deb-x64"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x64.deb
 
     - name: 上传 linux-arm64.deb
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-ubuntu-arm64"
+        name: "colormc-linux-deb-arm64"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-arm64.deb
 
     - name: 上传 linux-x64-aot.deb
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-ubuntu-x64-aot"
+        name: "colormc-linux-deb-x64-aot"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x64-aot.deb
 
     - name: 上传 linux-arm64-aot.deb
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-ubuntu-arm64-aot"
+        name: "colormc-linux-deb-arm64-aot"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-arm64-aot.deb
     
     - name: 上传 linux-x64-appimage.deb
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-linux-x64-appimage"
+        name: "colormc-linux-appimage-x64"
         path: build_out/colormc-${{ env.MAINVERSION }}${{ env.VERSION }}-linux-x86_64.AppImage
 
   build-macos:
