@@ -584,17 +584,16 @@ public partial class GameEditModel
         {
             case 0:
                 _obj.GameType = GameType.Release;
-                GameVersionList.AddRange(await GameBinding.GetGameVersion(true, false, false));
                 break;
             case 1:
                 _obj.GameType = GameType.Snapshot;
-                GameVersionList.AddRange(await GameBinding.GetGameVersion(false, true, false));
                 break;
             case 2:
                 _obj.GameType = GameType.Other;
-                GameVersionList.AddRange(await GameBinding.GetGameVersion(false, false, true));
                 break;
         }
+
+        GameVersionList.AddRange(await GameBinding.GetGameVersions(_obj.GameType));
     }
 
     private void GroupLoad()

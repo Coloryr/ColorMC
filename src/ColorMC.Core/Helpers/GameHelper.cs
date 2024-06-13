@@ -7,12 +7,11 @@ using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OtherLaunch;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Helpers;
 
-/// <summary>
-/// 游戏文件处理
-/// </summary>
 public static class GameHelper
 {
     /// <summary>
@@ -569,5 +568,230 @@ public static class GameHelper
         }
 
         return game;
+    }
+
+    /// <summary>
+    /// 转换到ColorMC数据
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static GameSettingObj? ToColorMC(this OfficialObj obj)
+    {
+        var game = new GameSettingObj()
+        {
+            Name = obj.id,
+            Loader = Loaders.Normal
+        };
+
+        if (obj.patches != null)
+        {
+            foreach (var item1 in obj.patches)
+            {
+                var id = item1.id;
+                var version = item1.version ?? "";
+                if (id == "game")
+                {
+                    game.Version = version;
+                }
+                else if (id == "forge")
+                {
+                    game.LoaderVersion = version;
+                    game.Loader = Loaders.Forge;
+                }
+                else if (id == "fabric")
+                {
+                    game.LoaderVersion = version;
+                    game.Loader = Loaders.Fabric;
+                }
+                else if (id == "quilt")
+                {
+                    game.LoaderVersion = version;
+                    game.Loader = Loaders.Quilt;
+                }
+                else if (id == "neoforge")
+                {
+                    game.LoaderVersion = version;
+                    game.Loader = Loaders.NeoForge;
+                }
+            }
+        }
+        else
+        { 
+            
+        }
+        
+        return game;
+    }
+
+    /// <summary>
+    /// 获取所有游戏版本
+    /// </summary>
+    /// <param name="type">类型</param>
+    /// <returns></returns>
+    public static async Task<List<string>> GetGameVersions(GameType type)
+    {
+        var list = new List<string>();
+        var ver = await VersionPath.GetVersionsAsync();
+        if (ver == null)
+        {
+            return list;
+        }
+
+        foreach (var item in ver.versions)
+        {
+            if (item.type == "release")
+            {
+                if (type == GameType.Release)
+                {
+                    list.Add(item.id);
+                }
+            }
+            else if (item.type == "snapshot")
+            {
+                if (type == GameType.Snapshot)
+                {
+                    list.Add(item.id);
+                }
+            }
+            else
+            {
+                if (type == GameType.Other)
+                {
+                    list.Add(item.id);
+                }
+            }
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// 导入文件夹
+    /// </summary>
+    /// <param name="name">实例名字</param>
+    /// <param name="local">位置</param>
+    /// <param name="unselect">排除的文件</param>
+    /// <param name="group">游戏群组</param>
+    /// <param name="request"></param>
+    /// <param name="overwirte"></param>
+    /// <returns></returns>
+
+    public static async Task<(bool, GameSettingObj?, Exception?)> AddGame(string name, string local, List<string>? unselect,
+        string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
+    {
+        GameSettingObj? game = null;
+
+        bool isfind = false;
+
+        var file1 = Path.GetFullPath(local + "/" + "mmc-pack.json");
+        var file2 = Path.GetFullPath(local + "/" + "instance.cfg");
+        if (File.Exists(file1) && File.Exists(file2))
+        {
+            try
+            {
+                var mmc = JsonConvert.DeserializeObject<MMCObj>(PathHelper.ReadText(file1)!);
+                if (mmc != null)
+                {
+                    var mmc1 = PathHelper.ReadText(file2)!;
+                    game = ToColorMC(mmc, mmc1, out var icon);
+                    game.Icon = icon + ".png";
+                    isfind = true;
+                }
+            }
+            catch
+            { 
+                
+            }
+        }
+
+        if (!isfind)
+        {
+            var files = Directory.GetFiles(local);
+            foreach (var item in files)
+            {
+                if (!item.EndsWith(".json"))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var obj1 = JsonConvert.DeserializeObject<OfficialObj>(PathHelper.ReadText(item)!);
+                    if (obj1 != null && obj1.id != null)
+                    {
+                        game = ToColorMC(obj1);
+                        isfind = true;
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        game ??= new GameSettingObj()
+        {
+            Name = name,
+            Version = (await GetGameVersions(GameType.Release))[0],
+            Loader = Loaders.Normal,
+            LoaderVersion = null
+        };
+        game.GroupName = group;
+
+        game = await InstancesPath.CreateGame(game, request, overwirte);
+        if (game == null)
+        {
+            return (false, null, null);
+        }
+
+        await game.CopyFile(local, unselect);
+
+        return (true, game, null);
+    }
+
+    public static bool IsMinecraftVersion(string dir)
+    {
+        bool find = false;
+        var files = PathHelper.GetFiles(dir);
+        foreach (var item3 in files)
+        {
+            if (find)
+            {
+                break;
+            }
+            if (item3.Name.EndsWith(".json"))
+            {
+                try
+                {
+                    var obj = JObject.Parse(PathHelper.ReadText(item3.FullName)!);
+                    if (obj.ContainsKey("id")
+                        && obj.ContainsKey("arguments")
+                        && obj.ContainsKey("mainClass"))
+                    {
+                        find = true;
+                        break;
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        return find;
+    }
+
+    public static bool IsMMCVersion(string dir)
+    {
+        var file1 = Path.GetFullPath(dir + "/" + "mmc-pack.json");
+        var file2 = Path.GetFullPath(dir + "/" + "instance.cfg");
+        if (File.Exists(file1) && File.Exists(file2))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

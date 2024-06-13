@@ -1,9 +1,7 @@
-using System;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
-using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.Utils;
 
@@ -38,14 +36,6 @@ public static class UIUtils
         }
 
         return default;
-    }
-
-    private class ColorObservable(string key) : IObservable<IBrush>
-    {
-        public IDisposable Subscribe(IObserver<IBrush> observer)
-        {
-            return ColorSel.Add(key, observer);
-        }
     }
 
     /// <summary>

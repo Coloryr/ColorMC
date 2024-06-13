@@ -453,23 +453,6 @@ public static class BaseBinding
         return (res.Item1 != null, res.Item2);
     }
 
-    //private static void ExecuteBashCommand(string command)
-    //{
-    //    var proc = new Process
-    //    {
-    //        StartInfo = new()
-    //        {
-    //            FileName = "/bin/bash",
-    //            Arguments = $"-c \"{command}\"",
-    //            UseShellExecute = false,
-    //            RedirectStandardOutput = true,
-    //            CreateNoWindow = true
-    //        }
-    //    };
-    //    proc.Start();
-    //    proc.WaitForExit();
-    //}
-
     /// <summary>
     /// 游戏进程启动后
     /// </summary>
@@ -503,6 +486,7 @@ public static class BaseBinding
                     return;
                 }
 
+                //启用手柄支持
                 if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
                 {
                     var run = true;
@@ -523,6 +507,12 @@ public static class BaseBinding
                     Dispatcher.UIThread.Post(App.Hide);
                 }
 
+                if (SystemInfo.Os == OsType.MacOS)
+                {
+                    return;
+                }
+
+                //修改窗口标题
                 if (!string.IsNullOrWhiteSpace(conf?.GameTitle))
                 {
                     var ran = new Random();
@@ -571,13 +561,6 @@ public static class BaseBinding
                         else if (SystemInfo.Os == OsType.Linux)
                         {
                             X11Hook.SetTitle(pr, title1);
-                        }
-                        else if (SystemInfo.Os == OsType.MacOS)
-                        {
-                            break;
-                            //string cmd = $"osascript -e 'tell application \"System Events\" " +
-                            //$"to set title of windows of process \"{pr.ProcessName}\" to \"{title1}\"'";
-                            //ExecuteBashCommand(cmd);
                         }
 
                         try
