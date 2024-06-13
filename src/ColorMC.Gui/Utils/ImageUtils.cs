@@ -205,6 +205,13 @@ public static class ImageUtils
         });
     }
 
+    /// <summary>
+    /// 图片等比缩放
+    /// </summary>
+    /// <param name="image">图片</param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <returns></returns>
     public static SKBitmap Resize(SKBitmap image, int width, int height)
     {
         int newWidth;

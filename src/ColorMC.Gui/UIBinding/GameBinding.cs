@@ -55,45 +55,11 @@ public static class GameBinding
     /// <summary>
     /// 获取游戏版本号
     /// </summary>
-    /// <param name="type1"></param>
-    /// <param name="type2"></param>
-    /// <param name="type3"></param>
+    /// <param name="type">发布类型</param>
     /// <returns></returns>
-    public static async Task<List<string>> GetGameVersion(bool? type1, bool? type2, bool? type3)
+    public static Task<List<string>> GetGameVersions(GameType type)
     {
-        var list = new List<string>();
-        var ver = await VersionPath.GetVersionsAsync();
-        if (ver == null)
-        {
-            return list;
-        }
-
-        foreach (var item in ver.versions)
-        {
-            if (item.type == "release")
-            {
-                if (type1 == true)
-                {
-                    list.Add(item.id);
-                }
-            }
-            else if (item.type == "snapshot")
-            {
-                if (type2 == true)
-                {
-                    list.Add(item.id);
-                }
-            }
-            else
-            {
-                if (type3 == true)
-                {
-                    list.Add(item.id);
-                }
-            }
-        }
-
-        return list;
+        return GameHelper.GetGameVersions(type);
     }
 
     /// <summary>
@@ -116,94 +82,6 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 添加文件夹
-    /// </summary>
-    /// <param name="path"></param>
-    /// <param name="group"></param>
-    /// <param name="request"></param>
-    /// <param name="overwirte"></param>
-    /// <returns></returns>
-    public static async Task<bool> AddGame(string path, string? group, ColorMCCore.Request request,
-        ColorMCCore.GameOverwirte overwirte)
-    {
-        var files = Directory.GetFiles(path);
-        var game = new GameSettingObj()
-        {
-            Version = (await GetGameVersion(true, false, false))[0],
-            Loader = Loaders.Normal,
-            LoaderVersion = null,
-            GroupName = group
-        };
-
-        foreach (var item in files)
-        {
-            if (item.EndsWith(".json"))
-            {
-                var obj = JObject.Parse(PathHelper.ReadText(item)!);
-                if (obj.TryGetValue("id", out var value))
-                {
-                    game.Name = value.ToString();
-                }
-                if (obj.TryGetValue("patches", out var patch) && patch is JArray array)
-                {
-                    foreach (var item1 in array)
-                    {
-                        var id = item1["id"]?.ToString();
-                        var version = item1["version"]?.ToString() ?? "";
-                        if (id == "game")
-                        {
-                            game.Version = version;
-                        }
-                        else if (id == "forge")
-                        {
-                            game.LoaderVersion = version;
-                            game.Loader = Loaders.Forge;
-                        }
-                        else if (id == "fabric")
-                        {
-                            game.LoaderVersion = version;
-                            game.Loader = Loaders.Fabric;
-                        }
-                        else if (id == "quilt")
-                        {
-                            game.LoaderVersion = version;
-                            game.Loader = Loaders.Quilt;
-                        }
-                        else if (id == "neoforge")
-                        {
-                            game.LoaderVersion = version;
-                            game.Loader = Loaders.NeoForge;
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-
-        if (string.IsNullOrWhiteSpace(game.Name))
-        {
-            var info = new DirectoryInfo(path);
-            game.Name = info.Name;
-        }
-
-        game = await InstancesPath.CreateGame(game, request, overwirte);
-        if (game == null)
-        {
-            return false;
-        }
-
-        var res = await game.CopyFile(path, null);
-
-        if (!res.Item1)
-        {
-            await game.Remove(request);
-            App.ShowError(App.Lang("Gui.Error26"), res.Item2);
-        }
-
-        return true;
-    }
-
-    /// <summary>
     /// 导入文件夹
     /// </summary>
     /// <param name="name"></param>
@@ -213,83 +91,25 @@ public static class GameBinding
     /// <param name="request"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<bool> AddGame(string name, string local, List<string> unselect,
+    public static async Task<bool> AddGame(string name, string local, List<string>? unselect,
         string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
-        var game = new GameSettingObj()
-        {
-            Name = name,
-            Version = (await GetGameVersion(true, false, false))[0],
-            Loader = Loaders.Normal,
-            LoaderVersion = null,
-            GroupName = group
-        };
-
-        game = await InstancesPath.CreateGame(game, request, overwirte);
-        if (game == null)
-        {
-            return false;
-        }
-
-        var res = await game.CopyFile(local, unselect);
+        var res = await GameHelper.AddGame(name, local, unselect, group, request, overwirte);
 
         if (!res.Item1)
         {
-            await game.Remove(request);
-            App.ShowError(App.Lang("Gui.Error26"), res.Item2);
-        }
-
-        var files = Directory.GetFiles(local);
-        foreach (var item in files)
-        {
-            if (item.EndsWith(".json"))
+            if (res.Item3 != null)
             {
-                try
-                {
-                    var obj = JObject.Parse(PathHelper.ReadText(item)!);
-                    if (obj.TryGetValue("patches", out var patch) && patch is JArray array)
-                    {
-                        foreach (var item1 in array)
-                        {
-                            var id = item1["id"]?.ToString();
-                            var version = item1["version"]?.ToString() ?? "";
-                            if (id == "game")
-                            {
-                                game.Version = version;
-                            }
-                            else if (id == "forge")
-                            {
-                                game.LoaderVersion = version;
-                                game.Loader = Loaders.Forge;
-                            }
-                            else if (id == "fabric")
-                            {
-                                game.LoaderVersion = version;
-                                game.Loader = Loaders.Fabric;
-                            }
-                            else if (id == "quilt")
-                            {
-                                game.LoaderVersion = version;
-                                game.Loader = Loaders.Quilt;
-                            }
-                            else if (id == "neoforge")
-                            {
-                                game.LoaderVersion = version;
-                                game.Loader = Loaders.NeoForge;
-                            }
-                        }
-                        game.Save();
-                        break;
-                    }
-                }
-                catch
-                {
-
-                }
+                App.ShowError(App.Lang("Gui.Error26"), res.Item3);
             }
+
+            return false;
         }
 
-        App.ShowGameEdit(game);
+        if (res.Item2 != null)
+        {
+            App.ShowGameEdit(res.Item2);
+        }
 
         return true;
     }
@@ -382,16 +202,13 @@ public static class GameBinding
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        var res = await InstallGameHelper.InstallCurseForge(data, name, group, zip, request, overwirte,
+        var res = await InstallGameHelper.InstallCurseForge(data, data1, name, group, zip, request, overwirte,
             update, update2);
         if (!res.Item1)
         {
             return false;
         }
-        if (data1.logo != null)
-        {
-            await SetGameIconFromUrl(res.Item2!, data1.logo.url);
-        }
+       
 
         return true;
     }
@@ -415,41 +232,14 @@ public static class GameBinding
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        var res = await InstallGameHelper.InstallModrinth(data, name, group, zip, request, overwirte,
+        var res = await InstallGameHelper.InstallModrinth(data, data1, name, group, zip, request, overwirte,
             update, update2);
         if (!res.Item1)
         {
             return false;
         }
-        if (data1.icon_url != null)
-        {
-            await SetGameIconFromUrl(res.Item2!, data1.icon_url);
-        }
 
         return true;
-    }
-
-    /// <summary>
-    /// 设置游戏实例图标
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="url"></param>
-    /// <returns></returns>
-    public static async Task SetGameIconFromUrl(GameSettingObj obj, string url)
-    {
-        try
-        {
-            var data = await BaseClient.GetBytesAsync(url);
-            if (data.Item1)
-            {
-                await File.WriteAllBytesAsync(obj.GetIconFile(), data.Item2!);
-            }
-        }
-        catch (Exception e)
-        {
-            Logs.Error(App.Lang("Gui.Error45"), e);
-            App.ShowError(App.Lang("Gui.Error45"), e);
-        }
     }
 
     /// <summary>
@@ -465,21 +255,24 @@ public static class GameBinding
             var file = await PathBinding.SelectFile(FileType.Icon);
             if (file.Item1 != null)
             {
+                bool resize = await model.ShowWait(App.Lang("Gui.Info53"));
+
                 model.Progress(App.Lang("Gui.Info30"));
                 using var info = SKBitmap.Decode(PathHelper.OpenRead(file.Item1)!);
-                if (info.Width > 200 || info.Height > 200)
+
+                if (resize && (info.Width > 100 || info.Height > 100))
                 {
                     using var image = await Task.Run(() =>
                     {
-                        return ImageUtils.Resize(info, 200, 200);
+                        return ImageUtils.Resize(info, 100, 100);
                     });
                     using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                    PathHelper.WriteBytes(obj.GetIconFile(), data.AsSpan().ToArray());
+                    obj.SetGameIconFromBytes(data.AsSpan().ToArray());
                 }
                 else
                 {
                     using var data = info.Encode(SKEncodedImageFormat.Png, 100);
-                    PathHelper.WriteBytes(obj.GetIconFile(), data.AsSpan().ToArray());
+                    obj.SetGameIconFromBytes(data.AsSpan().ToArray());
                 }
 
                 model.ProgressClose();
@@ -591,37 +384,6 @@ public static class GameBinding
 
         return await VersionPath.IsHaveVersionInfoAsync();
     }
-
-    //public static async void SaveGame(GameSettingObj obj, string? versi, Loaders loader, string? loadv)
-    //{
-    //    if (!string.IsNullOrWhiteSpace(versi))
-    //    {
-    //        obj.Version = versi;
-    //        var ver = await VersionPath.GetVersionsAsync();
-    //        var version1 = ver!.versions.FirstOrDefault(a => a.id == versi);
-    //        if (version1 != null)
-    //        {
-    //            if (version1.type == "release")
-    //            {
-    //                obj.GameType = GameType.Release;
-    //            }
-    //            else if (version1.type == "snapshot")
-    //            {
-    //                obj.GameType = GameType.Snapshot;
-    //            }
-    //            else
-    //            {
-    //                obj.GameType = GameType.Other;
-    //            }
-    //        }
-    //    }
-    //    obj.Loader = loader;
-    //    if (!string.IsNullOrWhiteSpace(loadv))
-    //    {
-    //        obj.LoaderVersion = loadv;
-    //    }
-    //    obj.Save();
-    //}
 
     /// <summary>
     /// 设置游戏Jvm参数

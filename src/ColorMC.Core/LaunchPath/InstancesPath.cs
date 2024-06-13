@@ -1,5 +1,6 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
@@ -149,38 +150,31 @@ public static class InstancesPath
         foreach (var item in list)
         {
             var file = Path.GetFullPath(item + "/" + Name1);
-            GameSettingObj? game = null;
             if (!File.Exists(file))
             {
-                var file1 = Path.GetFullPath(item + "/" + "mmc-pack.json");
-                var file2 = Path.GetFullPath(item + "/" + "instance.cfg");
-                if (File.Exists(file1) && File.Exists(file2))
-                {
-                    var mmc = JsonConvert.DeserializeObject<MMCObj>(PathHelper.ReadText(file1)!);
-                    if (mmc == null)
-                        break;
-
-                    var mmc1 = PathHelper.ReadText(file2)!;
-                    game = GameHelper.ToColorMC(mmc, mmc1, out var icon);
-                    game.Icon = icon + ".png";
-                }
+                continue;
             }
-            else
+
+            try
             {
                 var data1 = PathHelper.ReadText(file)!;
-                game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
-            }
-            if (game != null)
-            {
-                var path = Path.GetFileName(item);
-                if (path != game.DirName)
+                var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
+                if (game != null)
                 {
-                    game.DirName = path;
-                    game.Save();
+                    var path = Path.GetFileName(item);
+                    if (path != game.DirName)
+                    {
+                        game.DirName = path;
+                        game.Save();
+                    }
+                    game.ReadModInfo();
+                    game.ReadLaunchData();
+                    game.AddToGroup();
                 }
-                game.ReadModInfo();
-                game.ReadLaunchData();
-                game.AddToGroup();
+            }
+            catch(Exception e)
+            {
+                Logs.Error(LanguageHelper.Get("Core.Game.Error19"), e);
             }
         }
     }
@@ -498,6 +492,10 @@ public static class InstancesPath
     public static async Task<GameSettingObj?> CreateGame(this GameSettingObj game,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
+        if (string.IsNullOrWhiteSpace(game.Name))
+        {
+            throw new ArgumentException("Name can't be empty");
+        }
         var value = s_installGames.Values.FirstOrDefault(item => item.DirName == game.Name);
         if (value != null)
         {
@@ -785,43 +783,43 @@ public static class InstancesPath
             {
                 obj.Mods = res;
             }
-
-            if (obj.ModPack || !delete)
-            {
-                return;
-            }
-
-            var list = PathHelper.GetAllFile(obj.GetModsPath());
-            var remove = new List<string>();
-            foreach (var item in obj.Mods)
-            {
-                bool find = false;
-                foreach (var item1 in list)
-                {
-                    if (item.Value.File == item1.Name)
-                    {
-                        find = true;
-                        break;
-                    }
-                }
-
-                if (!find)
-                {
-                    remove.Add(item.Key);
-                }
-            }
-
-            if (remove.Count != 0)
-            {
-                remove.ForEach(item => obj.Mods.Remove(item));
-                obj.SaveModInfo();
-            }
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Game.Error8"), e);
             obj.Mods = [];
             return;
+        }
+
+        if (obj.ModPack || !delete)
+        {
+            return;
+        }
+
+        var list = PathHelper.GetAllFile(obj.GetModsPath());
+        var remove = new List<string>();
+        foreach (var item in obj.Mods)
+        {
+            bool find = false;
+            foreach (var item1 in list)
+            {
+                if (item.Value.File == item1.Name)
+                {
+                    find = true;
+                    break;
+                }
+            }
+
+            if (!find)
+            {
+                remove.Add(item.Key);
+            }
+        }
+
+        if (remove.Count != 0)
+        {
+            remove.ForEach(item => obj.Mods.Remove(item));
+            obj.SaveModInfo();
         }
     }
 
@@ -854,7 +852,6 @@ public static class InstancesPath
             {
                 LastPlay = new()
             };
-            return;
         }
     }
 
@@ -876,37 +873,27 @@ public static class InstancesPath
     /// <param name="local">目标地址</param>
     /// <param name="unselect">未选择的文件</param>
     /// <returns></returns>
-    public static async Task<(bool, Exception?)> CopyFile(this GameSettingObj obj,
+    public static async Task CopyFile(this GameSettingObj obj,
         string local, List<string>? unselect)
     {
-        try
+        local = Path.GetFullPath(local);
+        var list = PathHelper.GetAllFile(local);
+        if (unselect != null)
         {
-            local = Path.GetFullPath(local);
-            var list = PathHelper.GetAllFile(local);
-            if (unselect != null)
+            list.RemoveAll(item => unselect.Contains(item.FullName));
+        }
+        int basel = local.Length;
+        var local1 = obj.GetGamePath();
+        await Task.Run(() =>
+        {
+            foreach (var item in list)
             {
-                list.RemoveAll(item => unselect.Contains(item.FullName));
+                var path = item.FullName[basel..];
+                var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
+                info.Directory?.Create();
+                PathHelper.CopyFile(item.FullName, info.FullName);
             }
-            int basel = local.Length;
-            var local1 = obj.GetGamePath();
-            await Task.Run(() =>
-            {
-                foreach (var item in list)
-                {
-                    var path = item.FullName[basel..];
-                    var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
-                    info.Directory?.Create();
-                    PathHelper.CopyFile(item.FullName, info.FullName);
-                }
-            });
-            return (true, null);
-        }
-        catch (Exception e)
-        {
-            string temp = LanguageHelper.Get("Core.Game.Error13");
-            Logs.Error(temp, e);
-            return (false, e);
-        }
+        });
     }
 
     /// <summary>
@@ -965,5 +952,62 @@ public static class InstancesPath
         PathHelper.CopyFile(path, local);
 
         return (true, null);
+    }
+
+    /// <summary>
+    /// 设置游戏实例图标
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="url">网址</param>
+    /// <returns></returns>
+    public static async Task<bool> SetGameIconFromUrl(this GameSettingObj obj, string url)
+    {
+        var data = await BaseClient.GetBytesAsync(url);
+        if (data.Item1)
+        {
+            PathHelper.WriteBytes(obj.GetIconFile(), data.Item2!);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 设置游戏实例图标
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file">文件地址</param>
+    /// <returns></returns>
+    public static bool SetGameIconFromFile(this GameSettingObj obj, string file)
+    {
+        if (!File.Exists(file))
+        {
+            return false;
+        }
+
+        PathHelper.CopyFile(file, obj.GetIconFile());
+
+        return true;
+    }
+
+    /// <summary>
+    /// 设置游戏实例图标
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="data">图片数据</param>
+    public static void SetGameIconFromBytes(this GameSettingObj obj, byte[] data)
+    {
+        PathHelper.WriteBytes(obj.GetIconFile(), data);
+    }
+
+    /// <summary>
+    /// 设置游戏实例图标
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="data">图片数据</param>
+    public static void SetGameIconFromStream(this GameSettingObj obj, byte[] data)
+    {
+        PathHelper.WriteBytes(obj.GetIconFile(), data);
     }
 }

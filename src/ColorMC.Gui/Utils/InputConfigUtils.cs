@@ -79,6 +79,10 @@ public static class InputConfigUtils
         });
     }
 
+    /// <summary>
+    /// 保存控制配置
+    /// </summary>
+    /// <param name="obj"></param>
     public static void PutConfig(InputControlObj obj)
     {
         if (!Configs.TryAdd(obj.UUID, obj))

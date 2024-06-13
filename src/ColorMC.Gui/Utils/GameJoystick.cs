@@ -40,6 +40,11 @@ public class GameJoystick
         }
     }
 
+    /// <summary>
+    /// 开始处理手柄操作
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="handel"></param>
     public static void Start(GameSettingObj obj, IGameHandel handel)
     {
         if (NowGameJoystick.Remove(obj.UUID, out var value))

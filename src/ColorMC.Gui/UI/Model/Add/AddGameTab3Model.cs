@@ -174,36 +174,26 @@ public partial class AddGameModel
                 {
                     foreach (var item2 in item1.Children)
                     {
-                        bool find = false;
-                        foreach (var item3 in item2.Children)
+                        if (GameHelper.IsMinecraftVersion(item2.Path))
                         {
-                            if (find)
-                            {
-                                break;
-                            }
-                            if (item3.Name.EndsWith(".json"))
-                            {
-                                try
-                                {
-                                    var obj = JObject.Parse(PathHelper.ReadText(item3.Path)!);
-                                    if (obj.ContainsKey("id")
-                                        && obj.ContainsKey("arguments")
-                                        && obj.ContainsKey("mainClass"))
-                                    {
-                                        list.Add(item2.Path);
-                                        find = true;
-                                        break;
-                                    }
-                                }
-                                catch
-                                {
-                                    
-                                }
-                            }
+                            list.Add(item2.Path);
                         }
                     }
+                    if (list.Count > 0)
+                    {
+                        return list;
+                    }
+                }
 
-                    return list;
+                if (GameHelper.IsMinecraftVersion(item1.Path))
+                {
+                    list.Add(item1.Path);
+                    continue;
+                }
+
+                if (GameHelper.IsMMCVersion(item1.Path))
+                {
+                    list.Add(item1.Path);
                 }
             }
         }
@@ -217,7 +207,7 @@ public partial class AddGameModel
         foreach (var item in list)
         {
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
-            var res = await GameBinding.AddGame(item, Group, Tab2GameRequest, Tab2GameOverwirte);
+            var res = await GameBinding.AddGame("", item, null, Group, Tab2GameRequest, Tab2GameOverwirte);
             Model.ProgressClose();
 
             if (!res)
@@ -230,7 +220,7 @@ public partial class AddGameModel
 
         if (ok)
         {
-            var model = (App.MainWindow?.DataContext as MainModel);
+            var model = App.MainWindow?.DataContext as MainModel;
             model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
             App.MainWindow?.LoadMain();
             WindowClose();

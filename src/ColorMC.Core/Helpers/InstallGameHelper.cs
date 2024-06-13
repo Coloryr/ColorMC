@@ -319,7 +319,7 @@ public static class InstallGameHelper
     /// <param name="name">名字</param>
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, GameSettingObj?)> InstallModrinth(ModrinthVersionObj data,
+    public static async Task<(bool, GameSettingObj?)> InstallModrinth(ModrinthVersionObj data, ModrinthSearchObj.Hit data1,
         string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
@@ -343,6 +343,11 @@ public static class InstallGameHelper
             res2.Item2!.PID = data.project_id;
             res2.Item2.FID = data.id;
             res2.Item2.Save();
+
+            if (data1.icon_url != null)
+            {
+                await res2.Item2.SetGameIconFromUrl(data1.icon_url);
+            }
         }
 
         return res2;
@@ -355,7 +360,7 @@ public static class InstallGameHelper
     /// <param name="name">名字</param>
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, GameSettingObj?)> InstallCurseForge(CurseForgeModObj.Data data,
+    public static async Task<(bool, GameSettingObj?)> InstallCurseForge(CurseForgeModObj.Data data, CurseForgeObjList.Data data1,
         string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
@@ -379,6 +384,11 @@ public static class InstallGameHelper
             res2.Item2!.PID = data.modId.ToString();
             res2.Item2.FID = data.id.ToString();
             res2.Item2.Save();
+
+            if (data1.logo != null)
+            {
+                await res2.Item2.SetGameIconFromUrl(data1.logo.url);
+            }
         }
 
         return res2;

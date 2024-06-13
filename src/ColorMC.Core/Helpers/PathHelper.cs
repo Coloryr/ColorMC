@@ -82,6 +82,24 @@ public static class PathHelper
     }
 
     /// <summary>
+    /// 获取当前目录所有文件
+    /// </summary>
+    /// <param name="local">路径</param>
+    /// <returns>文件列表</returns>
+    public static List<FileInfo> GetFiles(string local)
+    {
+        var list = new List<FileInfo>();
+        var info = new DirectoryInfo(local);
+        if (!info.Exists)
+        {
+            return list;
+        }
+
+        list.AddRange(info.GetFiles());
+        return list;
+    }
+
+    /// <summary>
     /// 复制文件夹
     /// </summary>
     private static void Copys(string dir, string dir1)
@@ -290,6 +308,19 @@ public static class PathHelper
         info.Directory?.Create();
         using var stream = OpenWrite(local);
         stream.Write(data, 0, data.Length);
+    }
+
+    /// <summary>
+    /// 写文件
+    /// </summary>
+    /// <param name="local">路径</param>
+    /// <param name="data">数据</param>
+    public static void WriteBytes(string local, Stream data)
+    {
+        var info = new FileInfo(local);
+        info.Directory?.Create();
+        using var stream = OpenWrite(local);
+        data.CopyTo(stream);
     }
 
     /// <summary>

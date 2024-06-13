@@ -16,6 +16,9 @@ public static class InputControl
     public static event Action<Event>? OnEvent;
     public static bool IsEditMode = false;
 
+    /// <summary>
+    /// 手柄控制初始化
+    /// </summary>
     public static void Init()
     {
         sdl = Sdl.GetApi();
@@ -43,8 +46,15 @@ public static class InputControl
         _isRun = false;
     }
 
+    /// <summary>
+    /// 获取手柄数量
+    /// </summary>
     public static int Count => sdl.NumJoysticks();
 
+    /// <summary>
+    /// 获取手柄名字列表
+    /// </summary>
+    /// <returns></returns>
     public static List<string> GetNames()
     {
         var list = new List<string>();
@@ -82,6 +92,11 @@ public static class InputControl
         return result;
     }
 
+    /// <summary>
+    /// 打开手柄
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
     public static nint Open(int index)
     {
         unsafe
@@ -90,6 +105,10 @@ public static class InputControl
         }
     }
 
+    /// <summary>
+    /// 关闭手柄
+    /// </summary>
+    /// <param name="index"></param>
     public static void Close(nint index)
     {
         unsafe
@@ -98,6 +117,11 @@ public static class InputControl
         }
     }
 
+    /// <summary>
+    /// 获取手柄编号
+    /// </summary>
+    /// <param name="ptr"></param>
+    /// <returns></returns>
     public static unsafe int GetJoystickID(nint ptr)
     {
         var instanceID = sdl.GameControllerGetJoystick((GameController*)ptr);

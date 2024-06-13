@@ -459,7 +459,7 @@ public static class TestItem
         var list1 = ModrinthAPI.GetFileVersions(item.project_id, "", Loaders.Fabric).Result;
         var item1 = list1!.First();
 
-        InstallGameHelper.InstallModrinth(item1, null, null,
+        InstallGameHelper.InstallModrinth(item1, item, null, null,
             (a, b, c) => { }, Program.Download, (_) => Task.FromResult(true), (_, _) => { },
             (_) => { }).Wait();
     }
