@@ -61,6 +61,11 @@ public static class VersionPath
         }
     }
 
+    public static VersionObj? GetVersions()
+    {
+        return _version;
+    }
+
     /// <summary>
     /// 初始化
     /// </summary>

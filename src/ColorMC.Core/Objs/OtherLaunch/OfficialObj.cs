@@ -17,8 +17,13 @@ public record OfficialObj
     { 
         public string name { get; set; }
     }
+    public record ArgumentsObj
+    { 
+        public List<string> game { get; set; }
+    }
     public string id { get; set; }
     public string inheritsFrom { get; set; }
     public List<PatchObj> patches { get; set; }
     public List<LibrarieObj> libraries { get; set; }
+    public ArgumentsObj arguments { get; set; }
 }

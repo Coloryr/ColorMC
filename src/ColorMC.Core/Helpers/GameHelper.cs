@@ -616,8 +616,79 @@ public static class GameHelper
             }
         }
         else
-        { 
-            
+        {
+            var versions = VersionPath.GetVersions();
+            if (versions == null)
+            {
+                return null;
+            }
+            if (!string.IsNullOrWhiteSpace(obj.inheritsFrom))
+            {
+                if (versions.versions.Any(item => item.id == obj.inheritsFrom) == true)
+                {
+                    game.Version = obj.inheritsFrom;
+                }
+            }
+            else
+            {
+                if (versions.versions.Any(item => item.id == obj.id) == true)
+                {
+                    game.Version = obj.id;
+                }
+            }
+
+            foreach (var item in obj.libraries)
+            {
+                if (item.name.Contains("minecraftforge"))
+                {
+                    var names = item.name.Split(':');
+                    if (names.Length >= 3 && (names[1] is "forge" or "fmlloader"))
+                    {
+                        var args = names[2].Split('-');
+                        if (args.Length >= 2 && versions.versions.Any(item => item.id == args[0]))
+                        {
+                            game.Loader = Loaders.Forge;
+                            game.LoaderVersion = args[1];
+                        }
+                        break;
+                    }
+                }
+                else if (item.name.Contains("neoforged"))
+                {
+                    if (obj.arguments?.game is { } list)
+                    {
+                        for (int a = 0; a < list.Count; a++)
+                        {
+                            if (list[a] is "--fml.neoForgeVersion" or "--fml.forgeVersion" && list.Count > a + 1)
+                            {
+                                game.Loader = Loaders.NeoForge;
+                                game.LoaderVersion = list[a + 1];
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (item.name.Contains("fabricmc"))
+                {
+                    var names = item.name.Split(':');
+                    if (names.Length >= 3 && names[1] == "fabric-loader")
+                    {
+                        game.Loader = Loaders.Fabric;
+                        game.LoaderVersion = names[2];
+                        break;
+                    }
+                }
+                else if (item.name.Contains("quiltmc"))
+                {
+                    var names = item.name.Split(':');
+                    if (names.Length >= 3 && names[1] == "quilt-loader")
+                    {
+                        game.Loader = Loaders.Quilt;
+                        game.LoaderVersion = names[2];
+                        break;
+                    }
+                }
+            }
         }
         
         return game;
@@ -734,8 +805,7 @@ public static class GameHelper
         {
             Name = name,
             Version = (await GetGameVersions(GameType.Release))[0],
-            Loader = Loaders.Normal,
-            LoaderVersion = null
+            Loader = Loaders.Normal
         };
         game.GroupName = group;
 
