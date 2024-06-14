@@ -19,7 +19,7 @@ public record OfficialObj
     }
     public record ArgumentsObj
     { 
-        public List<string> game { get; set; }
+        public List<object> game { get; set; }
     }
     public string id { get; set; }
     public string inheritsFrom { get; set; }

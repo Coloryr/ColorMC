@@ -92,7 +92,7 @@ public static class GameBinding
     /// <param name="overwirte"></param>
     /// <returns></returns>
     public static async Task<bool> AddGame(string name, string local, List<string>? unselect,
-        string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
+        string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte, bool open)
     {
         var res = await GameHelper.AddGame(name, local, unselect, group, request, overwirte);
 
@@ -106,7 +106,7 @@ public static class GameBinding
             return false;
         }
 
-        if (res.Item2 != null)
+        if (res.Item2 != null && open)
         {
             App.ShowGameEdit(res.Item2);
         }

@@ -374,6 +374,11 @@ public static class GameHelper
                 game.Loader = Loaders.Forge;
                 game.LoaderVersion = item.version;
             }
+            else if (item.uid == "net.neoforged")
+            {
+                game.Loader = Loaders.NeoForge;
+                game.LoaderVersion = item.version;
+            }
             else if (item.uid == "net.fabricmc.fabric-loader")
             {
                 game.Loader = Loaders.Fabric;
@@ -390,6 +395,10 @@ public static class GameHelper
         if (list.TryGetValue("Name", out var item1))
         {
             game.Name = item1;
+        }
+        if (list.TryGetValue("name", out var item4))
+        {
+            game.Name = item4;
         }
         if (list.TryGetValue("JvmArgs", out item1))
         {
@@ -662,7 +671,7 @@ public static class GameHelper
                             if (list[a] is "--fml.neoForgeVersion" or "--fml.forgeVersion" && list.Count > a + 1)
                             {
                                 game.Loader = Loaders.NeoForge;
-                                game.LoaderVersion = list[a + 1];
+                                game.LoaderVersion = list[a + 1].ToString();
                                 break;
                             }
                         }
@@ -792,6 +801,7 @@ public static class GameHelper
                     {
                         game = ToColorMC(obj1);
                         isfind = true;
+                        break;
                     }
                 }
                 catch
@@ -863,5 +873,62 @@ public static class GameHelper
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// 扫描目录下的游戏版本
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
+    public static List<string> ScanVersions(string dir)
+    {
+        var list = new List<string>();
+        var dirs = PathHelper.GetDirs(dir);
+        foreach (var item in dirs)
+        {
+            if (item.Name == "versions")
+            {
+                var dirs1 = PathHelper.GetDirs(item.FullName);
+                foreach (var item2 in dirs1)
+                {
+                    if (IsMinecraftVersion(item2.FullName))
+                    {
+                        list.Add(item2.FullName);
+                    }
+                }
+                if (list.Count > 0)
+                {
+                    return list;
+                }
+            }
+            if (item.Name == "instances")
+            {
+                var dirs1 = PathHelper.GetDirs(item.FullName);
+                foreach (var item2 in dirs1)
+                {
+                    if (IsMMCVersion(item2.FullName))
+                    {
+                        list.Add(item2.FullName);
+                    }
+                }
+                if (list.Count > 0)
+                {
+                    return list;
+                }
+            }
+
+            if (IsMinecraftVersion(item.FullName))
+            {
+                list.Add(item.FullName);
+                continue;
+            }
+
+            if (IsMMCVersion(item.FullName))
+            {
+                list.Add(item.FullName);
+            }
+        }
+
+        return list;
     }
 }

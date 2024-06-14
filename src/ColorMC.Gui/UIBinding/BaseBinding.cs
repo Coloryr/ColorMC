@@ -87,6 +87,7 @@ public static class BaseBinding
         };
         ColorMCCore.OnDownload = App.StartDownload;
         ColorMCCore.GameExit += GameExit;
+        ColorMCCore.InstanceChange += InstanceChange;
 
         if (ColorMCGui.RunType == RunType.Program && SystemInfo.Os != OsType.Android)
         {
@@ -115,6 +116,11 @@ public static class BaseBinding
         {
             LongPressed.Released();
         }, handledEventsToo: true);
+    }
+
+    private static void InstanceChange()
+    {
+        App.MainWindow?.LoadMain();
     }
 
     /// <summary>

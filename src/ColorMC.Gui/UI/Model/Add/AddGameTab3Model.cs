@@ -53,15 +53,8 @@ public partial class AddGameModel
                 return;
             }
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info2"));
-            _fileModel = await Task.Run(() =>
-            {
-                return new FilesPageModel(SelectPath, true,
-                    ["assets", "libraries", "versions", "launcher_profiles.json"]);
-            });
-            Model.ProgressClose();
-            Files = _fileModel.Source;
 
-            var list = DoScan();
+            var list = GameHelper.ScanVersions(SelectPath);
             if (list.Count > 0)
             {
                 res = await Model.ShowWait(string.Format(App.Lang("AddGameWindow.Tab3.Info4"), list.Count));
@@ -71,6 +64,14 @@ public partial class AddGameModel
                     return;
                 }
             }
+
+            _fileModel = await Task.Run(() =>
+            {
+                return new FilesPageModel(SelectPath, true,
+                    ["assets", "libraries", "versions", "launcher_profiles.json"]);
+            });
+            Model.ProgressClose();
+            Files = _fileModel.Source;
 
             CanInput = true;
         }
@@ -116,7 +117,7 @@ public partial class AddGameModel
 
         Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
         var res = await GameBinding.AddGame(Name, SelectPath, _fileModel.GetUnSelectItems(),
-            Group, Tab2GameRequest, Tab2GameOverwirte);
+            Group, Tab2GameRequest, Tab2GameOverwirte, true);
         Model.ProgressClose();
 
         if (!res)
@@ -163,51 +164,13 @@ public partial class AddGameModel
         await RefashFiles();
     }
 
-    private List<string> DoScan()
-    {
-        var list = new List<string>();
-        foreach (var item in Files!.Items)
-        {
-            foreach (var item1 in item.Children)
-            {
-                if (item1.Name == "versions")
-                {
-                    foreach (var item2 in item1.Children)
-                    {
-                        if (GameHelper.IsMinecraftVersion(item2.Path))
-                        {
-                            list.Add(item2.Path);
-                        }
-                    }
-                    if (list.Count > 0)
-                    {
-                        return list;
-                    }
-                }
-
-                if (GameHelper.IsMinecraftVersion(item1.Path))
-                {
-                    list.Add(item1.Path);
-                    continue;
-                }
-
-                if (GameHelper.IsMMCVersion(item1.Path))
-                {
-                    list.Add(item1.Path);
-                }
-            }
-        }
-
-        return list;
-    }
-
     private async Task Import(List<string> list)
     {
         bool ok = true;
         foreach (var item in list)
         {
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
-            var res = await GameBinding.AddGame("", item, null, Group, Tab2GameRequest, Tab2GameOverwirte);
+            var res = await GameBinding.AddGame("", item, null, Group, Tab2GameRequest, Tab2GameOverwirte, false);
             Model.ProgressClose();
 
             if (!res)

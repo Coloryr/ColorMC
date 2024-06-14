@@ -100,6 +100,24 @@ public static class PathHelper
     }
 
     /// <summary>
+    /// 获取当前目录所有目录
+    /// </summary>
+    /// <param name="local">路径</param>
+    /// <returns>目录列表</returns>
+    public static List<DirectoryInfo> GetDirs(string local)
+    {
+        var list = new List<DirectoryInfo>();
+        var info = new DirectoryInfo(local);
+        if (!info.Exists)
+        {
+            return list;
+        }
+
+        list.AddRange(info.GetDirectories());
+        return list;
+    }
+
+    /// <summary>
     /// 复制文件夹
     /// </summary>
     private static void Copys(string dir, string dir1)
