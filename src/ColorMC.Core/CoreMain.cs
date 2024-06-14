@@ -139,7 +139,10 @@ public static class ColorMCCore
     /// 游戏退出事件
     /// </summary>
     public static event Action<GameSettingObj, LoginObj, int> GameExit;
-
+    /// <summary>
+    /// 游戏实例数量修改事件
+    /// </summary>
+    public static event Action? InstanceChange;
     /// <summary>
     /// 手机端启动
     /// </summary>
@@ -306,5 +309,13 @@ public static class ColorMCCore
     internal static void OnNettyPack(IChannel channel, IByteBuffer buffer)
     {
         NettyPack?.Invoke(channel, buffer);
+    }
+
+    /// <summary>
+    /// 游戏实例数量修改
+    /// </summary>
+    internal static void OnInstanceChange()
+    {
+        InstanceChange?.Invoke();
     }
 }

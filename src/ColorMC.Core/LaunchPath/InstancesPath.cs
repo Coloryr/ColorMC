@@ -2,7 +2,6 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
@@ -40,6 +39,8 @@ public static class InstancesPath
     public const string Name25 = "loader.jar";
 
     public const string DefaultGroup = " ";
+
+    private static FileSystemWatcher s_systemWatcher;
 
     /// <summary>
     /// 游戏实例列表
@@ -149,33 +150,73 @@ public static class InstancesPath
         var list = Directory.GetDirectories(BaseDir);
         foreach (var item in list)
         {
-            var file = Path.GetFullPath(item + "/" + Name1);
-            if (!File.Exists(file))
+            LoadInstance(item);
+        }
+
+        s_systemWatcher = new FileSystemWatcher(BaseDir);
+        s_systemWatcher.BeginInit();
+        s_systemWatcher.EnableRaisingEvents = true;
+        s_systemWatcher.IncludeSubdirectories = false;
+        s_systemWatcher.Created += SystemWatcher_Created;
+        s_systemWatcher.Deleted += SystemWatcher_Deleted;
+        s_systemWatcher.EndInit();
+    }
+
+    private static void LoadInstance(string item)
+    {
+        var file = Path.GetFullPath(item + "/" + Name1);
+        if (!File.Exists(file))
+        {
+            return;
+        }
+
+        try
+        {
+            var data1 = PathHelper.ReadText(file)!;
+            var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
+            if (game != null)
             {
-                continue;
+                var path = Path.GetFileName(item);
+                if (path != game.DirName)
+                {
+                    game.DirName = path;
+                    game.Save();
+                }
+                game.ReadModInfo();
+                game.ReadLaunchData();
+                game.AddToGroup();
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Game.Error19"), e);
+        }
+    }
+
+    private static void SystemWatcher_Deleted(object sender, FileSystemEventArgs e)
+    {
+        var local = e.FullPath;
+
+        var obj = s_installGames.Values.FirstOrDefault(item => item.DirName == e.Name);
+        obj?.RemoveFromGroup();
+
+        ColorMCCore.OnInstanceChange();
+    }
+
+    private static void SystemWatcher_Created(object sender, FileSystemEventArgs e)
+    {
+        var local = e.FullPath;
+        if (Directory.Exists(local))
+        {
+            var obj = s_installGames.Values.FirstOrDefault(item => item.DirName == e.Name);
+            if (obj != null)
+            {
+                return;
             }
 
-            try
-            {
-                var data1 = PathHelper.ReadText(file)!;
-                var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
-                if (game != null)
-                {
-                    var path = Path.GetFileName(item);
-                    if (path != game.DirName)
-                    {
-                        game.DirName = path;
-                        game.Save();
-                    }
-                    game.ReadModInfo();
-                    game.ReadLaunchData();
-                    game.AddToGroup();
-                }
-            }
-            catch(Exception e)
-            {
-                Logs.Error(LanguageHelper.Get("Core.Game.Error19"), e);
-            }
+            LoadInstance(local);
+
+            ColorMCCore.OnInstanceChange();
         }
     }
 
