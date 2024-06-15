@@ -125,6 +125,10 @@ public static class CheckHelpers
     public static bool IsGameVersion1202(string version)
     {
         Version version1 = new(version);
+        if (version1.Minor > 20)
+        {
+            return true;
+        }
         return version1.Minor >= 20 && version1.Build >= 2;
     }
 
