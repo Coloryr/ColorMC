@@ -196,6 +196,10 @@ public static partial class StringHelper
         return builder.ToString();
     }
 
+    /// <summary>
+    /// 版本号排序
+    /// </summary>
+    /// <param name="list"></param>
     public static void VersionSort(List<string> list)
     {
         var regex = VersionRegex();
