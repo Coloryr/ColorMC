@@ -403,7 +403,6 @@ public static class UrlHelper
     /// <returns></returns>
     public static (bool, string?) UrlChange(string old)
     {
-        //var random = new Random();
         if (BaseClient.Source == SourceLocal.Offical)
         {
             if (old.StartsWith(Forge))
