@@ -342,6 +342,20 @@ public static class PathHelper
     }
 
     /// <summary>
+    /// 写文件
+    /// </summary>
+    /// <param name="local"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static Task WriteBytesAsync(string local, Stream data)
+    {
+        var info = new FileInfo(local);
+        info.Directory?.Create();
+        using var stream = OpenWrite(local);
+        return data.CopyToAsync(stream);
+    }
+
+    /// <summary>
     /// 替换文件名非法字符
     /// </summary>
     /// <param name="name"></param>

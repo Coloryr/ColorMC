@@ -60,7 +60,8 @@ public static class InstallGameHelper
                         if (game == null)
                             break;
 
-                        if (InstancesPath.HaveGameWithName(game.Name))
+                        var res = await GameHelper.CheckNameAndAutoRename(game, request, overwirte);
+                        if (!res)
                         {
                             break;
                         }
@@ -71,12 +72,8 @@ public static class InstallGameHelper
                             {
                                 using var stream = zFile.GetInputStream(e);
                                 var path = game.GetBasePath();
-                                string file = Path.GetFullPath(path + '\\' + e.Name);
-                                FileInfo info2 = new(file);
-                                info2.Directory?.Create();
-                                using FileStream stream2 = new(file, FileMode.Create,
-                                    FileAccess.ReadWrite, FileShare.ReadWrite);
-                                await stream.CopyToAsync(stream2);
+                                string file = Path.GetFullPath(path + '/' + e.Name);
+                                await PathHelper.WriteBytesAsync(file, stream);
                             }
                         }
 

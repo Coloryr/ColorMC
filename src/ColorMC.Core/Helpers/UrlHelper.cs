@@ -33,9 +33,7 @@ public static class UrlHelper
     public const string Quilt = "https://maven.quiltmc.org/";
     public const string QuiltMeta = "https://meta.quiltmc.org/";
     public const string OptiFine = "https://optifine.net/";
-    public const string NeoForge = "https://maven.neoforged.net/";
-
-    public const string NeoForgeDownload = "https://maven.neoforged.net/releases/";
+    public const string NeoForge = "https://maven.neoforged.net/releases/";
 
     public const string Minecraft = "https://www.minecraft.net/";
     public const string MinecraftLib = "https://libraries.minecraft.net/";
@@ -196,7 +194,7 @@ public static class UrlHelper
         string? url = local switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/neoforged/{baseurl}",
-            _ => $"{NeoForge}releases/net/neoforged/{baseurl}"
+            _ => $"{NeoForge}net/neoforged/{baseurl}"
         };
 
         return url;
@@ -235,7 +233,7 @@ public static class UrlHelper
             return url;
         }
 
-        url = url.Replace(NeoForgeDownload, to);
+        url = url.Replace(NeoForge, to);
 
         return url;
     }
@@ -370,7 +368,7 @@ public static class UrlHelper
         return local switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{version}",
-            _ => $"{NeoForge}releases/net/neoforged/forge/maven-metadata.xml"
+            _ => $"{NeoForge}net/neoforged/forge/maven-metadata.xml"
         };
     }
 
@@ -385,7 +383,7 @@ public static class UrlHelper
             return local switch
             {
                 SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
-                _ => $"{NeoForge}releases/net/neoforged/neoforge/maven-metadata.xml"
+                _ => $"{NeoForge}net/neoforged/neoforge/maven-metadata.xml"
             };
         }
         else
@@ -393,7 +391,7 @@ public static class UrlHelper
             return local switch
             {
                 SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
-                _ => $"{NeoForge}releases/net/neoforged/forge/maven-metadata.xml"
+                _ => $"{NeoForge}net/neoforged/forge/maven-metadata.xml"
             };
         }
     }

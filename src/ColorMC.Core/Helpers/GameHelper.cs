@@ -931,4 +931,29 @@ public static class GameHelper
 
         return list;
     }
+
+    public static async Task<bool> CheckNameAndAutoRename(GameSettingObj game, ColorMCCore.Request request,
+        ColorMCCore.GameOverwirte overwirte)
+    {
+        if (InstancesPath.HaveGameWithName(game.Name))
+        {
+            var res = await overwirte(game);
+            if (!res)
+            {
+                res = await request(LanguageHelper.Get("Core.Game.Error20"));
+                if (!res)
+                {
+                    return false;
+                }
+                int a = 1;
+                do
+                {
+                    game.Name += $"({a})";
+                }
+                while (!InstancesPath.HaveGameWithName(game.Name));
+            }
+        }
+
+        return true;
+    }
 }
