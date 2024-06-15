@@ -302,7 +302,7 @@ public static class ForgeAPI
                 {
                     var str = item.InnerText;
                     var args = str.Split('.');
-                    var mc1 = "1." + args[0] + "." + args[1];
+                    var mc1 = "1." + args[0] + (args[1] == "0" ? "" : "." + args[1]);
                     var version = str;
 
                     if (!s_neoSupportVersion!.Contains(mc1))
@@ -328,6 +328,4 @@ public static class ForgeAPI
             }
         }
     }
-
-
 }

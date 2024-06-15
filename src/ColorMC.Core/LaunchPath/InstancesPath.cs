@@ -162,6 +162,10 @@ public static class InstancesPath
         s_systemWatcher.EndInit();
     }
 
+    /// <summary>
+    /// 加载游戏实例
+    /// </summary>
+    /// <param name="item"></param>
     private static void LoadInstance(string item)
     {
         var file = Path.GetFullPath(item + "/" + Name1);
@@ -251,9 +255,14 @@ public static class InstancesPath
         return s_installGames.Values.FirstOrDefault(a => a.Name == name);
     }
 
+    /// <summary>
+    /// 是否存在该名字的实例
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static bool HaveGameWithName(string name)
     {
-        return s_installGames.ContainsKey(name);
+        return s_installGames.Values.Any(item => item.Name == name);
     }
 
     /// <summary>
