@@ -563,7 +563,7 @@ public static class CheckHelpers
             }, cancel));
         }
 
-        await Task.WhenAll(list1.ToArray());
+        await Task.WhenAll([.. list1]);
 
         return list;
     }

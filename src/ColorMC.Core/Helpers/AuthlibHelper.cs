@@ -22,12 +22,12 @@ public static class AuthlibHelper
     /// </summary>
     public static string NowNide8Injector { get; private set; }
 
-    private static AuthlibInjectorObj LocalAuthLib = new()
+    private static readonly AuthlibInjectorObj LocalAuthLib = new()
     {
-        build_number = 51,
-        checksums = new() { sha256 = "d3ec36486b0a5ab5a16069733cd8d749950c2d62e1bdacaf27864b30b92c1c7f" },
-        download_url = "https://authlib-injector.yushi.moe/artifact/51/authlib-injector-1.2.3.jar",
-        version = "1.2.3"
+        build_number = 53,
+        checksums = new() { sha256 = "3bc9ebdc583b36abd2a65b626c4b9f35f21177fbf42a851606eaaea3fd42ee0f" },
+        download_url = "https://authlib-injector.yushi.moe/artifact/53/authlib-injector-1.2.5.jar",
+        version = "1.2.5"
     };
 
     /// <summary>

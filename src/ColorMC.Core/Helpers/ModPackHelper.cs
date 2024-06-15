@@ -337,8 +337,9 @@ public static class ModPackHelper
             name = $"{info.name}-{info.version}";
         }
 
+
         //创建游戏实例
-        var game = await InstancesPath.CreateGame(new()
+        var game = new GameSettingObj()
         {
             GroupName = group,
             Name = name,
@@ -347,7 +348,9 @@ public static class ModPackHelper
             Loader = loaders,
             ModPackType = SourceType.CurseForge,
             LoaderVersion = loaderversion
-        }, request, overwirte);
+        };
+
+        game = await InstancesPath.CreateGame(game, request, overwirte);
 
         if (game == null)
         {
@@ -826,7 +829,7 @@ public static class ModPackHelper
         }
 
         //创建游戏实例
-        var game = await InstancesPath.CreateGame(new()
+        var game = await InstancesPath.CreateGame(new GameSettingObj()
         {
             GroupName = group,
             Name = name,

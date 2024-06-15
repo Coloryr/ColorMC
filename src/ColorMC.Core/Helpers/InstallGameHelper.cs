@@ -60,11 +60,7 @@ public static class InstallGameHelper
                         if (game == null)
                             break;
 
-                        var res = await GameHelper.CheckNameAndAutoRename(game, request, overwirte);
-                        if (!res)
-                        {
-                            break;
-                        }
+                        var res = game.CreateGame(request, overwirte);
 
                         foreach (ZipEntry e in zFile)
                         {
@@ -76,8 +72,6 @@ public static class InstallGameHelper
                                 await PathHelper.WriteBytesAsync(file, stream);
                             }
                         }
-
-                        game.AddToGroup();
 
                         update2(CoreRunState.End);
                         import = true;

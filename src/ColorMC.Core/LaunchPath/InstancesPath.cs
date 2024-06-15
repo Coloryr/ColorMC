@@ -542,6 +542,25 @@ public static class InstancesPath
     public static async Task<GameSettingObj?> CreateGame(this GameSettingObj game,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
+        if (HaveGameWithName(game.Name))
+        {
+            var res = await overwirte(game);
+            if (!res)
+            {
+                res = await request(LanguageHelper.Get("Core.Game.Error20"));
+                if (!res)
+                {
+                    return null;
+                }
+                int a = 1;
+                do
+                {
+                    game.Name += $"({a})";
+                }
+                while (!HaveGameWithName(game.Name));
+            }
+        }
+
         if (string.IsNullOrWhiteSpace(game.Name))
         {
             throw new ArgumentException("Name can't be empty");
