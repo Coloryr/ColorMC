@@ -830,6 +830,11 @@ public static class GameHelper
         return (true, game, null);
     }
 
+    /// <summary>
+    /// 是否为Minecraft原版版本
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
     public static bool IsMinecraftVersion(string dir)
     {
         bool find = false;
@@ -863,6 +868,11 @@ public static class GameHelper
         return find;
     }
 
+    /// <summary>
+    /// 是否为MMC版本
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
     public static bool IsMMCVersion(string dir)
     {
         var file1 = Path.GetFullPath(dir + "/" + "mmc-pack.json");
@@ -930,30 +940,5 @@ public static class GameHelper
         }
 
         return list;
-    }
-
-    public static async Task<bool> CheckNameAndAutoRename(GameSettingObj game, ColorMCCore.Request request,
-        ColorMCCore.GameOverwirte overwirte)
-    {
-        if (InstancesPath.HaveGameWithName(game.Name))
-        {
-            var res = await overwirte(game);
-            if (!res)
-            {
-                res = await request(LanguageHelper.Get("Core.Game.Error20"));
-                if (!res)
-                {
-                    return false;
-                }
-                int a = 1;
-                do
-                {
-                    game.Name += $"({a})";
-                }
-                while (!InstancesPath.HaveGameWithName(game.Name));
-            }
-        }
-
-        return true;
     }
 }

@@ -27,9 +27,9 @@ public static class DownloadItemHelper
     {
         return new()
         {
-            Name = "mcaselector-2.2.2",
-            Local = Path.GetFullPath($"{ToolPath.BaseDir}/mcaselector-2.2.2.jar"),
-            Url = "https://github.com/Querz/mcaselector/releases/download/2.2.2/mcaselector-2.2.2.jar"
+            Name = "mcaselector-2.4.1",
+            Local = Path.GetFullPath($"{ToolPath.BaseDir}/mcaselector-2.4.1.jar"),
+            Url = "https://github.com/Querz/mcaselector/releases/download/2.4.1/mcaselector-2.4.1.jar"
         };
     }
     /// <summary>
