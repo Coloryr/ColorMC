@@ -436,7 +436,7 @@ public static class Launch
     {
         RunArgObj args;
 
-        var v2 = CheckHelpers.IsGameVersionV2(obj);
+        var v2 = obj.IsGameVersionV2();
 
         if (obj.JvmArg == null)
         {
@@ -609,7 +609,7 @@ public static class Launch
         var gameArg = new List<string>();
         if (obj.JvmArg?.RemoveGameArg != true)
         {
-            var v2 = CheckHelpers.IsGameVersionV2(obj);
+            var v2 = obj.IsGameVersionV2();
             gameArg.AddRange(v2 ? obj.MakeV2GameArg() : obj.MakeV1GameArg());
         }
 
@@ -861,7 +861,7 @@ public static class Launch
     {
         var version = VersionPath.GetVersion(obj.Version)
             ?? throw new Exception(string.Format(LanguageHelper.Get("Core.Check.Error1"), obj.Version));
-        var v2 = CheckHelpers.IsGameVersionV2(version);
+        var v2 = version.IsGameVersionV2();
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
         {
             return obj.AdvanceJvm.MainClass;
@@ -1001,7 +1001,11 @@ public static class Launch
         {
             stopwatch.Restart();
             stopwatch.Start();
-            var pack = await obj.ServerPackCheckAsync(larg.State, larg.Select);
+            var pack = await obj.ServerPackCheckAsync(new ServerPackCheckArg
+            {
+                State = larg.State,
+                Select = larg.Select
+            });
             stopwatch.Stop();
             temp = string.Format(LanguageHelper.Get("Core.Launch.Info14"),
                 obj.Name, stopwatch.Elapsed.ToString());
@@ -1023,15 +1027,23 @@ public static class Launch
             }
         }
 
+        larg.Update2?.Invoke(obj, LaunchState.Check);
+
         //检查游戏文件
         stopwatch.Restart();
         stopwatch.Start();
-        var res = await CheckHelpers.CheckGameFileAsync(obj, larg.Login, larg.Update2, token);
+        var res = await obj.CheckGameFileAsync(token);
+        var res3 = await larg.Login.CheckLoginCoreAsync();
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
+
+        if (res3 != null)
+        {
+            res.Add(res3);
+        }
 
         if (obj.GetModeFast() && obj.Loader == Loaders.Normal && larg.Request != null)
         {
@@ -1249,7 +1261,7 @@ public static class Launch
         {
             //安装Forge
             var version = VersionPath.GetVersion(obj.Version)!;
-            var v2 = CheckHelpers.IsGameVersionV2(version);
+            var v2 = version.IsGameVersionV2();
             if (v2 && obj.Loader is Loaders.Forge or Loaders.NeoForge)
             {
                 var obj1 = obj.Loader is Loaders.Forge

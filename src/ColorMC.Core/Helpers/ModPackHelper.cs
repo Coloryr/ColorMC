@@ -175,7 +175,7 @@ public static class ModPackHelper
 
                 var path1 = await GetCurseForgeItemPath(obj, res.data);
                 var modid = res.data.modId.ToString();
-                list1.Add(res.data.MakeModDownloadObj(obj, path1.Item1));
+                list1.Add(res.data.MakeModDownloadObj(path1.Item1));
                 obj.Mods.Add(modid, res.data.MakeModInfo(path1.Item2));
             }
         }

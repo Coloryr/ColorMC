@@ -104,3 +104,81 @@ public record GameMakeArg
     public WorldObj? World;
     public int? Mixinport;
 }
+
+/// <summary>
+/// 生成服务器包参数
+/// </summary>
+public record ServerPackGenArg
+{
+    /// <summary>
+    /// 保存路径
+    /// </summary>
+    public required string Local;
+    public ColorMCCore.Request? Request;
+}
+
+/// <summary>
+/// 服务器包检查参数
+/// </summary>
+public record ServerPackCheckArg
+{
+    public ColorMCCore.UpdateState? State;
+    public ColorMCCore.ChoiseCall? Select;
+}
+
+/// <summary>
+/// 解压世界参数
+/// </summary>
+public record UnzipBackupWorldArg
+{
+    /// <summary>
+    /// 文件位置
+    /// </summary>
+    public required string File;
+    public ColorMCCore.Request Request;
+}
+
+/// <summary>
+/// 导入文件夹参数
+/// </summary>
+public record AddGameArg
+{
+    /// <summary>
+    /// 位置
+    /// </summary>
+    public required string Local;
+    /// <summary>
+    /// 名字
+    /// </summary>
+    public string Name;
+    /// <summary>
+    /// 不导入的文件列表
+    /// </summary>
+    public List<string>? Unselect;
+    /// <summary>
+    /// 游戏组
+    /// </summary>
+    public string? Group;
+    public ColorMCCore.Request? Request;
+    public ColorMCCore.GameOverwirte? Overwirte;
+}
+
+/// <summary>
+/// 创建游戏版本参数
+/// </summary>
+public record CreateGameArg
+{
+    public required GameSettingObj Game;
+    public ColorMCCore.Request Request;
+    public ColorMCCore.GameOverwirte Overwirte;
+}
+
+/// <summary>
+/// 创建游戏版本参数
+/// </summary>
+public record CopyGameArg
+{
+    public required string Game;
+    public ColorMCCore.Request Request;
+    public ColorMCCore.GameOverwirte Overwirte;
+}

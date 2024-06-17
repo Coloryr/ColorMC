@@ -44,6 +44,10 @@ public static class Screenshots
         }
     }
 
+    /// <summary>
+    /// 删除屏幕截图
+    /// </summary>
+    /// <param name="file"></param>
     public static void Delete(string file)
     {
         PathHelper.Delete(file);

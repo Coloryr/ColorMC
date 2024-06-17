@@ -539,16 +539,14 @@ public static class InstancesPath
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>结果</returns>
-    public static async Task<GameSettingObj?> CreateGame(this GameSettingObj game,
-        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
+    public static async Task<GameSettingObj?> CreateGame(CreateGameArg arg)
     {
+        var game = arg.Game;
         if (HaveGameWithName(game.Name))
         {
-            var res = await overwirte(game);
-            if (!res)
+            if (arg.Overwirte == null || await arg.Overwirte(game) == false)
             {
-                res = await request(LanguageHelper.Get("Core.Game.Error20"));
-                if (!res)
+                if (arg.Request != null && await arg.Request(LanguageHelper.Get("Core.Game.Error20")) == false)
                 {
                     return null;
                 }
@@ -566,28 +564,20 @@ public static class InstancesPath
             throw new ArgumentException("Name can't be empty");
         }
         var value = s_installGames.Values.FirstOrDefault(item => item.DirName == game.Name);
-        if (value != null)
+        if (value != null
+            && s_installGames.Remove(value.UUID, out var temp)
+            && !await Remove(temp, arg.Request))
         {
-            if (await overwirte(game) == false)
-            {
-                return null;
-            }
-
-            if (s_installGames.Remove(value.UUID, out var temp))
-            {
-                if (!await Remove(temp, request))
-                {
-                    return null;
-                }
-            }
+            return null;
         }
+
         game.DirName = game.Name;
 
         var dir = game.GetBasePath();
         if (!await PathHelper.DeleteFilesAsync(new DeleteFilesArg
         {
             Local = dir,
-            Request = request
+            Request = arg.Request
         }))
         {
             return null;
@@ -770,7 +760,12 @@ public static class InstancesPath
     {
         var obj1 = obj.CopyObj();
         obj1.Name = name;
-        obj1 = await CreateGame(obj1, request, overwirte);
+        obj1 = await CreateGame(new CreateGameArg
+        { 
+            Game = obj1,
+            Request = request,
+            Overwirte = overwirte 
+        });
         if (obj1 != null)
         {
             await PathHelper.CopyDir(GetGamePath(obj), GetGamePath(obj1));
@@ -932,7 +927,7 @@ public static class InstancesPath
     /// 删除游戏实例
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static Task<bool> Remove(this GameSettingObj obj, ColorMCCore.Request request)
+    public static Task<bool> Remove(this GameSettingObj obj, ColorMCCore.Request? request)
     {
         obj.RemoveFromGroup();
         PathHelper.Delete(obj.GetGameJsonFile());
@@ -984,13 +979,11 @@ public static class InstancesPath
         if (File.Exists(file))
         {
             var res = await DownloadItemHelper.DecodeLoaderJarAsync(obj);
-
-            var name = res.name;
-
-            if (string.IsNullOrWhiteSpace(name))
+            if (res == null)
             {
                 return null;
             }
+            var name = res.Name;
 
             if (VersionPath.GetCustomLoaderObj(obj.UUID) == null)
             {
@@ -1018,7 +1011,7 @@ public static class InstancesPath
 
         var list = await DownloadItemHelper.DecodeLoaderJarAsync(obj, path);
 
-        if (list.Item1 == null)
+        if (list == null)
         {
             return (false, LanguageHelper.Get("Core.Game.Error17"));
         }

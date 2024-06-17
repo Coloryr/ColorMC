@@ -315,7 +315,7 @@ public static class Mods
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>Mod列表</returns>
-    public static async Task<List<ModObj>> GetModsAsync(this GameSettingObj obj, bool sha256)
+    public static async Task<List<ModObj>> GetModsAsync(this GameSettingObj obj, bool sha256 = false)
     {
         var list = new ConcurrentBag<ModObj>();
         var dir = obj.GetModsPath();

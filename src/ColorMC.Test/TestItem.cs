@@ -39,7 +39,7 @@ public static class TestItem
         else
         {
             //GameDownload.Download(version.versions.First()).Wait();
-            var list = DownloadItemHelper.DownloadAsync(version.versions.Where(a => a.id == "1.12.2").First()).Result;
+            var list = DownloadItemHelper.BuildVersionDownloadAsync(version.versions.Where(a => a.id == "1.12.2").First()).Result;
             if (list.State != GetDownloadState.End)
             {
                 Console.WriteLine("下载列表获取失败");
@@ -570,18 +570,18 @@ public static class TestItem
         var res = CheckHelpers.CheckForgeInstall(obj, "47.1.76", true);
     }
 
-    public static void Item33()
-    {
-        var client = new LanClient
-        {
-            FindLan = (motd, ip, port) =>
-            {
-                Console.WriteLine($"发现服务器 {ip} {port} {motd}");
-            }
-        };
-        var server = new LanServer("25565", "测试服务器");
+    //public static void Item33()
+    //{
+    //    var client = new LanClient
+    //    {
+    //        FindLan = (motd, ip, port) =>
+    //        {
+    //            Console.WriteLine($"发现服务器 {ip} {port} {motd}");
+    //        }
+    //    };
+    //    var server = new LanServer("25565", "测试服务器");
 
-    }
+    //}
 
     public static void Item34()
     {

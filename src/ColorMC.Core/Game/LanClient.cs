@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using ColorMC.Core.Helpers;
 
 namespace ColorMC.Core.Game;
 
@@ -19,8 +20,10 @@ public class LanClient
 
     public LanClient()
     {
+        //Minecraft原版组播地址
         _socketV4 = new(new IPEndPoint(IPAddress.Any, 4445));
         _socketV4.JoinMulticastGroup(IPAddress.Parse("224.0.2.60"));
+        //neoforge组播地址
         _socketV6 = new(new IPEndPoint(IPAddress.IPv6Any, 4445));
         _socketV6.JoinMulticastGroup(IPAddress.Parse("FF75:230::60"));
 
@@ -41,8 +44,8 @@ public class LanClient
                     string temp = Encoding.UTF8.GetString(data.Buffer);
                     var point = data.RemoteEndPoint;
 
-                    string motd = GetMotd(temp);
-                    string? ad = GetAd(temp);
+                    string motd = LanGameHelper.GetMotd(temp);
+                    string? ad = LanGameHelper.GetAd(temp);
 
                     if (ad != null)
                     {
@@ -71,8 +74,8 @@ public class LanClient
                     string temp = Encoding.UTF8.GetString(data.Buffer);
                     var point = data.RemoteEndPoint;
 
-                    string motd = GetMotd(temp);
-                    string? ad = GetAd(temp);
+                    string motd = LanGameHelper.GetMotd(temp);
+                    string? ad = LanGameHelper.GetAd(temp);
 
                     if (ad != null)
                     {
@@ -98,63 +101,5 @@ public class LanClient
 
         _socketV4.Close();
         _socketV4.Dispose();
-    }
-
-    /// <summary>
-    /// 获取Motd信息
-    /// </summary>
-    /// <param name="input">输入字符串</param>
-    /// <returns>Motd信息</returns>
-    public static string GetMotd(string input)
-    {
-        int i = input.IndexOf("[MOTD]");
-
-        if (i < 0)
-        {
-            return "missing no";
-        }
-        else
-        {
-            int j = input.IndexOf("[/MOTD]", i + "[MOTD]".Length);
-            return j < i ? "missing no" : input[(i + "[MOTD]".Length)..j];
-        }
-    }
-
-    /// <summary>
-    /// 获取地址信息
-    /// </summary>
-    /// <param name="input">输入字符串</param>
-    /// <returns>地址信息</returns>
-    public static string? GetAd(string input)
-    {
-        int i = input.IndexOf("[/MOTD]");
-
-        if (i < 0)
-        {
-            return null;
-        }
-        else
-        {
-            int j = input.IndexOf("[/MOTD]", i + "[/MOTD]".Length);
-
-            if (j >= 0)
-            {
-                return null;
-            }
-            else
-            {
-                int k = input.IndexOf("[AD]", i + "[/MOTD]".Length);
-
-                if (k < 0)
-                {
-                    return null;
-                }
-                else
-                {
-                    int l = input.IndexOf("[/AD]", k + "[AD]".Length);
-                    return l < k ? null : input[(k + "[AD]".Length)..l];
-                }
-            }
-        }
     }
 }

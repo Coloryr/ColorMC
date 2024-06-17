@@ -214,61 +214,57 @@ public static class Worlds
     /// <param name="obj">游戏实例</param>
     /// <param name="item1">文件</param>
     /// <returns>还原结果</returns>
-    public static async Task<bool> UnzipBackupWorldAsync(this GameSettingObj obj, FileInfo item1,
-        ColorMCCore.Request request)
+    public static async Task<bool> UnzipBackupWorldAsync(this GameSettingObj obj, UnzipBackupWorldArg arg)
     {
         var local = "";
+        var res = false;
 
+        using var s = new ZipInputStream(PathHelper.OpenRead(arg.File));
+        using var stream1 = new MemoryStream();
+        ZipEntry theEntry;
+        while ((theEntry = s.GetNextEntry()) != null)
         {
-            var res = false;
+            if (theEntry.Name == Name2)
+            {
+                await s.CopyToAsync(stream1);
+                res = true;
+                break;
+            }
+        }
+        if (!res)
+        {
+            return false;
+        }
+        var data = stream1.ToArray();
+        var data1 = Encoding.UTF8.GetString(data);
+        var info = JObject.Parse(data1);
+        var name = info?["name"]?.ToString();
+        if (name == null)
+        {
+            return false;
+        }
 
-            using var s = new ZipInputStream(PathHelper.OpenRead(item1.FullName));
-            using var stream1 = new MemoryStream();
-            ZipEntry theEntry;
-            while ((theEntry = s.GetNextEntry()) != null)
-            {
-                if (theEntry.Name == Name2)
-                {
-                    await s.CopyToAsync(stream1);
-                    res = true;
-                    break;
-                }
-            }
-            if (!res)
-            {
-                return false;
-            }
-            var data = stream1.ToArray();
-            var data1 = Encoding.UTF8.GetString(data);
-            var info = JObject.Parse(data1);
-            var name = info?["name"]?.ToString();
-            if (name == null)
-            {
-                return false;
-            }
+        var list1 = await obj.GetWorldsAsync();
+        var item = list1.FirstOrDefault(a => a.LevelName == name);
 
-            var list1 = await obj.GetWorldsAsync();
-            var item = list1.FirstOrDefault(a => a.LevelName == name);
-
-            if (item != null)
+        if (item != null)
+        {
+            local = item.Local;
+            await PathHelper.DeleteFilesAsync(new DeleteFilesArg
             {
-                local = item.Local;
-                await PathHelper.DeleteFilesAsync(new DeleteFilesArg
-                {
-                    Local = item.Local,
-                    Request = request
-                });
-            }
-            else
-            {
-                local = Path.GetFullPath(obj.GetSavesPath() + "/" + name);
-            }
+                Local = item.Local,
+                Request = arg.Request
+            });
+        }
+        else
+        {
+            local = Path.GetFullPath(obj.GetSavesPath() + "/" + name);
         }
 
         try
         {
-            await new ZipUtils().UnzipAsync(local, item1.FullName,
-                PathHelper.OpenRead(item1.FullName)!);
+            await new ZipUtils().UnzipAsync(local, arg.File,
+                PathHelper.OpenRead(arg.File)!);
             return true;
         }
         catch (Exception e)
