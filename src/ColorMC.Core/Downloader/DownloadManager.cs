@@ -36,11 +36,11 @@ public static class DownloadManager
     /// <summary>
     /// 下载项目队列
     /// </summary>
-    private readonly static ConcurrentQueue<DownloadItemObj> s_items = [];
+    private static readonly ConcurrentQueue<DownloadItemObj> s_items = [];
     /// <summary>
     /// 下载线程
     /// </summary>
-    private readonly static List<DownloadThread> s_threads = [];
+    private static readonly List<DownloadThread> s_threads = [];
     /// <summary>
     /// 处理完成信号量
     /// </summary>
@@ -123,15 +123,27 @@ public static class DownloadManager
         DoneSize = 0;
     }
 
+    /// <summary>
+    /// 调用GUI的方式下载
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
     public static Task<bool> StartAsync(ICollection<DownloadItemObj> list)
     {
+        DownloadArg arg;
         if (ColorMCCore.OnDownload == null)
         {
-            return StartAsync(list, null, null);
+            arg = new()
+            {
+                List = list
+            };
+            return StartAsync(arg);
         }
         else
         {
-            return ColorMCCore.OnDownload(list);
+            arg = ColorMCCore.OnDownload();
+            arg.List = list;
+            return StartAsync(arg);
         }
     }
 
@@ -140,8 +152,7 @@ public static class DownloadManager
     /// </summary>
     /// <param name="list">下载列表</param>
     /// <returns>结果</returns>
-    public static async Task<bool> StartAsync(ICollection<DownloadItemObj> list,
-        ColorMCCore.DownloaderUpdate? update, ColorMCCore.DownloadItemUpdate? update1)
+    internal static async Task<bool> StartAsync(DownloadArg args)
     {
         var names = new List<string>();
         //下载器是否在运行
@@ -153,18 +164,18 @@ public static class DownloadManager
         Clear();
         Logs.Info(LanguageHelper.Get("Core.Http.Info4"));
 
-        update?.Invoke(State = DownloadState.Init);
+        args.Update?.Invoke(State = DownloadState.Init);
 
         //装填下载内容
-        foreach (var item in list)
+        foreach (var item in args.List)
         {
             if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url)
                 || names.Contains(item.Name))
             {
                 continue;
             }
-            item.UpdateD = update1;
-            update1?.Invoke(ConfigUtils.Config.Http.DownloadThread, item);
+            item.UpdateD = args.ItemUpdate;
+            args.ItemUpdate?.Invoke(ConfigUtils.Config.Http.DownloadThread, item);
             s_items.Enqueue(item);
             names.Add(item.Name);
         }
@@ -173,7 +184,7 @@ public static class DownloadManager
         DoneSize = 0;
         AllSize = s_items.Count;
 
-        update?.Invoke(State = DownloadState.Start);
+        args.Update?.Invoke(State = DownloadState.Start);
 
         s_cancel.Dispose();
         s_cancel = new();
@@ -189,7 +200,7 @@ public static class DownloadManager
             }
         });
 
-        update?.Invoke(State = DownloadState.End);
+        args.Update?.Invoke(State = DownloadState.End);
 
         if (s_cancel.IsCancellationRequested)
         {

@@ -45,11 +45,11 @@ public static class InstancesPath
     /// <summary>
     /// 游戏实例列表
     /// </summary>
-    private readonly static Dictionary<string, GameSettingObj> s_installGames = [];
+    private static readonly Dictionary<string, GameSettingObj> s_installGames = [];
     /// <summary>
     /// 游戏实例组
     /// </summary>
-    private readonly static Dictionary<string, List<GameSettingObj>> s_gameGroups = [];
+    private static readonly Dictionary<string, List<GameSettingObj>> s_gameGroups = [];
 
     /// <summary>
     /// 基础路径
@@ -584,7 +584,11 @@ public static class InstancesPath
         game.DirName = game.Name;
 
         var dir = game.GetBasePath();
-        if (!await PathHelper.DeleteFilesAsync(dir, request))
+        if (!await PathHelper.DeleteFilesAsync(new DeleteFilesArg
+        {
+            Local = dir,
+            Request = request
+        }))
         {
             return null;
         }
@@ -932,7 +936,11 @@ public static class InstancesPath
     {
         obj.RemoveFromGroup();
         PathHelper.Delete(obj.GetGameJsonFile());
-        return PathHelper.DeleteFilesAsync(obj.GetBasePath(), request);
+        return PathHelper.DeleteFilesAsync(new DeleteFilesArg
+        {
+            Local = obj.GetBasePath(),
+            Request = request
+        });
     }
 
     /// <summary>

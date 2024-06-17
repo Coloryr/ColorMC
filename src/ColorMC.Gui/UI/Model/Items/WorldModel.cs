@@ -84,7 +84,7 @@ public partial class WorldModel : ObservableObject
 
     public async void DisE(DataPackModel pack)
     {
-        var res = await Task.Run(() => GameBinding.DataPackDisE(pack.Pack));
+        var res = await Task.Run(() => GameBinding.DataPackDisableOrEnable(pack.Pack));
         if (res)
         {
             Load1();

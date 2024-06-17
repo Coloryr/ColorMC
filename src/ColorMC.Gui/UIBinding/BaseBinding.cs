@@ -42,11 +42,11 @@ public static class BaseBinding
     /// <summary>
     /// 正在运行的游戏
     /// </summary>
-    public readonly static List<string> RunGames = [];
+    public static readonly List<string> RunGames = [];
     /// <summary>
     /// 游戏日志
     /// </summary>
-    public readonly static Dictionary<string, StringBuilder> GameLogs = [];
+    public static readonly Dictionary<string, StringBuilder> GameLogs = [];
 
     /// <summary>
     /// 是否为第一次启动
@@ -85,7 +85,7 @@ public static class BaseBinding
                 win.Log(d);
             }
         };
-        ColorMCCore.OnDownload = App.StartDownload;
+        ColorMCCore.OnDownload = App.ShowDownload;
         ColorMCCore.GameExit += GameExit;
         ColorMCCore.InstanceChange += InstanceChange;
 
@@ -612,8 +612,18 @@ public static class BaseBinding
         try
         {
             //启动
-            var p = await obj.StartGameAsync(obj1, world, request, pre, state, select, nojava,
-                loginfail, update2, mixinport, cancel);
+            var p = await obj.StartGameAsync(new GameLaunchArg
+            {   Login = obj1,
+                World = world,
+                Request = request,
+                Pre = pre,
+                State = state,
+                Select = select,
+                Nojava = nojava,
+                Loginfail = loginfail,
+                Update2 = update2,
+                Mixinport = mixinport
+            }, cancel);
 
             return (p, null);
         }
@@ -998,7 +1008,7 @@ public static class BaseBinding
             }
             if (!File.Exists(obj.Local))
             {
-                var res = await App.StartDownload([obj]);
+                var res = await DownloadManager.StartAsync([obj]);
                 if (!res)
                 {
                     return (false, null, null);

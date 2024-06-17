@@ -12,17 +12,19 @@ namespace ColorMC.Core.Asm;
 /// <summary>
 /// 启动器与游戏通信
 /// </summary>
-public static class NettyServer
+public class NettyServer
 {
-    private static IEventLoopGroup s_bossGroup;
-    private static IEventLoopGroup s_workerGroup;
-    private static ServerBootstrap s_bootstrap;
-    private static IChannel s_channel;
+    private IEventLoopGroup _bossGroup;
+    private IEventLoopGroup _workerGroup;
+    private ServerBootstrap _bootstrap;
+    private IChannel _channel;
 
     /// <summary>
     /// 客户端信道
     /// </summary>
-    private static readonly List<IChannel> s_channels = [];
+    private readonly List<IChannel> _channels = [];
+
+    public event Action<IChannel, IByteBuffer>? NettyPack;
 
     /// <summary>
     /// 获取所有正在使用的端口
@@ -70,23 +72,23 @@ public static class NettyServer
     /// 启动游戏端口服务器
     /// </summary>
     /// <returns></returns>
-    public static async Task<int> RunServerAsync()
+    public async Task<int> RunServerAsync()
     {
-        if (s_channel != null)
+        if (_channel != null)
         {
-            return (s_channel.LocalAddress as IPEndPoint)!.Port;
+            return (_channel.LocalAddress as IPEndPoint)!.Port;
         }
-        s_bossGroup = new MultithreadEventLoopGroup(1);
-        s_workerGroup = new MultithreadEventLoopGroup();
+        _bossGroup = new MultithreadEventLoopGroup(1);
+        _workerGroup = new MultithreadEventLoopGroup();
         try
         {
-            s_bootstrap = new();
-            s_bootstrap.Group(s_bossGroup, s_workerGroup);
-            s_bootstrap.Channel<TcpServerSocketChannel>();
-            s_bootstrap
+            _bootstrap = new();
+            _bootstrap.Group(_bossGroup, _workerGroup);
+            _bootstrap.Channel<TcpServerSocketChannel>();
+            _bootstrap
                 .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
                 {
-                    channel.Pipeline.AddLast("colormc", new GameServerHandler());
+                    channel.Pipeline.AddLast("colormc", new GameServerHandler(this));
                 }));
 
             int port = 0;
@@ -99,8 +101,7 @@ public static class NettyServer
             {
                 port = GetFirstAvailablePort();
             }
-            s_channel = await s_bootstrap.BindAsync(port);
-            ColorMCCore.Stop += Stop;
+            _channel = await _bootstrap.BindAsync(port);
 
             return port;
         }
@@ -114,21 +115,21 @@ public static class NettyServer
     /// <summary>
     /// 停止游戏端口服务器
     /// </summary>
-    private static async void Stop()
+    public async void Stop()
     {
-        await s_channel.CloseAsync();
+        await _channel.CloseAsync();
         await Task.WhenAll(
-                s_bossGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)),
-                s_workerGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)));
+                _bossGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)),
+                _workerGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)));
     }
 
     /// <summary>
     /// 发送数据到所有客户端
     /// </summary>
     /// <param name="byteBuffer"></param>
-    public static void SendMessage(IByteBuffer byteBuffer)
+    public void SendMessage(IByteBuffer byteBuffer)
     {
-        foreach (var item in s_channels.ToArray())
+        foreach (var item in _channels.ToArray())
         {
             try
             {
@@ -144,23 +145,28 @@ public static class NettyServer
         }
     }
 
-    private class GameServerHandler : ChannelHandlerAdapter
+    internal void OnNettyPack(IChannel channel, IByteBuffer buffer)
+    {
+        NettyPack?.Invoke(channel, buffer);
+    }
+
+    private class GameServerHandler(NettyServer server) : ChannelHandlerAdapter
     {
         public override void ChannelActive(IChannelHandlerContext ctx)
         {
-            s_channels.Add(ctx.Channel);
+            server._channels.Add(ctx.Channel);
         }
 
         public override void ChannelInactive(IChannelHandlerContext ctx)
         {
-            s_channels.Remove(ctx.Channel);
+            server._channels.Remove(ctx.Channel);
         }
 
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             if (message is IByteBuffer buffer)
             {
-                ColorMCCore.OnNettyPack(context.Channel, buffer);
+                server.OnNettyPack(context.Channel, buffer);
             }
         }
 

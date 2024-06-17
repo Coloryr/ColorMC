@@ -20,67 +20,102 @@ public static class GameAuth
     /// Obj账户
     /// Message错误信息
     /// Ex异常</returns>
-    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
-        string? Message, Exception? Ex)> LoginOAuthAsync(ColorMCCore.LoginOAuthCode loginOAuth)
+    public static async Task<LoginRes> LoginOAuthAsync(ColorMCCore.LoginOAuthCode loginOAuth)
     {
         var now = AuthState.OAuth;
         try
         {
-            var (done, code, url) = await OAuthAPI.GetCodeAsync();
-            if (done != LoginState.Done)
+            var res1 = await OAuthApi.GetCodeAsync();
+            if (res1.State != LoginState.Done)
             {
-                return (AuthState.OAuth, done, null, url!, null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.OAuth,
+                    LoginState = res1.State,
+                    Message = res1.Message
+                };
             }
-            loginOAuth(url!, code!);
-            (done, var obj) = await OAuthAPI.RunGetCodeAsync();
-            if (done != LoginState.Done)
+            loginOAuth(res1.Message!, res1.Code!);
+            var res2 = await OAuthApi.RunGetCodeAsync();
+            if (res2.State != LoginState.Done)
             {
-                return (AuthState.OAuth, done, null,
-                    LanguageHelper.Get("Core.Login.Error1"), null);
+                return new LoginRes
+                { 
+                    AuthState = AuthState.OAuth,
+                    LoginState = res2.State,
+                    Message = LanguageHelper.Get("Core.Login.Error1")
+                };
             }
             now = AuthState.XBox;
-            (done, var xnlToken, var xblUhs) = await OAuthAPI.GetXBLAsync(obj!.access_token);
-            if (done != LoginState.Done)
+            var res3 = await OAuthApi.GetXBLAsync(res2.Obj!.access_token);
+            if (res3.State != LoginState.Done)
             {
-                return (AuthState.XBox, done, null,
-                    LanguageHelper.Get("Core.Login.Error2"), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.XBox,
+                    LoginState = res3.State,
+                    Message = LanguageHelper.Get("Core.Login.Error2")
+                };
             }
             now = AuthState.XSTS;
-            (done, var xsts, var xsts1) = await OAuthAPI.GetXSTSAsync(xnlToken!);
-            if (done != LoginState.Done)
+            var res4 = await OAuthApi.GetXSTSAsync(res3.XBLToken!);
+            if (res4.State != LoginState.Done)
             {
-                return (AuthState.XSTS, done, null,
-                    LanguageHelper.Get("Core.Login.Error3"), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.XSTS,
+                    LoginState = res4.State,
+                    Message = LanguageHelper.Get("Core.Login.Error3")
+                };
             }
             now = AuthState.Token;
-            (done, var token) = await OAuthAPI.GetMinecraftAsync(xsts1!, xsts!);
-            if (done != LoginState.Done)
+            var res5 = await MinecraftAPI.GetMinecraftAsync(res4.XSTSUhs!, res4.XSTSToken!);
+            if (res5.State != LoginState.Done)
             {
-                return (AuthState.Token, done, null,
-                    LanguageHelper.Get("Core.Login.Error4"), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Token,
+                    LoginState = res5.State,
+                    Message = LanguageHelper.Get("Core.Login.Error4")
+                };
             }
 
-            var profile = await MinecraftAPI.GetMinecraftProfileAsync(token!);
+            var profile = await MinecraftAPI.GetMinecraftProfileAsync(res5.AccessToken!);
             if (profile == null || string.IsNullOrWhiteSpace(profile.id))
             {
-                return (AuthState.Profile, LoginState.Error, null,
-                    LanguageHelper.Get("Core.Login.Error5"), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Profile,
+                    LoginState = LoginState.DataError,
+                    Message = LanguageHelper.Get("Core.Login.Error5")
+                };
             }
 
-            return (AuthState.Profile, LoginState.Done, new()
+            return new LoginRes
             {
-                Text1 = obj!.refresh_token,
-                AuthType = AuthType.OAuth,
-                AccessToken = token!,
-                UserName = profile.name,
-                UUID = profile.id
-            }, null, null);
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Done,
+                Auth = new()
+                {
+                    Text1 = res2.Obj!.refresh_token,
+                    AuthType = AuthType.OAuth,
+                    AccessToken = res5.AccessToken!,
+                    UserName = profile.name,
+                    UUID = profile.id
+                }
+            };
         }
         catch (Exception e)
         {
             var text = LanguageHelper.Get("Core.Login.Error6");
             Logs.Error(text, e);
-            return (now, LoginState.Crash, null, text, e);
+            return new LoginRes
+            {
+                AuthState = now,
+                LoginState = LoginState.Crash,
+                Message = text,
+                Ex = e
+            };
         }
     }
 
@@ -89,7 +124,7 @@ public static class GameAuth
     /// </summary>
     public static void CancelWithOAuth()
     {
-        OAuthAPI.Cancel();
+        OAuthApi.Cancel();
     }
 
     /// <summary>
@@ -101,8 +136,7 @@ public static class GameAuth
     /// Obj账户
     /// Message错误信息
     /// Ex异常</returns>
-    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
-        string? Message, Exception? Ex)> RefreshOAuthAsync(LoginObj obj)
+    public static async Task<LoginRes> RefreshOAuthAsync(LoginObj obj)
     {
         AuthState now = AuthState.OAuth;
         try
@@ -110,52 +144,88 @@ public static class GameAuth
             var profile = await MinecraftAPI.GetMinecraftProfileAsync(obj.AccessToken);
             if (profile != null && !string.IsNullOrWhiteSpace(profile.id))
             {
-                return (AuthState.Profile, LoginState.Done, obj, null, null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Profile,
+                    LoginState = LoginState.Done,
+                    Auth = obj
+                };
             }
-            var (done, auth) = await OAuthAPI.RefreshTokenAsync(obj.Text1);
-            if (done != LoginState.Done)
+            var res1 = await OAuthApi.RefreshTokenAsync(obj.Text1);
+            if (res1.State != LoginState.Done)
             {
-                return (AuthState.OAuth, done, null,
-                    LanguageHelper.Get("Core.Login.Error1"), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.OAuth,
+                    LoginState = res1.State,
+                    Message = LanguageHelper.Get("Core.Login.Error1")
+                };
             }
-            (done, var XNLToken, var XBLUhs) = await OAuthAPI.GetXBLAsync(auth!.access_token);
-            if (done != LoginState.Done)
+            var res2 = await OAuthApi.GetXBLAsync(res1.Obj!.access_token);
+            if (res2.State != LoginState.Done)
             {
-                return (AuthState.XBox, done, null,
-                    LanguageHelper.Get("Core.Login.Error2"), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.XBox,
+                    LoginState = res1.State,
+                    Message = LanguageHelper.Get("Core.Login.Error2")
+                };
             }
-            (done, var XSTSToken, var XSTSUhs) = await OAuthAPI.GetXSTSAsync(XNLToken!);
-            if (done != LoginState.Done)
+            var res3 = await OAuthApi.GetXSTSAsync(res2.XBLToken!);
+            if (res3.State != LoginState.Done)
             {
-                return (AuthState.XSTS, done, null,
-                    LanguageHelper.Get("Core.Login.Error3"), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.XSTS,
+                    LoginState = res3.State,
+                    Message = LanguageHelper.Get("Core.Login.Error3")
+                };
             }
-            (done, var token) = await OAuthAPI.GetMinecraftAsync(XSTSUhs!, XSTSToken!);
-            if (done != LoginState.Done)
+            var res4 = await MinecraftAPI.GetMinecraftAsync(res3.XSTSUhs!, res3.XSTSToken!);
+            if (res4.State != LoginState.Done)
             {
-                return (AuthState.Token, done, null,
-                    LanguageHelper.Get("Core.Login.Error4"), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Token,
+                    LoginState = res4.State,
+                    Message = LanguageHelper.Get("Core.Login.Error4")
+                };
             }
 
-            profile = await MinecraftAPI.GetMinecraftProfileAsync(token!);
+            profile = await MinecraftAPI.GetMinecraftProfileAsync(res4.AccessToken!);
             if (profile == null || string.IsNullOrWhiteSpace(profile.id))
             {
-                return (AuthState.Token, LoginState.Error, null,
-                    LanguageHelper.Get("Core.Login.Error5"), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Profile,
+                    LoginState = LoginState.Error,
+                    Message = LanguageHelper.Get("Core.Login.Error5")
+                };
             }
 
             obj.UserName = profile!.name;
             obj.UUID = profile.id;
-            obj.Text1 = auth!.refresh_token;
-            obj.AccessToken = token!;
+            obj.Text1 = res1.Obj!.refresh_token;
+            obj.AccessToken = res4.AccessToken!;
 
-            return (AuthState.Profile, LoginState.Done, obj, null, null);
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Done,
+                Auth = obj
+            };
         }
         catch (Exception e)
         {
             var text = LanguageHelper.Get("Core.Login.Error8");
             Logs.Error(text, e);
-            return (now, LoginState.Crash, null, text, e);
+            return new LoginRes
+            {
+                AuthState = now,
+                LoginState = LoginState.Crash,
+                Message = text,
+                Ex = e
+            };
         }
     }
 
@@ -170,26 +240,40 @@ public static class GameAuth
     /// Obj账户
     /// Message错误信息
     /// Ex异常</returns>
-    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
-        string? Message, Exception? Ex)> LoginNide8Async(string server, string user, string pass)
+    public static async Task<LoginRes> LoginNide8Async(string server, string user, string pass)
     {
         try
         {
-            var (State, Obj, Msg) = await Nide8.AuthenticateAsync(server, FuntionUtils.NewUUID(), user, pass);
-            if (State != LoginState.Done)
+            var res1 = await Nide8.AuthenticateAsync(server, FuntionUtils.NewUUID(), user, pass);
+            if (res1.State != LoginState.Done)
             {
-                return (AuthState.Token, State, null,
-                    string.Format(LanguageHelper.Get("Core.Login.Error9"), Msg), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Token,
+                    LoginState= res1.State,
+                    Message = string.Format(LanguageHelper.Get("Core.Login.Error9"), res1.Message)
+                };
             }
 
-            Obj!.Text2 = user;
-            return (AuthState.Profile, LoginState.Done, Obj, null, null);
+            res1.Auth!.Text2 = user;
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Done,
+                Auth = res1.Auth
+            };
         }
         catch (Exception e)
         {
             var text = LanguageHelper.Get("Core.Login.Error10");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text, e);
+            return new LoginRes
+            {
+                AuthState = AuthState.Token,
+                LoginState = LoginState.Crash,
+                Message = text,
+                Ex = e
+            };
         }
     }
 
@@ -202,24 +286,38 @@ public static class GameAuth
     /// Obj账户
     /// Message错误信息
     /// Ex异常</returns>
-    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
-        string? Message, Exception? Ex)> RefreshNide8Async(LoginObj obj)
+    public static async Task<LoginRes> RefreshNide8Async(LoginObj obj)
     {
         try
         {
-            var (State, Obj, Msg) = await Nide8.RefreshAsync(obj);
-            if (State != LoginState.Done)
+            var res1 = await Nide8.RefreshAsync(obj);
+            if (res1.State != LoginState.Done)
             {
-                return (AuthState.Token, State, null,
-                    LanguageHelper.Get("Core.Login.Error11") + " " + Msg, null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Profile,
+                    LoginState = res1.State,
+                    Message = string.Format(LanguageHelper.Get("Core.Login.Error11"), res1.Message)
+                };
             }
-            return (AuthState.Profile, LoginState.Done, Obj, null, null);
+            return new LoginRes
+            { 
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Done,
+                Auth = res1.Auth
+            };
         }
         catch (Exception e)
         {
             var text = LanguageHelper.Get("Core.Login.Error12");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text, e);
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Crash,
+                Message = text,
+                Ex = e
+            };
         }
     }
 
@@ -234,26 +332,40 @@ public static class GameAuth
     /// Obj账户
     /// Message错误信息
     /// Ex异常</returns>
-    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
-        string? Message, Exception? Ex)> LoginAuthlibInjectorAsync(string server, string user, string pass)
+    public static async Task<LoginRes> LoginAuthlibInjectorAsync(string server, string user, string pass)
     {
         try
         {
-            var (State, Obj, Msg) = await AuthlibInjector.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server);
-            if (State != LoginState.Done)
+            var res1 = await AuthlibInjector.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server);
+            if (res1.State != LoginState.Done)
             {
-                return (AuthState.Token, State, null,
-                    string.Format(LanguageHelper.Get("Core.Login.Error13"), Msg), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Token,
+                    LoginState = res1.State,
+                    Message = string.Format(LanguageHelper.Get("Core.Login.Error13"), res1.Message)
+                };
             }
 
-            Obj!.Text2 = user;
-            return (AuthState.Profile, LoginState.Done, Obj, null, null);
+            res1.Auth!.Text2 = user;
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Done,
+                Auth = res1.Auth
+            };
         }
         catch (Exception e)
         {
             var text = LanguageHelper.Get("Core.Login.Error14");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text, e);
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Crash,
+                Message = text,
+                Ex = e
+            };
         }
     }
 
@@ -266,25 +378,39 @@ public static class GameAuth
     /// Obj账户
     /// Message错误信息
     /// Ex异常</returns>
-    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
-        string? Message, Exception? Ex)> RefreshAuthlibInjectorAsync(LoginObj obj)
+    public static async Task<LoginRes> RefreshAuthlibInjectorAsync(LoginObj obj)
     {
         try
         {
-            var (State, Obj, Msg) = await AuthlibInjector.RefreshAsync(obj);
-            if (State != LoginState.Done)
+            var res1 = await AuthlibInjector.RefreshAsync(obj);
+            if (res1.State != LoginState.Done)
             {
-                return (AuthState.Token, State, null,
-                    LanguageHelper.Get("Core.Login.Error15") + " " + Msg, null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Token,
+                    LoginState = res1.State,
+                    Message = string.Format(LanguageHelper.Get("Core.Login.Error15"), res1.Message)
+                };
             }
 
-            return (AuthState.Token, State, Obj, null, null);
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Done,
+                Auth = res1.Auth
+            };
         }
         catch (Exception e)
         {
             var text = LanguageHelper.Get("Core.Login.Error16");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text, e);
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Crash,
+                Message = text,
+                Ex = e
+            };
         }
     }
 
@@ -299,26 +425,40 @@ public static class GameAuth
     /// Obj账户
     /// Message错误信息
     /// Ex异常</returns>
-    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
-        string? Message, Exception? Ex)> LoginLittleSkinAsync(string user, string pass, string? server = null)
+    public static async Task<LoginRes> LoginLittleSkinAsync(string user, string pass, string? server = null)
     {
         try
         {
-            var (State, Obj, Msg) = await LittleSkin.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server);
-            if (State != LoginState.Done)
+            var res1 = await LittleSkin.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server);
+            if (res1.State != LoginState.Done)
             {
-                return (AuthState.Token, State, null,
-                    string.Format(LanguageHelper.Get("Core.Login.Error17"), Msg), null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Token,
+                    LoginState = res1.State,
+                    Message = string.Format(LanguageHelper.Get("Core.Login.Error17"), res1.Message)
+                };
             }
 
-            Obj!.Text2 = user;
-            return (AuthState.Profile, LoginState.Done, Obj, null, null);
+            res1.Auth!.Text2 = user;
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Done,
+                Auth = res1.Auth
+            };
         }
         catch (Exception e)
         {
             var text = LanguageHelper.Get("Core.Login.Error18");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text, e);
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Crash,
+                Message = text,
+                Ex = e
+            };
         }
     }
 
@@ -331,25 +471,39 @@ public static class GameAuth
     /// Obj账户
     /// Message错误信息
     /// Ex异常</returns>
-    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
-        string? Message, Exception? Ex)> RefreshLittleSkinAsync(LoginObj obj)
+    public static async Task<LoginRes> RefreshLittleSkinAsync(LoginObj obj)
     {
         try
         {
-            var (State, Obj, Msg) = await LittleSkin.RefreshAsync(obj);
-            if (State != LoginState.Done)
+            var res1 = await LittleSkin.RefreshAsync(obj);
+            if (res1.State != LoginState.Done)
             {
-                return (AuthState.Token, State, null,
-                    LanguageHelper.Get("Core.Login.Error19") + " " + Msg, null);
+                return new LoginRes
+                {
+                    AuthState = AuthState.Token,
+                    LoginState = res1.State,
+                    Message = string.Format(LanguageHelper.Get("Core.Login.Error19"), res1.Message)
+                };
             }
 
-            return (AuthState.Token, State, Obj, null, null);
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Done,
+                Auth = res1.Auth
+            };
         }
         catch (Exception e)
         {
             var text = LanguageHelper.Get("Core.Login.Error20");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text, e);
+            return new LoginRes
+            {
+                AuthState = AuthState.Profile,
+                LoginState = LoginState.Crash,
+                Message = text,
+                Ex = e
+            };
         }
     }
 
@@ -362,8 +516,7 @@ public static class GameAuth
     /// Obj账户
     /// Message错误信息
     /// Ex异常</returns>
-    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
-        string? Message, Exception? Ex)> RefreshTokenAsync(this LoginObj obj)
+    public static async Task<LoginRes> RefreshTokenAsync(this LoginObj obj)
     {
         return obj.AuthType switch
         {
@@ -371,7 +524,7 @@ public static class GameAuth
             AuthType.Nide8 => await RefreshNide8Async(obj),
             AuthType.AuthlibInjector => await RefreshAuthlibInjectorAsync(obj),
             AuthType.LittleSkin or AuthType.SelfLittleSkin => await RefreshLittleSkinAsync(obj),
-            _ => (AuthState.Token, LoginState.Done, obj, null, null),
+            _ => new LoginRes { AuthState = AuthState.Profile, LoginState = LoginState.Done, Auth = obj },
         };
     }
 }

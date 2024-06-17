@@ -10,7 +10,7 @@ public static class AdoptiumApi
 {
     public const string AdoptiumUrl = "https://api.adoptium.net/";
 
-    public readonly static List<string> SystemType =
+    public static readonly List<string> SystemType =
     [
         "", "Windows", "Linux", "Alpine Linux", "MacOS", "AIX", "Solaris"
     ];

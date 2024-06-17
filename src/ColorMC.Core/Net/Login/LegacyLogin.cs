@@ -11,7 +11,7 @@ namespace ColorMC.Core.Net.Login;
 /// <summary>
 /// 旧版账户验证
 /// </summary>
-public static class LoginOld
+public static class LegacyLogin
 {
     /// <summary>
     /// 登录
@@ -20,8 +20,7 @@ public static class LoginOld
     /// <param name="clientToken">客户端代码</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)>
-        AuthenticateAsync(string server, string clientToken, string user, string pass)
+    public static async Task<LegacyLoginRes> AuthenticateAsync(string server, string clientToken, string user, string pass)
     {
         var obj = new AuthenticateObj
         {
@@ -34,7 +33,7 @@ public static class LoginOld
             password = pass,
             clientToken = clientToken
         };
-        if (!server.EndsWith("/"))
+        if (!server.EndsWith('/'))
         {
             server += "/";
         }
@@ -43,27 +42,37 @@ public static class LoginOld
             Method = HttpMethod.Post,
             RequestUri = new(server + "authserver/authenticate")
         };
-        message.Headers.UserAgent.Append(new("ColorMC", ColorMCCore.Version));
+        message.Headers.UserAgent.Add(new("ColorMC", ColorMCCore.Version));
         message.Content = new StringContent(JsonConvert.SerializeObject(obj),
             MediaTypeHeaderValue.Parse("application/json"));
 
         var res = await BaseClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
-            return (LoginState.Error, null, null);
+        {
+            return new LegacyLoginRes
+            {
+                State = LoginState.Error,
+                Message = LanguageHelper.Get("Core.Login.Error22")
+            };
+        }
 
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
 
         if (obj2 == null)
         {
-            return (LoginState.JsonError, null, LanguageHelper.Get("Core.Login.Error22"));
+            return new LegacyLoginRes
+            {
+                State = LoginState.DataError,
+                Message = LanguageHelper.Get("Core.Login.Error22")
+            };
         }
 
         if (obj2.selectedProfile == null && obj2.availableProfiles?.Count > 0)
         {
             foreach (var item in obj2.availableProfiles)
             {
-                if (item.name.ToLower() == user.ToLower())
+                if (item.name.Equals(user, StringComparison.CurrentCultureIgnoreCase))
                 {
                     obj2.selectedProfile = item;
                     break;
@@ -76,19 +85,31 @@ public static class LoginOld
             var obj1 = JObject.Parse(data);
             if (obj1?["errorMessage"]?.ToString() is { } msg)
             {
-                return (LoginState.JsonError, null, msg);
+                return new LegacyLoginRes
+                {
+                    State = LoginState.Error,
+                    Message = msg
+                };
             }
 
-            return (LoginState.JsonError, null, LanguageHelper.Get("Core.Login.Error23"));
+            return new LegacyLoginRes
+            {
+                State = LoginState.Error,
+                Message = LanguageHelper.Get("Core.Login.Error23")
+            };
         }
 
-        return (LoginState.Done, new()
+        return new LegacyLoginRes
         {
-            UserName = obj2.selectedProfile.name,
-            UUID = obj2.selectedProfile.id,
-            AccessToken = obj2.accessToken,
-            ClientToken = obj2.clientToken
-        }, null);
+            State = LoginState.Done,
+            Auth = new()
+            {
+                UserName = obj2.selectedProfile.name,
+                UUID = obj2.selectedProfile.id,
+                AccessToken = obj2.accessToken,
+                ClientToken = obj2.clientToken
+            }
+        };
     }
 
     /// <summary>
@@ -96,7 +117,7 @@ public static class LoginOld
     /// </summary>
     /// <param name="server">服务器地址</param>
     /// <param name="obj">保存的账户</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> RefreshAsync(string server, LoginObj obj)
+    public static async Task<LegacyLoginRes> RefreshAsync(string server, LoginObj obj)
     {
         var obj1 = new RefreshObj
         {
@@ -108,30 +129,46 @@ public static class LoginOld
             Method = HttpMethod.Post,
             RequestUri = new(server + "/authserver/refresh")
         };
-        message.Headers.UserAgent.Append(new("ColorMC", ColorMCCore.Version));
+        message.Headers.UserAgent.Add(new("ColorMC", ColorMCCore.Version));
         message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
             MediaTypeHeaderValue.Parse("application/json"));
 
         var res = await BaseClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
-            return (LoginState.Error, null, "Json Error");
+            return new LegacyLoginRes
+            { 
+                State = LoginState.Error,
+                Message = LanguageHelper.Get("Core.Login.Error24")
+            };
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
         if (obj2 == null || obj2.selectedProfile == null)
         {
             var jobj = JObject.Parse(data);
             if (jobj?["errorMessage"]?.ToString() is { } msg)
             {
-                return (LoginState.JsonError, null, msg);
+                return new LegacyLoginRes
+                {
+                    State = LoginState.Error,
+                    Message = msg
+                };;
             }
-            return (LoginState.JsonError, null, "Other Error");
+            return new LegacyLoginRes
+            {
+                State = LoginState.DataError,
+                Message = LanguageHelper.Get("Core.Login.Error22")
+            };
         }
         obj.UserName = obj2.selectedProfile.name;
         obj.UUID = obj2.selectedProfile.id;
         obj.AccessToken = obj2.accessToken;
         obj.ClientToken = obj2.clientToken;
 
-        return (LoginState.Done, obj, null);
+        return new LegacyLoginRes
+        {
+            State = LoginState.Done,
+            Auth = obj
+        };
     }
 
     /// <summary>
@@ -152,7 +189,7 @@ public static class LoginOld
             Method = HttpMethod.Post,
             RequestUri = new(server)
         };
-        message.Headers.UserAgent.Append(new("ColorMC", ColorMCCore.Version));
+        message.Headers.UserAgent.Add(new("ColorMC", ColorMCCore.Version));
         message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
             MediaTypeHeaderValue.Parse("application/json"));
 

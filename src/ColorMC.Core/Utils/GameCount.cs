@@ -17,8 +17,8 @@ public static class GameCount
     private static bool s_isRun;
 
     private static readonly object s_lock = new();
-    private readonly static Dictionary<string, DateTime> s_timeList = [];
-    private readonly static Dictionary<string, TimeSpan> s_spanTimeList = [];
+    private static readonly Dictionary<string, DateTime> s_timeList = [];
+    private static readonly Dictionary<string, TimeSpan> s_spanTimeList = [];
 
     /// <summary>
     /// 统计数据

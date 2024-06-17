@@ -9,8 +9,6 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using DotNetty.Buffers;
-using DotNetty.Transport.Channels;
 
 namespace ColorMC.Core;
 
@@ -114,9 +112,9 @@ public static class ColorMCCore
     public delegate void GameLaunch(GameSettingObj obj, LaunchState state);
 
     /// <summary>
-    /// 下载用的回调
+    /// 显示下载窗口
     /// </summary>
-    public static Func<ICollection<DownloadItemObj>, Task<bool>>? OnDownload { get; set; }
+    public static Func<DownloadArg>? OnDownload { get; set; }
 
     /// <summary>
     /// 错误显示回调
@@ -131,10 +129,6 @@ public static class ColorMCCore
     /// 语言重载
     /// </summary>
     public static event Action<LanguageType>? LanguageReload;
-    /// <summary>
-    /// 收到游戏数据包
-    /// </summary>
-    public static event Action<IChannel, IByteBuffer>? NettyPack;
     /// <summary>
     /// 游戏退出事件
     /// </summary>
@@ -192,17 +186,29 @@ public static class ColorMCCore
     internal static ConcurrentDictionary<string, IGameHandel> Games = [];
 
     /// <summary>
+    /// 启动器核心参数
+    /// </summary>
+    internal static CoreInitArg CoreArg;
+
+    /// <summary>
     /// 初始化阶段1
     /// </summary>
     /// <param name="dir">运行的路径</param>
-    public static void Init(string dir)
+    public static void Init(CoreInitArg arg)
     {
-        BaseDir = dir;
-        Directory.CreateDirectory(dir);
+        if (string.IsNullOrWhiteSpace(arg.Local))
+        {
+            throw new Exception("Local is empty");
+        }
+        CoreArg = arg;
+
+        BaseDir = arg.Local;
+        Directory.CreateDirectory(BaseDir);
+
         LanguageHelper.Load(LanguageType.zh_cn);
-        Logs.Init(dir);
-        ToolPath.Init(dir);
-        ConfigUtils.Init(dir);
+        Logs.Init(BaseDir);
+        ToolPath.Init(BaseDir);
+        ConfigUtils.Init(BaseDir);
         BaseClient.Init();
 
         Logs.Info(LanguageHelper.Get("Core.Info1"));
@@ -299,16 +305,6 @@ public static class ColorMCCore
         {
             Games[uuid] = handel;
         }
-    }
-
-    /// <summary>
-    /// 游戏发送消息给启动器
-    /// </summary>
-    /// <param name="channel"></param>
-    /// <param name="buffer"></param>
-    internal static void OnNettyPack(IChannel channel, IByteBuffer buffer)
-    {
-        NettyPack?.Invoke(channel, buffer);
     }
 
     /// <summary>

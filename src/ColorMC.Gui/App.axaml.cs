@@ -79,13 +79,13 @@ public partial class App : Application
 
     public static TopLevel? TopLevel { get; set; }
 
-    public readonly static Dictionary<string, GameEditControl> GameEditWindows = [];
-    public readonly static Dictionary<string, GameConfigEditControl> ConfigEditWindows = [];
-    public readonly static Dictionary<string, AddControl> AddWindows = [];
-    public readonly static Dictionary<string, ServerPackControl> ServerPackWindows = [];
-    public readonly static Dictionary<string, GameLogControl> GameLogWindows = [];
-    public readonly static Dictionary<string, GameExportControl> GameExportWindows = [];
-    public readonly static Dictionary<string, GameCloudControl> GameCloudWindows = [];
+    public static readonly Dictionary<string, GameEditControl> GameEditWindows = [];
+    public static readonly Dictionary<string, GameConfigEditControl> ConfigEditWindows = [];
+    public static readonly Dictionary<string, AddControl> AddWindows = [];
+    public static readonly Dictionary<string, ServerPackControl> ServerPackWindows = [];
+    public static readonly Dictionary<string, GameLogControl> GameLogWindows = [];
+    public static readonly Dictionary<string, GameExportControl> GameExportWindows = [];
+    public static readonly Dictionary<string, GameCloudControl> GameCloudWindows = [];
 
     public static readonly SelfCrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
@@ -464,13 +464,12 @@ public partial class App : Application
         }
     }
 
-    public static Task<bool> StartDownload(ICollection<DownloadItemObj> list)
+    public static DownloadArg ShowDownload()
     {
         return Dispatcher.UIThread.Invoke(() =>
         {
             DownloadWindow?.Window.Close();
-
-            DownloadWindow = new(list);
+            DownloadWindow = new();
             AWindow(DownloadWindow);
 
             return DownloadWindow.Start();

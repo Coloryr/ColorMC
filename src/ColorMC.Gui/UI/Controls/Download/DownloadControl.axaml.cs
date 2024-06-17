@@ -17,18 +17,11 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public string UseName { get; }
 
-    private readonly ICollection<DownloadItemObj> _list;
-
     public DownloadControl()
     {
         InitializeComponent();
 
         UseName = ToString() ?? "DownloadControl";
-    }
-
-    public DownloadControl(ICollection<DownloadItemObj> list) : this()
-    {
-        _list = list;
     }
 
     public void Opened()
@@ -48,7 +41,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public void SetBaseModel(BaseModel model)
     {
-        var amodel = new DownloadModel(model, _list);
+        var amodel = new DownloadModel(model);
         amodel.PropertyChanged += Amodel_PropertyChanged;
         DataContext = amodel;
     }
@@ -61,7 +54,7 @@ public partial class DownloadControl : UserControl, IUserControl
         }
     }
 
-    public Task<bool> Start()
+    public DownloadArg Start()
     {
         return (DataContext as DownloadModel)!.Start();
     }

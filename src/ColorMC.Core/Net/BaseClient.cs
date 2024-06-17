@@ -4,6 +4,8 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Net;
 
@@ -130,5 +132,46 @@ public static class BaseClient
 
         var data1 = await data.Content.ReadAsStreamAsync();
         return (true, data1);
+    }
+
+    /// <summary>
+    /// 请求数据
+    /// </summary>
+    /// <param name="url">网址</param>
+    /// <param name="arg">参数</param>
+    /// <returns>数据</returns>
+    public static async Task<string> LoginPostStringAsync(string url, Dictionary<string, string> arg)
+    {
+        FormUrlEncodedContent content = new(arg);
+        using var message = await LoginClient.PostAsync(url, content);
+
+        return await message.Content.ReadAsStringAsync();
+    }
+    /// <summary>
+    /// 请求数据
+    /// </summary>
+    /// <param name="url">网址</param>
+    /// <param name="arg">参数</param>
+    /// <returns>数据</returns>
+    public static async Task<JObject?> LoginPostJsonAsync(string url, object arg)
+    {
+        var data1 = JsonConvert.SerializeObject(arg);
+        StringContent content = new(data1, MediaTypeHeaderValue.Parse("application/json"));
+        using var message = await LoginClient.PostAsync(url, content);
+        var data = await message.Content.ReadAsStringAsync();
+        return JObject.Parse(data);
+    }
+    /// <summary>
+    /// 请求数据
+    /// </summary>
+    /// <param name="url">网址</param>
+    /// <param name="arg">参数</param>
+    /// <returns>数据</returns>
+    public static async Task<JObject?> LoginPostAsync(string url, Dictionary<string, string> arg)
+    {
+        FormUrlEncodedContent content = new(arg);
+        using var message = await LoginClient.PostAsync(url, content);
+        var data = await message.Content.ReadAsStringAsync();
+        return JObject.Parse(data);
     }
 }

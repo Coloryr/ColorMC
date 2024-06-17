@@ -125,7 +125,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="cmd">命令</param>
-    public static void CmdRun(GameSettingObj obj, string cmd, Dictionary<string, string> env)
+    public static void CmdRun(this GameSettingObj obj, string cmd, Dictionary<string, string> env)
     {
         var args = cmd.Split('\n');
         var file = Path.GetFullPath(obj.GetBasePath() + "/" + args[0].Trim());
@@ -165,11 +165,62 @@ public static class Launch
         p.WaitForExit();
     }
 
+    /// <summary>
+    /// 手机执行命令
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="start"></param>
+    /// <param name="jvm1"></param>
+    /// <param name="env"></param>
+    /// <returns></returns>
+    public static int PhoneCmdRun(this GameSettingObj obj, string start, JavaInfo jvm1, Dictionary<string, string> env)
+    {
+        var args = start.Split('\n');
+        var arglist = new List<string>();
+        for (int a = 1; a < args.Length; a++)
+        {
+            arglist.Add(args[a].Trim());
+        }
+
+        return PhoneCmdRun(obj, arglist, jvm1, env);
+    }
+
+    /// <summary>
+    /// 手机执行命令
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="start"></param>
+    /// <param name="jvm1"></param>
+    /// <param name="env"></param>
+    /// <returns></returns>
+    public static int PhoneCmdRun(this GameSettingObj obj, List<string> arglist, JavaInfo jvm1, Dictionary<string, string> env)
+    {
+        var res2 = ColorMCCore.PhoneJvmRun(obj, jvm1, obj.GetGamePath(), arglist, env);
+        res2.StartInfo.RedirectStandardError = true;
+        res2.StartInfo.RedirectStandardInput = true;
+        res2.StartInfo.RedirectStandardOutput = true;
+        res2.OutputDataReceived += (a, b) =>
+        {
+            ColorMCCore.OnGameLog(obj, b.Data);
+        };
+        res2.ErrorDataReceived += (a, b) =>
+        {
+            ColorMCCore.OnGameLog(obj, b.Data);
+        };
+        res2.Start();
+        res2.BeginOutputReadLine();
+        res2.BeginErrorReadLine();
+
+        res2.WaitForExit();
+
+        return res2.ExitCode;
+    }
+
 
     /// <summary>
     /// V1版Jvm参数
     /// </summary>
-    private readonly static List<string> V1JvmArg =
+    private static readonly List<string> V1JvmArg =
     [
         "-Djava.library.path=${natives_directory}", "-cp", "${classpath}"
     ];
@@ -179,7 +230,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>参数</returns>
-    private static List<string> MakeV2JvmArg(GameSettingObj obj)
+    public static List<string> MakeV2JvmArg(this GameSettingObj obj)
     {
         var game = VersionPath.GetVersion(obj.Version)!;
         if (game.arguments == null)
@@ -263,7 +314,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>启动参数</returns>
-    private static List<string> MakeV1GameArg(GameSettingObj obj)
+    public static List<string> MakeV1GameArg(this GameSettingObj obj)
     {
         if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
@@ -296,12 +347,12 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    private static List<string> MakeV2GameArg(GameSettingObj obj)
+    private static List<string> MakeV2GameArg(this GameSettingObj obj)
     {
         var game = VersionPath.GetVersion(obj.Version)!;
         if (game.arguments == null)
         {
-            return MakeV1GameArg(obj);
+            return obj.MakeV1GameArg();
         }
 
         var arg = new List<string>();
@@ -380,10 +431,12 @@ public static class Launch
     /// <param name="v2">V2模式</param>
     /// <param name="login">登录的账户</param>
     /// <returns>Jvm参数</returns>
-    private static async Task<List<string>> JvmArgAsync(GameSettingObj obj, bool v2,
+    public static async Task<List<string>> MakeJvmArgAsync(this GameSettingObj obj,
         LoginObj login, JavaInfo jvm1, int? mixinport)
     {
         RunArgObj args;
+
+        var v2 = CheckHelpers.IsGameVersionV2(obj);
 
         if (obj.JvmArg == null)
         {
@@ -506,7 +559,7 @@ public static class Launch
             //jvmHead.Add("-Dcom.sun.jndi.cosnaming.object.trustURLCodebase=false");
             //jvmHead.Add($"-Dminecraft.client.jar={VersionPath.BaseDir}/{obj.Version}.jar");
 
-            jvm.AddRange(v2 ? MakeV2JvmArg(obj) : V1JvmArg);
+            jvm.AddRange(v2 ? obj.MakeV2JvmArg() : V1JvmArg);
         }
 
         //auth
@@ -551,12 +604,13 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="v2">V2模式</param>
     /// <returns>游戏启动参数</returns>
-    private static List<string> GameArg(GameSettingObj obj, bool v2, WorldObj? world)
+    private static List<string> MakeGameArg(this GameSettingObj obj, WorldObj? world)
     {
         var gameArg = new List<string>();
         if (obj.JvmArg?.RemoveGameArg != true)
         {
-            gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
+            var v2 = CheckHelpers.IsGameVersionV2(obj);
+            gameArg.AddRange(v2 ? obj.MakeV2GameArg() : obj.MakeV1GameArg());
         }
 
         if (SystemInfo.Os != OsType.Android)
@@ -692,143 +746,14 @@ public static class Launch
     }
 
     /// <summary>
-    /// 添加获取更新
-    /// </summary>
-    /// <param name="dic">源字典</param>
-    /// <param name="key">键</param>
-    /// <param name="value">值</param>
-    private static void AddOrUpdate(this Dictionary<LibVersionObj, string> dic,
-        LibVersionObj key, string value)
-    {
-        foreach (var item in dic)
-        {
-            if (item.Key.Equals(key))
-            {
-                dic.Remove(item.Key);
-                break;
-            }
-        }
-
-        dic.Add(key, value);
-    }
-
-    /// <summary>
-    /// 获取所有Lib
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="v2">V2模式</param>
-    /// <returns>Lib地址列表</returns>
-    private static async Task<List<string>> GetLibsAsync(GameSettingObj obj, bool v2)
-    {
-        var list = new Dictionary<LibVersionObj, string>();
-        var version = VersionPath.GetVersion(obj.Version)!;
-
-        //LoaderLib
-        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
-        {
-            var forge = obj.Loader == Loaders.NeoForge ?
-                obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-
-            var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
-                obj.Loader == Loaders.NeoForge, v2, false);
-
-            foreach (var item in list2)
-            {
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), item.Local);
-            }
-
-            if (v2)
-            {
-                list.AddOrUpdate(new(), GameHelper.ForgeWrapper);
-            }
-        }
-        else if (obj.Loader == Loaders.Fabric)
-        {
-            var fabric = obj.GetFabricObj()!;
-            foreach (var item in fabric.libraries)
-            {
-                var name = PathHelper.ToPathAndName(item.name);
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(name.Name),
-                    Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
-            }
-        }
-        else if (obj.Loader == Loaders.Quilt)
-        {
-            var quilt = obj.GetQuiltObj()!;
-            foreach (var item in quilt.libraries)
-            {
-                var name = PathHelper.ToPathAndName(item.name);
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(name.Name),
-                    Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
-            }
-        }
-        else if (obj.Loader == Loaders.OptiFine)
-        {
-            GameHelper.ReadyOptifineWrapper();
-            list.AddOrUpdate(new(), GameHelper.OptifineWrapper);
-        }
-        else if (obj.Loader == Loaders.Custom)
-        {
-            var list2 = obj.GetCustomLoaderLibs();
-            foreach (var (Name, Local) in list2)
-            {
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(Name), Local);
-            }
-        }
-
-        //GameLib
-        if (obj.Loader == Loaders.Custom && obj.CustomLoader?.OffLib == true)
-        {
-            var list1 = await DownloadItemHelper.BuildGameLibsAsync(version);
-            foreach (var item in list1)
-            {
-                if (item.Later == null)
-                {
-                    //不添加lwjgl
-                    if (item.Name.Contains("org.lwjgl") && SystemInfo.Os == OsType.Android)
-                    {
-                        continue;
-                    }
-                    list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
-                }
-            }
-        }
-        else
-        {
-            var list1 = await DownloadItemHelper.BuildGameLibsAsync(version);
-            foreach (var item in list1)
-            {
-                if (item.Later == null)
-                {
-                    //不添加lwjgl
-                    if (item.Name.Contains("org.lwjgl") && SystemInfo.Os == OsType.Android)
-                    {
-                        continue;
-                    }
-                    list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
-                }
-            }
-        }
-
-        //游戏核心
-        var list3 = new List<string>(list.Values);
-        if (obj.Loader != Loaders.NeoForge)
-        {
-            list3.Add(LibrariesPath.GetGameFile(obj.Version));
-        }
-
-        return list3;
-    }
-
-    /// <summary>
     /// 创建Classpath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="v2">是否为v2版本</param>
     /// <returns>结果</returns>
-    private static async Task<string> MakeClassPathAsync(GameSettingObj obj, bool v2, bool enableasm)
+    public static async Task<string> MakeClassPathAsync(this GameSettingObj obj, bool enableasm)
     {
-        var libraries = await GetLibsAsync(obj, v2);
+        var libraries = await obj.GetLibsAsync();
         var classpath = new StringBuilder();
         var sep = SystemInfo.Os == OsType.Windows ? ';' : ':';
         ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
@@ -891,6 +816,7 @@ public static class Launch
             Loaders.Forge => $"forge-{obj.Version}-{obj.LoaderVersion}",
             Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderVersion}",
             Loaders.Quilt => $"quilt-{obj.Version}-{obj.LoaderVersion}",
+            Loaders.NeoForge => $"neoforge-{obj.Version}-{obj.LoaderVersion}",
             _ => obj.Version
         };
 
@@ -931,8 +857,11 @@ public static class Launch
     /// <param name="version">游戏数据</param>
     /// <param name="v2">是否为v2版本</param>
     /// <returns>主类</returns>
-    private static string MakeMainClass(GameSettingObj obj, GameArgObj version, bool v2)
+    public static string MakeMainClass(this GameSettingObj obj)
     {
+        var version = VersionPath.GetVersion(obj.Version)
+            ?? throw new Exception(string.Format(LanguageHelper.Get("Core.Check.Error1"), obj.Version));
+        var v2 = CheckHelpers.IsGameVersionV2(version);
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
         {
             return obj.AdvanceJvm.MainClass;
@@ -983,22 +912,19 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="login">登录的账户</param>
     /// <returns></returns>
-    private static async Task<List<string>> MakeArgAsync(GameSettingObj obj, LoginObj login,
-        WorldObj? world, JavaInfo jvm, int? mixinport)
+    private static async Task<List<string>> MakeArgAsync(this GameSettingObj obj, GameMakeArg arg)
     {
         var list = new List<string>();
-        var version = VersionPath.GetVersion(obj.Version)!;
-        var v2 = CheckHelpers.IsGameVersionV2(version);
-        var jvmarg = await JvmArgAsync(obj, v2, login, jvm, mixinport);
-        var classpath = await MakeClassPathAsync(obj, v2, mixinport > 0);
-        var gamearg = GameArg(obj, v2, world);
-        ReplaceAll(obj, login, jvmarg, classpath);
-        ReplaceAll(obj, login, gamearg, classpath);
+        var jvmarg = await obj.MakeJvmArgAsync(arg.Login, arg.Jvm, arg.Mixinport);
+        var classpath = await obj.MakeClassPathAsync(arg.Mixinport > 0);
+        var gamearg = MakeGameArg(obj, arg.World);
+        ReplaceAll(obj, arg.Login, jvmarg, classpath);
+        ReplaceAll(obj, arg.Login, gamearg, classpath);
         //jvm
         list.AddRange(jvmarg);
 
         //mainclass
-        list.Add(MakeMainClass(obj, version, v2));
+        list.Add(obj.MakeMainClass());
 
         //gamearg
         list.AddRange(gamearg);
@@ -1014,12 +940,7 @@ public static class Launch
     /// <param name="jvmCfg">使用的Java</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns></returns>
-    public static async Task<IGameHandel?> StartGameAsync(this GameSettingObj obj, LoginObj login,
-        WorldObj? world, ColorMCCore.Request request, ColorMCCore.LaunchP pre,
-        ColorMCCore.UpdateState state, ColorMCCore.ChoiseCall select,
-        ColorMCCore.NoJava nojava, ColorMCCore.LoginFailRun loginfail,
-        ColorMCCore.GameLaunch update2, int? mixinport,
-        CancellationToken token)
+    public static async Task<IGameHandel?> StartGameAsync(this GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
     {
         var stopwatch = new Stopwatch();
 
@@ -1034,34 +955,35 @@ public static class Launch
         //登录账户
         stopwatch.Restart();
         stopwatch.Start();
-        update2(obj, LaunchState.Login);
-        var (State, State1, Obj, Message, Ex) = await login.RefreshTokenAsync();
-        if (State1 != LoginState.Done)
+        larg.Update2?.Invoke(obj, LaunchState.Login);
+        var res1 = await larg.Login.RefreshTokenAsync();
+        if (res1.LoginState != LoginState.Done)
         {
-            if (login.AuthType == AuthType.OAuth
-                && !string.IsNullOrWhiteSpace(login.UUID)
-                && await loginfail(login) == true)
+            if (larg.Login.AuthType == AuthType.OAuth
+                && !string.IsNullOrWhiteSpace(larg.Login.UUID)
+                && larg.Loginfail != null
+                && await larg.Loginfail(larg.Login) == true)
             {
-                login = new()
+                larg.Login = new()
                 {
-                    UserName = login.UserName,
-                    UUID = login.UUID,
+                    UserName = larg.Login.UserName,
+                    UUID = larg.Login.UUID,
                     AuthType = AuthType.Offline
                 };
             }
             else
             {
-                update2(obj, LaunchState.LoginFail);
-                if (Ex != null)
-                    throw new LaunchException(LaunchState.LoginFail, Message!, Ex);
+                larg.Update2?.Invoke(obj, LaunchState.LoginFail);
+                if (res1.Ex != null)
+                    throw new LaunchException(LaunchState.LoginFail, res1.Message!, res1.Ex);
 
-                throw new LaunchException(LaunchState.LoginFail, Message!);
+                throw new LaunchException(LaunchState.LoginFail, res1.Message!);
             }
         }
         else
         {
-            login = Obj!;
-            login.Save();
+            larg.Login = res1.Auth!;
+            larg.Login.Save();
         }
 
         if (token.IsCancellationRequested)
@@ -1079,7 +1001,7 @@ public static class Launch
         {
             stopwatch.Restart();
             stopwatch.Start();
-            var pack = await obj.ServerPackCheckAsync(state, select);
+            var pack = await obj.ServerPackCheckAsync(larg.State, larg.Select);
             stopwatch.Stop();
             temp = string.Format(LanguageHelper.Get("Core.Launch.Info14"),
                 obj.Name, stopwatch.Elapsed.ToString());
@@ -1087,8 +1009,13 @@ public static class Launch
             Logs.Info(temp);
             if (pack == false)
             {
-                var res1 = await request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
-                if (!res1)
+                if (larg.Request == null)
+                {
+                    throw new LaunchException(LaunchState.VersionError, 
+                        string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name));
+                }
+                var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
+                if (!res2)
                 {
                     throw new LaunchException(LaunchState.Cancel,
                             LanguageHelper.Get("Core.Launch.Error8"));
@@ -1099,17 +1026,17 @@ public static class Launch
         //检查游戏文件
         stopwatch.Restart();
         stopwatch.Start();
-        var res = await CheckHelpers.CheckGameFileAsync(obj, login, update2, token);
+        var res = await CheckHelpers.CheckGameFileAsync(obj, larg.Login, larg.Update2, token);
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
 
-        if (obj.GetModeFast() && obj.Loader == Loaders.Normal)
+        if (obj.GetModeFast() && obj.Loader == Loaders.Normal && larg.Request != null)
         {
-            var res1 = await request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
-            if (!res1)
+            var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
+            if (!res2)
             {
                 throw new LaunchException(LaunchState.Cancel,
                         LanguageHelper.Get("Core.Launch.Error8"));
@@ -1120,14 +1047,14 @@ public static class Launch
         if (!res.IsEmpty)
         {
             bool download = true;
-            if (!ConfigUtils.Config.Http.AutoDownload)
+            if (!ConfigUtils.Config.Http.AutoDownload && larg.Request != null)
             {
-                download = await request(LanguageHelper.Get("Core.Launch.Info12"));
+                download = await larg.Request(LanguageHelper.Get("Core.Launch.Info12"));
             }
 
             if (download)
             {
-                update2(obj, LaunchState.Download);
+                larg.Update2?.Invoke(obj, LaunchState.Download);
 
                 stopwatch.Restart();
                 stopwatch.Start();
@@ -1163,8 +1090,8 @@ public static class Launch
             jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
             if (jvm == null)
             {
-                update2(obj, LaunchState.JavaError);
-                nojava(jv);
+                larg.Update2?.Invoke(obj, LaunchState.JavaError);
+                larg.Nojava?.Invoke(jv);
                 throw new LaunchException(LaunchState.JavaError,
                         string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv));
             }
@@ -1177,8 +1104,14 @@ public static class Launch
         }
 
         //准备Jvm参数
-        update2(obj, LaunchState.JvmPrepare);
-        var arg = await MakeArgAsync(obj, login, world, jvm!, mixinport);
+        larg.Update2?.Invoke(obj, LaunchState.JvmPrepare);
+        var arg = await obj.MakeArgAsync(new GameMakeArg
+        {
+            Jvm = jvm!,
+            Login = larg.Login,
+            World = larg.World,
+            Mixinport = larg.Mixinport
+        });
         ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
         bool hidenext = false;
         if (SystemInfo.Os != OsType.Android)
@@ -1268,54 +1201,29 @@ public static class Launch
             var cmd1 = obj.JvmArg?.LaunchPreData;
             var cmd2 = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
             var start = string.IsNullOrWhiteSpace(cmd1) ? cmd2 : cmd1;
-            if (!string.IsNullOrWhiteSpace(start) && await pre(true))
+            if (!string.IsNullOrWhiteSpace(start) &&
+                (larg.Pre == null || await larg.Pre(true)))
             {
                 if (SystemInfo.Os == OsType.Android && start.StartsWith(JAVA_LOCAL))
                 {
                     if (JvmPath.FindJava(8) is { } jvm1)
                     {
                         stopwatch.Start();
-                        update2(obj, LaunchState.LaunchPre);
+                        larg.Update2?.Invoke(obj, LaunchState.LaunchPre);
                         start = ReplaceArg(obj, path!, arg, start);
-
-                        var args = start.Split('\n');
-                        var file = Path.GetFullPath(obj.GetBasePath() + "/" + args[0].Trim());
-                        var arglist = new List<string>();
-                        for (int a = 1; a < args.Length; a++)
-                        {
-                            arglist.Add(args[a].Trim());
-                        }
-
-                        var res1 = ColorMCCore.PhoneJvmRun(obj, jvm1, obj.GetGamePath(), arglist, env);
-                        res1.StartInfo.RedirectStandardError = true;
-                        res1.StartInfo.RedirectStandardInput = true;
-                        res1.StartInfo.RedirectStandardOutput = true;
-                        res1.OutputDataReceived += (a, b) =>
-                        {
-                            ColorMCCore.OnGameLog(obj, b.Data);
-                        };
-                        res1.ErrorDataReceived += (a, b) =>
-                        {
-                            ColorMCCore.OnGameLog(obj, b.Data);
-                        };
-                        res1.Start();
-                        res1.BeginOutputReadLine();
-                        res1.BeginErrorReadLine();
-
-                        await res1.WaitForExitAsync(token);
+                        obj.PhoneCmdRun(start, jvm1, env);
                         stopwatch.Stop();
                         string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                             obj.Name, stopwatch.Elapsed.ToString());
                         ColorMCCore.OnGameLog(obj, temp1);
-                        Logs.Info(temp1);
                     }
                 }
                 else
                 {
                     stopwatch.Start();
-                    update2(obj, LaunchState.LaunchPre);
+                    larg.Update2?.Invoke(obj, LaunchState.LaunchPre);
                     start = ReplaceArg(obj, path!, arg, start);
-                    CmdRun(obj, start, env);
+                    obj.CmdRun(start, env);
                     stopwatch.Stop();
                     string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                         obj.Name, stopwatch.Elapsed.ToString());
@@ -1351,28 +1259,13 @@ public static class Launch
                     obj.LoaderVersion!, obj.Loader is Loaders.NeoForge);
                 if (install)
                 {
-                    update2(obj, LaunchState.InstallForge);
+                    larg.Update2?.Invoke(obj, LaunchState.InstallForge);
                     var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
                             LanguageHelper.Get("Core.Launch.Error9"));
-                    using var res1 = ColorMCCore.PhoneJvmRun(obj, jvm1,
-                        obj.GetGamePath(), obj.MakeInstallForgeArg(v2), env);
-                    res1.StartInfo.RedirectStandardError = true;
-                    res1.StartInfo.RedirectStandardInput = true;
-                    res1.StartInfo.RedirectStandardOutput = true;
-                    res1.OutputDataReceived += (a, b) =>
-                    {
-                        ColorMCCore.OnGameLog(obj, b.Data);
-                    };
-                    res1.ErrorDataReceived += (a, b) =>
-                    {
-                        ColorMCCore.OnGameLog(obj, b.Data);
-                    };
-                    res1.Start();
-                    res1.BeginOutputReadLine();
-                    res1.BeginErrorReadLine();
 
-                    res1.WaitForExit();
-                    if (res1.ExitCode != 0)
+                    var res2 = obj.PhoneCmdRun(obj.MakeInstallForgeArg(v2), jvm1, env);
+
+                    if (res2 != 0)
                     {
                         throw new LaunchException(LaunchState.LoaderError,
                             LanguageHelper.Get("Core.Launch.Error10"));
@@ -1391,7 +1284,7 @@ public static class Launch
 
         if (SystemInfo.Os == OsType.Android)
         {
-            handel = ColorMCCore.PhoneGameLaunch(login, obj, jvm!, arg, env);
+            handel = ColorMCCore.PhoneGameLaunch(larg.Login, obj, jvm!, arg, env);
         }
         else
         {
@@ -1429,7 +1322,7 @@ public static class Launch
             };
             process.Exited += (a, b) =>
             {
-                ColorMCCore.OnGameExit(obj, login, process.ExitCode);
+                ColorMCCore.OnGameExit(obj, larg.Login, process.ExitCode);
                 process.Dispose();
             };
             process.Start();
@@ -1447,30 +1340,39 @@ public static class Launch
         ColorMCCore.AddGameHandel(obj.UUID, handel);
 
         //启动后执行
-        if ((obj.JvmArg?.LaunchPost == true || ConfigUtils.Config.DefaultJvmArg.LaunchPost))
+        if (obj.JvmArg?.LaunchPost == true || ConfigUtils.Config.DefaultJvmArg.LaunchPost)
         {
             var start = obj.JvmArg?.LaunchPostData;
             if (string.IsNullOrWhiteSpace(start))
             {
                 start = ConfigUtils.Config.DefaultJvmArg.LaunchPostData;
             }
-            if (!string.IsNullOrWhiteSpace(start))
+            if (!string.IsNullOrWhiteSpace(start) &&
+                (larg.Pre == null || await larg.Pre(false)))
             {
-                var res1 = await pre(false);
-                if (res1)
+                if (SystemInfo.Os == OsType.Android)
                 {
-                    if (SystemInfo.Os == OsType.Android)
-                    { }
-                    else
+                    if (JvmPath.FindJava(8) is { } jvm1)
                     {
                         stopwatch.Start();
-                        update2(obj, LaunchState.LaunchPost);
+                        larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
                         start = ReplaceArg(obj, path!, arg, start);
-                        CmdRun(obj, start, env);
+                        obj.PhoneCmdRun(start, jvm1, env);
                         stopwatch.Stop();
-                        ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
-                            obj.Name, stopwatch.Elapsed.ToString()));
+                        string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info9"),
+                            obj.Name, stopwatch.Elapsed.ToString());
+                        ColorMCCore.OnGameLog(obj, temp1);
                     }
+                }
+                else
+                {
+                    stopwatch.Start();
+                    larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
+                    start = ReplaceArg(obj, path!, arg, start);
+                    obj.CmdRun(start, env);
+                    stopwatch.Stop();
+                    ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
+                        obj.Name, stopwatch.Elapsed.ToString()));
                 }
             }
             else

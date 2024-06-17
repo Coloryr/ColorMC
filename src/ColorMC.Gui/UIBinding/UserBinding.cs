@@ -21,7 +21,7 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class UserBinding
 {
-    private readonly static List<(AuthType, string)> s_lockUser = [];
+    private static readonly List<(AuthType, string)> s_lockUser = [];
     public static SKBitmap? SkinImage { get; set; }
     public static SKBitmap? CapeIamge { get; set; }
     public static Bitmap HeadBitmap { get; private set; }
@@ -80,34 +80,34 @@ public static class UserBinding
             });
             return (true, null);
         }
-        var (_, State1, Obj, Message, Ex) = type switch
+        var res1 = type switch
         {
             AuthType.OAuth => await GameAuth.LoginOAuthAsync(loginOAuth),
             AuthType.Nide8 => await GameAuth.LoginNide8Async(input1!, input2!, input3!),
             AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(input1!, input2!, input3!),
             AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!),
             AuthType.SelfLittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, input3!),
-            _ => (AuthState.Profile, LoginState.Error, null, null, null)
+            _ => throw new Exception("Type Error")
         };
 
-        if (State1 != LoginState.Done)
+        if (res1.LoginState != LoginState.Done)
         {
-            if (Ex != null)
+            if (res1.Ex != null)
             {
-                App.ShowError(Message!, Ex);
+                App.ShowError(res1.Message!, res1.Ex);
                 return (false, App.Lang("Gui.Error4"));
             }
             else
             {
-                return (false, Message);
+                return (false, res1.Message);
             }
         }
-        if (string.IsNullOrWhiteSpace(Obj?.UUID))
+        if (string.IsNullOrWhiteSpace(res1.Auth?.UUID))
         {
             BaseBinding.OpUrl("https://minecraft.net/");
             return (false, App.Lang("Gui.Error47"));
         }
-        AuthDatabase.Save(Obj!);
+        AuthDatabase.Save(res1.Auth!);
         return (true, null);
     }
 

@@ -279,7 +279,11 @@ public static class ServerPack
 
         local += "files/";
 
-        await PathHelper.DeleteFilesAsync(local, request);
+        await PathHelper.DeleteFilesAsync(new DeleteFilesArg
+        {
+            Local = local, 
+            Request = request
+        });
         Directory.CreateDirectory(local);
 
         bool fail = false;
@@ -462,7 +466,7 @@ public static class ServerPack
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
     public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj,
-        ColorMCCore.UpdateState state, ColorMCCore.ChoiseCall select)
+        ColorMCCore.UpdateState? state, ColorMCCore.ChoiseCall? select)
     {
         var obj2 = obj.GetServerPack();
         var res = await BaseClient.GetStringAsync(obj.ServerUrl + "sha1");

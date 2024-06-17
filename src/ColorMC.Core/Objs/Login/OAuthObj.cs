@@ -10,7 +10,7 @@ public record OAuthObj
     public string message { get; set; }
 }
 
-public record OAuth1Obj
+public record OAuthGetCodeObj
 {
     public string token_type { get; set; }
     public string scope { get; set; }

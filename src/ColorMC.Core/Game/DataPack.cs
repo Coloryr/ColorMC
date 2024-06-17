@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
@@ -143,12 +144,12 @@ public static class DataPack
     }
 
     /// <summary>
-    /// 禁用启用数据包
+    /// 禁用/启用世界数据包
     /// </summary>
     /// <param name="list">数据包列表</param>
     /// <param name="world">世界储存</param>
     /// <returns></returns>
-    public static bool DisEna(IEnumerable<DataPackObj> list, WorldObj world)
+    public static bool DisableOrEnableDataPack(this WorldObj world, IEnumerable<DataPackObj> list)
     {
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 
@@ -217,12 +218,11 @@ public static class DataPack
     }
 
     /// <summary>
-    /// 删除数据包
+    /// 删除世界数据包
     /// </summary>
-    /// <param name="list">数据包列表</param>
     /// <param name="world">世界存储</param>
     /// <returns>是否删除</returns>
-    public static async Task<bool> DeleteAsync(List<DataPackObj> list, WorldObj world, ColorMCCore.Request request)
+    public static async Task<bool> DeleteDataPackAsync(this WorldObj world, DataPackDeleteArg arg)
     {
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 
@@ -232,11 +232,15 @@ public static class DataPack
             return false;
         }
 
-        foreach (var item in list)
+        foreach (var item in arg.List)
         {
             if (Directory.Exists(item.Path))
             {
-                await PathHelper.DeleteFilesAsync(item.Path, request);
+                await PathHelper.DeleteFilesAsync(new DeleteFilesArg
+                {
+                    Local = item.Path,
+                    Request = arg.Request
+                });
             }
             else
             {
@@ -248,7 +252,7 @@ public static class DataPack
         {
             try
             {
-                foreach (var obj in list)
+                foreach (var obj in arg.List)
                 {
                     foreach (var item in ens.CopyList())
                     {

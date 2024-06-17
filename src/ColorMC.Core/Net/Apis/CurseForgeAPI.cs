@@ -13,8 +13,6 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class CurseForgeAPI
 {
-    private const string CurseForgeKEY = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m";
-
     public const int GameID = 432;
 
     public const int ClassModPack = 4471;
@@ -24,6 +22,13 @@ public static class CurseForgeAPI
     public const int ClassShaderpack = 6552;
 
     public const int CategoryIdDataPacks = 5193;
+
+    private static async Task<string> Send(HttpRequestMessage httpRequest)
+    {
+        httpRequest.Headers.Add("x-api-key", ColorMCCore.CoreArg.CurseForgeKey ?? throw new Exception("CurseForge key is empty"));
+        var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
+        return await data.Content.ReadAsStringAsync();
+    }
 
     /// <summary>
     /// 获取列表
@@ -50,17 +55,16 @@ public static class CurseForgeAPI
             {
                 temp += $"&modLoaderType={modLoaderType}";
             }
-            HttpRequestMessage httpRequest = new()
+            var data = await Send(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(temp)
-            };
-            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
+            });
+            if (string.IsNullOrWhiteSpace(data))
+            {
                 return null;
-            return JsonConvert.DeserializeObject<CurseForgeObjList>(data1);
+            }
+            return JsonConvert.DeserializeObject<CurseForgeObjList>(data);
         }
         catch (Exception e)
         {
@@ -152,17 +156,16 @@ public static class CurseForgeAPI
         try
         {
             string temp = $"{UrlHelper.CurseForge}mods/{obj.projectID}/files/{obj.fileID}";
-            HttpRequestMessage httpRequest = new()
+            var data = await Send(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(temp)
-            };
-            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
+            });
+            if (string.IsNullOrWhiteSpace(data))
+            {
                 return null;
-            return JsonConvert.DeserializeObject<CurseForgeModObj>(data1);
+            }
+            return JsonConvert.DeserializeObject<CurseForgeModObj>(data);
         }
         catch (Exception e)
         {
@@ -185,19 +188,17 @@ public static class CurseForgeAPI
         {
             var arg1 = new { fileIds = new List<long>() };
             obj.ForEach(a => arg1.fileIds.Add(a.fileID));
-            string temp = $"{UrlHelper.CurseForge}mods/files";
-            HttpRequestMessage httpRequest = new()
+            var data = await Send(new()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri(temp),
+                RequestUri = new Uri($"{UrlHelper.CurseForge}mods/files"),
                 Content = new StringContent(JsonConvert.SerializeObject(arg1), MediaTypeHeaderValue.Parse("application/json"))
-            };
-            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
+            });
+            if (string.IsNullOrWhiteSpace(data))
+            {
                 return null;
-            return JsonConvert.DeserializeObject<Arg2>(data1)?.data;
+            }
+            return JsonConvert.DeserializeObject<Arg2>(data)?.data;
         }
         catch (Exception e)
         {
@@ -214,18 +215,16 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForge}categories?gameId={GameID}";
-            HttpRequestMessage httpRequest = new()
+            var data = await Send(new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(temp)
-            };
-            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
+                RequestUri = new Uri($"{UrlHelper.CurseForge}categories?gameId={GameID}")
+            });
+            if (string.IsNullOrWhiteSpace(data))
+            {
                 return null;
-            return JsonConvert.DeserializeObject<CurseForgeCategoriesObj>(data1);
+            }
+            return JsonConvert.DeserializeObject<CurseForgeCategoriesObj>(data);
         }
         catch (Exception e)
         {
@@ -241,18 +240,16 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForge}games/{GameID}/versions";
-            HttpRequestMessage httpRequest = new()
+            var data = await Send(new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(temp)
-            };
-            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
+                RequestUri = new Uri($"{UrlHelper.CurseForge}games/{GameID}/versions")
+            });
+            if (string.IsNullOrWhiteSpace(data))
+            {
                 return null;
-            return JsonConvert.DeserializeObject<CurseForgeVersion>(data1);
+            }
+            return JsonConvert.DeserializeObject<CurseForgeVersion>(data);
         }
         catch (Exception e)
         {
@@ -268,18 +265,16 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForge}games/{GameID}/version-types";
-            HttpRequestMessage httpRequest = new()
+            var data = await Send(new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(temp)
-            };
-            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
+                RequestUri = new Uri($"{UrlHelper.CurseForge}games/{GameID}/version-types")
+            });
+            if (string.IsNullOrWhiteSpace(data))
+            {
                 return null;
-            return JsonConvert.DeserializeObject<CurseForgeVersionType>(data1);
+            }
+            return JsonConvert.DeserializeObject<CurseForgeVersionType>(data);
         }
         catch (Exception e)
         {
@@ -295,18 +290,16 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForge}mods/{id}";
-            HttpRequestMessage httpRequest = new()
+            var data = await Send(new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(temp)
-            };
-            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
+                RequestUri = new Uri($"{UrlHelper.CurseForge}mods/{id}")
+            });
+            if (string.IsNullOrWhiteSpace(data))
+            {
                 return null;
-            return JsonConvert.DeserializeObject<CurseForgeObj>(data1);
+            }
+            return JsonConvert.DeserializeObject<CurseForgeObj>(data);
         }
         catch (Exception e)
         {
@@ -322,21 +315,19 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForge}mods";
             var arg1 = new { modIds = new List<long>(), filterPcOnly = true };
             obj.ForEach(a => arg1.modIds.Add(a.projectID));
-            HttpRequestMessage httpRequest = new()
+            var data = await Send(new()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri(temp),
+                RequestUri = new Uri($"{UrlHelper.CurseForge}mods"),
                 Content = new StringContent(JsonConvert.SerializeObject(arg1), MediaTypeHeaderValue.Parse("application/json"))
-            };
-            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
+            });
+            if (string.IsNullOrWhiteSpace(data))
+            {
                 return null;
-            return JsonConvert.DeserializeObject<CurseForgeObjList>(data1);
+            }
+            return JsonConvert.DeserializeObject<CurseForgeObjList>(data);
         }
         catch (Exception e)
         {
@@ -358,17 +349,16 @@ public static class CurseForgeAPI
             {
                 temp += $"&modLoaderType={Loader(loader)}";
             }
-            HttpRequestMessage httpRequest = new()
+            var data = await Send(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(temp)
-            };
-            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
+            });
+            if (string.IsNullOrWhiteSpace(data))
+            {
                 return null;
-            return JsonConvert.DeserializeObject<CurseForgeFileObj>(data1);
+            }
+            return JsonConvert.DeserializeObject<CurseForgeFileObj>(data);
         }
         catch (Exception e)
         {

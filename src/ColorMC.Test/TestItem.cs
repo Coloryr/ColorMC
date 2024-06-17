@@ -17,9 +17,10 @@ public static class TestItem
 {
     private static DesktopGameHandel? Start(GameSettingObj obj, LoginObj obj1)
     {
-        return obj.StartGameAsync(obj1, null, Program.Download,
-                (_) => Task.FromResult(true), (_) => { }, (_) => Task.FromResult(true), (_) => { },
-                (_) => Task.FromResult(true), (_, _) => { }, 0, CancellationToken.None).Result as DesktopGameHandel;
+        return obj.StartGameAsync(new GameLaunchArg 
+        { 
+            Login = obj1 
+        }, CancellationToken.None).Result as DesktopGameHandel;
     }
 
     public static void Item1()
@@ -140,7 +141,7 @@ public static class TestItem
                 Loader = Loaders.Forge,
                 LoaderVersion = "14.23.5.2860"
             };
-            var process = Start(game, login.Obj!);
+            var process = Start(game, login.Auth!);
             process?.Process.WaitForExit();
         }
     }
@@ -320,7 +321,7 @@ public static class TestItem
     public static void Item11()
     {
         var login = GameAuth.LoginNide8Async("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "123456").Result;
-        if (login.Obj == null)
+        if (login.Auth == null)
         {
             Console.WriteLine("登录错误");
         }
@@ -334,7 +335,7 @@ public static class TestItem
                 Loader = Loaders.Forge,
                 LoaderVersion = "40.1.85"
             };
-            var process = Start(game, login.Obj);
+            var process = Start(game, login.Auth);
             process?.Process.WaitForExit();
         }
     }
