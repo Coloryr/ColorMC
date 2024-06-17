@@ -32,25 +32,25 @@ public static class ServerPack
     /// </summary>
     /// <param name="obj">服务器实例</param>
     /// <returns>结果</returns>
-    public static async Task<bool> UpdateAsync(this ServerPackObj obj, GameSettingObj game,
-        ColorMCCore.UpdateState state)
+    public static async Task<bool> UpdateAsync(this ServerPackObj obj, ColorMCCore.UpdateState? state)
     {
-        PathHelper.Delete(game.GetServerPackFile());
-        var old = game.GetOldServerPack();
+        PathHelper.Delete(obj.Game.GetServerPackFile());
+        var old = obj.Game.GetOldServerPack();
 
         //替换旧的实例
-        obj.Game.CopyObj(game);
+        obj.Game.CopyObj(obj.Game);
 
         var list5 = new List<DownloadItemObj>();
 
-        var path = game.GetModsPath();
+        var path = obj.Game.GetModsPath();
 
         old ??= new()
         {
-            Mod = []
+            Mod = [],
+            Game = obj.Game
         };
 
-        state(LanguageHelper.Get("Core.ServerPack.Info2"));
+        state?.Invoke(LanguageHelper.Get("Core.ServerPack.Info2"));
 
         //区分新旧mod
         ServerModItemObj?[] list1 = [.. obj.Mod];
@@ -94,7 +94,7 @@ public static class ServerPack
                     Name = item.File,
                     Local = Path.GetFullPath(path + item.File),
                     SHA256 = item.Sha256,
-                    Url = game.ServerUrl + item.Url,
+                    Url = obj.Game.ServerUrl + item.Url,
                     UseColorMCHead = true
                 });
             }
@@ -110,7 +110,7 @@ public static class ServerPack
             }
         }
 
-        var mods = await game.GetModsAsync(true);
+        var mods = await obj.Game.GetModsAsync(true);
 
         //删除旧mod
         foreach (var item in list4)
@@ -124,7 +124,7 @@ public static class ServerPack
         }
 
         //检查资源包
-        path = game.GetResourcepacksPath();
+        path = obj.Game.GetResourcepacksPath();
 
         foreach (var item in obj.Resourcepack)
         {
@@ -133,14 +133,14 @@ public static class ServerPack
                 Name = item.File,
                 Local = Path.GetFullPath(path + item.File),
                 SHA256 = item.Sha256,
-                Url = game.ServerUrl + item.Url,
+                Url = obj.Game.ServerUrl + item.Url,
                 UseColorMCHead = true
             });
         }
 
         //检查配置文件
-        path = game.GetGamePath();
-        var path1 = game.GetBasePath();
+        path = obj.Game.GetGamePath();
+        var path1 = obj.Game.GetBasePath();
 
         foreach (var item in obj.Config)
         {
@@ -151,7 +151,7 @@ public static class ServerPack
                     Name = item.FileName,
                     Local = Path.GetFullPath(path1 + "/" + item.FileName),
                     SHA256 = item.Sha256,
-                    Url = game.ServerUrl + item.Url,
+                    Url = obj.Game.ServerUrl + item.Url,
                     Overwrite = true,
                     UseColorMCHead = true,
                     Later = (stream) =>
@@ -172,15 +172,15 @@ public static class ServerPack
                     SHA256 = item.Sha256,
                     Overwrite = true,
                     UseColorMCHead = true,
-                    Url = game.ServerUrl + item.Url
+                    Url = obj.Game.ServerUrl + item.Url
                 });
             }
         }
 
-        state(LanguageHelper.Get("Core.ServerPack.Info3"));
+        state?.Invoke(LanguageHelper.Get("Core.ServerPack.Info3"));
         //开始下载
         var res = await DownloadManager.StartAsync(list5);
-        state(null);
+        state?.Invoke(null);
         return res;
     }
 
@@ -189,7 +189,7 @@ public static class ServerPack
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>服务器实例</returns>
-    public static (string?, ServerPackObj?) GetServerPack(this GameSettingObj obj)
+    public static GetServerPackRes GetServerPack(this GameSettingObj obj)
     {
         var file = obj.GetServerPackFile();
         ServerPackObj? obj1 = null;
@@ -208,7 +208,11 @@ public static class ServerPack
             obj1.Game = obj;
         }
 
-        return (sha1, obj1);
+        return new GetServerPackRes
+        { 
+            Pack = obj1,
+            Sha1 = sha1, 
+        };
     }
 
     /// <summary>
@@ -256,10 +260,8 @@ public static class ServerPack
     /// 生成服务器实例
     /// </summary>
     /// <param name="obj">服务器实例</param>
-    /// <param name="local">保存路径</param>
     /// <returns>创建结果</returns>
-    public static async Task<bool> GenServerPackAsync(this ServerPackObj obj, string local,
-        ColorMCCore.Request request)
+    public static async Task<bool> GenServerPackAsync(this ServerPackObj obj, ServerPackGenArg arg)
     {
         var obj1 = new ServerPackObj()
         {
@@ -270,21 +272,21 @@ public static class ServerPack
             Text = obj.Text
         };
 
-        if (!local.EndsWith('/') && !local.EndsWith('\\'))
+        if (!arg.Local.EndsWith('/') && !arg.Local.EndsWith('\\'))
         {
-            local += "/";
+            arg.Local += "/";
         }
 
-        var path = local;
+        var path = arg.Local;
 
-        local += "files/";
+        arg.Local += "files/";
 
         await PathHelper.DeleteFilesAsync(new DeleteFilesArg
         {
-            Local = local, 
-            Request = request
+            Local = arg.Local, 
+            Request = arg.Request
         });
-        Directory.CreateDirectory(local);
+        Directory.CreateDirectory(arg.Local);
 
         bool fail = false;
 
@@ -299,7 +301,7 @@ public static class ServerPack
                 {
                     if (item.Source == null)
                     {
-                        var name = Path.GetFullPath(local + item.Sha256);
+                        var name = Path.GetFullPath(arg.Local + item.Sha256);
                         var name1 = Path.GetFullPath(local2 + item.File);
                         PathHelper.CopyFile(name1, name);
                         item.Url = $"files/{item.Sha256}";
@@ -324,7 +326,7 @@ public static class ServerPack
 
                 foreach (var item in obj.Resourcepack)
                 {
-                    var name = Path.GetFullPath(local + item.Sha256);
+                    var name = Path.GetFullPath(arg.Local + item.Sha256);
                     var name1 = Path.GetFullPath(local2 + item.File);
                     PathHelper.CopyFile(name1, name);
                     item.Url = $"files/{item.Sha256}";
@@ -350,12 +352,12 @@ public static class ServerPack
                     string path1 = Path.GetFullPath(local2 + "/" + item.Group);
                     if (item.IsDir)
                     {
-                        string path2 = Path.GetFullPath(local + item.Group);
+                        string path2 = Path.GetFullPath(arg.Local + item.Group);
                         if (item.IsZip)
                         {
                             //打包进压缩包
                             var file = new FileInfo(path2[..^1] + ".zip");
-                            await new ZipUtils(GameRequest: request).ZipFileAsync(path1, file.FullName);
+                            await new ZipUtils(GameRequest: arg.Request).ZipFileAsync(path1, file.FullName);
                             var stream = PathHelper.OpenRead(file.FullName)!;
 
                             var item1 = new ConfigPackObj()
@@ -369,7 +371,7 @@ public static class ServerPack
 
                             stream.Dispose();
 
-                            PathHelper.MoveFile(file.FullName, Path.GetFullPath(local + item1.Sha256));
+                            PathHelper.MoveFile(file.FullName, Path.GetFullPath(arg.Local + item1.Sha256));
 
                             obj1.Config.Add(item1);
                         }
@@ -390,7 +392,7 @@ public static class ServerPack
                                     IsZip = false
                                 };
 
-                                PathHelper.CopyFile(item1.FullName, local + item2.Sha256);
+                                PathHelper.CopyFile(item1.FullName, arg.Local + item2.Sha256);
 
                                 item2.Url = $"files/{item2.Sha256}";
 
@@ -413,7 +415,7 @@ public static class ServerPack
 
                         item2.Url = $"files/{item2.Sha256}";
 
-                        PathHelper.CopyFile(path1, local + item2.Sha256);
+                        PathHelper.CopyFile(path1, arg.Local + item2.Sha256);
 
                         obj1.Config.Add(item2);
                     }
@@ -434,7 +436,7 @@ public static class ServerPack
 
                     item2.Url = $"files/{item2.Sha256}";
 
-                    PathHelper.CopyFile(icon, local + item2.Sha256);
+                    PathHelper.CopyFile(icon, arg.Local + item2.Sha256);
 
                     obj1.Config.Add(item2);
                 }
@@ -465,8 +467,7 @@ public static class ServerPack
     /// <param name="obj">游戏实例</param>
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
-    public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj,
-        ColorMCCore.UpdateState? state, ColorMCCore.ChoiseCall? select)
+    public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj, ServerPackCheckArg arg)
     {
         var obj2 = obj.GetServerPack();
         var res = await BaseClient.GetStringAsync(obj.ServerUrl + "sha1");
@@ -474,7 +475,7 @@ public static class ServerPack
         {
             return false;
         }
-        if (obj2.Item1 == null || obj2.Item1 != res.Item2)
+        if (obj2.Sha1 == null || obj2.Sha1 != res.Item2)
         {
             var res1 = await BaseClient.GetStringAsync(obj.ServerUrl + "server.json");
             if (!res1.Item1)
@@ -496,15 +497,15 @@ public static class ServerPack
                 Logs.Error(LanguageHelper.Get("Core.Http.Error12"), e);
                 return false;
             }
-            if (!await select(obj1.Text))
+            if (arg.Select != null && !await arg.Select(obj1.Text))
             {
                 return true;
             }
 
-            obj2.Item2?.MoveToOld();
-            state(LanguageHelper.Get("Core.ServerPack.Info1"));
+            obj2.Pack?.MoveToOld();
+            arg.State?.Invoke(LanguageHelper.Get("Core.ServerPack.Info1"));
 
-            var res2 = await obj1.UpdateAsync(obj, state);
+            var res2 = await obj1.UpdateAsync(arg.State);
             if (res2)
             {
                 File.WriteAllText(obj.GetServerPackFile(), res1.Item2!);

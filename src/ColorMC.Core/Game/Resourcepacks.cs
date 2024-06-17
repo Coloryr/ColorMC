@@ -19,7 +19,7 @@ public static class Resourcepacks
     /// </summary>
     /// <param name="file">文件流</param>
     /// <returns>资源包</returns>
-    private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream file)
+    private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream file, CancellationToken cancel)
     {
         using var zFile = new ZipFile(file);
         var item1 = zFile.GetEntry("pack.mcmeta");
@@ -27,7 +27,7 @@ public static class Resourcepacks
         {
             using var stream1 = zFile.GetInputStream(item1);
             using var stream = new MemoryStream();
-            await stream1.CopyToAsync(stream);
+            await stream1.CopyToAsync(stream, cancel);
             var data = Encoding.UTF8.GetString(stream.ToArray());
             var obj1 = JObject.Parse(data);
             if (obj1 != null)
@@ -58,7 +58,7 @@ public static class Resourcepacks
                 {
                     using var stream2 = zFile.GetInputStream(item1);
                     using var stream3 = new MemoryStream();
-                    await stream2.CopyToAsync(stream3);
+                    await stream2.CopyToAsync(stream3, cancel);
                     obj.Icon = stream3.ToArray();
                 }
                 return obj;
@@ -85,7 +85,7 @@ public static class Resourcepacks
             return list;
         }
 
-        await Parallel.ForEachAsync(info.GetFiles(), async (item, _) =>
+        await Parallel.ForEachAsync(info.GetFiles(), async (item, cancel) =>
         {
             using var stream = PathHelper.OpenRead(item.FullName)!;
             string sha1 = HashHelper.GenSha1(stream);
@@ -96,7 +96,7 @@ public static class Resourcepacks
             try
             {
                 stream.Seek(0, SeekOrigin.Begin);
-                var obj = await ReadResourcepackAsync(stream);
+                var obj = await ReadResourcepackAsync(stream, cancel);
                 if (obj != null)
                 {
                     obj.Local = Path.GetFullPath(item.FullName);
@@ -162,6 +162,10 @@ public static class Resourcepacks
         return ok;
     }
 
+    /// <summary>
+    /// 删除材质包
+    /// </summary>
+    /// <param name="obj"></param>
     public static void Delete(this ResourcepackObj obj)
     {
         PathHelper.Delete(obj.Local);

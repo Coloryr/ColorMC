@@ -134,7 +134,7 @@ public static class LibrariesPath
     /// <returns>Lib地址列表</returns>
     public static async Task<List<string>> GetLibsAsync(this GameSettingObj obj)
     {
-        var v2 = CheckHelpers.IsGameVersionV2(obj);
+        var v2 = obj.IsGameVersionV2();
         var list = new Dictionary<LibVersionObj, string>();
         var version = VersionPath.GetVersion(obj.Version)!;
 

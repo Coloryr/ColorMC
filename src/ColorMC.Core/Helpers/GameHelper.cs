@@ -242,7 +242,7 @@ public static class GameHelper
     public static void ReadyOptifineWrapper()
     {
         OptifineWrapper = Path.GetFullPath(LibrariesPath.BaseDir +
-            "/com/coloryr/OptifineWrapper/1.0/OptifineWrapper-1.0.jar");
+            "/com/coloryr/OptifineWrapper/1.1/OptifineWrapper-1.1.jar");
         var file = new FileInfo(OptifineWrapper);
         if (!file.Exists)
         {
@@ -755,16 +755,18 @@ public static class GameHelper
     /// <param name="request"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-
-    public static async Task<(bool, GameSettingObj?, Exception?)> AddGame(string name, string local, List<string>? unselect,
-        string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
+    public static async Task<AddGameRes> AddGame(AddGameArg arg)
     {
+        if (string.IsNullOrWhiteSpace(arg.Local))
+        {
+            throw new Exception("Local is empty");
+        }
         GameSettingObj? game = null;
 
         bool isfind = false;
 
-        var file1 = Path.GetFullPath(local + "/" + "mmc-pack.json");
-        var file2 = Path.GetFullPath(local + "/" + "instance.cfg");
+        var file1 = Path.GetFullPath(arg.Local + "/" + "mmc-pack.json");
+        var file2 = Path.GetFullPath(arg.Local + "/" + "instance.cfg");
         if (File.Exists(file1) && File.Exists(file2))
         {
             try
@@ -786,7 +788,7 @@ public static class GameHelper
 
         if (!isfind)
         {
-            var files = Directory.GetFiles(local);
+            var files = Directory.GetFiles(arg.Local);
             foreach (var item in files)
             {
                 if (!item.EndsWith(".json"))
@@ -813,21 +815,34 @@ public static class GameHelper
 
         game ??= new GameSettingObj()
         {
-            Name = name,
+            Name = arg.Name,
             Version = (await GetGameVersions(GameType.Release))[0],
             Loader = Loaders.Normal
         };
-        game.GroupName = group;
 
-        game = await InstancesPath.CreateGame(game, request, overwirte);
-        if (game == null)
+        if (!string.IsNullOrWhiteSpace(arg.Name))
         {
-            return (false, null, null);
+            game.Name = arg.Name;
         }
 
-        await game.CopyFile(local, unselect);
+        game.GroupName = arg.Group;
 
-        return (true, game, null);
+        game = await InstancesPath.CreateGame(game, arg.Request, arg.Overwirte);
+        if (game == null)
+        {
+            return new AddGameRes
+            { 
+                State =false
+            };
+        }
+
+        await game.CopyFile(arg.Local, arg.Unselect);
+
+        return new AddGameRes
+        {
+            State = false,
+            Game = game
+        };
     }
 
     /// <summary>

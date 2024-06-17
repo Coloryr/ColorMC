@@ -27,7 +27,7 @@ public static class CurseForgeHelper
     /// <param name="data">CurseForge数据</param>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.Data data, GameSettingObj obj, string path)
+    public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.Data data, string path)
     {
         data.FixDownloadUrl();
 

@@ -1,4 +1,6 @@
-﻿using ColorMC.Core.Objs.Login;
+﻿using System.Collections.Concurrent;
+using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Objs.ServerPack;
 
 namespace ColorMC.Core.Objs;
 
@@ -120,4 +122,64 @@ public record LegacyLoginRes
     public LoginState State;
     public LoginObj? Auth;
     public string? Message;
+}
+
+/// <summary>
+/// 获取服务器实例结果
+/// </summary>
+public record GetServerPackRes
+{
+    /// <summary>
+    /// 服务器实例
+    /// </summary>
+    public ServerPackObj? Pack;
+    /// <summary>
+    /// Sha1
+    /// </summary>
+    public string? Sha1;
+}
+
+/// <summary>
+/// 语言列表结果
+/// </summary>
+public record LangRes
+{
+    public string Key;
+    public string Name;
+}
+
+/// <summary>
+/// 创建一个下载项目结果
+/// </summary>
+public record MakeDownloadItemRes
+{
+    public bool State;
+    public DownloadItemObj? Item;
+}
+
+/// <summary>
+/// 创建一些下载项目
+/// </summary>
+public record MakeDownloadItemsRes
+{
+    public bool State;
+    public List<DownloadItemObj>? List;
+}
+
+/// <summary>
+/// 创建一些下载项目，附带项目名字
+/// </summary>
+public record MakeDownloadNameItemsRes
+{
+    public string Name;
+    public ConcurrentBag<DownloadItemObj>? List;
+}
+
+/// <summary>
+/// 导入游戏文件夹结果
+/// </summary>
+public record AddGameRes
+{
+    public bool State;
+    public GameSettingObj? Game;
 }

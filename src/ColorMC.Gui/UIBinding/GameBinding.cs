@@ -1158,7 +1158,7 @@ public static class GameBinding
     /// <returns></returns>
     public static Task<bool> BackupWorld(GameSettingObj obj, FileInfo item1, ColorMCCore.Request request)
     {
-        return obj.UnzipBackupWorldAsync(item1, request);
+        return obj.UnzipBackupWorldAsync(new UnzipBackupWorldArg { File = item1.FullName, Request = request });
     }
 
     /// <summary>
@@ -1216,7 +1216,7 @@ public static class GameBinding
     /// <returns></returns>
     public static ServerPackObj? GetServerPack(GameSettingObj obj)
     {
-        return obj.GetServerPack().Item2;
+        return obj.GetServerPack().Pack;
     }
 
     /// <summary>
@@ -1229,7 +1229,11 @@ public static class GameBinding
     public static Task<bool> GenServerPack(ServerPackObj obj, string local,
         ColorMCCore.Request request)
     {
-        return obj.GenServerPackAsync(local, request);
+        return obj.GenServerPackAsync(new ServerPackGenArg
+        { 
+            Local = local, 
+            Request = request 
+        });
     }
 
     /// <summary>
@@ -1780,7 +1784,7 @@ public static class GameBinding
 
             model.Progress(App.Lang("AddGameWindow.Tab1.Info15"));
 
-            var res1 = await obj.UpdateAsync(game, (text) =>
+            var res1 = await obj.UpdateAsync((text) =>
             {
                 if (text == null)
                 {

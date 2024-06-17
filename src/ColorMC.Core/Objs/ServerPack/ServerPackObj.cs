@@ -24,5 +24,5 @@ public record ServerPackObj
     /// <summary>
     /// 游戏实例
     /// </summary>
-    public GameSettingObj Game { get; set; }
+    public required GameSettingObj Game { get; set; }
 }

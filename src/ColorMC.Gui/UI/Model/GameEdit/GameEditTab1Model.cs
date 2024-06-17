@@ -751,12 +751,12 @@ public partial class GameEditModel
                     }
                 }
 
-                return (null, null);
+                return null;
             });
-            if (list.Item1 != null)
+            if (list != null)
             {
-                LangList.Add(list.Item2);
-                _langList.Add(list.Item1);
+                LangList.Add(list.Name);
+                _langList.Add(list.Key);
 
                 Lang = 0;
             }

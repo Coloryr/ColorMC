@@ -64,12 +64,15 @@ public static class AuthlibHelper
     /// 初始化Nide8Injector，存在不下载
     /// </summary>
     /// <returns>Nide8Injector下载实例</returns>
-    public static async Task<(bool, DownloadItemObj?)> ReadyNide8()
+    public static async Task<MakeDownloadItemRes> ReadyNide8()
     {
         var data = await BaseClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/");
         if (data.Item1 == false)
         {
-            return (false, null);
+            return new MakeDownloadItemRes
+            {
+                State = false
+            };
         }
         try
         {
@@ -81,7 +84,11 @@ public static class AuthlibHelper
             item.SHA1 = sha1;
             if (!File.Exists(NowNide8Injector))
             {
-                return (true, item);
+                return new MakeDownloadItemRes
+                {
+                    State = true,
+                    Item = item
+                };
             }
 
             if (!string.IsNullOrWhiteSpace(sha1))
@@ -90,16 +97,26 @@ public static class AuthlibHelper
                 var sha11 = HashHelper.GenSha1(stream);
                 if (sha11 != sha1)
                 {
-                    return (true, item);
+                    return new MakeDownloadItemRes
+                    {
+                        State = true,
+                        Item = item
+                    };
                 }
             }
 
-            return (true, null);
+            return new MakeDownloadItemRes
+            {
+                State = true
+            };
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.Error8"), e);
-            return (false, null);
+            return new MakeDownloadItemRes
+            {
+                State = false
+            };
         }
     }
 
@@ -142,7 +159,7 @@ public static class AuthlibHelper
     /// 初始化AuthlibInjector，存在不下载
     /// </summary>
     /// <returns>AuthlibInjector下载实例</returns>
-    public static async Task<(bool, DownloadItemObj?)> ReadyAuthlibInjectorAsync()
+    public static async Task<MakeDownloadItemRes> ReadyAuthlibInjectorAsync()
     {
         try
         {
@@ -171,16 +188,27 @@ public static class AuthlibHelper
                         var sha2561 = await HashHelper.GenSha256Async(stream);
                         if (sha256 != sha2561)
                         {
-                            return (true, item1);
+                            return new MakeDownloadItemRes
+                            {
+                                State = true,
+                                Item = item1
+                            };
                         }
                     }
                 }
                 else
                 {
-                    return (true, item1);
+                    return new MakeDownloadItemRes
+                    {
+                        State = true,
+                        Item = item1
+                    };
                 }
 
-                return (true, null);
+                return new MakeDownloadItemRes
+                {
+                    State = true
+                };
             }
             else if (File.Exists(NowAuthlibInjector))
             {
@@ -192,17 +220,27 @@ public static class AuthlibHelper
                     if (item.SHA256 != sha2561)
                     {
                         var obj1 = await GetAuthlibInjectorObjAsync();
-                        return (true, BuildAuthlibInjectorItem(obj1));
+                        return new MakeDownloadItemRes
+                        {
+                            State = true,
+                            Item = BuildAuthlibInjectorItem(obj1)
+                        };
                     }
                 }
             }
 
-            return (true, null);
+            return new MakeDownloadItemRes
+            {
+                State = true
+            };
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.Error11"), e);
-            return (false, null);
+            return new MakeDownloadItemRes
+            {
+                State = false
+            };
         }
     }
 }

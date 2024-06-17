@@ -187,15 +187,13 @@ public static class PathHelper
             return true;
         }
 
-        if (arg.Request == null)
+        if (arg.Request != null)
         {
-            return false;
-        }
-
-        var res = await arg.Request(string.Format(LanguageHelper.Get("Core.Info2"), arg.Local));
-        if (!res)
-        {
-            return false;
+            var res = await arg.Request(string.Format(LanguageHelper.Get("Core.Info2"), arg.Local));
+            if (!res)
+            {
+                return false;
+            }
         }
 
         return await Task.Run(() =>
