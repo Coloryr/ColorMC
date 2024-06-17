@@ -16,8 +16,7 @@ public static class LittleSkin
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
     /// <param name="server">服务器地址</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)>
-        AuthenticateAsync(string clientToken, string user, string pass, string? server = null)
+    public static async Task<LegacyLoginRes> AuthenticateAsync(string clientToken, string user, string pass, string? server = null)
     {
         var type = AuthType.LittleSkin;
         string server1;
@@ -36,21 +35,21 @@ public static class LittleSkin
             {
                 server = server.Replace("/user", "/");
             }
-            if (!server.EndsWith("/"))
+            if (!server.EndsWith('/'))
             {
                 server += "/";
             }
             server1 = server;
         }
 
-        var obj = await LoginOld.AuthenticateAsync(server1 + "api/yggdrasil", clientToken, user, pass);
+        var obj = await LegacyLogin.AuthenticateAsync(server1 + "api/yggdrasil", clientToken, user, pass);
         if (obj.State != LoginState.Done)
             return obj;
 
-        obj.Obj!.AuthType = type;
+        obj.Auth!.AuthType = type;
         if (type == AuthType.SelfLittleSkin)
         {
-            obj.Obj.Text1 = server!;
+            obj.Auth.Text1 = server!;
         }
 
         return obj;
@@ -60,7 +59,7 @@ public static class LittleSkin
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> RefreshAsync(LoginObj obj)
+    public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj)
     {
         string server;
         if (obj.AuthType == AuthType.LittleSkin)
@@ -72,18 +71,22 @@ public static class LittleSkin
             server = obj.Text1;
         }
 
-        if (!server.EndsWith("/"))
+        if (!server.EndsWith('/'))
         {
             server += "/";
         }
 
         server += "api/yggdrasil";
 
-        if (await LoginOld.ValidateAsync(server + "/authserver/validate", obj))
+        if (await LegacyLogin.ValidateAsync(server + "/authserver/validate", obj))
         {
-            return (LoginState.Done, obj, null);
+            return new LegacyLoginRes
+            {
+                State = LoginState.Done,
+                Auth = obj,
+            };
         }
 
-        return await LoginOld.RefreshAsync(server, obj);
+        return await LegacyLogin.RefreshAsync(server, obj);
     }
 }

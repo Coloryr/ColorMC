@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
@@ -123,5 +124,114 @@ public static class LibrariesPath
         }
 
         return "";
+    }
+
+    /// <summary>
+    /// 获取所有Lib
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="v2">V2模式</param>
+    /// <returns>Lib地址列表</returns>
+    public static async Task<List<string>> GetLibsAsync(this GameSettingObj obj)
+    {
+        var v2 = CheckHelpers.IsGameVersionV2(obj);
+        var list = new Dictionary<LibVersionObj, string>();
+        var version = VersionPath.GetVersion(obj.Version)!;
+
+        //LoaderLib
+        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
+        {
+            var forge = obj.Loader == Loaders.NeoForge ?
+                obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
+
+            var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
+                obj.Loader == Loaders.NeoForge, v2, false);
+
+            foreach (var item in list2)
+            {
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), item.Local);
+            }
+
+            if (v2)
+            {
+                list.AddOrUpdate(new(), GameHelper.ForgeWrapper);
+            }
+        }
+        else if (obj.Loader == Loaders.Fabric)
+        {
+            var fabric = obj.GetFabricObj()!;
+            foreach (var item in fabric.libraries)
+            {
+                var name = PathHelper.ToPathAndName(item.name);
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(name.Name),
+                    Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
+            }
+        }
+        else if (obj.Loader == Loaders.Quilt)
+        {
+            var quilt = obj.GetQuiltObj()!;
+            foreach (var item in quilt.libraries)
+            {
+                var name = PathHelper.ToPathAndName(item.name);
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(name.Name),
+                    Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
+            }
+        }
+        else if (obj.Loader == Loaders.OptiFine)
+        {
+            GameHelper.ReadyOptifineWrapper();
+            list.AddOrUpdate(new(), GameHelper.OptifineWrapper);
+        }
+        else if (obj.Loader == Loaders.Custom)
+        {
+            var list2 = obj.GetCustomLoaderLibs();
+            foreach (var (Name, Local) in list2)
+            {
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(Name), Local);
+            }
+        }
+
+        //GameLib
+        if (obj.Loader == Loaders.Custom && obj.CustomLoader?.OffLib == true)
+        {
+            var list1 = await DownloadItemHelper.BuildGameLibsAsync(version);
+            foreach (var item in list1)
+            {
+                if (item.Later == null)
+                {
+                    //不添加lwjgl
+                    if (item.Name.Contains("org.lwjgl") && SystemInfo.Os == OsType.Android)
+                    {
+                        continue;
+                    }
+                    list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
+                }
+            }
+        }
+        else
+        {
+            var list1 = await DownloadItemHelper.BuildGameLibsAsync(version);
+            foreach (var item in list1)
+            {
+                if (item.Later == null)
+                {
+                    //不添加lwjgl
+                    if (item.Name.Contains("org.lwjgl") && SystemInfo.Os == OsType.Android)
+                    {
+                        continue;
+                    }
+                    list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
+                }
+            }
+        }
+
+        //游戏核心
+        var list3 = new List<string>(list.Values);
+        if (obj.Loader != Loaders.NeoForge)
+        {
+            list3.Add(LibrariesPath.GetGameFile(obj.Version));
+        }
+
+        return list3;
     }
 }

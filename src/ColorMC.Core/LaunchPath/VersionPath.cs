@@ -22,14 +22,14 @@ public static class VersionPath
     public const string Name4 = "neoforged";
 
     //版本缓存
-    private readonly static Dictionary<string, GameArgObj> s_gameArgs = [];
-    private readonly static Dictionary<string, ForgeInstallObj> s_forgeInstalls = [];
-    private readonly static Dictionary<string, ForgeInstallObj> s_neoForgeInstalls = [];
-    private readonly static Dictionary<string, ForgeLaunchObj> s_forgeLaunchs = [];
-    private readonly static Dictionary<string, ForgeLaunchObj> s_neoForgeLaunchs = [];
-    private readonly static Dictionary<string, FabricLoaderObj> s_fabricLoaders = [];
-    private readonly static Dictionary<string, QuiltLoaderObj> s_quiltLoaders = [];
-    private readonly static Dictionary<string, CustomLoaderObj> s_customLoader = [];
+    private static readonly Dictionary<string, GameArgObj> s_gameArgs = [];
+    private static readonly Dictionary<string, ForgeInstallObj> s_forgeInstalls = [];
+    private static readonly Dictionary<string, ForgeInstallObj> s_neoForgeInstalls = [];
+    private static readonly Dictionary<string, ForgeLaunchObj> s_forgeLaunchs = [];
+    private static readonly Dictionary<string, ForgeLaunchObj> s_neoForgeLaunchs = [];
+    private static readonly Dictionary<string, FabricLoaderObj> s_fabricLoaders = [];
+    private static readonly Dictionary<string, QuiltLoaderObj> s_quiltLoaders = [];
+    private static readonly Dictionary<string, CustomLoaderObj> s_customLoader = [];
 
     private static VersionObj? _version;
 

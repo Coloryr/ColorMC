@@ -180,14 +180,19 @@ public static class PathHelper
     /// <summary>
     /// 删除文件夹
     /// </summary>
-    public static async Task<bool> DeleteFilesAsync(string local, ColorMCCore.Request request)
+    public static async Task<bool> DeleteFilesAsync(DeleteFilesArg arg)
     {
-        if (!Directory.Exists(local))
+        if (!Directory.Exists(arg.Local))
         {
             return true;
         }
 
-        var res = await request(string.Format(LanguageHelper.Get("Core.Info2"), local));
+        if (arg.Request == null)
+        {
+            return false;
+        }
+
+        var res = await arg.Request(string.Format(LanguageHelper.Get("Core.Info2"), arg.Local));
         if (!res)
         {
             return false;
@@ -197,7 +202,7 @@ public static class PathHelper
         {
             try
             {
-                Directory.Delete(local, true);
+                Directory.Delete(arg.Local, true);
 
                 return true;
             }

@@ -32,7 +32,10 @@ internal class Program
 
         Console.WriteLine("Hello, World!");
 
-        ColorMCCore.Init(AppContext.BaseDirectory);
+        ColorMCCore.Init(new CoreInitArg
+        { 
+            Local = AppContext.BaseDirectory
+        });
         ColorMCCore.Init1();
 
         ColorMCCore.GameLog += Log;

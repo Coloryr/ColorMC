@@ -188,7 +188,7 @@ public enum LoginState
     /// <summary>
     /// 数据错误
     /// </summary>
-    JsonError,
+    DataError,
     /// <summary>
     /// 错误
     /// </summary>

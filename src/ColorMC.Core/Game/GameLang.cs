@@ -90,7 +90,8 @@ public static class GameLang
         {
             foreach (var item in obj.objects)
             {
-                if (item.Key.StartsWith(Name1) && item.Key.Contains(temp) && AssetsPath.ReadAsset(item.Value.hash) is { } str)
+                if (item.Key.StartsWith(Name1) && item.Key.Contains(temp) 
+                    && AssetsPath.ReadAsset(item.Value.hash) is { } str)
                 {
                     try
                     {

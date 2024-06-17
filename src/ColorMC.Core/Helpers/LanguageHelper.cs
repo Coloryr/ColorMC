@@ -91,7 +91,7 @@ public static class LanguageHelper
         {
             LoginState.Done => Get("Type.LoginState.Done"),
             LoginState.TimeOut => Get("Type.LoginState.TimeOut"),
-            LoginState.JsonError => Get("Type.LoginState.JsonError"),
+            LoginState.DataError => Get("Type.LoginState.DataError"),
             LoginState.Error => Get("Type.LoginState.Error"),
             LoginState.Crash => Get("Type.LoginState.Crash"),
             _ => Get("Type.LoginState.Other")

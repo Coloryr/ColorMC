@@ -1814,13 +1814,13 @@ public static class GameBinding
         }
     }
 
-    public static bool DataPackDisE(DataPackObj obj)
+    public static bool DataPackDisableOrEnable(DataPackObj obj)
     {
         if (BaseBinding.IsGameRun(obj.World.Game))
         {
             return false;
         }
-        return DataPack.DisEna([obj], obj.World);
+        return obj.World.DisableOrEnableDataPack([obj]);
     }
 
     public static bool DataPackDisE(IEnumerable<DataPackModel> pack)
@@ -1834,7 +1834,7 @@ public static class GameBinding
         {
             return false;
         }
-        return DataPack.DisEna(list, list[0].World);
+        return list[0].World.DisableOrEnableDataPack(list);
     }
 
     public static async Task<bool> DeleteDataPack(DataPackModel item, ColorMCCore.Request request)
@@ -1843,7 +1843,11 @@ public static class GameBinding
         {
             return false;
         }
-        return await DataPack.DeleteAsync([item.Pack], item.Pack.World, request);
+        return await item.Pack.World.DeleteDataPackAsync(new DataPackDeleteArg
+        {
+            List = [item.Pack],
+            Request = request
+        });
     }
 
     public static async Task<bool> DeleteDataPack(IEnumerable<DataPackModel> items, ColorMCCore.Request request)
@@ -1857,7 +1861,11 @@ public static class GameBinding
         {
             return false;
         }
-        return await DataPack.DeleteAsync(list, list[0].World, request);
+        return await list[0].World.DeleteDataPackAsync(new DataPackDeleteArg
+        {
+            List = list,
+            Request = request
+        });
     }
 
     public static async Task<List<Loaders>> GetSupportLoader(string version)

@@ -87,6 +87,14 @@ public static class CheckHelpers
         return download;
     }
 
+    public static bool IsGameVersionV2(GameSettingObj obj)
+    {
+        var version = VersionPath.GetVersion(obj.Version);
+        return version == null
+            ? throw new Exception(string.Format(LanguageHelper.Get("Core.Check.Error1"), obj.Version))
+            : IsGameVersionV2(version);
+    }
+
     /// <summary>
     /// 是否V2版本
     /// </summary>
@@ -190,7 +198,7 @@ public static class CheckHelpers
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns>下载列表</returns>
     public static async Task<ConcurrentBag<DownloadItemObj>> CheckGameFileAsync(GameSettingObj obj, LoginObj login,
-        ColorMCCore.GameLaunch update2, CancellationToken cancel)
+        ColorMCCore.GameLaunch? update2, CancellationToken cancel)
     {
         var list = new ConcurrentBag<DownloadItemObj>();
 

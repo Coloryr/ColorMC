@@ -27,12 +27,17 @@ public static class UrlHelper
     public const string ModrinthDownload = "https://cdn.modrinth.com/";
 
     public const string Modrinth = "https://api.modrinth.com/v2/";
+
     public const string Forge = "https://maven.minecraftforge.net/";
+
     public const string Fabric = "https://maven.fabricmc.net/";
     public const string FabricMeta = "https://meta.fabricmc.net/";
+
     public const string Quilt = "https://maven.quiltmc.org/";
     public const string QuiltMeta = "https://meta.quiltmc.org/";
+
     public const string OptiFine = "https://optifine.net/";
+
     public const string NeoForge = "https://maven.neoforged.net/releases/";
 
     public const string Minecraft = "https://www.minecraft.net/";

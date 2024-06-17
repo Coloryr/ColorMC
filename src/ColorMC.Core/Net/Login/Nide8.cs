@@ -16,17 +16,16 @@ public static class Nide8
     /// <param name="clientToken">客户端代码</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)>
-        AuthenticateAsync(string server, string clientToken, string user, string pass)
+    public static async Task<LegacyLoginRes> AuthenticateAsync(string server, string clientToken, string user, string pass)
     {
         string url = UrlHelper.Nide8 + server;
 
-        var obj = await LoginOld.AuthenticateAsync(url, clientToken, user, pass);
+        var obj = await LegacyLogin.AuthenticateAsync(url, clientToken, user, pass);
         if (obj.State != LoginState.Done)
             return obj;
 
-        obj.Obj!.AuthType = AuthType.Nide8;
-        obj.Obj.Text1 = server;
+        obj.Auth!.AuthType = AuthType.Nide8;
+        obj.Auth.Text1 = server;
 
         return obj;
     }
@@ -35,14 +34,18 @@ public static class Nide8
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> RefreshAsync(LoginObj obj)
+    public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj)
     {
         string server = UrlHelper.Nide8 + obj.Text1;
-        if (await LoginOld.ValidateAsync(server + "/authserver/validate", obj))
+        if (await LegacyLogin.ValidateAsync(server + "/authserver/validate", obj))
         {
-            return (LoginState.Done, obj, null);
+            return new LegacyLoginRes
+            { 
+                State = LoginState.Done,
+                Auth = obj
+            };
         }
 
-        return await LoginOld.RefreshAsync(server, obj);
+        return await LegacyLogin.RefreshAsync(server, obj);
     }
 }

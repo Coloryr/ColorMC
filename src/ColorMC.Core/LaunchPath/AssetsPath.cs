@@ -16,7 +16,7 @@ public static class AssetsPath
     public const string Name2 = "objects";
     public const string Name3 = "skins";
 
-    private readonly static Dictionary<string, AssetsObj> s_assets = [];
+    private static readonly Dictionary<string, AssetsObj> s_assets = [];
 
     /// <summary>
     /// 基础路径

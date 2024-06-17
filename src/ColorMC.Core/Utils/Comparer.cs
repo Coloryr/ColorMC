@@ -10,7 +10,7 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public class VersionStrObjComparer : IComparer<VersionStrObj>
 {
-    public readonly static VersionStrObjComparer Instance = new();
+    public static readonly VersionStrObjComparer Instance = new();
     public int Compare(VersionStrObj? x, VersionStrObj? y)
     {
         if (x == null || y == null)
@@ -26,7 +26,7 @@ public class VersionStrObjComparer : IComparer<VersionStrObj>
 /// </summary>
 public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
 {
-    public readonly static CurseDataComparer Instance = new();
+    public static readonly CurseDataComparer Instance = new();
     public bool Equals(CurseForgeModObj.Data? x, CurseForgeModObj.Data? y)
     {
         return x?.id == y?.id;
@@ -43,7 +43,7 @@ public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
 /// </summary>
 public class ModComparer : IComparer<ModObj>
 {
-    public readonly static ModComparer Instance = new();
+    public static readonly ModComparer Instance = new();
 
     public int Compare(ModObj? x, ModObj? y)
     {

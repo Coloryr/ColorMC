@@ -23,7 +23,6 @@ public partial class DownloadModel : TopModel
 
     private long _count;
     private readonly Timer _timer;
-    private readonly ICollection<DownloadItemObj> _list;
 
     [ObservableProperty]
     private string _speed;
@@ -36,7 +35,7 @@ public partial class DownloadModel : TopModel
 
     private readonly string _useName;
 
-    public DownloadModel(BaseModel model, ICollection<DownloadItemObj> list) : base(model)
+    public DownloadModel(BaseModel model) : base(model)
     {
         _useName = ToString() ?? "DownloadModel";
 
@@ -45,7 +44,6 @@ public partial class DownloadModel : TopModel
             AutoReset = true
         };
         _timer.Elapsed += Timer_Elapsed;
-        _list = list;
 
         Model.SetChoiseContent(_useName,
             App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
@@ -190,8 +188,12 @@ public partial class DownloadModel : TopModel
         }
     }
 
-    public Task<bool> Start()
+    public DownloadArg Start()
     {
-        return DownloadManager.StartAsync(_list, DownloaderUpdate, DownloadItemUpdate);
+        return new DownloadArg() 
+        {
+            Update = DownloaderUpdate, 
+            ItemUpdate = DownloadItemUpdate 
+        };
     }
 }

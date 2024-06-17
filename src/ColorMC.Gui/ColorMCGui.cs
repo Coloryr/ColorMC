@@ -20,6 +20,12 @@ namespace ColorMC.Gui;
 
 public static class ColorMCGui
 {
+    public static readonly CoreInitArg Arg = new()
+    { 
+        CurseForgeKey = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m",
+        OAuthKey = "aa0dd576-d717-4950-b257-a478d2c20968"
+    };
+
     public static string RunDir { get; private set; }
     public static string[] BaseSha1 { get; private set; }
     public static string InputDir { get; private set; }
@@ -96,7 +102,8 @@ public static class ColorMCGui
                 }
             }
 
-            ColorMCCore.Init(RunDir);
+            Arg.Local = RunDir;
+            ColorMCCore.Init(Arg);
 
             BuildAvaloniaApp()
                  .StartWithClassicDesktopLifetime(args);
@@ -130,7 +137,8 @@ public static class ColorMCGui
 
         Console.WriteLine($"RunDir:{RunDir}");
 
-        ColorMCCore.Init(RunDir);
+        Arg.Local = RunDir;
+        ColorMCCore.Init(Arg);
         GuiConfigUtils.Init(RunDir);
         FrpConfigUtils.Init(RunDir);
     }

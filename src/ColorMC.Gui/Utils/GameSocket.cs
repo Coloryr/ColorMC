@@ -15,31 +15,39 @@ public static class GameSocket
     public static readonly List<NetFrpCloudServerModel> Servers = [];
 
     public static int Port { get; private set; }
+
     private static bool s_isRun;
+
+    private static NettyServer s_nettyServer; 
+
     public static async void Init()
     {
-        ColorMCCore.NettyPack += ReadPack;
-        Port = await NettyServer.RunServerAsync();
+        s_nettyServer = new();
+        s_nettyServer.NettyPack += ReadPack;
+        Port = await s_nettyServer.RunServerAsync();
         App.OnClose += App_OnClose;
         s_isRun = true;
-        new Thread(() =>
+        new Thread(Run).Start();
+    }
+
+    private static void Run()
+    {
+        while (s_isRun)
         {
-            while (s_isRun)
+            if (Servers.Count != 0)
             {
-                if (Servers.Count != 0)
+                foreach (var item in Servers.ToArray())
                 {
-                    foreach (var item in Servers.ToArray())
-                    {
-                        SendServerInfo(item);
-                    }
+                    SendServerInfo(item);
                 }
-                Thread.Sleep(2000);
             }
-        }).Start();
+            Thread.Sleep(2000);
+        }
     }
 
     private static void App_OnClose()
     {
+        s_nettyServer.Stop();
         s_isRun = false;
     }
 
@@ -97,6 +105,6 @@ public static class GameSocket
         buf.WriteString(temp[0]);
         buf.WriteString(temp[1]);
         buf.WriteString(LanServer.MakeMotd("[ColorMC]" + model.Name, temp[1]));
-        NettyServer.SendMessage(buf);
+        s_nettyServer.SendMessage(buf);
     }
 }
