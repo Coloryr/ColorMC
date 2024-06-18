@@ -71,13 +71,13 @@ public static class UserBinding
     {
         if (type == AuthType.Offline)
         {
-            AuthDatabase.Save(new()
+            new LoginObj()
             {
                 UserName = input1!,
                 ClientToken = FuntionUtils.NewUUID(),
                 UUID = HashHelper.GenMd5(Encoding.UTF8.GetBytes(input1!.ToLower())),
                 AuthType = AuthType.Offline
-            });
+            }.Save();
             return (true, null);
         }
         var res1 = type switch

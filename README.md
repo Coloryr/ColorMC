@@ -2,7 +2,6 @@
 
 **ColorMC2 正在制作中，尽情期待**
 
-
 交流QQ群：571239090
 
 多语言  
@@ -19,6 +18,8 @@ https://crowdin.com/project/colormc
 **演示动画**
 
 ![](/image/GIF.gif)  
+
+[使用ColorMC启动器核心](Core.md)
 
 ## 支持平台
 - Linux(ubuntu 与 arch)

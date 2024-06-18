@@ -72,7 +72,7 @@ public record GameLaunchArg
     /// <summary>
     /// 登录账户
     /// </summary>
-    public required LoginObj Login;
+    public required LoginObj Auth;
     /// <summary>
     /// 自动进入的世界
     /// </summary>

@@ -19,7 +19,7 @@ public static class TestItem
     {
         return obj.StartGameAsync(new GameLaunchArg 
         { 
-            Login = obj1 
+            Auth = obj1 
         }, CancellationToken.None).Result as DesktopGameHandel;
     }
 

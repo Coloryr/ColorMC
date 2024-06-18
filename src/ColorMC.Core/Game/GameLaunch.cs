@@ -956,18 +956,18 @@ public static class Launch
         stopwatch.Restart();
         stopwatch.Start();
         larg.Update2?.Invoke(obj, LaunchState.Login);
-        var res1 = await larg.Login.RefreshTokenAsync();
+        var res1 = await larg.Auth.RefreshTokenAsync();
         if (res1.LoginState != LoginState.Done)
         {
-            if (larg.Login.AuthType == AuthType.OAuth
-                && !string.IsNullOrWhiteSpace(larg.Login.UUID)
+            if (larg.Auth.AuthType == AuthType.OAuth
+                && !string.IsNullOrWhiteSpace(larg.Auth.UUID)
                 && larg.Loginfail != null
-                && await larg.Loginfail(larg.Login) == true)
+                && await larg.Loginfail(larg.Auth) == true)
             {
-                larg.Login = new()
+                larg.Auth = new()
                 {
-                    UserName = larg.Login.UserName,
-                    UUID = larg.Login.UUID,
+                    UserName = larg.Auth.UserName,
+                    UUID = larg.Auth.UUID,
                     AuthType = AuthType.Offline
                 };
             }
@@ -982,8 +982,8 @@ public static class Launch
         }
         else
         {
-            larg.Login = res1.Auth!;
-            larg.Login.Save();
+            larg.Auth = res1.Auth!;
+            larg.Auth.Save();
         }
 
         if (token.IsCancellationRequested)
@@ -1033,7 +1033,7 @@ public static class Launch
         stopwatch.Restart();
         stopwatch.Start();
         var res = await obj.CheckGameFileAsync(token);
-        var res3 = await larg.Login.CheckLoginCoreAsync();
+        var res3 = await larg.Auth.CheckLoginCoreAsync();
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
             obj.Name, stopwatch.Elapsed.ToString());
@@ -1120,7 +1120,7 @@ public static class Launch
         var arg = await obj.MakeArgAsync(new GameMakeArg
         {
             Jvm = jvm!,
-            Login = larg.Login,
+            Login = larg.Auth,
             World = larg.World,
             Mixinport = larg.Mixinport
         });
@@ -1296,7 +1296,7 @@ public static class Launch
 
         if (SystemInfo.Os == OsType.Android)
         {
-            handel = ColorMCCore.PhoneGameLaunch(larg.Login, obj, jvm!, arg, env);
+            handel = ColorMCCore.PhoneGameLaunch(larg.Auth, obj, jvm!, arg, env);
         }
         else
         {
@@ -1334,7 +1334,7 @@ public static class Launch
             };
             process.Exited += (a, b) =>
             {
-                ColorMCCore.OnGameExit(obj, larg.Login, process.ExitCode);
+                ColorMCCore.OnGameExit(obj, larg.Auth, process.ExitCode);
                 process.Dispose();
             };
             process.Start();
