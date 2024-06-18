@@ -11,8 +11,113 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.Helpers;
 
-public static class InstallGameHelper
+public static class AddGameHelper
 {
+    /// <summary>
+    /// 导入文件夹
+    /// </summary>
+    /// <param name="name">实例名字</param>
+    /// <param name="local">位置</param>
+    /// <param name="unselect">排除的文件</param>
+    /// <param name="group">游戏群组</param>
+    /// <param name="request"></param>
+    /// <param name="overwirte"></param>
+    /// <returns></returns>
+    public static async Task<AddGameRes> AddGame(AddGameArg arg)
+    {
+        if (string.IsNullOrWhiteSpace(arg.Local))
+        {
+            throw new Exception("Local is empty");
+        }
+        GameSettingObj? game = null;
+
+        bool isfind = false;
+
+        var file1 = Path.GetFullPath(arg.Local + "/" + "mmc-pack.json");
+        var file2 = Path.GetFullPath(arg.Local + "/" + "instance.cfg");
+        if (File.Exists(file1) && File.Exists(file2))
+        {
+            try
+            {
+                var mmc = JsonConvert.DeserializeObject<MMCObj>(PathHelper.ReadText(file1)!);
+                if (mmc != null)
+                {
+                    var mmc1 = PathHelper.ReadText(file2)!;
+                    game = mmc.ToColorMC(mmc1, out var icon);
+                    game.Icon = icon + ".png";
+                    isfind = true;
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        if (!isfind)
+        {
+            var files = Directory.GetFiles(arg.Local);
+            foreach (var item in files)
+            {
+                if (!item.EndsWith(".json"))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var obj1 = JsonConvert.DeserializeObject<OfficialObj>(PathHelper.ReadText(item)!);
+                    if (obj1 != null && obj1.id != null)
+                    {
+                        game = obj1.ToColorMC();
+                        isfind = true;
+                        break;
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        game ??= new GameSettingObj()
+        {
+            Name = arg.Name ?? throw new Exception("Name is empty"),
+            Version = (await GameHelper.GetGameVersions(GameType.Release))[0],
+            Loader = Loaders.Normal
+        };
+
+        if (!string.IsNullOrWhiteSpace(arg.Name))
+        {
+            game.Name = arg.Name;
+        }
+
+        game.GroupName = arg.Group;
+
+        game = await InstancesPath.CreateGame(new CreateGameArg
+        {
+            Game = game,
+            Request = arg.Request,
+            Overwirte = arg.Overwirte
+        });
+        if (game == null)
+        {
+            return new AddGameRes
+            {
+                State = false
+            };
+        }
+
+        await game.CopyFile(arg.Local, arg.Unselect);
+
+        return new AddGameRes
+        {
+            State = false,
+            Game = game
+        };
+    }
+
     /// <summary>
     /// 导入整合包
     /// </summary>
@@ -20,23 +125,20 @@ public static class InstallGameHelper
     /// <param name="type">类型</param>
     /// <param name="type">名字</param>
     /// <param name="type">群组</param>
-    public static async Task<(bool, GameSettingObj?)> InstallZip(string dir, PackType type,
-        string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
-        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update,
-         ColorMCCore.PackState update2)
+    public static async Task<AddGameRes> InstallZip(InstallZipArg arg)
     {
         GameSettingObj? game = null;
         bool import = false;
         Stream? stream4 = null;
         try
         {
-            stream4 = PathHelper.OpenRead(dir);
-            switch (type)
+            stream4 = PathHelper.OpenRead(arg.Dir);
+            switch (arg.Type)
             {
                 //ColorMC格式
                 case PackType.ColorMC:
                     {
-                        update2(CoreRunState.Read);
+                        arg.Update2?.Invoke(CoreRunState.Read);
                         using ZipFile zFile = new(stream4);
                         using var stream1 = new MemoryStream();
                         bool find = false;
@@ -60,12 +162,15 @@ public static class InstallGameHelper
                         if (game == null)
                             break;
 
-                        var res = InstancesPath.CreateGame(new CreateGameArg
+                        game = await InstancesPath.CreateGame(new CreateGameArg
                         { 
                             Game = game, 
-                            Request = request, 
-                            Overwirte = overwirte
+                            Request = arg.Request, 
+                            Overwirte = arg.Overwirte
                         });
+
+                        if (game == null)
+                            break;
 
                         foreach (ZipEntry e in zFile)
                         {
@@ -78,28 +183,48 @@ public static class InstallGameHelper
                             }
                         }
 
-                        update2(CoreRunState.End);
+                        arg.Update2?.Invoke(CoreRunState.End);
                         import = true;
                         break;
                     }
                 //Curseforge压缩包
                 case PackType.CurseForge:
-                    (import, game) = await ModPackHelper.DownloadCurseForgeModPackAsync(dir, name,
-                        group, request, overwirte, update, update2);
+                    var res1 = await ModPackHelper.InstallCurseForgeModPackAsync(new InstallModPackZipArg
+                    {
+                        Zip = arg.Dir,
+                        Name = arg.Name,
+                        Request = arg.Request,
+                        Overwirte = arg.Overwirte,
+                        Update = arg.Update,
+                        Update2 = arg.Update2
+                    });
+                    import = res1.State;
+                    game = res1.Game;
 
-                    update2(CoreRunState.End);
+                    arg.Update2?.Invoke(CoreRunState.End);
                     break;
                 //Modrinth压缩包
                 case PackType.Modrinth:
-                    (import, game) = await ModPackHelper.DownloadModrinthModPackAsync(dir, name,
-                        group, request, overwirte, update, update2);
+                    var res2 = await ModPackHelper.InstallModrinthModPackAsync(new InstallModPackZipArg
+                    {
+                        Zip = arg.Dir,
+                        Name = arg.Name,
+                        Group = arg.Group,
+                        Request = arg.Request,
+                        Overwirte = arg.Overwirte,
+                        Update = arg.Update,
+                        Update2 = arg.Update2
+                    });
 
-                    update2(CoreRunState.End);
+                    import = res2.State;
+                    game = res2.Game;
+
+                    arg.Update2?.Invoke(CoreRunState.End);
                     break;
                 //MMC压缩包
                 case PackType.MMC:
                     {
-                        update2(CoreRunState.Read);
+                        arg.Update2?.Invoke(CoreRunState.Read);
                         using ZipFile zFile = new(stream4);
                         using var stream1 = new MemoryStream();
                         using var stream2 = new MemoryStream();
@@ -139,17 +264,17 @@ public static class InstallGameHelper
 
                         game = mmc.ToColorMC(mmc1, out var icon);
 
-                        if (!string.IsNullOrWhiteSpace(name))
+                        if (!string.IsNullOrWhiteSpace(arg.Name))
                         {
-                            game.Name = name;
+                            game.Name = arg.Name;
                         }
-                        if (!string.IsNullOrWhiteSpace(group))
+                        if (!string.IsNullOrWhiteSpace(arg.Group))
                         {
-                            game.GroupName = group;
+                            game.GroupName = arg.Group;
                         }
                         if (string.IsNullOrWhiteSpace(game.Name))
                         {
-                            game.Name = new FileInfo(dir).Name;
+                            game.Name = new FileInfo(arg.Dir).Name;
                         }
                         if (!string.IsNullOrWhiteSpace(icon))
                         {
@@ -158,8 +283,8 @@ public static class InstallGameHelper
                         game = await InstancesPath.CreateGame(new CreateGameArg
                         {
                             Game = game,
-                            Request = request,
-                            Overwirte = overwirte
+                            Request = arg.Request,
+                            Overwirte = arg.Overwirte
                         });
 
                         if (game == null)
@@ -180,14 +305,14 @@ public static class InstallGameHelper
                             }
                         }
 
-                        update2(CoreRunState.End);
+                        arg.Update2?.Invoke(CoreRunState.End);
                         import = true;
                         break;
                     }
                 //HMCL压缩包
                 case PackType.HMCL:
                     {
-                        update2(CoreRunState.Read);
+                        arg.Update2?.Invoke(CoreRunState.Read);
                         using ZipFile zFile = new(stream4);
                         using var stream1 = new MemoryStream();
                         using var stream2 = new MemoryStream();
@@ -223,20 +348,20 @@ public static class InstallGameHelper
                             break;
 
                         game = obj.ToColorMC();
-                        if (!string.IsNullOrWhiteSpace(name))
+                        if (!string.IsNullOrWhiteSpace(arg.Name))
                         {
-                            game.Name = name;
+                            game.Name = arg.Name;
                         }
-                        if (!string.IsNullOrWhiteSpace(group))
+                        if (!string.IsNullOrWhiteSpace(arg.Group))
                         {
-                            game.GroupName = group;
+                            game.GroupName = arg.Group;
                         }
 
                         game = await InstancesPath.CreateGame(new CreateGameArg
                         {
                             Game = game,
-                            Request = request,
-                            Overwirte = overwirte
+                            Request = arg.Request,
+                            Overwirte = arg.Overwirte
                         });
 
                         if (game == null)
@@ -274,33 +399,33 @@ public static class InstallGameHelper
                             }
                         }
 
-                        update2(CoreRunState.End);
+                        arg.Update2?.Invoke(CoreRunState.End);
                         import = true;
                         break;
                     }
                 //直接解压
                 case PackType.ZipPack:
                     {
-                        update2(CoreRunState.Read);
+                        arg.Update2?.Invoke(CoreRunState.Read);
 
-                        name ??= Path.GetFileName(dir);
+                        arg.Name ??= Path.GetFileName(arg.Dir);
 
-                        update2(CoreRunState.Start);
+                        arg.Update2?.Invoke(CoreRunState.Start);
                         game = await InstancesPath.CreateGame(new CreateGameArg
                         {
                             Game = new()
                             {
-                                GroupName = group,
-                                Name = name!
+                                GroupName = arg.Group,
+                                Name = arg.Name!
                             },
-                            Request = request,
-                            Overwirte = overwirte
+                            Request = arg.Request,
+                            Overwirte = arg.Overwirte
                         });
 
                         if (game != null)
                         {
-                            await new ZipUtils(ZipUpdate: zip).UnzipAsync(game!.GetGamePath(), dir, stream4!);
-                            update2(CoreRunState.End);
+                            await new ZipUtils(ZipUpdate: arg.Zip).UnzipAsync(game!.GetGamePath(), arg.Dir, stream4!);
+                            arg.Update2?.Invoke(CoreRunState.End);
                             import = true;
                         }
                         break;
@@ -317,24 +442,22 @@ public static class InstallGameHelper
         }
         if (!import && game != null)
         {
-            await game.Remove(request);
+            await game.Remove(arg.Request);
         }
-        update2(CoreRunState.End);
-        return (import, game);
+        arg.Update2?.Invoke(CoreRunState.End);
+        return new AddGameRes { State = import, Game = game };
     }
 
     /// <summary>
-    /// 安装Modrinth压缩包
+    /// 安装Modrinth整合包
     /// </summary>
     /// <param name="data">整合包信息</param>
     /// <param name="name">名字</param>
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, GameSettingObj?)> InstallModrinth(ModrinthVersionObj data, ModrinthSearchObj.Hit data1,
-        string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
-        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
+    public static async Task<AddGameRes> InstallModrinth(DownloadModrinthArg arg)
     {
-        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
+        var file = arg.Data.files.FirstOrDefault(a => a.primary) ?? arg.Data.files[0];
         var item = new DownloadItemObj()
         {
             Url = file.url,
@@ -345,19 +468,31 @@ public static class InstallGameHelper
 
         var res1 = await DownloadManager.StartAsync([item]);
         if (!res1)
-            return (false, null);
-
-        var res2 = await InstallZip(item.Local, PackType.Modrinth, name, group, zip,
-            request, overwirte, update, update2);
-        if (res2.Item1)
         {
-            res2.Item2!.PID = data.project_id;
-            res2.Item2.FID = data.id;
-            res2.Item2.Save();
+            return new();
+        }
 
-            if (data1.icon_url != null)
+        var res2 = await InstallZip(new InstallZipArg
+        {
+            Dir = item.Local,
+            Type = PackType.Modrinth,
+            Name = arg.Name,
+            Group = arg.Group,
+            Zip = arg.Zip,
+            Request = arg.Request,
+            Overwirte = arg.Overwirte,
+            Update = arg.Update,
+            Update2 = arg.Update2
+        });
+        if (res2.State)
+        {
+            res2.Game!.PID = arg.Data.project_id;
+            res2.Game.FID = arg.Data.id;
+            res2.Game.Save();
+
+            if (arg.Data1.icon_url != null)
             {
-                await res2.Item2.SetGameIconFromUrl(data1.icon_url);
+                await res2.Game.SetGameIconFromUrl(arg.Data1.icon_url);
             }
         }
 
@@ -365,113 +500,53 @@ public static class InstallGameHelper
     }
 
     /// <summary>
-    /// 安装curseforge压缩包
+    /// 安装curseforge整合包
     /// </summary>
     /// <param name="data">整合包信息</param>
     /// <param name="name">名字</param>
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, GameSettingObj?)> InstallCurseForge(CurseForgeModObj.Data data, CurseForgeObjList.Data data1,
-        string? name, string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
-        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
+    public static async Task<AddGameRes> InstallCurseForge(DownloadCurseForgeArg arg)
     {
-        data.FixDownloadUrl();
+        arg.Data.FixDownloadUrl();
 
         var item = new DownloadItemObj()
         {
-            Url = data.downloadUrl,
-            Name = data.fileName,
-            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.fileName),
+            Url = arg.Data.downloadUrl,
+            Name = arg.Data.fileName,
+            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + arg.Data.fileName),
         };
 
         var res1 = await DownloadManager.StartAsync([item]);
         if (!res1)
-            return (false, null);
+            return new AddGameRes { State = false };
 
-        var res2 = await InstallZip(item.Local, PackType.CurseForge, name, group, zip,
-            request, overwirte, update, update2);
-        if (res2.Item1)
+        var res2 = await InstallZip(new InstallZipArg
         {
-            res2.Item2!.PID = data.modId.ToString();
-            res2.Item2.FID = data.id.ToString();
-            res2.Item2.Save();
+            Dir = item.Local,
+            Type = PackType.CurseForge,
+            Name = arg.Name,
+            Group = arg.Group,
+            Zip = arg.Zip,
+            Request = arg.Request,
+            Overwirte = arg.Overwirte,
+            Update = arg.Update,
+            Update2 = arg.Update2
+        });
+        if (res2.State)
+        {
+            res2.Game!.PID = arg.Data.modId.ToString();
+            res2.Game.FID = arg.Data.id.ToString();
+            res2.Game.Save();
 
-            if (data1.logo != null)
+            if (arg.Data1.logo != null)
             {
-                await res2.Item2.SetGameIconFromUrl(data1.logo.url);
+                await res2.Game.SetGameIconFromUrl(arg.Data1.logo.url);
             }
         }
 
         return res2;
     }
 
-    /// <summary>
-    /// 升级整合包
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="data">数据</param>
-    /// <returns>结果</returns>
-    public static async Task<bool> UpdateModPack(this GameSettingObj obj, CurseForgeModObj.Data data,
-        ColorMCCore.PackUpdate update,
-        ColorMCCore.PackState update2)
-    {
-        data.FixDownloadUrl();
-
-        var item = new DownloadItemObj()
-        {
-            Url = data.downloadUrl,
-            Name = data.fileName,
-            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.fileName),
-        };
-
-        var res = await DownloadManager.StartAsync([item]);
-        if (!res)
-            return false;
-
-        res = await ModPackHelper.UpdateCurseForgeModPackAsync(obj, item.Local, update, update2);
-        if (res)
-        {
-            obj.PID = data.modId.ToString();
-            obj.FID = data.id.ToString();
-            obj.Save();
-            obj.SaveModInfo();
-        }
-
-        return res;
-    }
-
-    /// <summary>
-    /// 升级整合包
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="data"></param>
-    /// <returns>升级结果</returns>
-    public static async Task<bool> UpdateModPack(this GameSettingObj obj, ModrinthVersionObj data,
-        ColorMCCore.PackUpdate update,
-        ColorMCCore.PackState update2)
-    {
-        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
-        var item = new DownloadItemObj()
-        {
-            Url = file.url,
-            Name = file.filename,
-            SHA1 = file.hashes.sha1,
-            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.filename),
-        };
-
-        var res = await DownloadManager.StartAsync([item]);
-        if (!res)
-            return false;
-
-        res = await ModPackHelper.UpdateModrinthModPackAsync(obj, item.Local, update, update2);
-        if (res)
-        {
-            obj.PID = data.project_id;
-            obj.FID = data.id;
-            obj.Save();
-            obj.SaveModInfo();
-        }
-
-        return res;
-    }
+    
 }

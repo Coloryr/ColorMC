@@ -166,16 +166,14 @@ public partial class DownloadModel : TopModel
                     _downloadList.Add(a, item11);
                 }
             }
-            _timer.Start();
-            Size = count;
-        }
-        else if (state == DownloadState.Runing)
-        {
+            if (!_timer.Enabled)
+            {
+                _timer.Start();
+            }
             Size = count;
         }
         else if (state == DownloadState.End)
         {
-            Size = count;
             OnPropertyChanged("WindowClose");
         }
     }

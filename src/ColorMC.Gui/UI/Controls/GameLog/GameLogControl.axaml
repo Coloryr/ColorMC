@@ -90,7 +90,7 @@
                 </WrapPanel>
             </StackPanel>
         </Border>
-        <Border Classes="t1">
+        <Border Margin="0,0,0,5" Classes="t1">
             <ae:TextEditor
                 Name="TextEditor1"
                 Document="{Binding Text}"

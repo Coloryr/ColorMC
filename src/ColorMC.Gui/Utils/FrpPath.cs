@@ -1,7 +1,8 @@
-﻿using ColorMC.Core.Objs;
+﻿using System.IO;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 
-namespace ColorMC.Core.LaunchPath;
+namespace ColorMC.Gui.LaunchPath;
 
 public static class FrpPath
 {
@@ -16,7 +17,7 @@ public static class FrpPath
     {
         BaseDir = dir;
 
-        if (!BaseDir.EndsWith("/") && !BaseDir.EndsWith("\\"))
+        if (!BaseDir.EndsWith('/') && !BaseDir.EndsWith('\\'))
         {
             BaseDir += "/";
         }

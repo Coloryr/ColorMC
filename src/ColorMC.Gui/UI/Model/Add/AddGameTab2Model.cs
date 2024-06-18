@@ -121,7 +121,7 @@ public partial class AddGameModel
             Model.ProgressUpdate((double)now / size);
         }, PackState);
         Model.ProgressClose();
-        if (!res.Item1)
+        if (!res.State)
         {
             Model.Show(App.Lang("AddGameWindow.Tab2.Error1"));
             return;
@@ -132,7 +132,7 @@ public partial class AddGameModel
 
         if (Type == PackType.ZipPack)
         {
-            App.ShowGameEdit(res.Item2!);
+            App.ShowGameEdit(res.Game!);
         }
 
         WindowClose();

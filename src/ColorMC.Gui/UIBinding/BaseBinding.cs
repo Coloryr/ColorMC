@@ -22,6 +22,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.LaunchPath;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
@@ -106,6 +107,7 @@ public static class BaseBinding
         FrpConfigUtils.Init(ColorMCGui.RunDir);
         ImageUtils.Init(ColorMCGui.RunDir);
         InputConfigUtils.Init(ColorMCGui.RunDir);
+        FrpPath.Init(ColorMCGui.RunDir);
 
         FontSel.Load();
         ColorSel.Load();
