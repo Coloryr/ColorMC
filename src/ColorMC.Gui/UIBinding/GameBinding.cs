@@ -96,10 +96,10 @@ public static class GameBinding
     /// <param name="request"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<bool> AddGame(string name, string local, List<string>? unselect,
+    public static async Task<bool> AddGame(string? name, string local, List<string>? unselect,
         string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte, bool open)
     {
-        var res = await GameHelper.AddGame(new AddGameArg
+        var res = await AddGameHelper.AddGame(new AddGameArg
         { 
             Local = local, 
             Name = name,
@@ -135,12 +135,22 @@ public static class GameBinding
     /// <param name="update"></param>
     /// <param name="update2"></param>
     /// <returns></returns>
-    public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type, string? name,
+    public static Task<AddGameRes> AddPack(string dir, PackType type, string? name,
         string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
-        return InstallGameHelper.InstallZip(dir, type, name, group, zip, request, overwirte,
-            update, update2);
+        return AddGameHelper.InstallZip(new InstallZipArg
+        { 
+            Dir= dir,
+            Type = type,
+            Name = name,
+            Group = group,
+            Zip = zip,
+            Request = request,
+            Overwirte = overwirte,
+            Update = update,
+            Update2 = update2
+        });
     }
 
     /// <summary>
@@ -178,7 +188,7 @@ public static class GameBinding
     public static Task<Dictionary<string, string>?> GetCurseForgeCategories(
         FileType type = FileType.ModPack)
     {
-        return CurseForgeHelper.GetCurseForgeCategories(type);
+        return CurseForgeHelper.GetCategories(type);
     }
 
     /// <summary>
@@ -210,15 +220,20 @@ public static class GameBinding
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        var res = await InstallGameHelper.InstallCurseForge(data, data1, name, group, zip, request, overwirte,
-            update, update2);
-        if (!res.Item1)
+        var res = await AddGameHelper.InstallCurseForge(new DownloadCurseForgeArg
         {
-            return false;
-        }
-       
+            Data = data,
+            Data1 = data1,
+            Name = name,
+            Group = group,
+            Zip = zip,
+            Request = request,
+            Overwirte = overwirte,
+            Update = update,
+            Update2 = update2
+        });
 
-        return true;
+        return res.State;
     }
 
     /// <summary>
@@ -240,14 +255,20 @@ public static class GameBinding
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        var res = await InstallGameHelper.InstallModrinth(data, data1, name, group, zip, request, overwirte,
-            update, update2);
-        if (!res.Item1)
+        var res = await AddGameHelper.InstallModrinth(new DownloadModrinthArg
         {
-            return false;
-        }
+            Data = data,
+            Data1 = data1,
+            Name = name,
+            Group = group,
+            Zip = zip,
+            Request = request,
+            Overwirte = overwirte,
+            Update = update,
+            Update2 = update2
+        });
 
-        return true;
+        return res.State;
     }
 
     /// <summary>
@@ -1387,14 +1408,26 @@ public static class GameBinding
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        return obj.UpdateModPack(fid, update, update2);
+        return ModPackHelper.UpdateModPack(new UpdateCurseForgeModPackArg
+        {
+            Data = fid,
+            Game = obj,
+            Update = update,
+            Update2 = update2
+        });
     }
 
     public static Task<bool> ModPackUpdate(GameSettingObj obj, ModrinthVersionObj fid,
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        return obj.UpdateModPack(fid, update, update2);
+        return ModPackHelper.UpdateModPack(new UpdateModrinthModPackArg
+        { 
+            Game = obj, 
+            Data = fid, 
+            Update = update,
+            Update2 = update2
+        });
     }
 
     public static List<ModDisplayModel> ModDisable(ModDisplayModel item, List<ModDisplayModel> items)

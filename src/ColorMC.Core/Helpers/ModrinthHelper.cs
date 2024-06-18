@@ -128,4 +128,54 @@ public static class ModrinthHelper
 
         return list1;
     }
+
+    /// <summary>
+    /// 获取Modrinth整合包Mod信息
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="info">信息</param>
+    /// <param name="notify">通知</param>
+    /// <returns>信息</returns>
+    public static List<DownloadItemObj> GetModrinthModInfo(GetModrinthModInfoArg arg)
+    {
+        var list = new List<DownloadItemObj>();
+
+        var size = arg.Info.files.Count;
+        var now = 0;
+        foreach (var item in arg.Info.files)
+        {
+            var item11 = item.MakeDownloadObj(arg.Game);
+            list.Add(item11);
+
+            var url = item.downloads
+                .FirstOrDefault(a => a.StartsWith($"{UrlHelper.ModrinthDownload}data/"));
+            if (url == null)
+            {
+                url = item.downloads[0];
+            }
+            else
+            {
+                var modid = StringHelper.GetString(url, "data/", "/ver");
+                var fileid = StringHelper.GetString(url, "versions/", "/");
+
+                arg.Game.Mods.Remove(modid);
+                arg.Game.Mods.Add(modid, new()
+                {
+                    Path = item.path[..item.path.IndexOf('/')],
+                    Name = item.path,
+                    File = item.path,
+                    SHA1 = item11.SHA1!,
+                    ModId = modid,
+                    FileId = fileid,
+                    Url = url
+                });
+            }
+
+            now++;
+
+            arg.Update?.Invoke(size, now);
+        }
+
+        return list;
+    }
 }

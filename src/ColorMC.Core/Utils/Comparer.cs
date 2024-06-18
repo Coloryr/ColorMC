@@ -24,9 +24,9 @@ public class VersionStrObjComparer : IComparer<VersionStrObj>
 /// <summary>
 /// CurseForge比较器
 /// </summary>
-public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
+public class CurseForgeDataComparer : IEqualityComparer<CurseForgeModObj.Data>
 {
-    public static readonly CurseDataComparer Instance = new();
+    public static readonly CurseForgeDataComparer Instance = new();
     public bool Equals(CurseForgeModObj.Data? x, CurseForgeModObj.Data? y)
     {
         return x?.id == y?.id;

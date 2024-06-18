@@ -169,7 +169,7 @@ public partial class AddGameModel
         foreach (var item in list)
         {
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
-            var res = await GameBinding.AddGame("", item, null, Group, Tab2GameRequest, Tab2GameOverwirte, false);
+            var res = await GameBinding.AddGame(null, item, null, Group, Tab2GameRequest, Tab2GameOverwirte, false);
             Model.ProgressClose();
 
             if (!res)

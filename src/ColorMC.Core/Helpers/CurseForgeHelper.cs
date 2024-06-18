@@ -1,7 +1,10 @@
+using System.Collections.Concurrent;
 using System.Text;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Helpers;
 
@@ -88,7 +91,7 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static async Task<Dictionary<string, string>?> GetCurseForgeCategories(FileType type)
+    public static async Task<Dictionary<string, string>?> GetCategories(FileType type)
     {
         if (s_categories == null)
         {
@@ -172,5 +175,102 @@ public static class CurseForgeHelper
         s_supportVersion = list3;
 
         return list3;
+    }
+
+    /// <summary>
+    /// 获取CurseForge整合包Mod信息
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="info">整合包信息</param>
+    /// <param name="notify">是否通知</param>
+    /// <returns>Res安装结果
+    /// Game游戏实例</returns>
+    public static async Task<MakeDownloadItemsRes> GetModInfo(GetCurseForgeModInfoArg arg)
+    {
+        var size = arg.Info.files.Count;
+        var now = 0;
+        var list = new ConcurrentBag<DownloadItemObj>();
+
+        //获取Mod信息
+        var res = await CurseForgeAPI.GetMods(arg.Info.files);
+        if (res != null)
+        {
+            var res1 = res.Distinct(CurseForgeDataComparer.Instance);
+
+            foreach (var item in res1)
+            {
+                var path = await GetItemPath(arg.Game, item);
+                list.Add(item.MakeModDownloadObj(path.Item1));
+                var modid = item.modId.ToString();
+                arg.Game.Mods.Remove(modid);
+                arg.Game.Mods.Add(modid, item.MakeModInfo(path.Item2));
+
+                now++;
+                arg.Update?.Invoke(size, now);
+            }
+        }
+        else
+        {
+            //一个个获取
+            bool done = true;
+            await Parallel.ForEachAsync(arg.Info.files, async (item, token) =>
+            {
+                var res = await CurseForgeAPI.GetMod(item);
+                if (res == null || res.data == null)
+                {
+                    done = false;
+                    return;
+                }
+
+                var path = await GetItemPath(arg.Game, res.data);
+
+                list.Add(res.data.MakeModDownloadObj(path.Item1));
+                var modid = res.data.modId.ToString();
+                arg.Game.Mods.Remove(modid);
+                arg.Game.Mods.Add(modid, res.data.MakeModInfo(path.Item2));
+
+                now++;
+                arg.Update?.Invoke(size, now);
+            });
+            if (!done)
+            {
+                return new MakeDownloadItemsRes();
+            }
+        }
+
+        return new MakeDownloadItemsRes { List = list, State = true };
+    }
+
+    /// <summary>
+    /// 构建CurseForge资源所在的文件夹
+    /// </summary>
+    /// <param name="game"></param>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public static async Task<(string, string)> GetItemPath(GameSettingObj game, CurseForgeModObj.Data item)
+    {
+        var path = game.GetModsPath();
+        var path1 = InstancesPath.Name11;
+        if (!item.fileName.EndsWith(".jar"))
+        {
+            var info1 = await CurseForgeAPI.GetModInfo(item.modId);
+            if (info1 != null)
+            {
+                if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack)
+                    || info1.Data.classId == CurseForgeAPI.ClassResourcepack)
+                {
+                    path = game.GetResourcepacksPath();
+                    path1 = InstancesPath.Name8;
+                }
+                else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassShaderpack)
+                    || info1.Data.classId == CurseForgeAPI.ClassShaderpack)
+                {
+                    path = game.GetShaderpacksPath();
+                    path1 = InstancesPath.Name9;
+                }
+            }
+        }
+
+        return (path, path1);
     }
 }

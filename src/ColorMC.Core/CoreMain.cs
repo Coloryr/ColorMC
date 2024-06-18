@@ -149,7 +149,7 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端Jvm安装
     /// </summary>
-    public static Action<Stream, string, ZipUpdate> PhoneJvmInstall { internal get; set; }
+    public static Action<Stream, string, ZipUpdate?> PhoneJvmInstall { internal get; set; }
     /// <summary>
     /// 手机端读Java信息
     /// </summary>
@@ -227,7 +227,6 @@ public static class ColorMCCore
         ConfigSave.Init();
         GameCount.Init(BaseDir);
         JvmPath.Init(BaseDir);
-        FrpPath.Init(BaseDir);
         LocalMaven.Init(BaseDir);
         DownloadManager.Init(BaseDir);
         AuthDatabase.Init();

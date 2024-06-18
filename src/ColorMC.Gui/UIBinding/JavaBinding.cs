@@ -22,9 +22,14 @@ public static class JavaBinding
         };
     }
 
-    public static async Task<(bool, string?)> AddJavaZip(string file, string name, ColorMCCore.ZipUpdate zip)
+    public static async Task<InstallRes> AddJavaZip(string file, string name, ColorMCCore.ZipUpdate zip)
     {
-        return await JvmPath.UnzipJavaAsync(name, file, zip);
+        return await JvmPath.UnzipJavaAsync(new UnzipArg
+        { 
+            File = file,
+            Name = name, 
+            Zip = zip 
+        });
     }
 
     public static List<string> GetJavaName()
@@ -40,19 +45,19 @@ public static class JavaBinding
 
     public static (JavaInfoObj?, string?) AddJava(string name, string local)
     {
-        var (Res, Msg) = JvmPath.AddItem(name, local);
-        if (Res == false)
+        var res = JvmPath.AddItem(name, local);
+        if (res.State == false)
         {
-            return (null, Msg);
+            return (null, res.Message);
         }
         else
         {
-            var info = JvmPath.GetInfo(Msg);
+            var info = JvmPath.GetInfo(res.Message);
             if (info == null)
             {
                 return (null, App.Lang("Gui.Error5"));
             }
-            return (MakeInfo(Msg, info), null);
+            return (MakeInfo(res.Message!, info), null);
         }
     }
 
@@ -102,11 +107,18 @@ public static class JavaBinding
     public static async Task<(bool, string?)> DownloadJava(JavaDownloadObj obj,
         ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip)
     {
-        var (res, message) =
-            await JvmPath.InstallAsync(obj.File, obj.Name, obj.Sha256, obj.Url, zip, unzip);
-        if (res != CoreRunState.Init)
+        var res = await JvmPath.InstallAsync(new InstallJvmArg
         {
-            return (false, message);
+            File = obj.File,
+            Name = obj.Name,
+            Sha256 = obj.Sha256,
+            Url = obj.Url,
+            Zip = zip,
+            Unzip = unzip
+        });
+        if (!res.State)
+        {
+            return (false, res.Message);
         }
 
         return (true, null);

@@ -66,6 +66,12 @@ public static class LanGameHelper
         }
     }
 
+    /// <summary>
+    /// 创建联机用广播包
+    /// </summary>
+    /// <param name="motd"></param>
+    /// <param name="ip"></param>
+    /// <returns></returns>
     public static string MakeMotd(string motd, string ip)
     {
         return $"[MOTD]{motd}[/MOTD][AD]{ip}[/AD]";

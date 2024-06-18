@@ -65,6 +65,7 @@ public static class DownloadManager
         s_nowTask?.Cancel();
         s_tasks.Clear();
         s_threads.ForEach(a => a.Close());
+        State = DownloadState.End;
     }
 
     /// <summary>
@@ -79,6 +80,7 @@ public static class DownloadManager
         s_nowTask?.Cancel();
         s_tasks.Clear();
         s_threads.ForEach(a => a.DownloadStop());
+        State = DownloadState.End;
     }
 
     /// <summary>
@@ -145,13 +147,18 @@ public static class DownloadManager
         var task = new DownloadTask(list, arg);
         s_tasks.Enqueue(task);
 
-        if (State != DownloadState.Start)
+        if (State == DownloadState.End)
         {
             State = DownloadState.Start;
             arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count);
             TaskDone(arg);
         }
-        
+        else
+        {
+            arg.Update?.Invoke(s_threads.Count, State, 
+                s_tasks.Count + (s_nowTask != null ? 1 : 0));
+        }
+
         return await task.WaitDone();
     }
 
@@ -162,7 +169,6 @@ public static class DownloadManager
         {
             if (s_tasks.TryDequeue(out s_nowTask))
             {
-                State = DownloadState.Runing;
                 arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count + 1);
                 Start(s_nowTask, s_nowTask.Token);
             }

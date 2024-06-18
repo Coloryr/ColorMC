@@ -163,7 +163,7 @@ public record MakeDownloadItemRes
 public record MakeDownloadItemsRes
 {
     public bool State;
-    public List<DownloadItemObj>? List;
+    public ConcurrentBag<DownloadItemObj>? List;
 }
 
 /// <summary>
@@ -176,10 +176,19 @@ public record MakeDownloadNameItemsRes
 }
 
 /// <summary>
-/// 导入游戏文件夹结果
+/// 添加游戏结果
 /// </summary>
 public record AddGameRes
 {
     public bool State;
     public GameSettingObj? Game;
+}
+
+/// <summary>
+/// 安装Java结果
+/// </summary>
+public record InstallRes
+{
+    public bool State;
+    public string? Message;
 }

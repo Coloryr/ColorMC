@@ -1,5 +1,7 @@
-﻿using ColorMC.Core.Objs.Login;
+﻿using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.Modrinth;
 
 namespace ColorMC.Core.Objs;
 
@@ -150,7 +152,7 @@ public record AddGameArg
     /// <summary>
     /// 名字
     /// </summary>
-    public string Name;
+    public string? Name;
     /// <summary>
     /// 不导入的文件列表
     /// </summary>
@@ -181,4 +183,147 @@ public record CopyGameArg
     public required string Game;
     public ColorMCCore.Request? Request;
     public ColorMCCore.GameOverwirte? Overwirte;
+}
+
+public abstract record UnpackGameZipArg
+{
+    public string? Name;
+    public string? Group;
+    public ColorMCCore.ZipUpdate? Zip;
+    public ColorMCCore.Request? Request;
+    public ColorMCCore.GameOverwirte? Overwirte;
+    public ColorMCCore.PackUpdate? Update;
+    public ColorMCCore.PackState? Update2;
+}
+
+/// <summary>
+/// 导入整合包参数
+/// </summary>
+public record InstallZipArg : UnpackGameZipArg
+{
+    public required string Dir;
+    public required PackType Type;
+}
+
+/// <summary>
+/// 安装Modrinth整合包参数
+/// </summary>
+public record DownloadModrinthArg : UnpackGameZipArg
+{
+    public required ModrinthVersionObj Data;
+    public required ModrinthSearchObj.Hit Data1;
+}
+
+/// <summary>
+/// 安装curseforge整合包参数
+/// </summary>
+public record DownloadCurseForgeArg : UnpackGameZipArg
+{
+    public required CurseForgeModObj.Data Data;
+    public required CurseForgeObjList.Data Data1;
+}
+
+/// <summary>
+/// 安装压缩包参数
+/// </summary>
+public record InstallModPackZipArg
+{
+    public required string Zip;
+    public string? Name;
+    public string? Group;
+    public ColorMCCore.Request? Request;
+    public ColorMCCore.GameOverwirte? Overwirte;
+    public ColorMCCore.PackUpdate? Update;
+    public ColorMCCore.PackState? Update2;
+}
+
+/// <summary>
+/// 获取CurseForge整合包Mod信息参数
+/// </summary>
+public record GetCurseForgeModInfoArg
+{
+    public required GameSettingObj Game;
+    public required CurseForgePackObj Info;
+    public ColorMCCore.PackUpdate? Update;
+}
+
+/// <summary>
+/// 获取Modrinth整合包Mod信息参数
+/// </summary>
+public record GetModrinthModInfoArg
+{
+    public required GameSettingObj Game;
+    public required ModrinthPackObj Info;
+    public ColorMCCore.PackUpdate? Update;
+}
+
+/// <summary>
+/// 升级整合包参数
+/// </summary>
+public record UpdateModPackArg
+{
+    public required GameSettingObj Game;
+    public required string Zip;
+    public ColorMCCore.PackUpdate? Update;
+    public ColorMCCore.PackState? Update2;
+}
+
+/// <summary>
+/// 更新CurseForge整合包
+/// </summary>
+public record UpdateCurseForgeModPackArg
+{
+    public required GameSettingObj Game;
+    public required CurseForgeModObj.Data Data;
+    public ColorMCCore.PackUpdate Update;
+    public ColorMCCore.PackState Update2;
+}
+
+/// <summary>
+/// 更新Modrinth整合包
+/// </summary>
+public record UpdateModrinthModPackArg
+{
+    public required GameSettingObj Game;
+    public required ModrinthVersionObj Data;
+    public ColorMCCore.PackUpdate Update;
+    public ColorMCCore.PackState Update2;
+}
+
+/// <summary>
+/// 安装Java参数
+/// </summary>
+public record InstallJvmArg
+{
+    /// <summary>
+    /// 文件名
+    /// </summary>
+    public required string File;
+    /// <summary>
+    /// 名字
+    /// </summary>
+    public required string Name;
+    public required string Sha256;
+    /// <summary>
+    /// 下载地址
+    /// </summary>
+    public required string Url;
+    public ColorMCCore.ZipUpdate? Zip;
+    public ColorMCCore.JavaUnzip? Unzip;
+}
+
+/// <summary>
+/// 解压参数
+/// </summary>
+public record UnzipArg
+{
+    /// <summary>
+    /// 名字
+    /// </summary>
+    public required string Name;
+    /// <summary>
+    /// 文件
+    /// </summary>
+    public required string File;
+    public ColorMCCore.ZipUpdate? Zip;
 }

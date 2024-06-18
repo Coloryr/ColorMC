@@ -64,33 +64,36 @@ public static class JvmPath
     /// <param name="sha256">验证</param>
     /// <param name="url">地址</param>
     /// <returns>结果</returns>
-    public static async Task<(CoreRunState Res, string? Message)>
-        InstallAsync(string file, string name, string sha256, string url,
-        ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip)
+    public static async Task<InstallRes> InstallAsync(InstallJvmArg arg)
     {
         try
         {
-            Remove(name);
-            var res = await DownloadAsync(file, sha256, url);
-            if (!res.Res)
+            Remove(arg.Name);
+            var res = await DownloadAsync(arg.File, arg.Sha256, arg.Url);
+            if (!res.State)
             {
-                return (CoreRunState.Error, LanguageHelper.Get("Core.Jvm.Error5"));
+                return new InstallRes { Message = LanguageHelper.Get("Core.Jvm.Error5") };
             }
-            unzip();
-            res = await UnzipJavaAsync(name, res.Local!, zip);
-            if (!res.Res)
+            arg.Unzip?.Invoke();
+            res = await UnzipJavaAsync(new UnzipArg
             {
-                return (CoreRunState.Error, res.Local);
+                Name = arg.Name,
+                File = res.Message!,
+                Zip = arg.Zip
+            });
+            if (!res.State)
+            {
+                return new InstallRes { Message = res.Message };
             }
         }
         catch (Exception e)
         {
             string text = LanguageHelper.Get("Core.Jvm.Error7");
             Logs.Error(text, e);
-            return (CoreRunState.Error, text);
+            return new InstallRes { Message = text };
         }
 
-        return (CoreRunState.Init, null);
+        return new InstallRes { State = true };
     }
 
     /// <summary>
@@ -100,7 +103,7 @@ public static class JvmPath
     /// <param name="sha256">校验</param>
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
-    private static async Task<(bool Res, string? Local)> DownloadAsync(string name, string sha256, string url)
+    private static async Task<InstallRes> DownloadAsync(string name, string sha256, string url)
     {
         var item = new DownloadItemObj()
         {
@@ -114,10 +117,10 @@ public static class JvmPath
 
         if (res == false)
         {
-            return (false, null);
+            return new();
         }
 
-        return (true, item.Local);
+        return new InstallRes { State = true, Message = item.Local };
     }
 
     /// <summary>
@@ -143,15 +146,14 @@ public static class JvmPath
     /// <param name="name">名字</param>
     /// <param name="file">文件</param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> UnzipJavaAsync(string name, string file,
-        ColorMCCore.ZipUpdate zip)
+    public static async Task<InstallRes> UnzipJavaAsync(UnzipArg arg)
     {
-        string path = BaseDir + Name1 + "/" + name;
+        string path = BaseDir + Name1 + "/" + arg.Name;
         Directory.CreateDirectory(path);
-        var stream = PathHelper.OpenRead(file);
+        var stream = PathHelper.OpenRead(arg.File);
         if (stream == null)
         {
-            return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
+            return new InstallRes { Message = string.Format(LanguageHelper.Get("Core.Jvm.Error11"), arg.File) };
         }
 
         (bool, Exception?) res;
@@ -161,7 +163,7 @@ public static class JvmPath
             {
                 try
                 {
-                    ColorMCCore.PhoneJvmInstall(stream, path, zip);
+                    ColorMCCore.PhoneJvmInstall(stream, path, arg.Zip);
                     return (true, null!);
                 }
                 catch (Exception e)
@@ -176,7 +178,7 @@ public static class JvmPath
             {
                 try
                 {
-                    await new ZipUtils(ZipUpdate: zip).UnzipAsync(path, file, stream);
+                    await new ZipUtils(ZipUpdate: arg.Zip).UnzipAsync(path, arg.File, stream);
                     return (true, null!);
                 }
                 catch (Exception e)
@@ -192,13 +194,13 @@ public static class JvmPath
         {
             string temp = LanguageHelper.Get("Core.Jvm.Error12");
             Logs.Error(temp, res.Item2);
-            return (false, temp);
+            return new InstallRes { Message = temp };
         }
 
         var java = Find(path);
         if (java == null)
         {
-            return (false, LanguageHelper.Get("Core.Jvm.Error6"));
+            return new InstallRes { Message = LanguageHelper.Get("Core.Jvm.Error6") };
         }
         else
         {
@@ -220,7 +222,7 @@ public static class JvmPath
             JavaHelper.Per(java);
         }
 
-        return AddItem(name, java);
+        return AddItem(arg.Name, java);
     }
 
     /// <summary>
@@ -229,7 +231,7 @@ public static class JvmPath
     /// <param name="name">名字</param>
     /// <param name="local">路径</param>
     /// <returns>结果</returns>
-    public static (bool Res, string Msg) AddItem(string name, string local)
+    public static InstallRes AddItem(string name, string local)
     {
         if (local.StartsWith(BaseDir))
         {
@@ -255,14 +257,14 @@ public static class JvmPath
                 Local = local
             });
             ConfigUtils.Save();
-            return (true, name);
+            return new InstallRes { State = true, Message = name };
         }
         else
         {
             Logs.Info(LanguageHelper.Get("Core.Jvm.Error8"));
         }
 
-        return (false, LanguageHelper.Get("Core.Jvm.Error1"));
+        return new InstallRes { Message = LanguageHelper.Get("Core.Jvm.Error1") };
     }
 
     /// <summary>

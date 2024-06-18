@@ -19,8 +19,7 @@ public partial class GameLogControl : UserControl, IUserControl
 
     private readonly GameSettingObj _obj;
 
-    public string Title => string.Format(App.Lang("GameLogWindow.Title"),
-            _obj.Name);
+    public string Title => string.Format(App.Lang("GameLogWindow.Title"), _obj.Name);
 
     private Bitmap _icon;
     public Bitmap GetIcon() => _icon;
@@ -37,6 +36,8 @@ public partial class GameLogControl : UserControl, IUserControl
     public GameLogControl(GameSettingObj obj) : this()
     {
         _obj = obj;
+
+        UseName += ":" + _obj.UUID;
 
         TextEditor1.TextArea.Background = Brushes.Transparent;
 

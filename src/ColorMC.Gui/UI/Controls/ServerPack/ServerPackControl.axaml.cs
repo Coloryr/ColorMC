@@ -35,6 +35,7 @@ public partial class ServerPackControl : MenuControl
     public ServerPackControl(GameSettingObj obj) : this()
     {
         _obj = obj;
+        UseName += ":" + obj.UUID;
     }
 
     public override void Opened()

@@ -46,9 +46,9 @@ public partial class SettingModel
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
         });
         Model.ProgressClose();
-        if (!res.Item1)
+        if (!res.State)
         {
-            Model.Show(res.Item2!);
+            Model.Show(res.Message!);
         }
         else
         {

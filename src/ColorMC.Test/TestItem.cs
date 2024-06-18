@@ -51,8 +51,12 @@ public static class TestItem
 
     public static void Item3()
     {
-        var list = ModPackHelper.DownloadCurseForgeModPackAsync("H:\\ColonyVenture-1.13.zip", null, null,
-            Program.Download, (_) => Task.FromResult(true), (_, _) => { }, (_) => { }).Result;
+        var list = ModPackHelper.InstallCurseForgeModPackAsync(new InstallModPackZipArg
+        {
+            Zip = "H:\\ColonyVenture-1.13.zip",
+            Request = Program.Download,
+            Overwirte = (_) => Task.FromResult(true)
+        }).Result;
     }
 
     public static void Item4()
@@ -459,9 +463,13 @@ public static class TestItem
         var list1 = ModrinthAPI.GetFileVersions(item.project_id, "", Loaders.Fabric).Result;
         var item1 = list1!.First();
 
-        InstallGameHelper.InstallModrinth(item1, item, null, null,
-            (a, b, c) => { }, Program.Download, (_) => Task.FromResult(true), (_, _) => { },
-            (_) => { }).Wait();
+        AddGameHelper.InstallModrinth(new DownloadModrinthArg
+        {
+            Data = item1,
+            Data1 = item,
+            Request = Program.Download,
+            Overwirte = (_) => Task.FromResult(true),
+        }).Wait();
     }
 
     public static void Item22()
