@@ -114,9 +114,9 @@ public partial class GameEditModel
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info13"));
         var res = await ToolPath.OpenMapEditAsync();
         Model.ProgressClose();
-        if (!res.Item1)
+        if (!res.State)
         {
-            Model.Show(res.Item2!);
+            Model.Show(res.Message!);
         }
     }
 

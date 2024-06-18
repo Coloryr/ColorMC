@@ -67,32 +67,4 @@ public static class PathUtils
         item!.CopyTo(stream);
         return stream.ToArray();
     }
-
-    /// <summary>
-    /// 提升权限
-    /// </summary>
-    /// <param name="path">文件</param>
-    public static void Chmod(string path)
-    {
-        try
-        {
-            using var p = new Process();
-            p.StartInfo.FileName = "sh";
-            p.StartInfo.RedirectStandardInput = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.Start();
-
-            p.StandardInput.WriteLine("chmod a+x " + path);
-
-            p.StandardInput.WriteLine("exit");
-            p.WaitForExit();
-        }
-        catch (Exception e)
-        {
-            Logs.Error("chmod error", e);
-        }
-    }
 }

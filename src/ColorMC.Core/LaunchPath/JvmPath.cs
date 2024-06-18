@@ -64,7 +64,7 @@ public static class JvmPath
     /// <param name="sha256">验证</param>
     /// <param name="url">地址</param>
     /// <returns>结果</returns>
-    public static async Task<InstallRes> InstallAsync(InstallJvmArg arg)
+    public static async Task<MessageRes> InstallAsync(InstallJvmArg arg)
     {
         try
         {
@@ -72,7 +72,7 @@ public static class JvmPath
             var res = await DownloadAsync(arg.File, arg.Sha256, arg.Url);
             if (!res.State)
             {
-                return new InstallRes { Message = LanguageHelper.Get("Core.Jvm.Error5") };
+                return new MessageRes { Message = LanguageHelper.Get("Core.Jvm.Error5") };
             }
             arg.Unzip?.Invoke();
             res = await UnzipJavaAsync(new UnzipArg
@@ -83,17 +83,17 @@ public static class JvmPath
             });
             if (!res.State)
             {
-                return new InstallRes { Message = res.Message };
+                return new MessageRes { Message = res.Message };
             }
         }
         catch (Exception e)
         {
             string text = LanguageHelper.Get("Core.Jvm.Error7");
             Logs.Error(text, e);
-            return new InstallRes { Message = text };
+            return new MessageRes { Message = text };
         }
 
-        return new InstallRes { State = true };
+        return new MessageRes { State = true };
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public static class JvmPath
     /// <param name="sha256">校验</param>
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
-    private static async Task<InstallRes> DownloadAsync(string name, string sha256, string url)
+    private static async Task<MessageRes> DownloadAsync(string name, string sha256, string url)
     {
         var item = new DownloadItemObj()
         {
@@ -120,7 +120,7 @@ public static class JvmPath
             return new();
         }
 
-        return new InstallRes { State = true, Message = item.Local };
+        return new MessageRes { State = true, Message = item.Local };
     }
 
     /// <summary>
@@ -146,14 +146,14 @@ public static class JvmPath
     /// <param name="name">名字</param>
     /// <param name="file">文件</param>
     /// <returns></returns>
-    public static async Task<InstallRes> UnzipJavaAsync(UnzipArg arg)
+    public static async Task<MessageRes> UnzipJavaAsync(UnzipArg arg)
     {
         string path = BaseDir + Name1 + "/" + arg.Name;
         Directory.CreateDirectory(path);
         var stream = PathHelper.OpenRead(arg.File);
         if (stream == null)
         {
-            return new InstallRes { Message = string.Format(LanguageHelper.Get("Core.Jvm.Error11"), arg.File) };
+            return new MessageRes { Message = string.Format(LanguageHelper.Get("Core.Jvm.Error11"), arg.File) };
         }
 
         (bool, Exception?) res;
@@ -194,13 +194,13 @@ public static class JvmPath
         {
             string temp = LanguageHelper.Get("Core.Jvm.Error12");
             Logs.Error(temp, res.Item2);
-            return new InstallRes { Message = temp };
+            return new MessageRes { Message = temp };
         }
 
         var java = Find(path);
         if (java == null)
         {
-            return new InstallRes { Message = LanguageHelper.Get("Core.Jvm.Error6") };
+            return new MessageRes { Message = LanguageHelper.Get("Core.Jvm.Error6") };
         }
         else
         {
@@ -231,7 +231,7 @@ public static class JvmPath
     /// <param name="name">名字</param>
     /// <param name="local">路径</param>
     /// <returns>结果</returns>
-    public static InstallRes AddItem(string name, string local)
+    public static MessageRes AddItem(string name, string local)
     {
         if (local.StartsWith(BaseDir))
         {
@@ -257,14 +257,14 @@ public static class JvmPath
                 Local = local
             });
             ConfigUtils.Save();
-            return new InstallRes { State = true, Message = name };
+            return new MessageRes { State = true, Message = name };
         }
         else
         {
             Logs.Info(LanguageHelper.Get("Core.Jvm.Error8"));
         }
 
-        return new InstallRes { Message = LanguageHelper.Get("Core.Jvm.Error1") };
+        return new MessageRes { Message = LanguageHelper.Get("Core.Jvm.Error1") };
     }
 
     /// <summary>

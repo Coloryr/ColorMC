@@ -176,18 +176,18 @@ public record MakeDownloadNameItemsRes
 }
 
 /// <summary>
-/// 添加游戏结果
+/// 
 /// </summary>
-public record AddGameRes
+public record GameRes
 {
     public bool State;
     public GameSettingObj? Game;
 }
 
 /// <summary>
-/// 安装Java结果
+/// 
 /// </summary>
-public record InstallRes
+public record MessageRes
 {
     public bool State;
     public string? Message;

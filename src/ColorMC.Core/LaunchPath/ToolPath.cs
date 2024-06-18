@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -31,7 +32,7 @@ public static class ToolPath
     /// 打开地图编辑器
     /// </summary>
     /// <returns></returns>
-    public static async Task<(bool, string?)> OpenMapEditAsync()
+    public static async Task<MessageRes> OpenMapEditAsync()
     {
         var item = DownloadItemHelper.BuildMcaselectorItem();
         if (!File.Exists(item.Local))
@@ -39,14 +40,14 @@ public static class ToolPath
             var res = await DownloadManager.StartAsync([item]);
             if (!res)
             {
-                return (false, LanguageHelper.Get("Core.Tool.Error1"));
+                return new MessageRes { Message = LanguageHelper.Get("Core.Tool.Error1") };
             }
         }
 
         var java = JvmPath.FindJava(17);
         if (java == null)
         {
-            return (false, LanguageHelper.Get("Core.Tool.Error2"));
+            return new MessageRes { Message = LanguageHelper.Get("Core.Tool.Error2") };
         }
 
         var info = new ProcessStartInfo(java.Path)
@@ -67,6 +68,6 @@ public static class ToolPath
         p.BeginOutputReadLine();
         p.BeginErrorReadLine();
 
-        return (true, null);
+        return new MessageRes { State = true };
     }
 }
