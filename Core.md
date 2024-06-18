@@ -127,6 +127,7 @@ else
 启动游戏
 ```c#
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Utils;
 using ColorMC.Core.Objs;
 
 //创建游戏实例
@@ -143,7 +144,7 @@ var game = await InstancesPath.CreateGame(new()
 });
 
 //上一步登录的账户
-var auth = GetAuth();
+var auth = AuthDatabase.Auths.First().Value;
 //启动游戏
 var handel = await game.StartGameAsync(new()
 {
