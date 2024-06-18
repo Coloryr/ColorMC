@@ -1087,7 +1087,7 @@ public static class BaseBinding
         {
             if (SystemInfo.Os != OsType.Windows)
             {
-                PathUtils.Chmod(file);
+                PathBinding.Chmod(file);
             }
 
             var p = new Process

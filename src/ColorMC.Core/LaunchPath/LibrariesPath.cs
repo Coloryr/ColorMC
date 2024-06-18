@@ -229,7 +229,7 @@ public static class LibrariesPath
         var list3 = new List<string>(list.Values);
         if (obj.Loader != Loaders.NeoForge)
         {
-            list3.Add(LibrariesPath.GetGameFile(obj.Version));
+            list3.Add(GetGameFile(obj.Version));
         }
 
         return list3;

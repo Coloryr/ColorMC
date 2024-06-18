@@ -23,7 +23,7 @@ public static class AddGameHelper
     /// <param name="request"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<AddGameRes> AddGame(AddGameArg arg)
+    public static async Task<GameRes> AddGame(AddGameArg arg)
     {
         if (string.IsNullOrWhiteSpace(arg.Local))
         {
@@ -103,7 +103,7 @@ public static class AddGameHelper
         });
         if (game == null)
         {
-            return new AddGameRes
+            return new GameRes
             {
                 State = false
             };
@@ -111,7 +111,7 @@ public static class AddGameHelper
 
         await game.CopyFile(arg.Local, arg.Unselect);
 
-        return new AddGameRes
+        return new GameRes
         {
             State = false,
             Game = game
@@ -125,7 +125,7 @@ public static class AddGameHelper
     /// <param name="type">类型</param>
     /// <param name="type">名字</param>
     /// <param name="type">群组</param>
-    public static async Task<AddGameRes> InstallZip(InstallZipArg arg)
+    public static async Task<GameRes> InstallZip(InstallZipArg arg)
     {
         GameSettingObj? game = null;
         bool import = false;
@@ -445,7 +445,7 @@ public static class AddGameHelper
             await game.Remove(arg.Request);
         }
         arg.Update2?.Invoke(CoreRunState.End);
-        return new AddGameRes { State = import, Game = game };
+        return new GameRes { State = import, Game = game };
     }
 
     /// <summary>
@@ -455,7 +455,7 @@ public static class AddGameHelper
     /// <param name="name">名字</param>
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
-    public static async Task<AddGameRes> InstallModrinth(DownloadModrinthArg arg)
+    public static async Task<GameRes> InstallModrinth(DownloadModrinthArg arg)
     {
         var file = arg.Data.files.FirstOrDefault(a => a.primary) ?? arg.Data.files[0];
         var item = new DownloadItemObj()
@@ -506,7 +506,7 @@ public static class AddGameHelper
     /// <param name="name">名字</param>
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
-    public static async Task<AddGameRes> InstallCurseForge(DownloadCurseForgeArg arg)
+    public static async Task<GameRes> InstallCurseForge(DownloadCurseForgeArg arg)
     {
         arg.Data.FixDownloadUrl();
 
@@ -519,7 +519,7 @@ public static class AddGameHelper
 
         var res1 = await DownloadManager.StartAsync([item]);
         if (!res1)
-            return new AddGameRes { State = false };
+            return new GameRes { State = false };
 
         var res2 = await InstallZip(new InstallZipArg
         {

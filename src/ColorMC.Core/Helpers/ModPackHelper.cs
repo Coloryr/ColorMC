@@ -339,7 +339,7 @@ public static class ModPackHelper
     /// <param name="group">实例组</param>
     /// <returns>Res安装结果
     /// Game游戏实例</returns>
-    public static async Task<AddGameRes> InstallCurseForgeModPackAsync(InstallModPackZipArg arg)
+    public static async Task<GameRes> InstallCurseForgeModPackAsync(InstallModPackZipArg arg)
     {
         arg.Update2?.Invoke(CoreRunState.Read);
         using ZipFile zFile = new(PathHelper.OpenRead(arg.Zip));
@@ -472,7 +472,7 @@ public static class ModPackHelper
         });
         if (!list.State)
         {
-            return new AddGameRes { Game = game };
+            return new GameRes { Game = game };
         }
 
         game.SaveModInfo();
@@ -481,7 +481,7 @@ public static class ModPackHelper
 
         await DownloadManager.StartAsync([.. list.List]);
 
-        return new AddGameRes { State = true, Game = game };
+        return new GameRes { State = true, Game = game };
     }
 
     /// <summary>
@@ -745,7 +745,7 @@ public static class ModPackHelper
     /// <param name="group">实例组</param>
     /// <returns>Res安装结果
     /// Game游戏实例</returns>
-    public static async Task<AddGameRes> InstallModrinthModPackAsync(InstallModPackZipArg arg)
+    public static async Task<GameRes> InstallModrinthModPackAsync(InstallModPackZipArg arg)
     {
         arg.Update2?.Invoke(CoreRunState.Read);
         using ZipFile zFile = new(PathHelper.OpenRead(arg.Zip));
@@ -833,7 +833,7 @@ public static class ModPackHelper
 
         if (game == null)
         {
-            return new AddGameRes { Game = game };
+            return new GameRes { Game = game };
         }
 
         int length = "overrides".Length;
@@ -873,6 +873,6 @@ public static class ModPackHelper
 
         await DownloadManager.StartAsync([.. list]);
 
-        return new AddGameRes { State = true, Game = game };
+        return new GameRes { State = true, Game = game };
     }
 }

@@ -22,7 +22,7 @@ public static class JavaBinding
         };
     }
 
-    public static async Task<InstallRes> AddJavaZip(string file, string name, ColorMCCore.ZipUpdate zip)
+    public static async Task<MessageRes> AddJavaZip(string file, string name, ColorMCCore.ZipUpdate zip)
     {
         return await JvmPath.UnzipJavaAsync(new UnzipArg
         { 
