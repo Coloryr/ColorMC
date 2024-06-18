@@ -9,7 +9,7 @@ namespace ColorMC.Core.Downloader;
 /// <summary>
 /// 下载线程
 /// </summary>
-public class DownloadThread
+internal class DownloadThread
 {
     /// <summary>
     /// 线程
@@ -34,7 +34,11 @@ public class DownloadThread
     /// <summary>
     /// 是否被取消
     /// </summary>
-    private CancellationToken _cancel;
+    private CancellationTokenSource _cancel;
+    /// <summary>
+    /// 下载任务
+    /// </summary>
+    private DownloadTask _task;
 
     private readonly int _index;
 
@@ -87,9 +91,15 @@ public class DownloadThread
     /// <summary>
     /// 开始下载
     /// </summary>
-    public void Start(CancellationToken token)
+    public void Start(DownloadTask task, CancellationToken token)
     {
-        _cancel = token;
+        if (_cancel != null && !_cancel.IsCancellationRequested)
+        {
+            _cancel.Cancel();
+        }
+        _cancel = CancellationTokenSource.CreateLinkedTokenSource(token);
+
+        _task = task;
         _semaphoreWait.Release();
     }
 
@@ -137,7 +147,7 @@ public class DownloadThread
 
                 item.State = DownloadItemState.Done;
                 item.Update(_index);
-                DownloadManager.Done();
+                _task.Done();
                 return true;
             }
         }
@@ -153,7 +163,7 @@ public class DownloadThread
 
                 item.State = DownloadItemState.Done;
                 item.Update(_index);
-                DownloadManager.Done();
+                _task.Done();
                 return true;
             }
         }
@@ -169,7 +179,7 @@ public class DownloadThread
 
                 item.State = DownloadItemState.Done;
                 item.Update(_index);
-                DownloadManager.Done();
+                _task.Done();
                 return true;
             }
         }
@@ -188,7 +198,7 @@ public class DownloadThread
             return;
         }
         DownloadItemObj? item;
-        while ((item = DownloadManager.GetItem()) != null)
+        while ((item = _task.GetItem()) != null)
         {
             ChckPause(item);
 
@@ -249,13 +259,13 @@ public class DownloadThread
                     {
                         req.Headers.Add("ColorMC", ColorMCCore.Version);
                     }
-                    var data = BaseClient.DownloadClient.SendAsync(req,
-                        HttpCompletionOption.ResponseHeadersRead, _cancel).Result;
+                    var data = BaseClient.DownloadClient.Send(req,
+                        HttpCompletionOption.ResponseHeadersRead, _cancel.Token);
                     item.AllSize = (data.Content.Headers.ContentLength ?? 0);
                     item.State = DownloadItemState.GetInfo;
                     item.NowSize = 0;
                     item.Update(_index);
-                    using var stream1 = data.Content.ReadAsStream(_cancel);
+                    using var stream1 = data.Content.ReadAsStream();
 
                     //获取buffer
                     buffer = ArrayPool<byte>.Shared.Rent(DownloadManager.GetCopyBufferSize(stream1));
@@ -266,9 +276,9 @@ public class DownloadThread
 
                     int bytesRead;
                     //写文件
-                    while ((bytesRead = stream1.ReadAsync(buffer, _cancel).AsTask().Result) != 0)
+                    while ((bytesRead = stream1.ReadAsync(buffer, _cancel.Token).AsTask().Result) != 0)
                     {
-                        stream.WriteAsync(buffer, 0, bytesRead, _cancel).Wait();
+                        stream.WriteAsync(buffer, 0, bytesRead, _cancel.Token).Wait();
 
                         ChckPause(item);
 
@@ -351,7 +361,7 @@ public class DownloadThread
 
                     item.State = DownloadItemState.Done;
                     item.Update(_index);
-                    DownloadManager.Done();
+                    _task.Done();
                     break;
                 }
                 catch (Exception e)
@@ -387,6 +397,6 @@ public class DownloadThread
             } while (time < 5);
         }
 
-        DownloadManager.ThreadDone();
+        _task.ThreadDone();
     }
 }

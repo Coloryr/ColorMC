@@ -126,9 +126,8 @@ public partial class AddGameModel
             return;
         }
 
-        var model = (App.MainWindow?.DataContext as MainModel);
+        var model = App.MainWindow?.DataContext as MainModel;
         model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
-        App.MainWindow?.LoadMain();
         WindowClose();
     }
 
@@ -185,7 +184,6 @@ public partial class AddGameModel
         {
             var model = App.MainWindow?.DataContext as MainModel;
             model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
-            App.MainWindow?.LoadMain();
             WindowClose();
         }
     }

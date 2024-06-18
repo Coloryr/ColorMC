@@ -40,17 +40,6 @@ public static class InstancesPath
 
     public const string DefaultGroup = " ";
 
-    private static FileSystemWatcher s_systemWatcher;
-
-    /// <summary>
-    /// 游戏实例列表
-    /// </summary>
-    private static readonly Dictionary<string, GameSettingObj> s_installGames = [];
-    /// <summary>
-    /// 游戏实例组
-    /// </summary>
-    private static readonly Dictionary<string, List<GameSettingObj>> s_gameGroups = [];
-
     /// <summary>
     /// 基础路径
     /// </summary>
@@ -76,6 +65,18 @@ public static class InstancesPath
     /// 是否没有游戏实例
     /// </summary>
     public static bool IsNotGame => s_installGames.Count == 0;
+
+    private static FileSystemWatcher s_systemWatcher;
+    private static bool s_init;
+
+    /// <summary>
+    /// 游戏实例列表
+    /// </summary>
+    private static readonly Dictionary<string, GameSettingObj> s_installGames = [];
+    /// <summary>
+    /// 游戏实例组
+    /// </summary>
+    private static readonly Dictionary<string, List<GameSettingObj>> s_gameGroups = [];
 
     /// <summary>
     /// 添加游戏实例到组
@@ -110,6 +111,11 @@ public static class InstancesPath
                 s_gameGroups.Add(obj.GroupName, list);
             }
         }
+
+        if (!s_init)
+        {
+            ColorMCCore.OnInstanceChange();
+        }
     }
 
     /// <summary>
@@ -133,6 +139,11 @@ public static class InstancesPath
                 s_gameGroups.Remove(obj.GroupName);
             }
         }
+
+        if (!s_init)
+        {
+            ColorMCCore.OnInstanceChange();
+        }
     }
 
     /// <summary>
@@ -141,6 +152,8 @@ public static class InstancesPath
     /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
+        s_init = true;
+
         BaseDir = Path.GetFullPath(dir + "/" + Name);
 
         Directory.CreateDirectory(BaseDir);
@@ -160,6 +173,8 @@ public static class InstancesPath
         s_systemWatcher.Created += SystemWatcher_Created;
         s_systemWatcher.Deleted += SystemWatcher_Deleted;
         s_systemWatcher.EndInit();
+
+        s_init = false;
     }
 
     /// <summary>
@@ -203,8 +218,6 @@ public static class InstancesPath
 
         var obj = s_installGames.Values.FirstOrDefault(item => item.DirName == e.Name);
         obj?.RemoveFromGroup();
-
-        ColorMCCore.OnInstanceChange();
     }
 
     private static void SystemWatcher_Created(object sender, FileSystemEventArgs e)
@@ -219,8 +232,6 @@ public static class InstancesPath
             }
 
             LoadInstance(local);
-
-            ColorMCCore.OnInstanceChange();
         }
     }
 

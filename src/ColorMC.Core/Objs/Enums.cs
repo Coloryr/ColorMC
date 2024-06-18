@@ -395,5 +395,5 @@ public enum CoreRunState
 /// </summary>
 public enum DownloadState
 {
-    Init, Start, End
+    Start, Runing, End
 }

@@ -468,9 +468,15 @@ public partial class App : Application
     {
         return Dispatcher.UIThread.Invoke(() =>
         {
-            DownloadWindow?.Window.Close();
-            DownloadWindow = new();
-            AWindow(DownloadWindow);
+            if (DownloadWindow != null)
+            {
+                DownloadWindow.Window.TopActivate();
+            }
+            else
+            {
+                DownloadWindow = new();
+                AWindow(DownloadWindow);
+            }
 
             return DownloadWindow.Start();
         });

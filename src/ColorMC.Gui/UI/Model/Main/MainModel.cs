@@ -20,7 +20,7 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class MainModel : TopModel, IMainTop
 {
-    public bool IsLaunch = false;
+    public bool IsLaunch;
     public bool IsFirst = true;
 
     public ObservableCollection<string> GroupList { get; init; } = [];
@@ -558,9 +558,6 @@ public partial class MainModel : TopModel, IMainTop
 
     public async void Launch(GameItemModel obj)
     {
-        if (IsLaunch || obj.IsLaunch)
-            return;
-
         Select(obj);
 
         IsLaunch = true;

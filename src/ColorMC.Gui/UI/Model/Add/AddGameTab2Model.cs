@@ -45,11 +45,6 @@ public partial class AddGameModel
     [RelayCommand]
     public void AddPackGame()
     {
-        if (BaseBinding.IsDownload)
-        {
-            Model.Show(App.Lang("AddGameWindow.Tab1.Error4"));
-            return;
-        }
         if (Type == null)
         {
             Model.Show(App.Lang("AddGameWindow.Tab2.Error3"));
@@ -134,7 +129,6 @@ public partial class AddGameModel
 
         var model = (App.MainWindow?.DataContext as MainModel)!;
         model.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
-        App.MainWindow?.LoadMain();
 
         if (Type == PackType.ZipPack)
         {

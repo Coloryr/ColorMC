@@ -608,7 +608,7 @@ public static class BaseBinding
         ColorMCCore.GameLaunch update2, LoginObj obj1, WorldObj? world,
         int? mixinport, CancellationToken cancel)
     {
-        string? temp = null;
+        string? temp;
         try
         {
             //启动
@@ -649,14 +649,6 @@ public static class BaseBinding
         return (null, temp);
     }
 
-    /// <summary>
-    /// 获取下载状态
-    /// </summary>
-    /// <returns>状态</returns>
-    public static (int, int) GetDownloadSize()
-    {
-        return (DownloadManager.AllSize, DownloadManager.DoneSize);
-    }
 
     /// <summary>
     /// 在浏览器打开网址

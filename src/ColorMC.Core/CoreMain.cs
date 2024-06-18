@@ -15,7 +15,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A25";
-    public const string DateVersion = "20240615";
+    public const string DateVersion = "20240618";
 
     /// <summary>
     /// 版本号
@@ -93,7 +93,12 @@ public static class ColorMCCore
     /// 下载器状态更新
     /// </summary>
     /// <param name="state">状态</param>
-    public delegate void DownloaderUpdate(DownloadState state);
+    public delegate void DownloadUpdate(int thread, DownloadState state, int count);
+    /// <summary>
+    /// 下载任务状态更新
+    /// </summary>
+    /// <param name="state">状态</param>
+    public delegate void DownloadTaskUpdate(int all, int now);
     /// <summary>
     /// 下载项目状态更新
     /// </summary>
@@ -226,7 +231,7 @@ public static class ColorMCCore
         LocalMaven.Init(BaseDir);
         DownloadManager.Init(BaseDir);
         AuthDatabase.Init();
-        MCPath.Init(BaseDir);
+        MinecraftPath.Init(BaseDir);
 
         Logs.Info(LanguageHelper.Get("Core.Info3"));
     }

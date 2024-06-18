@@ -61,6 +61,7 @@ public partial class DownloadItemModel(int index) : ObservableObject
 
     public void Clear()
     {
+        Name = "";
         ErrorTime = 0;
         State = App.Lang("DownloadWindow.Info4");
         NowProgress = 0;

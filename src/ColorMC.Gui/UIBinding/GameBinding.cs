@@ -72,7 +72,12 @@ public static class GameBinding
     public static async Task<bool> AddGame(GameSettingObj game, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte)
     {
-        var game1 = await InstancesPath.CreateGame(game, request, overwirte);
+        var game1 = await InstancesPath.CreateGame(new CreateGameArg
+        { 
+            Game = game,
+            Request = request, 
+            Overwirte = overwirte 
+        });
         if (game1 != null)
         {
             ConfigBinding.SetLastLaunch(game1.UUID);
@@ -94,21 +99,24 @@ public static class GameBinding
     public static async Task<bool> AddGame(string name, string local, List<string>? unselect,
         string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte, bool open)
     {
-        var res = await GameHelper.AddGame(name, local, unselect, group, request, overwirte);
+        var res = await GameHelper.AddGame(new AddGameArg
+        { 
+            Local = local, 
+            Name = name,
+            Unselect = unselect,
+            Group = group, 
+            Request = request, 
+            Overwirte = overwirte 
+        });
 
-        if (!res.Item1)
+        if (!res.State)
         {
-            if (res.Item3 != null)
-            {
-                App.ShowError(App.Lang("Gui.Error26"), res.Item3);
-            }
-
             return false;
         }
 
-        if (res.Item2 != null && open)
+        if (res.Game != null && open)
         {
-            App.ShowGameEdit(res.Item2);
+            App.ShowGameEdit(res.Game);
         }
 
         return true;
@@ -1195,8 +1203,6 @@ public static class GameBinding
             return false;
         }
 
-        App.MainWindow?.LoadMain();
-
         return true;
     }
 
@@ -1645,12 +1651,17 @@ public static class GameBinding
     public static async Task<(bool, string?)> DownloadCloud(CloundListObj obj, string? group,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
-        var game = await InstancesPath.CreateGame(new()
+        var game = await InstancesPath.CreateGame(new CreateGameArg
         {
-            Name = obj.Name,
-            UUID = obj.UUID,
-            GroupName = group
-        }, request, overwirte);
+            Game = new()
+            {
+                Name = obj.Name,
+                UUID = obj.UUID,
+                GroupName = group
+            },
+            Request = request,
+            Overwirte = overwirte
+        });
         if (game == null)
         {
             return (false, App.Lang("AddGameWindow.Tab1.Error10"));
@@ -1734,7 +1745,6 @@ public static class GameBinding
         ColorMCCore.Request request)
     {
         var res = await obj.Remove(request);
-        App.MainWindow?.LoadMain();
         if (res)
         {
             Dispatcher.UIThread.Post(() =>
@@ -1775,7 +1785,12 @@ public static class GameBinding
             game.LaunchData = null!;
             game.ServerUrl = text;
             game.ModPackType = SourceType.ColorMC;
-            game = await InstancesPath.CreateGame(game, model.ShowWait, overwirte);
+            game = await InstancesPath.CreateGame(new CreateGameArg
+            { 
+                Game = game, 
+                Request = model.ShowWait,
+                Overwirte = overwirte 
+            });
 
             if (game == null)
             {

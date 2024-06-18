@@ -60,7 +60,12 @@ public static class InstallGameHelper
                         if (game == null)
                             break;
 
-                        var res = game.CreateGame(request, overwirte);
+                        var res = InstancesPath.CreateGame(new CreateGameArg
+                        { 
+                            Game = game, 
+                            Request = request, 
+                            Overwirte = overwirte
+                        });
 
                         foreach (ZipEntry e in zFile)
                         {
@@ -150,7 +155,12 @@ public static class InstallGameHelper
                         {
                             game.Icon = icon + ".png";
                         }
-                        game = await game.CreateGame(request, overwirte);
+                        game = await InstancesPath.CreateGame(new CreateGameArg
+                        {
+                            Game = game,
+                            Request = request,
+                            Overwirte = overwirte
+                        });
 
                         if (game == null)
                             break;
@@ -222,7 +232,12 @@ public static class InstallGameHelper
                             game.GroupName = group;
                         }
 
-                        game = await game.CreateGame(request, overwirte);
+                        game = await InstancesPath.CreateGame(new CreateGameArg
+                        {
+                            Game = game,
+                            Request = request,
+                            Overwirte = overwirte
+                        });
 
                         if (game == null)
                             break;
@@ -271,11 +286,16 @@ public static class InstallGameHelper
                         name ??= Path.GetFileName(dir);
 
                         update2(CoreRunState.Start);
-                        game = await InstancesPath.CreateGame(new()
+                        game = await InstancesPath.CreateGame(new CreateGameArg
                         {
-                            GroupName = group,
-                            Name = name!
-                        }, request, overwirte);
+                            Game = new()
+                            {
+                                GroupName = group,
+                                Name = name!
+                            },
+                            Request = request,
+                            Overwirte = overwirte
+                        });
 
                         if (game != null)
                         {

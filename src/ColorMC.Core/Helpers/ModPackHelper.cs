@@ -350,7 +350,12 @@ public static class ModPackHelper
             LoaderVersion = loaderversion
         };
 
-        game = await InstancesPath.CreateGame(game, request, overwirte);
+        game = await InstancesPath.CreateGame(new CreateGameArg
+        { 
+            Game = game,
+            Request = request,
+            Overwirte = overwirte 
+        });
 
         if (game == null)
         {
@@ -418,7 +423,7 @@ public static class ModPackHelper
             foreach (var item in res1)
             {
                 var path = await GetCurseForgeItemPath(game, item);
-                list.Add(item.MakeModDownloadObj(game, path.Item1));
+                list.Add(item.MakeModDownloadObj(path.Item1));
                 var modid = item.modId.ToString();
                 game.Mods.Remove(modid);
                 game.Mods.Add(modid, item.MakeModInfo(path.Item2));
@@ -445,7 +450,7 @@ public static class ModPackHelper
 
                 var path = await GetCurseForgeItemPath(game, res.data);
 
-                list.Add(res.data.MakeModDownloadObj(game, path.Item1));
+                list.Add(res.data.MakeModDownloadObj(path.Item1));
                 var modid = res.data.modId.ToString();
                 game.Mods.Remove(modid);
                 game.Mods.Add(modid, res.data.MakeModInfo(path.Item2));
@@ -829,16 +834,21 @@ public static class ModPackHelper
         }
 
         //创建游戏实例
-        var game = await InstancesPath.CreateGame(new GameSettingObj()
+        var game = await InstancesPath.CreateGame(new CreateGameArg
         {
-            GroupName = group,
-            Name = name,
-            Version = info.dependencies["minecraft"],
-            ModPack = true,
-            ModPackType = SourceType.Modrinth,
-            Loader = loaders,
-            LoaderVersion = loaderversion
-        }, request, overwirte);
+            Game = new GameSettingObj()
+            {
+                GroupName = group,
+                Name = name,
+                Version = info.dependencies["minecraft"],
+                ModPack = true,
+                ModPackType = SourceType.Modrinth,
+                Loader = loaders,
+                LoaderVersion = loaderversion
+            },
+            Request = request,
+            Overwirte = overwirte
+        });
 
         if (game == null)
         {
