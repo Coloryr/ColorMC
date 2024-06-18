@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Timers;
 using Avalonia.Threading;
-using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
@@ -29,7 +28,9 @@ public partial class DownloadModel : TopModel
     [ObservableProperty]
     private string _now;
     [ObservableProperty]
-    private double _value = 0;
+    private double _value;
+    [ObservableProperty]
+    private int _size;
     [ObservableProperty]
     private bool _isPause;
 
@@ -115,21 +116,6 @@ public partial class DownloadModel : TopModel
 
     public void DownloadItemUpdate(int thread, DownloadItemObj item)
     {
-        if (item.State == DownloadItemState.Init)
-        {
-            if (_downloadList.Count == 0 || _downloadList.Count != thread)
-            {
-                for (int a = 0; a < thread; a++)
-                {
-                    var item11 = new DownloadItemModel(a + 1);
-                    Dispatcher.UIThread.Post(() => DisplayList.Add(item11));
-                    _downloadList.Add(a, item11);
-                }
-            }
-
-            return;
-        }
-
         if (!_downloadList.TryGetValue(thread, out DownloadItemModel? value))
         {
             return;
@@ -140,7 +126,6 @@ public partial class DownloadModel : TopModel
 
         if (item.State == DownloadItemState.Done)
         {
-            Update();
             value.Clear();
         }
         else if (item.State == DownloadItemState.GetInfo)
@@ -159,13 +144,6 @@ public partial class DownloadModel : TopModel
         }
     }
 
-    public void Update()
-    {
-        var data = BaseBinding.GetDownloadSize();
-        Value = (double)data.Item2 / data.Item1 * 100;
-        Now = $"{data.Item2}/{data.Item1}";
-    }
-
     protected override void Close()
     {
         _timer.Dispose();
@@ -175,25 +153,49 @@ public partial class DownloadModel : TopModel
         _downloadList.Clear();
     }
 
-    public void DownloaderUpdate(DownloadState state)
+    public void DownloadUpdate(int thread, DownloadState state, int count)
     {
         if (state == DownloadState.Start)
         {
+            if (_downloadList.Count == 0 || _downloadList.Count != thread)
+            {
+                for (int a = 0; a < thread; a++)
+                {
+                    var item11 = new DownloadItemModel(a + 1);
+                    Dispatcher.UIThread.Post(() => DisplayList.Add(item11));
+                    _downloadList.Add(a, item11);
+                }
+            }
             _timer.Start();
-            Update();
+            Size = count;
+        }
+        else if (state == DownloadState.Runing)
+        {
+            Size = count;
         }
         else if (state == DownloadState.End)
         {
+            Size = count;
             OnPropertyChanged("WindowClose");
         }
     }
 
+    private void DownloadTaskUpdate(int all, int now)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            Value = (double)now / all * 100;
+            Now = $"{now}/{all}";
+        });
+    }
+
     public DownloadArg Start()
     {
-        return new DownloadArg() 
+        return new() 
         {
-            Update = DownloaderUpdate, 
-            ItemUpdate = DownloadItemUpdate 
+            Update = DownloadUpdate, 
+            UpdateTask = DownloadTaskUpdate,
+            UpdateItem = DownloadItemUpdate 
         };
     }
 }

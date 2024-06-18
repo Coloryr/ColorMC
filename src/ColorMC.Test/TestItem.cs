@@ -40,12 +40,12 @@ public static class TestItem
         {
             //GameDownload.Download(version.versions.First()).Wait();
             var list = DownloadItemHelper.BuildVersionDownloadAsync(version.versions.Where(a => a.id == "1.12.2").First()).Result;
-            if (list.State != GetDownloadState.End)
+            if (list == null)
             {
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.StartAsync(list.List!).Wait();
+            DownloadManager.StartAsync(list).Wait();
         }
     }
 
@@ -66,12 +66,12 @@ public static class TestItem
         {
             var item = res.loader.First();
             var list = DownloadItemHelper.BuildFabricAsync("1.19.2", item.version).Result;
-            if (list.State != GetDownloadState.End)
+            if (list == null)
             {
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.StartAsync(list.List!).Wait();
+            DownloadManager.StartAsync(list).Wait();
         }
     }
 
@@ -109,8 +109,7 @@ public static class TestItem
     public static void Item7()
     {
         var data = InstancesPath.Games.First();
-        var list = CheckHelpers.CheckGameFileAsync(data, new LoginObj(),
-            (_, _) => { }, CancellationToken.None).Result;
+        var list = CheckHelpers.CheckGameFileAsync(data, CancellationToken.None).Result;
         if (list == null)
         {
             Console.WriteLine("文件检查失败");

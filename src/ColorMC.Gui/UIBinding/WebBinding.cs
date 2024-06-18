@@ -393,7 +393,7 @@ public static class WebBinding
                 foreach (var item2 in item1.List)
                 {
                     version.Add(item2.displayName);
-                    items.Add((item2.MakeModDownloadObj(obj, path), item2.MakeModInfo(InstancesPath.Name11)));
+                    items.Add((item2.MakeModDownloadObj(path), item2.MakeModInfo(InstancesPath.Name11)));
                 }
                 res.Add(item1.Info.ModId, new()
                 {
@@ -407,7 +407,7 @@ public static class WebBinding
             }
         }
 
-        return (data.MakeModDownloadObj(obj, path), data.MakeModInfo(InstancesPath.Name11), res.Values.ToList());
+        return (data.MakeModDownloadObj(path), data.MakeModInfo(InstancesPath.Name11), res.Values.ToList());
     }
 
     public static async Task<(DownloadItemObj? Item, ModInfoObj? Info,
@@ -685,7 +685,7 @@ public static class WebBinding
                         case SourceType.CurseForge:
                             if (item1.Data is CurseForgeModObj.Data data)
                             {
-                                list.Add((data.MakeModDownloadObj(game, path), data.MakeModInfo(InstancesPath.Name11), item));
+                                list.Add((data.MakeModDownloadObj(path), data.MakeModInfo(InstancesPath.Name11), item));
                             }
                             break;
                         case SourceType.Modrinth:

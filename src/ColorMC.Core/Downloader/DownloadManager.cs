@@ -12,10 +12,6 @@ namespace ColorMC.Core.Downloader;
 public static class DownloadManager
 {
     /// <summary>
-    /// 取消下载
-    /// </summary>
-    private static CancellationTokenSource s_cancel = new();
-    /// <summary>
     /// 下载状态
     /// </summary>
     public static DownloadState State { get; private set; } = DownloadState.End;
@@ -25,26 +21,15 @@ public static class DownloadManager
     public static string DownloadDir { get; private set; }
 
     /// <summary>
-    /// 总下载数量
-    /// </summary>
-    public static int AllSize { get; private set; }
-    /// <summary>
-    /// 已下载数量
-    /// </summary>
-    public static int DoneSize { get; private set; }
-
-    /// <summary>
-    /// 下载项目队列
-    /// </summary>
-    private static readonly ConcurrentQueue<DownloadItemObj> s_items = [];
-    /// <summary>
     /// 下载线程
     /// </summary>
     private static readonly List<DownloadThread> s_threads = [];
-    /// <summary>
-    /// 处理完成信号量
-    /// </summary>
-    private static Semaphore s_semaphore;
+
+    private static readonly ConcurrentQueue<DownloadTask> s_tasks = [];
+
+    private static DownloadTask? s_nowTask;
+
+    private static bool s_stop;
 
     /// <summary>
     /// 初始化
@@ -62,9 +47,9 @@ public static class DownloadManager
 
     private static void LoadThread()
     {
+        DownloadStop();
         Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info1"),
             ConfigUtils.Config.Http.DownloadThread));
-        s_semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
         for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
         {
             s_threads.Add(new(a));
@@ -76,7 +61,9 @@ public static class DownloadManager
     /// </summary>
     private static void Stop()
     {
-        s_cancel.Cancel();
+        s_stop = true;
+        s_nowTask?.Cancel();
+        s_tasks.Clear();
         s_threads.ForEach(a => a.Close());
     }
 
@@ -85,9 +72,13 @@ public static class DownloadManager
     /// </summary>
     public static void DownloadStop()
     {
-        s_cancel.Cancel();
+        if (s_stop)
+        {
+            return;
+        }
+        s_nowTask?.Cancel();
+        s_tasks.Clear();
         s_threads.ForEach(a => a.DownloadStop());
-        s_items.Clear();
     }
 
     /// <summary>
@@ -95,6 +86,10 @@ public static class DownloadManager
     /// </summary>
     public static void DownloadPause()
     {
+        if (s_stop)
+        {
+            return;
+        }
         foreach (var item in s_threads)
         {
             item.Pause();
@@ -106,6 +101,10 @@ public static class DownloadManager
     /// </summary>
     public static void DownloadResume()
     {
+        if (s_stop)
+        {
+            return;
+        }
         foreach (var item in s_threads)
         {
             item.Resume();
@@ -113,37 +112,26 @@ public static class DownloadManager
     }
 
     /// <summary>
-    /// 清空下载器
-    /// </summary>
-    private static void Clear()
-    {
-        Logs.Info(LanguageHelper.Get("Core.Http.Info2"));
-        s_items.Clear();
-        AllSize = 0;
-        DoneSize = 0;
-    }
-
-    /// <summary>
     /// 调用GUI的方式下载
     /// </summary>
     /// <param name="list"></param>
     /// <returns></returns>
-    public static Task<bool> StartAsync(ICollection<DownloadItemObj> list)
+    public static async Task<bool> StartAsync(ICollection<DownloadItemObj> list)
     {
+        if (s_stop)
+        {
+            return false;
+        }
         DownloadArg arg;
         if (ColorMCCore.OnDownload == null)
         {
-            arg = new()
-            {
-                List = list
-            };
-            return StartAsync(arg);
+            arg = new();
+            return await StartAsync(list, arg);
         }
         else
         {
             arg = ColorMCCore.OnDownload();
-            arg.List = list;
-            return StartAsync(arg);
+            return await StartAsync(list, arg);
         }
     }
 
@@ -152,92 +140,47 @@ public static class DownloadManager
     /// </summary>
     /// <param name="list">下载列表</param>
     /// <returns>结果</returns>
-    internal static async Task<bool> StartAsync(DownloadArg args)
+    private static async Task<bool> StartAsync(ICollection<DownloadItemObj> list, DownloadArg arg)
     {
-        var names = new List<string>();
-        //下载器是否在运行
-        if (State != DownloadState.End)
+        var task = new DownloadTask(list, arg);
+        s_tasks.Enqueue(task);
+
+        if (State != DownloadState.Start)
         {
-            return false;
+            State = DownloadState.Start;
+            arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count);
+            TaskDone(arg);
         }
+        
+        return await task.WaitDone();
+    }
 
-        Clear();
-        Logs.Info(LanguageHelper.Get("Core.Http.Info4"));
-
-        args.Update?.Invoke(State = DownloadState.Init);
-
-        //装填下载内容
-        foreach (var item in args.List)
+    internal static void TaskDone(DownloadArg arg)
+    {
+        s_nowTask = null;
+        Task.Run(() =>
         {
-            if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url)
-                || names.Contains(item.Name))
+            if (s_tasks.TryDequeue(out s_nowTask))
             {
-                continue;
+                State = DownloadState.Runing;
+                arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count + 1);
+                Start(s_nowTask, s_nowTask.Token);
             }
-            item.UpdateD = args.ItemUpdate;
-            args.ItemUpdate?.Invoke(ConfigUtils.Config.Http.DownloadThread, item);
-            s_items.Enqueue(item);
-            names.Add(item.Name);
-        }
-
-        Logs.Info(LanguageHelper.Get("Core.Http.Info3"));
-        DoneSize = 0;
-        AllSize = s_items.Count;
-
-        args.Update?.Invoke(State = DownloadState.Start);
-
-        s_cancel.Dispose();
-        s_cancel = new();
-        foreach (var item in s_threads)
-        {
-            item.Start(s_cancel.Token);
-        }
-        await Task.Run(() =>
-        {
-            for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
+            else
             {
-                s_semaphore.WaitOne();
+                State = DownloadState.End;
+                arg.Update?.Invoke(s_threads.Count, State, 0);
             }
         });
+    }
 
-        args.Update?.Invoke(State = DownloadState.End);
-
-        if (s_cancel.IsCancellationRequested)
+    internal static void Start(DownloadTask task, CancellationToken token)
+    {
+        task.Update();
+        foreach (var item in s_threads)
         {
-            return false;
+            item.Start(task, token);
         }
-
-        return AllSize == DoneSize;
-    }
-
-    /// <summary>
-    /// 获取下载项目
-    /// </summary>
-    /// <returns></returns>
-    public static DownloadItemObj? GetItem()
-    {
-        if (s_items.TryDequeue(out var item))
-        {
-            return item;
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// 下载线程完成
-    /// </summary>
-    public static void Done()
-    {
-        DoneSize++;
-    }
-
-    /// <summary>
-    /// 线程完成
-    /// </summary>
-    public static void ThreadDone()
-    {
-        s_semaphore.Release();
     }
 
     /// <summary>
@@ -246,7 +189,7 @@ public static class DownloadManager
     /// <param name="index">下载器号</param>
     /// <param name="item">下载项目</param>
     /// <param name="e">错误内容</param>
-    public static void Error(DownloadItemObj item, Exception e)
+    internal static void Error(DownloadItemObj item, Exception e)
     {
         Logs.Error(string.Format(LanguageHelper.Get("Core.Http.Error1"), item.Name), e);
     }
@@ -256,7 +199,7 @@ public static class DownloadManager
     /// </summary>
     /// <param name="stream">流</param>
     /// <returns>大小</returns>
-    public static int GetCopyBufferSize(Stream stream)
+    internal static int GetCopyBufferSize(Stream stream)
     {
         int DefaultCopyBufferSize = 81920;
         int bufferSize = DefaultCopyBufferSize;

@@ -14,22 +14,22 @@ public record CoreInitArg
 }
 
 /// <summary>
-/// 开始下载所需参数
+/// 下载Gui调用所需参数
 /// </summary>
 public record DownloadArg
 {
     /// <summary>
-    /// 下载项目
-    /// </summary>
-    public ICollection<DownloadItemObj> List;
-    /// <summary>
     /// 下载状态更新
     /// </summary>
-    public ColorMCCore.DownloaderUpdate? Update;
+    public ColorMCCore.DownloadUpdate? Update;
+    /// <summary>
+    /// 下载任务更新
+    /// </summary>
+    public ColorMCCore.DownloadTaskUpdate? UpdateTask;
     /// <summary>
     /// 下载项目更新
     /// </summary>
-    public ColorMCCore.DownloadItemUpdate? ItemUpdate;
+    public ColorMCCore.DownloadItemUpdate? UpdateItem;
 }
 
 /// <summary>
@@ -169,8 +169,8 @@ public record AddGameArg
 public record CreateGameArg
 {
     public required GameSettingObj Game;
-    public ColorMCCore.Request Request;
-    public ColorMCCore.GameOverwirte Overwirte;
+    public ColorMCCore.Request? Request;
+    public ColorMCCore.GameOverwirte? Overwirte;
 }
 
 /// <summary>
@@ -179,6 +179,6 @@ public record CreateGameArg
 public record CopyGameArg
 {
     public required string Game;
-    public ColorMCCore.Request Request;
-    public ColorMCCore.GameOverwirte Overwirte;
+    public ColorMCCore.Request? Request;
+    public ColorMCCore.GameOverwirte? Overwirte;
 }

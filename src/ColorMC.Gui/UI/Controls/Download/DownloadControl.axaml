@@ -13,34 +13,48 @@
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
     <DockPanel Margin="5">
-        <Border
-            Margin="5"
-            Classes="t1"
-            DockPanel.Dock="Top">
-            <WrapPanel>
-                <ProgressBar
-                    Height="20"
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    BorderBrush="White"
-                    BorderThickness="1"
-                    Foreground="#FF5EBDD3"
-                    Maximum="100"
-                    ShowProgressText="True"
-                    Value="{Binding Value}" />
+        <Border Classes="t1" DockPanel.Dock="Top">
+            <StackPanel Margin="5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock
-                        MinWidth="100"
                         Margin="0,0,5,0"
                         DockPanel.Dock="Right"
-                        Text="{Binding Speed}" />
+                        Text="{setting:Localize DownloadWindow.Text6}" />
                     <TextBlock
                         MinWidth="100"
+                        DockPanel.Dock="Right"
+                        Text="{Binding Size}" />
+                </StackPanel>
+                <WrapPanel>
+                    <TextBlock
                         Margin="0,0,5,0"
                         DockPanel.Dock="Right"
-                        Text="{Binding Now}" />
-                </StackPanel>
-            </WrapPanel>
+                        Text="{setting:Localize DownloadWindow.Text7}" />
+                    <ProgressBar
+                        Height="20"
+                        Margin="0,0,5,0"
+                        VerticalAlignment="Center"
+                        BorderBrush="White"
+                        BorderThickness="1"
+                        Foreground="#FF5EBDD3"
+                        Maximum="100"
+                        ShowProgressText="True"
+                        Value="{Binding Value}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            MinWidth="100"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding Speed}" />
+                        <TextBlock
+                            MinWidth="100"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding Now}" />
+                    </StackPanel>
+
+                </WrapPanel>
+            </StackPanel>
         </Border>
 
         <ScrollViewer Margin="0,5,0,0" HorizontalScrollBarVisibility="Disabled">

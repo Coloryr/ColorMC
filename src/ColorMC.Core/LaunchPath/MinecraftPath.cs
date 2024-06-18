@@ -6,7 +6,7 @@ namespace ColorMC.Core.LaunchPath;
 /// <summary>
 /// 游戏路径
 /// </summary>
-public static class MCPath
+public static class MinecraftPath
 {
     public const string Name = "minecraft";
     public static string BaseDir { get; private set; }

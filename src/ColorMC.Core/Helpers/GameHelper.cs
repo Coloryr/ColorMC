@@ -827,12 +827,17 @@ public static class GameHelper
 
         game.GroupName = arg.Group;
 
-        game = await InstancesPath.CreateGame(game, arg.Request, arg.Overwirte);
+        game = await InstancesPath.CreateGame(new CreateGameArg
+        {
+            Game = game,
+            Request = arg.Request,
+            Overwirte = arg.Overwirte
+        });
         if (game == null)
         {
             return new AddGameRes
             { 
-                State =false
+                State = false
             };
         }
 

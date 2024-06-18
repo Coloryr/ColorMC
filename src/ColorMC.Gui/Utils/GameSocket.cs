@@ -4,6 +4,7 @@ using System.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Asm;
 using ColorMC.Core.Game;
+using ColorMC.Core.Helpers;
 using ColorMC.Gui.UI.Model.Items;
 using DotNetty.Buffers;
 using DotNetty.Transport.Channels;
@@ -104,7 +105,7 @@ public static class GameSocket
         buf.WriteInt(2);
         buf.WriteString(temp[0]);
         buf.WriteString(temp[1]);
-        buf.WriteString(LanServer.MakeMotd("[ColorMC]" + model.Name, temp[1]));
+        buf.WriteString(LanGameHelper.MakeMotd("[ColorMC]" + model.Name, temp[1]));
         s_nettyServer.SendMessage(buf);
     }
 }

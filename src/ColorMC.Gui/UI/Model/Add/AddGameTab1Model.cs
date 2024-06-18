@@ -347,12 +347,6 @@ public partial class AddGameModel
     [RelayCommand]
     public async Task AddGame()
     {
-        if (BaseBinding.IsDownload)
-        {
-            Model.Show(App.Lang("AddGameWindow.Tab1.Error4"));
-            return;
-        }
-
         var name = Name;
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -488,12 +482,6 @@ public partial class AddGameModel
     /// <param name="data1">数据</param>
     public async void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
     {
-        if (BaseBinding.IsDownload)
-        {
-            Model.Show(App.Lang("AddGameWindow.Tab1.Error4"));
-            return;
-        }
-
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallCurseForge(data, data1, Name, Group,
             ZipUpdate, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
@@ -519,12 +507,6 @@ public partial class AddGameModel
     /// <param name="data1">数据</param>
     public async void Install(ModrinthVersionObj data, ModrinthSearchObj.Hit data1)
     {
-        if (BaseBinding.IsDownload)
-        {
-            Model.Show(App.Lang("AddGameWindow.Tab1.Error4"));
-            return;
-        }
-
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallModrinth(data, data1, Name, Group,
             ZipUpdate, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
@@ -598,9 +580,8 @@ public partial class AddGameModel
     /// </summary>
     private void Done()
     {
-        var model = (App.MainWindow?.DataContext as MainModel);
+        var model = App.MainWindow?.DataContext as MainModel;
         model?.Model.Notify(App.Lang("AddGameWindow.Tab1.Info7"));
-        App.MainWindow?.LoadMain();
         Dispatcher.UIThread.Post(WindowClose);
     }
 }
