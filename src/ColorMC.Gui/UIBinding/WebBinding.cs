@@ -759,6 +759,9 @@ public static class WebBinding
             WebType.OpenFrp => "https://console.openfrp.net/home/",
             WebType.OpenFrpApi => "https://github.com/ZGIT-Network/OPENFRP-APIDOC",
             WebType.Live2DCore => "https://www.live2d.com/download/cubism-sdk/download-native/",
+            WebType.ColorMCDownload => "https://github.com/Coloryr/ColorMC/releases",
+            WebType.EditSkin => "https://www.minecraft.net/en-us/msaprofile/mygames/editskin",
+            WebType.LittleSkinEditSkin => "https://littleskin.cn/user/closet",
             _ => "https://colormc.coloryr.com"
         });
     }

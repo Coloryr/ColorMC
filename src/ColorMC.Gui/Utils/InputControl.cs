@@ -9,36 +9,29 @@ namespace ColorMC.Gui.Utils;
 
 public static class InputControl
 {
-    private static Sdl sdl;
     private static bool _isRun;
+    private static Sdl _sdl;
+    public static bool IsEditMode { get; set; }
 
-    public static bool IsInit { get; private set; }
     public static event Action<Event>? OnEvent;
-    public static bool IsEditMode = false;
 
     /// <summary>
     /// 手柄控制初始化
     /// </summary>
-    public static void Init()
+    public static void Init(Sdl sdl)
     {
-        sdl = Sdl.GetApi();
-
-        IsInit = sdl.Init(Sdl.InitGamecontroller) == 0;
-
-        if (IsInit)
+        _sdl = sdl;
+        App.OnClose += App_OnClose;
+        _isRun = true;
+        new Thread(() =>
         {
-            App.OnClose += App_OnClose;
-            _isRun = true;
-            new Thread(() =>
+            var sdlEvent = new Event();
+            while (_isRun)
             {
-                var sdlEvent = new Event();
-                while (_isRun)
-                {
-                    sdl.WaitEvent(ref sdlEvent);
-                    OnEvent?.Invoke(sdlEvent);
-                }
-            }).Start();
-        }
+                _sdl.WaitEvent(ref sdlEvent);
+                OnEvent?.Invoke(sdlEvent);
+            }
+        }).Start();
     }
 
     private static void App_OnClose()
@@ -49,7 +42,7 @@ public static class InputControl
     /// <summary>
     /// 获取手柄数量
     /// </summary>
-    public static int Count => sdl.NumJoysticks();
+    public static int Count => _sdl.NumJoysticks();
 
     /// <summary>
     /// 获取手柄名字列表
@@ -60,15 +53,15 @@ public static class InputControl
         var list = new List<string>();
         for (int i = 0; i < Count; i++)
         {
-            if (sdl.IsGameController(i) == SdlBool.True)
+            if (_sdl.IsGameController(i) == SdlBool.True)
             {
                 unsafe
                 {
-                    var gameController = sdl.GameControllerOpen(i);
+                    var gameController = _sdl.GameControllerOpen(i);
                     if (gameController != null)
                     {
-                        list.Add(BytePointerToString(sdl.GameControllerName(gameController)));
-                        sdl.GameControllerClose(gameController);
+                        list.Add(BytePointerToString(_sdl.GameControllerName(gameController)));
+                        _sdl.GameControllerClose(gameController);
                     }
                 }
             }
@@ -101,7 +94,7 @@ public static class InputControl
     {
         unsafe
         {
-            return new nint(sdl.GameControllerOpen(index));
+            return new nint(_sdl.GameControllerOpen(index));
         }
     }
 
@@ -113,7 +106,7 @@ public static class InputControl
     {
         unsafe
         {
-            sdl.GameControllerClose((GameController*)index);
+            _sdl.GameControllerClose((GameController*)index);
         }
     }
 
@@ -124,7 +117,7 @@ public static class InputControl
     /// <returns></returns>
     public static unsafe int GetJoystickID(nint ptr)
     {
-        var instanceID = sdl.GameControllerGetJoystick((GameController*)ptr);
-        return sdl.JoystickInstanceID(instanceID);
+        var instanceID = _sdl.GameControllerGetJoystick((GameController*)ptr);
+        return _sdl.JoystickInstanceID(instanceID);
     }
 }

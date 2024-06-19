@@ -521,7 +521,7 @@ public partial class SettingModel
 
     private void StartRead()
     {
-        if (InputControl.IsInit)
+        if (BaseBinding.SdlInit)
         {
             InputControl.OnEvent += InputControl_OnEvent;
         }
@@ -943,7 +943,7 @@ public partial class SettingModel
 
     private void StopRead()
     {
-        if (InputControl.IsInit)
+        if (BaseBinding.SdlInit)
         {
             InputControl.OnEvent -= InputControl_OnEvent;
         }

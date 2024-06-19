@@ -88,8 +88,8 @@ public class Mp3Decoder : IDisposable
         IFrameDecoder decoder = RetrieveDecoder(header, bitstream, layer);
         decoder.DecodeFrame();
         bitstream.CloseFrame();
-        pack.buff = ToByteArray(output.Buffer, 0, output.GetBufferLength());
-        pack.len = output.GetBufferLength() * 2;
+        pack.Buff = ToByteArray(output.Buffer, 0, output.GetBufferLength());
+        pack.Len = output.GetBufferLength() * 2;
         return pack;
     }
 

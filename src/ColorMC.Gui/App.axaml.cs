@@ -284,7 +284,7 @@ public partial class App : Application
         return AllWindow!;
     }
 
-    private async void PlatformSettings_ColorValuesChanged(object? sender, PlatformColorValues e)
+    private void PlatformSettings_ColorValuesChanged(object? sender, PlatformColorValues e)
     {
         if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
         {
@@ -292,7 +292,6 @@ public partial class App : Application
 
             ColorSel.Load();
             StyleSel.Load();
-            await LoadImage();
         }
     }
 
@@ -342,7 +341,7 @@ public partial class App : Application
         var file = GuiConfigUtils.Config.BackImage;
         if (string.IsNullOrWhiteSpace(file))
         {
-            file = "https://www.todaybing.com/api/today/cn";
+            file = "https://api.dujin.org/bing/1920.php";
         }
 
         if (GuiConfigUtils.Config.EnableBG)

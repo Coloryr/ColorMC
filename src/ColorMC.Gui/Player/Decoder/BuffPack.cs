@@ -8,9 +8,9 @@ public record BuffPack
     /// <summary>
     /// 数据
     /// </summary>
-    public byte[] buff;
+    public byte[] Buff;
     /// <summary>
     /// 长度
     /// </summary>
-    public int len;
+    public int Len;
 }
