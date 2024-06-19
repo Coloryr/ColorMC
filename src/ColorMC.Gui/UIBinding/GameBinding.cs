@@ -332,7 +332,7 @@ public static class GameBinding
             var have = AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
             if (!have)
             {
-                BaseBinding.OpUrl(UrlHelper.Minecraft);
+                WebBinding.OpenWeb(WebType.Minecraft);
                 return (null, App.Lang("Gui.Error44"));
             }
         }

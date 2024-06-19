@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Avalonia.Platform;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
@@ -8,11 +9,12 @@ public static class JavaLayerUtils
 {
     public static float[] DeserializeArrayResource(string name)
     {
-        string local = $"resm:ColorMC.Launcher.Mp3.{name}?assembly=ColorMC.Launcher";
+        string local = $"ColorMC.Gui.Player.Decoder.Mp3.{name}";
 
-        using var asset = AssetLoader.Open(new Uri(local));
+        var assm = Assembly.GetExecutingAssembly();
+        using var istr = assm.GetManifestResourceStream(local)!;
         var stream = new MemoryStream();
-        asset.CopyTo(stream);
+        istr.CopyTo(stream);
         var values = stream.ToArray();
 
         var result = new float[values.Length / 4];

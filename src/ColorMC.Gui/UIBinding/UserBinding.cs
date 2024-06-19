@@ -14,6 +14,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using SkiaSharp;
 
@@ -104,7 +105,7 @@ public static class UserBinding
         }
         if (string.IsNullOrWhiteSpace(res1.Auth?.UUID))
         {
-            BaseBinding.OpUrl("https://minecraft.net/");
+            WebBinding.OpenWeb(WebType.Minecraft);
             return (false, App.Lang("Gui.Error47"));
         }
         AuthDatabase.Save(res1.Auth!);
@@ -306,7 +307,7 @@ public static class UserBinding
                 }
                 break;
             case AuthType.OAuth:
-                BaseBinding.OpUrl("https://www.minecraft.net/en-us/msaprofile/mygames/editskin");
+                WebBinding.OpenWeb(WebType.EditSkin);
                 break;
             case AuthType.Nide8:
                 BaseBinding.OpUrl($"https://login.mc-user.com:233/{obj.Text1}/skin");
@@ -315,7 +316,7 @@ public static class UserBinding
             //BaseBinding.OpUrl($"https://login.mc-user.com:233/{obj.Text1}/skin");
             //break;
             case AuthType.LittleSkin:
-                BaseBinding.OpUrl("https://littleskin.cn/user/closet");
+                WebBinding.OpenWeb(WebType.LittleSkinEditSkin);
                 break;
             case AuthType.SelfLittleSkin:
                 BaseBinding.OpUrl($"{obj.Text1}/user/closet");

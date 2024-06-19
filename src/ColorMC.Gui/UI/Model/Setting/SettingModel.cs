@@ -2,6 +2,7 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.Setting;
@@ -47,7 +48,7 @@ public partial class SettingModel : MenuModel
             IsInputEnable = true;
         }
 
-        if (!InputControl.IsInit)
+        if (!BaseBinding.SdlInit)
         {
             InputInit = false;
         }

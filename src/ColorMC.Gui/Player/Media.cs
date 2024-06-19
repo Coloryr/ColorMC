@@ -2,12 +2,14 @@ using System;
 using System.Buffers.Binary;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using ColorMC.Core.Net;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Player.Decoder.Mp3;
+using Silk.NET.SDL;
+using Thread = System.Threading.Thread;
 
 namespace ColorMC.Gui.Player;
 
@@ -20,10 +22,6 @@ public static class Media
     /// 音乐路径
     /// </summary>
     private static string s_musicFile;
-    /// <summary>
-    /// 输出流
-    /// </summary>
-    private static IPlayer? s_player;
 
     private static CancellationTokenSource s_cancel = new();
 
@@ -33,32 +31,48 @@ public static class Media
     public static bool Decoding { get; private set; }
 
     /// <summary>
-    /// 音量
+    /// 音量 0 - 1
     /// </summary>
-    public static float Volume
-    {
-        set
-        {
-            if (s_player != null)
-            {
-                s_player.Volume = value;
-            }
-        }
-    }
+    public static float Volume { get; set; }
+
+    private static uint _deviceId;
+    private static AudioSpec audioSpec;
+    private static Sdl _sdl;
+    private static bool deviceOpen;
+    private static unsafe AudioCVT cvt;
+
+    private static int _lastChannel;
+    private static int _lastFreq;
+    private static int _lastBps;
+    private static int _lastLen;
 
     /// <summary>
     /// 初始化播放器
     /// </summary>
-    public static unsafe void Init()
+    public static void Init(Sdl sdl)
     {
-        if (SystemInfo.Os == OsType.Windows)
+        _sdl = sdl;
+        unsafe
         {
-            s_player = new NAudioPlayer();
+            AudioSpec spec1;
+            var spec = new AudioSpec()
+            {
+                Format = Sdl.AudioS16Sys,
+                Freq = 44100,
+                Channels = 2,
+                Samples = 1024
+            };
+
+            _deviceId = sdl.OpenAudioDevice((byte*)0, 0, &spec, &spec1, (int)Sdl.AudioAllowAnyChange);
+            if (_deviceId < 2)
+            {
+                return;
+            }
+
+            audioSpec = spec1;
+            deviceOpen = true;
         }
-        else
-        {
-            s_player = new OpenALPlayer();
-        }
+
         App.OnClose += Close;
     }
 
@@ -67,6 +81,10 @@ public static class Media
     /// </summary>
     public static async void Close()
     {
+        if (!deviceOpen)
+        {
+            return;
+        }
         Stop();
 
         await Task.Run(() =>
@@ -77,7 +95,10 @@ public static class Media
             }
         });
 
-        s_player?.Close();
+        if (_deviceId >= 2)
+        {
+            _sdl.CloseAudioDevice(_deviceId);
+        }
     }
 
     /// <summary>
@@ -85,7 +106,11 @@ public static class Media
     /// </summary>
     public static void Pause()
     {
-        s_player?.Pause();
+        if (!deviceOpen)
+        {
+            return;
+        }
+        _sdl.PauseAudioDevice(_deviceId, 1);
     }
 
     /// <summary>
@@ -93,7 +118,11 @@ public static class Media
     /// </summary>
     public static void Play()
     {
-        s_player?.Play();
+        if (!deviceOpen)
+        {
+            return;
+        }
+        _sdl.PauseAudioDevice(_deviceId, 0);
     }
 
     /// <summary>
@@ -101,9 +130,96 @@ public static class Media
     /// </summary>
     public static void Stop()
     {
+        if (!deviceOpen)
+        {
+            return;
+        }
         s_cancel.Cancel();
 
-        s_player?.Stop();
+        _sdl.ClearQueuedAudio(_deviceId);
+    }
+
+    private static void AudioMakeCov(int chn, int freq, int bps)
+    {
+        if (_lastChannel == chn && _lastFreq == freq && _lastBps == bps)
+        {
+            return;
+        }
+
+        ushort in_format;
+        if (bps == 1)
+        {
+            in_format = Sdl.AudioU8;
+        }
+        else if (bps == 2)
+        {
+            in_format = Sdl.AudioS16Sys;
+        }
+        else if (bps == 4)
+        {
+            in_format = Sdl.AudioS32Sys;
+        }
+        else
+        {
+            throw new Exception("bps is Unsupported format");
+        }
+
+        unsafe
+        {
+            if (cvt.Buf != null)
+            {
+                _sdl.Free(cvt.Buf);
+            }
+            fixed (AudioCVT* ptr = &cvt)
+            {
+                if (_sdl.BuildAudioCVT(ptr, in_format, (byte)chn, freq,
+                    audioSpec.Format, audioSpec.Channels, audioSpec.Freq) < 0)
+                {
+                    throw new Exception("cvt create fail");
+                }
+            }
+            _lastChannel = chn;
+            _lastFreq = freq;
+            _lastBps = bps;
+        }
+    }
+
+    private static byte[] AudioCov(byte[] input, int length)
+    {
+        unsafe
+        {
+            if (_lastLen != length)
+            {
+                if (cvt.Buf != null)
+                {
+                    _sdl.Free(cvt.Buf);
+                }
+
+                cvt.Buf = (byte*)_sdl.Malloc((nuint)(length * cvt.LenMult));
+                _lastLen = length;
+            }
+
+            Marshal.Copy(input, 0, new IntPtr(cvt.Buf), length);
+            cvt.Len = length;
+
+            fixed (AudioCVT* ptr = &cvt)
+            {
+                if (_sdl.ConvertAudio(ptr) < 0)
+                {
+                    throw new Exception("Cov Fail");
+                }
+            }
+
+            var buffer = new byte[cvt.LenCvt];
+
+            fixed (byte* ptr = buffer)
+            {
+                int val = (int)(Volume * Sdl.MixMaxvolume);
+                _sdl.MixAudioFormat(ptr, cvt.Buf, audioSpec.Format, (uint)cvt.LenCvt, val);
+            }
+
+            return buffer;
+        }
     }
 
     /// <summary>
@@ -113,8 +229,7 @@ public static class Media
     /// <returns></returns>
     public static async Task<(bool, string?)> PlayWAV(string filePath)
     {
-        //没有音频输出
-        if (s_player == null)
+        if (!deviceOpen)
         {
             return (false, null);
         }
@@ -208,7 +323,11 @@ public static class Media
                     {
                         var length = Math.Min(less, pack);
                         file.Read(temp, 0, length);
-                        s_player?.Write(numChannels, bitsPerSample, temp, length, sampleRate);
+                        AudioMakeCov(numChannels, bitsPerSample, sampleRate);
+                        var data = AudioCov(temp, length);
+
+                        _sdl.QueueAudio<byte>(_deviceId, data, (uint)data.Length);
+
                         if (s_cancel.IsCancellationRequested)
                             break;
 
@@ -238,7 +357,7 @@ public static class Media
     /// <returns></returns>
     public static async Task<(bool, string?)> PlayMp3(Stream stream)
     {
-        if (s_player == null)
+        if (!deviceOpen)
         {
             return (false, null);
         }
@@ -267,17 +386,26 @@ public static class Media
             {
                 Decoding = true;
                 int count = 0;
+                Play();
                 while (true)
                 {
                     if (s_cancel.IsCancellationRequested)
                         break;
                     var frame = decoder.DecodeFrame();
-                    if (frame == null || frame.len <= 0 || s_cancel.IsCancellationRequested)
+                    if (frame == null || frame.Len <= 0 || s_cancel.IsCancellationRequested)
                     {
                         break;
                     }
 
-                    s_player?.Write(2, 16, frame.buff, frame.len, decoder.outputFrequency);
+                    AudioMakeCov(decoder.outputChannels, decoder.outputFrequency, 2);
+                    var data = AudioCov(frame.Buff, frame.Len);
+
+                    _sdl.QueueAudio<byte>(_deviceId, data, (uint)data.Length);
+
+                    while (_sdl.GetQueuedAudioSize(_deviceId) > 50000)
+                    {
+                        Thread.Sleep(5);
+                    }
                     count++;
                 }
                 decoder.Dispose();
@@ -299,8 +427,10 @@ public static class Media
     /// <returns></returns>
     public static async Task<(bool, string?)> PlayMp3(string file)
     {
-        if (s_player == null)
+        if (!deviceOpen)
+        {
             return (false, null);
+        }
 
         s_musicFile = file;
 
@@ -315,8 +445,10 @@ public static class Media
     /// <returns></returns>
     public static async Task<(bool, string?)> PlayUrl(string url)
     {
-        if (s_player == null)
+        if (!deviceOpen)
+        {
             return (false, null);
+        }
 
         try
         {

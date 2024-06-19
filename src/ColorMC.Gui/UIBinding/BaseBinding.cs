@@ -33,6 +33,8 @@ using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.Hook;
 using ColorMC.Gui.Utils.LaunchSetting;
 using ICSharpCode.SharpZipLib.Zip;
+using Silk.NET.SDL;
+using Thread = System.Threading.Thread;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -57,6 +59,8 @@ public static class BaseBinding
     /// 是否正在下载
     /// </summary>
     public static bool IsDownload => DownloadManager.State != DownloadState.End;
+
+    public static bool SdlInit;
 
     /// <summary>
     /// 停止启动游戏
@@ -94,8 +98,13 @@ public static class BaseBinding
         {
             try
             {
-                Media.Init();
-                InputControl.Init();
+                var sdl = Sdl.GetApi();
+                if (sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) == 0)
+                {
+                    InputControl.Init(sdl);
+                    Media.Init(sdl);
+                    SdlInit = true;
+                }
             }
             catch (Exception e)
             {

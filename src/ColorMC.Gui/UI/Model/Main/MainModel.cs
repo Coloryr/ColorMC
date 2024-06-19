@@ -191,7 +191,7 @@ public partial class MainModel : TopModel, IMainTop
         {
             if (_isNewUpdate)
             {
-                BaseBinding.OpUrl("https://colormc.coloryr.com/");
+                WebBinding.OpenWeb(WebType.ColorMCDownload);
             }
             else
             {

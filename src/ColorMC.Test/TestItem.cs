@@ -8,7 +8,7 @@ using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using System.Diagnostics;
+using ColorMC.Gui.Player;
 using System.IO.Compression;
 
 namespace ColorMC.Test;
@@ -603,6 +603,12 @@ public static class TestItem
 
     public static void Item35()
     {
-        
+        var file = File.OpenRead("H:\\music.mp3");
+        var sdl = Silk.NET.SDL.Sdl.GetApi();
+        var res = sdl.Init(Silk.NET.SDL.Sdl.InitAudio);
+
+        Media.Init(sdl);
+        Media.Volume = 1;
+        Media.PlayMp3(file).Wait();
     }
 }
