@@ -137,7 +137,7 @@ public static class LegacyLogin
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
             return new LegacyLoginRes
-            { 
+            {
                 State = LoginState.Error,
                 Message = LanguageHelper.Get("Core.Login.Error24")
             };
@@ -151,7 +151,7 @@ public static class LegacyLogin
                 {
                     State = LoginState.Error,
                     Message = msg
-                };;
+                }; ;
             }
             return new LegacyLoginRes
             {

@@ -38,8 +38,8 @@ public static class AuthlibInjector
         {
             return new LegacyLoginRes
             {
-               State = LoginState.Done,
-               Auth = obj
+                State = LoginState.Done,
+                Auth = obj
             };
         }
         return await LegacyLogin.RefreshAsync(obj.Text1, obj);

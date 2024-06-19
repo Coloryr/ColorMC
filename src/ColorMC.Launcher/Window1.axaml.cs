@@ -1,10 +1,10 @@
+using System;
+using System.Diagnostics;
+using System.IO;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
-using System;
-using System.Diagnostics;
-using System.IO;
 
 namespace ColorMC.Launcher;
 

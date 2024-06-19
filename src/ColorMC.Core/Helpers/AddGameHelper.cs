@@ -3,7 +3,6 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
@@ -163,9 +162,9 @@ public static class AddGameHelper
                             break;
 
                         game = await InstancesPath.CreateGame(new CreateGameArg
-                        { 
-                            Game = game, 
-                            Request = arg.Request, 
+                        {
+                            Game = game,
+                            Request = arg.Request,
                             Overwirte = arg.Overwirte
                         });
 
@@ -548,5 +547,5 @@ public static class AddGameHelper
         return res2;
     }
 
-    
+
 }

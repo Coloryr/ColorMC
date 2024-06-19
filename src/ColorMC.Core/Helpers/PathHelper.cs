@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Text;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;

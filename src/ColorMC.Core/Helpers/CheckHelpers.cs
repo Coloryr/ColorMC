@@ -208,7 +208,7 @@ public static class CheckHelpers
         {
             //不存在游戏
             var var = await VersionPath.GetVersionsAsync();
-            var version = var?.versions.Where(a => a.id == obj.Version).FirstOrDefault() 
+            var version = var?.versions.Where(a => a.id == obj.Version).FirstOrDefault()
                 ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
             var res1 = await DownloadItemHelper.BuildVersionDownloadAsync(version)
                 ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));

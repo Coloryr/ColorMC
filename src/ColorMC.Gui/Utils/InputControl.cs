@@ -16,7 +16,7 @@ public static class InputControl
     public static event Action<Event>? OnEvent;
 
     /// <summary>
-    /// ÊÖ±ú¿ØÖÆ³õÊ¼»¯
+    /// æ‰‹æŸ„æ§åˆ¶åˆå§‹åŒ–
     /// </summary>
     public static void Init(Sdl sdl)
     {
@@ -40,12 +40,12 @@ public static class InputControl
     }
 
     /// <summary>
-    /// »ñÈ¡ÊÖ±úÊıÁ¿
+    /// è·å–æ‰‹æŸ„æ•°é‡
     /// </summary>
     public static int Count => _sdl.NumJoysticks();
 
     /// <summary>
-    /// »ñÈ¡ÊÖ±úÃû×ÖÁĞ±í
+    /// è·å–æ‰‹æŸ„åå­—åˆ—è¡¨
     /// </summary>
     /// <returns></returns>
     public static List<string> GetNames()
@@ -86,7 +86,7 @@ public static class InputControl
     }
 
     /// <summary>
-    /// ´ò¿ªÊÖ±ú
+    /// æ‰“å¼€æ‰‹æŸ„
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
@@ -99,7 +99,7 @@ public static class InputControl
     }
 
     /// <summary>
-    /// ¹Ø±ÕÊÖ±ú
+    /// å…³é—­æ‰‹æŸ„
     /// </summary>
     /// <param name="index"></param>
     public static void Close(nint index)
@@ -111,7 +111,7 @@ public static class InputControl
     }
 
     /// <summary>
-    /// »ñÈ¡ÊÖ±ú±àºÅ
+    /// è·å–æ‰‹æŸ„ç¼–å·
     /// </summary>
     /// <param name="ptr"></param>
     /// <returns></returns>

@@ -105,7 +105,7 @@ public class NettyServer
 
             return port;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Logs.Crash("netty error", e);
             return 0;

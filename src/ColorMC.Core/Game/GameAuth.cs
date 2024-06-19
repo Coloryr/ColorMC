@@ -40,7 +40,7 @@ public static class GameAuth
             if (res2.State != LoginState.Done)
             {
                 return new LoginRes
-                { 
+                {
                     AuthState = AuthState.OAuth,
                     LoginState = res2.State,
                     Message = LanguageHelper.Get("Core.Login.Error1")
@@ -250,7 +250,7 @@ public static class GameAuth
                 return new LoginRes
                 {
                     AuthState = AuthState.Token,
-                    LoginState= res1.State,
+                    LoginState = res1.State,
                     Message = string.Format(LanguageHelper.Get("Core.Login.Error9"), res1.Message)
                 };
             }
@@ -301,7 +301,7 @@ public static class GameAuth
                 };
             }
             return new LoginRes
-            { 
+            {
                 AuthState = AuthState.Profile,
                 LoginState = LoginState.Done,
                 Auth = res1.Auth

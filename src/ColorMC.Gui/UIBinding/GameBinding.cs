@@ -16,7 +16,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Net;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Objs.CurseForge;
@@ -31,7 +30,6 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SkiaSharp;
 
 namespace ColorMC.Gui.UIBinding;
@@ -73,10 +71,10 @@ public static class GameBinding
         ColorMCCore.GameOverwirte overwirte)
     {
         var game1 = await InstancesPath.CreateGame(new CreateGameArg
-        { 
+        {
             Game = game,
-            Request = request, 
-            Overwirte = overwirte 
+            Request = request,
+            Overwirte = overwirte
         });
         if (game1 != null)
         {
@@ -100,13 +98,13 @@ public static class GameBinding
         string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte, bool open)
     {
         var res = await AddGameHelper.AddGame(new AddGameArg
-        { 
-            Local = local, 
+        {
+            Local = local,
             Name = name,
             Unselect = unselect,
-            Group = group, 
-            Request = request, 
-            Overwirte = overwirte 
+            Group = group,
+            Request = request,
+            Overwirte = overwirte
         });
 
         if (!res.State)
@@ -140,8 +138,8 @@ public static class GameBinding
         ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
         return AddGameHelper.InstallZip(new InstallZipArg
-        { 
-            Dir= dir,
+        {
+            Dir = dir,
             Type = type,
             Name = name,
             Group = group,
@@ -942,7 +940,7 @@ public static class GameBinding
     {
         return InstancesPath.GetGame(uuid);
     }
-        
+
     /// <summary>
     /// 获取服务器列表
     /// </summary>
@@ -1257,9 +1255,9 @@ public static class GameBinding
         ColorMCCore.Request request)
     {
         return obj.GenServerPackAsync(new ServerPackGenArg
-        { 
-            Local = local, 
-            Request = request 
+        {
+            Local = local,
+            Request = request
         });
     }
 
@@ -1422,9 +1420,9 @@ public static class GameBinding
         ColorMCCore.PackState update2)
     {
         return ModPackHelper.UpdateModPack(new UpdateModrinthModPackArg
-        { 
-            Game = obj, 
-            Data = fid, 
+        {
+            Game = obj,
+            Data = fid,
             Update = update,
             Update2 = update2
         });
@@ -1819,10 +1817,10 @@ public static class GameBinding
             game.ServerUrl = text;
             game.ModPackType = SourceType.ColorMC;
             game = await InstancesPath.CreateGame(new CreateGameArg
-            { 
-                Game = game, 
+            {
+                Game = game,
                 Request = model.ShowWait,
-                Overwirte = overwirte 
+                Overwirte = overwirte
             });
 
             if (game == null)

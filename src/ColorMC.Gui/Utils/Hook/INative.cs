@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Utils.Hook;

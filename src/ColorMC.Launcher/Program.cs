@@ -1,5 +1,5 @@
-using Avalonia;
 using System;
+using Avalonia;
 
 #if !DEBUG
 using Avalonia.Media;

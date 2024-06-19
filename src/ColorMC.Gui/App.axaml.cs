@@ -583,7 +583,7 @@ public partial class App : Application
         else
         {
             AddJavaWindow = new()
-            { 
+            {
                 NeedJava = version
             };
             AWindow(AddJavaWindow);

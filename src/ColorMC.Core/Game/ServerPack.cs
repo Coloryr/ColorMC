@@ -209,9 +209,9 @@ public static class ServerPack
         }
 
         return new GetServerPackRes
-        { 
+        {
             Pack = obj1,
-            Sha1 = sha1, 
+            Sha1 = sha1,
         };
     }
 
@@ -283,7 +283,7 @@ public static class ServerPack
 
         await PathHelper.DeleteFilesAsync(new DeleteFilesArg
         {
-            Local = arg.Local, 
+            Local = arg.Local,
             Request = arg.Request
         });
         Directory.CreateDirectory(arg.Local);
