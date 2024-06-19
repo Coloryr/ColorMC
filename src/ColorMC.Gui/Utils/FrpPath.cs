@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 

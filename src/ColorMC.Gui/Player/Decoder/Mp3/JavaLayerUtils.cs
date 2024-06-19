@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Avalonia.Platform;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 

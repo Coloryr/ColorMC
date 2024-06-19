@@ -189,11 +189,11 @@ public partial class DownloadModel : TopModel
 
     public DownloadArg Start()
     {
-        return new() 
+        return new()
         {
-            Update = DownloadUpdate, 
+            Update = DownloadUpdate,
             UpdateTask = DownloadTaskUpdate,
-            UpdateItem = DownloadItemUpdate 
+            UpdateItem = DownloadItemUpdate
         };
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Text;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
@@ -78,10 +77,10 @@ public static class ModPackHelper
             return false;
 
         res = await UpdateModrinthModPackAsync(new UpdateModPackArg
-        { 
+        {
             Game = arg.Game,
-            Zip = item.Local, 
-            Update = arg.Update, 
+            Zip = item.Local,
+            Update = arg.Update,
             Update2 = arg.Update2
         });
         if (res)
@@ -265,10 +264,10 @@ public static class ModPackHelper
             obj1.Mods.Clear();
 
             var list = await CurseForgeHelper.GetModInfo(new GetCurseForgeModInfoArg
-            { 
-                Game = obj1, 
-                Info = info, 
-                Update = arg.Update 
+            {
+                Game = obj1,
+                Info = info,
+                Update = arg.Update
             });
             if (!list.State)
             {
@@ -432,10 +431,10 @@ public static class ModPackHelper
         };
 
         game = await InstancesPath.CreateGame(new CreateGameArg
-        { 
+        {
             Game = game,
             Request = arg.Request,
-            Overwirte = arg.Overwirte 
+            Overwirte = arg.Overwirte
         });
 
         if (game == null)
@@ -591,10 +590,10 @@ public static class ModPackHelper
 
         //获取Mod信息
         var list = ModrinthHelper.GetModrinthModInfo(new GetModrinthModInfoArg
-        { 
-            Game = obj1, 
-            Info = info, 
-            Update = arg.Update 
+        {
+            Game = obj1,
+            Info = info,
+            Update = arg.Update
         });
         var list1 = new List<DownloadItemObj>();
 
@@ -860,11 +859,11 @@ public static class ModPackHelper
 
         //获取Mod信息
 
-        var list = ModrinthHelper.GetModrinthModInfo(new GetModrinthModInfoArg 
-        { 
-            Game = game, 
-            Info = info, 
-            Update = arg.Update 
+        var list = ModrinthHelper.GetModrinthModInfo(new GetModrinthModInfoArg
+        {
+            Game = game,
+            Info = info,
+            Update = arg.Update
         });
 
         game.SaveModInfo();

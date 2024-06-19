@@ -624,7 +624,8 @@ public static class BaseBinding
         {
             //启动
             var p = await obj.StartGameAsync(new GameLaunchArg
-            {   Auth = obj1,
+            {
+                Auth = obj1,
                 World = world,
                 Request = request,
                 Pre = pre,

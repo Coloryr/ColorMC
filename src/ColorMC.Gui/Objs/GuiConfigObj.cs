@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;

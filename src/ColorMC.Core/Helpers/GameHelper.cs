@@ -7,7 +7,6 @@ using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OtherLaunch;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Helpers;
@@ -699,7 +698,7 @@ public static class GameHelper
                 }
             }
         }
-        
+
         return game;
     }
 

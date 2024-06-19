@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.ServerPack;
 
@@ -70,7 +70,7 @@ public record OAuthGetTokenRes
 /// </summary>
 public record OAuthRefreshTokenRes : OAuthGetTokenRes
 {
-    
+
 }
 
 /// <summary>

@@ -1015,7 +1015,7 @@ public static class Launch
             {
                 if (larg.Request == null)
                 {
-                    throw new LaunchException(LaunchState.VersionError, 
+                    throw new LaunchException(LaunchState.VersionError,
                         string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name));
                 }
                 var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));

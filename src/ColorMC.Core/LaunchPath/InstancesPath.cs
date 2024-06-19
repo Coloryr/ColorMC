@@ -772,10 +772,10 @@ public static class InstancesPath
         var obj1 = obj.CopyObj();
         obj1.Name = name;
         obj1 = await CreateGame(new CreateGameArg
-        { 
+        {
             Game = obj1,
             Request = request,
-            Overwirte = overwirte 
+            Overwirte = overwirte
         });
         if (obj1 != null)
         {

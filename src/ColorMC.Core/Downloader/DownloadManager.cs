@@ -155,7 +155,7 @@ public static class DownloadManager
         }
         else
         {
-            arg.Update?.Invoke(s_threads.Count, State, 
+            arg.Update?.Invoke(s_threads.Count, State,
                 s_tasks.Count + (s_nowTask != null ? 1 : 0));
         }
 

@@ -91,13 +91,13 @@ public static class GameLang
         {
             foreach (var item in obj.objects)
             {
-                if (item.Key.StartsWith(Name1) && item.Key.Contains(temp) 
+                if (item.Key.StartsWith(Name1) && item.Key.Contains(temp)
                     && AssetsPath.ReadAsset(item.Value.hash) is { } str)
                 {
                     try
                     {
                         var data = JsonConvert.DeserializeObject<LangObj>(str)!;
-                        return new LangRes 
+                        return new LangRes
                         {
                             Key = (item.Key.Replace(Name1, "").Replace(".json", "")),
                             Name = data.Name + "-" + data.Region

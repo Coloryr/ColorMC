@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using ColorMC.Core;
 using ColorMC.Core.Asm;
-using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Gui.UI.Model.Items;
 using DotNetty.Buffers;
@@ -19,7 +17,7 @@ public static class GameSocket
 
     private static bool s_isRun;
 
-    private static NettyServer s_nettyServer; 
+    private static NettyServer s_nettyServer;
 
     public static async void Init()
     {

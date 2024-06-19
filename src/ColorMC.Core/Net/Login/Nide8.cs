@@ -40,7 +40,7 @@ public static class Nide8
         if (await LegacyLogin.ValidateAsync(server + "/authserver/validate", obj))
         {
             return new LegacyLoginRes
-            { 
+            {
                 State = LoginState.Done,
                 Auth = obj
             };

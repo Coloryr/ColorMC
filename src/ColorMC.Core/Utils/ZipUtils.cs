@@ -10,7 +10,7 @@ namespace ColorMC.Core.Utils;
 /// <summary>
 /// 压缩包处理
 /// </summary>
-public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null, 
+public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     ColorMCCore.Request? GameRequest = null)
 {
     private int Size = 0;

@@ -25,10 +25,10 @@ public static class JavaBinding
     public static async Task<MessageRes> AddJavaZip(string file, string name, ColorMCCore.ZipUpdate zip)
     {
         return await JvmPath.UnzipJavaAsync(new UnzipArg
-        { 
+        {
             File = file,
-            Name = name, 
-            Zip = zip 
+            Name = name,
+            Zip = zip
         });
     }
 

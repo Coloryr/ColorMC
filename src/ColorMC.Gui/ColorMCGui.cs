@@ -21,7 +21,7 @@ namespace ColorMC.Gui;
 public static class ColorMCGui
 {
     public static readonly CoreInitArg Arg = new()
-    { 
+    {
         CurseForgeKey = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m",
         OAuthKey = "aa0dd576-d717-4950-b257-a478d2c20968"
     };
@@ -219,7 +219,7 @@ public static class ColorMCGui
         }
         else if (config1.SoftwareRender == true)
         {
-            opt1.RenderingMode = [X11RenderingMode.Software];   
+            opt1.RenderingMode = [X11RenderingMode.Software];
         }
 
         var opt2 = new MacOSPlatformOptions()

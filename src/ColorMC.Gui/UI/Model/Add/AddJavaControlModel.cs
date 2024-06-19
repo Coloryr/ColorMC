@@ -207,7 +207,7 @@ public partial class AddJavaControlModel : TopModel
 
             if (Arch != null || Version != null || System != null)
             {
-                res = await WebBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System), 
+                res = await WebBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System),
                     VersionList.IndexOf(Version!));
             }
 

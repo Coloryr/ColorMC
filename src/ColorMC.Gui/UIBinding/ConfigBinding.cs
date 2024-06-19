@@ -920,7 +920,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Input.NowConfig = uuid;
         GuiConfigUtils.Save();
     }
-    
+
     /// <summary>
     /// 保存手柄配置
     /// </summary>
