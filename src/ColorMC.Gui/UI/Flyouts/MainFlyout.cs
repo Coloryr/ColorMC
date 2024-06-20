@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -18,23 +19,23 @@ public class MainFlyout
         [
             (App.Lang("MainWindow.Flyouts.Text2"), true, ()=>
             {
-                App.ShowGameEdit(obj.Obj);
+                WindowManager.ShowGameEdit(obj.Obj);
             }),
             (App.Lang("MainWindow.Flyouts.Text1"), true, ()=>
             {
-                App.ShowGameLog(obj.Obj);
+                WindowManager.ShowGameLog(obj.Obj);
             }),
             (App.Lang("MainWindow.Flyouts.Text3"), true, ()=>
             {
-                App.ShowAdd(obj.Obj, FileType.Mod);
+                WindowManager.ShowAdd(obj.Obj, FileType.Mod);
             }),
             (App.Lang("MainWindow.Flyouts.Text4"), true, ()=>
             {
-                App.ShowGameEdit(obj.Obj, GameEditWindowType.Mod);
+                WindowManager.ShowGameEdit(obj.Obj, GameEditWindowType.Mod);
             }),
             (App.Lang("MainWindow.Flyouts.Text6"), true, ()=>
             {
-                App.ShowGameEdit(obj.Obj, GameEditWindowType.World);
+                WindowManager.ShowGameEdit(obj.Obj, GameEditWindowType.World);
             }),
             (App.Lang("Button.OpFile"), true, ()=>
             {
@@ -52,12 +53,12 @@ public class MainFlyout
             }),
             (App.Lang("MainWindow.Flyouts.Text14"), GameCloudUtils.Connect, ()=>
             {
-                App.ShowGameCloud(obj.Obj);
+                WindowManager.ShowGameCloud(obj.Obj);
             }),
             (App.Lang("MainWindow.Flyouts.Text10"), !run, obj.Rename),
             (App.Lang("MainWindow.Flyouts.Text9"), !run, ()=>
             {
-                App.ShowGameExport(obj.Obj);
+                WindowManager.ShowGameExport(obj.Obj);
             }),
             (App.Lang("MainWindow.Flyouts.Text11"), !run, obj.DeleteGame),
             (App.Lang("MainWindow.Flyouts.Text12"), !run,  obj.Copy),

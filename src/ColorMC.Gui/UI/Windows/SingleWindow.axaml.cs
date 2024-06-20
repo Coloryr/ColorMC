@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -15,7 +16,7 @@ public partial class SingleWindow : Window
     {
         InitializeComponent();
 
-        Icon = App.Icon;
+        Icon = ImageManager.Icon;
 
         if (SystemInfo.Os == OsType.Linux)
         {
@@ -74,7 +75,7 @@ public partial class SingleWindow : Window
             switch (e.Key)
             {
                 case Key.OemComma:
-                    App.ShowSetting(SettingType.Normal);
+                    WindowManager.ShowSetting(SettingType.Normal);
                     break;
                 case Key.Q:
                     App.Close();

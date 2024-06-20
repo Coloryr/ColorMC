@@ -7,6 +7,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using SkiaSharp;
 
 namespace ColorMC.Gui.Utils;
@@ -66,7 +67,7 @@ public static class ImageUtils
                 Logs.Error(App.Lang("Gui.Error24"), e);
             }
 
-            return App.GameIcon;
+            return ImageManager.GameIcon;
         }
     }
 

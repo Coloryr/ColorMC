@@ -1,48 +1,50 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Download;
 using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls.Download;
 
-public partial class DownloadControl : UserControl, IUserControl
+public partial class DownloadControl : BaseUserControl
 {
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public string Title => App.Lang("DownloadWindow.Title");
-
-    public string UseName { get; }
-
     public DownloadControl()
     {
         InitializeComponent();
 
+        Title = App.Lang("DownloadWindow.Title");
         UseName = ToString() ?? "DownloadControl";
     }
 
-    public void Opened()
+    public override void Opened()
     {
         Window.SetTitle(Title);
     }
 
-    public void Closed()
+    public override void Closed()
     {
-        App.DownloadWindow = null;
+        WindowManager.DownloadWindow = null;
     }
 
-    public async Task<bool> Closing()
+    public override async Task<bool> Closing()
     {
         return DataContext is DownloadModel model && !await model.Stop();
     }
 
-    public void SetBaseModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
         var amodel = new DownloadModel(model);
         amodel.PropertyChanged += Amodel_PropertyChanged;
         DataContext = amodel;
+    }
+
+    public override Bitmap GetIcon()
+    {
+        return ImageManager.GameIcon;
     }
 
     private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)

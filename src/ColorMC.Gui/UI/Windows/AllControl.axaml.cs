@@ -11,6 +11,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
@@ -19,14 +20,14 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class AllControl : UserControl, IBaseWindow
 {
-    private IUserControl _baseControl;
-    private IUserControl _nowControl;
+    private BaseUserControl _baseControl;
+    private BaseUserControl _nowControl;
 
     private readonly List<Control> controls = [];
 
     public IBaseWindow Window => this;
 
-    public IUserControl ICon => _nowControl;
+    public BaseUserControl ICon => _nowControl;
 
     public BaseModel Model => (DataContext as BaseModel)!;
 
@@ -78,7 +79,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == BaseModel.InfoName)
+        if (e.PropertyName == BaseModel.InfoShow)
         {
             windowNotification.Show(Model.NotifyText);
         }
@@ -110,7 +111,7 @@ public partial class AllControl : UserControl, IBaseWindow
         Update();
     }
 
-    public void Add(IUserControl con)
+    public void Add(BaseUserControl con)
     {
         if (_baseControl == null)
         {
@@ -143,7 +144,7 @@ public partial class AllControl : UserControl, IBaseWindow
         SetIcon(_nowControl.GetIcon());
     }
 
-    public void Active(IUserControl con)
+    public void Active(BaseUserControl con)
     {
         var con1 = (con as Control)!;
 
@@ -157,7 +158,7 @@ public partial class AllControl : UserControl, IBaseWindow
         SetIcon(_nowControl.GetIcon());
     }
 
-    public async void Close(IUserControl con)
+    public async void Close(BaseUserControl con)
     {
         var res = await con.Closing();
         if (res)
@@ -178,11 +179,11 @@ public partial class AllControl : UserControl, IBaseWindow
             {
                 con1 = controls.Last();
                 controls.Remove(con1);
-                _nowControl = (con1 as IUserControl)!;
+                _nowControl = (con1 as BaseUserControl)!;
             }
             else
             {
-                con1 = (_baseControl as Control)!;
+                con1 = _baseControl;
                 _nowControl = _baseControl;
             }
             Controls.Child = con1;
@@ -214,7 +215,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
     private void Update()
     {
-        App.UpdateWindow(Model);
+        WindowManager.UpdateWindow(Model);
     }
 
     public void SetTitle(string data)
@@ -231,7 +232,7 @@ public partial class AllControl : UserControl, IBaseWindow
     {
         if (_nowControl is MainControl || _nowControl is CustomControl)
             return false;
-        if (_nowControl is not IUserControl now)
+        if (_nowControl is not BaseUserControl now)
             return false;
 
         return await now.Closing();

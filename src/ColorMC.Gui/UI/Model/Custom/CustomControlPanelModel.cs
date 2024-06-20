@@ -1,6 +1,7 @@
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Model.Items;
@@ -25,7 +26,7 @@ public partial class CustomControlPanelModel : TopModel
     [ObservableProperty]
     private string _userType = "";
     [ObservableProperty]
-    private Bitmap _head = App.LoadIcon;
+    private Bitmap _head = ImageManager.LoadIcon;
     [ObservableProperty]
     private (string, ushort) _server;
 
@@ -50,19 +51,19 @@ public partial class CustomControlPanelModel : TopModel
     [RelayCommand]
     public void Setting()
     {
-        App.ShowSetting(SettingType.Normal);
+        WindowManager.ShowSetting(SettingType.Normal);
     }
 
     [RelayCommand]
     public void User()
     {
-        App.ShowUser();
+        WindowManager.ShowUser();
     }
 
     [RelayCommand]
     public void Skin()
     {
-        App.ShowSkin();
+        WindowManager.ShowSkin();
     }
 
     [RelayCommand]
@@ -106,7 +107,7 @@ public partial class CustomControlPanelModel : TopModel
 
     public void App_SkinLoad()
     {
-        Head = UserBinding.HeadBitmap!;
+        Head = ImageManager.HeadBitmap!;
     }
 
     public async void App_UserEdit()

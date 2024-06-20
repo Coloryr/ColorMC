@@ -8,6 +8,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 
 namespace ColorMC.Gui.Utils;
 
@@ -58,7 +59,7 @@ public static class UpdateChecker
             var obj = await ColorMCAPI.GetUpdateIndex();
             if (obj == null)
             {
-                App.UpdateCheckFail();
+                UpdateCheckFail();
                 return (false, false, null);
             }
 
@@ -75,7 +76,7 @@ public static class UpdateChecker
         }
         catch (Exception e)
         {
-            App.UpdateCheckFail();
+            UpdateCheckFail();
             Logs.Error(App.Lang("SettingWindow.Tab3.Error2"), e);
         }
 
@@ -134,7 +135,7 @@ public static class UpdateChecker
         }
         else
         {
-            App.ShowError(App.Lang("Gui.Error22"), "");
+            WindowManager.ShowError(App.Lang("Gui.Error22"), "");
         }
     }
 
@@ -150,7 +151,7 @@ public static class UpdateChecker
             var obj = await ColorMCAPI.GetUpdateSha1();
             if (obj == null || obj.TryGetValue("res", out _))
             {
-                App.ShowError(App.Lang("SettingWindow.Tab3.Error2"), "Json Error");
+                WindowManager.ShowError(App.Lang("SettingWindow.Tab3.Error2"), "Json Error");
                 return (false, null);
             }
 
@@ -177,9 +178,19 @@ public static class UpdateChecker
         }
         catch (Exception e)
         {
-            App.ShowError(App.Lang("SettingWindow.Tab3.Error2"), e);
+            WindowManager.ShowError(App.Lang("SettingWindow.Tab3.Error2"), e);
         }
 
         return (null, null);
+    }
+
+    public static void UpdateCheckFail()
+    {
+        var window = WindowManager.GetMainWindow();
+        if (window == null)
+        {
+            return;
+        }
+        window.Model.Show(App.Lang("SettingWindow.Tab3.Error2"));
     }
 }

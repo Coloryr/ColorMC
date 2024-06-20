@@ -1,6 +1,7 @@
 using System.IO;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.GameEdit;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -17,8 +18,7 @@ public partial class ResourcePackModel : ObservableObject
     public string Local => Pack.Local;
     public string PackFormat => Pack.pack_format.ToString();
     public string Description => Pack.description;
-    public string Broken => Pack.Broken ?
-            App.Lang("GameEditWindow.Tab8.Info4") : "";
+    public string Broken => Pack.Broken ? App.Lang("GameEditWindow.Tab8.Info4") : "";
 
     public Bitmap Pic { get; }
 
@@ -26,7 +26,7 @@ public partial class ResourcePackModel : ObservableObject
     {
         Top = top;
         Pack = pack;
-        Pic = Pack.Icon == null ? App.GameIcon : GetImage();
+        Pic = Pack.Icon == null ? ImageManager.GameIcon : GetImage();
     }
 
     public Bitmap GetImage()
@@ -42,7 +42,7 @@ public partial class ResourcePackModel : ObservableObject
 
     public void Close()
     {
-        if (Pic != App.GameIcon)
+        if (Pic != ImageManager.GameIcon)
         {
             Pic.Dispose();
         }

@@ -2,6 +2,8 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media.Imaging;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Setting;
@@ -19,14 +21,11 @@ public partial class SettingControl : MenuControl
     private Tab7Control _tab7;
     private Tab8Control _tab8;
 
-    public override string Title => App.Lang("SettingWindow.Title");
-
-    public override string UseName { get; }
-
     private readonly int _needJava;
 
     public SettingControl()
     {
+        Title = App.Lang("SettingWindow.Title");
         UseName = ToString() ?? "SettingControl";
     }
 
@@ -55,7 +54,7 @@ public partial class SettingControl : MenuControl
 
     public override void Closed()
     {
-        App.SettingWindow = null;
+        WindowManager.SettingWindow = null;
     }
 
     public void GoTo(SettingType type)
@@ -82,9 +81,9 @@ public partial class SettingControl : MenuControl
         (DataContext as SettingModel)!.LoadUISetting();
     }
 
-    protected override MenuModel SetModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
-        return new SettingModel(model);
+        DataContext = new SettingModel(model);
     }
 
     protected override Control ViewChange(bool iswhell, int old, int index)
@@ -163,5 +162,10 @@ public partial class SettingControl : MenuControl
             default:
                 throw new InvalidEnumArgumentException();
         }
+    }
+
+    public override Bitmap GetIcon()
+    {
+        return ImageManager.GameIcon;
     }
 }

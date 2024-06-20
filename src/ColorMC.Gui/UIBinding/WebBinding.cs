@@ -20,6 +20,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
@@ -984,7 +985,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.Lang("Gui.Error46"), e);
+            WindowManager.ShowError(App.Lang("Gui.Error46"), e);
             return (false, null, null, null, null);
         }
     }
@@ -1146,7 +1147,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.Lang("Gui.Error46"), e);
+            WindowManager.ShowError(App.Lang("Gui.Error46"), e);
             return (false, null, null);
         }
     }
@@ -1363,7 +1364,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.Lang("Gui.Error46"), e);
+            WindowManager.ShowError(App.Lang("Gui.Error46"), e);
             return null;
         }
     }
@@ -1420,7 +1421,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            App.ShowError(App.Lang("Gui.Error46"), e);
+            WindowManager.ShowError(App.Lang("Gui.Error46"), e);
             return (false, null, null, null, null);
         }
     }

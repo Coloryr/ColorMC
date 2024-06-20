@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
@@ -9,7 +10,7 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel
 {
-    public Bitmap Bitmap => App.GameIcon;
+    public Bitmap Bitmap => ImageManager.GameIcon;
     public string Version => ColorMCCore.Version;
     public string RunType => App.Lang(ColorMCGui.IsAot ? "SettingWindow.Tab7.Info1" : "SettingWindow.Tab7.Info2");
 

@@ -1,9 +1,8 @@
 using System.ComponentModel;
-using System.IO;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameExport;
 
@@ -18,18 +17,12 @@ public partial class GameExportControl : MenuControl
     private Tab3Control _tab3;
     private Tab4Control _tab4;
 
-    private Bitmap _icon;
-    public override Bitmap GetIcon() => _icon;
-    public override string Title =>
-        string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
-
-    public override string UseName { get; }
-
     public GameExportControl(GameSettingObj obj)
     {
-        UseName = (ToString() ?? "GameExportControl") + ":" + obj.UUID;
-
         _obj = obj;
+
+        Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
+        UseName = (ToString() ?? "GameExportControl") + ":" + obj.UUID;
     }
 
     public override async void Opened()
@@ -42,26 +35,18 @@ public partial class GameExportControl : MenuControl
         await model.LoadMod();
         model.LoadFile();
 
-        var icon = model.Obj.GetIconFile();
-        if (File.Exists(icon))
-        {
-            _icon = new(icon);
-            Window.SetIcon(_icon);
-        }
         model.Model.ProgressClose();
         model.NowView = 0;
     }
 
     public override void Closed()
     {
-        _icon?.Dispose();
-
-        App.GameExportWindows.Remove(_obj.UUID);
+        WindowManager.GameExportWindows.Remove(_obj.UUID);
     }
 
-    protected override MenuModel SetModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
-        return new GameExportModel(model, _obj);
+        DataContext = new GameExportModel(model, _obj);
     }
 
     protected override Control ViewChange(bool iswhell, int old, int index)
@@ -91,4 +76,9 @@ public partial class GameExportControl : MenuControl
         };
     }
 
+    public override Bitmap GetIcon()
+    {
+        var icon = ImageManager.GetGameIcon(_obj);
+        return icon ?? ImageManager.GameIcon;
+    }
 }

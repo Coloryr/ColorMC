@@ -5,6 +5,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -60,7 +61,7 @@ public partial class SettingModel
     [RelayCommand]
     public void ShowAddJava()
     {
-        App.ShowAddJava(_needJava);
+        WindowManager.ShowAddJava(_needJava);
     }
 
     [RelayCommand]

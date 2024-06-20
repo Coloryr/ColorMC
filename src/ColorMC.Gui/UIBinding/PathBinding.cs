@@ -19,6 +19,7 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Checksum;
@@ -319,7 +320,7 @@ public static class PathBinding
                 try
                 {
                     var name = file.GetPath();
-                    var data = UserBinding.SkinImage?.Encode(SKEncodedImageFormat.Png, 100);
+                    var data = ImageManager.SkinBitmap?.Encode(SKEncodedImageFormat.Png, 100);
                     if (data?.AsSpan().ToArray() is { } data1)
                     {
                         PathHelper.WriteBytes(name!, data1);
@@ -707,7 +708,7 @@ public static class PathBinding
             catch (Exception e)
             {
                 string temp = App.Lang("GameEditWindow.Tab6.Error1");
-                App.ShowError(temp, e);
+                WindowManager.ShowError(temp, e);
                 Logs.Error(temp, e);
                 return false;
             }
@@ -843,7 +844,7 @@ public static class PathBinding
             catch (Exception e)
             {
                 string temp = App.Lang("GameEditWindow.Tab6.Error1");
-                App.ShowError(temp, e);
+                WindowManager.ShowError(temp, e);
                 Logs.Error(temp, e);
                 return false;
             }
@@ -972,7 +973,7 @@ public static class PathBinding
             catch (Exception e)
             {
                 string temp = App.Lang("GameEditWindow.Tab6.Error1");
-                App.ShowError(temp, e);
+                WindowManager.ShowError(temp, e);
                 Logs.Error(temp, e);
                 return false;
             }

@@ -10,6 +10,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Model;
@@ -21,7 +22,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 {
     private WindowNotificationManager windowNotification;
 
-    public IUserControl ICon { get; set; }
+    public BaseUserControl ICon { get; set; }
 
     public BaseModel Model => (DataContext as BaseModel)!;
 
@@ -32,7 +33,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         InitializeComponent();
     }
 
-    public SelfBaseWindow(IUserControl con)
+    public SelfBaseWindow(BaseUserControl con)
     {
         InitializeComponent();
 
@@ -46,7 +47,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             SystemDecorations = SystemDecorations.BorderOnly;
         }
 
-        Icon = App.Icon;
+        Icon = ImageManager.Icon;
 
         if (ICon is UserControl con1)
         {
@@ -91,7 +92,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == BaseModel.InfoName)
+        if (e.PropertyName == BaseModel.InfoShow)
         {
             windowNotification.Show(Model.NotifyText);
         }
@@ -162,7 +163,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private void FindGoodPos()
     {
-        var basewindow = App.LastWindow;
+        var basewindow = WindowManager.LastWindow;
 
         if (basewindow == null || basewindow.WindowState == WindowState.Minimized)
             return;
@@ -209,7 +210,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             switch (e.Key)
             {
                 case Key.OemComma:
-                    App.ShowSetting(SettingType.Normal);
+                    WindowManager.ShowSetting(SettingType.Normal);
                     break;
                 case Key.Q:
                     App.Close();
@@ -237,19 +238,19 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         DataContext = null;
         ICon.Closed();
 
-        if (App.LastWindow == this)
+        if (WindowManager.LastWindow == this)
         {
-            App.LastWindow = null;
+            WindowManager.LastWindow = null;
         }
         if (App.TopLevel == this)
         {
             if (ConfigBinding.WindowMode())
             {
-                App.TopLevel = GetTopLevel(App.AllWindow);
+                App.TopLevel = GetTopLevel(WindowManager.AllWindow);
             }
             else
             {
-                var win = App.GetMainWindow();
+                var win = WindowManager.GetMainWindow();
                 App.TopLevel = win as Window;
             }
         }
@@ -260,13 +261,13 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private void Window_Activated(object? sender, EventArgs e)
     {
-        App.LastWindow = this;
+        WindowManager.LastWindow = this;
         App.TopLevel = this;
     }
 
     private void Update()
     {
-        App.UpdateWindow(Model);
+        WindowManager.UpdateWindow(Model);
 
         ICon.Update();
     }

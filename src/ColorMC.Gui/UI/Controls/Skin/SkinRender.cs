@@ -9,6 +9,7 @@ using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Avalonia.Rendering;
 using Avalonia.Threading;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.UI.Animations;
@@ -229,7 +230,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         var smg = gl.CompileShaderAndGetError(_vertexShader, SkinShader.VertexShader(GlVersion, false));
         if (smg != null)
         {
-            App.ShowError(App.Lang("SkinWindow.Error2"),
+            WindowManager.ShowError(App.Lang("SkinWindow.Error2"),
                     new Exception($"GlConsts.GL_VERTEX_SHADER.\n{smg}"));
         }
 
@@ -237,7 +238,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         smg = gl.CompileShaderAndGetError(_fragmentShader, SkinShader.VertexShader(GlVersion, true));
         if (smg != null)
         {
-            App.ShowError(App.Lang("SkinWindow.Error2"),
+            WindowManager.ShowError(App.Lang("SkinWindow.Error2"),
                     new Exception($"GlConsts.GL_FRAGMENT_SHADER.\n{smg}"));
         }
 
@@ -248,7 +249,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         smg = gl.LinkProgramAndGetError(_shaderProgram);
         if (smg != null)
         {
-            App.ShowError(App.Lang("SkinWindow.Error1"), new Exception(smg));
+            WindowManager.ShowError(App.Lang("SkinWindow.Error1"), new Exception(smg));
         }
 
         InitVAO(gl, _normalVAO);
@@ -410,24 +411,24 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
     {
         var model = (DataContext as SkinModel)!;
         model.IsLoading = true;
-        if (UserBinding.SkinImage == null)
+        if (ImageManager.SkinBitmap == null)
         {
             model.HaveSkin = false;
             model.Text = App.Lang("SkinWindow.Info2");
             return;
         }
 
-        model.SteveModelType = Skin2DHead.GetTextType(UserBinding.SkinImage);
+        model.SteveModelType = Skin2DHead.GetTextType(ImageManager.SkinBitmap);
         if (model.SteveModelType == SkinType.Unkonw)
         {
             model.HaveSkin = false;
             model.Text = App.Lang("SkinWindow.Info3");
             return;
         }
-        LoadTex(gl, UserBinding.SkinImage, _texture);
-        if (UserBinding.CapeIamge != null)
+        LoadTex(gl, ImageManager.SkinBitmap, _texture);
+        if (ImageManager.CapeBitmap != null)
         {
-            LoadTex(gl, UserBinding.CapeIamge, _texture1);
+            LoadTex(gl, ImageManager.CapeBitmap, _texture1);
             _haveCape = true;
         }
         else
@@ -855,7 +856,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
         gl.Viewport(0, 0, _width, _height);
 
-        if (App.BackBitmap != null)
+        if (ImageManager.BackBitmap != null)
         {
             gl.ClearColor(0, 0, 0, 0.2f);
         }

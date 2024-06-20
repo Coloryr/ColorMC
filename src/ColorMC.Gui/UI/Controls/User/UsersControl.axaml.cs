@@ -1,7 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.User;
@@ -9,18 +11,13 @@ using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls.User;
 
-public partial class UsersControl : UserControl, IUserControl
+public partial class UsersControl : BaseUserControl
 {
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public string Title => App.Lang("UserWindow.Title");
-
-    public string UseName { get; }
-
     public UsersControl()
     {
         InitializeComponent();
 
+        Title = App.Lang("UserWindow.Title");
         UseName = ToString() ?? "UsersControl";
 
         DataGrid_User.DoubleTapped += DataGrid_User_DoubleTapped;
@@ -31,14 +28,14 @@ public partial class UsersControl : UserControl, IUserControl
         AddHandler(DragDrop.DropEvent, Drop);
     }
 
-    public void Opened()
+    public override void Opened()
     {
         Window.SetTitle(Title);
     }
 
-    public void Closed()
+    public override void Closed()
     {
-        App.UserWindow = null;
+        WindowManager.UserWindow = null;
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -110,13 +107,19 @@ public partial class UsersControl : UserControl, IUserControl
         (DataContext as UsersControlModel)!.SetAdd();
     }
 
-    public void SetBaseModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
         var amodel = new UsersControlModel(model);
         DataContext = amodel;
     }
 
+    public override Bitmap GetIcon()
+    {
+        return ImageManager.GameIcon;
+    }
+
     private void TextBox_KeyDown(object? sender, KeyEventArgs e)
     {
+
     }
 }

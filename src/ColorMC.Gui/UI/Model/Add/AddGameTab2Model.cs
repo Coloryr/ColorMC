@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -127,12 +128,12 @@ public partial class AddGameModel
             return;
         }
 
-        var model = (App.MainWindow?.DataContext as MainModel)!;
+        var model = (WindowManager.MainWindow?.DataContext as MainModel)!;
         model.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
 
         if (Type == PackType.ZipPack)
         {
-            App.ShowGameEdit(res.Game!);
+            WindowManager.ShowGameEdit(res.Game!);
         }
 
         WindowClose();

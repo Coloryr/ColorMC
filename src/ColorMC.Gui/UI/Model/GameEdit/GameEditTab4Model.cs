@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -53,7 +54,7 @@ public partial class GameEditModel
     [RelayCommand]
     public void AddMod()
     {
-        App.ShowAdd(_obj, FileType.Mod);
+        WindowManager.ShowAdd(_obj, FileType.Mod);
     }
 
     [RelayCommand]
@@ -69,7 +70,7 @@ public partial class GameEditModel
             return;
 
         _isModSet = true;
-        await App.ShowAddSet(_obj);
+        await WindowManager.ShowAddSet(_obj);
         _isModSet = false;
     }
 
