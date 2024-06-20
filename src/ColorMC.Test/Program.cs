@@ -40,9 +40,9 @@ internal class Program
 
         ColorMCCore.GameLog += Log;
 
-        //TestItem.Item35();
+        TestItem.Item36();
 
-        GetSha1();
+        //GetSha1();
 
         Console.ReadLine();
     }

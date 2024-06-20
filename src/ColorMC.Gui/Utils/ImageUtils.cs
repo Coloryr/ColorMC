@@ -71,50 +71,12 @@ public static class ImageUtils
     }
 
     /// <summary>
-    /// 创建头像图片
-    /// </summary>
-    /// <param name="file">图片</param>
-    /// <returns>图片数据</returns>
-    public static Stream MakeHeadImage(string file)
-    {
-        using var image = SKBitmap.Decode(file);
-        using var image1 = new SKBitmap(8, 8);
-        using var image2 = new SKBitmap(64, 64);
-
-        for (int i = 0; i < 8; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                image1.SetPixel(i, j, image.GetPixel(i + 8, j + 8));
-            }
-        }
-
-        for (int i = 0; i < 8; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                image1.SetPixel(i, j, Mix(image1.GetPixel(i, j), image.GetPixel(i + 40, j + 8)));
-            }
-        }
-
-        for (int i = 0; i < 64; i++)
-        {
-            for (int j = 0; j < 64; j++)
-            {
-                image2.SetPixel(i, j, image1.GetPixel(i / 8, j / 8));
-            }
-        }
-
-        return image2.Encode(SKEncodedImageFormat.Png, 100).AsStream();
-    }
-
-    /// <summary>
     /// 混合像素
     /// </summary>
     /// <param name="rgba">源</param>
     /// <param name="mix">目标</param>
     /// <returns>结果</returns>
-    private static SKColor Mix(SKColor rgba, SKColor mix)
+    public static SKColor Mix(SKColor rgba, SKColor mix)
     {
         double ap = mix.Alpha / 255;
         double dp = 1 - ap;
