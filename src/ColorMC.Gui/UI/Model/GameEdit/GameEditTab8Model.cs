@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
@@ -18,7 +19,7 @@ public partial class GameEditModel
     [RelayCommand]
     public void AddResource()
     {
-        App.ShowAdd(_obj, FileType.Resourcepack);
+        WindowManager.ShowAdd(_obj, FileType.Resourcepack);
     }
 
     [RelayCommand]

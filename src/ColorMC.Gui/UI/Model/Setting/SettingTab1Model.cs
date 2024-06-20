@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -121,7 +122,7 @@ public partial class SettingModel
         catch (Exception e1)
         {
             Model.Show(App.Lang("SettingWindow.Tab1.Error3"));
-            App.ShowError(App.Lang("SettingWindow.Tab1.Error3"), e1);
+            WindowManager.ShowError(App.Lang("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {
@@ -184,7 +185,7 @@ public partial class SettingModel
         catch (Exception e1)
         {
             Model.Show(App.Lang("SettingWindow.Tab1.Error3"));
-            App.ShowError(App.Lang("SettingWindow.Tab1.Error3"), e1);
+            WindowManager.ShowError(App.Lang("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {
@@ -216,7 +217,7 @@ public partial class SettingModel
         catch (Exception e1)
         {
             Model.Show(App.Lang("SettingWindow.Tab1.Error3"));
-            App.ShowError(App.Lang("SettingWindow.Tab1.Error3"), e1);
+            WindowManager.ShowError(App.Lang("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {

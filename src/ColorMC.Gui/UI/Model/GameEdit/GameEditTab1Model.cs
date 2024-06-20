@@ -8,6 +8,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -219,7 +220,7 @@ public partial class GameEditModel
     [RelayCommand]
     public void ExportGame()
     {
-        App.ShowGameExport(_obj);
+        WindowManager.ShowGameExport(_obj);
     }
 
     [RelayCommand]
@@ -321,7 +322,7 @@ public partial class GameEditModel
     [RelayCommand]
     public void OpenGameLog()
     {
-        App.ShowGameLog(_obj);
+        WindowManager.ShowGameLog(_obj);
     }
 
     [RelayCommand]
@@ -543,13 +544,13 @@ public partial class GameEditModel
     [RelayCommand]
     public void OpenServerPack()
     {
-        App.ShowServerPack(_obj);
+        WindowManager.ShowServerPack(_obj);
     }
 
     [RelayCommand]
     public void OpenConfigEdit()
     {
-        App.ShowConfigEdit(_obj);
+        WindowManager.ShowConfigEdit(_obj);
     }
 
     [RelayCommand]

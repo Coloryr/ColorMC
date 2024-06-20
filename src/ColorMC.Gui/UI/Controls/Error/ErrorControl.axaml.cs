@@ -1,5 +1,7 @@
 using System;
 using Avalonia.Controls;
+using Avalonia.Media.Imaging;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Error;
 using ColorMC.Gui.UI.Windows;
@@ -7,19 +9,13 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Error;
 
-public partial class ErrorControl : UserControl, IUserControl
+public partial class ErrorControl : BaseUserControl
 {
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public string Title { get; init; }
-
     private readonly string? _data;
     private readonly Exception? _e;
     private readonly string _e1;
     private readonly bool _close;
     private readonly bool _type = false;
-
-    public string UseName { get; }
 
     public ErrorControl()
     {
@@ -47,12 +43,12 @@ public partial class ErrorControl : UserControl, IUserControl
         Title = data;
     }
 
-    public void Opened()
+    public override void Opened()
     {
         Window.SetTitle(Title);
     }
 
-    public void Closed()
+    public override void Closed()
     {
         if ((DataContext as ErrorModel)!.NeedClose
             || (App.IsHide && !BaseBinding.IsGameRuning()))
@@ -61,7 +57,7 @@ public partial class ErrorControl : UserControl, IUserControl
         }
     }
 
-    public void SetBaseModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
         if (_type)
         {
@@ -71,5 +67,10 @@ public partial class ErrorControl : UserControl, IUserControl
         {
             DataContext = new ErrorModel(model, _data ?? "", _e1, _close);
         }
+    }
+
+    public override Bitmap GetIcon()
+    {
+        return ImageManager.GameIcon;
     }
 }

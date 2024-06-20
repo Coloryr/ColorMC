@@ -24,6 +24,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
@@ -114,7 +115,7 @@ public static class GameBinding
 
         if (res.Game != null && open)
         {
-            App.ShowGameEdit(res.Game);
+            WindowManager.ShowGameEdit(res.Game);
         }
 
         return true;
@@ -309,7 +310,7 @@ public static class GameBinding
         catch (Exception e)
         {
             Logs.Error(App.Lang("Gui.Error43"), e);
-            App.ShowError(App.Lang("Gui.Error43"), e);
+            WindowManager.ShowError(App.Lang("Gui.Error43"), e);
         }
     }
 
@@ -398,7 +399,7 @@ public static class GameBinding
     public static void MoveGameGroup(GameSettingObj obj, string? now)
     {
         obj.MoveGameGroup(now);
-        App.MainWindow?.LoadMain();
+        WindowManager.MainWindow?.LoadMain();
     }
 
     /// <summary>
@@ -1171,7 +1172,7 @@ public static class GameBinding
         {
             string text = App.Lang("Gui.Error20");
             Logs.Error(text, e);
-            App.ShowError(text, e);
+            WindowManager.ShowError(text, e);
             return false;
         }
     }
@@ -1198,7 +1199,7 @@ public static class GameBinding
         obj.Name = data;
         obj.Save();
 
-        App.MainWindow?.LoadMain();
+        WindowManager.MainWindow?.LoadMain();
     }
 
     /// <summary>
@@ -1368,7 +1369,7 @@ public static class GameBinding
                         GetString(item.Item2))).Append(Environment.NewLine);
                 }
 
-                App.ShowError(App.Lang("Gui.Info26"), str.ToString());
+                WindowManager.ShowError(App.Lang("Gui.Info26"), str.ToString());
                 return false;
             }
 
@@ -1486,7 +1487,7 @@ public static class GameBinding
     /// <param name="obj"></param>
     public static void GameStateUpdate(GameSettingObj obj)
     {
-        if (App.GameLogWindows.TryGetValue(obj.UUID, out var win1))
+        if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var win1))
         {
             win1.Update();
         }
@@ -1767,7 +1768,7 @@ public static class GameBinding
         {
             Dispatcher.UIThread.Post(() =>
             {
-                App.ShowGameCloud(obj, true);
+                WindowManager.ShowGameCloud(obj, true);
             });
         }
     }
@@ -1780,7 +1781,7 @@ public static class GameBinding
         {
             Dispatcher.UIThread.Post(() =>
             {
-                App.CloseGameWindow(obj);
+                WindowManager.CloseGameWindow(obj);
             });
         }
 
@@ -2027,7 +2028,7 @@ public static class GameBinding
                 }
             }
         });
-        App.ShowError(App.Lang("Gui.Info52"), info.ToString(), false);
+        WindowManager.ShowError(App.Lang("Gui.Info52"), info.ToString(), false);
     }
 
     public static async Task<string> GetGameLoader(GameSettingObj obj)

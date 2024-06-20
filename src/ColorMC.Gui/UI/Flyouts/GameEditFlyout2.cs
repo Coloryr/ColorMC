@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Helpers;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
@@ -29,7 +30,7 @@ public class GameEditFlyout2
             }),
             (App.Lang("GameEditWindow.Flyouts2.Text4"), true, ()=>
             {
-                App.ShowConfigEdit(_model.World);
+                WindowManager.ShowConfigEdit(_model.World);
             }),
             (App.Lang("GameEditWindow.Flyouts2.Text3"), !_model.World.Broken, ()=>
             {

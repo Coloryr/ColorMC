@@ -1,11 +1,10 @@
 using System.ComponentModel;
-using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
@@ -26,19 +25,12 @@ public partial class GameEditControl : MenuControl
     private Tab11Control _tab11;
     private Tab12Control _tab12;
 
-    private Bitmap _icon;
-    public override Bitmap GetIcon() => _icon;
-
-    public override string Title =>
-        string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
-
-    public override string UseName { get; }
-
     public GameEditControl(GameSettingObj obj)
     {
-        UseName = (ToString() ?? "GameEditControl") + ":" + obj.UUID;
-
         _obj = obj;
+
+        UseName = (ToString() ?? "GameEditControl") + ":" + obj.UUID;
+        Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
     }
 
     public override async Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
@@ -79,48 +71,18 @@ public partial class GameEditControl : MenuControl
     public override void Opened()
     {
         Window.SetTitle(Title);
-
-        var icon = _obj.GetIconFile();
-        if (File.Exists(icon))
-        {
-            _icon = new(icon);
-            Window.SetIcon(_icon);
-        }
-    }
-
-    public void SetType(GameEditWindowType type)
-    {
-        var model = (DataContext as GameEditModel)!;
-        switch (type)
-        {
-            case GameEditWindowType.Normal:
-                model.NowView = 0;
-                break;
-            case GameEditWindowType.Mod:
-                model.NowView = 2;
-                break;
-            case GameEditWindowType.World:
-                model.NowView = 3;
-                break;
-        }
     }
 
     public override void Closed()
     {
-        _icon?.Dispose();
-
-        App.GameEditWindows.Remove(_obj.UUID);
+        WindowManager.GameEditWindows.Remove(_obj.UUID);
     }
 
-    public void Started()
+    public override void SetBaseModel(BaseModel model)
     {
-        (DataContext as GameEditModel)!.GameStateChange();
+        DataContext = new GameEditModel(model, _obj);
     }
 
-    protected override MenuModel SetModel(BaseModel model)
-    {
-        return new GameEditModel(model, _obj);
-    }
     protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as GameEditModel)!;
@@ -185,5 +147,33 @@ public partial class GameEditControl : MenuControl
             default:
                 throw new InvalidEnumArgumentException();
         }
+    }
+
+    public override Bitmap GetIcon()
+    {
+        var icon = ImageManager.GetGameIcon(_obj);
+        return icon ?? ImageManager.GameIcon;
+    }
+
+    public void SetType(GameEditWindowType type)
+    {
+        var model = (DataContext as GameEditModel)!;
+        switch (type)
+        {
+            case GameEditWindowType.Normal:
+                model.NowView = 0;
+                break;
+            case GameEditWindowType.Mod:
+                model.NowView = 2;
+                break;
+            case GameEditWindowType.World:
+                model.NowView = 3;
+                break;
+        }
+    }
+
+    public void Started()
+    {
+        (DataContext as GameEditModel)!.GameStateChange();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -25,19 +26,19 @@ public partial class MainEmptyModel : TopModel
     [RelayCommand]
     public void AddUser()
     {
-        App.ShowUser(true);
+        WindowManager.ShowUser(true);
     }
 
     [RelayCommand]
     public void SetJava()
     {
-        App.ShowSetting(SettingType.SetJava);
+        WindowManager.ShowSetting(SettingType.SetJava);
     }
 
     [RelayCommand]
     public void AddGame()
     {
-        App.ShowAddGame(null);
+        WindowManager.ShowAddGame(null);
     }
 
     [RelayCommand]
@@ -55,7 +56,7 @@ public partial class MainEmptyModel : TopModel
     [RelayCommand]
     public void ShowSetting()
     {
-        App.ShowSetting(SettingType.Normal);
+        WindowManager.ShowSetting(SettingType.Normal);
     }
 
     partial void OnLanguageChanged(LanguageType value)

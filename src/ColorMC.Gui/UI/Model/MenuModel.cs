@@ -7,6 +7,10 @@ namespace ColorMC.Gui.UI.Model;
 
 public abstract partial class MenuModel : TopModel
 {
+    public const string SideOpen = "SideOpen";
+    public const string SideClose = "SideClose";
+    public const string NowViewName = "NowView";
+
     /// <summary>
     /// 菜单项
     /// </summary>

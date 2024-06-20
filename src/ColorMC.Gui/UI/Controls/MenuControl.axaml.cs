@@ -1,16 +1,15 @@
+using System;
 using System.ComponentModel;
 using System.Threading;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls;
 
-public partial class MenuControl : UserControl, IUserControl
+public abstract partial class MenuControl : BaseUserControl
 {
     private bool _switch1 = false;
 
@@ -19,29 +18,25 @@ public partial class MenuControl : UserControl, IUserControl
 
     private int _now = -1;
 
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public virtual string UseName { get; }
-    public virtual string Title { get; }
-
     public MenuControl()
     {
         InitializeComponent();
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;
         StackPanel2.PointerPressed += StackPanel2_PointerPressed;
+
+        DataContextChanged += MenuControl_DataContextChanged;
     }
 
-    virtual protected MenuModel SetModel(BaseModel model) { throw new WarningException(); }
-    virtual protected Control ViewChange(bool iswhell, int old, int index) { throw new WarningException(); }
+    private void MenuControl_DataContextChanged(object? sender, EventArgs e)
+    {
+        if (DataContext is MenuModel model)
+        {
+            model.PropertyChanged += Model_PropertyChanged;
+        }
+    }
 
-    virtual public Task<bool> OnKeyDown(object? sender, KeyEventArgs e) { return Task.FromResult(false); }
-    virtual public Bitmap GetIcon() { return App.GameIcon; }
-    virtual public void Opened() { }
-    virtual public void Closed() { }
-    virtual public void IPointerPressed(PointerPressedEventArgs e) { }
-    virtual public void IPointerReleased(PointerReleasedEventArgs e) { }
-    virtual public Task<bool> Closing() { return Task.FromResult(false); }
+    protected abstract Control ViewChange(bool iswhell, int old, int index);
 
     private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
@@ -82,16 +77,9 @@ public partial class MenuControl : UserControl, IUserControl
         _switch1 = !_switch1;
     }
 
-    public void SetBaseModel(BaseModel model)
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        var model1 = SetModel(model);
-        model1.PropertyChanged += Model1_PropertyChanged;
-        DataContext = model1;
-    }
-
-    private void Model1_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == "SideOpen")
+        if (e.PropertyName == MenuModel.SideOpen)
         {
             _cancel1.Cancel();
             _cancel1.Dispose();
@@ -103,7 +91,7 @@ public partial class MenuControl : UserControl, IUserControl
                 App.SidePageSlide300.Start(null, DockPanel1, _cancel1.Token);
             });
         }
-        else if (e.PropertyName == "SideClose")
+        else if (e.PropertyName == MenuModel.SideClose)
         {
             _cancel1.Cancel();
             _cancel1.Dispose();
@@ -111,11 +99,7 @@ public partial class MenuControl : UserControl, IUserControl
             App.SidePageSlide300.Start(DockPanel1, null, _cancel1.Token);
             StackPanel1.IsVisible = false;
         }
-        else if (e.PropertyName == "WindowClose")
-        {
-            Window.Close();
-        }
-        else if (e.PropertyName == "NowView")
+        else if (e.PropertyName == MenuModel.NowViewName)
         {
             var model = (DataContext as MenuModel)!;
             Go(ViewChange(model.IsWhell, _now, model.NowView));

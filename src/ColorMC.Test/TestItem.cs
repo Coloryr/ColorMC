@@ -615,9 +615,8 @@ public static class TestItem
     }
     public static void Item36()
     {
-        var image = Skin3DHead.Draw("H:\\color_yr.png");
-        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+        var image = Skin3DHead.MakeHeadImage(SKBitmap.Decode("D:\\skin\\Skins\\color_yr.png"));
         using var stream = File.OpenWrite("output.png");
-        data.SaveTo(stream);
+        image.CopyTo(stream);
     }
 }

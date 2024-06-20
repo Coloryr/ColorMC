@@ -15,6 +15,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -259,7 +260,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
         }
 
         return (-1, false, null);
@@ -300,7 +301,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
         }
 
         return -1;
@@ -343,7 +344,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
         }
         return -1;
     }
@@ -388,7 +389,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
 
         }
 
@@ -462,7 +463,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
         }
 
         return -1;
@@ -504,7 +505,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
         }
     }
 
@@ -543,7 +544,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
         }
         return null;
     }
@@ -584,7 +585,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
         }
         return null;
     }
@@ -630,7 +631,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
         }
         return -1;
     }
@@ -675,7 +676,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
         }
         return null;
     }
@@ -732,7 +733,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
             return -1;
         }
     }
@@ -778,7 +779,7 @@ public static class GameCloudUtils
         {
             string temp = App.Lang("GameCloudWindow.Error3");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
             return -1;
         }
     }

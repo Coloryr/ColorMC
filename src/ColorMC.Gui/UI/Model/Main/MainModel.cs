@@ -8,6 +8,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -20,6 +21,8 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class MainModel : TopModel, IMainTop
 {
+    public const string SwitchView = "SwitchView";
+
     public bool IsLaunch;
     public bool IsFirst = true;
 
@@ -80,7 +83,7 @@ public partial class MainModel : TopModel, IMainTop
     private GameItemModel? _oneGame;
 
     [ObservableProperty]
-    private Bitmap _head = App.LoadIcon;
+    private Bitmap _head = ImageManager.LoadIcon;
 
     [ObservableProperty]
     private bool _render = true;
@@ -203,7 +206,7 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public void ShowCount()
     {
-        App.ShowCount();
+        WindowManager.ShowCount();
     }
 
     [RelayCommand]
@@ -228,19 +231,19 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public void ShowSkin()
     {
-        App.ShowSkin();
+        WindowManager.ShowSkin();
     }
 
     [RelayCommand]
     public void ShowUser()
     {
-        App.ShowUser();
+        WindowManager.ShowUser();
     }
 
     [RelayCommand]
     public void ShowSetting()
     {
-        App.ShowSetting(SettingType.Normal);
+        WindowManager.ShowSetting(SettingType.Normal);
     }
 
     [RelayCommand]
@@ -294,7 +297,7 @@ public partial class MainModel : TopModel, IMainTop
     {
         if (UserBinding.HaveOnline())
         {
-            App.ShowNetFrp();
+            WindowManager.ShowNetFrp();
         }
         else
         {
@@ -304,7 +307,7 @@ public partial class MainModel : TopModel, IMainTop
 
     private void App_SkinLoad()
     {
-        Head = UserBinding.HeadBitmap!;
+        Head = ImageManager.HeadBitmap!;
 
         IsHeadLoad = false;
     }
@@ -545,7 +548,7 @@ public partial class MainModel : TopModel, IMainTop
             }
         }
 
-        OnPropertyChanged("SwitchView");
+        OnPropertyChanged(SwitchView);
     }
 
     public void GameClose(string uuid)
