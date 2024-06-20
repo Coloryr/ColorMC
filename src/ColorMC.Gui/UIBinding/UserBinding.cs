@@ -15,6 +15,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Skin;
 using ColorMC.Gui.Utils;
 using SkiaSharp;
 
@@ -258,7 +259,7 @@ public static class UserBinding
             try
             {
                 SkinImage = SKBitmap.Decode(file);
-                using var data = ImageUtils.MakeHeadImage(file);
+                using var data = Skin2DHead.MakeHeadImage(file);
                 if (file == null)
                 {
                     HeadBitmap = new Bitmap(asset);

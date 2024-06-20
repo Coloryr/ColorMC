@@ -14,7 +14,6 @@ using ColorMC.Gui.Skin;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 using SkiaSharp;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
@@ -418,7 +417,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
             return;
         }
 
-        model.SteveModelType = SkinUtil.GetTextType(UserBinding.SkinImage);
+        model.SteveModelType = Skin2DHead.GetTextType(UserBinding.SkinImage);
         if (model.SteveModelType == SkinType.Unkonw)
         {
             model.HaveSkin = false;
