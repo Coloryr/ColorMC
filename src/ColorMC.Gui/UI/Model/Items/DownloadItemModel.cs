@@ -54,7 +54,7 @@ public partial class DownloadItemModel(int index) : ObservableObject
         }
         else
         {
-            NowProgress = (double)NowSize / (double)AllSize;
+            NowProgress = (double)NowSize / (double)AllSize * 100;
             NowTemp = $"{(double)NowSize / 1000 / 1000:0.##} / {AllSize / 1000 / 1000:0.##} MB";
         }
     }

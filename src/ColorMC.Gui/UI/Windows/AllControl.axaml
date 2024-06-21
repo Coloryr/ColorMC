@@ -15,6 +15,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:BaseModel"
+    FontFamily="{setting:Font}"
     mc:Ignorable="d">
 
     <Design.DataContext>

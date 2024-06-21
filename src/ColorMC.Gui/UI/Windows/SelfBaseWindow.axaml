@@ -20,7 +20,7 @@
     d:DesignHeight="450"
     d:DesignWidth="760"
     x:DataType="model:BaseModel"
-    Background="{setting:Colors TranBack}"
+    Background="Transparent"
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaTitleBarHeightHint="-1"
     ExtendClientAreaToDecorationsHint="True"
@@ -35,7 +35,7 @@
     </Design.DataContext>
 
     <DockPanel>
-		<view:HeadControl
+        <view:HeadControl
             Name="Head"
             DockPanel.Dock="Top"
             IsVisible="{Binding EnableHead}" />
