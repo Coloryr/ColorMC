@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -84,7 +85,7 @@ public class GameEditFlyout1
                 && !string.IsNullOrWhiteSpace(obj?.PID)
                 && !string.IsNullOrWhiteSpace(obj?.FID), ()=>
                 {
-                    App.ShowAdd(obj!.Obj.Game, obj);
+                    WindowManager.ShowAdd(obj!.Obj.Game, obj);
                 }),
         ], con);
     }

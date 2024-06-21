@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
@@ -17,20 +19,15 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
-public partial class MainControl : UserControl, IUserControl
+public partial class MainControl : BaseUserControl
 {
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public string Title => "ColorMC";
-
     public readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
-
-    public string UseName { get; }
 
     public MainControl()
     {
         InitializeComponent();
 
+        Title = "ColorMC";
         UseName = ToString() ?? "MainControl";
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
@@ -40,7 +37,7 @@ public partial class MainControl : UserControl, IUserControl
         SizeChanged += MainControl_SizeChanged;
     }
 
-    public Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
+    public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control)
         {
@@ -137,7 +134,7 @@ public partial class MainControl : UserControl, IUserControl
             }
             if (str.StartsWith("authlib-injector:yggdrasil-server:"))
             {
-                App.ShowUser(false, str);
+                WindowManager.ShowUser(false, str);
             }
             else if (str.StartsWith("cloudkey:") || str.StartsWith("cloudKey:"))
             {
@@ -155,11 +152,11 @@ public partial class MainControl : UserControl, IUserControl
                 return;
             if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
             {
-                App.ShowAddGame(null, true, forder.GetPath());
+                WindowManager.ShowAddGame(null, true, forder.GetPath());
             }
             else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
             {
-                App.ShowAddGame(null, false, item.GetPath());
+                WindowManager.ShowAddGame(null, false, item.GetPath());
             }
         }
     }
@@ -190,19 +187,19 @@ public partial class MainControl : UserControl, IUserControl
         }
     }
 
-    public void WindowStateChange(WindowState state)
+    public override void WindowStateChange(WindowState state)
     {
         (DataContext as MainModel)!.Render = state != WindowState.Minimized;
     }
 
-    public void Closed()
+    public override void Closed()
     {
-        App.MainWindow = null;
+        WindowManager.MainWindow = null;
 
         App.Close();
     }
 
-    public void Opened()
+    public override void Opened()
     {
         Window.SetTitle(Title);
 
@@ -222,7 +219,7 @@ public partial class MainControl : UserControl, IUserControl
         }
     }
 
-    public async Task<bool> Closing()
+    public override async Task<bool> Closing()
     {
         var model = (DataContext as MainModel)!;
         if (model.IsLaunch)
@@ -314,7 +311,7 @@ public partial class MainControl : UserControl, IUserControl
         (DataContext as MainModel)!.ShowMessage(message);
     }
 
-    public void SetBaseModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
         var amodel = new MainModel(model);
         amodel.PropertyChanged += Amodel_PropertyChanged;
@@ -327,9 +324,14 @@ public partial class MainControl : UserControl, IUserControl
 
     private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "SwitchView")
+        if (e.PropertyName == MainModel.SwitchView)
         {
             SwitchView();
         }
+    }
+
+    public override Bitmap GetIcon()
+    {
+        return ImageManager.GameIcon;
     }
 }

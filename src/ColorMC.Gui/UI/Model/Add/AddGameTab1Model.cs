@@ -7,6 +7,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -230,7 +231,7 @@ public partial class AddGameModel
             return;
         }
 
-        App.ShowGameCloud(GameBinding.GetGame(obj.UUID!)!);
+        WindowManager.ShowGameCloud(GameBinding.GetGame(obj.UUID!)!);
         Done();
     }
 
@@ -580,7 +581,7 @@ public partial class AddGameModel
     /// </summary>
     private void Done()
     {
-        var model = App.MainWindow?.DataContext as MainModel;
+        var model = WindowManager.MainWindow?.DataContext as MainModel;
         model?.Model.Notify(App.Lang("AddGameWindow.Tab1.Info7"));
         Dispatcher.UIThread.Post(WindowClose);
     }

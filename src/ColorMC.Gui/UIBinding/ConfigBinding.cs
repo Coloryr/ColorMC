@@ -5,6 +5,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -139,7 +140,7 @@ public static class ConfigBinding
     /// </summary>
     public static void DeleteGuiImageConfig()
     {
-        App.RemoveImage();
+        ImageManager.RemoveImage();
         GuiConfigUtils.Config.BackImage = null;
         GuiConfigUtils.Save();
         App.OnPicUpdate();
@@ -158,7 +159,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.BackImage = dir;
         GuiConfigUtils.Save();
 
-        await App.LoadImage();
+        await ImageManager.LoadImage();
 
         App.OnPicUpdate();
     }
@@ -175,7 +176,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.BackLimit = enable;
         GuiConfigUtils.Save();
 
-        await App.LoadImage();
+        await ImageManager.LoadImage();
 
         App.OnPicUpdate();
     }
@@ -496,7 +497,7 @@ public static class ConfigBinding
 
         App.ColorChange();
         ColorSel.Load();
-        await App.LoadImage();
+        await ImageManager.LoadImage();
     }
 
     /// <summary>
@@ -539,7 +540,7 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
 
-        App.MainWindow?.MotdLoad();
+        WindowManager.MainWindow?.MotdLoad();
         ColorSel.Load();
     }
 
@@ -555,7 +556,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.GameName = v2;
         GuiConfigUtils.Save();
 
-        App.MainWindow?.LoadMain();
+        WindowManager.MainWindow?.LoadMain();
     }
 
     /// <summary>
@@ -623,7 +624,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Live2D.Model = null;
         GuiConfigUtils.Save();
 
-        App.MainWindow?.DeleteModel();
+        WindowManager.MainWindow?.DeleteModel();
     }
 
     /// <summary>
@@ -636,7 +637,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Live2D.Enable = enable;
         GuiConfigUtils.Save();
 
-        App.MainWindow?.ChangeModel();
+        WindowManager.MainWindow?.ChangeModel();
     }
 
     /// <summary>
@@ -649,7 +650,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Live2D.Model = live2DModel;
         GuiConfigUtils.Save();
 
-        App.MainWindow?.ChangeModel();
+        WindowManager.MainWindow?.ChangeModel();
     }
 
     /// <summary>
@@ -666,7 +667,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Live2D.Pos = pos;
         GuiConfigUtils.Save();
 
-        App.MainWindow?.ChangeLive2DSize();
+        WindowManager.MainWindow?.ChangeLive2DSize();
     }
 
     /// <summary>
@@ -679,7 +680,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Live2D.LowFps = value;
         GuiConfigUtils.Save();
 
-        App.MainWindow?.ChangeLive2DMode();
+        WindowManager.MainWindow?.ChangeLive2DMode();
     }
 
     /// <summary>

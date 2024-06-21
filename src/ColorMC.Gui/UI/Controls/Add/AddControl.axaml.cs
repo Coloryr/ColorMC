@@ -8,24 +8,16 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
-public partial class AddControl : UserControl, IUserControl
+public partial class AddControl : BaseUserControl
 {
     private readonly GameSettingObj _obj;
-
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public string Title => string.Format(App.Lang("AddWindow.Title"), _obj.Name);
-
-    private Bitmap _icon;
-    public Bitmap GetIcon() => _icon;
-
-    public string UseName { get; }
 
     public AddControl()
     {
@@ -34,9 +26,10 @@ public partial class AddControl : UserControl, IUserControl
 
     public AddControl(GameSettingObj obj) : this()
     {
-        UseName = (ToString() ?? "GameSettingObj") + ":" + obj.UUID;
-
         _obj = obj;
+
+        Title = string.Format(App.Lang("AddWindow.Title"), obj.Name);
+        UseName = (ToString() ?? "GameSettingObj") + ":" + obj.UUID;
 
         VersionFiles.DoubleTapped += VersionFiles_DoubleTapped;
         OptifineFiles.DoubleTapped += OptifineFiles_DoubleTapped;
@@ -50,31 +43,7 @@ public partial class AddControl : UserControl, IUserControl
         ScrollViewer1.ScrollChanged += ScrollViewer1_ScrollChanged;
     }
 
-    private void ScrollViewer1_ScrollChanged(object? sender, ScrollChangedEventArgs e)
-    {
-        if (e.ExtentDelta == e.OffsetDelta || e.ExtentDelta.Y < 0)
-        {
-            return;
-        }
-        if (DataContext is AddControlModel model)
-        {
-            if (model.EmptyDisplay)
-            {
-                return;
-            }
-            model.DisplayFilter = false;
-        }
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is AddControlModel model)
-        {
-            model.Wheel(e.Delta.Y);
-        }
-    }
-
-    public void SetBaseModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
         var amodel = new AddControlModel(model, _obj);
         amodel.PropertyChanged += Model_PropertyChanged;
@@ -82,12 +51,48 @@ public partial class AddControl : UserControl, IUserControl
         DataContext = amodel;
     }
 
-    public void OnKeyDown(object? sender, KeyEventArgs e)
+    public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.F5)
         {
             (DataContext as AddControlModel)!.Reload();
+
+            return Task.FromResult(true);
         }
+
+        return Task.FromResult(false);
+    }
+    public override Bitmap GetIcon()
+    {
+        var icon = ImageManager.GetGameIcon(_obj);
+        return icon ?? ImageManager.GameIcon;
+    }
+
+    public override void Closed()
+    {
+        WindowManager.AddWindows.Remove(_obj.UUID);
+    }
+
+    public override void Opened()
+    {
+        Window.SetTitle(Title);
+
+        (DataContext as AddControlModel)!.Display = true;
+    }
+
+    public async Task GoSet()
+    {
+        await (DataContext as AddControlModel)!.GoSet();
+    }
+
+    public void GoTo(FileType type)
+    {
+        (DataContext as AddControlModel)?.GoTo(type);
+    }
+
+    public void GoFile(SourceType type, string pid)
+    {
+        (DataContext as AddControlModel)!.GoFile(type, pid);
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -139,9 +144,29 @@ public partial class AddControl : UserControl, IUserControl
         {
             ScrollViewer1.ScrollToHome();
         }
-        else if (e.PropertyName == "WindowClose")
+    }
+
+    private void ScrollViewer1_ScrollChanged(object? sender, ScrollChangedEventArgs e)
+    {
+        if (e.ExtentDelta == e.OffsetDelta || e.ExtentDelta.Y < 0)
         {
-            Window.Close();
+            return;
+        }
+        if (DataContext is AddControlModel model)
+        {
+            if (model.EmptyDisplay)
+            {
+                return;
+            }
+            model.DisplayFilter = false;
+        }
+    }
+
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (DataContext is AddControlModel model)
+        {
+            model.Wheel(e.Delta.Y);
         }
     }
 
@@ -189,41 +214,5 @@ public partial class AddControl : UserControl, IUserControl
     private async void VersionFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
         await (DataContext as AddControlModel)!.GoFile();
-    }
-
-    public void Closed()
-    {
-        _icon?.Dispose();
-
-        App.AddWindows.Remove(_obj.UUID);
-    }
-
-    public void GoFile(SourceType type, string pid)
-    {
-        (DataContext as AddControlModel)!.GoFile(type, pid);
-    }
-
-    public void Opened()
-    {
-        Window.SetTitle(Title);
-
-        var icon = _obj.GetIconFile();
-        if (File.Exists(icon))
-        {
-            _icon = new(icon);
-            Window.SetIcon(_icon);
-        }
-
-        (DataContext as AddControlModel)!.Display = true;
-    }
-
-    public async Task GoSet()
-    {
-        await (DataContext as AddControlModel)!.GoSet();
-    }
-
-    public void GoTo(FileType type)
-    {
-        (DataContext as AddControlModel)?.GoTo(type);
     }
 }

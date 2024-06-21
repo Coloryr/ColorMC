@@ -1,14 +1,13 @@
 using System.ComponentModel;
-using System.IO;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using AvaloniaEdit.Indentation.CSharp;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
@@ -16,35 +15,10 @@ using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls.GameConfigEdit;
 
-public partial class GameConfigEditControl : UserControl, IUserControl
+public partial class GameConfigEditControl : BaseUserControl
 {
     private readonly WorldObj _world;
     private readonly GameSettingObj _obj;
-
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    private Bitmap _icon;
-    public Bitmap GetIcon() => _icon;
-
-    public string Title
-    {
-        get
-        {
-            var model = (DataContext as GameConfigEditModel)!;
-            if (model.World == null)
-            {
-                return string.Format(App.Lang("ConfigEditWindow.Title"),
-                    model.Obj?.Name);
-            }
-            else
-            {
-                return string.Format(App.Lang("ConfigEditWindow.Title1"),
-                    model.World?.Game.Name, model.World?.LevelName);
-            }
-        }
-    }
-
-    public string UseName { get; }
 
     public GameConfigEditControl()
     {
@@ -62,17 +36,24 @@ public partial class GameConfigEditControl : UserControl, IUserControl
 
     public GameConfigEditControl(WorldObj world) : this()
     {
+        _world = world;
+        _obj = world.Game;
+
+        Title = string.Format(App.Lang("ConfigEditWindow.Title1"),
+                world.Game.Name, world.LevelName);
+
         UseName = (ToString() ?? "GameConfigEditControl")
             + ":" + world.Game.UUID + ":" + world.LevelName;
-
-        _world = world;
     }
 
     public GameConfigEditControl(GameSettingObj obj) : this()
     {
+        _obj = obj;
+
         UseName = (ToString() ?? "GameConfigEditControl") + ":" + obj.UUID;
 
-        _obj = obj;
+        Title = string.Format(App.Lang("ConfigEditWindow.Title"),
+                obj.Name);
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -116,26 +97,16 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         });
     }
 
-    public void Opened()
+    public override void Opened()
     {
         Window.SetTitle(Title);
 
         var model = (DataContext as GameConfigEditModel)!;
         model.Load();
-
-        var icon = model.Obj == null ?
-            model.World!.Game.GetIconFile() : model.Obj.GetIconFile();
-        if (File.Exists(icon))
-        {
-            _icon = new(icon);
-            Window.SetIcon(_icon);
-        }
     }
 
-    public void Closed()
+    public override void Closed()
     {
-        _icon?.Dispose();
-
         string key;
         var model = (DataContext as GameConfigEditModel)!;
         if (model.World != null)
@@ -146,13 +117,25 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         {
             key = model.Obj.UUID;
         }
-        App.ConfigEditWindows.Remove(key);
+        WindowManager.ConfigEditWindows.Remove(key);
     }
 
-    public void SetBaseModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
         var amodel = new GameConfigEditModel(model, _obj, _world);
         amodel.PropertyChanged += Model_PropertyChanged;
         DataContext = amodel;
+
+        var icon = ImageManager.GetGameIcon(_obj);
+        if (icon != null)
+        {
+            model.Icon = icon;
+        }
+    }
+
+    public override Bitmap GetIcon()
+    {
+        var icon = ImageManager.GetGameIcon(_obj);
+        return icon ?? ImageManager.GameIcon;
     }
 }

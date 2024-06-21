@@ -4,6 +4,7 @@ using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -134,7 +135,7 @@ public partial class FileItemModel : ObservableObject
 
     public async void Close()
     {
-        if (await GetImage() != App.GameIcon)
+        if (await GetImage() != ImageManager.GameIcon)
         {
             _img?.Dispose();
         }

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace ColorMC.Gui.UI.Model;
 
 public abstract class TopModel(BaseModel model) : ObservableObject
@@ -16,6 +17,6 @@ public abstract class TopModel(BaseModel model) : ObservableObject
     /// </summary>
     public void WindowClose()
     {
-        OnPropertyChanged("WindowClose");
+        model.WindowClose();
     }
 }

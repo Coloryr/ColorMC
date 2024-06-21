@@ -32,17 +32,17 @@ internal class Program
 
         Console.WriteLine("Hello, World!");
 
-        ColorMCCore.Init(new CoreInitArg
-        { 
-            Local = AppContext.BaseDirectory
-        });
-        ColorMCCore.Init1();
+        //ColorMCCore.Init(new CoreInitArg
+        //{ 
+        //    Local = AppContext.BaseDirectory
+        //});
+        //ColorMCCore.Init1();
 
-        ColorMCCore.GameLog += Log;
+        //ColorMCCore.GameLog += Log;
 
-        //TestItem.Item35();
+        TestItem.Item36();
 
-        GetSha1();
+        //GetSha1();
 
         Console.ReadLine();
     }

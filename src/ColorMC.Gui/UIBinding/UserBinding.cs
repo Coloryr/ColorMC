@@ -14,7 +14,9 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Skin;
 using ColorMC.Gui.Utils;
 using SkiaSharp;
 
@@ -23,9 +25,7 @@ namespace ColorMC.Gui.UIBinding;
 public static class UserBinding
 {
     private static readonly List<(AuthType, string)> s_lockUser = [];
-    public static SKBitmap? SkinImage { get; set; }
-    public static SKBitmap? CapeIamge { get; set; }
-    public static Bitmap HeadBitmap { get; private set; }
+
     public static List<string> GetLoginType()
     {
         var list = new List<string>()
@@ -95,7 +95,7 @@ public static class UserBinding
         {
             if (res1.Ex != null)
             {
-                App.ShowError(res1.Message!, res1.Ex);
+                WindowManager.ShowError(res1.Message!, res1.Ex);
                 return (false, App.Lang("Gui.Error4"));
             }
             else
@@ -199,20 +199,9 @@ public static class UserBinding
     {
         var obj = GetLastUser();
 
-        SkinImage?.Dispose();
-        CapeIamge?.Dispose();
-        HeadBitmap?.Dispose();
-
-        SkinImage = null;
-        CapeIamge = null;
-
-        var uri = new Uri($"resm:ColorMC.Gui.Resource.Pic.user.png");
-        using var asset = AssetLoader.Open(uri);
-
         if (obj == null)
         {
-            HeadBitmap = new Bitmap(asset);
-            App.OnSkinLoad();
+            ImageManager.SetDefaultHead();
             return;
         }
 
@@ -229,12 +218,6 @@ public static class UserBinding
             {
                 file1 = AssetsPath.GetCapeFile(obj);
             }
-
-            file = AssetsPath.GetSkinFile(obj);
-            if (!File.Exists(file))
-            {
-                file = null;
-            }
         }
         else
         {
@@ -249,44 +232,7 @@ public static class UserBinding
             }
         }
 
-        if (file == null)
-        {
-            HeadBitmap = new Bitmap(asset);
-        }
-        else
-        {
-            try
-            {
-                SkinImage = SKBitmap.Decode(file);
-                using var data = ImageUtils.MakeHeadImage(file);
-                if (file == null)
-                {
-                    HeadBitmap = new Bitmap(asset);
-                }
-                else
-                {
-                    HeadBitmap = new Bitmap(data);
-                }
-            }
-            catch (Exception e)
-            {
-                Logs.Error(string.Format(App.Lang("Gui.Error34"), file), e);
-            }
-        }
-
-        if (file1 != null)
-        {
-            try
-            {
-                CapeIamge = SKBitmap.Decode(file1);
-            }
-            catch (Exception e)
-            {
-                Logs.Error(string.Format(App.Lang("Gui.Error35"), file), e);
-            }
-        }
-
-        App.OnSkinLoad();
+        ImageManager.LoadSkinHead(file, file1);
     }
 
     public static async void EditSkin()

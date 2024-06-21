@@ -6,6 +6,7 @@ using Avalonia.Media.Immutable;
 using Avalonia.Platform;
 using Avalonia.Threading;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 
@@ -151,7 +152,7 @@ public static class ColorSel
             ButtonBorder = App.NowTheme == PlatformThemeVariant.Light
                 ? AppLightBackColor8 : AppDarkBackColor8;
 
-            if (App.BackBitmap != null)
+            if (ImageManager.BackBitmap != null)
             {
                 GroupBackColor1 = Brushes.Transparent;
                 MainButtonBG = App.NowTheme == PlatformThemeVariant.Light

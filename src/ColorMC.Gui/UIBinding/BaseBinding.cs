@@ -23,6 +23,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.LaunchPath;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
@@ -60,7 +61,7 @@ public static class BaseBinding
     /// </summary>
     public static bool IsDownload => DownloadManager.State != DownloadState.End;
 
-    public static bool SdlInit;
+    public static bool SdlInit { get; private set; }
 
     /// <summary>
     /// 停止启动游戏
@@ -76,7 +77,7 @@ public static class BaseBinding
     /// </summary>
     public static void Init()
     {
-        ColorMCCore.Error += App.ShowError;
+        ColorMCCore.Error += WindowManager.ShowError;
         ColorMCCore.LanguageReload += LanguageReload;
         ColorMCCore.GameLog += (obj, d) =>
         {
@@ -85,12 +86,12 @@ public static class BaseBinding
                 log.Append(d).Append(Environment.NewLine);
             }
 
-            if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
+            if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var win))
             {
                 win.Log(d);
             }
         };
-        ColorMCCore.OnDownload = App.ShowDownload;
+        ColorMCCore.OnDownload = WindowManager.ShowDownload;
         ColorMCCore.GameExit += GameExit;
         ColorMCCore.InstanceChange += InstanceChange;
 
@@ -131,7 +132,7 @@ public static class BaseBinding
 
     private static void InstanceChange()
     {
-        App.MainWindow?.LoadMain();
+        WindowManager.MainWindow?.LoadMain();
     }
 
     /// <summary>
@@ -147,14 +148,14 @@ public static class BaseBinding
         UserBinding.UnLockUser(obj1);
         Dispatcher.UIThread.Post(() =>
         {
-            App.MainWindow?.GameClose(obj.UUID);
+            WindowManager.MainWindow?.GameClose(obj.UUID);
         });
         if (code != 0 && !App.IsClose)
         {
             Dispatcher.UIThread.Post(() =>
             {
-                App.ShowGameLog(obj);
-                App.MainWindow?.ShowMessage(App.Lang("MainWindow.Live2D.Text3"));
+                WindowManager.ShowGameLog(obj);
+                WindowManager.MainWindow?.ShowMessage(App.Lang("MainWindow.Live2D.Text3"));
             });
         }
         else
@@ -193,8 +194,8 @@ public static class BaseBinding
     {
         UpdateChecker.Init();
         GameCloudUtils.Init(ColorMCGui.RunDir);
-        App.MainWindow?.LoadDone();
-        App.CustomWindow?.Load1();
+        WindowManager.MainWindow?.LoadDone();
+        WindowManager.CustomWindow?.Load1();
 
         await GameCloudUtils.StartConnect();
 
@@ -203,7 +204,7 @@ public static class BaseBinding
             Dispatcher.UIThread.Post(async () =>
             {
                 var game = InstancesPath.GetGame(s_launch);
-                var window = App.GetMainWindow();
+                var window = WindowManager.GetMainWindow();
                 if (window == null)
                 {
                     return;
@@ -317,7 +318,7 @@ public static class BaseBinding
             obj.StartServer.Port = server.ServerPort;
         }
 
-        if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
+        if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var win))
         {
             win.ClearLog();
         }
@@ -371,7 +372,7 @@ public static class BaseBinding
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    App.ShowSetting(SettingType.SetJava, version);
+                    WindowManager.ShowSetting(SettingType.SetJava, version);
                 });
             }, (login) =>
             {
@@ -450,7 +451,7 @@ public static class BaseBinding
                 Media.Pause();
             }
 
-            App.MainWindow?.ShowMessage(App.Lang("MainWindow.Live2D.Text2"));
+            WindowManager.MainWindow?.ShowMessage(App.Lang("MainWindow.Live2D.Text2"));
 
             RunGames.Add(obj.UUID);
             GameCount.LaunchDone(obj);
@@ -649,14 +650,14 @@ public static class BaseBinding
             if (e1.Ex != null)
             {
                 Logs.Error(temp, e1.Ex);
-                App.ShowError(temp, e1.Ex);
+                WindowManager.ShowError(temp, e1.Ex);
             }
         }
         catch (Exception e)
         {
             temp = App.Lang("Gui.Error6");
             Logs.Error(temp, e);
-            App.ShowError(temp, e);
+            WindowManager.ShowError(temp, e);
         }
         return (null, temp);
     }
@@ -870,14 +871,14 @@ public static class BaseBinding
 
         try
         {
-            App.ShowCustom(file, true);
-            App.CustomWindow?.Load1();
+            WindowManager.ShowCustom(file, true);
+            WindowManager.CustomWindow?.Load1();
         }
         catch (Exception ex)
         {
             var data = App.Lang("SettingWindow.Tab6.Error2");
             Logs.Error(data, ex);
-            App.ShowError(data, ex);
+            WindowManager.ShowError(data, ex);
 
             return (false, data);
         }
@@ -931,7 +932,7 @@ public static class BaseBinding
     public static void SetCloudKey(string str)
     {
         GuiConfigUtils.Config.ServerKey = str[9..];
-        App.ShowSetting(SettingType.Net);
+        WindowManager.ShowSetting(SettingType.Net);
     }
 
     /// <summary>
