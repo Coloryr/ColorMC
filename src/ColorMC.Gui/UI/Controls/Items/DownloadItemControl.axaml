@@ -9,38 +9,48 @@
     x:DataType="model:DownloadItemModel"
     mc:Ignorable="d">
     <Border Classes="t1">
-        <StackPanel Margin="5">
-            <WrapPanel>
-                <TextBlock Text="{setting:Localize DownloadWindow.Text5}" />
-                <TextBlock Margin="0,0,10,0" Text="{Binding Index}" />
-                <TextBlock Text="{Binding Name}" />
-            </WrapPanel>
-
-            <WrapPanel>
-                <ProgressBar
-                    Height="20"
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    BorderBrush="White"
-                    BorderThickness="1"
-                    Foreground="#FF5EBDD3"
-                    IsIndeterminate="{Binding IsNotSize}"
-                    Maximum="1"
-                    Minimum="0"
-                    ShowProgressText="{Binding !IsNotSize}"
-                    SmallChange="0.01"
-                    Value="{Binding NowProgress}" />
-                <TextBlock
-                    Width="100"
-                    Margin="0,0,20,0"
-                    Text="{Binding NowTemp}" />
-                <TextBlock
-                    Width="100"
-                    Margin="0,0,20,0"
-                    Text="{Binding State}" />
-                <TextBlock Margin="0,0,5,0" Text="{setting:Localize DownloadWindow.DataGrid.Text5}" />
-                <TextBlock Text="{Binding ErrorTime}" />
-            </WrapPanel>
+        <StackPanel Margin="15">
+            <DockPanel Margin="0,0,0,5">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize DownloadWindow.DataGrid.Text5}" />
+                    <TextBlock Text="{Binding ErrorTime, FallbackValue=0}" />
+                </StackPanel>
+                <StackPanel
+                    Margin="20,0,0,0"
+                    DockPanel.Dock="Right"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Width="100"
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="Left"
+                        Text="{Binding NowTemp, FallbackValue=Speed}" />
+                    <TextBlock
+                        Width="80"
+                        Margin="0,0,20,0"
+                        Text="{Binding State, FallbackValue=下载中}" />
+                </StackPanel>
+                <WrapPanel>
+                    <TextBlock Text="{setting:Localize DownloadWindow.Text5}" />
+                    <TextBlock Text="{Binding Index, FallbackValue=1}" />
+                </WrapPanel>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,5">
+                <StackPanel
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Right"
+                    Orientation="Horizontal">
+                    <TextBlock Text="{Binding NowProgress, StringFormat=0.00, FallbackValue=50}" />
+                    <TextBlock Text="%" />
+                </StackPanel>
+                <TextBlock Text="{Binding Name, FallbackValue=Name}" />
+            </DockPanel>
+            <ProgressBar
+                Height="10"
+                HorizontalAlignment="Stretch"
+                CornerRadius="20"
+                IsIndeterminate="{Binding IsNotSize}"
+                Maximum="100"
+                Value="{Binding NowProgress}" />
         </StackPanel>
     </Border>
 </UserControl>

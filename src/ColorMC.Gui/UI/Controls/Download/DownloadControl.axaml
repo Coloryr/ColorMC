@@ -12,62 +12,54 @@
     x:DataType="model:DownloadModel"
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
-    <DockPanel Margin="5">
-        <Border Classes="t1" DockPanel.Dock="Top">
-            <StackPanel Margin="5">
-                <StackPanel Orientation="Horizontal">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+            <StackPanel Margin="20,20,20,10">
+                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                     <TextBlock
                         Margin="0,0,5,0"
                         DockPanel.Dock="Right"
+                        FontSize="20"
                         Text="{setting:Localize DownloadWindow.Text6}" />
                     <TextBlock
-                        MinWidth="100"
                         DockPanel.Dock="Right"
-                        Text="{Binding Size}" />
+                        FontSize="20"
+                        Text="{Binding Size, FallbackValue=2}" />
                 </StackPanel>
-                <WrapPanel>
-                    <TextBlock
-                        Margin="0,0,5,0"
-                        DockPanel.Dock="Right"
-                        Text="{setting:Localize DownloadWindow.Text7}" />
-                    <ProgressBar
-                        Height="20"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Center"
-                        BorderBrush="White"
-                        BorderThickness="1"
-                        Foreground="#FF5EBDD3"
-                        Maximum="100"
-                        ShowProgressText="True"
-                        Value="{Binding Value}" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            MinWidth="100"
-                            Margin="0,0,5,0"
-                            DockPanel.Dock="Right"
-                            Text="{Binding Speed}" />
-                        <TextBlock
-                            MinWidth="100"
-                            Margin="0,0,5,0"
-                            DockPanel.Dock="Right"
-                            Text="{Binding Now}" />
+                <DockPanel Margin="0,0,0,5">
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <TextBlock Text="{Binding Value, StringFormat=0.00, FallbackValue=50}" />
+                        <TextBlock Text="%" />
                     </StackPanel>
-
-                </WrapPanel>
+                    <WrapPanel>
+                        <TextBlock DockPanel.Dock="Left" Text="{setting:Localize DownloadWindow.Text7}" />
+                        <TextBlock
+                            MinWidth="80"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding Now, FallbackValue=9000/9000}" />
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding Speed, FallbackValue=10 MB/s}" />
+                    </WrapPanel>
+                </DockPanel>
+                <ProgressBar
+                    Height="10"
+                    Margin="0,5,0,0"
+                    HorizontalAlignment="Stretch"
+                    CornerRadius="20"
+                    Maximum="100"
+                    Value="{Binding Value}" />
             </StackPanel>
-        </Border>
-
-        <ScrollViewer Margin="0,5,0,0" HorizontalScrollBarVisibility="Disabled">
             <ItemsControl
+                Margin="20,0,20,20"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 ItemsSource="{Binding DisplayList}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <items:DownloadItemControl Margin="0,0,0,5" DataContext="{Binding}" />
+                        <items:DownloadItemControl Margin="0,0,0,10" DataContext="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </ScrollViewer>
-    </DockPanel>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

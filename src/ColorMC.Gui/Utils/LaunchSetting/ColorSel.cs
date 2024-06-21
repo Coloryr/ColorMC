@@ -15,7 +15,7 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 /// </summary>
 public static class ColorSel
 {
-    public static readonly IBrush AppLightBackColor = Brush.Parse("#FFF3F3F3");
+    public static readonly IBrush AppLightBackColor = Brush.Parse("#FFFFFFFF");
     public static readonly IBrush AppLightBackColor1 = Brush.Parse("#AA989898");
     public static readonly IBrush AppLightBackColor2 = Brush.Parse("#11FFFFFF");
     public static readonly IBrush AppLightBackColor3 = Brush.Parse("#EEEEEE");
@@ -49,7 +49,7 @@ public static class ColorSel
     public const string ButtonDarkFontStr = "#FF000000";
     public const string FontDarkColorStr = "#FFE9E9E9";
 
-    public const string GroupLightColorStr = "#CCfbfbfb";
+    public const string GroupLightColorStr = "#CCe2e2e2";
     public const string GroupDarkColorStr = "#CC000000";
 
     public const string GroupLightColor1Str = "#FFe5e5e5";

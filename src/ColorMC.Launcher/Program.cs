@@ -35,7 +35,7 @@ internal static class GuiLoad
 
 public static class Program
 {
-    public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
+    public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Regular.ttf?assembly=ColorMC.Launcher#MiSans";
 
 #if !DEBUG
     /// <summary>
