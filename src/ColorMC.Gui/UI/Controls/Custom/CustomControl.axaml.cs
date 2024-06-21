@@ -3,9 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Custom;
 using ColorMC.Gui.UI.Model.Items;
@@ -14,17 +16,12 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Custom;
 
-public partial class CustomControl : UserControl, IUserControl, IMainTop
+public partial class CustomControl : BaseUserControl, IMainTop
 {
     private GameSettingObj? _obj;
     private CustomPanelControl? _ui;
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public string Title { get; set; }
 
     private string _uiPath;
-
-    public string UseName { get; }
 
     public CustomControl()
     {
@@ -33,11 +30,11 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         UseName = ToString() ?? "CustomControl";
     }
 
-    public void Closed()
+    public override void Closed()
     {
-        App.CustomWindow = null;
+        WindowManager.CustomWindow = null;
 
-        if (App.MainWindow == null)
+        if (WindowManager.MainWindow == null)
         {
             App.Close();
         }
@@ -86,12 +83,12 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         amodel.MotdLoad();
     }
 
-    public async Task<bool> Closing()
+    public override async Task<bool> Closing()
     {
         if (_obj == null)
             return false;
 
-        var model = (_ui?.DataContext as CustomControlPanelModel);
+        var model = _ui?.DataContext as CustomControlPanelModel;
         if (model == null)
         {
             return false;
@@ -115,6 +112,11 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         return false;
     }
 
+    public override Bitmap GetIcon()
+    {
+        return ImageManager.GameIcon;
+    }
+
     public void Launch(GameItemModel obj)
     {
         (DataContext as CustomControlPanelModel)!.Launch(obj);
@@ -130,7 +132,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
     }
 
-    public void SetBaseModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
         DataContext = model;
     }

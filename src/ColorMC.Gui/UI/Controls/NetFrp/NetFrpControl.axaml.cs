@@ -1,6 +1,8 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Media.Imaging;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.NetFrp;
 
@@ -14,18 +16,15 @@ public partial class NetFrpControl : MenuControl
     private NetFrpTab4Control _tab4;
     private NetFrpTab5Control _tab5;
 
-    public override string Title => App.Lang("NetFrpWindow.Title");
-
-    public override string UseName { get; }
-
     public NetFrpControl()
     {
+        Title = App.Lang("NetFrpWindow.Title");
         UseName = ToString() ?? "NetFrpControl";
     }
 
     public override void Closed()
     {
-        App.NetFrpWindow = null;
+        WindowManager.NetFrpWindow = null;
     }
 
     public override async void Opened()
@@ -39,9 +38,9 @@ public partial class NetFrpControl : MenuControl
         }
     }
 
-    protected override MenuModel SetModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
-        return new NetFrpModel(model);
+        DataContext = new NetFrpModel(model);
     }
 
     protected override Control ViewChange(bool iswhell, int old, int index)
@@ -82,5 +81,10 @@ public partial class NetFrpControl : MenuControl
     public override Task<bool> Closing()
     {
         return (DataContext as NetFrpModel)!.Closing();
+    }
+
+    public override Bitmap GetIcon()
+    {
+        return ImageManager.GameIcon;
     }
 }

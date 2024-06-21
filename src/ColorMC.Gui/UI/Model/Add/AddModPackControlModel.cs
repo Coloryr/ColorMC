@@ -6,6 +6,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
@@ -277,16 +278,16 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     {
         var select = _last;
         WindowClose();
-        App.ShowAddGame(null);
+        WindowManager.ShowAddGame(null);
         if (data.SourceType == SourceType.CurseForge)
         {
-            App.AddGameWindow?.Install(
+            WindowManager.AddGameWindow?.Install(
                 (data.Data as CurseForgeModObj.Data)!,
                 (select!.Data?.Data as CurseForgeObjList.Data)!);
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
-            App.AddGameWindow?.Install(
+            WindowManager.AddGameWindow?.Install(
                 (data.Data as ModrinthVersionObj)!,
                 (select!.Data?.Data as ModrinthSearchObj.Hit)!);
         }

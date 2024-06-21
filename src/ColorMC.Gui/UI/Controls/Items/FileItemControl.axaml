@@ -2,7 +2,7 @@
     x:Class="ColorMC.Gui.UI.Controls.Items.FileItemControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:app="clr-namespace:ColorMC.Gui"
+    xmlns:app="clr-namespace:ColorMC.Gui.Manager"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
@@ -28,7 +28,7 @@
                     VerticalAlignment="Center"
                     CornerRadius="{setting:Style PicRadius}">
                     <Border.Background>
-                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:App.LoadIcon}}" Stretch="UniformToFill" />
+                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadIcon}}" Stretch="UniformToFill" />
                     </Border.Background>
                 </Border>
                 <StackPanel Margin="100,0,0,0">

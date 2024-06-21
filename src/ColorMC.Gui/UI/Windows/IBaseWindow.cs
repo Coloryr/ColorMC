@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
 
@@ -8,14 +9,14 @@ namespace ColorMC.Gui.UI.Windows;
 public interface IBaseWindow
 {
     public BaseModel Model { get; }
-    public IUserControl ICon { get; }
+    public BaseUserControl ICon { get; }
     public void SetTitle(string data);
     public void SetIcon(Bitmap icon);
     public void Close()
     {
         if (ConfigBinding.WindowMode())
         {
-            App.AllWindow?.Close(ICon);
+            WindowManager.AllWindow?.Close(ICon);
         }
         else if (this is Window window)
         {
@@ -27,7 +28,7 @@ public interface IBaseWindow
     {
         if (ConfigBinding.WindowMode())
         {
-            App.AllWindow?.Add(ICon);
+            WindowManager.AllWindow?.Add(ICon);
         }
         else if (this is Window window)
         {
@@ -39,7 +40,7 @@ public interface IBaseWindow
     {
         if (ConfigBinding.WindowMode())
         {
-            App.AllWindow?.Active(ICon);
+            WindowManager.AllWindow?.Active(ICon);
         }
         else if (this is Window window)
         {
@@ -56,7 +57,7 @@ public interface IBaseWindow
     {
         if (ConfigBinding.WindowMode())
         {
-            App.AllWindow?.Hide();
+            WindowManager.AllWindow?.Hide();
         }
         else if (this is Window window)
         {

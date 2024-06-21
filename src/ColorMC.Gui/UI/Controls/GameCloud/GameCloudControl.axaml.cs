@@ -1,10 +1,9 @@
 using System.ComponentModel;
-using System.IO;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameCloud;
 
@@ -16,33 +15,19 @@ public partial class GameCloudControl : MenuControl
     private Tab2Control _tab2;
     private Tab3Control _tab3;
 
-    private Bitmap _icon;
-    public override Bitmap GetIcon() => _icon;
-
     public GameSettingObj Obj { get; }
-
-    public override string Title =>
-        string.Format(App.Lang("GameCloudWindow.Title"), Obj.Name);
-
-    public override string UseName { get; }
 
     public GameCloudControl(GameSettingObj obj)
     {
-        UseName = (ToString() ?? "GameCloudControl") + ":" + obj.UUID;
-
         Obj = obj;
+
+        Title = string.Format(App.Lang("GameCloudWindow.Title"), obj.Name);
+        UseName = (ToString() ?? "GameCloudControl") + ":" + obj.UUID;
     }
 
     public override async void Opened()
     {
         Window.SetTitle(Title);
-
-        var icon = Obj.GetIconFile();
-        if (File.Exists(icon))
-        {
-            _icon = new(icon);
-            Window.SetIcon(_icon);
-        }
 
         if (DataContext is GameCloudModel model && await model.Init())
         {
@@ -52,14 +37,18 @@ public partial class GameCloudControl : MenuControl
 
     public override void Closed()
     {
-        _icon?.Dispose();
-
-        App.GameCloudWindows.Remove((DataContext as GameCloudModel)!.Obj.UUID);
+        WindowManager.GameCloudWindows.Remove((DataContext as GameCloudModel)!.Obj.UUID);
     }
 
-    protected override MenuModel SetModel(BaseModel model)
+    public override void SetBaseModel(BaseModel model)
     {
-        return new GameCloudModel(model, Obj);
+        DataContext = new GameCloudModel(model, Obj);
+    }
+
+    public override Bitmap GetIcon()
+    {
+        var icon = ImageManager.GetGameIcon(Obj);
+        return icon ?? ImageManager.GameIcon;
     }
 
     protected override Control ViewChange(bool iswhell, int old, int index)

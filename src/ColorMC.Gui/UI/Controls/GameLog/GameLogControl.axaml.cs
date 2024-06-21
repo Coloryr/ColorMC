@@ -7,24 +7,16 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameLog;
 using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls.GameLog;
 
-public partial class GameLogControl : UserControl, IUserControl
+public partial class GameLogControl : BaseUserControl
 {
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
     private readonly GameSettingObj _obj;
-
-    public string Title => string.Format(App.Lang("GameLogWindow.Title"), _obj.Name);
-
-    private Bitmap _icon;
-    public Bitmap GetIcon() => _icon;
-
-    public string UseName { get; }
 
     public GameLogControl()
     {
@@ -37,12 +29,47 @@ public partial class GameLogControl : UserControl, IUserControl
     {
         _obj = obj;
 
-        UseName += ":" + _obj.UUID;
+        Title = string.Format(App.Lang("GameLogWindow.Title"), obj.Name);
+        UseName += ":" + obj.UUID;
 
         TextEditor1.TextArea.Background = Brushes.Transparent;
 
         TextEditor1.PointerWheelChanged += TextEditor1_PointerWheelChanged;
         TextEditor1.TextArea.PointerWheelChanged += TextEditor1_PointerWheelChanged;
+    }
+
+    public override void Update()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            (DataContext as GameLogModel)?.Load();
+        });
+    }
+
+    public override void Opened()
+    {
+        Window.SetTitle(Title);
+
+        (DataContext as GameLogModel)!.Load();
+        (DataContext as GameLogModel)!.Load1();
+    }
+
+    public override void SetBaseModel(BaseModel model)
+    {
+        var amodel = new GameLogModel(model, _obj);
+        amodel.PropertyChanged += Model_PropertyChanged;
+        DataContext = amodel;
+    }
+
+    public override void Closed()
+    {
+        WindowManager.GameLogWindows.Remove(_obj.UUID);
+    }
+
+    public override Bitmap GetIcon()
+    {
+        var icon = ImageManager.GetGameIcon(_obj);
+        return icon ?? ImageManager.GameIcon;
     }
 
     public void ClearLog()
@@ -62,36 +89,6 @@ public partial class GameLogControl : UserControl, IUserControl
         {
             (DataContext as GameLogModel)!.Log(data);
         });
-    }
-
-    public void Update()
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            (DataContext as GameLogModel)?.Load();
-        });
-    }
-
-    public void Opened()
-    {
-        Window.SetTitle(Title);
-
-        var icon = _obj.GetIconFile();
-        if (File.Exists(icon))
-        {
-            _icon = new(icon);
-            Window.SetIcon(_icon);
-        }
-
-        (DataContext as GameLogModel)!.Load();
-        (DataContext as GameLogModel)!.Load1();
-    }
-
-    public void Closed()
-    {
-        _icon?.Dispose();
-
-        App.GameLogWindows.Remove(_obj.UUID);
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -120,12 +117,5 @@ public partial class GameLogControl : UserControl, IUserControl
     private void TextEditor1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         (DataContext as GameLogModel)?.SetNotAuto();
-    }
-
-    public void SetBaseModel(BaseModel model)
-    {
-        var amodel = new GameLogModel(model, _obj);
-        amodel.PropertyChanged += Model_PropertyChanged;
-        DataContext = amodel;
     }
 }

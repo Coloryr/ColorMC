@@ -9,6 +9,8 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Player;
+using ColorMC.Gui.Skin;
+using SkiaSharp;
 using System.IO.Compression;
 
 namespace ColorMC.Test;
@@ -610,5 +612,11 @@ public static class TestItem
         Media.Init(sdl);
         Media.Volume = 1;
         Media.PlayMp3(file).Wait();
+    }
+    public static void Item36()
+    {
+        var image = Skin3DHead.MakeHeadImage(SKBitmap.Decode("D:\\skin\\Skins\\color_yr.png"));
+        using var stream = File.OpenWrite("output.png");
+        image.CopyTo(stream);
     }
 }

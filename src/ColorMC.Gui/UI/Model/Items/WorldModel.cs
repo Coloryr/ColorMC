@@ -7,6 +7,7 @@ using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -39,12 +40,12 @@ public partial class WorldModel : ObservableObject
     {
         Top = top;
         World = world;
-        Pic = World.Icon != null ? new Bitmap(World.Icon) : App.GameIcon;
+        Pic = World.Icon != null ? new Bitmap(World.Icon) : ImageManager.GameIcon;
     }
 
     public void Close()
     {
-        if (Pic != App.GameIcon)
+        if (Pic != ImageManager.GameIcon)
         {
             Pic.Dispose();
         }

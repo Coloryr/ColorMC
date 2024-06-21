@@ -9,6 +9,7 @@ using Avalonia.Styling;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -19,7 +20,9 @@ namespace ColorMC.Gui.UI.Model;
 
 public partial class BaseModel : ObservableObject
 {
-    public const string InfoName = "InfoShow";
+    public const string InfoShow = "InfoShow";
+    public const string WindowCloseName = "WindowClose";
+    public const string IconName = "Icon";
 
     /// <summary>
     /// 进度条
@@ -54,7 +57,7 @@ public partial class BaseModel : ObservableObject
     public string NotifyText;
 
     [ObservableProperty]
-    private Bitmap _icon = App.GameIcon;
+    private Bitmap _icon = ImageManager.GameIcon;
     [ObservableProperty]
     private Bitmap? _back;
 
@@ -321,7 +324,7 @@ public partial class BaseModel : ObservableObject
     public void Notify(string data)
     {
         NotifyText = data;
-        OnPropertyChanged(InfoName);
+        OnPropertyChanged(InfoShow);
     }
 
     public void SetIcon(Bitmap image)
@@ -697,5 +700,10 @@ public partial class BaseModel : ObservableObject
         {
 
         }
+    }
+
+    public void WindowClose()
+    {
+        OnPropertyChanged(WindowCloseName);
     }
 }

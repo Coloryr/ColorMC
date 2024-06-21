@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Input;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -84,7 +85,7 @@ public partial class GameEditModel
     [RelayCommand]
     public void AddWorld()
     {
-        App.ShowAdd(_obj, FileType.World);
+        WindowManager.ShowAdd(_obj, FileType.World);
     }
 
     [RelayCommand]

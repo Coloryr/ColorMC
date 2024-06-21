@@ -1,26 +1,24 @@
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
-public partial class AddModPackControl : UserControl, IUserControl
+public partial class AddModPackControl : BaseUserControl
 {
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public string Title => App.Lang("AddModPackWindow.Title");
-
-    public string UseName { get; }
-
     public AddModPackControl()
     {
         InitializeComponent();
 
+        Title = App.Lang("AddModPackWindow.Title");
         UseName = ToString() ?? "AddModPackControl";
 
         PackFiles.DoubleTapped += PackFiles_DoubleTapped;
@@ -31,6 +29,42 @@ public partial class AddModPackControl : UserControl, IUserControl
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
         ScrollViewer1.ScrollChanged += ScrollViewer1_ScrollChanged;
+    }
+
+    public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.F5)
+        {
+            (DataContext as AddModPackControlModel)!.Reload1();
+
+            return Task.FromResult(true);
+        }
+
+        return Task.FromResult(false);
+    }
+
+    public override void Closed()
+    {
+        WindowManager.AddModPackWindow = null;
+    }
+
+    public override void Opened()
+    {
+        Window.SetTitle(Title);
+
+        (DataContext as AddModPackControlModel)!.Source = 0;
+    }
+
+    public override void SetBaseModel(BaseModel model)
+    {
+        var amodel = new AddModPackControlModel(model);
+        amodel.PropertyChanged += Model_PropertyChanged;
+        DataContext = amodel;
+    }
+
+    public override Bitmap GetIcon()
+    {
+        return ImageManager.GameIcon;
     }
 
     private void ScrollViewer1_ScrollChanged(object? sender, ScrollChangedEventArgs e)
@@ -54,14 +88,6 @@ public partial class AddModPackControl : UserControl, IUserControl
         if (DataContext is AddModPackControlModel model)
         {
             model.Wheel(e.Delta.Y);
-        }
-    }
-
-    public void OnKeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.F5)
-        {
-            (DataContext as AddModPackControlModel)!.Reload1();
         }
     }
 
@@ -112,24 +138,5 @@ public partial class AddModPackControl : UserControl, IUserControl
     private async void PackFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
         await (DataContext as AddModPackControlModel)!.Download();
-    }
-
-    public void Closed()
-    {
-        App.AddModPackWindow = null;
-    }
-
-    public void Opened()
-    {
-        Window.SetTitle(Title);
-
-        (DataContext as AddModPackControlModel)!.Source = 0;
-    }
-
-    public void SetBaseModel(BaseModel model)
-    {
-        var amodel = new AddModPackControlModel(model);
-        amodel.PropertyChanged += Model_PropertyChanged;
-        DataContext = amodel;
     }
 }

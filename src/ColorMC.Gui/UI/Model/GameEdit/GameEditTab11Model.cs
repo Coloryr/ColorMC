@@ -4,6 +4,7 @@ using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -50,7 +51,7 @@ public partial class GameEditModel
     [RelayCommand]
     public void AddShaderpack()
     {
-        App.ShowAdd(_obj, FileType.Shaderpack);
+        WindowManager.ShowAdd(_obj, FileType.Shaderpack);
     }
 
     public async void DropShaderpack(IDataObject data)

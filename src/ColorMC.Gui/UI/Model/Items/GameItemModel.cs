@@ -10,6 +10,7 @@ using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -137,7 +138,7 @@ public partial class GameItemModel : GameModel
     [RelayCommand]
     public void AddGame()
     {
-        App.ShowAddGame(_group);
+        WindowManager.ShowAddGame(_group);
     }
 
     [RelayCommand]
@@ -154,16 +155,11 @@ public partial class GameItemModel : GameModel
     [RelayCommand]
     public void EditGame()
     {
-        App.ShowGameEdit(Obj);
+        WindowManager.ShowGameEdit(Obj);
     }
 
     public void LoadIcon()
     {
-        if (Pic != null && Pic != App.GameIcon)
-        {
-            Pic.Dispose();
-        }
-
         Pic = GetImage();
     }
 
@@ -225,15 +221,8 @@ public partial class GameItemModel : GameModel
 
     private Bitmap GetImage()
     {
-        var file = Obj.GetIconFile();
-        if (File.Exists(file))
-        {
-            return new Bitmap(file);
-        }
-        else
-        {
-            return App.GameIcon;
-        }
+        var icon = ImageManager.GetGameIcon(Obj);
+        return icon ?? ImageManager.GameIcon;
     }
 
     public async void Rename()
@@ -330,9 +319,6 @@ public partial class GameItemModel : GameModel
 
     protected override void Close()
     {
-        if (Pic != App.GameIcon)
-        {
-            Pic?.Dispose();
-        }
+        
     }
 }
