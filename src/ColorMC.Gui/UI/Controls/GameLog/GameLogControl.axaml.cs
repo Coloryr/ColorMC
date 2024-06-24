@@ -54,7 +54,7 @@ public partial class GameLogControl : BaseUserControl
         (DataContext as GameLogModel)!.Load1();
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var amodel = new GameLogModel(model, _obj);
         amodel.PropertyChanged += Model_PropertyChanged;

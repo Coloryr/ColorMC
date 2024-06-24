@@ -115,7 +115,6 @@ public partial class MainModel : TopModel, IMainTop
     public MainModel(BaseModel model) : base(model)
     {
         App.SkinLoad += App_SkinLoad;
-
         App.UserEdit += LoadUser;
     }
 

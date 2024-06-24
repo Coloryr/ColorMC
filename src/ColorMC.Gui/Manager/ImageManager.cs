@@ -119,7 +119,7 @@ public static class ImageManager
         }
 
         App.OnPicUpdate();
-        ColorSel.Load();
+        App.ColorChange();
         FuntionUtils.RunGC();
     }
 

@@ -46,7 +46,7 @@ public partial class ServerPackControl : MenuControl
         WindowManager.ServerPackWindows.Remove(_obj.UUID);
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var pack = GameBinding.GetServerPack(_obj);
         if (pack == null)

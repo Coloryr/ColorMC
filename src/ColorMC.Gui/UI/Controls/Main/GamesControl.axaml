@@ -16,38 +16,32 @@
         Padding="5"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Top"
-        Background="{setting:Colors GroupBack}"
-        BorderBrush="{setting:Colors GroupColor}"
-        BorderThickness="1"
-        CornerRadius="{setting:Style ButtonCornerRadius}"
+        Background="{setting:Theme MainGroupBG}"
+        BorderBrush="Transparent"
+        CornerRadius="5"
         Header="{Binding Header}"
         IsExpanded="{Binding Expander, FallbackValue=true}">
         <Expander.Styles>
-            <Style Selector="Expander:pointerover /template/ Border#ExpanderContent">
-                <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
-            </Style>
-
-            <Style Selector="Expander:pointerover /template/ ToggleButton#ExpanderHeader">
-                <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
-            </Style>
-
             <Style Selector="Expander /template/ ToggleButton#ExpanderHeader">
-                <Setter Property="Background" Value="{setting:Colors GroupBack}" />
-                <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
-                <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
-
-                <Style Selector="^:checked">
-                    <Setter Property="BorderThickness" Value="1,1,1,0" />
-                </Style>
-
-                <Style Selector="^:pointerover /template/ Border#ToggleButtonBackground">
-                    <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+                <Setter Property="Background" Value="{setting:Theme MainGroupBG}" />
+                <Setter Property="BorderBrush" Value="{setting:Theme MainGroupBorder}" />
+                <Setter Property="BorderThickness" Value="{setting:ThemeThick Border}" />
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+            <Style Selector="Expander:pointerover /template/ ToggleButton#ExpanderHeader">
+                <Style Selector="^ /template/ Border#ToggleButtonBackground">
+                    <Setter Property="BorderBrush" Value="{setting:Theme MainGroupBorder}" />
+                    <Setter Property="Background" Value="{setting:Theme MainGroupBG}" />
                 </Style>
             </Style>
 
-            <Style Selector="Expander /template/ Border#ExpanderContent">
-                <Setter Property="Background" Value="{setting:Colors GroupBack}" />
-                <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
+            <Style Selector="Expander:down /template/ Border#ExpanderContent">
+                <Setter Property="Background" Value="{setting:Theme MainGroupItemBG}" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+            <Style Selector="Expander:pointerover /template/ Border#ExpanderContent">
+                <Setter Property="BorderBrush" Value="Transparent" />
             </Style>
         </Expander.Styles>
         <Panel>

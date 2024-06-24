@@ -48,7 +48,7 @@ public partial class AddJavaControl : BaseUserControl
         WindowManager.AddJavaWindow = null;
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         DataContext = new AddJavaControlModel(model, NeedJava);
     }

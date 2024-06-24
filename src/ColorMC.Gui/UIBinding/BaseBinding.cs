@@ -120,7 +120,6 @@ public static class BaseBinding
         FrpPath.Init(ColorMCGui.RunDir);
 
         FontSel.Load();
-        ColorSel.Load();
         StyleSel.Load();
         App.LoadPageSlide();
 

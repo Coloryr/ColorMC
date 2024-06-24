@@ -123,6 +123,9 @@ public partial class App : Application
                 NowTheme = PlatformThemeVariant.Dark;
                 break;
         }
+
+        ThemeManager.Load();
+        ColorSel.Load();
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -183,6 +186,7 @@ public partial class App : Application
     /// </summary>
     public static void Clear()
     {
+        ThemeManager.Remove();
         ColorSel.Remove();
         FontSel.Remove();
         LangSel.Remove();
@@ -213,9 +217,8 @@ public partial class App : Application
     {
         if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
         {
-            NowTheme = PlatformSettings!.GetColorValues().ThemeVariant;
+            ColorChange();
 
-            ColorSel.Load();
             StyleSel.Load();
         }
     }

@@ -44,7 +44,7 @@ public partial class GameExportControl : MenuControl
         WindowManager.GameExportWindows.Remove(_obj.UUID);
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         DataContext = new GameExportModel(model, _obj);
     }

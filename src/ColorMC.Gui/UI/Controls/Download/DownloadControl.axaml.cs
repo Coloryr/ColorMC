@@ -35,7 +35,7 @@ public partial class DownloadControl : BaseUserControl
         return DataContext is DownloadModel model && !await model.Stop();
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var amodel = new DownloadModel(model);
         amodel.PropertyChanged += Amodel_PropertyChanged;

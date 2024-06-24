@@ -46,9 +46,9 @@ public partial class DownloadModel : TopModel
         };
         _timer.Elapsed += Timer_Elapsed;
 
-        Model.SetChoiseContent(_useName,
-            App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
-        Model.SetChoiseCall(_useName, Pause, () => _ = Stop());
+        Model.SetChoiseContent(_useName, App.Lang("DownloadWindow.Text2"),
+            App.Lang("DownloadWindow.Text1"));
+        Model.SetChoiseCall(_useName, () => _ = Stop(), Pause);
         Model.HeadBackEnable = false;
     }
 
