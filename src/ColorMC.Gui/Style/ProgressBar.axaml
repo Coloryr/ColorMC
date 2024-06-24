@@ -12,6 +12,12 @@
     </Design.PreviewWith>
 
     <Style Selector="ProgressBar">
-        <Setter Property="Foreground" Value="{setting:Colors Main}" />
+        <Setter Property="Foreground" Value="{setting:Theme RandomColor}" />
+    </Style>
+
+    <Style Selector="ProgressBar:horizontal">
+        <Style Selector="^ Border#ProgressBarRoot">
+            <Setter Property="Background" Value="{setting:Theme ProgressBarBG}" />
+        </Style>
     </Style>
 </Styles>

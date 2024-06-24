@@ -34,7 +34,7 @@ public partial class AddGameControl : BaseUserControl
         AddHandler(DragDrop.DropEvent, Drop);
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var amodel = new AddGameModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;
@@ -91,11 +91,7 @@ public partial class AddGameControl : BaseUserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "WindowClose")
-        {
-            Window.Close();
-        }
-        else if (e.PropertyName == "GoTab1")
+        if (e.PropertyName == "GoTab1")
         {
             Content1.Child = _tab1 ??= new();
         }

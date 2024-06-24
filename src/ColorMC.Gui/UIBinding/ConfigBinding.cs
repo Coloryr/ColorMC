@@ -49,7 +49,7 @@ public static class ConfigBinding
         var res = GuiConfigUtils.Load(dir, true);
         if (res)
         {
-            ColorSel.Load();
+            App.ColorChange();
             FontSel.Load();
             StyleSel.Load();
         }
@@ -84,7 +84,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.RGB = enable;
 
         GuiConfigUtils.Save();
-        ColorSel.Load();
+        App.ColorChange();
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.RGBS = v1;
         GuiConfigUtils.Config.RGBV = v2;
         GuiConfigUtils.Save();
-        ColorSel.Load();
+        App.ColorChange();
     }
 
     /// <summary>
@@ -114,7 +114,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ColorDark.ColorFont1 = font3;
         GuiConfigUtils.Config.ColorDark.ColorFont2 = font4;
         GuiConfigUtils.Save();
-        ColorSel.Load();
+        App.ColorChange();
     }
 
     /// <summary>
@@ -204,6 +204,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.WindowTran = open;
         GuiConfigUtils.Save();
 
+        App.ColorChange();
         App.OnPicUpdate();
     }
 
@@ -490,14 +491,13 @@ public static class ConfigBinding
     /// 设置主题色
     /// </summary>
     /// <param name="type"></param>
-    public static async void SetColorType(ColorType type)
+    public static void SetColorType(ColorType type)
     {
         GuiConfigUtils.Config.ColorType = type;
         GuiConfigUtils.Save();
 
         App.ColorChange();
-        ColorSel.Load();
-        await ImageManager.LoadImage();
+        App.OnPicUpdate();
     }
 
     /// <summary>
@@ -541,7 +541,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         WindowManager.MainWindow?.MotdLoad();
-        ColorSel.Load();
+        App.ColorChange();
     }
 
     /// <summary>

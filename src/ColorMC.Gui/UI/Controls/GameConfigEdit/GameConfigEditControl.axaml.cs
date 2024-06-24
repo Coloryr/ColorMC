@@ -120,7 +120,7 @@ public partial class GameConfigEditControl : BaseUserControl
         WindowManager.ConfigEditWindows.Remove(key);
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var amodel = new GameConfigEditModel(model, _obj, _world);
         amodel.PropertyChanged += Model_PropertyChanged;

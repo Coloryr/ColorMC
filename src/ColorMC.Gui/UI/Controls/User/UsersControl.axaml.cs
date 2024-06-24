@@ -107,7 +107,7 @@ public partial class UsersControl : BaseUserControl
         (DataContext as UsersControlModel)!.SetAdd();
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var amodel = new UsersControlModel(model);
         DataContext = amodel;

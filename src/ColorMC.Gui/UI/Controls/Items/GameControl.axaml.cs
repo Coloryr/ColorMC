@@ -36,7 +36,6 @@ public partial class GameControl : UserControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        Opacity = 0;
         Dispatcher.UIThread.Post(FadeIn);
     }
 

@@ -311,7 +311,7 @@ public partial class MainControl : BaseUserControl
         (DataContext as MainModel)!.ShowMessage(message);
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var amodel = new MainModel(model);
         amodel.PropertyChanged += Amodel_PropertyChanged;

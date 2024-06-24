@@ -38,7 +38,7 @@ public partial class NetFrpControl : MenuControl
         }
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         DataContext = new NetFrpModel(model);
     }
