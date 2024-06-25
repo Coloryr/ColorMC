@@ -13,8 +13,9 @@
     mc:Ignorable="d">
     <Panel>
         <Button
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            Padding="10"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
             Background="Transparent"
             BorderThickness="0"
             Command="{Binding AddGame}"
@@ -27,10 +28,6 @@
                     Fill="{setting:Colors Font}"
                     Path="/Resource/Icon/add1.svg"
                     Stroke="{setting:Colors Font}" />
-                <TextBlock
-                    Margin="0,0,0,5"
-                    HorizontalAlignment="Center"
-                    Text="{setting:Localize MainWindow.Text8}" />
             </StackPanel>
         </Button>
         <Button
@@ -74,6 +71,7 @@
                     </StackPanel>
                     <TextBlock
                         MinWidth="72"
+                        MaxWidth="200"
                         Margin="10,0,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"

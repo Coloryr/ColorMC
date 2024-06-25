@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.McMod;
@@ -9,6 +10,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -41,6 +43,8 @@ public partial class FileItemModel : ObservableObject
     private bool _enableButton;
     [ObservableProperty]
     private bool _haveDownload;
+    [ObservableProperty]
+    private IBrush _border;
 
     public FileItemModel(FileItemObj data, IAddWindow add)
     {
@@ -66,6 +70,14 @@ public partial class FileItemModel : ObservableObject
     partial void OnIsSelectChanged(bool value)
     {
         EnableButton = Top || IsSelect;
+        if (IsSelect)
+        {
+            Border = ColorSel.MainColor;
+        }
+        else
+        {
+            Border = Brushes.Transparent;
+        }
     }
 
     partial void OnTopChanged(bool value)

@@ -63,9 +63,9 @@ public static class ThemeManager
             }
             return Brushes.Transparent;
         }
-        else if (key == "DownloadItemBG")
+        else if (key == "ItemBG")
         {
-            return s_theme.DownloadItemBG;
+            return s_theme.ItemBG;
         }
         else if (key == "MainGroupBG")
         {
@@ -99,15 +99,6 @@ public static class ThemeManager
         else if (key == "GameItemBG")
         {
             return s_theme.GameItemBG;
-        }
-        else if (key == "DownloadItemBorder")
-        {
-            if (GuiConfigUtils.Config.WindowTran && ImageManager.BackBitmap == null)
-            {
-                return s_theme.DownloadItemBorder;
-            }
-
-            return Brushes.Transparent;
         }
         else if (key == "RandomColor")
         {
@@ -256,12 +247,11 @@ public static class ThemeManager
     {
         s_light = new()
         {
-            WindowBG = Brush.Parse("#FFFFFFFF"),
+            WindowBG = Brush.Parse("#FFF4F4F5"),
             ProgressBarBG = Brush.Parse("#FFe4e4e7"),
             MainGroupBG = Brush.Parse("#FFd4d4d8"),
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
-            DownloadItemBG = Brush.Parse("#FFF4F4F5"),
-            DownloadItemBorder = Brush.Parse("#FFE0E0E0"),
+            ItemBG = Brush.Parse("#FFFFFFFF"),
             GameItemBG = Brush.Parse("#FFF2F2F2")
         };
 
@@ -271,8 +261,7 @@ public static class ThemeManager
             ProgressBarBG = Brush.Parse("#FF3f3f46"),
             MainGroupBG = Brush.Parse("#FF27272a"),
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
-            DownloadItemBG = Brush.Parse("#FF27272a"),
-            DownloadItemBorder = Brush.Parse("#FFE0E0E0"),
+            ItemBG = Brush.Parse("#FF27272a"),
             GameItemBG = Brush.Parse("#FFc7c7cb")
         };
     }

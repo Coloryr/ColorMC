@@ -157,7 +157,6 @@ public partial class AddControl : BaseUserControl
             {
                 return;
             }
-            model.DisplayFilter = false;
         }
     }
 
