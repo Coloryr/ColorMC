@@ -69,7 +69,7 @@ public partial class SkinControl : BaseUserControl
         WindowManager.SkinWindow = null;
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var amodel = new SkinModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;

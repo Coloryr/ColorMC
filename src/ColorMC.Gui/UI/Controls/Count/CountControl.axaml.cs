@@ -27,7 +27,7 @@ public partial class CountControl : BaseUserControl
         Window.SetTitle(Title);
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         DataContext = new CountModel();
     }

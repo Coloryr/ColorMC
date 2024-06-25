@@ -16,10 +16,12 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
@@ -2047,5 +2049,10 @@ public static class GameBinding
     public static Task<(bool, string?)> SetGameLoader(GameSettingObj obj, string path)
     {
         return obj.SetGameLoader(path);
+    }
+
+    public static Task<McModTypsObj?> GetMcModCategories()
+    {
+        return ColorMCAPI.GetMcModGroup();
     }
 }

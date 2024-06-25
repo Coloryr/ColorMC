@@ -78,7 +78,7 @@ public partial class GameEditControl : MenuControl
         WindowManager.GameEditWindows.Remove(_obj.UUID);
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         DataContext = new GameEditModel(model, _obj);
     }

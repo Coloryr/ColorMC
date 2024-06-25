@@ -57,7 +57,7 @@ public partial class ErrorControl : BaseUserControl
         }
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         if (_type)
         {
