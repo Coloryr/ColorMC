@@ -31,8 +31,8 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// 显示的下载模组项目列表
     /// </summary>
     public ObservableCollection<DownloadModModel> DownloadModList { get; init; } = [];
-    /// 显示的<summary>
-    /// 下载类型列表
+    /// <summary>
+    /// 显示的下载类型列表
     /// </summary>
     public string[] TypeList { get; init; } = LanguageBinding.GetAddType();
     /// <summary>
@@ -435,6 +435,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             Model.ProgressClose();
             if (list == null || list1 == null)
             {
+                _load = false;
                 Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
                 return;
             }
@@ -479,6 +480,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             Model.ProgressClose();
             if (list == null || list1 == null)
             {
+                _load = false;
                 Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
                 return;
             }
@@ -516,8 +518,29 @@ public partial class AddControlModel : GameModel, IAddWindow
         //McMod搜索源
         else if (type == SourceType.McMod)
         {
-            GameVersionList.Add("");
-            GameVersionList.Add(Obj.Version);
+            Model.Progress(App.Lang("AddModPackWindow.Info4"));
+            var list = await GameBinding.GetMcModCategories();
+            Model.ProgressClose();
+            if (list == null)
+            {
+                _load = false;
+                Model.ShowOk(App.Lang("AddModPackWindow.Error4"), LoadFail);
+                return;
+            }
+            GameVersionList.AddRange(list.versions);
+
+            Categories.Clear();
+            Categories.Add(0, "");
+            int a = 1;
+            foreach (var item in list.types)
+            {
+                Categories.Add(a++, item);
+            }
+
+            SortTypeList.Add("");
+            SortTypeList.AddRange(list.sorts);
+
+            CategorieList.AddRange(Categories.Values);
 
             if (GameVersionList.Contains(Obj.Version))
             {
@@ -575,7 +598,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         if (type == SourceType.McMod)
         {
             //McMod搜索源
-            var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0);
+            var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0, Obj.Loader, Obj.Version, Categories[Categorie], SortType);
             if (data == null)
             {
                 Model.ProgressClose();

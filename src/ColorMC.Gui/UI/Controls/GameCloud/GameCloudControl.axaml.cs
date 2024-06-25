@@ -40,7 +40,7 @@ public partial class GameCloudControl : MenuControl
         WindowManager.GameCloudWindows.Remove((DataContext as GameCloudModel)!.Obj.UUID);
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         DataContext = new GameCloudModel(model, Obj);
     }

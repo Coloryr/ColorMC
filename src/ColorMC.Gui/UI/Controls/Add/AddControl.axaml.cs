@@ -43,7 +43,7 @@ public partial class AddControl : BaseUserControl
         ScrollViewer1.ScrollChanged += ScrollViewer1_ScrollChanged;
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var amodel = new AddControlModel(model, _obj);
         amodel.PropertyChanged += Model_PropertyChanged;

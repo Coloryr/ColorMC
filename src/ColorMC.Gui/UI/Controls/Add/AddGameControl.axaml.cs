@@ -34,7 +34,7 @@ public partial class AddGameControl : BaseUserControl
         AddHandler(DragDrop.DropEvent, Drop);
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var amodel = new AddGameModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;

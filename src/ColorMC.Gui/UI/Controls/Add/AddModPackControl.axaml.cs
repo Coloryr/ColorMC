@@ -55,7 +55,7 @@ public partial class AddModPackControl : BaseUserControl
         (DataContext as AddModPackControlModel)!.Source = 0;
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         var amodel = new AddModPackControlModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;

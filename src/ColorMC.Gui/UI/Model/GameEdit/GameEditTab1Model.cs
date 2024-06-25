@@ -738,7 +738,7 @@ public partial class GameEditModel
 
         opt.TryGetValue("lang", out string? lang);
 
-        if (lang != null)
+        if (lang != null && !string.IsNullOrWhiteSpace(_obj.Version))
         {
             var list = await Task.Run(() =>
             {

@@ -132,7 +132,7 @@ public partial class CustomControl : BaseUserControl, IMainTop
 
     }
 
-    public override void SetBaseModel(BaseModel model)
+    public override void SetModel(BaseModel model)
     {
         DataContext = model;
     }
