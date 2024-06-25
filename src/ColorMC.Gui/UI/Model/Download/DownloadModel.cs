@@ -58,14 +58,14 @@ public partial class DownloadModel : TopModel
         {
             BaseBinding.DownloadResume();
             Model.SetChoiseContent(_useName,
-                App.Lang("DownloadWindow.Text1"), App.Lang("DownloadWindow.Text2"));
+                App.Lang("DownloadWindow.Text2"), App.Lang("DownloadWindow.Text1"));
             Model.Notify(App.Lang("DownloadWindow.Info3"));
         }
         else
         {
             BaseBinding.DownloadPause();
             Model.SetChoiseContent(_useName,
-                App.Lang("DownloadWindow.Text4"), App.Lang("DownloadWindow.Text2"));
+                App.Lang("DownloadWindow.Text2"), App.Lang("DownloadWindow.Text4"));
             Model.Notify(App.Lang("DownloadWindow.Info2"));
         }
     }

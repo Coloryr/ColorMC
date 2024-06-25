@@ -234,12 +234,6 @@ public partial class AddControlModel : GameModel, IAddWindow
     [ObservableProperty]
     private string? _gameVersionDownload;
 
-    /// <summary>
-    /// 展示搜索选项
-    /// </summary>
-    [ObservableProperty]
-    private bool _displayFilter = true;
-
     private double _count;
 
     private readonly string _useName;
@@ -247,11 +241,6 @@ public partial class AddControlModel : GameModel, IAddWindow
     public AddControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
         _useName = ToString() ?? "AddControlModel";
-        Model.SetChoiseContent(_useName, App.Lang("Button.Filter"));
-        Model.SetChoiseCall(_useName, () =>
-        {
-            DisplayFilter = !DisplayFilter;
-        });
     }
 
     partial void OnOptifineDisplayChanged(bool value)

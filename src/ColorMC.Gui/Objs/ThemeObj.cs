@@ -13,7 +13,6 @@ public record ThemeObj
     public IBrush ProgressBarBG;
     public IBrush MainGroupBG;
     public IBrush MainGroupBorder;
-    public IBrush DownloadItemBG;
-    public IBrush DownloadItemBorder;
+    public IBrush ItemBG;
     public IBrush GameItemBG;
 }

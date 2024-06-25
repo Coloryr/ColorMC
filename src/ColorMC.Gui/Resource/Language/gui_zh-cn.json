@@ -601,7 +601,7 @@
 	"DownloadWindow.Title": "下载列表",
 	"DownloadWindow.DataGrid.Text2": "状态",
 	"DownloadWindow.DataGrid.Text4": "总大小(Mb)",
-	"DownloadWindow.DataGrid.Text5": "错误次数",
+	"DownloadWindow.DataGrid.Text5": "错误次数：",
 	"DownloadWindow.Text1": "暂停下载",
 	"DownloadWindow.Text2": "停止下载",
 	"DownloadWindow.Text4": "继续下载",

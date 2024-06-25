@@ -46,6 +46,7 @@
         </Expander.Styles>
         <Panel>
             <ItemsControl
+                Margin="0,10,0,-10"
                 VerticalAlignment="Top"
                 Background="Transparent"
                 ItemsSource="{Binding GameList}">
@@ -56,7 +57,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <views1:GameControl DataContext="{Binding}" />
+                        <views1:GameControl Margin="0,0,10,10" DataContext="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
