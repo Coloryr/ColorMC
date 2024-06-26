@@ -68,6 +68,10 @@ public static class InstancesPath
 
     private static FileSystemWatcher s_systemWatcher;
     private static bool s_init;
+    private static bool s_change;
+    private static int s_delay;
+
+    private static readonly object s_lock = new();
 
     /// <summary>
     /// 游戏实例列表
@@ -114,7 +118,7 @@ public static class InstancesPath
 
         if (!s_init)
         {
-            ColorMCCore.OnInstanceChange();
+            StartChange();
         }
     }
 
@@ -142,7 +146,32 @@ public static class InstancesPath
 
         if (!s_init)
         {
-            ColorMCCore.OnInstanceChange();
+            StartChange();
+        }
+    }
+
+    private static void StartChange()
+    {
+        lock (s_lock)
+        {
+            s_delay = 500;
+            if (!s_change)
+            {
+                s_change = true;
+                Task.Run(() =>
+                {
+                    while (s_delay != 0)
+                    {
+                        Thread.Sleep(s_delay);
+                        lock (s_lock)
+                        {
+                            s_delay = 0;
+                        }
+                    }
+                    ColorMCCore.OnInstanceChange();
+                    s_change = false;
+                });
+            }
         }
     }
 
