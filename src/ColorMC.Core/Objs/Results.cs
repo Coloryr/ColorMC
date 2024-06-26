@@ -192,3 +192,9 @@ public record MessageRes
     public bool State;
     public string? Message;
 }
+
+public record IntRes
+{
+    public bool State;
+    public int? Data;
+}

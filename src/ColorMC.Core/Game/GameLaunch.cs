@@ -1045,7 +1045,7 @@ public static class Launch
             res.Add(res3);
         }
 
-        if (obj.GetModeFast() && obj.Loader == Loaders.Normal && larg.Request != null)
+        if (obj.GetModFast() && obj.Loader == Loaders.Normal && larg.Request != null)
         {
             var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
             if (!res2)

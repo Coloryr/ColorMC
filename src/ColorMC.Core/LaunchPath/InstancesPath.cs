@@ -45,6 +45,8 @@ public static class InstancesPath
     /// </summary>
     public static string BaseDir { get; private set; }
 
+    public static bool AddGames { get; set; }
+
     /// <summary>
     /// 获取所有游戏实例
     /// </summary>
@@ -68,6 +70,10 @@ public static class InstancesPath
 
     private static FileSystemWatcher s_systemWatcher;
     private static bool s_init;
+    private static bool s_change;
+    private static int s_delay;
+
+    private static readonly object s_lock = new();
 
     /// <summary>
     /// 游戏实例列表
@@ -114,7 +120,7 @@ public static class InstancesPath
 
         if (!s_init)
         {
-            ColorMCCore.OnInstanceChange();
+            StartChange();
         }
     }
 
@@ -142,7 +148,32 @@ public static class InstancesPath
 
         if (!s_init)
         {
-            ColorMCCore.OnInstanceChange();
+            StartChange();
+        }
+    }
+
+    private static void StartChange()
+    {
+        lock (s_lock)
+        {
+            s_delay = 500;
+            if (!s_change)
+            {
+                s_change = true;
+                Task.Run(() =>
+                {
+                    while (s_delay != 0)
+                    {
+                        Thread.Sleep(s_delay);
+                        lock (s_lock)
+                        {
+                            s_delay = 0;
+                        }
+                    }
+                    ColorMCCore.OnInstanceChange();
+                    s_change = false;
+                });
+            }
         }
     }
 
@@ -214,6 +245,11 @@ public static class InstancesPath
 
     private static void SystemWatcher_Deleted(object sender, FileSystemEventArgs e)
     {
+        if (AddGames)
+        {
+            return;
+        }
+
         var local = e.FullPath;
 
         var obj = s_installGames.Values.FirstOrDefault(item => item.DirName == e.Name);
@@ -222,6 +258,10 @@ public static class InstancesPath
 
     private static void SystemWatcher_Created(object sender, FileSystemEventArgs e)
     {
+        if (AddGames)
+        {
+            return;
+        }
         var local = e.FullPath;
         if (Directory.Exists(local))
         {

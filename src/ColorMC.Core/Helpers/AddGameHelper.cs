@@ -112,7 +112,7 @@ public static class AddGameHelper
 
         return new GameRes
         {
-            State = false,
+            State = true,
             Game = game
         };
     }

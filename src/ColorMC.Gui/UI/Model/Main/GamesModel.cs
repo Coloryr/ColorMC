@@ -121,6 +121,10 @@ public partial class GamesModel : TopModel
             remove.Add(item);
         }
 
+        if (GameList.Count == 0 || GameList.Count - 1 < 0)
+        {
+            return;
+        }
         GameList.RemoveAt(GameList.Count - 1);
 
         foreach (var item in remove)

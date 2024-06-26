@@ -72,6 +72,8 @@ public static class BaseBinding
     /// </summary>
     private static string s_launch;
 
+    public static bool IsAddGames { set { InstancesPath.AddGames = value; } }
+
     /// <summary>
     /// 初始化
     /// </summary>
