@@ -165,6 +165,7 @@ public partial class AddGameModel
 
     private async Task Import(List<string> list)
     {
+        BaseBinding.IsAddGame = true;
         bool ok = true;
         foreach (var item in list)
         {
@@ -179,9 +180,11 @@ public partial class AddGameModel
                 return;
             }
         }
+        BaseBinding.IsAddGame = false;
 
         if (ok)
         {
+            WindowManager.MainWindow?.LoadMain();
             var model = WindowManager.MainWindow?.DataContext as MainModel;
             model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
             WindowClose();

@@ -72,6 +72,8 @@ public static class BaseBinding
     /// </summary>
     private static string s_launch;
 
+    public static bool IsAddGame;
+
     /// <summary>
     /// 初始化
     /// </summary>
@@ -132,6 +134,10 @@ public static class BaseBinding
 
     private static void InstanceChange()
     {
+        if (IsAddGame)
+        {
+            return;
+        }
         WindowManager.MainWindow?.LoadMain();
     }
 
