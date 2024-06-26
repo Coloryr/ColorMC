@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     MinHeight="100"
     d:DesignWidth="500"
     x:DataType="model:FileItemModel"
@@ -14,11 +15,9 @@
     ToolTip.VerticalOffset="-30"
     mc:Ignorable="d">
     <Border
-        Margin="10"
+        Margin="10,5,10,5"
         Background="{setting:Theme ItemBG}"
-        BorderBrush="{Binding Border}"
-        BorderThickness="1"
-        BoxShadow="0 1 3 0 #1A000000, 0 1 2 -1 #1A000000"
+        BoxShadow="{Binding Border}"
         CornerRadius="5">
         <Panel Margin="15">
             <Panel>
@@ -32,24 +31,18 @@
                         <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadIcon}}" Stretch="UniformToFill" />
                     </Border.Background>
                 </Border>
-                <StackPanel Margin="100,0,0,0">
-                    <WrapPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                        <TextBlock Margin="0,0,10,0" Text="{Binding Name}" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text1}" />
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                Text="{Binding Author}"
-                                TextTrimming="CharacterEllipsis" />
-                        </StackPanel>
-                    </WrapPanel>
+                <DockPanel Margin="110,0,0,0">
                     <TextBlock
-                        Margin="0,0,5,0"
-                        MaxLines="2"
-                        Text="{Binding Summary}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="Wrap" />
-                    <WrapPanel>
+                        DockPanel.Dock="Top"
+                        FontSize="16"
+                        Foreground="{setting:Colors Main}"
+                        Text="{Binding Name, FallbackValue=1234}" />
+                    <TextBlock
+                        DockPanel.Dock="Top"
+                        Foreground="#FF9A9A9A"
+                        Text="{Binding Author, FallbackValue=Author}"
+                        TextTrimming="CharacterEllipsis" />
+                    <WrapPanel DockPanel.Dock="Bottom">
                         <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
                             <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text2}" />
                             <TextBlock Text="{Binding DownloadCount}" />
@@ -59,7 +52,12 @@
                             <TextBlock Text="{Binding ModifiedDate}" />
                         </StackPanel>
                     </WrapPanel>
-                </StackPanel>
+                    <TextBlock
+                        MaxLines="2"
+                        Text="{Binding Summary}"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="Wrap" />
+                </DockPanel>
             </Panel>
             <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
                 <Button
@@ -69,7 +67,10 @@
                     Classes="top"
                     Command="{Binding OpenWeb}"
                     IsVisible="{Binding EnableButton}">
-                    <Svg Path="/Resource/Icon/Item/web.svg" />
+                    <svg:SvgControl
+                        Fill="{setting:Colors Font}"
+                        Path="/Resource/Icon/Item/web.svg"
+                        Stroke="{setting:Colors Font}" />
                 </Button>
                 <Button
                     Width="35"
@@ -79,7 +80,10 @@
                     Command="{Binding Install}"
                     IsEnabled="{Binding HaveDownload}"
                     IsVisible="{Binding EnableButton, FallbackValue=true}">
-                    <Svg Path="/Resource/Icon/Item/download.svg" />
+                    <svg:SvgControl
+                        Fill="{setting:Colors Font}"
+                        Path="/Resource/Icon/Item/download.svg"
+                        Stroke="{setting:Colors Font}" />
                 </Button>
             </StackPanel>
             <TextBlock

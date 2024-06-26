@@ -18,9 +18,10 @@
     <Style Selector="ComboBox">
         <Setter Property="MaxDropDownHeight" Value="300" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Background" Value="{setting:Colors Back}" />
-        <Setter Property="BorderBrush" Value="#44808080" />
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="BorderBrush" Value="#FFe5e7eb" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
 
         <Style Selector="^:pointerover /template/ Border#Background">
             <Setter Property="BorderBrush" Value="{setting:Colors Main}" />

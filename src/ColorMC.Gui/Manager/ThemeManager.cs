@@ -100,6 +100,10 @@ public static class ThemeManager
         {
             return s_theme.GameItemBG;
         }
+        else if (key == "TopViewBG")
+        {
+            return s_theme.TopViewBG;
+        }
         else if (key == "RandomColor")
         {
             return s_colors[s_random.Next(s_colors.Length)];
@@ -252,7 +256,8 @@ public static class ThemeManager
             MainGroupBG = Brush.Parse("#FFd4d4d8"),
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
             ItemBG = Brush.Parse("#FFFFFFFF"),
-            GameItemBG = Brush.Parse("#FFF2F2F2")
+            GameItemBG = Brush.Parse("#FFF2F2F2"),
+            TopViewBG = Brush.Parse("#886D6D6D")
         };
 
         s_dark = new()
@@ -262,7 +267,8 @@ public static class ThemeManager
             MainGroupBG = Brush.Parse("#FF27272a"),
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
             ItemBG = Brush.Parse("#FF27272a"),
-            GameItemBG = Brush.Parse("#FFc7c7cb")
+            GameItemBG = Brush.Parse("#FFc7c7cb"),
+            TopViewBG = Brush.Parse("#886D6D6D")
         };
     }
 }

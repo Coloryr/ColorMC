@@ -16,93 +16,94 @@
         <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
             <DockPanel Margin="10">
                 <Border
-                    Margin="10"
+                    Margin="10,10,10,5"
                     Background="{setting:Theme ItemBG}"
                     BoxShadow="0 1 3 0 #1A000000, 0 1 2 -1 #1A000000"
                     CornerRadius="5"
                     DockPanel.Dock="Top"
                     IsEnabled="{Binding !IsDownload}">
                     <StackPanel Margin="15">
-                        <WrapPanel Margin="0,0,0,0">
-                            <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                        <WrapPanel>
+                            <DockPanel Width="200" Margin="0,0,10,5">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                                 <ComboBox
-                                    Width="120"
                                     Height="30"
+                                    HorizontalAlignment="Stretch"
                                     IsEnabled="{ReflectionBinding !Set}"
                                     ItemsSource="{Binding TypeList}"
                                     SelectedIndex="{Binding Type}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                            </DockPanel>
+                            <DockPanel Width="200" Margin="0,0,10,5">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text2}" />
                                 <ComboBox
-                                    Width="120"
                                     Height="30"
+                                    HorizontalAlignment="Stretch"
                                     ItemsSource="{Binding DownloadSourceList}"
                                     SelectedIndex="{Binding DownloadSource}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                            </DockPanel>
+                            <DockPanel Width="200" Margin="0,0,0,5">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                                 <ComboBox
-                                    Width="120"
                                     Height="30"
+                                    HorizontalAlignment="Stretch"
                                     ItemsSource="{Binding GameVersionList}"
                                     SelectedItem="{Binding GameVersion}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text5}" />
-                                <NumericUpDown
-                                    Width="120"
-                                    Height="30"
-                                    FormatString="N0"
-                                    Minimum="0"
-                                    Value="{Binding Page}" />
-                            </StackPanel>
+                            </DockPanel>
                         </WrapPanel>
                         <WrapPanel Margin="0,0,0,-5">
-                            <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                            <DockPanel Width="200" Margin="0,0,10,5">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text4}" />
                                 <ComboBox
-                                    Width="120"
                                     Height="30"
+                                    HorizontalAlignment="Stretch"
                                     ItemsSource="{Binding SortTypeList}"
                                     SelectedIndex="{Binding SortType}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                            </DockPanel>
+                            <DockPanel Width="200" Margin="0,0,0,5">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text5}" />
                                 <ComboBox
-                                    Width="120"
                                     Height="30"
+                                    HorizontalAlignment="Stretch"
                                     ItemsSource="{Binding CategorieList}"
                                     SelectedIndex="{Binding Categorie}" />
-                            </StackPanel>
-                            <TextBox
-                                Width="150"
+                            </DockPanel>
+                        </WrapPanel>
+                        <DockPanel Margin="0,5,0,0">
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-3,3,-2"
+                                Classes="top"
+                                Command="{Binding GetList}"
+                                Content="{setting:Localize AddModPackWindow.Text8}"
+                                DockPanel.Dock="Right"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text75}"
+                                ToolTip.VerticalOffset="-30" />
+                            <NumericUpDown
+                                Width="110"
                                 Height="30"
-                                Margin="0,0,5,5"
+                                Margin="0,0,10,0"
+                                DockPanel.Dock="Right"
+                                FormatString="N0"
+                                Minimum="0"
+                                Value="{Binding Page}" />
+                            <TextBox
+                                Height="30"
+                                Margin="0,0,10,0"
                                 HorizontalAlignment="Stretch"
-                                Classes="input1"
                                 Text="{Binding Name}"
                                 Watermark="{setting:Localize Text.Name}">
                                 <TextBox.KeyBindings>
                                     <KeyBinding Command="{Binding GetNameList}" Gesture="Enter" />
                                 </TextBox.KeyBindings>
                             </TextBox>
-                            <Button
-                                Width="100"
-                                Height="30"
-                                Margin="-2,-3,3,-2"
-                                Classes="top"
-                                Command="{Binding GetList}"
-                                Content="{setting:Localize AddModPackWindow.Text8}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text75}"
-                                ToolTip.VerticalOffset="-30" />
-                        </WrapPanel>
+                        </DockPanel>
                     </StackPanel>
                 </Border>
 
                 <Panel>
                     <ItemsControl
+                        Margin="0,0,0,5"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         ItemsSource="{Binding DisplayList}">
@@ -114,7 +115,7 @@
                     </ItemsControl>
 
                     <Border
-                        Margin="10"
+                        Margin="10,5,10,10"
                         Classes="t1"
                         IsVisible="{Binding EmptyDisplay}">
                         <TextBlock
@@ -127,13 +128,15 @@
         </ScrollViewer>
         <DockPanel
             Name="VersionDisplay"
-            Background="{setting:Colors TopBottom}"
+            Background="{setting:Theme TopViewBG}"
             IsVisible="False">
             <Border
-                Margin="5"
-                Classes="t2"
+                Margin="10,10,10,5"
+                Background="{setting:Theme ItemBG}"
+                BoxShadow="0 1 3 0 #1A000000, 0 1 2 -1 #1A000000"
+                CornerRadius="5"
                 DockPanel.Dock="Top">
-                <WrapPanel Margin="0,0,0,-5">
+                <WrapPanel Margin="10,10,10,5">
                     <TextBlock Margin="0,0,5,5" Text="{setting:Localize Text.GameVersion}" />
                     <ComboBox
                         Width="100"
@@ -155,7 +158,7 @@
 
                     <Button
                         Width="100"
-                        Height="30"
+                        Height="35"
                         Margin="-2,-7,3,-2"
                         Classes="top"
                         Command="{Binding Refresh1}"
@@ -164,7 +167,7 @@
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="30"
+                        Height="35"
                         Margin="-2,-7,3,-2"
                         Classes="top"
                         Command="{Binding GoFile}"
@@ -173,21 +176,25 @@
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
-            <Border Margin="5,0,5,5" Classes="t1">
+            <Border
+                Margin="10,5,10,10"
+                Background="{setting:Theme ItemBG}"
+                BoxShadow="0 1 3 0 #1A000000, 0 1 2 -1 #1A000000"
+                CornerRadius="5">
                 <DataGrid
                     Name="VersionFiles"
-                    Background="{setting:Colors TranBack}"
+                    Margin="10"
                     CanUserResizeColumns="True"
                     ItemsSource="{Binding FileList}"
                     SelectedItem="{Binding File}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{setting:Localize Text.Name}"
-                            IsReadOnly="True" />
                         <DataGridCheckBoxColumn
                             Binding="{Binding IsDownload}"
                             Header="{setting:Localize Text.Downloaded}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize Text.Name}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Size}"
