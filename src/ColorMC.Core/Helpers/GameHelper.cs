@@ -765,7 +765,7 @@ public static class GameHelper
                 {
                     var obj = JObject.Parse(PathHelper.ReadText(item3.FullName)!);
                     if (obj.ContainsKey("id")
-                        && obj.ContainsKey("arguments")
+                        && (obj.ContainsKey("arguments") || obj.ContainsKey("minecraftArguments"))
                         && obj.ContainsKey("mainClass"))
                     {
                         find = true;

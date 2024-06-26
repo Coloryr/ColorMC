@@ -165,7 +165,7 @@ public partial class AddGameModel
 
     private async Task Import(List<string> list)
     {
-        BaseBinding.IsAddGame = true;
+        BaseBinding.IsAddGames = true;
         bool ok = true;
         foreach (var item in list)
         {
@@ -180,7 +180,7 @@ public partial class AddGameModel
                 return;
             }
         }
-        BaseBinding.IsAddGame = false;
+        BaseBinding.IsAddGames = false;
 
         if (ok)
         {

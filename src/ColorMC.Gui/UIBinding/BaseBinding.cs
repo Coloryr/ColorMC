@@ -72,7 +72,7 @@ public static class BaseBinding
     /// </summary>
     private static string s_launch;
 
-    public static bool IsAddGame;
+    public static bool IsAddGames { set { InstancesPath.AddGames = value; } }
 
     /// <summary>
     /// 初始化
@@ -134,10 +134,6 @@ public static class BaseBinding
 
     private static void InstanceChange()
     {
-        if (IsAddGame)
-        {
-            return;
-        }
         WindowManager.MainWindow?.LoadMain();
     }
 
