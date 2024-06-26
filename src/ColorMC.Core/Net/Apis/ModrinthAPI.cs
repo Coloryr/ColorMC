@@ -251,6 +251,25 @@ public static class ModrinthAPI
     }
 
     /// <summary>
+    /// 从文件Sha1获取项目
+    /// </summary>
+    /// <param name="sha1"></param>
+    /// <returns></returns>
+    public static async Task<ModrinthVersionFileObj?> GetVersionFromSha1(string sha1)
+    {
+        try
+        {
+            var res = await BaseClient.DownloadClient.GetStringAsync($"{UrlHelper.Modrinth}version_file/{sha1}");
+            return JsonConvert.DeserializeObject<ModrinthVersionFileObj>(res);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.Modrinth.Error5"), e);
+            return null;
+        }
+    }
+
+    /// <summary>
     /// 获取Mod依赖
     /// </summary>
     /// <param name="data">mod</param>

@@ -2055,4 +2055,9 @@ public static class GameBinding
     {
         return ColorMCAPI.GetMcModGroup();
     }
+
+    public static Task<IntRes> AutoMarkMods(GameSettingObj obj, bool cov)
+    {
+        return ModrinthHelper.AutoMark(obj, cov);
+    }
 }
