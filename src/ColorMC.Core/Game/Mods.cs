@@ -335,7 +335,7 @@ public static class Mods
         //}, async (item, cancel) =>
         await Parallel.ForEachAsync(files, async (item, cancel) =>
         {
-            if (item.Extension is not (".zip" or ".jar" or ".disable"))
+            if (item.Extension is not (".zip" or ".jar" or ".disable" or ".disabled"))
             {
                 return;
             }
@@ -348,29 +348,12 @@ public static class Mods
                 sha1 = HashHelper.GenSha1(filestream);
                 filestream.Seek(0, SeekOrigin.Begin);
 
-                //Mod 资源包
-                if (item.Extension is ".zip")
-                {
-                    var obj3 = new ModObj
-                    {
-                        Local = Path.GetFullPath(item.FullName),
-                        Disable = item.Extension is ".disable",
-                        Loader = Loaders.Fabric,
-                        V2 = true,
-                        name = item.Name,
-                        Sha1 = sha1
-                    };
-                    list.Add(obj3);
-                    add = true;
-                    return;
-                }
-
                 using var zFile = new ZipFile(filestream);
                 var mod = await ReadModAsync(zFile);
                 if (mod != null)
                 {
                     mod.Local = Path.GetFullPath(item.FullName);
-                    mod.Disable = item.Extension is ".disable";
+                    mod.Disable = item.Extension is ".disable" or ".disabled";
                     mod.Sha1 = sha1;
                     mod.Game = obj;
                     list.Add(mod);
@@ -394,7 +377,7 @@ public static class Mods
                     {
                         name = "",
                         Local = Path.GetFullPath(item.FullName),
-                        Disable = item.Extension is ".disable",
+                        Disable = item.Extension is ".disable" or ".disabled",
                         ReadFail = true,
                         Sha1 = sha1,
                         Game = obj
@@ -515,7 +498,7 @@ public static class Mods
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static bool GetModeFast(this GameSettingObj obj)
+    public static bool GetModFast(this GameSettingObj obj)
     {
         string dir = obj.GetModsPath();
 

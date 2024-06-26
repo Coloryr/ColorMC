@@ -75,6 +75,29 @@ public partial class GameEditModel
     }
 
     [RelayCommand]
+    public async Task StartAutoSetMod()
+    {
+        if (_isModSet)
+            return;
+
+        var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab4.Info18"));
+
+        _isModSet = true;
+        Model.Progress(App.Lang("GameEditWindow.Tab4.Info19"));
+        var res1 = await GameBinding.AutoMarkMods(_obj, res);
+        Model.ProgressClose();
+        if (!res1.State)
+        {
+            Model.Show(string.Format(App.Lang("GameEditWindow.Tab4.Error4"), res1.Data));
+        }
+        else
+        {
+            Model.Show(string.Format(App.Lang("GameEditWindow.Tab4.Info20"), res1.Data));
+        }
+        _isModSet = false;
+    }
+
+    [RelayCommand]
     public async Task ImportMod()
     {
         var file = await PathBinding.AddFile(_obj, FileType.Mod);

@@ -75,6 +75,15 @@
                             Height="30"
                             Margin="-2,-3,3,2"
                             Classes="top"
+                            Command="{Binding StartAutoSetMod}"
+                            Content="{setting:Localize GameEditWindow.Tab4.Text7}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text53}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="100"
+                            Height="30"
+                            Margin="-2,-3,3,2"
+                            Classes="top"
                             Command="{Binding StartSetMod}"
                             Content="{setting:Localize GameEditWindow.Tab4.Text4}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text53}"
