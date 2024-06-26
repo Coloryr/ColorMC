@@ -22,6 +22,7 @@
                 <Button
                     Width="80"
                     Height="35"
+                    Background="{setting:Colors Main}"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding ChoiseClick}"
@@ -32,6 +33,7 @@
                 <Button
                     Width="80"
                     Height="35"
+                    Background="{setting:Colors Main}"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding Choise1Click}"
@@ -42,6 +44,7 @@
                 <Button
                     Width="80"
                     Height="35"
+                    Background="{setting:Colors Main}"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding BackClick}"

@@ -64,8 +64,6 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     private bool _display = false;
     [ObservableProperty]
     private bool _emptyDisplay = true;
-    [ObservableProperty]
-    private bool _displayFilter = true;
 
     private double _count;
 
@@ -74,11 +72,6 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     public AddModPackControlModel(BaseModel model) : base(model)
     {
         _useName = ToString() ?? "AddModPackControlModel";
-        Model.SetChoiseContent(_useName, App.Lang("Button.Filter"));
-        Model.SetChoiseCall(_useName, choise: () =>
-        {
-            DisplayFilter = !DisplayFilter;
-        });
     }
 
     partial void OnDisplayChanged(bool value)

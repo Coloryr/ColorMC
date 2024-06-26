@@ -22,21 +22,21 @@
     </Design.PreviewWith>
 
     <Style Selector="Button">
-        <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
-        <Setter Property="BorderBrush" Value="{setting:Colors ButtonBorder}" />
-        <Setter Property="Background" Value="{setting:Colors Main}" />
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
+        <Setter Property="BorderBrush" Value="#FFD4D4D8" />
+        <Setter Property="Background" Value="#FFFFFF" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="Padding" Value="0" />
 
         <Style Selector="^:pressed">
             <Setter Property="RenderTransform" Value="scale(0.95)" />
         </Style>
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{setting:Colors Back1}" />
-            <Setter Property="Foreground" Value="{setting:Colors Font}" />
+            <Setter Property="Background" Value="#FFf4f4f5" />
+            <Setter Property="BorderBrush" Value="#FFD4D4D8" />
         </Style>
         <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#FFAAAAAA" />
@@ -50,30 +50,27 @@
     <Style Selector="Button.top">
         <Setter Property="Template">
             <ControlTemplate>
-                <Decorator Padding="3">
-                    <Border x:Name="PART_Border" CornerRadius="{TemplateBinding CornerRadius}">
-                        <ContentPresenter
-                            x:Name="PART_ContentPresenter"
-                            Padding="{TemplateBinding Padding}"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Content="{TemplateBinding Content}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            CornerRadius="{TemplateBinding CornerRadius}"
-                            RecognizesAccessKey="True" />
-                    </Border>
-                </Decorator>
+                <Border
+                    x:Name="PART_Border"
+                    Margin="3"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <ContentPresenter
+                        x:Name="PART_ContentPresenter"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        RecognizesAccessKey="True" />
+                </Border>
             </ControlTemplate>
         </Setter>
-
         <Style Selector="^ /template/ Border#PART_Border">
-            <Setter Property="BoxShadow" Value="0 1 1 0 #999999" />
-        </Style>
-        <Style Selector="^:pointerover /template/ Border#PART_Border">
-            <Setter Property="BoxShadow" Value="0 1 2 0 #DDDDDD" />
+            <Setter Property="BoxShadow" Value="0 1 2 0 #1A000000" />
         </Style>
     </Style>
 </Styles>

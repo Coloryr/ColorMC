@@ -19,6 +19,8 @@
 
     <Style Selector="TextBox">
         <Setter Property="Foreground" Value="{setting:Colors Font}" />
+        <Setter Property="BorderBrush" Value="#FFe5e7eb" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="SelectionBrush" Value="{setting:Colors Main}" />
 
         <Style Selector="^:pointerover Border#PART_BorderElement">

@@ -20,6 +20,8 @@ public partial class FileItemModel : ObservableObject
 {
     private readonly IAddWindow _add;
 
+    private static readonly BoxShadows shadows = new(BoxShadow.Parse("0 1 3 0 #1A000000"), [BoxShadow.Parse("0 1 2 -1 #1A000000")]);
+
     public Task<Bitmap?> Image => GetImage();
 
     private Bitmap? _img;
@@ -44,7 +46,7 @@ public partial class FileItemModel : ObservableObject
     [ObservableProperty]
     private bool _haveDownload;
     [ObservableProperty]
-    private IBrush _border;
+    private BoxShadows _border = shadows;
 
     public FileItemModel(FileItemObj data, IAddWindow add)
     {
@@ -72,11 +74,15 @@ public partial class FileItemModel : ObservableObject
         EnableButton = Top || IsSelect;
         if (IsSelect)
         {
-            Border = ColorSel.MainColor;
+            var color = ColorSel.MainColor.ToColor();
+            var color1 = new Color(255, color.R, color.G, color.B);
+            var box = BoxShadow.Parse("0 0 3 1 #1A000000");
+            box.Color = color1;
+            Border = new BoxShadows(box);
         }
         else
         {
-            Border = Brushes.Transparent;
+            Border = shadows;
         }
     }
 

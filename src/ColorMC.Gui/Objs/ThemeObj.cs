@@ -15,4 +15,5 @@ public record ThemeObj
     public IBrush MainGroupBorder;
     public IBrush ItemBG;
     public IBrush GameItemBG;
+    public IBrush TopViewBG;
 }
