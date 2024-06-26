@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
@@ -177,5 +179,63 @@ public static class ModrinthHelper
         }
 
         return list;
+    }
+
+    /// <summary>
+    /// 自动标记mod
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="cov"></param>
+    /// <returns></returns>
+    public static async Task<IntRes> AutoMark(GameSettingObj obj, bool cov)
+    {
+        var list = await obj.GetModsAsync();
+        var mods1 = obj.Mods.Values.ToArray();
+
+        var res = new ConcurrentBag<ModInfoObj>();
+
+        int error = 0;
+        int count = 0;
+
+        await Parallel.ForEachAsync(list, async (item, cancel) =>
+        {
+            if (mods1.Any(item1 => item.Sha1 == item1.SHA1) && !cov)
+            {
+                return;
+            }
+
+            var data = await ModrinthAPI.GetVersionFromSha1(item.Sha1);
+            if (data == null)
+            {
+                error++;
+                return;
+            }
+            res.Add(new()
+            {
+                Path = "mods",
+                Name = data.files[0].filename,
+                File = Path.GetFileName(item.Local),
+                SHA1 = item.Sha1,
+                Url = data.files[0].url,
+                ModId = data.project_id,
+                FileId = data.id
+            });
+            count++;
+        });
+
+        foreach (var item in res)
+        {
+            if (!obj.Mods.TryAdd(item.ModId, item))
+            {
+                obj.Mods[item.ModId] = item;
+            }
+        }
+
+        obj.SaveModInfo();
+        if (error != 0)
+        {
+            return new() { Data = error, State = false };
+        }
+        return new() { Data = count, State = true };
     }
 }
