@@ -45,6 +45,8 @@ public static class InstancesPath
     /// </summary>
     public static string BaseDir { get; private set; }
 
+    public static bool AddGames { get; set; }
+
     /// <summary>
     /// 获取所有游戏实例
     /// </summary>
@@ -243,6 +245,11 @@ public static class InstancesPath
 
     private static void SystemWatcher_Deleted(object sender, FileSystemEventArgs e)
     {
+        if (AddGames)
+        {
+            return;
+        }
+
         var local = e.FullPath;
 
         var obj = s_installGames.Values.FirstOrDefault(item => item.DirName == e.Name);
@@ -251,6 +258,10 @@ public static class InstancesPath
 
     private static void SystemWatcher_Created(object sender, FileSystemEventArgs e)
     {
+        if (AddGames)
+        {
+            return;
+        }
         var local = e.FullPath;
         if (Directory.Exists(local))
         {
