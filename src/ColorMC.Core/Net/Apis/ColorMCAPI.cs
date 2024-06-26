@@ -1,4 +1,5 @@
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Utils;
@@ -81,9 +82,37 @@ public static class ColorMCAPI
     /// <param name="name">名字</param>
     /// <param name="page">页数</param>
     /// <returns>数据</returns>
-    public static Task<Dictionary<string, McModSearchItemObj>?> GetMcModFromName(string name, int page)
+    public static Task<Dictionary<string, McModSearchItemObj>?> GetMcMod(string name, int page, Loaders loader, string version, string modtype, int sort)
     {
-        return GetList(2, [name, page.ToString()]);
+        return GetList(2, [name, page.ToString(), modtype, version, ((int)loader).ToString(), sort.ToString()]);
+    }
+
+    /// <summary>
+    /// 获取McMod分组列表
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<McModTypsObj?> GetMcModGroup()
+    {
+        try
+        {
+            var req = new HttpRequestMessage(HttpMethod.Post, BaseUrl + "getmcmodgroup");
+            req.Headers.Add("ColorMC", ColorMCCore.Version);
+            var data = await BaseClient.DownloadClient.SendAsync(req);
+            var data1 = await data.Content.ReadAsStringAsync();
+            var obj = JObject.Parse(data1);
+            if (!obj.TryGetValue("res", out var value) || value.Type != JTokenType.Integer
+                || ((int)value) != 100)
+            {
+                return null;
+            }
+
+            return obj["data"]?.ToObject<McModTypsObj>();
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error2"), e);
+            return null;
+        }
     }
 
     public static async Task<string?> GetNewLog()

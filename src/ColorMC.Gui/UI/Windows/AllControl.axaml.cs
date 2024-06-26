@@ -135,8 +135,8 @@ public partial class AllControl : UserControl, IBaseWindow
             Controls.Child = con2;
             App.CrossFade300.Start(null, con2);
 
-            con.Opened();
             Model.AddBackCall(Back);
+            con.Opened();
         }
 
         _nowControl = con;

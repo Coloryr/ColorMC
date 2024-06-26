@@ -25,6 +25,9 @@ public partial class NetFrpControl : MenuControl
     public override void Closed()
     {
         WindowManager.NetFrpWindow = null;
+
+        var model = (DataContext as NetFrpModel)!;
+        model.RemoveClick();
     }
 
     public override async void Opened()

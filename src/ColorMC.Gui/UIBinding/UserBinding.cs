@@ -233,6 +233,7 @@ public static class UserBinding
         }
 
         ImageManager.LoadSkinHead(file, file1);
+        App.OnSkinLoad();
     }
 
     public static async void EditSkin()

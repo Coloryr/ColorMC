@@ -716,9 +716,9 @@ public static class WebBinding
         BaseBinding.OpUrl($"https://search.mcmod.cn/s?key={obj.Name}");
     }
 
-    public static async Task<List<FileItemObj>?> SearchMcmod(string key, int page)
+    public static async Task<List<FileItemObj>?> SearchMcmod(string name, int page, Loaders loader, string version, string modtype, int sort)
     {
-        var list = await ColorMCAPI.GetMcModFromName(key, page);
+        var list = await ColorMCAPI.GetMcMod(name, page, loader, version, modtype, sort);
         if (list == null)
             return null;
 
@@ -735,7 +735,7 @@ public static class WebBinding
                 FileType = FileType.Mod,
                 SourceType = SourceType.McMod,
                 Data = item,
-                ModifiedDate = item.mcmod_time.ToString()
+                ModifiedDate = item.mcmod_update_time.ToString()
             });
         }
 
