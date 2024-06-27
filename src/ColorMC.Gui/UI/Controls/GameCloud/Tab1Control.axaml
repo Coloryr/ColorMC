@@ -10,9 +10,13 @@
     d:DesignWidth="800"
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
-    <Panel Name="ScrollViewer1" Margin="5,0,5,5">
-        <Border Classes="t2">
-            <DockPanel>
+    <DockPanel Name="ScrollViewer1" Margin="0,0,0,0">
+        <Border
+            Margin="10"
+            Background="{setting:Theme ItemBG}"
+            BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
+            CornerRadius="5">
+            <DockPanel Margin="15">
                 <StackPanel
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Bottom"
@@ -39,7 +43,6 @@
                     <TextBlock Text="{setting:Localize GameCloudWindow.Tab1.Text2}" />
                     <TextBox
                         Margin="0,5,5,0"
-                        Classes="input1"
                         IsEnabled="False"
                         IsReadOnly="True"
                         Text="{Binding UUID}" />
@@ -52,8 +55,7 @@
                         <TextBlock Text="{Binding LocalConfigTime}" />
                     </StackPanel>
                 </StackPanel>
-
             </DockPanel>
         </Border>
-    </Panel>
+    </DockPanel>
 </UserControl>

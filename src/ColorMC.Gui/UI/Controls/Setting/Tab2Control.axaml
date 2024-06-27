@@ -8,42 +8,37 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view="clr-namespace:ColorMC.Gui.Objs"
-    d:DesignHeight="1300"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="5,0,5,0">
+        <StackPanel Margin="0,0,10,15">
             <Border
-                Margin="0,0,0,5"
+                Margin="10,5,10,3"
                 Classes="t2"
                 IsVisible="{Binding Phone}">
-                <StackPanel Name="PhoneSetting">
+                <StackPanel Name="PhoneSetting" Margin="15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg22.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/Setting/svg22.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text43}" />
                     </StackPanel>
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,0,0,5"
+                Margin="10,5,10,3"
                 Classes="t2"
                 IsEnabled="{Binding !Phone}">
-                <StackPanel>
+                <StackPanel Margin="15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg1.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/Setting/svg1.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text46}" />
                     </StackPanel>
 
@@ -77,17 +72,15 @@
                         TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
                     <!--  语言  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg2.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/Setting/svg2.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text47}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,-5">
@@ -128,19 +121,16 @@
                         TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg3.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/Setting/svg3.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text39}" />
                     </StackPanel>
-
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock MinWidth="70" Text="{setting:Localize SettingWindow.Tab2.Text40}" />
@@ -194,17 +184,15 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
                     <!--  背景图  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg4.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/Setting/svg4.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text2}" />
                     </StackPanel>
                     <ToggleSwitch
@@ -215,21 +203,20 @@
                     <TextBox
                         MinWidth="300"
                         Margin="0,0,5,5"
-                        Classes="input1"
                         IsEnabled="{Binding EnableBG}"
                         Text="{Binding Pic}"
                         Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
                     <WrapPanel HorizontalAlignment="Right" IsEnabled="{Binding EnableBG}">
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-2,3,-2"
                             Classes="top"
                             Command="{Binding DeletePic}"
                             Content="{setting:Localize Button.Delete}" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-2,3,-2"
                             Classes="top"
                             Command="{Binding OpenPic}"
@@ -237,7 +224,7 @@
                             DockPanel.Dock="Right" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-2,3,-2"
                             Classes="top"
                             Command="{Binding SetPic}"
@@ -267,7 +254,7 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2"
                             VerticalAlignment="Center"
                             Classes="top"
@@ -297,7 +284,7 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2"
                             VerticalAlignment="Center"
                             Classes="top"
@@ -332,7 +319,7 @@
                         </StackPanel>
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2"
                             VerticalAlignment="Center"
                             Classes="top"
@@ -343,20 +330,17 @@
                     <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text18}" />
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
                     <!--  颜色设置  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg5.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/Setting/svg5.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text7}" />
                     </StackPanel>
-
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <RadioButton
                             Margin="5,0,0,0"
@@ -368,7 +352,7 @@
                         <ColorPicker Margin="0,0,5,0" Color="{Binding MainColor}" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2"
                             VerticalAlignment="Center"
                             Classes="top"
@@ -474,47 +458,45 @@
             </Border>
 
             <Border
-                Margin="0,0,0,5"
+                Margin="10,5,10,3"
                 Classes="t2"
-                IsEnabled="{Binding !Phone}"
                 IsVisible="{Binding !Phone}">
-                <StackPanel>
+                <StackPanel Margin="15">
                     <!--  Live2D人物  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg6.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/Setting/svg6.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text29}" />
                     </StackPanel>
 
                     <WrapPanel>
                         <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text30}" />
                         <TextBlock Margin="5,0,5,0" Text="{Binding Live2DCoreState}" />
-                        <StackPanel Orientation="Horizontal">
-                            <Button
-                                Width="100"
-                                Height="30"
-                                Margin="-2,-2,3,-2"
-                                HorizontalAlignment="Right"
-                                Classes="top"
-                                Command="{Binding DownloadCore}"
-                                Content="{setting:Localize SettingWindow.Tab2.Text31}"
-                                IsEnabled="{Binding !CoreInstall}" />
-                            <Button
-                                Width="100"
-                                Height="30"
-                                Margin="-2,-2,3,-2"
-                                HorizontalAlignment="Right"
-                                Classes="top"
-                                Command="{Binding InstallCore}"
-                                Content="{setting:Localize SettingWindow.Tab2.Text49}"
-                                IsEnabled="{Binding !CoreInstall}" />
-                        </StackPanel>
+
                     </WrapPanel>
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-2,3,-2"
+                            HorizontalAlignment="Right"
+                            Classes="top"
+                            Command="{Binding DownloadCore}"
+                            Content="{setting:Localize SettingWindow.Tab2.Text31}"
+                            IsEnabled="{Binding !CoreInstall}" />
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-2,3,-2"
+                            HorizontalAlignment="Right"
+                            Classes="top"
+                            Command="{Binding InstallCore}"
+                            Content="{setting:Localize SettingWindow.Tab2.Text49}"
+                            IsEnabled="{Binding !CoreInstall}" />
+                    </StackPanel>
                     <StackPanel IsEnabled="{Binding CoreInstall}">
                         <ToggleSwitch
                             Margin="0,0,5,0"
@@ -524,7 +506,6 @@
                         <TextBox
                             MinWidth="300"
                             Margin="0,5,5,0"
-                            Classes="input1"
                             IsEnabled="{Binding EnableLive2D}"
                             Text="{Binding Live2DModel}"
                             Watermark="{setting:Localize SettingWindow.Tab2.Text33}" />
@@ -534,7 +515,7 @@
                             IsEnabled="{Binding EnableLive2D}">
                             <Button
                                 Width="100"
-                                Height="30"
+                                Height="35"
                                 Margin="-2,-2,3,-2"
                                 Classes="top"
                                 Command="{Binding DeleteLive2D}"
@@ -542,7 +523,7 @@
                                 DockPanel.Dock="Right" />
                             <Button
                                 Width="100"
-                                Height="30"
+                                Height="35"
                                 Margin="-2,-2,3,-2"
                                 Classes="top"
                                 Command="{Binding OpenLive2D}"
@@ -550,7 +531,7 @@
                                 DockPanel.Dock="Right" />
                             <Button
                                 Width="100"
-                                Height="30"
+                                Height="35"
                                 Margin="-2,-2,3,-2"
                                 Classes="top"
                                 Command="{Binding SetLive2D}"

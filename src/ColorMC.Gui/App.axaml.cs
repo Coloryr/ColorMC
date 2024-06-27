@@ -190,7 +190,6 @@ public partial class App : Application
         ColorSel.Remove();
         FontSel.Remove();
         LangSel.Remove();
-        StyleSel.Remove();
     }
 
     public static void StartLock()
@@ -218,8 +217,6 @@ public partial class App : Application
         if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
         {
             ColorChange();
-
-            StyleSel.Load();
         }
     }
 

@@ -135,7 +135,7 @@ public partial class AllControl : UserControl, IBaseWindow
             Controls.Child = con2;
             App.CrossFade300.Start(null, con2);
 
-            Model.AddBackCall(Back);
+            Model.PushBack(Back);
             con.Opened();
         }
 
@@ -195,7 +195,7 @@ public partial class AllControl : UserControl, IBaseWindow
         ((con as UserControl)?.DataContext as TopModel)?.TopClose();
         con.Closed();
 
-        Model.RemoveBack();
+        Model.PopBack();
 
         App.Clear();
     }

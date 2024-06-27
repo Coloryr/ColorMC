@@ -12,7 +12,7 @@
     x:DataType="model:ErrorModel"
     mc:Ignorable="d">
     <ae:TextEditor
-        Margin="3"
+        Margin="5"
         Background="{setting:Colors TranBack}"
         Document="{Binding Text}"
         FontSize="14"

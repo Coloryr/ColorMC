@@ -18,13 +18,13 @@
                 <Border
                     Margin="10,10,10,5"
                     Background="{setting:Theme ItemBG}"
-                    BoxShadow="0 1 3 0 #1A000000, 0 1 2 -1 #1A000000"
+                    BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
                     CornerRadius="5"
                     DockPanel.Dock="Top"
                     IsEnabled="{Binding !IsDownload}">
                     <StackPanel Margin="15">
                         <WrapPanel>
-                            <DockPanel Width="200" Margin="0,0,10,5">
+                            <DockPanel Width="200" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                                 <ComboBox
                                     Height="30"
@@ -33,7 +33,7 @@
                                     ItemsSource="{Binding TypeList}"
                                     SelectedIndex="{Binding Type}" />
                             </DockPanel>
-                            <DockPanel Width="200" Margin="0,0,10,5">
+                            <DockPanel Width="200" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text2}" />
                                 <ComboBox
                                     Height="30"
@@ -41,7 +41,10 @@
                                     ItemsSource="{Binding DownloadSourceList}"
                                     SelectedIndex="{Binding DownloadSource}" />
                             </DockPanel>
-                            <DockPanel Width="200" Margin="0,0,0,5">
+                            <DockPanel
+                                Width="200"
+                                Margin="0,0,0,10"
+                                IsEnabled="{Binding SourceLoad}">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                                 <ComboBox
                                     Height="30"
@@ -50,8 +53,8 @@
                                     SelectedItem="{Binding GameVersion}" />
                             </DockPanel>
                         </WrapPanel>
-                        <WrapPanel Margin="0,0,0,-5">
-                            <DockPanel Width="200" Margin="0,0,10,5">
+                        <WrapPanel Margin="0,0,0,-5" IsEnabled="{Binding SourceLoad}">
+                            <DockPanel Width="200" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text4}" />
                                 <ComboBox
                                     Height="30"
@@ -59,7 +62,7 @@
                                     ItemsSource="{Binding SortTypeList}"
                                     SelectedIndex="{Binding SortType}" />
                             </DockPanel>
-                            <DockPanel Width="200" Margin="0,0,0,5">
+                            <DockPanel Width="200" Margin="0,0,0,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text5}" />
                                 <ComboBox
                                     Height="30"
@@ -68,7 +71,7 @@
                                     SelectedIndex="{Binding Categorie}" />
                             </DockPanel>
                         </WrapPanel>
-                        <DockPanel Margin="0,5,0,0">
+                        <DockPanel Margin="0,5,0,0" IsEnabled="{Binding SourceLoad}">
                             <Button
                                 Width="100"
                                 Height="35"
@@ -101,7 +104,7 @@
                     </StackPanel>
                 </Border>
 
-                <Panel>
+                <Panel Margin="0,5,0,0">
                     <ItemsControl
                         Margin="0,0,0,5"
                         HorizontalAlignment="Stretch"
@@ -133,7 +136,7 @@
             <Border
                 Margin="10,10,10,5"
                 Background="{setting:Theme ItemBG}"
-                BoxShadow="0 1 3 0 #1A000000, 0 1 2 -1 #1A000000"
+                BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
                 CornerRadius="5"
                 DockPanel.Dock="Top">
                 <WrapPanel Margin="10,10,10,5">
@@ -179,7 +182,7 @@
             <Border
                 Margin="10,5,10,10"
                 Background="{setting:Theme ItemBG}"
-                BoxShadow="0 1 3 0 #1A000000, 0 1 2 -1 #1A000000"
+                BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
                 CornerRadius="5">
                 <DataGrid
                     Name="VersionFiles"
@@ -215,13 +218,15 @@
 
         <DockPanel
             Name="OptifineDisplay"
-            Background="{setting:Colors TopBottom}"
+            Background="{setting:Theme TopViewBG}"
             IsVisible="False">
             <Border
-                Margin="5"
-                Classes="t2"
+                Margin="10,10,10,5"
+                Background="{setting:Theme ItemBG}"
+                BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
+                CornerRadius="5"
                 DockPanel.Dock="Top">
-                <WrapPanel Margin="0,0,0,-5">
+                <WrapPanel Margin="10,10,10,5">
                     <TextBlock Margin="0,0,5,5" Text="{setting:Localize AddWindow.Text10}" />
 
                     <TextBlock Margin="0,0,5,5" Text="{setting:Localize Text.GameVersion}" />
@@ -233,7 +238,7 @@
 
                     <Button
                         Width="100"
-                        Height="30"
+                        Height="35"
                         Margin="-2,-7,3,-2"
                         Classes="top"
                         Command="{Binding LoadOptifineList}"
@@ -243,7 +248,7 @@
 
                     <Button
                         Width="100"
-                        Height="30"
+                        Height="35"
                         Margin="-2,-7,3,-2"
                         Classes="top"
                         Command="{Binding DownloadOptifine}"
@@ -252,9 +257,14 @@
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
-            <Border Margin="5,0,5,5" Classes="t1">
+            <Border
+                Margin="10,5,10,10"
+                Background="{setting:Theme ItemBG}"
+                BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
+                CornerRadius="5">
                 <DataGrid
                     Name="OptifineFiles"
+                    Margin="10"
                     Background="{setting:Colors TranBack}"
                     CanUserResizeColumns="True"
                     ItemsSource="{Binding DownloadOptifineList}"
@@ -283,17 +293,18 @@
 
         <DockPanel
             Name="ModDownloadDisplay"
-            Background="{setting:Colors TopBottom}"
+            Background="{setting:Theme TopViewBG}"
             IsVisible="False">
             <Border
-                Margin="5"
-                Classes="t2"
+                Margin="10,10,10,5"
+                Background="{setting:Theme ItemBG}"
+                BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
+                CornerRadius="5"
                 DockPanel.Dock="Top">
-                <WrapPanel>
+                <WrapPanel Margin="10,10,10,5">
                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text7}" />
                     <ToggleSwitch
                         Margin="0,0,10,0"
-                        Command="{Binding ModsLoad}"
                         IsChecked="{Binding LoadMoreMod}"
                         OffContent="{setting:Localize AddWindow.Text9}"
                         OnContent="{setting:Localize AddWindow.Text9}" />
@@ -317,9 +328,14 @@
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
             </Border>
-            <Border Margin="5,0,5,5" Classes="t1">
+            <Border
+                Margin="10,5,10,10"
+                Background="{setting:Theme ItemBG}"
+                BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
+                CornerRadius="5">
                 <DataGrid
                     Name="ModDownloadFiles"
+                    Margin="10"
                     Background="{setting:Colors TranBack}"
                     CanUserResizeColumns="True"
                     ItemsSource="{Binding DownloadModList}"
@@ -334,6 +350,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <ComboBox
+                                        Margin="0,5,0,5"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         ItemsSource="{Binding Version}"

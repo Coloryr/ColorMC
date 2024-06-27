@@ -50,9 +50,9 @@
                                 </Border>
                                 <ProgressBar
                                     Width="38"
-                                    Height="15"
+                                    Height="10"
                                     MinWidth="38"
-                                    CornerRadius="10"
+                                    CornerRadius="20"
                                     IsIndeterminate="{Binding IsHeadLoad}"
                                     IsVisible="{Binding IsHeadLoad}" />
                             </Panel>

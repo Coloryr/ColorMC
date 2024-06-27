@@ -26,7 +26,7 @@
             Orientation="Horizontal">
             <Button
                 Width="100"
-                Height="30"
+                Height="35"
                 Margin="10,0,10,0"
                 HorizontalAlignment="Center"
                 Classes="top"
@@ -34,7 +34,7 @@
                 Content="{setting:Localize Button.Confirm}" />
             <Button
                 Width="100"
-                Height="30"
+                Height="35"
                 Margin="10,0,10,0"
                 HorizontalAlignment="Center"
                 Classes="top"

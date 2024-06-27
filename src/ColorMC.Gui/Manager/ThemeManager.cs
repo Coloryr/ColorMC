@@ -8,6 +8,7 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
+using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.Manager;
 
@@ -15,12 +16,24 @@ public static class ThemeManager
 {
     private static readonly Dictionary<string, List<WeakReference<IObserver<IBrush>>>> s_colorList = [];
     private static readonly Dictionary<string, List<WeakReference<IObserver<Thickness>>>> s_thinkList = [];
+    private static readonly Dictionary<string, List<WeakReference<IObserver<object?>>>> s_styleList = [];
 
     private static readonly ThemeObj s_light;
     private static readonly ThemeObj s_dark;
 
-    private static ThemeObj s_theme;
     private static readonly Random s_random = new();
+
+    private static readonly double s_fontTitleSize = 17;
+    private static readonly Thickness s_borderPadding = new(6, 6, 15, 6);
+    private static readonly Thickness s_borderPadding1 = new(6);
+
+    private static BoxShadows s_buttonShadow;
+
+    private static ThemeObj s_theme;
+
+    private static CornerRadius s_buttonCornerRadius = new(3);
+    private static CornerRadius s_picRadius = new(0);
+    private static int Radius;
 
     private static readonly IBrush[] s_colors = [Brush.Parse("#3b82f6"), Brush.Parse("#22c55e"), 
         Brush.Parse("#eab308"), Brush.Parse("#ef4444"), Brush.Parse("#a855f7"), 
@@ -37,6 +50,29 @@ public static class ThemeManager
         {
             s_theme = s_dark;
         }
+
+        var config = GuiConfigUtils.Config.Style;
+
+        s_buttonCornerRadius = new(config.ButtonCornerRadius);
+
+        if (config.EnablePicRadius)
+        {
+            s_picRadius = new(config.ButtonCornerRadius);
+        }
+        else
+        {
+            s_picRadius = new(0);
+        }
+
+        Radius = config.EnableBorderRadius ? config.ButtonCornerRadius : 0;
+
+        s_buttonShadow = new(new BoxShadow
+        {
+            OffsetY = 0,
+            Blur = 3,
+            Spread = 1,
+            Color = ColorSel.MainColor.ToColor()
+        });
 
         Reload();
     }
@@ -104,12 +140,69 @@ public static class ThemeManager
         {
             return s_theme.TopViewBG;
         }
+        else if (key == "AllBorder")
+        {
+            return s_theme.AllBorder;
+        }
+        else if (key == "ButtonBorder")
+        {
+            return s_theme.ButtonBorder;
+        }
         else if (key == "RandomColor")
         {
             return s_colors[s_random.Next(s_colors.Length)];
         }
 
         return Brushes.Transparent;
+    }
+
+    private static object? GetStyle(string key)
+    {
+        if (key == "ButtonCornerRadius")
+        {
+            return s_buttonCornerRadius;
+        }
+        else if (key == "PicRadius")
+        {
+            return s_picRadius;
+        }
+        else if (key == "FontTitle")
+        {
+            return s_fontTitleSize;
+        }
+        else if (key == "Radius")
+        {
+            return Radius;
+        }
+        else if (key == "BorderPadding")
+        {
+            return s_borderPadding;
+        }
+        else if (key == "BorderPadding1")
+        {
+            return s_borderPadding1;
+        }
+        else if (key == "ButtonTopBoxShadow")
+        {
+            return s_buttonShadow;
+        }
+        return null;
+    }
+
+    public static IDisposable AddStyle(string key, IObserver<object?> observer)
+    {
+        if (s_styleList.TryGetValue(key, out var list))
+        {
+            list.Add(new(observer));
+        }
+        else
+        {
+            list = [new(observer)];
+            s_styleList.Add(key, list);
+        }
+        var value = GetStyle(key);
+        observer.OnNext(value);
+        return new UnsubscribeStyle(list, observer);
     }
 
     private static Thickness GetThick(string key)
@@ -135,7 +228,7 @@ public static class ThemeManager
         }
         var value = GetColor(key);
         observer.OnNext(value);
-        return new Unsubscribe(list, observer);
+        return new UnsubscribeColor(list, observer);
     }
 
     public static IDisposable Add(string key, IObserver<Thickness> observer)
@@ -173,6 +266,29 @@ public static class ThemeManager
                 if (!item1.TryGetTarget(out _))
                 {
                     item.Remove(item1);
+                }
+            }
+        }
+
+        foreach (var item in s_styleList.Values)
+        {
+            foreach (var item1 in item.ToArray())
+            {
+                if (!item1.TryGetTarget(out _))
+                {
+                    item.Remove(item1);
+                }
+            }
+        }
+
+        foreach (var item in s_styleList)
+        {
+            var value = GetStyle(item.Key);
+            foreach (var item1 in item.Value)
+            {
+                if (item1.TryGetTarget(out var target))
+                {
+                    target.OnNext(value);
                 }
             }
         }
@@ -217,7 +333,7 @@ public static class ThemeManager
         }
     }
 
-    private class Unsubscribe(List<WeakReference<IObserver<IBrush>>> observers, IObserver<IBrush> observer) : IDisposable
+    private class UnsubscribeColor(List<WeakReference<IObserver<IBrush>>> observers, IObserver<IBrush> observer) : IDisposable
     {
         public void Dispose()
         {
@@ -247,17 +363,34 @@ public static class ThemeManager
         }
     }
 
+    private class UnsubscribeStyle(List<WeakReference<IObserver<object?>>> observers, IObserver<object?> observer) : IDisposable
+    {
+        public void Dispose()
+        {
+            foreach (var item in observers.ToArray())
+            {
+                if (!item.TryGetTarget(out var target)
+                    || target == observer)
+                {
+                    observers.Remove(item);
+                }
+            }
+        }
+    }
+
     static ThemeManager()
     {
         s_light = new()
         {
-            WindowBG = Brush.Parse("#FFF4F4F5"),
+            WindowBG = Brush.Parse("#FFf3f3f3"),
             ProgressBarBG = Brush.Parse("#FFe4e4e7"),
             MainGroupBG = Brush.Parse("#FFd4d4d8"),
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
             ItemBG = Brush.Parse("#FFFFFFFF"),
             GameItemBG = Brush.Parse("#FFF2F2F2"),
-            TopViewBG = Brush.Parse("#886D6D6D")
+            TopViewBG = Brush.Parse("#886D6D6D"),
+            AllBorder = Brush.Parse("#FFe5e7eb"),
+            ButtonBorder = Brush.Parse("#FFD4D4D8")
         };
 
         s_dark = new()
@@ -268,7 +401,9 @@ public static class ThemeManager
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
             ItemBG = Brush.Parse("#FF27272a"),
             GameItemBG = Brush.Parse("#FFc7c7cb"),
-            TopViewBG = Brush.Parse("#886D6D6D")
+            TopViewBG = Brush.Parse("#886D6D6D"),
+            AllBorder = Brush.Parse("#FFe5e7eb"),
+            ButtonBorder = Brush.Parse("#FFD4D4D8")
         };
     }
 }

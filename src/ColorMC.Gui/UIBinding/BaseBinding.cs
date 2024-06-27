@@ -122,7 +122,6 @@ public static class BaseBinding
         FrpPath.Init(ColorMCGui.RunDir);
 
         FontSel.Load();
-        StyleSel.Load();
         App.LoadPageSlide();
 
         InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>

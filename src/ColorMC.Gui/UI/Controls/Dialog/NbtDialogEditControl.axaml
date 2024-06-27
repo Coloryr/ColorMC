@@ -11,12 +11,13 @@
     mc:Ignorable="d">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <DockPanel
+            Margin="5"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             DockPanel.Dock="Top">
             <Button
                 Width="100"
-                Height="30"
+                Height="35"
                 Margin="3,-2,3,-2"
                 VerticalAlignment="Center"
                 Classes="top"

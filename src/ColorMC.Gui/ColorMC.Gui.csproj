@@ -43,6 +43,9 @@
     <None Remove="Resource\Icon\AddMenu\item2.svg" />
     <None Remove="Resource\Icon\AddMenu\item3.svg" />
     <None Remove="Resource\Icon\AddMenu\item4.svg" />
+    <None Remove="Resource\Icon\AddMenu\item5.svg" />
+    <None Remove="Resource\Icon\AddMenu\item6.svg" />
+    <None Remove="Resource\Icon\AddMenu\item7.svg" />
     <None Remove="Resource\Icon\AddMenu\svg1.svg" />
     <None Remove="Resource\Icon\book.svg" />
     <None Remove="Resource\Icon\count.svg" />
@@ -170,7 +173,9 @@
     <AvaloniaResource Include="Resource\Icon\AddMenu\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item3.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item4.svg" />
-    <AvaloniaResource Include="Resource\Icon\AddMenu\svg1.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item5.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item6.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item7.svg" />
     <AvaloniaResource Include="Resource\Icon\book.svg" />
     <AvaloniaResource Include="Resource\Icon\count.svg" />
     <AvaloniaResource Include="Resource\Icon\down.svg" />
@@ -319,5 +324,10 @@
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
     <ProjectReference Include="..\..\X11.Net\X11\X11.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="UI\Controls\Add\AddGameTab4Control.axaml.cs">
+      <DependentUpon>AddGameTab4Control.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

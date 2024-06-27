@@ -23,7 +23,7 @@
             Orientation="Horizontal">
             <Button
                 Width="100"
-                Height="30"
+                Height="35"
                 Margin="10,0,10,0"
                 Classes="top"
                 Command="{Binding Confirm}"
@@ -32,7 +32,7 @@
                 IsVisible="{Binding EnableVisable}" />
             <Button
                 Width="100"
-                Height="30"
+                Height="35"
                 Margin="10,0,10,0"
                 Classes="top"
                 Command="{Binding Cancel}"
