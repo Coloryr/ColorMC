@@ -536,10 +536,10 @@ public partial class UsersControlModel : TopModel
 
     private void Show()
     {
-        Model.AddBackCall(() =>
+        Model.PushBack(() =>
         {
             DialogHost.Close("UsersControl");
-            Model.RemoveBack();
+            Model.PopBack();
         });
 
         Dispatcher.UIThread.Post(() =>

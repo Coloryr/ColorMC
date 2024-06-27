@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -90,14 +91,61 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public void GoTab(object? arg)
     {
-        Model.AddBackCall(Back);
         Main = false;
+        Model.PushBack(Back);
         OnPropertyChanged("Go" + arg);
+    }
+
+    [RelayCommand]
+    public void GoModPack()
+    {
+        Main = false;
+        Model.PushBack(BackDownload);
+        WindowManager.ShowAddModPack();
+        OnPropertyChanged("GoTab1");
+        Model.Show(App.Lang("AddGameWindow.Tab1.Info20"));
+    }
+
+    [RelayCommand]
+    public void GoCloud()
+    {
+        Main = false;
+        Model.PushBack(BackDownload);
+        GameCloudDownload();
+    }
+
+    [RelayCommand]
+    public void GoServer()
+    {
+        Main = false;
+        Model.PushBack(BackDownload);
+        ServerPackDownload();
+    }
+
+    [RelayCommand]
+    public void GoDownload()
+    {
+        Model.PushBack(BackMain);
+        Main = false;
+        OnPropertyChanged("GoDownload");
+    }
+
+    public void BackMain()
+    {
+        Model.PopBack();
+        OnPropertyChanged("Back");
+        Main = true;
+    }
+
+    public void BackDownload()
+    {
+        Model.PopBack();
+        OnPropertyChanged("GoDownload");
     }
 
     private void Back()
     {
-        Model.RemoveBack();
+        Model.PopBack();
         Name = null;
         Group = null;
         Version = null;

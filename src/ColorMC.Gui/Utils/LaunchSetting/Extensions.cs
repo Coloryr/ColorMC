@@ -54,7 +54,7 @@ public class StyleExtension(string key) : MarkupExtension, IObservable<object?>
 
     public IDisposable Subscribe(IObserver<object?> observer)
     {
-        return StyleSel.Add(key, observer);
+        return ThemeManager.AddStyle(key, observer);
     }
 }
 

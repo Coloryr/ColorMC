@@ -20,7 +20,7 @@ public partial class FileItemModel : ObservableObject
 {
     private readonly IAddWindow _add;
 
-    private static readonly BoxShadows shadows = new(BoxShadow.Parse("0 1 3 0 #1A000000"), [BoxShadow.Parse("0 1 2 -1 #1A000000")]);
+    private static readonly BoxShadows shadows = new(BoxShadow.Parse("0 0 3 1 #1A000000"), [BoxShadow.Parse("0 0 5 -1 #1A000000")]);
 
     public Task<Bitmap?> Image => GetImage();
 

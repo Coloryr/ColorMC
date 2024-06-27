@@ -10,7 +10,7 @@
                     <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text2}" />
                     <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text3}" />
                 </ListBox>
-                <ListBoxItem Content="test" IsEnabled="False" />
+                <ListBoxItem Content="test" IsSelected="True" />
                 <ListBoxItem
                     Classes="down"
                     Content="test"
@@ -26,14 +26,57 @@
 
     <Style Selector="ListBoxItem">
         <Setter Property="Padding" Value="5,5,15,5" />
-        <Setter Property="Margin" Value="20,2,0,2" />
+        <Setter Property="Margin" Value="0,2,0,2" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
 
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Name="PART_ContentBorder"
+                    Padding="{TemplateBinding Padding}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="5">
+                    <Panel>
+                        <Border
+                            Name="PART_ContentSelect"
+                            Width="5"
+                            Height="20"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Background="{setting:Colors Main}"
+                            CornerRadius="5"
+                            IsVisible="False" />
+                        <ContentPresenter
+                            Name="PART_ContentPresenter"
+                            Margin="10,0,0,0"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </Panel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
         <Style Selector="^:selected /template/ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{setting:Colors Bottom2}" />
+            <Setter Property="Background" Value="Transparent" />
         </Style>
-        <Style Selector="^:disabled /template/ContentPresenter#PART_ContentPresenter">
+        <Style Selector="^:pointerover /template/ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="^:selected /template/Border#PART_ContentSelect">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        <Style Selector="^:selected /template/Border#PART_ContentBorder">
+            <Setter Property="Background" Value="#FFE8E8E8" />
+        </Style>
+        <Style Selector="^:pointerover /template/Border#PART_ContentBorder">
+            <Setter Property="Background" Value="#FFCCCCCC" />
+        </Style>
+        <Style Selector="^:disabled /template/Border#PART_ContentBorder">
             <Setter Property="Background" Value="#EEAAAAAA" />
         </Style>
     </Style>

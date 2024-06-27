@@ -16,7 +16,7 @@
         <TextBox
             Width="300"
             Margin="0,5,0,0"
-            Classes="input1"
+            HorizontalAlignment="Stretch"
             Foreground="{setting:Colors Font}"
             Text="{Binding Key}"
             Watermark="{Binding Title1}" />
@@ -30,7 +30,7 @@
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
                     Classes="top"
@@ -38,7 +38,7 @@
                     Content="{setting:Localize Button.Confirm}" />
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
                     Classes="top"

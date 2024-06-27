@@ -14,6 +14,11 @@
         </Border>
     </Design.PreviewWith>
 
+    <Style Selector="ToggleSwitch:unchecked /template/ Border#OuterBorder">
+        <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
     <Style Selector="ToggleSwitch:pointerover /template/ Border#SwitchKnobBounds">
         <Setter Property="Background" Value="{setting:Colors Main}" />
     </Style>

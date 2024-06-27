@@ -11,13 +11,29 @@
     d:DesignWidth="800"
     x:DataType="model:AddGameModel"
     mc:Ignorable="d">
-    <ScrollViewer>
-        <StackPanel Margin="5">
-            <Border Classes="t2">
+    <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <Border
+            Margin="20"
+            Background="{setting:Theme ItemBG}"
+            BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
+            CornerRadius="5">
+            <DockPanel Margin="15">
+                <Button
+                    Width="100"
+                    Height="35"
+                    Margin="-2,-3,0,-2"
+                    HorizontalAlignment="Right"
+                    Classes="top"
+                    Command="{Binding AddGame}"
+                    Content="{setting:Localize Button.Done}"
+                    DockPanel.Dock="Bottom"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text69}"
+                    ToolTip.VerticalOffset="-30" />
                 <StackPanel>
                     <TextBox
-                        Margin="0,0,0,5"
-                        Classes="input1"
+                        Height="30"
+                        Margin="0,0,5,10"
+                        HorizontalAlignment="Stretch"
                         Text="{Binding Name}"
                         Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -26,12 +42,10 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/GameEdit/svg1.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/GameEdit/svg1.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize Text.GameVersion}" />
                     </StackPanel>
-                    <WrapPanel>
+                    <WrapPanel Margin="0,0,0,5">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
@@ -45,16 +59,15 @@
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
                             <ComboBox
                                 Width="200"
-                                Margin="0,0,5,0"
+                                Margin="0,0,10,0"
                                 VerticalContentAlignment="Center"
                                 IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding GameVersionList}"
                                 SelectedItem="{Binding Version}" />
                         </StackPanel>
-
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-7,3,-2"
                             Classes="top"
                             Command="{Binding LoadVersion}"
@@ -68,12 +81,10 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/GameEdit/svg2.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/GameEdit/svg2.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text4}" />
                     </StackPanel>
-                    <WrapPanel>
+                    <WrapPanel Margin="0,0,0,5">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
@@ -91,17 +102,16 @@
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
                             <ComboBox
                                 Width="200"
-                                Margin="0,0,5,0"
+                                Margin="0,0,10,0"
                                 VerticalContentAlignment="Center"
                                 IsEnabled="{Binding EnableLoader}"
                                 ItemsSource="{Binding LoaderVersionList}"
                                 SelectedItem="{Binding LoaderVersion}" />
                         </StackPanel>
-
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <Button
                                 Width="100"
-                                Height="30"
+                                Height="35"
                                 Margin="-2,-3,3,-2"
                                 Classes="top"
                                 Command="{Binding VersionSelect}"
@@ -110,7 +120,7 @@
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="100"
-                                Height="30"
+                                Height="35"
                                 Margin="-2,-3,3,-2"
                                 Classes="top"
                                 Command="{Binding GetLoader}"
@@ -120,8 +130,9 @@
                         </StackPanel>
                     </WrapPanel>
                     <TextBox
-                        Margin="0,0,0,5"
-                        Classes="input1"
+                        Height="30"
+                        Margin="0,0,5,10"
+                        HorizontalAlignment="Stretch"
                         IsEnabled="{Binding CustomLoader}"
                         Text="{Binding LoaderLocal}"
                         Watermark="{setting:Localize AddGameWindow.Tab1.Text15}" />
@@ -132,7 +143,7 @@
                             OnContent="{setting:Localize AddGameWindow.Tab1.Text16}" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-3,0,-2"
                             HorizontalAlignment="Right"
                             Classes="top"
@@ -146,21 +157,19 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/GameEdit/svg3.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/GameEdit/svg3.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                     </StackPanel>
                     <WrapPanel Orientation="Horizontal">
                         <ComboBox
                             Width="200"
-                            Margin="0,0,5,0"
+                            Margin="0,0,10,0"
                             VerticalContentAlignment="Center"
                             ItemsSource="{Binding GroupList}"
                             SelectedItem="{Binding Group}" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-2,3,-2"
                             VerticalAlignment="Center"
                             Classes="top"
@@ -169,41 +178,8 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text84}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-3,0,-2"
-                        HorizontalAlignment="Right"
-                        Classes="top"
-                        Command="{Binding AddGame}"
-                        Content="{setting:Localize Button.Done}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text69}"
-                        ToolTip.VerticalOffset="-30" />
                 </StackPanel>
-            </Border>
-            <Border Margin="0,5,0,0" Classes="t2">
-                <WrapPanel Margin="0,0,0,-5">
-                    <Button
-                        Width="120"
-                        Height="30"
-                        Margin="-2,-3,3,2"
-                        Classes="top"
-                        Command="{Binding GameCloudDownload}"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text13}"
-                        IsEnabled="{Binding CloudEnable}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text68}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="120"
-                        Height="30"
-                        Margin="-2,-3,3,2"
-                        Classes="top"
-                        Command="{Binding ServerPackDownload}"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text14}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text71}"
-                        ToolTip.VerticalOffset="-30" />
-                </WrapPanel>
-            </Border>
-        </StackPanel>
+            </DockPanel>
+        </Border>
     </ScrollViewer>
 </UserControl>

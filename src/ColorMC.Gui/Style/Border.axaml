@@ -19,15 +19,11 @@
     </Style>
 
     <Style Selector="Border.t2">
-        <Setter Property="Background" Value="{setting:Colors GroupBack}" />
+        <Setter Property="Background" Value="{setting:Theme ItemBG}" />
         <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
         <Setter Property="Padding" Value="{setting:Style BorderPadding}" />
-        <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="BorderThickness" Value="1" />
-        <Style Selector="^:pointerover">
-            <Setter Property="Background" Value="{DynamicResource ExpanderHeaderBackgroundPointerOver}" />
-            <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
-        </Style>
     </Style>
 
 </Styles>

@@ -51,7 +51,6 @@ public static class ConfigBinding
         {
             App.ColorChange();
             FontSel.Load();
-            StyleSel.Load();
         }
 
         return res;
@@ -693,7 +692,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Style.ButtonCornerRadius = value;
         GuiConfigUtils.Save();
 
-        StyleSel.Load();
+        ThemeManager.Load();
     }
 
     /// <summary>
@@ -742,7 +741,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Style.EnableBorderRadius = enableBorderRadius;
         GuiConfigUtils.Save();
 
-        StyleSel.Load();
+        ThemeManager.Load();
     }
 
     /// <summary>

@@ -82,6 +82,7 @@
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text4}" />
                     <ProgressBar
+                        CornerRadius="20"
                         Height="10"
                         Margin="10,0,10,0"
                         IsIndeterminate="True" />

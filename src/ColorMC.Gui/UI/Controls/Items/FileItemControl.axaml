@@ -43,16 +43,13 @@
                         Text="{Binding Author, FallbackValue=Author}"
                         TextTrimming="CharacterEllipsis" />
                     <WrapPanel DockPanel.Dock="Bottom">
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text2}" />
-                            <TextBlock Text="{Binding DownloadCount}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text3}" />
-                            <TextBlock Text="{Binding ModifiedDate}" />
-                        </StackPanel>
+                        <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text2}" />
+                        <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
+                        <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text3}" />
+                        <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
                     </WrapPanel>
                     <TextBlock
+                        Margin="0,0,30,0"
                         MaxLines="2"
                         Text="{Binding Summary}"
                         TextTrimming="CharacterEllipsis"
@@ -98,7 +95,8 @@
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddWindow.Control.Text1}" />
                     <ProgressBar
-                        Height="20"
+                        Height="10"
+                        CornerRadius="20"
                         Margin="10"
                         IsIndeterminate="{Binding NowDownload}" />
                 </StackPanel>

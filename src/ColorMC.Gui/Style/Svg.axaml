@@ -9,7 +9,7 @@
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="svg|SvgControl.t1">
+    <Style Selector="svg|SvgControl">
         <Setter Property="Fill" Value="{setting:Colors Font}" />
         <Setter Property="Stroke" Value="{setting:Colors Font}" />
     </Style>

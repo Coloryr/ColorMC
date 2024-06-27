@@ -29,6 +29,7 @@
                     Content="{Binding HeadChoiseContent}"
                     CornerRadius="0"
                     Foreground="White"
+                    IsEnabled="{Binding ChoiseEnable}"
                     IsVisible="{Binding HeadChoiseDisplay}" />
                 <Button
                     Width="80"
@@ -40,6 +41,7 @@
                     Content="{Binding HeadChoise1Content}"
                     CornerRadius="0"
                     Foreground="White"
+                    IsEnabled="{Binding Choise1Enable}"
                     IsVisible="{Binding HeadChoise1Display}" />
                 <Button
                     Width="80"

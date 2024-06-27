@@ -15,7 +15,7 @@
     <Style Selector="NumericUpDown">
         <Setter Property="Foreground" Value="{setting:Colors Font}" />
         <Setter Property="Background" Value="#FFFFFFFF" />
-        <Setter Property="BorderBrush" Value="#FFe5e7eb" />
+        <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="5" />
 
