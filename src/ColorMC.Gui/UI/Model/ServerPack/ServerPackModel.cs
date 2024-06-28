@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
@@ -10,7 +10,7 @@ public partial class ServerPackModel : MenuModel
 {
     public ServerPackObj Obj { get; }
 
-    public override List<MenuObj> TabItems { get; init; } =
+    public override List<MenuItemModel> TabItems { get; init; } =
     [
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.Lang("ServerPackWindow.Tabs.Text1") },

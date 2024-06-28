@@ -26,14 +26,21 @@
                 SelectedIndex="{Binding NowView}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <svg:SvgControl
-                                Width="24"
-                                Height="24"
-                                Fill="{setting:Colors Font}"
-                                Path="{Binding Icon}"
-                                Stroke="{setting:Colors Font}" />
-                            <TextBlock Margin="5,0,0,0" Text="{Binding Text}" />
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <svg:SvgControl
+                                    Width="24"
+                                    Height="24"
+                                    Fill="{setting:Colors Font}"
+                                    Path="{Binding Icon}"
+                                    Stroke="{setting:Colors Font}" />
+                                <TextBlock Margin="5,0,0,0" Text="{Binding Text}" />
+
+                            </StackPanel>
+                            <ListBox
+                                Margin="10,0,0,0"
+                                IsVisible="{Binding IsCheck}"
+                                ItemsSource="{Binding SubMenu}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

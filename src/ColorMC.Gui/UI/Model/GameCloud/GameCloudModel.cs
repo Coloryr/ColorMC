@@ -8,7 +8,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -20,7 +19,7 @@ namespace ColorMC.Gui.UI.Model.GameCloud;
 
 public partial class GameCloudModel : MenuModel
 {
-    public override List<MenuObj> TabItems { get; init; } =
+    public override List<MenuItemModel> TabItems { get; init; } =
     [
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.Lang("GameCloudWindow.Tabs.Text1") },

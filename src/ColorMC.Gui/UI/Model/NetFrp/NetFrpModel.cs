@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel : MenuModel
 {
-    public override List<MenuObj> TabItems { get; init; } =
+    public override List<MenuItemModel> TabItems { get; init; } =
     [
         new() { Icon = "/Resource/Icon/NetFrp/item4.svg",
             Text = App.Lang("NetFrpWindow.Tabs.Text4") },

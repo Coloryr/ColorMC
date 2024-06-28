@@ -27,13 +27,16 @@ public static class ThemeManager
     private static readonly Thickness s_borderPadding = new(6, 6, 15, 6);
     private static readonly Thickness s_borderPadding1 = new(6);
 
-    private static BoxShadows s_buttonShadow;
-
     private static ThemeObj s_theme;
 
     private static CornerRadius s_buttonCornerRadius = new(3);
     private static CornerRadius s_picRadius = new(0);
     private static int Radius;
+
+    private static BoxShadows s_buttonShadow;
+
+    public static readonly BoxShadows BorderShadows = new(BoxShadow.Parse("0 0 3 1 #1A000000"), [BoxShadow.Parse("0 0 5 -1 #1A000000")]);
+    public static BoxShadows BorderSelecrShadows;
 
     private static readonly IBrush[] s_colors = [Brush.Parse("#3b82f6"), Brush.Parse("#22c55e"), 
         Brush.Parse("#eab308"), Brush.Parse("#ef4444"), Brush.Parse("#a855f7"), 
@@ -66,12 +69,21 @@ public static class ThemeManager
 
         Radius = config.EnableBorderRadius ? config.ButtonCornerRadius : 0;
 
+        var color = ColorSel.MainColor.ToColor();
+        var color1 = new Color(255, color.R, color.G, color.B);
+
         s_buttonShadow = new(new BoxShadow
         {
-            OffsetY = 0,
             Blur = 3,
             Spread = 1,
-            Color = ColorSel.MainColor.ToColor()
+            Color = color1
+        });
+
+        BorderSelecrShadows = new(new BoxShadow
+        { 
+            Blur = 3,
+            Spread = 1,
+            Color = color1
         });
 
         Reload();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -48,9 +49,13 @@ public partial class GameConfigEditModel : GameModel
 
     [ObservableProperty]
     private bool _isWorld;
+    [ObservableProperty]
+    private bool _isEdit;
 
     [ObservableProperty]
     private string _useName;
+
+    private string _lastName;
 
     public int TurnTo;
 
@@ -75,11 +80,21 @@ public partial class GameConfigEditModel : GameModel
 
     async partial void OnFileChanged(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
+        if (_lastName == value || string.IsNullOrWhiteSpace(value))
         {
             return;
         }
+        if (IsEdit)
+        {
+            var res = await Model.ShowWait(App.Lang("ConfigEditWindow.Info8"));
+            if (!res)
+            {
+                File = _lastName;
+                return;
+            }
+        }
 
+        _lastName = value;
         Model.Progress(App.Lang("ConfigEditWindow.Info7"));
         ChunkData = null;
         var info = new FileInfo(value);
@@ -150,6 +165,7 @@ public partial class GameConfigEditModel : GameModel
 
             Text = new(text);
         }
+        IsEdit = false;
     }
 
     [RelayCommand]
@@ -224,6 +240,7 @@ public partial class GameConfigEditModel : GameModel
         }
 
         Model.Notify(App.Lang("Text.Saved"));
+        IsEdit = false;
     }
 
     [RelayCommand]
@@ -248,6 +265,15 @@ public partial class GameConfigEditModel : GameModel
         var chunkflie = (fmodel.IsEntity ? "entities/" : "region/") + fmodel.ChunkFile;
         if (FileList.Contains(chunkflie))
         {
+            if (_lastName != File && IsEdit)
+            {
+                var res = await Model.ShowWait(App.Lang("ConfigEditWindow.Info8"));
+                if (!res)
+                {
+                    return;
+                }
+                IsEdit = false;
+            }
             File = chunkflie;
             var (X, Z) = ChunkUtils.PosToChunk(fmodel.PosX ?? 0, fmodel.PosZ ?? 0);
             await Task.Run(() =>
@@ -350,6 +376,7 @@ public partial class GameConfigEditModel : GameModel
         {
             model.Add("", NbtType.NbtEnd);
         }
+        Edit();
     }
 
     public async void Delete(NbtNodeModel model)
@@ -362,6 +389,8 @@ public partial class GameConfigEditModel : GameModel
             return;
 
         model.Top.Remove(model);
+
+        IsEdit = true;
     }
 
     public async void Delete(IReadOnlyList<NbtNodeModel?> list)
@@ -378,6 +407,7 @@ public partial class GameConfigEditModel : GameModel
         {
             item?.Top?.Remove(item);
         }
+        Edit();
     }
 
     public async void SetKey(NbtNodeModel model)
@@ -416,6 +446,7 @@ public partial class GameConfigEditModel : GameModel
         }
 
         model.EditKey(model.Key!, model1.Key);
+        Edit();
     }
 
     public async void SetValue(NbtNodeModel model)
@@ -526,6 +557,12 @@ public partial class GameConfigEditModel : GameModel
         }
 
         model.Update();
+        Edit();
+    }
+
+    public void Edit()
+    {
+        IsEdit = true;
     }
 
     public async void Find()
@@ -568,8 +605,6 @@ public partial class GameConfigEditModel : GameModel
             Text.Text = "";
         }
     }
-
-
 
     private void Turn(int value)
     {

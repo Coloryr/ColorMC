@@ -10,7 +10,6 @@ using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -30,7 +29,7 @@ public partial class GameExportModel : MenuModel
 
     public string[] ExportTypes { get; init; } = LanguageBinding.GetExportName();
 
-    public override List<MenuObj> TabItems { get; init; } =
+    public override List<MenuItemModel> TabItems { get; init; } =
     [
         new() { Icon = "/Resource/Icon/GameExport/item1.svg",
             Text = App.Lang("GameExportWindow.Tabs.Text1") },

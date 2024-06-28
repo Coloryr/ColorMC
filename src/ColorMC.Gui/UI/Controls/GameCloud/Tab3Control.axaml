@@ -11,12 +11,13 @@
     d:DesignWidth="800"
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
-    <Border
-        Name="ScrollViewer1"
-        Margin="5,0,5,5"
-        Classes="t1">
-        <ScrollViewer IsEnabled="{Binding Enable}" VerticalScrollBarVisibility="Visible">
+    <Panel>
+        <ScrollViewer
+            Name="ScrollViewer1"
+            IsEnabled="{Binding Enable}"
+            VerticalScrollBarVisibility="Visible">
             <ItemsControl
+                Margin="0,5,10,18"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 ItemsSource="{Binding WorldCloudList}">
@@ -27,5 +28,14 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-    </Border>
+        <Border
+            Margin="10,5,20,18"
+            Classes="t1"
+            IsVisible="{Binding !Enable}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="{setting:Localize GameCloudWindow.Error10}" />
+        </Border>
+    </Panel>
 </UserControl>

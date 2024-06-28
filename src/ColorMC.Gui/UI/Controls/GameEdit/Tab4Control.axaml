@@ -11,32 +11,38 @@
     x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel Name="ScrollViewer1" Margin="5,0,5,0">
-        <DockPanel>
+    <Panel Name="ScrollViewer1">
+        <DockPanel Margin="10">
             <Border
-                Margin="0,0,0,5"
+                Margin="10,10,10,5"
                 Classes="t2"
                 DockPanel.Dock="Top"
                 IsVisible="{Binding DisplayFilter}">
-                <StackPanel>
-                    <DockPanel Margin="0,0,0,5">
-                        <TextBlock Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
+                <StackPanel Margin="15">
+                    <DockPanel Margin="0,0,0,10">
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-2,-2,-2"
+                            Classes="top"
+                            Command="{Binding LoadMod}"
+                            Content="{setting:Localize Button.Refash}"
+                            DockPanel.Dock="Right"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text55}"
+                            ToolTip.VerticalOffset="-30" />
+                        <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
                         <ComboBox
-                            Width="110"
-                            Margin="5,0,0,0"
+                            Width="150"
+                            Margin="0,0,10,0"
                             VerticalAlignment="Center"
                             ItemsSource="{Binding ModFilterList}"
                             SelectedIndex="{Binding ModFilter}" />
-                        <TextBox
-                            Margin="5,0,0,0"
-                            Classes="input1"
-                            Text="{Binding ModText}"
-                            Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
                     </DockPanel>
+                    <TextBox Text="{Binding ModText}" Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
                     <WrapPanel Margin="0,0,0,-5">
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-3,3,2"
                             Classes="top"
                             Command="{Binding ImportMod}"
@@ -45,7 +51,7 @@
                             ToolTip.VerticalOffset="-30" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-3,3,2"
                             Classes="top"
                             Command="{Binding AddMod}"
@@ -54,16 +60,7 @@
                             ToolTip.VerticalOffset="-30" />
                         <Button
                             Width="100"
-                            Height="30"
-                            Margin="-2,-3,3,2"
-                            Classes="top"
-                            Command="{Binding LoadMod}"
-                            Content="{setting:Localize Button.Refash}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text55}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-3,3,2"
                             Classes="top"
                             Command="{Binding CheckMod}"
@@ -72,7 +69,7 @@
                             ToolTip.VerticalOffset="-30" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-3,3,2"
                             Classes="top"
                             Command="{Binding StartAutoSetMod}"
@@ -81,7 +78,7 @@
                             ToolTip.VerticalOffset="-30" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-3,3,2"
                             Classes="top"
                             Command="{Binding StartSetMod}"
@@ -90,7 +87,7 @@
                             ToolTip.VerticalOffset="-30" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-3,3,2"
                             Classes="top"
                             Command="{Binding DependTestMod}"
@@ -99,7 +96,7 @@
                             ToolTip.VerticalOffset="-30" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-3,3,2"
                             Classes="top"
                             Command="{Binding OpenMod}"
@@ -110,9 +107,10 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,5" Classes="t1">
+            <Border Margin="10" Classes="t2">
                 <DataGrid
                     Name="DataGrid1"
+                    Margin="15"
                     AutoGenerateColumns="False"
                     CanUserResizeColumns="True"
                     HorizontalScrollBarVisibility="Visible"
