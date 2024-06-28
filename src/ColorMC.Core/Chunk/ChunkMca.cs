@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs.Chunk;
@@ -163,25 +164,30 @@ public static class ChunkMca
         {
             InNbtType = NbtType.NbtCompound
         };
-        var temp = new byte[5];
-        foreach (var item in data.Pos)
+        var list1 = new ChunkNbt[data.Pos.Length];
+        await Parallel.ForAsync(0, data.Pos.Length, async (a, cancel) =>
         {
+            var item = data.Pos[a];
             if (item == null || item.Count == 0)
             {
-                continue;
+                return;
             }
+            byte[] buffer;
             //获取区块位置
-            stream.Seek(item.Pos, SeekOrigin.Begin);
-            stream.ReadExactly(temp);
-            //区块大小
-            item.Size = temp[0] << 24 | temp[1] << 16
-                | temp[2] << 8 | temp[3];
-            var type = temp[4];
-            var buffer = new byte[item.Size - 1];
-            await stream.ReadExactlyAsync(buffer);
+            lock (stream)
+            {
+                stream.Seek(item.Pos, SeekOrigin.Begin);
+                var temp = new byte[5];
+                stream.ReadExactly(temp);
+                //区块大小
+                item.Size = temp[0] << 24 | temp[1] << 16 | temp[2] << 8 | temp[3];
+                var type = temp[4];
+                buffer = new byte[item.Size - 1];
+                stream.ReadExactly(buffer);
+            }
             using var stream1 = new MemoryStream(buffer);
             //读NBT标签
-            var nbt = await NbtBase.Read<ChunkNbt>(stream1, true);
+            var nbt = await NbtBase.ReadAsync<ChunkNbt>(stream1, true);
 
             //获取区块位置
             if (nbt!.TryGet("xPos") is NbtInt value)
@@ -198,7 +204,14 @@ public static class ChunkMca
                 nbt.Z = value2.Value[1];
             }
 
-            list.Add(nbt);
+            list1[a] = nbt;
+        });
+        foreach (var item in list1)
+        {
+            if (item != null)
+            {
+                list.Add(item);
+            }
         }
         data.Nbt = list;
     }

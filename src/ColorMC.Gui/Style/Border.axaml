@@ -21,9 +21,13 @@
     <Style Selector="Border.t2">
         <Setter Property="Background" Value="{setting:Theme ItemBG}" />
         <Setter Property="BorderBrush" Value="{setting:Colors GroupColor}" />
-        <Setter Property="Padding" Value="{setting:Style BorderPadding}" />
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="BorderThickness" Value="1" />
     </Style>
 
+    <Style Selector="Border.t3">
+        <Setter Property="Background" Value="{setting:Theme ItemBG}" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="BoxShadow" Value="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000" />
+    </Style>
 </Styles>

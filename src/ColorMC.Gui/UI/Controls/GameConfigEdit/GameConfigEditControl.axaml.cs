@@ -28,10 +28,19 @@ public partial class GameConfigEditControl : BaseUserControl
         NbtViewer.KeyDown += NbtViewer_KeyDown;
 
         TextEditor1.KeyDown += NbtViewer_KeyDown;
+        TextEditor1.TextArea.TextEntered += TextEditor1_TextInput;
         TextEditor1.TextArea.Background = Brushes.Transparent;
         TextEditor1.Options.ShowBoxForControlCharacters = true;
         TextEditor1.TextArea.IndentationStrategy =
             new CSharpIndentationStrategy(TextEditor1.Options);
+    }
+
+    private void TextEditor1_TextInput(object? sender, TextInputEventArgs e)
+    {
+        if (DataContext is GameConfigEditModel model)
+        {
+            model.Edit();
+        }
     }
 
     public GameConfigEditControl(WorldObj world) : this()

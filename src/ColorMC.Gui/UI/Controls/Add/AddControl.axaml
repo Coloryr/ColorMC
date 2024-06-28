@@ -17,9 +17,7 @@
             <DockPanel Margin="10">
                 <Border
                     Margin="10,10,10,5"
-                    Background="{setting:Theme ItemBG}"
-                    BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
-                    CornerRadius="5"
+                    Classes="t2"
                     DockPanel.Dock="Top"
                     IsEnabled="{Binding !IsDownload}">
                     <StackPanel Margin="15">

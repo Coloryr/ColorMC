@@ -14,8 +14,6 @@ public partial class WorldCloudControl : UserControl
 
         PointerPressed += WorldCloudControl_PointerPressed;
         PointerReleased += WorldCloudControl_PointerReleased;
-        PointerEntered += WorldCloudControl_PointerEntered;
-        PointerExited += WorldCloudControl_PointerExited;
         PointerMoved += WorldCloudControl_PointerMoved;
     }
 
@@ -27,16 +25,6 @@ public partial class WorldCloudControl : UserControl
     private void WorldCloudControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         LongPressed.Released();
-    }
-
-    private void WorldCloudControl_PointerExited(object? sender, PointerEventArgs e)
-    {
-        Rectangle2.IsVisible = false;
-    }
-
-    private void WorldCloudControl_PointerEntered(object? sender, PointerEventArgs e)
-    {
-        Rectangle2.IsVisible = true;
     }
 
     private void WorldCloudControl_PointerPressed(object? sender, PointerPressedEventArgs e)

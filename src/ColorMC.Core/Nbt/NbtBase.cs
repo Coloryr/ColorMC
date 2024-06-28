@@ -159,12 +159,12 @@ public abstract class NbtBase
         return (Activator.CreateInstance(type) as NbtBase)!;
     }
 
-    public static async Task<T?> Read<T>(Stream stream, bool chunk = false) where T : NbtBase
+    public static async Task<T?> ReadAsync<T>(Stream stream, bool chunk = false) where T : NbtBase
     {
-        return await Read(stream, chunk) as T;
+        return await ReadAsync(stream, chunk) as T;
     }
 
-    public static async Task<NbtBase?> Read(Stream stream, bool chunk = false)
+    public static async Task<NbtBase?> ReadAsync(Stream stream, bool chunk = false)
     {
         if (stream.Length < 2)
         {
@@ -225,7 +225,10 @@ public abstract class NbtBase
             nbt = ById(type1);
         }
         nbt.ZipType = zip;
-        nbt.Read(stream2);
+        await Task.Run(() =>
+        { 
+            nbt.Read(stream2); 
+        });
 
         stream2.Dispose();
 
@@ -235,7 +238,7 @@ public abstract class NbtBase
     public static async Task<T?> Read<T>(string file) where T : NbtBase
     {
         using var stream = PathHelper.OpenRead(file)!;
-        return await Read(stream) as T;
+        return await ReadAsync(stream) as T;
     }
 
     /// <summary>
@@ -246,7 +249,7 @@ public abstract class NbtBase
     public static async Task<NbtBase?> Read(string file)
     {
         using var stream = PathHelper.OpenRead(file)!;
-        return await Read(stream);
+        return await ReadAsync(stream);
     }
 
     public static void Save(NbtBase nbt, Stream stream)

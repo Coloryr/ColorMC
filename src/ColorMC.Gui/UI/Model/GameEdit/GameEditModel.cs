@@ -1,34 +1,14 @@
 ﻿using System.Collections.Generic;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class GameEditModel : MenuModel
 {
-    public override List<MenuObj> TabItems { get; init; } =
-    [
-        new() { Icon = "/Resource/Icon/GameEdit/item1.svg",
-            Text = App.Lang("GameEditWindow.Tabs.Text1") },
-        new() { Icon = "/Resource/Icon/GameEdit/item2.svg",
-            Text = App.Lang("GameEditWindow.Tabs.Text2") },
-        new() { Icon = "/Resource/Icon/GameEdit/item3.svg",
-            Text = App.Lang("GameEditWindow.Tabs.Text4") },
-        new() { Icon = "/Resource/Icon/GameEdit/item4.svg",
-            Text = App.Lang("GameEditWindow.Tabs.Text5") },
-        new() { Icon = "/Resource/Icon/GameEdit/item5.svg",
-            Text = App.Lang("GameEditWindow.Tabs.Text6") },
-        new() { Icon = "/Resource/Icon/GameEdit/item6.svg",
-            Text = App.Lang("GameEditWindow.Tabs.Text7") },
-        new() { Icon = "/Resource/Icon/GameEdit/item7.svg",
-            Text = App.Lang("GameEditWindow.Tabs.Text10") },
-        new() { Icon = "/Resource/Icon/GameEdit/item8.svg",
-            Text = App.Lang("GameEditWindow.Tabs.Text11") },
-        new() { Icon = "/Resource/Icon/GameEdit/item9.svg",
-            Text = App.Lang("GameEditWindow.Tabs.Text12") },
-    ];
+    public override List<MenuItemModel> TabItems { get; init; }
 
     [ObservableProperty]
     private bool _displayFilter = true;
@@ -50,6 +30,44 @@ public partial class GameEditModel : MenuModel
         }
 
         _titleText = string.Format(App.Lang("GameEditWindow.Tab2.Text13"), _obj.Name);
+
+        TabItems =
+        [
+            new()
+            {
+                Icon = "/Resource/Icon/GameEdit/item1.svg",
+                Text = App.Lang("GameEditWindow.Tabs.Text1"),
+                SubMenu =
+                [
+                    new SubMenuItemModel() 
+                    { 
+                        Name = App.Lang("GameEditWindow.Tab1.Text11"), 
+                        Func = ExportGame 
+                    },
+                    new SubMenuItemModel()
+                    {
+                        Name = App.Lang("GameEditWindow.Tab1.Text7"),
+                        Func = OpenGameLog
+                    }
+                ]
+            },
+            new() { Icon = "/Resource/Icon/GameEdit/item2.svg",
+                Text = App.Lang("GameEditWindow.Tabs.Text2") },
+            new() { Icon = "/Resource/Icon/GameEdit/item3.svg",
+                Text = App.Lang("GameEditWindow.Tabs.Text4") },
+            new() { Icon = "/Resource/Icon/GameEdit/item4.svg",
+                Text = App.Lang("GameEditWindow.Tabs.Text5") },
+            new() { Icon = "/Resource/Icon/GameEdit/item5.svg",
+                Text = App.Lang("GameEditWindow.Tabs.Text6") },
+            new() { Icon = "/Resource/Icon/GameEdit/item6.svg",
+                Text = App.Lang("GameEditWindow.Tabs.Text7") },
+            new() { Icon = "/Resource/Icon/GameEdit/item7.svg",
+                Text = App.Lang("GameEditWindow.Tabs.Text10") },
+            new() { Icon = "/Resource/Icon/GameEdit/item8.svg",
+                Text = App.Lang("GameEditWindow.Tabs.Text11") },
+            new() { Icon = "/Resource/Icon/GameEdit/item9.svg",
+                Text = App.Lang("GameEditWindow.Tabs.Text12") },
+        ];
     }
 
     public void ShowFilter()

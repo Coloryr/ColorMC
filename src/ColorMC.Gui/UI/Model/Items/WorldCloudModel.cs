@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameCloud;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -27,6 +29,9 @@ public partial class WorldCloudModel : ObservableObject
 
     [ObservableProperty]
     private Bitmap _pic;
+
+    [ObservableProperty]
+    private BoxShadows _border = ThemeManager.BorderShadows;
 
     public readonly bool HaveCloud;
     public readonly bool HaveLocal;
@@ -72,6 +77,18 @@ public partial class WorldCloudModel : ObservableObject
 
         HaveCloud = true;
         HaveLocal = false;
+    }
+
+    partial void OnIsSelectChanged(bool value)
+    {
+        if (IsSelect)
+        {
+            Border = ThemeManager.BorderSelecrShadows;
+        }
+        else
+        {
+            Border = ThemeManager.BorderShadows;
+        }
     }
 
     public void Select()

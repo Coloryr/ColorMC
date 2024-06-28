@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.CodeAnalysis;
 
 namespace ColorMC.Gui.UI.Model;
 
-public abstract partial class MenuModel : TopModel
+public abstract partial class MenuModel(BaseModel model) : TopModel(model)
 {
     public const string SideOpen = "SideOpen";
     public const string SideClose = "SideClose";
@@ -14,7 +16,7 @@ public abstract partial class MenuModel : TopModel
     /// <summary>
     /// 菜单项
     /// </summary>
-    public abstract List<MenuObj> TabItems { get; init; }
+    public abstract List<MenuItemModel> TabItems { get; init; }
 
     /// <summary>
     /// 显示的标题
@@ -32,16 +34,15 @@ public abstract partial class MenuModel : TopModel
 
     private double _lastWheel;
 
-    public MenuModel(BaseModel model) : base(model)
-    {
-        Title = TabItems[0].Text;
-    }
-
-    partial void OnNowViewChanged(int value)
+    partial void OnNowViewChanged(int oldValue, int newValue)
     {
         CloseSide();
-
-        Title = TabItems[value].Text;
+        if (oldValue != -1)
+        {
+            TabItems[oldValue].IsCheck = false;
+        }
+        TabItems[newValue].IsCheck = true;
+        Title = TabItems[newValue].Text;
     }
 
     public void WhellChange(double dir)
