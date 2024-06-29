@@ -29,18 +29,6 @@ public partial class GameExportModel : MenuModel
 
     public string[] ExportTypes { get; init; } = LanguageBinding.GetExportName();
 
-    public override List<MenuItemModel> TabItems { get; init; } =
-    [
-        new() { Icon = "/Resource/Icon/GameExport/item1.svg",
-            Text = App.Lang("GameExportWindow.Tabs.Text1") },
-        new() { Icon = "/Resource/Icon/GameExport/item2.svg",
-            Text = App.Lang("GameExportWindow.Tabs.Text2") },
-        new() { Icon = "/Resource/Icon/GameExport/item3.svg",
-            Text = App.Lang("GameExportWindow.Tabs.Text3") },
-        new() { Icon = "/Resource/Icon/GameExport/item4.svg",
-            Text = App.Lang("GameExportWindow.Tabs.Text4") },
-    ];
-
     /// <summary>
     /// 在线下载的Mod列表
     /// </summary>
@@ -99,6 +87,18 @@ public partial class GameExportModel : MenuModel
         Obj = obj;
 
         _use = ToString() ?? "GameExportModel";
+
+        SetMenu(
+        [
+            new() { Icon = "/Resource/Icon/GameExport/item1.svg",
+                Text = App.Lang("GameExportWindow.Tabs.Text1") },
+            new() { Icon = "/Resource/Icon/GameExport/item2.svg",
+                Text = App.Lang("GameExportWindow.Tabs.Text2") },
+            new() { Icon = "/Resource/Icon/GameExport/item3.svg",
+                Text = App.Lang("GameExportWindow.Tabs.Text3") },
+            new() { Icon = "/Resource/Icon/GameExport/item4.svg",
+                Text = App.Lang("GameExportWindow.Tabs.Text4") },
+        ]);
     }
 
     async partial void OnTypeChanged(PackType value)

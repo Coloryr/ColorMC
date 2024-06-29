@@ -13,82 +13,32 @@
     x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel Name="ScrollViewer1">
-        <DockPanel Margin="5,0,5,0">
-            <Border
-                Margin="0,0,0,5"
-                Classes="t2"
-                DockPanel.Dock="Top">
-                <WrapPanel Margin="0,0,0,-5">
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-3,3,2"
-                        Classes="top"
-                        Command="{Binding ImportWorld}"
-                        Content="{setting:Localize Button.Input}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text100}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-3,3,2"
-                        Classes="top"
-                        Command="{Binding AddWorld}"
-                        Content="{setting:Localize Button.NetDownload}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text101}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-3,3,2"
-                        Classes="top"
-                        Command="{Binding LoadWorld}"
-                        Content="{setting:Localize Button.Refash}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text102}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-3,3,2"
-                        Classes="top"
-                        Command="{Binding EditWorld}"
-                        Content="{setting:Localize GameEditWindow.Tab5.Text3}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text103}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-3,3,2"
-                        Classes="top"
-                        Command="{Binding BackupWorld}"
-                        Content="{setting:Localize GameEditWindow.Tab5.Text2}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text42}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-3,3,2"
-                        Classes="top"
-                        Command="{Binding OpenBackupWorld}"
-                        Content="{setting:Localize GameEditWindow.Tab5.Text1}"
-                        IsEnabled="{Binding !Phone}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text104}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-3,3,2"
-                        Classes="top"
-                        Command="{Binding OpenWorld}"
-                        Content="{setting:Localize Button.OpFile}"
-                        IsEnabled="{Binding !Phone}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                        ToolTip.VerticalOffset="-30" />
-                </WrapPanel>
-            </Border>
-            <Border Margin="0,0,0,5" Classes="t1">
-                <ScrollViewer VerticalScrollBarVisibility="Visible">
+    <Panel>
+        <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
+            <DockPanel Margin="0,0,10,15">
+                <Border
+                    Margin="10,5,10,3"
+                    Classes="t2"
+                    DockPanel.Dock="Top"
+                    IsVisible="{Binding DisplayFilter}">
+                    <DockPanel Margin="15">
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-3,-3,-3"
+                            Classes="top"
+                            Command="{Binding LoadWorld}"
+                            Content="{setting:Localize Button.Refash}"
+                            DockPanel.Dock="Right"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text102}"
+                            ToolTip.VerticalOffset="-30" />
+                        <TextBox
+                            Margin="0,0,10,0"
+                            Text="{Binding WorldText}"
+                            Watermark="{setting:Localize Text.Name}" />
+                    </DockPanel>
+                </Border>
+                <Panel>
                     <ItemsControl
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
@@ -99,10 +49,18 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </ScrollViewer>
-            </Border>
-        </DockPanel>
-
+                    <Border
+                        Margin="10,5,10,3"
+                        Classes="t1"
+                        IsVisible="{Binding WorldEmptyDisplay}">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="30"
+                            Text="{setting:Localize GameEditWindow.Tab5.Text5}" />
+                    </Border>
+                </Panel>
+            </DockPanel>
+        </ScrollViewer>
         <Panel
             Name="Grid2"
             Background="{setting:Colors BG1}"

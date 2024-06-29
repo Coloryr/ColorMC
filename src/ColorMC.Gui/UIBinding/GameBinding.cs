@@ -17,6 +17,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
+using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Objs.CurseForge;
@@ -2059,5 +2060,10 @@ public static class GameBinding
     public static Task<IntRes> AutoMarkMods(GameSettingObj obj, bool cov)
     {
         return ModrinthHelper.AutoMark(obj, cov);
+    }
+
+    public static Chat StringToChat(string description)
+    {
+        return ServerDescriptionJsonConverter.StringToChar(description);
     }
 }

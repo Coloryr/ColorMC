@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class WorldCloudModel : ObservableObject
+public partial class WorldCloudModel : SelectItemModel
 {
     public string Name => HaveLocal ? World.LevelName : Cloud.Name;
     public string Time => HaveLocal ? FuntionUtils.MillisecondsToDataTime(World.LastPlayed).ToString()
@@ -25,13 +25,7 @@ public partial class WorldCloudModel : ObservableObject
     private readonly GameCloudModel _model;
 
     [ObservableProperty]
-    private bool _isSelect;
-
-    [ObservableProperty]
     private Bitmap _pic;
-
-    [ObservableProperty]
-    private BoxShadows _border = ThemeManager.BorderShadows;
 
     public readonly bool HaveCloud;
     public readonly bool HaveLocal;
@@ -77,18 +71,6 @@ public partial class WorldCloudModel : ObservableObject
 
         HaveCloud = true;
         HaveLocal = false;
-    }
-
-    partial void OnIsSelectChanged(bool value)
-    {
-        if (IsSelect)
-        {
-            Border = ThemeManager.BorderSelecrShadows;
-        }
-        else
-        {
-            Border = ThemeManager.BorderShadows;
-        }
     }
 
     public void Select()

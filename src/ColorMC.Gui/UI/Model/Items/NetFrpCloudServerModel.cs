@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class NetFrpCloudServerModel : ObservableObject
+public partial class NetFrpCloudServerModel : SelectItemModel
 {
     /// <summary>
     /// 名字

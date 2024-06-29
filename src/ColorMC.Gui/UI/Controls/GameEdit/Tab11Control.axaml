@@ -13,71 +13,39 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Name="ScrollViewer1" Margin="5,0,5,0">
-            <Border
-                Margin="0,0,0,5"
-                Classes="t2"
-                DockPanel.Dock="Top">
-                <WrapPanel Margin="0,0,0,-5">
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding LoadShaderpack}"
-                        Content="{setting:Localize Button.Refash}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text62}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding ImportShaderpack}"
-                        Content="{setting:Localize Button.Input}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text60}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding AddShaderpack}"
-                        Content="{setting:Localize Button.NetDownload}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text61}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding OpenShaderpack}"
-                        Content="{setting:Localize Button.OpFile}"
-                        IsEnabled="{Binding !Phone}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                        ToolTip.VerticalOffset="-30" />
-                </WrapPanel>
-            </Border>
-            <Border Margin="0,0,0,5" Classes="t1">
-                <DataGrid
-                    Name="DataGrid1"
-                    AutoGenerateColumns="False"
-                    CanUserResizeColumns="True"
-                    CanUserSortColumns="False"
-                    ItemsSource="{Binding ShaderpackList}"
-                    SelectedItem="{Binding ShaderpackItem}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{setting:Localize Text.FileName}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Local}"
-                            Header="{setting:Localize Text.Path}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Border>
+        <DockPanel Name="ScrollViewer1" Margin="0,0,10,15">
+            <Panel>
+                <Border Margin="10,5,10,3" Classes="t2">
+                    <DataGrid
+                        Name="DataGrid1"
+                        Margin="15"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="False"
+                        ItemsSource="{Binding ShaderpackList}"
+                        SelectedItem="{Binding ShaderpackItem}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Binding="{Binding Name}"
+                                Header="{setting:Localize Text.FileName}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Local}"
+                                Header="{setting:Localize Text.Path}"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+                <Border
+                    Margin="10,5,10,3"
+                    Classes="t1"
+                    IsVisible="{Binding ShaderpackEmptyDisplay}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="30"
+                        Text="{setting:Localize GameEditWindow.Tab11.Text2}" />
+                </Border>
+            </Panel>
         </DockPanel>
         <Panel
             Name="Grid2"

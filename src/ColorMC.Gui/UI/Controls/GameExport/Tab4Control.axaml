@@ -12,18 +12,18 @@
     mc:Ignorable="d">
     <DockPanel
         Name="ScrollViewer1"
-        Margin="5,0,5,0"
+        Margin="0,0,10,15"
         Background="Transparent">
         <Border
-            Margin="0,0,0,5"
+            Margin="10,5,10,3"
             Classes="t2"
             DockPanel.Dock="Top"
             IsEnabled="{Binding MoEx}">
-            <DockPanel>
+            <DockPanel Margin="15">
                 <Button
                     Width="100"
-                    Height="30"
-                    Margin="3,-3,0,-2"
+                    Height="35"
+                    Margin="-2,-3,-2,-2"
                     VerticalAlignment="Center"
                     Classes="top"
                     Command="{Binding AddFile}"
@@ -32,17 +32,19 @@
                     ToolTip.Tip="{setting:Localize ToolTip.Text114}"
                     ToolTip.VerticalOffset="-30" />
                 <ComboBox
+                    Margin="0,0,10,0"
                     HorizontalAlignment="Stretch"
                     ItemsSource="{Binding FileList}"
                     SelectedItem="{Binding FileName}" />
             </DockPanel>
         </Border>
         <Border
-            Margin="0,0,0,5"
-            Classes="t1"
+            Margin="10,5,10,3"
+            Classes="t2"
             IsEnabled="{Binding MoEx}">
             <DataGrid
                 Name="DataGrid1"
+                Margin="15"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False"

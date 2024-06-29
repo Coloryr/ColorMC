@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class NetFrpLocalModel(NetFrpModel top, string motd, string port) : ObservableObject
+public partial class NetFrpLocalModel(NetFrpModel top, string motd, string port) : SelectItemModel
 {
     public string Motd => motd;
     public string Port => port;

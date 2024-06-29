@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -14,13 +15,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class WorldModel : ObservableObject
+public partial class WorldModel : SelectItemModel
 {
     public readonly WorldObj World;
     public readonly GameEditModel Top;
 
-    [ObservableProperty]
-    private bool _isSelect;
     [ObservableProperty]
     private bool _empty;
     [ObservableProperty]
@@ -54,11 +53,12 @@ public partial class WorldModel : ObservableObject
     public async Task Load()
     {
         DataPackList.Clear();
-        var list = await Task.Run(() => World.GetDataPacks());
+        var list = await Task.Run(World.GetDataPacks);
         foreach (var item in list)
         {
             DataPackList.Add(new(item));
         }
+        Empty = DataPackList.Count == 0;
     }
 
     private async void Load1()

@@ -13,82 +13,59 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Name="ScrollViewer1" Margin="5,0,5,0">
-            <Border
-                Margin="0,0,0,5"
-                Classes="t2"
-                DockPanel.Dock="Top">
-                <StackPanel Margin="0,0,0,-5" Orientation="Horizontal">
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding LoadSchematic}"
-                        Content="{setting:Localize Button.Refash}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text64}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding AddSchematic}"
-                        Content="{setting:Localize Button.Input}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text63}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding OpenSchematic}"
-                        Content="{setting:Localize Button.OpFile}"
-                        IsEnabled="{Binding !Phone}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                        ToolTip.VerticalOffset="-30" />
-                </StackPanel>
-            </Border>
-            <Border Margin="0,0,0,5" Classes="t1">
-                <DataGrid
-                    Name="DataGrid1"
-                    AutoGenerateColumns="False"
-                    CanUserResizeColumns="True"
-                    CanUserSortColumns="False"
-                    ItemsSource="{Binding SchematicList}"
-                    SelectedItem="{Binding SchematicItem}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{setting:Localize Text.Name}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Author}"
-                            Header="{setting:Localize Text.Author}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Description}"
-                            Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text3}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Width}"
-                            Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text4}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Height}"
-                            Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text5}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Length}"
-                            Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text6}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Local}"
-                            Header="{setting:Localize Text.Path}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Border>
+        <DockPanel Name="ScrollViewer1" Margin="0,0,10,15">
+            <Panel>
+                <Border Margin="10,5,10,3" Classes="t2">
+                    <DataGrid
+                        Name="DataGrid1"
+                        Margin="15"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="False"
+                        ItemsSource="{Binding SchematicList}"
+                        SelectedItem="{Binding SchematicItem}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Binding="{Binding Name}"
+                                Header="{setting:Localize Text.Name}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Author}"
+                                Header="{setting:Localize Text.Author}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Description}"
+                                Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text3}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Width}"
+                                Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text4}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Height}"
+                                Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text5}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Length}"
+                                Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text6}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Local}"
+                                Header="{setting:Localize Text.Path}"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+                <Border
+                    Margin="10,5,10,3"
+                    Classes="t1"
+                    IsVisible="{Binding SchematicEmptyDisplay}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="30"
+                        Text="{setting:Localize GameEditWindow.Tab12.Text2}" />
+                </Border>
+            </Panel>
         </DockPanel>
         <Panel
             Name="Grid2"

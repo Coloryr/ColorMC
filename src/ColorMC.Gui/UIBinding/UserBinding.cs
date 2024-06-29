@@ -53,6 +53,21 @@ public static class UserBinding
         return list;
     }
 
+    public static List<string> GetDisplayUserTypes()
+    {
+        var list = new List<string>()
+        {
+            "",
+            AuthType.Offline.GetName(),
+            AuthType.OAuth.GetName(),
+            AuthType.Nide8.GetName(),
+            AuthType.AuthlibInjector.GetName(),
+            AuthType.LittleSkin.GetName(),
+            AuthType.SelfLittleSkin.GetName()
+        };
+        return list;
+    }
+
     public static int ToInt(this AuthType type)
     {
         return type switch
@@ -206,30 +221,14 @@ public static class UserBinding
         }
 
         string? file = null, file1 = null;
-        (bool, bool) temp;
-        if (obj.AuthType == AuthType.Offline)
+        var temp = await PlayerSkinAPI.DownloadSkin(obj);
+        if (temp.Item1)
         {
-            temp = await PlayerSkinAPI.DownloadSkin(obj);
-            if (temp.Item1)
-            {
-                file = AssetsPath.GetSkinFile(obj);
-            }
-            if (temp.Item2)
-            {
-                file1 = AssetsPath.GetCapeFile(obj);
-            }
+            file = AssetsPath.GetSkinFile(obj);
         }
-        else
+        if (temp.Item2)
         {
-            temp = await PlayerSkinAPI.DownloadSkin(obj);
-            if (temp.Item1)
-            {
-                file = AssetsPath.GetSkinFile(obj);
-            }
-            if (temp.Item2)
-            {
-                file1 = AssetsPath.GetCapeFile(obj);
-            }
+            file1 = AssetsPath.GetCapeFile(obj);
         }
 
         ImageManager.LoadSkinHead(file, file1);

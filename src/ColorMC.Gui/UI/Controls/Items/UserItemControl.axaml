@@ -1,0 +1,49 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.UserItemControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="clr-namespace:ColorMC.Gui.Manager"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    x:DataType="model:UserDisplayModel"
+    mc:Ignorable="d">
+    <Border
+        Margin="10,5,10,5"
+        Background="{setting:Theme ItemBG}"
+        BoxShadow="{Binding Border}"
+        CornerRadius="5">
+        <Panel Margin="15">
+            <Panel>
+                <Border
+                    Width="50"
+                    Height="50"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    CornerRadius="5">
+                    <Border.Background>
+                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadIcon}}" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+                <DockPanel Margin="60,0,0,0">
+                    <TextBlock
+                        DockPanel.Dock="Top"
+                        FontSize="16"
+                        Foreground="{setting:Colors Main}"
+                        Text="{Binding Name, FallbackValue=1234}" />
+                    <TextBlock
+                        DockPanel.Dock="Top"
+                        Foreground="#FF9A9A9A"
+                        Text="{Binding Type, FallbackValue=Type}"
+                        TextTrimming="CharacterEllipsis" />
+                    <TextBlock
+                        Width="100"
+                        Text="{Binding UUID, FallbackValue=UUID}"
+                        TextTrimming="CharacterEllipsis" />
+                </DockPanel>
+            </Panel>
+        </Panel>
+    </Border>
+</UserControl>

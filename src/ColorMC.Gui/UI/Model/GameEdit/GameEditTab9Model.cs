@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
@@ -13,7 +14,9 @@ public partial class GameEditModel
 
     private ScreenshotModel _lastScreenshot;
 
-    [RelayCommand]
+    [ObservableProperty]
+    private bool _screenshotEmptyDisplay;
+
     public void LoadScreenshot()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab9.Info3"));
@@ -25,16 +28,15 @@ public partial class GameEditModel
         {
             ScreenshotList.Add(new(this, item));
         }
+        ScreenshotEmptyDisplay = ScreenshotList.Count == 0;
     }
 
-    [RelayCommand]
-    public void OpenScreenshot()
+    private void OpenScreenshot()
     {
         PathBinding.OpPath(_obj, PathType.ScreenshotsPath);
     }
 
-    [RelayCommand]
-    public async Task ClearScreenshot()
+    private async void ClearScreenshot()
     {
         var res = await Model.ShowWait(
             string.Format(App.Lang("GameEditWindow.Tab9.Info2"), _obj.Name));

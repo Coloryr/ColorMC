@@ -410,7 +410,16 @@ public partial class GameEditModel
     }
 
     [RelayCommand]
-    public async Task DeleteConfig()
+    public async Task OpenJava()
+    {
+        var file = await PathBinding.SelectFile(FileType.Java);
+        if (file.Item1 != null)
+        {
+            JvmLocal = file.Item1;
+        }
+    }
+
+    private async void DeleteConfig()
     {
         var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab2.Info1"));
         if (res)
@@ -418,16 +427,6 @@ public partial class GameEditModel
             GameBinding.DeleteConfig(_obj);
 
             ConfigLoad();
-        }
-    }
-
-    [RelayCommand]
-    public async Task OpenJava()
-    {
-        var file = await PathBinding.SelectFile(FileType.Java);
-        if (file.Item1 != null)
-        {
-            JvmLocal = file.Item1;
         }
     }
 

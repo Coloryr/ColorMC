@@ -10,12 +10,12 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,0">
+    <DockPanel Name="ScrollViewer1" Margin="0,0,10,15">
         <Border
-            Margin="0,0,0,5"
+            Margin="10,5,10,3"
             Classes="t2"
             DockPanel.Dock="Top">
-            <StackPanel>
+            <StackPanel Margin="15">
                 <DockPanel>
                     <TextBlock
                         Margin="0,0,5,0"
@@ -23,8 +23,8 @@
                         Text="{setting:Localize ServerPackWindow.Tab4.Text1}" />
                     <Button
                         Width="80"
-                        Height="30"
-                        Margin="-2,-2,0,-2"
+                        Height="35"
+                        Margin="-2,-2,-3,-2"
                         Classes="top"
                         Command="{Binding AddFile}"
                         Content="{setting:Localize Button.Add}"
@@ -33,7 +33,7 @@
                         ToolTip.VerticalOffset="-30" />
                     <ComboBox
                         Width="140"
-                        Margin="0,0,5,0"
+                        Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"
                         DockPanel.Dock="Right"
                         ItemsSource="{Binding FuntionList}"
@@ -43,7 +43,7 @@
                         DockPanel.Dock="Right"
                         Text="{setting:Localize ServerPackWindow.Tab4.Text2}" />
                     <ComboBox
-                        Margin="0,0,5,0"
+                        Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"
                         ItemsSource="{Binding NameList}"
                         SelectedItem="{Binding Group}" />
@@ -54,9 +54,10 @@
                     Text="{setting:Localize ServerPackWindow.Tab4.Text3}" />
             </StackPanel>
         </Border>
-        <Border Margin="0,0,0,5" Classes="t1">
+        <Border Margin="10,5,10,3" Classes="t2">
             <DataGrid
                 Name="DataGrid1"
+                Margin="15"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False"

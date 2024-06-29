@@ -12,24 +12,13 @@
     mc:Ignorable="d">
     <ScrollViewer Name="ScrollViewer1">
         <StackPanel Margin="0,0,10,15">
-            <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Margin="15">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Text="{Binding TitleText}"
-                        TextTrimming="CharacterEllipsis" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,0,-2"
-                        HorizontalAlignment="Right"
-                        Classes="top"
-                        Command="{Binding DeleteConfig}"
-                        Content="{setting:Localize GameEditWindow.Tab2.Text28}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text38}"
-                        ToolTip.VerticalOffset="-30" />
-                </StackPanel>
-            </Border>
+            <TextBlock
+                Margin="25,20,25,10"
+                HorizontalAlignment="Center"
+                FontSize="15"
+                Foreground="{setting:Colors Main}"
+                Text="{Binding TitleText, FallbackValue=123}"
+                TextTrimming="CharacterEllipsis" />
             <!--  分辨率  -->
             <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Margin="15">

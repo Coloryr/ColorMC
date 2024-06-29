@@ -614,7 +614,7 @@ public static class PathBinding
                 return null;
             case FileType.Shaderpack:
                 res = await SelectFile(top,
-                    App.Lang("GameEditWindow.Tab11.Info1"),
+                    App.Lang("GameEditWindow.Tab11.Text1"),
                     ZIPFILE,
                     App.Lang("GameEditWindow.Tab11.Info2"), true);
                 if (res?.Any() == true)
@@ -1008,8 +1008,9 @@ public static class PathBinding
                 {
                     var proc = new Process();
                     proc.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
-                    proc.StartInfo.FileName = "rundll32.exe";
-                    proc.StartInfo.Arguments = @"C:\WINDOWS\system32\shimgvw.dll,ImageView_Fullscreen " + screenshot;
+                    proc.StartInfo.FileName = "cmd.exe";
+                    proc.StartInfo.Arguments = $"/c start \"\" \"{screenshot}\"";
+                    proc.StartInfo.CreateNoWindow = true;
                     proc.Start();
                     break;
                 }

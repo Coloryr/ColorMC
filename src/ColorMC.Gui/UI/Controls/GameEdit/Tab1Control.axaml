@@ -235,58 +235,6 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border Margin="10,5,10,3" Classes="t2">
-                <WrapPanel Margin="15,15,15,10">
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding Delete}"
-                        Content="{setting:Localize Button.Delete}"
-                        IsEnabled="{Binding !GameRun}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text36}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding OpenConfigEdit}"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text6}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text50}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Classes="top"
-                        Command="{Binding Open}"
-                        Content="{setting:Localize Button.OpFile}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="120"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding OpenServerPack}"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text5}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text47}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="120"
-                        Height="30"
-                        Margin="-2,-2,3,3"
-                        Classes="top"
-                        Command="{Binding GenGameInfo}"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text14}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text132}"
-                        ToolTip.VerticalOffset="-30" />
-                </WrapPanel>
-            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

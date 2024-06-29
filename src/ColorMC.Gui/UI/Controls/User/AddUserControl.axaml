@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     <StackPanel Margin="5">
         <TextBlock Text="{setting:Localize UserWindow.Text5}" />
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
             <TextBlock Text="{setting:Localize UserWindow.Text3}" />
             <ComboBox
                 Width="300"
@@ -22,21 +22,18 @@
         <TextBox
             Margin="5"
             AcceptsReturn="True"
-            Classes="input1"
             IsEnabled="{Binding EnableName}"
             Text="{Binding Name}"
             Watermark="{Binding WatermarkName}" />
         <TextBox
             Margin="5"
             AcceptsReturn="True"
-            Classes="input1"
             IsEnabled="{Binding EnableUser}"
             Text="{Binding User}"
             Watermark="{setting:Localize Text.UserName}" />
         <TextBox
-            Margin="5"
+            Margin="5,5,5,10"
             AcceptsReturn="True"
-            Classes="input1"
             IsEnabled="{Binding EnablePassword}"
             PasswordChar="*"
             Text="{Binding Password}"
@@ -44,8 +41,8 @@
         <DockPanel HorizontalAlignment="Stretch">
             <Button
                 Width="100"
-                Height="30"
-                Margin="-2,-2,3,-2"
+                Height="35"
+                Margin="-2,-2,1,-2"
                 Classes="top"
                 Command="{Binding Add}"
                 Content="{setting:Localize Button.Add}"
@@ -53,7 +50,7 @@
                 IsEnabled="{Binding !IsAdding}" />
             <Button
                 Width="100"
-                Height="30"
+                Height="35"
                 Margin="-2,-2,3,-2"
                 Classes="top"
                 Command="{Binding Cancel}"
@@ -61,8 +58,8 @@
                 DockPanel.Dock="Right" />
             <Button
                 Width="100"
-                Height="30"
-                Margin="-2,-2,3,-2"
+                Height="35"
+                Margin="1,-2,3,-2"
                 Classes="top"
                 Command="{Binding Register}"
                 Content="{setting:Localize UserWindow.Text7}"

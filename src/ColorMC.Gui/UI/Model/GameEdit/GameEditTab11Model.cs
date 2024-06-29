@@ -18,21 +18,26 @@ public partial class GameEditModel
     [ObservableProperty]
     private ShaderpackObj? _shaderpackItem;
 
-    [RelayCommand]
-    public void OpenShaderpack()
+    [ObservableProperty]
+    private bool _shaderpackEmptyDisplay;
+
+
+    private void OpenShaderpack()
     {
         PathBinding.OpPath(_obj, PathType.ShaderpacksPath);
     }
-    [RelayCommand]
-    public async Task LoadShaderpack()
+
+    public async void LoadShaderpack()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
         ShaderpackList.Clear();
         ShaderpackList.AddRange(await GameBinding.GetShaderpacks(_obj));
         Model.ProgressClose();
+
+        ShaderpackEmptyDisplay = ShaderpackList.Count == 0;
     }
-    [RelayCommand]
-    public async Task ImportShaderpack()
+
+    private async void ImportShaderpack()
     {
         var res = await PathBinding.AddFile(_obj, FileType.Shaderpack);
         if (res == null)
@@ -45,11 +50,11 @@ public partial class GameEditModel
         }
 
         Model.Notify(App.Lang("GameEditWindow.Tab11.Info3"));
-        await LoadShaderpack();
+        LoadShaderpack();
     }
 
-    [RelayCommand]
-    public void AddShaderpack()
+
+    private void AddShaderpack()
     {
         WindowManager.ShowAdd(_obj, FileType.Shaderpack);
     }
@@ -59,14 +64,14 @@ public partial class GameEditModel
         var res = await GameBinding.AddFile(_obj, data, FileType.Shaderpack);
         if (res)
         {
-            await LoadShaderpack();
+            LoadShaderpack();
         }
     }
 
-    public async void DeleteShaderpack(ShaderpackObj obj)
+    public void DeleteShaderpack(ShaderpackObj obj)
     {
         GameBinding.DeleteShaderpack(obj);
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
-        await LoadShaderpack();
+        LoadShaderpack();
     }
 }
