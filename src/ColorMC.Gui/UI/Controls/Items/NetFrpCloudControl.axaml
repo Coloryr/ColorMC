@@ -26,7 +26,7 @@
                     Margin="-2,-2,3,-2"
                     Classes="top"
                     Command="{Binding Join}"
-                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                    CornerRadius="5"
                     ToolTip.Tip="{setting:Localize ToolTip.Text128}"
                     ToolTip.VerticalOffset="-30">
                     <svg:SvgControl Path="/Resource/Icon/Item/join.svg" />
@@ -37,7 +37,7 @@
                     Margin="-2,-2,3,-2"
                     Classes="top"
                     Command="{Binding Copy}"
-                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                    CornerRadius="5"
                     ToolTip.Tip="{setting:Localize ToolTip.Text129}"
                     ToolTip.VerticalOffset="-30">
                     <svg:SvgControl Path="/Resource/Icon/Item/clipboard.svg" />
@@ -48,7 +48,7 @@
                     Margin="-2,-2,-3,-2"
                     Classes="top"
                     Command="{Binding Test}"
-                    CornerRadius="{setting:Style ButtonCornerRadius}"
+                    CornerRadius="5"
                     ToolTip.Tip="{setting:Localize ToolTip.Text130}"
                     ToolTip.VerticalOffset="-30">
                     <svg:SvgControl Path="/Resource/Icon/Item/ping.svg" />

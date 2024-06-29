@@ -26,7 +26,7 @@
             Margin="20"
             BorderThickness="0"
             Command="{Binding GoModPack}"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+            CornerRadius="5">
             <StackPanel>
                 <svg:SvgControl Path="/Resource/Icon/AddMenu/item4.svg" />
                 <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tab1.Text19}" />
@@ -38,7 +38,7 @@
             Margin="20"
             BorderThickness="0"
             Command="{Binding GoCloud}"
-            CornerRadius="{setting:Style ButtonCornerRadius}"
+            CornerRadius="5"
             IsEnabled="{Binding CloudEnable}">
             <StackPanel>
                 <svg:SvgControl Path="/Resource/Icon/AddMenu/item6.svg" />
@@ -51,7 +51,7 @@
             Margin="20"
             BorderThickness="0"
             Command="{Binding GoServer}"
-            CornerRadius="{setting:Style ButtonCornerRadius}">
+            CornerRadius="5">
             <StackPanel>
                 <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item7.svg" />
                 <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tab1.Text14}" />

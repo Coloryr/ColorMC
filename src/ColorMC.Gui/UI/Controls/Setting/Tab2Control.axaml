@@ -133,34 +133,6 @@
                     </StackPanel>
                     <WrapPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock MinWidth="70" Text="{setting:Localize SettingWindow.Tab2.Text40}" />
-                            <Slider
-                                Width="150"
-                                Height="40"
-                                Margin="5,-10,5,0"
-                                HorizontalAlignment="Left"
-                                Foreground="{setting:Colors Main}"
-                                IsSnapToTickEnabled="True"
-                                LargeChange="1"
-                                Maximum="20"
-                                Minimum="0"
-                                SmallChange="1"
-                                TickFrequency="1"
-                                Value="{Binding ButtonCornerRadius}" />
-                            <TextBlock Width="40" Text="{Binding ButtonCornerRadius, StringFormat='{}{0}'}" />
-                        </StackPanel>
-                        <ToggleSwitch
-                            Margin="0,0,10,0"
-                            IsChecked="{Binding EnablePicRadius}"
-                            OffContent="{setting:Localize SettingWindow.Tab2.Text50}"
-                            OnContent="{setting:Localize SettingWindow.Tab2.Text50}" />
-                        <ToggleSwitch
-                            IsChecked="{Binding EnableBorderRadius}"
-                            OffContent="{setting:Localize SettingWindow.Tab2.Text51}"
-                            OnContent="{setting:Localize SettingWindow.Tab2.Text51}" />
-                    </WrapPanel>
-                    <WrapPanel>
-                        <StackPanel Orientation="Horizontal">
                             <TextBlock MinWidth="70" Text="{setting:Localize SettingWindow.Tab2.Text41}" />
                             <Slider
                                 Width="150"
@@ -341,13 +313,27 @@
                             Path="/Resource/Icon/Setting/svg5.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text7}" />
                     </StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
                         <RadioButton
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab2.Text26}"
                             GroupName="Group1"
                             IsChecked="{Binding IsAutoColor}" />
+                        <RadioButton
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text27}"
+                            GroupName="Group1"
+                            IsChecked="{Binding IsLightColor}" />
+                        <RadioButton
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize SettingWindow.Tab2.Text28}"
+                            GroupName="Group1"
+                            IsChecked="{Binding IsDarkColor}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <TextBlock Margin="5,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text8}" />
                         <ColorPicker Margin="0,0,5,0" Color="{Binding MainColor}" />
                         <Button
@@ -361,50 +347,6 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text124}"
                             ToolTip.VerticalOffset="-30" />
                     </StackPanel>
-                    <RadioButton
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text27}"
-                        GroupName="Group1"
-                        IsChecked="{Binding IsLightColor}" />
-                    <WrapPanel Margin="0,0,0,5">
-                        <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text10}" />
-                        <ColorPicker Margin="0,0,5,0" Color="{Binding LightBackColor}" />
-                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text11}" />
-                            <ColorPicker Color="{Binding LightTranColor}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text16}" />
-                            <ColorPicker Color="{Binding LightFont1Color}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text17}" />
-                            <ColorPicker Color="{Binding LightFont2Color}" />
-                        </StackPanel>
-                    </WrapPanel>
-                    <RadioButton
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text28}"
-                        GroupName="Group1"
-                        IsChecked="{Binding IsDarkColor}" />
-                    <WrapPanel Orientation="Horizontal">
-                        <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text10}" />
-                        <ColorPicker Margin="0,0,5,0" Color="{Binding DarkBackColor}" />
-                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text11}" />
-                            <ColorPicker Color="{Binding DarkTranColor}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text16}" />
-                            <ColorPicker Color="{Binding DarkFont1Color}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Width="80" Text="{setting:Localize SettingWindow.Tab2.Text17}" />
-                            <ColorPicker Color="{Binding DarkFont2Color}" />
-                        </StackPanel>
-                    </WrapPanel>
                     <!--  RGB模式  -->
                     <ToggleSwitch
                         IsChecked="{Binding EnableRGB}"
