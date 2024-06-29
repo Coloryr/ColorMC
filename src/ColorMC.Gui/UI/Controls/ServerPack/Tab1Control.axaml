@@ -10,35 +10,23 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <Border
-        Name="ScrollViewer1"
-        Margin="5,0,5,5"
-        Classes="t2">
-        <DockPanel>
-            <DockPanel DockPanel.Dock="Bottom">
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="-2"
-                    Classes="top"
-                    Command="{Binding GoToNext}"
-                    Content="{setting:Localize ServerPackWindow.Tab1.Text11}"
-                    DockPanel.Dock="Right"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text47}"
-                    ToolTip.VerticalOffset="-30" />
-                <TextBlock Text="{setting:Localize ServerPackWindow.Tab1.Text12}" />
+    <Decorator Margin="0,0,10,15">
+        <Border
+            Name="ScrollViewer1"
+            Margin="10,5,10,3"
+            Classes="t2">
+            <DockPanel Margin="15">
+                <TextBlock
+                    Margin="0,0,0,10"
+                    DockPanel.Dock="Top"
+                    Text="{setting:Localize ServerPackWindow.Tab1.Text1}" />
+                <TextBox
+                    AcceptsReturn="True"
+                    Classes="input2"
+                    DockPanel.Dock="Top"
+                    Text="{Binding Text}"
+                    Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
             </DockPanel>
-            <TextBlock
-                Margin="0,0,0,5"
-                DockPanel.Dock="Top"
-                Text="{setting:Localize ServerPackWindow.Tab1.Text1}" />
-            <TextBox
-                Margin="0,0,0,5"
-                AcceptsReturn="True"
-                Classes="input2"
-                DockPanel.Dock="Top"
-                Text="{Binding Text}"
-                Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
-        </DockPanel>
-    </Border>
+        </Border>
+    </Decorator>
 </UserControl>

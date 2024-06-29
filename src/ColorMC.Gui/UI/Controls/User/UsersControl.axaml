@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:items="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.User"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
@@ -11,7 +12,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:UsersControlModel"
-    Background="{setting:Colors TranBack}"
+    Background="{setting:Theme WindowBG}"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
@@ -21,60 +22,47 @@
                     <view:AddUserControl />
                 </DataTemplate>
             </dialog:DialogHost.DataTemplates>
-            <Panel Margin="5">
-                <Border Classes="t1" DockPanel.Dock="Bottom">
-                    <DataGrid
-                        Name="DataGrid_User"
-                        AutoGenerateColumns="False"
-                        CanUserResizeColumns="True"
-                        CanUserSortColumns="False"
-                        HorizontalScrollBarVisibility="Visible"
-                        ItemsSource="{Binding UserList}"
-                        SelectedItem="{Binding Item}"
-                        VerticalScrollBarVisibility="Visible">
-                        <DataGrid.Columns>
-                            <DataGridCheckBoxColumn
-                                Binding="{Binding Use}"
-                                Header="{setting:Localize UserWindow.DataGrid.Text1}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Type}"
-                                Header="{setting:Localize UserWindow.DataGrid.Text3}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Name}"
-                                Header="{setting:Localize Text.UserName}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding UUID}"
-                                Header="{setting:Localize UserWindow.DataGrid.Text4}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Text1}"
-                                Header="{setting:Localize UserWindow.DataGrid.Text5}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Text2}"
-                                Header="{setting:Localize UserWindow.DataGrid.Text6}"
-                                IsReadOnly="True" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+            <DockPanel Margin="10">
+                <Border
+                    Margin="10"
+                    Classes="t2"
+                    DockPanel.Dock="Top">
+                    <DockPanel Margin="15">
+                        <TextBlock Margin="0,0,5,0" Text="账户类型" />
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-2,-3,-2"
+                            Classes="top"
+                            Command="{Binding SetAdd}"
+                            Content="添加账户"
+                            DockPanel.Dock="Right"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text26}"
+                            ToolTip.VerticalOffset="-30" />
+                        <ComboBox
+                            Height="35"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            ItemsSource="{Binding DisplayUserTypeList}"
+                            SelectedIndex="{Binding DisplayType}" />
+                    </DockPanel>
                 </Border>
-
-                <Button
-                    Width="44"
-                    Height="44"
-                    Margin="6"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Classes="top"
-                    Command="{Binding SetAdd}"
-                    CornerRadius="20"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text26}"
-                    ToolTip.VerticalOffset="-30">
-                    <Svg Path="/Resource/Icon/add.svg" />
-                </Button>
-            </Panel>
+                <ScrollViewer VerticalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding UserList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <items:UserItemControl DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
         </dialog:DialogHost>
 
         <Panel

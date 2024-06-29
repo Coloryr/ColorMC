@@ -16,7 +16,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class FileItemModel : ObservableObject
+public partial class FileItemModel : SelectItemModel
 {
     private readonly IAddWindow _add;
 
@@ -36,15 +36,11 @@ public partial class FileItemModel : ObservableObject
     [ObservableProperty]
     private bool _nowDownload = false;
     [ObservableProperty]
-    private bool _isSelect;
-    [ObservableProperty]
     private bool _top;
     [ObservableProperty]
     private bool _enableButton;
     [ObservableProperty]
     private bool _haveDownload;
-    [ObservableProperty]
-    private BoxShadows _border = ThemeManager.BorderShadows;
 
     public FileItemModel(FileItemObj data, IAddWindow add)
     {
@@ -67,17 +63,9 @@ public partial class FileItemModel : ObservableObject
         }
     }
 
-    partial void OnIsSelectChanged(bool value)
+    protected override void IsSelectChanged(bool value)
     {
         EnableButton = Top || IsSelect;
-        if (IsSelect)
-        {
-            Border = ThemeManager.BorderSelecrShadows;
-        }
-        else
-        {
-            Border = ThemeManager.BorderShadows;
-        }
     }
 
     partial void OnTopChanged(bool value)

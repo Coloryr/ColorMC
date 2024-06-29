@@ -6,11 +6,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     x:DataType="model:NetFrpCloudServerModel"
     Design.Width="320"
     mc:Ignorable="d">
-    <Border Classes="t2">
-        <DockPanel>
+    <Border
+        Margin="10,5,10,5"
+        Background="{setting:Theme ItemBG}"
+        BoxShadow="{Binding Border}"
+        CornerRadius="5">
+        <DockPanel Margin="15">
             <StackPanel
                 VerticalAlignment="Center"
                 DockPanel.Dock="Right"
@@ -24,7 +29,7 @@
                     CornerRadius="{setting:Style ButtonCornerRadius}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text128}"
                     ToolTip.VerticalOffset="-30">
-                    <Svg Path="/Resource/Icon/Item/join.svg" />
+                    <svg:SvgControl Path="/Resource/Icon/Item/join.svg" />
                 </Button>
                 <Button
                     Width="40"
@@ -35,22 +40,26 @@
                     CornerRadius="{setting:Style ButtonCornerRadius}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text129}"
                     ToolTip.VerticalOffset="-30">
-                    <Svg Path="/Resource/Icon/Item/clipboard.svg" />
+                    <svg:SvgControl Path="/Resource/Icon/Item/clipboard.svg" />
                 </Button>
                 <Button
                     Width="40"
                     Height="40"
-                    Margin="-2,-2,0,-2"
+                    Margin="-2,-2,-3,-2"
                     Classes="top"
                     Command="{Binding Test}"
                     CornerRadius="{setting:Style ButtonCornerRadius}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text130}"
                     ToolTip.VerticalOffset="-30">
-                    <Svg Path="/Resource/Icon/Item/ping.svg" />
+                    <svg:SvgControl Path="/Resource/Icon/Item/ping.svg" />
                 </Button>
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="{Binding Name, FallbackValue=服务器1}" TextTrimming="CharacterEllipsis" />
+                <TextBlock
+                    FontSize="16"
+                    Foreground="{setting:Colors Main}"
+                    Text="{Binding Name, FallbackValue=服务器1}"
+                    TextTrimming="CharacterEllipsis" />
                 <WrapPanel Orientation="Horizontal">
                     <TextBlock Margin="0,0,10,0" Text="{Binding IP, FallbackValue=127.0.0.1:25565}" />
                     <StackPanel Orientation="Horizontal">

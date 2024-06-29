@@ -7,26 +7,23 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    d:DesignHeight="700"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer
         Name="ScrollViewer1"
-        Margin="5,0,5,0"
+        Margin="0,0,10,15"
         HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
-            <Panel Margin="0,0,0,5">
+            <Panel Margin="10,5,10,3">
                 <Border Classes="t2" IsEnabled="{Binding !IsDownload}">
-                    <StackPanel>
+                    <StackPanel Margin="15">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <svg:SvgControl
                                 Width="24"
                                 Height="24"
                                 Margin="0,0,5,0"
-                                Fill="{setting:Colors Font}"
-                                Path="/Resource/Icon/Setting/svg7.svg"
-                                Stroke="{setting:Colors Font}" />
+                                Path="/Resource/Icon/Setting/svg7.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                         </StackPanel>
                         <WrapPanel>
@@ -78,17 +75,15 @@
                         Text="{setting:Localize SettingWindow.Tab3.Text26}" />
                 </Border>
             </Panel>
-            <Panel Margin="0,0,0,5">
+            <Panel Margin="10,5,10,3">
                 <Border Classes="t2" IsEnabled="{Binding !IsDownload}">
-                    <StackPanel>
+                    <StackPanel Margin="15">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <svg:SvgControl
                                 Width="24"
                                 Height="24"
                                 Margin="0,0,5,0"
-                                Fill="{setting:Colors Font}"
-                                Path="/Resource/Icon/Setting/svg8.svg"
-                                Stroke="{setting:Colors Font}" />
+                                Path="/Resource/Icon/Setting/svg8.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text3}" />
                         </StackPanel>
                         <Grid Margin="0,0,5,0" ColumnDefinitions="3*,1*">
@@ -123,8 +118,8 @@
                         </Grid>
                         <Button
                             Width="100"
-                            Height="30"
-                            Margin="-2,-2,3,-2"
+                            Height="35"
+                            Margin="-2,-2,-3,-2"
                             HorizontalAlignment="Right"
                             Classes="top"
                             Command="{Binding SetProxy}"
@@ -156,18 +151,16 @@
                 </Border>
             </Panel>
             <Border
-                Margin="0,0,0,5"
+                Margin="10,5,10,3"
                 Classes="t2"
                 IsEnabled="{Binding !Phone}">
-                <StackPanel>
+                <StackPanel Margin="15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg9.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/Setting/svg9.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text14}" />
                     </StackPanel>
                     <WrapPanel>
@@ -179,15 +172,15 @@
                         <StackPanel Margin="0,0,0,-5" Orientation="Horizontal">
                             <Button
                                 Width="100"
-                                Height="30"
+                                Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"
                                 Command="{Binding StartCheck}"
                                 Content="{setting:Localize SettingWindow.Tab3.Text16}" />
                             <Button
                                 Width="100"
-                                Height="30"
-                                Margin="-2,-6,3,-2"
+                                Height="35"
+                                Margin="-2,-6,-3,-2"
                                 Classes="top"
                                 Command="{Binding StartUpdate}"
                                 Content="{setting:Localize SettingWindow.Tab3.Text17}" />
@@ -195,16 +188,14 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
-                            Path="/Resource/Icon/Setting/svg10.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Path="/Resource/Icon/Setting/svg10.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text20}" />
                     </StackPanel>
                     <TextBlock Margin="5,0,0,5" Text="{Binding ServerInfo}" />
@@ -219,8 +210,8 @@
                         Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
                     <Button
                         Width="100"
-                        Height="30"
-                        Margin="-2,-2,3,-2"
+                        Height="35"
+                        Margin="-2,-2,-3,-2"
                         HorizontalAlignment="Right"
                         Classes="top"
                         Command="{Binding GameCloudConnect}"

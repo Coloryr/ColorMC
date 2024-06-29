@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     VerticalAlignment="Top"
     mc:Ignorable="d">
     <Border Background="{setting:Colors MotdBack}" CornerRadius="5">
@@ -27,7 +28,7 @@
                         Classes="top"
                         DockPanel.Dock="Right"
                         IsVisible="False">
-                        <Svg Path="/Resource/Icon/reload.svg" />
+                        <svg:SvgControl Path="/Resource/Icon/reload.svg" />
                     </Button>
                     <StackPanel Margin="64,0,0,0" VerticalAlignment="Center">
                         <TextBlock
@@ -82,9 +83,9 @@
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text4}" />
                     <ProgressBar
-                        CornerRadius="20"
                         Height="10"
                         Margin="10,0,10,0"
+                        CornerRadius="20"
                         IsIndeterminate="True" />
                 </StackPanel>
             </Panel>

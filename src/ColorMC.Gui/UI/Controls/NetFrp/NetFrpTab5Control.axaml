@@ -12,23 +12,20 @@
     d:DesignWidth="800"
     x:DataType="model:NetFrpModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,0">
+    <DockPanel Name="ScrollViewer1" Margin="0,0,10,15">
         <Border
-            Margin="0,0,0,5"
+            Margin="10,5,10,3"
             Classes="t2"
             DockPanel.Dock="Top">
-            <StackPanel>
-                <WrapPanel Margin="0,0,0,-5" Orientation="Horizontal">
-                    <TextBox
-                        MinWidth="210"
-                        Margin="0,0,5,5"
-                        Classes="input1"
-                        Text="{Binding KeyOpenFrp}"
-                        Watermark="{setting:Localize NetFrpWindow.Tab1.Text1}" />
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+            <StackPanel Margin="15">
+                <DockPanel Margin="0,0,0,-5">
+                    <StackPanel
+                        Margin="0,0,0,5"
+                        DockPanel.Dock="Right"
+                        Orientation="Horizontal">
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-2,3,-2"
                             Classes="top"
                             Command="{Binding GetChannelOpenFrp}"
@@ -36,31 +33,39 @@
                             DockPanel.Dock="Right" />
                         <Button
                             Width="100"
-                            Height="30"
+                            Height="35"
                             Margin="-2,-2,3,-2"
                             Classes="top"
                             Command="{Binding OpenUrlOpenFrp}"
                             Content="{setting:Localize AddWindow.Control.Text3}" />
                     </StackPanel>
-                </WrapPanel>
+                    <TextBox
+                        Margin="0,0,10,5"
+                        Text="{Binding KeyOpenFrp}"
+                        Watermark="{setting:Localize NetFrpWindow.Tab1.Text1}" />
+                </DockPanel>
             </StackPanel>
         </Border>
 
-        <Panel Margin="0,0,0,5">
-            <TextBlock
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                IsVisible="{Binding IsOpenFrpEmpty}"
-                Text="{setting:Localize NetFrpWindow.Tab1.Text5}" />
+        <Panel>
             <ScrollViewer>
                 <ItemsControl ItemsSource="{Binding RemotesOpenFrp}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <view:NetFrpRemoteControl Margin="0,0,0,3" DataContext="{Binding}" />
+                            <view:NetFrpRemoteControl DataContext="{Binding}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
+            <Border
+                Margin="10,5,10,3"
+                Classes="t1"
+                IsVisible="{Binding IsOpenFrpEmpty}">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="30"
+                    Text="{setting:Localize NetFrpWindow.Tab1.Text5}" />
+            </Border>
         </Panel>
     </DockPanel>
 </UserControl>

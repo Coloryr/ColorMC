@@ -12,9 +12,9 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel Name="ScrollViewer1">
-        <DockPanel Margin="10">
+        <DockPanel Margin="0,0,10,15">
             <Border
-                Margin="10,10,10,5"
+                Margin="10,5,10,3"
                 Classes="t2"
                 DockPanel.Dock="Top"
                 IsVisible="{Binding DisplayFilter}">
@@ -39,75 +39,9 @@
                             SelectedIndex="{Binding ModFilter}" />
                     </DockPanel>
                     <TextBox Text="{Binding ModText}" Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
-                    <WrapPanel Margin="0,0,0,-5">
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,3,2"
-                            Classes="top"
-                            Command="{Binding ImportMod}"
-                            Content="{setting:Localize Button.Input}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text57}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,3,2"
-                            Classes="top"
-                            Command="{Binding AddMod}"
-                            Content="{setting:Localize Button.NetDownload}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text56}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,3,2"
-                            Classes="top"
-                            Command="{Binding CheckMod}"
-                            Content="{setting:Localize GameEditWindow.Tab4.Text3}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text54}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,3,2"
-                            Classes="top"
-                            Command="{Binding StartAutoSetMod}"
-                            Content="{setting:Localize GameEditWindow.Tab4.Text7}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text53}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,3,2"
-                            Classes="top"
-                            Command="{Binding StartSetMod}"
-                            Content="{setting:Localize GameEditWindow.Tab4.Text4}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text53}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,3,2"
-                            Classes="top"
-                            Command="{Binding DependTestMod}"
-                            Content="{setting:Localize GameEditWindow.Tab4.Text5}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text52}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,3,2"
-                            Classes="top"
-                            Command="{Binding OpenMod}"
-                            Content="{setting:Localize Button.OpFile}"
-                            IsEnabled="{Binding !Phone}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                            ToolTip.VerticalOffset="-30" />
-                    </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border Margin="10" Classes="t2">
+            <Border Margin="10,5,10,3" Classes="t2">
                 <DataGrid
                     Name="DataGrid1"
                     Margin="15"

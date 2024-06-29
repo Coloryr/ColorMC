@@ -64,83 +64,6 @@ public partial class GameEditModel
     }
 
     [RelayCommand]
-    public async Task StartSetMod()
-    {
-        if (_isModSet)
-            return;
-
-        _isModSet = true;
-        await WindowManager.ShowAddSet(_obj);
-        _isModSet = false;
-    }
-
-    [RelayCommand]
-    public async Task StartAutoSetMod()
-    {
-        if (_isModSet)
-            return;
-
-        var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab4.Info18"));
-
-        _isModSet = true;
-        Model.Progress(App.Lang("GameEditWindow.Tab4.Info19"));
-        var res1 = await GameBinding.AutoMarkMods(_obj, res);
-        Model.ProgressClose();
-        if (!res1.State)
-        {
-            Model.Show(string.Format(App.Lang("GameEditWindow.Tab4.Error4"), res1.Data));
-        }
-        else
-        {
-            Model.Show(string.Format(App.Lang("GameEditWindow.Tab4.Info20"), res1.Data));
-        }
-        _isModSet = false;
-    }
-
-    [RelayCommand]
-    public async Task ImportMod()
-    {
-        var file = await PathBinding.AddFile(_obj, FileType.Mod);
-
-        if (file == null)
-            return;
-
-        if (file == false)
-        {
-            Model.Progress(App.Lang("GameEditWindow.Tab4.Error2"));
-            return;
-        }
-
-        Model.Notify(App.Lang("GameEditWindow.Tab4.Info2"));
-        await LoadMod();
-    }
-
-    [RelayCommand]
-    public async Task CheckMod()
-    {
-        Model.Progress(App.Lang("GameEditWindow.Tab4.Info10"));
-        var res = await WebBinding.CheckModUpdate(_obj, _modItems);
-        Model.ProgressClose();
-        if (res.Count > 0)
-        {
-            var res1 = await Model.ShowWait(string.Format(
-                App.Lang("GameEditWindow.Tab4.Info11"), res.Count));
-            if (res1)
-            {
-                Model.Progress(App.Lang("GameEditWindow.Tab4.Info12"));
-                await WebBinding.DownloadMod(_obj, res);
-                Model.ProgressClose();
-
-                await LoadMod();
-            }
-        }
-        else
-        {
-            Model.Show(App.Lang("GameEditWindow.Tab4.Info13"));
-        }
-    }
-
-    [RelayCommand]
     public async Task LoadMod()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info1"));
@@ -182,8 +105,7 @@ public partial class GameEditModel
         LoadMod1();
     }
 
-    [RelayCommand]
-    public async Task DependTestMod()
+    private async void DependTestMod()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info15"));
         var res = await GameBinding.ModCheck(_modItems);
@@ -192,6 +114,78 @@ public partial class GameEditModel
         {
             Model.Notify(App.Lang("GameEditWindow.Tab4.Info16"));
         }
+    }
+
+    public async void StartSetMod()
+    {
+        if (_isModSet)
+            return;
+
+        _isModSet = true;
+        await WindowManager.ShowAddSet(_obj);
+        _isModSet = false;
+    }
+
+    private async void StartAutoSetMod()
+    {
+        if (_isModSet)
+            return;
+
+        var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab4.Info18"));
+
+        _isModSet = true;
+        Model.Progress(App.Lang("GameEditWindow.Tab4.Info19"));
+        var res1 = await GameBinding.AutoMarkMods(_obj, res);
+        Model.ProgressClose();
+        if (!res1.State)
+        {
+            Model.Show(string.Format(App.Lang("GameEditWindow.Tab4.Error4"), res1.Data));
+        }
+        else
+        {
+            Model.Show(string.Format(App.Lang("GameEditWindow.Tab4.Info20"), res1.Data));
+        }
+        _isModSet = false;
+    }
+    private async void CheckMod()
+    {
+        Model.Progress(App.Lang("GameEditWindow.Tab4.Info10"));
+        var res = await WebBinding.CheckModUpdate(_obj, _modItems);
+        Model.ProgressClose();
+        if (res.Count > 0)
+        {
+            var res1 = await Model.ShowWait(string.Format(
+                App.Lang("GameEditWindow.Tab4.Info11"), res.Count));
+            if (res1)
+            {
+                Model.Progress(App.Lang("GameEditWindow.Tab4.Info12"));
+                await WebBinding.DownloadMod(_obj, res);
+                Model.ProgressClose();
+
+                await LoadMod();
+            }
+        }
+        else
+        {
+            Model.Show(App.Lang("GameEditWindow.Tab4.Info13"));
+        }
+    }
+
+    private async void ImportMod()
+    {
+        var file = await PathBinding.AddFile(_obj, FileType.Mod);
+
+        if (file == null)
+            return;
+
+        if (file == false)
+        {
+            Model.Progress(App.Lang("GameEditWindow.Tab4.Error2"));
+            return;
+        }
+
+        Model.Notify(App.Lang("GameEditWindow.Tab4.Info2"));
+        await LoadMod();
     }
 
     public async void DropMod(IDataObject data)

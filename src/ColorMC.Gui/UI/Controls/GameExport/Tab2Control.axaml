@@ -10,16 +10,16 @@
     d:DesignWidth="800"
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,2">
+    <DockPanel Name="ScrollViewer1" Margin="0,0,10,15">
         <Border
-            Margin="0,0,0,5"
+            Margin="10,5,10,3"
             Classes="t2"
             DockPanel.Dock="Top">
-            <DockPanel>
+            <DockPanel Margin="15">
                 <Button
                     Width="100"
-                    Height="30"
-                    Margin="-2,-3,0,-2"
+                    Height="35"
+                    Margin="-2,-3,-2,-2"
                     Classes="top"
                     Command="{Binding OpenMod}"
                     Content="{setting:Localize Button.OpFile}"
@@ -28,7 +28,7 @@
                     ToolTip.VerticalOffset="-30" />
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="-2,-3,3,-2"
                     Classes="top"
                     Command="{Binding LoadMod}"
@@ -37,15 +37,15 @@
                     ToolTip.Tip="{setting:Localize ToolTip.Text55}"
                     ToolTip.VerticalOffset="-30" />
                 <TextBox
-                    Margin="0,0,5,0"
-                    Classes="input1"
+                    Margin="0,0,10,0"
                     Text="{Binding Text}"
                     Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
             </DockPanel>
         </Border>
-        <Border Margin="0,0,0,5" Classes="t1">
+        <Border Margin="10,5,10,3" Classes="t2">
             <DataGrid
                 Name="DataGrid1"
+                Margin="15"
                 AutoGenerateColumns="False"
                 Background="{setting:Colors TranBack}"
                 CanUserResizeColumns="True"

@@ -10,35 +10,38 @@
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <Border
-        Name="ScrollViewer1"
-        Margin="5,0,5,5"
-        Classes="t2">
-        <DataGrid
-            Name="DataGrid1"
-            AutoGenerateColumns="False"
-            CanUserResizeColumns="True"
-            CanUserSortColumns="False"
-            ItemsSource="{Binding ModList}"
-            SelectedItem="{Binding ModItem}">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text1}" />
-                <DataGridTextColumn
-                    Binding="{Binding FileName}"
-                    Header="{setting:Localize Text.FileName}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text3}" />
-                <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text4}" />
-                <DataGridTextColumn
-                    Binding="{Binding Source}"
-                    Header="{setting:Localize Text.DownloadSource}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text6}" />
-                <DataGridTextColumn
-                    Binding="{Binding Sha256}"
-                    Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text7}"
-                    IsReadOnly="True" />
-            </DataGrid.Columns>
-        </DataGrid>
-    </Border>
+    <Decorator Margin="0,0,10,15">
+        <Border
+            Name="ScrollViewer1"
+            Margin="10,5,10,3"
+            Classes="t2">
+            <DataGrid
+                Name="DataGrid1"
+                Margin="15"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                ItemsSource="{Binding ModList}"
+                SelectedItem="{Binding ModItem}">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text1}" />
+                    <DataGridTextColumn
+                        Binding="{Binding FileName}"
+                        Header="{setting:Localize Text.FileName}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text3}" />
+                    <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text4}" />
+                    <DataGridTextColumn
+                        Binding="{Binding Source}"
+                        Header="{setting:Localize Text.DownloadSource}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text6}" />
+                    <DataGridTextColumn
+                        Binding="{Binding Sha256}"
+                        Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text7}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Decorator>
 </UserControl>

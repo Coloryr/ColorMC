@@ -27,8 +27,8 @@
     <Style Selector="ListBoxItem">
         <Setter Property="Padding" Value="5,5,15,5" />
         <Setter Property="Margin" Value="0,2,0,2" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
 
         <Setter Property="Template">
             <ControlTemplate>

@@ -18,7 +18,8 @@ namespace ColorMC.Gui.UI.Model.User;
 
 public partial class UsersControlModel : TopModel
 {
-    public List<string> UserTypeList { get; init; } = UserBinding.GetUserTypes();
+    public List<string> UserTypeList => UserBinding.GetUserTypes();
+    public List<string> DisplayUserTypeList => UserBinding.GetDisplayUserTypes();
     public ObservableCollection<UserDisplayModel> UserList { get; init; } = [];
 
     [ObservableProperty]
@@ -26,6 +27,9 @@ public partial class UsersControlModel : TopModel
 
     [ObservableProperty]
     private AuthType _type;
+
+    [ObservableProperty]
+    private int _displayType;
 
     [ObservableProperty]
     private bool _enableName;
@@ -53,6 +57,11 @@ public partial class UsersControlModel : TopModel
     private bool _isOAuth;
 
     public UsersControlModel(BaseModel model) : base(model)
+    {
+        Load();
+    }
+
+    partial void OnDisplayTypeChanged(int value)
     {
         Load();
     }
@@ -372,23 +381,22 @@ public partial class UsersControlModel : TopModel
         Load();
     }
 
-    public void Select()
-    {
-        if (Item == null)
-        {
-            Model.Show(App.Lang("UserWindow.Error1"));
-            return;
-        }
-
-        Select(Item);
-    }
-
     public void Select(UserDisplayModel item)
     {
         UserBinding.SetLastUser(item.UUID, item.AuthType);
 
         Model.Notify(App.Lang("UserWindow.Info5"));
-        Load();
+        foreach (var item1 in UserList)
+        {
+            if (item1.AuthType == item.AuthType && item1.UUID == item.UUID)
+            {
+                item1.IsSelect = true;
+            }
+            else
+            {
+                item1.IsSelect = false;
+            }
+        }
     }
 
     public void Drop(IDataObject data)
@@ -472,16 +480,13 @@ public partial class UsersControlModel : TopModel
         UserList.Clear();
         foreach (var item in UserBinding.GetAllUser())
         {
-            UserList.Add(new()
+            if (DisplayType == 0 || (DisplayType - 1) == (int)item.Value.AuthType)
             {
-                Name = item.Value.UserName,
-                UUID = item.Key.Item1,
-                AuthType = item.Key.Item2,
-                Type = item.Key.Item2.GetName(),
-                Text1 = item.Value.Text1,
-                Text2 = item.Value.Text2,
-                Use = item1 == item.Value
-            });
+                UserList.Add(new(this, item.Value)
+                {
+                    IsSelect = item1 == item.Value
+                });
+            }
         }
     }
 

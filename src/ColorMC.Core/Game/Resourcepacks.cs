@@ -26,9 +26,7 @@ public static class Resourcepacks
         if (item1 != null)
         {
             using var stream1 = zFile.GetInputStream(item1);
-            using var stream = new MemoryStream();
-            await stream1.CopyToAsync(stream, cancel);
-            var data = Encoding.UTF8.GetString(stream.ToArray());
+            var data = await StringHelper.GetStringAsync(stream1);
             var obj1 = JObject.Parse(data);
             if (obj1 != null)
             {

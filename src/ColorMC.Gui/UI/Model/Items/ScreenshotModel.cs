@@ -7,14 +7,11 @@ using SkiaSharp;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class ScreenshotModel(GameEditModel top, string obj) : ObservableObject
+public partial class ScreenshotModel(GameEditModel top, string obj) : SelectItemModel
 {
     public string Screenshot => obj;
 
     public GameEditModel Top => top;
-
-    [ObservableProperty]
-    private bool _isSelect;
 
     public string Name { get; } = Path.GetFileName(obj);
 
@@ -26,11 +23,12 @@ public partial class ScreenshotModel(GameEditModel top, string obj) : Observable
     {
         return await Task.Run(() =>
         {
-            using var image = SKBitmap.Decode(Screenshot);
-            using var image1 = image.Resize(new SKSizeI(200, 120), SKFilterQuality.High);
-            using var data = image1.Encode(SKEncodedImageFormat.Png, 100);
+            //using var image = SKBitmap.Decode(Screenshot);
+            //using var image1 = image.Resize(new SKSizeI(230, 129), SKFilterQuality.High);
+            //using var data = image1.Encode(SKEncodedImageFormat.Png, 100);
 
-            _img = new Bitmap(data.AsStream());
+            using var data = File.OpenRead(Screenshot);
+            _img = Bitmap.DecodeToWidth(data, 230);
 
             return _img;
         });

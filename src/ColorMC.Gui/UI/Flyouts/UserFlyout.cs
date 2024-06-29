@@ -8,34 +8,32 @@ namespace ColorMC.Gui.UI.Flyouts;
 public class UserFlyout
 {
     private readonly UserDisplayModel _obj;
-    private readonly UsersControlModel _model;
-    public UserFlyout(Control con, UsersControlModel model)
+    public UserFlyout(Control con, UserDisplayModel model)
     {
-        _model = model;
-        _obj = model.Item!;
+        _obj = model;
 
         _ = new FlyoutsControl(
         [
             (App.Lang("UserWindow.Flyouts.Text1"), true, ()=>
             {
-                 _model.Select(_obj);
+                 _obj.Select();
             }),
             (App.Lang("UserWindow.Flyouts.Text2"), _obj.AuthType != AuthType.Offline, ()=>
             {
-                _model.Refresh(_obj);
+                _obj.Refresh();
             }),
             (App.Lang("UserWindow.Flyouts.Text3"), _obj.AuthType != AuthType.Offline
                 && _obj.AuthType != AuthType.OAuth, ()=>
                 {
-                    _model.ReLogin(_obj);
+                    _obj.ReLogin();
                 }),
             (App.Lang("UserWindow.Flyouts.Text4"), true, ()=>
             {
-                _model.Remove(_obj);
+                _obj.Remove();
             }),
             (App.Lang("UserWindow.Flyouts.Text5"), _obj.AuthType == AuthType.Offline, ()=>
             {
-                _model.Edit(_obj);
+                _obj.Edit();
             })
         ], con);
     }

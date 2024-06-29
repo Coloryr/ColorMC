@@ -8,7 +8,6 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    MinHeight="100"
     d:DesignWidth="500"
     x:DataType="model:FileItemModel"
     ToolTip.Tip="{setting:Localize ToolTip.Text49}"
@@ -64,10 +63,7 @@
                     Classes="top"
                     Command="{Binding OpenWeb}"
                     IsVisible="{Binding EnableButton}">
-                    <svg:SvgControl
-                        Fill="{setting:Colors Font}"
-                        Path="/Resource/Icon/Item/web.svg"
-                        Stroke="{setting:Colors Font}" />
+                    <svg:SvgControl Path="/Resource/Icon/Item/web.svg" />
                 </Button>
                 <Button
                     Width="35"
@@ -77,10 +73,7 @@
                     Command="{Binding Install}"
                     IsEnabled="{Binding HaveDownload}"
                     IsVisible="{Binding EnableButton, FallbackValue=true}">
-                    <svg:SvgControl
-                        Fill="{setting:Colors Font}"
-                        Path="/Resource/Icon/Item/download.svg"
-                        Stroke="{setting:Colors Font}" />
+                    <svg:SvgControl Path="/Resource/Icon/Item/download.svg" />
                 </Button>
             </StackPanel>
             <TextBlock
@@ -96,8 +89,8 @@
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddWindow.Control.Text1}" />
                     <ProgressBar
                         Height="10"
-                        CornerRadius="20"
                         Margin="10"
+                        CornerRadius="20"
                         IsIndeterminate="{Binding NowDownload}" />
                 </StackPanel>
             </Panel>

@@ -19,16 +19,6 @@ namespace ColorMC.Gui.UI.Model.GameCloud;
 
 public partial class GameCloudModel : MenuModel
 {
-    public override List<MenuItemModel> TabItems { get; init; } =
-    [
-        new() { Icon = "/Resource/Icon/GameExport/item1.svg",
-            Text = App.Lang("GameCloudWindow.Tabs.Text1") },
-        new() { Icon = "/Resource/Icon/GameExport/item2.svg",
-            Text = App.Lang("GameCloudWindow.Tabs.Text2") },
-        new() { Icon = "/Resource/Icon/GameExport/item4.svg",
-            Text = App.Lang("GameCloudWindow.Tabs.Text3") }
-    ];
-
     [ObservableProperty]
     private bool _displayFilter = true;
 
@@ -68,6 +58,16 @@ public partial class GameCloudModel : MenuModel
         SetHeadBack();
 
         LoadWorld();
+
+        SetMenu(
+        [
+            new() { Icon = "/Resource/Icon/GameExport/item1.svg",
+                Text = App.Lang("GameCloudWindow.Tabs.Text1") },
+            new() { Icon = "/Resource/Icon/GameExport/item2.svg",
+                Text = App.Lang("GameCloudWindow.Tabs.Text2") },
+            new() { Icon = "/Resource/Icon/GameExport/item4.svg",
+                Text = App.Lang("GameCloudWindow.Tabs.Text3") }
+        ]);
     }
 
     [RelayCommand]

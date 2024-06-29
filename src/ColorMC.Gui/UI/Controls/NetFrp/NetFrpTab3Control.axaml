@@ -11,21 +11,23 @@
     d:DesignWidth="800"
     x:DataType="model:NetFrpModel"
     mc:Ignorable="d">
-    <Border
-        Name="ScrollViewer1"
-        Margin="5,0,5,5"
-        Classes="t1">
-        <ae:TextEditor
-            Name="TextEditor1"
-            Margin="0,5,0,0"
-            Document="{Binding Text}"
-            FontSize="14"
-            FontWeight="Normal"
-            Foreground="{setting:Colors Font}"
-            HorizontalScrollBarVisibility="Auto"
-            IsReadOnly="True"
-            ShowLineNumbers="True"
-            VerticalScrollBarVisibility="Visible"
-            WordWrap="true" />
-    </Border>
+    <Decorator Margin="0,0,10,15">
+        <Border
+            Name="ScrollViewer1"
+            Margin="10,5,10,3"
+            Classes="t2">
+            <ae:TextEditor
+                Name="TextEditor1"
+                Margin="15"
+                Document="{Binding Text}"
+                FontSize="14"
+                FontWeight="Normal"
+                Foreground="{setting:Colors Font}"
+                HorizontalScrollBarVisibility="Auto"
+                IsReadOnly="True"
+                ShowLineNumbers="True"
+                VerticalScrollBarVisibility="Visible"
+                WordWrap="true" />
+        </Border>
+    </Decorator>
 </UserControl>

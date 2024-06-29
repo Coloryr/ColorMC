@@ -116,18 +116,6 @@ public partial class SettingModel
     }
 
     [RelayCommand]
-    public void OpenDownloadPath()
-    {
-        PathBinding.OpPath(PathType.DownloadPath);
-    }
-
-    [RelayCommand]
-    public void OpenPicPath()
-    {
-        PathBinding.OpPath(PathType.PicPath);
-    }
-
-    [RelayCommand]
     public void StartUpdate()
     {
         UpdateChecker.StartUpdate();

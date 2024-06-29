@@ -13,21 +13,25 @@
     mc:Ignorable="d">
     <Panel
         Name="ScrollViewer1"
-        Margin="5,0,5,5"
+        Margin="0,0,10,15"
         Background="Transparent">
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            IsVisible="{Binding IsLocalEmpty}"
-            Text="{setting:Localize NetFrpWindow.Tab2.Text1}" />
         <ScrollViewer>
             <ItemsControl ItemsSource="{Binding Locals}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <view:NetFrpLocalControl Margin="0,0,0,3" DataContext="{Binding}" />
+                        <view:NetFrpLocalControl DataContext="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
+        <Border
+            Margin="10,5,10,3"
+            Classes="t1"
+            IsVisible="{Binding IsLocalEmpty}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="{setting:Localize NetFrpWindow.Tab2.Text1}" />
+        </Border>
     </Panel>
 </UserControl>

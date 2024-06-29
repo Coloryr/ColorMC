@@ -6,37 +6,41 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    Height="100"
     d:DesignHeight="100"
     d:DesignWidth="500"
     x:DataType="model:ResourcePackModel"
     mc:Ignorable="d">
-    <Panel Background="{setting:Colors TranBack}">
-        <Rectangle
-            Name="Rectangle2"
-            Fill="{setting:Colors Back}"
-            IsVisible="False"
-            RadiusX="{setting:Style Radius}"
-            RadiusY="{setting:Style Radius}" />
-        <Panel Margin="5">
+    <Border
+        Margin="10,5,10,5"
+        Background="{setting:Theme ItemBG}"
+        BoxShadow="{Binding Border}"
+        CornerRadius="5">
+        <Panel Margin="15">
             <Border
                 Width="90"
                 Height="90"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                CornerRadius="{setting:Style PicRadius}">
+                CornerRadius="5">
                 <Border.Background>
                     <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
-            <StackPanel Margin="100,0,0,0">
+            <StackPanel Margin="110,0,0,0">
                 <TextBlock
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
-                    MaxLines="3"
-                    Text="{Binding Local}"
+                    Foreground="{setting:Colors Main}"
+                    MaxLines="1"
+                    Text="{Binding Local, FallbackValue=test}"
                     TextTrimming="CharacterEllipsis"
                     TextWrapping="Wrap" />
+                <TextBlock
+                    Name="Description"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Left"
+                    MaxLines="2"
+                    TextTrimming="CharacterEllipsis" />
                 <StackPanel
                     Margin="0,0,0,0"
                     HorizontalAlignment="Stretch"
@@ -45,7 +49,7 @@
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        Text="{setting:Localize GameEditWindow.Control.Text5}" />
+                        Text="{setting:Localize GameEditWindow.Tab8.Text3}" />
                     <TextBlock
                         Margin="0,0,20,0"
                         HorizontalAlignment="Left"
@@ -54,14 +58,8 @@
                 <TextBlock
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
-                    MaxLines="2"
-                    Text="{Binding Description}"
-                    TextTrimming="CharacterEllipsis" />
-                <TextBlock
-                    Margin="0,0,5,0"
-                    HorizontalAlignment="Left"
                     Text="{Binding Broken}" />
             </StackPanel>
         </Panel>
-    </Panel>
+    </Border>
 </UserControl>
