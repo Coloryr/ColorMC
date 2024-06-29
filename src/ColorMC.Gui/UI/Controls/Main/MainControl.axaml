@@ -86,7 +86,7 @@
                                 Margin="-1,-4,-1,-4"
                                 Classes="top"
                                 Command="{Binding Upgrade}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
+                                CornerRadius="5"
                                 IsVisible="{Binding HaveUpdate}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text73}"
                                 ToolTip.VerticalOffset="-30">
@@ -98,7 +98,7 @@
                                 Margin="-1,-4,-1,-4"
                                 Classes="top"
                                 Command="{Binding NewInfo}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
+                                CornerRadius="5"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text74}"
                                 ToolTip.VerticalOffset="-30">
                                 <Svg Path="/Resource/Icon/new.svg" />
@@ -109,7 +109,7 @@
                                 Margin="-1,-4,-1,-4"
                                 Classes="top"
                                 Command="{Binding MusicPause}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
+                                CornerRadius="5"
                                 IsVisible="{Binding MusicDisplay}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text48}"
                                 ToolTip.VerticalOffset="-30">
@@ -121,7 +121,7 @@
                                 Margin="-1,-4,-1,-4"
                                 Classes="top"
                                 Command="{Binding OpenNetFrp}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
+                                CornerRadius="5"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text72}"
                                 ToolTip.VerticalOffset="-30">
                                 <Svg Path="/Resource/Icon/net.svg" />
@@ -132,7 +132,7 @@
                                 Margin="-1,-4,-1,-4"
                                 Classes="top"
                                 Command="{Binding OpenGuide}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
+                                CornerRadius="5"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text70}"
                                 ToolTip.VerticalOffset="-30">
                                 <Svg Path="/Resource/Icon/book.svg" />
@@ -143,7 +143,7 @@
                                 Margin="-1,-4,-1,-4"
                                 Classes="top"
                                 Command="{Binding ShowSkin}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
+                                CornerRadius="5"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text9}"
                                 ToolTip.VerticalOffset="-30">
                                 <Svg Path="/Resource/Icon/skin.svg" />
@@ -154,7 +154,7 @@
                                 Margin="-1,-4,-1,-4"
                                 Classes="top"
                                 Command="{Binding ShowCount}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
+                                CornerRadius="5"
                                 IsVisible="{Binding !IsPhone}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text92}"
                                 ToolTip.VerticalOffset="-30">
@@ -166,7 +166,7 @@
                                 Margin="-1,-4,-2,-4"
                                 Classes="top"
                                 Command="{Binding ShowSetting}"
-                                CornerRadius="{setting:Style ButtonCornerRadius}"
+                                CornerRadius="5"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text13}"
                                 ToolTip.VerticalOffset="-30">
                                 <Svg Path="/Resource/Icon/setting.svg" />
@@ -178,7 +178,7 @@
                             Margin="0,-4,-2,-4"
                             Classes="top"
                             Command="{Binding OpenSide}"
-                            CornerRadius="{setting:Style ButtonCornerRadius}"
+                            CornerRadius="5"
                             IsVisible="{Binding TopSide2}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text126}"
                             ToolTip.VerticalOffset="-30">

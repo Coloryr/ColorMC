@@ -100,18 +100,9 @@ public static class ConfigBinding
     /// <summary>
     /// 设置启动器颜色
     /// </summary>
-    public static void SetColor(string main, string back, string back1, string font1, string font2,
-        string back2, string back3, string font3, string font4)
+    public static void SetColor(string main)
     {
         GuiConfigUtils.Config.ColorMain = main;
-        GuiConfigUtils.Config.ColorLight.ColorBack = back;
-        GuiConfigUtils.Config.ColorLight.ColorTranBack = back1;
-        GuiConfigUtils.Config.ColorLight.ColorFont1 = font1;
-        GuiConfigUtils.Config.ColorLight.ColorFont2 = font2;
-        GuiConfigUtils.Config.ColorDark.ColorBack = back2;
-        GuiConfigUtils.Config.ColorDark.ColorTranBack = back3;
-        GuiConfigUtils.Config.ColorDark.ColorFont1 = font3;
-        GuiConfigUtils.Config.ColorDark.ColorFont2 = font4;
         GuiConfigUtils.Save();
         App.ColorChange();
     }
@@ -121,17 +112,7 @@ public static class ConfigBinding
     /// </summary>
     public static void ResetColor()
     {
-        SetColor(
-            ColorSel.MainColorStr,
-            ColorSel.BackLigthColorStr,
-            ColorSel.Back1LigthColorStr,
-            ColorSel.ButtonLightFontStr,
-            ColorSel.FontLigthColorStr,
-            ColorSel.BackDarkColorStr,
-            ColorSel.Back1DarkColorStr,
-            ColorSel.ButtonDarkFontStr,
-            ColorSel.FontDarkColorStr
-        );
+        SetColor(ColorSel.MainColorStr);
     }
 
     /// <summary>
@@ -683,19 +664,6 @@ public static class ConfigBinding
     }
 
     /// <summary>
-    /// 设置圆角样式
-    /// </summary>
-    /// <param name="value"></param>
-    public static void SetStyle(int value)
-    {
-        GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
-        GuiConfigUtils.Config.Style.ButtonCornerRadius = value;
-        GuiConfigUtils.Save();
-
-        ThemeManager.Load();
-    }
-
-    /// <summary>
     /// 设置动画样式
     /// </summary>
     /// <param name="value"></param>
@@ -727,21 +695,6 @@ public static class ConfigBinding
     {
         ConfigUtils.Config.SafeLog4j = value;
         ConfigUtils.Save();
-    }
-
-    /// <summary>
-    /// 设置圆角样式
-    /// </summary>
-    /// <param name="enablePicRadius"></param>
-    /// <param name="enableBorderRadius"></param>
-    public static void SetRadiusEnable(bool enablePicRadius, bool enableBorderRadius)
-    {
-        GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
-        GuiConfigUtils.Config.Style.EnablePicRadius = enablePicRadius;
-        GuiConfigUtils.Config.Style.EnableBorderRadius = enableBorderRadius;
-        GuiConfigUtils.Save();
-
-        ThemeManager.Load();
     }
 
     /// <summary>

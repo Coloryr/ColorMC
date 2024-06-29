@@ -114,14 +114,6 @@ public static class ColorSel
             }
             MainColor = Brush.Parse(GuiConfigUtils.Config.ColorMain);
 
-            var config = App.NowTheme == PlatformThemeVariant.Light ?
-                GuiConfigUtils.Config.ColorLight : GuiConfigUtils.Config.ColorDark;
-
-            BackColor = Brush.Parse(config.ColorBack);
-            Back1Color = Brush.Parse(config.ColorTranBack);
-            ButtonFont = Brush.Parse(config.ColorFont1);
-            FontColor = Brush.Parse(config.ColorFont2);
-
             BottomColor = App.NowTheme == PlatformThemeVariant.Light
                 ? AppLightBackColor : AppDarkBackColor;
 

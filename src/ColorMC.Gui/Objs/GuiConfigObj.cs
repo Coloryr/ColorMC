@@ -8,10 +8,6 @@ namespace ColorMC.Gui.Objs;
 public record StyleSetting
 {
     /// <summary>
-    /// 按钮圆角程度
-    /// </summary>
-    public int ButtonCornerRadius { get; set; }
-    /// <summary>
     /// 页面切换动画时间
     /// </summary>
     public int AmTime { get; set; }
@@ -19,14 +15,6 @@ public record StyleSetting
     /// 过度淡化
     /// </summary>
     public bool AmFade { get; set; }
-    /// <summary>
-    /// 是否启用图片圆角
-    /// </summary>
-    public bool EnablePicRadius { get; set; }
-    /// <summary>
-    /// 是否启用边框圆角
-    /// </summary>
-    public bool EnableBorderRadius { get; set; }
 }
 
 /// <summary>
@@ -170,29 +158,6 @@ public record Render
     public X11Render X11 { get; set; }
 }
 
-/// <summary>
-/// 启动器颜色设置
-/// </summary>
-public record ColorSetting
-{
-    /// <summary>
-    /// 背景色
-    /// </summary>
-    public string ColorBack { get; set; }
-    /// <summary>
-    /// 透明背景色
-    /// </summary>
-    public string ColorTranBack { get; set; }
-    /// <summary>
-    /// 字体颜色1
-    /// </summary>
-    public string ColorFont1 { get; set; }
-    /// <summary>
-    /// 字体颜色2
-    /// </summary>
-    public string ColorFont2 { get; set; }
-}
-
 public record Live2DSetting
 {
     /// <summary>
@@ -286,15 +251,6 @@ public record GuiConfigObj
     /// 主题色
     /// </summary>
     public string ColorMain { get; set; }
-
-    /// <summary>
-    /// 亮色
-    /// </summary>
-    public ColorSetting ColorLight { get; set; }
-    /// <summary>
-    /// 暗色
-    /// </summary>
-    public ColorSetting ColorDark { get; set; }
 
     /// <summary>
     /// 启用RGB模式

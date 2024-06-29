@@ -29,10 +29,6 @@ public static class ThemeManager
 
     private static ThemeObj s_theme;
 
-    private static CornerRadius s_buttonCornerRadius = new(3);
-    private static CornerRadius s_picRadius = new(0);
-    private static int Radius;
-
     private static BoxShadows s_buttonShadow;
 
     public static readonly BoxShadows BorderShadows = new(BoxShadow.Parse("0 0 3 1 #1A000000"), [BoxShadow.Parse("0 0 5 -1 #1A000000")]);
@@ -55,19 +51,6 @@ public static class ThemeManager
         }
 
         var config = GuiConfigUtils.Config.Style;
-
-        s_buttonCornerRadius = new(config.ButtonCornerRadius);
-
-        if (config.EnablePicRadius)
-        {
-            s_picRadius = new(config.ButtonCornerRadius);
-        }
-        else
-        {
-            s_picRadius = new(0);
-        }
-
-        Radius = config.EnableBorderRadius ? config.ButtonCornerRadius : 0;
 
         var color = ColorSel.MainColor.ToColor();
         var color1 = new Color(255, color.R, color.G, color.B);
@@ -170,29 +153,9 @@ public static class ThemeManager
 
     private static object? GetStyle(string key)
     {
-        if (key == "ButtonCornerRadius")
-        {
-            return s_buttonCornerRadius;
-        }
-        else if (key == "PicRadius")
-        {
-            return s_picRadius;
-        }
-        else if (key == "FontTitle")
+        if (key == "FontTitle")
         {
             return s_fontTitleSize;
-        }
-        else if (key == "Radius")
-        {
-            return Radius;
-        }
-        else if (key == "BorderPadding")
-        {
-            return s_borderPadding;
-        }
-        else if (key == "BorderPadding1")
-        {
-            return s_borderPadding1;
         }
         else if (key == "ButtonTopBoxShadow")
         {
