@@ -9,12 +9,13 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class FileItemModel : ObservableObject
+public partial class FileItemModel : SelectItemModel
 {
     private readonly IAddWindow _add;
 
@@ -33,8 +34,6 @@ public partial class FileItemModel : ObservableObject
     private bool isDownload = false;
     [ObservableProperty]
     private bool _nowDownload = false;
-    [ObservableProperty]
-    private bool _isSelect;
     [ObservableProperty]
     private bool _top;
     [ObservableProperty]
@@ -63,7 +62,7 @@ public partial class FileItemModel : ObservableObject
         }
     }
 
-    partial void OnIsSelectChanged(bool value)
+    protected override void IsSelectChanged(bool value)
     {
         EnableButton = Top || IsSelect;
     }

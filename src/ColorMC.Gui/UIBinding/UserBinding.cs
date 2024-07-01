@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -16,9 +13,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Skin;
 using ColorMC.Gui.Utils;
-using SkiaSharp;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -43,6 +38,21 @@ public static class UserBinding
     {
         var list = new List<string>()
         {
+            AuthType.Offline.GetName(),
+            AuthType.OAuth.GetName(),
+            AuthType.Nide8.GetName(),
+            AuthType.AuthlibInjector.GetName(),
+            AuthType.LittleSkin.GetName(),
+            AuthType.SelfLittleSkin.GetName()
+        };
+        return list;
+    }
+
+    public static List<string> GetDisplayUserTypes()
+    {
+        var list = new List<string>()
+        {
+            "",
             AuthType.Offline.GetName(),
             AuthType.OAuth.GetName(),
             AuthType.Nide8.GetName(),
@@ -206,30 +216,14 @@ public static class UserBinding
         }
 
         string? file = null, file1 = null;
-        (bool, bool) temp;
-        if (obj.AuthType == AuthType.Offline)
+        var temp = await PlayerSkinAPI.DownloadSkin(obj);
+        if (temp.Item1)
         {
-            temp = await PlayerSkinAPI.DownloadSkin(obj);
-            if (temp.Item1)
-            {
-                file = AssetsPath.GetSkinFile(obj);
-            }
-            if (temp.Item2)
-            {
-                file1 = AssetsPath.GetCapeFile(obj);
-            }
+            file = AssetsPath.GetSkinFile(obj);
         }
-        else
+        if (temp.Item2)
         {
-            temp = await PlayerSkinAPI.DownloadSkin(obj);
-            if (temp.Item1)
-            {
-                file = AssetsPath.GetSkinFile(obj);
-            }
-            if (temp.Item2)
-            {
-                file1 = AssetsPath.GetCapeFile(obj);
-            }
+            file1 = AssetsPath.GetCapeFile(obj);
         }
 
         ImageManager.LoadSkinHead(file, file1);

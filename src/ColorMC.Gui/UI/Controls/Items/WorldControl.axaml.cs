@@ -14,8 +14,6 @@ public partial class WorldControl : UserControl
 
         PointerPressed += WorldControl_PointerPressed;
         PointerReleased += WorldControl_PointerReleased;
-        PointerEntered += WorldControl_PointerEntered;
-        PointerExited += WorldControl_PointerExited;
         PointerMoved += WorldControl_PointerMoved;
 
         DataGridDataPack.DoubleTapped += DataGridDataPack_DoubleTapped;
@@ -54,16 +52,6 @@ public partial class WorldControl : UserControl
     private void WorldControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         LongPressed.Released();
-    }
-
-    private void WorldControl_PointerExited(object? sender, PointerEventArgs e)
-    {
-        Rectangle2.IsVisible = false;
-    }
-
-    private void WorldControl_PointerEntered(object? sender, PointerEventArgs e)
-    {
-        Rectangle2.IsVisible = true;
     }
 
     private void WorldControl_PointerPressed(object? sender, PointerPressedEventArgs e)

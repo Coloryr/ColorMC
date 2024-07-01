@@ -1,7 +1,7 @@
 ﻿<Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils">
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel>
@@ -18,34 +18,36 @@
     </Design.PreviewWith>
 
     <Style Selector="TextBox">
-        <Setter Property="Foreground" Value="{setting:Colors Font}" />
-        <Setter Property="SelectionBrush" Value="{setting:Colors Main}" />
+        <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
+        <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="SelectionBrush" Value="{setting:Theme MainColor}" />
 
         <Style Selector="^:pointerover Border#PART_BorderElement">
-            <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+            <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
         </Style>
 
         <Style Selector="^:focus /template/ Border#PART_BorderElement">
-            <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+            <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
         </Style>
     </Style>
 
     <Style Selector="TextBox.input1">
-        <Setter Property="Foreground" Value="{setting:Colors Font}" />
+        <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="CornerRadius" Value="0" />
-        <Setter Property="SelectionBrush" Value="{setting:Colors Main}" />
+        <Setter Property="SelectionBrush" Value="{setting:Theme MainColor}" />
 
         <Style Selector="^:pointerover Border#PART_BorderElement">
-            <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+            <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
         </Style>
 
         <Style Selector="^:focus">
             <Setter Property="Background" Value="#44bdf2ff" />
         </Style>
         <Style Selector="^:focus /template/ Border#PART_BorderElement">
-            <Setter Property="Background" Value="{setting:Colors Back}" />
-            <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+            <Setter Property="Background" Value="{setting:Theme TopBGColor}" />
+            <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
             <Setter Property="BorderThickness" Value="0,0,0,2" />
         </Style>
     </Style>

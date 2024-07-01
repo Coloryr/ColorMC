@@ -5,36 +5,39 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:views2="clr-namespace:ColorMC.Gui.UI.Controls.Main"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:MainModel"
     mc:Ignorable="d">
-    <Panel>
+    <Panel Margin="20,10,20,20">
         <ScrollViewer Name="ScrollViewer1" VerticalAlignment="Top">
             <ItemsControl ItemsSource="{Binding GameGroups}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <views2:GamesControl Margin="0,0,0,3" DataContext="{Binding}" />
+                        <views2:GamesControl Margin="0,0,0,10" DataContext="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
         <Border
-            Margin="5"
-            Padding="5"
+            Margin="10"
+            Padding="10"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            BoxShadow="0 2 8 #22000000"
-            Classes="t1"
+            Background="{setting:Theme ItemBG}"
+            BoxShadow="0 1 3 0 #1A000000, 0 1 2 -1 #1A000000"
+            CornerRadius="5"
             IsVisible="{Binding GameSearch}">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="搜索：" />
+                <TextBlock Text="{setting:Localize MainWindow.Text13}" />
                 <TextBox
                     Name="Search"
                     Width="200"
                     Height="20"
+                    Padding="5,6,6,5"
+                    Background="Transparent"
                     Classes="input1"
                     Text="{Binding GameSearchText}" />
             </StackPanel>

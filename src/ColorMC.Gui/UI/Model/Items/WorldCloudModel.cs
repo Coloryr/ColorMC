@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class WorldCloudModel : ObservableObject
+public partial class WorldCloudModel : SelectItemModel
 {
     public string Name => HaveLocal ? World.LevelName : Cloud.Name;
     public string Time => HaveLocal ? FuntionUtils.MillisecondsToDataTime(World.LastPlayed).ToString()
@@ -21,9 +21,6 @@ public partial class WorldCloudModel : ObservableObject
     public CloudWorldObj Cloud { get; init; }
 
     private readonly GameCloudModel _model;
-
-    [ObservableProperty]
-    private bool _isSelect;
 
     [ObservableProperty]
     private Bitmap _pic;

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
@@ -12,7 +10,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.LaunchSetting;
+
 using SkiaSharp;
 
 namespace ColorMC.Gui.Manager;
@@ -119,7 +117,7 @@ public static class ImageManager
         }
 
         App.OnPicUpdate();
-        ColorSel.Load();
+        App.ColorChange();
         FuntionUtils.RunGC();
     }
 

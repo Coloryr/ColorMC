@@ -25,8 +25,6 @@ public partial class AddModPackControl : BaseUserControl
 
         ModPackFiles.PointerPressed += ModPackFiles_PointerPressed;
 
-        Input1.KeyDown += Input1_KeyDown;
-
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
         ScrollViewer1.ScrollChanged += ScrollViewer1_ScrollChanged;
     }
@@ -79,7 +77,6 @@ public partial class AddModPackControl : BaseUserControl
             {
                 return;
             }
-            model.DisplayFilter = false;
         }
     }
 
@@ -124,14 +121,6 @@ public partial class AddModPackControl : BaseUserControl
         {
             await (DataContext as AddModPackControlModel)!.Download();
             e.Handled = true;
-        }
-    }
-
-    private void Input1_KeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Enter)
-        {
-            (DataContext as AddModPackControlModel)!.Reload();
         }
     }
 

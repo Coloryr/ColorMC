@@ -4,19 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     x:DataType="vm:NbtDialogEditModel"
     Design.Width="350"
     mc:Ignorable="d">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <DockPanel
+            Margin="5"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             DockPanel.Dock="Top">
             <Button
                 Width="100"
-                Height="30"
+                Height="35"
                 Margin="3,-2,3,-2"
                 VerticalAlignment="Center"
                 Classes="top"

@@ -14,13 +14,14 @@
 	<PropertyGroup>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Include="Resources\MiSans-Normal.ttf" />
-	</ItemGroup>
 	
 	<ItemGroup>
 		<None Remove=".gitignore" />
+		<None Remove="Resources\MiSans-Regular.ttf" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\MiSans-Regular.ttf" />
 	</ItemGroup>
 	
 	<ItemGroup>

@@ -5,46 +5,35 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
     <ScrollViewer Name="ScrollViewer1">
-        <StackPanel Margin="5,0,5,0">
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Text="{Binding TitleText}"
-                        TextTrimming="CharacterEllipsis" />
-                    <Button
-                        Width="100"
-                        Height="30"
-                        Margin="-2,-2,0,-2"
-                        HorizontalAlignment="Right"
-                        Classes="top"
-                        Command="{Binding DeleteConfig}"
-                        Content="{setting:Localize GameEditWindow.Tab2.Text28}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text38}"
-                        ToolTip.VerticalOffset="-30" />
-                </StackPanel>
-            </Border>
-
+        <StackPanel Margin="0,0,10,15">
+            <TextBlock
+                Margin="25,20,25,10"
+                HorizontalAlignment="Center"
+                FontSize="15"
+                Foreground="{setting:Theme MainColor}"
+                RenderOptions.TextRenderingMode="Antialias"
+                Text="{Binding TitleText, FallbackValue=123}"
+                TextTrimming="CharacterEllipsis" />
             <!--  分辨率  -->
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg15.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text9}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,0">
+                    <WrapPanel Margin="0,0,0,5">
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <TextBlock Width="110" Text="{setting:Localize GameEditWindow.Tab2.Text10}" />
                             <NumericUpDown
@@ -73,8 +62,8 @@
                     </WrapPanel>
                     <TextBox
                         Height="100"
+                        Margin="0,0,0,5"
                         AcceptsReturn="True"
-                        Classes="input"
                         Text="{Binding GameTitle}"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text38}" />
                     <WrapPanel>
@@ -95,7 +84,7 @@
                                 Height="40"
                                 Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
-                                Foreground="{setting:Colors Main}"
+                                Foreground="{setting:Theme MainColor}"
                                 IsSnapToTickEnabled="True"
                                 LargeChange="500"
                                 Maximum="5000"
@@ -108,21 +97,20 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-
             <!--  指定Java  -->
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/GameEdit/svg5.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text24}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,5">
+                    <WrapPanel Margin="0,0,0,10">
                         <TextBlock Width="110" Text="{setting:Localize GameEditWindow.Tab2.Text22}" />
                         <ComboBox
                             Width="200"
@@ -130,11 +118,11 @@
                             ItemsSource="{Binding JvmList}"
                             SelectedItem="{Binding JvmName}" />
                     </WrapPanel>
-                    <DockPanel Margin="0,0,0,5" IsEnabled="{Binding !Phone}">
+                    <DockPanel Margin="0,0,0,10" IsEnabled="{Binding !Phone}">
                         <Button
                             Width="100"
-                            Height="30"
-                            Margin="3,-3,0,-2"
+                            Height="35"
+                            Margin="-2,-2,-2,-2"
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding OpenJava}"
@@ -143,7 +131,7 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text7}"
                             ToolTip.VerticalOffset="-30" />
                         <TextBox
-                            Classes="input1"
+                            Margin="0,0,10,0"
                             Text="{Binding JvmLocal}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
                     </DockPanel>
@@ -169,58 +157,62 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-
             <!--  执行程序  -->
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg12.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text33}" />
                     </StackPanel>
-                    <CheckBox Content="{setting:Localize GameEditWindow.Tab2.Text31}" IsChecked="{Binding PerRun}" />
+                    <ToggleSwitch
+                        Margin="0,0,0,5"
+                        IsChecked="{Binding PerRun}"
+                        OffContent="{setting:Localize GameEditWindow.Tab2.Text31}"
+                        OnContent="{setting:Localize GameEditWindow.Tab2.Text31}" />
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,0"
+                        Margin="0,0,0,10"
                         AcceptsReturn="True"
-                        Classes="input2"
                         IsEnabled="{Binding PerRun}"
                         Text="{Binding PerRunCmd}"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text30}" />
 
-                    <CheckBox Content="{setting:Localize GameEditWindow.Tab2.Text29}" IsChecked="{Binding PostRun}" />
+                    <ToggleSwitch
+                        Margin="0,0,0,5"
+                        IsChecked="{Binding PostRun}"
+                        OffContent="{setting:Localize GameEditWindow.Tab2.Text29}"
+                        OnContent="{setting:Localize GameEditWindow.Tab2.Text29}" />
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,0"
                         AcceptsReturn="True"
-                        Classes="input2"
                         IsEnabled="{Binding PostRun}"
                         Text="{Binding PostRunCmd}"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text30}" />
                 </StackPanel>
             </Border>
             <!--  Jvm参数  -->
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
                     <!--  Jvm内存  -->
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg14.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text1}" />
                     </StackPanel>
 
                     <!--  Jvm GC  -->
-                    <WrapPanel Orientation="Horizontal">
+                    <WrapPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <TextBlock
                             Width="110"
                             HorizontalAlignment="Center"
@@ -231,19 +223,16 @@
                             SelectedIndex="{Binding Gc}" />
                     </WrapPanel>
                     <TextBox
-                        Margin="0,5,0,5"
-                        Classes="input1"
+                        Margin="0,0,0,10"
                         IsEnabled="{Binding EnableGc}"
                         Text="{Binding JvmGc}"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text3}" />
                     <!--  Jvm附加参数  -->
                     <TextBox
-                        Name="TextBox2"
-                        Margin="0,5,0,0"
-                        Classes="input1"
+                        Margin="0,0,0,10"
                         Text="{Binding JavaAgent}"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text6}" />
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <ToggleSwitch
                             Margin="0,0,10,0"
                             VerticalAlignment="Center"
@@ -259,58 +248,57 @@
                     </StackPanel>
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,0"
+                        Margin="0,0,0,10"
                         AcceptsReturn="True"
-                        Classes="input"
                         Text="{Binding JvmArg}"
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text7}" />
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,5"
+                        Margin="0,0,0,5"
                         AcceptsReturn="True"
-                        Classes="input"
                         Text="{Binding GameArg}"
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text8}" />
 
-                    <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text25}" TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        Text="{setting:Localize GameEditWindow.Tab2.Text25}"
+                        TextWrapping="Wrap" />
 
                     <TextBox
-                        Name="TextBox13"
                         Height="100"
-                        Margin="0,5,0,5"
+                        Margin="0,0,0,5"
                         AcceptsReturn="True"
-                        Classes="input"
                         Text="{Binding ClassPath}"
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text32}" />
 
-                    <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text25}" TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        Text="{setting:Localize GameEditWindow.Tab2.Text25}"
+                        TextWrapping="Wrap" />
 
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,5"
+                        Margin="0,0,0,5"
                         AcceptsReturn="True"
-                        Classes="input"
                         Text="{Binding JvmEnv}"
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text34}" />
 
-                    <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text35}" TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        Text="{setting:Localize GameEditWindow.Tab2.Text35}"
+                        TextWrapping="Wrap" />
 
-                    <TextBox
-                        Margin="0,5,0,0"
-                        Classes="input1"
-                        Text="{Binding MainClass}"
-                        Watermark="{setting:Localize GameEditWindow.Tab2.Text27}" />
+                    <TextBox Text="{Binding MainClass}" Watermark="{setting:Localize GameEditWindow.Tab2.Text27}" />
                 </StackPanel>
             </Border>
-
             <!--  自动加入  -->
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
@@ -318,62 +306,54 @@
                             Path="/Resource/Icon/GameEdit/svg6.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text14}" />
                     </StackPanel>
-                    <WrapPanel Orientation="Horizontal">
+                    <Grid ColumnDefinitions="*,0.4*">
                         <TextBox
-                            Width="300"
+                            Grid.Column="0"
                             Margin="0,0,10,0"
-                            Classes="input1"
                             Text="{Binding IP}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text15}" />
                         <TextBox
-                            Width="100"
-                            Classes="input1"
+                            Grid.Column="1"
                             MaxLength="5"
                             Text="{Binding Port}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text16}" />
-                    </WrapPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
             <!--  代理  -->
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg8.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text17}" />
                     </StackPanel>
-                    <Grid Margin="0,0,5,0" ColumnDefinitions="3*,1*">
+                    <Grid Margin="0,0,0,10" ColumnDefinitions="3*,1*">
                         <TextBox
                             Grid.Column="0"
-                            Margin="0,0,10,5"
-                            Classes="input1"
+                            Margin="0,0,10,0"
                             Text="{Binding ProxyIP}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text18}" />
                         <TextBox
                             Grid.Column="1"
-                            Margin="0,0,0,5"
-                            Classes="input1"
                             MaxLength="5"
                             Text="{Binding ProxyPort}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text19}" />
 
                     </Grid>
-                    <Grid Margin="0,0,5,0" ColumnDefinitions="*,*">
+                    <Grid ColumnDefinitions="*,*">
                         <TextBox
                             Grid.Column="0"
-                            Margin="0,0,10,5"
-                            Classes="input1"
+                            Margin="0,0,10,0"
                             Text="{Binding ProxyUser}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text20}" />
                         <TextBox
                             Grid.Column="1"
-                            Margin="0,0,0,5"
-                            Classes="input1"
                             PasswordChar="*"
                             Text="{Binding ProxyPassword}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text21}" />

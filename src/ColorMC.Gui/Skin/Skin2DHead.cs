@@ -96,9 +96,8 @@ public static class Skin2DHead
     /// </summary>
     /// <param name="file">图片</param>
     /// <returns>图片数据</returns>
-    public static Stream MakeHeadImage(string file)
+    public static Stream MakeHeadImage(SKBitmap image)
     {
-        using var image = SKBitmap.Decode(file);
         using var image1 = new SKBitmap(8, 8);
         using var image2 = new SKBitmap(64, 64);
 

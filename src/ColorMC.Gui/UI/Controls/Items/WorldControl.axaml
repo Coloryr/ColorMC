@@ -5,37 +5,35 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    MinHeight="100"
     d:DesignHeight="200"
     d:DesignWidth="500"
     x:DataType="model:WorldModel"
     mc:Ignorable="d">
-    <Panel Background="{setting:Colors TranBack}">
-        <Rectangle
-            Name="Rectangle2"
-            Fill="{setting:Colors Back}"
-            IsVisible="False"
-            RadiusX="{setting:Style Radius}"
-            RadiusY="{setting:Style Radius}" />
-        <Panel Margin="4">
+    <Border
+        Margin="10,5,10,5"
+        Background="{setting:Theme ItemBG}"
+        BoxShadow="{Binding Border}"
+        CornerRadius="5">
+        <Panel Margin="15">
             <Border
                 Width="90"
                 Height="90"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                CornerRadius="{setting:Style PicRadius}">
+                CornerRadius="5">
                 <Border.Background>
                     <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
-            <StackPanel Margin="100,0,0,0">
+            <StackPanel Margin="110,0,0,0">
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    FontSize="16"
+                    Foreground="{setting:Theme MainColor}"
+                    Text="{Binding Name, FallbackValue=test}" />
                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                    <TextBlock
-                        Margin="0,0,20,0"
-                        HorizontalAlignment="Left"
-                        Text="{Binding Name}" />
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
@@ -74,14 +72,14 @@
                 <TextBlock
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
-                    MaxLines="3"
+                    MaxLines="2"
                     Text="{Binding Local}"
                     TextTrimming="CharacterEllipsis"
                     TextWrapping="Wrap" />
             </StackPanel>
             <DockPanel Margin="5,95,5,5" IsVisible="{Binding IsSelect}">
                 <TextBlock DockPanel.Dock="Top" Text="{setting:Localize GameEditWindow.Control.Text6}" />
-                <Panel>
+                <Panel Margin="0,5,0,0">
                     <DataGrid
                         Name="DataGridDataPack"
                         AutoGenerateColumns="False"
@@ -110,14 +108,18 @@
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Panel Background="{setting:Colors BG1}" IsVisible="{Binding Empty}">
+                    <Border
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Classes="t1"
+                        IsVisible="{Binding Empty}">
                         <TextBlock
                             HorizontalAlignment="Center"
                             FontSize="20"
                             Text="{setting:Localize GameEditWindow.Control.Text9}" />
-                    </Panel>
+                    </Border>
                 </Panel>
             </DockPanel>
         </Panel>
-    </Panel>
+    </Border>
 </UserControl>

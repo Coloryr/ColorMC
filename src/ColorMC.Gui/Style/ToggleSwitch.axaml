@@ -1,7 +1,7 @@
 ﻿<Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils">
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel>
@@ -14,14 +14,19 @@
         </Border>
     </Design.PreviewWith>
 
+    <Style Selector="ToggleSwitch:unchecked /template/ Border#OuterBorder">
+        <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
     <Style Selector="ToggleSwitch:pointerover /template/ Border#SwitchKnobBounds">
-        <Setter Property="Background" Value="{setting:Colors Main}" />
+        <Setter Property="Background" Value="{setting:Theme MainColor}" />
     </Style>
     <Style Selector="ToggleSwitch:pointerover /template/ Border#OuterBorder">
-        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
     </Style>
     <Style Selector="ToggleSwitch:checked /template/ Border#SwitchKnobBounds">
-        <Setter Property="Background" Value="{setting:Colors Main}" />
+        <Setter Property="Background" Value="{setting:Theme MainColor}" />
     </Style>
     <Style Selector="ToggleSwitch:disabled /template/ Border#SwitchKnobBounds">
         <Setter Property="Background" Value="#999999" />

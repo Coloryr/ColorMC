@@ -6,62 +6,34 @@
     xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,0">
-        <Border
-            Margin="0,0,0,5"
-            Classes="t2"
-            DockPanel.Dock="Top">
-            <WrapPanel Margin="0,0,0,-5">
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="-2,-3,3,2"
-                    Classes="top"
-                    Command="{Binding LoadScreenshot}"
-                    Content="{setting:Localize Button.Refash}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text109}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="-2,-3,3,2"
-                    Classes="top"
-                    Command="{Binding ClearScreenshot}"
-                    Content="{setting:Localize GameEditWindow.Flyouts4.Text1}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text110}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="-2,-3,3,2"
-                    Classes="top"
-                    Command="{Binding OpenScreenshot}"
-                    Content="{setting:Localize Button.OpFile}"
-                    IsEnabled="{Binding !Phone}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text111}"
-                    ToolTip.VerticalOffset="-30" />
-            </WrapPanel>
-        </Border>
-        <Border Margin="0,0,0,5" Classes="t2">
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-                <ItemsControl ItemsSource="{Binding ScreenshotList}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <item:ScreenshotControl DataContext="{Binding}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </ScrollViewer>
-        </Border>
-    </DockPanel>
+    <ScrollViewer Name="ScrollViewer1">
+        <Panel Margin="0,0,10,15">
+            <ItemsControl ItemsSource="{Binding ScreenshotList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <item:ScreenshotControl DataContext="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            <Border
+                Margin="10,5,10,3"
+                Classes="t1"
+                IsVisible="{Binding ScreenshotEmptyDisplay}">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="30"
+                    Text="{setting:Localize GameEditWindow.Tab9.Text2}" />
+            </Border>
+        </Panel>
+    </ScrollViewer>
 </UserControl>

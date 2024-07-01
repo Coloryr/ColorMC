@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using Avalonia.Media;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Live2DCSharpSDK.Framework.Core;
@@ -25,24 +26,6 @@ public partial class SettingModel
 
     [ObservableProperty]
     private Color _mainColor;
-
-    [ObservableProperty]
-    private Color _lightBackColor;
-    [ObservableProperty]
-    private Color _lightTranColor;
-    [ObservableProperty]
-    private Color _lightFont1Color;
-    [ObservableProperty]
-    private Color _lightFont2Color;
-
-    [ObservableProperty]
-    private Color _darkBackColor;
-    [ObservableProperty]
-    private Color _darkTranColor;
-    [ObservableProperty]
-    private Color _darkFont1Color;
-    [ObservableProperty]
-    private Color _darkFont2Color;
 
     [ObservableProperty]
     private bool _windowMode;
@@ -73,10 +56,6 @@ public partial class SettingModel
     [ObservableProperty]
     private bool _enableLive2D;
     [ObservableProperty]
-    private bool _enablePicRadius;
-    [ObservableProperty]
-    private bool _enableBorderRadius;
-    [ObservableProperty]
     private bool _lowFps;
 
     [ObservableProperty]
@@ -97,8 +76,6 @@ public partial class SettingModel
     private int _l2dWidth;
     [ObservableProperty]
     private int _l2dHeight;
-    [ObservableProperty]
-    private int _buttonCornerRadius;
     [ObservableProperty]
     private int _amTime;
     [ObservableProperty]
@@ -129,22 +106,6 @@ public partial class SettingModel
             return;
 
         ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight, L2dPos);
-    }
-
-    partial void OnEnableBorderRadiusChanged(bool value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetRadiusEnable(EnablePicRadius, EnableBorderRadius);
-    }
-
-    partial void OnEnablePicRadiusChanged(bool value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetRadiusEnable(EnablePicRadius, EnableBorderRadius);
     }
 
     partial void OnEnableLive2DChanged(bool value)
@@ -179,14 +140,6 @@ public partial class SettingModel
         ConfigBinding.SetStyle(AmTime, AmFade);
     }
 
-    partial void OnButtonCornerRadiusChanged(int value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetStyle(ButtonCornerRadius);
-    }
-
     partial void OnL2dWidthChanged(int value)
     {
         if (_load)
@@ -201,46 +154,6 @@ public partial class SettingModel
             return;
 
         ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight, L2dPos);
-    }
-
-    partial void OnLightFont2ColorChanged(Color value)
-    {
-        ColorChange();
-    }
-
-    partial void OnLightFont1ColorChanged(Color value)
-    {
-        ColorChange();
-    }
-
-    partial void OnLightTranColorChanged(Color value)
-    {
-        ColorChange();
-    }
-
-    partial void OnLightBackColorChanged(Color value)
-    {
-        ColorChange();
-    }
-
-    partial void OnDarkFont2ColorChanged(Color value)
-    {
-        ColorChange();
-    }
-
-    partial void OnDarkFont1ColorChanged(Color value)
-    {
-        ColorChange();
-    }
-
-    partial void OnDarkTranColorChanged(Color value)
-    {
-        ColorChange();
-    }
-
-    partial void OnDarkBackColorChanged(Color value)
-    {
-        ColorChange();
     }
 
     partial void OnMainColorChanged(Color value)
@@ -410,15 +323,7 @@ public partial class SettingModel
     {
         _load = true;
         ConfigBinding.ResetColor();
-        MainColor = Color.Parse(ColorSel.MainColorStr);
-        LightBackColor = Color.Parse(ColorSel.BackLigthColorStr);
-        LightTranColor = Color.Parse(ColorSel.Back1LigthColorStr);
-        LightFont1Color = Color.Parse(ColorSel.ButtonLightFontStr);
-        LightFont2Color = Color.Parse(ColorSel.FontLigthColorStr);
-        DarkBackColor = Color.Parse(ColorSel.BackDarkColorStr);
-        DarkTranColor = Color.Parse(ColorSel.Back1DarkColorStr);
-        DarkFont1Color = Color.Parse(ColorSel.ButtonDarkFontStr);
-        DarkFont2Color = Color.Parse(ColorSel.FontDarkColorStr);
+        MainColor = Color.Parse(ThemeManager.MainColorStr);
         _load = false;
         Model.Notify(App.Lang("SettingWindow.Tab2.Info4"));
     }
@@ -562,14 +467,6 @@ public partial class SettingModel
                     break;
             }
             MainColor = Color.Parse(con.ColorMain);
-            LightBackColor = Color.Parse(con.ColorLight.ColorBack);
-            LightTranColor = Color.Parse(con.ColorLight.ColorTranBack);
-            LightFont1Color = Color.Parse(con.ColorLight.ColorFont1);
-            LightFont2Color = Color.Parse(con.ColorLight.ColorFont2);
-            DarkBackColor = Color.Parse(con.ColorDark.ColorBack);
-            DarkTranColor = Color.Parse(con.ColorDark.ColorTranBack);
-            DarkFont1Color = Color.Parse(con.ColorDark.ColorFont1);
-            DarkFont2Color = Color.Parse(con.ColorDark.ColorFont2);
             EnableRGB = con.RGB;
             IsDefaultFont = con.FontDefault;
             EnableFontList = !IsDefaultFont;
@@ -577,7 +474,6 @@ public partial class SettingModel
             EnablePicResize = con.BackLimit;
             EnableWindowTran = con.WindowTran;
 
-            ButtonCornerRadius = con.Style.ButtonCornerRadius;
             AmTime = con.Style.AmTime;
             AmFade = con.Style.AmFade;
 
@@ -619,11 +515,7 @@ public partial class SettingModel
         if (_load)
             return;
 
-        ConfigBinding.SetColor(MainColor.ToString(),
-            LightBackColor.ToString(), LightTranColor.ToString(),
-            LightFont1Color.ToString(), LightFont2Color.ToString(),
-            DarkBackColor.ToString(), DarkTranColor.ToString(),
-            DarkFont1Color.ToString(), DarkFont2Color.ToString());
+        ConfigBinding.SetColor(MainColor.ToString());
     }
 
     private void SaveWindowSetting()

@@ -106,9 +106,10 @@ public partial class AddJavaControlModel : TopModel
 
     public async void Load()
     {
-        Model.Progress(App.Lang("AddJavaWindow.Info4"));
-
         _load = true;
+
+        Model.Progress(App.Lang("AddJavaWindow.Info4"));
+        Model.ChoiseEnable = false;
 
         _list1.Clear();
         JavaList.Clear();
@@ -216,10 +217,12 @@ public partial class AddJavaControlModel : TopModel
 
             Select();
 
+            Model.ChoiseEnable = true;
             Model.ProgressClose();
         }
         else
         {
+            Model.ChoiseEnable = true;
             Model.ProgressClose();
             Model.Show(App.Lang("AddJavaWindow.Error1"));
         }

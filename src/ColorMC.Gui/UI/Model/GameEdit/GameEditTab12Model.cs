@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
@@ -17,23 +16,25 @@ public partial class GameEditModel
     [ObservableProperty]
     private SchematicObj? _schematicItem;
 
+    [ObservableProperty]
+    private bool _schematicEmptyDisplay;
+
     [RelayCommand]
     public void OpenSchematic()
     {
         PathBinding.OpPath(_obj, PathType.SchematicsPath);
     }
 
-    [RelayCommand]
-    public async Task LoadSchematic()
+    public async void LoadSchematic()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
         SchematicList.Clear();
         SchematicList.AddRange(await GameBinding.GetSchematics(_obj));
         Model.ProgressClose();
+        SchematicEmptyDisplay = SchematicList.Count == 0;
     }
 
-    [RelayCommand]
-    public async Task AddSchematic()
+    private async void AddSchematic()
     {
         var res = await PathBinding.AddFile(_obj, FileType.Schematic);
 
@@ -47,7 +48,7 @@ public partial class GameEditModel
         }
 
         Model.Show(App.Lang("GameEditWindow.Tab12.Info3"));
-        await LoadSchematic();
+        LoadSchematic();
     }
 
     public async void DropSchematic(IDataObject data)
@@ -55,14 +56,14 @@ public partial class GameEditModel
         var res = await GameBinding.AddFile(_obj, data, FileType.Schematic);
         if (res)
         {
-            await LoadSchematic();
+            LoadSchematic();
         }
     }
 
-    public async void DeleteSchematic(SchematicObj obj)
+    public void DeleteSchematic(SchematicObj obj)
     {
         GameBinding.DeleteSchematic(obj);
         Model.Show(App.Lang("GameEditWindow.Tab10.Info5"));
-        await LoadSchematic();
+        LoadSchematic();
     }
 }

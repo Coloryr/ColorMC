@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
@@ -21,6 +20,7 @@ public partial class AddGameControl : BaseUserControl
     private AddGameTab1Control _tab1;
     private AddGameTab2Control _tab2;
     private AddGameTab3Control _tab3;
+    private AddGameTab4Control _tab4;
 
     public AddGameControl()
     {
@@ -91,11 +91,7 @@ public partial class AddGameControl : BaseUserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "WindowClose")
-        {
-            Window.Close();
-        }
-        else if (e.PropertyName == "GoTab1")
+        if (e.PropertyName == "GoTab1")
         {
             Content1.Child = _tab1 ??= new();
         }
@@ -107,14 +103,13 @@ public partial class AddGameControl : BaseUserControl
         {
             Content1.Child = _tab3 ??= new();
         }
+        else if (e.PropertyName == "GoDownload")
+        {
+            Content1.Child = _tab4 ??= new();
+        }
         else if (e.PropertyName == "Back")
         {
             Content1.Child = null;
-        }
-        else if (e.PropertyName == "GoModPack")
-        {
-            Content1.Child = _tab1 ??= new();
-            WindowManager.ShowAddModPack();
         }
     }
 

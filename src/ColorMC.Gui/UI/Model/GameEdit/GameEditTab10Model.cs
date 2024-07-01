@@ -1,10 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -17,13 +15,15 @@ public partial class GameEditModel
     [ObservableProperty]
     private (string?, ushort) _iPPort;
 
+    [ObservableProperty]
+    private bool _serverEmptyDisplay;
+
     partial void OnServerItemChanged(ServerInfoObj? value)
     {
         IPPort = (value?.IP, 0);
     }
 
-    [RelayCommand]
-    public async Task AddServer()
+    private async void AddServer()
     {
         var (Cancel, Text1, Text2) = await Model.ShowInput(
             App.Lang("GameEditWindow.Tab10.Info1"),
@@ -52,6 +52,7 @@ public partial class GameEditModel
         ServerList.Clear();
         ServerList.AddRange(await GameBinding.GetServers(_obj));
         Model.ProgressClose();
+        ServerEmptyDisplay = ServerList.Count == 0;
     }
 
     public async void DeleteServer(ServerInfoObj obj)

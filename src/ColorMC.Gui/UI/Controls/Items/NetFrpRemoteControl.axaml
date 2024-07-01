@@ -5,37 +5,47 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     x:DataType="model:NetFrpRemoteModel"
     mc:Ignorable="d">
-    <Border Classes="t2">
-        <WrapPanel Margin="0,0,0,-5" VerticalAlignment="Center">
-            <TextBlock Margin="0,0,5,5" Text="{Binding Name}" />
-            <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
-                <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text10}" />
-                <TextBlock Text="{Binding ID}" />
-            </StackPanel>
-            <StackPanel
+    <Border
+        Margin="10,5,10,5"
+        Background="{setting:Theme ItemBG}"
+        BoxShadow="{Binding Border}"
+        CornerRadius="5">
+        <StackPanel Margin="15">
+            <TextBlock
                 Margin="0,0,5,5"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text11}" />
-                <TextBlock Text="{Binding Type}" />
-            </StackPanel>
-            <StackPanel
-                Margin="0,0,5,5"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text12}" />
-                <TextBlock Text="{Binding Remote}" />
-            </StackPanel>
-            <StackPanel
-                Margin="0,0,5,5"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text13}" />
-                <TextBlock Text="{Binding Use}" />
-            </StackPanel>
-        </WrapPanel>
+                FontSize="16"
+                Foreground="{setting:Theme MainColor}"
+                Text="{Binding Name, FallbackValue=Name}" />
+            <WrapPanel Margin="0,0,0,-5" VerticalAlignment="Center">
+                <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text10}" />
+                    <TextBlock Text="{Binding ID}" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,0,5,5"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text11}" />
+                    <TextBlock Text="{Binding Type}" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,0,5,5"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text12}" />
+                    <TextBlock Text="{Binding Remote}" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,0,5,5"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text13}" />
+                    <TextBlock Text="{Binding Use}" />
+                </StackPanel>
+            </WrapPanel>
+        </StackPanel>
     </Border>
 </UserControl>

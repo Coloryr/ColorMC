@@ -225,8 +225,7 @@ public partial class SettingModel
         }
     }
 
-    [RelayCommand]
-    public async Task Reset()
+    private async void Reset()
     {
         var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info1"));
         if (!res)
@@ -236,8 +235,7 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab1.Info2"));
     }
 
-    [RelayCommand]
-    public async Task ClearUser()
+    private async void ClearUser()
     {
         var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info3"));
         if (!res)
@@ -247,9 +245,18 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab1.Info4"));
     }
 
-    [RelayCommand]
-    public void Open()
+    private void OpenDownloadPath()
+    {
+        PathBinding.OpPath(PathType.DownloadPath);
+    }
+
+    private void Open()
     {
         PathBinding.OpPath(PathType.BasePath);
+    }
+
+    private void OpenPicPath()
+    {
+        PathBinding.OpPath(PathType.PicPath);
     }
 }

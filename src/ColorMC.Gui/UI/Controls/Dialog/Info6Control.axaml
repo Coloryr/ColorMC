@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     x:DataType="dialogmodel:Info6Model"
     mc:Ignorable="d">
     <DockPanel>
@@ -18,7 +18,7 @@
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
                     Classes="top"
@@ -26,7 +26,7 @@
                     Content="{setting:Localize Button.Confirm}" />
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
                     Classes="top"
@@ -38,7 +38,6 @@
         <TextBox
             Margin="0,5,0,0"
             AcceptsReturn="True"
-            CornerRadius="0"
             IsReadOnly="True"
             Text="{Binding Text2}" />
     </DockPanel>

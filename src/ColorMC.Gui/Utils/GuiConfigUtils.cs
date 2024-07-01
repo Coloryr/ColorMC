@@ -3,8 +3,9 @@ using System.IO;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Utils.LaunchSetting;
+
 using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Utils;
@@ -75,16 +76,6 @@ public static class GuiConfigUtils
                 Config.Render = MakeRenderConfig();
                 save = true;
             }
-            if (Config.ColorLight == null)
-            {
-                Config.ColorLight = MakeColorLightConfig();
-                save = true;
-            }
-            if (Config.ColorDark == null)
-            {
-                Config.ColorDark = MakeColorDarkConfig();
-                save = true;
-            }
             if (Config.Live2D == null)
             {
                 Config.Live2D = MakeLive2DConfig();
@@ -147,7 +138,6 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            ButtonCornerRadius = 3,
             AmTime = 500
         };
     }
@@ -182,9 +172,7 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            ColorMain = ColorSel.MainColorStr,
-            ColorLight = MakeColorLightConfig(),
-            ColorDark = MakeColorDarkConfig(),
+            ColorMain = ThemeManager.MainColorStr,
             RGBS = 100,
             RGBV = 100,
             ServerCustom = MakeServerCustomConfig(),
@@ -197,28 +185,6 @@ public static class GuiConfigUtils
             Gui = MakeGuiSettingConfig(),
             Style = MakeStyleSettingConfig(),
             Input = new()
-        };
-    }
-
-    public static ColorSetting MakeColorLightConfig()
-    {
-        return new()
-        {
-            ColorBack = ColorSel.BackLigthColorStr,
-            ColorTranBack = ColorSel.Back1LigthColorStr,
-            ColorFont1 = ColorSel.ButtonLightFontStr,
-            ColorFont2 = ColorSel.FontLigthColorStr,
-        };
-    }
-
-    public static ColorSetting MakeColorDarkConfig()
-    {
-        return new()
-        {
-            ColorBack = ColorSel.BackDarkColorStr,
-            ColorTranBack = ColorSel.Back1DarkColorStr,
-            ColorFont1 = ColorSel.ButtonDarkFontStr,
-            ColorFont2 = ColorSel.FontDarkColorStr,
         };
     }
 

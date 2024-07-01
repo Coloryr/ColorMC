@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -15,10 +14,10 @@ public abstract class BaseUserControl : UserControl
     public string Title { get; protected set; }
     public string UseName { get; protected set; }
     public abstract Bitmap GetIcon();
-    public  void SetBaseModel(BaseModel model)
+    public void SetBaseModel(BaseModel model)
     {
-        model.PropertyChanged += Model_PropertyChanged;
         SetModel(model);
+        model.PropertyChanged += Model_PropertyChanged;
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -31,9 +30,9 @@ public abstract class BaseUserControl : UserControl
 
     public abstract void SetModel(BaseModel model);
     public virtual void WindowStateChange(WindowState state) { }
-    public virtual Task<bool> OnKeyDown(object? sender, KeyEventArgs e) 
+    public virtual Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
     {
-        return Task.FromResult(false); 
+        return Task.FromResult(false);
     }
     public virtual void IPointerPressed(PointerPressedEventArgs e) { }
     public virtual void IPointerReleased(PointerReleasedEventArgs e) { }

@@ -15,10 +15,6 @@ public partial class ScreenshotControl : UserControl
 
         PointerPressed += ScreenshotControl_PointerPressed;
         PointerReleased += ScreenshotControl_PointerReleased;
-
-        PointerEntered += ScreenshotControl_PointerEntered;
-        PointerExited += ScreenshotControl_PointerExited;
-
         DoubleTapped += ScreenshotControl_DoubleTapped;
     }
 
@@ -32,16 +28,6 @@ public partial class ScreenshotControl : UserControl
         LongPressed.Cancel();
         var model = (DataContext as ScreenshotModel)!;
         PathBinding.OpenPicFile(model.Screenshot);
-    }
-
-    private void ScreenshotControl_PointerExited(object? sender, PointerEventArgs e)
-    {
-        Rectangle2.IsVisible = false;
-    }
-
-    private void ScreenshotControl_PointerEntered(object? sender, PointerEventArgs e)
-    {
-        Rectangle2.IsVisible = true;
     }
 
     private void ScreenshotControl_PointerPressed(object? sender, PointerPressedEventArgs e)

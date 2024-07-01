@@ -35,13 +35,13 @@ internal static class GuiLoad
 
 public static class Program
 {
-    public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
+    public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Regular.ttf?assembly=ColorMC.Launcher#MiSans";
 
 #if !DEBUG
     /// <summary>
     /// 加载路径
     /// </summary>
-    public const string TopVersion = "A26";
+    public const string TopVersion = "A27";
 
     public static readonly string[] BaseSha1 =
     [

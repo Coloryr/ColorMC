@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;

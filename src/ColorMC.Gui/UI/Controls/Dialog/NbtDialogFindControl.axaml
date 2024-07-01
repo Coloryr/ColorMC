@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     x:DataType="vm:NbtDialogFindModel"
     mc:Ignorable="d">
@@ -14,9 +14,9 @@
                 Margin="5"
                 HorizontalAlignment="Center"
                 Text="{Binding FindText1}" />
-            <DockPanel Margin="5">
+            <DockPanel Margin="0,0,0,10">
                 <TextBlock Text="{Binding FindText2}" />
-                <TextBox Classes="input1" Text="{Binding PosName}" />
+                <TextBox HorizontalAlignment="Stretch" Text="{Binding PosName}" />
             </DockPanel>
             <WrapPanel>
                 <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
@@ -59,14 +59,14 @@
                 Orientation="Horizontal">
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="10,0,10,0"
                     Classes="top"
                     Command="{Binding FindStart}"
                     Content="{setting:Localize ConfigEditWindow.Text10}" />
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="10,0,10,0"
                     Classes="top"
                     Command="{Binding FindCancel}"

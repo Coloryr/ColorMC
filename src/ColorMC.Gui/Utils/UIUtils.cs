@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
+using ColorMC.Core.Net.Motd;
 
 namespace ColorMC.Gui.Utils;
 
@@ -113,5 +114,23 @@ public static class UIUtils
         }
 
         return temp;
+    }
+
+    public static IBrush GetColor(string? color)
+    {
+        if (string.IsNullOrWhiteSpace(color))
+        {
+            return Brushes.White;
+        }
+        if (color.StartsWith('#'))
+        {
+            return Brush.Parse(color);
+        }
+        if (ServerMotd.ColorMap.TryGetValue(color, out var color1))
+        {
+            return Brush.Parse(color1);
+        }
+
+        return Brush.Parse(color);
     }
 }

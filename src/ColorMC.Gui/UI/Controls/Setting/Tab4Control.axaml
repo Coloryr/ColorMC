@@ -5,28 +5,27 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    d:DesignHeight="1200"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer
         Name="ScrollViewer1"
-        Margin="5,0,5,0"
+        Margin="0,0,10,15"
         HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
-            <Border Margin="0,0,0,5" Classes="t2">
+            <Border Margin="10,5,10,3" Classes="t2">
                 <!--  运行前检查  -->
-                <StackPanel>
+                <StackPanel Margin="15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg11.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text24}" />
                     </StackPanel>
                     <WrapPanel>
@@ -42,7 +41,7 @@
                                     Margin="3,-9,0,0"
                                     HorizontalAlignment="Left"
                                     Path="/Resource/Icon/down.svg"
-                                    Stroke="{setting:Colors Font}" />
+                                    Stroke="{setting:Theme FontColor}" />
                                 <CheckBox
                                     Margin="25,0,5,0"
                                     Content="{setting:Localize SettingWindow.Tab4.Text22}"
@@ -62,7 +61,7 @@
                                     Margin="3,-9,0,0"
                                     HorizontalAlignment="Left"
                                     Path="/Resource/Icon/down.svg"
-                                    Stroke="{setting:Colors Font}" />
+                                    Stroke="{setting:Theme FontColor}" />
                                 <CheckBox
                                     Margin="25,0,5,0"
                                     Content="{setting:Localize SettingWindow.Tab4.Text22}"
@@ -82,7 +81,7 @@
                                     Margin="3,-9,0,0"
                                     HorizontalAlignment="Left"
                                     Path="/Resource/Icon/down.svg"
-                                    Stroke="{setting:Colors Font}" />
+                                    Stroke="{setting:Theme FontColor}" />
                                 <CheckBox
                                     Margin="25,0,5,0"
                                     Content="{setting:Localize SettingWindow.Tab4.Text22}"
@@ -102,7 +101,7 @@
                                     Margin="3,-9,0,0"
                                     HorizontalAlignment="Left"
                                     Path="/Resource/Icon/down.svg"
-                                    Stroke="{setting:Colors Font}" />
+                                    Stroke="{setting:Theme FontColor}" />
                                 <CheckBox
                                     Margin="25,0,5,0"
                                     Content="{setting:Localize SettingWindow.Tab4.Text22}"
@@ -114,19 +113,19 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,0,0,5"
+                Margin="10,5,10,3"
                 Classes="t2"
                 IsEnabled="{Binding !Phone}">
-                <StackPanel>
+                <StackPanel Margin="15">
                     <!--  分辨率  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg15.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text9}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,-5">
@@ -158,17 +157,17 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
                     <!--  Jvm内存  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg14.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text1}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,-5">
@@ -240,16 +239,16 @@
                     <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text35}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
-            <Border Margin="0,0,0,5" Classes="t2">
-                <StackPanel>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg12.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text13}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -273,19 +272,19 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,0,0,5"
+                Margin="10,5,10,3"
                 Classes="t2"
                 IsEnabled="{Binding !Phone}">
-                <StackPanel>
+                <StackPanel Margin="15">
                     <!--  运行后  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg13.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text19}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">

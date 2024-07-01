@@ -5,23 +5,28 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:AddJavaControlModel"
-    Background="{setting:Colors TranBack}"
+    Background="{setting:Theme WindowBG}"
     mc:Ignorable="d">
-    <DockPanel Margin="5">
-        <Border Classes="t2" DockPanel.Dock="Top">
-            <StackPanel>
+    <DockPanel Margin="10">
+        <Border
+            Margin="10,10,10,5"
+            Background="{setting:Theme ItemBG}"
+            BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
+            CornerRadius="5"
+            DockPanel.Dock="Top">
+            <StackPanel Margin="15">
                 <WrapPanel Margin="0,0,0,-5">
                     <ComboBox
                         Width="120"
-                        Margin="0,0,5,5"
+                        Margin="0,0,10,5"
                         ItemsSource="{Binding JavaTypeList}"
                         SelectedIndex="{Binding TypeIndex}"
                         SelectedItem="{Binding JavaType}" />
-                    <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                    <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text2}" />
                         <ComboBox
                             Width="120"
@@ -29,15 +34,15 @@
                             SelectedItem="{Binding System}" />
                     </StackPanel>
 
-                    <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                    <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
                         <ComboBox
-                            Width="90"
+                            Width="70"
                             ItemsSource="{Binding VersionList}"
                             SelectedItem="{Binding Version}" />
                     </StackPanel>
 
-                    <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text4}" />
                         <ComboBox
                             Width="120"
@@ -53,10 +58,15 @@
                     TextWrapping="Wrap" />
             </StackPanel>
         </Border>
-        <Border Margin="0,5,0,0" Classes="t1">
+        <Border
+            Margin="10"
+            Background="{setting:Theme ItemBG}"
+            BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
+            CornerRadius="5">
             <Panel>
                 <DataGrid
                     Name="JavaFiles"
+                    Margin="15"
                     AutoGenerateColumns="False"
                     CanUserResizeColumns="True"
                     CanUserSortColumns="False"
@@ -89,8 +99,11 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Panel Background="{setting:Colors BG1}" IsVisible="{Binding Display}">
-                    <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddJavaWindow.Text6}" />
+                <Panel Background="{setting:Theme OverBGColor}" IsVisible="{Binding Display}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="16"
+                        Text="{setting:Localize AddJavaWindow.Text6}" />
                 </Panel>
             </Panel>
         </Border>

@@ -5,14 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameCloud"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
-    <Panel Name="ScrollViewer1" Margin="5,0,5,5">
-        <Border Classes="t2">
-            <DockPanel>
+    <DockPanel Name="ScrollViewer1" Margin="0,0,10,15">
+        <Border Margin="10,5,10,3" Classes="t2">
+            <DockPanel Margin="15">
                 <StackPanel
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Bottom"
@@ -39,7 +39,6 @@
                     <TextBlock Text="{setting:Localize GameCloudWindow.Tab1.Text2}" />
                     <TextBox
                         Margin="0,5,5,0"
-                        Classes="input1"
                         IsEnabled="False"
                         IsReadOnly="True"
                         Text="{Binding UUID}" />
@@ -52,8 +51,7 @@
                         <TextBlock Text="{Binding LocalConfigTime}" />
                     </StackPanel>
                 </StackPanel>
-
             </DockPanel>
         </Border>
-    </Panel>
+    </DockPanel>
 </UserControl>
