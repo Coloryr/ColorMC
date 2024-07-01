@@ -20,14 +20,26 @@ public partial class ServerPackModel : MenuModel
 
         SetMenu(
         [
-            new() { Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text1") },
-            new() { Icon = "/Resource/Icon/GameExport/item2.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text2") },
-            new() { Icon = "/Resource/Icon/GameExport/item3.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text3") },
-            new() { Icon = "/Resource/Icon/GameExport/item4.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text4") },
+            new() 
+            { 
+                Icon = "/Resource/Icon/GameExport/item1.svg",
+                Text = App.Lang("ServerPackWindow.Tabs.Text1") 
+            },
+            new() 
+            {
+                Icon = "/Resource/Icon/GameExport/item2.svg",
+                Text = App.Lang("ServerPackWindow.Tabs.Text2") 
+            },
+            new() 
+            { 
+                Icon = "/Resource/Icon/GameExport/item3.svg",
+                Text = App.Lang("ServerPackWindow.Tabs.Text3") 
+            },
+            new() 
+            {
+                Icon = "/Resource/Icon/GameExport/item4.svg",
+                Text = App.Lang("ServerPackWindow.Tabs.Text4") 
+            },
         ]);
     }
 

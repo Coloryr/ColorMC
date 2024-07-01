@@ -18,9 +18,6 @@ public record ThemeObj
     /// </summary>
     public IBrush FontColor;
     public IBrush WindowBG;
-    /// <summary>
-    /// 用于开启模糊模式时窗口的颜色
-    /// </summary>
     public IBrush WindowTranColor;
     public IBrush ProgressBarBG;
     public IBrush MainGroupBG;

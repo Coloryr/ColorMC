@@ -17,6 +17,7 @@
                 HorizontalAlignment="Center"
                 FontSize="15"
                 Foreground="{setting:Theme MainColor}"
+                RenderOptions.TextRenderingMode="Antialias"
                 Text="{Binding TitleText, FallbackValue=123}"
                 TextTrimming="CharacterEllipsis" />
             <!--  分辨率  -->

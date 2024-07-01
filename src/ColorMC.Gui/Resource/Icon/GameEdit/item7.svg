@@ -1,8 +1,16 @@
 <?xml version="1.0" ?>
 <svg class="feather feather-server" fill="none" height="24" stroke-linecap="round" stroke-linejoin="round"
     stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-    <rect height="8" rx="2" ry="2" width="20" x="2" y="2" />
-    <rect height="8" rx="2" ry="2" width="20" x="2" y="14" />
-    <line x1="6" x2="6.01" y1="6" y2="6" />
-    <line x1="6" x2="6.01" y1="18" y2="18" />
+    <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#33ff40;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#33b5ff;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <g stroke="url(#grad1)" fill="none">
+        <rect height="8" rx="2" ry="2" width="20" x="2" y="2" />
+        <rect height="8" rx="2" ry="2" width="20" x="2" y="14" />
+        <line x1="6" x2="6.01" y1="6" y2="6" />
+        <line x1="6" x2="6.01" y1="18" y2="18" />
+    </g>
 </svg>

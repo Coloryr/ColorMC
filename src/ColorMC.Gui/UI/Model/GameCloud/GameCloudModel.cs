@@ -61,12 +61,21 @@ public partial class GameCloudModel : MenuModel
 
         SetMenu(
         [
-            new() { Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = App.Lang("GameCloudWindow.Tabs.Text1") },
-            new() { Icon = "/Resource/Icon/GameExport/item2.svg",
-                Text = App.Lang("GameCloudWindow.Tabs.Text2") },
-            new() { Icon = "/Resource/Icon/GameExport/item4.svg",
-                Text = App.Lang("GameCloudWindow.Tabs.Text3") }
+            new() 
+            { 
+                Icon = "/Resource/Icon/GameExport/item1.svg",
+                Text = App.Lang("GameCloudWindow.Tabs.Text1") 
+            },
+            new() 
+            { 
+                Icon = "/Resource/Icon/GameExport/item2.svg",
+                Text = App.Lang("GameCloudWindow.Tabs.Text2") 
+            },
+            new() 
+            { 
+                Icon = "/Resource/Icon/GameExport/item4.svg",
+                Text = App.Lang("GameCloudWindow.Tabs.Text3") 
+            }
         ]);
     }
 
