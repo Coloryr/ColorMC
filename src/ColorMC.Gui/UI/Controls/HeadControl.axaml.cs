@@ -6,7 +6,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.LaunchSetting;
+
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -48,7 +48,7 @@ public partial class HeadControl : UserControl
             CornerRadius = new CornerRadius(0),
             Foreground = Brushes.White
         };
-        _buttonMin.Bind(BackgroundProperty, new ColorsExtension("Main"));
+        _buttonMin.Bind(BackgroundProperty, new ThemeExtension("MainColor"));
         _buttonMax = new Button()
         {
             Width = 40,
@@ -58,7 +58,7 @@ public partial class HeadControl : UserControl
             CornerRadius = new CornerRadius(0),
             Foreground = Brushes.White
         };
-        _buttonMax.Bind(BackgroundProperty, new ColorsExtension("Main"));
+        _buttonMax.Bind(BackgroundProperty, new ThemeExtension("MainColor"));
         var max = new HeadImg();
         max.Bind(HeadImg.PathProperty, MaxObservale.ToBinding());
         MaxObservale.Notify(MaxIcon[0]);
@@ -73,7 +73,7 @@ public partial class HeadControl : UserControl
             CornerRadius = new CornerRadius(0),
             Foreground = Brushes.White
         };
-        _buttonClose.Bind(BackgroundProperty, new ColorsExtension("Main"));
+        _buttonClose.Bind(BackgroundProperty, new ThemeExtension("MainColor"));
 
         StackPanel1.Children.Add(_buttonMin);
         StackPanel1.Children.Add(_buttonMax);

@@ -6,7 +6,7 @@
     xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:AddModPackControlModel"
@@ -178,7 +178,6 @@
                 <DataGrid
                     Name="PackFiles"
                     Margin="10"
-                    Background="{setting:Colors TranBack}"
                     CanUserResizeColumns="True"
                     ItemsSource="{Binding FileList}"
                     SelectedItem="{Binding Item}">

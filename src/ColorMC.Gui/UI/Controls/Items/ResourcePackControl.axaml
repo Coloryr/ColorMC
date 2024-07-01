@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="100"
     d:DesignWidth="500"
     x:DataType="model:ResourcePackModel"
@@ -30,7 +30,7 @@
                 <TextBlock
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
-                    Foreground="{setting:Colors Main}"
+                    Foreground="{setting:Theme MainColor}"
                     MaxLines="1"
                     Text="{Binding Local, FallbackValue=test}"
                     TextTrimming="CharacterEllipsis"

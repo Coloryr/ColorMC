@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:MainModel"
@@ -21,14 +21,13 @@
             Margin="0,0,0,50"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
-            Background="{setting:Colors Back}"
             BorderBrush="Black"
             BorderThickness="1"
             CornerRadius="30"
             IsVisible="False">
             <TextBlock
                 Margin="5"
-                Foreground="{setting:Colors Font}"
+                Foreground="{setting:Theme FontColor}"
                 Text="{Binding Message}" />
         </Border>
     </Panel>

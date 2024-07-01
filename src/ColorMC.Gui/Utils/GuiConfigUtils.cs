@@ -3,8 +3,9 @@ using System.IO;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Utils.LaunchSetting;
+
 using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Utils;
@@ -171,7 +172,7 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            ColorMain = ColorSel.MainColorStr,
+            ColorMain = ThemeManager.MainColorStr,
             RGBS = 100,
             RGBV = 100,
             ServerCustom = MakeServerCustomConfig(),

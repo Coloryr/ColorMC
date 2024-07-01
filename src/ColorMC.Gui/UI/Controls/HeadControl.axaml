@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     Height="35"
     d:DesignHeight="35"
     d:DesignWidth="800"
@@ -13,7 +13,7 @@
     Background="Transparent"
     mc:Ignorable="d">
     <Panel>
-        <Border Name="Border1" Background="{setting:Colors Main}" />
+        <Border Name="Border1" Background="{setting:Theme MainColor}" />
         <DockPanel>
             <StackPanel
                 Name="StackPanel1"
@@ -22,7 +22,7 @@
                 <Button
                     Width="80"
                     Height="35"
-                    Background="{setting:Colors Main}"
+                    Background="{setting:Theme MainColor}"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding ChoiseClick}"
@@ -34,7 +34,7 @@
                 <Button
                     Width="80"
                     Height="35"
-                    Background="{setting:Colors Main}"
+                    Background="{setting:Theme MainColor}"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding Choise1Click}"
@@ -46,7 +46,7 @@
                 <Button
                     Width="80"
                     Height="35"
-                    Background="{setting:Colors Main}"
+                    Background="{setting:Theme MainColor}"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding BackClick}"

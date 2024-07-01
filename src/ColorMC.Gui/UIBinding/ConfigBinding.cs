@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Avalonia.Media;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
@@ -8,7 +9,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.LaunchSetting;
+
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -50,7 +51,6 @@ public static class ConfigBinding
         if (res)
         {
             App.ColorChange();
-            FontSel.Load();
         }
 
         return res;
@@ -112,7 +112,7 @@ public static class ConfigBinding
     /// </summary>
     public static void ResetColor()
     {
-        SetColor(ColorSel.MainColorStr);
+        SetColor(ThemeManager.MainColorStr);
     }
 
     /// <summary>
@@ -406,7 +406,7 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
 
-        FontSel.Load();
+        ThemeManager.Load();
     }
 
     /// <summary>

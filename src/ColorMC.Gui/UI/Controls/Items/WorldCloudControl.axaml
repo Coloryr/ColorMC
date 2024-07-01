@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignWidth="500"
     x:DataType="model:WorldCloudModel"
     mc:Ignorable="d">
@@ -28,7 +28,7 @@
             <StackPanel Margin="110,0,0,0">
                 <TextBlock
                     FontSize="16"
-                    Foreground="{setting:Colors Main}"
+                    Foreground="{setting:Theme MainColor}"
                     Text="{Binding Name}" />
                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
                     <TextBlock

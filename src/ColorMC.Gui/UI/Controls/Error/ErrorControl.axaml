@@ -6,21 +6,23 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Error"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:ErrorModel"
+    Background="{setting:Theme WindowBG}"
     mc:Ignorable="d">
-    <ae:TextEditor
-        Margin="5"
-        Background="{setting:Colors TranBack}"
-        Document="{Binding Text}"
-        FontSize="14"
-        FontWeight="Normal"
-        Foreground="{setting:Colors Font}"
-        HorizontalScrollBarVisibility="Auto"
-        IsReadOnly="True"
-        ShowLineNumbers="True"
-        VerticalScrollBarVisibility="Visible"
-        WordWrap="True" />
+    <Border Classes="t2">
+        <ae:TextEditor
+            Margin="15"
+            Document="{Binding Text}"
+            FontSize="14"
+            FontWeight="Normal"
+            Foreground="{setting:Theme FontColor}"
+            HorizontalScrollBarVisibility="Auto"
+            IsReadOnly="True"
+            ShowLineNumbers="True"
+            VerticalScrollBarVisibility="Visible"
+            WordWrap="True" />
+    </Border>
 </UserControl>

@@ -1,7 +1,7 @@
 ﻿<Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils">
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel Height="400">
@@ -24,11 +24,11 @@
         <Setter Property="CornerRadius" Value="5" />
 
         <Style Selector="^:pointerover /template/ Border#Background">
-            <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+            <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
         </Style>
     </Style>
 
     <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
-        <Setter Property="Background" Value="{setting:Colors Main}" />
+        <Setter Property="Background" Value="{setting:Theme MainColor}" />
     </Style>
 </Styles>

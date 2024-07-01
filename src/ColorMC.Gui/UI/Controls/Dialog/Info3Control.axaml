@@ -5,14 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     x:DataType="dialogmodel:Info3Model"
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBox
             Name="TextBox1"
             MinWidth="300"
-            Foreground="{setting:Colors Font}"
+            Foreground="{setting:Theme FontColor}"
             IsReadOnly="{Binding TextReadonly}"
             Text="{Binding Text1}"
             TextAlignment="Center"
@@ -22,7 +22,7 @@
             Name="TextBox2"
             MinWidth="300"
             Margin="0,10,0,0"
-            Foreground="{setting:Colors Font}"
+            Foreground="{setting:Theme FontColor}"
             IsReadOnly="{Binding TextReadonly}"
             IsVisible="{Binding Text2Visable}"
             PasswordChar="{Binding Password}"

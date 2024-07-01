@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using Avalonia.Media;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Live2DCSharpSDK.Framework.Core;
@@ -322,7 +323,7 @@ public partial class SettingModel
     {
         _load = true;
         ConfigBinding.ResetColor();
-        MainColor = Color.Parse(ColorSel.MainColorStr);
+        MainColor = Color.Parse(ThemeManager.MainColorStr);
         _load = false;
         Model.Notify(App.Lang("SettingWindow.Tab2.Info4"));
     }

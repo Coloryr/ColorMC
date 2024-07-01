@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     x:DataType="model:NetFrpRemoteModel"
     mc:Ignorable="d">
     <Border
@@ -17,7 +17,7 @@
             <TextBlock
                 Margin="0,0,5,5"
                 FontSize="16"
-                Foreground="{setting:Colors Main}"
+                Foreground="{setting:Theme MainColor}"
                 Text="{Binding Name, FallbackValue=Name}" />
             <WrapPanel Margin="0,0,0,-5" VerticalAlignment="Center">
                 <StackPanel Margin="0,0,5,5" Orientation="Horizontal">

@@ -12,7 +12,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.LaunchSetting;
+
 using SkiaSharp;
 
 namespace ColorMC.Gui.Manager;

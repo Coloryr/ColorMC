@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     x:DataType="model:NetFrpLocalModel"
     Design.Width="320"
     mc:Ignorable="d">
@@ -18,7 +18,7 @@
             <StackPanel>
                 <TextBlock
                     FontSize="16"
-                    Foreground="{setting:Colors Main}"
+                    Foreground="{setting:Theme MainColor}"
                     Text="{Binding Motd, FallbackValue=456}" />
                 <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab2.Text3}" />

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignWidth="500"
     x:DataType="model:FileItemModel"
@@ -34,7 +34,7 @@
                     <TextBlock
                         DockPanel.Dock="Top"
                         FontSize="16"
-                        Foreground="{setting:Colors Main}"
+                        Foreground="{setting:Theme MainColor}"
                         Text="{Binding Name, FallbackValue=1234}" />
                     <TextBlock
                         DockPanel.Dock="Top"
@@ -80,11 +80,11 @@
                 Padding="3"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                Background="{setting:Colors Bottom1}"
-                Foreground="{setting:Colors Font}"
+                Background="{setting:Theme TopBGColor}"
+                Foreground="{setting:Theme FontColor}"
                 IsVisible="{Binding IsDownload, FallbackValue=true}"
                 Text="{setting:Localize Text.Downloaded}" />
-            <Panel Background="{setting:Colors Bottom1}" IsVisible="{Binding NowDownload, FallbackValue=false}">
+            <Panel Background="{setting:Theme TopBGColor}" IsVisible="{Binding NowDownload, FallbackValue=false}">
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddWindow.Control.Text1}" />
                     <ProgressBar

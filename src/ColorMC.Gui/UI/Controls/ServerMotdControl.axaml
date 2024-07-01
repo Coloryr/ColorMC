@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     VerticalAlignment="Top"
     mc:Ignorable="d">
@@ -78,7 +78,7 @@
             </Panel>
             <Panel
                 Name="Grid1"
-                Background="{setting:Colors Bottom1}"
+                Background="{setting:Theme TopBGColor}"
                 IsVisible="False">
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text4}" />
@@ -91,7 +91,7 @@
             </Panel>
             <Panel
                 Name="Grid2"
-                Background="{setting:Colors Bottom1}"
+                Background="{setting:Theme TopBGColor}"
                 IsVisible="False">
                 <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text5}" />
             </Panel>

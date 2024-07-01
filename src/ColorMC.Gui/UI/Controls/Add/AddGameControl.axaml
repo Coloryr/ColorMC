@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -72,7 +72,7 @@
                 CornerRadius="5"
                 IsVisible="{Binding !IsPhone}">
                 <StackPanel>
-                    <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item3.svg" />
+                    <svg:SvgControl Fill="{setting:Theme FontColor}" Path="/Resource/Icon/AddMenu/item3.svg" />
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tabs.Text3}" />
                 </StackPanel>
             </Button>
@@ -82,7 +82,7 @@
 
         <Panel
             Name="Grid2"
-            Background="{setting:Colors BG1}"
+            Background="{setting:Theme TopGridColor}"
             IsVisible="False">
             <TextBlock
                 Name="Label1"

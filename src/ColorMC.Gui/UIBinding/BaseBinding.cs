@@ -32,7 +32,6 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.Hook;
-using ColorMC.Gui.Utils.LaunchSetting;
 using ICSharpCode.SharpZipLib.Zip;
 using Silk.NET.SDL;
 using Thread = System.Threading.Thread;
@@ -121,7 +120,6 @@ public static class BaseBinding
         InputConfigUtils.Init(ColorMCGui.RunDir);
         FrpPath.Init(ColorMCGui.RunDir);
 
-        FontSel.Load();
         App.LoadPageSlide();
 
         InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>
@@ -182,7 +180,7 @@ public static class BaseBinding
     private static void LanguageReload(LanguageType type)
     {
         App.LoadLanguage(type);
-        LangSel.Reload();
+        LangMananger.Reload();
 
         App.Reboot();
     }
