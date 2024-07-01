@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Media.Fonts;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;

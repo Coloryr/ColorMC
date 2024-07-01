@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
@@ -20,25 +18,25 @@ public partial class ServerPackModel : MenuModel
 
         SetMenu(
         [
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text1") 
+                Text = App.Lang("ServerPackWindow.Tabs.Text1")
             },
-            new() 
+            new()
             {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text2") 
+                Text = App.Lang("ServerPackWindow.Tabs.Text2")
             },
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/GameExport/item3.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text3") 
+                Text = App.Lang("ServerPackWindow.Tabs.Text3")
             },
-            new() 
+            new()
             {
                 Icon = "/Resource/Icon/GameExport/item4.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text4") 
+                Text = App.Lang("ServerPackWindow.Tabs.Text4")
             },
         ]);
     }

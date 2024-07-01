@@ -16,7 +16,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// <summary>
 /// 账户显示
 /// </summary>
-public partial class UserDisplayModel(UsersControlModel top ,LoginObj Obj) : SelectItemModel
+public partial class UserDisplayModel(UsersControlModel top, LoginObj Obj) : SelectItemModel
 {
     /// <summary>
     /// 用户名
@@ -50,7 +50,7 @@ public partial class UserDisplayModel(UsersControlModel top ,LoginObj Obj) : Sel
         {
             return _img;
         }
-        
+
         try
         {
             await Task.Run(async () =>

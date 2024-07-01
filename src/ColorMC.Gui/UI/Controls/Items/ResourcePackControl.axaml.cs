@@ -4,7 +4,6 @@ using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
-using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;

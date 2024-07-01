@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Web;
 using Avalonia.Input;
 using Avalonia.Threading;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;

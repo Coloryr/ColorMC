@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -9,43 +8,19 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Styling;
 using Avalonia.Threading;
-using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Animations;
-using ColorMC.Gui.UI.Controls.Add;
-using ColorMC.Gui.UI.Controls.Count;
-using ColorMC.Gui.UI.Controls.Custom;
-using ColorMC.Gui.UI.Controls.Download;
-using ColorMC.Gui.UI.Controls.Error;
-using ColorMC.Gui.UI.Controls.GameCloud;
-using ColorMC.Gui.UI.Controls.GameConfigEdit;
-using ColorMC.Gui.UI.Controls.GameEdit;
-using ColorMC.Gui.UI.Controls.GameExport;
-using ColorMC.Gui.UI.Controls.GameLog;
-using ColorMC.Gui.UI.Controls.Main;
-using ColorMC.Gui.UI.Controls.NetFrp;
-using ColorMC.Gui.UI.Controls.ServerPack;
-using ColorMC.Gui.UI.Controls.Setting;
-using ColorMC.Gui.UI.Controls.Skin;
-using ColorMC.Gui.UI.Controls.User;
-using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using SkiaSharp;
 
 namespace ColorMC.Gui;
 
@@ -185,7 +160,7 @@ public partial class App : Application
     public static void Clear()
     {
         ThemeManager.Remove();
-        
+
         LangMananger.Remove();
     }
 
@@ -249,7 +224,7 @@ public partial class App : Application
         s_language.Load(reader.ReadToEnd());
     }
 
-    
+
 
     public static void Close()
     {

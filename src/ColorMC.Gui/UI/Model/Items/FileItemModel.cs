@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.McMod;

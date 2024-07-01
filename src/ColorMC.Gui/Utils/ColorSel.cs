@@ -1,12 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using Avalonia.Media;
-using Avalonia.Media.Immutable;
-using Avalonia.Platform;
-using Avalonia.Threading;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Manager;
 
 namespace ColorMC.Gui.Utils;
 

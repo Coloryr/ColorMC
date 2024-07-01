@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Avalonia.Media;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;

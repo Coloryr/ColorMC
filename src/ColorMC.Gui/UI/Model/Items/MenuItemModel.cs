@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// 菜单项目
 /// </summary>
 public partial class MenuItemModel : ObservableObject
-{ 
+{
     /// <summary>
     /// 图标
     /// </summary>

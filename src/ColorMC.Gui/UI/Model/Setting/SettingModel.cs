@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -40,23 +39,23 @@ public partial class SettingModel : MenuModel
 
         SetMenu(
         [
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/Setting/item1.svg",
                 Text = App.Lang("SettingWindow.Tabs.Text2")
             },
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/Setting/item2.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text3") 
+                Text = App.Lang("SettingWindow.Tabs.Text3")
             },
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/Setting/item3.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text4") 
+                Text = App.Lang("SettingWindow.Tabs.Text4")
             },
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/Setting/item4.svg",
                 Text = App.Lang("SettingWindow.Tabs.Text5"),
                 SubMenu =
@@ -67,7 +66,7 @@ public partial class SettingModel : MenuModel
                         Func = LoadJava
                     },
                     new SubMenuItemModel()
-                    { 
+                    {
                         Name = App.Lang("SettingWindow.Tab5.Text4"),
                         Func = ShowAddJava
                     },
@@ -88,13 +87,13 @@ public partial class SettingModel : MenuModel
                     }
                 ]
             },
-            new() 
+            new()
             {
                 Icon = "/Resource/Icon/Setting/item5.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text6") 
+                Text = App.Lang("SettingWindow.Tabs.Text6")
             },
             new()
-            { 
+            {
                 Icon = "/Resource/Icon/Setting/item6.svg",
                 Text = App.Lang("SettingWindow.Tabs.Text1"),
                 SubMenu =
@@ -131,10 +130,10 @@ public partial class SettingModel : MenuModel
                     }
                 ]
             },
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/Setting/item8.svg",
-            Text = App.Lang("SettingWindow.Tabs.Text8") 
+            Text = App.Lang("SettingWindow.Tabs.Text8")
             },
             new()
             {

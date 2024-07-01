@@ -90,25 +90,25 @@ public partial class GameExportModel : MenuModel
 
         SetMenu(
         [
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = App.Lang("GameExportWindow.Tabs.Text1") 
+                Text = App.Lang("GameExportWindow.Tabs.Text1")
             },
             new()
-            { 
+            {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
                 Text = App.Lang("GameExportWindow.Tabs.Text2")
             },
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/GameExport/item3.svg",
                 Text = App.Lang("GameExportWindow.Tabs.Text3")
             },
             new()
-            { 
+            {
                 Icon = "/Resource/Icon/GameExport/item4.svg",
-                Text = App.Lang("GameExportWindow.Tabs.Text4") 
+                Text = App.Lang("GameExportWindow.Tabs.Text4")
             },
         ]);
     }
