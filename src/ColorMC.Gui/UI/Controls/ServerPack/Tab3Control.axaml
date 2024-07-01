@@ -5,33 +5,36 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.ServerPack"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
-    <Border
-        Name="ScrollViewer1"
-        Margin="5,0,5,5"
-        Classes="t2">
-        <DataGrid
-            Name="DataGrid1"
-            AutoGenerateColumns="False"
-            CanUserResizeColumns="True"
-            CanUserSortColumns="False"
-            ItemsSource="{Binding ConfigList}">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text1}" />
-                <DataGridTextColumn
-                    Binding="{Binding FileName}"
-                    Header="{setting:Localize Text.FileName}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text3}" />
-                <DataGridTextColumn
-                    Binding="{Binding Sha256}"
-                    Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text7}"
-                    IsReadOnly="True" />
-            </DataGrid.Columns>
-        </DataGrid>
-    </Border>
+    <Decorator Margin="0,0,10,15">
+        <Border
+            Name="ScrollViewer1"
+            Margin="10,5,10,3"
+            Classes="t2">
+            <DataGrid
+                Name="DataGrid1"
+                Margin="15"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                ItemsSource="{Binding ConfigList}">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text1}" />
+                    <DataGridTextColumn
+                        Binding="{Binding FileName}"
+                        Header="{setting:Localize Text.FileName}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text3}" />
+                    <DataGridTextColumn
+                        Binding="{Binding Sha256}"
+                        Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text7}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Decorator>
 </UserControl>

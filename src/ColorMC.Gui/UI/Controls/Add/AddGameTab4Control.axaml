@@ -1,0 +1,61 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Add.AddGameTab4Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:AddGameModel"
+    mc:Ignorable="d">
+    <WrapPanel
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        RenderOptions.TextRenderingMode="Antialias">
+        <WrapPanel.Styles>
+            <Style Selector="Button">
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+        </WrapPanel.Styles>
+        <Button
+            Width="100"
+            Height="130"
+            Margin="20"
+            BorderThickness="0"
+            Command="{Binding GoModPack}"
+            CornerRadius="5">
+            <StackPanel>
+                <svg:SvgControl Path="/Resource/Icon/AddMenu/item4.svg" />
+                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tab1.Text19}" />
+            </StackPanel>
+        </Button>
+        <Button
+            Width="100"
+            Height="130"
+            Margin="20"
+            BorderThickness="0"
+            Command="{Binding GoCloud}"
+            CornerRadius="5"
+            IsEnabled="{Binding CloudEnable}">
+            <StackPanel>
+                <svg:SvgControl Path="/Resource/Icon/AddMenu/item6.svg" />
+                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tab1.Text13}" />
+            </StackPanel>
+        </Button>
+        <Button
+            Width="100"
+            Height="130"
+            Margin="20"
+            BorderThickness="0"
+            Command="{Binding GoServer}"
+            CornerRadius="5">
+            <StackPanel>
+                <svg:SvgControl Fill="{setting:Theme FontColor}" Path="/Resource/Icon/AddMenu/item7.svg" />
+                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tab1.Text14}" />
+            </StackPanel>
+        </Button>
+    </WrapPanel>
+</UserControl>

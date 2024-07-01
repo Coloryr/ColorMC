@@ -8,7 +8,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.LaunchSetting;
+
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -49,9 +49,7 @@ public static class ConfigBinding
         var res = GuiConfigUtils.Load(dir, true);
         if (res)
         {
-            ColorSel.Load();
-            FontSel.Load();
-            StyleSel.Load();
+            App.ColorChange();
         }
 
         return res;
@@ -84,7 +82,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.RGB = enable;
 
         GuiConfigUtils.Save();
-        ColorSel.Load();
+        App.ColorChange();
     }
 
     /// <summary>
@@ -95,26 +93,17 @@ public static class ConfigBinding
         GuiConfigUtils.Config.RGBS = v1;
         GuiConfigUtils.Config.RGBV = v2;
         GuiConfigUtils.Save();
-        ColorSel.Load();
+        App.ColorChange();
     }
 
     /// <summary>
     /// 设置启动器颜色
     /// </summary>
-    public static void SetColor(string main, string back, string back1, string font1, string font2,
-        string back2, string back3, string font3, string font4)
+    public static void SetColor(string main)
     {
         GuiConfigUtils.Config.ColorMain = main;
-        GuiConfigUtils.Config.ColorLight.ColorBack = back;
-        GuiConfigUtils.Config.ColorLight.ColorTranBack = back1;
-        GuiConfigUtils.Config.ColorLight.ColorFont1 = font1;
-        GuiConfigUtils.Config.ColorLight.ColorFont2 = font2;
-        GuiConfigUtils.Config.ColorDark.ColorBack = back2;
-        GuiConfigUtils.Config.ColorDark.ColorTranBack = back3;
-        GuiConfigUtils.Config.ColorDark.ColorFont1 = font3;
-        GuiConfigUtils.Config.ColorDark.ColorFont2 = font4;
         GuiConfigUtils.Save();
-        ColorSel.Load();
+        App.ColorChange();
     }
 
     /// <summary>
@@ -122,17 +111,7 @@ public static class ConfigBinding
     /// </summary>
     public static void ResetColor()
     {
-        SetColor(
-            ColorSel.MainColorStr,
-            ColorSel.BackLigthColorStr,
-            ColorSel.Back1LigthColorStr,
-            ColorSel.ButtonLightFontStr,
-            ColorSel.FontLigthColorStr,
-            ColorSel.BackDarkColorStr,
-            ColorSel.Back1DarkColorStr,
-            ColorSel.ButtonDarkFontStr,
-            ColorSel.FontDarkColorStr
-        );
+        SetColor(ThemeManager.MainColorStr);
     }
 
     /// <summary>
@@ -204,6 +183,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.WindowTran = open;
         GuiConfigUtils.Save();
 
+        App.ColorChange();
         App.OnPicUpdate();
     }
 
@@ -425,7 +405,7 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
 
-        FontSel.Load();
+        ThemeManager.Load();
     }
 
     /// <summary>
@@ -490,14 +470,13 @@ public static class ConfigBinding
     /// 设置主题色
     /// </summary>
     /// <param name="type"></param>
-    public static async void SetColorType(ColorType type)
+    public static void SetColorType(ColorType type)
     {
         GuiConfigUtils.Config.ColorType = type;
         GuiConfigUtils.Save();
 
         App.ColorChange();
-        ColorSel.Load();
-        await ImageManager.LoadImage();
+        App.OnPicUpdate();
     }
 
     /// <summary>
@@ -541,7 +520,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         WindowManager.MainWindow?.MotdLoad();
-        ColorSel.Load();
+        App.ColorChange();
     }
 
     /// <summary>
@@ -684,19 +663,6 @@ public static class ConfigBinding
     }
 
     /// <summary>
-    /// 设置圆角样式
-    /// </summary>
-    /// <param name="value"></param>
-    public static void SetStyle(int value)
-    {
-        GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
-        GuiConfigUtils.Config.Style.ButtonCornerRadius = value;
-        GuiConfigUtils.Save();
-
-        StyleSel.Load();
-    }
-
-    /// <summary>
     /// 设置动画样式
     /// </summary>
     /// <param name="value"></param>
@@ -728,21 +694,6 @@ public static class ConfigBinding
     {
         ConfigUtils.Config.SafeLog4j = value;
         ConfigUtils.Save();
-    }
-
-    /// <summary>
-    /// 设置圆角样式
-    /// </summary>
-    /// <param name="enablePicRadius"></param>
-    /// <param name="enableBorderRadius"></param>
-    public static void SetRadiusEnable(bool enablePicRadius, bool enableBorderRadius)
-    {
-        GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
-        GuiConfigUtils.Config.Style.EnablePicRadius = enablePicRadius;
-        GuiConfigUtils.Config.Style.EnableBorderRadius = enableBorderRadius;
-        GuiConfigUtils.Save();
-
-        StyleSel.Load();
     }
 
     /// <summary>

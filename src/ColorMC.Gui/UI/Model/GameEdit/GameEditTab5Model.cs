@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Input;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
@@ -17,11 +20,45 @@ public partial class GameEditModel
 {
     public ObservableCollection<WorldModel> WorldList { get; init; } = [];
 
+    private readonly List<WorldModel> _worldItems = [];
+
     private WorldModel? _selectWorld;
 
+    [ObservableProperty]
+    private bool _worldEmptyDisplay;
+
+    [ObservableProperty]
+    private string _worldText;
+
+    partial void OnWorldTextChanged(string value)
+    {
+        LoadWorld1();
+    }
 
     [RelayCommand]
-    public async Task BackupWorld()
+    public async Task LoadWorld()
+    {
+        Model.Progress(App.Lang("GameEditWindow.Tab5.Info5"));
+        _worldItems.Clear();
+
+        var res = await GameBinding.GetWorlds(_obj!);
+        foreach (var item in res)
+        {
+            var item1 = new WorldModel(this, item);
+            await item1.Load();
+            _worldItems.Add(item1);
+        }
+        LoadWorld1();
+
+        Model.ProgressClose();
+    }
+
+    private void OpenBackupWorld()
+    {
+        PathBinding.OpPath(_obj, PathType.WorldBackPath);
+    }
+
+    private async void BackupWorld()
     {
         var info = new DirectoryInfo(_obj.GetWorldBackupPath());
         if (!info.Exists)
@@ -61,8 +98,29 @@ public partial class GameEditModel
             await LoadWorld();
         }
     }
-    [RelayCommand]
-    public async Task ImportWorld()
+
+    private async void EditWorld()
+    {
+        Model.Progress(App.Lang("GameEditWindow.Tab5.Info13"));
+        var res = await ToolPath.OpenMapEditAsync();
+        Model.ProgressClose();
+        if (!res.State)
+        {
+            Model.Show(res.Message!);
+        }
+    }
+
+    private void OpenWorld()
+    {
+        PathBinding.OpPath(_obj, PathType.SavePath);
+    }
+
+    private void AddWorld()
+    {
+        WindowManager.ShowAdd(_obj, FileType.World);
+    }
+
+    private async void ImportWorld()
     {
         var file = await PathBinding.AddFile(_obj, FileType.World);
         if (file == null)
@@ -77,48 +135,20 @@ public partial class GameEditModel
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info2"));
         await LoadWorld();
     }
-    [RelayCommand]
-    public void OpenWorld()
-    {
-        PathBinding.OpPath(_obj, PathType.SavePath);
-    }
-    [RelayCommand]
-    public void AddWorld()
-    {
-        WindowManager.ShowAdd(_obj, FileType.World);
-    }
 
-    [RelayCommand]
-    public void OpenBackupWorld()
+    public void LoadWorld1()
     {
-        PathBinding.OpPath(_obj, PathType.WorldBackPath);
-    }
-    [RelayCommand]
-    public async Task LoadWorld()
-    {
-        Model.Progress(App.Lang("GameEditWindow.Tab5.Info5"));
         WorldList.Clear();
-
-        var res = await GameBinding.GetWorlds(_obj!);
-        foreach (var item in res)
+        if (string.IsNullOrWhiteSpace(WorldText))
         {
-            var item1 = new WorldModel(this, item);
-            await item1.Load();
-            WorldList.Add(item1);
+            WorldList.AddRange(_worldItems);
+        }
+        else
+        {
+            WorldList.AddRange(_worldItems.Where(item => item.Name.Contains(WorldText)));
         }
 
-        Model.ProgressClose();
-    }
-    [RelayCommand]
-    public async Task EditWorld()
-    {
-        Model.Progress(App.Lang("GameEditWindow.Tab5.Info13"));
-        var res = await ToolPath.OpenMapEditAsync();
-        Model.ProgressClose();
-        if (!res.State)
-        {
-            Model.Show(res.Message!);
-        }
+        WorldEmptyDisplay = WorldList.Count == 0;
     }
 
     public async void DropWorld(IDataObject data)

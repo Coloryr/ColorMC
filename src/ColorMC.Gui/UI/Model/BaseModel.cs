@@ -96,6 +96,11 @@ public partial class BaseModel : ObservableObject
     [ObservableProperty]
     private bool _headBackEnable = true;
 
+    [ObservableProperty]
+    private bool _choiseEnable = true;
+    [ObservableProperty]
+    private bool _choise1Enable = true;
+
     public SelfPublisher<bool> HeadDisplayObservale = new();
     public SelfPublisher<bool> HeadCloseObservale = new();
 
@@ -234,7 +239,7 @@ public partial class BaseModel : ObservableObject
         }
     }
 
-    public void AddBackCall(Action back)
+    public void PushBack(Action back)
     {
         _listBack.Push(back);
         if (SystemInfo.Os != OsType.Android && !_listBack.IsEmpty)
@@ -243,7 +248,7 @@ public partial class BaseModel : ObservableObject
         }
     }
 
-    public void RemoveBack()
+    public void PopBack()
     {
         _listBack.TryPop(out _);
         if (_listBack.IsEmpty)

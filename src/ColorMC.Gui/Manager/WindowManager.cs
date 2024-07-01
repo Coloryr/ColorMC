@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
@@ -35,7 +33,7 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.LaunchSetting;
+
 
 namespace ColorMC.Gui.Manager;
 
@@ -589,7 +587,7 @@ public static class WindowManager
         if (GuiConfigUtils.Config != null)
         {
             model.Background = GuiConfigUtils.Config.WindowTran ?
-                ColorSel.BottomTranColor : ColorSel.BottomColor;
+                ThemeManager.GetColor("WindowTranColor") : Brushes.White;
             model.Back = ImageManager.BackBitmap;
             if (ImageManager.BackBitmap != null)
             {

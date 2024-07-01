@@ -56,10 +56,10 @@ public partial class GameEditControl : MenuControl
                     model.LoadServer();
                     break;
                 case 7:
-                    await model.LoadShaderpack();
+                    model.LoadShaderpack();
                     break;
                 case 8:
-                    await model.LoadSchematic();
+                    model.LoadSchematic();
                     break;
             }
 
@@ -89,6 +89,8 @@ public partial class GameEditControl : MenuControl
         switch (old)
         {
             case 2:
+            case 3:
+            case 4:
                 model.RemoveChoise();
                 break;
             case 6:
@@ -126,9 +128,11 @@ public partial class GameEditControl : MenuControl
                 _ = model.LoadMod();
                 return _tab4 ??= new();
             case 3:
+                model.SetChoise();
                 _ = model.LoadWorld();
                 return _tab5 ??= new();
             case 4:
+                model.SetChoise();
                 _ = model.LoadResource();
                 return _tab8 ??= new();
             case 5:
@@ -139,10 +143,10 @@ public partial class GameEditControl : MenuControl
                 model.LoadServer();
                 return _tab10 ??= new();
             case 7:
-                _ = model.LoadShaderpack();
+                model.LoadShaderpack();
                 return _tab11 ??= new();
             case 8:
-                _ = model.LoadSchematic();
+                model.LoadSchematic();
                 return _tab12 ??= new();
             default:
                 throw new InvalidEnumArgumentException();

@@ -6,16 +6,18 @@
     xmlns:icon="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameExport"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Items"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
-    <Border
-        Name="ScrollViewer1"
-        Margin="5,0,5,5"
-        Classes="t1">
-        <TreeDataGrid Source="{Binding Source}" />
-    </Border>
+    <Decorator Margin="0,0,10,15">
+        <Border
+            Name="ScrollViewer1"
+            Margin="10,5,10,3"
+            Classes="t2">
+            <TreeDataGrid Margin="15" Source="{Binding Source}" />
+        </Border>
+    </Decorator>
 </UserControl>

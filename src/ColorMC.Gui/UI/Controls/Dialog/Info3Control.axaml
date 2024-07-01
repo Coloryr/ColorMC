@@ -5,16 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     x:DataType="dialogmodel:Info3Model"
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBox
             Name="TextBox1"
-            MinWidth="330"
-            Classes="input1"
-            FontSize="20"
-            Foreground="{setting:Colors Font}"
+            MinWidth="300"
+            Foreground="{setting:Theme FontColor}"
             IsReadOnly="{Binding TextReadonly}"
             Text="{Binding Text1}"
             TextAlignment="Center"
@@ -22,11 +20,9 @@
             Watermark="{Binding Watermark1}" />
         <TextBox
             Name="TextBox2"
-            MinWidth="330"
+            MinWidth="300"
             Margin="0,10,0,0"
-            Classes="input1"
-            FontSize="20"
-            Foreground="{setting:Colors Font}"
+            Foreground="{setting:Theme FontColor}"
             IsReadOnly="{Binding TextReadonly}"
             IsVisible="{Binding Text2Visable}"
             PasswordChar="{Binding Password}"
@@ -36,14 +32,15 @@
             Watermark="{Binding Watermark2}" />
         <StackPanel Margin="0,10,0,0">
             <ProgressBar
-                Height="20"
+                Height="10"
                 Margin="0,0,0,10"
+                CornerRadius="20"
                 IsIndeterminate="{Binding ValueVisable}"
                 IsVisible="{Binding ValueVisable}" />
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
                     Classes="top"
@@ -53,7 +50,7 @@
                     IsVisible="{Binding ConfirmEnable}" />
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
                     Classes="top"

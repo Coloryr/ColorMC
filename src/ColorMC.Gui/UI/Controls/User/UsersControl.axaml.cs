@@ -1,10 +1,6 @@
-using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.User;
 using ColorMC.Gui.UI.Windows;
@@ -19,9 +15,6 @@ public partial class UsersControl : BaseUserControl
 
         Title = App.Lang("UserWindow.Title");
         UseName = ToString() ?? "UsersControl";
-
-        DataGrid_User.DoubleTapped += DataGrid_User_DoubleTapped;
-        DataGrid_User.CellPointerPressed += DataGrid_User_PointerPressed;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
@@ -57,46 +50,6 @@ public partial class UsersControl : BaseUserControl
         (DataContext as UsersControlModel)!.Drop(e.Data);
     }
 
-    private void DataGrid_User_PointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            var model = (DataContext as UsersControlModel)!;
-            if (model.Item == null)
-            {
-                return;
-            }
-
-            var pro = e.PointerPressedEventArgs.GetCurrentPoint(this);
-
-            if (pro.Properties.IsRightButtonPressed)
-            {
-                Flyout((sender as Control)!);
-            }
-            else if (e.Column.DisplayIndex == 0 && pro.Properties.IsLeftButtonPressed)
-            {
-                model.Select(model.Item);
-            }
-            else
-            {
-                LongPressed.Pressed(() => Flyout((sender as Control)!));
-            }
-        });
-    }
-
-    private void Flyout(Control control)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            var model = (DataContext as UsersControlModel)!;
-            _ = new UserFlyout(control, model);
-        });
-    }
-
-    private void DataGrid_User_DoubleTapped(object? sender, RoutedEventArgs e)
-    {
-        (DataContext as UsersControlModel)!.Select();
-    }
     public void AddUrl(string url)
     {
         (DataContext as UsersControlModel)!.AddUrl(url);
@@ -116,10 +69,5 @@ public partial class UsersControl : BaseUserControl
     public override Bitmap GetIcon()
     {
         return ImageManager.GameIcon;
-    }
-
-    private void TextBox_KeyDown(object? sender, KeyEventArgs e)
-    {
-
     }
 }

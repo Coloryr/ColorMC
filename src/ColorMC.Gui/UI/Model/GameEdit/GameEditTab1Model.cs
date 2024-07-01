@@ -218,12 +218,6 @@ public partial class GameEditModel
     }
 
     [RelayCommand]
-    public void ExportGame()
-    {
-        WindowManager.ShowGameExport(_obj);
-    }
-
-    [RelayCommand]
     public async Task CheckModPackUpdate()
     {
         if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
@@ -317,12 +311,6 @@ public partial class GameEditModel
                 }
             }
         }
-    }
-
-    [RelayCommand]
-    public void OpenGameLog()
-    {
-        WindowManager.ShowGameLog(_obj);
     }
 
     [RelayCommand]
@@ -505,7 +493,50 @@ public partial class GameEditModel
     }
 
     [RelayCommand]
-    public async Task Delete()
+    public async Task SelectLoader()
+    {
+        var file = await PathBinding.SelectFile(FileType.Loader);
+        if (file.Item1 == null)
+        {
+            return;
+        }
+
+        var res = await GameBinding.SetGameLoader(_obj, file.Item1);
+        if (res.Item1)
+        {
+            ReadCustomLoader();
+        }
+        else
+        {
+            Model.Show(res.Item2!);
+        }
+    }
+    private void ExportGame()
+    {
+        WindowManager.ShowGameExport(_obj);
+    }
+
+    private void OpenGameLog()
+    {
+        WindowManager.ShowGameLog(_obj);
+    }
+
+    private void OpenConfigEdit()
+    {
+        WindowManager.ShowConfigEdit(_obj);
+    }
+
+    private void OpPath()
+    {
+        PathBinding.OpPath(_obj, PathType.BasePath);
+    }
+
+    private void OpenServerPack()
+    {
+        WindowManager.ShowServerPack(_obj);
+    }
+
+    private async void Delete()
     {
         if (BaseBinding.IsGameRun(_obj))
         {
@@ -527,50 +558,11 @@ public partial class GameEditModel
         }
     }
 
-    [RelayCommand]
-    public async Task GenGameInfo()
+    private async void GenGameInfo()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info10"));
         await GameBinding.GenGameInfo(_obj);
         Model.ProgressClose();
-    }
-
-    [RelayCommand]
-    public void Open()
-    {
-        PathBinding.OpPath(_obj, PathType.BasePath);
-    }
-
-    [RelayCommand]
-    public void OpenServerPack()
-    {
-        WindowManager.ShowServerPack(_obj);
-    }
-
-    [RelayCommand]
-    public void OpenConfigEdit()
-    {
-        WindowManager.ShowConfigEdit(_obj);
-    }
-
-    [RelayCommand]
-    public async Task SelectLoader()
-    {
-        var file = await PathBinding.SelectFile(FileType.Loader);
-        if (file.Item1 == null)
-        {
-            return;
-        }
-
-        var res = await GameBinding.SetGameLoader(_obj, file.Item1);
-        if (res.Item1)
-        {
-            ReadCustomLoader();
-        }
-        else
-        {
-            Model.Show(res.Item2!);
-        }
     }
 
     private async void ReadCustomLoader()

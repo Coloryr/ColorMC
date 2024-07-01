@@ -3,7 +3,7 @@ using ColorMC.Gui.Objs.Frp;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class NetFrpRemoteModel
+public partial class NetFrpRemoteModel : SelectItemModel
 {
     public NetFrpRemoteModel(string key, SakuraFrpChannelObj obj)
     {

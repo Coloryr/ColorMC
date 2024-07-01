@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;

@@ -5,17 +5,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:MainEmptyModel"
+    Background="{setting:Theme WindowBG}"
     mc:Ignorable="d">
-    <Panel Background="Transparent">
+    <Panel Margin="20">
         <StackPanel
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            Background="{setting:Colors MainButtonBG}"
             RenderOptions.TextRenderingMode="Antialias">
             <TextBlock
                 Margin="0,5,0,5"
@@ -36,12 +36,12 @@
                     Margin="20"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{setting:Colors MainButtonBG}"
+                    Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding AddUser}"
-                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                    CornerRadius="5">
                     <StackPanel>
-                        <svg:SvgControl Path="/Resource/Icon/Main/svg1.svg" Stroke="{setting:Colors Font}" />
+                        <svg:SvgControl Path="/Resource/Icon/Main/svg1.svg" Stroke="{setting:Theme FontColor}" />
                         <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text2}" />
                     </StackPanel>
                 </Button>
@@ -51,12 +51,12 @@
                     Margin="20"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{setting:Colors MainButtonBG}"
+                    Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding SetJava}"
-                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                    CornerRadius="5">
                     <StackPanel>
-                        <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/Main/svg2.svg" />
+                        <svg:SvgControl Fill="{setting:Theme FontColor}" Path="/Resource/Icon/Main/svg2.svg" />
                         <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text4}" />
                     </StackPanel>
                 </Button>
@@ -66,12 +66,12 @@
                     Margin="20"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{setting:Colors MainButtonBG}"
+                    Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding AddGame}"
-                    CornerRadius="{setting:Style ButtonCornerRadius}">
+                    CornerRadius="5">
                     <StackPanel>
-                        <svg:SvgControl Fill="{setting:Colors Font}" Path="/Resource/Icon/AddMenu/item1.svg" />
+                        <svg:SvgControl Fill="{setting:Theme FontColor}" Path="/Resource/Icon/AddMenu/item1.svg" />
                         <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text6}" />
                     </StackPanel>
                 </Button>
@@ -91,14 +91,14 @@
             <Button
                 Width="120"
                 Height="30"
-                Margin="-2,-3,3,-2"
+                Margin="-2,-3,5,-2"
                 Classes="top"
                 Command="{Binding OpenWeb1}"
                 Content="{setting:Localize SettingWindow.Tab7.Text3}" />
             <Button
                 Width="120"
                 Height="30"
-                Margin="-2,-3,3,-2"
+                Margin="-2,-3,5,-2"
                 Classes="top"
                 Command="{Binding OpenWeb2}"
                 Content="{setting:Localize SettingWindow.Tab7.Text4}" />

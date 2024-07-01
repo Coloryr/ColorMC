@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 
@@ -6,21 +7,30 @@ namespace ColorMC.Core.Net.Motd;
 /// <summary>
 /// Motd¿Í»§¶Ë
 /// </summary>
-public class ProtocolHandler
+public class ProtocolHandler(TcpClient tcp)
 {
-    private TcpClient _tcp;
+    public Stopwatch PingWatcher = new();
 
-    public ProtocolHandler(TcpClient tcp)
-    {
-        _tcp = tcp;
-    }
-
-    private void Receive(byte[] buffer, int start, int offset, SocketFlags f)
+    public void Receive(byte[] buffer, int start, int offset, SocketFlags f)
     {
         int read = 0;
+        int count = 0;
         while (read < offset)
         {
-            read += _tcp.Client.Receive(buffer, start + read, offset - read, f);
+            count++;
+            if (count > 20)
+            {
+                throw new Exception("read fail");
+            }
+            if (PingWatcher.Elapsed == TimeSpan.Zero)
+            {
+                PingWatcher.Start();
+            }
+            read += tcp.Client.Receive(buffer, start + read, offset - read, f);
+            if (PingWatcher.IsRunning)
+            {
+                PingWatcher.Stop();
+            }
         }
     }
 
@@ -46,15 +56,11 @@ public class ProtocolHandler
     {
         if (offset > 0)
         {
-            try
-            {
-                byte[] cache = new byte[offset];
-                Receive(cache, 0, offset, SocketFlags.None);
-                return cache;
-            }
-            catch (OutOfMemoryException) { }
+            byte[] cache = new byte[offset];
+            Receive(cache, 0, offset, SocketFlags.None);
+            return cache;
         }
-        return new byte[] { };
+        return [];
     }
 
     /// <summary>
@@ -65,22 +71,14 @@ public class ProtocolHandler
     {
         int i = 0;
         int j = 0;
-        int k;
         byte[] tmp = new byte[1];
         while (true)
         {
             Receive(tmp, 0, 1, SocketFlags.None);
-            k = tmp[0];
+            int k = tmp[0];
             i |= (k & 0x7F) << j++ * 7;
-            if (j > 5)
-            {
-                throw new OverflowException("VarInt too big");
-            }
-
-            if ((k & 0x80) != 128)
-            {
-                break;
-            }
+            if (j > 5) throw new OverflowException("VarInt too big");
+            if ((k & 0x80) != 128) break;
         }
         return i;
     }
@@ -105,20 +103,12 @@ public class ProtocolHandler
     {
         int i = 0;
         int j = 0;
-        int k = 0;
         while (true)
         {
-            k = ReadNextByte(cache);
+            int k = ReadNextByte(cache);
             i |= (k & 0x7F) << j++ * 7;
-            if (j > 5)
-            {
-                throw new OverflowException("VarInt too big");
-            }
-
-            if ((k & 0x80) != 128)
-            {
-                break;
-            }
+            if (j > 5) throw new OverflowException("VarInt too big");
+            if ((k & 0x80) != 128) break;
         }
         return i;
     }
@@ -135,10 +125,7 @@ public class ProtocolHandler
         {
             return Encoding.UTF8.GetString(ReadData(length, cache));
         }
-        else
-        {
-            return "";
-        }
+        else return "";
     }
 
     /// <summary>
@@ -148,14 +135,14 @@ public class ProtocolHandler
     /// <returns>Byte array for this integer</returns>
     public static byte[] GetVarInt(int paramInt)
     {
-        List<byte> bytes = new();
+        List<byte> bytes = [];
         while ((paramInt & -128) != 0)
         {
             bytes.Add((byte)(paramInt & 127 | 128));
             paramInt = (int)((uint)paramInt >> 7);
         }
         bytes.Add((byte)paramInt);
-        return bytes.ToArray();
+        return [.. bytes];
     }
 
     /// <summary>
@@ -165,12 +152,9 @@ public class ProtocolHandler
     /// <returns>Array containing all the data</returns>
     public static byte[] ConcatBytes(params byte[][] bytes)
     {
-        List<byte> result = new();
+        List<byte> result = [];
         foreach (byte[] array in bytes)
-        {
             result.AddRange(array);
-        }
-
-        return result.ToArray();
+        return [.. result];
     }
 }

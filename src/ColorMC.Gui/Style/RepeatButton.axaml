@@ -1,7 +1,7 @@
 ﻿<Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils">
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel>
@@ -19,23 +19,23 @@
     </Design.PreviewWith>
 
     <Style Selector="RepeatButton">
-        <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="Padding" Value="0" />
-        <Setter Property="BorderBrush" Value="{setting:Colors Bottom}" />
+        <Setter Property="BorderBrush" Value="#FFFFFFFF" />
 
         <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
+            <Setter Property="Foreground" Value="#FFFFFFFF" />
         </Style>
         <Style Selector="^:pressed">
             <Setter Property="RenderTransform" Value="scale(0.95)" />
         </Style>
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#FFDDDDDD" />
-            <Setter Property="Foreground" Value="{setting:Colors Font}" />
+            <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
         </Style>
         <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#FFAAAAAA" />

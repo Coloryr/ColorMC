@@ -13,6 +13,8 @@ public static class MinecraftAPI
     public const string Profile = "https://api.minecraftservices.com/minecraft/profile";
     public const string UserProfile = "https://sessionserver.mojang.com/session/minecraft/profile";
     public const string LoginXbox = "https://api.minecraftservices.com/authentication/login_with_xbox";
+    public const string News = "https://www.minecraft.net/content/minecraft-net/_jcr_content.articles.grid?tileselection=auto&tagsPath=minecraft:stockholm/news,minecraft:stockholm/guides,minecraft:stockholm/events,minecraft:stockholm/minecraft-builds,minecraft:stockholm/marketplace,minecraft:stockholm/deep-dives,minecraft:stockholm/merch,minecraft:article/culture,minecraft:article/insider,minecraft:article/merch,minecraft:article/news&propResPath=/content/minecraft-net/language-masters/en-us/articles/jcr:content/root/generic-container/par/bleeding_page_sectio/page-section-par/grid_copy&count=2000&pageSize={0}&offset={1}&locale=en-us&lang=/content/minecraft-net/language-masters/en-us";
+    public const int PageSize = 8;
 
     /// <summary>
     /// 获取账户信息
@@ -69,5 +71,18 @@ public static class MinecraftAPI
             State = LoginState.Done,
             AccessToken = accessToken
         };
+    }
+
+    /// <summary>
+    /// 获取Minecraft新闻信息
+    /// </summary>
+    /// <param name="page"></param>
+    /// <returns></returns>
+    public static async Task<MinecraftNewObj?> GetMinecraftNew(int page = 0)
+    {
+        var url = string.Format(News, PageSize, page * PageSize);
+        var data = await BaseClient.DownloadClient.GetStringAsync(url);
+
+        return JsonConvert.DeserializeObject<MinecraftNewObj>(data);
     }
 }

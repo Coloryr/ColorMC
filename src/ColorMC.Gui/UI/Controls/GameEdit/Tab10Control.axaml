@@ -5,51 +5,42 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="5,0,5,0">
+    <DockPanel Name="ScrollViewer1" Margin="0,0,10,15">
         <view:ServerMotdControl
-            Margin="0,0,0,5"
+            Margin="10,5,10,3"
             DockPanel.Dock="Top"
             IPPort="{Binding IPPort}" />
-        <Panel>
-            <Border Margin="0,0,0,5" Classes="t1">
-                <DataGrid
-                    Name="DataGrid1"
-                    AutoGenerateColumns="False"
-                    CanUserResizeColumns="True"
-                    CanUserSortColumns="False"
-                    ItemsSource="{Binding ServerList}"
-                    SelectedItem="{Binding ServerItem}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{setting:Localize Text.Name}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding IP}"
-                            Header="{setting:Localize GameEditWindow.Tab10.Text1}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
+        <Panel Margin="10,5,10,3">
+            <DataGrid
+                Name="DataGrid1"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                ItemsSource="{Binding ServerList}"
+                SelectedItem="{Binding ServerItem}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="{setting:Localize Text.Name}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding IP}"
+                        Header="{setting:Localize GameEditWindow.Tab10.Text1}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Border Classes="t1" IsVisible="{Binding ServerEmptyDisplay}">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="30"
+                    Text="{setting:Localize GameEditWindow.Tab10.Text2}" />
             </Border>
-            <Button
-                Width="45"
-                Height="45"
-                Margin="8,8,4,8"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Classes="top"
-                Command="{Binding AddServer}"
-                CornerRadius="20"
-                ToolTip.Tip="{setting:Localize ToolTip.Text58}"
-                ToolTip.VerticalOffset="-30">
-                <Svg Path="/Resource/Icon/add.svg" />
-            </Button>
         </Panel>
     </DockPanel>
 </UserControl>

@@ -5,14 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:MainModel"
     mc:Ignorable="d">
     <Panel>
-        <Border Background="{setting:Colors BG1}" IsVisible="{Binding IsGameError}">
+        <Border Background="{setting:Theme OverBGColor}" IsVisible="{Binding IsGameError}">
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"

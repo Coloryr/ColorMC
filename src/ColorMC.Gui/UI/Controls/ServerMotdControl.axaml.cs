@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
@@ -10,6 +9,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -20,6 +20,8 @@ public partial class ServerMotdControl : UserControl
 
     private string? _ip;
     private ushort _port;
+
+
 
     public (string, ushort) IPPort
     {
@@ -124,38 +126,6 @@ public partial class ServerMotdControl : UserControl
         Grid1.IsVisible = false;
     }
 
-    private static Dictionary<string, string> ColorMap = new()
-    {
-        { "black", "#000000" },
-        { "dark_blue", "#0000aa" },
-        { "dark_green", "#00aa00" },
-        { "dark_aqua", "#000000" },
-        { "dark_red", "#aa0000" },
-        { "dark_purple", "#aa00aa" },
-        { "gold", "#ffaa00" },
-        { "gray", "#aaaaaa" },
-        { "dark_gray", "#555555" },
-        { "blue", "#5555ff" },
-        { "green", "#55ff55" },
-        { "aqua", "#55ffff" },
-        { "red", "#ff5555" },
-        { "light_purple", "#ff55ff" },
-        { "yellow", "#ffff55" },
-        { "white", "#ffffff" }
-    };
-
-    private static string FixColor(string color)
-    {
-        if (color.StartsWith('#'))
-            return color;
-        if (ColorMap.TryGetValue(color, out var color1))
-        {
-            return color1;
-        }
-
-        return color;
-    }
-
     public void MakeText(Chat chat)
     {
         if (chat.Text == "\n")
@@ -169,8 +139,7 @@ public partial class ServerMotdControl : UserControl
             var text = new Run()
             {
                 Text = chat.Obfuscated ? " " : chat.Text,
-                Foreground = chat.Color == null ? Brushes.White
-                    : Brush.Parse(FixColor(chat.Color))
+                Foreground = UIUtils.GetColor(chat.Color)
             };
 
             if (chat.Bold)

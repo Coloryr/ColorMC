@@ -1,7 +1,7 @@
 ﻿<Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils">
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel>
@@ -17,26 +17,33 @@
                     Margin="20"
                     Content="123"
                     IsEnabled="False" />
+
+                <Button
+                    Width="80"
+                    Height="40"
+                    Margin="20"
+                    Classes="items"
+                    Content="123" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
 
     <Style Selector="Button">
-        <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
-        <Setter Property="BorderBrush" Value="{setting:Colors ButtonBorder}" />
-        <Setter Property="Background" Value="{setting:Colors Main}" />
+        <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
+        <Setter Property="BorderBrush" Value="{setting:Theme ButtonBorder}" />
+        <Setter Property="Background" Value="#FFFFFF" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="Padding" Value="0" />
 
         <Style Selector="^:pressed">
             <Setter Property="RenderTransform" Value="scale(0.95)" />
         </Style>
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{setting:Colors Back1}" />
-            <Setter Property="Foreground" Value="{setting:Colors Font}" />
+            <Setter Property="Background" Value="#FFf4f4f5" />
+            <Setter Property="BorderBrush" Value="{setting:Theme ButtonBorder}" />
         </Style>
         <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#FFAAAAAA" />
@@ -50,30 +57,67 @@
     <Style Selector="Button.top">
         <Setter Property="Template">
             <ControlTemplate>
-                <Decorator Padding="3">
-                    <Border x:Name="PART_Border" CornerRadius="{TemplateBinding CornerRadius}">
-                        <ContentPresenter
-                            x:Name="PART_ContentPresenter"
-                            Padding="{TemplateBinding Padding}"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Content="{TemplateBinding Content}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            CornerRadius="{TemplateBinding CornerRadius}"
-                            RecognizesAccessKey="True" />
-                    </Border>
-                </Decorator>
+                <Border
+                    x:Name="PART_Border"
+                    Margin="3"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <ContentPresenter
+                        x:Name="PART_ContentPresenter"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Background="{TemplateBinding Background}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        RecognizesAccessKey="True" />
+                </Border>
             </ControlTemplate>
         </Setter>
-
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#FFFFFF" />
+        </Style>
         <Style Selector="^ /template/ Border#PART_Border">
-            <Setter Property="BoxShadow" Value="0 1 1 0 #999999" />
+            <Setter Property="BoxShadow" Value="0 1 2 0 #1A000000" />
         </Style>
         <Style Selector="^:pointerover /template/ Border#PART_Border">
-            <Setter Property="BoxShadow" Value="0 1 2 0 #DDDDDD" />
+            <Setter Property="BoxShadow" Value="{setting:Style ButtonTopBoxShadow}" />
+            <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
+        </Style>
+    </Style>
+
+    <Style Selector="Button.items">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="10,8,15,8" />
+        <Setter Property="Margin" Value="0,1,0,1" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border Background="Blue" Opacity="0" />
+                    <ContentPresenter
+                        x:Name="PART_ContentPresenter"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        RecognizesAccessKey="True" />
+
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="scale(1)" />
+        </Style>
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#FFCCCCCC" />
         </Style>
     </Style>
 </Styles>

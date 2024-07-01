@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
@@ -10,18 +8,6 @@ public partial class ServerPackModel : MenuModel
 {
     public ServerPackObj Obj { get; }
 
-    public override List<MenuObj> TabItems { get; init; } =
-    [
-        new() { Icon = "/Resource/Icon/GameExport/item1.svg",
-            Text = App.Lang("ServerPackWindow.Tabs.Text1") },
-        new() { Icon = "/Resource/Icon/GameExport/item2.svg",
-            Text = App.Lang("ServerPackWindow.Tabs.Text2") },
-        new() { Icon = "/Resource/Icon/GameExport/item3.svg",
-            Text = App.Lang("ServerPackWindow.Tabs.Text3") },
-        new() { Icon = "/Resource/Icon/GameExport/item4.svg",
-            Text = App.Lang("ServerPackWindow.Tabs.Text4") },
-    ];
-
     private readonly string _name;
 
     public ServerPackModel(BaseModel model, ServerPackObj obj) : base(model)
@@ -29,6 +15,30 @@ public partial class ServerPackModel : MenuModel
         _name = ToString() ?? "ServerPackModel";
 
         Obj = obj;
+
+        SetMenu(
+        [
+            new()
+            {
+                Icon = "/Resource/Icon/GameExport/item1.svg",
+                Text = App.Lang("ServerPackWindow.Tabs.Text1")
+            },
+            new()
+            {
+                Icon = "/Resource/Icon/GameExport/item2.svg",
+                Text = App.Lang("ServerPackWindow.Tabs.Text2")
+            },
+            new()
+            {
+                Icon = "/Resource/Icon/GameExport/item3.svg",
+                Text = App.Lang("ServerPackWindow.Tabs.Text3")
+            },
+            new()
+            {
+                Icon = "/Resource/Icon/GameExport/item4.svg",
+                Text = App.Lang("ServerPackWindow.Tabs.Text4")
+            },
+        ]);
     }
 
     public async void Gen()

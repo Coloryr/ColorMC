@@ -1,32 +1,45 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel : MenuModel
 {
-    public override List<MenuObj> TabItems { get; init; } =
-    [
-        new() { Icon = "/Resource/Icon/NetFrp/item4.svg",
-            Text = App.Lang("NetFrpWindow.Tabs.Text4") },
-        new() { Icon = "/Resource/Icon/NetFrp/item1.svg",
-            Text = App.Lang("NetFrpWindow.Tabs.Text1") },
-        new() { Icon = "/Resource/Icon/NetFrp/item5.svg",
-            Text = App.Lang("NetFrpWindow.Tabs.Text5") },
-        new() { Icon = "/Resource/Icon/NetFrp/item2.svg",
-            Text = App.Lang("NetFrpWindow.Tabs.Text2") },
-        new() { Icon = "/Resource/Icon/NetFrp/item3.svg",
-            Text = App.Lang("NetFrpWindow.Tabs.Text3") }
-    ];
-
     private readonly string _name;
 
     public NetFrpModel(BaseModel model) : base(model)
     {
         _name = ToString() ?? "NetFrpModel";
+
+        SetMenu(
+        [
+            new()
+            {
+                Icon = "/Resource/Icon/NetFrp/item4.svg",
+                Text = App.Lang("NetFrpWindow.Tabs.Text4")
+            },
+            new()
+            {
+                Icon = "/Resource/Icon/NetFrp/item1.svg",
+                Text = App.Lang("NetFrpWindow.Tabs.Text1")
+            },
+            new()
+            {
+                Icon = "/Resource/Icon/NetFrp/item5.svg",
+                Text = App.Lang("NetFrpWindow.Tabs.Text5")
+            },
+            new()
+            {
+                Icon = "/Resource/Icon/NetFrp/item2.svg",
+                Text = App.Lang("NetFrpWindow.Tabs.Text2")
+            },
+            new()
+            {
+                Icon = "/Resource/Icon/NetFrp/item3.svg",
+                Text = App.Lang("NetFrpWindow.Tabs.Text3")
+            }
+        ]);
     }
 
     public async Task<bool> Open()

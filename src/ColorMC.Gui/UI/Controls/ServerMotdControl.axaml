@@ -4,17 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     VerticalAlignment="Top"
     mc:Ignorable="d">
-    <Border
-        Padding="1"
-        Background="#55F2F2F2"
-        BorderBrush="#33000000"
-        BorderThickness="1"
-        CornerRadius="{setting:Style ButtonCornerRadius}">
-        <Panel Background="{setting:Colors MotdBack}">
-            <Panel Margin="3">
+    <Border Background="{setting:Colors MotdBack}" CornerRadius="5">
+        <Panel>
+            <Panel Margin="10">
                 <Image
                     Name="Image1"
                     Width="64"
@@ -22,74 +18,80 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
-                <StackPanel Margin="64,0,0,0" VerticalAlignment="Center">
-                    <TextBlock
-                        Name="StackPanel1"
-                        Margin="3,0,0,0"
-                        TextTrimming="CharacterEllipsis" />
-                    <TextBlock
-                        Name="StackPanel2"
-                        Margin="3,0,0,0"
-                        TextTrimming="CharacterEllipsis" />
-                    <WrapPanel>
-                        <StackPanel Margin="5,0,5,0" Orientation="Horizontal">
-                            <TextBlock Foreground="{setting:Colors Motd}" Text="{setting:Localize ServerMotdControl.Text1}" />
-                            <TextBlock
-                                Name="Label2"
-                                Foreground="{setting:Colors Motd}"
-                                Text="0" />
-                            <TextBlock Foreground="{setting:Colors Motd}" Text="/" />
-                            <TextBlock
-                                Name="Label3"
-                                Foreground="{setting:Colors Motd}"
-                                Text="0" />
-                        </StackPanel>
-                        <StackPanel Margin="5,0,0,0" Orientation="Horizontal">
-                            <TextBlock Foreground="{setting:Colors Motd}" Text="{setting:Localize ServerMotdControl.Text2}" />
-                            <TextBlock
-                                Name="Label4"
-                                Foreground="{setting:Colors Motd}"
-                                Text="0" />
-                        </StackPanel>
-                        <Button
-                            Name="Button2"
-                            Width="100"
-                            Height="30"
-                            Margin="2,-2,0,-2"
-                            Classes="top"
-                            Content="{setting:Localize Button.Refash}"
-                            IsVisible="False" />
-                    </WrapPanel>
-                </StackPanel>
-                <StackPanel
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        Margin="10,0,0,0"
-                        Foreground="{setting:Colors Motd}"
-                        Text="{setting:Localize ServerMotdControl.Text3}" />
-                    <TextBlock
-                        Name="Label5"
-                        Foreground="{setting:Colors Motd}"
-                        Text="999" />
-                </StackPanel>
+                <DockPanel Margin="5,0,0,0">
+                    <Button
+                        Name="Button2"
+                        Width="42"
+                        Height="42"
+                        Margin="-2"
+                        VerticalAlignment="Top"
+                        Classes="top"
+                        DockPanel.Dock="Right"
+                        IsVisible="False">
+                        <svg:SvgControl Path="/Resource/Icon/reload.svg" />
+                    </Button>
+                    <StackPanel Margin="64,0,0,0" VerticalAlignment="Center">
+                        <TextBlock
+                            Name="StackPanel1"
+                            Margin="3,0,0,0"
+                            TextTrimming="CharacterEllipsis" />
+                        <TextBlock
+                            Name="StackPanel2"
+                            Margin="3,0,0,0"
+                            TextTrimming="CharacterEllipsis" />
+                        <WrapPanel>
+                            <StackPanel Margin="5,0,5,0" Orientation="Horizontal">
+                                <TextBlock Foreground="{setting:Colors Motd}" Text="{setting:Localize ServerMotdControl.Text1}" />
+                                <TextBlock
+                                    Name="Label2"
+                                    Foreground="{setting:Colors Motd}"
+                                    Text="0" />
+                                <TextBlock Foreground="{setting:Colors Motd}" Text="/" />
+                                <TextBlock
+                                    Name="Label3"
+                                    Foreground="{setting:Colors Motd}"
+                                    Text="0" />
+                            </StackPanel>
+                            <StackPanel Margin="5,0,0,0" Orientation="Horizontal">
+                                <TextBlock Foreground="{setting:Colors Motd}" Text="{setting:Localize ServerMotdControl.Text2}" />
+                                <TextBlock
+                                    Name="Label4"
+                                    Foreground="{setting:Colors Motd}"
+                                    Text="0" />
+                            </StackPanel>
+                            <StackPanel
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="10,0,0,0"
+                                    Foreground="{setting:Colors Motd}"
+                                    Text="{setting:Localize ServerMotdControl.Text3}" />
+                                <TextBlock
+                                    Name="Label5"
+                                    Foreground="{setting:Colors Motd}"
+                                    Text="999" />
+                            </StackPanel>
+                        </WrapPanel>
+                    </StackPanel>
+                </DockPanel>
             </Panel>
             <Panel
                 Name="Grid1"
-                Background="{setting:Colors Bottom1}"
+                Background="{setting:Theme TopBGColor}"
                 IsVisible="False">
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text4}" />
                     <ProgressBar
                         Height="10"
                         Margin="10,0,10,0"
+                        CornerRadius="20"
                         IsIndeterminate="True" />
                 </StackPanel>
             </Panel>
             <Panel
                 Name="Grid2"
-                Background="{setting:Colors Bottom1}"
+                Background="{setting:Theme TopBGColor}"
                 IsVisible="False">
                 <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text5}" />
             </Panel>

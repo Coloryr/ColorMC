@@ -37,8 +37,9 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         InitializeComponent();
 
-        DataContext = new BaseModel(con.UseName);
-
+        var model = new BaseModel(con.UseName);
+        model.PropertyChanged += Model_PropertyChanged;
+        DataContext = model;
         ICon = con;
 
         if (SystemInfo.Os == OsType.Linux)
@@ -62,7 +63,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Closing += SelfBaseWindow_Closing;
         PropertyChanged += SelfBaseWindow_PropertyChanged;
         ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
-        Model.PropertyChanged += Model_PropertyChanged;
         PointerReleased += SelfBaseWindow_PointerReleased;
         PointerPressed += SelfBaseWindow_PointerPressed;
 

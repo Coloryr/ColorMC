@@ -25,6 +25,7 @@ public partial class GamesModel : TopModel
 
     private readonly IMainTop _top;
     private readonly Dictionary<string, GameItemModel> _items = [];
+    private readonly GameItemModel _addItem;
 
     public GamesModel(BaseModel model, IMainTop top, string key, string name,
         List<GameSettingObj> list) : base(model)
@@ -37,6 +38,7 @@ public partial class GamesModel : TopModel
             var model1 = new GameItemModel(Model, _top, item);
             _items.Add(item.UUID, model1);
         }
+        _addItem = new(Model, Key == InstancesPath.DefaultGroup ? null : Key);
         Task.Run(() =>
         {
             foreach (var item in _items)
@@ -50,7 +52,7 @@ public partial class GamesModel : TopModel
 
             Dispatcher.UIThread.Post(() =>
             {
-                GameList.Add(new(model, Key == InstancesPath.DefaultGroup ? null : Key));
+                GameList.Add(_addItem);
             });
         });
 
@@ -155,7 +157,7 @@ public partial class GamesModel : TopModel
 
             Dispatcher.UIThread.Post(() =>
             {
-                GameList.Add(new(Model, Key));
+                GameList.Add(_addItem);
             });
         });
     }
@@ -184,9 +186,12 @@ public partial class GamesModel : TopModel
         {
             if (item.IsNew)
             {
-                continue;
+                item.IsDisplay = false;
             }
-            item.IsDisplay = item.Name.Contains(value);
+            else
+            {
+                item.IsDisplay = item.Name.Contains(value);
+            }
         }
     }
 }

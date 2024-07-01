@@ -43,6 +43,9 @@
     <None Remove="Resource\Icon\AddMenu\item2.svg" />
     <None Remove="Resource\Icon\AddMenu\item3.svg" />
     <None Remove="Resource\Icon\AddMenu\item4.svg" />
+    <None Remove="Resource\Icon\AddMenu\item5.svg" />
+    <None Remove="Resource\Icon\AddMenu\item6.svg" />
+    <None Remove="Resource\Icon\AddMenu\item7.svg" />
     <None Remove="Resource\Icon\AddMenu\svg1.svg" />
     <None Remove="Resource\Icon\book.svg" />
     <None Remove="Resource\Icon\count.svg" />
@@ -114,6 +117,7 @@
     <None Remove="Resource\Icon\NetFrp\join.svg" />
     <None Remove="Resource\Icon\new.svg" />
     <None Remove="Resource\Icon\play.svg" />
+    <None Remove="Resource\Icon\reload.svg" />
     <None Remove="Resource\Icon\resize.svg" />
     <None Remove="Resource\Icon\setting.svg" />
     <None Remove="Resource\Icon\Setting\item1.svg" />
@@ -169,7 +173,9 @@
     <AvaloniaResource Include="Resource\Icon\AddMenu\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item3.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item4.svg" />
-    <AvaloniaResource Include="Resource\Icon\AddMenu\svg1.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item5.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item6.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item7.svg" />
     <AvaloniaResource Include="Resource\Icon\book.svg" />
     <AvaloniaResource Include="Resource\Icon\count.svg" />
     <AvaloniaResource Include="Resource\Icon\down.svg" />
@@ -240,6 +246,7 @@
     <AvaloniaResource Include="Resource\Icon\Item\join.svg" />
     <AvaloniaResource Include="Resource\Icon\new.svg" />
     <AvaloniaResource Include="Resource\Icon\play.svg" />
+    <AvaloniaResource Include="Resource\Icon\reload.svg" />
     <AvaloniaResource Include="Resource\Icon\setting.svg" />
     <AvaloniaResource Include="Resource\Icon\resize.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item1.svg" />
@@ -308,7 +315,7 @@
     <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.18" />
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.10" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="DialogHost.Avalonia" Version="0.7.7" />
+    <PackageReference Include="DialogHost.Avalonia" Version="0.7.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Silk.NET.SDL" Version="2.21.0" />
     <PackageReference Include="SkiaSharp" Version="2.88.8" />
