@@ -5,14 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     x:DataType="dialogmodel:Info4Model"
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock
             HorizontalAlignment="Center"
             FontSize="20"
-            Foreground="{setting:Colors Font}"
+            Foreground="{setting:Theme FontColor}"
             Text="{Binding Text}"
             TextAlignment="Center"
             TextWrapping="Wrap" />

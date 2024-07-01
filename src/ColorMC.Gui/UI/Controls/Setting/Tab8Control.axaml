@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
     d:DesignWidth="800"
@@ -127,9 +127,9 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg23.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock
                             Margin="0,0,10,0"
                             FontSize="{setting:Style FontTitle}"
@@ -437,9 +437,9 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Colors Font}"
+                            Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg26.svg"
-                            Stroke="{setting:Colors Font}" />
+                            Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab8.Text25}" />
                     </StackPanel>
 

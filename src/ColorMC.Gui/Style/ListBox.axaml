@@ -1,7 +1,7 @@
 ﻿<Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils">
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel>
@@ -20,7 +20,7 @@
     </Design.PreviewWith>
 
     <Style Selector="ListBox">
-        <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
+        <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
         <Setter Property="Background" Value="Transparent" />
     </Style>
 
@@ -46,7 +46,7 @@
                             Height="20"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Background="{setting:Colors Main}"
+                            Background="{setting:Theme MainColor}"
                             CornerRadius="5"
                             IsVisible="False" />
                         <ContentPresenter

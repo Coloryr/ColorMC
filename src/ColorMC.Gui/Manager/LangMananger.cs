@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace ColorMC.Gui.Utils.LaunchSetting;
+namespace ColorMC.Gui.Manager;
 
 /// <summary>
 /// 文本获取 
 /// </summary>
-public static class LangSel
+public static class LangMananger
 {
     private static readonly Dictionary<string, List<WeakReference<IObserver<string>>>> s_langList = [];
 

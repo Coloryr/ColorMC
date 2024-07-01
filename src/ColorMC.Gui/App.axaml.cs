@@ -45,7 +45,6 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.LaunchSetting;
 using SkiaSharp;
 
 namespace ColorMC.Gui;
@@ -125,7 +124,6 @@ public partial class App : Application
         }
 
         ThemeManager.Load();
-        ColorSel.Load();
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -187,9 +185,8 @@ public partial class App : Application
     public static void Clear()
     {
         ThemeManager.Remove();
-        ColorSel.Remove();
-        FontSel.Remove();
-        LangSel.Remove();
+        
+        LangMananger.Remove();
     }
 
     public static void StartLock()

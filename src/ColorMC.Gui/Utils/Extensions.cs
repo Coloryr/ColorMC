@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using ColorMC.Gui.Manager;
 
-namespace ColorMC.Gui.Utils.LaunchSetting;
+namespace ColorMC.Gui.Utils;
 
 public class ColorsExtension(string key) : MarkupExtension, IObservable<IBrush>
 {
@@ -28,7 +29,7 @@ public class LocalizeExtension(string key) : MarkupExtension, IObservable<string
 
     public IDisposable Subscribe(IObserver<string> observer)
     {
-        return LangSel.Add(key, observer);
+        return LangMananger.Add(key, observer);
     }
 }
 
@@ -41,7 +42,7 @@ public class FontExtension : MarkupExtension, IObservable<FontFamily>
 
     public IDisposable Subscribe(IObserver<FontFamily> observer)
     {
-        return FontSel.Add(observer);
+        return ThemeManager.AddFont(observer);
     }
 }
 
@@ -81,5 +82,64 @@ public class ThemeThickExtension(string key) : MarkupExtension, IObservable<Thic
     public IDisposable Subscribe(IObserver<Thickness> observer)
     {
         return ThemeManager.Add(key, observer);
+    }
+}
+
+public class UnsubscribeColor(List<WeakReference<IObserver<IBrush>>> observers, IObserver<IBrush> observer) : IDisposable
+{
+    public void Dispose()
+    {
+        foreach (var item in observers.ToArray())
+        {
+            if (!item.TryGetTarget(out var target)
+                || target == observer)
+            {
+                observers.Remove(item);
+            }
+        }
+    }
+}
+public class UnsubscribeThick(List<WeakReference<IObserver<Thickness>>> observers, IObserver<Thickness> observer) : IDisposable
+{
+    public void Dispose()
+    {
+        foreach (var item in observers.ToArray())
+        {
+            if (!item.TryGetTarget(out var target)
+                || target == observer)
+            {
+                observers.Remove(item);
+            }
+        }
+    }
+}
+
+public class UnsubscribeStyle(List<WeakReference<IObserver<object?>>> observers, IObserver<object?> observer) : IDisposable
+{
+    public void Dispose()
+    {
+        foreach (var item in observers.ToArray())
+        {
+            if (!item.TryGetTarget(out var target)
+                || target == observer)
+            {
+                observers.Remove(item);
+            }
+        }
+    }
+}
+
+public class UnsubscribeFont(List<WeakReference<IObserver<FontFamily>>> observers, IObserver<FontFamily> observer) : IDisposable
+{
+    public void Dispose()
+    {
+        foreach (var item in observers.ToArray())
+        {
+            if (!item.TryGetTarget(out var target)
+                || target == observer)
+            {
+                observers.Remove(item);
+            }
+        }
     }
 }

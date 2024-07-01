@@ -6,7 +6,7 @@
     xmlns:items="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Download"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:DownloadModel"

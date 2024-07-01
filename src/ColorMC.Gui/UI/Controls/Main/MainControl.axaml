@@ -6,7 +6,7 @@
     xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Items"
@@ -196,7 +196,7 @@
             <Decorator Name="Start" IsVisible="False" />
             <Panel
                 Name="Grid2"
-                Background="{setting:Colors BG1}"
+                Background="{setting:Theme TopGridColor}"
                 IsVisible="False">
                 <TextBlock
                     Name="Label1"
