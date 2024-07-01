@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Threading;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
 

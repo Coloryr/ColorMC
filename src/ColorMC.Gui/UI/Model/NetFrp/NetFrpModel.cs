@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
@@ -16,30 +14,30 @@ public partial class NetFrpModel : MenuModel
 
         SetMenu(
         [
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/NetFrp/item4.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text4") 
+                Text = App.Lang("NetFrpWindow.Tabs.Text4")
             },
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/NetFrp/item1.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text1") 
+                Text = App.Lang("NetFrpWindow.Tabs.Text1")
             },
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/NetFrp/item5.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text5") 
+                Text = App.Lang("NetFrpWindow.Tabs.Text5")
             },
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/NetFrp/item2.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text2") 
+                Text = App.Lang("NetFrpWindow.Tabs.Text2")
             },
-            new() 
-            { 
+            new()
+            {
                 Icon = "/Resource/Icon/NetFrp/item3.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text3") 
+                Text = App.Lang("NetFrpWindow.Tabs.Text3")
             }
         ]);
     }

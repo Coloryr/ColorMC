@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -319,6 +318,6 @@ public partial class GameItemModel : GameModel
 
     protected override void Close()
     {
-        
+
     }
 }

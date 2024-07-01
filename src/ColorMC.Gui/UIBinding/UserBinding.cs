@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -16,9 +13,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Skin;
 using ColorMC.Gui.Utils;
-using SkiaSharp;
 
 namespace ColorMC.Gui.UIBinding;
 

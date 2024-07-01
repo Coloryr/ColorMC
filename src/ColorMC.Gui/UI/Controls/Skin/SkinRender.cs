@@ -14,7 +14,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Skin;
-using ColorMC.Gui.UIBinding;
 using SkiaSharp;
 
 namespace ColorMC.Gui.UI.Controls.Skin;

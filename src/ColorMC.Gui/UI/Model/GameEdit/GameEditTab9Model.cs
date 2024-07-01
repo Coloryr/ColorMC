@@ -1,10 +1,8 @@
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 

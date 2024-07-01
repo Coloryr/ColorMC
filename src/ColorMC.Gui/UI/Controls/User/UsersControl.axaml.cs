@@ -1,10 +1,6 @@
-using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.User;
 using ColorMC.Gui.UI.Windows;

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameCloud;
 using CommunityToolkit.Mvvm.ComponentModel;

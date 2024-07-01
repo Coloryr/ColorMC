@@ -1,11 +1,9 @@
-using System.Collections.Generic;
 using System.IO;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

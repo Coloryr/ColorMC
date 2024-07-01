@@ -29,7 +29,7 @@ public partial class GameEditModel
 
     partial void OnResourceTextChanged(string value)
     {
-        
+
     }
 
     [RelayCommand]
@@ -57,7 +57,7 @@ public partial class GameEditModel
         }
         else
         {
-            ResourcePackList.AddRange(_resourceItems.Where(item=>item.Local.Contains(ResourceText)));
+            ResourcePackList.AddRange(_resourceItems.Where(item => item.Local.Contains(ResourceText)));
         }
 
         ResourceEmptyDisplay = ResourcePackList.Count == 0;
