@@ -51,7 +51,7 @@
                                     SelectedItem="{Binding GameVersion}" />
                             </DockPanel>
                         </WrapPanel>
-                        <WrapPanel Margin="0,0,0,-5" IsEnabled="{Binding SourceLoad}">
+                        <WrapPanel IsEnabled="{Binding SourceLoad}">
                             <DockPanel Width="200" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text4}" />
                                 <ComboBox
@@ -69,11 +69,11 @@
                                     SelectedIndex="{Binding Categorie}" />
                             </DockPanel>
                         </WrapPanel>
-                        <DockPanel Margin="0,5,0,0" IsEnabled="{Binding SourceLoad}">
+                        <DockPanel IsEnabled="{Binding SourceLoad}">
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,3,-2"
+                                Margin="-2,-3,-3,-2"
                                 Classes="top"
                                 Command="{Binding GetList}"
                                 Content="{setting:Localize AddModPackWindow.Text8}"

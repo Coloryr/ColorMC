@@ -14,9 +14,7 @@
     <DockPanel Margin="10">
         <Border
             Margin="10,10,10,5"
-            Background="{setting:Theme ItemBG}"
-            BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
-            CornerRadius="5"
+            Classes="t2"
             DockPanel.Dock="Top">
             <StackPanel Margin="15">
                 <WrapPanel Margin="0,0,0,-5">
@@ -58,11 +56,7 @@
                     TextWrapping="Wrap" />
             </StackPanel>
         </Border>
-        <Border
-            Margin="10"
-            Background="{setting:Theme ItemBG}"
-            BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
-            CornerRadius="5">
+        <Border Margin="10" Classes="t2">
             <Panel>
                 <DataGrid
                     Name="JavaFiles"
@@ -99,12 +93,12 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Panel Background="{setting:Theme OverBGColor}" IsVisible="{Binding Display}">
+                <Border Classes="t1" IsVisible="{Binding Display}">
                     <TextBlock
                         HorizontalAlignment="Center"
-                        FontSize="16"
+                        FontSize="30"
                         Text="{setting:Localize AddJavaWindow.Text6}" />
-                </Panel>
+                </Border>
             </Panel>
         </Border>
     </DockPanel>
