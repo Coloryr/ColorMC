@@ -21,7 +21,7 @@
                 <Button
                     Width="100"
                     Height="35"
-                    Margin="-2"
+                    Margin="-2,-2,-3,-2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Classes="top"
@@ -41,7 +41,7 @@
                         <Button
                             Width="100"
                             Height="35"
-                            Margin="-2"
+                            Margin="-2,-2,-3,-2"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Classes="top"

@@ -146,7 +146,7 @@ public partial class UsersControlModel : TopModel
         AuthType type;
         if (LockLogin)
         {
-            type = _locks[Type].Type;
+            type = _locks[value].Type;
         }
         else
         {
@@ -284,7 +284,10 @@ public partial class UsersControlModel : TopModel
     [RelayCommand]
     public void SetAdd()
     {
-        Type = 0;
+        if (Type == -1)
+        {
+            Type = 0;
+        }
 
         User = "";
         Password = "";
@@ -527,15 +530,11 @@ public partial class UsersControlModel : TopModel
         if (!res)
         {
             Model.Show(App.Lang("UserWindow.Error6"));
-            var user = UserBinding.GetUser(obj.UUID, obj.AuthType);
-            if (user == null)
-                return;
-
             AuthType type;
-
+            int index = 0;
             if (LockLogin)
             {
-                var index = FindLockLogin(obj.AuthType, obj.Text1);
+                index = FindLockLogin(obj.AuthType, obj.Text1);
                 if (index == -1)
                 {
                     Model.Show(App.Lang("UserWindow.Error9"));
@@ -543,6 +542,7 @@ public partial class UsersControlModel : TopModel
                 }
                 var login = _locks[index];
                 type = login.Type;
+                Type = index;
             }
             else
             {
@@ -556,13 +556,13 @@ public partial class UsersControlModel : TopModel
                 case AuthType.SelfLittleSkin:
                     OnTypeChanged(Type);
                     SetAdd();
-                    User = user.Text2;
-                    Name = user.Text1;
+                    User = obj.Text2;
+                    Name = obj.Text1;
                     break;
                 case AuthType.LittleSkin:
                     OnTypeChanged(Type);
                     SetAdd();
-                    User = user.Text2;
+                    User = obj.Text2;
                     break;
             }
         }
@@ -574,11 +574,11 @@ public partial class UsersControlModel : TopModel
 
     private int FindLockLogin(AuthType type, string url)
     {
-        for (int a=0;a<_locks.Length;a++)
+        for (int a = 0; a < _locks.Length; a++)
         {
             if (_locks[a].Type == type)
-            { 
-                if(type == AuthType.OAuth)
+            {
+                if (type == AuthType.OAuth)
                 {
                     return a;
                 }

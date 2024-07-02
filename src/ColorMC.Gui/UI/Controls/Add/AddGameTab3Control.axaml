@@ -19,7 +19,7 @@
             <StackPanel Margin="15">
                 <TextBox
                     Height="30"
-                    Margin="0,0,5,10"
+                    Margin="0,0,0,10"
                     HorizontalAlignment="Stretch"
                     Text="{Binding Name}"
                     Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
@@ -27,7 +27,7 @@
                     <Button
                         Width="100"
                         Height="35"
-                        Margin="-2,3,-2,3"
+                        Margin="-2,-2,-3,-2"
                         Classes="top"
                         Command="{Binding SelectLocal}"
                         Content="{setting:Localize AddGameWindow.Tab3.Text2}"
@@ -90,7 +90,7 @@
                 </WrapPanel>
             </StackPanel>
         </Border>
-        <Border Margin="10" Classes="t2">
+        <Border Margin="10,5,10,10" Classes="t2">
             <TreeDataGrid Margin="15" Source="{Binding Files}" />
         </Border>
     </DockPanel>
