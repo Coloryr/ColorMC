@@ -7,7 +7,6 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 
 public partial class Info5Model(string? name) : ObservableObject
 {
-
     [ObservableProperty]
     private string _text;
     [ObservableProperty]

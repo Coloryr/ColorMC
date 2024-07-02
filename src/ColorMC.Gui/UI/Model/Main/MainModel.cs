@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -354,13 +355,13 @@ public partial class MainModel : TopModel, IMainTop
 
     public void LoadMotd()
     {
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item2 != null && config.Item2.ServerCustom?.Motd == true &&
-            !string.IsNullOrWhiteSpace(config.Item2.ServerCustom.IP))
+        var config = GuiConfigUtils.Config.ServerCustom;
+        if (config != null && config?.Motd == true &&
+            !string.IsNullOrWhiteSpace(config?.IP))
         {
             MotdDisplay = true;
 
-            Server = (config.Item2.ServerCustom.IP, config.Item2.ServerCustom.Port);
+            Server = (config.IP, config.Port);
         }
         else
         {
@@ -416,12 +417,13 @@ public partial class MainModel : TopModel, IMainTop
 
         BaseBinding.LoadMusic();
 
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item2?.Live2D.LowFps == true)
+        var config = GuiConfigUtils.Config;
+        var config1 = ConfigUtils.Config;
+        if (config.Live2D?.LowFps == true)
         {
             LowFps = true;
         }
-        if (config.Item1?.Http?.CheckUpdate == true)
+        if (config1.Http?.CheckUpdate == true)
         {
             var data = await UpdateChecker.Check();
             if (!data.Item1)
@@ -438,9 +440,8 @@ public partial class MainModel : TopModel, IMainTop
     {
         IsNotGame = GameBinding.IsNotGame;
 
-        var config = ConfigBinding.GetAllConfig();
-
-        if (config.Item2.ServerCustom?.PlayMusic == true)
+        var config = GuiConfigUtils.Config.ServerCustom;
+        if (config?.PlayMusic == true)
         {
             Model.Title = App.Lang("Name") + " " + App.Lang("MainWindow.Info33");
             MusicDisplay = true;
@@ -450,12 +451,12 @@ public partial class MainModel : TopModel, IMainTop
             MusicDisplay = false;
         }
 
-        if (config.Item2.ServerCustom?.LockGame == true)
+        if (config?.LockGame == true)
         {
             GameGroups.Clear();
             GroupList.Clear();
             IsFirst = true;
-            var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
+            var game = GameBinding.GetGame(config?.GameName);
             if (game == null)
             {
                 IsGameError = true;

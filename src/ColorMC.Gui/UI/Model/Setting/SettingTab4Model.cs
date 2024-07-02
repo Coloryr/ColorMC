@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Setting;
@@ -193,10 +195,10 @@ public partial class SettingModel
     public void LoadArg()
     {
         _argLoad = true;
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item1 is { } con)
+        var config = ConfigUtils.Config;
+        if (config is { } con)
         {
-            GC = (con.DefaultJvmArg.GC ?? GCType.G1GC);
+            GC = con.DefaultJvmArg.GC ?? GCType.G1GC;
 
             MinMemory = con.DefaultJvmArg.MinMemory;
             MaxMemory = con.DefaultJvmArg.MaxMemory;
@@ -225,7 +227,8 @@ public partial class SettingModel
             SafeLog4j = con.SafeLog4j;
         }
 
-        if (config.Item2 is { } con1)
+        var config1 = GuiConfigUtils.Config;
+        if (config1 is { } con1)
         {
             CloseBefore = con1.CloseBeforeLaunch;
         }

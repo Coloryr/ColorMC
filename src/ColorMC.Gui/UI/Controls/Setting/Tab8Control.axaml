@@ -47,8 +47,8 @@
                                     SelectedIndex="{Binding InputIndex}" />
                             </StackPanel>
                         </WrapPanel>
-                        <WrapPanel Margin="0,0,0,10">
-                            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
                                 <ComboBox
                                     Width="200"
@@ -56,7 +56,7 @@
                                     ItemsSource="{Binding Configs}"
                                     SelectedIndex="{Binding SelectConfig}" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text6}" />
                                 <ComboBox
                                     Width="200"

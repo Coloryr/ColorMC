@@ -6,10 +6,12 @@ using Avalonia.Media;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -19,7 +21,12 @@ public partial class SettingModel
 
     public ObservableCollection<string> GameList { get; init; } = [];
 
-    public List<string> LoginList { get; init; } = UserBinding.GetLoginType();
+    public ObservableCollection<LockLoginModel> Locks { get; init; } = [];
+
+    public string[] LoginList { get; init; } = UserBinding.GetLoginType();
+
+    [ObservableProperty]
+    private LockLoginModel? _lockSelect;
 
     [ObservableProperty]
     private Color _motdFontColor;
@@ -30,8 +37,6 @@ public partial class SettingModel
     private string _serverIP;
     [ObservableProperty]
     private string? _music;
-    [ObservableProperty]
-    private string? _loginUrl;
 
     [ObservableProperty]
     private ushort? _serverPort;
@@ -47,8 +52,6 @@ public partial class SettingModel
     [ObservableProperty]
     private bool _enableOneLogin;
     [ObservableProperty]
-    private bool _enableOneLoginUrl;
-    [ObservableProperty]
     private bool _enableMusic;
     [ObservableProperty]
     private bool _slowVolume;
@@ -61,15 +64,8 @@ public partial class SettingModel
     private int _game = -1;
     [ObservableProperty]
     private int _volume;
-    [ObservableProperty]
-    private int _login = -1;
 
     private bool _serverLoad = true;
-
-    partial void OnLoginUrlChanged(string? value)
-    {
-        SetLoginLock();
-    }
 
     partial void OnEnableUIChanged(bool value)
     {
@@ -77,21 +73,6 @@ public partial class SettingModel
             return;
 
         ConfigBinding.SetUI(value);
-    }
-
-    partial void OnLoginChanged(int value)
-    {
-        var type = (AuthType)(value + 1);
-        if (type is AuthType.Nide8 or AuthType.AuthlibInjector or AuthType.SelfLittleSkin)
-        {
-            EnableOneLoginUrl = true;
-        }
-        else
-        {
-            EnableOneLoginUrl = false;
-        }
-
-        SetLoginLock();
     }
 
     partial void OnEnableOneLoginChanged(bool value)
@@ -223,6 +204,60 @@ public partial class SettingModel
         Music = file.Item1;
     }
 
+    [RelayCommand]
+    public async Task AddLockLogin()
+    {
+        var model = new AddLockLoginModel();
+        var res = await DialogHost.Show(model, "AddLockLogin");
+        if (res is true)
+        {
+            if (model.Index == 0)
+            {
+                foreach (var item in Locks)
+                {
+                    if (item.AuthType == AuthType.OAuth)
+                    {
+                        Model.Show(App.Lang("SettingWindow.Tab6.Error4"));
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(model.InputText)
+                    || string.IsNullOrWhiteSpace(model.InputText1))
+                {
+                    Model.Show(App.Lang("SettingWindow.Tab6.Error5"));
+                    return;
+                }
+                foreach (var item in Locks)
+                {
+                    if (item.Name == model.InputText)
+                    {
+                        Model.Show(App.Lang("SettingWindow.Tab6.Error6"));
+                        return;
+                    }
+                }
+            }
+
+            Locks.Add(new(this, new()
+            {
+                Name = model.InputText,
+                Data = model.InputText1,
+                Type = (AuthType)(model.Index + 1)
+            }));
+
+            SetLoginLock();
+        }
+    }
+
+    public void Delete(LockLoginModel model)
+    {
+        Locks.Remove(model);
+
+        SetLoginLock();
+    }
+
     public void LoadServer()
     {
         _serverLoad = true;
@@ -240,7 +275,8 @@ public partial class SettingModel
         GameList.Clear();
         GameList.AddRange(list1);
 
-        if (ConfigBinding.GetAllConfig().Item2?.ServerCustom is { } config)
+        var config = GuiConfigUtils.Config.ServerCustom;
+        if (config is { })
         {
             ServerIP = config.IP;
             ServerPort = config.Port;
@@ -267,9 +303,12 @@ public partial class SettingModel
 
             Volume = config.Volume;
 
-            LoginUrl = config.LoginUrl;
-            Login = config.LoginType;
             EnableOneLogin = config.LockLogin;
+
+            foreach (var item in config.LockLogins)
+            {
+                Locks.Add(new(this, item));
+            }
         }
 
         _serverLoad = false;
@@ -288,7 +327,13 @@ public partial class SettingModel
         if (_serverLoad)
             return;
 
-        ConfigBinding.SetLoginLock(EnableOneLogin, Login, LoginUrl!);
+        var list = new List<LockLogin>();
+        foreach (var item in Locks)
+        {
+            list.Add(item.login);
+        }
+
+        ConfigBinding.SetLoginLock(EnableOneLogin, list);
     }
 
     private void SetIP()

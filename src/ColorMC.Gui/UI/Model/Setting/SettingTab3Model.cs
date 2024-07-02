@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -168,8 +169,8 @@ public partial class SettingModel
 
         IsDownload = BaseBinding.IsDownload;
 
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item1 is { } con)
+        var config = ConfigUtils.Config;
+        if (config is { } con)
         {
             Source = (int)con.Http.Source;
 
@@ -187,7 +188,8 @@ public partial class SettingModel
             AutoDownload = con.Http.AutoDownload;
             CheckUpdate = con.Http.CheckUpdate;
         }
-        if (config.Item2 is { } con1)
+        var config1 = GuiConfigUtils.Config;
+        if (config1 is { } con1)
         {
             ServerKey = con1.ServerKey;
             ServerInfo = GameCloudUtils.Info;

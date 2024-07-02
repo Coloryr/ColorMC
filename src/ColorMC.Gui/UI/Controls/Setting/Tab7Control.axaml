@@ -11,109 +11,112 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer Name="ScrollViewer1" Margin="0,0,10,15">
-        <Border Margin="10,5,10,3" Classes="t2">
-            <WrapPanel
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <Image
-                    Name="Image1"
-                    Width="160"
-                    Height="160"
-                    Margin="60,0,10,0"
+    <ScrollViewer Name="ScrollViewer1">
+        <Decorator Margin="0,0,10,15">
+            <Border Margin="10,5,10,3" Classes="t2">
+                <WrapPanel
+                    Margin="15"
                     HorizontalAlignment="Center"
-                    Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <StackPanel Name="StackPanel1">
-                        <TextBlock FontSize="60" Text="ColorMC" />
-                        <TextBlock FontSize="25" Text="{setting:Localize SettingWindow.Tab7.Text2}" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                FontSize="20"
-                                Text="{setting:Localize Text.Version}" />
-                            <TextBlock FontSize="20" Text="{Binding Version}" />
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Image
+                        Name="Image1"
+                        Width="160"
+                        Height="160"
+                        Margin="60,0,10,0"
+                        HorizontalAlignment="Center"
+                        Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel Name="StackPanel1">
+                            <TextBlock FontSize="60" Text="ColorMC" />
+                            <TextBlock FontSize="25" Text="{setting:Localize SettingWindow.Tab7.Text2}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    FontSize="20"
+                                    Text="{setting:Localize Text.Version}" />
+                                <TextBlock FontSize="20" Text="{Binding Version}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    FontSize="20"
+                                    Text="{setting:Localize SettingWindow.Tab7.Text10}" />
+                                <TextBlock FontSize="20" Text="{Binding RunType}" />
+                            </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                FontSize="20"
-                                Text="{setting:Localize SettingWindow.Tab7.Text10}" />
-                            <TextBlock FontSize="20" Text="{Binding RunType}" />
+                        <StackPanel
+                            Name="StackPanel2"
+                            MaxWidth="350"
+                            Margin="0,5,0,0">
+                            <WrapPanel>
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text3}"
+                                    Command="{Binding OpenUrl1}" />
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text8}"
+                                    Command="{Binding OpenUrl5}" />
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text7}"
+                                    Command="{Binding OpenUrl4}" />
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text5}"
+                                    Command="{Binding OpenUrl3}" />
+                            </WrapPanel>
+                            <WrapPanel>
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text4}"
+                                    Command="{Binding OpenUrl2}" />
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text9}"
+                                    Command="{Binding OpenUrl6}" />
+                            </WrapPanel>
+                            <WrapPanel>
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text11}"
+                                    Command="{Binding OpenUrl7}" />
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text12}"
+                                    Command="{Binding OpenUrl8}" />
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text14}"
+                                    Command="{Binding OpenUrl10}" />
+                            </WrapPanel>
+                            <WrapPanel>
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text13}"
+                                    Command="{Binding OpenUrl9}" />
+                                <views:HyperLink
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    Alias="{setting:Localize NetFrpWindow.Tab5.Text1}"
+                                    Command="{Binding OpenUrl11}" />
+                            </WrapPanel>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel
-                        Name="StackPanel2"
-                        MaxWidth="350"
-                        Margin="0,5,0,0">
-                        <WrapPanel>
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text3}"
-                                Command="{Binding OpenUrl1}" />
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text8}"
-                                Command="{Binding OpenUrl5}" />
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text7}"
-                                Command="{Binding OpenUrl4}" />
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text5}"
-                                Command="{Binding OpenUrl3}" />
-                        </WrapPanel>
-                        <WrapPanel>
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text4}"
-                                Command="{Binding OpenUrl2}" />
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text9}"
-                                Command="{Binding OpenUrl6}" />
-                        </WrapPanel>
-                        <WrapPanel>
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text11}"
-                                Command="{Binding OpenUrl7}" />
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text12}"
-                                Command="{Binding OpenUrl8}" />
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text14}"
-                                Command="{Binding OpenUrl10}" />
-                        </WrapPanel>
-                        <WrapPanel>
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                Alias="{setting:Localize SettingWindow.Tab7.Text13}"
-                                Command="{Binding OpenUrl9}" />
-                            <views:HyperLink
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Alias="{setting:Localize NetFrpWindow.Tab5.Text1}"
-                                Command="{Binding OpenUrl11}" />
-                        </WrapPanel>
-                    </StackPanel>
-                </StackPanel>
-            </WrapPanel>
-        </Border>
+                </WrapPanel>
+            </Border>
+        </Decorator>
     </ScrollViewer>
 </UserControl>

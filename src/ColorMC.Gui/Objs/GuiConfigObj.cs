@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
@@ -38,6 +39,25 @@ public record LastUser
     /// 账户类型
     /// </summary>
     public AuthType Type { get; set; }
+}
+
+/// <summary>
+/// 登录模型
+/// </summary>
+public record LockLogin
+{
+    /// <summary>
+    /// 账户类型
+    /// </summary>
+    public AuthType Type { get; set; }
+    /// <summary>
+    /// 锁定地址
+    /// </summary>
+    public string Data { get; set; }
+    /// <summary>
+    /// 登录模型名字
+    /// </summary>
+    public string Name { get; set; }
 }
 
 /// <summary>
@@ -110,13 +130,9 @@ public record ServerCustom
     /// </summary>
     public bool LockLogin { get; set; }
     /// <summary>
-    /// 登录实例类型
+    /// 登录模型实例
     /// </summary>
-    public int LoginType { get; set; }
-    /// <summary>
-    /// 登录实例网址
-    /// </summary>
-    public string LoginUrl { get; set; }
+    public List<LockLogin> LockLogins { get; set; }
 }
 
 /// <summary>

@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Avalonia.Input;
 using Avalonia.Threading;
+using AvaloniaEdit.Utils;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
@@ -17,15 +22,30 @@ namespace ColorMC.Gui.UI.Model.User;
 
 public partial class UsersControlModel : TopModel
 {
-    public List<string> UserTypeList => UserBinding.GetUserTypes();
-    public List<string> DisplayUserTypeList => UserBinding.GetDisplayUserTypes();
+    public ObservableCollection<string> UserTypeList { get; } = [];
+    public ObservableCollection<string> DisplayUserTypeList { get; } = [];
     public ObservableCollection<UserDisplayModel> UserList { get; init; } = [];
+
+    public bool LockLogin { get; init; }
+
+    public bool HaveLogin
+    {
+        get
+        {
+            if (!LockLogin)
+            {
+                return true;
+            }
+
+            return _locks.Length > 0;
+        }
+    }
 
     [ObservableProperty]
     private UserDisplayModel? _item;
 
     [ObservableProperty]
-    private AuthType _type;
+    private int _type = -1;
 
     [ObservableProperty]
     private int _displayType;
@@ -36,8 +56,6 @@ public partial class UsersControlModel : TopModel
     private bool _enableUser;
     [ObservableProperty]
     private bool _enablePassword;
-    [ObservableProperty]
-    private bool _enableType;
     [ObservableProperty]
     private bool _isAdding;
     [ObservableProperty]
@@ -52,11 +70,39 @@ public partial class UsersControlModel : TopModel
     [ObservableProperty]
     private string? _password;
 
+    private readonly LockLogin[] _locks;
+
     private bool _cancel;
     private bool _isOAuth;
 
     public UsersControlModel(BaseModel model) : base(model)
     {
+        var config = GuiConfigUtils.Config.ServerCustom;
+        LockLogin = config.LockLogin;
+        if (LockLogin)
+        {
+            _locks = [.. config.LockLogins];
+            DisplayUserTypeList.Add("");
+            foreach (var item in _locks)
+            {
+                if (item.Type == AuthType.OAuth)
+                {
+                    UserTypeList.Add(AuthType.OAuth.GetName());
+                    DisplayUserTypeList.Add(AuthType.OAuth.GetName());
+                }
+                else
+                {
+                    UserTypeList.Add(item.Name);
+                    DisplayUserTypeList.Add(item.Name);
+                }
+            }
+        }
+        else
+        {
+            UserTypeList.AddRange(UserBinding.GetLoginType());
+            DisplayUserTypeList.AddRange(UserBinding.GetDisplayUserTypes());
+        }
+
         Load();
     }
 
@@ -95,9 +141,18 @@ public partial class UsersControlModel : TopModel
         }
     }
 
-    partial void OnTypeChanged(AuthType value)
+    partial void OnTypeChanged(int value)
     {
-        switch (value)
+        AuthType type;
+        if (LockLogin)
+        {
+            type = _locks[Type].Type;
+        }
+        else
+        {
+            type = (AuthType)value;
+        }
+        switch (type)
         {
             case AuthType.Offline:
                 EnableName = false;
@@ -120,9 +175,17 @@ public partial class UsersControlModel : TopModel
                 CanRegister = true;
                 break;
             case AuthType.Nide8:
-                EnableName = true;
                 WatermarkName = App.Lang("UserWindow.Info9");
-                Name = "";
+                if (LockLogin)
+                {
+                    EnableName = false;
+                    Name = _locks[Type].Data;
+                }
+                else
+                {
+                    EnableName = true;
+                    Name = "";
+                }
                 EnableUser = true;
                 User = "";
                 EnablePassword = true;
@@ -130,9 +193,17 @@ public partial class UsersControlModel : TopModel
                 CanRegister = true;
                 break;
             case AuthType.AuthlibInjector:
-                EnableName = true;
                 WatermarkName = App.Lang("UserWindow.Info10");
-                Name = "";
+                if (LockLogin)
+                {
+                    EnableName = false;
+                    Name = _locks[Type].Data;
+                }
+                else
+                {
+                    EnableName = true;
+                    Name = "";
+                }
                 EnableUser = true;
                 User = "";
                 EnablePassword = true;
@@ -140,9 +211,17 @@ public partial class UsersControlModel : TopModel
                 CanRegister = false;
                 break;
             case AuthType.LittleSkin:
-                EnableName = false;
                 WatermarkName = "";
-                Name = "";
+                if (LockLogin)
+                {
+                    EnableName = false;
+                    Name = _locks[Type].Data;
+                }
+                else
+                {
+                    EnableName = true;
+                    Name = "";
+                }
                 EnableUser = true;
                 User = "";
                 EnablePassword = true;
@@ -150,9 +229,17 @@ public partial class UsersControlModel : TopModel
                 CanRegister = true;
                 break;
             case AuthType.SelfLittleSkin:
-                EnableName = true;
                 WatermarkName = App.Lang("UserWindow.Info11");
-                Name = "";
+                if (LockLogin)
+                {
+                    EnableName = false;
+                    Name = _locks[Type].Data;
+                }
+                else
+                {
+                    EnableName = true;
+                    Name = "";
+                }
                 EnableUser = true;
                 User = "";
                 EnablePassword = true;
@@ -175,12 +262,21 @@ public partial class UsersControlModel : TopModel
     [RelayCommand]
     public void Register()
     {
-        switch (Type)
+        AuthType type;
+        if (LockLogin)
+        {
+            type = _locks[Type].Type;
+        }
+        else
+        { 
+            type = (AuthType)Type;
+        }
+        switch (type)
         {
             case AuthType.OAuth:
             case AuthType.Nide8:
             case AuthType.LittleSkin:
-                WebBinding.OpenRegister(Type, Name);
+                WebBinding.OpenRegister(type, Name);
                 break;
         }
     }
@@ -188,20 +284,7 @@ public partial class UsersControlModel : TopModel
     [RelayCommand]
     public void SetAdd()
     {
-        EnableType = true;
-        var server = ConfigBinding.GetAllConfig().Item2.ServerCustom;
-        if (server.LockLogin)
-        {
-            Type = (AuthType)(server.LoginType + 1);
-            Name = server.LoginUrl;
-            EnableType = false;
-        }
-        else
-        {
-            Name = "";
-            Type = (AuthType)(-1);
-            EnableType = true;
-        }
+        Type = 0;
 
         User = "";
         Password = "";
@@ -214,7 +297,16 @@ public partial class UsersControlModel : TopModel
     {
         bool ok = false;
         IsAdding = true;
-        switch (Type)
+        AuthType type;
+        if (LockLogin)
+        {
+            type = _locks[Type].Type;
+        }
+        else
+        {
+            type = (AuthType)Type;
+        }
+        switch (type)
         {
             case AuthType.Offline:
                 var name = User;
@@ -400,8 +492,10 @@ public partial class UsersControlModel : TopModel
 
     public void Drop(IDataObject data)
     {
-        if (ConfigBinding.IsLockLogin())
+        if (LockLogin)
+        {
             return;
+        }
 
         if (data.Contains(DataFormats.Text))
         {
@@ -415,11 +509,13 @@ public partial class UsersControlModel : TopModel
 
     public void AddUrl(string url)
     {
-        if (ConfigBinding.IsLockLogin())
+        if (LockLogin)
+        {
             return;
+        }
 
         SetAdd();
-        Type = AuthType.AuthlibInjector;
+        Type = (int)AuthType.AuthlibInjector;
         Name = HttpUtility.UrlDecode(url.Replace("authlib-injector:yggdrasil-server:", ""));
     }
 
@@ -435,7 +531,25 @@ public partial class UsersControlModel : TopModel
             if (user == null)
                 return;
 
-            switch (Type)
+            AuthType type;
+
+            if (LockLogin)
+            {
+                var index = FindLockLogin(obj.AuthType, obj.Text1);
+                if (index == -1)
+                {
+                    Model.Show(App.Lang("UserWindow.Error9"));
+                    return;
+                }
+                var login = _locks[index];
+                type = login.Type;
+            }
+            else
+            {
+                type = (AuthType)Type;
+            }
+
+            switch (type)
             {
                 case AuthType.Nide8:
                 case AuthType.AuthlibInjector:
@@ -458,11 +572,43 @@ public partial class UsersControlModel : TopModel
         }
     }
 
+    private int FindLockLogin(AuthType type, string url)
+    {
+        for (int a=0;a<_locks.Length;a++)
+        {
+            if (_locks[a].Type == type)
+            { 
+                if(type == AuthType.OAuth)
+                {
+                    return a;
+                }
+                else if (_locks[a].Data == url)
+                {
+                    return a;
+                }
+            }
+        }
+
+        return -1;
+    }
+
     public void ReLogin(UserDisplayModel obj)
     {
-        Type = obj.AuthType;
+        if (LockLogin)
+        {
+            var index = FindLockLogin(obj.AuthType, obj.Text1);
+            if (index == -1)
+            {
+                Model.Show(App.Lang("UserWindow.Error9"));
+                return;
+            }
+            Type = index;
+        }
+        else
+        {
+            Type = (int)obj.AuthType;
+        }
 
-        EnableType = false;
         EnableName = false;
         EnableUser = false;
 
@@ -479,12 +625,51 @@ public partial class UsersControlModel : TopModel
         UserList.Clear();
         foreach (var item in UserBinding.GetAllUser())
         {
-            if (DisplayType == 0 || (DisplayType - 1) == (int)item.Value.AuthType)
+            if (LockLogin)
             {
-                UserList.Add(new(this, item.Value)
+                if (DisplayType <= 0)
                 {
-                    IsSelect = item1 == item.Value
-                });
+                    foreach (var item2 in _locks)
+                    {
+                        if (item2.Type == item.Value.AuthType && (item2.Type == AuthType.OAuth
+                            || item2.Data == item.Value.Text1))
+                        {
+                            UserList.Add(new(this, item.Value)
+                            {
+                                IsSelect = item1 == item.Value
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    var login = _locks[DisplayType - 1];
+                    if (login.Type == item.Value.AuthType && (login.Type == AuthType.OAuth
+                            || login.Data == item.Value.Text1))
+                    {
+                        UserList.Add(new(this, item.Value)
+                        {
+                            IsSelect = item1 == item.Value
+                        });
+                    }
+                }
+            }
+            else
+            {
+                if (DisplayType <= 0)
+                {
+                    UserList.Add(new(this, item.Value)
+                    {
+                        IsSelect = item1 == item.Value
+                    });
+                }
+                else if ((DisplayType - 1) == (int)item.Value.AuthType)
+                {
+                    UserList.Add(new(this, item.Value)
+                    {
+                        IsSelect = item1 == item.Value
+                    });
+                }
             }
         }
     }

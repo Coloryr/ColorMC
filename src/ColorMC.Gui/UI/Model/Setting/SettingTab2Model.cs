@@ -2,12 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media;
+using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
-
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Live2DCSharpSDK.Framework.Core;
@@ -440,8 +441,8 @@ public partial class SettingModel
             });
         });
 
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item2 is { } con)
+        var config = GuiConfigUtils.Config;
+        if (config is { } con)
         {
             Pic = con.BackImage;
             EnableBG = con.EnableBG;
@@ -484,7 +485,8 @@ public partial class SettingModel
             L2dPos = con.Live2D.Pos;
             LowFps = con.Live2D.LowFps;
         }
-        if (config.Item1 is { } con1)
+        var config1 = ConfigUtils.Config;
+        if (config1 is { } con1)
         {
             Language = con1.Language;
         }
