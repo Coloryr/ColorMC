@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
 
@@ -15,41 +16,71 @@ public abstract partial class MenuControl : BaseUserControl
 
     private bool _switch1 = false;
 
-    private BaseMenuControl _control;
+    private readonly BaseMenuControl _control;
+    private readonly MenuSideControl _sideControl;
 
     private int _now = -1;
 
     public MenuControl()
     {
-        DataContextChanged += MenuControl_DataContextChanged;
         _control = new();
+        _sideControl = new();
+
+        DataContextChanged += MenuControl_DataContextChanged;
+        SizeChanged += MenuControl_SizeChanged;
+        
+        _control.SidePanel3.PointerPressed += SidePanel2_PointerPressed;
+        
         Content = _control;
+    }
+
+    private void SidePanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var model = (DataContext as MenuModel)!;
+        model.CloseSide();
     }
 
     protected abstract Control ViewChange(bool iswhell, int old, int index);
 
+    private void MenuControl_SizeChanged(object? sender, SizeChangedEventArgs e)
+    {
+        var model = (DataContext as MenuModel)!;
+        if (e.NewSize.Width > 500)
+        {
+            model.TopSide = false;
+            _control.SidePanel2.Child = null;
+            _control.SidePanel1.Child = _sideControl;
+        }
+        else
+        {
+            model.TopSide = true;
+            _control.SidePanel1.Child = null;
+            _control.SidePanel2.Child = _sideControl;
+        }
+    }
+
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        //if (e.PropertyName == MenuModel.SideOpen)
-        //{
-        //    _cancel1.Cancel();
-        //    _cancel1.Dispose();
-        //    _cancel1 = new();
+        if (e.PropertyName == MenuModel.SideOpen)
+        {
+            _cancel1.Cancel();
+            _cancel1.Dispose();
+            _cancel1 = new();
 
-        //    _control.StackPanel1.IsVisible = true;
-        //    Dispatcher.UIThread.Post(() =>
-        //    {
-        //        App.SidePageSlide300.Start(null, _control.DockPanel1, _cancel1.Token);
-        //    });
-        //}
-        //else if (e.PropertyName == MenuModel.SideClose)
-        //{
-        //    _cancel1.Cancel();
-        //    _cancel1.Dispose();
-        //    _cancel1 = new();
-        //    App.SidePageSlide300.Start(_control.DockPanel1, null, _cancel1.Token);
-        //    _control.StackPanel1.IsVisible = false;
-        //}
+            _control.SidePanel3.IsVisible = true;
+            Dispatcher.UIThread.Post(() =>
+            {
+                App.SidePageSlide300.Start(null, _control.SidePanel2, _cancel1.Token);
+            });
+        }
+        else if (e.PropertyName == MenuModel.SideClose)
+        {
+            _cancel1.Cancel();
+            _cancel1.Dispose();
+            _cancel1 = new();
+            App.SidePageSlide300.Start(_control.SidePanel2, null, _cancel1.Token);
+            _control.SidePanel3.IsVisible = false;
+        }
 
         if (e.PropertyName == MenuModel.NowViewName)
         {
@@ -93,13 +124,6 @@ public partial class BaseMenuControl : UserControl
     public BaseMenuControl()
     {
         InitializeComponent();
-
-        StackPanel1.PointerPressed += StackPanel1_PointerPressed;
-    }
-
-    private void StackPanel1_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        (DataContext as MenuModel)!.CloseSide();
     }
 
     public void SwitchTo(bool dir, Control control, bool dir1, CancellationToken token)

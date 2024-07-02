@@ -13,8 +13,7 @@
     </Design.PreviewWith>
 
     <Style Selector="Border.t1">
-        <Setter Property="Background" Value="{setting:Theme TopBGColor}" />
-        <Setter Property="BorderBrush" Value="{setting:Theme OverBrushColor}" />
+        <Setter Property="Background" Value="{setting:Theme OverBGColor}" />
         <Setter Property="CornerRadius" Value="5" />
     </Style>
 

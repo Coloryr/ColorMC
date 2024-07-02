@@ -29,6 +29,12 @@ public abstract partial class MenuModel(BaseModel model) : TopModel(model)
     [ObservableProperty]
     private int _nowView = -1;
 
+    /// <summary>
+    /// 是否切换到侧边栏模式
+    /// </summary>
+    [ObservableProperty]
+    private bool _topSide;
+
     public bool IsWhell;
 
     private double _lastWheel;
