@@ -13,71 +13,50 @@
     x:DataType="model:MenuModel"
     Background="{setting:Theme WindowBG}"
     mc:Ignorable="d">
-    <DockPanel>
-        <DockPanel
-            Name="StackPanel1"
-            Width="150"
-            Margin="10"
-            DockPanel.Dock="Left">
-            <ScrollViewer Name="DockPanel1">
-                <ItemsControl
-                    Margin="0,0,5,0"
-                    ItemsSource="{Binding TabItems}"
-                    RenderOptions.TextRenderingMode="Antialias">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <ListBoxItem IsSelected="{Binding IsCheck}">
-                                    <Button
-                                        Padding="0"
-                                        Classes="items"
-                                        Command="{Binding Select}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <svg:SvgControl
-                                                Width="24"
-                                                Height="24"
-                                                Fill="{setting:Theme FontColor}"
-                                                Path="{Binding Icon}"
-                                                Stroke="{setting:Theme FontColor}" />
-                                            <TextBlock Margin="5,0,0,0" Text="{Binding Text}" />
-                                        </StackPanel>
-                                    </Button>
-                                </ListBoxItem>
-                                <ItemsControl
-                                    Margin="10,0,0,0"
-                                    IsVisible="{Binding IsCheck}"
-                                    ItemsSource="{Binding SubMenu}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="model1:SubMenuItemModel">
-                                            <Button
-                                                Classes="items"
-                                                Command="{Binding Select}"
-                                                Content="{Binding Name}"
-                                                IsVisible="{Binding !Hide}" />
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+    <Panel>
+        <DockPanel>
+            <Decorator
+                Name="SidePanel1"
+                Margin="10,10,0,10"
+                DockPanel.Dock="Left" />
+            <StackPanel
+                Name="StackPanel2"
+                Height="42"
+                Margin="10,10,0,5"
+                Background="Transparent"
+                DockPanel.Dock="Top"
+                Orientation="Horizontal">
+                <Button
+                    Width="42"
+                    Height="42"
+                    Margin="-3,0,10,0"
+                    Classes="top"
+                    Command="{Binding OpenSide}"
+                    CornerRadius="5"
+                    IsVisible="{Binding TopSide, FallbackValue=false}">
+                    <svg:SvgControl Path="/Resource/Icon/menu.svg" />
+                </Button>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    RenderOptions.TextRenderingMode="Antialias"
+                    Text="{Binding Title, FallbackValue=Title}" />
+            </StackPanel>
+            <Panel ClipToBounds="True">
+                <Decorator Name="Content1" />
+                <Decorator Name="Content2" />
+            </Panel>
         </DockPanel>
-        <StackPanel
-            Name="StackPanel2"
-            Margin="10"
-            Background="Transparent"
-            DockPanel.Dock="Top"
-            Orientation="Horizontal">
-            <TextBlock
-                Margin="0,5,0,0"
-                FontSize="20"
-                RenderOptions.TextRenderingMode="Antialias"
-                Text="{Binding Title, FallbackValue=Title}" />
-        </StackPanel>
-        <Panel ClipToBounds="True">
-            <Decorator Name="Content1" />
-            <Decorator Name="Content2" />
-        </Panel>
-    </DockPanel>
+        <Border
+            Name="SidePanel3"
+            Background="#00FFFFFF"
+            IsVisible="False">
+            <Border
+                HorizontalAlignment="Left"
+                VerticalAlignment="Stretch"
+                Background="{setting:Theme TopBGColor}">
+                <Decorator Name="SidePanel2" Margin="10,10,0,0" />
+            </Border>
+        </Border>
+    </Panel>
 </UserControl>

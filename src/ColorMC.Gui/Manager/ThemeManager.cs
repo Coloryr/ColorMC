@@ -200,7 +200,7 @@ public static class ThemeManager
         }
         else if (key == "OverBGColor")
         {
-            return s_theme.TopBGColor;
+            return s_theme.OverBGColor;
         }
         else if (key == "OverBrushColor")
         {

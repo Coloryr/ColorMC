@@ -10,11 +10,8 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer
-        Name="ScrollViewer1"
-        Margin="0,0,10,15"
-        HorizontalScrollBarVisibility="Disabled">
-        <StackPanel>
+    <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="0,0,10,15">
             <Panel Margin="10,5,10,3">
                 <Border Classes="t2" IsEnabled="{Binding !IsDownload}">
                     <StackPanel Margin="15">
@@ -26,49 +23,46 @@
                                 Path="/Resource/Icon/Setting/svg7.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                         </StackPanel>
-                        <WrapPanel>
-                            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize Text.DownloadSource}" />
+                        <WrapPanel Margin="0,0,0,0">
+                            <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    HorizontalAlignment="Center"
+                                    Text="{setting:Localize Text.DownloadSource}" />
                                 <ComboBox
-                                    Width="100"
-                                    Margin="5,0,0,0"
+                                    Width="110"
                                     ItemsSource="{Binding SourceList}"
                                     SelectedIndex="{Binding Source}" />
                             </StackPanel>
-                            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                            <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
                                 <TextBlock
                                     Margin="0,0,5,0"
                                     HorizontalAlignment="Center"
                                     Text="{setting:Localize SettingWindow.Tab3.Text2}" />
                                 <NumericUpDown
-                                    Width="105"
+                                    Width="110"
                                     Height="30"
-                                    Margin="0,0,5,0"
                                     FormatString="N0"
                                     Minimum="1"
                                     Value="{Binding Thread}" />
                             </StackPanel>
+                        </WrapPanel>
+                        <WrapPanel>
                             <ToggleSwitch
                                 Margin="0,0,10,0"
                                 IsChecked="{Binding CheckFile}"
                                 OffContent="{setting:Localize SettingWindow.Tab3.Text11}"
                                 OnContent="{setting:Localize SettingWindow.Tab3.Text11}" />
                             <ToggleSwitch
+                                Margin="0,0,0,0"
                                 IsChecked="{Binding AutoDownload}"
                                 OffContent="{setting:Localize SettingWindow.Tab3.Text19}"
                                 OnContent="{setting:Localize SettingWindow.Tab3.Text19}" />
                         </WrapPanel>
-                        <TextBlock
-                            Margin="0,2,0,0"
-                            Text="{setting:Localize SettingWindow.Tab3.Text25}"
-                            TextWrapping="Wrap" />
-                        <TextBlock
-                            Margin="0,2,0,0"
-                            Text="{setting:Localize SettingWindow.Tab3.Text24}"
-                            TextWrapping="Wrap" />
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text24}" TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Border Classes="t1" IsVisible="{Binding IsDownload}">
+                <Border Classes="t1" IsVisible="{Binding IsDownload, FallbackValue=false}">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -78,7 +72,7 @@
             <Panel Margin="10,5,10,3">
                 <Border Classes="t2" IsEnabled="{Binding !IsDownload}">
                     <StackPanel Margin="15">
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                             <svg:SvgControl
                                 Width="24"
                                 Height="24"
@@ -86,52 +80,48 @@
                                 Path="/Resource/Icon/Setting/svg8.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text3}" />
                         </StackPanel>
-                        <Grid Margin="0,0,5,0" ColumnDefinitions="3*,1*">
+                        <Grid Margin="0,0,0,5" ColumnDefinitions="3*,1*">
                             <TextBox
                                 Grid.Column="0"
                                 Margin="0,0,10,5"
-                                Classes="input1"
                                 Text="{Binding IP}"
                                 Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
                             <TextBox
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
-                                Classes="input1"
                                 MaxLength="5"
                                 Text="{Binding Port}"
                                 Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
                         </Grid>
-                        <Grid Margin="0,0,5,0" ColumnDefinitions="*,*">
+                        <Grid Margin="0,0,0,0" ColumnDefinitions="*,*">
                             <TextBox
                                 Grid.Column="0"
                                 Margin="0,0,10,5"
-                                Classes="input1"
                                 Text="{Binding User}"
                                 Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
                             <TextBox
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
-                                Classes="input1"
                                 PasswordChar="*"
                                 Text="{Binding Password}"
                                 Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
                         </Grid>
                         <Button
-                            Width="100"
+                            Width="90"
                             Height="35"
                             Margin="-2,-2,-3,-2"
                             HorizontalAlignment="Right"
                             Classes="top"
                             Command="{Binding SetProxy}"
                             Content="{setting:Localize Button.Set}" />
-                        <WrapPanel Margin="0,5,0,0">
+                        <WrapPanel>
                             <ToggleSwitch
-                                Margin="0,0,20,0"
+                                Margin="0,0,10,0"
                                 IsChecked="{Binding LoginProxy}"
                                 OffContent="{setting:Localize SettingWindow.Tab3.Text8}"
                                 OnContent="{setting:Localize SettingWindow.Tab3.Text8}" />
                             <ToggleSwitch
-                                Margin="0,0,20,0"
+                                Margin="0,0,10,0"
                                 IsChecked="{Binding DownloadProxy}"
                                 OffContent="{setting:Localize SettingWindow.Tab3.Text9}"
                                 OnContent="{setting:Localize SettingWindow.Tab3.Text9}" />
@@ -143,7 +133,7 @@
                         <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Border Classes="t1" IsVisible="{Binding IsDownload}">
+                <Border Classes="t1" IsVisible="{Binding IsDownload, FallbackValue=false}">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -165,20 +155,20 @@
                     </StackPanel>
                     <WrapPanel>
                         <ToggleSwitch
-                            Margin="0,0,10,-4"
+                            Margin="0,0,10,0"
                             IsChecked="{Binding CheckUpdate}"
                             OffContent="{setting:Localize SettingWindow.Tab3.Text15}"
                             OnContent="{setting:Localize SettingWindow.Tab3.Text15}" />
                         <StackPanel Margin="0,0,0,-5" Orientation="Horizontal">
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"
                                 Command="{Binding StartCheck}"
                                 Content="{setting:Localize SettingWindow.Tab3.Text16}" />
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-6,-3,-2"
                                 Classes="top"
