@@ -33,6 +33,11 @@ public partial class UsersControl : BaseUserControl
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
+        var model = (DataContext as UsersControlModel)!;
+        if (model.LockLogin)
+        {
+            return;
+        }
         if (e.Data.Contains(DataFormats.Text))
         {
             Grid2.IsVisible = true;
@@ -46,6 +51,11 @@ public partial class UsersControl : BaseUserControl
 
     private void Drop(object? sender, DragEventArgs e)
     {
+        var model = (DataContext as UsersControlModel)!;
+        if (model.LockLogin)
+        {
+            return;
+        }
         Grid2.IsVisible = false;
         (DataContext as UsersControlModel)!.Drop(e.Data);
     }

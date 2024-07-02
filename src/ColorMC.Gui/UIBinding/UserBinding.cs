@@ -21,31 +21,29 @@ public static class UserBinding
 {
     private static readonly List<(AuthType, string)> s_lockUser = [];
 
-    public static List<string> GetLoginType()
+    public static string[] GetLoginType()
     {
-        var list = new List<string>()
-        {
+        return
+        [
             AuthType.OAuth.GetName(),
             AuthType.Nide8.GetName(),
             AuthType.AuthlibInjector.GetName(),
             AuthType.LittleSkin.GetName(),
             AuthType.SelfLittleSkin.GetName()
-        };
-        return list;
+        ];
     }
 
-    public static List<string> GetUserTypes()
+    public static string[] GetUserTypes()
     {
-        var list = new List<string>()
-        {
+        return
+        [
             AuthType.Offline.GetName(),
             AuthType.OAuth.GetName(),
             AuthType.Nide8.GetName(),
             AuthType.AuthlibInjector.GetName(),
             AuthType.LittleSkin.GetName(),
             AuthType.SelfLittleSkin.GetName()
-        };
-        return list;
+        ];
     }
 
     public static List<string> GetDisplayUserTypes()

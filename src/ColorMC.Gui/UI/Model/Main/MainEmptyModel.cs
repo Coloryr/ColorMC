@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Config;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
@@ -71,10 +72,10 @@ public partial class MainEmptyModel : TopModel
 
     public void Load()
     {
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item1 is { } con1)
+        var config = ConfigUtils.Config;
+        if (config != null)
         {
-            Language = con1.Language;
+            Language = config.Language;
         }
     }
 

@@ -119,9 +119,8 @@ public static class WindowManager
 
         if (!test)
         {
-            var config = ConfigBinding.GetAllConfig();
-            if (config.Item2 == null
-                || config.Item2.ServerCustom?.EnableUI == false)
+            var config = GuiConfigUtils.Config.ServerCustom;
+            if (config == null || config?.EnableUI == false)
             {
                 return false;
             }

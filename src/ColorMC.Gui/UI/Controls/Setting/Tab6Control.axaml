@@ -3,240 +3,271 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Setting"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="0,0,10,15">
-            <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg17.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text1}" />
+    <dialog:DialogHost DisableOpeningAnimation="True" Identifier="AddLockLogin">
+        <dialog:DialogHost.DataTemplates>
+            <DataTemplate DataType="model:AddLockLoginModel">
+                <view:AddLockLoginControl />
+            </DataTemplate>
+        </dialog:DialogHost.DataTemplates>
+        <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="0,0,10,15">
+                <Border Margin="10,5,10,3" Classes="t2">
+                    <StackPanel Margin="15">
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,5,0"
+                                Path="/Resource/Icon/Setting/svg17.svg" />
+                            <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text1}" />
+                        </StackPanel>
+                        <WrapPanel>
+                            <ToggleSwitch
+                                Margin="0,0,20,0"
+                                IsChecked="{Binding EnableMotd}"
+                                OffContent="{setting:Localize SettingWindow.Tab6.Text1}"
+                                OnContent="{setting:Localize SettingWindow.Tab6.Text1}" />
+                            <ToggleSwitch
+                                IsChecked="{Binding EnableJoin}"
+                                OffContent="{setting:Localize SettingWindow.Tab6.Text4}"
+                                OnContent="{setting:Localize SettingWindow.Tab6.Text4}" />
+                        </WrapPanel>
+                        <Grid Margin="0,0,0,10" ColumnDefinitions="2*,*">
+                            <TextBox
+                                Grid.Column="0"
+                                Margin="0,0,10,0"
+                                IsEnabled="{Binding EnableIP}"
+                                Text="{Binding ServerIP}"
+                                Watermark="{setting:Localize SettingWindow.Tab6.Text2}" />
+                            <TextBox
+                                Grid.Column="1"
+                                IsEnabled="{Binding EnableIP}"
+                                MaxLength="5"
+                                Text="{Binding ServerPort}"
+                                Watermark="{setting:Localize SettingWindow.Tab6.Text3}" />
+                        </Grid>
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text6}" />
+                                <ColorPicker Color="{Binding MotdFontColor}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text5}" />
+                                <ColorPicker Color="{Binding MotdBackColor}" />
+                            </StackPanel>
+                        </WrapPanel>
                     </StackPanel>
-                    <WrapPanel>
-                        <ToggleSwitch
-                            Margin="0,0,20,0"
-                            IsChecked="{Binding EnableMotd}"
-                            OffContent="{setting:Localize SettingWindow.Tab6.Text1}"
-                            OnContent="{setting:Localize SettingWindow.Tab6.Text1}" />
-                        <ToggleSwitch
-                            IsChecked="{Binding EnableJoin}"
-                            OffContent="{setting:Localize SettingWindow.Tab6.Text4}"
-                            OnContent="{setting:Localize SettingWindow.Tab6.Text4}" />
-                    </WrapPanel>
-                    <Grid Margin="0,0,0,10" ColumnDefinitions="2*,*">
-                        <TextBox
-                            Grid.Column="0"
-                            Margin="0,0,10,0"
-                            IsEnabled="{Binding EnableIP}"
-                            Text="{Binding ServerIP}"
-                            Watermark="{setting:Localize SettingWindow.Tab6.Text2}" />
-                        <TextBox
-                            Grid.Column="1"
-                            IsEnabled="{Binding EnableIP}"
-                            MaxLength="5"
-                            Text="{Binding ServerPort}"
-                            Watermark="{setting:Localize SettingWindow.Tab6.Text3}" />
-                    </Grid>
-                    <WrapPanel>
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text6}" />
-                            <ColorPicker Color="{Binding MotdFontColor}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text5}" />
-                            <ColorPicker Color="{Binding MotdBackColor}" />
-                        </StackPanel>
-                    </WrapPanel>
-                </StackPanel>
-            </Border>
+                </Border>
 
-            <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg18.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text27}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <ToggleSwitch
-                            Margin="0,0,10,0"
-                            IsChecked="{Binding EnableOneGame}"
-                            OffContent="{setting:Localize SettingWindow.Tab6.Text7}"
-                            OnContent="{setting:Localize SettingWindow.Tab6.Text7}" />
-                        <ComboBox
-                            Width="175"
-                            IsEnabled="{Binding EnableOneGame}"
-                            ItemsSource="{Binding GameList}"
-                            SelectedIndex="{Binding Game}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                        <ToggleSwitch
-                            Margin="0,0,10,0"
-                            IsChecked="{Binding EnableOneLogin}"
-                            OffContent="{setting:Localize SettingWindow.Tab6.Text24}"
-                            OnContent="{setting:Localize SettingWindow.Tab6.Text24}" />
-                        <ComboBox
-                            Width="175"
+                <Border Margin="10,5,10,3" Classes="t2">
+                    <StackPanel Margin="15">
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,5,0"
+                                Path="/Resource/Icon/Setting/svg18.svg" />
+                            <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text27}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <ToggleSwitch
+                                Margin="0,0,10,0"
+                                IsChecked="{Binding EnableOneGame}"
+                                OffContent="{setting:Localize SettingWindow.Tab6.Text7}"
+                                OnContent="{setting:Localize SettingWindow.Tab6.Text7}" />
+                            <ComboBox
+                                Width="175"
+                                IsEnabled="{Binding EnableOneGame}"
+                                ItemsSource="{Binding GameList}"
+                                SelectedIndex="{Binding Game}" />
+                        </StackPanel>
+                        <DockPanel Margin="0,0,0,10">
+                            <Button
+                                Width="90"
+                                Height="30"
+                                Margin="-2,-2,-3,-2"
+                                Command="{Binding AddLockLogin}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text33}"
+                                DockPanel.Dock="Right"
+                                IsEnabled="{Binding EnableOneLogin}" />
+                            <ToggleSwitch
+                                Margin="0,0,10,0"
+                                IsChecked="{Binding EnableOneLogin}"
+                                OffContent="{setting:Localize SettingWindow.Tab6.Text24}"
+                                OnContent="{setting:Localize SettingWindow.Tab6.Text24}" />
+                        </DockPanel>
+                        <DataGrid
+                            Name="LockLoginList"
+                            Height="150"
+                            CanUserResizeColumns="True"
                             IsEnabled="{Binding EnableOneLogin}"
-                            ItemsSource="{Binding LoginList}"
-                            SelectedIndex="{Binding Login}" />
+                            ItemsSource="{Binding Locks}"
+                            SelectedItem="{Binding LockSelect}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Binding="{Binding Name}"
+                                    Header="{setting:Localize SettingWindow.Tab6.Text34}"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Binding="{Binding Type}"
+                                    Header="{setting:Localize SettingWindow.Tab6.Text35}"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Binding="{Binding Data}"
+                                    Header="{setting:Localize SettingWindow.Tab6.Text36}"
+                                    IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </StackPanel>
-                    <TextBox
-                        IsEnabled="{Binding EnableOneLoginUrl}"
-                        Text="{Binding LoginUrl}"
-                        Watermark="{setting:Localize SettingWindow.Tab6.Text25}" />
-                </StackPanel>
-            </Border>
-            <Border
-                Margin="10,5,10,3"
-                Classes="t2"
-                IsVisible="{Binding !Phone}">
-                <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg19.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text8}" />
+                </Border>
+                <Border
+                    Margin="10,5,10,3"
+                    Classes="t2"
+                    IsVisible="{Binding !Phone}">
+                    <StackPanel Margin="15">
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,5,0"
+                                Path="/Resource/Icon/Setting/svg19.svg" />
+                            <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text8}" />
+                        </StackPanel>
+                        <ToggleSwitch
+                            IsChecked="{Binding EnableUI}"
+                            OffContent="{setting:Localize SettingWindow.Tab6.Text30}"
+                            OnContent="{setting:Localize SettingWindow.Tab6.Text30}" />
+                        <WrapPanel HorizontalAlignment="Right">
+                            <Button
+                                Width="90"
+                                Height="35"
+                                Margin="-2,-2,3,-2"
+                                Classes="top"
+                                Command="{Binding UIGuide}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text10}"
+                                DockPanel.Dock="Left" />
+                            <Button
+                                Width="90"
+                                Height="35"
+                                Margin="-2,-2,-3,-2"
+                                Classes="top"
+                                Command="{Binding Test}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text11}" />
+                        </WrapPanel>
                     </StackPanel>
-                    <ToggleSwitch
-                        IsChecked="{Binding EnableUI}"
-                        OffContent="{setting:Localize SettingWindow.Tab6.Text30}"
-                        OnContent="{setting:Localize SettingWindow.Tab6.Text30}" />
-                    <WrapPanel HorizontalAlignment="Right">
+                </Border>
+                <Border
+                    Margin="10,5,10,3"
+                    Classes="t2"
+                    IsVisible="{Binding !Phone}">
+                    <StackPanel Margin="15">
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,5,0"
+                                Path="/Resource/Icon/Setting/svg21.svg" />
+                            <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text29}" />
+                        </StackPanel>
+                        <WrapPanel>
+                            <ToggleSwitch
+                                Margin="0,0,10,0"
+                                IsChecked="{Binding EnableMusic}"
+                                OffContent="{setting:Localize SettingWindow.Tab6.Text16}"
+                                OnContent="{setting:Localize SettingWindow.Tab6.Text16}" />
+                            <ToggleSwitch
+                                Margin="0,0,10,0"
+                                IsEnabled="{Binding EnableMusic}"
+                                OffContent="{setting:Localize SettingWindow.Tab6.Text22}"
+                                OnContent="{setting:Localize SettingWindow.Tab6.Text22}" />
+                            <ToggleSwitch
+                                IsEnabled="{Binding RunPause}"
+                                OffContent="{setting:Localize SettingWindow.Tab6.Text26}"
+                                OnContent="{setting:Localize SettingWindow.Tab6.Text26}" />
+                        </WrapPanel>
+                        <TextBox
+                            Margin="0,5,0,5"
+                            Classes="input1"
+                            IsEnabled="{Binding EnableMusic}"
+                            Text="{Binding Music}"
+                            Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
                         <Button
-                            Width="90"
-                            Height="35"
-                            Margin="-2,-2,3,-2"
-                            Classes="top"
-                            Command="{Binding UIGuide}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text10}"
-                            DockPanel.Dock="Left" />
-                        <Button
-                            Width="90"
+                            Width="100"
                             Height="35"
                             Margin="-2,-2,-3,-2"
+                            HorizontalAlignment="Right"
                             Classes="top"
-                            Command="{Binding Test}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text11}" />
-                    </WrapPanel>
-                </StackPanel>
-            </Border>
-            <Border
-                Margin="10,5,10,3"
-                Classes="t2"
-                IsVisible="{Binding !Phone}">
-                <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg21.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text29}" />
+                            Command="{Binding SelectMusic}"
+                            Content="{setting:Localize Button.Select}"
+                            IsEnabled="{Binding EnableMusic}" />
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab6.Text18}" />
+                            <Slider
+                                Width="150"
+                                Height="40"
+                                Margin="5,-10,5,0"
+                                HorizontalAlignment="Left"
+                                Foreground="{setting:Theme MainColor}"
+                                IsEnabled="{Binding EnableMusic}"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="1"
+                                Maximum="100"
+                                Minimum="0"
+                                SmallChange="1"
+                                TickFrequency="1"
+                                Value="{Binding Volume}" />
+                            <TextBlock
+                                Width="40"
+                                Margin="0,0,5,0"
+                                Text="{Binding Volume, StringFormat='{}{0}%'}" />
+                        </StackPanel>
+                        <WrapPanel Margin="0,0,0,-5">
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-3,-6,3,-2"
+                                Classes="top"
+                                Command="{Binding MusicStart}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text19}"
+                                IsEnabled="{Binding EnableMusic}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-6,3,-2"
+                                Classes="top"
+                                Command="{Binding MusicPause}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text21}"
+                                IsEnabled="{Binding EnableMusic}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-6,3,-2"
+                                Classes="top"
+                                Command="{Binding MusicPlay}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text23}"
+                                IsEnabled="{Binding EnableMusic}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-6,3,-2"
+                                Classes="top"
+                                Command="{Binding MusicStop}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text20}"
+                                IsEnabled="{Binding EnableMusic}" />
+                        </WrapPanel>
                     </StackPanel>
-                    <WrapPanel>
-                        <ToggleSwitch
-                            Margin="0,0,10,0"
-                            IsChecked="{Binding EnableMusic}"
-                            OffContent="{setting:Localize SettingWindow.Tab6.Text16}"
-                            OnContent="{setting:Localize SettingWindow.Tab6.Text16}" />
-                        <ToggleSwitch
-                            Margin="0,0,10,0"
-                            IsEnabled="{Binding EnableMusic}"
-                            OffContent="{setting:Localize SettingWindow.Tab6.Text22}"
-                            OnContent="{setting:Localize SettingWindow.Tab6.Text22}" />
-                        <ToggleSwitch
-                            IsEnabled="{Binding RunPause}"
-                            OffContent="{setting:Localize SettingWindow.Tab6.Text26}"
-                            OnContent="{setting:Localize SettingWindow.Tab6.Text26}" />
-                    </WrapPanel>
-                    <TextBox
-                        Margin="0,5,0,5"
-                        Classes="input1"
-                        IsEnabled="{Binding EnableMusic}"
-                        Text="{Binding Music}"
-                        Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-2,-3,-2"
-                        HorizontalAlignment="Right"
-                        Classes="top"
-                        Command="{Binding SelectMusic}"
-                        Content="{setting:Localize Button.Select}"
-                        IsEnabled="{Binding EnableMusic}" />
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <TextBlock Text="{setting:Localize SettingWindow.Tab6.Text18}" />
-                        <Slider
-                            Width="150"
-                            Height="40"
-                            Margin="5,-10,5,0"
-                            HorizontalAlignment="Left"
-                            Foreground="{setting:Theme MainColor}"
-                            IsEnabled="{Binding EnableMusic}"
-                            IsSnapToTickEnabled="True"
-                            LargeChange="1"
-                            Maximum="100"
-                            Minimum="0"
-                            SmallChange="1"
-                            TickFrequency="1"
-                            Value="{Binding Volume}" />
-                        <TextBlock
-                            Width="40"
-                            Margin="0,0,5,0"
-                            Text="{Binding Volume, StringFormat='{}{0}%'}" />
-                    </StackPanel>
-                    <WrapPanel Margin="0,0,0,-5">
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-3,-6,3,-2"
-                            Classes="top"
-                            Command="{Binding MusicStart}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text19}"
-                            IsEnabled="{Binding EnableMusic}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-6,3,-2"
-                            Classes="top"
-                            Command="{Binding MusicPause}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text21}"
-                            IsEnabled="{Binding EnableMusic}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-6,3,-2"
-                            Classes="top"
-                            Command="{Binding MusicPlay}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text23}"
-                            IsEnabled="{Binding EnableMusic}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-6,3,-2"
-                            Classes="top"
-                            Command="{Binding MusicStop}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text20}"
-                            IsEnabled="{Binding EnableMusic}" />
-                    </WrapPanel>
-                </StackPanel>
-            </Border>
-        </StackPanel>
-    </ScrollViewer>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </dialog:DialogHost>
+
 </UserControl>

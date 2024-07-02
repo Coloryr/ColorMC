@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
@@ -63,15 +64,6 @@ public static class ConfigBinding
     public static bool LoadFrpConfig(string local)
     {
         return FrpConfigUtils.Load(local, true);
-    }
-
-    /// <summary>
-    /// 获取所有配置文件
-    /// </summary>
-    /// <returns></returns>
-    public static (ConfigObj, GuiConfigObj) GetAllConfig()
-    {
-        return (ConfigUtils.Config, GuiConfigUtils.Config);
     }
 
     /// <summary>
@@ -575,12 +567,11 @@ public static class ConfigBinding
     /// <param name="enableOneLogin"></param>
     /// <param name="login"></param>
     /// <param name="url"></param>
-    public static void SetLoginLock(bool enableOneLogin, int login, string url)
+    public static void SetLoginLock(bool enableOneLogin, List<LockLogin> list)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.LockLogin = enableOneLogin;
-        GuiConfigUtils.Config.ServerCustom.LoginType = login;
-        GuiConfigUtils.Config.ServerCustom.LoginUrl = url;
+        GuiConfigUtils.Config.ServerCustom.LockLogins = list;
         GuiConfigUtils.Save();
     }
 

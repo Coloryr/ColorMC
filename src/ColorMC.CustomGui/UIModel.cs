@@ -14,6 +14,8 @@ public partial class UIModel(BaseModel model) : TopModel(model), IMainTop
 {
     public ObservableCollection<GameItemModel> Games { get; } = [];
 
+    public (string, ushort) IPPort => ("www.coloryr.com", 25565);
+
     [ObservableProperty]
     public GameItemModel? _selectGame;
 

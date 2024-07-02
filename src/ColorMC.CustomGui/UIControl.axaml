@@ -5,12 +5,23 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.CustomGui"
+    xmlns:ping="clr-namespace:ColorMC.Gui.UI.Controls;assembly=ColorMC.Gui"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:UIModel"
     mc:Ignorable="d">
     <Panel>
         <Image Source="image.png" Stretch="UniformToFill" />
+        <StackPanel Margin="10" VerticalAlignment="Bottom">
+            <TextBlock
+                FontSize="20"
+                Foreground="White"
+                Text="XXX服务器客户端" />
+            <TextBlock
+                FontSize="20"
+                Foreground="White"
+                Text="1.0.0" />
+        </StackPanel>
         <DockPanel>
             <DockPanel
                 HorizontalAlignment="Stretch"
@@ -42,19 +53,10 @@
                     Foreground="White"
                     Text="ColorMC启动器自定义主界面" />
             </DockPanel>
-            <StackPanel
-                Margin="10"
-                VerticalAlignment="Bottom"
-                DockPanel.Dock="Left">
-                <TextBlock
-                    FontSize="20"
-                    Foreground="White"
-                    Text="XXX服务器客户端" />
-                <TextBlock
-                    FontSize="20"
-                    Foreground="White"
-                    Text="1.0.0" />
-            </StackPanel>
+            <ping:ServerMotdControl
+                Width="500"
+                DockPanel.Dock="Top"
+                IPPort="{Binding IPPort}" />
             <DockPanel>
                 <StackPanel
                     Margin="20"

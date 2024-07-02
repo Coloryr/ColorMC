@@ -21,8 +21,6 @@ public partial class ServerMotdControl : UserControl
     private string? _ip;
     private ushort _port;
 
-
-
     public (string, ushort) IPPort
     {
         get => GetValue(IPPortProperty);

@@ -28,15 +28,16 @@
                     Classes="t2"
                     DockPanel.Dock="Top">
                     <DockPanel Margin="15">
-                        <TextBlock Margin="0,0,5,0" Text="账户类型" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize UserWindow.Text9}" />
                         <Button
                             Width="100"
                             Height="35"
                             Margin="-2,-2,-3,-2"
                             Classes="top"
                             Command="{Binding SetAdd}"
-                            Content="添加账户"
+                            Content="{setting:Localize UserWindow.Text5}"
                             DockPanel.Dock="Right"
+                            IsEnabled="{Binding HaveLogin}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text26}"
                             ToolTip.VerticalOffset="-30" />
                         <ComboBox

@@ -10,6 +10,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Add;
@@ -239,7 +240,7 @@ public partial class AddJavaControlModel : TopModel
             return;
         }
 
-        if (ConfigBinding.GetAllConfig().Item2?.WindowMode != true)
+        if (GuiConfigUtils.Config.WindowMode != true)
         {
             Model.Progress(App.Lang("AddJavaWindow.Info2"));
         }
