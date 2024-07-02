@@ -10,11 +10,8 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer
-        Name="ScrollViewer1"
-        Margin="0,0,10,15"
-        HorizontalScrollBarVisibility="Disabled">
-        <StackPanel>
+    <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="0,0,10,15">
             <Border Margin="10,5,10,3" Classes="t2">
                 <!--  运行前检查  -->
                 <StackPanel Margin="15">
@@ -170,7 +167,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text1}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,-5">
+                    <WrapPanel Margin="0,0,0,5">
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
                             <NumericUpDown
@@ -191,31 +188,29 @@
                         </StackPanel>
                     </WrapPanel>
                     <!--  Jvm参数  -->
-                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <TextBlock
                             Width="110"
                             HorizontalAlignment="Center"
                             Text="{setting:Localize SettingWindow.Tab4.Text2}" />
                         <ComboBox
-                            Width="200"
+                            Width="150"
                             ItemsSource="{Binding GCTypeList}"
                             SelectedIndex="{Binding GC}" />
                     </StackPanel>
                     <TextBox
-                        Margin="0,5,0,5"
-                        Classes="input1"
+                        Margin="0,0,0,10"
                         IsEnabled="False"
                         Text="{Binding GCArg}"
                         Watermark="{setting:Localize SettingWindow.Tab4.Text3}" />
                     <!--  Jvm附加参数  -->
                     <TextBox
-                        Margin="0,5,0,0"
-                        Classes="input1"
+                        Margin="0,0,0,10"
                         Text="{Binding JavaAgent}"
                         Watermark="{setting:Localize SettingWindow.Tab4.Text6}" />
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,0"
+                        Margin="0,0,0,10"
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding JvmArg}"
@@ -227,7 +222,10 @@
                         Classes="input"
                         Text="{Binding GameArg}"
                         Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
-                    <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text25}" TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        Text="{setting:Localize GameEditWindow.Tab2.Text25}"
+                        TextWrapping="Wrap" />
                     <TextBox
                         Height="100"
                         Margin="0,5,0,0"
@@ -253,13 +251,10 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox
-                            Margin="0,0,5,0"
+                            Margin="0,0,10,0"
                             Content="{setting:Localize SettingWindow.Tab4.Text23}"
                             IsChecked="{Binding SafeLog4j}" />
-                        <CheckBox
-                            Margin="0,0,5,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text20}"
-                            IsChecked="{Binding PreRun}" />
+                        <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PreRun}" />
                     </StackPanel>
                     <TextBox
                         Height="100"
@@ -289,7 +284,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox
-                            Margin="0,0,5,0"
+                            Margin="0,0,10,0"
                             Content="{setting:Localize SettingWindow.Tab4.Text18}"
                             IsChecked="{Binding CloseBefore}" />
                         <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PostRun}" />

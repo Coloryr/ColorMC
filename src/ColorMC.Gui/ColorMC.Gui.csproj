@@ -29,10 +29,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AvaloniaXaml Remove="Resource\UI\UI.axaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="icon.ico" />
     <None Remove="macicon.ico" />
@@ -293,7 +289,6 @@
     <EmbeddedResource Include="Resource\Pic\launch.png" />
     <EmbeddedResource Include="Resource\Pic\load.png" />
     <EmbeddedResource Include="Resource\Pic\user.png" />
-    <EmbeddedResource Include="Resource\UI\UI.axaml" />
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.
@@ -307,7 +302,6 @@
     <PackageReference Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />

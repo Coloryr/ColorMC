@@ -49,12 +49,11 @@
                         </WrapPanel>
                         <WrapPanel>
                             <ToggleSwitch
-                                Margin="0,0,10,0"
+                                Margin="0,0,20,0"
                                 IsChecked="{Binding CheckFile}"
                                 OffContent="{setting:Localize SettingWindow.Tab3.Text11}"
                                 OnContent="{setting:Localize SettingWindow.Tab3.Text11}" />
                             <ToggleSwitch
-                                Margin="0,0,0,0"
                                 IsChecked="{Binding AutoDownload}"
                                 OffContent="{setting:Localize SettingWindow.Tab3.Text19}"
                                 OnContent="{setting:Localize SettingWindow.Tab3.Text19}" />
@@ -116,12 +115,12 @@
                             Content="{setting:Localize Button.Set}" />
                         <WrapPanel>
                             <ToggleSwitch
-                                Margin="0,0,10,0"
+                                Margin="0,0,20,0"
                                 IsChecked="{Binding LoginProxy}"
                                 OffContent="{setting:Localize SettingWindow.Tab3.Text8}"
                                 OnContent="{setting:Localize SettingWindow.Tab3.Text8}" />
                             <ToggleSwitch
-                                Margin="0,0,10,0"
+                                Margin="0,0,20,0"
                                 IsChecked="{Binding DownloadProxy}"
                                 OffContent="{setting:Localize SettingWindow.Tab3.Text9}"
                                 OnContent="{setting:Localize SettingWindow.Tab3.Text9}" />

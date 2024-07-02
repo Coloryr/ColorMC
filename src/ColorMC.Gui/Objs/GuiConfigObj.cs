@@ -83,10 +83,6 @@ public record ServerCustom
     /// 是否启用自定义UI
     /// </summary>
     public bool EnableUI { get; set; }
-    /// <summary>
-    /// 自定义UI文件
-    /// </summary>
-    public string? UIFile { get; set; }
 
     /// <summary>
     /// 播放背景音乐

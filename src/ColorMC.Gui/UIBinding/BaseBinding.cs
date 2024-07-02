@@ -62,6 +62,8 @@ public static class BaseBinding
 
     public static bool SdlInit { get; private set; }
 
+    public static event Action? LoadDone;
+
     /// <summary>
     /// 停止启动游戏
     /// </summary>
@@ -188,12 +190,11 @@ public static class BaseBinding
     /// <summary>
     /// 核心初始化完成
     /// </summary>
-    public static async void LoadDone()
+    public static async void OnLoadDone()
     {
         UpdateChecker.Init();
         GameCloudUtils.Init(ColorMCGui.RunDir);
-        WindowManager.MainWindow?.LoadDone();
-        WindowManager.CustomWindow?.Load1();
+        LoadDone?.Invoke();
 
         await GameCloudUtils.StartConnect();
 
@@ -856,21 +857,11 @@ public static class BaseBinding
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static (bool, string?) TestCustomWindow(string file)
+    public static (bool, string?) TestCustomWindow()
     {
-        if (!File.Exists(file))
-        {
-            file = GetRunDir() + file;
-            if (!File.Exists(file))
-            {
-                return (false, App.Lang("Gui.Error9"));
-            }
-        }
-
         try
         {
-            WindowManager.ShowCustom(file, true);
-            WindowManager.CustomWindow?.Load1();
+            WindowManager.ShowCustom(true);
         }
         catch (Exception ex)
         {

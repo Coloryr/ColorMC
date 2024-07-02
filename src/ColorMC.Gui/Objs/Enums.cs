@@ -149,7 +149,9 @@ public enum WebType
     Live2DCore,
     ColorMCDownload,
     EditSkin,
-    LittleSkinEditSkin
+    LittleSkinEditSkin,
+    UIGuide,
+    UIGuide1
 }
 
 public enum FrpType

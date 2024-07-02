@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Media;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -27,8 +28,6 @@ public partial class SettingModel
 
     [ObservableProperty]
     private string _serverIP;
-    [ObservableProperty]
-    private string? _fileUI;
     [ObservableProperty]
     private string? _music;
     [ObservableProperty]
@@ -77,7 +76,7 @@ public partial class SettingModel
         if (_serverLoad)
             return;
 
-        ConfigBinding.SetUI(value, FileUI);
+        ConfigBinding.SetUI(value);
     }
 
     partial void OnLoginChanged(int value)
@@ -127,14 +126,6 @@ public partial class SettingModel
         SetMusic();
     }
 
-    partial void OnFileUIChanged(string? value)
-    {
-        if (_serverLoad)
-            return;
-
-        ConfigBinding.SetUI(EnableUI, value);
-    }
-
     partial void OnMotdFontColorChanged(Color value)
     {
         SetIP();
@@ -179,31 +170,11 @@ public partial class SettingModel
         SetIP();
     }
 
-    [RelayCommand]
-    public async Task SelectUI()
-    {
-        var file = await PathBinding.SelectFile(FileType.UI);
-        if (file.Item1 != null)
-        {
-            FileUI = file.Item1;
-        }
-    }
-
-    [RelayCommand]
-    public void Delete()
-    {
-        FileUI = "";
-    }
 
     [RelayCommand]
     public void Test()
     {
-        if (string.IsNullOrWhiteSpace(FileUI))
-        {
-            Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
-            return;
-        }
-        var res = BaseBinding.TestCustomWindow(FileUI);
+        var res = BaseBinding.TestCustomWindow();
         if (!res.Item1)
         {
             Model.Show(res.Item2!);
@@ -211,19 +182,9 @@ public partial class SettingModel
     }
 
     [RelayCommand]
-    public async Task Save()
+    public void UIGuide()
     {
-        var str = await PathBinding.SaveFile(FileType.UI, null);
-        if (str == null)
-            return;
-
-        if (str == false)
-        {
-            Model.Show(App.Lang("SettingWindow.Tab6.Error3"));
-            return;
-        }
-
-        Model.Notify(App.Lang("SettingWindow.Tab6.Info4"));
+        WebBinding.OpenWeb(WebType.UIGuide);
     }
 
     [RelayCommand]
@@ -283,7 +244,6 @@ public partial class SettingModel
         {
             ServerIP = config.IP;
             ServerPort = config.Port;
-            FileUI = config.UIFile;
             Music = config.Music;
 
             EnableMotd = config.Motd;

@@ -131,7 +131,7 @@ public partial class App : Application
             Task.Run(() =>
             {
                 ColorMCCore.Init1();
-                BaseBinding.LoadDone();
+                BaseBinding.OnLoadDone();
             });
         }
         Dispatcher.UIThread.Post(async () => await ImageManager.LoadImage());

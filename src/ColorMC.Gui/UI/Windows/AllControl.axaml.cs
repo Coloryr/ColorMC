@@ -128,7 +128,7 @@ public partial class AllControl : UserControl, IBaseWindow
             var con1 = Controls.Child;
             var con2 = (con as Control)!;
             Controls.Child = null;
-            if (con1 is not (MainControl or CustomControl) && con1 is { } con3)
+            if (con1 is { } con3)
             {
                 controls.Add(con3);
             }
@@ -230,7 +230,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
     public async Task<bool> Closing()
     {
-        if (_nowControl is MainControl || _nowControl is CustomControl)
+        if (_nowControl is MainControl)
             return false;
         if (_nowControl is not BaseUserControl now)
             return false;
