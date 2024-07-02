@@ -543,11 +543,10 @@ public static class ConfigBinding
     /// </summary>
     /// <param name="enable"></param>
     /// <param name="value"></param>
-    public static void SetUI(bool enable, string? value)
+    public static void SetUI(bool enable)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.EnableUI = enable;
-        GuiConfigUtils.Config.ServerCustom.UIFile = value;
         GuiConfigUtils.Save();
     }
 

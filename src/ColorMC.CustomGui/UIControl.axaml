@@ -1,0 +1,88 @@
+<UserControl
+    x:Class="ColorMC.CustomGui.UIControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.CustomGui"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:UIModel"
+    mc:Ignorable="d">
+    <Panel>
+        <Image Source="image.png" Stretch="UniformToFill" />
+        <DockPanel>
+            <DockPanel
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                DockPanel.Dock="Top">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Command="{Binding OpenUsers}"
+                        Content="用户设置"
+                        Foreground="White" />
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="0,0,20,0"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Command="{Binding OpenSetting}"
+                        Content="启动器设置"
+                        Foreground="White" />
+                </StackPanel>
+                <TextBlock
+                    Margin="20"
+                    DockPanel.Dock="Top"
+                    FontSize="20"
+                    Foreground="White"
+                    Text="ColorMC启动器自定义主界面" />
+            </DockPanel>
+            <StackPanel
+                Margin="10"
+                VerticalAlignment="Bottom"
+                DockPanel.Dock="Left">
+                <TextBlock
+                    FontSize="20"
+                    Foreground="White"
+                    Text="XXX服务器客户端" />
+                <TextBlock
+                    FontSize="20"
+                    Foreground="White"
+                    Text="1.0.0" />
+            </StackPanel>
+            <DockPanel>
+                <StackPanel
+                    Margin="20"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom">
+                    <ComboBox
+                        Margin="0,0,0,5"
+                        HorizontalAlignment="Stretch"
+                        Background="#AA787878"
+                        DisplayMemberBinding="{Binding Name}"
+                        Foreground="White"
+                        ItemsSource="{Binding Games}"
+                        SelectedItem="{Binding SelectGame}">
+                        <ComboBox.Styles>
+                            <!--<Style Selector="TextBlock">
+                                <Setter Property="Foreground" Value="White" />
+                            </Style>-->
+                        </ComboBox.Styles>
+                    </ComboBox>
+                    <Button
+                        Padding="10,5,10,5"
+                        Background="#AA787878"
+                        Command="{Binding Launch}"
+                        Content="启动游戏"
+                        FontSize="40"
+                        Foreground="White" />
+                </StackPanel>
+            </DockPanel>
+        </DockPanel>
+    </Panel>
+</UserControl>

@@ -763,6 +763,8 @@ public static class WebBinding
             WebType.ColorMCDownload => "https://github.com/Coloryr/ColorMC/releases",
             WebType.EditSkin => "https://www.minecraft.net/en-us/msaprofile/mygames/editskin",
             WebType.LittleSkinEditSkin => "https://littleskin.cn/user/closet",
+            WebType.UIGuide => "https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%.9A%E5%88%B6",
+            WebType.UIGuide1 => "https://gitee.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9A%E5%88%B6",
             _ => "https://colormc.coloryr.com"
         });
     }

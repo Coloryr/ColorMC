@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorMC.Setup.Wix", "ColorM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "X11", "..\X11.Net\X11\X11.csproj", "{5CE171A3-EC3A-41A7-9163-10623926DC54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorMC.CustomGui", "ColorMC.CustomGui\ColorMC.CustomGui.csproj", "{8543640C-A015-475F-90A1-CCA2B768C402}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -202,6 +204,26 @@ Global
 		{5CE171A3-EC3A-41A7-9163-10623926DC54}.Release|x64.Build.0 = Release|Any CPU
 		{5CE171A3-EC3A-41A7-9163-10623926DC54}.Release|x86.ActiveCfg = Release|Any CPU
 		{5CE171A3-EC3A-41A7-9163-10623926DC54}.Release|x86.Build.0 = Release|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Debug|ARM.Build.0 = Debug|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Debug|x64.Build.0 = Debug|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Debug|x86.Build.0 = Debug|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|ARM.ActiveCfg = Release|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|ARM.Build.0 = Release|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|ARM64.Build.0 = Release|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|x64.ActiveCfg = Release|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|x64.Build.0 = Release|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|x86.ActiveCfg = Release|Any CPU
+		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -42,7 +42,7 @@
                     IsVisible="{Binding !Phone}"
                     Orientation="Horizontal">
                     <Button
-                        Width="100"
+                        Width="90"
                         Height="35"
                         Margin="-2,-2,3,-2"
                         Classes="top"
@@ -50,7 +50,7 @@
                         Content="{setting:Localize Button.Add}"
                         DockPanel.Dock="Right" />
                     <Button
-                        Width="100"
+                        Width="90"
                         Height="35"
                         Margin="-2,-2,-3,-2"
                         Classes="top"

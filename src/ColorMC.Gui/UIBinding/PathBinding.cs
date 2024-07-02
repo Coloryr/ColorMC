@@ -287,30 +287,6 @@ public static class PathBinding
                     Logs.Error(App.Lang("GameEditWindow.Tab5.Error1"), e);
                     return false;
                 }
-            case FileType.UI:
-                file = await SaveFile(top,
-                    App.Lang("SettingWindow.Tab6.Info1"), ".axaml", "ui.axaml");
-                if (file == null)
-                    break;
-
-                try
-                {
-                    var name = file.GetPath();
-                    if (name == null)
-                        return null;
-                    if (File.Exists(name))
-                    {
-                        PathHelper.Delete(name);
-                    }
-
-                    File.WriteAllBytes(name, PathUtils.GetFile("ColorMC.Gui.Resource.UI.UI.axaml"));
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(App.Lang("SettingWindow.Tab6.Error3"), e);
-                    return false;
-                }
             case FileType.Skin:
                 file = await SaveFile(top,
                     App.Lang("Gui.Info9"), ".png", "skin.png");
@@ -413,7 +389,6 @@ public static class PathBinding
     private static readonly string[] JSON = ["*.json"];
     private static readonly string[] MODPACK = ["*.zip", "*.mrpack"];
     private static readonly string[] PICFILE = ["*.png", "*.jpg", "*.bmp"];
-    private static readonly string[] UIFILE = ["*.axaml"];
     private static readonly string[] AUDIO = ["*.mp3", "*.wav"];
     private static readonly string[] MODEL = ["*.model3.json"];
     private static readonly string[] HEADFILE = ["*.png"];
@@ -502,16 +477,6 @@ public static class PathBinding
                     App.Lang("SettingWindow.Tab2.Info3"),
                     PICFILE,
                     App.Lang("SettingWindow.Tab2.Info6"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
-                break;
-            case FileType.UI:
-                res = await SelectFile(top,
-                    App.Lang("SettingWindow.Tab6.Info2"),
-                    UIFILE,
-                    App.Lang("SettingWindow.Tab6.Info3"));
                 if (res?.Any() == true)
                 {
                     return (res[0].GetPath(), res[0].Name);

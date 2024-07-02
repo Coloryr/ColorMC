@@ -46,7 +46,7 @@ public static class WindowManager
     public static UsersControl? UserWindow { get; set; }
     public static MainControl? MainWindow { get; set; }
     public static AddGameControl? AddGameWindow { get; set; }
-    public static CustomControl? CustomWindow { get; set; }
+    public static DllAssembly? CustomWindow { get; set; }
     public static AddModPackControl? AddModPackWindow { get; set; }
     public static SettingControl? SettingWindow { get; set; }
     public static SkinControl? SkinWindow { get; set; }
@@ -109,38 +109,49 @@ public static class WindowManager
         return AllWindow!;
     }
 
-    public static bool ShowCustom()
+    public static bool ShowCustom(bool test = false)
     {
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item2 == null
-            || config.Item2.ServerCustom?.EnableUI == false
-            || string.IsNullOrWhiteSpace(config.Item2.ServerCustom?.UIFile))
+        if (CustomWindow != null)
         {
-            return false;
+            CustomWindow.Window.Window.TopActivate();
+            return true;
         }
-        else
-        {
-            try
-            {
-                string file = config.Item2.ServerCustom.UIFile;
-                if (!File.Exists(file))
-                {
-                    file = BaseBinding.GetRunDir() + file;
-                    if (!File.Exists(file))
-                    {
-                        return false;
-                    }
-                }
 
-                ShowCustom(file, false);
-                return true;
-            }
-            catch (Exception e)
+        if (!test)
+        {
+            var config = ConfigBinding.GetAllConfig();
+            if (config.Item2 == null
+                || config.Item2.ServerCustom?.EnableUI == false)
             {
-                var data = App.Lang("Gui.Error10");
-                Logs.Error(data, e);
-                ShowError(data, e, true);
+                return false;
             }
+        }
+
+        try
+        {
+            string file = BaseBinding.GetRunDir() + "ColorMC.CustomGui.dll";
+            if (!File.Exists(file))
+            {
+                return false;
+            }
+
+            var dll = new DllAssembly();
+
+            if (dll.IsLoad)
+            {
+                if (!test)
+                {
+                    CustomWindow = dll;
+                }
+                AWindow(dll.Window, test);
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            var data = App.Lang("Gui.Error10");
+            Logs.Error(data, e);
+            ShowError(data, e, true);
         }
 
         return false;
@@ -174,21 +185,6 @@ public static class WindowManager
             con.SetBaseModel(win.Model);
             win.Show();
         }
-    }
-
-    public static void ShowCustom(string obj, bool newwindow)
-    {
-        if (CustomWindow != null)
-        {
-            CustomWindow.Window.TopActivate();
-        }
-        else
-        {
-            CustomWindow = new();
-            AWindow(CustomWindow, newwindow);
-        }
-
-        CustomWindow.Load(obj);
     }
 
     public static void ShowAddGame(string? group, bool isDir = false, string? file = null)
@@ -575,7 +571,7 @@ public static class WindowManager
             }
             else
             {
-                return CustomWindow.Window;
+                return CustomWindow.Window.Window;
             }
         }
 
@@ -651,7 +647,7 @@ public static class WindowManager
                 window.WindowState = WindowState.Normal;
                 window.Activate();
             }
-            else if (CustomWindow?.GetVisualRoot() is Window window1)
+            else if (CustomWindow?.Window.GetVisualRoot() is Window window1)
             {
                 window1.Show();
                 window1.WindowState = WindowState.Normal;
@@ -674,9 +670,9 @@ public static class WindowManager
             if (MainWindow?.GetVisualRoot() is Window window)
             {
                 window.Hide();
-                (CustomWindow?.GetVisualRoot() as Window)?.Close();
+                (CustomWindow?.Window.GetVisualRoot() as Window)?.Close();
             }
-            else if (CustomWindow?.GetVisualRoot() is Window window1)
+            else if (CustomWindow?.Window.GetVisualRoot() is Window window1)
             {
                 window1.Hide();
             }

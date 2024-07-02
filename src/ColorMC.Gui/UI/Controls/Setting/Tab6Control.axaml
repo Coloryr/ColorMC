@@ -10,11 +10,8 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer
-        Name="ScrollViewer1"
-        Margin="0,0,10,15"
-        HorizontalScrollBarVisibility="Disabled">
-        <StackPanel>
+    <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="0,0,10,15">
             <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Margin="15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -25,30 +22,31 @@
                             Path="/Resource/Icon/Setting/svg17.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text1}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,5">
+                    <WrapPanel>
                         <ToggleSwitch
                             Margin="0,0,20,0"
                             IsChecked="{Binding EnableMotd}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text1}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text1}" />
                         <ToggleSwitch
-                            Margin="0,0,10,0"
                             IsChecked="{Binding EnableJoin}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text4}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text4}" />
+                    </WrapPanel>
+                    <Grid Margin="0,0,0,10" ColumnDefinitions="2*,*">
                         <TextBox
-                            Width="200"
+                            Grid.Column="0"
                             Margin="0,0,10,0"
                             IsEnabled="{Binding EnableIP}"
                             Text="{Binding ServerIP}"
                             Watermark="{setting:Localize SettingWindow.Tab6.Text2}" />
                         <TextBox
-                            Width="100"
+                            Grid.Column="1"
                             IsEnabled="{Binding EnableIP}"
                             MaxLength="5"
                             Text="{Binding ServerPort}"
                             Watermark="{setting:Localize SettingWindow.Tab6.Text3}" />
-                    </WrapPanel>
+                    </Grid>
                     <WrapPanel>
                         <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text6}" />
@@ -84,7 +82,7 @@
                             ItemsSource="{Binding GameList}"
                             SelectedIndex="{Binding Game}" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <ToggleSwitch
                             Margin="0,0,10,0"
                             IsChecked="{Binding EnableOneLogin}"
@@ -97,8 +95,6 @@
                             SelectedIndex="{Binding Login}" />
                     </StackPanel>
                     <TextBox
-                        Margin="0,5,0,0"
-                        Classes="input1"
                         IsEnabled="{Binding EnableOneLoginUrl}"
                         Text="{Binding LoginUrl}"
                         Watermark="{setting:Localize SettingWindow.Tab6.Text25}" />
@@ -121,44 +117,22 @@
                         IsChecked="{Binding EnableUI}"
                         OffContent="{setting:Localize SettingWindow.Tab6.Text30}"
                         OnContent="{setting:Localize SettingWindow.Tab6.Text30}" />
-                    <TextBox
-                        Margin="0,5,0,5"
-                        Text="{Binding FileUI}"
-                        Watermark="{setting:Localize SettingWindow.Tab6.Text9}" />
                     <WrapPanel HorizontalAlignment="Right">
                         <Button
-                            Width="100"
+                            Width="90"
                             Height="35"
                             Margin="-2,-2,3,-2"
                             Classes="top"
-                            Command="{Binding SelectUI}"
-                            Content="{setting:Localize Button.Select}"
-                            DockPanel.Dock="Right" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,3,-2"
-                            Classes="top"
-                            Command="{Binding Save}"
+                            Command="{Binding UIGuide}"
                             Content="{setting:Localize SettingWindow.Tab6.Text10}"
-                            DockPanel.Dock="Right" />
+                            DockPanel.Dock="Left" />
                         <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,3,-2"
-                            Classes="top"
-                            Command="{Binding Delete}"
-                            Content="{setting:Localize Button.Delete}"
-                            DockPanel.Dock="Right"
-                            IsEnabled="{Binding FileUI, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                        <Button
-                            Width="100"
+                            Width="90"
                             Height="35"
                             Margin="-2,-2,-3,-2"
                             Classes="top"
                             Command="{Binding Test}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text11}"
-                            IsEnabled="{Binding FileUI, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                            Content="{setting:Localize SettingWindow.Tab6.Text11}" />
                     </WrapPanel>
                 </StackPanel>
             </Border>
