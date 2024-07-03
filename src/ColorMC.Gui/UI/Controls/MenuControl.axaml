@@ -42,7 +42,7 @@
                     RenderOptions.TextRenderingMode="Antialias"
                     Text="{Binding Title, FallbackValue=Title}" />
             </StackPanel>
-            <Panel ClipToBounds="True">
+            <Panel Name="TabPanel" ClipToBounds="True">
                 <Decorator Name="Content1" />
                 <Decorator Name="Content2" />
             </Panel>

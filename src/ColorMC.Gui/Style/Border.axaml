@@ -29,4 +29,9 @@
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="BoxShadow" Value="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000" />
     </Style>
+
+    <Style Selector="Border.t4">
+        <Setter Property="Background" Value="{setting:Theme TopBGColor}" />
+        <Setter Property="CornerRadius" Value="5" />
+    </Style>
 </Styles>

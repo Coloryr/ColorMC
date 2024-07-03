@@ -12,6 +12,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;

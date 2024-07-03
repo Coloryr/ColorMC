@@ -18,8 +18,8 @@
         Background="{setting:Theme ItemBG}"
         BoxShadow="{Binding Border}"
         CornerRadius="5">
-        <Panel Margin="15">
-            <Panel>
+        <Panel>
+            <Panel Margin="15">
                 <Border
                     Width="90"
                     Height="90"
@@ -54,37 +54,38 @@
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="Wrap" />
                 </DockPanel>
+                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Button
+                        Width="35"
+                        Height="35"
+                        Margin="-2,-8,-3,3"
+                        Classes="top"
+                        Command="{Binding OpenWeb}"
+                        IsVisible="{Binding EnableButton}">
+                        <svg:SvgControl Path="/Resource/Icon/Item/web.svg" />
+                    </Button>
+                    <Button
+                        Width="35"
+                        Height="35"
+                        Margin="-2,-3,-3,-2"
+                        Classes="top"
+                        Command="{Binding Install}"
+                        IsEnabled="{Binding HaveDownload}"
+                        IsVisible="{Binding EnableButton, FallbackValue=true}">
+                        <svg:SvgControl Path="/Resource/Icon/Item/download.svg" />
+                    </Button>
+                </StackPanel>
+                <TextBlock
+                    Padding="3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Background="{setting:Theme TopBGColor}"
+                    Foreground="{setting:Theme FontColor}"
+                    IsVisible="{Binding IsDownload, FallbackValue=true}"
+                    Text="{setting:Localize Text.Downloaded}" />
+
             </Panel>
-            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
-                <Button
-                    Width="35"
-                    Height="35"
-                    Margin="-2,-8,-3,3"
-                    Classes="top"
-                    Command="{Binding OpenWeb}"
-                    IsVisible="{Binding EnableButton}">
-                    <svg:SvgControl Path="/Resource/Icon/Item/web.svg" />
-                </Button>
-                <Button
-                    Width="35"
-                    Height="35"
-                    Margin="-2,-3,-3,-2"
-                    Classes="top"
-                    Command="{Binding Install}"
-                    IsEnabled="{Binding HaveDownload}"
-                    IsVisible="{Binding EnableButton, FallbackValue=true}">
-                    <svg:SvgControl Path="/Resource/Icon/Item/download.svg" />
-                </Button>
-            </StackPanel>
-            <TextBlock
-                Padding="3"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Background="{setting:Theme TopBGColor}"
-                Foreground="{setting:Theme FontColor}"
-                IsVisible="{Binding IsDownload, FallbackValue=true}"
-                Text="{setting:Localize Text.Downloaded}" />
-            <Panel Background="{setting:Theme TopBGColor}" IsVisible="{Binding NowDownload, FallbackValue=false}">
+            <Border Classes="t4" IsVisible="{Binding NowDownload, FallbackValue=false}">
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddWindow.Control.Text1}" />
                     <ProgressBar
@@ -93,7 +94,7 @@
                         CornerRadius="20"
                         IsIndeterminate="{Binding NowDownload}" />
                 </StackPanel>
-            </Panel>
+            </Border>
         </Panel>
     </Border>
 </UserControl>

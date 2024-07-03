@@ -2,7 +2,6 @@ using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Count;
-using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls.Count;
 

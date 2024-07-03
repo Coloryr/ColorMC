@@ -1,7 +1,7 @@
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.CustomGui;
 

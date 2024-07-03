@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Loader;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Custom;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.Utils;

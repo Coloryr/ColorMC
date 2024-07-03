@@ -1,5 +1,5 @@
-﻿using ColorMC.Gui.UI.Controls.Custom;
-using ColorMC.Gui.UI.Windows;
+﻿using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Controls.Custom;
 
 namespace ColorMC.CustomGui;
 

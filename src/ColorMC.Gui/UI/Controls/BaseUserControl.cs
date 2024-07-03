@@ -5,11 +5,25 @@ using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Windows;
 
-namespace ColorMC.Gui.UI.Windows;
+namespace ColorMC.Gui.UI.Controls;
 
 public abstract class BaseUserControl : UserControl
 {
+    public BaseUserControl()
+    {
+        SizeChanged += BaseUserControl_SizeChanged;
+    }
+
+    private void BaseUserControl_SizeChanged(object? sender, SizeChangedEventArgs e)
+    {
+        if (DataContext is TopModel model)
+        {
+            model.WidthChange(-1, e.NewSize.Width);
+        }
+    }
+
     public IBaseWindow Window => WindowManager.FindRoot(VisualRoot);
     public string Title { get; protected set; }
     public string UseName { get; protected set; }

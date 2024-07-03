@@ -24,7 +24,7 @@
                     Orientation="Horizontal">
                     <Button
                         Width="100"
-                        Height="30"
+                        Height="35"
                         Margin="-2,-2,3,-2"
                         Classes="top"
                         Command="{Binding UploadConfig}"
@@ -33,7 +33,7 @@
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="30"
+                        Height="35"
                         Margin="-2,-2,0,-2"
                         Classes="top"
                         Command="{Binding DownloadConfig}"

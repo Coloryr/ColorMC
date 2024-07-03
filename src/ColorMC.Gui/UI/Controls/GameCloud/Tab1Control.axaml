@@ -19,7 +19,7 @@
                     Orientation="Horizontal">
                     <Button
                         Width="100"
-                        Height="25"
+                        Height="30"
                         Margin="0,0,5,0"
                         Command="{Binding MakeEnable}"
                         Content="{setting:Localize GameCloudWindow.Tab1.Text1}"
@@ -28,7 +28,8 @@
                         ToolTip.VerticalOffset="-30" />
                     <Button
                         Width="100"
-                        Height="25"
+                        Height="30"
+                        Margin="0,0,0,0"
                         Command="{Binding MakeDisable}"
                         Content="{setting:Localize GameCloudWindow.Tab1.Text3}"
                         IsEnabled="{Binding Enable}"
@@ -36,13 +37,16 @@
                         ToolTip.VerticalOffset="-30" />
                 </StackPanel>
                 <StackPanel IsEnabled="{Binding Enable}">
-                    <TextBlock Text="{setting:Localize GameCloudWindow.Tab1.Text2}" />
-                    <TextBox
-                        Margin="0,5,5,0"
-                        IsEnabled="False"
-                        IsReadOnly="True"
-                        Text="{Binding UUID}" />
-                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        FontSize="16"
+                        Text="{setting:Localize GameCloudWindow.Tab1.Text2}" />
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        FontSize="16"
+                        Foreground="{setting:Theme MainColor}"
+                        Text="{Binding UUID, FallbackValue=UUID}" />
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameCloudWindow.Tab1.Text4}" />
                         <TextBlock Text="{Binding ConfigTime}" />
                     </StackPanel>

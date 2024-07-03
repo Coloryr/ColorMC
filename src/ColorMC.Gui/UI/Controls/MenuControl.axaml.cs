@@ -5,7 +5,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -30,8 +29,17 @@ public abstract partial class MenuControl : BaseUserControl
         SizeChanged += MenuControl_SizeChanged;
         
         _control.SidePanel3.PointerPressed += SidePanel2_PointerPressed;
-        
+        _control.TabPanel.SizeChanged += TabPanel_SizeChanged;
+
         Content = _control;
+    }
+
+    private void TabPanel_SizeChanged(object? sender, SizeChangedEventArgs e)
+    {
+        if (DataContext is TopModel model)
+        {
+            model.WidthChange(0, e.NewSize.Width);
+        }
     }
 
     private void SidePanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
