@@ -50,6 +50,22 @@ public abstract partial class MenuModel(BaseModel model) : TopModel(model)
         Title = TabItems[newValue].Text;
     }
 
+    public override void WidthChange(int index, double width)
+    {
+        if (index != 0)
+        {
+            return;
+        }
+        if (width < 450)
+        {
+            MinMode = true;
+        }
+        else
+        {
+            MinMode = false;
+        }
+    }
+
     public void SetMenu(MenuItemModel[] items)
     {
         int a = 0;

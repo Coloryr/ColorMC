@@ -26,7 +26,7 @@ public record ThemeObj
     /// </summary>
     public IBrush ButtonBorder;
     /// <summary>
-    /// 浮动弹出框背景色
+    /// 覆盖层不带透明度背景色
     /// </summary>
     public IBrush TopBGColor;
     /// <summary>
@@ -34,7 +34,7 @@ public record ThemeObj
     /// </summary>
     public IBrush TopGridColor;
     /// <summary>
-    /// 覆盖层背景色
+    /// 覆盖层带透明度背景色
     /// </summary>
     public IBrush OverBGColor;
     /// <summary>

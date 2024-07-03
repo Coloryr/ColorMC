@@ -11,16 +11,6 @@ public partial class Tab1Control : UserControl
         InitializeComponent();
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-
-        ComboBox1.PointerPressed += ComboBox1_PointerPressed;
-    }
-
-    private async void ComboBox1_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (DataContext is GameEditModel model)
-        {
-            await model.LangLoad();
-        }
     }
 
     public void End()

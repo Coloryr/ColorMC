@@ -13,7 +13,6 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 

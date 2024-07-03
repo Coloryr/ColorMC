@@ -32,50 +32,43 @@
                 Margin="10,10,10,5"
                 Classes="t2"
                 DockPanel.Dock="Top">
-                <StackPanel Margin="15">
-                    <DockPanel>
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,-2,8"
-                            VerticalAlignment="Center"
-                            Classes="top"
-                            Command="{Binding Load}"
-                            Content="{setting:Localize ConfigEditWindow.Text3}"
-                            DockPanel.Dock="Right"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text41}"
-                            ToolTip.VerticalOffset="-30" />
-                        <Grid Margin="0,0,10,10" ColumnDefinitions="0.8*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="0,0,10,0"
+                <DockPanel Margin="15">
+                    <StackPanel Margin="0,0,0,10" DockPanel.Dock="Top">
+                        <DockPanel>
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-2,-2,8"
+                                VerticalAlignment="Center"
+                                Classes="top"
+                                Command="{Binding Load}"
+                                Content="{setting:Localize ConfigEditWindow.Text3}"
+                                DockPanel.Dock="Right"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text41}"
+                                ToolTip.VerticalOffset="-30" />
+                            <TextBox
+                                Width="300"
+                                Margin="0,0,10,10"
                                 HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
+                                DockPanel.Dock="Right"
+                                IsVisible="{Binding !MinMode}"
+                                Text="{Binding Name}"
+                                Watermark="{setting:Localize ConfigEditWindow.Text1}" />
+                            <ComboBox
+                                Margin="0,0,10,10"
+                                HorizontalAlignment="Stretch"
                                 ItemsSource="{Binding FileList}"
                                 SelectedIndex="{Binding Select}"
                                 SelectedItem="{Binding File}" />
-                            <TextBox
-                                Grid.Column="1"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                Text="{Binding Name}"
-                                Watermark="{setting:Localize ConfigEditWindow.Text1}" />
-                        </Grid>
-                    </DockPanel>
-                    <DockPanel>
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,-2,-3"
-                            VerticalAlignment="Center"
-                            Classes="top"
-                            Command="{Binding Save}"
-                            Content="{setting:Localize ConfigEditWindow.Text2}"
+                        </DockPanel>
+                        <TextBox
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Stretch"
                             DockPanel.Dock="Right"
-                            IsEnabled="{Binding IsEdit}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text40}"
-                            ToolTip.VerticalOffset="-30" />
-                        <WrapPanel Margin="0,0,0,-5">
+                            IsVisible="{Binding MinMode}"
+                            Text="{Binding Name}"
+                            Watermark="{setting:Localize ConfigEditWindow.Text1}" />
+                        <WrapPanel IsVisible="{Binding MinMode}">
                             <Button
                                 Width="100"
                                 Height="35"
@@ -100,7 +93,7 @@
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-2,-3,2"
+                                Margin="-2,-2,3,2"
                                 VerticalAlignment="Center"
                                 Classes="top"
                                 Command="{Binding FindEntity}"
@@ -108,30 +101,88 @@
                                 IsVisible="{Binding IsWorld}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text98}"
                                 ToolTip.VerticalOffset="-30" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-2,3,2"
+                                VerticalAlignment="Center"
+                                Classes="top"
+                                Command="{Binding Save}"
+                                Content="{setting:Localize ConfigEditWindow.Text2}"
+                                IsEnabled="{Binding IsEdit}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text40}"
+                                ToolTip.VerticalOffset="-30" />
                         </WrapPanel>
-                    </DockPanel>
-                </StackPanel>
-            </Border>
-            <Border Margin="10" Classes="t2">
-                <Panel Margin="15">
-                    <ae:TextEditor
-                        Name="TextEditor1"
-                        Document="{Binding Text}"
-                        FontSize="14"
-                        FontWeight="Normal"
-                        Foreground="{setting:Theme FontColor}"
-                        HorizontalScrollBarVisibility="Auto"
-                        IsVisible="{Binding !NbtEnable}"
-                        ShowLineNumbers="True"
-                        VerticalScrollBarVisibility="Visible"
-                        WordWrap="True" />
-                    <TreeDataGrid
-                        Name="NbtViewer"
-                        IsVisible="{Binding NbtEnable}"
-                        ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                        ScrollViewer.VerticalScrollBarVisibility="Visible"
-                        Source="{Binding Source}" />
-                </Panel>
+                        <DockPanel IsVisible="{Binding !MinMode}">
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-2,-2,-3"
+                                VerticalAlignment="Center"
+                                Classes="top"
+                                Command="{Binding Save}"
+                                Content="{setting:Localize ConfigEditWindow.Text2}"
+                                DockPanel.Dock="Right"
+                                IsEnabled="{Binding IsEdit}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text40}"
+                                ToolTip.VerticalOffset="-30" />
+                            <WrapPanel Margin="0,0,0,-5">
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-2,3,2"
+                                    VerticalAlignment="Center"
+                                    Classes="top"
+                                    Command="{Binding Open}"
+                                    Content="{setting:Localize Button.OpFile}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                                    ToolTip.VerticalOffset="-30" />
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-2,3,2"
+                                    VerticalAlignment="Center"
+                                    Classes="top"
+                                    Command="{Binding FindBlock}"
+                                    Content="{setting:Localize ConfigEditWindow.Text5}"
+                                    IsVisible="{Binding IsWorld}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text97}"
+                                    ToolTip.VerticalOffset="-30" />
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-2,-3,2"
+                                    VerticalAlignment="Center"
+                                    Classes="top"
+                                    Command="{Binding FindEntity}"
+                                    Content="{setting:Localize ConfigEditWindow.Text6}"
+                                    IsVisible="{Binding IsWorld}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text98}"
+                                    ToolTip.VerticalOffset="-30" />
+                            </WrapPanel>
+                        </DockPanel>
+
+                    </StackPanel>
+                    <Panel>
+                        <ae:TextEditor
+                            Name="TextEditor1"
+                            Document="{Binding Text}"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Foreground="{setting:Theme FontColor}"
+                            HorizontalScrollBarVisibility="Auto"
+                            IsVisible="{Binding !NbtEnable}"
+                            ShowLineNumbers="True"
+                            VerticalScrollBarVisibility="Visible"
+                            WordWrap="True" />
+                        <TreeDataGrid
+                            Name="NbtViewer"
+                            IsVisible="{Binding NbtEnable}"
+                            ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            Source="{Binding Source}" />
+                    </Panel>
+                </DockPanel>
             </Border>
         </DockPanel>
     </dialog:DialogHost>

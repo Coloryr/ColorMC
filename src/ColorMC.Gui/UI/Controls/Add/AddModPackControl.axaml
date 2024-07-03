@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
-    d:DesignHeight="450"
+    d:DesignHeight="600"
     d:DesignWidth="800"
     x:DataType="model:AddModPackControlModel"
     Background="{setting:Theme WindowBG}"
@@ -20,8 +20,42 @@
                     Classes="t2"
                     DockPanel.Dock="Top">
                     <StackPanel Margin="15">
-                        <WrapPanel Margin="0,0,0,-5">
-                            <DockPanel Width="200" Margin="0,0,10,10">
+                        <StackPanel Margin="0,0,0,-5" IsVisible="{Binding MinMode}">
+                            <DockPanel Margin="0,0,0,10">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text2}" />
+                                <ComboBox
+                                    Height="30"
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding SourceList}"
+                                    SelectedIndex="{Binding Source}" />
+                            </DockPanel>
+                            <DockPanel Margin="0,0,0,10" IsEnabled="{Binding SourceLoad}">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
+                                <ComboBox
+                                    Height="30"
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding GameVersionList}"
+                                    SelectedItem="{Binding GameVersion}" />
+                            </DockPanel>
+                            <DockPanel Margin="0,0,0,10" IsEnabled="{Binding SourceLoad}">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text4}" />
+                                <ComboBox
+                                    Height="30"
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding SortTypeList}"
+                                    SelectedIndex="{Binding SortType}" />
+                            </DockPanel>
+                            <DockPanel Margin="0,0,0,10" IsEnabled="{Binding SourceLoad}">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text1}" />
+                                <ComboBox
+                                    Height="30"
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding CategorieList}"
+                                    SelectedIndex="{Binding Categorie}" />
+                            </DockPanel>
+                        </StackPanel>
+                        <WrapPanel Margin="0,0,0,-5" IsVisible="{Binding !MinMode}">
+                            <DockPanel Width="180" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text2}" />
                                 <ComboBox
                                     Height="30"
@@ -30,10 +64,10 @@
                                     SelectedIndex="{Binding Source}" />
                             </DockPanel>
                             <DockPanel
-                                Width="200"
+                                Width="180"
                                 Margin="0,0,10,10"
                                 IsEnabled="{Binding SourceLoad}">
-                                <TextBlock Width="65" Text="{setting:Localize Text.GameVersion}" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                                 <ComboBox
                                     Height="30"
                                     HorizontalAlignment="Stretch"
@@ -41,7 +75,7 @@
                                     SelectedItem="{Binding GameVersion}" />
                             </DockPanel>
                             <DockPanel
-                                Width="200"
+                                Width="180"
                                 Margin="0,0,10,10"
                                 IsEnabled="{Binding SourceLoad}">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text4}" />
@@ -52,7 +86,7 @@
                                     SelectedIndex="{Binding SortType}" />
                             </DockPanel>
                             <DockPanel
-                                Width="200"
+                                Width="180"
                                 Margin="0,0,0,10"
                                 IsEnabled="{Binding SourceLoad}">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text1}" />
@@ -64,27 +98,30 @@
                             </DockPanel>
                         </WrapPanel>
                         <DockPanel Margin="0,5,0,0" IsEnabled="{Binding SourceLoad}">
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-3,3,-2"
-                                Classes="top"
-                                Command="{Binding Reload}"
-                                Content="{setting:Localize AddModPackWindow.Text8}"
+                            <StackPanel
+                                Margin="10,0,0,0"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text75}"
-                                ToolTip.VerticalOffset="-30" />
-                            <NumericUpDown
-                                Width="110"
-                                Height="30"
-                                Margin="0,0,10,0"
-                                DockPanel.Dock="Right"
-                                FormatString="N0"
-                                Minimum="0"
-                                Value="{Binding Page}" />
+                                IsVisible="{Binding !MinMode}"
+                                Orientation="Horizontal">
+                                <NumericUpDown
+                                    Width="110"
+                                    Height="30"
+                                    Margin="0,0,10,0"
+                                    FormatString="N0"
+                                    Minimum="0"
+                                    Value="{Binding Page}" />
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-3,-3,-2"
+                                    Classes="top"
+                                    Command="{Binding Reload}"
+                                    Content="{setting:Localize AddModPackWindow.Text8}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text75}"
+                                    ToolTip.VerticalOffset="-30" />
+                            </StackPanel>
                             <TextBox
                                 Height="30"
-                                Margin="0,0,10,0"
                                 HorizontalAlignment="Stretch"
                                 Text="{Binding Text}"
                                 Watermark="{setting:Localize Text.Name}">
@@ -93,6 +130,28 @@
                                 </TextBox.KeyBindings>
                             </TextBox>
                         </DockPanel>
+                        <StackPanel
+                            Margin="0,10,0,0"
+                            HorizontalAlignment="Right"
+                            IsVisible="{Binding MinMode}"
+                            Orientation="Horizontal">
+                            <NumericUpDown
+                                Width="110"
+                                Height="30"
+                                Margin="0,0,10,0"
+                                FormatString="N0"
+                                Minimum="0"
+                                Value="{Binding Page}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-3,-3,-2"
+                                Classes="top"
+                                Command="{Binding Reload}"
+                                Content="{setting:Localize AddModPackWindow.Text8}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text75}"
+                                ToolTip.VerticalOffset="-30" />
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 
@@ -120,87 +179,80 @@
                 </Panel>
             </DockPanel>
         </ScrollViewer>
-        <DockPanel
+        <Border
             Name="ModPackFiles"
             Background="{setting:Theme TopViewBG}"
             IsVisible="False">
             <Border
-                Margin="10,10,10,5"
-                Background="{setting:Theme ItemBG}"
-                BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
-                CornerRadius="5"
+                Margin="10"
+                Classes="t3"
                 DockPanel.Dock="Top">
-                <WrapPanel Margin="10,10,10,5">
-                    <TextBlock Margin="0,0,5,5" Text="{setting:Localize Text.GameVersion}" />
-                    <ComboBox
-                        Width="110"
-                        Margin="0,0,5,5"
-                        VerticalAlignment="Center"
-                        ItemsSource="{Binding GameVersionList}"
-                        SelectedItem="{Binding GameVersion1}" />
-                    <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text5}" />
-                        <NumericUpDown
-                            Width="100"
-                            Height="30"
-                            FormatString="N0"
-                            IsEnabled="{Binding PageEnable1}"
-                            Minimum="0"
-                            Value="{Binding Page1}" />
-                    </StackPanel>
-
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-7,3,-2"
-                        Classes="top"
-                        Command="{Binding Search}"
-                        Content="{setting:Localize AddModPackWindow.Text10}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text77}"
-                        ToolTip.VerticalOffset="-30" />
-
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-7,3,-2"
-                        Classes="top"
-                        Command="{Binding Download}"
-                        Content="{setting:Localize AddModPackWindow.Text12}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text91}"
-                        ToolTip.VerticalOffset="-30" />
-                </WrapPanel>
+                <DockPanel Margin="15">
+                    <WrapPanel DockPanel.Dock="Top">
+                        <TextBlock Margin="0,0,5,10" Text="{setting:Localize Text.GameVersion}" />
+                        <ComboBox
+                            Width="150"
+                            Margin="0,0,10,10"
+                            VerticalAlignment="Center"
+                            ItemsSource="{Binding GameVersionList}"
+                            SelectedItem="{Binding GameVersion1}" />
+                        <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text5}" />
+                            <NumericUpDown
+                                Width="110"
+                                Height="30"
+                                FormatString="N0"
+                                IsEnabled="{Binding PageEnable1}"
+                                Minimum="0"
+                                Value="{Binding Page1}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-3,3,7"
+                                Classes="top"
+                                Command="{Binding Search}"
+                                Content="{setting:Localize AddModPackWindow.Text10}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text77}"
+                                ToolTip.VerticalOffset="-30" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-3,3,7"
+                                Classes="top"
+                                Command="{Binding Download}"
+                                Content="{setting:Localize AddModPackWindow.Text12}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text91}"
+                                ToolTip.VerticalOffset="-30" />
+                        </StackPanel>
+                    </WrapPanel>
+                    <DataGrid
+                        Name="PackFiles"
+                        CanUserResizeColumns="True"
+                        ItemsSource="{Binding FileList}"
+                        SelectedItem="{Binding Item}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Binding="{Binding Name}"
+                                Header="{setting:Localize Text.Name}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Size}"
+                                Header="{setting:Localize Text.Size}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Download}"
+                                Header="{setting:Localize AddModPackWindow.DataGrid.Text3}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Time}"
+                                Header="{setting:Localize AddModPackWindow.DataGrid.Text4}"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </Border>
-            <Border
-                Margin="10,5,10,10"
-                Background="{setting:Theme ItemBG}"
-                BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"
-                CornerRadius="5">
-                <DataGrid
-                    Name="PackFiles"
-                    Margin="10"
-                    CanUserResizeColumns="True"
-                    ItemsSource="{Binding FileList}"
-                    SelectedItem="{Binding Item}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{setting:Localize Text.Name}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Size}"
-                            Header="{setting:Localize Text.Size}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Download}"
-                            Header="{setting:Localize AddModPackWindow.DataGrid.Text3}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Time}"
-                            Header="{setting:Localize AddModPackWindow.DataGrid.Text4}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Border>
-        </DockPanel>
+        </Border>
     </Panel>
 </UserControl>

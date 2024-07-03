@@ -14,7 +14,7 @@
     mc:Ignorable="d">
     <Border Classes="t2">
         <ae:TextEditor
-            Margin="15"
+            Margin="5"
             Document="{Binding Text}"
             FontSize="14"
             FontWeight="Normal"

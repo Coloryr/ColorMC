@@ -5,7 +5,6 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
-using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 

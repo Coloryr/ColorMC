@@ -11,7 +11,6 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
-using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls.GameConfigEdit;
 

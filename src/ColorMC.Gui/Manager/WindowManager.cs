@@ -12,6 +12,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Count;
 using ColorMC.Gui.UI.Controls.Custom;

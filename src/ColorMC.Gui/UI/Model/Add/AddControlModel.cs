@@ -250,7 +250,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     partial void OnLoadMoreModChanged(bool value)
     {
-        ModsLoad();
+        ModsLoad(true);
     }
 
     partial void OnOptifineDisplayChanged(bool value)
@@ -846,7 +846,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// 加载模组列表
     /// </summary>
-    public void ModsLoad()
+    public void ModsLoad(bool ischange = false)
     {
         DownloadModList.Clear();
         if (LoadMoreMod)
@@ -855,15 +855,14 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
         else
         {
-            ModList.ForEach(item =>
+            foreach (var item in ModList)
             {
-                if (item.Optional)
+                if (!item.Optional)
                 {
-                    return;
+                    DownloadModList.Add(item);
                 }
-                DownloadModList.Add(item);
-            });
-            if (DownloadModList.Count == 0)
+            }
+            if (!ischange && DownloadModList.Count == 0)
             {
                 LoadMoreMod = true;
             }

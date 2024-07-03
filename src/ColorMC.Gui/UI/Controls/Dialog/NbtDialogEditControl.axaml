@@ -7,7 +7,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     x:DataType="vm:NbtDialogEditModel"
-    Design.Width="350"
+    Design.Width="300"
     mc:Ignorable="d">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <DockPanel
@@ -18,26 +18,27 @@
             <Button
                 Width="100"
                 Height="35"
-                Margin="3,-2,3,-2"
-                VerticalAlignment="Center"
+                Margin="-3,-2,-2,-2"
+                VerticalAlignment="Top"
                 Classes="top"
                 Command="{Binding DataEditDone}"
                 Content="{setting:Localize ConfigEditWindow.Text2}"
                 DockPanel.Dock="Right"
                 ToolTip.Tip="{setting:Localize ToolTip.Text40}"
                 ToolTip.VerticalOffset="-30" />
-            <ToggleSwitch
-                Margin="10,0,0,0"
-                DockPanel.Dock="Right"
-                IsChecked="{Binding HexEdit}"
-                OffContent="{setting:Localize ConfigEditWindow.Text12}"
-                OnContent="{setting:Localize ConfigEditWindow.Text12}" />
-            <StackPanel
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock Text="{setting:Localize ConfigEditWindow.Text4}" />
-                <TextBlock Text="{Binding DataType}" />
+            <StackPanel>
+                <StackPanel
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock Text="{setting:Localize ConfigEditWindow.Text4}" />
+                    <TextBlock Text="{Binding DataType}" />
+                </StackPanel>
+                <ToggleSwitch
+                    DockPanel.Dock="Right"
+                    IsChecked="{Binding HexEdit}"
+                    OffContent="{setting:Localize ConfigEditWindow.Text12}"
+                    OnContent="{setting:Localize ConfigEditWindow.Text12}" />
             </StackPanel>
         </DockPanel>
         <DataGrid
