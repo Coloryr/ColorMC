@@ -19,8 +19,7 @@
                 <Border
                     Margin="10,5,10,3"
                     Classes="t2"
-                    DockPanel.Dock="Top"
-                    IsVisible="{Binding DisplayFilter}">
+                    DockPanel.Dock="Top">
                     <DockPanel Margin="15">
                         <Button
                             Width="100"
@@ -35,7 +34,7 @@
                         <TextBox
                             Margin="0,0,10,0"
                             Text="{Binding WorldText}"
-                            Watermark="{setting:Localize Text.Name}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab5.Text6}" />
                     </DockPanel>
                 </Border>
                 <Panel>

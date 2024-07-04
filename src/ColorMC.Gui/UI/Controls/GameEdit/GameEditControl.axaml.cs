@@ -86,17 +86,6 @@ public partial class GameEditControl : MenuControl
     protected override Control ViewChange(bool iswhell, int old, int index)
     {
         var model = (DataContext as GameEditModel)!;
-        switch (old)
-        {
-            case 2:
-            case 3:
-            case 4:
-                model.RemoveChoise();
-                break;
-            case 6:
-                model.RemoveChoiseTab10();
-                break;
-        }
         switch (index)
         {
             case 0:
@@ -124,22 +113,18 @@ public partial class GameEditControl : MenuControl
                 }
                 return _tab2;
             case 2:
-                model.SetChoise();
                 _ = model.LoadMod();
                 return _tab4 ??= new();
             case 3:
-                model.SetChoise();
                 _ = model.LoadWorld();
                 return _tab5 ??= new();
             case 4:
-                model.SetChoise();
                 _ = model.LoadResource();
                 return _tab8 ??= new();
             case 5:
                 model.LoadScreenshot();
                 return _tab9 ??= new();
             case 6:
-                model.SetChoiseTab10();
                 model.LoadServer();
                 return _tab10 ??= new();
             case 7:

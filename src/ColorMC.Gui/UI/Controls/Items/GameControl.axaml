@@ -25,9 +25,7 @@
                 <svg:SvgControl
                     Width="70"
                     Height="70"
-                    Fill="{setting:Theme FontColor}"
-                    Path="/Resource/Icon/add1.svg"
-                    Stroke="{setting:Theme FontColor}" />
+                    Path="/Resource/Icon/add1.svg" />
             </StackPanel>
         </Button>
         <Button
@@ -53,7 +51,7 @@
                             IsEnabled="{Binding !IsLaunching}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text11}"
                             ToolTip.VerticalOffset="-30">
-                            <Svg Path="/Resource/Icon/launch.svg" />
+                            <svg:SvgControl Path="/Resource/Icon/launch.svg" />
                         </Button>
                         <Button
                             Width="36"
@@ -66,7 +64,7 @@
                             IsEnabled="{Binding !OneGame}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text12}"
                             ToolTip.VerticalOffset="-30">
-                            <Svg Path="/Resource/Icon/edit.svg" />
+                            <svg:SvgControl Path="/Resource/Icon/edit.svg" />
                         </Button>
                     </StackPanel>
                     <TextBlock

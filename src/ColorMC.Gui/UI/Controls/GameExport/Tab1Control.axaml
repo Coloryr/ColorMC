@@ -15,15 +15,13 @@
     <Panel Name="ScrollViewer1" Margin="0,0,10,15">
         <Border Margin="10,5,10,3" Classes="t2">
             <DockPanel Margin="15">
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                <DockPanel DockPanel.Dock="Top">
+                    <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/AddMenu/svg1.svg"
-                            Stroke="{setting:Theme FontColor}" />
+                            Path="/Resource/Icon/AddMenu/item2.svg" />
                         <TextBlock
                             Margin="0,0,5,0"
                             FontSize="{setting:Style FontTitle}"
@@ -31,14 +29,22 @@
                     </StackPanel>
                     <ComboBox
                         Width="200"
+                        Margin="0,0,0,10"
+                        IsVisible="{Binding !MinMode}"
                         ItemsSource="{Binding ExportTypes}"
                         SelectedIndex="{Binding Type}" />
-                </StackPanel>
+                    <ComboBox
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Stretch"
+                        IsVisible="{Binding MinMode}"
+                        ItemsSource="{Binding ExportTypes}"
+                        SelectedIndex="{Binding Type}" />
+                </DockPanel>
                 <DockPanel DockPanel.Dock="Bottom">
                     <Button
                         Width="100"
-                        Height="30"
-                        Margin="-2,-3,0,-2"
+                        Height="35"
+                        Margin="-2,-3,-3,-2"
                         Classes="top"
                         Command="{Binding Export}"
                         Content="{setting:Localize GameExportWindow.Tab1.Text2}"
@@ -49,26 +55,22 @@
                 </DockPanel>
                 <StackPanel>
                     <TextBox
-                        Margin="0,5,0,0"
-                        Classes="input1"
+                        Margin="0,0,0,10"
                         IsEnabled="{Binding EnableInput1}"
                         Text="{Binding Name}"
                         Watermark="{setting:Localize GameExportWindow.Tab1.Text3}" />
                     <TextBox
-                        Margin="0,5,0,0"
-                        Classes="input1"
+                        Margin="0,0,0,10"
                         IsEnabled="{Binding EnableInput1}"
                         Text="{Binding Version}"
                         Watermark="{setting:Localize GameExportWindow.Tab1.Text4}" />
                     <TextBox
-                        Margin="0,5,0,0"
-                        Classes="input1"
+                        Margin="0,0,0,10"
                         IsEnabled="{Binding CfEx}"
                         Text="{Binding Author}"
                         Watermark="{setting:Localize Text.Author}" />
                     <TextBox
-                        Margin="0,5,0,5"
-                        Classes="input1"
+                        Margin="0,0,0,10"
                         IsEnabled="{Binding MoEx}"
                         Text="{Binding Summary}"
                         Watermark="{setting:Localize GameExportWindow.Tab1.Text6}" />

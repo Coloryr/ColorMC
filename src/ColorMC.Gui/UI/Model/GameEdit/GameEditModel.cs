@@ -7,9 +7,6 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class GameEditModel : MenuModel
 {
-    [ObservableProperty]
-    private bool _displayFilter = true;
-
     private readonly GameSettingObj _obj;
 
     public bool Phone { get; } = false;
@@ -293,27 +290,6 @@ public partial class GameEditModel : MenuModel
         ]);
     }
 
-    public void ShowFilter()
-    {
-        DisplayFilter = !DisplayFilter;
-    }
-
-    public void SetChoise()
-    {
-        Model.SetChoiseContent(_useName, App.Lang("Button.Filter"));
-        Model.SetChoiseCall(_useName, ShowFilter);
-    }
-
-    public void RemoveChoise()
-    {
-        Model.RemoveChoiseData(_useName);
-    }
-
-    public void OpenLoad()
-    {
-        GameLoad();
-        ConfigLoad();
-    }
     private void PackState(CoreRunState state)
     {
         if (state == CoreRunState.Read)

@@ -10,68 +10,61 @@
     d:DesignWidth="800"
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
-    <DockPanel
-        Name="ScrollViewer1"
-        Margin="0,0,10,15"
-        Background="Transparent">
+    <Decorator Name="ScrollViewer1" Margin="0,0,10,15">
         <Border
             Margin="10,5,10,3"
             Classes="t2"
             DockPanel.Dock="Top"
             IsEnabled="{Binding MoEx}">
             <DockPanel Margin="15">
-                <Button
-                    Width="100"
-                    Height="35"
-                    Margin="-2,-3,-2,-2"
-                    VerticalAlignment="Center"
-                    Classes="top"
-                    Command="{Binding AddFile}"
-                    Content="{setting:Localize Button.Add}"
-                    DockPanel.Dock="Right"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text114}"
-                    ToolTip.VerticalOffset="-30" />
-                <ComboBox
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Stretch"
-                    ItemsSource="{Binding FileList}"
-                    SelectedItem="{Binding FileName}" />
+                <DockPanel Margin="0,0,0,10" DockPanel.Dock="Top">
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="-2,-3,-2,-2"
+                        VerticalAlignment="Center"
+                        Classes="top"
+                        Command="{Binding AddFile}"
+                        Content="{setting:Localize Button.Add}"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text114}"
+                        ToolTip.VerticalOffset="-30" />
+                    <ComboBox
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding FileList}"
+                        SelectedItem="{Binding FileName}" />
+                </DockPanel>
+                <DataGrid
+                    Name="DataGrid1"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    HorizontalScrollBarVisibility="Visible"
+                    ItemsSource="{Binding OtherFiles}"
+                    SelectedItem="{Binding SelectFile}"
+                    VerticalScrollBarVisibility="Visible">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Path}"
+                            Header="{setting:Localize GameExportWindow.Tab4.Text1}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding FileSize}"
+                            Header="{setting:Localize Text.Size}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize GameExportWindow.Tab4.Text2}" />
+                        <DataGridTextColumn
+                            Binding="{Binding Sha1}"
+                            Header="Sha1"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Sha512}"
+                            Header="Sha512"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </DockPanel>
         </Border>
-        <Border
-            Margin="10,5,10,3"
-            Classes="t2"
-            IsEnabled="{Binding MoEx}">
-            <DataGrid
-                Name="DataGrid1"
-                Margin="15"
-                AutoGenerateColumns="False"
-                CanUserResizeColumns="True"
-                CanUserSortColumns="False"
-                HorizontalScrollBarVisibility="Visible"
-                ItemsSource="{Binding OtherFiles}"
-                SelectedItem="{Binding SelectFile}"
-                VerticalScrollBarVisibility="Visible">
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding Path}"
-                        Header="{setting:Localize GameExportWindow.Tab4.Text1}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding FileSize}"
-                        Header="{setting:Localize Text.Size}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize GameExportWindow.Tab4.Text2}" />
-                    <DataGridTextColumn
-                        Binding="{Binding Sha1}"
-                        Header="Sha1"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Sha512}"
-                        Header="Sha512"
-                        IsReadOnly="True" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </Border>
-    </DockPanel>
+    </Decorator>
 </UserControl>
