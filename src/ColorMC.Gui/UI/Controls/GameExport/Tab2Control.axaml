@@ -10,67 +10,63 @@
     d:DesignWidth="800"
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="0,0,10,15">
-        <Border
-            Margin="10,5,10,3"
-            Classes="t2"
-            DockPanel.Dock="Top">
+    <Decorator Name="ScrollViewer1" Margin="0,0,10,15">
+        <Border Margin="10,5,10,3" Classes="t2">
             <DockPanel Margin="15">
-                <Button
-                    Width="100"
-                    Height="35"
-                    Margin="-2,-3,-2,-2"
-                    Classes="top"
-                    Command="{Binding OpenMod}"
-                    Content="{setting:Localize Button.OpFile}"
-                    DockPanel.Dock="Right"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text113}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Width="100"
-                    Height="35"
-                    Margin="-2,-3,3,-2"
-                    Classes="top"
-                    Command="{Binding LoadMod}"
-                    Content="{setting:Localize Button.Refash}"
-                    DockPanel.Dock="Right"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text55}"
-                    ToolTip.VerticalOffset="-30" />
-                <TextBox
-                    Margin="0,0,10,0"
-                    Text="{Binding Text}"
-                    Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
+                <DockPanel Margin="0,0,0,10" DockPanel.Dock="Top">
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="-2,-3,-2,-2"
+                        Classes="top"
+                        Command="{Binding OpenMod}"
+                        Content="{setting:Localize Button.OpFile}"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text113}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="-2,-3,3,-2"
+                        Classes="top"
+                        Command="{Binding LoadMod}"
+                        Content="{setting:Localize Button.Refash}"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text55}"
+                        ToolTip.VerticalOffset="-30" />
+                    <TextBox
+                        Margin="0,0,10,0"
+                        Text="{Binding Text}"
+                        Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
+                </DockPanel>
+                <DataGrid
+                    Name="DataGrid1"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    HorizontalScrollBarVisibility="Visible"
+                    ItemsSource="{Binding Mods}"
+                    SelectedItem="{Binding SelectMod}"
+                    VerticalScrollBarVisibility="Visible">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Binding="{Binding Export}" Header="{setting:Localize GameExportWindow.Tab2.DataGrid.Text1}" />
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize Text.Name}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Modid}"
+                            Header="modid"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Source}"
+                            Header="{setting:Localize Text.DownloadSource}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}" />
+                        <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </DockPanel>
         </Border>
-        <Border Margin="10,5,10,3" Classes="t2">
-            <DataGrid
-                Name="DataGrid1"
-                Margin="15"
-                AutoGenerateColumns="False"
-                CanUserResizeColumns="True"
-                CanUserSortColumns="False"
-                HorizontalScrollBarVisibility="Visible"
-                ItemsSource="{Binding Mods}"
-                SelectedItem="{Binding SelectMod}"
-                VerticalScrollBarVisibility="Visible">
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{Binding Export}" Header="{setting:Localize GameExportWindow.Tab2.DataGrid.Text1}" />
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="{setting:Localize Text.Name}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Modid}"
-                        Header="modid"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Source}"
-                        Header="{setting:Localize Text.DownloadSource}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}" />
-                    <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </Border>
-    </DockPanel>
+    </Decorator>
 </UserControl>

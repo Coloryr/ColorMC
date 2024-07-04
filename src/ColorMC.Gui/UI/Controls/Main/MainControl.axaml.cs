@@ -180,9 +180,14 @@ public partial class MainControl : BaseUserControl
                     DataContext = new MainEmptyModel(model.Model)
                 };
             }
-            else if (Content1.Child is not MainGamesControl)
+            //else if (Content1.Child is not MainGamesControl)
+            //{
+            //    Content1.Child = new MainGamesControl();
+            //}
+            else if (Content1.Child is not MinecraftNewsControl)
             {
-                Content1.Child = new MainGamesControl();
+                Content1.Child = new MinecraftNewsControl();
+                model.LoadNews();
             }
         }
     }

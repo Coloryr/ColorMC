@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.MoJang;
@@ -81,8 +82,10 @@ public static class MinecraftAPI
     public static async Task<MinecraftNewObj?> GetMinecraftNew(int page = 0)
     {
         var url = string.Format(News, PageSize, page * PageSize);
-        var data = await BaseClient.DownloadClient.GetStringAsync(url);
-
-        return JsonConvert.DeserializeObject<MinecraftNewObj>(data);
+        var req = new HttpRequestMessage(HttpMethod.Get, url);
+        req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+        var data = await BaseClient.DownloadClient.SendAsync(req);
+        var data1 = await data.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<MinecraftNewObj>(data1);
     }
 }

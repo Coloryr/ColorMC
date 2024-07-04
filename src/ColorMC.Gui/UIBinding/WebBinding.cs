@@ -17,6 +17,7 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
@@ -1510,6 +1511,18 @@ public static class WebBinding
             case AuthType.LittleSkin:
                 BaseBinding.OpUrl("https://littleskin.cn/auth/register");
                 break;
+        }
+    }
+
+    public static async Task<MinecraftNewObj?> LoadNews()
+    {
+        try
+        {
+            return await MinecraftAPI.GetMinecraftNew();
+        }
+        catch (Exception e)
+        {
+            return null;
         }
     }
 }
