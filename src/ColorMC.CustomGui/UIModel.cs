@@ -49,7 +49,7 @@ public partial class UIModel(BaseModel model) : TopModel(model), IMainTop
         }
     }
 
-    protected override void Close()
+    public override void Close()
     {
         
     }

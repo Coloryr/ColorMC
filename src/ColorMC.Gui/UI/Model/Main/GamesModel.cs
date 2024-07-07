@@ -133,7 +133,7 @@ public partial class GamesModel : TopModel
             var model = GameList.FirstOrDefault(item1 => item1.Obj.UUID == item);
             if (model != null)
             {
-                model.TopClose();
+                model.Close();
                 GameList.Remove(model);
             }
         }
@@ -162,11 +162,11 @@ public partial class GamesModel : TopModel
         });
     }
 
-    protected override void Close()
+    public override void Close()
     {
         foreach (var item in GameList)
         {
-            item.TopClose();
+            item.Close();
         }
         GameList.Clear();
         _items.Clear();

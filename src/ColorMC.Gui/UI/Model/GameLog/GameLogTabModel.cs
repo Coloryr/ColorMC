@@ -217,7 +217,7 @@ public partial class GameLogModel : GameModel
         }
     }
 
-    protected override void Close()
+    public override void Close()
     {
         FileList.Clear();
         _run = false;

@@ -337,7 +337,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
         OnPropertyChanged("SkinLoadDone");
     }
 
-    protected override void Close()
+    public override void Close()
     {
 
     }

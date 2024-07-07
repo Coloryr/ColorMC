@@ -148,7 +148,7 @@ public partial class SettingModel : MenuModel
         Model.RemoveChoiseData(_name);
     }
 
-    protected override void Close()
+    public override void Close()
     {
         FontList.Clear();
         JavaList.Clear();

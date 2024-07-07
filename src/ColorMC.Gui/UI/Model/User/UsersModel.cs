@@ -687,7 +687,7 @@ public partial class UsersControlModel : TopModel
         await BaseBinding.CopyTextClipboard(code);
     }
 
-    protected override void Close()
+    public override void Close()
     {
         UserList.Clear();
         if (_isOAuth)

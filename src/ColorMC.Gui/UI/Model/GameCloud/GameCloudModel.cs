@@ -331,7 +331,7 @@ public partial class GameCloudModel : MenuModel
         }
     }
 
-    protected override void Close()
+    public override void Close()
     {
         _files = null!;
         WorldCloudList.Clear();

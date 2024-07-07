@@ -68,7 +68,7 @@ public partial class NetFrpModel : MenuModel
         Model.RemoveChoiseData(_name);
     }
 
-    protected override void Close()
+    public override void Close()
     {
         _client?.Stop();
 

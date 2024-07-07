@@ -21,11 +21,10 @@ public abstract partial class TopModel(BaseModel model) : ObservableObject
         }
     }
 
-    public void TopClose()
-    {
-        Close();
-    }
-    protected abstract void Close();
+    /// <summary>
+    /// 上层UI用关闭通知
+    /// </summary>
+    public abstract void Close();
 
     /// <summary>
     /// 关闭窗口

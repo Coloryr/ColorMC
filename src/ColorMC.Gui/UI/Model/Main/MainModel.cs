@@ -402,7 +402,28 @@ public partial class MainModel : TopModel, IMainTop
         else
         {
             UserId = user.UserName;
-            UserType = user.AuthType.GetName();
+
+            if (GuiConfigUtils.Config.ServerCustom.LockLogin && user.AuthType != AuthType.OAuth)
+            {
+                bool find = false;
+                foreach (var item in GuiConfigUtils.Config.ServerCustom.LockLogins)
+                {
+                    if (item.Type == user.AuthType && item.Data == user.Text1)
+                    {
+                        UserType = item.Name;
+                        find = true;
+                        break;
+                    }
+                }
+                if (!find)
+                {
+                    UserType = App.Lang("MainWindow.Error7");
+                }
+            }
+            else
+            {
+                UserType = user.AuthType.GetName();
+            }
         }
 
         await UserBinding.LoadSkin();
@@ -626,12 +647,12 @@ public partial class MainModel : TopModel, IMainTop
         OnPropertyChanged("ModelText");
     }
 
-    protected override void Close()
+    public override void Close()
     {
         GroupList.Clear();
         foreach (var item in GameGroups)
         {
-            item.TopClose();
+            item.Close();
         }
         GameGroups.Clear();
         Launchs.Clear();

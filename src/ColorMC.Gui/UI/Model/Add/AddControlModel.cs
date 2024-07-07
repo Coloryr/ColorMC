@@ -1351,7 +1351,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
     }
 
-    protected override void Close()
+    public override void Close()
     {
         _close = true;
         _load = true;

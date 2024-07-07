@@ -144,7 +144,7 @@ public partial class DownloadModel : TopModel
         }
     }
 
-    protected override void Close()
+    public override void Close()
     {
         _timer.Dispose();
         Model.HeadBackEnable = true;

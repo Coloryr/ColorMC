@@ -316,7 +316,7 @@ public partial class GameItemModel : GameModel
             string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
     }
 
-    protected override void Close()
+    public override void Close()
     {
 
     }

@@ -611,7 +611,7 @@ public partial class GameConfigEditModel : GameModel
         OnPropertyChanged("TurnTo");
     }
 
-    protected override void Close()
+    public override void Close()
     {
 
     }

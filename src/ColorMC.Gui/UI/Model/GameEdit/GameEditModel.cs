@@ -315,7 +315,7 @@ public partial class GameEditModel : MenuModel
         }
     }
 
-    protected override void Close()
+    public override void Close()
     {
         _configLoad = true;
         _gameLoad = true;

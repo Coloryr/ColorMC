@@ -193,7 +193,7 @@ public partial class AllControl : UserControl, IBaseWindow
         SetTitle(_nowControl.Title);
         SetIcon(_nowControl.GetIcon());
 
-        ((con as UserControl)?.DataContext as TopModel)?.TopClose();
+        ((con as UserControl)?.DataContext as TopModel)?.Close();
         con.Closed();
 
         Model.PopBack();

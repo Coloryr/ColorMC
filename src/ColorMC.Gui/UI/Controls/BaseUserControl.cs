@@ -54,4 +54,11 @@ public abstract class BaseUserControl : UserControl
     public virtual void Closed() { }
     public virtual void Update() { }
     public virtual Task<bool> Closing() { return Task.FromResult(false); }
+    public void Close()
+    {
+        if (DataContext is TopModel model)
+        {
+            model.WindowClose();
+        }
+    }
 }
