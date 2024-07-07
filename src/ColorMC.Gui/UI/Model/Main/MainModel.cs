@@ -108,6 +108,12 @@ public partial class MainModel : TopModel, IMainTop
     [ObservableProperty]
     private bool _lowFps;
 
+    [ObservableProperty]
+    private string _helloText;
+
+    [ObservableProperty]
+    private float _musicVolume;
+
     private bool _isNewUpdate;
     private string _updateStr;
 

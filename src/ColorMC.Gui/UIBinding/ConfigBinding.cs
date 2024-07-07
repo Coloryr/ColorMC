@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
@@ -567,7 +568,7 @@ public static class ConfigBinding
     /// <param name="enableOneLogin"></param>
     /// <param name="login"></param>
     /// <param name="url"></param>
-    public static void SetLoginLock(bool enableOneLogin, List<LockLogin> list)
+    public static void SetLoginLock(bool enableOneLogin, List<LockLoginSetting> list)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.LockLogin = enableOneLogin;
@@ -880,5 +881,32 @@ public static class ConfigBinding
     public static void RemoveInputConfig(InputControlObj obj)
     {
         InputConfigUtils.Remove(obj);
+    }
+
+    /// <summary>
+    /// 设置头像角度
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    public static void SetHeadXY(int x, int y)
+    {
+        GuiConfigUtils.Config.Head ??= new();
+        GuiConfigUtils.Config.Head.X = x;
+        GuiConfigUtils.Config.Head.Y = y;
+        GuiConfigUtils.Save();
+
+        UserBinding.ReloadSkin();
+    }
+
+    /// <summary>
+    /// 设置头像角度
+    /// </summary>
+    public static void SetHeadType(HeadType type)
+    {
+        GuiConfigUtils.Config.Head ??= new();
+        GuiConfigUtils.Config.Head.Type = type;
+        GuiConfigUtils.Save();
+
+        UserBinding.ReloadSkin();
     }
 }

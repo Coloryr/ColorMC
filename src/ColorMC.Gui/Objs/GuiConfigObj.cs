@@ -29,7 +29,7 @@ public record MainWindowSetting
 /// <summary>
 /// 上一个启动的账户
 /// </summary>
-public record LastUser
+public record LastUserSetting
 {
     /// <summary>
     /// 账户UUID
@@ -44,7 +44,7 @@ public record LastUser
 /// <summary>
 /// 登录模型
 /// </summary>
-public record LockLogin
+public record LockLoginSetting
 {
     /// <summary>
     /// 账户类型
@@ -63,7 +63,7 @@ public record LockLogin
 /// <summary>
 /// 服务器自定义
 /// </summary>
-public record ServerCustom
+public record ServerCustomSetting
 {
     /// <summary>
     /// Motd的地址
@@ -132,13 +132,13 @@ public record ServerCustom
     /// <summary>
     /// 登录模型实例
     /// </summary>
-    public List<LockLogin> LockLogins { get; set; }
+    public List<LockLoginSetting> LockLogins { get; set; }
 }
 
 /// <summary>
 /// Windows窗口渲染设置
 /// </summary>
-public record WindowsRender
+public record WindowsRenderSetting
 {
     public bool? ShouldRenderOnUIThread { get; set; }
     public bool? OverlayPopups { get; set; }
@@ -147,7 +147,7 @@ public record WindowsRender
 /// <summary>
 /// X11窗口渲染设置
 /// </summary>
-public record X11Render
+public record X11RenderSetting
 {
     public bool? UseDBusMenu { get; set; }
     public bool? UseDBusFilePicker { get; set; }
@@ -158,16 +158,16 @@ public record X11Render
 /// <summary>
 /// 渲染设置
 /// </summary>
-public record Render
+public record RenderSetting
 {
     /// <summary>
     /// Windows设置
     /// </summary>
-    public WindowsRender Windows { get; set; }
+    public WindowsRenderSetting Windows { get; set; }
     /// <summary>
     /// X11设置
     /// </summary>
-    public X11Render X11 { get; set; }
+    public X11RenderSetting X11 { get; set; }
 }
 
 public record Live2DSetting
@@ -198,11 +198,18 @@ public record Live2DSetting
     public bool LowFps { get; set; }
 }
 
-public record InputObj
+public record InputSetting
 {
     public bool Enable { get; set; }
     public string? NowConfig { get; set; }
 }
+
+public record HeadSetting
+{ 
+    public HeadType Type { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+}   
 
 /// <summary>
 /// Gui配置文件
@@ -212,7 +219,7 @@ public record GuiConfigObj
     /// <summary>
     /// 使用的账户
     /// </summary>
-    public LastUser? LastUser { get; set; }
+    public LastUserSetting? LastUser { get; set; }
     /// <summary>
     /// 是否启用背景图
     /// </summary>
@@ -249,11 +256,11 @@ public record GuiConfigObj
     /// <summary>
     /// 服务器设置
     /// </summary>
-    public ServerCustom ServerCustom { get; set; }
+    public ServerCustomSetting ServerCustom { get; set; }
     /// <summary>
     /// 渲染设置
     /// </summary>
-    public Render Render { get; set; }
+    public RenderSetting Render { get; set; }
 
     /// <summary>
     /// 主题色类型
@@ -298,6 +305,10 @@ public record GuiConfigObj
     /// </summary>
     public string LastLaunch { get; set; }
     /// <summary>
+    /// 头像展示设置
+    /// </summary>
+    public HeadSetting Head { get; set; }
+    /// <summary>
     /// Live2D设置
     /// </summary>
     public Live2DSetting Live2D { get; set; }
@@ -312,7 +323,7 @@ public record GuiConfigObj
     /// <summary>
     /// 手柄绑定
     /// </summary>
-    public InputObj Input { get; set; }
+    public InputSetting Input { get; set; }
     /// <summary>
     /// 服务器云同步密钥
     /// </summary>

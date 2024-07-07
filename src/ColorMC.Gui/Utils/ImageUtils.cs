@@ -35,7 +35,7 @@ public static class ImageUtils
     /// </summary>
     /// <param name="url">网址</param>
     /// <returns>位图</returns>
-    public static async Task<Bitmap?> Load(string url)
+    public static async Task<Bitmap?> Load(string url, bool zoom)
     {
         if (!Directory.Exists(Local))
         {
@@ -53,11 +53,20 @@ public static class ImageUtils
                 var data1 = await BaseClient.GetStreamAsync(url);
                 if (data1.Item1)
                 {
-                    using var image1 = SKBitmap.Decode(data1.Item2!);
-                    using var image2 = Resize(image1, 100, 100);
-                    using var data = image2.Encode(SKEncodedImageFormat.Png, 100);
-                    PathHelper.WriteBytes(Local + sha1, data.AsSpan().ToArray());
-                    return new Bitmap(Local + sha1);
+                    if (zoom)
+                    {
+                        using var image1 = SKBitmap.Decode(data1.Item2!);
+                        using var image2 = Resize(image1, 100, 100);
+                        using var data = image2.Encode(SKEncodedImageFormat.Png, 100);
+                        PathHelper.WriteBytes(Local + sha1, data.AsSpan().ToArray());
+                        return new Bitmap(Local + sha1);
+                    }
+                    else
+                    {
+                        using var stream1 = new MemoryStream();
+                        PathHelper.WriteBytes(Local + sha1, stream1.ToArray());
+                        return new Bitmap(Local + sha1);
+                    }
                 }
 
                 return null;

@@ -58,6 +58,7 @@ public static class BaseClient
             DownloadClient = new();
         }
 
+        DownloadClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
         DownloadClient.DefaultRequestHeaders.UserAgent.Clear();
         DownloadClient.DefaultRequestHeaders.UserAgent
             .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));

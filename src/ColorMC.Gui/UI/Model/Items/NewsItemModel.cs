@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Utils;
@@ -35,7 +36,7 @@ public partial class NewsItemModel(MinecraftNewObj.ArticleObj item) : Observable
         {
             await Task.Run(() =>
             {
-                _img = ImageUtils.Load(item.DefaultTile.Image.ImageURL).Result;
+                _img = ImageUtils.Load("https://www.minecraft.net" +  item.DefaultTile.Image.ImageURL, false).Result;
             });
             return _img;
         }

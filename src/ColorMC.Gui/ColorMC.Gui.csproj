@@ -143,6 +143,7 @@
     <None Remove="Resource\Icon\Setting\svg24.svg" />
     <None Remove="Resource\Icon\Setting\svg25.svg" />
     <None Remove="Resource\Icon\Setting\svg26.svg" />
+    <None Remove="Resource\Icon\Setting\svg27.svg" />
     <None Remove="Resource\Icon\Setting\svg3.svg" />
     <None Remove="Resource\Icon\Setting\svg4.svg" />
     <None Remove="Resource\Icon\Setting\svg5.svg" />
@@ -240,7 +241,6 @@
     <AvaloniaResource Include="Resource\Icon\NetFrp\item4.svg" />
     <AvaloniaResource Include="Resource\Icon\NetFrp\item5.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\join.svg" />
-    <AvaloniaResource Include="Resource\Icon\new.svg" />
     <AvaloniaResource Include="Resource\Icon\play.svg" />
     <AvaloniaResource Include="Resource\Icon\reload.svg" />
     <AvaloniaResource Include="Resource\Icon\setting.svg" />
@@ -272,6 +272,7 @@
     <AvaloniaResource Include="Resource\Icon\Setting\svg24.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg25.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg26.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg27.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg3.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg4.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg5.svg" />
@@ -279,7 +280,6 @@
     <AvaloniaResource Include="Resource\Icon\Setting\svg7.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg8.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg9.svg" />
-    <AvaloniaResource Include="Resource\Icon\upgrade.svg" />
     <AvaloniaResource Include="Resource\Icon\skin.svg" />
     <EmbeddedResource Include="macicon.ico" />
     <EmbeddedResource Include="Player\Decoder\Mp3\sfd.temp" />

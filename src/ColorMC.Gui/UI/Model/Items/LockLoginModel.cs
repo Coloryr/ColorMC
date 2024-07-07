@@ -10,7 +10,7 @@ using ColorMC.Gui.UI.Model.Setting;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public record LockLoginModel(SettingModel top, LockLogin login)
+public record LockLoginModel(SettingModel top, LockLoginSetting login)
 { 
     public string Name => login.Name;
     public string Data => login.Data;
