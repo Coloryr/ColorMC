@@ -73,7 +73,7 @@ public partial class ErrorModel : TopModel
         }
     }
 
-    protected override void Close()
+    public override void Close()
     {
         Model.RemoveChoiseData(_useName);
     }

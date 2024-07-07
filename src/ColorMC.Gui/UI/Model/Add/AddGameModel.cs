@@ -164,7 +164,7 @@ public partial class AddGameModel : TopModel
         Main = true;
     }
 
-    protected override void Close()
+    public override void Close()
     {
         _load = true;
         Back();

@@ -29,19 +29,17 @@
                 </Border>
                 <DockPanel Margin="60,0,0,0">
                     <TextBlock
+                        Width="240"
                         DockPanel.Dock="Top"
                         FontSize="16"
                         Foreground="{setting:Theme MainColor}"
-                        Text="{Binding Name, FallbackValue=1234}" />
+                        Text="{Binding Name, FallbackValue=1234}"
+                        TextTrimming="CharacterEllipsis" />
                     <TextBlock
                         DockPanel.Dock="Top"
                         Foreground="#FF9A9A9A"
-                        Text="{Binding Type, FallbackValue=Type}"
-                        TextTrimming="CharacterEllipsis" />
-                    <TextBlock
-                        Width="100"
-                        Text="{Binding UUID, FallbackValue=UUID}"
-                        TextTrimming="CharacterEllipsis" />
+                        Text="{Binding Type, FallbackValue=Type}" />
+                    <TextBlock Width="240" Text="{Binding UUID, FallbackValue=UUID}" />
                 </DockPanel>
             </Panel>
         </Panel>

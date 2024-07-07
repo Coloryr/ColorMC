@@ -391,7 +391,7 @@ public partial class GameExportModel : MenuModel
         Source = Files.Source;
     }
 
-    protected override void Close()
+    public override void Close()
     {
         Mods.Clear();
         OtherFiles.Clear();

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media;
@@ -100,6 +101,21 @@ public partial class SettingModel
 
     [ObservableProperty]
     private string _live2DCoreState;
+
+    public string IconHead
+    {
+        get
+        {
+            var random = new Random();
+            var index = random.Next(200000);
+            if (index == 114514)
+            {
+                return $"/Resource/Icon/Setting/svg{28 + random.Next(6)}.svg";
+            }
+
+            return "/Resource/Icon/Setting/svg27.svg";
+        }
+    }
 
     private bool _load = true;
 

@@ -59,7 +59,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     [ObservableProperty]
     private bool _emptyDisplay = true;
     /// <summary>
-    /// ËÑË÷Ô´Êý¾ÝÊÇ·ñ¼ÓÔØÁË
+    /// ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     [ObservableProperty]
     private bool _sourceLoad;
@@ -441,7 +441,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
     }
 
-    protected override void Close()
+    public override void Close()
     {
         _load = true;
         Model.RemoveChoiseData(_useName);

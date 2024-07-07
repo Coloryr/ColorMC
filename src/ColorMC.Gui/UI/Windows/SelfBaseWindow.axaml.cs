@@ -235,7 +235,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         App.PicUpdate -= Update;
 
-        ((ICon as UserControl)?.DataContext as TopModel)?.TopClose();
+        ((ICon as UserControl)?.DataContext as TopModel)?.Close();
         DataContext = null;
         ICon.Closed();
 

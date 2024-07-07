@@ -67,7 +67,7 @@ public partial class ServerPackModel : MenuModel
         Model.RemoveChoiseData(_name);
     }
 
-    protected override void Close()
+    public override void Close()
     {
         ModList.Clear();
         ConfigList.Clear();

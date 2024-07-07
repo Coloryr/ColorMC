@@ -574,15 +574,13 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.LockLogin = enableOneLogin;
         GuiConfigUtils.Config.ServerCustom.LockLogins = list;
         GuiConfigUtils.Save();
-    }
 
-    /// <summary>
-    /// 是否锁定了登录
-    /// </summary>
-    /// <returns></returns>
-    public static bool IsLockLogin()
-    {
-        return GuiConfigUtils.Config.ServerCustom.LockLogin;
+        App.OnUserEdit();
+        if (WindowManager.UserWindow != null)
+        {
+            WindowManager.UserWindow.Close();
+            WindowManager.ShowUser();
+        }
     }
 
     /// <summary>

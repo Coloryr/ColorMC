@@ -79,7 +79,7 @@ public partial class MainEmptyModel : TopModel
         }
     }
 
-    protected override void Close()
+    public override void Close()
     {
 
     }

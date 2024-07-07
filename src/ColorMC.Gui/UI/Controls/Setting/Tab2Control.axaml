@@ -401,10 +401,7 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border
-                Margin="10,5,10,3"
-                Classes="t2"
-                IsVisible="{Binding !Phone}">
+            <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Margin="15">
                     <!--  头像设置  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -412,7 +409,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg27.svg" />
+                            Path="{Binding IconHead}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text54}" />
                     </StackPanel>
                     <WrapPanel>

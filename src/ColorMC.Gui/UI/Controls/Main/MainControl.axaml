@@ -37,16 +37,13 @@
                         <Button
                             Height="60"
                             HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Left"
+                            HorizontalContentAlignment="Stretch"
                             Background="{setting:Theme WindowBase}"
                             BorderThickness="0"
                             Command="{Binding ShowUser}"
                             IsVisible="{Binding TopSide1}">
-                            <StackPanel
-                                Margin="5,0,0,0"
-                                HorizontalAlignment="Left"
-                                Orientation="Horizontal">
-                                <Panel>
+                            <DockPanel Margin="5,0,0,0">
+                                <Panel HorizontalAlignment="Left">
                                     <Border
                                         Width="50"
                                         Height="50"
@@ -63,22 +60,38 @@
                                         IsIndeterminate="{Binding IsHeadLoad}"
                                         IsVisible="{Binding IsHeadLoad}" />
                                 </Panel>
+                                <Button
+                                    Width="42"
+                                    Height="42"
+                                    Margin="0,0,5,0"
+                                    HorizontalAlignment="Right"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding ShowSkin}"
+                                    CornerRadius="5"
+                                    DockPanel.Dock="Right"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text9}"
+                                    ToolTip.VerticalOffset="-30">
+                                    <svg:SvgControl Path="/Resource/Icon/skin.svg" />
+                                </Button>
                                 <StackPanel
-                                    Margin="10,0,0,0"
+                                    Margin="5,0,0,0"
                                     VerticalAlignment="Center"
                                     DockPanel.Dock="Left"
-                                    IsVisible="{Binding TopSide1}">
+                                    IsVisible="{Binding TopSide1}"
+                                    RenderOptions.TextRenderingMode="Antialias">
                                     <TextBlock
-                                        FontSize="18"
-                                        RenderOptions.TextRenderingMode="Antialias"
-                                        Text="{Binding UserId, FallbackValue=User Name}" />
+                                        FontSize="17"
+                                        Text="{Binding UserId, FallbackValue=User Name}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
                                     <TextBlock
                                         HorizontalAlignment="Left"
                                         FontSize="12"
-                                        RenderOptions.TextRenderingMode="Antialias"
                                         Text="{Binding UserType, FallbackValue=456}" />
                                 </StackPanel>
-                            </StackPanel>
+
+                            </DockPanel>
                         </Button>
                         <ScrollViewer Margin="0,10,0,0" DockPanel.Dock="Right">
                             <StackPanel>
@@ -197,15 +210,6 @@
                                 ToolTip.Tip="{setting:Localize ToolTip.Text70}"
                                 ToolTip.VerticalOffset="-30">
                                 <svg:SvgControl Path="/Resource/Icon/book.svg" />
-                            </Button>
-                            <Button
-                                Width="42"
-                                Height="42"
-                                Command="{Binding ShowSkin}"
-                                CornerRadius="5"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                                ToolTip.VerticalOffset="-30">
-                                <svg:SvgControl Path="/Resource/Icon/skin.svg" />
                             </Button>
                             <Button
                                 Width="42"
