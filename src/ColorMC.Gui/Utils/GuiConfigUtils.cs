@@ -91,9 +91,15 @@ public static class GuiConfigUtils
                 Config.Style = MakeStyleSettingConfig();
                 save = true;
             }
+            if (Config.Head == null)
+            {
+                Config.Head = MakeHeadSettingConfig();
+                save = true;
+            }
             if (Config.Input == null)
             {
                 Config.Input = new();
+                save = true;
             }
 
             if (save)
@@ -134,6 +140,16 @@ public static class GuiConfigUtils
         });
     }
 
+    public static HeadSetting MakeHeadSettingConfig()
+    {
+        return new()
+        {
+            Type = HeadType.Head3D_B,
+            X = 15,
+            Y = 60
+        };
+    }
+
     public static StyleSetting MakeStyleSettingConfig()
     {
         return new()
@@ -151,7 +167,7 @@ public static class GuiConfigUtils
         };
     }
 
-    public static Render MakeRenderConfig()
+    public static RenderSetting MakeRenderConfig()
     {
         return new()
         {
@@ -184,11 +200,12 @@ public static class GuiConfigUtils
             Live2D = MakeLive2DConfig(),
             Gui = MakeGuiSettingConfig(),
             Style = MakeStyleSettingConfig(),
+            Head = MakeHeadSettingConfig(),
             Input = new()
         };
     }
 
-    public static ServerCustom MakeServerCustomConfig()
+    public static ServerCustomSetting MakeServerCustomConfig()
     {
         return new()
         {

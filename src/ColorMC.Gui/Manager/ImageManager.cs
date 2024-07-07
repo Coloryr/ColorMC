@@ -8,6 +8,7 @@ using Avalonia.Platform;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.Utils;
 
@@ -62,9 +63,20 @@ public static class ImageManager
         {
             try
             {
+                var old = SkinBitmap;
+                var old1 = HeadBitmap;
+                var config = GuiConfigUtils.Config.Head;
                 SkinBitmap = SKBitmap.Decode(file);
-                using var data = Skin3DHead.MakeHeadImage(SkinBitmap);
+                using var data = config.Type switch
+                { 
+                    HeadType.Head2D => Skin2DHead.MakeHeadImage(SkinBitmap),
+                    HeadType.Head3D_A => Skin3DHeadA.MakeHeadImage(SkinBitmap),
+                    HeadType.Head3D_B => Skin3DHeadB.MakeHeadImage(SkinBitmap),
+                    _ => throw new IndexOutOfRangeException()
+                };
                 HeadBitmap = new Bitmap(data);
+                old?.Dispose();
+                old1?.Dispose();
             }
             catch (Exception e)
             {
@@ -82,6 +94,25 @@ public static class ImageManager
                 Logs.Error(string.Format(App.Lang("Gui.Error35"), file), e);
             }
         }
+    }
+
+    public static void ReloadSkinHead()
+    {
+        if (SkinBitmap == null)
+        {
+            return;
+        }
+        var old = HeadBitmap;
+        var config = GuiConfigUtils.Config.Head;
+        using var data = config.Type switch
+        {
+            HeadType.Head2D => Skin2DHead.MakeHeadImage(SkinBitmap),
+            HeadType.Head3D_A => Skin3DHeadA.MakeHeadImage(SkinBitmap),
+            HeadType.Head3D_B => Skin3DHeadB.MakeHeadImage(SkinBitmap),
+            _ => throw new IndexOutOfRangeException()
+        };
+        HeadBitmap = new Bitmap(data);
+        old?.Dispose();
     }
 
     public static void SetDefaultHead()

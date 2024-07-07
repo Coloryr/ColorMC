@@ -96,7 +96,7 @@ public partial class FileItemModel : SelectItemModel
         {
             await Task.Run(() =>
             {
-                _img = ImageUtils.Load(Data.Logo).Result;
+                _img = ImageUtils.Load(Data.Logo, true).Result;
             });
             return _img;
         }

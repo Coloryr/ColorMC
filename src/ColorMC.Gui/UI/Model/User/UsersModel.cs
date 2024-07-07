@@ -70,7 +70,7 @@ public partial class UsersControlModel : TopModel
     [ObservableProperty]
     private string? _password;
 
-    private readonly LockLogin[] _locks;
+    private readonly LockLoginSetting[] _locks;
 
     private bool _cancel;
     private bool _isOAuth;

@@ -320,19 +320,19 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <RadioButton
-                            Margin="0,0,5,0"
+                            Margin="0,0,20,0"
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab2.Text26}"
                             GroupName="Group1"
                             IsChecked="{Binding IsAutoColor}" />
                         <RadioButton
-                            Margin="0,0,5,0"
+                            Margin="0,0,20,0"
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab2.Text27}"
                             GroupName="Group1"
                             IsChecked="{Binding IsLightColor}" />
                         <RadioButton
-                            Margin="0,0,5,0"
+                            Margin="0,0,20,0"
                             VerticalAlignment="Center"
                             Content="{setting:Localize SettingWindow.Tab2.Text28}"
                             GroupName="Group1"
@@ -357,7 +357,7 @@
                         IsChecked="{Binding EnableRGB}"
                         OffContent="{setting:Localize SettingWindow.Tab2.Text13}"
                         OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
-                    <WrapPanel>
+                    <WrapPanel IsEnabled="{Binding EnableRGB}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text14}" />
                             <Slider
@@ -366,7 +366,6 @@
                                 Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Theme MainColor}"
-                                IsEnabled="{Binding EnableRGB}"
                                 IsSnapToTickEnabled="True"
                                 LargeChange="1"
                                 Maximum="100"
@@ -387,7 +386,6 @@
                                 Margin="5,-10,5,0"
                                 HorizontalAlignment="Left"
                                 Foreground="{setting:Theme MainColor}"
-                                IsEnabled="{Binding EnableRGB}"
                                 IsSnapToTickEnabled="True"
                                 LargeChange="1"
                                 Maximum="100"
@@ -403,7 +401,80 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-
+            <Border
+                Margin="10,5,10,3"
+                Classes="t2"
+                IsVisible="{Binding !Phone}">
+                <StackPanel Margin="15">
+                    <!--  头像设置  -->
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg27.svg" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text54}" />
+                    </StackPanel>
+                    <WrapPanel>
+                        <RadioButton
+                            Margin="0,0,20,0"
+                            Content="{setting:Localize SettingWindow.Tab2.Text55}"
+                            GroupName="Group2"
+                            IsChecked="{Binding IsHead1}" />
+                        <RadioButton
+                            Margin="0,0,20,0"
+                            Content="{setting:Localize SettingWindow.Tab2.Text56}"
+                            GroupName="Group2"
+                            IsChecked="{Binding IsHead2}" />
+                        <RadioButton
+                            Content="{setting:Localize SettingWindow.Tab2.Text57}"
+                            GroupName="Group2"
+                            IsChecked="{Binding IsHead3}" />
+                    </WrapPanel>
+                    <WrapPanel IsEnabled="{Binding IsHead3}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text58}" />
+                            <Slider
+                                Width="150"
+                                Height="40"
+                                Margin="5,-10,5,0"
+                                HorizontalAlignment="Left"
+                                Foreground="{setting:Theme MainColor}"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="1"
+                                Maximum="90"
+                                Minimum="0"
+                                SmallChange="1"
+                                TickFrequency="1"
+                                Value="{Binding HeadX}" />
+                            <TextBlock
+                                Width="40"
+                                Margin="0,0,5,0"
+                                Text="{Binding HeadX, StringFormat='{}{0}度'}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text59}" />
+                            <Slider
+                                Width="150"
+                                Height="40"
+                                Margin="5,-10,5,0"
+                                HorizontalAlignment="Left"
+                                Foreground="{setting:Theme MainColor}"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="1"
+                                Maximum="90"
+                                Minimum="0"
+                                SmallChange="1"
+                                TickFrequency="1"
+                                Value="{Binding HeadY}" />
+                            <TextBlock
+                                Width="40"
+                                Margin="0,0,5,0"
+                                Text="{Binding HeadY, StringFormat='{}{0}度'}" />
+                        </StackPanel>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
             <Border
                 Margin="10,5,10,3"
                 Classes="t2"

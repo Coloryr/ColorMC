@@ -228,6 +228,19 @@ public static class UserBinding
         App.OnSkinLoad();
     }
 
+    public static void ReloadSkin()
+    {
+        var obj = GetLastUser();
+
+        if (obj == null)
+        {
+            return;
+        }
+
+        ImageManager.ReloadSkinHead();
+        App.OnSkinLoad();
+    }
+
     public static async void EditSkin()
     {
         var obj = GetLastUser();

@@ -60,6 +60,17 @@ public partial class SettingModel
     private bool _lowFps;
 
     [ObservableProperty]
+    private bool _isHead1;
+    [ObservableProperty]
+    private bool _isHead2;
+    [ObservableProperty]
+    private bool _isHead3;
+    [ObservableProperty]
+    private int _headX;
+    [ObservableProperty]
+    private int _headY;
+
+    [ObservableProperty]
     private LanguageType _language;
     [ObservableProperty]
     private int _picEffect;
@@ -92,6 +103,45 @@ public partial class SettingModel
 
     private bool _load = true;
 
+    partial void OnIsHead1Changed(bool value)
+    {
+        if (_load || !value)
+            return;
+
+        ConfigBinding.SetHeadType(HeadType.Head2D);
+    }
+
+    partial void OnIsHead2Changed(bool value)
+    {
+        if (_load || !value)
+            return;
+
+        ConfigBinding.SetHeadType(HeadType.Head3D_A);
+    }
+
+    partial void OnIsHead3Changed(bool value)
+    {
+        if (_load || !value)
+            return;
+
+        ConfigBinding.SetHeadType(HeadType.Head3D_B);
+    }
+
+    partial void OnHeadXChanged(int value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetHeadXY(value, HeadY);
+    }
+
+    partial void OnHeadYChanged(int value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetHeadXY(HeadX, value);
+    }
 
     partial void OnLowFpsChanged(bool value)
     {
@@ -211,35 +261,26 @@ public partial class SettingModel
 
     partial void OnIsAutoColorChanged(bool value)
     {
-        if (_load)
+        if (_load || !value)
             return;
 
-        if (value)
-        {
-            ConfigBinding.SetColorType(ColorType.Auto);
-        }
+        ConfigBinding.SetColorType(ColorType.Auto);
     }
 
     partial void OnIsLightColorChanged(bool value)
     {
-        if (_load)
+        if (_load || !value)
             return;
 
-        if (value)
-        {
-            ConfigBinding.SetColorType(ColorType.Light);
-        }
+        ConfigBinding.SetColorType(ColorType.Light);
     }
 
     partial void OnIsDarkColorChanged(bool value)
     {
-        if (_load)
+        if (_load || !value)
             return;
 
-        if (value)
-        {
-            ConfigBinding.SetColorType(ColorType.Dark);
-        }
+        ConfigBinding.SetColorType(ColorType.Dark);
     }
 
     async partial void OnEnablePicResizeChanged(bool value)
@@ -484,6 +525,28 @@ public partial class SettingModel
             EnableLive2D = con.Live2D.Enable;
             L2dPos = con.Live2D.Pos;
             LowFps = con.Live2D.LowFps;
+
+            switch (con.Head.Type)
+            {
+                case HeadType.Head2D:
+                    IsHead1 = true;
+                    IsHead2 = false;
+                    IsHead3 = false;
+                    break;
+                case HeadType.Head3D_A:
+                    IsHead1 = false;
+                    IsHead2 = true;
+                    IsHead3 = false;
+                    break;
+                case HeadType.Head3D_B:
+                    IsHead1 = false;
+                    IsHead2 = false;
+                    IsHead3 = true;
+                    break;
+            };
+
+            HeadX = con.Head.X;
+            HeadY = con.Head.Y;
         }
         var config1 = ConfigUtils.Config;
         if (config1 is { } con1)

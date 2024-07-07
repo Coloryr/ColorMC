@@ -327,7 +327,7 @@ public partial class SettingModel
         if (_serverLoad)
             return;
 
-        var list = new List<LockLogin>();
+        var list = new List<LockLoginSetting>();
         foreach (var item in Locks)
         {
             list.Add(item.login);
