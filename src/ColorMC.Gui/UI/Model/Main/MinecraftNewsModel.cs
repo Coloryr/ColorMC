@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -15,16 +16,24 @@ public partial class MainModel
     public ObservableCollection<NewsItemModel> News { get; init; } = [];
 
     [ObservableProperty]
-    private bool _isLoadNews;
+    private string? _displayNews;
 
-    public async void LoadNews()
+    [ObservableProperty]
+    private bool _isLoadNews;
+    [ObservableProperty]
+    private bool _isHaveNews;
+
+    [RelayCommand]
+    public async Task LoadNews()
     {
         IsLoadNews = true;
         News.Clear();
+        DisplayNews = null;
         var data = await WebBinding.LoadNews();
         if (data == null)
         {
             IsLoadNews = false;
+            IsHaveNews = false;
             Model.Show("News加载失败");
             return;
         }
@@ -32,6 +41,16 @@ public partial class MainModel
         foreach (var item in data.ArticleGrid)
         {
             News.Add(new(item));
+        }
+
+        if (News.Count > 0)
+        {
+            IsHaveNews = true;
+            DisplayNews = News[0].Title;
+        }
+        else
+        {
+            IsHaveNews = false;
         }
 
         IsLoadNews = false;

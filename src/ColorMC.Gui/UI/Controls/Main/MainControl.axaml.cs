@@ -22,6 +22,11 @@ public partial class MainControl : BaseUserControl
 {
     public readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
+    private MainOneGameControl? _oneGame;
+    private MinecraftNewsControl? _news;
+    private MainEmptyControl? _emptyGame;
+    private MainGamesControl? _games;
+
     public MainControl()
     {
         InitializeComponent();
@@ -164,31 +169,25 @@ public partial class MainControl : BaseUserControl
     private void SwitchView()
     {
         var model = (DataContext as MainModel)!;
-        if (model.IsOneGame || model.IsGameError)
+        if (model.NewsDisplay)
         {
-            if (Content1.Child is not MainOneGameControl)
-            {
-                Content1.Child = new MainOneGameControl();
-            }
+            _news ??= new();
+            Content1.Child = _news;
+        }
+        else if (model.IsOneGame || model.IsGameError)
+        {
+            _oneGame ??= new();
+            Content1.Child = _oneGame;
+        }
+        else if (model.IsNotGame && Content1.Child is not MainEmptyControl)
+        {
+            _emptyGame ??= new();
+            Content1.Child = _emptyGame;
         }
         else
         {
-            if (model.IsNotGame && Content1.Child is not MainEmptyControl)
-            {
-                Content1.Child = new MainEmptyControl()
-                {
-                    DataContext = new MainEmptyModel(model.Model)
-                };
-            }
-            //else if (Content1.Child is not MainGamesControl)
-            //{
-            //    Content1.Child = new MainGamesControl();
-            //}
-            else if (Content1.Child is not MinecraftNewsControl)
-            {
-                Content1.Child = new MinecraftNewsControl();
-                model.LoadNews();
-            }
+            _games ??= new();
+            Content1.Child = _games;
         }
     }
 

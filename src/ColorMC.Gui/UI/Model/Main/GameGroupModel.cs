@@ -13,7 +13,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
-public partial class GamesModel : TopModel
+public partial class GameGroupModel : TopModel
 {
     public ObservableCollection<GameItemModel> GameList { get; init; } = [];
 
@@ -27,7 +27,7 @@ public partial class GamesModel : TopModel
     private readonly Dictionary<string, GameItemModel> _items = [];
     private readonly GameItemModel _addItem;
 
-    public GamesModel(BaseModel model, IMainTop top, string key, string name,
+    public GameGroupModel(BaseModel model, IMainTop top, string key, string name,
         List<GameSettingObj> list) : base(model)
     {
         _top = top;

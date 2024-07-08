@@ -19,7 +19,7 @@ public partial class GamesControl : UserControl
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
-        if (e.Source is Control && DataContext is GamesModel model)
+        if (e.Source is Control && DataContext is GameGroupModel model)
         {
             Grid1.IsVisible = model.DropIn(e.Data);
         }
@@ -33,7 +33,7 @@ public partial class GamesControl : UserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid1.IsVisible = false;
-        if (e.Source is Control && DataContext is GamesModel model)
+        if (e.Source is Control && DataContext is GameGroupModel model)
         {
             model.Drop(e.Data);
         }

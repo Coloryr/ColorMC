@@ -64,6 +64,7 @@ public static class ImageUtils
                     else
                     {
                         using var stream1 = new MemoryStream();
+                        data1.Item2!.CopyTo(stream1);
                         PathHelper.WriteBytes(Local + sha1, stream1.ToArray());
                         return new Bitmap(Local + sha1);
                     }
