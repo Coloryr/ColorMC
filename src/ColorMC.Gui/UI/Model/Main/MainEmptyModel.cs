@@ -8,21 +8,14 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
-public partial class MainEmptyModel : TopModel
+public partial class MainModel
 {
     public string[] LanguageList { get; init; } = LanguageBinding.GetLanguages();
 
     [ObservableProperty]
     private LanguageType _language;
 
-    private bool _load = true;
-
-    public MainEmptyModel(BaseModel model) : base(model)
-    {
-        Load();
-
-        _load = false;
-    }
+    private bool _emptyLoad = true;
 
     [RelayCommand]
     public void AddUser()
@@ -54,33 +47,26 @@ public partial class MainEmptyModel : TopModel
         WebBinding.OpenWeb(WebType.Minecraft);
     }
 
-    [RelayCommand]
-    public void ShowSetting()
-    {
-        WindowManager.ShowSetting(SettingType.Normal);
-    }
-
     partial void OnLanguageChanged(LanguageType value)
     {
-        if (_load)
+        if (_emptyLoad)
+        {
             return;
+        }
 
         Model.Progress(App.Lang("SettingWindow.Tab2.Info1"));
         ConfigBinding.SetLanguage(value);
         Model.ProgressClose();
     }
 
-    public void Load()
+    public void LoadEmptyGame()
     {
+        _emptyLoad = true;
         var config = ConfigUtils.Config;
         if (config != null)
         {
             Language = config.Language;
         }
-    }
-
-    public override void Close()
-    {
-
+        _emptyLoad = false;
     }
 }

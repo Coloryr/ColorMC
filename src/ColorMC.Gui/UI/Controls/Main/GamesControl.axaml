@@ -9,7 +9,7 @@
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:GamesModel"
+    x:DataType="model:GameGroupModel"
     mc:Ignorable="d">
     <Expander
         Name="Expander_Head"

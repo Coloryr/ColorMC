@@ -7,6 +7,7 @@ using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -18,9 +19,14 @@ public partial class NewsItemModel(MinecraftNewObj.ArticleObj item) : Observable
 
     private Bitmap? _img;
 
-    public string Title => item.DefaultTile.Title;
+    public string Title => item.DefaultTile.Title.ToUpper();
     public string SubTitle => item.DefaultTile.SubHeader;
     public string Category => item.PrimaryCategory;
+
+    public void OpenUrl()
+    {
+        BaseBinding.OpUrl("https://www.minecraft.net" + item.ArticleUrl);
+    }
 
     private async Task<Bitmap?> GetImage()
     {
