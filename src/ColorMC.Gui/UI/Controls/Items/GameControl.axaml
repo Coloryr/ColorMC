@@ -7,77 +7,38 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    Width="80"
+    VerticalAlignment="Top"
     x:DataType="model:GameItemModel"
-    IsVisible="{Binding IsDisplay, FallbackValue=True}"
+    IsVisible="{Binding IsDisplay}"
     ToolTip.Tip="{Binding Tips}"
     mc:Ignorable="d">
-    <Panel>
+    <Panel Background="Transparent">
         <Button
-            Padding="10"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
+            Width="78"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             Background="Transparent"
             BorderThickness="0"
             Command="{Binding AddGame}"
             CornerRadius="5"
-            IsVisible="{Binding IsNew, FallbackValue=false}">
-            <StackPanel>
+            IsVisible="{Binding IsNew, FallbackValue=False}">
+            <StackPanel Margin="5">
                 <svg:SvgControl
                     Width="70"
                     Height="70"
                     Path="/Resource/Icon/add1.svg" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Center"
+                    Text="{setting:Localize MainWindow.Text8}" />
             </StackPanel>
         </Button>
         <Button
-            Padding="10"
-            Background="#fff2f2f2"
+            Background="Transparent"
             BorderThickness="0"
             IsVisible="{Binding !IsNew, FallbackValue=True}">
-            <DockPanel>
-                <DockPanel DockPanel.Dock="Right">
-                    <StackPanel
-                        Margin="10,5,0,0"
-                        DockPanel.Dock="Bottom"
-                        IsVisible="{Binding ButtonShow}"
-                        Orientation="Horizontal">
-                        <Button
-                            Width="36"
-                            Height="36"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Classes="top"
-                            ClipToBounds="False"
-                            Command="{Binding Launch}"
-                            IsEnabled="{Binding !IsLaunching}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text11}"
-                            ToolTip.VerticalOffset="-30">
-                            <svg:SvgControl Path="/Resource/Icon/launch.svg" />
-                        </Button>
-                        <Button
-                            Width="36"
-                            Height="36"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Classes="top"
-                            ClipToBounds="False"
-                            Command="{Binding EditGame}"
-                            IsEnabled="{Binding !OneGame}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text12}"
-                            ToolTip.VerticalOffset="-30">
-                            <svg:SvgControl Path="/Resource/Icon/edit.svg" />
-                        </Button>
-                    </StackPanel>
-                    <TextBlock
-                        MinWidth="72"
-                        MaxWidth="200"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        Text="{Binding Name, FallbackValue=Test}"
-                        TextTrimming="{Binding Trim}"
-                        TextWrapping="{Binding Wrap}" />
-                </DockPanel>
+            <StackPanel Margin="5">
                 <Panel>
                     <Border
                         Width="70"
@@ -104,8 +65,47 @@
                         IsVisible="{Binding IsLoad}"
                         Source="resm:ColorMC.Gui.Resource.Pic.load.png"
                         Stretch="UniformToFill" />
+                    <Button
+                        Width="36"
+                        Height="36"
+                        Margin="34,0,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Classes="top"
+                        ClipToBounds="False"
+                        Command="{Binding EditGame}"
+                        CornerRadius="20"
+                        IsEnabled="{Binding !OneGame}"
+                        IsVisible="{Binding ButtonShow}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text12}"
+                        ToolTip.VerticalOffset="-30">
+                        <svg:SvgControl Path="/Resource/Icon/edit.svg" />
+                    </Button>
+                    <Button
+                        Width="36"
+                        Height="36"
+                        Margin="0,0,34,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Classes="top"
+                        ClipToBounds="False"
+                        Command="{Binding Launch}"
+                        CornerRadius="20"
+                        IsEnabled="{Binding !IsLaunching}"
+                        IsVisible="{Binding ButtonShow}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text11}"
+                        ToolTip.VerticalOffset="-30">
+                        <svg:SvgControl Path="/Resource/Icon/launch.svg" />
+                    </Button>
                 </Panel>
-            </DockPanel>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="13"
+                    Text="{Binding Name, FallbackValue=1234}"
+                    TextAlignment="Center"
+                    TextTrimming="{Binding Trim}"
+                    TextWrapping="{Binding Wrap}" />
+            </StackPanel>
         </Button>
     </Panel>
 </UserControl>

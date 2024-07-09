@@ -88,6 +88,8 @@ public partial class MainModel : TopModel, IMainTop
     {
         App.SkinLoad += App_SkinLoad;
         App.UserEdit += LoadUser;
+
+        ShowHello();
     }
 
     partial void OnTopSideChanged(bool value)
@@ -224,14 +226,21 @@ public partial class MainModel : TopModel, IMainTop
     {
         NewsDisplay = true;
         SideDisplay = false;
+        HelloText = App.Lang("MainWindow.Text20");
         Model.PushBack(NewBack);
         OnPropertyChanged(SwitchView);
+    }
+
+    private void ShowHello()
+    {
+        HelloText = App.Lang("MainWindow.Hello.Text1");
     }
 
     private void NewBack()
     {
         NewsDisplay = false;
         SideDisplay = true;
+        ShowHello();
         Model.PopBack();
         OnPropertyChanged(SwitchView);
     }

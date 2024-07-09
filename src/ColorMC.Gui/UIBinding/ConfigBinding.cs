@@ -96,6 +96,7 @@ public static class ConfigBinding
     {
         GuiConfigUtils.Config.ColorMain = main;
         GuiConfigUtils.Save();
+
         App.ColorChange();
     }
 

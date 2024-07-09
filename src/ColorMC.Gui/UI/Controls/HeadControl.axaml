@@ -6,14 +6,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
-    Height="35"
-    d:DesignHeight="35"
+    Height="45"
     d:DesignWidth="800"
     x:DataType="model:BaseModel"
     Background="Transparent"
     mc:Ignorable="d">
-    <Panel>
-        <Border Name="Border1" Background="{setting:Theme MainColor}" />
+    <Panel RenderOptions.TextRenderingMode="Antialias">
+        <Border Name="Border1" Background="Transparent" />
         <DockPanel>
             <StackPanel
                 Name="StackPanel1"
@@ -21,8 +20,8 @@
                 Orientation="Horizontal">
                 <Button
                     Width="80"
-                    Height="35"
-                    Background="{setting:Theme MainColor}"
+                    Height="45"
+                    Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding ChoiseClick}"
@@ -33,8 +32,8 @@
                     IsVisible="{Binding HeadChoiseDisplay}" />
                 <Button
                     Width="80"
-                    Height="35"
-                    Background="{setting:Theme MainColor}"
+                    Height="45"
+                    Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding Choise1Click}"
@@ -45,8 +44,8 @@
                     IsVisible="{Binding HeadChoise1Display}" />
                 <Button
                     Width="80"
-                    Height="35"
-                    Background="{setting:Theme MainColor}"
+                    Height="45"
+                    Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding BackClick}"
@@ -60,7 +59,7 @@
                 Name="Icons"
                 Width="25"
                 Height="25"
-                Margin="5,0,0,0"
+                Margin="10,5,0,0"
                 VerticalAlignment="Center"
                 CornerRadius="5"
                 DockPanel.Dock="Left">
@@ -70,14 +69,16 @@
             </Border>
             <TextBlock
                 Name="TitleShow"
-                Margin="5,0,0,0"
-                Foreground="#FFF"
+                Margin="5,5,0,0"
+                VerticalAlignment="Center"
+                Foreground="#000000"
                 Text="{Binding Title}"
                 TextTrimming="CharacterEllipsis" />
             <TextBlock
                 Name="TitleShow1"
-                Margin="5,0,0,0"
-                Foreground="#FFF"
+                Margin="5,5,0,0"
+                VerticalAlignment="Center"
+                Foreground="#000000"
                 Text="{Binding Title1}"
                 TextTrimming="CharacterEllipsis" />
         </DockPanel>

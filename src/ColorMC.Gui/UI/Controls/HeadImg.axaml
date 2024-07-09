@@ -6,5 +6,5 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     mc:Ignorable="d">
-    <Svg Path="{Binding $parent.Path}" />
+    <svg:SvgControl Path="{Binding $parent.Path}" />
 </Decorator>
