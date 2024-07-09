@@ -43,8 +43,6 @@ public static class ThemeManager
 
     private static FontFamily s_font = new(FontFamily.DefaultFontFamilyName);
 
-    public static IBrush MainColor { get; private set; } = Brush.Parse(MainColorStr);
-
     private static void RgbColor_ColorChanged()
     {
         Dispatcher.UIThread.Invoke(Reload);
@@ -60,7 +58,6 @@ public static class ThemeManager
         {
             s_theme = s_dark;
         }
-
 
         LoadColor();
         LoadFont();
@@ -184,7 +181,7 @@ public static class ThemeManager
         }
         else if (key == "MainColor")
         {
-            return RgbColor.IsEnable() ? RgbColor.GetColor() : MainColor;
+            return RgbColor.IsEnable() ? RgbColor.GetColor() : s_theme.MainColor;
         }
         else if (key == "FontColor")
         {

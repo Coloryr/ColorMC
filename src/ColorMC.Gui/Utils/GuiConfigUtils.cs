@@ -146,7 +146,7 @@ public static class GuiConfigUtils
         {
             Type = HeadType.Head3D_B,
             X = 15,
-            Y = 60
+            Y = 65
         };
     }
 

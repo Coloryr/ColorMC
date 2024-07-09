@@ -4,9 +4,9 @@ using ColorMC.Gui.UI.Model.Main;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
-public partial class GamesControl : UserControl
+public partial class GameGroupControl : UserControl
 {
-    public GamesControl()
+    public GameGroupControl()
     {
         InitializeComponent();
 

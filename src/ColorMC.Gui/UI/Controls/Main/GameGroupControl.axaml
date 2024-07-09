@@ -1,0 +1,78 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Main.GameGroupControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Items"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:GameGroupModel"
+    mc:Ignorable="d">
+    <Border Classes="t2">
+        <Expander
+            Name="Expander_Head"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            BorderThickness="0"
+            CornerRadius="5"
+            IsExpanded="{Binding Expander, FallbackValue=true}">
+            <Expander.Header>
+                <TextBlock FontSize="18" Text="{Binding Header, FallbackValue=123}" />
+            </Expander.Header>
+            <Expander.Styles>
+                <Style Selector="Expander /template/ ToggleButton#ExpanderHeader">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+                <Style Selector="Expander:pointerover /template/ ToggleButton#ExpanderHeader">
+                    <Style Selector="^ /template/ Border#ToggleButtonBackground">
+                        <Setter Property="BorderBrush" Value="{setting:Theme OverBrushColor}" />
+                        <Setter Property="Background" Value="{setting:Theme ItemBG}" />
+                    </Style>
+                </Style>
+
+                <Style Selector="Expander:down /template/ Border#ExpanderContent">
+                    <Setter Property="Padding" Value="8,0,8,8" />
+                </Style>
+                <!--<Style Selector="Expander:pointerover /template/ Border#ExpanderContent">
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>-->
+            </Expander.Styles>
+            <Panel>
+                <ItemsControl
+                    Margin="0,0,0,-10"
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    ItemsSource="{Binding GameList}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <views1:GameControl Margin="0,0,4,4" DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Panel
+                    Name="Grid1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="{setting:Theme TopGridColor}"
+                    IsVisible="False">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="20"
+                        Text="{setting:Localize MainWindow.Text11}" />
+                </Panel>
+            </Panel>
+        </Expander>
+    </Border>
+</UserControl>

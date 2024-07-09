@@ -46,9 +46,8 @@ public partial class HeadControl : UserControl
             BorderThickness = new Thickness(0),
             BorderBrush = Brushes.Transparent,
             CornerRadius = new CornerRadius(0),
-            Foreground = Brushes.White
+            Background = Brushes.Transparent
         };
-        _buttonMin.Bind(BackgroundProperty, new ThemeExtension("MainColor"));
         _buttonMax = new Button()
         {
             Width = 40,
@@ -56,9 +55,8 @@ public partial class HeadControl : UserControl
             BorderThickness = new Thickness(0),
             BorderBrush = Brushes.Transparent,
             CornerRadius = new CornerRadius(0),
-            Foreground = Brushes.White
+            Background = Brushes.Transparent
         };
-        _buttonMax.Bind(BackgroundProperty, new ThemeExtension("MainColor"));
         var max = new HeadImg();
         max.Bind(HeadImg.PathProperty, MaxObservale.ToBinding());
         MaxObservale.Notify(MaxIcon[0]);
@@ -71,9 +69,8 @@ public partial class HeadControl : UserControl
             BorderThickness = new Thickness(0),
             BorderBrush = Brushes.Transparent,
             CornerRadius = new CornerRadius(0),
-            Foreground = Brushes.White
+            Background = Brushes.Transparent
         };
-        _buttonClose.Bind(BackgroundProperty, new ThemeExtension("MainColor"));
 
         StackPanel1.Children.Add(_buttonMin);
         StackPanel1.Children.Add(_buttonMax);

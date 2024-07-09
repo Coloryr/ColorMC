@@ -15,24 +15,23 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:BaseModel"
+    Background="Transparent"
     FontFamily="{setting:Font}"
     mc:Ignorable="d">
-
     <Design.DataContext>
         <model:BaseModel />
     </Design.DataContext>
-
-    <DockPanel>
-        <view:HeadControl
-            Name="Head"
-            DockPanel.Dock="Top"
-            IsVisible="{Binding EnableHead}" />
-        <Panel Background="{Binding Background}">
-            <Image
-                IsVisible="{Binding BgVisible}"
-                Opacity="{Binding BgOpacity}"
-                Source="{Binding Back}"
-                Stretch="UniformToFill" />
+    <Panel Background="{Binding Background}">
+        <Image
+            IsVisible="{Binding BgVisible}"
+            Opacity="{Binding BgOpacity}"
+            Source="{Binding Back}"
+            Stretch="UniformToFill" />
+        <DockPanel Background="{setting:Theme WindowBG}">
+            <view:HeadControl
+                Name="Head"
+                DockPanel.Dock="Top"
+                IsVisible="{Binding EnableHead}" />
             <dialog:DialogHost DisableOpeningAnimation="True" Identifier="{Binding Name}">
                 <dialog:DialogHost.DataTemplates>
                     <DataTemplate DataType="dialogmodel:Info1Model">
@@ -53,7 +52,6 @@
                 </dialog:DialogHost.DataTemplates>
                 <Panel>
                     <Decorator Name="Controls" />
-
                     <Panel
                         Name="Grid2"
                         Background="{setting:Theme TopGridColor}"
@@ -66,26 +64,26 @@
                     </Panel>
                 </Panel>
             </dialog:DialogHost>
-            <Button
-                Name="ResizeButton"
-                Width="18"
-                Height="18"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Background="Transparent"
-                BorderBrush="Transparent"
-                Cursor="BottomRightCorner"
-                IsVisible="False">
-                <Button.Styles>
-                    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                        <Setter Property="Background" Value="Transparent" />
-                    </Style>
-                </Button.Styles>
-                <svg:SvgControl
-                    Fill="{setting:Theme FontColor}"
-                    Path="/Resource/Icon/resize.svg"
-                    Stroke="{setting:Theme FontColor}" />
-            </Button>
-        </Panel>
-    </DockPanel>
+        </DockPanel>
+        <Button
+            Name="ResizeButton"
+            Width="18"
+            Height="18"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            Cursor="BottomRightCorner"
+            IsVisible="False">
+            <Button.Styles>
+                <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+            </Button.Styles>
+            <svg:SvgControl
+                Fill="{setting:Theme FontColor}"
+                Path="/Resource/Icon/resize.svg"
+                Stroke="{setting:Theme FontColor}" />
+        </Button>
+    </Panel>
 </UserControl>

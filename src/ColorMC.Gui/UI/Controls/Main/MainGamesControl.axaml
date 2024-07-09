@@ -16,7 +16,7 @@
             <ItemsControl ItemsSource="{Binding GameGroups}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <views2:GamesControl Margin="0,0,0,10" DataContext="{Binding}" />
+                        <views2:GameGroupControl Margin="0,0,0,10" DataContext="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

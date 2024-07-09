@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -23,12 +25,18 @@ public partial class MainModel
     [ObservableProperty]
     private bool _isHaveNews;
 
+    [ObservableProperty]
+    private Bitmap? _newsImage;
+
     [RelayCommand]
     public async Task LoadNews()
     {
         IsLoadNews = true;
         News.Clear();
         DisplayNews = null;
+        var temp = NewsImage;
+        NewsImage = null;
+        temp?.Dispose();
         var data = await WebBinding.LoadNews();
         if (data == null)
         {
@@ -47,6 +55,7 @@ public partial class MainModel
         {
             IsHaveNews = true;
             DisplayNews = News[0].Title;
+            NewsImage = await News[0].Image;
         }
         else
         {
