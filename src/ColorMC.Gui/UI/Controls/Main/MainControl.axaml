@@ -262,7 +262,7 @@
                                             Foreground="White"
                                             IsVisible="{Binding !IsHaveNews}"
                                             Text="{setting:Localize MainWindow.Text21}" />
-                                        <Border Classes="t1" IsVisible="{Binding IsLoadNews}">
+                                        <Border IsVisible="{Binding IsLoadNews}">
                                             <TextBlock
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
