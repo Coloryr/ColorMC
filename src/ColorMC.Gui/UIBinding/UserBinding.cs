@@ -21,7 +21,7 @@ public static class UserBinding
 {
     private static readonly List<(AuthType, string)> s_lockUser = [];
 
-    public static string[] GetLoginType()
+    public static string[] GetLockLoginType()
     {
         return
         [
@@ -33,7 +33,7 @@ public static class UserBinding
         ];
     }
 
-    public static string[] GetUserTypes()
+    public static string[] GetLoginUserType()
     {
         return
         [
@@ -59,20 +59,6 @@ public static class UserBinding
             AuthType.SelfLittleSkin.GetName()
         };
         return list;
-    }
-
-    public static int ToInt(this AuthType type)
-    {
-        return type switch
-        {
-            AuthType.Offline => 0,
-            AuthType.OAuth => 1,
-            AuthType.Nide8 => 2,
-            AuthType.AuthlibInjector => 3,
-            AuthType.LittleSkin => 4,
-            AuthType.SelfLittleSkin => 5,
-            _ => -1
-        };
     }
 
     public static async Task<(bool, string?)> AddUser(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth,
