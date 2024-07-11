@@ -68,7 +68,7 @@ public static class ImageManager
                 var config = GuiConfigUtils.Config.Head;
                 SkinBitmap = SKBitmap.Decode(file);
                 using var data = config.Type switch
-                { 
+                {
                     HeadType.Head2D => Skin2DHead.MakeHeadImage(SkinBitmap),
                     HeadType.Head3D_A => Skin3DHeadA.MakeHeadImage(SkinBitmap),
                     HeadType.Head3D_B => Skin3DHeadB.MakeHeadImage(SkinBitmap),

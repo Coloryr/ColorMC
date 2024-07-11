@@ -83,7 +83,7 @@ public partial class GameEditControl : MenuControl
         DataContext = new GameEditModel(model, _obj);
     }
 
-    protected override Control ViewChange( int old, int index)
+    protected override Control ViewChange(int old, int index)
     {
         var model = (DataContext as GameEditModel)!;
         switch (index)

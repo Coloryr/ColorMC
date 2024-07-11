@@ -160,6 +160,6 @@ public enum FrpType
 }
 
 public enum HeadType
-{ 
+{
     Head2D, Head3D_A, Head3D_B
 }

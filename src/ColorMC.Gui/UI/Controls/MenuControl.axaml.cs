@@ -27,7 +27,7 @@ public abstract partial class MenuControl : BaseUserControl
 
         DataContextChanged += MenuControl_DataContextChanged;
         SizeChanged += MenuControl_SizeChanged;
-        
+
         _control.SidePanel3.PointerPressed += SidePanel2_PointerPressed;
         _control.TabPanel.SizeChanged += TabPanel_SizeChanged;
 

@@ -15,7 +15,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Count;
-using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Controls.GameCloud;
@@ -129,7 +128,7 @@ public static class WindowManager
 
         try
         {
-            string file = BaseBinding.GetRunDir() +  "ColorMC.CustomGui.dll";
+            string file = BaseBinding.GetRunDir() + "ColorMC.CustomGui.dll";
             if (!File.Exists(file))
             {
                 return false;
