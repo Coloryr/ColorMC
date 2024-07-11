@@ -855,14 +855,16 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
         gl.Viewport(0, 0, _width, _height);
 
-        if (ImageManager.BackBitmap != null)
-        {
-            gl.ClearColor(0, 0, 0, 0.2f);
-        }
-        else
-        {
-            gl.ClearColor(0, 0, 0, 1);
-        }
+        //if (ImageManager.BackBitmap != null)
+        //{
+        //    gl.ClearColor(0, 0, 0, 0);
+        //}
+        //else
+        //{
+        //    gl.ClearColor(0, 0, 0, 1);
+        //}
+
+        gl.ClearColor(0, 0, 0, 0);
 
         gl.Clear(GlConsts.GL_COLOR_BUFFER_BIT | GlConsts.GL_DEPTH_BUFFER_BIT);
 

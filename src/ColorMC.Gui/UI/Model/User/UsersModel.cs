@@ -98,7 +98,7 @@ public partial class UsersControlModel : TopModel
         }
         else
         {
-            UserTypeList.AddRange(UserBinding.GetLoginType());
+            UserTypeList.AddRange(UserBinding.GetLoginUserType());
             DisplayUserTypeList.AddRange(UserBinding.GetDisplayUserTypes());
         }
 

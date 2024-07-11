@@ -11,10 +11,9 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:SkinModel"
-    Background="{setting:Theme WindowBG}"
     mc:Ignorable="d">
-    <Grid Margin="10" ColumnDefinitions="3*,1.5*">
-        <Panel Grid.Column="0" Margin="10,10,5,10">
+    <Grid Margin="10,0,10,10" ColumnDefinitions="3*,1.5*">
+        <Panel Grid.Column="0" Margin="10,10,0,10">
             <view2:SkinRender Name="Skin" IsVisible="{Binding HaveSkin}" />
             <Grid
                 HorizontalAlignment="Left"
@@ -32,7 +31,7 @@
                     CommandParameter="{x:Static arg:MoveType.LeftUp}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↖" />
+                    <TextBlock Text="↖" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="0"
@@ -44,7 +43,7 @@
                     CommandParameter="{x:Static arg:MoveType.Up}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↑" />
+                    <TextBlock Text="↑" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="0"
@@ -56,7 +55,7 @@
                     CommandParameter="{x:Static arg:MoveType.RightUp}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↗" />
+                    <TextBlock Text="↗" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="1"
@@ -68,7 +67,7 @@
                     CommandParameter="{x:Static arg:MoveType.Left}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="←" />
+                    <TextBlock Text="←" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="1"
@@ -80,7 +79,7 @@
                     CommandParameter="{x:Static arg:MoveType.Right}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="→" />
+                    <TextBlock Text="→" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="3"
@@ -92,7 +91,7 @@
                     CommandParameter="{x:Static arg:MoveType.LeftDown}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↙" />
+                    <TextBlock Text="↙" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="3"
@@ -104,7 +103,7 @@
                     CommandParameter="{x:Static arg:MoveType.Down}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↓" />
+                    <TextBlock Text="↓" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="3"
@@ -116,7 +115,7 @@
                     CommandParameter="{x:Static arg:MoveType.RightDown}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↘" />
+                    <TextBlock Text="↘" />
                 </RepeatButton>
             </Grid>
             <Grid
@@ -135,7 +134,7 @@
                     CommandParameter="{x:Static arg:MoveType.LeftUp}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↖" />
+                    <TextBlock Text="↖" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="0"
@@ -147,7 +146,7 @@
                     CommandParameter="{x:Static arg:MoveType.Up}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↑" />
+                    <TextBlock Text="↑" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="0"
@@ -159,7 +158,7 @@
                     CommandParameter="{x:Static arg:MoveType.RightUp}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↗" />
+                    <TextBlock Text="↗" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="1"
@@ -171,7 +170,7 @@
                     CommandParameter="{x:Static arg:MoveType.Left}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="←" />
+                    <TextBlock Text="←" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="1"
@@ -183,7 +182,7 @@
                     CommandParameter="{x:Static arg:MoveType.Right}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="→" />
+                    <TextBlock Text="→" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="3"
@@ -195,7 +194,7 @@
                     CommandParameter="{x:Static arg:MoveType.LeftDown}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↙" />
+                    <TextBlock Text="↙" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="3"
@@ -207,7 +206,7 @@
                     CommandParameter="{x:Static arg:MoveType.Down}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↓" />
+                    <TextBlock Text="↓" />
                 </RepeatButton>
                 <RepeatButton
                     Grid.Row="3"
@@ -219,7 +218,7 @@
                     CommandParameter="{x:Static arg:MoveType.RightDown}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↘" />
+                    <TextBlock Text="↘" />
                 </RepeatButton>
             </Grid>
             <StackPanel
@@ -235,7 +234,7 @@
                     CommandParameter="{x:Static arg:MoveType.Up}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↑" />
+                    <TextBlock Text="↑" />
                 </RepeatButton>
                 <RepeatButton
                     Width="40"
@@ -246,18 +245,16 @@
                     CommandParameter="{x:Static arg:MoveType.Down}"
                     Delay="100"
                     Interval="20">
-                    <TextBlock Foreground="{setting:Colors Button}" Text="↓" />
+                    <TextBlock Text="↓" />
                 </RepeatButton>
             </StackPanel>
             <StackPanel VerticalAlignment="Bottom" IsVisible="{Binding HaveSkin}">
                 <TextBlock
                     Margin="2"
                     HorizontalAlignment="Left"
-                    Foreground="{setting:Colors Button}"
                     Text="{Binding NowFps}" />
                 <TextBlock
                     Margin="2"
-                    Foreground="{setting:Colors Button}"
                     Text="{Binding Info}"
                     TextWrapping="Wrap" />
             </StackPanel>

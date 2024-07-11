@@ -23,7 +23,7 @@ public partial class SettingModel
 
     public ObservableCollection<LockLoginModel> Locks { get; init; } = [];
 
-    public string[] LoginList { get; init; } = UserBinding.GetLoginType();
+    public string[] LoginList { get; init; } = UserBinding.GetLockLoginType();
 
     [ObservableProperty]
     private LockLoginModel? _lockSelect;

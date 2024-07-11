@@ -56,6 +56,14 @@
                                         <Setter Property="Background" Value="Transparent" />
                                     </Style>
                                 </Style>
+                                <Style Selector="Button#Skin">
+                                    <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                    <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Style>
                             </Border.Styles>
                             <Button
                                 Name="User"
@@ -68,6 +76,7 @@
                                 IsVisible="{Binding TopSide1}">
                                 <DockPanel Margin="5,0,0,0">
                                     <Panel HorizontalAlignment="Left">
+
                                         <Border
                                             Width="50"
                                             Height="50"
@@ -85,6 +94,7 @@
                                             IsVisible="{Binding IsHeadLoad}" />
                                     </Panel>
                                     <Button
+                                        Name="Skin"
                                         Width="35"
                                         Height="35"
                                         Margin="0,0,5,0"
@@ -96,7 +106,7 @@
                                         DockPanel.Dock="Right"
                                         ToolTip.Tip="{setting:Localize ToolTip.Text9}"
                                         ToolTip.VerticalOffset="-30">
-                                        <svg:SvgControl Path="/Resource/Icon/skin.svg" />
+                                        <svg:SvgControl Path="/Resource/Icon/skin.svg" Stroke="White" />
                                     </Button>
                                     <StackPanel
                                         Margin="5,0,0,0"
