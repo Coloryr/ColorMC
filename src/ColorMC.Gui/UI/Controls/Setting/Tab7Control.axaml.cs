@@ -3,10 +3,8 @@ using System.Threading.Tasks;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Styling;
-using ColorMC.Gui.UI.Model.Setting;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 

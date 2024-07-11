@@ -1,7 +1,5 @@
 using Avalonia.Controls;
-using Avalonia.Input;
 using ColorMC.Gui.UI.Model.ServerPack;
-using ColorMC.Gui.UI.Model.Setting;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
 

@@ -205,11 +205,11 @@ public record InputSetting
 }
 
 public record HeadSetting
-{ 
+{
     public HeadType Type { get; set; }
     public int X { get; set; }
     public int Y { get; set; }
-}   
+}
 
 /// <summary>
 /// Gui配置文件
