@@ -11,7 +11,6 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:MenuModel"
-    Background="{setting:Theme WindowBG}"
     mc:Ignorable="d">
     <Panel>
         <DockPanel>
@@ -19,7 +18,7 @@
             <StackPanel
                 Name="StackPanel2"
                 Height="42"
-                Margin="10,10,0,5"
+                Margin="10,0,0,5"
                 Background="Transparent"
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">

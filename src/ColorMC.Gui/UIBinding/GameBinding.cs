@@ -2009,7 +2009,7 @@ public static class GameBinding
             {
                 if (obj.Loader == Loaders.Custom)
                 {
-                    info.AppendLine(string.Format(App.Lang("Gui.Info47"), GameBinding.GetGameLoader(obj), obj.CustomLoader?.OffLib));
+                    info.AppendLine(string.Format(App.Lang("Gui.Info47"), GetGameLoader(obj), obj.CustomLoader?.OffLib));
                 }
                 else
                 {

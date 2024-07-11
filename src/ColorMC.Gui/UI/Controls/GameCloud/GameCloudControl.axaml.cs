@@ -51,7 +51,7 @@ public partial class GameCloudControl : MenuControl
         return icon ?? ImageManager.GameIcon;
     }
 
-    protected override Control ViewChange(bool iswhell, int old, int index)
+    protected override Control ViewChange(int old, int index)
     {
         return index switch
         {

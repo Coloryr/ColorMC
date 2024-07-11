@@ -10,7 +10,7 @@
     d:DesignWidth="800"
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
-    <DockPanel Name="ScrollViewer1" Margin="0,0,10,15">
+    <DockPanel Margin="0,0,10,15">
         <Border Margin="10,5,10,3" Classes="t2">
             <DockPanel Margin="15">
                 <StackPanel

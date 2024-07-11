@@ -9,10 +9,9 @@
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignWidth="800"
     x:DataType="model:CountModel"
-    Background="{setting:Theme WindowBG}"
     mc:Ignorable="d">
     <ScrollViewer>
-        <StackPanel Margin="10">
+        <StackPanel Margin="10,0,10,10">
             <Border Margin="10,10,10,5" Classes="t2">
                 <StackPanel Margin="15">
                     <StackPanel Margin="0,0,0,10" Orientation="Horizontal">

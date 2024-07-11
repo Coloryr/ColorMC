@@ -83,7 +83,7 @@ public partial class GameEditControl : MenuControl
         DataContext = new GameEditModel(model, _obj);
     }
 
-    protected override Control ViewChange(bool iswhell, int old, int index)
+    protected override Control ViewChange( int old, int index)
     {
         var model = (DataContext as GameEditModel)!;
         switch (index)
@@ -91,26 +91,10 @@ public partial class GameEditControl : MenuControl
             case 0:
                 model.GameLoad();
                 _tab1 ??= new();
-                if (iswhell && old == 1)
-                {
-                    _tab1.End();
-                }
-                else
-                {
-                    _tab1.Reset();
-                }
                 return _tab1;
             case 1:
                 model.ConfigLoad();
                 _tab2 ??= new();
-                if (iswhell && old == 2)
-                {
-                    _tab2.End();
-                }
-                else
-                {
-                    _tab2.Reset();
-                }
                 return _tab2;
             case 2:
                 _ = model.LoadMod();

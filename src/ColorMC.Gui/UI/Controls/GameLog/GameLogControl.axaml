@@ -10,11 +10,10 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:GameLogModel"
-    Background="{setting:Theme WindowBG}"
     mc:Ignorable="d">
-    <Decorator Margin="10">
+    <DockPanel Margin="10">
         <Border
-            Margin="10,10,10,5"
+            Margin="10,0,10,10"
             Classes="t2"
             DockPanel.Dock="Top">
             <DockPanel Margin="15">
@@ -90,18 +89,20 @@
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
                 </StackPanel>
-                <ae:TextEditor
-                    Name="TextEditor1"
-                    Document="{Binding Text}"
-                    FontSize="14"
-                    FontWeight="Normal"
-                    Foreground="{setting:Theme FontColor}"
-                    HorizontalScrollBarVisibility="Auto"
-                    IsReadOnly="True"
-                    ShowLineNumbers="True"
-                    VerticalScrollBarVisibility="Visible"
-                    WordWrap="{Binding IsWordWrap}" />
+
             </DockPanel>
         </Border>
-    </Decorator>
+        <ae:TextEditor
+            Name="TextEditor1"
+            Margin="5,0,5,10"
+            Document="{Binding Text}"
+            FontSize="14"
+            FontWeight="Normal"
+            Foreground="{setting:Theme FontColor}"
+            HorizontalScrollBarVisibility="Auto"
+            IsReadOnly="True"
+            ShowLineNumbers="True"
+            VerticalScrollBarVisibility="Visible"
+            WordWrap="{Binding IsWordWrap}" />
+    </DockPanel>
 </UserControl>

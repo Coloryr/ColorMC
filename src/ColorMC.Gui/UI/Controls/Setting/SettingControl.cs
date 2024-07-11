@@ -86,7 +86,7 @@ public partial class SettingControl : MenuControl
         DataContext = new SettingModel(model);
     }
 
-    protected override Control ViewChange(bool iswhell, int old, int index)
+    protected override Control ViewChange(int old, int index)
     {
         var model = (DataContext as SettingModel)!;
         switch (old)
@@ -100,39 +100,15 @@ public partial class SettingControl : MenuControl
             case 0:
                 model.LoadUISetting();
                 _tab2 ??= new();
-                if (iswhell && old == 1)
-                {
-                    _tab2.End();
-                }
-                else
-                {
-                    _tab2.Reset();
-                }
                 return _tab2;
             case 1:
                 model.LoadHttpSetting();
                 model.TestGameCloudConnect();
                 _tab3 ??= new();
-                if (iswhell && old == 2)
-                {
-                    _tab3.End();
-                }
-                else
-                {
-                    _tab3.Reset();
-                }
                 return _tab3;
             case 2:
                 model.LoadArg();
                 _tab4 ??= new();
-                if (iswhell && old == 3)
-                {
-                    _tab4.End();
-                }
-                else
-                {
-                    _tab4.Reset();
-                }
                 return _tab4;
             case 3:
                 model.Load(_needJava);
@@ -140,14 +116,6 @@ public partial class SettingControl : MenuControl
             case 4:
                 model.LoadServer();
                 _tab6 ??= new();
-                if (iswhell && old == 5)
-                {
-                    _tab6.End();
-                }
-                else
-                {
-                    _tab6.Reset();
-                }
                 return _tab6;
             case 5:
                 return _tab1 ??= new();

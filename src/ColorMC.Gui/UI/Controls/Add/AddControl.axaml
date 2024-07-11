@@ -10,7 +10,6 @@
     d:DesignHeight="600"
     d:DesignWidth="800"
     x:DataType="model:AddControlModel"
-    Background="{setting:Theme WindowBG}"
     mc:Ignorable="d">
     <UserControl.Resources>
         <setting:WidthToVisibilityConverter x:Key="WidthToVisibilityConverter" />
@@ -19,7 +18,7 @@
         <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
             <DockPanel Margin="10">
                 <Border
-                    Margin="10,10,10,5"
+                    Margin="10,0,10,5"
                     Classes="t2"
                     DockPanel.Dock="Top"
                     IsEnabled="{Binding !IsDownload}">
@@ -182,17 +181,26 @@
                 </Border>
 
                 <Panel>
-                    <ItemsControl
-                        Margin="0,0,0,5"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        ItemsSource="{Binding DisplayList}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <item:FileItemControl DataContext="{Binding}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <StackPanel>
+                        <ItemsControl
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            ItemsSource="{Binding DisplayList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <item:FileItemControl DataContext="{Binding}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button
+                            Height="35"
+                            Margin="6,0,6,5"
+                            HorizontalAlignment="Stretch"
+                            Classes="top"
+                            Command="{Binding Next}"
+                            Content="{setting:Localize AddModPackWindow.Text14}"
+                            IsVisible="{Binding !EmptyDisplay}" />
+                    </StackPanel>
                     <Border
                         Margin="10,5,10,10"
                         Classes="t1"

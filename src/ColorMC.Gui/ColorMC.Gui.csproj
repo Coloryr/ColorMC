@@ -166,6 +166,7 @@
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\load.png" />
+    <None Remove="Resource\Pic\pic1.png" />
     <None Remove="Resource\Pic\user.png" />
   </ItemGroup>
   <ItemGroup>
@@ -293,6 +294,7 @@
     <AvaloniaResource Include="Resource\Icon\Setting\svg8.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg9.svg" />
     <AvaloniaResource Include="Resource\Icon\skin.svg" />
+    <EmbeddedResource Include="Resource\Pic\pic1.png" />
     <EmbeddedResource Include="macicon.ico" />
     <EmbeddedResource Include="Player\Decoder\Mp3\sfd.temp" />
     <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />

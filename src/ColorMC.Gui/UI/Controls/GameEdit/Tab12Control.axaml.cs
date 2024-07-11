@@ -13,19 +13,10 @@ public partial class Tab12Control : UserControl
         InitializeComponent();
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is GameEditModel model && model.NowView == 8)
-        {
-            model.WhellChange(e.Delta.Y);
-        }
     }
 
     private void DragEnter(object? sender, DragEventArgs e)

@@ -12,19 +12,10 @@ public partial class Tab2Control : UserControl
         InitializeComponent();
 
         DataGrid1.CellEditEnded += DataGrid1_CellEditEnded;
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
     private void DataGrid1_CellEditEnded(object? sender, DataGridCellEditEndedEventArgs e)
     {
         (DataContext as ServerPackModel)?.ModItemEdit();
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is SettingModel model && model.NowView == 1)
-        {
-            model.WhellChange(e.Delta.Y);
-        }
     }
 }

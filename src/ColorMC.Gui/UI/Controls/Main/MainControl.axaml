@@ -32,66 +32,93 @@
                 VerticalAlignment="{Binding L2dPos1}" />
             <DockPanel>
                 <DockPanel Margin="20,10,20,0" DockPanel.Dock="Top">
-                    <Border Classes="t2" DockPanel.Dock="Right">
-                        <Button
-                            Width="200"
-                            Height="60"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Command="{Binding ShowUser}"
-                            IsVisible="{Binding TopSide1}">
-                            <DockPanel Margin="5,0,0,0">
-                                <Panel HorizontalAlignment="Left">
-                                    <Border
-                                        Width="50"
-                                        Height="50"
-                                        VerticalAlignment="Center">
-                                        <Border.Background>
-                                            <ImageBrush Source="{Binding Head}" Stretch="UniformToFill" />
-                                        </Border.Background>
-                                    </Border>
-                                    <ProgressBar
-                                        Width="38"
-                                        Height="10"
-                                        MinWidth="38"
-                                        CornerRadius="20"
-                                        IsIndeterminate="{Binding IsHeadLoad}"
-                                        IsVisible="{Binding IsHeadLoad}" />
-                                </Panel>
-                                <Button
-                                    Width="35"
-                                    Height="35"
-                                    Margin="0,0,5,0"
-                                    HorizontalAlignment="Right"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Command="{Binding ShowSkin}"
-                                    CornerRadius="5"
-                                    DockPanel.Dock="Right"
-                                    ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                                    ToolTip.VerticalOffset="-30">
-                                    <svg:SvgControl Path="/Resource/Icon/skin.svg" />
-                                </Button>
-                                <StackPanel
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    DockPanel.Dock="Left"
-                                    IsVisible="{Binding TopSide1}"
-                                    RenderOptions.TextRenderingMode="Antialias">
-                                    <TextBlock
-                                        FontSize="17"
-                                        Text="{Binding UserId, FallbackValue=User Name}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                    <TextBlock
-                                        HorizontalAlignment="Left"
-                                        FontSize="12"
-                                        Text="{Binding UserType, FallbackValue=456}" />
-                                </StackPanel>
-                            </DockPanel>
-                        </Button>
+                    <Border
+                        BorderThickness="0"
+                        Classes="t2"
+                        DockPanel.Dock="Right">
+                        <Border.Background>
+                            <ImageBrush Source="resm:ColorMC.Gui.Resource.Pic.pic1.png" Stretch="UniformToFill" />
+                        </Border.Background>
+                        <Border BorderThickness="0" Classes="t2">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0%,50%" EndPoint="80%,50%">
+                                    <GradientStop Offset="0.0" Color="Black" />
+                                    <GradientStop Offset="1.0" Color="#00000000" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.Styles>
+                                <Style Selector="Button#User">
+                                    <Setter Property="Background" />
+                                    <Style Selector="^:pressed">
+                                        <Setter Property="RenderTransform" Value="scale(1)" />
+                                    </Style>
+                                    <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Style>
+                            </Border.Styles>
+                            <Button
+                                Name="User"
+                                Width="200"
+                                Height="60"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                BorderThickness="0"
+                                Command="{Binding ShowUser}"
+                                IsVisible="{Binding TopSide1}">
+                                <DockPanel Margin="5,0,0,0">
+                                    <Panel HorizontalAlignment="Left">
+                                        <Border
+                                            Width="50"
+                                            Height="50"
+                                            VerticalAlignment="Center">
+                                            <Border.Background>
+                                                <ImageBrush Source="{Binding Head}" Stretch="UniformToFill" />
+                                            </Border.Background>
+                                        </Border>
+                                        <ProgressBar
+                                            Width="38"
+                                            Height="10"
+                                            MinWidth="38"
+                                            CornerRadius="20"
+                                            IsIndeterminate="{Binding IsHeadLoad}"
+                                            IsVisible="{Binding IsHeadLoad}" />
+                                    </Panel>
+                                    <Button
+                                        Width="35"
+                                        Height="35"
+                                        Margin="0,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Command="{Binding ShowSkin}"
+                                        CornerRadius="5"
+                                        DockPanel.Dock="Right"
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text9}"
+                                        ToolTip.VerticalOffset="-30">
+                                        <svg:SvgControl Path="/Resource/Icon/skin.svg" />
+                                    </Button>
+                                    <StackPanel
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Left"
+                                        IsVisible="{Binding TopSide1}"
+                                        RenderOptions.TextRenderingMode="Antialias">
+                                        <TextBlock
+                                            FontSize="17"
+                                            Foreground="White"
+                                            Text="{Binding UserId, FallbackValue=User Name}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap" />
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            FontSize="12"
+                                            Foreground="White"
+                                            Text="{Binding UserType, FallbackValue=456}" />
+                                    </StackPanel>
+                                </DockPanel>
+                            </Button>
+                        </Border>
                     </Border>
                     <Panel
                         Height="60"
@@ -168,6 +195,7 @@
                     <StackPanel>
                         <Border
                             Margin="0,0,0,10"
+                            BorderThickness="0"
                             Classes="t2"
                             IsVisible="{Binding !NewsDisplay}">
                             <Panel>

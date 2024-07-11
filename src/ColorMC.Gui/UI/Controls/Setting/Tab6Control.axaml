@@ -18,7 +18,7 @@
                 <view:AddLockLoginControl />
             </DataTemplate>
         </dialog:DialogHost.DataTemplates>
-        <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel Margin="0,0,10,15">
                 <Border Margin="10,5,10,3" Classes="t2">
                     <StackPanel Margin="15">

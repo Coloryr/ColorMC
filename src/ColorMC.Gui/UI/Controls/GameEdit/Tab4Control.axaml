@@ -11,7 +11,7 @@
     x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel Name="ScrollViewer1">
+    <Panel>
         <Decorator Margin="0,0,10,15">
             <Border Margin="10,5,10,3" Classes="t2">
                 <DockPanel Margin="15">

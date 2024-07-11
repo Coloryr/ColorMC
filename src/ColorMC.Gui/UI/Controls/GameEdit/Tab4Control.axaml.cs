@@ -15,19 +15,10 @@ public partial class Tab4Control : UserControl
 
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is GameEditModel model && model.NowView == 2)
-        {
-            model.WhellChange(e.Delta.Y);
-        }
     }
 
     private void DragEnter(object? sender, DragEventArgs e)

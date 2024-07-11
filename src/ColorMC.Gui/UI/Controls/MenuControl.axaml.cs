@@ -48,7 +48,7 @@ public abstract partial class MenuControl : BaseUserControl
         model.CloseSide();
     }
 
-    protected abstract Control ViewChange(bool iswhell, int old, int index);
+    protected abstract Control ViewChange(int old, int index);
 
     private void MenuControl_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
@@ -93,7 +93,7 @@ public abstract partial class MenuControl : BaseUserControl
         if (e.PropertyName == MenuModel.NowViewName)
         {
             var model = (DataContext as MenuModel)!;
-            Go(ViewChange(model.IsWhell, _now, model.NowView));
+            Go(ViewChange(_now, model.NowView));
             _now = model.NowView;
         }
     }

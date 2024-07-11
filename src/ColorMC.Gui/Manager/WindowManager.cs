@@ -129,7 +129,7 @@ public static class WindowManager
 
         try
         {
-            string file = BaseBinding.GetRunDir() + "ColorMC.CustomGui.dll";
+            string file = BaseBinding.GetRunDir() +  "ColorMC.CustomGui.dll";
             if (!File.Exists(file))
             {
                 return false;

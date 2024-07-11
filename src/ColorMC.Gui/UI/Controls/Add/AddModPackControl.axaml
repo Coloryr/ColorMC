@@ -10,11 +10,10 @@
     d:DesignHeight="600"
     d:DesignWidth="800"
     x:DataType="model:AddModPackControlModel"
-    Background="{setting:Theme WindowBG}"
     mc:Ignorable="d">
     <Panel>
         <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
-            <DockPanel Margin="10">
+            <DockPanel Margin="10,0,10,10">
                 <Border
                     Margin="10,10,10,5"
                     Classes="t2"

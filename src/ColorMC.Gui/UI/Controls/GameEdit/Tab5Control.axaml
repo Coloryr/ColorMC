@@ -14,7 +14,7 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
             <DockPanel Margin="0,0,10,15">
                 <Border
                     Margin="10,5,10,3"

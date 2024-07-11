@@ -9,15 +9,5 @@ public partial class NetFrpTab4Control : UserControl
     public NetFrpTab4Control()
     {
         InitializeComponent();
-
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is NetFrpModel model && model.NowView == 0)
-        {
-            model.WhellChange(e.Delta.Y);
-        }
     }
 }

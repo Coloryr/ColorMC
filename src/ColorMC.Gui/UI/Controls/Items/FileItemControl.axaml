@@ -30,7 +30,7 @@
                         <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadIcon}}" Stretch="UniformToFill" />
                     </Border.Background>
                 </Border>
-                <DockPanel Margin="110,0,0,0">
+                <DockPanel Margin="105,0,0,0">
                     <TextBlock
                         DockPanel.Dock="Top"
                         FontSize="16"
