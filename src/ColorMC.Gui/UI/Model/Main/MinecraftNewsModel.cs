@@ -26,6 +26,7 @@ public partial class MainModel
     [RelayCommand]
     public async Task LoadNews()
     {
+        IsHaveNews = true;
         IsLoadNews = true;
         News.Clear();
         DisplayNews = null;
@@ -33,9 +34,9 @@ public partial class MainModel
         NewsImage = null;
         temp?.Dispose();
         var data = await WebBinding.LoadNews();
+        IsLoadNews = false;
         if (data == null)
         {
-            IsLoadNews = false;
             IsHaveNews = false;
             Model.Show("News加载失败");
             return;
@@ -48,15 +49,13 @@ public partial class MainModel
 
         if (News.Count > 0)
         {
-            IsHaveNews = true;
             DisplayNews = News[0].Title;
             NewsImage = await News[0].Image;
+            IsHaveNews = true;
         }
         else
         {
             IsHaveNews = false;
         }
-
-        IsLoadNews = false;
     }
 }
