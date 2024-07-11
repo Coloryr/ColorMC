@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
-    Height="45"
+    Height="35"
     d:DesignWidth="800"
     x:DataType="model:BaseModel"
     Background="Transparent"
@@ -20,38 +20,35 @@
                 Orientation="Horizontal">
                 <Button
                     Width="80"
-                    Height="45"
+                    Height="35"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding ChoiseClick}"
                     Content="{Binding HeadChoiseContent}"
                     CornerRadius="0"
-                    Foreground="White"
                     IsEnabled="{Binding ChoiseEnable}"
                     IsVisible="{Binding HeadChoiseDisplay}" />
                 <Button
                     Width="80"
-                    Height="45"
+                    Height="35"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding Choise1Click}"
                     Content="{Binding HeadChoise1Content}"
                     CornerRadius="0"
-                    Foreground="White"
                     IsEnabled="{Binding Choise1Enable}"
                     IsVisible="{Binding HeadChoise1Display}" />
                 <Button
                     Width="80"
-                    Height="45"
+                    Height="35"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding BackClick}"
                     Content="{setting:Localize Gui.Text1}"
                     CornerRadius="0"
-                    Foreground="White"
                     IsEnabled="{Binding HeadBackEnable}"
                     IsVisible="{Binding HeadBack}" />
             </StackPanel>
@@ -59,7 +56,7 @@
                 Name="Icons"
                 Width="25"
                 Height="25"
-                Margin="10,5,0,0"
+                Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 CornerRadius="5"
                 DockPanel.Dock="Left">
@@ -69,14 +66,14 @@
             </Border>
             <TextBlock
                 Name="TitleShow"
-                Margin="5,5,0,0"
+                Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Foreground="#000000"
                 Text="{Binding Title}"
                 TextTrimming="CharacterEllipsis" />
             <TextBlock
                 Name="TitleShow1"
-                Margin="5,5,0,0"
+                Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Foreground="#000000"
                 Text="{Binding Title1}"

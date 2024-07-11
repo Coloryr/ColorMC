@@ -36,7 +36,6 @@ public partial class AddControl : BaseUserControl
         OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
         ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
 
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
         ScrollViewer1.ScrollChanged += ScrollViewer1_ScrollChanged;
     }
 
@@ -154,14 +153,6 @@ public partial class AddControl : BaseUserControl
             {
                 return;
             }
-        }
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is AddControlModel model)
-        {
-            model.Wheel(e.Delta.Y);
         }
     }
 

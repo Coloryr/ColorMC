@@ -17,16 +17,6 @@ public partial class Tab7Control : UserControl
     public Tab7Control()
     {
         InitializeComponent();
-
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is SettingModel model && model.NowView == 7)
-        {
-            model.WhellChange(e.Delta.Y);
-        }
     }
 
     public async void Start()

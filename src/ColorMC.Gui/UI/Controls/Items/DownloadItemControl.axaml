@@ -8,7 +8,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     x:DataType="model:DownloadItemModel"
     mc:Ignorable="d">
-    <Border Margin="10,5,10,10" Classes="t3">
+    <Border Margin="10,5,10,5" Classes="t3">
         <StackPanel Margin="15">
             <DockPanel Margin="0,0,0,5">
                 <StackPanel

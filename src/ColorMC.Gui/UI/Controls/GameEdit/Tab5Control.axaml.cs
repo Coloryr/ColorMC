@@ -10,19 +10,9 @@ public partial class Tab5Control : UserControl
     {
         InitializeComponent();
 
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is GameEditModel model && model.NowView == 3)
-        {
-            model.WhellChange(e.Delta.Y);
-        }
     }
 
     private void DragEnter(object? sender, DragEventArgs e)

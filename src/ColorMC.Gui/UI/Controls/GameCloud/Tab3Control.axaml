@@ -12,10 +12,7 @@
     x:DataType="model:GameCloudModel"
     mc:Ignorable="d">
     <Panel>
-        <ScrollViewer
-            Name="ScrollViewer1"
-            IsEnabled="{Binding Enable}"
-            VerticalScrollBarVisibility="Visible">
+        <ScrollViewer IsEnabled="{Binding Enable}" VerticalScrollBarVisibility="Visible">
             <ItemsControl
                 Margin="0,5,10,18"
                 HorizontalAlignment="Stretch"

@@ -13,7 +13,6 @@ public partial class Tab4Control : UserControl
         InitializeComponent();
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
     }
 
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
@@ -35,13 +34,5 @@ public partial class Tab4Control : UserControl
             var model = (DataContext as ServerPackModel)!;
             _ = new ServerPackFlyout1(control, model, model.FileItem);
         });
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is ServerPackModel model && model.NowView == 3)
-        {
-            model.WhellChange(e.Delta.Y);
-        }
     }
 }

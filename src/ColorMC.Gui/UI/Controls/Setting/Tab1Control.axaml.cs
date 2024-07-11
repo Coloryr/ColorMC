@@ -9,15 +9,5 @@ public partial class Tab1Control : UserControl
     public Tab1Control()
     {
         InitializeComponent();
-
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is SettingModel model && model.NowView == 5)
-        {
-            model.WhellChange(e.Delta.Y);
-        }
     }
 }

@@ -11,7 +11,7 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer Name="ScrollViewer1" IsEnabled="{Binding IsInputEnable}">
+    <ScrollViewer IsEnabled="{Binding IsInputEnable}">
         <StackPanel Margin="0,0,10,15">
             <Panel Margin="10,5,10,3">
                 <Border Classes="t2">

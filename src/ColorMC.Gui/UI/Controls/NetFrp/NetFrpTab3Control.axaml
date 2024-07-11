@@ -12,12 +12,8 @@
     x:DataType="model:NetFrpModel"
     mc:Ignorable="d">
     <Decorator Margin="0,0,10,15">
-        <Border
-            Name="ScrollViewer1"
-            Margin="10,5,10,3"
-            Classes="t2">
+        <Border Margin="10,5,10,3" Classes="t2">
             <ae:TextEditor
-                Name="TextEditor1"
                 Margin="15"
                 Document="{Binding Text}"
                 FontSize="14"

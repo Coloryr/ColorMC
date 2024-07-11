@@ -35,10 +35,6 @@ public abstract partial class MenuModel(BaseModel model) : TopModel(model)
     [ObservableProperty]
     private bool _topSide;
 
-    public bool IsWhell;
-
-    private double _lastWheel;
-
     partial void OnNowViewChanged(int oldValue, int newValue)
     {
         CloseSide();
@@ -85,31 +81,6 @@ public abstract partial class MenuModel(BaseModel model) : TopModel(model)
             {
                 NowView = model.Index;
             }
-        }
-    }
-
-    public void WhellChange(double dir)
-    {
-        _lastWheel += dir;
-        if (_lastWheel < -2)
-        {
-            if (NowView < TabItems.Count - 1)
-            {
-                IsWhell = true;
-                NowView++;
-                IsWhell = false;
-            }
-            _lastWheel = 0;
-        }
-        else if (_lastWheel > 2)
-        {
-            if (NowView > 0)
-            {
-                IsWhell = true;
-                NowView--;
-                IsWhell = false;
-            }
-            _lastWheel = 0;
         }
     }
 

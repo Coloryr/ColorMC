@@ -12,7 +12,7 @@
     x:DataType="model:AddGameModel"
     mc:Ignorable="d">
     <ScrollViewer VerticalScrollBarVisibility="Visible">
-        <Border Margin="20" Classes="t2">
+        <Border Margin="20,10,20,20" Classes="t2">
             <DockPanel Margin="15">
                 <Button
                     Width="100"

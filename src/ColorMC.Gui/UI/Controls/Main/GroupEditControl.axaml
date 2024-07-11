@@ -18,13 +18,14 @@
             <StackPanel Orientation="Horizontal">
                 <ComboBox
                     Width="200"
+                    Margin="0,0,10,0"
                     VerticalAlignment="Center"
                     ItemsSource="{Binding GroupList}"
                     SelectedItem="{Binding GroupItem}" />
                 <Button
                     Width="100"
-                    Height="30"
-                    Margin="0,-2,3,-2"
+                    Height="35"
+                    Margin="-2,-2,3,-2"
                     VerticalAlignment="Center"
                     Classes="top"
                     Command="{Binding AddGroup}"
@@ -36,7 +37,7 @@
                 Orientation="Horizontal">
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
                     Classes="top"
@@ -44,7 +45,7 @@
                     Content="{setting:Localize Button.Confirm}" />
                 <Button
                     Width="100"
-                    Height="30"
+                    Height="35"
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
                     Classes="top"
