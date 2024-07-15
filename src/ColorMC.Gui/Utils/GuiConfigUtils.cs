@@ -69,6 +69,11 @@ public static class GuiConfigUtils
                 Config.ServerCustom = MakeServerCustomConfig();
                 save = true;
             }
+            if (Config.ServerCustom.LockLogins == null)
+            {
+                Config.ServerCustom.LockLogins = [];
+                save = true;
+            }
             if (Config.Render == null
                 || Config.Render.Windows == null
                 || Config.Render.X11 == null)
@@ -211,7 +216,8 @@ public static class GuiConfigUtils
         {
             MotdColor = "White",
             MotdBackColor = "Black",
-            Volume = 30
+            Volume = 30,
+            LockLogins = []
         };
     }
 
