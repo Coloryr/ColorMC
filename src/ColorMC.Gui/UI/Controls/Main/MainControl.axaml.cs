@@ -338,4 +338,12 @@ public partial class MainControl : BaseUserControl
     {
         return ImageManager.GameIcon;
     }
+
+    public void IconChange(string uuid)
+    {
+        if (DataContext is MainModel model)
+        {
+            model.IconChange(uuid);
+        }
+    }
 }

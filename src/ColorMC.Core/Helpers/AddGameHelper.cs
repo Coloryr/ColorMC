@@ -192,6 +192,7 @@ public static class AddGameHelper
                     {
                         Zip = arg.Dir,
                         Name = arg.Name,
+                        Group = arg.Group,
                         Request = arg.Request,
                         Overwirte = arg.Overwirte,
                         Update = arg.Update,
@@ -546,6 +547,4 @@ public static class AddGameHelper
 
         return res2;
     }
-
-
 }

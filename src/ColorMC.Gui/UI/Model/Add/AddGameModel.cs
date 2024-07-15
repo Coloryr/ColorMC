@@ -39,6 +39,8 @@ public partial class AddGameModel : TopModel
 
     public bool IsPhone { get; }
 
+    public string? DefaultGroup { get; set; }
+
     /// <summary>
     /// 是否在加载中
     /// </summary>
@@ -147,7 +149,7 @@ public partial class AddGameModel : TopModel
     {
         Model.PopBack();
         Name = null;
-        Group = null;
+        Group = DefaultGroup;
         Version = null;
         LoaderVersion = null;
         LoaderTypeList.Clear();

@@ -97,6 +97,7 @@ public static class BaseBinding
         ColorMCCore.OnDownload = WindowManager.ShowDownload;
         ColorMCCore.GameExit += GameExit;
         ColorMCCore.InstanceChange += InstanceChange;
+        ColorMCCore.InstanceIconChange += InstanceIconChange;
 
         if (ColorMCGui.RunType == RunType.Program && SystemInfo.Os != OsType.Android)
         {
@@ -128,6 +129,11 @@ public static class BaseBinding
         {
             LongPressed.Released();
         }, handledEventsToo: true);
+    }
+
+    private static void InstanceIconChange(GameSettingObj obj)
+    {
+        WindowManager.MainWindow?.IconChange(obj.UUID);
     }
 
     private static void InstanceChange()

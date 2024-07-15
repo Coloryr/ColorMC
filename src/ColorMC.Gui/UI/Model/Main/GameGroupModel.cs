@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -31,6 +32,8 @@ public partial class GameGroupModel : TopModel
         List<GameSettingObj> list) : base(model)
     {
         _top = top;
+        Header = name;
+        Key = key;
         GameList.Clear();
         _items.Clear();
         foreach (var item in list)
@@ -55,9 +58,6 @@ public partial class GameGroupModel : TopModel
                 GameList.Add(_addItem);
             });
         });
-
-        Header = name;
-        Key = key;
     }
 
     public bool DropIn(IDataObject data)
@@ -191,6 +191,21 @@ public partial class GameGroupModel : TopModel
             else
             {
                 item.IsDisplay = item.Name.Contains(value);
+            }
+        }
+    }
+
+    public void IconChange(string uuid)
+    {
+        foreach (var item in GameList)
+        {
+            if (item.IsNew)
+            {
+                continue;
+            }
+            else if(item.UUID == uuid)
+            {
+                item.LoadIcon();
             }
         }
     }

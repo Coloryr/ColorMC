@@ -90,6 +90,14 @@ public partial class MainModel
         _semaphore.Release();
     }
 
+    public void IconChange(string uuid)
+    {
+        foreach (var item in GameGroups)
+        {
+            item.IconChange(uuid);
+        }
+    }
+
     public void Search()
     {
         GameSearch = true;
