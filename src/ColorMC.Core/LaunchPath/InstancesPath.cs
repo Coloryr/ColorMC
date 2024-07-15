@@ -1087,7 +1087,7 @@ public static class InstancesPath
         if (data.Item1)
         {
             PathHelper.WriteBytes(obj.GetIconFile(), data.Item2!);
-
+            ColorMCCore.OnInstanceIconChange(obj);
             return true;
         }
 
@@ -1108,6 +1108,7 @@ public static class InstancesPath
         }
 
         PathHelper.CopyFile(file, obj.GetIconFile());
+        ColorMCCore.OnInstanceIconChange(obj);
 
         return true;
     }
@@ -1120,6 +1121,7 @@ public static class InstancesPath
     public static void SetGameIconFromBytes(this GameSettingObj obj, byte[] data)
     {
         PathHelper.WriteBytes(obj.GetIconFile(), data);
+        ColorMCCore.OnInstanceIconChange(obj);
     }
 
     /// <summary>
@@ -1130,5 +1132,6 @@ public static class InstancesPath
     public static void SetGameIconFromStream(this GameSettingObj obj, byte[] data)
     {
         PathHelper.WriteBytes(obj.GetIconFile(), data);
+        ColorMCCore.OnInstanceIconChange(obj);
     }
 }

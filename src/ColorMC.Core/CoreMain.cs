@@ -15,7 +15,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A27";
-    public const string DateVersion = "20240711";
+    public const string DateVersion = "20240715";
 
     /// <summary>
     /// 版本号
@@ -142,6 +142,10 @@ public static class ColorMCCore
     /// 游戏实例数量修改事件
     /// </summary>
     public static event Action? InstanceChange;
+    /// <summary>
+    /// 游戏实例图标修改事件
+    /// </summary>
+    public static event Action<GameSettingObj>? InstanceIconChange;
     /// <summary>
     /// 手机端启动
     /// </summary>
@@ -317,5 +321,14 @@ public static class ColorMCCore
     internal static void OnInstanceChange()
     {
         InstanceChange?.Invoke();
+    }
+
+    /// <summary>
+    /// 游戏图标修改
+    /// </summary>
+    /// <param name="obj"></param>
+    internal static void OnInstanceIconChange(GameSettingObj obj)
+    {
+        InstanceIconChange?.Invoke(obj);
     }
 }

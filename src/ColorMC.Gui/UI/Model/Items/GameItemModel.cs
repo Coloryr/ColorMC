@@ -53,6 +53,7 @@ public partial class GameItemModel : GameModel
     private readonly IMainTop _top;
 
     public string Name => Obj.Name;
+    public string UUID => Obj.UUID;
 
     [ObservableProperty]
     private bool _oneGame;
@@ -71,6 +72,7 @@ public partial class GameItemModel : GameModel
     public GameItemModel(BaseModel model, IMainTop top, GameSettingObj obj) : base(model, obj)
     {
         _top = top;
+        _group = obj.GroupName;
         LoadIcon();
     }
 
