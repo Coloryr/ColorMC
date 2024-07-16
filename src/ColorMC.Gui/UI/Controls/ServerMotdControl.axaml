@@ -21,9 +21,9 @@
                 <DockPanel Margin="5,0,0,0">
                     <Button
                         Name="Button2"
-                        Width="42"
-                        Height="42"
-                        Margin="-2"
+                        Width="38"
+                        Height="38"
+                        Margin="-3"
                         VerticalAlignment="Top"
                         Classes="top"
                         DockPanel.Dock="Right"

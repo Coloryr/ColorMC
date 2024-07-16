@@ -1,6 +1,12 @@
+using System;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
@@ -20,6 +26,12 @@ public partial class FileItemControl : UserControl
         PointerEntered += FileItemControl_PointerEntered;
         PointerExited += FileItemControl_PointerExited;
         PointerMoved += FileItemControl_PointerMoved;
+    }
+
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+        Dispatcher.UIThread.Post(FadeIn);
     }
 
     private void FileItemControl_PointerMoved(object? sender, PointerEventArgs e)
@@ -99,5 +111,66 @@ public partial class FileItemControl : UserControl
                 });
             });
         }
+    }
+
+    private void FadeIn()
+    {
+        var animation = new Animation
+        {
+            FillMode = FillMode.Forward,
+            Easing = new CircularEaseInOut(),
+            Children =
+            {
+                new KeyFrame
+                {
+                    Setters =
+                    {
+                        new Setter
+                        {
+                            Property = OpacityProperty,
+                            Value = 0.0d
+                        },
+                        new Setter
+                        {
+                            Property = TranslateTransform.YProperty,
+                            Value = 10d
+                        }
+                    },
+                    Cue = new Cue(0d)
+                },
+                new KeyFrame
+                {
+                    Setters =
+                    {
+                        new Setter
+                        {
+                            Property = OpacityProperty,
+                            Value = 1.0d
+                        },
+                        new Setter
+                        {
+                            Property = TranslateTransform.YProperty,
+                            Value = 10d
+                        }
+                    },
+                    Cue = new Cue(0.5d)
+                },
+                new KeyFrame
+                {
+                    Setters =
+                    {
+                        new Setter
+                        {
+                            Property = TranslateTransform.YProperty,
+                            Value = 0d
+                        }
+                    },
+                    Cue = new Cue(1d)
+                }
+            },
+            Duration = TimeSpan.FromMilliseconds(500)
+        };
+
+        animation.RunAsync(this);
     }
 }

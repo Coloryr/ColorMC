@@ -19,7 +19,10 @@
                     <TextBlock Text="{Binding NowProgress, StringFormat=0.00, FallbackValue=50}" />
                     <TextBlock Text="%" />
                 </StackPanel>
-                <TextBlock Text="{Binding Name, FallbackValue=Name}" TextTrimming="CharacterEllipsis" />
+                <TextBlock
+                    Foreground="{setting:Theme MainColor}"
+                    Text="{Binding Name, FallbackValue=Name}"
+                    TextTrimming="CharacterEllipsis" />
             </DockPanel>
             <ProgressBar
                 Height="10"
@@ -31,8 +34,8 @@
                 Value="{Binding NowProgress}" />
             <WrapPanel>
                 <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                    <TextBlock Text="{setting:Localize DownloadWindow.Text5}" />
-                    <TextBlock Text="{Binding Index, FallbackValue=1}" />
+                    <TextBlock Foreground="#FF9A9A9A" Text="{setting:Localize DownloadWindow.Text5}" />
+                    <TextBlock Foreground="#FF9A9A9A" Text="{Binding Index, FallbackValue=1}" />
                 </StackPanel>
                 <TextBlock
                     Width="100"

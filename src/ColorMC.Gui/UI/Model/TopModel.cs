@@ -4,6 +4,8 @@ namespace ColorMC.Gui.UI.Model;
 
 public abstract partial class TopModel(BaseModel model) : ObservableObject
 {
+    public const string MinModeName = nameof(MinMode);
+
     public BaseModel Model => model;
 
     [ObservableProperty]
@@ -11,7 +13,7 @@ public abstract partial class TopModel(BaseModel model) : ObservableObject
 
     public virtual void WidthChange(int index, double width)
     {
-        if (width < 450)
+        if (width < 470)
         {
             MinMode = true;
         }

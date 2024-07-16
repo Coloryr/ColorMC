@@ -14,7 +14,7 @@
         <Border Margin="10,5,10,3" Classes="t2">
             <DataGrid
                 Name="DataGrid1"
-                Margin="15"
+                Margin="5"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False"

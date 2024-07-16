@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
@@ -78,5 +79,10 @@ public partial class UsersControl : BaseUserControl
     public override Bitmap GetIcon()
     {
         return ImageManager.GameIcon;
+    }
+
+    public void Relogin()
+    {
+        (DataContext as UsersControlModel)!.ReLogin();
     }
 }

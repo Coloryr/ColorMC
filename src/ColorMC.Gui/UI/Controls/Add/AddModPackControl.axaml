@@ -178,24 +178,21 @@
                 </Panel>
             </DockPanel>
         </ScrollViewer>
-        <Border
-            Name="ModPackFiles"
-            Background="{setting:Theme TopViewBG}"
-            IsVisible="False">
+        <Decorator Name="ModPackFiles" IsVisible="False">
             <Border
-                Margin="10"
-                Classes="t3"
+                Margin="20,10,20,20"
+                Classes="t2"
                 DockPanel.Dock="Top">
-                <DockPanel Margin="15">
-                    <WrapPanel DockPanel.Dock="Top">
-                        <TextBlock Margin="0,0,5,10" Text="{setting:Localize Text.GameVersion}" />
+                <DockPanel>
+                    <WrapPanel Margin="15,15,15,0" DockPanel.Dock="Top">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                         <ComboBox
                             Width="150"
-                            Margin="0,0,10,10"
+                            Margin="0,0,10,0"
                             VerticalAlignment="Center"
                             ItemsSource="{Binding GameVersionList}"
                             SelectedItem="{Binding GameVersion1}" />
-                        <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
+                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text5}" />
                             <NumericUpDown
                                 Width="110"
@@ -209,7 +206,7 @@
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,3,7"
+                                Margin="-2,-3,3,-3"
                                 Classes="top"
                                 Command="{Binding Search}"
                                 Content="{setting:Localize AddModPackWindow.Text10}"
@@ -218,7 +215,7 @@
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,3,7"
+                                Margin="-2,-3,3,-3"
                                 Classes="top"
                                 Command="{Binding Download}"
                                 Content="{setting:Localize AddModPackWindow.Text12}"
@@ -228,6 +225,7 @@
                     </WrapPanel>
                     <DataGrid
                         Name="PackFiles"
+                        Margin="5"
                         CanUserResizeColumns="True"
                         ItemsSource="{Binding FileList}"
                         SelectedItem="{Binding Item}">
@@ -252,6 +250,6 @@
                     </DataGrid>
                 </DockPanel>
             </Border>
-        </Border>
+        </Decorator>
     </Panel>
 </UserControl>

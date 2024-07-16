@@ -25,7 +25,7 @@
                     <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
-            <StackPanel Margin="110,0,0,0">
+            <StackPanel Margin="105,0,0,0">
                 <TextBlock
                     FontSize="16"
                     Foreground="{setting:Theme MainColor}"

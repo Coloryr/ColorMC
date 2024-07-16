@@ -100,10 +100,12 @@ public partial class AddModPackControl : BaseUserControl
                 if ((DataContext as AddModPackControlModel)!.Display)
                 {
                     App.CrossFade300.Start(null, ModPackFiles);
+                    App.CrossFade300.Start(ScrollViewer1, null);
                 }
                 else
                 {
                     App.CrossFade300.Start(ModPackFiles, null);
+                    App.CrossFade300.Start(null, ScrollViewer1);
                 }
             });
         }

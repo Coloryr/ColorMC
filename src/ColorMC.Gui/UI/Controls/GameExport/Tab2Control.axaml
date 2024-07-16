@@ -12,12 +12,12 @@
     mc:Ignorable="d">
     <Decorator Margin="0,0,10,15">
         <Border Margin="10,5,10,3" Classes="t2">
-            <DockPanel Margin="15">
-                <DockPanel Margin="0,0,0,10" DockPanel.Dock="Top">
+            <DockPanel>
+                <DockPanel Margin="15,15,15,0" DockPanel.Dock="Top">
                     <Button
                         Width="100"
                         Height="35"
-                        Margin="-2,-3,-2,-2"
+                        Margin="-2,-3,-2,-3"
                         Classes="top"
                         Command="{Binding OpenMod}"
                         Content="{setting:Localize Button.OpFile}"
@@ -27,7 +27,7 @@
                     <Button
                         Width="100"
                         Height="35"
-                        Margin="-2,-3,3,-2"
+                        Margin="-2,-3,3,-3"
                         Classes="top"
                         Command="{Binding LoadMod}"
                         Content="{setting:Localize Button.Refash}"
@@ -41,6 +41,7 @@
                 </DockPanel>
                 <DataGrid
                     Name="DataGrid1"
+                    Margin="5"
                     AutoGenerateColumns="False"
                     CanUserResizeColumns="True"
                     CanUserSortColumns="False"

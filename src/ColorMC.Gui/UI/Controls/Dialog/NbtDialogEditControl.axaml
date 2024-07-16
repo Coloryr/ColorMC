@@ -11,7 +11,7 @@
     mc:Ignorable="d">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <DockPanel
-            Margin="5"
+            Margin="5,5,5,0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             DockPanel.Dock="Top">
@@ -35,6 +35,7 @@
                     <TextBlock Text="{Binding DataType}" />
                 </StackPanel>
                 <ToggleSwitch
+                    Margin="0,0,0,-5"
                     DockPanel.Dock="Right"
                     IsChecked="{Binding HexEdit}"
                     OffContent="{setting:Localize ConfigEditWindow.Text12}"

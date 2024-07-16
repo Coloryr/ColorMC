@@ -14,9 +14,9 @@
     <Panel>
         <Decorator Margin="0,0,10,15">
             <Border Margin="10,5,10,3" Classes="t2">
-                <DockPanel Margin="15">
+                <DockPanel>
                     <StackPanel
-                        Margin="0,0,0,10"
+                        Margin="15,15,15,0"
                         DockPanel.Dock="Top"
                         IsVisible="{Binding MinMode}">
                         <DockPanel Margin="0,0,0,10">
@@ -44,7 +44,7 @@
                         </DockPanel>
                     </StackPanel>
                     <DockPanel
-                        Margin="0,0,0,10"
+                        Margin="15,15,15,0"
                         DockPanel.Dock="Top"
                         IsVisible="{Binding !MinMode}">
                         <Button
@@ -71,6 +71,7 @@
                     </DockPanel>
                     <DataGrid
                         Name="DataGrid1"
+                        Margin="5"
                         AutoGenerateColumns="False"
                         CanUserResizeColumns="True"
                         HorizontalScrollBarVisibility="Visible"

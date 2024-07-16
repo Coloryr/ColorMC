@@ -21,10 +21,15 @@
 
     <Style Selector="DataGrid">
         <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
+        <Style Selector="^ /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
+            <Setter Property="Fill" Value="Transparent" />
+        </Style>
     </Style>
 
     <Style Selector="DataGridColumnHeader">
         <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="SeparatorBrush" Value="Transparent" />
     </Style>
 
     <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">

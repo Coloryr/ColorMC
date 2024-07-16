@@ -23,12 +23,6 @@ public partial class MainModel : TopModel, IMainTop
 
     public bool IsPhone { get; } = SystemInfo.Os == OsType.Android;
 
-    private static readonly string[] _side =
-    [
-        "/Resource/Icon/left.svg",
-        "/Resource/Icon/menu.svg"
-    ];
-
     private readonly Semaphore _semaphore = new(0, 2);
     private readonly Dictionary<string, GameItemModel> Launchs = [];
 
@@ -59,15 +53,6 @@ public partial class MainModel : TopModel, IMainTop
     private bool _haveUpdate;
 
     [ObservableProperty]
-    private bool _topSide = true;
-    [ObservableProperty]
-    private bool _topSide1 = true;
-    [ObservableProperty]
-    private bool _topSide2 = false;
-    [ObservableProperty]
-    private string _sidePath = _side[0];
-
-    [ObservableProperty]
     private string _helloText;
 
     [ObservableProperty]
@@ -84,33 +69,6 @@ public partial class MainModel : TopModel, IMainTop
         App.UserEdit += LoadUser;
 
         ShowHello();
-    }
-
-    partial void OnTopSideChanged(bool value)
-    {
-        if (value)
-        {
-            SidePath = _side[1];
-        }
-        else
-        {
-            SidePath = _side[0];
-        }
-    }
-
-    [RelayCommand]
-    public void OpenSide()
-    {
-        if (TopSide)
-        {
-            TopSide1 = true;
-            TopSide = false;
-        }
-        else
-        {
-            TopSide1 = false;
-            TopSide = true;
-        }
     }
 
     [RelayCommand]
@@ -220,6 +178,7 @@ public partial class MainModel : TopModel, IMainTop
     {
         NewsDisplay = true;
         SideDisplay = false;
+        MotdDisplay = false;
         HelloText = App.Lang("MainWindow.Text20");
         Model.PushBack(NewBack);
         OnPropertyChanged(SwitchView);
@@ -233,7 +192,11 @@ public partial class MainModel : TopModel, IMainTop
     private void NewBack()
     {
         NewsDisplay = false;
-        SideDisplay = true;
+        if (!MinMode)
+        {
+            SideDisplay = true;
+        }
+        LoadMotd();
         ShowHello();
         Model.PopBack();
         OnPropertyChanged(SwitchView);

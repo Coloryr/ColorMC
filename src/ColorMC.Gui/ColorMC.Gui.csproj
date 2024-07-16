@@ -333,4 +333,7 @@
     <ProjectReference Include="..\..\X11.Net\X11\X11.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="UI\Controls\Main\MainUserControl.axaml" />
+  </ItemGroup>
 </Project>

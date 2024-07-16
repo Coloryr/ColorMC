@@ -87,10 +87,11 @@
             <Panel>
                 <DataGrid
                     Name="JavaFiles"
-                    Margin="15"
+                    Margin="5"
                     AutoGenerateColumns="False"
                     CanUserResizeColumns="True"
                     CanUserSortColumns="False"
+                    IsVisible="{Binding !Display}"
                     ItemsSource="{Binding JavaList}">
                     <DataGrid.Columns>
                         <DataGridTextColumn
