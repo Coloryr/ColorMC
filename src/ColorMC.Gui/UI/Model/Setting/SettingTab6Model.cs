@@ -305,6 +305,7 @@ public partial class SettingModel
 
             EnableOneLogin = config.LockLogin;
 
+            Locks.Clear();
             foreach (var item in config.LockLogins)
             {
                 Locks.Add(new(this, item));

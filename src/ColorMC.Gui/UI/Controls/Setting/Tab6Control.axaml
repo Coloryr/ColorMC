@@ -12,7 +12,10 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <dialog:DialogHost DisableOpeningAnimation="True" Identifier="AddLockLogin">
+    <dialog:DialogHost
+        DisableOpeningAnimation="True"
+        Identifier="AddLockLogin"
+        OverlayBackground="Transparent">
         <dialog:DialogHost.DataTemplates>
             <DataTemplate DataType="model:AddLockLoginModel">
                 <view:AddLockLoginControl />
@@ -90,7 +93,7 @@
                                 ItemsSource="{Binding GameList}"
                                 SelectedIndex="{Binding Game}" />
                         </StackPanel>
-                        <DockPanel Margin="0,0,0,10">
+                        <DockPanel Margin="0,0,0,0">
                             <Button
                                 Width="90"
                                 Height="30"
@@ -108,6 +111,7 @@
                         <DataGrid
                             Name="LockLoginList"
                             Height="150"
+                            Margin="-10,-5,-10,-10"
                             CanUserResizeColumns="True"
                             IsEnabled="{Binding EnableOneLogin}"
                             ItemsSource="{Binding Locks}"

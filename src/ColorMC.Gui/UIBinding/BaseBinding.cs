@@ -296,7 +296,7 @@ public static class BaseBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="obj1">保存的账户</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, string?)> Launch(BaseModel model, GameSettingObj obj,
+    public static async Task<(bool, string?, LaunchState)> Launch(BaseModel model, GameSettingObj obj,
         LoginObj obj1, WorldObj? world = null, bool hide = false)
     {
         if (SystemInfo.Os == OsType.Android)
@@ -308,7 +308,7 @@ public static class BaseBinding
 
         if (RunGames.Contains(obj.UUID))
         {
-            return (false, App.Lang("Gui.Error42"));
+            return (false, App.Lang("Gui.Error42"), LaunchState.End);
         }
         //设置自动加入服务器
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
@@ -443,7 +443,7 @@ public static class BaseBinding
 
         if (s_launchCancel.IsCancellationRequested)
         {
-            return (true, null);
+            return (true, null, LaunchState.End);
         }
 
         if (res.Item1 is { } pr)
@@ -473,7 +473,7 @@ public static class BaseBinding
             UserBinding.UnLockUser(obj1);
         }
 
-        return (res.Item1 != null, res.Item2);
+        return (res.Item1 != null, res.Item2, res.Item3);
     }
 
     /// <summary>
@@ -618,13 +618,14 @@ public static class BaseBinding
     /// <param name="world">需要运行的世界</param>
     /// <param name="cancel">取消启动</param>
     /// <returns>进程信息</returns>
-    private static async Task<(IGameHandel?, string?)> Launch(GameSettingObj obj,
+    private static async Task<(IGameHandel?, string?, LaunchState)> Launch(GameSettingObj obj,
         ColorMCCore.Request request, ColorMCCore.LaunchP pre,
         ColorMCCore.UpdateState state, ColorMCCore.ChoiseCall select,
         ColorMCCore.NoJava nojava, ColorMCCore.LoginFailRun loginfail,
         ColorMCCore.GameLaunch update2, LoginObj obj1, WorldObj? world,
         int? mixinport, CancellationToken cancel)
     {
+        var state1 = LaunchState.End;
         string? temp;
         try
         {
@@ -643,16 +644,17 @@ public static class BaseBinding
                 Mixinport = mixinport
             }, cancel);
 
-            return (p, null);
+            return (p, null, LaunchState.End);
         }
         catch (LaunchException e1)
         {
+            state1 = e1.State;
             temp = App.Lang("Gui.Error6");
             if (!string.IsNullOrWhiteSpace(e1.Message))
             {
                 temp = e1.Message;
             }
-            if (e1.Ex != null)
+            else if (e1.Ex != null)
             {
                 Logs.Error(temp, e1.Ex);
                 WindowManager.ShowError(temp, e1.Ex);
@@ -664,7 +666,7 @@ public static class BaseBinding
             Logs.Error(temp, e);
             WindowManager.ShowError(temp, e);
         }
-        return (null, temp);
+        return (null, temp, state1);
     }
 
 

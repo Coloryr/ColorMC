@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -308,7 +310,18 @@ public partial class MainModel
         }
         if (res.Item1 == false)
         {
-            Model.Show(res.Item2!);
+            if (res.Item3 == LaunchState.LoginFail)
+            {
+                var res1 = await Model.ShowWait(string.Format(App.Lang("MainWindow.Error8"), res.Item2!));
+                if (res1)
+                {
+                    WindowManager.ShowUser(relogin: true);
+                }
+            }
+            else
+            {
+                Model.Show(res.Item2!);
+            }
         }
         else
         {

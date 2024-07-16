@@ -16,9 +16,6 @@ public partial class MainStartControl : UserControl
     public MainStartControl()
     {
         InitializeComponent();
-
-        Background = App.NowTheme == PlatformThemeVariant.Light
-            ? Brushes.White : Brushes.Black;
     }
 
     public async void Start(Control panel)

@@ -32,7 +32,7 @@
                 Name="Head"
                 DockPanel.Dock="Top"
                 IsVisible="{Binding EnableHead}" />
-            <dialog:DialogHost DisableOpeningAnimation="True" Identifier="{Binding Name}">
+            <dialog:DialogHost OverlayBackground="Transparent" DisableOpeningAnimation="True" Identifier="{Binding Name}">
                 <dialog:DialogHost.DataTemplates>
                     <DataTemplate DataType="dialogmodel:Info1Model">
                         <dialogview:Info1Control DataContext="{Binding}" />

@@ -357,23 +357,23 @@ public static class GameBinding
     /// <param name="world"></param>
     /// <param name="hide"></param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> Launch(BaseModel model, GameSettingObj? obj,
+    public static async Task<(bool, string?, LaunchState)> Launch(BaseModel model, GameSettingObj? obj,
         WorldObj? world = null, bool hide = false)
     {
         if (obj == null)
         {
-            return (false, App.Lang("Gui.Error39"));
+            return (false, App.Lang("Gui.Error39"), LaunchState.End);
         }
 
         if (BaseBinding.IsGameRun(obj))
         {
-            return (false, App.Lang("Gui.Error42"));
+            return (false, App.Lang("Gui.Error42"), LaunchState.End);
         }
 
         var user = await GetUser(model);
         if (user.Item1 == null)
         {
-            return (false, user.Item2);
+            return (false, user.Item2, LaunchState.End);
         }
 
         var res1 = await BaseBinding.Launch(model, obj, user.Item1, world, hide);

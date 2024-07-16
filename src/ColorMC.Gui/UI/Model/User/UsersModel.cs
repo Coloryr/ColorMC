@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Avalonia.Input;
@@ -693,6 +694,22 @@ public partial class UsersControlModel : TopModel
         {
             UserBinding.OAuthCancel();
         }
+    }
+
+    public void ReLogin()
+    {
+        var user = UserBinding.GetLastUser();
+        if (user == null)
+        {
+            return;
+        }
+        var obj = UserList.Where(item => item.AuthType == user.AuthType && item.UUID == user.UUID)
+            .FirstOrDefault();
+        if (obj == null)
+        {
+            return;
+        }
+        ReLogin(obj);
     }
 
     public async void Edit(UserDisplayModel obj)

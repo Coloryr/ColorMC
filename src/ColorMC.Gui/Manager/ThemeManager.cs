@@ -406,7 +406,7 @@ public static class ThemeManager
             ProgressBarBG = Brush.Parse("#FFe4e4e7"),
             MainGroupBG = Brush.Parse("#FFd4d4d8"),
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
-            ItemBG = Brush.Parse("#FFFFFFFF"),
+            ItemBG = Brush.Parse("#CFFFFFFF"),
             GameItemBG = Brush.Parse("#FFF2F2F2"),
             TopViewBG = Brush.Parse("#886D6D6D"),
             AllBorder = Brush.Parse("#FFe5e7eb"),
@@ -426,7 +426,7 @@ public static class ThemeManager
             ProgressBarBG = Brush.Parse("#FF3f3f46"),
             MainGroupBG = Brush.Parse("#FF27272a"),
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
-            ItemBG = Brush.Parse("#FF27272a"),
+            ItemBG = Brush.Parse("#CF27272a"),
             GameItemBG = Brush.Parse("#FFc7c7cb"),
             TopViewBG = Brush.Parse("#886D6D6D"),
             AllBorder = Brush.Parse("#FFe5e7eb"),
@@ -434,7 +434,7 @@ public static class ThemeManager
             TopBGColor = Brush.Parse("#FFF4F4F5"),
             TopGridColor = Brush.Parse("#FF202020"),
             OverBGColor = Brush.Parse("#FF000000"),
-            OverBrushColor = Brush.Parse("#FF1d1d1d")
+            OverBrushColor = Brush.Parse("#FF1d1d1d"),
         };
     }
 }

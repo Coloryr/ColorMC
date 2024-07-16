@@ -69,19 +69,6 @@ public partial class MainControl : BaseUserControl
         {
             model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
             model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
-
-            if (Bounds.Width > 500 && model.TopSide2 != false)
-            {
-                model.TopSide2 = false;
-                model.TopSide = true;
-                model.TopSide1 = true;
-            }
-            else if (Bounds.Width <= 500 && model.TopSide2 != true)
-            {
-                model.TopSide2 = true;
-                model.TopSide = false;
-                model.TopSide1 = true;
-            }
         }
     }
 
@@ -139,7 +126,7 @@ public partial class MainControl : BaseUserControl
             }
             if (str.StartsWith("authlib-injector:yggdrasil-server:"))
             {
-                WindowManager.ShowUser(false, str);
+                WindowManager.ShowUser(false, url:str);
             }
             else if (str.StartsWith("cloudkey:") || str.StartsWith("cloudKey:"))
             {
@@ -331,6 +318,43 @@ public partial class MainControl : BaseUserControl
         if (e.PropertyName == MainModel.SwitchView)
         {
             SwitchView();
+        }
+        else if (e.PropertyName == TopModel.MinModeName)
+        {
+            if (DataContext is MainModel model)
+            {
+                if (model.MinMode)
+                {
+                    //HeadTop.Children.Remove(Buttons);
+                    //ContentTop.Children.Add(Buttons);
+                    TopRight.IsVisible = false;
+
+                    TopRight.Child = null;
+                    ContentTop.Children.Add(HeadButton);
+                    HeadButton.Margin = new(0, 0, 0, 10);
+
+                    Right.Child = null;
+                    ContentTop.Children.Add(RightSide);
+                    model.SideDisplay = false;
+                }
+                else
+                {
+                    //ContentTop.Children.Remove(Buttons);
+                    //HeadTop.Children.Add(Buttons);
+                    TopRight.IsVisible = true;
+
+                    ContentTop.Children.Remove(HeadButton);
+                    TopRight.Child = HeadButton;
+                    HeadButton.Margin = new(0);
+
+                    ContentTop.Children.Remove(RightSide);
+                    Right.Child = RightSide;
+                    if (!model.NewsDisplay)
+                    {
+                        model.SideDisplay = true;
+                    }
+                }
+            }
         }
     }
 

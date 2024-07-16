@@ -222,7 +222,7 @@ public static class WindowManager
         });
     }
 
-    public static void ShowUser(bool add = false, string? url = null)
+    public static void ShowUser(bool add = false, bool relogin = false, string? url = null)
     {
         if (UserWindow != null)
         {
@@ -241,6 +241,10 @@ public static class WindowManager
         if (add)
         {
             UserWindow?.Add();
+        }
+        if (relogin)
+        {
+            UserWindow?.Relogin();
         }
     }
 

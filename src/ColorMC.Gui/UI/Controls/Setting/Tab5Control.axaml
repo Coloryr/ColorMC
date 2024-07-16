@@ -12,90 +12,87 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <DockPanel Margin="0,0,10,15">
-        <Border
-            Margin="10,5,10,3"
-            Classes="t2"
-            DockPanel.Dock="Top"
-            IsEnabled="{Binding !JavaFinding}">
-            <StackPanel Margin="15">
-                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                    <svg:SvgControl
-                        Width="24"
-                        Height="24"
-                        Margin="0,0,5,0"
-                        Fill="{setting:Theme FontColor}"
-                        Path="/Resource/Icon/Setting/svg16.svg"
-                        Stroke="{setting:Theme FontColor}" />
-                    <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab5.Text1}" />
-                </StackPanel>
-                <DockPanel Margin="0,5,0,5" IsVisible="{Binding !Phone}">
-                    <TextBox
-                        Width="130"
-                        Margin="0,0,10,0"
-                        Text="{Binding JavaName}"
-                        Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
-                    <TextBox Text="{Binding JavaLocal}" Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
-                </DockPanel>
-                <StackPanel
-                    HorizontalAlignment="Right"
-                    IsVisible="{Binding !Phone}"
-                    Orientation="Horizontal">
-                    <Button
-                        Width="90"
-                        Height="35"
-                        Margin="-2,-2,3,-2"
-                        Classes="top"
-                        Command="{Binding AddJava}"
-                        Content="{setting:Localize Button.Add}"
-                        DockPanel.Dock="Right" />
-                    <Button
-                        Width="90"
-                        Height="35"
-                        Margin="-2,-2,-3,-2"
-                        Classes="top"
-                        Command="{Binding SelectJava}"
-                        Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right" />
-                </StackPanel>
-            </StackPanel>
-        </Border>
+    <Decorator Margin="0,0,10,15">
         <Border Margin="10,5,10,3" Classes="t2">
-            <DataGrid
-                Name="DataGrid1"
-                Margin="15"
-                AutoGenerateColumns="False"
-                CanUserResizeColumns="True"
-                CanUserSortColumns="False"
-                ItemsSource="{Binding JavaList}"
-                SelectedItem="{Binding JavaItem}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="{setting:Localize Text.Name}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding MajorVersion}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text3}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Version}"
-                        Header="{setting:Localize Text.Version}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Type}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text5}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Arch}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text6}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Path}"
-                        Header="{setting:Localize Text.Path}"
-                        IsReadOnly="True" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <DockPanel>
+                <StackPanel
+                    Margin="15,15,15,0"
+                    DockPanel.Dock="Top"
+                    IsEnabled="{Binding !JavaFinding}">
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg16.svg" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab5.Text1}" />
+                    </StackPanel>
+                    <DockPanel Margin="0,5,0,5" IsVisible="{Binding !Phone}">
+                        <TextBox
+                            Width="130"
+                            Margin="0,0,10,0"
+                            Text="{Binding JavaName}"
+                            Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
+                        <TextBox Text="{Binding JavaLocal}" Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
+                    </DockPanel>
+                    <StackPanel
+                        HorizontalAlignment="Right"
+                        IsVisible="{Binding !Phone}"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="90"
+                            Height="35"
+                            Margin="-2,-2,3,-2"
+                            Classes="top"
+                            Command="{Binding AddJava}"
+                            Content="{setting:Localize Button.Add}"
+                            DockPanel.Dock="Right" />
+                        <Button
+                            Width="90"
+                            Height="35"
+                            Margin="-2,-2,-3,-2"
+                            Classes="top"
+                            Command="{Binding SelectJava}"
+                            Content="{setting:Localize Button.Select}"
+                            DockPanel.Dock="Right" />
+                    </StackPanel>
+                </StackPanel>
+                <DataGrid
+                    Name="DataGrid1"
+                    Margin="5"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    ItemsSource="{Binding JavaList}"
+                    SelectedItem="{Binding JavaItem}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize Text.Name}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding MajorVersion}"
+                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text3}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Version}"
+                            Header="{setting:Localize Text.Version}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Type}"
+                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text5}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Arch}"
+                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text6}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Path}"
+                            Header="{setting:Localize Text.Path}"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
         </Border>
-    </DockPanel>
+    </Decorator>
 </UserControl>

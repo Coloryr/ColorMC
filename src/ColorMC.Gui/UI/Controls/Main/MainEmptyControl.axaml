@@ -12,14 +12,12 @@
     x:DataType="model:MainModel"
     mc:Ignorable="d">
     <Panel Margin="20">
-        <StackPanel
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            RenderOptions.TextRenderingMode="Antialias">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
             <TextBlock
                 Margin="0,5,0,5"
                 HorizontalAlignment="Center"
                 FontSize="20"
+                RenderOptions.TextRenderingMode="Antialias"
                 Text="{setting:Localize MainWindow.Text7}" />
         </StackPanel>
 

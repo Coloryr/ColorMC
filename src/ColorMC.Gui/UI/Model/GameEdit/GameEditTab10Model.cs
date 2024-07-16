@@ -20,7 +20,10 @@ public partial class GameEditModel
 
     partial void OnServerItemChanged(ServerInfoObj? value)
     {
-        IPPort = (value?.IP, 0);
+        if (value != null)
+        {
+            IPPort = (value?.IP, 0);
+        }
     }
 
     private async void AddServer()

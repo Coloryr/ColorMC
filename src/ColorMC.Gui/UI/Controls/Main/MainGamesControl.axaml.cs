@@ -32,7 +32,6 @@ public partial class MainGamesControl : UserControl
                 model.SearchClose();
                 model.Select(null);
             }
-
         }
     }
 }

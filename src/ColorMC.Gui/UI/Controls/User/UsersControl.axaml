@@ -15,7 +15,7 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <dialog:DialogHost DisableOpeningAnimation="True" Identifier="UsersControl">
+        <dialog:DialogHost OverlayBackground="Transparent" DisableOpeningAnimation="True" Identifier="UsersControl">
             <dialog:DialogHost.DataTemplates>
                 <DataTemplate DataType="model:UsersControlModel">
                     <view:AddUserControl />

@@ -213,24 +213,21 @@
                 </Panel>
             </DockPanel>
         </ScrollViewer>
-        <Panel
-            Name="VersionDisplay"
-            Background="{setting:Theme TopViewBG}"
-            IsVisible="False">
+        <Decorator Name="VersionDisplay" IsVisible="False">
             <Border
-                Margin="10"
-                Classes="t3"
+                Margin="20,10,20,20"
+                Classes="t2"
                 DockPanel.Dock="Top">
-                <DockPanel Margin="15">
-                    <WrapPanel DockPanel.Dock="Top">
-                        <TextBlock Margin="0,0,10,10" Text="{setting:Localize Text.GameVersion}" />
+                <DockPanel>
+                    <WrapPanel Margin="15,15,15,0" DockPanel.Dock="Top">
+                        <TextBlock Margin="0,0,10,0" Text="{setting:Localize Text.GameVersion}" />
                         <ComboBox
                             Width="150"
-                            Margin="0,0,10,10"
+                            Margin="0,0,10,0"
                             VerticalAlignment="Center"
                             ItemsSource="{Binding GameVersionList}"
                             SelectedItem="{Binding GameVersionDownload}" />
-                        <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
+                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text5}" />
                             <NumericUpDown
                                 Width="110"
@@ -245,7 +242,7 @@
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,3,7"
+                                Margin="-2,-3,3,-3"
                                 Classes="top"
                                 Command="{Binding Refresh1}"
                                 Content="{setting:Localize AddModPackWindow.Text10}"
@@ -254,7 +251,7 @@
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,3,7"
+                                Margin="-2,-3,3,-3"
                                 Classes="top"
                                 Command="{Binding GoFile}"
                                 Content="{setting:Localize AddModPackWindow.Text12}"
@@ -264,6 +261,7 @@
                     </WrapPanel>
                     <DataGrid
                         Name="VersionFiles"
+                        Margin="5"
                         CanUserResizeColumns="True"
                         ItemsSource="{Binding FileList}"
                         SelectedItem="{Binding File}">
@@ -292,25 +290,22 @@
                     </DataGrid>
                 </DockPanel>
             </Border>
-        </Panel>
-        <Panel
-            Name="OptifineDisplay"
-            Background="{setting:Theme TopViewBG}"
-            IsVisible="False">
-            <Border Margin="10" Classes="t3">
-                <DockPanel Margin="15">
-                    <WrapPanel DockPanel.Dock="Top">
-                        <TextBlock Margin="0,0,5,10" Text="{setting:Localize Text.GameVersion}" />
+        </Decorator>
+        <Decorator Name="OptifineDisplay" IsVisible="False">
+            <Border Margin="20,10,20,20" Classes="t2">
+                <DockPanel>
+                    <WrapPanel Margin="15,15,15,0" DockPanel.Dock="Top">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                         <ComboBox
                             Width="150"
-                            Margin="0,0,10,10"
+                            Margin="0,0,10,0"
                             ItemsSource="{Binding GameVersionList}"
                             SelectedItem="{Binding GameVersionOptifine}" />
                         <StackPanel Orientation="Horizontal">
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,3,7"
+                                Margin="-2,-3,3,-3"
                                 Classes="top"
                                 Command="{Binding LoadOptifineList}"
                                 Content="{setting:Localize AddModPackWindow.Text10}"
@@ -319,7 +314,7 @@
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,3,7"
+                                Margin="-2,-3,3,-3"
                                 Classes="top"
                                 Command="{Binding DownloadOptifine}"
                                 Content="{setting:Localize AddModPackWindow.Text12}"
@@ -329,6 +324,7 @@
                     </WrapPanel>
                     <DataGrid
                         Name="OptifineFiles"
+                        Margin="5"
                         CanUserResizeColumns="True"
                         ItemsSource="{Binding DownloadOptifineList}"
                         SelectedItem="{Binding OptifineItem}">
@@ -353,17 +349,14 @@
                     </DataGrid>
                 </DockPanel>
             </Border>
-        </Panel>
-        <Panel
-            Name="ModDownloadDisplay"
-            Background="{setting:Theme TopViewBG}"
-            IsVisible="False">
-            <Border Margin="10" Classes="t3">
-                <DockPanel Margin="15">
-                    <WrapPanel DockPanel.Dock="Top">
-                        <TextBlock Margin="0,0,10,10" Text="{setting:Localize AddWindow.Text7}" />
+        </Decorator>
+        <Decorator Name="ModDownloadDisplay" IsVisible="False">
+            <Border Margin="20,10,20,20" Classes="t2">
+                <DockPanel>
+                    <WrapPanel Margin="15,15,15,0" DockPanel.Dock="Top">
+                        <TextBlock Margin="0,0,20,0" Text="{setting:Localize AddWindow.Text7}" />
                         <ToggleSwitch
-                            Margin="0,0,10,10"
+                            Margin="0,0,10,0"
                             IsChecked="{Binding LoadMoreMod}"
                             OffContent="{setting:Localize AddWindow.Text9}"
                             OnContent="{setting:Localize AddWindow.Text9}" />
@@ -371,7 +364,7 @@
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,3,7"
+                                Margin="-2,-3,3,-3"
                                 Classes="top"
                                 Command="{Binding DownloadAllMod}"
                                 Content="{setting:Localize AddWindow.Text6}"
@@ -380,7 +373,7 @@
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,3,7"
+                                Margin="-2,-3,3,-3"
                                 Classes="top"
                                 Command="{Binding DownloadMod}"
                                 Content="{setting:Localize AddModPackWindow.Text12}"
@@ -390,6 +383,7 @@
                     </WrapPanel>
                     <DataGrid
                         Name="ModDownloadFiles"
+                        Margin="5"
                         CanUserResizeColumns="True"
                         ItemsSource="{Binding DownloadModList}"
                         SelectedItem="{Binding Mod}">
@@ -415,6 +409,6 @@
                     </DataGrid>
                 </DockPanel>
             </Border>
-        </Panel>
+        </Decorator>
     </Panel>
 </UserControl>

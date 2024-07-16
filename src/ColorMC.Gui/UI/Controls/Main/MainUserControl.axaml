@@ -1,0 +1,103 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Main.MainUserControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    x:DataType="model:MainModel"
+    mc:Ignorable="d">
+    <Border BorderThickness="0" Classes="t2">
+        <Border.Background>
+            <ImageBrush Source="resm:ColorMC.Gui.Resource.Pic.pic1.png" Stretch="UniformToFill" />
+        </Border.Background>
+        <Border BorderThickness="0" Classes="t2">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0%,50%" EndPoint="80%,50%">
+                    <GradientStop Offset="0.0" Color="Black" />
+                    <GradientStop Offset="1.0" Color="#00000000" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Styles>
+                <Style Selector="Button#User">
+                    <Setter Property="Background" />
+                    <Style Selector="^:pressed">
+                        <Setter Property="RenderTransform" Value="scale(1)" />
+                    </Style>
+                    <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </Style>
+                <Style Selector="Button#Skin">
+                    <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                    <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </Style>
+            </Border.Styles>
+            <Button
+                Name="User"
+                Height="60"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                BorderThickness="0"
+                Command="{Binding ShowUser}">
+                <DockPanel Margin="5,0,0,0">
+                    <Panel HorizontalAlignment="Left">
+                        <Border
+                            Width="50"
+                            Height="50"
+                            VerticalAlignment="Center">
+                            <Border.Background>
+                                <ImageBrush Source="{Binding Head}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <ProgressBar
+                            Width="38"
+                            Height="10"
+                            MinWidth="38"
+                            CornerRadius="20"
+                            IsIndeterminate="{Binding IsHeadLoad}"
+                            IsVisible="{Binding IsHeadLoad}" />
+                    </Panel>
+                    <Button
+                        Name="Skin"
+                        Width="35"
+                        Height="35"
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Right"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding ShowSkin}"
+                        CornerRadius="5"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text9}"
+                        ToolTip.VerticalOffset="-30">
+                        <svg:SvgControl Path="/Resource/Icon/skin.svg" Stroke="White" />
+                    </Button>
+                    <StackPanel
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Left"
+                        RenderOptions.TextRenderingMode="Antialias">
+                        <TextBlock
+                            FontSize="17"
+                            Foreground="White"
+                            Text="{Binding UserId, FallbackValue=User Name}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            FontSize="12"
+                            Foreground="White"
+                            Text="{Binding UserType, FallbackValue=456}" />
+                    </StackPanel>
+                </DockPanel>
+            </Button>
+        </Border>
+    </Border>
+</UserControl>
