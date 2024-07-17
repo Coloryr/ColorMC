@@ -64,12 +64,12 @@ public partial class AddGameModel
     /// 版本类型
     /// </summary>
     [ObservableProperty]
-    private int versionType;
+    private int _versionType;
     /// <summary>
     /// 加载器类型
     /// </summary>
     [ObservableProperty]
-    private int loaderType = -1;
+    private int _loaderType = -1;
 
     /// <summary>
     /// 加载器类型列表

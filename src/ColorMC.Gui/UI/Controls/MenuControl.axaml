@@ -13,7 +13,7 @@
     x:DataType="model:MenuModel"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel>
+        <DockPanel Name="TopPanel">
             <Decorator Name="SidePanel1" DockPanel.Dock="Left" />
             <StackPanel
                 Name="StackPanel2"

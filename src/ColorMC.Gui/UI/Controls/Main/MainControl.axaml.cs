@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -170,6 +171,7 @@ public partial class MainControl : BaseUserControl
         {
             _emptyGame ??= new();
             Content1.Child = _emptyGame;
+            model.LoadEmptyGame();
         }
         else
         {
@@ -190,7 +192,7 @@ public partial class MainControl : BaseUserControl
         App.Close();
     }
 
-    public override void Opened()
+    public override async void Opened()
     {
         Window.SetTitle(Title);
 
@@ -198,9 +200,13 @@ public partial class MainControl : BaseUserControl
 
         if (BaseBinding.NewStart)
         {
+            MainView.Opacity = 0;
             var con1 = new MainStartControl();
             Start.Child = con1;
-            con1.Start(Start);
+            Start.IsVisible = true;
+            await con1.Start();
+            await App.CrossFade300.Start(Start, MainView, CancellationToken.None);
+            Start.IsVisible = false;
         }
 
         if (ColorMCGui.IsCrash)

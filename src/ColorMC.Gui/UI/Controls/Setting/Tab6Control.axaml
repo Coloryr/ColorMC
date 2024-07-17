@@ -70,7 +70,6 @@
                         </WrapPanel>
                     </StackPanel>
                 </Border>
-
                 <Border Margin="10,5,10,3" Classes="t2">
                     <StackPanel Margin="15">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -90,14 +89,22 @@
                             <ComboBox
                                 Width="175"
                                 IsEnabled="{Binding EnableOneGame}"
+                                IsVisible="{Binding !MinMode}"
                                 ItemsSource="{Binding GameList}"
                                 SelectedIndex="{Binding Game}" />
                         </StackPanel>
-                        <DockPanel Margin="0,0,0,0">
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="{Binding EnableOneGame}"
+                            IsVisible="{Binding MinMode}"
+                            ItemsSource="{Binding GameList}"
+                            SelectedIndex="{Binding Game}" />
+                        <DockPanel>
                             <Button
                                 Width="90"
-                                Height="30"
+                                Height="35"
                                 Margin="-2,-2,-3,-2"
+                                Classes="top"
                                 Command="{Binding AddLockLogin}"
                                 Content="{setting:Localize SettingWindow.Tab6.Text33}"
                                 DockPanel.Dock="Right"
@@ -198,21 +205,6 @@
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text26}"
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text26}" />
                         </WrapPanel>
-                        <TextBox
-                            Margin="0,5,0,5"
-                            Classes="input1"
-                            IsEnabled="{Binding EnableMusic}"
-                            Text="{Binding Music}"
-                            Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,-3,-2"
-                            HorizontalAlignment="Right"
-                            Classes="top"
-                            Command="{Binding SelectMusic}"
-                            Content="{setting:Localize Button.Select}"
-                            IsEnabled="{Binding EnableMusic}" />
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <TextBlock Text="{setting:Localize SettingWindow.Tab6.Text18}" />
                             <Slider
@@ -234,9 +226,24 @@
                                 Margin="0,0,5,0"
                                 Text="{Binding Volume, StringFormat='{}{0}%'}" />
                         </StackPanel>
+                        <TextBox
+                            Margin="0,5,0,5"
+                            Classes="input1"
+                            IsEnabled="{Binding EnableMusic}"
+                            Text="{Binding Music}"
+                            Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
+                        <Button
+                            Width="90"
+                            Height="35"
+                            Margin="-2,-2,-3,-2"
+                            HorizontalAlignment="Right"
+                            Classes="top"
+                            Command="{Binding SelectMusic}"
+                            Content="{setting:Localize Button.Select}"
+                            IsEnabled="{Binding EnableMusic}" />
                         <WrapPanel Margin="0,0,0,-5">
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-3,-6,3,-2"
                                 Classes="top"
@@ -244,7 +251,7 @@
                                 Content="{setting:Localize SettingWindow.Tab6.Text19}"
                                 IsEnabled="{Binding EnableMusic}" />
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"
@@ -252,7 +259,7 @@
                                 Content="{setting:Localize SettingWindow.Tab6.Text21}"
                                 IsEnabled="{Binding EnableMusic}" />
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"
@@ -260,7 +267,7 @@
                                 Content="{setting:Localize SettingWindow.Tab6.Text23}"
                                 IsEnabled="{Binding EnableMusic}" />
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"

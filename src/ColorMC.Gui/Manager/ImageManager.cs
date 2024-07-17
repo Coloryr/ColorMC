@@ -27,8 +27,6 @@ public static class ImageManager
     public static SKBitmap? CapeBitmap { get; private set; }
     public static Bitmap? HeadBitmap { get; private set; }
 
-    public static Bitmap DefaultHeadBitmap { get; private set; }
-
     private static readonly Dictionary<string, Bitmap> s_gameIcon = [];
 
     public static void Load()
@@ -45,11 +43,6 @@ public static class ImageManager
         {
             using var asset1 = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.load.png"));
             LoadIcon = new(asset1!);
-        }
-        {
-            var uri = new Uri($"resm:ColorMC.Gui.Resource.Pic.user.png");
-            using var asset = AssetLoader.Open(uri);
-            DefaultHeadBitmap = new Bitmap(asset);
         }
     }
 
@@ -118,7 +111,7 @@ public static class ImageManager
     public static void SetDefaultHead()
     {
         RemoveSkin();
-        HeadBitmap = DefaultHeadBitmap;
+        HeadBitmap = null;
         App.OnSkinLoad();
     }
 
@@ -156,10 +149,7 @@ public static class ImageManager
     {
         SkinBitmap?.Dispose();
         CapeBitmap?.Dispose();
-        if (HeadBitmap is { } && HeadBitmap != DefaultHeadBitmap)
-        {
-            HeadBitmap.Dispose();
-        }
+        HeadBitmap?.Dispose();
 
         HeadBitmap = null;
         SkinBitmap = null;

@@ -249,7 +249,7 @@ public partial class MainModel : TopModel, IMainTop
                 return;
             }
             HaveUpdate = true;
-            _isNewUpdate = data.Item2 || ColorMCGui.IsAot;
+            _isNewUpdate = data.Item2 || ColorMCGui.IsAot || ColorMCGui.IsMin;
             _updateStr = data.Item3!;
         }
     }

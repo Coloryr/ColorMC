@@ -22,6 +22,7 @@
                     Command="{Binding AddGame}"
                     Content="{setting:Localize Button.Done}"
                     DockPanel.Dock="Bottom"
+                    IsEnabled="{Binding !IsLoad}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text69}"
                     ToolTip.VerticalOffset="-30" />
                 <StackPanel>
@@ -40,12 +41,11 @@
                             Path="/Resource/Icon/GameEdit/svg1.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize Text.GameVersion}" />
                     </StackPanel>
-                    <StackPanel IsVisible="{Binding MinMode}">
+                    <StackPanel IsEnabled="{Binding !IsLoad}" IsVisible="{Binding MinMode}">
                         <DockPanel Margin="0,0,0,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
                                 HorizontalAlignment="Stretch"
-                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding VersionTypeList}"
                                 SelectedIndex="{Binding VersionType}" />
                         </DockPanel>
@@ -53,7 +53,6 @@
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
                             <ComboBox
                                 HorizontalAlignment="Stretch"
-                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding GameVersionList}"
                                 SelectedItem="{Binding Version}" />
                         </DockPanel>
@@ -65,17 +64,15 @@
                             Classes="top"
                             Command="{Binding LoadVersion}"
                             Content="{setting:Localize GameEditWindow.Tab1.Text2}"
-                            IsEnabled="{Binding !IsLoad}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}"
                             ToolTip.VerticalOffset="-30" />
                     </StackPanel>
-                    <WrapPanel IsVisible="{Binding !MinMode}">
+                    <WrapPanel IsEnabled="{Binding !IsLoad}" IsVisible="{Binding !MinMode}">
                         <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
                                 Width="200"
                                 Margin="0,0,10,0"
-                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding VersionTypeList}"
                                 SelectedIndex="{Binding VersionType}" />
                         </StackPanel>
@@ -84,7 +81,6 @@
                             <ComboBox
                                 Width="200"
                                 Margin="0,0,10,0"
-                                IsEnabled="{Binding !IsLoad}"
                                 ItemsSource="{Binding GameVersionList}"
                                 SelectedItem="{Binding Version}" />
                         </StackPanel>
@@ -95,7 +91,6 @@
                             Classes="top"
                             Command="{Binding LoadVersion}"
                             Content="{setting:Localize GameEditWindow.Tab1.Text2}"
-                            IsEnabled="{Binding !IsLoad}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>

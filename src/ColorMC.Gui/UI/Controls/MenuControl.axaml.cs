@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Threading;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -58,12 +59,14 @@ public abstract partial class MenuControl : BaseUserControl
             model.TopSide = false;
             _control.SidePanel2.Child = null;
             _control.SidePanel1.Child = _sideControl;
+            _control.TopPanel.Margin = new Thickness(0);
         }
         else
         {
             model.TopSide = true;
             _control.SidePanel1.Child = null;
             _control.SidePanel2.Child = _sideControl;
+            _control.TopPanel.Margin = new Thickness(10,0,0,0);
         }
     }
 

@@ -35,6 +35,7 @@ public static class ColorMCGui
     public static Func<Control> PhoneGetSetting { get; set; }
     public static Func<FrpType, string> PhoneGetFrp { get; set; }
     public static bool IsAot { get; set; }
+    public static bool IsMin { get; set; }
     public static bool IsCrash { get; set; }
 
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Regular.ttf?assembly=ColorMC.Launcher#MiSans";
@@ -160,9 +161,10 @@ public static class ColorMCGui
         }
     }
 
-    public static void SetAot(bool aot)
+    public static void SetRuntimeState(bool aot, bool min)
     {
         IsAot = aot;
+        IsMin = min;
     }
 
     public static void SetBaseSha1(string[] data)
