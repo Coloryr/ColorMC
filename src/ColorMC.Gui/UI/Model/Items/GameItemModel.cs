@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
@@ -62,6 +64,26 @@ public partial class GameItemModel : GameModel
     private Bitmap _pic;
 
     private readonly string? _group;
+
+    public int Index
+    {
+        set
+        {
+            switch (value)
+            {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    {
+                        using var asset = AssetLoader.Open(new Uri($"resm:ColorMC.Gui.Resource.Pic.{value}.png"));
+                        Pic = new Bitmap(asset);
+                    }
+                    break;
+            }
+        }
+    }
 
     public GameItemModel(BaseModel model, string? group) : base(model, new() { })
     {

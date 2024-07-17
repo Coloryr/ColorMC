@@ -221,7 +221,16 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
             _change = false;
             ChangeModel();
             model.ChangeModelDone();
-            model.ShowMessage(App.Lang("MainWindow.Live2D.Text1"));
+            var random = new Random();
+            var index = random.Next(1000);
+            if (index == 666)
+            {
+                model.ShowMessage("Ciallo～(∠·ω< )⌒★");
+            }
+            else
+            {
+                model.ShowMessage(App.Lang("MainWindow.Live2D.Text1"));
+            }
         }
         if (_delete)
         {

@@ -12,7 +12,20 @@ public partial class SettingModel
 {
     public Bitmap Bitmap => ImageManager.GameIcon;
     public string Version => ColorMCCore.Version;
-    public string RunType => App.Lang(ColorMCGui.IsAot ? "SettingWindow.Tab7.Info1" : "SettingWindow.Tab7.Info2");
+    public string RunType => GetRunType();
+
+    private string GetRunType()
+    {
+        if (ColorMCGui.IsAot)
+        {
+            return App.Lang("SettingWindow.Tab7.Info1");
+        }
+        else if (ColorMCGui.IsMin)
+        {
+            return App.Lang("SettingWindow.Tab7.Info4");
+        }
+        return App.Lang("SettingWindow.Tab7.Info2");
+    }
 
     [RelayCommand]
     public void OpenUrl1(object urls)

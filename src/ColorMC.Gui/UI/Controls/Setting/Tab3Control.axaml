@@ -23,7 +23,7 @@
                                 Path="/Resource/Icon/Setting/svg7.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                         </StackPanel>
-                        <WrapPanel Margin="0,0,0,0">
+                        <WrapPanel IsVisible="{Binding !MinMode}">
                             <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
                                 <TextBlock
                                     Margin="0,0,5,0"
@@ -47,6 +47,30 @@
                                     Value="{Binding Thread}" />
                             </StackPanel>
                         </WrapPanel>
+                        <StackPanel IsVisible="{Binding MinMode}">
+                            <DockPanel Margin="0,0,0,5">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    HorizontalAlignment="Center"
+                                    Text="{setting:Localize Text.DownloadSource}" />
+                                <ComboBox
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding SourceList}"
+                                    SelectedIndex="{Binding Source}" />
+                            </DockPanel>
+                            <DockPanel Margin="0,0,0,5">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    HorizontalAlignment="Center"
+                                    Text="{setting:Localize SettingWindow.Tab3.Text2}" />
+                                <NumericUpDown
+                                    Height="30"
+                                    HorizontalAlignment="Stretch"
+                                    FormatString="N0"
+                                    Minimum="1"
+                                    Value="{Binding Thread}" />
+                            </DockPanel>
+                        </StackPanel>
                         <WrapPanel>
                             <ToggleSwitch
                                 Margin="0,0,20,0"
@@ -61,7 +85,7 @@
                         <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text24}" TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Border Classes="t1" IsVisible="{Binding IsDownload, FallbackValue=false}">
+                <Border Classes="t4" IsVisible="{Binding IsDownload, FallbackValue=true}">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -132,7 +156,7 @@
                         <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Border Classes="t1" IsVisible="{Binding IsDownload, FallbackValue=false}">
+                <Border Classes="t4" IsVisible="{Binding IsDownload}">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -152,24 +176,24 @@
                             Path="/Resource/Icon/Setting/svg9.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text14}" />
                     </StackPanel>
-                    <WrapPanel>
+                    <WrapPanel Margin="0,-5,0,-5">
                         <ToggleSwitch
-                            Margin="0,0,10,0"
+                            Margin="0,5,20,0"
                             IsChecked="{Binding CheckUpdate}"
                             OffContent="{setting:Localize SettingWindow.Tab3.Text15}"
                             OnContent="{setting:Localize SettingWindow.Tab3.Text15}" />
-                        <StackPanel Margin="0,0,0,-5" Orientation="Horizontal">
+                        <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                             <Button
                                 Width="90"
                                 Height="35"
-                                Margin="-2,-6,3,-2"
+                                Margin="-2,-3,3,-2"
                                 Classes="top"
                                 Command="{Binding StartCheck}"
                                 Content="{setting:Localize SettingWindow.Tab3.Text16}" />
                             <Button
                                 Width="90"
                                 Height="35"
-                                Margin="-2,-6,-3,-2"
+                                Margin="-2,-3,-3,-2"
                                 Classes="top"
                                 Command="{Binding StartUpdate}"
                                 Content="{setting:Localize SettingWindow.Tab3.Text17}" />
@@ -198,7 +222,7 @@
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
                     <Button
-                        Width="100"
+                        Width="90"
                         Height="35"
                         Margin="-2,-2,-3,-2"
                         HorizontalAlignment="Right"

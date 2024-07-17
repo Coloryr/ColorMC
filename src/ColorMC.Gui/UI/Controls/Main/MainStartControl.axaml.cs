@@ -4,7 +4,6 @@ using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Platform;
 using Avalonia.Styling;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -18,7 +17,7 @@ public partial class MainStartControl : UserControl
         InitializeComponent();
     }
 
-    public async void Start(Control panel)
+    public async Task Start()
     {
         var animation = new Animation
         {
@@ -106,44 +105,8 @@ public partial class MainStartControl : UserControl
             },
             Duration = TimeSpan.FromMilliseconds(1500)
         };
-        var animation2 = new Animation
-        {
-            FillMode = FillMode.Forward,
-            Easing = SlideEasing,
-            Children =
-            {
-                new KeyFrame
-                {
-                    Setters =
-                    {
-                        new Setter
-                        {
-                            Property = OpacityProperty,
-                            Value = 1.0d
-                        }
-                    },
-                    Cue = new Cue(0d)
-                },
-                new KeyFrame
-                {
-                    Setters =
-                    {
-                        new Setter
-                        {
-                            Property = OpacityProperty,
-                            Value = 0.0d
-                        }
-                    },
-                    Cue = new Cue(1d)
-                }
-            },
-            Duration = TimeSpan.FromMilliseconds(500)
-        };
-        panel.IsVisible = true;
-        _ = animation.RunAsync(Image1);
-        _ = animation1.RunAsync(Grid1);
+        var task = animation.RunAsync(Image1);
+        var task1 = animation1.RunAsync(Grid1);
         await Task.Delay(2000);
-        await animation2.RunAsync(this);
-        panel.IsVisible = false;
     }
 }

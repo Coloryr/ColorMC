@@ -411,7 +411,7 @@ public static class ThemeManager
             TopViewBG = Brush.Parse("#886D6D6D"),
             AllBorder = Brush.Parse("#FFe5e7eb"),
             ButtonBorder = Brush.Parse("#FFD4D4D8"),
-            TopBGColor = Brush.Parse("#FFF4F4F5"),
+            TopBGColor = Brush.Parse("#CFF4F4F5"),
             TopGridColor = Brush.Parse("#FFFFFFFF"),
             OverBGColor = Brush.Parse("#FFFFFFFF"),
             OverBrushColor = Brush.Parse("#FFe5e5e5")
@@ -431,7 +431,7 @@ public static class ThemeManager
             TopViewBG = Brush.Parse("#886D6D6D"),
             AllBorder = Brush.Parse("#FFe5e7eb"),
             ButtonBorder = Brush.Parse("#FFD4D4D8"),
-            TopBGColor = Brush.Parse("#FFF4F4F5"),
+            TopBGColor = Brush.Parse("#CFF4F4F5"),
             TopGridColor = Brush.Parse("#FF202020"),
             OverBGColor = Brush.Parse("#FF000000"),
             OverBrushColor = Brush.Parse("#FF1d1d1d"),

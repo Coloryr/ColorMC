@@ -125,7 +125,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text9}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,-5">
+                    <WrapPanel Margin="0,0,0,-5" IsVisible="{Binding !MinMode}">
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
                             <NumericUpDown
@@ -152,6 +152,33 @@
                             OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
                             OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
                     </WrapPanel>
+                    <StackPanel IsVisible="{Binding MinMode}">
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
+                            <NumericUpDown
+                                Height="30"
+                                HorizontalAlignment="Stretch"
+                                FormatString="N0"
+                                IsEnabled="{Binding !FullScreen}"
+                                Minimum="1"
+                                Value="{Binding Width}" />
+                        </DockPanel>
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text11}" />
+                            <NumericUpDown
+                                Height="30"
+                                HorizontalAlignment="Stretch"
+                                FormatString="N0"
+                                IsEnabled="{Binding !FullScreen}"
+                                Minimum="1"
+                                Value="{Binding Height}" />
+                        </DockPanel>
+                        <ToggleSwitch
+                            Margin="0,0,0,5"
+                            IsChecked="{Binding FullScreen}"
+                            OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
+                            OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -167,7 +194,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text1}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,5">
+                    <WrapPanel Margin="0,0,0,5" IsVisible="{Binding !MinMode}">
                         <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
                             <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
                             <NumericUpDown
@@ -187,8 +214,31 @@
                                 Value="{Binding MaxMemory}" />
                         </StackPanel>
                     </WrapPanel>
+                    <StackPanel Margin="0,0,0,5" IsVisible="{Binding MinMode}">
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
+                            <NumericUpDown
+                                Height="30"
+                                HorizontalAlignment="Stretch"
+                                FormatString="N0"
+                                Minimum="1"
+                                Value="{Binding MinMemory}" />
+                        </DockPanel>
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text5}" />
+                            <NumericUpDown
+                                Height="30"
+                                HorizontalAlignment="Stretch"
+                                FormatString="N0"
+                                Minimum="1"
+                                Value="{Binding MaxMemory}" />
+                        </DockPanel>
+                    </StackPanel>
                     <!--  Jvm参数  -->
-                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                    <StackPanel
+                        Margin="0,0,0,10"
+                        IsVisible="{Binding !MinMode}"
+                        Orientation="Horizontal">
                         <TextBlock
                             Width="110"
                             HorizontalAlignment="Center"
@@ -198,6 +248,16 @@
                             ItemsSource="{Binding GCTypeList}"
                             SelectedIndex="{Binding GC}" />
                     </StackPanel>
+                    <DockPanel Margin="0,0,0,10" IsVisible="{Binding MinMode}">
+                        <TextBlock
+                            Width="110"
+                            HorizontalAlignment="Center"
+                            Text="{setting:Localize SettingWindow.Tab4.Text2}" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding GCTypeList}"
+                            SelectedIndex="{Binding GC}" />
+                    </DockPanel>
                     <TextBox
                         Margin="0,0,0,10"
                         IsEnabled="False"

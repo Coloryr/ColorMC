@@ -30,21 +30,28 @@
                             IsChecked="{Binding InputEnable}"
                             OffContent="{setting:Localize SettingWindow.Tab8.Text2}"
                             OnContent="{setting:Localize SettingWindow.Tab8.Text2}" />
-                        <WrapPanel Margin="0,0,0,10">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text3}" />
-                                <TextBlock Margin="0,0,5,0" Text="{Binding InputNum}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
-                                <ComboBox
-                                    Width="200"
-                                    Margin="0,0,5,0"
-                                    ItemsSource="{Binding InputNames}"
-                                    SelectedIndex="{Binding InputIndex}" />
-                            </StackPanel>
-                        </WrapPanel>
-                        <WrapPanel>
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text3}" />
+                            <TextBlock Margin="0,0,5,0" Text="{Binding InputNum}" />
+                        </StackPanel>
+                        <StackPanel
+                            Margin="0,0,0,10"
+                            IsVisible="{Binding !MinMode}"
+                            Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
+                            <ComboBox
+                                Width="200"
+                                ItemsSource="{Binding InputNames}"
+                                SelectedIndex="{Binding InputIndex}" />
+                        </StackPanel>
+                        <DockPanel Margin="0,0,0,10" IsVisible="{Binding MinMode}">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding InputNames}"
+                                SelectedIndex="{Binding InputIndex}" />
+                        </DockPanel>
+                        <WrapPanel IsVisible="{Binding !MinMode}">
                             <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
                                 <ComboBox
@@ -62,16 +69,32 @@
                                     SelectedIndex="{Binding NowConfig}" />
                             </StackPanel>
                         </WrapPanel>
+                        <StackPanel IsVisible="{Binding MinMode}">
+                            <DockPanel Margin="0,0,0,10">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
+                                <ComboBox
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding Configs}"
+                                    SelectedIndex="{Binding SelectConfig}" />
+                            </DockPanel>
+                            <DockPanel Margin="0,0,0,10">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text6}" />
+                                <ComboBox
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding Configs}"
+                                    SelectedIndex="{Binding NowConfig}" />
+                            </DockPanel>
+                        </StackPanel>
                         <WrapPanel Margin="0,0,0,-5">
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-2,3,3"
                                 Classes="top"
                                 Command="{Binding NewInputConfig}"
                                 Content="{setting:Localize Button.Add}" />
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-2,3,3"
                                 Classes="top"
@@ -79,7 +102,7 @@
                                 Content="{setting:Localize Button.Rename}"
                                 IsEnabled="{Binding InputExist}" />
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-2,3,3"
                                 Classes="top"
@@ -87,14 +110,14 @@
                                 Content="{setting:Localize Button.Delete}"
                                 IsEnabled="{Binding InputExist}" />
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-2,3,3"
                                 Classes="top"
                                 Command="{Binding ImportInputConfig}"
                                 Content="{setting:Localize Button.Input}" />
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-2,3,3"
                                 Classes="top"
@@ -104,7 +127,7 @@
                         </WrapPanel>
                     </StackPanel>
                 </Border>
-                <Border Classes="t1" IsVisible="{Binding !InputInit}">
+                <Border Classes="t4" IsVisible="{Binding !InputInit, FallbackValue=false}">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -116,10 +139,7 @@
                 Classes="t2"
                 IsEnabled="{Binding InputExist}">
                 <DockPanel Margin="15">
-                    <StackPanel
-                        Margin="0,0,0,10"
-                        DockPanel.Dock="Top"
-                        Orientation="Horizontal">
+                    <DockPanel Margin="0,0,0,10" DockPanel.Dock="Top">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
@@ -130,14 +150,15 @@
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab8.Text8}" />
                         <Button
-                            Width="100"
+                            Width="90"
                             Height="35"
-                            Margin="-2,-3,3,-2"
+                            Margin="-2,-3,-3,-2"
+                            HorizontalAlignment="Right"
                             Classes="top"
                             Command="{Binding AddInput}"
                             Content="{setting:Localize Button.Add}"
                             Focusable="False" />
-                    </StackPanel>
+                    </DockPanel>
                     <TextBlock
                         DockPanel.Dock="Bottom"
                         Text="{setting:Localize SettingWindow.Tab8.Text11}"
@@ -182,10 +203,7 @@
                 Classes="t2"
                 IsEnabled="{Binding InputExist}">
                 <DockPanel Margin="15">
-                    <StackPanel
-                        Margin="0,0,0,10"
-                        DockPanel.Dock="Top"
-                        Orientation="Horizontal">
+                    <DockPanel Margin="0,0,0,10" DockPanel.Dock="Top">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
@@ -196,15 +214,15 @@
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab8.Text12}" />
                         <Button
-                            Width="100"
+                            Width="90"
                             Height="35"
-                            Margin="-2,-3,3,-2"
+                            Margin="-2,-3,-3,-2"
+                            HorizontalAlignment="Right"
                             Classes="top"
                             Command="{Binding AddAxisInput}"
                             Content="{setting:Localize Button.Add}"
                             Focusable="False" />
-                    </StackPanel>
-
+                    </DockPanel>
                     <TextBlock
                         DockPanel.Dock="Bottom"
                         Text="{setting:Localize SettingWindow.Tab8.Text16}"
@@ -268,7 +286,6 @@
                     </DataGrid>
                 </DockPanel>
             </Border>
-
             <Border
                 Margin="10,5,10,3"
                 Classes="t2"
@@ -282,7 +299,7 @@
                             Path="/Resource/Icon/Setting/svg24.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab8.Text17}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,5">
+                    <WrapPanel Margin="0,0,0,5" IsVisible="{Binding !MinMode}">
                         <StackPanel Margin="0,0,60,5" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text18}" />
                             <ComboBox
@@ -298,6 +315,22 @@
                                 SelectedIndex="{Binding InputCursorAxis}" />
                         </StackPanel>
                     </WrapPanel>
+                    <StackPanel Margin="0,0,0,5" IsVisible="{Binding MinMode}">
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text18}" />
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding AxisType}"
+                                SelectedIndex="{Binding InputRotateAxis}" />
+                        </DockPanel>
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text19}" />
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding AxisType}"
+                                SelectedIndex="{Binding InputCursorAxis}" />
+                        </DockPanel>
+                    </StackPanel>
                     <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text20}" />
                     <WrapPanel Margin="0,0,0,10">
                         <StackPanel
@@ -421,7 +454,6 @@
                     </StackPanel>
                 </StackPanel>
             </Border>
-
             <Border
                 Margin="10,5,10,3"
                 Classes="t2"
@@ -437,7 +469,6 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab8.Text25}" />
                     </StackPanel>
-
                     <ToggleSwitch
                         Margin="0,0,10,0"
                         VerticalAlignment="Center"
@@ -454,7 +485,7 @@
                                 Margin="0,0,5,0"
                                 Path="{Binding CycleLeftIcon}" />
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-3,3,-2"
                                 Classes="top"
@@ -471,7 +502,7 @@
                                 Margin="0,0,5,0"
                                 Path="{Binding CycleRightIcon}" />
                             <Button
-                                Width="100"
+                                Width="90"
                                 Height="35"
                                 Margin="-2,-3,3,-2"
                                 Classes="top"

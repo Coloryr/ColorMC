@@ -44,12 +44,27 @@ public partial class GameGroupModel : TopModel
         _addItem = new(Model, Key == InstancesPath.DefaultGroup ? null : Key);
         Task.Run(() =>
         {
+            bool res = false;
+            int index = 1;
+            if (_items.Count == 5)
+            {
+                var random = new Random();
+                if (random.Next(2000) == 666)
+                {
+                    res = true;
+                }
+            }
+
             foreach (var item in _items)
             {
                 Thread.Sleep(50);
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     GameList.Add(item.Value);
+                    if (res)
+                    {
+                        item.Value.Index = index++;
+                    }
                 });
             }
 

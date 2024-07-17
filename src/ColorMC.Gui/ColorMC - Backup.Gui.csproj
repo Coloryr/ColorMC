@@ -163,11 +163,6 @@
     <None Remove="Resource\Icon\user.svg" />
     <None Remove="Resource\Language\gui_en-us.json" />
     <None Remove="Resource\Language\gui_zh-cn.json" />
-    <None Remove="Resource\Pic\1.png" />
-    <None Remove="Resource\Pic\2.png" />
-    <None Remove="Resource\Pic\3.png" />
-    <None Remove="Resource\Pic\4.png" />
-    <None Remove="Resource\Pic\5.png" />
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\load.png" />
@@ -298,11 +293,6 @@
     <AvaloniaResource Include="Resource\Icon\Setting\svg8.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg9.svg" />
     <AvaloniaResource Include="Resource\Icon\skin.svg" />
-    <EmbeddedResource Include="Resource\Pic\1.png" />
-    <EmbeddedResource Include="Resource\Pic\2.png" />
-    <EmbeddedResource Include="Resource\Pic\3.png" />
-    <EmbeddedResource Include="Resource\Pic\4.png" />
-    <EmbeddedResource Include="Resource\Pic\5.png" />
     <EmbeddedResource Include="Resource\Pic\pic1.png" />
     <EmbeddedResource Include="macicon.ico" />
     <EmbeddedResource Include="Player\Decoder\Mp3\sfd.temp" />
