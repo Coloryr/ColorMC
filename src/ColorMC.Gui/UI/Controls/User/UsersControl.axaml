@@ -66,6 +66,7 @@
         </dialog:DialogHost>
 
         <Panel
+            Margin="20,10,20,20"
             Name="Grid2"
             Background="{setting:Theme TopGridColor}"
             IsVisible="False">

@@ -18,6 +18,6 @@
     </Design.PreviewWith>
 
     <Style Selector="ToolTip">
-        <Setter Property="Background" Value="{setting:Theme TopBGColor}" />
+        <Setter Property="Background" Value="{setting:Theme OverBGColor}" />
     </Style>
 </Styles>

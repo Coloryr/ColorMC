@@ -149,7 +149,8 @@
                                                     Background="Transparent"
                                                     BorderThickness="0"
                                                     Command="{Binding OpenNews}"
-                                                    IsVisible="{Binding IsHaveNews, FallbackValue=true}">
+                                                    IsEnabled="{Binding !IsLoadNews}"
+                                                    IsVisible="{Binding IsHaveNews}">
                                                     <Button.Styles>
                                                         <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
                                                             <Setter Property="Background" Value="Transparent" />
@@ -294,7 +295,7 @@
                                 DockPanel.Dock="Top"
                                 IsVisible="{Binding !NewsDisplay}" />
                             <views:ServerMotdControl
-                                Margin="10,0,10,0"
+                                Margin="10,0,10,10"
                                 DockPanel.Dock="Top"
                                 IPPort="{Binding Server}"
                                 IsVisible="{Binding MotdDisplay}" />
@@ -304,6 +305,7 @@
                 </DockPanel>
                 <Panel
                     Name="Grid2"
+                    Margin="20,10,20,20"
                     Background="{setting:Theme TopGridColor}"
                     IsVisible="False">
                     <TextBlock

@@ -1,6 +1,6 @@
 # ColorMC 一个全平台Minecraft PC启动器
 
-**ColorMC2 正在制作中，尽情期待**
+**ColorMC A27 正在制作中，尽情期待**
 
 交流QQ群：571239090
 
@@ -19,10 +19,8 @@ https://crowdin.com/project/colormc
 
 ![](/image/GIF.gif)  
 
-[使用ColorMC启动器核心](Core.md)
-
 ## 支持平台
-- Linux(ubuntu 与 arch)
+- Linux(提供deb pkg rpm)
 - Windows
 - macOs
 
@@ -91,7 +89,7 @@ chmod a+x ./build/build-linux.sh
 ```
 
 打包ubuntu镜像  
-**需要在Ubunt系统中操作**
+**需要在Ubuntu系统中操作**
 ```bash
 chmod a+x ./build/build-ubuntu.sh
 
@@ -99,7 +97,7 @@ chmod a+x ./build/build-ubuntu.sh
 ```
 
 打包rpm镜像  
-**需要在Ubunt系统中操作**
+**需要在Ubuntu系统中操作**
 ```bash
 chmod a+x ./build/build-rpm.sh
 
@@ -133,31 +131,40 @@ chmod a+x ./build/build-macos.sh
 
 ## 二次开发
 
+首先克隆代码
 ```
 git clone https://github.com/Coloryr/ColorMC.git
+
+git submodule update --init --recursive
 ```
 
-使用IDE打开`./src/ColorMC.sln`项目
+`./src/ColorMC.sln`为根工程
 
-## 项目说明
-- ColorMC.Core 启动器底层核心
-- ColorMC.Cmd CLI模式 (已放弃)
+### 使用ColorMC启动器核心
+
+[使用ColorMC启动器核心来开发自己的启动器](Core.md)
+
+### 项目说明
+- ColorMC.Core 启动器核心
+- ColorMC.CustomGui 自定义启动器界面，[教程](CustomGui.md)
+- ColorMC.Cmd Cli模式 (已废弃)
 - ColorMC.Gui Gui模式
-- ColorMC.Launcher 启动器
-- ColorMC.Test 用于启动器核心测试
+- ColorMC.Launcher 启动器本体
+- ColorMC.Test 用于启动器测试
 - ColorMC.Setup 用于构建windows的msi安装包
 
 ## 依赖/引用的项目
 [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) 跨平台UI框架  
+[DialogHost.Avalonia](https://github.com/AvaloniaUtils/DialogHost.Avalonia) 弹窗库
 [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM工具  
 [Svg.Skia](https://github.com/wieslawsoltes/Svg.Skia) Svg图像显示  
 [SkiaSharp](https://github.com/mono/SkiaSharp) Skia图像库  
-[Heijden.Dns.Portable](https://github.com/softlion/Heijden.Dns) DNS解析  
+[Silk.NET](https://github.com/dotnet/Silk.NET) 高性能底层库接口
+[Heijden.Dns](https://github.com/softlion/Heijden.Dns) DNS解析  
 [HtmlAgilityPack](https://html-agility-pack.net/) HTML解析器  
 [Jint](https://github.com/sebastienros/jint) JS解析执行器  
-[NAudio](https://github.com/naudio/NAudio) Windows音频播放  
+[DotNetty](https://github.com/Azure/DotNetty) 异步通信框架
 [Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
-[OpenTK.OpenAL](https://opentk.net/) openal音频  
 [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
 [Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
 [ForgeWrapper](https://github.com/Coloryr/ForgeWrapper) Forge启动器  

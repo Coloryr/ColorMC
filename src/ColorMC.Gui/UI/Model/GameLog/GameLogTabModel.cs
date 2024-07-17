@@ -17,6 +17,11 @@ namespace ColorMC.Gui.UI.Model.GameLog;
 
 public partial class GameLogModel : GameModel
 {
+    public const string NameEnd = "End";
+    public const string NameInsert = "Insert";
+    public const string NameTop = "Top";
+    public const string NameSearch = "Search";
+
     public ObservableCollection<string> FileList { get; init; } = [];
 
     [ObservableProperty]
@@ -65,7 +70,7 @@ public partial class GameLogModel : GameModel
             {
                 Text = new();
             }
-            OnPropertyChanged("Top");
+            OnPropertyChanged(NameTop);
             return;
         }
 
@@ -79,7 +84,7 @@ public partial class GameLogModel : GameModel
         }
 
         Text = new(data);
-        OnPropertyChanged("Top");
+        OnPropertyChanged(NameTop);
     }
 
     [RelayCommand]
@@ -151,7 +156,7 @@ public partial class GameLogModel : GameModel
     [RelayCommand]
     public void Search()
     {
-        OnPropertyChanged("Search");
+        OnPropertyChanged(NameSearch);
     }
 
     public void Load()
@@ -206,14 +211,14 @@ public partial class GameLogModel : GameModel
             Temp = temp.ToString();
             Dispatcher.UIThread.Invoke(() =>
             {
-                OnPropertyChanged("Insert");
+                OnPropertyChanged(NameInsert);
             });
             Temp = "";
         }
 
         if (IsAuto)
         {
-            OnPropertyChanged("End");
+            OnPropertyChanged(NameEnd);
         }
     }
 

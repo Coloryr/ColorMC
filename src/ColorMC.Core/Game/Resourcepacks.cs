@@ -93,6 +93,13 @@ public static class Resourcepacks
             }
             try
             {
+                string sha256s = "";
+                if (sha256)
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                    sha256s = HashHelper.GenSha256(stream);
+                }
+
                 stream.Seek(0, SeekOrigin.Begin);
                 var obj = await ReadResourcepackAsync(stream, cancel);
                 if (obj != null)
@@ -101,8 +108,7 @@ public static class Resourcepacks
                     obj.Sha1 = sha1;
                     if (sha256)
                     {
-                        stream.Seek(0, SeekOrigin.Begin);
-                        obj.Sha256 = HashHelper.GenSha256(stream);
+                        obj.Sha256 = sha256s;
                     }
                     list.Add(obj);
                 }

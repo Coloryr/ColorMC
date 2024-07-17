@@ -18,7 +18,8 @@
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False"
-                ItemsSource="{Binding ConfigList}">
+                ItemsSource="{Binding ResourceList}"
+                SelectedItem="{Binding ResourceItem}">
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text1}" />
                     <DataGridTextColumn

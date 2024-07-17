@@ -46,7 +46,7 @@
             </Expander.Styles>
             <Panel>
                 <ItemsControl
-                    Margin="0,0,0,-10"
+                    Margin="0,0,0,-5"
                     VerticalAlignment="Top"
                     Background="Transparent"
                     ItemsSource="{Binding GameList}">

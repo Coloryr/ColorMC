@@ -143,6 +143,12 @@ public static class WindowManager
                     CustomWindow = dll;
                 }
                 AWindow(dll.Window, test);
+                var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/custom";
+                if (!File.Exists(path))
+                {
+                    File.WriteAllText(path, "custom");
+                    CustomWindow?.Window.Window.Model.Show(App.Lang("Gui.Info54"));
+                }
             }
             return true;
         }

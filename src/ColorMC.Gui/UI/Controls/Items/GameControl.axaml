@@ -15,7 +15,7 @@
     mc:Ignorable="d">
     <Panel Background="Transparent">
         <Button
-            Width="78"
+            Width="68"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="Transparent"
@@ -25,13 +25,10 @@
             IsVisible="{Binding IsNew, FallbackValue=False}">
             <StackPanel Margin="5">
                 <svg:SvgControl
-                    Width="70"
-                    Height="70"
+                    Width="65"
+                    Height="65"
                     Path="/Resource/Icon/add1.svg" />
-                <TextBlock
-                    Margin="0,0,0,5"
-                    HorizontalAlignment="Center"
-                    Text="{setting:Localize MainWindow.Text8}" />
+                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text8}" />
             </StackPanel>
         </Button>
         <Button

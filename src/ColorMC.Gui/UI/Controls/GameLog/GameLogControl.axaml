@@ -37,7 +37,7 @@
                             ItemsSource="{Binding FileList}"
                             SelectedItem="{Binding File}" />
                     </WrapPanel>
-                    <WrapPanel Margin="0,5,0,-5">
+                    <WrapPanel Margin="0,5,0,-10">
                         <Button
                             Width="100"
                             Height="35"

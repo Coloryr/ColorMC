@@ -1,6 +1,5 @@
 ﻿using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
@@ -15,14 +14,6 @@ public partial class ServerPackModel
     {
         SaveConfig();
     }
-
-    [RelayCommand]
-    public void GoToNext()
-    {
-        NowView++;
-    }
-
-
 
     public void LoadConfig()
     {

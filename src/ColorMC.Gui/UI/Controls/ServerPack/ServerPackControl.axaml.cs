@@ -68,14 +68,6 @@ public partial class ServerPackControl : MenuControl
     protected override Control ViewChange(int old, int index)
     {
         var model = (DataContext as ServerPackModel)!;
-        switch (old)
-        {
-            case 1:
-            case 2:
-            case 4:
-                model.RemoveChoise();
-                break;
-        }
         switch (model.NowView)
         {
             case 0:
@@ -83,15 +75,12 @@ public partial class ServerPackControl : MenuControl
                 return _tab1 ??= new();
             case 1:
                 model.LoadMod();
-                model.SetTab2Click();
                 return _tab2 ??= new();
             case 2:
-                model.LoadConfigList();
-                model.SetTab3Click();
+                model.LoadResourceList();
                 return _tab3 ??= new();
             case 3:
                 model.LoadFile();
-                model.SetTab4Click();
                 return _tab4 ??= new();
             default:
                 throw new InvalidEnumArgumentException();

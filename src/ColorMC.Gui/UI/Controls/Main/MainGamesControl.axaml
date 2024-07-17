@@ -33,10 +33,7 @@
                 <TextBox
                     Name="Search"
                     Width="200"
-                    Height="20"
-                    Padding="5,6,6,5"
                     Background="Transparent"
-                    Classes="input1"
                     Text="{Binding GameSearchText}" />
             </StackPanel>
         </Border>

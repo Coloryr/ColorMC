@@ -58,6 +58,7 @@
         </ScrollViewer>
         <Panel
             Name="Grid2"
+            Margin="0,0,10,15"
             Background="{setting:Theme TopGridColor}"
             IsVisible="False">
             <TextBlock

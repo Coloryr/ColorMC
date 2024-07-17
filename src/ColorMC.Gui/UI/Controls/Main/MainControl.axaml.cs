@@ -47,11 +47,16 @@ public partial class MainControl : BaseUserControl
     {
         if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control)
         {
-            if (DataContext is MainModel model)
+            if (DataContext is MainModel model
+                && Content1.Child is MainGamesControl con)
             {
-                model.Search();
-                if (Content1.Child is MainGamesControl con)
+                if (model.GameSearch)
                 {
+                    model.SearchClose();
+                }
+                else
+                {
+                    model.Search();
                     Dispatcher.UIThread.Post(() =>
                     {
                         con.Search.Focus();
