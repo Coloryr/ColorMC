@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
@@ -12,25 +12,43 @@ namespace ColorMC.CustomGui;
 
 public partial class UIModel(BaseModel model) : TopModel(model), IMainTop
 {
+    /// <summary>
+    /// 游戏列表
+    /// </summary>
     public ObservableCollection<GameItemModel> Games { get; } = [];
 
+    /// <summary>
+    /// 用于展示的服务器
+    /// </summary>
     public (string, ushort) IPPort => ("www.coloryr.com", 25565);
 
+    /// <summary>
+    /// 选中的游戏实例
+    /// </summary>
     [ObservableProperty]
     public GameItemModel? _selectGame;
 
+    /// <summary>
+    /// 打开启动器设置指令
+    /// </summary>
     [RelayCommand]
     public void OpenSetting()
     {
         WindowManager.ShowSetting(SettingType.Normal);
     }
 
+    /// <summary>
+    /// 打开用户列表指令
+    /// </summary>
     [RelayCommand]
     public void OpenUsers()
     {
         WindowManager.ShowUser();
     }
 
+    /// <summary>
+    /// 启动游戏指令
+    /// </summary>
     [RelayCommand]
     public async Task Launch()
     {
@@ -54,6 +72,9 @@ public partial class UIModel(BaseModel model) : TopModel(model), IMainTop
         
     }
 
+    /// <summary>
+    /// 加载游戏列表
+    /// </summary>
     public void Load()
     {
         Games.Clear();

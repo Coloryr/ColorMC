@@ -54,6 +54,7 @@
                     <Decorator Name="Controls" />
                     <Panel
                         Name="Grid2"
+                        Margin="20"
                         Background="{setting:Theme TopGridColor}"
                         IsVisible="False">
                         <TextBlock

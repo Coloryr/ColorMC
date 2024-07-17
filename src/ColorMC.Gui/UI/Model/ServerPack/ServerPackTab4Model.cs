@@ -73,12 +73,6 @@ public partial class ServerPackModel
         LoadFile();
     }
 
-    public void SetTab4Click()
-    {
-        Model.SetChoiseCall(_name, Gen);
-        Model.SetChoiseContent(_name, App.Lang("ServerPackWindow.Tab1.Text10"));
-    }
-
     public void LoadFile()
     {
         FileList.Clear();

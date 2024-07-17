@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
@@ -21,22 +22,64 @@ public partial class ServerPackModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text1")
+                Text = App.Lang("ServerPackWindow.Tabs.Text1"),
+                SubMenu = 
+                [
+                    new SubMenuItemModel()
+                    { 
+                        Func = Gen,
+                        Name = App.Lang("ServerPackWindow.Tab1.Text10")
+                    }
+                ]
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text2")
+                Text = App.Lang("ServerPackWindow.Tabs.Text2"),
+                SubMenu =
+                [
+                    new SubMenuItemModel()
+                    {
+                        Func = SelectAllMod,
+                        Name = App.Lang("Button.SelectAll")
+                    },
+                    new SubMenuItemModel()
+                    {
+                        Func = UnSelectAllMod,
+                        Name = App.Lang("ServerPackWindow.Tab2.Text3")
+                    }
+                ]
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item3.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text3")
+                Text = App.Lang("ServerPackWindow.Tabs.Text3"),
+                SubMenu =
+                [
+                    new SubMenuItemModel()
+                    {
+                        Func = SelectAllResource,
+                        Name = App.Lang("Button.SelectAll")
+                    },
+                    new SubMenuItemModel()
+                    {
+                        Func = UnSelectAllResource,
+                        Name = App.Lang("ServerPackWindow.Tab2.Text3")
+                    }
+                ]
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item4.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text4")
+                Text = App.Lang("ServerPackWindow.Tabs.Text4"),
+                SubMenu =
+                [
+                    new SubMenuItemModel()
+                    {
+                        Func = Gen,
+                        Name = App.Lang("ServerPackWindow.Tab1.Text10")
+                    }
+                ]
             },
         ]);
     }
@@ -62,15 +105,10 @@ public partial class ServerPackModel : MenuModel
         }
     }
 
-    public void RemoveChoise()
-    {
-        Model.RemoveChoiseData(_name);
-    }
-
     public override void Close()
     {
         ModList.Clear();
-        ConfigList.Clear();
+        ResourceList.Clear();
         NameList.Clear();
     }
 }

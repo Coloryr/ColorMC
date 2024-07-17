@@ -11,42 +11,21 @@
     x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel>
-        <Decorator Margin="0,0,10,15">
-            <Border Margin="10,5,10,3" Classes="t2">
-                <DockPanel>
-                    <StackPanel
-                        Margin="15,15,15,0"
-                        DockPanel.Dock="Top"
-                        IsVisible="{Binding MinMode}">
-                        <DockPanel Margin="0,0,0,10">
-                            <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding ModFilterList}"
-                                SelectedIndex="{Binding ModFilter}" />
-                        </DockPanel>
-                        <DockPanel>
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-2,-3,-2"
-                                Classes="top"
-                                Command="{Binding LoadMod}"
-                                Content="{setting:Localize Button.Refash}"
-                                DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text55}"
-                                ToolTip.VerticalOffset="-30" />
-                            <TextBox
-                                Margin="0,0,10,0"
-                                Text="{Binding ModText}"
-                                Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
-                        </DockPanel>
-                    </StackPanel>
-                    <DockPanel
-                        Margin="15,15,15,0"
-                        DockPanel.Dock="Top"
-                        IsVisible="{Binding !MinMode}">
+    <Panel Margin="0,0,10,15">
+        <Border Margin="10,5,10,3" Classes="t2">
+            <DockPanel>
+                <StackPanel
+                    Margin="15,15,15,0"
+                    DockPanel.Dock="Top"
+                    IsVisible="{Binding MinMode}">
+                    <DockPanel Margin="0,0,0,10">
+                        <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding ModFilterList}"
+                            SelectedIndex="{Binding ModFilter}" />
+                    </DockPanel>
+                    <DockPanel>
                         <Button
                             Width="100"
                             Height="35"
@@ -57,77 +36,96 @@
                             DockPanel.Dock="Right"
                             ToolTip.Tip="{setting:Localize ToolTip.Text55}"
                             ToolTip.VerticalOffset="-30" />
-                        <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
-                        <ComboBox
-                            Width="100"
-                            Margin="0,0,10,0"
-                            VerticalAlignment="Center"
-                            ItemsSource="{Binding ModFilterList}"
-                            SelectedIndex="{Binding ModFilter}" />
                         <TextBox
                             Margin="0,0,10,0"
                             Text="{Binding ModText}"
                             Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
                     </DockPanel>
-                    <DataGrid
-                        Name="DataGrid1"
-                        Margin="5"
-                        AutoGenerateColumns="False"
-                        CanUserResizeColumns="True"
-                        HorizontalScrollBarVisibility="Visible"
-                        ItemsSource="{Binding ModList}"
-                        SelectedItem="{Binding ModItem}"
-                        VerticalScrollBarVisibility="Visible">
-                        <DataGrid.Columns>
-                            <DataGridCheckBoxColumn
-                                Binding="{Binding Enable}"
-                                Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text1}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Name}"
-                                Header="{setting:Localize Text.Name}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Modid}"
-                                Header="modid"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Version}"
-                                Header="{setting:Localize Text.Version}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Loader}"
-                                Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text7}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Source}"
-                                Header="{setting:Localize Text.DownloadSource}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding PID}"
-                                Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding FID}"
-                                Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Local}"
-                                Header="{setting:Localize Text.Path}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Author}"
-                                Header="{setting:Localize Text.Author}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Url}"
-                                Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text6}"
-                                IsReadOnly="True" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                </StackPanel>
+                <DockPanel
+                    Margin="15,15,15,0"
+                    DockPanel.Dock="Top"
+                    IsVisible="{Binding !MinMode}">
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="-2,-2,-3,-2"
+                        Classes="top"
+                        Command="{Binding LoadMod}"
+                        Content="{setting:Localize Button.Refash}"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text55}"
+                        ToolTip.VerticalOffset="-30" />
+                    <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
+                    <ComboBox
+                        Width="100"
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding ModFilterList}"
+                        SelectedIndex="{Binding ModFilter}" />
+                    <TextBox
+                        Margin="0,0,10,0"
+                        Text="{Binding ModText}"
+                        Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
                 </DockPanel>
-            </Border>
-        </Decorator>
+                <DataGrid
+                    Name="DataGrid1"
+                    Margin="5"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    HorizontalScrollBarVisibility="Visible"
+                    ItemsSource="{Binding ModList}"
+                    SelectedItem="{Binding ModItem}"
+                    VerticalScrollBarVisibility="Visible">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn
+                            Binding="{Binding Enable}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text1}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize Text.Name}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Modid}"
+                            Header="modid"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Version}"
+                            Header="{setting:Localize Text.Version}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Loader}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text7}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Source}"
+                            Header="{setting:Localize Text.DownloadSource}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding PID}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding FID}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Local}"
+                            Header="{setting:Localize Text.Path}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Author}"
+                            Header="{setting:Localize Text.Author}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Url}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text6}"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
 
         <Panel
             Name="Grid2"

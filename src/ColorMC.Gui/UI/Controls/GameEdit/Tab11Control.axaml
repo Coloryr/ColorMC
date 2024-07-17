@@ -12,41 +12,37 @@
     x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Panel>
-        <DockPanel Margin="0,0,10,15">
-            <Panel>
-                <Border Margin="10,5,10,3" Classes="t2">
-                    <DataGrid
-                        Name="DataGrid1"
-                        Margin="15"
-                        AutoGenerateColumns="False"
-                        CanUserResizeColumns="True"
-                        CanUserSortColumns="False"
-                        ItemsSource="{Binding ShaderpackList}"
-                        SelectedItem="{Binding ShaderpackItem}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn
-                                Binding="{Binding Name}"
-                                Header="{setting:Localize Text.FileName}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Local}"
-                                Header="{setting:Localize Text.Path}"
-                                IsReadOnly="True" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Border>
-                <Border
-                    Margin="10,5,10,3"
-                    Classes="t1"
-                    IsVisible="{Binding ShaderpackEmptyDisplay}">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="30"
-                        Text="{setting:Localize GameEditWindow.Tab11.Text2}" />
-                </Border>
-            </Panel>
-        </DockPanel>
+    <Panel Margin="0,0,10,15">
+        <Border Margin="10,5,10,3" Classes="t2">
+            <DataGrid
+                Name="DataGrid1"
+                Margin="5"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                ItemsSource="{Binding ShaderpackList}"
+                SelectedItem="{Binding ShaderpackItem}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="{setting:Localize Text.FileName}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Local}"
+                        Header="{setting:Localize Text.Path}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+        <Border
+            Margin="10,5,10,3"
+            Classes="t1"
+            IsVisible="{Binding ShaderpackEmptyDisplay}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="{setting:Localize GameEditWindow.Tab11.Text2}" />
+        </Border>
         <Panel
             Name="Grid2"
             Background="{setting:Theme TopGridColor}"

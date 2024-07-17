@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Model.ServerPack;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
@@ -14,6 +15,9 @@ public partial class Tab3Control : UserControl
 
     private void DataGrid1_CellEditEnded(object? sender, DataGridCellEditEndedEventArgs e)
     {
-        (DataContext as ServerPackModel)?.ConfigItemEdit();
+        Dispatcher.UIThread.Post(() =>
+        {
+            (DataContext as ServerPackModel)?.ResourceItemEdit();
+        });
     }
 }

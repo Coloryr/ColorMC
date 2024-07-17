@@ -89,24 +89,24 @@ public partial class GameLogControl : BaseUserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "End")
+        if (e.PropertyName == GameLogModel.NameEnd)
         {
             Dispatcher.UIThread.Post(() =>
             {
                 TextEditor1.ScrollToLine(TextEditor1.LineCount - 2);
             });
         }
-        else if (e.PropertyName == "Insert")
+        else if (e.PropertyName == GameLogModel.NameInsert)
         {
             TextEditor1.AppendText((DataContext as GameLogModel)!.Temp);
         }
-        else if (e.PropertyName == "Top")
+        else if (e.PropertyName == GameLogModel.NameTop)
         {
             Dispatcher.UIThread.Post(TextEditor1.ScrollToHome);
         }
-        else if (e.PropertyName == "Search")
+        else if (e.PropertyName == GameLogModel.NameSearch)
         {
-            TextEditor1.SearchPanel.IsVisible = true;
+            TextEditor1.SearchPanel.Open();
         }
     }
 

@@ -11,14 +11,14 @@ public partial class UIControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = "服务器客户端"; //窗口标题
+        Title = "鏈嶅姟鍣ㄥ鎴风"; //绐楀彛鏍囬
 
-        UseName = ToString() ?? "UIControl"; //这个必须要有
+        UseName = ToString() ?? "UIControl"; //杩欎釜蹇呴』瑕佹湁
     }
 
     public override Bitmap GetIcon()
     {
-        //窗口图标
+        //绐楀彛鍥炬爣
         return ImageManager.GameIcon;
     }
 

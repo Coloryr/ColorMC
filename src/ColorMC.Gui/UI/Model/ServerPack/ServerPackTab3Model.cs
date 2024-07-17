@@ -11,39 +11,39 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public partial class ServerPackModel
 {
-    public ObservableCollection<ServerPackItemModel> ConfigList { get; init; } = [];
+    public ObservableCollection<ServerPackItemModel> ResourceList { get; init; } = [];
 
     [ObservableProperty]
-    private ServerPackItemModel _configItem;
+    private ServerPackItemModel _resourceItem;
 
     [RelayCommand]
-    public void SelectAllConfig()
+    public void SelectAllResource()
     {
-        foreach (var item in ConfigList)
+        foreach (var item in ResourceList)
         {
             item.Check = true;
-            ConfigItemEdit(item);
+            ResourceItemEdit(item);
         }
     }
 
     [RelayCommand]
-    public void UnSelectAllConfig()
+    public void UnSelectAllResource()
     {
-        foreach (var item in ConfigList)
+        foreach (var item in ResourceList)
         {
             item.Check = false;
-            ConfigItemEdit(item);
+            ResourceItemEdit(item);
         }
     }
 
-    public void ConfigItemEdit()
+    public void ResourceItemEdit()
     {
-        ConfigItemEdit(ConfigItem);
+        ResourceItemEdit(ResourceItem);
     }
 
-    public async void LoadConfigList()
+    public async void LoadResourceList()
     {
-        ConfigList.Clear();
+        ResourceList.Clear();
         var mods = await GameBinding.GetResourcepacks(Obj.Game, true);
 
         Obj.Resourcepack?.RemoveAll(a => mods.Find(b => a.Sha256 == b.Sha256) == null);
@@ -77,13 +77,13 @@ public partial class ServerPackModel
                 }
             }
 
-            ModList.Add(item2);
+            ResourceList.Add(item2);
         });
 
         GameBinding.SaveServerPack(Obj);
     }
 
-    private void ConfigItemEdit(ServerPackItemModel obj)
+    private void ResourceItemEdit(ServerPackItemModel obj)
     {
         var item = Obj.Resourcepack?.FirstOrDefault(a => a.Sha256 == obj.Sha256
                         && a.File == obj.FileName);
@@ -96,7 +96,7 @@ public partial class ServerPackModel
             }
             else
             {
-                Obj.Resourcepack ??= new();
+                Obj.Resourcepack ??= [];
                 item = new()
                 {
                     Sha256 = obj.Sha256,
@@ -117,11 +117,5 @@ public partial class ServerPackModel
         }
 
         GameBinding.SaveServerPack(Obj);
-    }
-
-    public void SetTab3Click()
-    {
-        Model.SetChoiseCall(_name, SelectAllConfig, UnSelectAllConfig);
-        Model.SetChoiseContent(_name, App.Lang("Button.SelectAll"), App.Lang("ServerPackWindow.Tab2.Text3"));
     }
 }

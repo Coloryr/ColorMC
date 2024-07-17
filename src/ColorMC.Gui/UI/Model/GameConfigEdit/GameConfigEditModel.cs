@@ -177,6 +177,10 @@ public partial class GameConfigEditModel : GameModel
             FindText2 = App.Lang("ConfigEditWindow.Text11")
         };
         await DialogHost.Show(model, UseName);
+        if (model.Cancel)
+        {
+            return;
+        }
         FindStart(model);
     }
 
@@ -190,6 +194,10 @@ public partial class GameConfigEditModel : GameModel
             FindText2 = App.Lang("ConfigEditWindow.Text7")
         };
         await DialogHost.Show(model, UseName);
+        if (model.Cancel)
+        {
+            return;
+        }
         FindStart(model);
     }
 

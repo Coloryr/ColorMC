@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace ColorMC.Gui.UI.Controls.Main
+namespace ColorMC.Gui.UI.Controls.Main;
+
+public partial class MainOneGameControl : UserControl
 {
-    public partial class MainOneGameControl : UserControl
+    public MainOneGameControl()
     {
-        public MainOneGameControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
