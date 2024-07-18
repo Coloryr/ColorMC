@@ -21,6 +21,8 @@ public record ThemeObj
     public IBrush GameItemBG;
     public IBrush TopViewBG;
     public IBrush AllBorder;
+    public IBrush ButtonBG;
+    public IBrush ButtonOver;
     /// <summary>
     /// 按钮边框背景色
     /// </summary>
@@ -41,4 +43,6 @@ public record ThemeObj
     /// 覆盖层边框颜色
     /// </summary>
     public IBrush OverBrushColor;
+    public IBrush SelectItemBG;
+    public IBrush SelectItemOver;
 }

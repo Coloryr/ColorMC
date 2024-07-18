@@ -68,14 +68,12 @@
                 Name="TitleShow"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
-                Foreground="#000000"
                 Text="{Binding Title}"
                 TextTrimming="CharacterEllipsis" />
             <TextBlock
                 Name="TitleShow1"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
-                Foreground="#000000"
                 Text="{Binding Title1}"
                 TextTrimming="CharacterEllipsis" />
         </DockPanel>

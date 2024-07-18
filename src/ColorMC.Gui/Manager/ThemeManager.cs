@@ -175,6 +175,14 @@ public static class ThemeManager
         {
             return s_theme.AllBorder;
         }
+        else if (key == "ButtonBG")
+        {
+            return s_theme.ButtonBG;
+        }
+        else if (key == "ButtonOver")
+        {
+            return s_theme.ButtonOver;
+        }
         else if (key == "ButtonBorder")
         {
             return s_theme.ButtonBorder;
@@ -202,6 +210,14 @@ public static class ThemeManager
         else if (key == "OverBrushColor")
         {
             return s_theme.OverBrushColor;
+        }
+        else if (key == "SelectItemBG")
+        {
+            return s_theme.SelectItemBG;
+        }
+        else if (key == "SelectItemOver")
+        {
+            return s_theme.SelectItemOver;
         }
         else if (key == "RandomColor")
         {
@@ -410,11 +426,15 @@ public static class ThemeManager
             GameItemBG = Brush.Parse("#FFF2F2F2"),
             TopViewBG = Brush.Parse("#886D6D6D"),
             AllBorder = Brush.Parse("#FFe5e7eb"),
+            ButtonBG = Brush.Parse("#FFFFFFFF"),
+            ButtonOver = Brush.Parse("#FFFFFFFF"),
             ButtonBorder = Brush.Parse("#FFD4D4D8"),
             TopBGColor = Brush.Parse("#CFF4F4F5"),
             TopGridColor = Brush.Parse("#FFFFFFFF"),
             OverBGColor = Brush.Parse("#FFFFFFFF"),
-            OverBrushColor = Brush.Parse("#FFe5e5e5")
+            OverBrushColor = Brush.Parse("#FFe5e5e5"),
+            SelectItemBG = Brush.Parse("#FFE8E8E8"),
+            SelectItemOver = Brush.Parse("#FFCCCCCC"),
         };
 
         s_dark = new()
@@ -430,11 +450,15 @@ public static class ThemeManager
             GameItemBG = Brush.Parse("#FFc7c7cb"),
             TopViewBG = Brush.Parse("#886D6D6D"),
             AllBorder = Brush.Parse("#FFe5e7eb"),
+            ButtonBG = Brush.Parse("#FF000000"),
+            ButtonOver = Brush.Parse("#FF141414"),
             ButtonBorder = Brush.Parse("#FFD4D4D8"),
             TopBGColor = Brush.Parse("#CFF4F4F5"),
             TopGridColor = Brush.Parse("#FF202020"),
             OverBGColor = Brush.Parse("#FF000000"),
             OverBrushColor = Brush.Parse("#FF1d1d1d"),
+            SelectItemBG = Brush.Parse("#FF353535"),
+            SelectItemOver = Brush.Parse("#FF454545"),
         };
     }
 }
