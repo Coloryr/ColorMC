@@ -1,17 +1,14 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Model;
@@ -19,51 +16,38 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class SelfBaseWindow : Window, IBaseWindow
+public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 {
     private WindowNotificationManager windowNotification;
 
-    public BaseUserControl ICon { get; set; }
+    public override BaseUserControl ICon => _con;
+
+    private BaseUserControl _con;
 
     public BaseModel Model => (DataContext as BaseModel)!;
 
+    public abstract HeadControl Head { get; }
+
     private bool _isClose;
 
-    public SelfBaseWindow()
+    protected void Init(BaseUserControl con)
     {
-        InitializeComponent();
-    }
-
-    public SelfBaseWindow(BaseUserControl con)
-    {
-        InitializeComponent();
+        Init();
 
         var model = new BaseModel(con.UseName);
         model.PropertyChanged += Model_PropertyChanged;
         DataContext = model;
-        ICon = con;
+        _con = con;
 
-        if (SystemInfo.Os == OsType.Linux)
+        if (_con is UserControl con1)
         {
-            ResizeButton.IsVisible = true;
-            SystemDecorations = SystemDecorations.BorderOnly;
+            SetChild(con1);
         }
-
-        Icon = ImageManager.Icon;
-
-        if (ICon is UserControl con1)
-        {
-            MainControl.Child = con1;
-        }
-
-        AddHandler(KeyDownEvent, Window_KeyDown, RoutingStrategies.Tunnel);
 
         Closed += UserWindow_Closed;
-        Opened += UserWindow_Opened;
         Activated += Window_Activated;
         Closing += SelfBaseWindow_Closing;
         PropertyChanged += SelfBaseWindow_PropertyChanged;
-        ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
         PointerReleased += SelfBaseWindow_PointerReleased;
         PointerPressed += SelfBaseWindow_PointerPressed;
 
@@ -80,6 +64,8 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         Update();
     }
+
+    protected abstract void SetChild(Control control);
 
     private void SelfBaseWindow_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
@@ -121,19 +107,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         if (e.Property == WindowStateProperty)
         {
-            ICon.WindowStateChange(WindowState);
             Head.WindowStateChange(WindowState);
-            if (SystemInfo.Os == OsType.Windows)
-            {
-                if (WindowState == WindowState.Maximized)
-                {
-                    Padding = new Thickness(8);
-                }
-                else
-                {
-                    Padding = new Thickness(0);
-                }
-            }
         }
     }
 
@@ -196,39 +170,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         }
 
         Position = new(x, y);
-    }
-
-    private async void Window_KeyDown(object? sender, KeyEventArgs e)
-    {
-        if (await ICon.OnKeyDown(sender, e))
-        {
-            e.Handled = true;
-            return;
-        }
-
-        if (SystemInfo.Os == OsType.MacOS && e.KeyModifiers == KeyModifiers.Control)
-        {
-            switch (e.Key)
-            {
-                case Key.OemComma:
-                    WindowManager.ShowSetting(SettingType.Normal);
-                    break;
-                case Key.Q:
-                    App.Close();
-                    break;
-                case Key.M:
-                    WindowState = WindowState.Minimized;
-                    break;
-                case Key.W:
-                    Close();
-                    break;
-            }
-        }
-    }
-
-    private void UserWindow_Opened(object? sender, EventArgs e)
-    {
-        ICon.Opened();
     }
 
     private void UserWindow_Closed(object? sender, EventArgs e)

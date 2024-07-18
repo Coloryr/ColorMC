@@ -1,0 +1,95 @@
+<Window
+    x:Class="ColorMC.Gui.UI.Windows.MultiLinuxWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    xmlns:dialogview="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
+    xmlns:info="clr-namespace:ColorMC.Gui.UI.Controls.Info"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
+    xmlns:view1="clr-namespace:ColorMC.Gui.UI.Windows"
+    Title="{Binding Title}"
+    Width="770"
+    Height="460"
+    MinWidth="345"
+    MinHeight="460"
+    d:DesignHeight="460"
+    d:DesignWidth="770"
+    x:DataType="model:BaseModel"
+    Background="Transparent"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    ExtendClientAreaToDecorationsHint="True"
+    FontFamily="{setting:Font}"
+    RequestedThemeVariant="{Binding Theme}"
+    TransparencyBackgroundFallback="Transparent"
+    TransparencyLevelHint="{Binding Hints}"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <model:BaseModel />
+    </Design.DataContext>
+    <Panel>
+        <Panel Margin="5" Background="{Binding Background}">
+            <Image
+                IsVisible="{Binding BgVisible}"
+                Opacity="{Binding BgOpacity}"
+                Source="{Binding Back}"
+                Stretch="UniformToFill" />
+            <DockPanel Background="{setting:Theme WindowBG}">
+                <view:HeadControl
+                    Name="HeadControl"
+                    DockPanel.Dock="Top"
+                    IsVisible="{Binding EnableHead}" />
+                <dialog:DialogHost
+                    DisableOpeningAnimation="True"
+                    Identifier="{Binding Name}"
+                    OverlayBackground="Transparent">
+                    <dialog:DialogHost.DataTemplates>
+                        <DataTemplate DataType="dialogmodel:Info1Model">
+                            <dialogview:Info1Control DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="dialogmodel:Info3Model">
+                            <dialogview:Info3Control DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="dialogmodel:Info4Model">
+                            <dialogview:Info4Control DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="dialogmodel:Info5Model">
+                            <dialogview:Info5Control DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="dialogmodel:Info6Model">
+                            <dialogview:Info6Control DataContext="{Binding}" />
+                        </DataTemplate>
+                    </dialog:DialogHost.DataTemplates>
+                    <Decorator Name="MainControl" />
+                </dialog:DialogHost>
+            </DockPanel>
+            <Button
+                Name="ResizeButton"
+                Width="18"
+                Height="18"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Cursor="BottomRightCorner"
+                IsVisible="False">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </Button.Styles>
+                <svg:SvgControl
+                    Fill="{setting:Theme FontColor}"
+                    Path="/Resource/Icon/resize.svg"
+                    Stroke="{setting:Theme FontColor}" />
+            </Button>
+        </Panel>
+        <view1:LinuxControl />
+    </Panel>
+</Window>

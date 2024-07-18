@@ -34,14 +34,13 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
-
 namespace ColorMC.Gui.Manager;
 
 public static class WindowManager
 {
     public static Window? LastWindow { get; set; }
 
-    public static AllControl? AllWindow { get; set; }
+    public static SingleControl? AllWindow { get; set; }
     public static DownloadControl? DownloadWindow { get; set; }
     public static UsersControl? UserWindow { get; set; }
     public static MainControl? MainWindow { get; set; }
@@ -81,6 +80,12 @@ public static class WindowManager
                 AllWindow.Model.HeadDisplay = false;
                 AllWindow.Opened();
             }
+            else if (SystemInfo.Os == OsType.Linux)
+            {
+                var win = new SingleLinuxWindow();
+                AllWindow = win.Win;
+                win.Show();
+            }
             else
             {
                 var win = new SingleWindow();
@@ -97,7 +102,7 @@ public static class WindowManager
 
     public static IBaseWindow FindRoot(object? con)
     {
-        if (con is AllControl all)
+        if (con is SingleControl all)
             return all;
         else if (GuiConfigUtils.Config.WindowMode)
             return AllWindow!;
@@ -173,7 +178,15 @@ public static class WindowManager
                     return;
                 }
 
-                var win = new SelfBaseWindow(con);
+                AMultiWindow win;
+                if (SystemInfo.Os == OsType.Linux)
+                {
+                    win = new MultiLinuxWindow(con);
+                }
+                else
+                {
+                    win = new MultiWindow(con);
+                }
                 con.SetBaseModel(win.Model);
                 win.Show();
             }
@@ -185,7 +198,15 @@ public static class WindowManager
         }
         else
         {
-            var win = new SelfBaseWindow(con);
+            AMultiWindow win;
+            if (SystemInfo.Os == OsType.Linux)
+            {
+                win = new MultiLinuxWindow(con);
+            }
+            else
+            {
+                win = new MultiWindow(con);
+            }
             App.TopLevel ??= win;
             con.SetBaseModel(win.Model);
             win.Show();

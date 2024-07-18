@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ColorMC.Gui.UI.Windows.LinuxControl">
+	<Panel>
+		<Border Margin="5" BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000">
+			<Panel>
+				
+			</Panel>
+		</Border>
+		<Rectangle HorizontalAlignment="Left" VerticalAlignment="Top" Width="5" Height="5" Fill="Aqua" Cursor="Arrow"/>
+	</Panel>
+</UserControl>

@@ -344,4 +344,18 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="UI\Controls\Main\MainUserControl.axaml" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="UI\Windows\MultiLinuxWindow.axaml.cs">
+      <DependentUpon>MultiLinuxWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Windows\SingleControl.axaml.cs">
+      <DependentUpon>SingleControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Windows\MultiWindow.axaml.cs">
+      <DependentUpon>MultiWindow.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="UI\Windows\SingleLinuxWindow.axaml" />
+  </ItemGroup>
 </Project>
