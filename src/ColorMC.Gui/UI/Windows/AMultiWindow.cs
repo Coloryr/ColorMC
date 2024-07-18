@@ -30,9 +30,9 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 
     private bool _isClose;
 
-    protected void Init(BaseUserControl con)
+    protected void InitMultiWindow(BaseUserControl con)
     {
-        Init();
+        InitBaseWindow();
 
         var model = new BaseModel(con.UseName);
         model.PropertyChanged += Model_PropertyChanged;
@@ -95,12 +95,6 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
             MaxItems = 3,
             Margin = new(0, 30, 0, 0)
         };
-    }
-
-    private void ResizeButton_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        e.Handled = true;
-        BeginResizeDrag(WindowEdge.SouthEast, e);
     }
 
     private void SelfBaseWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)

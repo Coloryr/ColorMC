@@ -14,12 +14,12 @@
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     xmlns:view1="clr-namespace:ColorMC.Gui.UI.Windows"
     Title="{Binding Title}"
-    Width="770"
-    Height="460"
-    MinWidth="345"
-    MinHeight="460"
-    d:DesignHeight="460"
-    d:DesignWidth="770"
+    Width="780"
+    Height="470"
+    MinWidth="355"
+    MinHeight="470"
+    d:DesignHeight="470"
+    d:DesignWidth="780"
     x:DataType="model:BaseModel"
     Background="Transparent"
     ExtendClientAreaChromeHints="NoChrome"
@@ -34,7 +34,8 @@
         <model:BaseModel />
     </Design.DataContext>
     <Panel>
-        <Panel Margin="5" Background="{Binding Background}">
+        <view1:LinuxControl />
+        <Panel Name="MainView" Margin="10" Background="{Binding Background}">
             <Image
                 IsVisible="{Binding BgVisible}"
                 Opacity="{Binding BgOpacity}"
@@ -90,6 +91,5 @@
                     Stroke="{setting:Theme FontColor}" />
             </Button>
         </Panel>
-        <view1:LinuxControl />
     </Panel>
 </Window>
