@@ -48,14 +48,14 @@ public static class SakuraFrpApi
         return null;
     }
 
-    public static async Task<string?> GetChannelConfig(string key, int id)
+    public static async Task<string?> GetChannelConfig(string key, int id, string version)
     {
         try
         {
             var content = new StringContent(JsonConvert.SerializeObject(new { query = id }),
                 MediaTypeHeaderValue.Parse("application/json"));
 
-            var data = await BaseClient.LoginClient.PostAsync($"{Url}tunnel/config?token={key}", content);
+            var data = await BaseClient.LoginClient.PostAsync($"{Url}tunnel/config?token={key}&frpc={version}", content);
             var str = await data.Content.ReadAsStringAsync();
             if (str.StartsWith('{'))
             {
@@ -76,14 +76,8 @@ public static class SakuraFrpApi
     /// 创建Frp下载项目
     /// </summary>
     /// <returns></returns>
-    public static async Task<DownloadItemObj?> BuildFrpItem()
+    public static DownloadItemObj? BuildFrpItem(SakuraFrpDownloadObj data)
     {
-        var data = await GetDownload();
-        if (data == null)
-        {
-            return null;
-        }
-
         SakuraFrpDownloadObj.DownloadItemObj.Arch.ArchItem data1;
 
         if (SystemInfo.Os == OsType.Windows)
@@ -133,7 +127,7 @@ public static class SakuraFrpApi
         };
     }
 
-    private static async Task<SakuraFrpDownloadObj?> GetDownload()
+    public static async Task<SakuraFrpDownloadObj?> GetDownload()
     {
         try
         {

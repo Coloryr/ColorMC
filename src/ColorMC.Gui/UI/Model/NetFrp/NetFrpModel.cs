@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
@@ -17,7 +18,15 @@ public partial class NetFrpModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item4.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text4")
+                Text = App.Lang("NetFrpWindow.Tabs.Text4"),
+                SubMenu =
+                [
+                    new SubMenuItemModel()
+                    { 
+                        Func = GetCloud,
+                        Name = App.Lang("NetFrpWindow.Tab4.Text2")
+                    }
+                ]
             },
             new()
             {
@@ -32,7 +41,15 @@ public partial class NetFrpModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item2.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text2")
+                Text = App.Lang("NetFrpWindow.Tabs.Text2"),
+                SubMenu =
+                [
+                    new SubMenuItemModel()
+                    {
+                        Func = CleanLocal,
+                        Name = App.Lang("NetFrpWindow.Tab2.Text2")
+                    }
+                ]
             },
             new()
             {
@@ -58,6 +75,14 @@ public partial class NetFrpModel : MenuModel
         {
             Model.ShowOk(App.Lang("NetFrpWindow.Tab4.Error2"), WindowClose);
             return false;
+        }
+        if (!string.IsNullOrWhiteSpace(KeySakura))
+        {
+            await GetChannelSakura();
+        }
+        if (!string.IsNullOrWhiteSpace(KeyOpenFrp))
+        {
+            await GetChannelOpenFrp();
         }
 
         return true;

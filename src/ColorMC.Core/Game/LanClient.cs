@@ -21,10 +21,14 @@ public class LanClient
     public LanClient()
     {
         //Minecraft原版组播地址
-        _socketV4 = new(new IPEndPoint(IPAddress.Any, 4445));
+        _socketV4 = new();
+        _socketV4.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+        _socketV4.Client.Bind(new IPEndPoint(IPAddress.Any, 4445));
         _socketV4.JoinMulticastGroup(IPAddress.Parse("224.0.2.60"));
         //neoforge组播地址
-        _socketV6 = new(new IPEndPoint(IPAddress.IPv6Any, 4445));
+        _socketV6 = new(AddressFamily.InterNetworkV6);
+        _socketV6.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+        _socketV6.Client.Bind(new IPEndPoint(IPAddress.IPv6Any, 4445));
         _socketV6.JoinMulticastGroup(IPAddress.Parse("FF75:230::60"));
 
         _isRun = true;

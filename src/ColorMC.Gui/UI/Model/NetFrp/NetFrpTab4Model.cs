@@ -96,10 +96,4 @@ public partial class NetFrpModel
             Model.Show(temp1);
         }
     }
-
-    public void SetTab4Click()
-    {
-        Model.SetChoiseCall(_name, GetCloud);
-        Model.SetChoiseContent(_name, App.Lang("NetFrpWindow.Tab4.Text2"));
-    }
 }

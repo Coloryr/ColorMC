@@ -32,6 +32,8 @@ public partial class NetFrpModel
 
     private string _remoteIP;
     private string _localIP;
+    private bool _isSend;
+    private bool _isStoping;
 
     private NetFrpLocalModel _now;
 
@@ -55,6 +57,7 @@ public partial class NetFrpModel
             Stop();
         }
 
+        _isSend = false;
         _process = process;
         _remoteIP = ip;
         _localIP = model.Port;
@@ -91,6 +94,10 @@ public partial class NetFrpModel
 
     private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
+        if (_isSend)
+        {
+            return;
+        }
         Log(e.Data);
         if (e.Data?.Contains("TCP 隧道启动成功") == true
             || e.Data?.Contains("Your TCP proxy is available now") == true
@@ -98,6 +105,7 @@ public partial class NetFrpModel
             || e.Data?.Contains("或使用 IP 地址连接") == true)
         {
             _isOut.Add(_localIP);
+            _isSend = true;
             Dispatcher.UIThread.Post(() =>
             {
                 IsOk = true;
@@ -134,6 +142,11 @@ public partial class NetFrpModel
 
     public void Stop()
     {
+        if (_isStoping)
+        {
+            return;
+        }
+        _isStoping = true;
         IsOk = false;
         IsRuning = false;
 
@@ -142,10 +155,14 @@ public partial class NetFrpModel
             return;
         }
 
-        _process.Kill(true);
-        _process.Close();
-        _process.Dispose();
-        _process = null;
+        Task.Run(() =>
+        {
+            _process.Kill(true);
+            _process.Close();
+            _process.Dispose();
+            _process = null;
+            _isStoping = false;
+        });
     }
 
     public void Log(string? data)

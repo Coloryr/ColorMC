@@ -51,8 +51,6 @@ public partial class NetFrpControl : MenuControl
         var model = (DataContext as NetFrpModel)!;
         switch (old)
         {
-            case 0:
-            case 3:
             case 4:
                 model.RemoveClick();
                 break;
@@ -61,7 +59,6 @@ public partial class NetFrpControl : MenuControl
         {
             case 0:
                 model.LoadCloud();
-                model.SetTab4Click();
                 return _tab4 ??= new();
             case 1:
                 model.LoadSakura();
@@ -71,7 +68,6 @@ public partial class NetFrpControl : MenuControl
                 return _tab5 ??= new();
             case 3:
                 model.LoadLocal();
-                model.SetTab2Click();
                 return _tab2 ??= new();
             case 4:
                 model.SetTab3Click();
