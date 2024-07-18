@@ -23,10 +23,10 @@ public partial class ServerPackModel : MenuModel
             {
                 Icon = "/Resource/Icon/GameExport/item1.svg",
                 Text = App.Lang("ServerPackWindow.Tabs.Text1"),
-                SubMenu = 
+                SubMenu =
                 [
                     new SubMenuItemModel()
-                    { 
+                    {
                         Func = Gen,
                         Name = App.Lang("ServerPackWindow.Tab1.Text10")
                     }

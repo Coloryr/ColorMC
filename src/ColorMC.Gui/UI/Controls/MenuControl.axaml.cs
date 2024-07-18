@@ -66,7 +66,7 @@ public abstract partial class MenuControl : BaseUserControl
             model.TopSide = true;
             _control.SidePanel1.Child = null;
             _control.SidePanel2.Child = _sideControl;
-            _control.TopPanel.Margin = new Thickness(10,0,0,0);
+            _control.TopPanel.Margin = new Thickness(10, 0, 0, 0);
         }
     }
 

@@ -26,36 +26,36 @@ public partial class LinuxControl : UserControl
         && sender is Rectangle rectangle)
         {
             if (rectangle.Name == "NorthWest")
-            { 
-                window.BeginResizeDrag(WindowEdge.NorthWest, e); 
+            {
+                window.BeginResizeDrag(WindowEdge.NorthWest, e);
             }
             else if (rectangle.Name == "North")
-            { 
-                window.BeginResizeDrag(WindowEdge.North, e); 
+            {
+                window.BeginResizeDrag(WindowEdge.North, e);
             }
             else if (rectangle.Name == "NorthEast")
-            { 
-                window.BeginResizeDrag(WindowEdge.NorthEast, e); 
+            {
+                window.BeginResizeDrag(WindowEdge.NorthEast, e);
             }
             else if (rectangle.Name == "West")
-            { 
-                window.BeginResizeDrag(WindowEdge.West, e); 
+            {
+                window.BeginResizeDrag(WindowEdge.West, e);
             }
             else if (rectangle.Name == "East")
-            { 
-                window.BeginResizeDrag(WindowEdge.East, e); 
+            {
+                window.BeginResizeDrag(WindowEdge.East, e);
             }
             else if (rectangle.Name == "SouthWest")
-            { 
-                window.BeginResizeDrag(WindowEdge.SouthWest, e); 
+            {
+                window.BeginResizeDrag(WindowEdge.SouthWest, e);
             }
             else if (rectangle.Name == "South")
-            { 
-                window.BeginResizeDrag(WindowEdge.South, e); 
+            {
+                window.BeginResizeDrag(WindowEdge.South, e);
             }
             else if (rectangle.Name == "SouthEast")
-            { 
-                window.BeginResizeDrag(WindowEdge.SouthEast, e); 
+            {
+                window.BeginResizeDrag(WindowEdge.SouthEast, e);
             }
         }
     }

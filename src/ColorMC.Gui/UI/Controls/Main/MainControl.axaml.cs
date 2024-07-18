@@ -132,7 +132,7 @@ public partial class MainControl : BaseUserControl
             }
             if (str.StartsWith("authlib-injector:yggdrasil-server:"))
             {
-                WindowManager.ShowUser(false, url:str);
+                WindowManager.ShowUser(false, url: str);
             }
             else if (str.StartsWith("cloudkey:") || str.StartsWith("cloudKey:"))
             {

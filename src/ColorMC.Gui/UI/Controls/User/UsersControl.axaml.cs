@@ -1,4 +1,3 @@
-using System;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;

@@ -1,7 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls;
 
 namespace ColorMC.Gui.UI.Windows;
