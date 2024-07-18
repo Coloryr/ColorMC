@@ -69,7 +69,7 @@ public partial class UIModel(BaseModel model) : TopModel(model), IMainTop
 
     public override void Close()
     {
-        
+
     }
 
     /// <summary>
@@ -86,16 +86,16 @@ public partial class UIModel(BaseModel model) : TopModel(model), IMainTop
 
     public void Launch(GameItemModel obj)
     {
-        
+
     }
 
     public void Select(GameItemModel? model)
     {
-        
+
     }
 
     public void EditGroup(GameItemModel model)
     {
-        
+
     }
 }

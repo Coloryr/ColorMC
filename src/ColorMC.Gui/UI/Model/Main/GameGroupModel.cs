@@ -218,7 +218,7 @@ public partial class GameGroupModel : TopModel
             {
                 continue;
             }
-            else if(item.UUID == uuid)
+            else if (item.UUID == uuid)
             {
                 item.LoadIcon();
             }

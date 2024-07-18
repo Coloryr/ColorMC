@@ -7,7 +7,7 @@ public partial class MultiWindow : AMultiWindow
 {
     public override HeadControl Head => HeadControl;
 
-    public MultiWindow() 
+    public MultiWindow()
     {
         InitializeComponent();
     }

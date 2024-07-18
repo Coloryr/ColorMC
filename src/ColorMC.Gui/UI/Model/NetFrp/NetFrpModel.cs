@@ -22,7 +22,7 @@ public partial class NetFrpModel : MenuModel
                 SubMenu =
                 [
                     new SubMenuItemModel()
-                    { 
+                    {
                         Func = GetCloud,
                         Name = App.Lang("NetFrpWindow.Tab4.Text2")
                     }
