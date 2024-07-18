@@ -170,6 +170,7 @@ git submodule update --init --recursive
 [ForgeWrapper](https://github.com/Coloryr/ForgeWrapper) Forge启动器  
 [Live2DCSharpSDK](https://github.com/coloryr/Live2DCSharpSDK) Live2d渲染框架  
 [OptifineWrapper](https://github.com/coloryr/OptifineWrapper) Optifine启动器  
+[ColorMCASM](https://github.com/Coloryr/ColorMCASM) 用于ColorMC与游戏内通信
 
 ## 开源协议
 Apache 2.0  

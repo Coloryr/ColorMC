@@ -14,8 +14,9 @@
     mc:Ignorable="d">
     <Panel>
         <Border Margin="10,5,20,18" Classes="t2">
-            <DockPanel Margin="15" IsEnabled="{Binding Enable}">
+            <DockPanel IsEnabled="{Binding Enable}">
                 <StackPanel
+                    Margin="15"
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Bottom"
                     Orientation="Horizontal">
@@ -38,7 +39,7 @@
                         ToolTip.Tip="{setting:Localize ToolTip.Text96}"
                         ToolTip.VerticalOffset="-30" />
                 </StackPanel>
-                <TreeDataGrid Margin="3" Source="{Binding Source}" />
+                <TreeDataGrid Margin="5" Source="{Binding Source}" />
             </DockPanel>
         </Border>
         <Border
