@@ -11,12 +11,12 @@ public partial class SingleWindow : ABaseWindow
     {
         InitializeComponent();
 
-        Init();
-
         Closed += UserWindow_Closed;
         Closing += SingleWindow_Closing;
 
         DataContext = Win.DataContext;
+
+        InitBaseWindow();
     }
 
     private async void SingleWindow_Closing(object? sender, WindowClosingEventArgs e)

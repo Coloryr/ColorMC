@@ -39,15 +39,8 @@ public partial class SingleControl : UserControl, IBaseWindow, ITop
 
         DataContext = new BaseModel("AllControl");
 
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            ResizeButton.IsVisible = true;
-        }
-
         PointerPressed += AllControl_PointerPressed;
         PointerReleased += AllControl_PointerReleased;
-
-        ResizeButton.AddHandler(PointerPressedEvent, ResizeButton_PointerPressed, RoutingStrategies.Tunnel);
 
         App.PicUpdate += Update;
 
@@ -83,12 +76,6 @@ public partial class SingleControl : UserControl, IBaseWindow, ITop
         {
             windowNotification.Show(Model.NotifyText);
         }
-    }
-
-    private void ResizeButton_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        e.Handled = true;
-        (VisualRoot as Window)?.BeginResizeDrag(WindowEdge.SouthEast, e);
     }
 
     private void AllControl_PointerPressed(object? sender, PointerPressedEventArgs e)

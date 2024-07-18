@@ -15,14 +15,14 @@ public abstract class ABaseWindow : Window
 {
     public abstract ITop ICon { get; }
 
-    protected void Init()
+    protected void InitBaseWindow()
     {
         Icon = ImageManager.Icon;
 
         AddHandler(KeyDownEvent, Window_KeyDown, RoutingStrategies.Tunnel);
 
         Opened += UserWindow_Opened;
-        PropertyChanged += SelfBaseWindow_PropertyChanged;
+        PropertyChanged += OnPropertyChanged;
     }
 
     private void UserWindow_Opened(object? sender, EventArgs e)
@@ -30,7 +30,7 @@ public abstract class ABaseWindow : Window
         ICon.Opened();
     }
 
-    private void SelfBaseWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    private void OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (e.Property == WindowStateProperty)
         {

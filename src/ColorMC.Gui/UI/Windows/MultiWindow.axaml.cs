@@ -16,7 +16,7 @@ public partial class MultiWindow : AMultiWindow
     {
         InitializeComponent();
 
-        Init(con);
+        InitMultiWindow(con);
     }
 
     protected override void SetChild(Control control)

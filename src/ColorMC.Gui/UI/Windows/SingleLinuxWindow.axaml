@@ -8,12 +8,12 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Windows"
     Title="{Binding Title}"
-    Width="770"
-    Height="460"
-    MinWidth="345"
-    MinHeight="460"
-    d:DesignHeight="460"
-    d:DesignWidth="770"
+    Width="780"
+    Height="470"
+    MinWidth="355"
+    MinHeight="470"
+    d:DesignHeight="470"
+    d:DesignWidth="780"
     x:DataType="model:BaseModel"
     Background="Transparent"
     ExtendClientAreaChromeHints="NoChrome"
@@ -29,7 +29,7 @@
     </Design.DataContext>
 
     <Panel>
-        <view:SingleControl Name="Win" Margin="5" />
         <view:LinuxControl />
+        <view:SingleControl Name="Win" Margin="10" />
     </Panel>
 </Window>

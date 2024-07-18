@@ -5,11 +5,14 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ColorMC.Gui.UI.Windows.LinuxControl">
 	<Panel>
-		<Border Margin="5" BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000">
-			<Panel>
-				
-			</Panel>
-		</Border>
-		<Rectangle HorizontalAlignment="Left" VerticalAlignment="Top" Width="5" Height="5" Fill="Aqua" Cursor="Arrow"/>
+		<Border Margin="10" BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"/>
+		<Rectangle Name="NorthWest" HorizontalAlignment="Left" VerticalAlignment="Top" Width="10" Height="10" Fill="Transparent" Cursor="TopLeftCorner"/>
+		<Rectangle Name="North" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,0,10,0" Height="10" Fill="Transparent" Cursor="TopSide"/>
+		<Rectangle Name="NorthEast" HorizontalAlignment="Right" VerticalAlignment="Top" Width="10" Height="10" Fill="Transparent" Cursor="TopRightCorner"/>
+		<Rectangle Name="West" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,10,0,10" Width="10" Fill="Transparent" Cursor="LeftSide"/>
+		<Rectangle Name="East" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,10,0,10" Width="10" Fill="Transparent" Cursor="RightSide"/>
+		<Rectangle Name="SouthWest" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="10" Height="10" Fill="Transparent" Cursor="BottomLeftCorner"/>
+		<Rectangle Name="South" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,0,10,0" Height="10" Fill="Transparent" Cursor="BottomSide"/>
+		<Rectangle Name="SouthEast" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="10" Height="10" Fill="Transparent" Cursor="BottomRightCorner"/>
 	</Panel>
 </UserControl>
