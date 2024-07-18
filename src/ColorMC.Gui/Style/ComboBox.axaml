@@ -18,7 +18,7 @@
     <Style Selector="ComboBox">
         <Setter Property="MaxDropDownHeight" Value="300" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
         <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="5" />

@@ -5,11 +5,6 @@
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel>
-                <ListBox>
-                    <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text1}" />
-                    <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text2}" />
-                    <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text3}" />
-                </ListBox>
                 <ListBoxItem Content="test" IsSelected="True" />
                 <ListBoxItem
                     Classes="down"
@@ -19,13 +14,8 @@
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="ListBox">
-        <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
-        <Setter Property="Background" Value="Transparent" />
-    </Style>
-
-    <Style Selector="ListBoxItem">
-        <Setter Property="Padding" Value="5,5,15,5" />
+    <Style Selector="ListBoxItem.t1">
+        <Setter Property="Padding" Value="0" />
         <Setter Property="Margin" Value="0,2,0,2" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -71,10 +61,10 @@
             <Setter Property="IsVisible" Value="True" />
         </Style>
         <Style Selector="^:selected /template/Border#PART_ContentBorder">
-            <Setter Property="Background" Value="#FFE8E8E8" />
+            <Setter Property="Background" Value="{setting:Theme SelectItemBG}" />
         </Style>
         <Style Selector="^:pointerover /template/Border#PART_ContentBorder">
-            <Setter Property="Background" Value="#FFCCCCCC" />
+            <Setter Property="Background" Value="{setting:Theme SelectItemOver}" />
         </Style>
         <Style Selector="^:disabled /template/Border#PART_ContentBorder">
             <Setter Property="Background" Value="#EEAAAAAA" />

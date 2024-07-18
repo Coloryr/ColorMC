@@ -21,7 +21,8 @@
             Margin="0,0,0,50"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
-            BorderBrush="Black"
+            Background="{setting:Theme ButtonBG}"
+            BorderBrush="{setting:Theme AllBorder}"
             BorderThickness="1"
             CornerRadius="30"
             IsVisible="False">

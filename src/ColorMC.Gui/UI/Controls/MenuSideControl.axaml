@@ -20,9 +20,13 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <ListBoxItem IsSelected="{Binding IsCheck}">
+                        <ListBoxItem
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            Classes="t1"
+                            IsSelected="{Binding IsCheck}">
                             <Button
-                                Padding="0"
+                                Padding="5,5,15,5"
                                 Classes="items"
                                 Command="{Binding Select}">
                                 <StackPanel Orientation="Horizontal">
