@@ -1,19 +1,19 @@
 <Window
-    x:Class="ColorMC.Gui.UI.Windows.SingleWindow"
+    x:Class="ColorMC.Gui.UI.Windows.SingleLinuxWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
-    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Windows"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Windows"
     Title="{Binding Title}"
-    Width="760"
-    Height="450"
-    MinWidth="335"
-    MinHeight="450"
-    d:DesignHeight="450"
-    d:DesignWidth="760"
+    Width="770"
+    Height="460"
+    MinWidth="345"
+    MinHeight="460"
+    d:DesignHeight="460"
+    d:DesignWidth="770"
     x:DataType="model:BaseModel"
     Background="Transparent"
     ExtendClientAreaChromeHints="NoChrome"
@@ -28,5 +28,8 @@
         <model:BaseModel />
     </Design.DataContext>
 
-    <views1:SingleControl Name="Win" />
+    <Panel>
+        <view:SingleControl Name="Win" Margin="5" />
+        <view:LinuxControl />
+    </Panel>
 </Window>

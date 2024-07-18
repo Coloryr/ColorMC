@@ -1,5 +1,5 @@
-<Window
-    x:Class="ColorMC.Gui.UI.Windows.SelfBaseWindow"
+<UserControl
+    x:Class="ColorMC.Gui.UI.Windows.SingleControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,22 +12,11 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
-    Title="{Binding Title}"
-    Width="760"
-    Height="450"
-    MinWidth="335"
-    MinHeight="450"
     d:DesignHeight="450"
-    d:DesignWidth="760"
+    d:DesignWidth="800"
     x:DataType="model:BaseModel"
     Background="Transparent"
-    ExtendClientAreaChromeHints="NoChrome"
-    ExtendClientAreaTitleBarHeightHint="-1"
-    ExtendClientAreaToDecorationsHint="True"
     FontFamily="{setting:Font}"
-    RequestedThemeVariant="{Binding Theme}"
-    TransparencyBackgroundFallback="Transparent"
-    TransparencyLevelHint="{Binding Hints}"
     mc:Ignorable="d">
     <Design.DataContext>
         <model:BaseModel />
@@ -64,7 +53,20 @@
                         <dialogview:Info6Control DataContext="{Binding}" />
                     </DataTemplate>
                 </dialog:DialogHost.DataTemplates>
-                <Decorator Name="MainControl" />
+                <Panel>
+                    <Decorator Name="Controls" />
+                    <Panel
+                        Name="Grid2"
+                        Margin="20"
+                        Background="{setting:Theme TopGridColor}"
+                        IsVisible="False">
+                        <TextBlock
+                            Name="Label1"
+                            HorizontalAlignment="Center"
+                            FontSize="30"
+                            Text="test" />
+                    </Panel>
+                </Panel>
             </dialog:DialogHost>
         </DockPanel>
         <Button
@@ -88,4 +90,4 @@
                 Stroke="{setting:Theme FontColor}" />
         </Button>
     </Panel>
-</Window>
+</UserControl>

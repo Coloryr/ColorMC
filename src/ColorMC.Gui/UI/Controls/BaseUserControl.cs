@@ -9,7 +9,7 @@ using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls;
 
-public abstract class BaseUserControl : UserControl
+public abstract class BaseUserControl : UserControl, ITop
 {
     public BaseUserControl()
     {

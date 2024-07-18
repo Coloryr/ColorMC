@@ -18,7 +18,7 @@ using ColorMC.Gui.UI.Model;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class AllControl : UserControl, IBaseWindow
+public partial class SingleControl : UserControl, IBaseWindow, ITop
 {
     private BaseUserControl _baseControl;
     private BaseUserControl _nowControl;
@@ -33,7 +33,7 @@ public partial class AllControl : UserControl, IBaseWindow
 
     private WindowNotificationManager windowNotification;
 
-    public AllControl()
+    public SingleControl()
     {
         InitializeComponent();
 
@@ -54,7 +54,7 @@ public partial class AllControl : UserControl, IBaseWindow
         Update();
     }
 
-    public Task<bool> IKeyDown(object? sender, KeyEventArgs e)
+    public Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
     {
         return ICon.OnKeyDown(sender, e);
     }
