@@ -24,7 +24,7 @@
                             DockPanel.Dock="Right"
                             Orientation="Horizontal">
                             <Button
-                                Width="110"
+                                Width="120"
                                 Height="35"
                                 Margin="-2,-2,3,-2"
                                 Classes="top"

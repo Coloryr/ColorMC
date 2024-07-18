@@ -99,10 +99,4 @@ public partial class NetFrpModel
             Locals.Add(item);
         });
     }
-
-    public void SetTab2Click()
-    {
-        Model.SetChoiseCall(_name, CleanLocal);
-        Model.SetChoiseContent(_name, App.Lang("NetFrpWindow.Tab2.Text2"));
-    }
 }

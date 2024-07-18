@@ -999,7 +999,7 @@
 	"NetFrpWindow.Tab1.Text13": "是否可用",
 	"NetFrpWindow.Tab1.Info1": "正在获取用户信息",
 	"NetFrpWindow.Tab1.Info2": "正在获取隧道信息",
-	"NetFrpWindow.Tab1.Error2": "正在获取隧道信息",
+	"NetFrpWindow.Tab1.Error2": "获取隧道信息失败",
 	"NetFrpWindow.Tab1.Error3": "请输入密钥",
 	"NetFrpWindow.Tab2.Text1": "没有扫描到本地的局域网游戏",
 	"NetFrpWindow.Tab2.Text2": "清空结果",

@@ -986,6 +986,7 @@ public static class BaseBinding
     {
         string file;
         string dir;
+        string version = "0.51.0-sakura-7.2";
         if (SystemInfo.Os == OsType.Android)
         {
             file = ColorMCGui.PhoneGetFrp.Invoke(item1.FrpType);
@@ -997,7 +998,13 @@ public static class BaseBinding
             string? local = "";
             if (item1.FrpType == FrpType.SakuraFrp)
             {
-                obj = await SakuraFrpApi.BuildFrpItem();
+                var obj1 = await SakuraFrpApi.GetDownload();
+                if (obj1 == null)
+                {
+                    return (false, null, null);
+                }
+                version = obj1.frpc.ver;
+                obj = SakuraFrpApi.BuildFrpItem(obj1);
                 local = obj?.Local;
             }
             else if (item1.FrpType == FrpType.OpenFrp)
@@ -1023,7 +1030,7 @@ public static class BaseBinding
         string? info = null;
         if (item1.FrpType == FrpType.SakuraFrp)
         {
-            info = await SakuraFrpApi.GetChannelConfig(item1.Key, item1.ID);
+            info = await SakuraFrpApi.GetChannelConfig(item1.Key, item1.ID, version);
         }
         else if (item1.FrpType == FrpType.OpenFrp)
         {
