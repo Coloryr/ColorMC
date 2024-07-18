@@ -5,7 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ColorMC.Gui.UI.Windows.LinuxControl">
 	<Panel>
-		<Border Margin="10" BoxShadow="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000"/>
+		<Border Margin="10" BoxShadow="0 0 5 1 #1A000000, 0 0 8 -1 #FF000000"/>
 		<Rectangle Name="NorthWest" HorizontalAlignment="Left" VerticalAlignment="Top" Width="10" Height="10" Fill="Transparent" Cursor="TopLeftCorner"/>
 		<Rectangle Name="North" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,0,10,0" Height="10" Fill="Transparent" Cursor="TopSide"/>
 		<Rectangle Name="NorthEast" HorizontalAlignment="Right" VerticalAlignment="Top" Width="10" Height="10" Fill="Transparent" Cursor="TopRightCorner"/>
