@@ -199,8 +199,8 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("ServerPackWindow.Tab4.Item1"),
-            App.Lang("ServerPackWindow.Tab4.Item2")
+            App.Lang("ServerPackWindow.Tab4.Text5"),
+            App.Lang("ServerPackWindow.Tab4.Text6")
         ];
     }
 

@@ -82,7 +82,7 @@ public static class UserBinding
             AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(input1!, input2!, input3!),
             AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!),
             AuthType.SelfLittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, input3!),
-            _ => throw new Exception("Type Error")
+            _ => throw new Exception(App.Lang("UserBinding.Error2"))
         };
 
         if (res1.LoginState != LoginState.Done)
@@ -90,7 +90,7 @@ public static class UserBinding
             if (res1.Ex != null)
             {
                 WindowManager.ShowError(res1.Message!, res1.Ex);
-                return (false, App.Lang("Gui.Error4"));
+                return (false, App.Lang("UserBinding.Error1"));
             }
             else
             {
@@ -100,7 +100,7 @@ public static class UserBinding
         if (string.IsNullOrWhiteSpace(res1.Auth?.UUID))
         {
             WebBinding.OpenWeb(WebType.Minecraft);
-            return (false, App.Lang("Gui.Error47"));
+            return (false, App.Lang("UserBinding.Error3"));
         }
         AuthDatabase.Save(res1.Auth!);
         return (true, null);

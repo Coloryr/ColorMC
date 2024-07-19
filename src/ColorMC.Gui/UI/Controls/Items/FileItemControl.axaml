@@ -42,9 +42,9 @@
                         Text="{Binding Author, FallbackValue=Author}"
                         TextTrimming="CharacterEllipsis" />
                     <WrapPanel DockPanel.Dock="Bottom">
-                        <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text2}" />
+                        <TextBlock Text="{setting:Localize FileItemControl.Text1}" />
                         <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
-                        <TextBlock Text="{setting:Localize AddModPackWindow.Control.Text3}" />
+                        <TextBlock Text="{setting:Localize FileItemControl.Text2}" />
                         <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
                     </WrapPanel>
                     <TextBlock
@@ -87,7 +87,7 @@
             </Panel>
             <Border Classes="t4" IsVisible="{Binding NowDownload, FallbackValue=false}">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddWindow.Control.Text1}" />
+                    <TextBlock HorizontalAlignment="Center" Text="{setting:Localize FileItemControl.Text3}" />
                     <ProgressBar
                         Height="10"
                         Margin="10"

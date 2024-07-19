@@ -110,7 +110,7 @@
                                     Margin="5,0,0,5"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Center"
-                                    Alias="{setting:Localize NetFrpWindow.Tab5.Text1}"
+                                    Alias="{setting:Localize SettingWindow.Tab7.Text15}"
                                     Command="{Binding OpenUrl11}" />
                             </WrapPanel>
                         </StackPanel>

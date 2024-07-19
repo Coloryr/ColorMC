@@ -21,15 +21,15 @@
                 ItemsSource="{Binding ResourceList}"
                 SelectedItem="{Binding ResourceItem}">
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text1}" />
+                    <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab2.Text9}" />
                     <DataGridTextColumn
                         Binding="{Binding FileName}"
                         Header="{setting:Localize Text.FileName}"
                         IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text3}" />
+                    <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab2.Text10}" />
                     <DataGridTextColumn
                         Binding="{Binding Sha256}"
-                        Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text7}"
+                        Header="{setting:Localize ServerPackWindow.Tab2.Text8}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>

@@ -74,7 +74,7 @@ public static class ImageUtils
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("Gui.Error24"), e);
+                Logs.Error(App.Lang("ImageUtils.Error2"), e);
             }
 
             return ImageManager.GameIcon;
@@ -172,7 +172,7 @@ public static class ImageUtils
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("Gui.Error1"), e);
+                Logs.Error(App.Lang("ImageUtils.Error1"), e);
                 return null;
             }
         });

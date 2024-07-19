@@ -46,7 +46,7 @@ public static class GuiConfigUtils
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("Gui.Error17"), e);
+                Logs.Error(App.Lang("Config.Error2"), e);
             }
 
             if (Config == null)
@@ -84,11 +84,6 @@ public static class GuiConfigUtils
             if (Config.Live2D == null)
             {
                 Config.Live2D = MakeLive2DConfig();
-                save = true;
-            }
-            if (Config.Gui == null)
-            {
-                Config.Gui = MakeGuiSettingConfig();
                 save = true;
             }
             if (Config.Style == null)
@@ -203,7 +198,6 @@ public static class GuiConfigUtils
             EnableBG = false,
             BackImage = "",
             Live2D = MakeLive2DConfig(),
-            Gui = MakeGuiSettingConfig(),
             Style = MakeStyleSettingConfig(),
             Head = MakeHeadSettingConfig(),
             Input = new()
@@ -218,14 +212,6 @@ public static class GuiConfigUtils
             MotdBackColor = "Black",
             Volume = 30,
             LockLogins = []
-        };
-    }
-
-    public static MainWindowSetting MakeGuiSettingConfig()
-    {
-        return new()
-        {
-
         };
     }
 }

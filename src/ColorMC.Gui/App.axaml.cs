@@ -33,7 +33,7 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.UnhandledException += (a, e) =>
         {
-            string temp = Lang("Gui.Error25");
+            string temp = Lang("App.Error1");
             Logs.Error(temp, e.ExceptionObject as Exception);
             WindowManager.ShowError(temp, e.ExceptionObject as Exception);
         };
@@ -145,18 +145,12 @@ public partial class App : Application
         }
     }
 
-    /// <summary>
-    /// 加载样式
-    /// </summary>
     public static void LoadPageSlide()
     {
         PageSlide500.Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime);
         PageSlide500.Fade = GuiConfigUtils.Config.Style.AmFade;
     }
 
-    /// <summary>
-    /// 清理Gui缓存
-    /// </summary>
     public static void Clear()
     {
         ThemeManager.Remove();

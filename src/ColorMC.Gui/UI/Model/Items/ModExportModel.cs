@@ -62,7 +62,7 @@ public partial class ModExportModel : ObservableObject
         {
             if (Obj1 == null)
             {
-                _model.Show(App.Lang("Gui.Error52"));
+                _model.Show(App.Lang("GameEditWindow.Tab4.Error5"));
                 Export = false;
             }
         }

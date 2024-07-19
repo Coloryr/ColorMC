@@ -9,11 +9,11 @@ public class UrlFlyout
     {
         _ = new FlyoutsControl(
         [
-            (App.Lang("AddWindow.Control.Text3"), url != null, ()=>
+            (App.Lang("NetFrpWindow.Tab1.Text14"), url != null, ()=>
             {
                 BaseBinding.OpUrl(url);
             }),
-            (App.Lang("AddWindow.Control.Text4"), url1 != null, ()=>
+            (App.Lang("AddWindow.Text13"), url1 != null, ()=>
             {
                 BaseBinding.OpUrl(url1);
             })

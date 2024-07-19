@@ -135,7 +135,7 @@ public static class UpdateChecker
         }
         else
         {
-            WindowManager.ShowError(App.Lang("Gui.Error22"), "");
+            WindowManager.ShowError(App.Lang("UpdateChecker.Error1"), "");
         }
     }
 
@@ -170,7 +170,7 @@ public static class UpdateChecker
                 if (WebSha1s[a] != Sha1s[a])
                 {
                     obj.TryGetValue("text", out var data1);
-                    return (true, data1?.ToString() ?? App.Lang("Gui.Info20"));
+                    return (true, data1?.ToString() ?? App.Lang("UpdateChecker.Info1"));
                 }
             }
 

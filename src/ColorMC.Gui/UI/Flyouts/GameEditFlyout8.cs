@@ -24,7 +24,7 @@ public class GameEditFlyout8
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("GameEditWindow.Flyouts1.Text1"),
+            (App.Lang("GameEditWindow.Flyouts.Text1"),
                 !BaseBinding.IsGameRun(model.World.Game), ()=>
                 {
                     if (single)

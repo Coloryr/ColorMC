@@ -56,7 +56,7 @@ public partial class MainModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("MainWindow.Info1"), false);
+        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("Text.Group"), false);
         if (Cancel)
         {
             return;

@@ -55,11 +55,11 @@
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Binding="{Binding Key}"
-                    Header="{setting:Localize ConfigEditWindow.DataGrid.Text1}"
+                    Header="{setting:Localize ConfigEditWindow.Text14}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Value}"
-                    Header="{setting:Localize ConfigEditWindow.DataGrid.Text2}"
+                    Header="{setting:Localize ConfigEditWindow.Text15}"
                     IsReadOnly="False" />
             </DataGrid.Columns>
         </DataGrid>

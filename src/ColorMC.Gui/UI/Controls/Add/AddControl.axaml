@@ -280,11 +280,11 @@
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Download}"
-                                Header="{setting:Localize AddModPackWindow.DataGrid.Text3}"
+                                Header="{setting:Localize AddModPackWindow.Text15}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Time}"
-                                Header="{setting:Localize AddModPackWindow.DataGrid.Text4}"
+                                Header="{setting:Localize AddModPackWindow.Text16}"
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>
@@ -339,11 +339,11 @@
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Forge}"
-                                Header="{setting:Localize Text.ForgeVersion}"
+                                Header="{setting:Localize AddWindow.Text14}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Date}"
-                                Header="{setting:Localize AddModPackWindow.DataGrid.Text4}"
+                                Header="{setting:Localize AddModPackWindow.Text16}"
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>
@@ -388,10 +388,10 @@
                         ItemsSource="{Binding DownloadModList}"
                         SelectedItem="{Binding Mod}">
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{Binding Download}" Header="{setting:Localize AddWindow.DataGrid.Text1}" />
+                            <DataGridCheckBoxColumn Binding="{Binding Download}" Header="{setting:Localize AddWindow.Text11}" />
                             <DataGridTextColumn
                                 Binding="{Binding Name}"
-                                Header="{setting:Localize AddWindow.DataGrid.Text2}"
+                                Header="{setting:Localize AddWindow.Text12}"
                                 IsReadOnly="True" />
                             <DataGridTemplateColumn Header="{setting:Localize Text.Version}">
                                 <DataGridTemplateColumn.CellTemplate>

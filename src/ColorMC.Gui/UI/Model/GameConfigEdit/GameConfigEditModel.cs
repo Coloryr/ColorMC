@@ -246,7 +246,7 @@ public partial class GameConfigEditModel : GameModel
             }
         }
 
-        Model.Notify(App.Lang("Text.Saved"));
+        Model.Notify(App.Lang("ConfigEditWindow.Info9"));
         IsEdit = false;
     }
 

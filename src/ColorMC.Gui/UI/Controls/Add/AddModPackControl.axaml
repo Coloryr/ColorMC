@@ -240,11 +240,11 @@
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Download}"
-                                Header="{setting:Localize AddModPackWindow.DataGrid.Text3}"
+                                Header="{setting:Localize AddModPackWindow.Text15}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Time}"
-                                Header="{setting:Localize AddModPackWindow.DataGrid.Text4}"
+                                Header="{setting:Localize AddModPackWindow.Text16}"
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>

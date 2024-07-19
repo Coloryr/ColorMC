@@ -705,7 +705,7 @@ public static class WebBinding
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("Gui.Error16"), e);
+                Logs.Error(App.Lang("WebBinding.Error1"), e);
             }
         });
 
@@ -988,7 +988,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(App.Lang("Gui.Error46"), e);
+            WindowManager.ShowError(App.Lang("WebBinding.Error2"), e);
             return (false, null, null, null, null);
         }
     }
@@ -1150,7 +1150,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(App.Lang("Gui.Error46"), e);
+            WindowManager.ShowError(App.Lang("WebBinding.Error2"), e);
             return (false, null, null);
         }
     }
@@ -1367,7 +1367,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(App.Lang("Gui.Error46"), e);
+            WindowManager.ShowError(App.Lang("WebBinding.Error2"), e);
             return null;
         }
     }
@@ -1424,7 +1424,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(App.Lang("Gui.Error46"), e);
+            WindowManager.ShowError(App.Lang("WebBinding.Error2"), e);
             return (false, null, null, null, null);
         }
     }

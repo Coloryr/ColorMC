@@ -81,7 +81,7 @@ public static class GameCloudUtils
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("Gui.Error36"), e);
+                Logs.Error(App.Lang("GameCloudUtils.Error1"), e);
             }
         }
 
@@ -141,7 +141,7 @@ public static class GameCloudUtils
     public static async Task StartConnect()
     {
         Connect = false;
-        Info = App.Lang("Utils.GameCloud.Error2");
+        Info = App.Lang("GameCloudUtils.Error2");
         var config = GuiConfigUtils.Config.ServerKey;
         if (string.IsNullOrWhiteSpace(config))
         {
@@ -180,7 +180,7 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("Gui.Error37"), e);
+            Logs.Error(App.Lang("GameCloudUtils.Error3"), e);
         }
     }
 
@@ -205,12 +205,12 @@ public static class GameCloudUtils
                 var value = (int)res1!;
                 if (value == 300)
                 {
-                    Info = App.Lang("Utils.GameCloud.Error3");
+                    Info = App.Lang("GameCloudUtils.Error4");
                     return;
                 }
                 else if (value != 100)
                 {
-                    Info = App.Lang("Utils.GameCloud.Error1");
+                    Info = App.Lang("GameCloudUtils.Error5");
                     return;
                 }
             }
@@ -495,10 +495,10 @@ public static class GameCloudUtils
                 var obj = JObject.Parse(data);
                 if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
                 {
-                    Info = App.Lang("Utils.GameCloud.Error1");
+                    Info = App.Lang("GameCloudUtils.Error5");
                     return;
                 }
-                Info = string.Format(App.Lang("Utils.GameCloud.Info1"), obj["use"], obj["size"]);
+                Info = string.Format(App.Lang("GameCloudUtils.Info1"), obj["use"], obj["size"]);
             }
         }
         catch (Exception e)

@@ -37,7 +37,7 @@
                             Margin="-2,-2,3,-2"
                             Classes="top"
                             Command="{Binding OpenUrlOpenFrp}"
-                            Content="{setting:Localize AddWindow.Control.Text3}" />
+                            Content="{setting:Localize NetFrpWindow.Tab1.Text14}" />
                     </StackPanel>
                     <TextBox
                         Margin="0,0,10,5"

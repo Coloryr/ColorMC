@@ -73,7 +73,7 @@ public static class ImageManager
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(App.Lang("Gui.Error34"), file), e);
+                Logs.Error(string.Format(App.Lang("ImageManager.Error1"), file), e);
             }
         }
         if (file1 != null || !File.Exists(file1))
@@ -84,7 +84,7 @@ public static class ImageManager
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(App.Lang("Gui.Error35"), file), e);
+                Logs.Error(string.Format(App.Lang("ImageManager.Error2"), file), e);
             }
         }
     }

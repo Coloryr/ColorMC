@@ -80,7 +80,7 @@
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn
                             Binding="{Binding Enable}"
-                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text1}"
+                            Header="{setting:Localize GameEditWindow.Tab4.Text9}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Name}"
@@ -96,7 +96,7 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Loader}"
-                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text7}"
+                            Header="{setting:Localize GameEditWindow.Tab4.Text11}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Source}"
@@ -104,11 +104,11 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding PID}"
-                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}"
+                            Header="{setting:Localize GameEditWindow.Tab4.Text12}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding FID}"
-                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}"
+                            Header="{setting:Localize GameEditWindow.Tab4.Text13}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Local}"
@@ -120,7 +120,7 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Url}"
-                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text6}"
+                            Header="{setting:Localize GameEditWindow.Tab4.Text10}"
                             IsReadOnly="True" />
                     </DataGrid.Columns>
                 </DataGrid>

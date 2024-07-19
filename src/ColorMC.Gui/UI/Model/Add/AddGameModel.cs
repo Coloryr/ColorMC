@@ -65,7 +65,7 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("AddGameWindow.Tab1.Info5"), false);
+        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("Text.Group"), false);
         if (Cancel)
         {
             return;

@@ -99,7 +99,7 @@
                                 Margin="-2,-2,3,3"
                                 Classes="top"
                                 Command="{Binding RenameInputConfig}"
-                                Content="{setting:Localize Button.Rename}"
+                                Content="{setting:Localize SettingWindow.Tab8.Text32}"
                                 IsEnabled="{Binding InputExist}" />
                             <Button
                                 Width="90"
@@ -122,7 +122,7 @@
                                 Margin="-2,-2,3,3"
                                 Classes="top"
                                 Command="{Binding ExportInputConfig}"
-                                Content="{setting:Localize Button.Output}"
+                                Content="{setting:Localize SettingWindow.Tab8.Text31}"
                                 IsEnabled="{Binding InputExist}" />
                         </WrapPanel>
                     </StackPanel>

@@ -53,7 +53,7 @@ public static class InputConfigUtils
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("Gui.Error50"), e);
+                Logs.Error(App.Lang("Config.Error3"), e);
             }
 
             if (config == null || config.Keys == null

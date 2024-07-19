@@ -122,10 +122,10 @@ public static class ColorMCGui
     {
         if (e.Exception.InnerException is DBusException)
         {
-            Logs.Error(App.Lang("Gui.Error25"), e.Exception);
+            Logs.Error(App.Lang("App.Error1"), e.Exception);
             return;
         }
-        Logs.Crash(App.Lang("Gui.Error25"), e.Exception);
+        Logs.Crash(App.Lang("App.Error1"), e.Exception);
     }
 
     public static void StartPhone(string local)

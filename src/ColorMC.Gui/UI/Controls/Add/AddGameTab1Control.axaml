@@ -20,7 +20,7 @@
                     HorizontalAlignment="Right"
                     Classes="top"
                     Command="{Binding AddGame}"
-                    Content="{setting:Localize Button.Done}"
+                    Content="{setting:Localize AddGameWindow.Tab1.Text22}"
                     DockPanel.Dock="Bottom"
                     IsEnabled="{Binding !IsLoad}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text69}"

@@ -152,14 +152,14 @@ public static class WindowManager
                 if (!File.Exists(path))
                 {
                     File.WriteAllText(path, "custom");
-                    CustomWindow?.Window.Window.Model.Show(App.Lang("Gui.Info54"));
+                    CustomWindow?.Window.Window.Model.Show(App.Lang("WindowManager.Info1"));
                 }
             }
             return true;
         }
         catch (Exception e)
         {
-            var data = App.Lang("Gui.Error10");
+            var data = App.Lang("WindowManager.Error1");
             Logs.Error(data, e);
             ShowError(data, e, true);
         }

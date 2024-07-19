@@ -100,15 +100,15 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Arch}"
-                            Header="{setting:Localize AddJavaWindow.DataGrid.Text2}"
+                            Header="{setting:Localize AddJavaWindow.Text4}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Os}"
-                            Header="{setting:Localize AddJavaWindow.DataGrid.Text3}"
+                            Header="{setting:Localize AddJavaWindow.Text2}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding MainVersion}"
-                            Header="{setting:Localize AddJavaWindow.DataGrid.Text4}"
+                            Header="{setting:Localize AddJavaWindow.Text8}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Version}"

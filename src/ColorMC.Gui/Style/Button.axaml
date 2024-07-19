@@ -149,7 +149,7 @@
             <Setter Property="RenderTransform" Value="scale(0.95)" />
         </Style>
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{setting:Theme ButtonOver}" />
+            <Setter Property="Background" Value="{setting:Theme SelectItemOver}" />
         </Style>
     </Style>
 </Styles>

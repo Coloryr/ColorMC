@@ -20,7 +20,7 @@ public class GameEditFlyout5
             {
                 _model.DeleteServer(_model.ServerItem!);
             }),
-            (App.Lang("GameEditWindow.Flyouts5.Text1"), true, ()=>
+            (App.Lang("GameEditWindow.Flyouts.Text13"), true, ()=>
             {
                 GameBinding.CopyServer(_model.ServerItem!);
             })

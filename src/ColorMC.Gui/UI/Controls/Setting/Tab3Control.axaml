@@ -136,7 +136,7 @@
                             HorizontalAlignment="Right"
                             Classes="top"
                             Command="{Binding SetProxy}"
-                            Content="{setting:Localize Button.Set}" />
+                            Content="{setting:Localize SettingWindow.Tab2.Text60}" />
                         <WrapPanel>
                             <ToggleSwitch
                                 Margin="0,0,20,0"

@@ -413,7 +413,7 @@ public static class Media
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("Gui.Error29"), e);
+                Logs.Error(App.Lang("MediaPlayer.Error1"), e);
             }
         }, s_cancel.Token);
 
@@ -464,7 +464,7 @@ public static class Media
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("Gui.Error30"), e);
+            Logs.Error(App.Lang("MediaPlayer.Error2"), e);
             return (false, null);
         }
     }

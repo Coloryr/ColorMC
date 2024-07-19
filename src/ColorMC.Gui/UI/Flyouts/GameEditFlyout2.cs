@@ -20,23 +20,23 @@ public class GameEditFlyout2
             {
                 PathBinding.OpPath(_model.World);
             }),
-            (App.Lang("GameEditWindow.Flyouts2.Text5"), CheckHelpers.IsGameVersion120(_model.World.Game.Version), ()=>
+            (App.Lang("GameEditWindow.Flyouts.Text11"), CheckHelpers.IsGameVersion120(_model.World.Game.Version), ()=>
             {
                 _model.Top.LaunchWorld(_model);
             }),
-            (App.Lang("GameEditWindow.Flyouts2.Text1"), true, ()=>
+            (App.Lang("GameEditWindow.Flyouts.Text7"), true, ()=>
             {
                 _model.Top.Export(_model);
             }),
-            (App.Lang("GameEditWindow.Flyouts2.Text4"), true, ()=>
+            (App.Lang("GameEditWindow.Flyouts.Text10"), true, ()=>
             {
                 WindowManager.ShowConfigEdit(_model.World);
             }),
-            (App.Lang("GameEditWindow.Flyouts2.Text3"), !_model.World.Broken, ()=>
+            (App.Lang("GameEditWindow.Flyouts.Text9"), !_model.World.Broken, ()=>
             {
                 _model.Top.BackupWorld(_model);
             }),
-            (App.Lang("GameEditWindow.Flyouts2.Text2"), !_model.World.Broken, ()=>
+            (App.Lang("GameEditWindow.Flyouts.Text8"), !_model.World.Broken, ()=>
             {
                 _model.Top.DeleteWorld(_model);
             })

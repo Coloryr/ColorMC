@@ -85,7 +85,7 @@ public partial class SettingModel
         }
 
         Model.Progress(App.Lang("SettingWindow.Tab5.Info7"));
-        string temp = App.Lang("Gui.Info27");
+        string temp = App.Lang("AddGameWindow.Tab1.Info21");
         var res = await JavaBinding.AddJavaZip(file.Item1, file.Item2, (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));

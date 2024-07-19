@@ -29,7 +29,7 @@ public static class ColorSel
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("Gui.Error11"), e);
+            Logs.Error(App.Lang("Config.Error4"), e);
         }
     }
 

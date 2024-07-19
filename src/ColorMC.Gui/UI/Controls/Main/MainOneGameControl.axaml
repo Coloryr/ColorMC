@@ -17,7 +17,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="25"
-                Text="{setting:Localize MainWindow.Info18}"
+                Text="{setting:Localize MainWindow.Text24}"
                 TextWrapping="Wrap" />
         </Border>
         <Decorator

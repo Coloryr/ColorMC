@@ -113,7 +113,7 @@ public static class BaseBinding
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("Gui.Error32"), e);
+                Logs.Error(App.Lang("BaseBinding.Error1"), e);
             }
         }
 
@@ -161,7 +161,7 @@ public static class BaseBinding
             Dispatcher.UIThread.Post(() =>
             {
                 WindowManager.ShowGameLog(obj);
-                WindowManager.MainWindow?.ShowMessage(App.Lang("MainWindow.Live2D.Text3"));
+                WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text3"));
             });
         }
         else
@@ -216,11 +216,11 @@ public static class BaseBinding
                 }
                 if (game == null)
                 {
-                    window?.Model.Show(App.Lang("Gui.Error28"));
+                    window?.Model.Show(App.Lang("BaseBinding.Error2"));
                 }
                 else if (window?.Model is BaseModel model)
                 {
-                    window.Model.Progress(string.Format(App.Lang("Gui.Info28"), game.Name));
+                    window.Model.Progress(string.Format(App.Lang("BaseBinding.Info1"), game.Name));
                     var res = await GameBinding.Launch(model, game, hide: true);
                     if (!res.Item1)
                     {
@@ -308,7 +308,7 @@ public static class BaseBinding
 
         if (RunGames.Contains(obj.UUID))
         {
-            return (false, App.Lang("Gui.Error42"), LaunchState.End);
+            return (false, App.Lang("BaseBinding.Error3"), LaunchState.End);
         }
         //设置自动加入服务器
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
@@ -371,7 +371,7 @@ public static class BaseBinding
             {
                 return Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    return model.ShowTextWait(App.Lang("Text.Update"), text ?? "");
+                    return model.ShowTextWait(App.Lang("BaseBinding.Info2"), text ?? "");
                 });
             }, (version) =>
             {
@@ -456,7 +456,7 @@ public static class BaseBinding
                 Media.Pause();
             }
 
-            WindowManager.MainWindow?.ShowMessage(App.Lang("MainWindow.Live2D.Text2"));
+            WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text2"));
 
             RunGames.Add(obj.UUID);
             GameCount.LaunchDone(obj);
@@ -517,7 +517,7 @@ public static class BaseBinding
 
                     if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
                     {
-                        run = await model.ShowWait(App.Lang("Gui.Error51"));
+                        run = await model.ShowWait(App.Lang("BaseBinding.Error7"));
                     }
                     if (run)
                     {
@@ -649,7 +649,7 @@ public static class BaseBinding
         catch (LaunchException e1)
         {
             state1 = e1.State;
-            temp = App.Lang("Gui.Error6");
+            temp = App.Lang("BaseBinding.Error4");
             if (!string.IsNullOrWhiteSpace(e1.Message))
             {
                 temp = e1.Message;
@@ -662,7 +662,7 @@ public static class BaseBinding
         }
         catch (Exception e)
         {
-            temp = App.Lang("Gui.Error6");
+            temp = App.Lang("BaseBinding.Error4");
             Logs.Error(temp, e);
             WindowManager.ShowError(temp, e);
         }
@@ -873,7 +873,7 @@ public static class BaseBinding
         }
         catch (Exception ex)
         {
-            var data = App.Lang("SettingWindow.Tab6.Error2");
+            var data = App.Lang("BaseBinding.Error8");
             Logs.Error(data, ex);
             WindowManager.ShowError(data, ex);
 
@@ -907,7 +907,7 @@ public static class BaseBinding
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("Gui.Error33"), e);
+                Logs.Error(App.Lang("BaseBinding.Error5"), e);
             }
         }
 #pragma warning restore CA1416 // 验证平台兼容性
@@ -1122,7 +1122,7 @@ public static class BaseBinding
         }
         catch (Exception e)
         {
-            Logs.Error("frp start error", e);
+            Logs.Error(App.Lang("BaseBinding.Error6"), e);
         }
 
         return (false, null, null);
