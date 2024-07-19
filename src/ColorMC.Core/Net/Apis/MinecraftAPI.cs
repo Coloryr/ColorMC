@@ -26,7 +26,7 @@ public static class MinecraftAPI
     {
         HttpRequestMessage message = new(HttpMethod.Get, Profile);
         message.Headers.Add("Authorization", $"Bearer {accessToken}");
-        var data = await BaseClient.LoginClient.SendAsync(message);
+        var data = await WebClient.LoginClient.SendAsync(message);
         var data1 = await data.Content.ReadAsStringAsync();
 
         return JsonConvert.DeserializeObject<MinecraftProfileObj>(data1); ;
@@ -41,7 +41,7 @@ public static class MinecraftAPI
     public static async Task<UserProfileObj?> GetUserProfile(string? uuid, string? url = null)
     {
         url ??= $"{UserProfile}/{uuid}";
-        var data = await BaseClient.LoginClient.GetStringAsync(url);
+        var data = await WebClient.LoginClient.GetStringAsync(url);
 
         return JsonConvert.DeserializeObject<UserProfileObj>(data);
     }
@@ -51,7 +51,7 @@ public static class MinecraftAPI
     /// </summary>
     public static async Task<MinecraftLoginRes> GetMinecraftAsync(string xstsUhs, string xstsToken)
     {
-        var json = await BaseClient.LoginPostJsonAsync(LoginXbox, new
+        var json = await WebClient.LoginPostJsonAsync(LoginXbox, new
         {
             identityToken = $"XBL3.0 x={xstsUhs};{xstsToken}"
         });
@@ -84,7 +84,7 @@ public static class MinecraftAPI
         var url = string.Format(News, PageSize, page * PageSize);
         var req = new HttpRequestMessage(HttpMethod.Get, url);
         req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-        var data = await BaseClient.DownloadClient.SendAsync(req);
+        var data = await WebClient.DownloadClient.SendAsync(req);
         var data1 = await data.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<MinecraftNewObj>(data1);
     }

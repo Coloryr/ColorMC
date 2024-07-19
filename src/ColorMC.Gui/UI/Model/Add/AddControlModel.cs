@@ -1337,6 +1337,11 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     public override void Close()
     {
+        if (Display)
+        {
+            Model.PopBack();
+        }
+
         _close = true;
         _load = true;
         Model.RemoveChoiseData(_useName);

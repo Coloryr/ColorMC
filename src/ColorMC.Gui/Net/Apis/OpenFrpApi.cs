@@ -23,7 +23,7 @@ public static class OpenFrpApi
     {
         try
         {
-            var data = await BaseClient.LoginClient.GetStringAsync($"{Url}?action=getallproxies&user={key}");
+            var data = await WebClient.LoginClient.GetStringAsync($"{Url}?action=getallproxies&user={key}");
 
             return JsonConvert.DeserializeObject<OpenFrpChannelObj>(data);
         }
@@ -39,7 +39,7 @@ public static class OpenFrpApi
     {
         try
         {
-            var data = await BaseClient.LoginClient.GetStringAsync($"{Url}?action=getproxy&proxy={id}&user={key}");
+            var data = await WebClient.LoginClient.GetStringAsync($"{Url}?action=getproxy&proxy={id}&user={key}");
 
             return JsonConvert.DeserializeObject<OpenFrpChannelInfoObj>(data);
         }
@@ -160,7 +160,7 @@ public static class OpenFrpApi
     {
         try
         {
-            var data = await BaseClient.LoginClient.GetStringAsync($"https://console.openfrp.net/web/commonQuery/get?key=software");
+            var data = await WebClient.LoginClient.GetStringAsync($"https://console.openfrp.net/web/commonQuery/get?key=software");
 
             return JsonConvert.DeserializeObject<OpenFrpDownloadObj>(data);
         }

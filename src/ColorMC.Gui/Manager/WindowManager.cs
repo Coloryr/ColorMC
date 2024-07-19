@@ -70,7 +70,7 @@ public static class WindowManager
         WindowTransparencyLevel.Mica
     ];
 
-    public static void StartWindow()
+    public static void Init()
     {
         if (ConfigBinding.WindowMode())
         {
@@ -92,6 +92,11 @@ public static class WindowManager
                 AllWindow = win.Win;
                 win.Show();
             }
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                App.TopLevel ??= TopLevel.GetTopLevel(AllWindow);
+            });
         }
 
         if (!ShowCustom())
@@ -610,52 +615,35 @@ public static class WindowManager
 
     public static void UpdateWindow(BaseModel model)
     {
-        if (GuiConfigUtils.Config != null)
+        model.Back = ImageManager.BackBitmap;
+        if (ImageManager.BackBitmap != null)
         {
-            model.Background = GuiConfigUtils.Config.WindowTran ?
-                ThemeManager.GetColor("WindowTranColor") : Brushes.White;
-            model.Back = ImageManager.BackBitmap;
-            if (ImageManager.BackBitmap != null)
+            if (GuiConfigUtils.Config.BackTran != 0)
             {
-                if (GuiConfigUtils.Config.BackTran != 0)
-                {
-                    model.BgOpacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
-                }
-                else
-                {
-                    model.BgOpacity = 1.0;
-                }
-                model.BgVisible = true;
+                model.BgOpacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
             }
             else
             {
-                model.BgVisible = false;
+                model.BgOpacity = 1.0;
             }
-
-            if (GuiConfigUtils.Config.WindowTran)
-            {
-                model.Hints = [WindowTran[GuiConfigUtils.Config.WindowTranType]];
-            }
-            else
-            {
-                model.Hints = [WindowTransparencyLevel.None];
-            }
-
-            switch (GuiConfigUtils.Config.ColorType)
-            {
-                case ColorType.Auto:
-                    model.Theme =
-                        App.ThisApp.PlatformSettings!.GetColorValues().ThemeVariant ==
-                        PlatformThemeVariant.Light ? ThemeVariant.Light : ThemeVariant.Dark;
-                    break;
-                case ColorType.Light:
-                    model.Theme = ThemeVariant.Light;
-                    break;
-                case ColorType.Dark:
-                    model.Theme = ThemeVariant.Dark;
-                    break;
-            }
+            model.BgVisible = true;
         }
+        else
+        {
+            model.BgVisible = false;
+        }
+
+        if (GuiConfigUtils.Config.WindowTran)
+        {
+            model.Hints = [WindowTran[GuiConfigUtils.Config.WindowTranType]];
+        }
+        else
+        {
+            model.Hints = [WindowTransparencyLevel.None];
+        }
+
+        model.Theme = ThemeManager.NowTheme ==
+            PlatformThemeVariant.Light ? ThemeVariant.Light : ThemeVariant.Dark;
     }
 
     public static void Show()

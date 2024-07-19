@@ -34,7 +34,7 @@ public partial class SettingModel
         var path1 = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/run";
         PathHelper.Delete(path1);
 
-        App.Reboot();
+        ColorMCGui.Reboot();
     }
 
     [RelayCommand]
@@ -55,7 +55,7 @@ public partial class SettingModel
         var path1 = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/run";
         PathHelper.WriteText(path1, path);
 
-        App.Reboot();
+        ColorMCGui.Reboot();
     }
 
     [RelayCommand]

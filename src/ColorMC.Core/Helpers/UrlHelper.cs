@@ -408,7 +408,7 @@ public static class UrlHelper
     /// <returns></returns>
     public static (bool, string?) UrlChange(string old)
     {
-        if (BaseClient.Source == SourceLocal.Offical)
+        if (WebClient.Source == SourceLocal.Offical)
         {
             if (old.StartsWith(Forge))
             {

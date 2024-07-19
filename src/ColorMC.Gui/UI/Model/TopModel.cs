@@ -4,6 +4,8 @@ namespace ColorMC.Gui.UI.Model;
 
 public abstract partial class TopModel(BaseModel model) : ObservableObject
 {
+    public const string WindowCloseName = "WindowClose";
+
     public const string MinModeName = nameof(MinMode);
 
     public BaseModel Model => model;
@@ -33,6 +35,6 @@ public abstract partial class TopModel(BaseModel model) : ObservableObject
     /// </summary>
     public void WindowClose()
     {
-        model.WindowClose();
+        OnPropertyChanged(WindowCloseName);
     }
 }

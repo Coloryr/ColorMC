@@ -15,6 +15,7 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
@@ -28,7 +29,6 @@ public partial class App : Application
 {
     public App()
     {
-        Name = "ColorMC";
         ThisApp = this;
 
         AppDomain.CurrentDomain.UnhandledException += (a, e) =>
@@ -47,29 +47,18 @@ public partial class App : Application
     public static readonly SelfPageSlide PageSlide500 = new(TimeSpan.FromMilliseconds(500));
     public static readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
-    public static event Action? PicUpdate;
-    public static event Action? UserEdit;
-    public static event Action? SkinLoad;
     public static event Action? OnClose;
 
     public static Application ThisApp { get; private set; }
     public static IApplicationLifetime? Life { get; private set; }
 
-    public static bool IsClose { get; set; }
     public static bool IsHide { get; private set; }
-
-    public static PlatformThemeVariant NowTheme { get; private set; }
 
     private static readonly Language s_language = new();
 
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-
-        if (ColorMCGui.RunType == RunType.Program)
-        {
-            StartLock();
-        }
     }
 
     public static string Lang(string input)
@@ -81,24 +70,6 @@ public partial class App : Application
         }
 
         return LanguageHelper.Get(input);
-    }
-
-    public static void ColorChange()
-    {
-        switch (GuiConfigUtils.Config.ColorType)
-        {
-            case ColorType.Auto:
-                NowTheme = ThisApp.PlatformSettings!.GetColorValues().ThemeVariant;
-                break;
-            case ColorType.Light:
-                NowTheme = PlatformThemeVariant.Light;
-                break;
-            case ColorType.Dark:
-                NowTheme = PlatformThemeVariant.Dark;
-                break;
-        }
-
-        ThemeManager.Load();
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -116,33 +87,43 @@ public partial class App : Application
             LoadLanguage(ConfigUtils.Config.Language);
         }
 
-        ImageManager.Load();
+        if (PlatformSettings is { } setting)
+        {
+            setting.ColorValuesChanged += (object? sender, PlatformColorValues e) =>
+            {
+                if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
+                {
+                    ThemeManager.Init();
+                }
+            };
+        }
 
-        PlatformSettings!.ColorValuesChanged += PlatformSettings_ColorValuesChanged;
+        GameSocket.Init();
+        UpdateChecker.Init();
+        GameCloudUtils.Init(ColorMCGui.RunDir);
+        FrpConfigUtils.Init(ColorMCGui.RunDir);
+        ImageUtils.Init(ColorMCGui.RunDir);
+        InputConfigUtils.Init(ColorMCGui.RunDir);
+        FrpPath.Init(ColorMCGui.RunDir);
 
-        ColorChange();
+        LoadPageSlide();
 
         BaseBinding.Init();
 
-        WindowManager.StartWindow();
+        ThemeManager.Init();
+        ImageManager.Init();
+
+        WindowManager.Init();
 
         if (ColorMCGui.RunType != RunType.AppBuilder)
         {
             Task.Run(() =>
             {
                 ColorMCCore.Init1();
-                BaseBinding.OnLoadDone();
+                BaseBinding.Init1();
             });
         }
-        Dispatcher.UIThread.Post(async () => await ImageManager.LoadImage());
-
-        if (ConfigBinding.WindowMode())
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                TopLevel ??= TopLevel.GetTopLevel(WindowManager.AllWindow);
-            });
-        }
+        _ = ImageManager.LoadImage();
     }
 
     public static void LoadPageSlide()
@@ -154,51 +135,8 @@ public partial class App : Application
     public static void Clear()
     {
         ThemeManager.Remove();
-
         LangMananger.Remove();
-    }
-
-    public static void StartLock()
-    {
-        new Thread(() =>
-        {
-            while (!IsClose)
-            {
-                ColorMCGui.TestLock();
-                if (IsClose)
-                {
-                    return;
-                }
-                IsHide = false;
-                Dispatcher.UIThread.Post(Show);
-            }
-        })
-        {
-            Name = "ColorMC_Lock"
-        }.Start();
-    }
-
-    private void PlatformSettings_ColorValuesChanged(object? sender, PlatformColorValues e)
-    {
-        if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
-        {
-            ColorChange();
-        }
-    }
-
-    public static void OnUserEdit()
-    {
-        UserEdit?.Invoke();
-    }
-
-    public static void OnPicUpdate()
-    {
-        PicUpdate?.Invoke();
-    }
-
-    public static void OnSkinLoad()
-    {
-        SkinLoad?.Invoke();
+        FuntionUtils.RunGC();
     }
 
     public static void LoadLanguage(LanguageType type)
@@ -218,11 +156,8 @@ public partial class App : Application
         s_language.Load(reader.ReadToEnd());
     }
 
-
-
     public static void Close()
     {
-        IsClose = true;
         OnClose?.Invoke();
         WindowManager.CloseAllWindow();
         ColorMCCore.Close();
@@ -233,7 +168,7 @@ public partial class App : Application
     public static void Show()
     {
         IsHide = false;
-        WindowManager.Show();
+        Dispatcher.UIThread.Post(WindowManager.Show);
     }
 
     public static void Hide()
@@ -243,16 +178,11 @@ public partial class App : Application
         WindowManager.Hide();
     }
 
-    public static void Reboot()
+    public static void TestClose()
     {
-        if (SystemInfo.Os != OsType.Android)
+        if (IsHide && !GameManager.IsGameRuning())
         {
-            IsClose = true;
-            Thread.Sleep(500);
-            Process.Start($"{(SystemInfo.Os == OsType.Windows ?
-                    "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");
-            //Thread.Sleep(200);
-            Close();
+            ColorMCGui.Close();
         }
     }
 }

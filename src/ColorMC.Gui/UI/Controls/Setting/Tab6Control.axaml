@@ -201,6 +201,10 @@
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text22}"
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text22}" />
                             <ToggleSwitch
+                                IsEnabled="{Binding Loop}"
+                                OffContent="{setting:Localize SettingWindow.Tab6.Text37}"
+                                OnContent="{setting:Localize SettingWindow.Tab6.Text37}" />
+                            <ToggleSwitch
                                 IsEnabled="{Binding RunPause}"
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text26}"
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text26}" />

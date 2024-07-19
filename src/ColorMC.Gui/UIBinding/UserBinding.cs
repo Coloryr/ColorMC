@@ -13,12 +13,15 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class UserBinding
 {
+    public static event Action? UserEdit;
+
     private static readonly List<(AuthType, string)> s_lockUser = [];
 
     public static string[] GetLockLoginType()
@@ -123,14 +126,16 @@ public static class UserBinding
         if (item != null)
             AuthDatabase.Delete(item);
 
-        App.OnUserEdit();
+        OnUserEdit();
     }
 
     public static LoginObj? GetLastUser()
     {
         var obj = GuiConfigUtils.Config?.LastUser;
         if (obj == null)
+        {
             return null;
+        }
         return AuthDatabase.Get(obj.UUID, obj.Type);
     }
 
@@ -157,7 +162,7 @@ public static class UserBinding
 
         GuiConfigUtils.Save();
 
-        App.OnUserEdit();
+        OnUserEdit();
     }
 
     public static void ClearLastUser()
@@ -211,7 +216,6 @@ public static class UserBinding
         }
 
         ImageManager.LoadSkinHead(file, file1);
-        App.OnSkinLoad();
     }
 
     public static void ReloadSkin()
@@ -224,7 +228,6 @@ public static class UserBinding
         }
 
         ImageManager.ReloadSkinHead();
-        App.OnSkinLoad();
     }
 
     public static async void EditSkin()
@@ -272,7 +275,7 @@ public static class UserBinding
 
         GuiConfigUtils.Save();
 
-        App.OnUserEdit();
+        OnUserEdit();
     }
 
     public static void UserLastUser()
@@ -311,5 +314,42 @@ public static class UserBinding
     public static async Task<bool> TestLogin(LoginObj user)
     {
         return (await user.RefreshTokenAsync()).LoginState == LoginState.Done;
+    }
+
+    public static void OnUserEdit()
+    {
+        UserEdit?.Invoke();
+    }
+
+    /// <summary>
+    /// 获取选中的账户
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public static async Task<(LoginObj?, string?)> GetUser(BaseModel model)
+    {
+        var login = GetLastUser();
+        if (login == null)
+        {
+            return (null, App.Lang("GameBinding.Error3"));
+        }
+        if (login.AuthType == AuthType.Offline)
+        {
+            var have = AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
+            if (!have)
+            {
+                WebBinding.OpenWeb(WebType.Minecraft);
+                return (null, App.Lang("GameBinding.Error4"));
+            }
+        }
+
+        if (IsLock(login))
+        {
+            var res = await model.ShowWait(App.Lang("GameBinding.Error1"));
+            if (!res)
+                return (null, App.Lang("GameBinding.Error5"));
+        }
+
+        return (login, null);
     }
 }

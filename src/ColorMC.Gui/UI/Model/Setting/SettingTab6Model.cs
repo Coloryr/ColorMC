@@ -59,6 +59,8 @@ public partial class SettingModel
     private bool _runPause;
     [ObservableProperty]
     private bool _enableUI;
+    [ObservableProperty]
+    private bool _loop;
 
     [ObservableProperty]
     private int _game = -1;
@@ -66,6 +68,14 @@ public partial class SettingModel
     private int _volume;
 
     private bool _serverLoad = true;
+
+    partial void OnLoopChanged(bool value)
+    {
+        if (_serverLoad)
+            return;
+
+        SetMusic();
+    }
 
     partial void OnEnableUIChanged(bool value)
     {
@@ -289,6 +299,7 @@ public partial class SettingModel
             EnableUI = config.EnableUI;
             RunPause = config.RunPause;
             SlowVolume = config.SlowVolume;
+            Loop = config.MusicLoop;
 
             MotdFontColor = ColorSel.MotdColor.ToColor();
             MotdBackColor = ColorSel.MotdBackColor.ToColor();
@@ -320,7 +331,7 @@ public partial class SettingModel
         if (_serverLoad)
             return;
 
-        ConfigBinding.SetMusic(EnableMusic, SlowVolume, Music, Volume, RunPause);
+        ConfigBinding.SetMusic(EnableMusic, SlowVolume, Music, Volume, RunPause, Loop);
     }
 
     private void SetLoginLock()

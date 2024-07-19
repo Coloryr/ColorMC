@@ -21,7 +21,6 @@ namespace ColorMC.Gui.UI.Model;
 public partial class BaseModel : ObservableObject
 {
     public const string InfoShow = "InfoShow";
-    public const string WindowCloseName = "WindowClose";
     public const string IconName = "Icon";
 
     /// <summary>
@@ -73,8 +72,6 @@ public partial class BaseModel : ObservableObject
 
     [ObservableProperty]
     private ThemeVariant _theme;
-    [ObservableProperty]
-    private IBrush _background;
 
     [ObservableProperty]
     private bool _enableHead = true;
@@ -705,10 +702,5 @@ public partial class BaseModel : ObservableObject
         {
 
         }
-    }
-
-    public void WindowClose()
-    {
-        OnPropertyChanged(WindowCloseName);
     }
 }

@@ -2,7 +2,8 @@
     x:Class="ColorMC.Gui.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia">
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    Name="ColorMC">
     <Application.Styles>
         <FluentTheme />
         <dialog:DialogHostStyles />

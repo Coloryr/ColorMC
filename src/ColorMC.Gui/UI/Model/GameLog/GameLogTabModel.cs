@@ -8,6 +8,7 @@ using Avalonia.Threading;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -62,9 +63,9 @@ public partial class GameLogModel : GameModel
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            if (BaseBinding.GameLogs.ContainsKey(Obj.UUID))
+            if (GameManager.GetGameLog(Obj.UUID) is { } text)
             {
-                Text = new(BaseBinding.GameLogs[Obj.UUID].ToString());
+                Text = new(text);
             }
             else
             {
@@ -129,7 +130,8 @@ public partial class GameLogModel : GameModel
     [RelayCommand]
     public void Stop()
     {
-        BaseBinding.StopGame(Obj);
+        GameManager.StopGame(Obj);
+        GameBinding.CancelLaunch();
         IsGameRun = false;
     }
 
@@ -161,7 +163,7 @@ public partial class GameLogModel : GameModel
 
     public void Load()
     {
-        IsGameRun = BaseBinding.IsGameRun(Obj);
+        IsGameRun = GameManager.IsGameRun(Obj);
 
         if (IsGameRun)
         {
@@ -230,9 +232,13 @@ public partial class GameLogModel : GameModel
 
     public void LoadLast()
     {
-        if (BaseBinding.GameLogs.TryGetValue(Obj.UUID, out var temp))
+        if (GameManager.GetGameLog(Obj.UUID) is { } text)
         {
-            Text = new(temp.ToString());
+            Text = new(text);
+        }
+        else
+        {
+            Text = new();
         }
     }
 }

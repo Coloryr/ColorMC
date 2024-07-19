@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
@@ -22,10 +23,12 @@ public class GameEditFlyout8
             obj = mods.ToList()[0];
         }
 
+        var run = GameManager.IsGameRun(model.World.Game);
+
         _ = new FlyoutsControl(
         [
             (App.Lang("GameEditWindow.Flyouts.Text1"),
-                !BaseBinding.IsGameRun(model.World.Game), ()=>
+                !run, ()=>
                 {
                     if (single)
                     {
@@ -36,7 +39,7 @@ public class GameEditFlyout8
                         model.DisE(mods);
                     }
                 }),
-            (App.Lang("Button.Delete"), !BaseBinding.IsGameRun(model.World.Game), ()=>
+            (App.Lang("Button.Delete"), !run, ()=>
             {
                 if (single)
                 {

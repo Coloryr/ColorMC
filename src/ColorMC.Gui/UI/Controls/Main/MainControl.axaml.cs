@@ -234,7 +234,7 @@ public partial class MainControl : BaseUserControl
             return true;
         }
 
-        if (BaseBinding.IsGameRuning())
+        if (GameManager.IsGameRuning())
         {
             App.Hide();
             return true;

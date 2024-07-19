@@ -212,5 +212,9 @@ public partial class NetFrpModel
             Model.SetChoiseCall(_name, Stop);
             Model.SetChoiseContent(_name, App.Lang("NetFrpWindow.Tab3.Text2"));
         }
+        else
+        {
+            RemoveClick();
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class SingleLinuxWindow : ABaseWindow
 {
-    public override ITop ICon => Win;
+    public override ITopWindow ICon => Win;
 
     public SingleLinuxWindow()
     {

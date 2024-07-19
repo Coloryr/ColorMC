@@ -43,15 +43,6 @@ public static class BaseBinding
     public const string DrapType = "Game";
 
     /// <summary>
-    /// 正在运行的游戏
-    /// </summary>
-    public static readonly List<string> RunGames = [];
-    /// <summary>
-    /// 游戏日志
-    /// </summary>
-    public static readonly Dictionary<string, StringBuilder> GameLogs = [];
-
-    /// <summary>
     /// 是否为第一次启动
     /// </summary>
     public static bool NewStart => ColorMCCore.NewStart;
@@ -65,15 +56,17 @@ public static class BaseBinding
     public static event Action? LoadDone;
 
     /// <summary>
-    /// 停止启动游戏
-    /// </summary>
-    private static CancellationTokenSource s_launchCancel = new();
-    /// <summary>
     /// 快捷启动
     /// </summary>
     private static string s_launch;
 
-    public static bool IsAddGames { set { InstancesPath.AddGames = value; } }
+    public static bool IsAddGames
+    { 
+        set 
+        { 
+            InstancesPath.AddGames = value; 
+        } 
+    }
 
     /// <summary>
     /// 初始化
@@ -84,15 +77,7 @@ public static class BaseBinding
         ColorMCCore.LanguageReload += LanguageReload;
         ColorMCCore.GameLog += (obj, d) =>
         {
-            if (GameLogs.TryGetValue(obj.UUID, out var log))
-            {
-                log.Append(d).Append(Environment.NewLine);
-            }
-
-            if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var win))
-            {
-                win.Log(d);
-            }
+            GameManager.AddGameLog(obj.UUID, d);
         };
         ColorMCCore.OnDownload = WindowManager.ShowDownload;
         ColorMCCore.GameExit += GameExit;
@@ -116,14 +101,6 @@ public static class BaseBinding
                 Logs.Error(App.Lang("BaseBinding.Error1"), e);
             }
         }
-
-        GameSocket.Init();
-        FrpConfigUtils.Init(ColorMCGui.RunDir);
-        ImageUtils.Init(ColorMCGui.RunDir);
-        InputConfigUtils.Init(ColorMCGui.RunDir);
-        FrpPath.Init(ColorMCGui.RunDir);
-
-        App.LoadPageSlide();
 
         InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>
         {
@@ -149,14 +126,14 @@ public static class BaseBinding
     /// <param name="code"></param>
     private static void GameExit(GameSettingObj obj, LoginObj obj1, int code)
     {
+        GameManager.GameExit(obj.UUID);
         GameCount.GameClose(obj);
-        RunGames.Remove(obj.UUID);
         UserBinding.UnLockUser(obj1);
         Dispatcher.UIThread.Post(() =>
         {
             WindowManager.MainWindow?.GameClose(obj.UUID);
         });
-        if (code != 0 && !App.IsClose)
+        if (code != 0 && !ColorMCGui.IsClose)
         {
             Dispatcher.UIThread.Post(() =>
             {
@@ -166,18 +143,19 @@ public static class BaseBinding
         }
         else
         {
-            if (App.IsHide && !IsGameRuning())
-            {
-                App.Close();
-            }
-            if (GameCloudUtils.Connect && !App.IsClose)
+            if (GameCloudUtils.Connect && !ColorMCGui.IsClose)
             {
                 Task.Run(() =>
                 {
                     GameBinding.CheckCloudAndOpen(obj);
                 });
             }
+            else
+            {
+                App.TestClose();
+            }
         }
+
         GameBinding.GameStateUpdate(obj);
     }
 
@@ -190,16 +168,14 @@ public static class BaseBinding
         App.LoadLanguage(type);
         LangMananger.Reload();
 
-        App.Reboot();
+        ColorMCGui.Reboot();
     }
 
     /// <summary>
     /// 核心初始化完成
     /// </summary>
-    public static async void OnLoadDone()
+    public static async void Init1()
     {
-        UpdateChecker.Init();
-        GameCloudUtils.Init(ColorMCGui.RunDir);
         LoadDone?.Invoke();
 
         await GameCloudUtils.StartConnect();
@@ -214,22 +190,23 @@ public static class BaseBinding
                 {
                     return;
                 }
-                if (game == null)
+                if (window?.Model is { } model)
                 {
-                    window?.Model.Show(App.Lang("BaseBinding.Error2"));
-                }
-                else if (window?.Model is BaseModel model)
-                {
-                    window.Model.Progress(string.Format(App.Lang("BaseBinding.Info1"), game.Name));
+                    if (game == null)
+                    {
+                        model.Show(App.Lang("BaseBinding.Error2"));
+                        return;
+                    }
+                    model.Progress(string.Format(App.Lang("BaseBinding.Info1"), game.Name));
                     var res = await GameBinding.Launch(model, game, hide: true);
                     if (!res.Item1)
                     {
                         window.Show();
-                        window.Model.Show(res.Item2!);
+                        model.Show(res.Item2!);
                     }
                     else
                     {
-                        window.Model.ProgressClose();
+                        model.ProgressClose();
                         window.Hide();
                     }
                 }
@@ -262,414 +239,6 @@ public static class BaseBinding
             await clipboard.SetDataObjectAsync(obj);
         }
     }
-
-    /// <summary>
-    /// 游戏实例是否在运行
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    public static bool IsGameRun(GameSettingObj obj)
-    {
-        return RunGames.Contains(obj.UUID);
-    }
-
-    /// <summary>
-    /// 是否有游戏在运行
-    /// </summary>
-    public static bool IsGameRuning()
-    {
-        return RunGames.Count > 0;
-    }
-
-    /// <summary>
-    /// 强制停止游戏实例
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    public static void StopGame(GameSettingObj obj)
-    {
-        s_launchCancel.Cancel();
-        ColorMCCore.KillGame(obj.UUID);
-    }
-
-    /// <summary>
-    /// 启动游戏
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="obj1">保存的账户</param>
-    /// <returns>结果</returns>
-    public static async Task<(bool, string?, LaunchState)> Launch(BaseModel model, GameSettingObj obj,
-        LoginObj obj1, WorldObj? world = null, bool hide = false)
-    {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            hide = false;
-        }
-
-        s_launchCancel = new();
-
-        if (RunGames.Contains(obj.UUID))
-        {
-            return (false, App.Lang("BaseBinding.Error3"), LaunchState.End);
-        }
-        //设置自动加入服务器
-        if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
-            !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
-        {
-            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP,
-                GuiConfigUtils.Config.ServerCustom.Port);
-
-            obj = obj.CopyObj();
-            obj.StartServer ??= new();
-            obj.StartServer.IP = server.ServerAddress;
-            obj.StartServer.Port = server.ServerPort;
-        }
-
-        if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var win))
-        {
-            win.ClearLog();
-        }
-
-        //清空日志
-        if (GameLogs.TryGetValue(obj.UUID, out StringBuilder? value))
-        {
-            value.Clear();
-        }
-        else
-        {
-            GameLogs.Add(obj.UUID, new());
-        }
-
-        var port = GameSocket.Port;
-
-        //锁定账户
-        UserBinding.AddLockUser(obj1);
-
-        var res = await Task.Run(async () =>
-            await Launch(obj, (a) =>
-            {
-                return Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    return model.ShowWait(a);
-                });
-            }, (pre) =>
-            {
-                return Dispatcher.UIThread.InvokeAsync(() =>
-                    model.ShowWait(pre ? App.Lang("MainWindow.Info29") : App.Lang("MainWindow.Info30")));
-            }, (text) =>
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    if (text == null)
-                    {
-                        model.ProgressClose();
-                    }
-                    else
-                    {
-                        model.Progress(text);
-                    }
-                });
-            }, (text) =>
-            {
-                return Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    return model.ShowTextWait(App.Lang("BaseBinding.Info2"), text ?? "");
-                });
-            }, (version) =>
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    WindowManager.ShowSetting(SettingType.SetJava, version);
-                });
-            }, (login) =>
-            {
-                return Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    return model.ShowWait(string.Format(
-                        App.Lang("MainWindow.Info21"), login.UserName));
-                });
-            }, (obj, state) =>
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    if (GuiConfigUtils.Config.CloseBeforeLaunch)
-                    {
-                        if (state == LaunchState.End)
-                        {
-                            model.ProgressClose();
-                        }
-                        model.ProgressUpdate(App.Lang(state switch
-                        {
-                            LaunchState.Login => "MainWindow.Info8",
-                            LaunchState.Check => "MainWindow.Info9",
-                            LaunchState.CheckVersion => "MainWindow.Info10",
-                            LaunchState.CheckLib => "MainWindow.Info11",
-                            LaunchState.CheckAssets => "MainWindow.Info12",
-                            LaunchState.CheckLoader => "MainWindow.Info13",
-                            LaunchState.CheckLoginCore => "MainWindow.Info14",
-                            LaunchState.CheckMods => "MainWindow.Info17",
-                            LaunchState.Download => "MainWindow.Info15",
-                            LaunchState.JvmPrepare => "MainWindow.Info16",
-                            LaunchState.LaunchPre => "MainWindow.Info31",
-                            LaunchState.LaunchPost => "MainWindow.Info32",
-                            LaunchState.InstallForge => "MainWindow.Info38",
-                            _ => ""
-                        }));
-                    }
-                    else
-                    {
-                        model.Title1 = App.Lang(state switch
-                        {
-                            LaunchState.Login => "MainWindow.Info8",
-                            LaunchState.Check => "MainWindow.Info9",
-                            LaunchState.CheckVersion => "MainWindow.Info10",
-                            LaunchState.CheckLib => "MainWindow.Info11",
-                            LaunchState.CheckAssets => "MainWindow.Info12",
-                            LaunchState.CheckLoader => "MainWindow.Info13",
-                            LaunchState.CheckLoginCore => "MainWindow.Info14",
-                            LaunchState.CheckMods => "MainWindow.Info17",
-                            LaunchState.Download => "MainWindow.Info15",
-                            LaunchState.JvmPrepare => "MainWindow.Info16",
-                            LaunchState.LaunchPre => "MainWindow.Info31",
-                            LaunchState.LaunchPost => "MainWindow.Info32",
-                            LaunchState.InstallForge => "MainWindow.Info38",
-                            _ => ""
-                        });
-                    }
-                });
-            }, obj1, world, port, s_launchCancel.Token));
-
-        model.ProgressClose();
-        model.Title1 = "";
-        FuntionUtils.RunGC();
-
-        if (s_launchCancel.IsCancellationRequested)
-        {
-            UserBinding.UnLockUser(obj1);
-            return (true, null, LaunchState.End);
-        }
-
-        if (res.Item1 is { } pr)
-        {
-            obj.LaunchData.LastTime = DateTime.Now;
-            obj.SaveLaunchData();
-
-            if (GuiConfigUtils.Config.ServerCustom.RunPause)
-            {
-                Media.Pause();
-            }
-
-            WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text2"));
-
-            RunGames.Add(obj.UUID);
-            GameCount.LaunchDone(obj);
-            GameBinding.GameStateUpdate(obj);
-
-            if (pr is DesktopGameHandel handel)
-            {
-                GameHandel(model, obj, handel, hide);
-            }
-        }
-        else
-        {
-            GameCount.LaunchError(obj);
-            UserBinding.UnLockUser(obj1);
-        }
-
-        return (res.Item1 != null, res.Item2, res.Item3);
-    }
-
-    /// <summary>
-    /// 游戏进程启动后
-    /// </summary>
-    /// <param name="model"></param>
-    /// <param name="obj"></param>
-    /// <param name="handel"></param>
-    /// <param name="hide"></param>
-    private static void GameHandel(BaseModel model, GameSettingObj obj, DesktopGameHandel handel, bool hide)
-    {
-        var pr = handel.Process;
-        Task.Run(async () =>
-        {
-            try
-            {
-                var conf = obj.Window;
-                if (SystemInfo.Os == OsType.Windows)
-                {
-                    Win32Native.Win32.WaitWindowDisplay(pr);
-                }
-                else if (SystemInfo.Os == OsType.Linux)
-                {
-                    X11Hook.WaitWindowDisplay(pr);
-                }
-                else if (SystemInfo.Os == OsType.MacOS)
-                {
-                    return;
-                }
-
-                if (pr.HasExited)
-                {
-                    return;
-                }
-
-                //启用手柄支持
-                if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
-                {
-                    var run = true;
-                    var uuid = GuiConfigUtils.Config.Input.NowConfig;
-
-                    if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
-                    {
-                        run = await model.ShowWait(App.Lang("BaseBinding.Error7"));
-                    }
-                    if (run)
-                    {
-                        GameJoystick.Start(obj, handel);
-                    }
-                }
-
-                if (hide)
-                {
-                    Dispatcher.UIThread.Post(App.Hide);
-                }
-
-                if (SystemInfo.Os == OsType.MacOS)
-                {
-                    return;
-                }
-
-                //修改窗口标题
-                if (!string.IsNullOrWhiteSpace(conf?.GameTitle))
-                {
-                    var ran = new Random();
-                    int i = 0;
-                    var list = new List<string>();
-                    var list1 = conf.GameTitle.Split('\n');
-
-                    foreach (var item in list1)
-                    {
-                        var temp = item.Trim();
-                        if (string.IsNullOrWhiteSpace(temp))
-                        {
-                            continue;
-                        }
-
-                        list.Add(temp);
-                    }
-                    if (list.Count == 0)
-                    {
-                        return;
-                    }
-
-                    Thread.Sleep(1000);
-
-                    do
-                    {
-                        string title1 = "";
-                        if (conf.RandomTitle)
-                        {
-                            title1 = list[ran.Next(list.Count)];
-                        }
-                        else
-                        {
-                            i++;
-                            if (i >= list.Count)
-                            {
-                                i = 0;
-                            }
-                            title1 = list[i];
-                        }
-
-                        if (SystemInfo.Os == OsType.Windows)
-                        {
-                            Win32Native.Win32.SetTitle(pr, title1);
-                        }
-                        else if (SystemInfo.Os == OsType.Linux)
-                        {
-                            X11Hook.SetTitle(pr, title1);
-                        }
-
-                        try
-                        {
-                            if (!conf.CycTitle || conf.TitleDelay <= 0 || pr.HasExited)
-                            {
-                                break;
-                            }
-
-                            Thread.Sleep(conf.TitleDelay);
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-                    while (!App.IsClose && !handel.IsExit);
-                }
-            }
-            catch
-            {
-
-            }
-        });
-    }
-
-    /// <summary>
-    /// 启动游戏
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="obj1">登陆的账户</param>
-    /// <param name="world">需要运行的世界</param>
-    /// <param name="cancel">取消启动</param>
-    /// <returns>进程信息</returns>
-    private static async Task<(IGameHandel?, string?, LaunchState)> Launch(GameSettingObj obj,
-        ColorMCCore.Request request, ColorMCCore.LaunchP pre,
-        ColorMCCore.UpdateState state, ColorMCCore.ChoiseCall select,
-        ColorMCCore.NoJava nojava, ColorMCCore.LoginFailRun loginfail,
-        ColorMCCore.GameLaunch update2, LoginObj obj1, WorldObj? world,
-        int? mixinport, CancellationToken cancel)
-    {
-        var state1 = LaunchState.End;
-        string? temp;
-        try
-        {
-            //启动
-            var p = await obj.StartGameAsync(new GameLaunchArg
-            {
-                Auth = obj1,
-                World = world,
-                Request = request,
-                Pre = pre,
-                State = state,
-                Select = select,
-                Nojava = nojava,
-                Loginfail = loginfail,
-                Update2 = update2,
-                Mixinport = mixinport
-            }, cancel);
-
-            return (p, null, LaunchState.End);
-        }
-        catch (LaunchException e1)
-        {
-            state1 = e1.State;
-            temp = App.Lang("BaseBinding.Error4");
-            if (!string.IsNullOrWhiteSpace(e1.Message))
-            {
-                temp = e1.Message;
-            }
-            else if (e1.Ex != null)
-            {
-                Logs.Error(temp, e1.Ex);
-                WindowManager.ShowError(temp, e1.Ex);
-            }
-        }
-        catch (Exception e)
-        {
-            temp = App.Lang("BaseBinding.Error4");
-            Logs.Error(temp, e);
-            WindowManager.ShowError(temp, e);
-        }
-        return (null, temp, state1);
-    }
-
 
     /// <summary>
     /// 在浏览器打开网址
@@ -717,7 +286,7 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 停止下载
+    /// 停止下载DownloadStop
     /// </summary>
     public static void DownloadStop()
     {
@@ -776,54 +345,19 @@ public static class BaseBinding
     /// <summary>
     /// 播放音乐
     /// </summary>
-    public static async void MusicStart()
+    public static void MusicStart()
     {
-        bool play = false;
-        Media.Volume = 0;
-        var file = GuiConfigUtils.Config.ServerCustom.Music;
+        var config = GuiConfigUtils.Config.ServerCustom;
+        if (config == null)
+        {
+            return;
+        }
+        var file = config.Music;
         if (file == null)
             return;
 
-        if (file.StartsWith("http://") || file.StartsWith("https://"))
-        {
-            await Media.PlayUrl(file);
-            play = true;
-        }
-        else
-        {
-            file = Path.GetFullPath(file);
-            if (File.Exists(file))
-            {
-                if (file.EndsWith(".mp3"))
-                {
-                    await Media.PlayMp3(file);
-                    play = true;
-                }
-                else if (file.EndsWith(".wav"))
-                {
-                    await Media.PlayWAV(file);
-                    play = true;
-                }
-            }
-        }
-        if (play)
-        {
-            if (GuiConfigUtils.Config.ServerCustom.SlowVolume)
-            {
-                await Task.Run(() =>
-                {
-                    for (int a = 0; a < GuiConfigUtils.Config.ServerCustom.Volume; a++)
-                    {
-                        Media.Volume = (float)a / 100;
-                        Thread.Sleep(50);
-                    }
-                });
-            }
-            else
-            {
-                Media.Volume = (float)GuiConfigUtils.Config.ServerCustom.Volume / 100;
-            }
-        }
+        Media.Loop = config.MusicLoop;
+        Media.PlayMusic(file, config.SlowVolume, config.Volume);
     }
 
     /// <summary>

@@ -29,7 +29,10 @@ public static class ImageManager
 
     private static readonly Dictionary<string, Bitmap> s_gameIcon = [];
 
-    public static void Load()
+    public static event Action? PicUpdate;
+    public static event Action? SkinChange;
+
+    public static void Init()
     {
         {
             using var asset = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
@@ -87,6 +90,8 @@ public static class ImageManager
                 Logs.Error(string.Format(App.Lang("ImageManager.Error2"), file), e);
             }
         }
+
+        OnSkinLoad();
     }
 
     public static void ReloadSkinHead()
@@ -106,20 +111,21 @@ public static class ImageManager
         };
         HeadBitmap = new Bitmap(data);
         old?.Dispose();
+        OnSkinLoad();
     }
 
     public static void SetDefaultHead()
     {
         RemoveSkin();
         HeadBitmap = null;
-        App.OnSkinLoad();
+        OnSkinLoad();
     }
 
     public static void RemoveImage()
     {
         var image = BackBitmap;
         BackBitmap = null;
-        App.OnPicUpdate();
+        OnPicUpdate();
         image?.Dispose();
     }
 
@@ -140,8 +146,8 @@ public static class ImageManager
                     config.BackLimit ? config.BackLimitValue : 100);
         }
 
-        App.OnPicUpdate();
-        App.ColorChange();
+        OnPicUpdate();
+        ThemeManager.Init();
         FuntionUtils.RunGC();
     }
 
@@ -172,5 +178,15 @@ public static class ImageManager
         }
 
         return null;
+    }
+
+    public static void OnPicUpdate()
+    {
+        PicUpdate?.Invoke();
+    }
+
+    public static void OnSkinLoad()
+    {
+        SkinChange?.Invoke();
     }
 }

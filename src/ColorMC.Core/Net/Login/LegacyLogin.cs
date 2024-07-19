@@ -46,7 +46,7 @@ public static class LegacyLogin
         message.Content = new StringContent(JsonConvert.SerializeObject(obj),
             MediaTypeHeaderValue.Parse("application/json"));
 
-        var res = await BaseClient.LoginClient.SendAsync(message);
+        var res = await WebClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
         {
@@ -133,7 +133,7 @@ public static class LegacyLogin
         message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
             MediaTypeHeaderValue.Parse("application/json"));
 
-        var res = await BaseClient.LoginClient.SendAsync(message);
+        var res = await WebClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
             return new LegacyLoginRes
@@ -193,7 +193,7 @@ public static class LegacyLogin
         message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
             MediaTypeHeaderValue.Parse("application/json"));
 
-        var res = await BaseClient.LoginClient.SendAsync(message);
+        var res = await WebClient.LoginClient.SendAsync(message);
         if (res.StatusCode == HttpStatusCode.NoContent)
         {
             return true;

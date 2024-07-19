@@ -12,7 +12,7 @@ namespace ColorMC.Core.Net;
 /// <summary>
 /// 网络客户端
 /// </summary>
-public static class BaseClient
+public static class WebClient
 {
     /// <summary>
     /// 下载源

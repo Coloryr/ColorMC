@@ -118,10 +118,10 @@ public static class LocalMaven
                 {
                     Name = name
                 };
-                var url = (BaseClient.Source == SourceLocal.Offical ?
+                var url = (WebClient.Source == SourceLocal.Offical ?
                     UrlHelper.MavenUrl[0] :
                     UrlHelper.MavenUrl[1]) + dir;
-                var res = await BaseClient.DownloadClient
+                var res = await WebClient.DownloadClient
                     .GetAsync(url + ".sha1",
                     HttpCompletionOption.ResponseHeadersRead);
                 if (res.IsSuccessStatusCode)

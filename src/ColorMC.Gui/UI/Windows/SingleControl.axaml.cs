@@ -15,7 +15,7 @@ using ColorMC.Gui.UI.Model;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class SingleControl : UserControl, IBaseWindow, ITop
+public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
 {
     private BaseUserControl _baseControl;
     private BaseUserControl _nowControl;
@@ -39,9 +39,9 @@ public partial class SingleControl : UserControl, IBaseWindow, ITop
         PointerPressed += AllControl_PointerPressed;
         PointerReleased += AllControl_PointerReleased;
 
-        App.PicUpdate += Update;
+        ImageManager.PicUpdate += PicUpdate;
 
-        Update();
+        PicUpdate();
     }
 
     public Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
@@ -92,7 +92,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITop
 
     public void Opened()
     {
-        Update();
+        PicUpdate();
     }
 
     public void Add(BaseUserControl con)
@@ -197,7 +197,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITop
         }
     }
 
-    private void Update()
+    private void PicUpdate()
     {
         WindowManager.UpdateWindow(Model);
     }

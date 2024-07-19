@@ -259,7 +259,7 @@ internal class DownloadThread
                     {
                         req.Headers.Add("ColorMC", ColorMCCore.Version);
                     }
-                    var data = BaseClient.DownloadClient.Send(req,
+                    var data = WebClient.DownloadClient.Send(req,
                         HttpCompletionOption.ResponseHeadersRead, _cancel.Token);
                     item.AllSize = (data.Content.Headers.ContentLength ?? 0);
                     item.State = DownloadItemState.GetInfo;

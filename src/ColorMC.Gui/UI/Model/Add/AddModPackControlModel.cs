@@ -58,9 +58,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     private bool _display = false;
     [ObservableProperty]
     private bool _emptyDisplay = true;
-    /// <summary>
-    /// ����Դ�����Ƿ������
-    /// </summary>
+
     [ObservableProperty]
     private bool _sourceLoad;
 
@@ -443,6 +441,11 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
     public override void Close()
     {
+        if (Display)
+        {
+            Model.PopBack();
+        }
+
         _load = true;
         Model.RemoveChoiseData(_useName);
         FileList.Clear();

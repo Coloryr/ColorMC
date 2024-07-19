@@ -9,7 +9,7 @@ using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls;
 
-public abstract class BaseUserControl : UserControl, ITop
+public abstract class BaseUserControl : UserControl, ITopWindow
 {
     public BaseUserControl()
     {
@@ -31,12 +31,15 @@ public abstract class BaseUserControl : UserControl, ITop
     public void SetBaseModel(BaseModel model)
     {
         SetModel(model);
-        model.PropertyChanged += Model_PropertyChanged;
+        if (DataContext is TopModel model1)
+        {
+            model1.PropertyChanged += Model_PropertyChanged;
+        }
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == BaseModel.WindowCloseName)
+        if (e.PropertyName == TopModel.WindowCloseName)
         {
             Window.Close();
         }

@@ -86,6 +86,7 @@ internal class DownloadTask
     public void Cancel()
     {
         _items.Clear();
+        _cancel.Cancel();
     }
 
     /// <summary>

@@ -188,7 +188,7 @@ public partial class GameItemModel : GameModel
 
     public void Reload()
     {
-        IsLaunch = BaseBinding.IsGameRun(Obj);
+        IsLaunch = GameManager.IsGameRun(Obj);
 
         SetTips();
     }

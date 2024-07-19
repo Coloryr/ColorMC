@@ -49,7 +49,7 @@ public partial class ErrorControl : BaseUserControl
     public override void Closed()
     {
         if ((DataContext as ErrorModel)!.NeedClose
-            || (App.IsHide && !BaseBinding.IsGameRuning()))
+            || (App.IsHide && !GameManager.IsGameRuning()))
         {
             App.Close();
         }

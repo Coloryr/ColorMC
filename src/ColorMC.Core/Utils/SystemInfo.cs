@@ -89,8 +89,5 @@ public static class SystemInfo
 
         SystemName = RuntimeInformation.OSDescription;
         System = $"Os:{Os} Arch:{SystemArch}";
-
-        Logs.Info(System);
-        Logs.Info(SystemName);
     }
 }

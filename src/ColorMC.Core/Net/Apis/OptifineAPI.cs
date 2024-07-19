@@ -20,19 +20,19 @@ public static class OptifineAPI
     /// </summary>
     public static async Task<(SourceLocal?, List<OptifineObj>?)> GetOptifineVersion()
     {
-        string url = UrlHelper.GetOptifine(BaseClient.Source);
+        string url = UrlHelper.GetOptifine(WebClient.Source);
         try
         {
-            var type = BaseClient.Source;
+            var type = WebClient.Source;
             var list = new List<OptifineObj>();
-            var data = await BaseClient.GetStringAsync(url);
+            var data = await WebClient.GetStringAsync(url);
             if (data.Item1 == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return (null, null);
             }
-            if (BaseClient.Source == SourceLocal.Offical)
+            if (WebClient.Source == SourceLocal.Offical)
             {
                 HtmlDocument html = new();
                 html.LoadHtml(data.Item2!);
@@ -97,7 +97,7 @@ public static class OptifineAPI
                         MCVersion = item.mcversion,
                         Forge = item.forge,
                         Url1 = UrlHelper.OptifineDownload(item, type),
-                        Local = BaseClient.Source
+                        Local = WebClient.Source
                     });
                 });
             }
@@ -123,8 +123,8 @@ public static class OptifineAPI
         {
             if (obj.Local == SourceLocal.Offical)
             {
-                _ = BaseClient.GetStringAsync(obj.Url1);
-                var data = await BaseClient.GetStringAsync(obj.Url2);
+                _ = WebClient.GetStringAsync(obj.Url1);
+                var data = await WebClient.GetStringAsync(obj.Url2);
                 if (data.Item1 == false)
                 {
                     ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),

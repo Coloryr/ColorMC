@@ -184,7 +184,7 @@ public static class TestItem
 
         CancellationToken token = CancellationToken.None;
 
-        BaseClient.Source = SourceLocal.Offical;
+        WebClient.Source = SourceLocal.Offical;
 
         DesktopGameHandel? process;
         //process = game.StartGame(login).Result;
@@ -604,13 +604,11 @@ public static class TestItem
 
     public static void Item35()
     {
-        var file = File.OpenRead("H:\\music.mp3");
         var sdl = Silk.NET.SDL.Sdl.GetApi();
         var res = sdl.Init(Silk.NET.SDL.Sdl.InitAudio);
 
         Media.Init(sdl);
-        Media.Volume = 1;
-        Media.PlayMp3(file).Wait();
+        Media.PlayMusic("H:\\music.mp3", false, 100);
     }
     public static void Item36()
     {

@@ -103,9 +103,13 @@ public partial class AddGameModel : TopModel
     {
         Main = false;
         Model.PushBack(BackDownload);
-        WindowManager.ShowAddModPack();
         OnPropertyChanged("GoTab1");
-        Model.Show(App.Lang("AddGameWindow.Tab1.Info20"));
+        if (!ConfigBinding.WindowMode())
+        {
+            Model.Show(App.Lang("AddGameWindow.Tab1.Info20"));
+        }
+
+        WindowManager.ShowAddModPack();
     }
 
     [RelayCommand]

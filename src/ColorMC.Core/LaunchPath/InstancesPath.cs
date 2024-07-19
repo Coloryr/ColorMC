@@ -1083,7 +1083,7 @@ public static class InstancesPath
     /// <returns></returns>
     public static async Task<bool> SetGameIconFromUrl(this GameSettingObj obj, string url)
     {
-        var data = await BaseClient.GetBytesAsync(url);
+        var data = await WebClient.GetBytesAsync(url);
         if (data.Item1)
         {
             PathHelper.WriteBytes(obj.GetIconFile(), data.Item2!);

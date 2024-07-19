@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
@@ -36,21 +35,12 @@ public partial class DownloadControl : BaseUserControl
     public override void SetModel(BaseModel model)
     {
         var amodel = new DownloadModel(model);
-        amodel.PropertyChanged += Amodel_PropertyChanged;
         DataContext = amodel;
     }
 
     public override Bitmap GetIcon()
     {
         return ImageManager.GameIcon;
-    }
-
-    private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == "WindowClose")
-        {
-            Window?.Close();
-        }
     }
 
     public DownloadArg Start()

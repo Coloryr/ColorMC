@@ -51,7 +51,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         PointerReleased += SelfBaseWindow_PointerReleased;
         PointerPressed += SelfBaseWindow_PointerPressed;
 
-        App.PicUpdate += Update;
+        ImageManager.PicUpdate += PicUpdate;
 
         if (con is ErrorControl)
         {
@@ -62,7 +62,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
             FindGoodPos();
         }
 
-        Update();
+        PicUpdate();
     }
 
     protected abstract void SetChild(Control control);
@@ -168,7 +168,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
-        App.PicUpdate -= Update;
+        ImageManager.PicUpdate -= PicUpdate;
 
         ((ICon as UserControl)?.DataContext as TopModel)?.Close();
         DataContext = null;
@@ -192,7 +192,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         }
 
         App.Clear();
-        FuntionUtils.RunGC();
+        App.TestClose();
     }
 
     private void Window_Activated(object? sender, EventArgs e)
@@ -201,7 +201,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         App.TopLevel = this;
     }
 
-    private void Update()
+    private void PicUpdate()
     {
         WindowManager.UpdateWindow(Model);
 
