@@ -235,7 +235,7 @@
                             Margin="-2,-2,-3,-2"
                             Classes="top"
                             Command="{Binding SetPic}"
-                            Content="{setting:Localize Button.Use}"
+                            Content="{setting:Localize SettingWindow.Tab2.Text61}"
                             DockPanel.Dock="Right" />
                     </WrapPanel>
                     <WrapPanel Margin="0,0,0,5" IsEnabled="{Binding EnableBG}">
@@ -267,7 +267,7 @@
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding SetPic}"
-                            Content="{setting:Localize Button.Set}"
+                            Content="{setting:Localize SettingWindow.Tab2.Text60}"
                             IsVisible="{Binding !MinMode}" />
                     </WrapPanel>
                     <Button
@@ -278,7 +278,7 @@
                         VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding SetPic}"
-                        Content="{setting:Localize Button.Set}"
+                        Content="{setting:Localize SettingWindow.Tab2.Text60}"
                         IsVisible="{Binding MinMode}" />
                     <WrapPanel Margin="0,0,0,5" IsEnabled="{Binding EnableBG}">
                         <StackPanel Orientation="Horizontal">
@@ -309,7 +309,7 @@
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding SetPicTran}"
-                            Content="{setting:Localize Button.Set}"
+                            Content="{setting:Localize SettingWindow.Tab2.Text60}"
                             IsVisible="{Binding !MinMode}" />
                     </WrapPanel>
                     <Button
@@ -320,7 +320,7 @@
                         VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding SetPicTran}"
-                        Content="{setting:Localize Button.Set}"
+                        Content="{setting:Localize SettingWindow.Tab2.Text60}"
                         IsVisible="{Binding MinMode}" />
                     <WrapPanel
                         Margin="0,0,0,5"
@@ -358,7 +358,7 @@
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding SetPicSize}"
-                            Content="{setting:Localize Button.Set}"
+                            Content="{setting:Localize SettingWindow.Tab2.Text60}"
                             IsEnabled="{Binding EnablePicResize}"
                             IsVisible="{Binding !MinMode}" />
                     </WrapPanel>
@@ -370,7 +370,7 @@
                         VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding SetPicSize}"
-                        Content="{setting:Localize Button.Set}"
+                        Content="{setting:Localize SettingWindow.Tab2.Text60}"
                         IsEnabled="{Binding EnablePicResize}"
                         IsVisible="{Binding MinMode}" />
                     <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text18}" />
@@ -615,7 +615,7 @@
                                 Margin="-2,-2,-3,-2"
                                 Classes="top"
                                 Command="{Binding SetLive2D}"
-                                Content="{setting:Localize Button.Use}"
+                                Content="{setting:Localize SettingWindow.Tab2.Text61}"
                                 DockPanel.Dock="Right" />
                         </WrapPanel>
                         <WrapPanel Margin="0,5,0,0" IsVisible="{Binding !MinMode}">

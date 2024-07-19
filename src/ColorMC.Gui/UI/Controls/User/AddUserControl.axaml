@@ -29,7 +29,7 @@
             AcceptsReturn="True"
             IsEnabled="{Binding EnableUser}"
             Text="{Binding User}"
-            Watermark="{setting:Localize Text.UserName}" />
+            Watermark="{setting:Localize UserWindow.Text10}" />
         <TextBox
             Margin="5,5,5,10"
             AcceptsReturn="True"

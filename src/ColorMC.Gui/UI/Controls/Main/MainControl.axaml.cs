@@ -106,7 +106,7 @@ public partial class MainControl : BaseUserControl
             else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
             {
                 Grid2.IsVisible = true;
-                Label1.Text = App.Lang("Text.Import");
+                Label1.Text = App.Lang("MainWindow.Text25");
             }
         }
     }

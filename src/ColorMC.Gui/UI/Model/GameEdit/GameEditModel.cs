@@ -206,7 +206,7 @@ public partial class GameEditModel : MenuModel
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("GameEditWindow.Flyouts4.Text1"),
+                        Name = App.Lang("GameEditWindow.Tab9.Text3"),
                         Func = ClearScreenshot
                     },
                     new SubMenuItemModel()

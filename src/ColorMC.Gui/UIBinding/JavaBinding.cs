@@ -55,7 +55,7 @@ public static class JavaBinding
             var info = JvmPath.GetInfo(res.Message);
             if (info == null)
             {
-                return (null, App.Lang("Gui.Error5"));
+                return (null, App.Lang("JavaBinding.Error1"));
             }
             return (MakeInfo(res.Message!, info), null);
         }

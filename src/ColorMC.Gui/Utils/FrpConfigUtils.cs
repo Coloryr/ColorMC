@@ -44,7 +44,7 @@ public static class FrpConfigUtils
                 {
                     return false;
                 }
-                Logs.Error(App.Lang("Gui.Error49"), e);
+                Logs.Error(App.Lang("Config.Error1"), e);
             }
 
             if (Config == null)

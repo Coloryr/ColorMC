@@ -33,19 +33,19 @@
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Description}"
-                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text3}"
+                        Header="{setting:Localize GameEditWindow.Tab12.Text3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Width}"
-                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text4}"
+                        Header="{setting:Localize GameEditWindow.Tab12.Text4}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Height}"
-                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text5}"
+                        Header="{setting:Localize GameEditWindow.Tab12.Text5}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Length}"
-                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text6}"
+                        Header="{setting:Localize GameEditWindow.Tab12.Text6}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Local}"

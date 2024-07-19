@@ -720,7 +720,7 @@ public partial class UsersControlModel : TopModel
         }
 
         var res = await Model.ShowEditInput(obj.Name, obj.UUID,
-            App.Lang("Text.UserName"), App.Lang("UserWindow.DataGrid.Text4"));
+            App.Lang("UserWindow.Text10"), App.Lang("UserWindow.Info13"));
         if (res.Cancel)
         {
             return;

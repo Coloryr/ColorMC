@@ -96,7 +96,7 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public async Task Upgrade()
     {
-        var res = await Model.ShowTextWait(App.Lang("Text.Update"), _updateStr);
+        var res = await Model.ShowTextWait(App.Lang("BaseBinding.Info2"), _updateStr);
         if (res)
         {
             if (_isNewUpdate)
@@ -186,7 +186,7 @@ public partial class MainModel : TopModel, IMainTop
 
     private void ShowHello()
     {
-        HelloText = App.Lang("MainWindow.Hello.Text1");
+        HelloText = App.Lang("Hello.Text1");
     }
 
     private void NewBack()

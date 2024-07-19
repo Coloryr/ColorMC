@@ -50,7 +50,7 @@
                     SelectedItem="{Binding SelectMod}"
                     VerticalScrollBarVisibility="Visible">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Binding="{Binding Export}" Header="{setting:Localize GameExportWindow.Tab2.DataGrid.Text1}" />
+                        <DataGridCheckBoxColumn Binding="{Binding Export}" Header="{setting:Localize GameExportWindow.Tab2.Text1}" />
                         <DataGridTextColumn
                             Binding="{Binding Name}"
                             Header="{setting:Localize Text.Name}"
@@ -63,8 +63,8 @@
                             Binding="{Binding Source}"
                             Header="{setting:Localize Text.DownloadSource}"
                             IsReadOnly="True" />
-                        <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}" />
-                        <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}" />
+                        <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize GameEditWindow.Tab4.Text12}" />
+                        <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.Text13}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

@@ -361,13 +361,13 @@ public partial class AddGameModel
         EnableLoader = false;
         LoaderVersion = null;
         IsLoad = true;
-        Model.Title1 = App.Lang("GameEditWindow.Info1");
+        Model.Title1 = App.Lang("GameEditWindow.Tab1.Info12");
         var res = await GameBinding.ReloadVersion();
         IsLoad = false;
         Model.Title1 = "";
         if (!res)
         {
-            Model.Show(App.Lang("GameEditWindow.Error1"));
+            Model.Show(App.Lang("GameEditWindow.Tab1.Error4"));
             return;
         }
 
@@ -470,7 +470,7 @@ public partial class AddGameModel
 
     private void ZipUpdate(string text, int size, int all)
     {
-        string temp = App.Lang("Gui.Info27");
+        string temp = App.Lang("AddGameWindow.Tab1.Info21");
         Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {text} {size}/{all}"));
     }
 

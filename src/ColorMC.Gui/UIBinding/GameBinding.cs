@@ -286,9 +286,9 @@ public static class GameBinding
             var file = await PathBinding.SelectFile(FileType.Icon);
             if (file.Item1 != null)
             {
-                bool resize = await model.ShowWait(App.Lang("Gui.Info53"));
+                bool resize = await model.ShowWait(App.Lang("GameBinding.Info14"));
 
-                model.Progress(App.Lang("Gui.Info30"));
+                model.Progress(App.Lang("GameBinding.Info4"));
                 using var info = SKBitmap.Decode(PathHelper.OpenRead(file.Item1)!);
 
                 if (resize && (info.Width > 100 || info.Height > 100))
@@ -307,13 +307,14 @@ public static class GameBinding
                 }
 
                 model.ProgressClose();
-                model.Notify(App.Lang("Gui.Info29"));
+                model.Notify(App.Lang("GameBinding.Info3"));
             }
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("Gui.Error43"), e);
-            WindowManager.ShowError(App.Lang("Gui.Error43"), e);
+            var text = App.Lang("GameBinding.Error2");
+            Logs.Error(text, e);
+            WindowManager.ShowError(text, e);
         }
     }
 
@@ -327,7 +328,7 @@ public static class GameBinding
         var login = UserBinding.GetLastUser();
         if (login == null)
         {
-            return (null, App.Lang("Gui.Error40"));
+            return (null, App.Lang("GameBinding.Error3"));
         }
         if (login.AuthType == AuthType.Offline)
         {
@@ -335,15 +336,15 @@ public static class GameBinding
             if (!have)
             {
                 WebBinding.OpenWeb(WebType.Minecraft);
-                return (null, App.Lang("Gui.Error44"));
+                return (null, App.Lang("GameBinding.Error4"));
             }
         }
 
         if (UserBinding.IsLock(login))
         {
-            var res = await model.ShowWait(App.Lang("Gui.Info36"));
+            var res = await model.ShowWait(App.Lang("GameBinding.Error1"));
             if (!res)
-                return (null, App.Lang("Gui.Error41"));
+                return (null, App.Lang("GameBinding.Error5"));
         }
 
         return (login, null);
@@ -362,12 +363,12 @@ public static class GameBinding
     {
         if (obj == null)
         {
-            return (false, App.Lang("Gui.Error39"), LaunchState.End);
+            return (false, App.Lang("GameBinding.Error6"), LaunchState.End);
         }
 
         if (BaseBinding.IsGameRun(obj))
         {
-            return (false, App.Lang("Gui.Error42"), LaunchState.End);
+            return (false, App.Lang("BaseBinding.Error3"), LaunchState.End);
         }
 
         var user = await GetUser(model);
@@ -494,7 +495,7 @@ public static class GameBinding
         {
             var obj1 = new ModDisplayModel()
             {
-                Name = item.ReadFail ? App.Lang("GameEditWindow.Tab4.Info5")
+                Name = item.ReadFail ? App.Lang("GameBinding.Info15")
                 : item.name,
                 Obj = item
             };
@@ -534,7 +535,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string temp = string.Format(App.Lang("GameEditWindow.Tab4.Error3"), obj.Local);
+            string temp = string.Format(App.Lang("GameBinding.Error14"), obj.Local);
             Logs.Error(temp, e);
             return (false, temp);
         }
@@ -994,13 +995,6 @@ public static class GameBinding
         obj.Save();
     }
 
-    //public static void SetAdvanceJvmArg(GameSettingObj obj, AdvanceJvmObj obj1)
-    //{
-    //    obj.AdvanceJvm = obj1;
-
-    //    obj.Save();
-    //}
-
     /// <summary>
     /// 获取光影包列表
     /// </summary>
@@ -1056,7 +1050,7 @@ public static class GameBinding
             {
                 list1.Add(new()
                 {
-                    Name = App.Lang("Gui.Error14"),
+                    Name = App.Lang("GameBinding.Info17"),
                     Local = item.Local,
                 });
             }
@@ -1173,7 +1167,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string text = App.Lang("Gui.Error20");
+            string text = App.Lang("GameBinding.Error7");
             Logs.Error(text, e);
             WindowManager.ShowError(text, e);
             return false;
@@ -1368,11 +1362,11 @@ public static class GameBinding
                 var str = new StringBuilder();
                 foreach (var item in lost)
                 {
-                    str.Append(string.Format(App.Lang("Gui.Info25"), item.Item1,
+                    str.Append(string.Format(App.Lang("GameBinding.Info1"), item.Item1,
                         GetString(item.Item2))).Append(Environment.NewLine);
                 }
 
-                WindowManager.ShowError(App.Lang("Gui.Info26"), str.ToString());
+                WindowManager.ShowError(App.Lang("GameBinding.Info2"), str.ToString());
                 return false;
             }
 
@@ -1678,7 +1672,7 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("AddGameWindow.Tab1.Error17"), e);
+                Logs.Error(App.Lang("GameBinding.Error8"), e);
             }
             return false;
         });
@@ -1699,7 +1693,7 @@ public static class GameBinding
         });
         if (game == null)
         {
-            return (false, App.Lang("AddGameWindow.Tab1.Error10"));
+            return (false, App.Lang("GameBinding.Error9"));
         }
 
         var cloud = new CloudDataObj()
@@ -1716,7 +1710,7 @@ public static class GameBinding
         }
         else
         {
-            //return (false, App.Lang("AddGameWindow.Tab1.Error11"));
+            
         }
 
         var temp = await GameCloudUtils.HaveCloud(game);
@@ -1751,7 +1745,7 @@ public static class GameBinding
                 var res1 = await DownloadManager.StartAsync(list);
                 if (!res1)
                 {
-                    return (false, App.Lang("AddGameWindow.Tab1.Error12"));
+                    return (false, App.Lang("GameBinding.Error10"));
                 }
             }
         }
@@ -1799,12 +1793,12 @@ public static class GameBinding
             var data = await BaseClient.GetStringAsync(text + "server.json");
             if (!data.Item1)
             {
-                return (false, App.Lang("AddGameWindow.Tab1.Error15"));
+                return (false, App.Lang("GameBinding.Error11"));
             }
             var obj = JsonConvert.DeserializeObject<ServerPackObj>(data.Item2!);
             if (obj == null)
             {
-                return (false, App.Lang("AddGameWindow.Tab1.Error16"));
+                return (false, App.Lang("GameBinding.Error12"));
             }
 
             var game = obj.Game;
@@ -1829,10 +1823,10 @@ public static class GameBinding
 
             if (game == null)
             {
-                return (false, App.Lang("AddGameWindow.Tab1.Error10"));
+                return (false, App.Lang("GameBinding.Error9"));
             }
 
-            model.Progress(App.Lang("AddGameWindow.Tab1.Info15"));
+            model.Progress(App.Lang("GameBinding.Info16"));
 
             var res1 = await obj.UpdateAsync((text) =>
             {
@@ -1848,7 +1842,7 @@ public static class GameBinding
             if (!res1)
             {
                 model.ProgressClose();
-                model.ShowOk(App.Lang("AddGameWindow.Tab1.Error12"), async () =>
+                model.ShowOk(App.Lang("GameBinding.Error10"), async () =>
                 {
                     await game.Remove(model.ShowWait);
                 });
@@ -1862,7 +1856,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string temp = App.Lang("AddGameWindow.Tab1.Error16");
+            string temp = App.Lang("GameBinding.Error12");
             Logs.Error(temp, e);
             return (false, temp);
         }
@@ -1999,39 +1993,39 @@ public static class GameBinding
         await Task.Run(() =>
         {
             info.AppendLine($"ColorMC:{ColorMCCore.Version}")
-                .AppendLine($"{App.Lang("Gui.Info44")}{obj.Name}")
-                .AppendLine($"{App.Lang("Gui.Info45")}{obj.Version}");
+                .AppendLine($"{App.Lang("GameBinding.Info5")}{obj.Name}")
+                .AppendLine($"{App.Lang("GameBinding.Info6")}{obj.Version}");
             if (obj.ModPack)
             {
-                info.AppendLine(string.Format(App.Lang("Gui.Info51"), obj.ModPackType.GetName(), obj.PID, obj.FID));
+                info.AppendLine(string.Format(App.Lang("GameBinding.Info12"), obj.ModPackType.GetName(), obj.PID, obj.FID));
             }
             if (obj.Loader != Loaders.Normal)
             {
                 if (obj.Loader == Loaders.Custom)
                 {
-                    info.AppendLine(string.Format(App.Lang("Gui.Info47"), GetGameLoader(obj), obj.CustomLoader?.OffLib));
+                    info.AppendLine(string.Format(App.Lang("GameBinding.Info8"), GetGameLoader(obj), obj.CustomLoader?.OffLib));
                 }
                 else
                 {
-                    info.AppendLine(string.Format(App.Lang("Gui.Info46"), obj.Loader.GetName(), obj.LoaderVersion));
+                    info.AppendLine(string.Format(App.Lang("GameBinding.Info7"), obj.Loader.GetName(), obj.LoaderVersion));
                 }
 
                 if (list.Count != 0)
                 {
-                    info.AppendLine(App.Lang("Gui.Info48"));
+                    info.AppendLine(App.Lang("GameBinding.Info9"));
 
                     foreach (var item in list)
                     {
-                        info.AppendLine(string.Format(App.Lang("Gui.Info49"), item.name, item.modid, item.authorList?.MakeString(), Path.GetFileName(item.Local), item.Disable, item.CoreMod, item.Sha1, item.Loader.GetName()));
+                        info.AppendLine(string.Format(App.Lang("GameBinding.Info10"), item.name, item.modid, item.authorList?.MakeString(), Path.GetFileName(item.Local), item.Disable, item.CoreMod, item.Sha1, item.Loader.GetName()));
                         if (obj.Mods.Values.FirstOrDefault(item => item.SHA1 == item.SHA1) is { } item1)
                         {
-                            info.AppendLine(string.Format(App.Lang("Gui.Info50"), item1.Type.GetName(), item1.ModId, item1.FileId));
+                            info.AppendLine(string.Format(App.Lang("GameBinding.Info11"), item1.Type.GetName(), item1.ModId, item1.FileId));
                         }
                     }
                 }
             }
         });
-        WindowManager.ShowError(App.Lang("Gui.Info52"), info.ToString(), false);
+        WindowManager.ShowError(App.Lang("GameBinding.Info13"), info.ToString(), false);
     }
 
     public static async Task<string> GetGameLoader(GameSettingObj obj)
@@ -2043,7 +2037,7 @@ public static class GameBinding
         }
         else
         {
-            return App.Lang("GameEditWindow.Tab1.Error4");
+            return App.Lang("GameBinding.Error13");
         }
     }
 

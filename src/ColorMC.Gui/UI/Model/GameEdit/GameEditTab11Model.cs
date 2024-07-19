@@ -47,7 +47,7 @@ public partial class GameEditModel
             return;
         }
 
-        Model.Notify(App.Lang("GameEditWindow.Tab11.Info3"));
+        Model.Notify(App.Lang("GameEditWindow.Tab11.Info1"));
         LoadShaderpack();
     }
 

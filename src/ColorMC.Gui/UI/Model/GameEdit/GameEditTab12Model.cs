@@ -47,7 +47,7 @@ public partial class GameEditModel
             return;
         }
 
-        Model.Show(App.Lang("GameEditWindow.Tab12.Info3"));
+        Model.Show(App.Lang("GameEditWindow.Tab11.Info1"));
         LoadSchematic();
     }
 

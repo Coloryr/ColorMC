@@ -22,7 +22,7 @@ public class GameEditFlyout3
             {
                 PathBinding.OpFile(_obj.Local);
             }),
-            (App.Lang("GameEditWindow.Flyouts3.Text1"), true, ()=>
+            (App.Lang("GameEditWindow.Flyouts.Text12"), true, ()=>
             {
                 _top.DeleteResource(_obj);
             })

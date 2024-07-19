@@ -10,7 +10,7 @@ public class Live2DFlyout
     {
         _ = new FlyoutsControl(
         [
-            (App.Lang("MainWindow.Live2D.Flyouts.Text1"), true, ()=>
+            (App.Lang("Live2dControl.Flyouts.Text1"), true, ()=>
             {
                 var list = live2d.GetMotions();
                 if (list.Count != 0)
@@ -23,7 +23,7 @@ public class Live2DFlyout
                     _ = new FlyoutsControl([.. list1], live2d);
                 }
             }),
-            (App.Lang("MainWindow.Live2D.Flyouts.Text2"), true, ()=>
+            (App.Lang("Live2dControl.Flyouts.Text2"), true, ()=>
             {
                 var list = live2d.GetExpressions();
                 if (list.Count != 0)

@@ -19,14 +19,6 @@ public record StyleSetting
 }
 
 /// <summary>
-/// 主界面设置
-/// </summary>
-public record MainWindowSetting
-{
-
-}
-
-/// <summary>
 /// 上一个启动的账户
 /// </summary>
 public record LastUserSetting
@@ -312,10 +304,6 @@ public record GuiConfigObj
     /// Live2D设置
     /// </summary>
     public Live2DSetting Live2D { get; set; }
-    /// <summary>
-    /// 主界面设置
-    /// </summary>
-    public MainWindowSetting Gui { get; set; }
     /// <summary>
     /// 样式设置
     /// </summary>

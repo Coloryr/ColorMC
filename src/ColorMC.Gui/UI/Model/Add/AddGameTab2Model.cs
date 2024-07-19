@@ -105,7 +105,7 @@ public partial class AddGameModel
     /// <param name="type">压缩包类型</param>
     private async void AddPack(PackType type)
     {
-        string temp = App.Lang("Gui.Info27");
+        string temp = App.Lang("AddGameWindow.Tab1.Info21");
 
         if (string.IsNullOrWhiteSpace(ZipLocal))
         {

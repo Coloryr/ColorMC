@@ -21,21 +21,21 @@
                 ItemsSource="{Binding ModList}"
                 SelectedItem="{Binding ModItem}">
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text1}" />
+                    <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab2.Text4}" />
                     <DataGridTextColumn
                         Binding="{Binding FileName}"
                         Header="{setting:Localize Text.FileName}"
                         IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text3}" />
-                    <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text4}" />
+                    <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize ServerPackWindow.Tab2.Text5}" />
+                    <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize ServerPackWindow.Tab2.Text6}" />
                     <DataGridTextColumn
                         Binding="{Binding Source}"
                         Header="{setting:Localize Text.DownloadSource}"
                         IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text6}" />
+                    <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab2.Text7}" />
                     <DataGridTextColumn
                         Binding="{Binding Sha256}"
-                        Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text7}"
+                        Header="{setting:Localize ServerPackWindow.Tab2.Text8}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>

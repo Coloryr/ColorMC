@@ -244,7 +244,7 @@ public partial class AddJavaControlModel : TopModel
         {
             Model.Progress(App.Lang("AddJavaWindow.Info2"));
         }
-        string temp = App.Lang("Gui.Info27");
+        string temp = App.Lang("AddGameWindow.Tab1.Info21");
         var res1 = await JavaBinding.DownloadJava(obj, (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));

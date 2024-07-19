@@ -316,7 +316,7 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text1) = await Model.ShowInputOne(App.Lang("AddGameWindow.Tab1.Info5"), false);
+        var (Cancel, Text1) = await Model.ShowInputOne(App.Lang("Text.Group"), false);
         if (Cancel)
         {
             return;
@@ -474,13 +474,13 @@ public partial class GameEditModel
         LoaderTypeList.Clear();
         EnableLoader = false;
         IsLoad = true;
-        Model.Title1 = App.Lang("GameEditWindow.Info1");
+        Model.Title1 = App.Lang("GameEditWindow.Tab1.Info12");
         var res = await GameBinding.ReloadVersion();
         IsLoad = false;
         Model.Title1 = "";
         if (!res)
         {
-            Model.Show(App.Lang("GameEditWindow.Error1"));
+            Model.Show(App.Lang("GameEditWindow.Tab1.Error4"));
             return;
         }
 

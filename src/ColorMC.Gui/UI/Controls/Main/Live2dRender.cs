@@ -142,7 +142,7 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
         }
         if (!File.Exists(model))
         {
-            (DataContext as MainModel)!.Model.Show(App.Lang("MainWindow.Live2D.Error1"));
+            (DataContext as MainModel)!.Model.Show(App.Lang("Live2dControl.Error1"));
             return;
         }
         var info = new FileInfo(model);
@@ -152,7 +152,7 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
         }
         catch (Exception e)
         {
-            string temp = App.Lang("MainWindow.Live2D.Error2");
+            string temp = App.Lang("Live2dControl.Error2");
             Logs.Error(temp, e);
             (DataContext as MainModel)!.Model.Show(temp);
         }
@@ -189,7 +189,7 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
         catch (Exception e)
         {
             (DataContext as MainModel)!.ChangeModelDone();
-            Logs.Error(App.Lang("Gui.Error31"), e);
+            Logs.Error(App.Lang("Live2dControl.Error3"), e);
         }
     }
 
@@ -229,7 +229,7 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
             }
             else
             {
-                model.ShowMessage(App.Lang("MainWindow.Live2D.Text1"));
+                model.ShowMessage(App.Lang("Live2dControl.Text1"));
             }
         }
         if (_delete)

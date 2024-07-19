@@ -27,7 +27,7 @@ public class GameEditFlyout1
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("GameEditWindow.Flyouts1.Text1"), true, () =>
+            (App.Lang("GameEditWindow.Flyouts.Text1"), true, () =>
             {
                 if (single)
                 {
@@ -41,7 +41,7 @@ public class GameEditFlyout1
                     }
                 }
             }),
-            (App.Lang("GameEditWindow.Flyouts1.Text2"), true, ()=>
+            (App.Lang("GameEditWindow.Flyouts.Text2"), true, ()=>
             {
                 if (single)
                 {
@@ -56,7 +56,7 @@ public class GameEditFlyout1
             {
                 PathBinding.OpFile(obj.Local);
             }),
-            (App.Lang("GameEditWindow.Flyouts1.Text6"), true, async ()=>
+            (App.Lang("GameEditWindow.Flyouts.Text6"), true, async ()=>
             {
                 var list = new List<IStorageFile>();
                 if (App.TopLevel is { } top)
@@ -72,16 +72,16 @@ public class GameEditFlyout1
                     await BaseBinding.CopyFileClipboard(list);
                 }
             }),
-            (App.Lang("GameEditWindow.Flyouts1.Text3"), single, ()=>
+            (App.Lang("GameEditWindow.Flyouts.Text3"), single, ()=>
             {
                 WebBinding.OpenMcmod(obj);
             }),
-            (App.Lang("GameEditWindow.Flyouts1.Text4"), single
+            (App.Lang("GameEditWindow.Flyouts.Text4"), single
                 && !string.IsNullOrWhiteSpace(obj?.Url), ()=>
                 {
                     BaseBinding.OpUrl(obj!.Url);
                 }),
-            (App.Lang("GameEditWindow.Flyouts1.Text5"), single
+            (App.Lang("GameEditWindow.Flyouts.Text5"), single
                 && !string.IsNullOrWhiteSpace(obj?.PID)
                 && !string.IsNullOrWhiteSpace(obj?.FID), ()=>
                 {
