@@ -47,7 +47,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="model1:SubMenuItemModel">
                                     <Button
-                                        Classes="items"
+                                        Classes="items1"
                                         Command="{Binding Select}"
                                         Content="{Binding Name}"
                                         IsVisible="{Binding !Hide}" />
