@@ -358,23 +358,23 @@ public static class GameBinding
     /// <param name="world"></param>
     /// <param name="hide"></param>
     /// <returns></returns>
-    public static async Task<(bool, string?, LaunchState)> Launch(BaseModel model, GameSettingObj? obj,
+    public static async Task<(bool, string?, LaunchState, LoginObj?)> Launch(BaseModel model, GameSettingObj? obj,
         WorldObj? world = null, bool hide = false)
     {
         if (obj == null)
         {
-            return (false, App.Lang("GameBinding.Error6"), LaunchState.End);
+            return (false, App.Lang("GameBinding.Error6"), LaunchState.End, null);
         }
 
         if (BaseBinding.IsGameRun(obj))
         {
-            return (false, App.Lang("BaseBinding.Error3"), LaunchState.End);
+            return (false, App.Lang("BaseBinding.Error3"), LaunchState.End, null);
         }
 
         var user = await GetUser(model);
         if (user.Item1 == null)
         {
-            return (false, user.Item2, LaunchState.End);
+            return (false, user.Item2, LaunchState.End, null);
         }
 
         var res1 = await BaseBinding.Launch(model, obj, user.Item1, world, hide);
@@ -382,7 +382,7 @@ public static class GameBinding
         {
             ConfigBinding.SetLastLaunch(obj.UUID);
         }
-        return res1;
+        return (res1.Item1, res1.Item2, res1.Item3, user.Item1);
     }
 
     /// <summary>

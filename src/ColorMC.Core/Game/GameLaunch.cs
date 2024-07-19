@@ -552,9 +552,9 @@ public static class Launch
 
             //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");
             //jvmHead.Add("-XX:+UnlockExperimentalVMOptions");
-            jvm.Add("-Dfml.ignoreInvalidMinecraftCertificates=true");
-            jvm.Add("-Dfml.ignorePatchDiscrepancies=true");
-            jvm.Add("-Dlog4j2.formatMsgNoLookups=true");
+            //jvm.Add("-Dfml.ignoreInvalidMinecraftCertificates=true");
+            //jvm.Add("-Dfml.ignorePatchDiscrepancies=true");
+            //jvm.Add("-Dlog4j2.formatMsgNoLookups=true");
             //jvmHead.Add("-Dcom.sun.jndi.rmi.object.trustURLCodebase=false");
             //jvmHead.Add("-Dcom.sun.jndi.cosnaming.object.trustURLCodebase=false");
             //jvmHead.Add($"-Dminecraft.client.jar={VersionPath.BaseDir}/{obj.Version}.jar");

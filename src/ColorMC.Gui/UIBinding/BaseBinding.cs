@@ -443,6 +443,7 @@ public static class BaseBinding
 
         if (s_launchCancel.IsCancellationRequested)
         {
+            UserBinding.UnLockUser(obj1);
             return (true, null, LaunchState.End);
         }
 

@@ -310,7 +310,7 @@ public partial class MainModel
         }
         if (res.Item1 == false)
         {
-            if (res.Item3 == LaunchState.LoginFail)
+            if (res.Item3 == LaunchState.LoginFail && res.Item4!.AuthType != AuthType.OAuth)
             {
                 var res1 = await Model.ShowWait(string.Format(App.Lang("MainWindow.Error8"), res.Item2!));
                 if (res1)
