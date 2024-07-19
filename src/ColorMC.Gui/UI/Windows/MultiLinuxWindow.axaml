@@ -70,26 +70,6 @@
                     <Decorator Name="MainControl" />
                 </dialog:DialogHost>
             </DockPanel>
-            <Button
-                Name="ResizeButton"
-                Width="18"
-                Height="18"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Background="Transparent"
-                BorderBrush="Transparent"
-                Cursor="BottomRightCorner"
-                IsVisible="False">
-                <Button.Styles>
-                    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                        <Setter Property="Background" Value="Transparent" />
-                    </Style>
-                </Button.Styles>
-                <svg:SvgControl
-                    Fill="{setting:Theme FontColor}"
-                    Path="/Resource/Icon/resize.svg"
-                    Stroke="{setting:Theme FontColor}" />
-            </Button>
         </Panel>
     </Panel>
 </Window>

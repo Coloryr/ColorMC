@@ -114,7 +114,6 @@
     <None Remove="Resource\Icon\new.svg" />
     <None Remove="Resource\Icon\play.svg" />
     <None Remove="Resource\Icon\reload.svg" />
-    <None Remove="Resource\Icon\resize.svg" />
     <None Remove="Resource\Icon\setting.svg" />
     <None Remove="Resource\Icon\Setting\item1.svg" />
     <None Remove="Resource\Icon\Setting\item2.svg" />
@@ -255,7 +254,6 @@
     <AvaloniaResource Include="Resource\Icon\play.svg" />
     <AvaloniaResource Include="Resource\Icon\reload.svg" />
     <AvaloniaResource Include="Resource\Icon\setting.svg" />
-    <AvaloniaResource Include="Resource\Icon\resize.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item1.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item3.svg" />

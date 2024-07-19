@@ -230,7 +230,7 @@ public static class LanguageHelper
     {
         return type switch
         {
-            LanguageType.en_us => "English",
+            LanguageType.en_us => "English(AI)",
             LanguageType.zh_cn => "简体中文",
             _ => ""
         };
