@@ -59,7 +59,7 @@ public static class DownloadItemHelper
         return new DownloadItemObj
         {
             Name = name,
-            Url = UrlHelper.DownloadAssets(hash, BaseClient.Source),
+            Url = UrlHelper.DownloadAssets(hash, WebClient.Source),
             Local = Path.GetFullPath($"{AssetsPath.ObjectsDir}/{hash[..2]}/{hash}"),
             SHA1 = hash
         };
@@ -76,8 +76,8 @@ public static class DownloadItemHelper
         var file = LibrariesPath.GetGameFile(mc);
         return new()
         {
-            Url = BaseClient.Source == SourceLocal.Offical ? game.downloads.client.url
-                : UrlHelper.DownloadGame(mc, BaseClient.Source),
+            Url = WebClient.Source == SourceLocal.Offical ? game.downloads.client.url
+                : UrlHelper.DownloadGame(mc, WebClient.Source),
             SHA1 = game.downloads.client.sha1,
             Local = file,
             Name = $"{mc}.jar"
@@ -95,7 +95,7 @@ public static class DownloadItemHelper
     {
         version += UrlHelper.FixForgeUrl(mc);
         var name = $"forge-{mc}-{version}-{type}";
-        var url = UrlHelper.DownloadForgeJar(mc, version, BaseClient.Source);
+        var url = UrlHelper.DownloadForgeJar(mc, version, WebClient.Source);
 
         return new()
         {
@@ -118,7 +118,7 @@ public static class DownloadItemHelper
         var name = v2222
             ? $"neoforge-{version}-{type}"
             : $"forge-{mc}-{version}-{type}";
-        var url = UrlHelper.DownloadNeoForgeJar(mc, version, BaseClient.Source);
+        var url = UrlHelper.DownloadNeoForgeJar(mc, version, WebClient.Source);
 
         return new()
         {
@@ -266,9 +266,9 @@ public static class DownloadItemHelper
                 {
                     Url = neo ?
                     UrlHelper.DownloadNeoForgeLib(item1.downloads.artifact.url,
-                        BaseClient.Source) :
+                        WebClient.Source) :
                     UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
-                        BaseClient.Source),
+                        WebClient.Source),
                     Name = item1.name,
                     Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}"),
                     SHA1 = item1.downloads.artifact.sha1
@@ -408,7 +408,7 @@ public static class DownloadItemHelper
                 var obj = new DownloadItemObj()
                 {
                     Name = item1.name,
-                    Url = UrlHelper.DownloadLibraries(item1.downloads.artifact.url, BaseClient.Source),
+                    Url = UrlHelper.DownloadLibraries(item1.downloads.artifact.url, WebClient.Source),
                     Local = file,
                     SHA1 = item1.downloads.artifact.sha1
                 };
@@ -453,7 +453,7 @@ public static class DownloadItemHelper
                     var obj1 = new DownloadItemObj()
                     {
                         Name = item1.name + "-native" + SystemInfo.Os,
-                        Url = UrlHelper.DownloadLibraries(lib.url, BaseClient.Source),
+                        Url = UrlHelper.DownloadLibraries(lib.url, WebClient.Source),
                         Local = $"{LibrariesPath.BaseDir}/{lib.path}",
                         SHA1 = lib.sha1,
                         Later = (test) => GameHelper.UnpackNative(obj.id, test)
@@ -720,7 +720,7 @@ public static class DownloadItemHelper
     public static async Task<List<DownloadItemObj>?> BuildFabricAsync(string mc, string version)
     {
         var list = new List<DownloadItemObj>();
-        var meta = await FabricAPI.GetMeta(BaseClient.Source);
+        var meta = await FabricAPI.GetMeta(WebClient.Source);
         if (meta == null)
         {
             return null;
@@ -743,7 +743,7 @@ public static class DownloadItemHelper
 
         version = fabric.version;
 
-        var data = await FabricAPI.GetLoader(mc, version, BaseClient.Source);
+        var data = await FabricAPI.GetLoader(mc, version, WebClient.Source);
         if (data == null)
         {
             return null;
@@ -761,7 +761,7 @@ public static class DownloadItemHelper
             var name = PathHelper.ToPathAndName(item.name);
             list.Add(new()
             {
-                Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),
+                Url = UrlHelper.DownloadQuilt(item.url + name.Path, WebClient.Source),
                 Name = name.Name,
                 Local = $"{LibrariesPath.BaseDir}/{name.Path}"
             });
@@ -792,7 +792,7 @@ public static class DownloadItemHelper
     public static async Task<List<DownloadItemObj>?> BuildQuiltAsync(string mc, string? version = null)
     {
         var list = new List<DownloadItemObj>();
-        var meta = await QuiltAPI.GetMeta(BaseClient.Source);
+        var meta = await QuiltAPI.GetMeta(WebClient.Source);
         if (meta == null)
         {
             return null;
@@ -815,7 +815,7 @@ public static class DownloadItemHelper
 
         version = quilt.version;
 
-        var data = await QuiltAPI.GetLoader(mc, version, BaseClient.Source);
+        var data = await QuiltAPI.GetLoader(mc, version, WebClient.Source);
         if (data == null)
         {
             return null;
@@ -833,7 +833,7 @@ public static class DownloadItemHelper
             var name = PathHelper.ToPathAndName(item.name);
             list.Add(new()
             {
-                Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),
+                Url = UrlHelper.DownloadQuilt(item.url + name.Path, WebClient.Source),
                 Name = name.Name,
                 Local = $"{LibrariesPath.BaseDir}/{name.Path}"
             });

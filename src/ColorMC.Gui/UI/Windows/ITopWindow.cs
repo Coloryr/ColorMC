@@ -4,7 +4,7 @@ using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public interface ITop
+public interface ITopWindow
 {
     public void Opened();
     public void WindowStateChange(WindowState state);

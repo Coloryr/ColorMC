@@ -47,7 +47,7 @@ public static class OAuthApi
     /// </summary>
     public static async Task<OAuthGetCodeRes> GetCodeAsync()
     {
-        var data = await BaseClient.LoginPostStringAsync(OAuthCode, Arg1);
+        var data = await WebClient.LoginPostStringAsync(OAuthCode, Arg1);
         if (data.Contains("error"))
         {
             return new OAuthGetCodeRes
@@ -106,7 +106,7 @@ public static class OAuthApi
                     State = LoginState.TimeOut
                 };
             }
-            var data = await BaseClient.LoginPostStringAsync(OAuthToken, Arg2);
+            var data = await WebClient.LoginPostStringAsync(OAuthToken, Arg2);
             var obj3 = JObject.Parse(data);
             if (obj3 == null)
             {
@@ -164,7 +164,7 @@ public static class OAuthApi
             ["refresh_token"] = token
         };
 
-        var obj1 = await BaseClient.LoginPostAsync(OAuthToken, dir);
+        var obj1 = await WebClient.LoginPostAsync(OAuthToken, dir);
         if (obj1 == null)
         {
             return new OAuthRefreshTokenRes
@@ -202,7 +202,7 @@ public static class OAuthApi
     /// <returns></returns>
     public static async Task<OAuthXboxLiveRes> GetXBLAsync(string token)
     {
-        var json = await BaseClient.LoginPostJsonAsync(XboxLive, new
+        var json = await WebClient.LoginPostJsonAsync(XboxLive, new
         {
             Properties = new
             {
@@ -241,7 +241,7 @@ public static class OAuthApi
     /// <exception cref="FailedAuthenticationException"></exception>
     public static async Task<OAuthXSTSRes> GetXSTSAsync(string token)
     {
-        var json = await BaseClient.LoginPostJsonAsync(XSTS, new
+        var json = await WebClient.LoginPostJsonAsync(XSTS, new
         {
             Properties = new
             {

@@ -174,7 +174,7 @@ public partial class DownloadModel : TopModel
         }
         else if (state == DownloadState.End)
         {
-            OnPropertyChanged("WindowClose");
+            Dispatcher.UIThread.Post(WindowClose);
         }
     }
 

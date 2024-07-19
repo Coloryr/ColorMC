@@ -65,8 +65,8 @@ public partial class MainModel : TopModel, IMainTop
 
     public MainModel(BaseModel model) : base(model)
     {
-        App.SkinLoad += App_SkinLoad;
-        App.UserEdit += LoadUser;
+        ImageManager.SkinChange += SkinChange;
+        UserBinding.UserEdit += LoadUser;
 
         ShowHello();
     }
@@ -202,7 +202,7 @@ public partial class MainModel : TopModel, IMainTop
         OnPropertyChanged(SwitchView);
     }
 
-    private void App_SkinLoad()
+    private void SkinChange()
     {
         Head = ImageManager.HeadBitmap!;
 

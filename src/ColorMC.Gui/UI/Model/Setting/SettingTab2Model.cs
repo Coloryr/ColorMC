@@ -359,7 +359,7 @@ public partial class SettingModel
             }
             else
             {
-                App.Reboot();
+                ColorMCGui.Reboot();
             }
         }
     }

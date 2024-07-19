@@ -538,7 +538,7 @@ public partial class GameEditModel
 
     private async void Delete()
     {
-        if (BaseBinding.IsGameRun(_obj))
+        if (GameManager.IsGameRun(_obj))
         {
             Model.Show(App.Lang("GameEditWindow.Tab1.Error1"));
             return;
@@ -597,7 +597,7 @@ public partial class GameEditModel
 
     public void GameStateChange()
     {
-        GameRun = BaseBinding.IsGameRun(_obj);
+        GameRun = GameManager.IsGameRun(_obj);
     }
 
     public async Task LangLoad()
@@ -724,7 +724,7 @@ public partial class GameEditModel
 
         OffLib = _obj.CustomLoader?.OffLib ?? false;
 
-        GameRun = BaseBinding.IsGameRun(_obj);
+        GameRun = GameManager.IsGameRun(_obj);
 
         var opt = _obj.GetOptions();
 

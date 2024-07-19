@@ -105,7 +105,7 @@ public static class GuiConfigUtils
             if (save)
             {
                 Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
-                Save();
+                SaveNow();
             }
         }
         else

@@ -36,7 +36,7 @@ public static class ColorMCAPI
             httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
             httpRequest.Content = new StringContent(JsonConvert.SerializeObject(new { type, ids }));
 
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
+            var data = await WebClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
@@ -97,7 +97,7 @@ public static class ColorMCAPI
         {
             var req = new HttpRequestMessage(HttpMethod.Post, BaseUrl + "getmcmodgroup");
             req.Headers.Add("ColorMC", ColorMCCore.Version);
-            var data = await BaseClient.DownloadClient.SendAsync(req);
+            var data = await WebClient.DownloadClient.SendAsync(req);
             var data1 = await data.Content.ReadAsStringAsync();
             var obj = JObject.Parse(data1);
             if (!obj.TryGetValue("res", out var value) || value.Type != JTokenType.Integer
@@ -121,7 +121,7 @@ public static class ColorMCAPI
         {
             var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "update/log");
             req.Headers.Add("ColorMC", ColorMCCore.Version);
-            var data = await BaseClient.DownloadClient.SendAsync(req);
+            var data = await WebClient.DownloadClient.SendAsync(req);
             return await data.Content.ReadAsStringAsync();
         }
         catch (Exception e)
@@ -135,7 +135,7 @@ public static class ColorMCAPI
     {
         var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "update/index.json");
         req.Headers.Add("ColorMC", ColorMCCore.Version);
-        var data = await BaseClient.DownloadClient.SendAsync(req);
+        var data = await WebClient.DownloadClient.SendAsync(req);
         return JObject.Parse(await data.Content.ReadAsStringAsync());
     }
 
@@ -143,7 +143,7 @@ public static class ColorMCAPI
     {
         var req = new HttpRequestMessage(HttpMethod.Get, CheckUrl + "sha1.json");
         req.Headers.Add("ColorMC", ColorMCCore.Version);
-        var data = await BaseClient.DownloadClient.SendAsync(req);
+        var data = await WebClient.DownloadClient.SendAsync(req);
         string text = await data.Content.ReadAsStringAsync();
         return JObject.Parse(text);
     }
@@ -154,7 +154,7 @@ public static class ColorMCAPI
         {
             var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "frplist");
             req.Headers.Add("ColorMC", ColorMCCore.Version);
-            var data = await BaseClient.DownloadClient.SendAsync(req);
+            var data = await WebClient.DownloadClient.SendAsync(req);
             return JObject.Parse(await data.Content.ReadAsStringAsync());
         }
         catch (Exception e)
@@ -176,7 +176,7 @@ public static class ColorMCAPI
 
         try
         {
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
+            var data = await WebClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
             {
@@ -214,7 +214,7 @@ public static class ColorMCAPI
         };
         httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
 
-        var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
+        var data = await WebClient.DownloadClient.SendAsync(httpRequest);
         var str = await data.Content.ReadAsStringAsync();
 
         return JsonConvert.DeserializeObject<PojavLauncherTeamObj>(str);

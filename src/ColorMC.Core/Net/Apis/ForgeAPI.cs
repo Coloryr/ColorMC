@@ -40,7 +40,7 @@ public static class ForgeAPI
                     return s_neoSupportVersion;
                 }
                 string url = UrlHelper.ForgeVersion(local);
-                var data = await BaseClient.GetStringAsync(url);
+                var data = await WebClient.GetStringAsync(url);
                 if (data.Item1 == false)
                 {
                     ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
@@ -91,7 +91,7 @@ public static class ForgeAPI
                 string url = neo
                     ? UrlHelper.NeoForgeVersions(mc, local, v222)
                     : UrlHelper.ForgeVersions(mc, local);
-                var data = await BaseClient.GetStringAsync(url);
+                var data = await WebClient.GetStringAsync(url);
                 if (data.Item1 == false)
                 {
                     ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
@@ -193,7 +193,7 @@ public static class ForgeAPI
     {
         var url = neo ? UrlHelper.NeoForgeVersions(mc, SourceLocal.Offical, false) :
                     UrlHelper.ForgeVersion(SourceLocal.Offical);
-        var html = await BaseClient.GetStringAsync(url);
+        var html = await WebClient.GetStringAsync(url);
         if (html.Item1 == false)
         {
             ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
@@ -284,7 +284,7 @@ public static class ForgeAPI
         {
             url = UrlHelper.NeoForgeVersions(mc, SourceLocal.Offical, true);
 
-            html = await BaseClient.GetStringAsync(url);
+            html = await WebClient.GetStringAsync(url);
             if (html.Item1 == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),

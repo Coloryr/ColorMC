@@ -113,6 +113,10 @@ public record ServerCustomSetting
     /// </summary>
     public bool SlowVolume { get; set; }
     /// <summary>
+    /// 循环播放
+    /// </summary>
+    public bool MusicLoop { get; set; }
+    /// <summary>
     /// 游戏启动后暂停
     /// </summary>
     public bool RunPause { get; set; }

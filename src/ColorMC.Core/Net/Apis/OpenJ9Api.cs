@@ -17,7 +17,7 @@ public static class OpenJ9Api
         List<string>? MainVersion, List<OpenJ9Obj1.Downloads>? Data)> GetJavaList()
     {
         var url = "https://developer.ibm.com/middleware/v1/contents/static/semeru-runtime-downloads";
-        var data = await BaseClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        var data = await WebClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
         if (data == null)
         {
             return (null, null, null, null);

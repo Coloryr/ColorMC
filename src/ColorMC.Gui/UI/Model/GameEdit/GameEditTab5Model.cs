@@ -219,7 +219,7 @@ public partial class GameEditModel
 
     public async void LaunchWorld(WorldModel world)
     {
-        if (BaseBinding.IsGameRun(world.World.Game))
+        if (GameManager.IsGameRun(world.World.Game))
         {
             return;
         }

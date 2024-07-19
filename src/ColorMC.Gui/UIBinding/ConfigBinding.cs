@@ -8,6 +8,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Player;
 using ColorMC.Gui.Utils;
 
 
@@ -35,7 +36,7 @@ public static class ConfigBinding
         var res = ConfigUtils.Load(dir, true);
         if (res)
         {
-            BaseClient.Init();
+            WebClient.Init();
         }
 
         return res;
@@ -50,7 +51,7 @@ public static class ConfigBinding
         var res = GuiConfigUtils.Load(dir, true);
         if (res)
         {
-            App.ColorChange();
+            ThemeManager.Init();
         }
 
         return res;
@@ -72,9 +73,9 @@ public static class ConfigBinding
     public static void SetRgb(bool enable)
     {
         GuiConfigUtils.Config.RGB = enable;
-
         GuiConfigUtils.Save();
-        App.ColorChange();
+
+        ThemeManager.Init();
     }
 
     /// <summary>
@@ -85,7 +86,8 @@ public static class ConfigBinding
         GuiConfigUtils.Config.RGBS = v1;
         GuiConfigUtils.Config.RGBV = v2;
         GuiConfigUtils.Save();
-        App.ColorChange();
+
+        ThemeManager.Init();
     }
 
     /// <summary>
@@ -96,7 +98,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ColorMain = main;
         GuiConfigUtils.Save();
 
-        App.ColorChange();
+        ThemeManager.Init();
     }
 
     /// <summary>
@@ -112,10 +114,10 @@ public static class ConfigBinding
     /// </summary>
     public static void DeleteGuiImageConfig()
     {
-        ImageManager.RemoveImage();
         GuiConfigUtils.Config.BackImage = null;
         GuiConfigUtils.Save();
-        App.OnPicUpdate();
+
+        ImageManager.RemoveImage();
     }
 
     /// <summary>
@@ -132,8 +134,6 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         await ImageManager.LoadImage();
-
-        App.OnPicUpdate();
     }
 
     /// <summary>
@@ -149,8 +149,6 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         await ImageManager.LoadImage();
-
-        App.OnPicUpdate();
     }
 
     /// <summary>
@@ -162,7 +160,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.BackTran = data;
         GuiConfigUtils.Save();
 
-        App.OnPicUpdate();
+        ImageManager.OnPicUpdate();
     }
 
     /// <summary>
@@ -176,8 +174,8 @@ public static class ConfigBinding
         GuiConfigUtils.Config.WindowTran = open;
         GuiConfigUtils.Save();
 
-        App.ColorChange();
-        App.OnPicUpdate();
+        ThemeManager.Init();
+        ImageManager.OnPicUpdate();
     }
 
     /// <summary>
@@ -195,7 +193,7 @@ public static class ConfigBinding
         ConfigUtils.Config.Http.Source = value;
         ConfigUtils.Save();
 
-        BaseClient.Init();
+        WebClient.Init();
     }
 
     /// <summary>
@@ -235,7 +233,7 @@ public static class ConfigBinding
         ConfigUtils.Config.Http.ProxyPassword = password;
         ConfigUtils.Save();
 
-        BaseClient.Init();
+        WebClient.Init();
     }
 
     /// <summary>
@@ -257,7 +255,7 @@ public static class ConfigBinding
         ConfigUtils.Config.Http.GameProxy = v3;
         ConfigUtils.Save();
 
-        BaseClient.Init();
+        WebClient.Init();
     }
 
     /// <summary>
@@ -364,7 +362,7 @@ public static class ConfigBinding
         ConfigUtils.Config.Window = obj;
         ConfigUtils.Save();
 
-        BaseClient.Init();
+        WebClient.Init();
     }
 
     /// <summary>
@@ -398,7 +396,7 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
 
-        ThemeManager.Load();
+        ThemeManager.Init();
     }
 
     /// <summary>
@@ -434,7 +432,7 @@ public static class ConfigBinding
 
             GuiConfigUtils.Save();
 
-            App.Reboot();
+            ColorMCGui.Reboot();
         }
     }
 
@@ -468,8 +466,8 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ColorType = type;
         GuiConfigUtils.Save();
 
-        App.ColorChange();
-        App.OnPicUpdate();
+        ThemeManager.Init();
+        ImageManager.OnPicUpdate();
     }
 
     /// <summary>
@@ -513,7 +511,8 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         WindowManager.MainWindow?.MotdLoad();
-        App.ColorChange();
+
+        ThemeManager.Init();
     }
 
     /// <summary>
@@ -551,7 +550,7 @@ public static class ConfigBinding
     /// <param name="v3"></param>
     /// <param name="v4"></param>
     /// <param name="v5"></param>
-    public static void SetMusic(bool v1, bool v2, string? v3, int v4, bool v5)
+    public static void SetMusic(bool v1, bool v2, string? v3, int v4, bool v5, bool v6)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.PlayMusic = v1;
@@ -559,7 +558,10 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.Music = v3;
         GuiConfigUtils.Config.ServerCustom.Volume = v4;
         GuiConfigUtils.Config.ServerCustom.RunPause = v5;
+        GuiConfigUtils.Config.ServerCustom.MusicLoop = v6;
         GuiConfigUtils.Save();
+
+        Media.Loop = v6;
     }
 
     /// <summary>
@@ -575,7 +577,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.LockLogins = list;
         GuiConfigUtils.Save();
 
-        App.OnUserEdit();
+        UserBinding.OnUserEdit();
         if (WindowManager.UserWindow != null)
         {
             WindowManager.UserWindow.Close();

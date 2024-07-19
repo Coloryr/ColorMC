@@ -13,7 +13,7 @@ public class MainFlyout
 {
     public MainFlyout(Control con, GameItemModel obj)
     {
-        var run = BaseBinding.IsGameRun(obj.Obj);
+        var run = GameManager.IsGameRun(obj.Obj);
 
         _ = new FlyoutsControl(
         [
@@ -66,7 +66,7 @@ public class MainFlyout
                 GameJoystick.NowGameJoystick.ContainsKey(obj.Obj.UUID), obj.SetJoystick),
             (App.Lang("MainWindow.Flyouts.Text13"), run, ()=>
             {
-                BaseBinding.StopGame(obj.Obj);
+                GameManager.StopGame(obj.Obj);
             })
         ], con);
     }

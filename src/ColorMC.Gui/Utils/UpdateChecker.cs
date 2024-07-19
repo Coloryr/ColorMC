@@ -131,7 +131,7 @@ public static class UpdateChecker
         var res = await DownloadManager.StartAsync(list);
         if (res)
         {
-            App.Reboot();
+            ColorMCGui.Reboot();
         }
         else
         {

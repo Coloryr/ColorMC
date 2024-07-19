@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Windows;
 
 public abstract class ABaseWindow : Window
 {
-    public abstract ITop ICon { get; }
+    public abstract ITopWindow ICon { get; }
 
     protected void InitBaseWindow()
     {

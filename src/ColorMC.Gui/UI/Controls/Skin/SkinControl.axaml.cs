@@ -24,7 +24,7 @@ public partial class SkinControl : BaseUserControl
 
         Button2.Click += Button2_Click;
 
-        App.SkinLoad += App_SkinLoad;
+        ImageManager.SkinChange += SkinChange;
     }
 
     public override async Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
@@ -62,7 +62,8 @@ public partial class SkinControl : BaseUserControl
 
     public override void Closed()
     {
-        App.SkinLoad -= App_SkinLoad;
+        ImageManager.SkinChange -= SkinChange;
+
         _renderTimer.Close();
 
         WindowManager.SkinWindow = null;
@@ -95,7 +96,7 @@ public partial class SkinControl : BaseUserControl
         }
     }
 
-    private void App_SkinLoad()
+    private void SkinChange()
     {
         Skin.ChangeSkin();
     }

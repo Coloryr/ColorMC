@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ColorMC.Core.Net;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Player.Decoder.Mp3;
+using ColorMC.Gui.Utils;
 using Silk.NET.SDL;
 using Thread = System.Threading.Thread;
 
@@ -34,6 +35,11 @@ public static class Media
     /// 音量 0 - 1
     /// </summary>
     public static float Volume { get; set; }
+
+    /// <summary>
+    /// 循环播放
+    /// </summary>
+    public static bool Loop { get; set; }
 
     private static uint _deviceId;
     private static AudioSpec audioSpec;
@@ -227,7 +233,7 @@ public static class Media
     /// </summary>
     /// <param name="filePath"></param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> PlayWAV(string filePath)
+    private static async Task<(bool, string?)> PlayWAV(string filePath)
     {
         if (!deviceOpen)
         {
@@ -347,6 +353,22 @@ public static class Media
 
         Decoding = false;
 
+        if (Loop)
+        {
+            _ = Task.Run(() =>
+            {
+                while (_sdl.GetQueuedAudioSize(_deviceId) > 0)
+                {
+                    Thread.Sleep(100);
+                }
+                Task.Run(() =>
+                {
+                    Thread.Sleep(500);
+                    _ = PlayWAV(s_musicFile);
+                });
+            });
+        }
+
         return (true, null);
     }
 
@@ -355,7 +377,7 @@ public static class Media
     /// </summary>
     /// <param name="stream"></param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> PlayMp3(Stream stream)
+    private static async Task<(bool, string?)> PlayMp3(Stream stream)
     {
         if (!deviceOpen)
         {
@@ -410,6 +432,18 @@ public static class Media
                 }
                 decoder.Dispose();
                 Decoding = false;
+                if (Loop)
+                {
+                    while (_sdl.GetQueuedAudioSize(_deviceId) > 0)
+                    {
+                        Thread.Sleep(100);
+                    }
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(500);
+                        _ = PlayUrl(s_musicFile);
+                    });
+                }
             }
             catch (Exception e)
             {
@@ -425,14 +459,12 @@ public static class Media
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> PlayMp3(string file)
+    private static async Task<(bool, string?)> PlayMp3(string file)
     {
         if (!deviceOpen)
         {
             return (false, null);
         }
-
-        s_musicFile = file;
 
         var reader = File.OpenRead(file);
         return await PlayMp3(reader);
@@ -443,7 +475,7 @@ public static class Media
     /// </summary>
     /// <param name="url"></param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> PlayUrl(string url)
+    private static async Task<(bool, string?)> PlayUrl(string url)
     {
         if (!deviceOpen)
         {
@@ -452,11 +484,11 @@ public static class Media
 
         try
         {
-            var res = await BaseClient.DownloadClient.GetAsync(url);
+            var res = await Core.Net.WebClient.DownloadClient.GetAsync(url);
             if (res.StatusCode == HttpStatusCode.Redirect)
             {
                 var url1 = res.Headers.Location;
-                res = await BaseClient.DownloadClient.GetAsync(url1);
+                res = await Core.Net.WebClient.DownloadClient.GetAsync(url1);
                 return await PlayMp3(res.Content.ReadAsStream());
             }
 
@@ -470,13 +502,57 @@ public static class Media
     }
 
     /// <summary>
-    /// 播放结束
+    /// 播放音乐
     /// </summary>
-    public static void PlayEnd()
+    /// <param name="file">文件或者网址</param>
+    /// <param name="value">是否渐变大声</param>
+    /// <param name="value1">最大音量 0-100</param>
+    public static async void PlayMusic(string file, bool value, int value1)
     {
-        if (!string.IsNullOrWhiteSpace(s_musicFile))
+        s_musicFile = file;
+
+        bool play = false;
+        Volume = 0;
+
+        if (file.StartsWith("http://") || file.StartsWith("https://"))
         {
-            _ = PlayMp3(s_musicFile);
+            await PlayUrl(file);
+            play = true;
+        }
+        else
+        {
+            file = Path.GetFullPath(file);
+            if (File.Exists(file))
+            {
+                if (file.EndsWith(".mp3"))
+                {
+                    await PlayMp3(file);
+                    play = true;
+                }
+                else if (file.EndsWith(".wav"))
+                {
+                    await PlayWAV(file);
+                    play = true;
+                }
+            }
+        }
+        if (play)
+        {
+            if (value)
+            {
+                await Task.Run(() =>
+                {
+                    for (int a = 0; a < value1; a++)
+                    {
+                        Volume = (float)a / 100;
+                        Thread.Sleep(50);
+                    }
+                });
+            }
+            else
+            {
+                Volume = (float)value1 / 100;
+            }
         }
     }
 }

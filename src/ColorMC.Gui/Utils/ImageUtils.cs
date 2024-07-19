@@ -50,7 +50,7 @@ public static class ImageUtils
         {
             try
             {
-                var data1 = await BaseClient.GetStreamAsync(url);
+                var data1 = await WebClient.GetStreamAsync(url);
                 if (data1.Item1)
                 {
                     if (zoom)
@@ -113,7 +113,7 @@ public static class ImageUtils
                 Stream? stream1 = null;
                 if (file.StartsWith("https://") || file.StartsWith("http://"))
                 {
-                    var res = await BaseClient.DownloadClient.GetAsync(file);
+                    var res = await WebClient.DownloadClient.GetAsync(file);
                     stream1 = res.Content.ReadAsStream();
                 }
                 else if (file.StartsWith("ColorMC.Gui"))

@@ -109,10 +109,6 @@ public partial class AddModPackControl : BaseUserControl
                 }
             });
         }
-        else if (e.PropertyName == "WindowClose")
-        {
-            Window.Close();
-        }
     }
 
     private async void ModPackFiles_PointerPressed(object? sender, PointerPressedEventArgs e)

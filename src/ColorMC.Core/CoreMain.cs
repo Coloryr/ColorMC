@@ -218,7 +218,7 @@ public static class ColorMCCore
         Logs.Init(BaseDir);
         ToolPath.Init(BaseDir);
         ConfigUtils.Init(BaseDir);
-        BaseClient.Init();
+        WebClient.Init();
 
         Logs.Info(LanguageHelper.Get("Core.Info1"));
     }

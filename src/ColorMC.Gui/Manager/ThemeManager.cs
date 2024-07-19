@@ -48,9 +48,24 @@ public static class ThemeManager
         Dispatcher.UIThread.Invoke(Reload);
     }
 
-    public static void Load()
+    public static PlatformThemeVariant NowTheme { get; private set; }
+
+    public static void Init()
     {
-        if (App.NowTheme == PlatformThemeVariant.Light)
+        switch (GuiConfigUtils.Config.ColorType)
+        {
+            case ColorType.Auto:
+                NowTheme = App.ThisApp.PlatformSettings!.GetColorValues().ThemeVariant;
+                break;
+            case ColorType.Light:
+                NowTheme = PlatformThemeVariant.Light;
+                break;
+            case ColorType.Dark:
+                NowTheme = PlatformThemeVariant.Dark;
+                break;
+        }
+
+        if (NowTheme == PlatformThemeVariant.Light)
         {
             s_theme = s_light;
         }
@@ -61,6 +76,9 @@ public static class ThemeManager
 
         LoadColor();
         LoadFont();
+
+        RgbColor.Load();
+        ColorSel.Load();
 
         Reload();
     }
@@ -84,9 +102,6 @@ public static class ThemeManager
             Spread = 1,
             Color = color1
         });
-
-        RgbColor.Load();
-        ColorSel.Load();
     }
 
     private static void LoadFont()
@@ -120,7 +135,18 @@ public static class ThemeManager
         }
         else if (key == "WindowTranColor")
         {
-            return s_theme.WindowTranColor;
+            if (GuiConfigUtils.Config.WindowTran)
+            {
+                return s_theme.WindowTranColor;
+            }
+            else if (NowTheme == PlatformThemeVariant.Light)
+            {
+                return Brushes.White;
+            }
+            else
+            {
+                return Brushes.Black;
+            }
         }
         else if (key == "WindowBase")
         {

@@ -241,7 +241,7 @@ public partial class GameEditModel
         {
             return;
         }
-        if (BaseBinding.IsGameRun(_obj))
+        if (GameManager.IsGameRun(_obj))
         {
             return;
         }

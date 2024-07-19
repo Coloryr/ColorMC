@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -63,7 +64,7 @@ public partial class NetFrpModel
         var list2 = new List<GameSettingObj>();
         foreach (var item in list)
         {
-            if (!BaseBinding.IsGameRun(item))
+            if (!GameManager.IsGameRun(item))
             {
                 list1.Add(item.Name);
                 list2.Add(item);

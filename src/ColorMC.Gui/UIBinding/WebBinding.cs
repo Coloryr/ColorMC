@@ -772,39 +772,39 @@ public static class WebBinding
 
     public static Task<List<string>?> GetForgeSupportVersion()
     {
-        return ForgeAPI.GetSupportVersion(false, BaseClient.Source);
+        return ForgeAPI.GetSupportVersion(false, WebClient.Source);
     }
     public static Task<List<string>?> GetFabricSupportVersion()
     {
-        return FabricAPI.GetSupportVersion(BaseClient.Source);
+        return FabricAPI.GetSupportVersion(WebClient.Source);
     }
     public static Task<List<string>?> GetQuiltSupportVersion()
     {
-        return QuiltAPI.GetSupportVersion(BaseClient.Source);
+        return QuiltAPI.GetSupportVersion(WebClient.Source);
     }
 
     public static Task<List<string>?> GetNeoForgeVersion(string version)
     {
-        return ForgeAPI.GetVersionList(true, version, BaseClient.Source);
+        return ForgeAPI.GetVersionList(true, version, WebClient.Source);
     }
 
     public static Task<List<string>?> GetNeoForgeSupportVersion()
     {
-        return ForgeAPI.GetSupportVersion(true, BaseClient.Source);
+        return ForgeAPI.GetSupportVersion(true, WebClient.Source);
     }
     public static Task<List<string>?> GetForgeVersion(string version)
     {
-        return ForgeAPI.GetVersionList(false, version, BaseClient.Source);
+        return ForgeAPI.GetVersionList(false, version, WebClient.Source);
     }
 
     public static Task<List<string>?> GetFabricVersion(string version)
     {
-        return FabricAPI.GetLoaders(version, BaseClient.Source);
+        return FabricAPI.GetLoaders(version, WebClient.Source);
     }
 
     public static Task<List<string>?> GetQuiltVersion(string version)
     {
-        return QuiltAPI.GetLoaders(version, BaseClient.Source);
+        return QuiltAPI.GetLoaders(version, WebClient.Source);
     }
 
     public static async Task<List<string>?> GetOptifineVersion(string version)
