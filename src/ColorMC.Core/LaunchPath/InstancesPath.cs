@@ -995,9 +995,10 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="local">目标地址</param>
     /// <param name="unselect">未选择的文件</param>
+    /// <param name="dir">根目录方式复制</param>
     /// <returns></returns>
     public static async Task CopyFile(this GameSettingObj obj,
-        string local, List<string>? unselect)
+        string local, List<string>? unselect, bool dir)
     {
         local = Path.GetFullPath(local);
         var list = PathHelper.GetAllFile(local);
@@ -1006,7 +1007,7 @@ public static class InstancesPath
             list.RemoveAll(item => unselect.Contains(item.FullName));
         }
         int basel = local.Length;
-        var local1 = obj.GetGamePath();
+        var local1 = dir ? obj.GetBasePath() : obj.GetGamePath();
         await Task.Run(() =>
         {
             foreach (var item in list)

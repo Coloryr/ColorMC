@@ -31,6 +31,7 @@ public static class AddGameHelper
         GameSettingObj? game = null;
 
         bool isfind = false;
+        bool ismmc = false;
 
         var file1 = Path.GetFullPath(arg.Local + "/" + "mmc-pack.json");
         var file2 = Path.GetFullPath(arg.Local + "/" + "instance.cfg");
@@ -44,6 +45,7 @@ public static class AddGameHelper
                     var mmc1 = PathHelper.ReadText(file2)!;
                     game = mmc.ToColorMC(mmc1, out var icon);
                     game.Icon = icon + ".png";
+                    ismmc = true;
                     isfind = true;
                 }
             }
@@ -108,7 +110,7 @@ public static class AddGameHelper
             };
         }
 
-        await game.CopyFile(arg.Local, arg.Unselect);
+        await game.CopyFile(arg.Local, arg.Unselect, ismmc);
 
         return new GameRes
         {
