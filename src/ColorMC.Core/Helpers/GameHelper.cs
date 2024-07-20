@@ -808,6 +808,7 @@ public static class GameHelper
     {
         var list = new List<string>();
         var dirs = PathHelper.GetDirs(dir);
+        dirs.Insert(0, new DirectoryInfo(dir));
         foreach (var item in dirs)
         {
             if (item.Name == "versions")
