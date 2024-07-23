@@ -87,7 +87,7 @@ public class SynthesisFilter
      */
     private static float[] Load()
     {
-        return JavaLayerUtils.DeserializeArrayResource("sfd.temp");
+        return JavaLayerUtils.DeserializeArrayResource();
     }
 
     /**

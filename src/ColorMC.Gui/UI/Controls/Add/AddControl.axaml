@@ -11,9 +11,6 @@
     d:DesignWidth="800"
     x:DataType="model:AddControlModel"
     mc:Ignorable="d">
-    <UserControl.Resources>
-        <setting:WidthToVisibilityConverter x:Key="WidthToVisibilityConverter" />
-    </UserControl.Resources>
     <Panel>
         <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
             <DockPanel Margin="10">

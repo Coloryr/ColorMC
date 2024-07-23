@@ -6,9 +6,9 @@ namespace ColorMC.Gui.Player.Decoder.Mp3;
 
 public static class JavaLayerUtils
 {
-    public static float[] DeserializeArrayResource(string name)
+    public static float[] DeserializeArrayResource()
     {
-        string local = $"ColorMC.Gui.Player.Decoder.Mp3.{name}";
+        string local = $"ColorMC.Gui.MusicPlayer.Decoder.Mp3.sfd.temp";
 
         var assm = Assembly.GetExecutingAssembly();
         using var istr = assm.GetManifestResourceStream(local)!;
