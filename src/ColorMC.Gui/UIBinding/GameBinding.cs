@@ -326,6 +326,141 @@ public static class GameBinding
     }
 
     /// <summary>
+    /// 启动多个实例
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static async Task<(List<string>?, string?, Dictionary<string, LaunchState>?, LoginObj?)> 
+        Launch(BaseModel model, ICollection<GameSettingObj> obj)
+    {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            return (null, null, null, null);
+        }
+        var list = obj.Where(item => !GameManager.IsGameRun(item))
+            .ToList();
+
+        if (list.Count == 0)
+        {
+            return (null, App.Lang("GameBinding.Error6"), null, null);
+        }
+
+        var res = await UserBinding.GetUser(model);
+        if (res.Item1 is not { } user)
+        {
+            return (null, res.Item2, null, null);
+        }
+
+        s_launchCancel = new();
+
+        foreach (var item in list)
+        {
+            GameManager.ClearGameLog(item.UUID);
+        }
+
+        var port = GameSocket.Port;
+
+        //锁定账户
+        UserBinding.AddLockUser(user);
+
+        var state1 = LaunchState.End;
+        var arg = MakeArg(user, model, port);
+
+        //设置自动加入服务器
+        if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
+            !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
+        {
+            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP,
+                GuiConfigUtils.Config.ServerCustom.Port);
+
+            arg.Server = new()
+            {
+                IP = server.ServerAddress,
+                Port = server.ServerPort
+            };
+        }
+
+        var res1 = await Task.Run(async () =>
+        {
+            return await obj.StartGameAsync(arg, s_launchCancel.Token);
+        });
+
+        model.Title1 = "";
+        FuntionUtils.RunGC();
+
+        if (s_launchCancel.IsCancellationRequested)
+        {
+            UserBinding.UnLockUser(user);
+            return (null, null, null, user);
+        }
+
+        if (GuiConfigUtils.Config.ServerCustom.RunPause)
+        {
+            Media.Pause();
+        }
+
+        var list1 = new Dictionary<string, LaunchState>();
+        var list2 = new List<string>();
+        foreach (var item in res1)
+        {
+            if (item.Value.Item1 is { } pr)
+            {
+                item.Key.LaunchData.LastTime = DateTime.Now;
+                item.Key.SaveLaunchData();
+
+                WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text2"));
+
+                GameManager.StartGame(item.Key);
+                GameCount.LaunchDone(item.Key);
+                GameStateUpdate(item.Key);
+
+                if (pr is DesktopGameHandel handel)
+                {
+                    GameHandel(model, item.Key, handel);
+                }
+
+                list2.Add(item.Key.UUID);
+            }
+            else
+            {
+                var temp = App.Lang("BaseBinding.Error4");
+                if (item.Value.Item2 is LaunchException e1)
+                {
+                    state1 = e1.State;
+                    if (!string.IsNullOrWhiteSpace(e1.Message))
+                    {
+                        temp = e1.Message;
+                    }
+                    else if (e1.Ex != null)
+                    {
+                        Logs.Error(temp, e1.Ex);
+                        WindowManager.ShowError(temp, e1.Ex);
+                    }
+
+                    list1.Add(item.Key.UUID, state1);
+                }
+                else
+                {
+                    Logs.Error(temp, item.Value.Item2);
+                    WindowManager.ShowError(temp, item.Value.Item2);
+
+                    list1.Add(item.Key.UUID, LaunchState.End);
+                }
+
+                GameCount.LaunchError(item.Key);
+            }
+        }
+
+        if (list2.Count == 0)
+        {
+            UserBinding.UnLockUser(user);
+        }
+
+        return (list2, null, list1, user);
+    }
+
+    /// <summary>
     /// 启动游戏
     /// </summary>
     /// <param name="model"></param>
@@ -359,24 +494,6 @@ public static class GameBinding
 
         s_launchCancel = new();
 
-        //设置自动加入服务器
-        if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
-            !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
-        {
-            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP,
-                GuiConfigUtils.Config.ServerCustom.Port);
-
-            obj = obj.CopyObj();
-            obj.StartServer ??= new();
-            obj.StartServer.IP = server.ServerAddress;
-            obj.StartServer.Port = server.ServerPort;
-        }
-
-        if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var win))
-        {
-            win.ClearLog();
-        }
-
         GameManager.ClearGameLog(obj.UUID);
 
         var port = GameSocket.Port;
@@ -386,115 +503,26 @@ public static class GameBinding
 
         var state1 = LaunchState.End;
         string? temp = null;
+        var arg = MakeArg(user, model, port);
+        arg.World = world;
+        //设置自动加入服务器
+        if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
+            !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
+        {
+            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP,
+                GuiConfigUtils.Config.ServerCustom.Port);
 
+            arg.Server = new()
+            {
+                IP = server.ServerAddress,
+                Port = server.ServerPort
+            };
+        }
         var res1 = await Task.Run(async () =>
         {
             try
             {
-                return await obj.StartGameAsync(new GameLaunchArg
-                {
-                    Auth = user,
-                    World = world,
-                    Request = (a) =>
-                    {
-                        return Dispatcher.UIThread.InvokeAsync(() =>
-                        {
-                            return model.ShowWait(a);
-                        });
-                    },
-                    Pre = (pre) =>
-                    {
-                        return Dispatcher.UIThread.InvokeAsync(() =>
-                            model.ShowWait(pre ? App.Lang("MainWindow.Info29") : App.Lang("MainWindow.Info30")));
-                    },
-                    State = (text) =>
-                    {
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            if (text == null)
-                            {
-                                model.ProgressClose();
-                            }
-                            else
-                            {
-                                model.Progress(text);
-                            }
-                        });
-                    },
-                    Select = (text) =>
-                    {
-                        return Dispatcher.UIThread.InvokeAsync(() =>
-                        {
-                            return model.ShowTextWait(App.Lang("BaseBinding.Info2"), text ?? "");
-                        });
-                    },
-                    Nojava = (version) =>
-                    {
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            WindowManager.ShowSetting(SettingType.SetJava, version);
-                        });
-                    },
-                    Loginfail = (login) =>
-                    {
-                        return Dispatcher.UIThread.InvokeAsync(() =>
-                        {
-                            return model.ShowWait(string.Format(
-                                App.Lang("MainWindow.Info21"), login.UserName));
-                        });
-                    },
-                    Update2 = (obj, state) =>
-                    {
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            if (GuiConfigUtils.Config.CloseBeforeLaunch)
-                            {
-                                if (state == LaunchState.End)
-                                {
-                                    model.ProgressClose();
-                                }
-                                model.ProgressUpdate(App.Lang(state switch
-                                {
-                                    LaunchState.Login => "MainWindow.Info8",
-                                    LaunchState.Check => "MainWindow.Info9",
-                                    LaunchState.CheckVersion => "MainWindow.Info10",
-                                    LaunchState.CheckLib => "MainWindow.Info11",
-                                    LaunchState.CheckAssets => "MainWindow.Info12",
-                                    LaunchState.CheckLoader => "MainWindow.Info13",
-                                    LaunchState.CheckLoginCore => "MainWindow.Info14",
-                                    LaunchState.CheckMods => "MainWindow.Info17",
-                                    LaunchState.Download => "MainWindow.Info15",
-                                    LaunchState.JvmPrepare => "MainWindow.Info16",
-                                    LaunchState.LaunchPre => "MainWindow.Info31",
-                                    LaunchState.LaunchPost => "MainWindow.Info32",
-                                    LaunchState.InstallForge => "MainWindow.Info38",
-                                    _ => ""
-                                }));
-                            }
-                            else
-                            {
-                                model.Title1 = App.Lang(state switch
-                                {
-                                    LaunchState.Login => "MainWindow.Info8",
-                                    LaunchState.Check => "MainWindow.Info9",
-                                    LaunchState.CheckVersion => "MainWindow.Info10",
-                                    LaunchState.CheckLib => "MainWindow.Info11",
-                                    LaunchState.CheckAssets => "MainWindow.Info12",
-                                    LaunchState.CheckLoader => "MainWindow.Info13",
-                                    LaunchState.CheckLoginCore => "MainWindow.Info14",
-                                    LaunchState.CheckMods => "MainWindow.Info17",
-                                    LaunchState.Download => "MainWindow.Info15",
-                                    LaunchState.JvmPrepare => "MainWindow.Info16",
-                                    LaunchState.LaunchPre => "MainWindow.Info31",
-                                    LaunchState.LaunchPost => "MainWindow.Info32",
-                                    LaunchState.InstallForge => "MainWindow.Info38",
-                                    _ => ""
-                                });
-                            }
-                        });
-                    },
-                    Mixinport = port
-                }, s_launchCancel.Token);
+                return await obj.StartGameAsync(arg, s_launchCancel.Token);
             }
             catch (Exception e)
             {
@@ -549,7 +577,12 @@ public static class GameBinding
 
             if (pr is DesktopGameHandel handel)
             {
-                GameHandel(model, obj, handel, hide);
+                GameHandel(model, obj, handel);
+
+                if (hide)
+                {
+                    Dispatcher.UIThread.Post(App.Hide);
+                }
             }
 
             ConfigBinding.SetLastLaunch(obj.UUID);
@@ -561,6 +594,113 @@ public static class GameBinding
         }
 
         return (res1 != null, temp, state1, user);
+    }
+
+    private static GameLaunchArg MakeArg(LoginObj user, BaseModel model, int port)
+    {
+        return new GameLaunchArg
+        {
+            Auth = user,
+            Request = (a) =>
+            {
+                return Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    return model.ShowWait(a);
+                });
+            },
+            Pre = (pre) =>
+            {
+                return Dispatcher.UIThread.InvokeAsync(() =>
+                    model.ShowWait(pre ? App.Lang("MainWindow.Info29") : App.Lang("MainWindow.Info30")));
+            },
+            State = (text) =>
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (text == null)
+                    {
+                        model.ProgressClose();
+                    }
+                    else
+                    {
+                        model.Progress(text);
+                    }
+                });
+            },
+            Select = (text) =>
+            {
+                return Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    return model.ShowTextWait(App.Lang("BaseBinding.Info2"), text ?? "");
+                });
+            },
+            Nojava = (version) =>
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    WindowManager.ShowSetting(SettingType.SetJava, version);
+                });
+            },
+            Loginfail = (login) =>
+            {
+                return Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    return model.ShowWait(string.Format(
+                        App.Lang("MainWindow.Info21"), login.UserName));
+                });
+            },
+            Update2 = (obj, state) =>
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (GuiConfigUtils.Config.CloseBeforeLaunch)
+                    {
+                        if (state == LaunchState.End)
+                        {
+                            model.ProgressClose();
+                        }
+                        model.ProgressUpdate(App.Lang(state switch
+                        {
+                            LaunchState.Login => "MainWindow.Info8",
+                            LaunchState.Check => "MainWindow.Info9",
+                            LaunchState.CheckVersion => "MainWindow.Info10",
+                            LaunchState.CheckLib => "MainWindow.Info11",
+                            LaunchState.CheckAssets => "MainWindow.Info12",
+                            LaunchState.CheckLoader => "MainWindow.Info13",
+                            LaunchState.CheckLoginCore => "MainWindow.Info14",
+                            LaunchState.CheckMods => "MainWindow.Info17",
+                            LaunchState.Download => "MainWindow.Info15",
+                            LaunchState.JvmPrepare => "MainWindow.Info16",
+                            LaunchState.LaunchPre => "MainWindow.Info31",
+                            LaunchState.LaunchPost => "MainWindow.Info32",
+                            LaunchState.InstallForge => "MainWindow.Info38",
+                            _ => ""
+                        }));
+                    }
+                    else
+                    {
+                        model.Title1 = App.Lang(state switch
+                        {
+                            LaunchState.Login => "MainWindow.Info8",
+                            LaunchState.Check => "MainWindow.Info9",
+                            LaunchState.CheckVersion => "MainWindow.Info10",
+                            LaunchState.CheckLib => "MainWindow.Info11",
+                            LaunchState.CheckAssets => "MainWindow.Info12",
+                            LaunchState.CheckLoader => "MainWindow.Info13",
+                            LaunchState.CheckLoginCore => "MainWindow.Info14",
+                            LaunchState.CheckMods => "MainWindow.Info17",
+                            LaunchState.Download => "MainWindow.Info15",
+                            LaunchState.JvmPrepare => "MainWindow.Info16",
+                            LaunchState.LaunchPre => "MainWindow.Info31",
+                            LaunchState.LaunchPost => "MainWindow.Info32",
+                            LaunchState.InstallForge => "MainWindow.Info38",
+                            _ => ""
+                        });
+                    }
+                });
+            },
+            Mixinport = port
+        };
     }
 
     /// <summary>
@@ -2247,8 +2387,7 @@ public static class GameBinding
     /// <param name="model"></param>
     /// <param name="obj"></param>
     /// <param name="handel"></param>
-    /// <param name="hide"></param>
-    private static void GameHandel(BaseModel model, GameSettingObj obj, DesktopGameHandel handel, bool hide)
+    private static void GameHandel(BaseModel model, GameSettingObj obj, DesktopGameHandel handel)
     {
         var pr = handel.Process;
         Task.Run(async () =>
@@ -2288,11 +2427,6 @@ public static class GameBinding
                     {
                         GameJoystick.Start(obj, handel);
                     }
-                }
-
-                if (hide)
-                {
-                    Dispatcher.UIThread.Post(App.Hide);
                 }
 
                 if (SystemInfo.Os == OsType.MacOS)

@@ -8,9 +8,11 @@ using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -18,6 +20,7 @@ public partial class GameGroupModel : TopModel
 {
     public ObservableCollection<GameItemModel> GameList { get; init; } = [];
 
+    public bool IsPhone { get; } = SystemInfo.Os == OsType.Android;
     public string Header { get; }
     public string Key { get; }
 
@@ -73,6 +76,12 @@ public partial class GameGroupModel : TopModel
                 GameList.Add(_addItem);
             });
         });
+    }
+
+    [RelayCommand]
+    public void LaunchAll()
+    {
+        _top.Launch(_items.Values);
     }
 
     public bool DropIn(IDataObject data)

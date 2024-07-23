@@ -70,6 +70,11 @@ public static class GameManager
 
     public static void ClearGameLog(string uuid)
     {
+        if (WindowManager.GameLogWindows.TryGetValue(uuid, out var win))
+        {
+            win.ClearLog();
+        }
+
         //清空日志
         if (GameLogs.TryGetValue(uuid, out StringBuilder? value))
         {

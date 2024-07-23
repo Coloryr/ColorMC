@@ -156,8 +156,13 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public async Task OpenGuide()
     {
-        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab7.Info3"));
-        WebBinding.OpenWeb(res ? WebType.Guide1 : WebType.Guide);
+        var list = LanguageBinding.GetGuide();
+        var res = await Model.ShowCombo(App.Lang("SettingWindow.Tab7.Info3"), list);
+        if (res.Cancel)
+        {
+            return;
+        }
+        WebBinding.OpenWeb(res.Index == 0 ? WebType.Guide1 : WebType.Guide);
     }
 
     [RelayCommand]

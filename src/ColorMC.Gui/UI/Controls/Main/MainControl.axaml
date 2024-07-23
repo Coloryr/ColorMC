@@ -16,6 +16,7 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <dialog:DialogHost
+        Background="{setting:Theme ButtonBG}"
         DisableOpeningAnimation="True"
         Identifier="MainCon"
         OverlayBackground="Transparent">
@@ -123,6 +124,11 @@
                                             <Border Background="#77000000" CornerRadius="5" />
                                         </Panel>
                                         <StackPanel Margin="15">
+                                            <StackPanel.Styles>
+                                                <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                                    <Setter Property="Background" Value="Transparent" />
+                                                </Style>
+                                            </StackPanel.Styles>
                                             <Panel Margin="0,0,0,5">
                                                 <TextBlock
                                                     Margin="0,0,0,5"
@@ -136,7 +142,8 @@
                                                     Background="Transparent"
                                                     BorderThickness="0"
                                                     Command="{Binding LoadNews}"
-                                                    CornerRadius="5">
+                                                    CornerRadius="5"
+                                                    IsVisible="{Binding !IsLoadNews}">
                                                     <svg:SvgControl Fill="White" Path="/Resource/Icon/reload.svg" />
                                                 </Button>
                                             </Panel>
@@ -151,11 +158,6 @@
                                                     Command="{Binding OpenNews}"
                                                     IsEnabled="{Binding !IsLoadNews}"
                                                     IsVisible="{Binding IsHaveNews}">
-                                                    <Button.Styles>
-                                                        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                                                            <Setter Property="Background" Value="Transparent" />
-                                                        </Style>
-                                                    </Button.Styles>
                                                     <DockPanel>
                                                         <svg:SvgControl
                                                             Width="35"
@@ -287,11 +289,11 @@
                             </StackPanel>
                         </Decorator>
                     </ScrollViewer>
-                    <ScrollViewer VerticalAlignment="Top">
+                    <ScrollViewer Margin="0,10,0,0" VerticalAlignment="Top">
                         <DockPanel>
                             <StackPanel
                                 Name="ContentTop"
-                                Margin="10,10,10,0"
+                                Margin="10,0,10,0"
                                 DockPanel.Dock="Top"
                                 IsVisible="{Binding !NewsDisplay}" />
                             <views:ServerMotdControl

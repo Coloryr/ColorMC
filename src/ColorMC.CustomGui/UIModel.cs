@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.CustomGui;
 
-public partial class UIModel(BaseModel model) : TopModel(model), IMainTop
+public partial class UIModel(BaseModel model) : TopModel(model)
 {
     /// <summary>
     /// 游戏列表
@@ -80,22 +80,7 @@ public partial class UIModel(BaseModel model) : TopModel(model), IMainTop
         Games.Clear();
         foreach (var item in InstancesPath.Games)
         {
-            Games.Add(new(Model, this, item));
+            Games.Add(new(Model, null, item));
         }
-    }
-
-    public void Launch(GameItemModel obj)
-    {
-
-    }
-
-    public void Select(GameItemModel? model)
-    {
-
-    }
-
-    public void EditGroup(GameItemModel model)
-    {
-
     }
 }

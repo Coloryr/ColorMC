@@ -640,9 +640,9 @@ public partial class BaseModel : ObservableObject
     }
 
     public async Task<(bool Cancel, int Index, string? Item)>
-        ShowCombo(string data, IEnumerable<string> data1)
+        ShowCombo(string title, IEnumerable<string> data1)
     {
-        _info5.Text = data;
+        _info5.Text = title;
         _info5.Items.Clear();
         _info5.Items.AddRange(data1);
         _info5.Select = null!;

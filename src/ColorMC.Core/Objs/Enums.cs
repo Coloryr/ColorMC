@@ -316,6 +316,10 @@ public enum LaunchState
     /// 外置登录器错误
     /// </summary>
     LoginCoreError,
+    /// <summary>
+    /// 启动错误
+    /// </summary>
+    Error,
 }
 
 /// <summary>

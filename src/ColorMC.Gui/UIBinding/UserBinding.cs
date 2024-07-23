@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -23,6 +24,7 @@ public static class UserBinding
     public static event Action? UserEdit;
 
     private static readonly List<(AuthType, string)> s_lockUser = [];
+    private static bool s_notDisplayUserLock;
 
     public static string[] GetLockLoginType()
     {
@@ -343,11 +345,22 @@ public static class UserBinding
             }
         }
 
-        if (IsLock(login))
+        if (IsLock(login) && !s_notDisplayUserLock)
         {
             var res = await model.ShowWait(App.Lang("GameBinding.Error1"));
             if (!res)
+            {
                 return (null, App.Lang("GameBinding.Error5"));
+            }
+
+            Dispatcher.UIThread.Post(async () =>
+            {
+                var res1 = await model.ShowWait(App.Lang("GameBinding.Info18"));
+                if (res1)
+                {
+                    s_notDisplayUserLock = true;
+                }
+            });
         }
 
         return (login, null);
