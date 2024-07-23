@@ -2,6 +2,9 @@
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 游戏进程句柄
+/// </summary>
 public interface IGameHandel
 {
     public string UUID { get; }
@@ -10,6 +13,11 @@ public interface IGameHandel
     public void Kill();
 }
 
+/// <summary>
+/// 游戏进程句柄
+/// </summary>
+/// <param name="process"></param>
+/// <param name="uuid"></param>
 public class DesktopGameHandel(Process process, string uuid) : IGameHandel
 {
     public Process Process => process;

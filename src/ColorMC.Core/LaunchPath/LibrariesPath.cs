@@ -223,7 +223,7 @@ public static class LibrariesPath
                 list.AddOrUpdate(FuntionUtils.MakeVersionObj(Name), Local);
             }
         }
-       
+
         //游戏核心
         var list3 = new List<string>(list.Values);
         if (obj.Loader != Loaders.NeoForge)

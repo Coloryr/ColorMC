@@ -32,8 +32,8 @@ public static class Skin3DHeadA
     ];
 
     // 定义立方体索引
-    public static readonly ushort[] s_cubeIndices =
-    {
+    private static readonly ushort[] s_cubeIndices =
+    [
         8, 12, 15, 11, // Back face (Top)
         8, 12, 13, 9, // Bottom face (Top)
         8, 9, 10, 11, // Right face (Top)
@@ -46,7 +46,7 @@ public static class Skin3DHeadA
         11, 15, 14, 10, // Top face (Top)
         12, 13, 14, 15, // Left face (Top)
         9, 13, 14, 10, // Front face (Top)
-    };
+    ];
 
     // Define the colors for each face
     private static readonly SKRectI[] s_facePos =
@@ -210,7 +210,7 @@ public static class Skin3DHeadA
 
 
     // 应用3D变换并投影到2D
-    static SKPoint Project(SKMatrix44 mat, SKPoint3 v)
+    private static SKPoint Project(SKMatrix44 mat, SKPoint3 v)
     {
         // 创建一个4D向量
         float[] vec = { v.X, v.Y, v.Z, 1 };
@@ -230,7 +230,7 @@ public static class Skin3DHeadA
         return new SKPoint(result[0], result[1]);
     }
 
-    static void DrawTexturedFace(SKCanvas canvas, SKBitmap texture, SKMatrix44 transform, int index)
+    private static void DrawTexturedFace(SKCanvas canvas, SKBitmap texture, SKMatrix44 transform, int index)
     {
         var vertices = new SKPoint[4];
         var texCoords = new SKPoint[4];

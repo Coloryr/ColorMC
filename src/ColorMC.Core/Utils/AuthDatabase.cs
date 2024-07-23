@@ -128,7 +128,7 @@ public static class AuthDatabase
     /// <summary>
     /// 删除账户
     /// </summary>
-    public static void Delete(LoginObj obj)
+    public static void Delete(this LoginObj obj)
     {
         Auths.TryRemove((obj.UUID, obj.AuthType), out _);
         Save();

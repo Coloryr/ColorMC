@@ -5,7 +5,6 @@ using System.Linq;
 using Avalonia.Controls;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

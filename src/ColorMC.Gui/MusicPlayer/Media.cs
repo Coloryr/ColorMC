@@ -5,10 +5,8 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using ColorMC.Core.Net;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Player.Decoder.Mp3;
-using ColorMC.Gui.Utils;
 using Silk.NET.SDL;
 using Thread = System.Threading.Thread;
 

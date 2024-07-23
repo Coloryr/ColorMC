@@ -331,7 +331,7 @@ public static class GameBinding
     /// <param name="model"></param>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static async Task<(List<string>?, string?, Dictionary<string, LaunchState>?, LoginObj?)> 
+    public static async Task<(List<string>?, string?, Dictionary<string, LaunchState>?, LoginObj?)>
         Launch(BaseModel model, ICollection<GameSettingObj> obj)
     {
         if (SystemInfo.Os == OsType.Android)
@@ -404,7 +404,7 @@ public static class GameBinding
         var list2 = new List<string>();
         foreach (var item in res1)
         {
-            if (item.Value.Item1 is { } pr)
+            if (item.Value.Handel is { } pr)
             {
                 item.Key.LaunchData.LastTime = DateTime.Now;
                 item.Key.SaveLaunchData();
@@ -425,7 +425,7 @@ public static class GameBinding
             else
             {
                 var temp = App.Lang("BaseBinding.Error4");
-                if (item.Value.Item2 is LaunchException e1)
+                if (item.Value.Ex is LaunchException e1)
                 {
                     state1 = e1.State;
                     if (!string.IsNullOrWhiteSpace(e1.Message))
@@ -442,8 +442,8 @@ public static class GameBinding
                 }
                 else
                 {
-                    Logs.Error(temp, item.Value.Item2);
-                    WindowManager.ShowError(temp, item.Value.Item2);
+                    Logs.Error(temp, item.Value.Ex);
+                    WindowManager.ShowError(temp, item.Value.Ex);
 
                     list1.Add(item.Key.UUID, LaunchState.End);
                 }
@@ -2378,7 +2378,7 @@ public static class GameBinding
 
     public static void CancelLaunch()
     {
-        s_launchCancel.Cancel();    
+        s_launchCancel.Cancel();
     }
 
     /// <summary>

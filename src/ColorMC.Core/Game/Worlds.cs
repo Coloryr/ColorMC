@@ -38,57 +38,10 @@ public static class Worlds
 
         await Parallel.ForEachAsync(info.GetDirectories(), async (item, cacenl) =>
         {
-            var find = false;
-            var file = Path.GetFullPath(item.FullName + "/level.dat");
-            if (File.Exists(file))
+            var world = await ReadWorld(item);
+            if (world != null)
             {
-                try
-                {
-                    //读NBT
-                    if (await NbtBase.Read(file) is not NbtCompound tag)
-                    {
-                        return;
-                    }
-
-                    var obj = new WorldObj()
-                    {
-                        Nbt = tag
-                    };
-
-                    //读数据
-                    var tag1 = tag.TryGet<NbtCompound>("Data")!;
-                    obj.LastPlayed = tag1.TryGet<NbtLong>("LastPlayed")!.Value;
-                    obj.GameType = tag1.TryGet<NbtInt>("GameType")!.Value;
-                    obj.Hardcore = tag1.TryGet<NbtByte>("hardcore")!.Value;
-                    obj.Difficulty = tag1.TryGet<NbtByte>("Difficulty")!.Value;
-                    obj.LevelName = tag1.TryGet<NbtString>("LevelName")!.Value;
-
-                    obj.Local = Path.GetFullPath(item.FullName);
-                    obj.Game = game;
-
-                    var icon = item.GetFiles().Where(a => a.Name == "icon.png").FirstOrDefault();
-                    if (icon != null)
-                    {
-                        obj.Icon = icon.FullName;
-                    }
-
-                    list.Add(obj);
-                    find = true;
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(LanguageHelper.Get("Core.Game.Error4"), e);
-                }
-            }
-
-            if (!find)
-            {
-                list.Add(new()
-                {
-                    Broken = true,
-                    Local = Path.GetFullPath(item.FullName),
-                    Game = game
-                });
+                list.Add(world);
             }
         });
 
@@ -272,5 +225,61 @@ public static class Worlds
             ColorMCCore.OnError(LanguageHelper.Get("Core.Game.Error11"), e, false);
             return false;
         }
+    }
+
+    /// <summary>
+    /// 读取世界信息
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
+    private static async Task<WorldObj?> ReadWorld(DirectoryInfo dir)
+    {
+        var file = Path.GetFullPath(dir.FullName + "/level.dat");
+        if (!File.Exists(file))
+        {
+            return null;
+        }
+
+        try
+        {
+            //读NBT
+            if (await NbtBase.Read(file) is not NbtCompound tag)
+            {
+                throw new Exception("NBT tag error");
+            }
+
+            var obj = new WorldObj()
+            {
+                Nbt = tag
+            };
+
+            //读数据
+            var tag1 = tag.TryGet<NbtCompound>("Data")!;
+            obj.LastPlayed = tag1.TryGet<NbtLong>("LastPlayed")!.Value;
+            obj.GameType = tag1.TryGet<NbtInt>("GameType")!.Value;
+            obj.Hardcore = tag1.TryGet<NbtByte>("hardcore")!.Value;
+            obj.Difficulty = tag1.TryGet<NbtByte>("Difficulty")!.Value;
+            obj.LevelName = tag1.TryGet<NbtString>("LevelName")!.Value;
+
+            obj.Local = Path.GetFullPath(dir.FullName);
+
+            var icon = dir.GetFiles().Where(a => a.Name == "icon.png").FirstOrDefault();
+            if (icon != null)
+            {
+                obj.Icon = icon.FullName;
+            }
+
+            return obj;
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Game.Error4"), e);
+        }
+
+        return new()
+        {
+            Broken = true,
+            Local = Path.GetFullPath(dir.FullName)
+        };
     }
 }

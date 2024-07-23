@@ -118,15 +118,12 @@ public static class UserBinding
 
     public static void Remove(string uuid, AuthType type)
     {
-        if (GuiConfigUtils.Config.LastUser != null
-            && type == GuiConfigUtils.Config.LastUser.Type
-            && uuid == GuiConfigUtils.Config.LastUser.UUID)
+        if (GuiConfigUtils.Config.LastUser is { } last
+            && type == last.Type && uuid == last.UUID)
         {
             ClearLastUser();
         }
-        var item = AuthDatabase.Get(uuid, type);
-        if (item != null)
-            AuthDatabase.Delete(item);
+        AuthDatabase.Get(uuid, type)?.Delete();
 
         OnUserEdit();
     }

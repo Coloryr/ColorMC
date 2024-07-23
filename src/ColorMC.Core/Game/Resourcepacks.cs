@@ -1,4 +1,3 @@
-using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -14,58 +13,6 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Resourcepacks
 {
-    /// <summary>
-    /// 获取资源包
-    /// </summary>
-    /// <param name="file">文件流</param>
-    /// <returns>资源包</returns>
-    private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream file, CancellationToken cancel)
-    {
-        using var zFile = new ZipFile(file);
-        var item1 = zFile.GetEntry("pack.mcmeta");
-        if (item1 != null)
-        {
-            using var stream1 = zFile.GetInputStream(item1);
-            var data = await StringHelper.GetStringAsync(stream1);
-            var obj1 = JObject.Parse(data);
-            if (obj1 != null)
-            {
-                var obj = new ResourcepackObj();
-                if (obj1.ContainsKey("pack"))
-                {
-                    var obj2 = obj1["pack"] as JObject;
-                    if (obj2!["pack_format"] is { } item2)
-                    {
-                        obj.pack_format = (int)item2;
-                    }
-                    if (obj2.ContainsKey("description"))
-                    {
-                        var obj3 = obj2["description"]!;
-                        if (obj3.Type == JTokenType.String)
-                        {
-                            obj.description = obj3.ToString();
-                        }
-                        else if (obj3.Type == JTokenType.Object)
-                        {
-                            obj.description = obj3["fallback"]?.ToString() ?? "";
-                        }
-                    }
-                }
-                item1 = zFile.GetEntry("pack.png");
-                if (item1 != null)
-                {
-                    using var stream2 = zFile.GetInputStream(item1);
-                    using var stream3 = new MemoryStream();
-                    await stream2.CopyToAsync(stream3, cancel);
-                    obj.Icon = stream3.ToArray();
-                }
-                return obj;
-            }
-        }
-
-        return null;
-    }
-
     /// <summary>
     /// 获取材质包列表
     /// </summary>
@@ -174,4 +121,57 @@ public static class Resourcepacks
     {
         PathHelper.Delete(obj.Local);
     }
+
+    /// <summary>
+    /// 获取资源包
+    /// </summary>
+    /// <param name="file">文件流</param>
+    /// <returns>资源包</returns>
+    private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream file, CancellationToken cancel)
+    {
+        using var zFile = new ZipFile(file);
+        var item1 = zFile.GetEntry("pack.mcmeta");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            var data = await StringHelper.GetStringAsync(stream1);
+            var obj1 = JObject.Parse(data);
+            if (obj1 != null)
+            {
+                var obj = new ResourcepackObj();
+                if (obj1.ContainsKey("pack"))
+                {
+                    var obj2 = obj1["pack"] as JObject;
+                    if (obj2!["pack_format"] is { } item2)
+                    {
+                        obj.pack_format = (int)item2;
+                    }
+                    if (obj2.ContainsKey("description"))
+                    {
+                        var obj3 = obj2["description"]!;
+                        if (obj3.Type == JTokenType.String)
+                        {
+                            obj.description = obj3.ToString();
+                        }
+                        else if (obj3.Type == JTokenType.Object)
+                        {
+                            obj.description = obj3["fallback"]?.ToString() ?? "";
+                        }
+                    }
+                }
+                item1 = zFile.GetEntry("pack.png");
+                if (item1 != null)
+                {
+                    using var stream2 = zFile.GetInputStream(item1);
+                    using var stream3 = new MemoryStream();
+                    await stream2.CopyToAsync(stream3, cancel);
+                    obj.Icon = stream3.ToArray();
+                }
+                return obj;
+            }
+        }
+
+        return null;
+    }
+
 }
