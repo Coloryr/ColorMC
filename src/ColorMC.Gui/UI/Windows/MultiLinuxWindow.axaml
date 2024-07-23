@@ -35,7 +35,10 @@
     </Design.DataContext>
     <Panel>
         <view1:LinuxControl />
-        <Panel Name="MainView" Margin="10" Background="{setting:Theme WindowTranColor}">
+        <Panel
+            Name="MainView"
+            Margin="10"
+            Background="{setting:Theme WindowTranColor}">
             <Image
                 IsVisible="{Binding BgVisible}"
                 Opacity="{Binding BgOpacity}"

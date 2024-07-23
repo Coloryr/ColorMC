@@ -453,7 +453,7 @@ public static class ThemeManager
             TopViewBG = Brush.Parse("#886D6D6D"),
             AllBorder = Brush.Parse("#FFe5e7eb"),
             ButtonBG = Brush.Parse("#FFFFFFFF"),
-            ButtonOver = Brush.Parse("#FFFFFFFF"),
+            ButtonOver = Brush.Parse("#FFFEFEFE"),
             ButtonBorder = Brush.Parse("#FFD4D4D8"),
             TopBGColor = Brush.Parse("#CFF4F4F5"),
             TopGridColor = Brush.Parse("#FFFFFFFF"),

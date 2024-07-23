@@ -77,6 +77,7 @@ public record GameLaunchArg
     /// 自动进入的世界
     /// </summary>
     public WorldObj? World;
+    public ServerObj? Server;
     public ColorMCCore.Request? Request;
     public ColorMCCore.LaunchP? Pre;
     public ColorMCCore.UpdateState? State;
@@ -104,6 +105,7 @@ public record GameMakeArg
     /// 自动进入的世界
     /// </summary>
     public WorldObj? World;
+    public ServerObj? Server;
     public int? Mixinport;
 }
 

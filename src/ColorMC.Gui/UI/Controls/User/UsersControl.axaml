@@ -15,7 +15,11 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <dialog:DialogHost OverlayBackground="Transparent" DisableOpeningAnimation="True" Identifier="UsersControl">
+        <dialog:DialogHost
+            Background="{setting:Theme ButtonBG}"
+            DisableOpeningAnimation="True"
+            Identifier="UsersControl"
+            OverlayBackground="Transparent">
             <dialog:DialogHost.DataTemplates>
                 <DataTemplate DataType="model:UsersControlModel">
                     <view:AddUserControl />
@@ -66,8 +70,8 @@
         </dialog:DialogHost>
 
         <Panel
-            Margin="20,10,20,20"
             Name="Grid2"
+            Margin="20,10,20,20"
             Background="{setting:Theme TopGridColor}"
             IsVisible="False">
             <TextBlock

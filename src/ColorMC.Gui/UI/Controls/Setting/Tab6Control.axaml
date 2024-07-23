@@ -13,6 +13,7 @@
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <dialog:DialogHost
+        Background="{setting:Theme ButtonBG}"
         DisableOpeningAnimation="True"
         Identifier="AddLockLogin"
         OverlayBackground="Transparent">

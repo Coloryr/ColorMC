@@ -229,4 +229,13 @@ public static class LanguageBinding
             App.Lang("Type.Postion.Item9"),
         ];
     }
+
+    public static string[] GetGuide()
+    {
+        return
+        [
+            App.Lang("Type.Guide.Item1"),
+            App.Lang("Type.Guide.Item2"),
+        ];
+    }
 }

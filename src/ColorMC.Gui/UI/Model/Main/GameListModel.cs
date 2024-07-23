@@ -302,7 +302,6 @@ public partial class MainModel
         item.IsLoad = true;
         Model.Notify(App.Lang(string.Format(App.Lang("MainWindow.Info28"), game.Name)));
         var res = await GameBinding.Launch(Model, game, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
-        Model.Title1 = null;
         item.IsLoad = false;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
@@ -333,6 +332,52 @@ public partial class MainModel
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
                 Model.Progress(App.Lang("MainWindow.Info26"));
+            }
+        }
+        IsLaunch = false;
+    }
+
+    public async void Launch(ICollection<GameItemModel> list)
+    {
+        IsLaunch = true;
+        var res = await Model.ShowWait(App.Lang("MainWindow.Info41"));
+        if (!res)
+        {
+            return;
+        }
+
+        var list1 = new List<GameSettingObj>();
+        foreach (var item in list)
+        {
+            list1.Add(item.Obj);
+            item.IsLaunch = false;
+            item.IsLoad = true;
+        }
+
+        Model.Progress(App.Lang("MainWindow.Info3"));
+        var res1 = await GameBinding.Launch(Model, list1);
+        Model.ProgressClose();
+        if (res1.Item2 != null)
+        {
+            Model.Show(res1.Item2);
+        }
+
+        foreach (var item in list)
+        {
+            item.IsLoad = false;
+            if (res1.Item1?.Contains(item.UUID) == true)
+            {
+                item.IsLaunch = true;
+            }
+        }
+
+        if (res1.Item3?.ContainsValue(LaunchState.LoginFail) == true
+            && res1.Item4!.AuthType != AuthType.OAuth)
+        {
+            var res2 = await Model.ShowWait(string.Format(App.Lang("MainWindow.Error8"), res1.Item4!));
+            if (res2)
+            {
+                WindowManager.ShowUser(relogin: true);
             }
         }
         IsLaunch = false;

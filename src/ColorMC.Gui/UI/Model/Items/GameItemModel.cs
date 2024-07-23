@@ -52,7 +52,7 @@ public partial class GameItemModel : GameModel
     [ObservableProperty]
     private TextTrimming _trim = TextTrimming.CharacterEllipsis;
 
-    private readonly IMainTop _top;
+    private readonly IMainTop? _top;
 
     public string Name => Obj.Name;
     public string UUID => Obj.UUID;
@@ -91,7 +91,7 @@ public partial class GameItemModel : GameModel
         _isNew = true;
     }
 
-    public GameItemModel(BaseModel model, IMainTop top, GameSettingObj obj) : base(model, obj)
+    public GameItemModel(BaseModel model, IMainTop? top, GameSettingObj obj) : base(model, obj)
     {
         _top = top;
         _group = obj.GroupName;
@@ -172,7 +172,7 @@ public partial class GameItemModel : GameModel
             return;
         }
 
-        _top.Launch(this);
+        _top?.Launch(this);
     }
 
     [RelayCommand]
@@ -234,7 +234,7 @@ public partial class GameItemModel : GameModel
 
     public void SetSelect()
     {
-        _top.Select(this);
+        _top?.Select(this);
     }
 
     public void Flyout(Control con)
@@ -326,7 +326,7 @@ public partial class GameItemModel : GameModel
 
     public void EditGroup()
     {
-        _top.EditGroup(this);
+        _top?.EditGroup(this);
     }
 
     /// <summary>
