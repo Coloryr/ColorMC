@@ -368,6 +368,7 @@ public partial class MainModel
             if (res1.Item1?.Contains(item.UUID) == true)
             {
                 item.IsLaunch = true;
+                Launchs.Add(item.UUID, item);
             }
         }
 
