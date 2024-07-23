@@ -15,56 +15,6 @@ namespace ColorMC.Core.Game;
 public static class DataPack
 {
     /// <summary>
-    /// 检查数据包
-    /// </summary>
-    /// <param name="path">路径</param>
-    /// <param name="ens">已启用的数据包</param>
-    /// <param name="dis">已禁用的数据包</param>
-    /// <param name="data">数据包内容</param>
-    /// <returns></returns>
-    private static DataPackObj? CheckPack(string path, NbtList? ens, NbtList? dis, JObject data)
-    {
-        if (data.TryGetValue("pack", out var obj) && obj is JObject obj1)
-        {
-            var item1 = new DataPackObj()
-            {
-                Name = "file/" + Path.GetFileName(path),
-                Path = path,
-                Description = obj1["description"]?.ToString() ?? "",
-                PackFormat = obj1["pack_format"]?.Value<int>() ?? -1
-            };
-
-            if (ens != null)
-            {
-                foreach (var item2 in ens)
-                {
-                    if (item2 is NbtString item3 && item3.Value == item1.Name)
-                    {
-                        item1.Enable = true;
-                        break;
-                    }
-                }
-            }
-
-            if (dis != null)
-            {
-                foreach (var item2 in dis)
-                {
-                    if (item2 is NbtString item3 && item3.Value == item1.Name)
-                    {
-                        item1.Enable = false;
-                        break;
-                    }
-                }
-            }
-
-            return item1;
-        }
-
-        return null;
-    }
-
-    /// <summary>
     /// 获取数据包列表
     /// </summary>
     /// <param name="world">世界存储</param>
@@ -280,5 +230,55 @@ public static class DataPack
         });
 
         return true;
+    }
+
+    /// <summary>
+    /// 检查数据包
+    /// </summary>
+    /// <param name="path">路径</param>
+    /// <param name="ens">已启用的数据包</param>
+    /// <param name="dis">已禁用的数据包</param>
+    /// <param name="data">数据包内容</param>
+    /// <returns></returns>
+    private static DataPackObj? CheckPack(string path, NbtList? ens, NbtList? dis, JObject data)
+    {
+        if (data.TryGetValue("pack", out var obj) && obj is JObject obj1)
+        {
+            var item1 = new DataPackObj()
+            {
+                Name = "file/" + Path.GetFileName(path),
+                Path = path,
+                Description = obj1["description"]?.ToString() ?? "",
+                PackFormat = obj1["pack_format"]?.Value<int>() ?? -1
+            };
+
+            if (ens != null)
+            {
+                foreach (var item2 in ens)
+                {
+                    if (item2 is NbtString item3 && item3.Value == item1.Name)
+                    {
+                        item1.Enable = true;
+                        break;
+                    }
+                }
+            }
+
+            if (dis != null)
+            {
+                foreach (var item2 in dis)
+                {
+                    if (item2 is NbtString item3 && item3.Value == item1.Name)
+                    {
+                        item1.Enable = false;
+                        break;
+                    }
+                }
+            }
+
+            return item1;
+        }
+
+        return null;
     }
 }

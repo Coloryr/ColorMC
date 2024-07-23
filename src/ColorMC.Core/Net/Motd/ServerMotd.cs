@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using ColorMC.Core.Objs.Minecraft;
@@ -162,7 +161,7 @@ public static class ServerMotd
             tcp.Client.Send(request_packet, SocketFlags.None);
 
             // Response
-            
+
             int packetLength = handler.ReadNextVarIntRAW();
             info.Ping = handler.PingWatcher.ElapsedMilliseconds;
             if (packetLength > 0)

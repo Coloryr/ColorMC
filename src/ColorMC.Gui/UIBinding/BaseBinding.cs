@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -13,13 +12,10 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
-using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.LaunchPath;
@@ -28,13 +24,10 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI;
-using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.Hook;
 using ICSharpCode.SharpZipLib.Zip;
 using Silk.NET.SDL;
-using Thread = System.Threading.Thread;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -60,12 +53,15 @@ public static class BaseBinding
     /// </summary>
     private static string s_launch;
 
+    /// <summary>
+    /// 是否处于添加游戏实例中
+    /// </summary>
     public static bool IsAddGames
-    { 
-        set 
-        { 
-            InstancesPath.AddGames = value; 
-        } 
+    {
+        set
+        {
+            InstancesPath.DisableWatcher = value;
+        }
     }
 
     /// <summary>

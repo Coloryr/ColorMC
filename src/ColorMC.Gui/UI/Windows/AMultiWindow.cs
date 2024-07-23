@@ -7,7 +7,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Error;

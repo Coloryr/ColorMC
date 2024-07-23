@@ -18,299 +18,6 @@ namespace ColorMC.Core.Game;
 public static class Mods
 {
     /// <summary>
-    /// 读取一个Mod文件
-    /// </summary>
-    /// <param name="zFile">Mod压缩包</param>
-    /// <returns>游戏Mod</returns>
-    private static async Task<ModObj?> ReadModAsync(ZipFile zFile)
-    {
-        //forge 1.13以下
-        var item1 = zFile.GetEntry("mcmod.info");
-        if (item1 != null)
-        {
-            using var stream1 = zFile.GetInputStream(item1);
-            using var stream2 = new MemoryStream();
-            await stream1.CopyToAsync(stream2);
-            var data = Encoding.UTF8.GetString(stream2.ToArray());
-            var obj1 = JToken.Parse(data);
-            JObject obj3;
-            if (obj1 is JArray array)
-            {
-                obj3 = (array[0] as JObject)!;
-            }
-            else
-            {
-                obj3 = (obj1["modList"]![0] as JObject)!;
-            }
-            if (obj3 != null)
-            {
-                var obj4 = obj3.ToObject<ModObj>()!;
-                obj4.name ??= "";
-                obj4.modid ??= "";
-                obj4.V2 = false;
-                obj4.Loader = Loaders.Forge;
-                return obj4;
-            }
-        }
-
-        //forge coremod
-        item1 = zFile.GetEntry("META-INF/fml_cache_annotation.json");
-        if (item1 != null)
-        {
-            using var stream1 = zFile.GetInputStream(item1);
-            using var stream2 = new MemoryStream();
-            await stream1.CopyToAsync(stream2);
-            var data = Encoding.UTF8.GetString(stream2.ToArray());
-            var obj1 = JObject.Parse(data);
-            var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
-            if (obj2 == null)
-            {
-                return null;
-            }
-
-            var obj3 = new ModObj
-            {
-                V2 = true,
-                Loader = Loaders.Forge,
-                modid = obj2["modId"]?["value"]?.ToString() ?? "",
-                name = obj2["names"]?["value"]?.ToString() ?? "",
-                version = obj2["version"]?["value"]?.ToString(),
-                requiredMods = [obj2["dependencies"]?["value"]?.ToString() ?? ""],
-                CoreMod = true
-            };
-
-            obj3.modid ??= "";
-            obj3.name ??= obj3.modid;
-
-            return obj3;
-        }
-
-        //forge 1.13及以上
-        bool neoforge = false;
-        item1 = zFile.GetEntry("META-INF/mods.toml");
-        if (item1 == null)
-        {
-            //neoforge1.20.5
-            item1 = zFile.GetEntry("META-INF/neoforge.mods.toml");
-            neoforge = true;
-        }
-        if (item1 != null)
-        {
-            using var stream1 = zFile.GetInputStream(item1);
-            using var stream = new MemoryStream();
-            await stream1.CopyToAsync(stream);
-            var model = Toml.Parse(stream.ToArray()).ToModel();
-            if (model["mods"] is not TomlTableArray model1)
-            {
-                return null;
-            }
-            var model2 = model1[0];
-            if (model2 == null)
-            {
-                return null;
-            }
-            var obj3 = new ModObj
-            {
-                V2 = true,
-                Loader = neoforge ? Loaders.NeoForge : Loaders.Forge,
-            };
-            if (model2.TryGetValue("modId", out object item2))
-            {
-                obj3.modid = item2 as string ?? "";
-            }
-            if (model2.TryGetValue("displayName", out item2))
-            {
-                obj3.name = item2 as string ?? "";
-            }
-            if (model2.TryGetValue("modId", out item2))
-            {
-                obj3.modid = item2 as string ?? "";
-            }
-            if (model2.TryGetValue("description", out item2))
-            {
-                obj3.description = item2 as string;
-            }
-            if (model2.TryGetValue("version", out item2))
-            {
-                obj3.version = item2 as string;
-            }
-            if (model2.TryGetValue("authorList", out item2))
-            {
-                obj3.authorList = (item2 as string)?.ToStringList();
-            }
-            //forge 1.20
-            else if (model2.TryGetValue("authors", out item2))
-            {
-                obj3.authorList = (item2 as string)?.ToStringList();
-            }
-            if (model2.TryGetValue("displayURL", out item2))
-            {
-                obj3.url = item2 as string;
-            }
-
-            obj3.name ??= "";
-
-            //依赖项
-            if (model.TryGetValue("dependencies", out var model3) && model3 is TomlTable model4)
-            {
-                obj3.requiredMods = [];
-                if (model4.FirstOrDefault().Value is TomlTableArray model5)
-                {
-                    foreach (var item3 in model5)
-                    {
-                        if (item3.TryGetValue("modId", out item2)
-                        && item3.TryGetValue("mandatory", out var item4)
-                        && item4?.ToString()?.ToLower() == "true"
-                        && item2 is string str)
-                        {
-                            obj3.requiredMods.Add(str);
-                        }
-                    }
-                }
-            }
-
-            obj3.InJar = [];
-            foreach (ZipEntry item3 in zFile)
-            {
-                if (item3.Name.EndsWith(".jar") && item3.Name.StartsWith("META-INF/jarjar/"))
-                {
-                    using var filestream = zFile.GetInputStream(item3);
-                    using var stream2 = new MemoryStream();
-                    await filestream.CopyToAsync(stream2);
-                    stream2.Seek(0, SeekOrigin.Begin);
-                    using var zFile1 = new ZipFile(stream2);
-                    var inmod = await ReadModAsync(zFile1);
-                    if (inmod != null)
-                    {
-                        obj3.InJar.Add(inmod);
-                    }
-                }
-            }
-
-            return obj3;
-        }
-
-        //fabric
-        item1 = zFile.GetEntry("fabric.mod.json");
-        if (item1 != null)
-        {
-            using var stream1 = zFile.GetInputStream(item1);
-            using var stream = new MemoryStream();
-            await stream1.CopyToAsync(stream);
-            var data = Encoding.UTF8.GetString(stream.ToArray());
-            var obj1 = JObject.Parse(data);
-            var obj3 = new ModObj
-            {
-                Loader = Loaders.Fabric,
-                V2 = true,
-                modid = obj1["id"]?.ToString() ?? "",
-                name = obj1["name"]?.ToString() ?? "",
-                description = obj1["description"]?.ToString(),
-                version = obj1["version"]?.ToString(),
-                authorList = (obj1["authors"] as JArray)?.ToStringList(),
-                url = obj1["contact"]?["homepage"]?.ToString(),
-            };
-
-            obj3.name ??= "";
-
-            if (obj1.ContainsKey("depends"))
-            {
-                obj3.requiredMods = [];
-                if (obj1["depends"] is JObject obj4)
-                {
-                    foreach (var item3 in obj4)
-                    {
-                        obj3.requiredMods.Add(item3.Key);
-                    }
-                }
-            }
-
-            //JarInJar
-            obj3.InJar = [];
-
-            foreach (ZipEntry item2 in zFile)
-            {
-                if (item2.Name.EndsWith(".jar") && item2.Name.StartsWith("META-INF/jars/"))
-                {
-                    using var filestream = zFile.GetInputStream(item2);
-                    using var stream2 = new MemoryStream();
-                    await filestream.CopyToAsync(stream2);
-                    stream2.Seek(0, SeekOrigin.Begin);
-                    using var zFile1 = new ZipFile(stream2);
-                    var inmod = await ReadModAsync(zFile1);
-                    if (inmod != null)
-                    {
-                        obj3.InJar.Add(inmod);
-                    }
-                }
-            }
-
-            return obj3;
-        }
-
-        //quilt
-        item1 = zFile.GetEntry("quilt.mod.json");
-        if (item1 != null)
-        {
-            using var stream1 = zFile.GetInputStream(item1);
-            using var stream = new MemoryStream();
-            await stream1.CopyToAsync(stream);
-            var data = Encoding.UTF8.GetString(stream.ToArray());
-            var obj1 = JObject.Parse(data);
-            if (obj1?["quilt_loader"] is not JObject obj4)
-            {
-                return null;
-            }
-            var obj3 = new ModObj
-            {
-                Loader = Loaders.Quilt,
-                V2 = true,
-                modid = obj4["id"]?.ToString() ?? "",
-                name = obj4["metadata"]?["name"]?.ToString() ?? "",
-                description = obj4["metadata"]?["description"]?.ToString(),
-                version = obj4["version"]?.ToString(),
-                authorList = (obj4["metadata"]?["contributors"] as JObject)?.ToStringList(),
-                url = obj4["contact"]?["homepage"]?.ToString(),
-            };
-
-            obj3.name ??= "";
-
-            obj3.requiredMods = [];
-            if (obj4["depends"] is JArray obj5)
-            {
-                foreach (var item3 in obj5)
-                {
-                    if (item3?["id"]?.ToString() is string str)
-                    {
-                        obj3.requiredMods.Add(str);
-                    }
-                }
-            }
-
-            //JarInJar
-            obj3.InJar = [];
-
-            foreach (ZipEntry item2 in zFile)
-            {
-                if (item2.Name.EndsWith(".jar") && item2.Name.StartsWith("META-INF/jars/"))
-                {
-                    using var filestream = zFile.GetInputStream(item2);
-                    using var zFile1 = new ZipFile(filestream);
-                    var inmod = await ReadModAsync(zFile1);
-                    if (inmod != null)
-                    {
-                        obj3.InJar.Add(inmod);
-                    }
-                }
-            }
-
-            return obj3;
-        }
-
-        return null;
-    }
-
-    /// <summary>
     /// 获取Mod列表
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -625,4 +332,298 @@ public static class Mods
 
         return null;
     }
+
+    /// <summary>
+    /// 读取一个Mod文件
+    /// </summary>
+    /// <param name="zFile">Mod压缩包</param>
+    /// <returns>游戏Mod</returns>
+    private static async Task<ModObj?> ReadModAsync(ZipFile zFile)
+    {
+        //forge 1.13以下
+        var item1 = zFile.GetEntry("mcmod.info");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream2 = new MemoryStream();
+            await stream1.CopyToAsync(stream2);
+            var data = Encoding.UTF8.GetString(stream2.ToArray());
+            var obj1 = JToken.Parse(data);
+            JObject obj3;
+            if (obj1 is JArray array)
+            {
+                obj3 = (array[0] as JObject)!;
+            }
+            else
+            {
+                obj3 = (obj1["modList"]![0] as JObject)!;
+            }
+            if (obj3 != null)
+            {
+                var obj4 = obj3.ToObject<ModObj>()!;
+                obj4.name ??= "";
+                obj4.modid ??= "";
+                obj4.V2 = false;
+                obj4.Loader = Loaders.Forge;
+                return obj4;
+            }
+        }
+
+        //forge coremod
+        item1 = zFile.GetEntry("META-INF/fml_cache_annotation.json");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream2 = new MemoryStream();
+            await stream1.CopyToAsync(stream2);
+            var data = Encoding.UTF8.GetString(stream2.ToArray());
+            var obj1 = JObject.Parse(data);
+            var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
+            if (obj2 == null)
+            {
+                return null;
+            }
+
+            var obj3 = new ModObj
+            {
+                V2 = true,
+                Loader = Loaders.Forge,
+                modid = obj2["modId"]?["value"]?.ToString() ?? "",
+                name = obj2["names"]?["value"]?.ToString() ?? "",
+                version = obj2["version"]?["value"]?.ToString(),
+                requiredMods = [obj2["dependencies"]?["value"]?.ToString() ?? ""],
+                CoreMod = true
+            };
+
+            obj3.modid ??= "";
+            obj3.name ??= obj3.modid;
+
+            return obj3;
+        }
+
+        //forge 1.13及以上
+        bool neoforge = false;
+        item1 = zFile.GetEntry("META-INF/mods.toml");
+        if (item1 == null)
+        {
+            //neoforge1.20.5
+            item1 = zFile.GetEntry("META-INF/neoforge.mods.toml");
+            neoforge = true;
+        }
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream = new MemoryStream();
+            await stream1.CopyToAsync(stream);
+            var model = Toml.Parse(stream.ToArray()).ToModel();
+            if (model["mods"] is not TomlTableArray model1)
+            {
+                return null;
+            }
+            var model2 = model1[0];
+            if (model2 == null)
+            {
+                return null;
+            }
+            var obj3 = new ModObj
+            {
+                V2 = true,
+                Loader = neoforge ? Loaders.NeoForge : Loaders.Forge,
+            };
+            if (model2.TryGetValue("modId", out object item2))
+            {
+                obj3.modid = item2 as string ?? "";
+            }
+            if (model2.TryGetValue("displayName", out item2))
+            {
+                obj3.name = item2 as string ?? "";
+            }
+            if (model2.TryGetValue("modId", out item2))
+            {
+                obj3.modid = item2 as string ?? "";
+            }
+            if (model2.TryGetValue("description", out item2))
+            {
+                obj3.description = item2 as string;
+            }
+            if (model2.TryGetValue("version", out item2))
+            {
+                obj3.version = item2 as string;
+            }
+            if (model2.TryGetValue("authorList", out item2))
+            {
+                obj3.authorList = (item2 as string)?.ToStringList();
+            }
+            //forge 1.20
+            else if (model2.TryGetValue("authors", out item2))
+            {
+                obj3.authorList = (item2 as string)?.ToStringList();
+            }
+            if (model2.TryGetValue("displayURL", out item2))
+            {
+                obj3.url = item2 as string;
+            }
+
+            obj3.name ??= "";
+
+            //依赖项
+            if (model.TryGetValue("dependencies", out var model3) && model3 is TomlTable model4)
+            {
+                obj3.requiredMods = [];
+                if (model4.FirstOrDefault().Value is TomlTableArray model5)
+                {
+                    foreach (var item3 in model5)
+                    {
+                        if (item3.TryGetValue("modId", out item2)
+                        && item3.TryGetValue("mandatory", out var item4)
+                        && item4?.ToString()?.ToLower() == "true"
+                        && item2 is string str)
+                        {
+                            obj3.requiredMods.Add(str);
+                        }
+                    }
+                }
+            }
+
+            obj3.InJar = [];
+            foreach (ZipEntry item3 in zFile)
+            {
+                if (item3.Name.EndsWith(".jar") && item3.Name.StartsWith("META-INF/jarjar/"))
+                {
+                    using var filestream = zFile.GetInputStream(item3);
+                    using var stream2 = new MemoryStream();
+                    await filestream.CopyToAsync(stream2);
+                    stream2.Seek(0, SeekOrigin.Begin);
+                    using var zFile1 = new ZipFile(stream2);
+                    var inmod = await ReadModAsync(zFile1);
+                    if (inmod != null)
+                    {
+                        obj3.InJar.Add(inmod);
+                    }
+                }
+            }
+
+            return obj3;
+        }
+
+        //fabric
+        item1 = zFile.GetEntry("fabric.mod.json");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream = new MemoryStream();
+            await stream1.CopyToAsync(stream);
+            var data = Encoding.UTF8.GetString(stream.ToArray());
+            var obj1 = JObject.Parse(data);
+            var obj3 = new ModObj
+            {
+                Loader = Loaders.Fabric,
+                V2 = true,
+                modid = obj1["id"]?.ToString() ?? "",
+                name = obj1["name"]?.ToString() ?? "",
+                description = obj1["description"]?.ToString(),
+                version = obj1["version"]?.ToString(),
+                authorList = (obj1["authors"] as JArray)?.ToStringList(),
+                url = obj1["contact"]?["homepage"]?.ToString(),
+            };
+
+            obj3.name ??= "";
+
+            if (obj1.ContainsKey("depends"))
+            {
+                obj3.requiredMods = [];
+                if (obj1["depends"] is JObject obj4)
+                {
+                    foreach (var item3 in obj4)
+                    {
+                        obj3.requiredMods.Add(item3.Key);
+                    }
+                }
+            }
+
+            //JarInJar
+            obj3.InJar = [];
+
+            foreach (ZipEntry item2 in zFile)
+            {
+                if (item2.Name.EndsWith(".jar") && item2.Name.StartsWith("META-INF/jars/"))
+                {
+                    using var filestream = zFile.GetInputStream(item2);
+                    using var stream2 = new MemoryStream();
+                    await filestream.CopyToAsync(stream2);
+                    stream2.Seek(0, SeekOrigin.Begin);
+                    using var zFile1 = new ZipFile(stream2);
+                    var inmod = await ReadModAsync(zFile1);
+                    if (inmod != null)
+                    {
+                        obj3.InJar.Add(inmod);
+                    }
+                }
+            }
+
+            return obj3;
+        }
+
+        //quilt
+        item1 = zFile.GetEntry("quilt.mod.json");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream = new MemoryStream();
+            await stream1.CopyToAsync(stream);
+            var data = Encoding.UTF8.GetString(stream.ToArray());
+            var obj1 = JObject.Parse(data);
+            if (obj1?["quilt_loader"] is not JObject obj4)
+            {
+                return null;
+            }
+            var obj3 = new ModObj
+            {
+                Loader = Loaders.Quilt,
+                V2 = true,
+                modid = obj4["id"]?.ToString() ?? "",
+                name = obj4["metadata"]?["name"]?.ToString() ?? "",
+                description = obj4["metadata"]?["description"]?.ToString(),
+                version = obj4["version"]?.ToString(),
+                authorList = (obj4["metadata"]?["contributors"] as JObject)?.ToStringList(),
+                url = obj4["contact"]?["homepage"]?.ToString(),
+            };
+
+            obj3.name ??= "";
+
+            obj3.requiredMods = [];
+            if (obj4["depends"] is JArray obj5)
+            {
+                foreach (var item3 in obj5)
+                {
+                    if (item3?["id"]?.ToString() is string str)
+                    {
+                        obj3.requiredMods.Add(str);
+                    }
+                }
+            }
+
+            //JarInJar
+            obj3.InJar = [];
+
+            foreach (ZipEntry item2 in zFile)
+            {
+                if (item2.Name.EndsWith(".jar") && item2.Name.StartsWith("META-INF/jars/"))
+                {
+                    using var filestream = zFile.GetInputStream(item2);
+                    using var zFile1 = new ZipFile(filestream);
+                    var inmod = await ReadModAsync(zFile1);
+                    if (inmod != null)
+                    {
+                        obj3.InJar.Add(inmod);
+                    }
+                }
+            }
+
+            return obj3;
+        }
+
+        return null;
+    }
+
 }

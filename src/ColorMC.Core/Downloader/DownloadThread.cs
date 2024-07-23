@@ -66,7 +66,7 @@ internal class DownloadThread
     /// <summary>
     /// 关闭下载器
     /// </summary>
-    public void Close()
+    internal void Close()
     {
         if (!_run)
         {
@@ -80,7 +80,7 @@ internal class DownloadThread
     /// <summary>
     /// 停止下载
     /// </summary>
-    public void DownloadStop()
+    internal void DownloadStop()
     {
         if (_pause)
         {
@@ -91,13 +91,13 @@ internal class DownloadThread
     /// <summary>
     /// 开始下载
     /// </summary>
-    public void Start(DownloadTask task, CancellationToken token)
+    internal void Start(DownloadTask task)
     {
         if (_cancel != null && !_cancel.IsCancellationRequested)
         {
             _cancel.Cancel();
         }
-        _cancel = CancellationTokenSource.CreateLinkedTokenSource(token);
+        _cancel = CancellationTokenSource.CreateLinkedTokenSource(task.Token);
 
         _task = task;
         _semaphoreWait.Release();
@@ -106,7 +106,7 @@ internal class DownloadThread
     /// <summary>
     /// 暂停下载
     /// </summary>
-    public void Pause()
+    internal void Pause()
     {
         _pause = true;
     }
@@ -114,7 +114,7 @@ internal class DownloadThread
     /// <summary>
     /// 恢复下载
     /// </summary>
-    public void Resume()
+    internal void Resume()
     {
         _pause = false;
         _semaphorePause.Release();

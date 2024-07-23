@@ -107,7 +107,6 @@ public static partial class FuntionUtils
         {
             Task.Delay(1000).Wait();
             GC.Collect();
-            GC.Collect();
         });
     }
 

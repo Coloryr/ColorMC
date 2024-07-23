@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -118,7 +117,7 @@ public static class ColorMCGui
     }
 
     public static void Close()
-    { 
+    {
         IsClose = true;
         App.Close();
     }

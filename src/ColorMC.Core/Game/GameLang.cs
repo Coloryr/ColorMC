@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace ColorMC.Core.Game;
 
 /// <summary>
-/// 游戏语音
+/// 游戏语言
 /// </summary>
 public static class GameLang
 {

@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.ServerPack;
 
@@ -176,7 +177,7 @@ public record MakeDownloadNameItemsRes
 }
 
 /// <summary>
-/// 
+/// 游戏实例处理结果
 /// </summary>
 public record GameRes
 {
@@ -185,7 +186,7 @@ public record GameRes
 }
 
 /// <summary>
-/// 
+/// 消息结果
 /// </summary>
 public record MessageRes
 {
@@ -193,8 +194,20 @@ public record MessageRes
     public string? Message;
 }
 
+/// <summary>
+/// 数字结果
+/// </summary>
 public record IntRes
 {
     public bool State;
     public int? Data;
+}
+
+/// <summary>
+/// 游戏启动结果
+/// </summary>
+public record GameLaunchRes
+{
+    public IGameHandel? Handel;
+    public Exception? Ex;
 }

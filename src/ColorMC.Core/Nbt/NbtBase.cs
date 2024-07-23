@@ -226,8 +226,8 @@ public abstract class NbtBase
         }
         nbt.ZipType = zip;
         await Task.Run(() =>
-        { 
-            nbt.Read(stream2); 
+        {
+            nbt.Read(stream2);
         });
 
         stream2.Dispose();

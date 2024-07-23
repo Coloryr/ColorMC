@@ -3,7 +3,6 @@ using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Error;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Error;
 

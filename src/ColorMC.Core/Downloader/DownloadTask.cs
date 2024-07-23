@@ -8,29 +8,25 @@ namespace ColorMC.Core.Downloader;
 
 internal class DownloadTask
 {
+    internal CancellationToken Token => _cancel.Token;
+
     /// <summary>
     /// 取消下载
     /// </summary>
     private readonly CancellationTokenSource _cancel = new();
-
     /// <summary>
     /// 下载项目队列
     /// </summary>
     private readonly ConcurrentQueue<DownloadItemObj> _items = [];
-
     /// <summary>
     /// 总下载数量
     /// </summary>
-    public int AllSize { get; private set; }
+    private readonly int _allSize;
+    private readonly DownloadArg _arg;
     /// <summary>
     /// 已下载数量
     /// </summary>
-    public int DoneSize { get; private set; }
-
-    public CancellationToken Token => _cancel.Token;
-
-    private DownloadArg _arg;
-
+    private int _doneSize;
     private int _threadCount;
 
     /// <summary>
@@ -59,8 +55,8 @@ internal class DownloadTask
             names.Add(item.Name);
         }
 
-        DoneSize = 0;
-        AllSize = _items.Count;
+        _doneSize = 0;
+        _allSize = _items.Count;
     }
 
     public Task<bool> WaitDone()
@@ -74,13 +70,13 @@ internal class DownloadTask
                 return false;
             }
 
-            return AllSize == DoneSize;
+            return _allSize == _doneSize;
         });
     }
 
     public void Update()
     {
-        _arg.UpdateTask?.Invoke(AllSize, DoneSize);
+        _arg.UpdateTask?.Invoke(_allSize, _doneSize);
     }
 
     public void Cancel()
@@ -108,7 +104,7 @@ internal class DownloadTask
     /// </summary>
     public void Done()
     {
-        DoneSize++;
+        _doneSize++;
         Update();
     }
 

@@ -131,11 +131,7 @@ public static class GameAuth
     /// 从OAuth刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    /// <returns>AuthState验证过程
-    /// LoginState登录状态
-    /// Obj账户
-    /// Message错误信息
-    /// Ex异常</returns>
+    /// <returns></returns>
     public static async Task<LoginRes> RefreshOAuthAsync(LoginObj obj)
     {
         AuthState now = AuthState.OAuth;
@@ -235,11 +231,7 @@ public static class GameAuth
     /// <param name="server">服务器UUID</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
-    /// <returns>AuthState验证过程
-    /// LoginState登录状态
-    /// Obj账户
-    /// Message错误信息
-    /// Ex异常</returns>
+    /// <returns></returns>
     public static async Task<LoginRes> LoginNide8Async(string server, string user, string pass)
     {
         try
@@ -281,11 +273,7 @@ public static class GameAuth
     /// 从统一通行证刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    /// <returns>AuthState验证过程
-    /// LoginState登录状态
-    /// Obj账户
-    /// Message错误信息
-    /// Ex异常</returns>
+    /// <returns></returns>
     public static async Task<LoginRes> RefreshNide8Async(LoginObj obj)
     {
         try
@@ -327,11 +315,7 @@ public static class GameAuth
     /// <param name="server">服务器地址</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
-    /// <returns>AuthState验证过程
-    /// LoginState登录状态
-    /// Obj账户
-    /// Message错误信息
-    /// Ex异常</returns>
+    /// <returns></returns>
     public static async Task<LoginRes> LoginAuthlibInjectorAsync(string server, string user, string pass)
     {
         try
@@ -373,11 +357,7 @@ public static class GameAuth
     /// 从外置登录刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    /// <returns>AuthState验证过程
-    /// LoginState登录状态
-    /// Obj账户
-    /// Message错误信息
-    /// Ex异常</returns>
+    /// <returns></returns>
     public static async Task<LoginRes> RefreshAuthlibInjectorAsync(LoginObj obj)
     {
         try
@@ -420,11 +400,7 @@ public static class GameAuth
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
     /// <param name="server">自定义皮肤站地址</param>
-    /// <returns>AuthState验证过程
-    /// LoginState登录状态
-    /// Obj账户
-    /// Message错误信息
-    /// Ex异常</returns>
+    /// <returns></returns>
     public static async Task<LoginRes> LoginLittleSkinAsync(string user, string pass, string? server = null)
     {
         try
@@ -466,11 +442,7 @@ public static class GameAuth
     /// 从皮肤站刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    /// <returns>AuthState验证过程
-    /// LoginState登录状态
-    /// Obj账户
-    /// Message错误信息
-    /// Ex异常</returns>
+    /// <returns></returns>
     public static async Task<LoginRes> RefreshLittleSkinAsync(LoginObj obj)
     {
         try
@@ -511,11 +483,7 @@ public static class GameAuth
     /// 刷新登录登录
     /// </summary>
     /// <param name="obj">登录信息</param>
-    /// <returns>AuthState验证过程
-    /// LoginState登录状态
-    /// Obj账户
-    /// Message错误信息
-    /// Ex异常</returns>
+    /// <returns></returns>
     public static async Task<LoginRes> RefreshTokenAsync(this LoginObj obj)
     {
         return obj.AuthType switch
