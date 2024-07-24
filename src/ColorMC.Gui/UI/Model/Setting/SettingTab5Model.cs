@@ -6,7 +6,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -21,12 +21,12 @@ public partial class SettingModel
     private string? _javaLocal;
 
     [ObservableProperty]
-    private JavaDisplayObj _javaItem;
+    private JavaDisplayModel _javaItem;
 
     [ObservableProperty]
     private bool _javaFinding;
 
-    public ObservableCollection<JavaDisplayObj> JavaList { get; init; } = [];
+    public ObservableCollection<JavaDisplayModel> JavaList { get; init; } = [];
 
     private bool _javaLoaded;
     private int _needJava;
@@ -44,9 +44,9 @@ public partial class SettingModel
 
         var res = JavaBinding.AddJava(JavaName, JavaLocal);
         Model.ProgressClose();
-        if (res.Item1 == null)
+        if (!res.State)
         {
-            Model.Show(res.Item2!);
+            Model.Show(res.Message!);
             return;
         }
 

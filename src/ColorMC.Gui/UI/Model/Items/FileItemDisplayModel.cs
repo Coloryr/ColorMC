@@ -1,11 +1,11 @@
 using ColorMC.Core.Objs;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 文件显示
 /// </summary>
-public record FileItemObj
+public record FileItemDisplayModel
 {
     /// <summary>
     /// 名字

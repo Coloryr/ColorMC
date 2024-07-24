@@ -1,11 +1,11 @@
 ﻿using Avalonia.Media;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 字体显示
 /// </summary>
-public record FontDisplayObj
+public record FontDisplayModel
 {
     /// <summary>
     /// 字体名字

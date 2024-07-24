@@ -166,9 +166,9 @@ public partial class SettingModel
     public void Test()
     {
         var res = BaseBinding.TestCustomWindow();
-        if (!res.Item1)
+        if (!res)
         {
-            Model.Show(res.Item2!);
+            Model.Show(App.Lang("BaseBinding.Error8"));
         }
     }
 

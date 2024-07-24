@@ -12,9 +12,9 @@ public class Steve3DTexture
     /// </summary>
     /// <param name="type">类型</param>
     /// <returns></returns>
-    public SteveTexture GetSteveTextureTop(SkinType type)
+    public SteveTextureObj GetSteveTextureTop(SkinType type)
     {
-        SteveTexture tex = new()
+        SteveTextureObj tex = new()
         {
             Head = GetTex(_headTex, type, 32f, 0f),
         };
@@ -36,9 +36,9 @@ public class Steve3DTexture
     /// </summary>
     /// <param name="type">类型</param>
     /// <returns></returns>
-    public SteveTexture GetSteveTexture(SkinType type)
+    public SteveTextureObj GetSteveTexture(SkinType type)
     {
-        SteveTexture tex = new()
+        SteveTextureObj tex = new()
         {
             Head = GetTex(_headTex, type),
             Body = GetTex(_bodyTex, type, 16f, 16f),

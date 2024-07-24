@@ -1050,18 +1050,18 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="path">自定义加载器路径</param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> SetGameLoader(this GameSettingObj obj, string path)
+    public static async Task<MessageRes> SetGameLoader(this GameSettingObj obj, string path)
     {
         if (!File.Exists(path))
         {
-            return (false, LanguageHelper.Get("Core.Game.Error16"));
+            return new() { Message = LanguageHelper.Get("Core.Game.Error16") };
         }
 
         var list = await DownloadItemHelper.DecodeLoaderJarAsync(obj, path);
 
         if (list == null)
         {
-            return (false, LanguageHelper.Get("Core.Game.Error17"));
+            return new() { Message = LanguageHelper.Get("Core.Game.Error17") };
         }
 
         var local = obj.GetGameLoaderFile();
@@ -1069,7 +1069,7 @@ public static class InstancesPath
 
         PathHelper.CopyFile(path, local);
 
-        return (true, null);
+        return new() { State = true };
     }
 
     /// <summary>

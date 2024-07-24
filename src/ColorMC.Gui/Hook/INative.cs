@@ -1,7 +1,7 @@
 using System;
 using ColorMC.Gui.Objs;
 
-namespace ColorMC.Gui.Utils.Hook;
+namespace ColorMC.Gui.Hook;
 
 public interface INative
 {

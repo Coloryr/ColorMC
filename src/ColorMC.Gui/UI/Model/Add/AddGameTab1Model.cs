@@ -291,7 +291,7 @@ public partial class AddGameModel
             if (game.Loader == Loaders.Custom && !string.IsNullOrWhiteSpace(LoaderLocal))
             {
                 var res1 = await GameBinding.SetGameLoader(game, LoaderLocal);
-                if (!res1.Item1)
+                if (!res1.State)
                 {
                     Model.ShowOk(App.Lang("AddGameWindow.Tab1.Error18"), Done);
                     return;

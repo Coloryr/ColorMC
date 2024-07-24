@@ -7,7 +7,7 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    xmlns:view="clr-namespace:ColorMC.Gui.Objs"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Model.Items"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -110,7 +110,7 @@
                                 ItemsSource="{Binding FontList}"
                                 SelectedItem="{Binding FontItem}">
                                 <ComboBox.ItemTemplate>
-                                    <DataTemplate DataType="view:FontDisplayObj">
+                                    <DataTemplate DataType="view:FontDisplayModel">
                                         <StackPanel>
                                             <TextBlock FontFamily="{Binding FontFamily}" Text="{Binding FontName}" />
                                         </StackPanel>
@@ -140,7 +140,7 @@
                             ItemsSource="{Binding FontList}"
                             SelectedItem="{Binding FontItem}">
                             <ComboBox.ItemTemplate>
-                                <DataTemplate DataType="view:FontDisplayObj">
+                                <DataTemplate DataType="view:FontDisplayModel">
                                     <StackPanel>
                                         <TextBlock FontFamily="{Binding FontFamily}" Text="{Binding FontName}" />
                                     </StackPanel>

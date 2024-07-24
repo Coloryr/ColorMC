@@ -246,9 +246,9 @@ public partial class GameEditModel
             return;
         }
         var res = GameBinding.ModEnableDisable(item.Obj);
-        if (!res.Item1)
+        if (!res.State)
         {
-            Model.Show(res.Item2!);
+            Model.Show(res.Message!);
         }
         else
         {

@@ -5,7 +5,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -23,7 +22,7 @@ public partial class FileItemModel : SelectItemModel
 
     private Bitmap? _img;
 
-    public FileItemObj Data { get; init; }
+    public FileItemDisplayModel Data { get; init; }
     public string? Name => Data.Name;
     public string? Summary => Data.Summary;
     public string? Author => Data.Author;
@@ -41,7 +40,7 @@ public partial class FileItemModel : SelectItemModel
     [ObservableProperty]
     private bool _haveDownload;
 
-    public FileItemModel(FileItemObj data, IAddWindow add)
+    public FileItemModel(FileItemDisplayModel data, IAddWindow add)
     {
         Data = data;
         _add = add;

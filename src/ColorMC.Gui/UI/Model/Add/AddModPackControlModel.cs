@@ -7,7 +7,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -19,7 +18,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 public partial class AddModPackControlModel : TopModel, IAddWindow
 {
     public string[] SourceList { get; init; } = LanguageBinding.GetSourceList();
-    public ObservableCollection<FileDisplayObj> FileList { get; init; } = [];
+    public ObservableCollection<FileDisplayModel> FileList { get; init; } = [];
     public ObservableCollection<string> GameVersionList { get; init; } = [];
     public ObservableCollection<string> CategorieList { get; init; } = [];
     public ObservableCollection<string> SortTypeList { get; init; } = [];
@@ -30,7 +29,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     private bool _load = false;
 
     [ObservableProperty]
-    private FileDisplayObj _item;
+    private FileDisplayModel _item;
 
     [ObservableProperty]
     private int _source = -1;
@@ -271,7 +270,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Load1();
     }
 
-    public void Install1(FileDisplayObj data)
+    public void Install1(FileDisplayModel data)
     {
         var select = _last;
         WindowClose();
@@ -351,7 +350,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
         FileList.Clear();
         Model.Progress(App.Lang("AddModPackWindow.Info3"));
-        List<FileDisplayObj>? list = null;
+        List<FileDisplayModel>? list = null;
         if (Source == 0)
         {
             PageEnable1 = true;

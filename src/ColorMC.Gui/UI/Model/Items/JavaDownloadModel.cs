@@ -1,9 +1,9 @@
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// Java下载项目
 /// </summary>
-public record JavaDownloadObj
+public record JavaDownloadModel
 {
     /// <summary>
     /// 名字

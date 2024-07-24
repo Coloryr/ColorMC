@@ -8,6 +8,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -18,13 +19,13 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel
 {
-    public ObservableCollection<FontDisplayObj> FontList { get; init; } = [];
+    public ObservableCollection<FontDisplayModel> FontList { get; init; } = [];
     public string[] TranTypeList { get; init; } = LanguageBinding.GetWindowTranTypes();
     public string[] LanguageList { get; init; } = LanguageBinding.GetLanguages();
     public string[] PosList { get; init; } = LanguageBinding.GetPos();
 
     [ObservableProperty]
-    private FontDisplayObj? _fontItem;
+    private FontDisplayModel? _fontItem;
 
     [ObservableProperty]
     private Color _mainColor;
@@ -228,7 +229,7 @@ public partial class SettingModel
         ColorChange();
     }
 
-    partial void OnFontItemChanged(FontDisplayObj? value)
+    partial void OnFontItemChanged(FontDisplayModel? value)
     {
         if (_load || value == null)
             return;

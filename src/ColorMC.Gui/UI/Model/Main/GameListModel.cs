@@ -307,11 +307,11 @@ public partial class MainModel
         {
             Model.ProgressClose();
         }
-        if (res.Item1 == false)
+        if (res.Res == false)
         {
-            if (res.Item3 == LaunchState.LoginFail && res.Item4!.AuthType != AuthType.OAuth)
+            if (res.LoginFail && res.User!.AuthType != AuthType.OAuth)
             {
-                var res1 = await Model.ShowWait(string.Format(App.Lang("MainWindow.Error8"), res.Item2!));
+                var res1 = await Model.ShowWait(string.Format(App.Lang("MainWindow.Error8"), res.Message!));
                 if (res1)
                 {
                     WindowManager.ShowUser(relogin: true);
@@ -319,7 +319,7 @@ public partial class MainModel
             }
             else
             {
-                Model.Show(res.Item2!);
+                Model.Show(res.Message!);
             }
         }
         else
@@ -357,25 +357,25 @@ public partial class MainModel
         Model.Progress(App.Lang("MainWindow.Info3"));
         var res1 = await GameBinding.Launch(Model, list1);
         Model.ProgressClose();
-        if (res1.Item2 != null)
+        if (res1.Message != null)
         {
-            Model.Show(res1.Item2);
+            Model.Show(res1.Message);
         }
 
         foreach (var item in list)
         {
             item.IsLoad = false;
-            if (res1.Item1?.Contains(item.UUID) == true)
+            if (res1.Done?.Contains(item.UUID) == true)
             {
                 item.IsLaunch = true;
                 Launchs.Add(item.UUID, item);
             }
         }
 
-        if (res1.Item3?.ContainsValue(LaunchState.LoginFail) == true
-            && res1.Item4!.AuthType != AuthType.OAuth)
+        if (res1.Fail?.ContainsValue(LaunchState.LoginFail) == true
+            && res1.User!.AuthType != AuthType.OAuth)
         {
-            var res2 = await Model.ShowWait(string.Format(App.Lang("MainWindow.Error8"), res1.Item4!));
+            var res2 = await Model.ShowWait(string.Format(App.Lang("MainWindow.Error8"), res1.Message!));
             if (res2)
             {
                 WindowManager.ShowUser(relogin: true);

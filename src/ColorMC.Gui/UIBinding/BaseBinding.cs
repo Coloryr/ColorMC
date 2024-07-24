@@ -18,7 +18,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
@@ -34,6 +33,8 @@ namespace ColorMC.Gui.UIBinding;
 public static class BaseBinding
 {
     public const string DrapType = "Game";
+
+    public const string FrpVersion = "0.51.0-sakura-7.2";
 
     /// <summary>
     /// 是否为第一次启动
@@ -195,10 +196,10 @@ public static class BaseBinding
                     }
                     model.Progress(string.Format(App.Lang("BaseBinding.Info1"), game.Name));
                     var res = await GameBinding.Launch(model, game, hide: true);
-                    if (!res.Item1)
+                    if (!res.Res)
                     {
                         window.Show();
-                        model.Show(res.Item2!);
+                        model.Show(res.Message!);
                     }
                     else
                     {
@@ -396,11 +397,12 @@ public static class BaseBinding
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static (bool, string?) TestCustomWindow()
+    public static bool TestCustomWindow()
     {
         try
         {
             WindowManager.ShowCustom(true);
+            return true;
         }
         catch (Exception ex)
         {
@@ -408,10 +410,8 @@ public static class BaseBinding
             Logs.Error(data, ex);
             WindowManager.ShowError(data, ex);
 
-            return (false, data);
+            return false;
         }
-
-        return (true, null);
     }
 
     /// <summary>
@@ -513,11 +513,12 @@ public static class BaseBinding
     /// <param name="item1"></param>
     /// <param name="model"></param>
     /// <returns></returns>
-    public static async Task<(bool, Process?, string?)> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
+    public static async Task<FrpLaunchRes> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
+        
         string file;
         string dir;
-        string version = "0.51.0-sakura-7.2";
+        string version = FrpVersion;
         if (SystemInfo.Os == OsType.Android)
         {
             file = ColorMCGui.PhoneGetFrp.Invoke(item1.FrpType);
@@ -532,7 +533,7 @@ public static class BaseBinding
                 var obj1 = await SakuraFrpApi.GetDownload();
                 if (obj1 == null)
                 {
-                    return (false, null, null);
+                    return new();
                 }
                 version = obj1.frpc.ver;
                 obj = SakuraFrpApi.BuildFrpItem(obj1);
@@ -544,14 +545,14 @@ public static class BaseBinding
             }
             if (obj == null)
             {
-                return (false, null, null);
+                return new();
             }
             if (!File.Exists(obj.Local))
             {
                 var res = await DownloadManager.StartAsync([obj]);
                 if (!res)
                 {
-                    return (false, null, null);
+                    return new();
                 }
             }
             file = local!;
@@ -573,7 +574,7 @@ public static class BaseBinding
         }
         if (info == null)
         {
-            return (false, null, null);
+            return new();
         }
 
         var lines = info.Split("\n");
@@ -649,13 +650,18 @@ public static class BaseBinding
                 }
             };
 
-            return (true, p, outip);
+            return new()
+            {
+                Res = true,
+                Process = p,
+                IP = outip
+            };
         }
         catch (Exception e)
         {
             Logs.Error(App.Lang("BaseBinding.Error6"), e);
         }
 
-        return (false, null, null);
+        return new();
     }
 }

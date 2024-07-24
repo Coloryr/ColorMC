@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.Loader;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Custom;
@@ -23,39 +25,30 @@ public class DllAssembly : AssemblyLoadContext
             return;
         }
 
+        Assembly abs;
+
         using var stream = File.OpenRead(local1);
         if (File.Exists(local2))
         {
             using var stream1 = File.OpenRead(local2);
 
-            LoadFromStream(stream, stream1);
+            abs = LoadFromStream(stream, stream1);
         }
         else
         {
-            LoadFromStream(stream);
+            abs = LoadFromStream(stream);
         }
 
-        foreach (var item in Assemblies)
+        foreach (var item1 in abs.GetTypes())
         {
-            if (Plugin != null)
+            foreach (var item2 in item1.GetInterfaces())
             {
-                break;
-            }
-            foreach (var item1 in item.GetTypes())
-            {
-                if (Plugin != null)
+                if (item2 == typeof(ICustomControl))
                 {
-                    break;
-                }
-                foreach (var item2 in item1.GetInterfaces())
-                {
-                    if (item2 == typeof(ICustomControl))
-                    {
-                        Plugin = (Activator.CreateInstance(item1) as ICustomControl)!;
-                        Window = Plugin.GetControl();
-                        IsLoad = true;
-                        break;
-                    }
+                    Plugin = (Activator.CreateInstance(item1) as ICustomControl)!;
+                    Window = Plugin.GetControl();
+                    IsLoad = true;
+                    return;
                 }
             }
         }

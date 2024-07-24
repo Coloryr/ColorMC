@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.LaunchPath;
 using ColorMC.Gui.Objs.Frp;
+using ColorMC.Gui.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Net.Apis;

@@ -8,7 +8,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Main;
-using ColorMC.Gui.Utils.Hook;
+using ColorMC.Gui.Hook;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;

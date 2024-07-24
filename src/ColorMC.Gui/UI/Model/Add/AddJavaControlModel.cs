@@ -7,7 +7,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -20,12 +20,12 @@ public partial class AddJavaControlModel : TopModel
     /// <summary>
     /// JAVA列表
     /// </summary>
-    private readonly List<JavaDownloadObj> _list1 = [];
+    private readonly List<JavaDownloadModel> _list1 = [];
 
     /// <summary>
     /// 显示的JAVA列表
     /// </summary>
-    public ObservableCollection<JavaDownloadObj> JavaList { get; init; } = [];
+    public ObservableCollection<JavaDownloadModel> JavaList { get; init; } = [];
     public ObservableCollection<string> SystemList { get; init; } = [];
     public ObservableCollection<string> VersionList { get; init; } = [];
     public ObservableCollection<string> ArchList { get; init; } = [];
@@ -231,7 +231,7 @@ public partial class AddJavaControlModel : TopModel
         _load = false;
     }
 
-    public async void Install(JavaDownloadObj obj)
+    public async void Install(JavaDownloadModel obj)
     {
         var res = await Model.ShowWait(string.Format(
             App.Lang("AddJavaWindow.Info1"), obj.Name));
@@ -256,9 +256,9 @@ public partial class AddJavaControlModel : TopModel
             });
         });
         Model.ProgressClose();
-        if (!res1.Item1)
+        if (!res1.State)
         {
-            Model.Show(res1.Item2!);
+            Model.Show(res1.Message!);
             return;
         }
 

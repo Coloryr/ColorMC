@@ -144,9 +144,9 @@ public partial class GameLogModel : GameModel
         IsGameRun = true;
 
         var res = await GameBinding.Launch(Model, Obj, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
-        if (!res.Item1)
+        if (!res.Res)
         {
-            Model.Show(res.Item2!);
+            Model.Show(res.Message!);
         }
         Load();
         if (File == null)
