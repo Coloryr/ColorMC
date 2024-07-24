@@ -502,13 +502,13 @@ public partial class GameEditModel
         }
 
         var res = await GameBinding.SetGameLoader(_obj, file.Item1);
-        if (res.Item1)
+        if (res.State)
         {
             ReadCustomLoader();
         }
         else
         {
-            Model.Show(res.Item2!);
+            Model.Show(res.Message!);
         }
     }
     private void ExportGame()

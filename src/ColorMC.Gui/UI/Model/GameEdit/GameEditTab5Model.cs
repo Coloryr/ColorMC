@@ -225,9 +225,9 @@ public partial class GameEditModel
         }
 
         var res = await GameBinding.Launch(Model, world.World.Game, world.World, GuiConfigUtils.Config.CloseBeforeLaunch);
-        if (!res.Item1)
+        if (!res.Res)
         {
-            Model.Show(res.Item2!);
+            Model.Show(res.Message!);
         }
     }
 }

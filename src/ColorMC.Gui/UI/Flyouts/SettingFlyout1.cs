@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using Avalonia.Controls;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
 
@@ -11,7 +11,7 @@ public class SettingFlyout1
 {
     public SettingFlyout1(Control con, SettingModel model, IList list)
     {
-        var java = list.Cast<JavaDisplayObj>();
+        var java = list.Cast<JavaDisplayModel>();
 
         _ = new FlyoutsControl(
         [

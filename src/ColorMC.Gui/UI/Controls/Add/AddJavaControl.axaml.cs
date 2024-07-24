@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
+using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -58,7 +58,7 @@ public partial class AddJavaControl : BaseUserControl
 
     private void JavaFiles_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        if (JavaFiles.SelectedItem is not JavaDownloadObj obj)
+        if (JavaFiles.SelectedItem is not JavaDownloadModel obj)
             return;
 
         (DataContext as AddJavaControlModel)!.Install(obj);

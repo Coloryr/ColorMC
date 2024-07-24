@@ -6,8 +6,9 @@ using System.Threading;
 using Avalonia.Input;
 using Avalonia.Win32.Input;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Utils;
 
-namespace ColorMC.Gui.Utils.Hook;
+namespace ColorMC.Gui.Hook;
 
 public class Win32Native : INative
 {

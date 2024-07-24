@@ -9,7 +9,7 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel
 {
-    public List<string> GCTypeList { get; init; } = JavaBinding.GetGCTypes();
+    public string[] GCTypeList { get; init; } = LanguageBinding.GetGCTypes();
 
     [ObservableProperty]
     private string? _preCmd;

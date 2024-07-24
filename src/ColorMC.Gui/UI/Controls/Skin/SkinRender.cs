@@ -445,7 +445,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         model.IsLoading = false;
     }
 
-    private unsafe void PutVAO(GlInterface gl, VAOItem vao, CubeModelItem model, float[] uv)
+    private unsafe void PutVAO(GlInterface gl, VAOItem vao, CubeModelItemObj model, float[] uv)
     {
         float[] vertices =
         [

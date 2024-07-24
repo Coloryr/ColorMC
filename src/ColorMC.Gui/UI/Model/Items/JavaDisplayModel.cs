@@ -1,9 +1,9 @@
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// Java显示
 /// </summary>
-public record JavaDisplayObj
+public record JavaDisplayModel
 {
     /// <summary>
     /// 名字

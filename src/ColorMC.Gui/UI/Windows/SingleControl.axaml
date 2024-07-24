@@ -33,6 +33,7 @@
                 DockPanel.Dock="Top"
                 IsVisible="{Binding EnableHead}" />
             <dialog:DialogHost
+                Background="{setting:Theme ButtonBG}"
                 DisableOpeningAnimation="True"
                 Identifier="{Binding Name}"
                 OverlayBackground="Transparent">

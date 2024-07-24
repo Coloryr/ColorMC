@@ -2,7 +2,7 @@ using System.IO;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 
-namespace ColorMC.Gui.LaunchPath;
+namespace ColorMC.Gui.Utils;
 
 public static class FrpPath
 {

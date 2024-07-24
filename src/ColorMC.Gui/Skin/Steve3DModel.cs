@@ -13,7 +13,7 @@ public class Steve3DModel
     /// </summary>
     /// <param name="type">类型</param>
     /// <returns></returns>
-    public SteveModel GetSteve(SkinType type)
+    public SteveModelObj GetSteve(SkinType type)
     {
         return new()
         {
@@ -96,9 +96,9 @@ public class Steve3DModel
     /// </summary>
     /// <param name="type">类型</param>
     /// <returns></returns>
-    public SteveModel GetSteveTop(SkinType type)
+    public SteveModelObj GetSteveTop(SkinType type)
     {
-        var model = new SteveModel
+        var model = new SteveModelObj
         {
             Head = new()
             {

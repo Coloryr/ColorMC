@@ -7,6 +7,19 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class LanguageBinding
 {
+    public static string[] GetGCTypes()
+    {
+        return
+        [
+            "",
+            GCType.G1GC.GetName(),
+            GCType.SerialGC.GetName(),
+            GCType.ParallelGC.GetName(),
+            GCType.CMSGC.GetName(),
+            GCType.User.GetName()
+        ];
+    }
+
     public static string[] GetAxisTypeName()
     {
         return

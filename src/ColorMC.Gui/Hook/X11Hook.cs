@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using X11;
 
-namespace ColorMC.Gui.Utils.Hook;
+namespace ColorMC.Gui.Hook;
 
 internal partial class X11Hook
 {

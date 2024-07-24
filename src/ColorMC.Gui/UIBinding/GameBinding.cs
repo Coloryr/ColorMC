@@ -34,7 +34,7 @@ using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.Hook;
+using ColorMC.Gui.Hook;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using SkiaSharp;
@@ -331,25 +331,30 @@ public static class GameBinding
     /// <param name="model"></param>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static async Task<(List<string>?, string?, Dictionary<string, LaunchState>?, LoginObj?)>
-        Launch(BaseModel model, ICollection<GameSettingObj> obj)
+    public static async Task<GameLaunchListRes> Launch(BaseModel model, ICollection<GameSettingObj> obj)
     {
         if (SystemInfo.Os == OsType.Android)
         {
-            return (null, null, null, null);
+            return new();
         }
         var list = obj.Where(item => !GameManager.IsGameRun(item))
             .ToList();
 
         if (list.Count == 0)
         {
-            return (null, App.Lang("GameBinding.Error6"), null, null);
+            return new()
+            { 
+                Message = App.Lang("GameBinding.Error6")
+            };
         }
 
         var res = await UserBinding.GetUser(model);
         if (res.Item1 is not { } user)
         {
-            return (null, res.Item2, null, null);
+            return new()
+            { 
+                Message = res.Item2
+            };
         }
 
         s_launchCancel = new();
@@ -392,7 +397,10 @@ public static class GameBinding
         if (s_launchCancel.IsCancellationRequested)
         {
             UserBinding.UnLockUser(user);
-            return (null, null, null, user);
+            return new()
+            { 
+                User = user
+            };
         }
 
         if (GuiConfigUtils.Config.ServerCustom.RunPause)
@@ -457,7 +465,12 @@ public static class GameBinding
             UserBinding.UnLockUser(user);
         }
 
-        return (list2, null, list1, user);
+        return new()
+        { 
+            Done = list2,
+            Fail = list1,
+            User = user
+        };
     }
 
     /// <summary>
@@ -468,23 +481,29 @@ public static class GameBinding
     /// <param name="world"></param>
     /// <param name="hide"></param>
     /// <returns></returns>
-    public static async Task<(bool, string?, LaunchState, LoginObj?)> Launch(BaseModel model, GameSettingObj? obj,
+    public static async Task<GameLaunchOneRes> Launch(BaseModel model, GameSettingObj? obj,
         WorldObj? world = null, bool hide = false)
     {
         if (obj == null)
         {
-            return (false, App.Lang("GameBinding.Error6"), LaunchState.End, null);
+            return new()
+            {
+                Message = App.Lang("GameBinding.Error6")
+            };
         }
 
         if (GameManager.IsGameRun(obj))
         {
-            return (false, App.Lang("BaseBinding.Error3"), LaunchState.End, null);
+            return new()
+            {
+                Message = App.Lang("BaseBinding.Error3")
+            };
         }
 
         var res = await UserBinding.GetUser(model);
         if (res.Item1 is not { } user)
         {
-            return (false, res.Item2, LaunchState.End, null);
+            return new() { Message = res.Item2 };
         }
 
         if (SystemInfo.Os == OsType.Android)
@@ -556,18 +575,18 @@ public static class GameBinding
         if (s_launchCancel.IsCancellationRequested)
         {
             UserBinding.UnLockUser(user);
-            return (true, null, LaunchState.End, user);
+            return new() { Res = true };
         }
 
         if (res1 is { } pr)
         {
-            obj.LaunchData.LastTime = DateTime.Now;
-            obj.SaveLaunchData();
-
             if (GuiConfigUtils.Config.ServerCustom.RunPause)
             {
                 Media.Pause();
             }
+
+            obj.LaunchData.LastTime = DateTime.Now;
+            obj.SaveLaunchData();
 
             WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text2"));
 
@@ -593,7 +612,13 @@ public static class GameBinding
             UserBinding.UnLockUser(user);
         }
 
-        return (res1 != null, temp, state1, user);
+        return new()
+        {
+            Res = res1 != null,
+            Message = temp,
+            LoginFail = state1 == LaunchState.LoginFail,
+            User = user
+        };
     }
 
     private static GameLaunchArg MakeArg(LoginObj user, BaseModel model, int port)
@@ -836,7 +861,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static (bool, string?) ModEnableDisable(ModObj obj)
+    public static MessageRes ModEnableDisable(ModObj obj)
     {
         try
         {
@@ -849,13 +874,13 @@ public static class GameBinding
                 obj.Disable();
             }
 
-            return (true, null);
+            return new() { State = true };
         }
         catch (Exception e)
         {
             string temp = string.Format(App.Lang("GameBinding.Error14"), obj.Local);
-            Logs.Error(temp, e);
-            return (false, temp);
+            Logs.Error(temp, e); 
+            return new() { Message = temp };
         }
     }
 
@@ -1719,6 +1744,14 @@ public static class GameBinding
         return await Task.Run(() => obj.ReadLog(name));
     }
 
+    /// <summary>
+    /// 升级整合包
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="fid"></param>
+    /// <param name="update"></param>
+    /// <param name="update2"></param>
+    /// <returns></returns>
     public static Task<bool> ModPackUpdate(GameSettingObj obj, CurseForgeModObj.Data fid,
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
@@ -1732,6 +1765,14 @@ public static class GameBinding
         });
     }
 
+    /// <summary>
+    /// 升级整合包
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="fid"></param>
+    /// <param name="update"></param>
+    /// <param name="update2"></param>
+    /// <returns></returns>
     public static Task<bool> ModPackUpdate(GameSettingObj obj, ModrinthVersionObj fid,
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
@@ -1745,6 +1786,12 @@ public static class GameBinding
         });
     }
 
+    /// <summary>
+    /// 启用/禁用模组
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="items"></param>
+    /// <returns></returns>
     public static List<ModDisplayModel> ModDisable(ModDisplayModel item, List<ModDisplayModel> items)
     {
         var list = new List<ModDisplayModel>();
@@ -1907,6 +1954,11 @@ public static class GameBinding
         return false;
     }
 
+    /// <summary>
+    /// 检测压缩包类型
+    /// </summary>
+    /// <param name="local"></param>
+    /// <returns></returns>
     public static PackType CheckType(string local)
     {
         Stream? stream = PathHelper.OpenRead(local);
@@ -1959,6 +2011,13 @@ public static class GameBinding
         return PackType.ColorMC;
     }
 
+    /// <summary>
+    /// 解压云同步配置
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="data"></param>
+    /// <param name="local"></param>
+    /// <returns></returns>
     public static async Task<bool> UnZipCloudConfig(GameSettingObj obj, CloudDataObj data, string local)
     {
         data.Config.Clear();
@@ -1996,6 +2055,15 @@ public static class GameBinding
             return false;
         });
     }
+
+    /// <summary>
+    /// 下载云同步实例
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="group"></param>
+    /// <param name="request"></param>
+    /// <param name="overwirte"></param>
+    /// <returns></returns>
     public static async Task<(bool, string?)> DownloadCloud(CloundListObj obj, string? group,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
@@ -2068,11 +2136,20 @@ public static class GameBinding
         return (true, null);
     }
 
+    /// <summary>
+    /// 根据名字获取游戏实例
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static GameSettingObj? GetGameByName(string name)
     {
         return InstancesPath.GetGameByName(name);
     }
 
+    /// <summary>
+    /// 检测是否有云同步并打开窗口
+    /// </summary>
+    /// <param name="obj"></param>
     public static async void CheckCloudAndOpen(GameSettingObj obj)
     {
         var res = await GameCloudUtils.HaveCloud(obj);
@@ -2085,6 +2162,12 @@ public static class GameBinding
         }
     }
 
+    /// <summary>
+    /// 删除游戏实例
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
     public static async Task<bool> DeleteGame(GameSettingObj obj,
         ColorMCCore.Request request)
     {
@@ -2100,6 +2183,15 @@ public static class GameBinding
         return res;
     }
 
+    /// <summary>
+    /// 下载服务器包
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="name"></param>
+    /// <param name="group"></param>
+    /// <param name="text"></param>
+    /// <param name="overwirte"></param>
+    /// <returns></returns>
     public static async Task<(bool, string?)> DownloadServerPack(BaseModel model,
         string? name, string? group, string text, ColorMCCore.GameOverwirte overwirte)
     {
@@ -2177,6 +2269,11 @@ public static class GameBinding
         }
     }
 
+    /// <summary>
+    /// 启用/禁用数据包
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static bool DataPackDisableOrEnable(DataPackObj obj)
     {
         if (GameManager.IsGameRun(obj.World.Game))
@@ -2186,6 +2283,11 @@ public static class GameBinding
         return obj.World.DisableOrEnableDataPack([obj]);
     }
 
+    /// <summary>
+    /// 启用/禁用数据包
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static bool DataPackDisE(IEnumerable<DataPackModel> pack)
     {
         var list = new List<DataPackObj>();
@@ -2200,6 +2302,12 @@ public static class GameBinding
         return list[0].World.DisableOrEnableDataPack(list);
     }
 
+    /// <summary>
+    /// 删除数据包
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
     public static async Task<bool> DeleteDataPack(DataPackModel item, ColorMCCore.Request request)
     {
         if (GameManager.IsGameRun(item.Pack.World.Game))
@@ -2213,6 +2321,12 @@ public static class GameBinding
         });
     }
 
+    /// <summary>
+    /// 删除数据包
+    /// </summary>
+    /// <param name="items"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
     public static async Task<bool> DeleteDataPack(IEnumerable<DataPackModel> items, ColorMCCore.Request request)
     {
         var list = new List<DataPackObj>();
@@ -2231,6 +2345,11 @@ public static class GameBinding
         });
     }
 
+    /// <summary>
+    /// 查询支持的模组加载器
+    /// </summary>
+    /// <param name="version"></param>
+    /// <returns></returns>
     public static async Task<List<Loaders>> GetSupportLoader(string version)
     {
         var loaders = new List<Loaders>();
@@ -2285,22 +2404,11 @@ public static class GameBinding
         return loaders;
     }
 
-    private static string MakeString(this List<string> list)
-    {
-        var str = new StringBuilder();
-        foreach (var item in list)
-        {
-            str.Append(item).Append(", ");
-        }
-
-        if (str.Length > 0)
-        {
-            return str.ToString()[..^1];
-        }
-
-        return "";
-    }
-
+    /// <summary>
+    /// 生成实例信息
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static async Task GenGameInfo(GameSettingObj obj)
     {
         var list = await obj.GetModsAsync(false);
@@ -2343,6 +2451,11 @@ public static class GameBinding
         WindowManager.ShowError(App.Lang("GameBinding.Info13"), info.ToString(), false);
     }
 
+    /// <summary>
+    /// 获取自定义加载器数据
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static async Task<string> GetGameLoader(GameSettingObj obj)
     {
         var res = await obj.GetGameLoaderInfo();
@@ -2356,26 +2469,50 @@ public static class GameBinding
         }
     }
 
-    public static Task<(bool, string?)> SetGameLoader(GameSettingObj obj, string path)
+    /// <summary>
+    /// 设置自定义加载器
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static Task<MessageRes> SetGameLoader(GameSettingObj obj, string path)
     {
         return obj.SetGameLoader(path);
     }
 
+    /// <summary>
+    /// 获取McMod分类
+    /// </summary>
+    /// <returns></returns>
     public static Task<McModTypsObj?> GetMcModCategories()
     {
         return ColorMCAPI.GetMcModGroup();
     }
 
+    /// <summary>
+    /// 自动标记模组
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="cov"></param>
+    /// <returns></returns>
     public static Task<IntRes> AutoMarkMods(GameSettingObj obj, bool cov)
     {
         return ModrinthHelper.AutoMark(obj, cov);
     }
 
+    /// <summary>
+    /// 消息解析
+    /// </summary>
+    /// <param name="description"></param>
+    /// <returns></returns>
     public static Chat StringToChat(string description)
     {
         return ServerDescriptionJsonConverter.StringToChar(description);
     }
 
+    /// <summary>
+    /// 取消启动
+    /// </summary>
     public static void CancelLaunch()
     {
         s_launchCancel.Cancel();
@@ -2500,5 +2637,26 @@ public static class GameBinding
 
             }
         });
+    }
+
+    /// <summary>
+    /// 拼接字符串
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    private static string MakeString(this List<string> list)
+    {
+        var str = new StringBuilder();
+        foreach (var item in list)
+        {
+            str.Append(item).Append(", ");
+        }
+
+        if (str.Length > 0)
+        {
+            return str.ToString()[..^1];
+        }
+
+        return "";
     }
 }

@@ -37,7 +37,7 @@ public static class WebBinding
     private const string Android = "Android";
     private const string Arm64 = "Arm64";
 
-    public static async Task<List<FileItemObj>?> GetPackList(SourceType type, string? version,
+    public static async Task<List<FileItemDisplayModel>?> GetPackList(SourceType type, string? version,
         string? filter, int page, int sort, string categoryId)
     {
         version ??= "";
@@ -64,7 +64,7 @@ public static class WebBinding
                 }, categoryId: categoryId);
             if (list == null)
                 return null;
-            var list1 = new List<FileItemObj>();
+            var list1 = new List<FileItemDisplayModel>();
             list.data.ForEach(item =>
             {
                 list1.Add(new()
@@ -88,7 +88,7 @@ public static class WebBinding
             var list = await ModrinthAPI.GetModPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId);
             if (list == null)
                 return null;
-            var list1 = new List<FileItemObj>();
+            var list1 = new List<FileItemDisplayModel>();
             list.hits.ForEach(item =>
             {
                 list1.Add(new()
@@ -111,7 +111,7 @@ public static class WebBinding
         return null;
     }
 
-    public static async Task<List<FileDisplayObj>?> GetPackFile(SourceType type, string id,
+    public static async Task<List<FileDisplayModel>?> GetPackFile(SourceType type, string id,
         int page, string? mc, Loaders loader, FileType type1 = FileType.ModPack)
     {
         if (type == SourceType.CurseForge)
@@ -120,7 +120,7 @@ public static class WebBinding
             if (list == null)
                 return null;
 
-            var list1 = new List<FileDisplayObj>();
+            var list1 = new List<FileDisplayModel>();
             list.data.ForEach(item =>
             {
                 list1.Add(new()
@@ -145,7 +145,7 @@ public static class WebBinding
             if (list == null)
                 return null;
 
-            var list1 = new List<FileDisplayObj>();
+            var list1 = new List<FileDisplayModel>();
             list.ForEach(item =>
             {
                 var file = item.files.FirstOrDefault(a => a.primary) ?? item.files[0];
@@ -194,7 +194,7 @@ public static class WebBinding
         };
     }
 
-    public static async Task<List<FileItemObj>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
+    public static async Task<List<FileItemDisplayModel>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
     {
         version ??= "";
         filter ??= "";
@@ -296,7 +296,7 @@ public static class WebBinding
             };
             if (list == null)
                 return null;
-            var list1 = new List<FileItemObj>();
+            var list1 = new List<FileItemDisplayModel>();
             var modlist = new List<string>();
             list.data.ForEach(item =>
             {
@@ -336,7 +336,7 @@ public static class WebBinding
             };
             if (list == null)
                 return null;
-            var list1 = new List<FileItemObj>();
+            var list1 = new List<FileItemDisplayModel>();
 
             var modlist = new List<string>();
             list.hits.ForEach(item =>
@@ -606,7 +606,7 @@ public static class WebBinding
         }]);
     }
 
-    public static string? GetUrl(this FileItemObj obj)
+    public static string? GetUrl(this FileItemDisplayModel obj)
     {
         if (obj.SourceType == SourceType.CurseForge)
         {
@@ -628,7 +628,7 @@ public static class WebBinding
         return null;
     }
 
-    public static string? GetMcMod(this FileItemObj obj)
+    public static string? GetMcMod(this FileItemDisplayModel obj)
     {
         if ((obj.SourceType == SourceType.CurseForge
             || obj.SourceType == SourceType.Modrinth)
@@ -717,13 +717,13 @@ public static class WebBinding
         BaseBinding.OpUrl($"https://search.mcmod.cn/s?key={obj.Name}");
     }
 
-    public static async Task<List<FileItemObj>?> SearchMcmod(string name, int page, Loaders loader, string version, string modtype, int sort)
+    public static async Task<List<FileItemDisplayModel>?> SearchMcmod(string name, int page, Loaders loader, string version, string modtype, int sort)
     {
         var list = await ColorMCAPI.GetMcMod(name, page, loader, version, modtype, sort);
         if (list == null)
             return null;
 
-        var list1 = new List<FileItemObj>();
+        var list1 = new List<FileItemDisplayModel>();
         foreach (var item in list.Values)
         {
             list1.Add(new()
@@ -862,7 +862,7 @@ public static class WebBinding
     }
 
     public static async Task<(bool, List<string>? Arch, List<string>? Os,
-        List<string>? MainVersion, List<JavaDownloadObj>? Download)> GetJavaList(int type, int os, int mainversion)
+        List<string>? MainVersion, List<JavaDownloadModel>? Download)> GetJavaList(int type, int os, int mainversion)
     {
         if (SystemInfo.Os == OsType.Android)
         {
@@ -924,7 +924,7 @@ public static class WebBinding
     }
 
     private static async Task<(bool, List<string>? Arch, List<string>? Os, List<string>? MainVersion,
-        List<JavaDownloadObj>?)> GetZuluList()
+        List<JavaDownloadModel>?)> GetZuluList()
     {
         try
         {
@@ -961,7 +961,7 @@ public static class WebBinding
                         orderby newGroup.Key descending
                         select newGroup.Key.ToString());
 
-            var list1 = new List<JavaDownloadObj>();
+            var list1 = new List<JavaDownloadModel>();
             foreach (var item in list)
             {
                 if (item.name.EndsWith(".deb") || item.name.EndsWith(".rpm")
@@ -993,9 +993,9 @@ public static class WebBinding
         }
     }
 
-    private static List<JavaDownloadObj> GetGraalvmList()
+    private static List<JavaDownloadModel> GetGraalvmList()
     {
-        return new List<JavaDownloadObj>()
+        return new List<JavaDownloadModel>()
             {
                 new()
                 {
@@ -1101,7 +1101,7 @@ public static class WebBinding
         return a[..^1];
     }
 
-    private static async Task<(bool, List<string>? Arch, List<JavaDownloadObj>?)>
+    private static async Task<(bool, List<string>? Arch, List<JavaDownloadModel>?)>
         GetAdoptiumList(int mainversion, int os)
     {
         try
@@ -1127,7 +1127,7 @@ public static class WebBinding
                           orderby newGroup.Key descending
                           select newGroup.Key);
 
-            var list3 = new List<JavaDownloadObj>();
+            var list3 = new List<JavaDownloadModel>();
             foreach (var item in list)
             {
                 if (item.binary.image_type == "debugimage")
@@ -1155,7 +1155,7 @@ public static class WebBinding
         }
     }
 
-    private static void AddDragonwell(List<JavaDownloadObj> list, DragonwellObj.Item item)
+    private static void AddDragonwell(List<JavaDownloadModel> list, DragonwellObj.Item item)
     {
         string main = "8";
         string version = item.version8;
@@ -1348,7 +1348,7 @@ public static class WebBinding
         }
     }
 
-    private static async Task<List<JavaDownloadObj>?> GetDragonwellList()
+    private static async Task<List<JavaDownloadModel>?> GetDragonwellList()
     {
         try
         {
@@ -1358,7 +1358,7 @@ public static class WebBinding
                 return null;
             }
 
-            var list1 = new List<JavaDownloadObj>();
+            var list1 = new List<JavaDownloadModel>();
 
             AddDragonwell(list1, list.extended);
             AddDragonwell(list1, list.standard);
@@ -1373,7 +1373,7 @@ public static class WebBinding
     }
 
     private static async Task<(bool ok, List<string>? Arch, List<string>? Os,
-        List<string>? MainVersion, List<JavaDownloadObj>?)> GetOpenJ9List()
+        List<string>? MainVersion, List<JavaDownloadModel>?)> GetOpenJ9List()
     {
         try
         {
@@ -1382,7 +1382,7 @@ public static class WebBinding
             {
                 return (false, null, null, null, null);
             }
-            var list1 = new List<JavaDownloadObj>();
+            var list1 = new List<JavaDownloadModel>();
 
             foreach (var item in Data!)
             {
@@ -1429,11 +1429,11 @@ public static class WebBinding
         }
     }
 
-    private static async Task<List<JavaDownloadObj>?> GetPojavLauncherTeamList()
+    private static async Task<List<JavaDownloadModel>?> GetPojavLauncherTeamList()
     {
         try
         {
-            var list = new List<JavaDownloadObj>();
+            var list = new List<JavaDownloadModel>();
             var res = await ColorMCAPI.GetJavaList();
             if (res == null)
             {

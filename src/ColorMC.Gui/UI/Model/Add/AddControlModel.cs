@@ -12,7 +12,6 @@ using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -42,7 +41,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// 显示的文件列表
     /// </summary>
-    public ObservableCollection<FileDisplayObj> FileList { get; init; } = [];
+    public ObservableCollection<FileDisplayModel> FileList { get; init; } = [];
     /// <summary>
     /// 显示的项目列表
     /// </summary>
@@ -129,7 +128,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// 项目
     /// </summary>
     [ObservableProperty]
-    private FileDisplayObj? _file;
+    private FileDisplayModel? _file;
     /// <summary>
     /// 下载的模组
     /// </summary>
@@ -940,7 +939,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// 开始下载文件
     /// </summary>
     /// <param name="data"></param>
-    public async void Install1(FileDisplayObj data)
+    public async void Install1(FileDisplayModel data)
     {
         var type = SourceTypeList[DownloadSource];
         if (Set)
@@ -1135,7 +1134,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         FileList.Clear();
 
-        List<FileDisplayObj>? list = null;
+        List<FileDisplayModel>? list = null;
         var type = SourceTypeList[DownloadSource];
         if (type == SourceType.McMod)
         {
@@ -1337,7 +1336,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     public override void Close()
     {
-        if (Display)
+        if (VersionDisplay || OptifineDisplay || ModDownloadDisplay)
         {
             Model.PopBack();
         }

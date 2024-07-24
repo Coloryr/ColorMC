@@ -61,9 +61,9 @@ public partial class UIModel(BaseModel model) : TopModel(model)
         Model.Progress("正在启动游戏");
         var res = await GameBinding.Launch(Model, SelectGame.Obj, hide: true);
         Model.ProgressClose();
-        if (!res.Item1)
+        if (!res.Res)
         {
-            Model.Show("游戏启动失败\n" + res.Item2);
+            Model.Show("游戏启动失败\n" + res.Message);
         }
     }
 
