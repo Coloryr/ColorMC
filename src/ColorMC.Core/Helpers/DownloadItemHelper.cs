@@ -19,6 +19,12 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class DownloadItemHelper
 {
+    public static SourceType TestSourceType(string? pid, string? fid)
+    {
+        return FuntionUtils.CheckNotNumber(pid) || FuntionUtils.CheckNotNumber(fid) 
+            ? SourceType.Modrinth : SourceType.CurseForge;
+    }
+
     /// <summary>
     /// 地图编辑器下载项目
     /// </summary>
@@ -516,17 +522,17 @@ public static class DownloadItemHelper
             return null;
         }
         var obj2 = await GameAPI.GetAssets(obj1.assetIndex.url);
-        if (obj2.Item1 == null)
+        if (obj2 == null)
         {
             return null;
         }
 
-        obj1.AddIndex(obj2.Item2!);
+        obj1.AddIndex(obj2.Text);
         list.Add(BuildGameItem(obj.id));
 
         list.AddRange(await BuildGameLibsAsync(obj1));
 
-        foreach (var item1 in obj2.Item1.objects)
+        foreach (var item1 in obj2.Assets.objects)
         {
             var obj3 = BuildAssetsItem(item1.Key, item1.Value.hash);
             if (obj3.CheckToAdd(ConfigUtils.Config.GameCheck.CheckAssetsSha1))
@@ -704,8 +710,7 @@ public static class DownloadItemHelper
     /// <param name="obj">游戏实例</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static Task<List<DownloadItemObj>?>
-        BuildFabric(GameSettingObj obj)
+    public static Task<List<DownloadItemObj>?> BuildFabric(GameSettingObj obj)
     {
         return BuildFabricAsync(obj.Version, obj.LoaderVersion!);
     }
@@ -862,12 +867,12 @@ public static class DownloadItemHelper
     public static async Task<DownloadItemObj?> BuildOptifineAsync(string mc, string version)
     {
         var list = await OptifineAPI.GetOptifineVersion();
-        if (list.Item1 == null)
+        if (list == null)
         {
             return null;
         }
 
-        foreach (var item in list.Item2!)
+        foreach (var item in list)
         {
             if (item.Version == version && item.MCVersion == mc)
             {

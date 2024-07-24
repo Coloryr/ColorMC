@@ -22,13 +22,13 @@ public static class FabricAPI
         {
             string url = UrlHelper.GetFabricMeta(local);
             var data = await WebClient.GetStringAsync(url);
-            if (data.Item1 == false)
+            if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
-            return JsonConvert.DeserializeObject<FabricMetaObj>(data.Item2!);
+            return JsonConvert.DeserializeObject<FabricMetaObj>(data.Message!);
         }
         catch (Exception e)
         {
@@ -48,13 +48,13 @@ public static class FabricAPI
         {
             string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}/{version}/profile/json";
             var data = await WebClient.GetStringAsync(url);
-            if (data.Item1 == false)
+            if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
-            return data.Item2;
+            return data.Message;
         }
         catch (Exception e)
         {
@@ -73,14 +73,14 @@ public static class FabricAPI
         {
             string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}";
             var data = await WebClient.GetStringAsync(url);
-            if (data.Item1 == false)
+            if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
 
-            var list = JsonConvert.DeserializeObject<List<FabricLoaderObj1>>(data.Item2!);
+            var list = JsonConvert.DeserializeObject<List<FabricLoaderObj1>>(data.Message!);
             if (list == null)
                 return null;
 
@@ -113,13 +113,13 @@ public static class FabricAPI
 
             string url = $"{UrlHelper.GetFabricMeta(local)}/game";
             var data = await WebClient.GetStringAsync(url);
-            if (data.Item1 == false)
+            if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
-            var list = JsonConvert.DeserializeObject<List<FabricMetaObj.Game>>(data.Item2!);
+            var list = JsonConvert.DeserializeObject<List<FabricMetaObj.Game>>(data.Message!);
             if (list == null)
                 return null;
 

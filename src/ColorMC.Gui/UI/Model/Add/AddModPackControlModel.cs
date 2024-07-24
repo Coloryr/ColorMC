@@ -318,7 +318,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
 
         Model.Progress(App.Lang("AddModPackWindow.Info2"));
-        var data = await WebBinding.GetPackList((SourceType)Source,
+        var data = await WebBinding.GetModPackList((SourceType)Source,
             GameVersion, Text, Page ?? 0, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
 
@@ -354,14 +354,14 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         if (Source == 0)
         {
             PageEnable1 = true;
-            list = await WebBinding.GetPackFile((SourceType)Source,
+            list = await WebBinding.GetPackFileList((SourceType)Source,
                 (_last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), Page1 ?? 0,
                 GameVersion1, Loaders.Normal);
         }
         else if (Source == 1)
         {
             PageEnable1 = false;
-            list = await WebBinding.GetPackFile((SourceType)Source,
+            list = await WebBinding.GetPackFileList((SourceType)Source,
                 (_last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, Page1 ?? 0,
                 GameVersion1, Loaders.Normal);
         }

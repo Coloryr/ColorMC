@@ -471,14 +471,14 @@ public static class ServerPack
     {
         var obj2 = obj.GetServerPack();
         var res = await WebClient.GetStringAsync(obj.ServerUrl + "sha1");
-        if (!res.Item1)
+        if (!res.State)
         {
             return false;
         }
-        if (obj2.Sha1 == null || obj2.Sha1 != res.Item2)
+        if (obj2.Sha1 == null || obj2.Sha1 != res.Message)
         {
             var res1 = await WebClient.GetStringAsync(obj.ServerUrl + "server.json");
-            if (!res1.Item1)
+            if (!res1.State)
             {
                 return false;
             }
@@ -486,7 +486,7 @@ public static class ServerPack
             ServerPackObj? obj1;
             try
             {
-                obj1 = JsonConvert.DeserializeObject<ServerPackObj>(res1.Item2!);
+                obj1 = JsonConvert.DeserializeObject<ServerPackObj>(res1.Message!);
                 if (obj1 == null)
                 {
                     return false;
@@ -508,7 +508,7 @@ public static class ServerPack
             var res2 = await obj1.UpdateAsync(arg.State);
             if (res2)
             {
-                File.WriteAllText(obj.GetServerPackFile(), res1.Item2!);
+                File.WriteAllText(obj.GetServerPackFile(), res1.Message!);
             }
 
             return res2;

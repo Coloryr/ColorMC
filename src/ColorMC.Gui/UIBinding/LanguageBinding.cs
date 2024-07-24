@@ -7,6 +7,45 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class LanguageBinding
 {
+    public static string[] GetLockLoginType()
+    {
+        return
+        [
+            AuthType.OAuth.GetName(),
+            AuthType.Nide8.GetName(),
+            AuthType.AuthlibInjector.GetName(),
+            AuthType.LittleSkin.GetName(),
+            AuthType.SelfLittleSkin.GetName()
+        ];
+    }
+
+    public static string[] GetLoginUserType()
+    {
+        return
+        [
+            AuthType.Offline.GetName(),
+            AuthType.OAuth.GetName(),
+            AuthType.Nide8.GetName(),
+            AuthType.AuthlibInjector.GetName(),
+            AuthType.LittleSkin.GetName(),
+            AuthType.SelfLittleSkin.GetName()
+        ];
+    }
+
+    public static string[] GetDisplayUserTypes()
+    {
+        return
+        [
+            "",
+            AuthType.Offline.GetName(),
+            AuthType.OAuth.GetName(),
+            AuthType.Nide8.GetName(),
+            AuthType.AuthlibInjector.GetName(),
+            AuthType.LittleSkin.GetName(),
+            AuthType.SelfLittleSkin.GetName()
+        ];
+    }
+
     public static string[] GetGCTypes()
     {
         return

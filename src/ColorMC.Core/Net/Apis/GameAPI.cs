@@ -16,23 +16,27 @@ public static class GameAPI
     /// 下载资源文件
     /// </summary>
     /// <param name="url">网址</param>
-    public static async Task<(AssetsObj?, string?)> GetAssets(string url)
+    public static async Task<GetAssetsRes?> GetAssets(string url)
     {
         try
         {
             var data = await WebClient.GetStringAsync(url);
-            if (data.Item1 == false)
+            if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
-                return (null, null);
+                return null;
             }
-            return (JsonConvert.DeserializeObject<AssetsObj>(data.Item2!), data.Item2!);
+            return new()
+            {
+                Assets = JsonConvert.DeserializeObject<AssetsObj>(data.Message!)!,
+                Text = data.Message!
+            };
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.Error4"), e);
-            return (null, null);
+            return null;
         }
     }
 
@@ -65,24 +69,28 @@ public static class GameAPI
     /// <summary>
     /// 下载版本数据
     /// </summary>
-    public static async Task<(VersionObj?, string?)> GetVersions(SourceLocal? local = null)
+    public static async Task<GetVersionsRes?> GetVersions(SourceLocal? local = null)
     {
         try
         {
             string url = UrlHelper.GameVersion(local);
             var data = await WebClient.GetStringAsync(url);
-            if (data.Item1 == false)
+            if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
-                return (null, null);
+                return null;
             }
-            return (JsonConvert.DeserializeObject<VersionObj>(data.Item2!), data.Item2);
+            return new()
+            {
+                Version = JsonConvert.DeserializeObject<VersionObj>(data.Message!)!,
+                Text = data.Message!
+            };
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.Error6"), e);
-            return (null, null);
+            return null;
         }
     }
 }

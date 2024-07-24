@@ -31,5 +31,5 @@ public partial class DownloadModModel : ObservableObject
     /// <summary>
     /// 下载项目列表
     /// </summary>
-    public List<(DownloadItemObj Item, ModInfoObj Info)> Items;
+    public List<DownloadModArg> Items;
 }

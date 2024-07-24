@@ -571,20 +571,32 @@ public static class Launch
         else if (login.AuthType == AuthType.AuthlibInjector)
         {
             var res = await WebClient.GetStringAsync(login.Text1);
+            if (!res.State)
+            {
+                throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+            }
             jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
-            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Item2!)}");
+            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
         }
         else if (login.AuthType == AuthType.LittleSkin)
         {
             var res = await WebClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
+            if (!res.State)
+            {
+                throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+            }
             jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
-            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Item2!)}");
+            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
         }
         else if (login.AuthType == AuthType.SelfLittleSkin)
         {
             var res = await WebClient.GetStringAsync($"{login.Text1}api/yggdrasil");
+            if (!res.State)
+            {
+                throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+            }
             jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
-            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Item2!)}");
+            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
         }
 
         //log4j2-xml

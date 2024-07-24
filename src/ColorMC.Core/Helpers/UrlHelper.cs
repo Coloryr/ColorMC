@@ -493,14 +493,10 @@ public static class UrlHelper
                 return "";
             }
         }
-        else if (FuntionUtils.CheckNotNumber(item.Projcet) || FuntionUtils.CheckNotNumber(item.FileId))
-        {
-            return MakeDownloadUrl(SourceType.Modrinth, item.Projcet,
-                item.FileId, item.File);
-        }
+
         else
         {
-            return MakeDownloadUrl(SourceType.CurseForge, item.Projcet,
+            return MakeDownloadUrl(DownloadItemHelper.TestSourceType(item.Projcet, item.FileId), item.Projcet,
                 item.FileId, item.File);
         }
     }

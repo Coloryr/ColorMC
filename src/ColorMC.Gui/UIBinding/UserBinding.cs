@@ -26,59 +26,31 @@ public static class UserBinding
     private static readonly List<(AuthType, string)> s_lockUser = [];
     private static bool s_notDisplayUserLock;
 
-    public static string[] GetLockLoginType()
-    {
-        return
-        [
-            AuthType.OAuth.GetName(),
-            AuthType.Nide8.GetName(),
-            AuthType.AuthlibInjector.GetName(),
-            AuthType.LittleSkin.GetName(),
-            AuthType.SelfLittleSkin.GetName()
-        ];
-    }
-
-    public static string[] GetLoginUserType()
-    {
-        return
-        [
-            AuthType.Offline.GetName(),
-            AuthType.OAuth.GetName(),
-            AuthType.Nide8.GetName(),
-            AuthType.AuthlibInjector.GetName(),
-            AuthType.LittleSkin.GetName(),
-            AuthType.SelfLittleSkin.GetName()
-        ];
-    }
-
-    public static List<string> GetDisplayUserTypes()
-    {
-        var list = new List<string>()
-        {
-            "",
-            AuthType.Offline.GetName(),
-            AuthType.OAuth.GetName(),
-            AuthType.Nide8.GetName(),
-            AuthType.AuthlibInjector.GetName(),
-            AuthType.LittleSkin.GetName(),
-            AuthType.SelfLittleSkin.GetName()
-        };
-        return list;
-    }
-
-    public static async Task<(bool, string?)> AddUser(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth,
+    /// <summary>
+    /// 添加账户
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="loginOAuth"></param>
+    /// <param name="input1"></param>
+    /// <param name="input2"></param>
+    /// <param name="input3"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public static async Task<MessageRes> AddUser(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth,
         string? input1, string? input2 = null, string? input3 = null)
     {
         if (type == AuthType.Offline)
         {
-            new LoginObj()
+            var user = new LoginObj()
             {
                 UserName = input1!,
                 ClientToken = FuntionUtils.NewUUID(),
                 UUID = HashHelper.GenMd5(Encoding.UTF8.GetBytes(input1!.ToLower())),
                 AuthType = AuthType.Offline
-            }.Save();
-            return (true, null);
+            };
+            user.Save();
+            SetSelectUser(user.UUID, user.AuthType);
+            return new() { State = true };
         }
         var res1 = type switch
         {
@@ -95,27 +67,37 @@ public static class UserBinding
             if (res1.Ex != null)
             {
                 WindowManager.ShowError(res1.Message!, res1.Ex);
-                return (false, App.Lang("UserBinding.Error1"));
+                return new() { Message = App.Lang("UserBinding.Error1") };
             }
             else
             {
-                return (false, res1.Message);
+                return new() { Message = res1.Message };
             }
         }
         if (string.IsNullOrWhiteSpace(res1.Auth?.UUID))
         {
             WebBinding.OpenWeb(WebType.Minecraft);
-            return (false, App.Lang("UserBinding.Error3"));
+            return new() { Message = App.Lang("UserBinding.Error3") };
         }
-        AuthDatabase.Save(res1.Auth!);
-        return (true, null);
+        res1.Auth!.Save();
+        SetSelectUser(res1.Auth.UUID, res1.Auth.AuthType);
+        return new() { State = true };
     }
 
+    /// <summary>
+    /// 获取所有账户
+    /// </summary>
+    /// <returns></returns>
     public static Dictionary<(string, AuthType), LoginObj> GetAllUser()
     {
-        return new(AuthDatabase.Auths);
+        return AuthDatabase.Auths;
     }
 
+    /// <summary>
+    /// 删除账户
+    /// </summary>
+    /// <param name="uuid"></param>
+    /// <param name="type"></param>
     public static void Remove(string uuid, AuthType type)
     {
         if (GuiConfigUtils.Config.LastUser is { } last
@@ -128,6 +110,10 @@ public static class UserBinding
         OnUserEdit();
     }
 
+    /// <summary>
+    /// 获取所有账户
+    /// </summary>
+    /// <returns></returns>
     public static LoginObj? GetLastUser()
     {
         var obj = GuiConfigUtils.Config?.LastUser;
@@ -138,6 +124,12 @@ public static class UserBinding
         return AuthDatabase.Get(obj.UUID, obj.Type);
     }
 
+    /// <summary>
+    /// 重新登录账户
+    /// </summary>
+    /// <param name="uuid"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public static async Task<bool> ReLogin(string uuid, AuthType type)
     {
         var obj = AuthDatabase.Get(uuid, type);
@@ -151,7 +143,12 @@ public static class UserBinding
         return (await obj.RefreshTokenAsync()).LoginState == LoginState.Done;
     }
 
-    public static void SetLastUser(string uuid, AuthType type)
+    /// <summary>
+    /// 设置选中账户
+    /// </summary>
+    /// <param name="uuid"></param>
+    /// <param name="type"></param>
+    public static void SetSelectUser(string uuid, AuthType type)
     {
         GuiConfigUtils.Config.LastUser = new()
         {
@@ -164,17 +161,19 @@ public static class UserBinding
         OnUserEdit();
     }
 
+    /// <summary>
+    /// 删除选中账户
+    /// </summary>
     public static void ClearLastUser()
     {
         GuiConfigUtils.Config.LastUser = null;
         GuiConfigUtils.Save();
     }
 
-    public static LoginObj? GetUser(string uuid, AuthType type)
-    {
-        return AuthDatabase.Get(uuid, type);
-    }
-
+    /// <summary>
+    /// 锁定账户
+    /// </summary>
+    /// <param name="obj"></param>
     public static void AddLockUser(LoginObj obj)
     {
         if (!s_lockUser.Contains((obj.AuthType, obj.UUID)))
@@ -183,16 +182,29 @@ public static class UserBinding
         }
     }
 
+    /// <summary>
+    /// 解锁账户
+    /// </summary>
+    /// <param name="obj"></param>
     public static void UnLockUser(LoginObj obj)
     {
         s_lockUser.Remove((obj.AuthType, obj.UUID));
     }
 
+    /// <summary>
+    /// 账户是否锁定
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static bool IsLock(LoginObj obj)
     {
         return s_lockUser.Contains((obj.AuthType, obj.UUID));
     }
 
+    /// <summary>
+    /// 加载账户皮肤
+    /// </summary>
+    /// <returns></returns>
     public static async Task LoadSkin()
     {
         var obj = GetLastUser();
@@ -217,6 +229,9 @@ public static class UserBinding
         ImageManager.LoadSkinHead(file, file1);
     }
 
+    /// <summary>
+    /// 重新绘制账户皮肤
+    /// </summary>
     public static void ReloadSkin()
     {
         var obj = GetLastUser();
@@ -229,6 +244,9 @@ public static class UserBinding
         ImageManager.ReloadSkinHead();
     }
 
+    /// <summary>
+    /// 编辑皮肤
+    /// </summary>
     public static async void EditSkin()
     {
         var obj = GetLastUser();
@@ -264,33 +282,34 @@ public static class UserBinding
         }
     }
 
+    /// <summary>
+    /// 清空所有账户
+    /// </summary>
     public static void ClearAllUser()
     {
-        AuthDatabase.Auths.Clear();
-
-        AuthDatabase.Save();
+        AuthDatabase.ClearAuths();
 
         GuiConfigUtils.Config.LastUser = null;
-
         GuiConfigUtils.Save();
 
         OnUserEdit();
     }
 
-    public static void UserLastUser()
-    {
-        if (AuthDatabase.Auths.Count == 1)
-        {
-            var item = AuthDatabase.Auths.ToList()[0];
-            SetLastUser(item.Key.Item1, item.Key.Item2);
-        }
-    }
-
+    /// <summary>
+    /// 取消微软登录
+    /// </summary>
     public static void OAuthCancel()
     {
         GameAuth.CancelWithOAuth();
     }
 
+    /// <summary>
+    /// 编辑账户
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="uuid"></param>
+    /// <param name="text1"></param>
+    /// <param name="text2"></param>
     public static void EditUser(string name, string uuid, string text1, string text2)
     {
         foreach (var item in AuthDatabase.Auths.Values)
@@ -305,16 +324,28 @@ public static class UserBinding
         }
     }
 
+    /// <summary>
+    /// 是否有微软账户
+    /// </summary>
+    /// <returns></returns>
     public static bool HaveOnline()
     {
         return AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
     }
 
+    /// <summary>
+    /// 测试登录
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public static async Task<bool> TestLogin(LoginObj user)
     {
         return (await user.RefreshTokenAsync()).LoginState == LoginState.Done;
     }
 
+    /// <summary>
+    /// 当账户编辑后
+    /// </summary>
     public static void OnUserEdit()
     {
         UserEdit?.Invoke();
@@ -325,12 +356,12 @@ public static class UserBinding
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    public static async Task<(LoginObj?, string?)> GetUser(BaseModel model)
+    public static async Task<GameLaunchUserRes> GetLaunchUser(BaseModel model)
     {
         var login = GetLastUser();
         if (login == null)
         {
-            return (null, App.Lang("GameBinding.Error3"));
+            return new() { Message = App.Lang("GameBinding.Error3") };
         }
         if (login.AuthType == AuthType.Offline)
         {
@@ -338,7 +369,7 @@ public static class UserBinding
             if (!have)
             {
                 WebBinding.OpenWeb(WebType.Minecraft);
-                return (null, App.Lang("GameBinding.Error4"));
+                return new() { Message = App.Lang("GameBinding.Error4") };
             }
         }
 
@@ -347,7 +378,7 @@ public static class UserBinding
             var res = await model.ShowWait(App.Lang("GameBinding.Error1"));
             if (!res)
             {
-                return (null, App.Lang("GameBinding.Error5"));
+                return new() { Message = App.Lang("GameBinding.Error5") };
             }
 
             Dispatcher.UIThread.Post(async () =>
@@ -360,6 +391,6 @@ public static class UserBinding
             });
         }
 
-        return (login, null);
+        return new() { User = login };
     }
 }
