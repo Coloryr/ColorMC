@@ -13,9 +13,9 @@ public record OpenJ9Obj
 }
 
 
-public record OpenJ9Obj1
+public record OpenJ9FileObj
 {
-    public record Downloads
+    public record Download
     {
         public record Jdk
         {
@@ -35,5 +35,5 @@ public record OpenJ9Obj1
         public Jdk jdk { get; set; }
         public Jdk jre { get; set; }
     }
-    public List<Downloads> downloads { get; set; }
+    public List<Download> downloads { get; set; }
 }

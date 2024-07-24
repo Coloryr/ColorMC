@@ -146,11 +146,11 @@ public static class ModrinthAPI
         try
         {
             var res = await WebClient.GetStringAsync($"{UrlHelper.Modrinth}project/{id}/version/{version}");
-            if (res.Item1 == false)
+            if (res.State == false)
             {
                 return null;
             }
-            return JsonConvert.DeserializeObject<ModrinthVersionObj>(res.Item2!);
+            return JsonConvert.DeserializeObject<ModrinthVersionObj>(res.Message!);
         }
         catch (Exception e)
         {
@@ -169,11 +169,11 @@ public static class ModrinthAPI
         try
         {
             var res = await WebClient.GetStringAsync($"{UrlHelper.Modrinth}project/{id}");
-            if (res.Item1 == false)
+            if (res.State == false)
             {
                 return null;
             }
-            return JsonConvert.DeserializeObject<ModrinthVersionObj>(res.Item2!);
+            return JsonConvert.DeserializeObject<ModrinthVersionObj>(res.Message!);
         }
         catch (Exception e)
         {
@@ -276,11 +276,10 @@ public static class ModrinthAPI
     /// <param name="mc">游戏版本</param>
     /// <param name="loader">加载器</param>
     /// <returns></returns>
-    public static async Task<ConcurrentBag<((string Name, string ModId) Info,
-        List<ModrinthVersionObj> List)>>
+    public static async Task<ConcurrentBag<GetModrinthModDependenciesRes>>
         GetModDependencies(ModrinthVersionObj data, string mc, Loaders loader)
     {
-        var list = new ConcurrentBag<((string Name, string ModId) Info, List<ModrinthVersionObj> List)>();
+        var list = new ConcurrentBag<GetModrinthModDependenciesRes>();
         if (data.dependencies == null || data.dependencies.Count == 0)
         {
             return list;
@@ -301,7 +300,12 @@ public static class ModrinthAPI
             if (res == null)
                 return;
 
-            list.Add(((res.name, res.project_id), new() { res }));
+            list.Add(new() 
+            {
+                Name = res.name,
+                ModId = res.project_id,
+                List = [res]
+            });
 
             foreach (var item3 in await GetModDependencies(res, mc, loader))
             {

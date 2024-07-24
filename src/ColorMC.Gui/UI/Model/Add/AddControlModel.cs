@@ -12,6 +12,7 @@ using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -95,7 +96,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// 下载的模组项目
     /// </summary>
-    private (DownloadItemObj, ModInfoObj) _modsave;
+    private DownloadModArg _modsave;
     /// <summary>
     /// 是否在加载
     /// </summary>
@@ -679,9 +680,9 @@ public partial class AddControlModel : GameModel, IAddWindow
         Model.Progress(App.Lang("AddWindow.Info11"));
         var res1 = await WebBinding.DownloadOptifine(Obj, OptifineItem);
         Model.ProgressClose();
-        if (res1.Item1 == false)
+        if (res1.State == false)
         {
-            Model.Show(res1.Item2!);
+            Model.Show(res1.Message!);
         }
         else
         {
@@ -1011,29 +1012,33 @@ public partial class AddControlModel : GameModel, IAddWindow
             {
                 var list = (type == SourceType.McMod ? _lastType : type) switch
                 {
-                    SourceType.CurseForge => await WebBinding.DownloadMod(Obj,
+                    SourceType.CurseForge => await WebBinding.GetDownloadModList(Obj,
                     data.Data as CurseForgeModObj.Data),
-                    SourceType.Modrinth => await WebBinding.DownloadMod(Obj,
+                    SourceType.Modrinth => await WebBinding.GetDownloadModList(Obj,
                     data.Data as ModrinthVersionObj),
-                    _ => (null, null, null)
+                    _ => null
                 };
-                if (list.Item1 == null)
+                if (list == null)
                 {
                     Model.Show(App.Lang("AddWindow.Error9"));
                     return;
                 }
-                if (list.Item3!.Count == 0)
+                if (list.List!.Count == 0)
                 {
                     res = await WebBinding.DownloadMod(Obj,
-                        new List<(DownloadItemObj, ModInfoObj)>() { (list.Item1!, list.Item2!) });
+                        new List<DownloadModArg>() { new()
+                        {
+                            Item = list.Item!,
+                            Info = list.Info!
+                        } });
                     IsDownload = false;
                 }
                 else
                 {
                     //添加模组信息
                     ModList.Clear();
-                    ModList.AddRange(list.Item3);
-                    _modsave = (list.Item1!, list.Item2!);
+                    ModList.AddRange(list.List);
+                    _modsave = (list.Item!, list.Info!);
                     ModDownloadDisplay = true;
                     ModList.ForEach(item =>
                     {
@@ -1180,14 +1185,14 @@ public partial class AddControlModel : GameModel, IAddWindow
         if (type == SourceType.CurseForge)
         {
             EnablePage = true;
-            list = await WebBinding.GetPackFile(type, id ??
+            list = await WebBinding.GetPackFileList(type, id ??
                 (_last!.Data.Data as CurseForgeObjList.Data)!.id.ToString(), PageDownload,
                 GameVersionDownload, Obj.Loader, _now);
         }
         else if (type == SourceType.Modrinth)
         {
             EnablePage = false;
-            list = await WebBinding.GetPackFile(type, id ??
+            list = await WebBinding.GetPackFileList(type, id ??
                 (_last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, PageDownload,
                 GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
         }

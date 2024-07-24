@@ -57,7 +57,7 @@ public partial class ErrorModel : TopModel
         }
 
         Model.Progress(App.Lang("GameLogWindow.Info6"));
-        var url = await WebBinding.Push(Text.Text);
+        var url = await WebBinding.PushMclo(Text.Text);
         Model.ProgressClose();
         if (url == null)
         {

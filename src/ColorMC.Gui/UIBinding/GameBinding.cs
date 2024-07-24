@@ -348,13 +348,10 @@ public static class GameBinding
             };
         }
 
-        var res = await UserBinding.GetUser(model);
-        if (res.Item1 is not { } user)
+        var res = await UserBinding.GetLaunchUser(model);
+        if (res.User is not { } user)
         {
-            return new()
-            { 
-                Message = res.Item2
-            };
+            return new() { Message = res.Message };
         }
 
         s_launchCancel = new();
@@ -397,10 +394,7 @@ public static class GameBinding
         if (s_launchCancel.IsCancellationRequested)
         {
             UserBinding.UnLockUser(user);
-            return new()
-            { 
-                User = user
-            };
+            return new() { User = user };
         }
 
         if (GuiConfigUtils.Config.ServerCustom.RunPause)
@@ -500,10 +494,10 @@ public static class GameBinding
             };
         }
 
-        var res = await UserBinding.GetUser(model);
-        if (res.Item1 is not { } user)
+        var res = await UserBinding.GetLaunchUser(model);
+        if (res.User is not { } user)
         {
-            return new() { Message = res.Item2 };
+            return new() { Message = res.Message };
         }
 
         if (SystemInfo.Os == OsType.Android)
@@ -836,22 +830,8 @@ public static class GameBinding
 
         list1.ForEach(item =>
         {
-            var obj1 = new ModDisplayModel()
-            {
-                Name = item.ReadFail ? App.Lang("GameBinding.Info15")
-                : item.name,
-                Obj = item
-            };
-
-            var item1 = obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
-            if (item1 != null)
-            {
-                obj1.Obj1 = item1;
-            }
-
-            obj1.Enable = !item.Disable;
-
-            list.Add(obj1);
+            var obj1 = obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
+            list.Add(new ModDisplayModel(item, obj1));
         });
         return list;
     }
@@ -2198,11 +2178,11 @@ public static class GameBinding
         try
         {
             var data = await WebClient.GetStringAsync(text + "server.json");
-            if (!data.Item1)
+            if (!data.State)
             {
                 return (false, App.Lang("GameBinding.Error11"));
             }
-            var obj = JsonConvert.DeserializeObject<ServerPackObj>(data.Item2!);
+            var obj = JsonConvert.DeserializeObject<ServerPackObj>(data.Message!);
             if (obj == null)
             {
                 return (false, App.Lang("GameBinding.Error12"));
@@ -2257,7 +2237,7 @@ public static class GameBinding
                 return (false, null);
             }
 
-            PathHelper.WriteText(game.GetServerPackFile(), data.Item2!);
+            PathHelper.WriteText(game.GetServerPackFile(), data.Message!);
 
             return (true, null);
         }
@@ -2420,17 +2400,20 @@ public static class GameBinding
                 .AppendLine($"{App.Lang("GameBinding.Info6")}{obj.Version}");
             if (obj.ModPack)
             {
-                info.AppendLine(string.Format(App.Lang("GameBinding.Info12"), obj.ModPackType.GetName(), obj.PID, obj.FID));
+                info.AppendLine(string.Format(App.Lang("GameBinding.Info12"), 
+                    obj.ModPackType.GetName(), obj.PID, obj.FID));
             }
             if (obj.Loader != Loaders.Normal)
             {
                 if (obj.Loader == Loaders.Custom)
                 {
-                    info.AppendLine(string.Format(App.Lang("GameBinding.Info8"), GetGameLoader(obj), obj.CustomLoader?.OffLib));
+                    info.AppendLine(string.Format(App.Lang("GameBinding.Info8"), 
+                        GetGameLoader(obj), obj.CustomLoader?.OffLib));
                 }
                 else
                 {
-                    info.AppendLine(string.Format(App.Lang("GameBinding.Info7"), obj.Loader.GetName(), obj.LoaderVersion));
+                    info.AppendLine(string.Format(App.Lang("GameBinding.Info7"), 
+                        obj.Loader.GetName(), obj.LoaderVersion));
                 }
 
                 if (list.Count != 0)
@@ -2439,10 +2422,14 @@ public static class GameBinding
 
                     foreach (var item in list)
                     {
-                        info.AppendLine(string.Format(App.Lang("GameBinding.Info10"), item.name, item.modid, item.authorList?.MakeString(), Path.GetFileName(item.Local), item.Disable, item.CoreMod, item.Sha1, item.Loader.GetName()));
+                        info.AppendLine(string.Format(App.Lang("GameBinding.Info10"), 
+                            item.name, item.modid,item.authorList?.MakeString(), 
+                            Path.GetFileName(item.Local), item.Disable, item.CoreMod, 
+                            item.Sha1, item.Loader.GetName()));
                         if (obj.Mods.Values.FirstOrDefault(item => item.SHA1 == item.SHA1) is { } item1)
                         {
-                            info.AppendLine(string.Format(App.Lang("GameBinding.Info11"), item1.Type.GetName(), item1.ModId, item1.FileId));
+                            info.AppendLine(string.Format(App.Lang("GameBinding.Info11"), 
+                                item1.Type.GetName(), item1.ModId, item1.FileId));
                         }
                     }
                 }

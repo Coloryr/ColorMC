@@ -25,7 +25,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<ProjectReference Include="..\ColorMC.CustomGui\ColorMC.CustomGui.csproj" />
+		<ProjectReference Condition="'$(Configuration)' == 'Debug'" Include="..\ColorMC.CustomGui\ColorMC.CustomGui.csproj" />
 		<ProjectReference Include="..\ColorMC.Gui\ColorMC.Gui.csproj" />
 		<ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
 	</ItemGroup>

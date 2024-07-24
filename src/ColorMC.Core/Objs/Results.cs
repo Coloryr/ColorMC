@@ -1,6 +1,9 @@
 using System.Collections.Concurrent;
 using ColorMC.Core.Game;
+using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 
 namespace ColorMC.Core.Objs;
@@ -210,4 +213,37 @@ public record GameLaunchRes
 {
     public IGameHandel? Handel;
     public Exception? Ex;
+}
+
+/// <summary>
+/// 获取OpenJ9列表
+/// </summary>
+public record GetOpenJ9ListRes
+{
+    public List<string>? Arch;
+    public List<string>? Os;
+    public List<string>? MainVersion;
+    public List<OpenJ9FileObj.Download>? Download;
+}
+
+public record GetAssetsRes
+{
+    public AssetsObj Assets;
+    public string Text;
+}
+
+public record GetVersionsRes
+{
+    public VersionObj Version;
+    public string Text;
+}
+
+/// <summary>
+/// 获取模组依赖列表
+/// </summary>
+public record GetModrinthModDependenciesRes
+{
+    public string Name;
+    public string ModId;
+    public List<ModrinthVersionObj> List;
 }

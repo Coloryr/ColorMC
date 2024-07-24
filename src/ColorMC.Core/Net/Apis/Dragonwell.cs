@@ -8,13 +8,13 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class Dragonwell
 {
+    private const string Url = "https://dragonwell-jdk.io/releases.json";
     /// <summary>
     /// 获取列表
     /// </summary>
     public static async Task<DragonwellObj?> GetJavaList()
     {
-        var url = "https://dragonwell-jdk.io/releases.json";
-        var data = await WebClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        var data = await WebClient.DownloadClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead);
         if (data == null)
             return null;
         var str = await data.Content.ReadAsStringAsync();

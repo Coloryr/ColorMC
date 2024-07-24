@@ -1,3 +1,4 @@
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Java;
 using HtmlAgilityPack;
 using Jint;
@@ -10,24 +11,22 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class OpenJ9Api
 {
+    private const string Url = "https://developer.ibm.com/middleware/v1/contents/static/semeru-runtime-downloads";
     /// <summary>
     /// 获取列表
     /// </summary>
-    public static async Task<(List<string>? Arch, List<string>? Os,
-        List<string>? MainVersion, List<OpenJ9Obj1.Downloads>? Data)> GetJavaList()
+    public static async Task<GetOpenJ9ListRes?> GetJavaList()
     {
-        var url = "https://developer.ibm.com/middleware/v1/contents/static/semeru-runtime-downloads";
-        var data = await WebClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-        if (data == null)
+        var data = await WebClient.GetStringAsync(Url);
+        if (!data.State)
         {
-            return (null, null, null, null);
+            return null;
         }
-        var str = await data.Content.ReadAsStringAsync();
 
-        var obj = JsonConvert.DeserializeObject<OpenJ9Obj>(str);
+        var obj = JsonConvert.DeserializeObject<OpenJ9Obj>(data.Message!);
         if (obj == null || obj.error)
         {
-            return (null, null, null, null);
+            return null;
         }
 
         var item1 = obj.results[0].content;
@@ -40,7 +39,7 @@ public static class OpenJ9Api
             .Where(x => x.Attributes["id"]?.Value == "runtimeVersion");
         if (!nodes.Any())
         {
-            return (null, null, null, null);
+            return null;
         }
 
         var node = nodes.ToList()[0];
@@ -60,7 +59,7 @@ public static class OpenJ9Api
             .Where(x => x.Attributes["id"]?.Value == "operatingSystem");
         if (!nodes.Any())
         {
-            return (null, null, null, null);
+            return null;
         }
         node = nodes.ToList()[0];
         nodes1 = node.SelectNodes("option");
@@ -72,8 +71,10 @@ public static class OpenJ9Api
         foreach (var item in nodes1)
         {
             string value = item.Attributes["value"].Value;
-            if (value.ToLower() == "any")
+            if (value.Equals("any", StringComparison.CurrentCultureIgnoreCase))
+            {
                 continue;
+            }
             system.Add(value);
         }
 
@@ -81,7 +82,7 @@ public static class OpenJ9Api
             .Where(x => x.Attributes["id"]?.Value == "arch");
         if (!nodes.Any())
         {
-            return (null, null, null, null);
+            return null;
         }
         node = nodes.ToList()[0];
         nodes1 = node.SelectNodes("option");
@@ -93,8 +94,10 @@ public static class OpenJ9Api
         foreach (var item in nodes1)
         {
             string value = item.Attributes["value"].Value;
-            if (value.ToLower() == "any")
+            if (value.Equals("any", StringComparison.CurrentCultureIgnoreCase))
+            {
                 continue;
+            }
             arch.Add(value);
         }
 
@@ -106,12 +109,22 @@ public static class OpenJ9Api
         using var engine = new Engine();
         var obj1 = engine.Evaluate(item2);
         if (obj1 == null)
-            return (null, null, null, null);
+        {
+            return null;
+        }
 
-        var obj2 = JsonConvert.DeserializeObject<OpenJ9Obj1>(obj1.ToString()!);
+        var obj2 = JsonConvert.DeserializeObject<OpenJ9FileObj>(obj1.ToString()!);
         if (obj2 == null)
-            return (null, null, null, null);
+        {
+            return null;
+        }
 
-        return (arch, system, mainversion, obj2.downloads);
+        return new() 
+        {
+            Arch = arch, 
+            Os = system, 
+            MainVersion = mainversion,
+            Download = obj2.downloads
+        };
     }
 }

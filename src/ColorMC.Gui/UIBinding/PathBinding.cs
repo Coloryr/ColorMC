@@ -31,6 +31,17 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class PathBinding
 {
+    private static readonly string[] EXE = ["*.exe"];
+    private static readonly string[] ZIP = ["*.zip", "*.tar.xz", "*.tar.gz"];
+    private static readonly string[] JSON = ["*.json"];
+    private static readonly string[] MODPACK = ["*.zip", "*.mrpack"];
+    private static readonly string[] PICFILE = ["*.png", "*.jpg", "*.bmp"];
+    private static readonly string[] AUDIO = ["*.mp3", "*.wav"];
+    private static readonly string[] MODEL = ["*.model3.json"];
+    private static readonly string[] HEADFILE = ["*.png"];
+    private static readonly string[] ZIPFILE = ["*.zip"];
+    private static readonly string[] JARFILE = ["*.jar"];
+
     /// <summary>
     /// 提升权限
     /// </summary>
@@ -383,17 +394,6 @@ public static class PathBinding
             }
         });
     }
-
-    private static readonly string[] EXE = ["*.exe"];
-    private static readonly string[] ZIP = ["*.zip", "*.tar.xz", "*.tar.gz"];
-    private static readonly string[] JSON = ["*.json"];
-    private static readonly string[] MODPACK = ["*.zip", "*.mrpack"];
-    private static readonly string[] PICFILE = ["*.png", "*.jpg", "*.bmp"];
-    private static readonly string[] AUDIO = ["*.mp3", "*.wav"];
-    private static readonly string[] MODEL = ["*.model3.json"];
-    private static readonly string[] HEADFILE = ["*.png"];
-    private static readonly string[] ZIPFILE = ["*.zip"];
-    private static readonly string[] JARFILE = ["*.jar"];
 
     /// <summary>
     /// 打开文件

@@ -41,13 +41,13 @@ public static class ForgeAPI
                 }
                 string url = UrlHelper.ForgeVersion(local);
                 var data = await WebClient.GetStringAsync(url);
-                if (data.Item1 == false)
+                if (data.State == false)
                 {
                     ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                         new Exception(url), false);
                     return null;
                 }
-                var obj = JsonConvert.DeserializeObject<List<string>>(data.Item2!);
+                var obj = JsonConvert.DeserializeObject<List<string>>(data.Message!);
                 if (obj == null)
                     return null;
 
@@ -92,7 +92,7 @@ public static class ForgeAPI
                     ? UrlHelper.NeoForgeVersions(mc, local, v222)
                     : UrlHelper.ForgeVersions(mc, local);
                 var data = await WebClient.GetStringAsync(url);
-                if (data.Item1 == false)
+                if (data.State == false)
                 {
                     ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                         new Exception(url), false);
@@ -102,7 +102,7 @@ public static class ForgeAPI
 
                 if (neo)
                 {
-                    var obj = JsonConvert.DeserializeObject<List<NeoForgeVersionObj>>(data.Item2!);
+                    var obj = JsonConvert.DeserializeObject<List<NeoForgeVersionObj>>(data.Message!);
                     if (obj == null)
                         return null;
 
@@ -113,7 +113,7 @@ public static class ForgeAPI
                 }
                 else
                 {
-                    var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data.Item2!);
+                    var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data.Message!);
                     if (obj == null)
                         return null;
 
@@ -194,7 +194,7 @@ public static class ForgeAPI
         var url = neo ? UrlHelper.NeoForgeVersions(mc, SourceLocal.Offical, false) :
                     UrlHelper.ForgeVersion(SourceLocal.Offical);
         var html = await WebClient.GetStringAsync(url);
-        if (html.Item1 == false)
+        if (html.State == false)
         {
             ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                 new Exception(url), false);
@@ -202,7 +202,7 @@ public static class ForgeAPI
         }
 
         var xml = new XmlDocument();
-        xml.LoadXml(html.Item2!);
+        xml.LoadXml(html.Message!);
 
         var list = new List<string>();
 
@@ -285,7 +285,7 @@ public static class ForgeAPI
             url = UrlHelper.NeoForgeVersions(mc, SourceLocal.Offical, true);
 
             html = await WebClient.GetStringAsync(url);
-            if (html.Item1 == false)
+            if (html.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
@@ -293,7 +293,7 @@ public static class ForgeAPI
             }
 
             xml = new XmlDocument();
-            xml.LoadXml(html.Item2!);
+            xml.LoadXml(html.Message!);
 
             node = xml.SelectNodes("//metadata/versioning/versions/version");
             if (node?.Count > 0)

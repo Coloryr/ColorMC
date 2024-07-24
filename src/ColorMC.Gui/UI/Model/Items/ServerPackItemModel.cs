@@ -1,7 +1,6 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -25,21 +24,41 @@ public partial class ServerPackItemModel : ObservableObject
     {
         get
         {
-            if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
+            if (SourceType is { } type)
             {
-                return "";
-            }
-            else if (FuntionUtils.CheckNotNumber(PID) || FuntionUtils.CheckNotNumber(FID))
-            {
-                return SourceType.Modrinth.GetName();
+                return type.GetName();
             }
             else
             {
-                return SourceType.CurseForge.GetName();
+                return "";
             }
         }
     }
 
+    public SourceType? SourceType;
+
     public ModDisplayModel Mod;
     public ResourcepackObj Resourcepack;
+
+    partial void OnPIDChanged(string? value)
+    {
+        Update();
+    }
+
+    partial void OnFIDChanged(string? value)
+    {
+        Update();
+    }
+
+    public void Update()
+    {
+        if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
+        {
+            SourceType = null;
+        }
+        else
+        {
+            SourceType = DownloadItemHelper.TestSourceType(PID, FID);
+        }
+    }
 }

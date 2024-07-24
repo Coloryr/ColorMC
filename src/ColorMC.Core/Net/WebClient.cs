@@ -89,16 +89,16 @@ public static class WebClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> GetStringAsync(string url)
+    public static async Task<MessageRes> GetStringAsync(string url)
     {
-        var data = await DownloadClient.GetAsync(url);
+        var data = await DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
         if (data.StatusCode != HttpStatusCode.OK)
         {
-            return (false, null);
+            return new();
         }
 
         var data1 = await data.Content.ReadAsStringAsync();
-        return (true, data1);
+        return new() { State = true, Message = data1 };
     }
 
     /// <summary>

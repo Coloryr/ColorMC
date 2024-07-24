@@ -67,7 +67,7 @@ public static class AuthlibHelper
     public static async Task<MakeDownloadItemRes> ReadyNide8()
     {
         var data = await WebClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/");
-        if (data.Item1 == false)
+        if (data.State == false)
         {
             return new MakeDownloadItemRes
             {
@@ -76,7 +76,7 @@ public static class AuthlibHelper
         }
         try
         {
-            var obj = JObject.Parse(data.Item2!);
+            var obj = JObject.Parse(data.Message!);
             var sha1 = obj?["jarHash"]!.ToString().ToLower();
             var item = BuildNide8Item(obj!["jarVersion"]!.ToString());
             NowNide8Injector = item.Local;
@@ -131,11 +131,11 @@ public static class AuthlibHelper
         {
             string url = UrlHelper.AuthlibInjectorMeta(WebClient.Source);
             var meta = await WebClient.GetStringAsync(url);
-            if (meta.Item1 == false)
+            if (meta.State == false)
             {
                 return LocalAuthLib;
             }
-            var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!);
+            var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Message!);
             if (obj == null)
             {
                 return LocalAuthLib;
@@ -143,11 +143,11 @@ public static class AuthlibHelper
             var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).ToList()[0];
 
             var info = await WebClient.GetStringAsync(UrlHelper.AuthlibInjector(item, WebClient.Source));
-            if (info.Item1 == false)
+            if (info.State == false)
             {
                 return LocalAuthLib;
             }
-            return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!) ?? LocalAuthLib;
+            return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Message!) ?? LocalAuthLib;
         }
         catch
         {

@@ -99,8 +99,8 @@ public partial class UsersControlModel : TopModel
         }
         else
         {
-            UserTypeList.AddRange(UserBinding.GetLoginUserType());
-            DisplayUserTypeList.AddRange(UserBinding.GetDisplayUserTypes());
+            UserTypeList.AddRange(LanguageBinding.GetLoginUserType());
+            DisplayUserTypeList.AddRange(LanguageBinding.GetDisplayUserTypes());
         }
 
         Load();
@@ -320,9 +320,9 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 var res = await UserBinding.AddUser(AuthType.Offline, LoginOAuthCode, name, null);
-                if (!res.Item1)
+                if (!res.State)
                 {
-                    Model.Show(res.Item2!);
+                    Model.Show(res.Message!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -339,9 +339,9 @@ public partial class UsersControlModel : TopModel
                 {
                     break;
                 }
-                if (!res.Item1)
+                if (!res.State)
                 {
-                    Model.Show(res.Item2!);
+                    Model.Show(res.Message!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -367,9 +367,9 @@ public partial class UsersControlModel : TopModel
                 res = await UserBinding.AddUser(AuthType.Nide8, LoginOAuthCode, server,
                     User, Password);
                 Model.ProgressClose();
-                if (!res.Item1)
+                if (!res.State)
                 {
-                    Model.Show(res.Item2!);
+                    Model.Show(res.Message!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -394,9 +394,9 @@ public partial class UsersControlModel : TopModel
                 res = await UserBinding.AddUser(AuthType.AuthlibInjector, LoginOAuthCode, server,
                     User, Password);
                 Model.ProgressClose();
-                if (!res.Item1)
+                if (!res.State)
                 {
-                    Model.Show(res.Item2!);
+                    Model.Show(res.Message!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -415,9 +415,9 @@ public partial class UsersControlModel : TopModel
                 res = await UserBinding.AddUser(AuthType.LittleSkin, LoginOAuthCode,
                     User, Password);
                 Model.ProgressClose();
-                if (!res.Item1)
+                if (!res.State)
                 {
-                    Model.Show(res.Item2!);
+                    Model.Show(res.Message!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -441,9 +441,9 @@ public partial class UsersControlModel : TopModel
                 res = await UserBinding.AddUser(AuthType.SelfLittleSkin, LoginOAuthCode,
                     User, Password, server);
                 Model.ProgressClose();
-                if (!res.Item1)
+                if (!res.State)
                 {
-                    Model.Show(res.Item2!);
+                    Model.Show(res.Message!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -456,7 +456,6 @@ public partial class UsersControlModel : TopModel
         }
         if (ok)
         {
-            UserBinding.UserLastUser();
             CloseShow();
         }
         Load();
@@ -477,7 +476,7 @@ public partial class UsersControlModel : TopModel
 
     public void Select(UserDisplayModel item)
     {
-        UserBinding.SetLastUser(item.UUID, item.AuthType);
+        UserBinding.SetSelectUser(item.UUID, item.AuthType);
 
         Model.Notify(App.Lang("UserWindow.Info5"));
         foreach (var item1 in UserList)

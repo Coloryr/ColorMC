@@ -1095,6 +1095,7 @@
 	"WindowManager.Error1": "自定义UI加载失败",
 	"WebBinding.Error1": "模组更新检查失败",
 	"WebBinding.Error2": "获取Java列表错误",
+	"WebBinding.Error3": "获取Minecraft News错误",
 	"UserBinding.Error1": "登录发生异常",
 	"UserBinding.Error2": "账户类型错误",
 	"UserBinding.Error3": "没有找到您的Minecraft账户，请确认你的账户已经购买了Minecraft，并在https://minecraft.net登录并查看皮肤",

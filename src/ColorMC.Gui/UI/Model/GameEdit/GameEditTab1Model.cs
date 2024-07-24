@@ -227,7 +227,7 @@ public partial class GameEditModel
         }
 
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info2"));
-        if (FuntionUtils.CheckNotNumber(PID) || FuntionUtils.CheckNotNumber(FID))
+        if (DownloadItemHelper.TestSourceType(PID, FID) == SourceType.Modrinth)
         {
             var list = await ModrinthAPI.GetFileVersions(PID, _obj.Version, _obj.Loader);
             Model.ProgressClose();

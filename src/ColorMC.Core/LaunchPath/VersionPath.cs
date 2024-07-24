@@ -88,20 +88,22 @@ public static class VersionPath
     /// <returns></returns>
     public static async Task GetFromWebAsync()
     {
-        (_version, var data) = await GameAPI.GetVersions();
-        if (_version != null)
+        var res = await GameAPI.GetVersions();
+        if (res != null)
         {
-            SaveVersions(data!);
+            _version = res.Version;
+            SaveVersions(res.Text);
             return;
         }
-        (_version, data) = await GameAPI.GetVersions(SourceLocal.Offical);
-        if (_version == null)
+        res = await GameAPI.GetVersions(SourceLocal.Offical);
+        if (res == null)
         {
             Logs.Error(LanguageHelper.Get("Core.Path.Error3"));
         }
         else
         {
-            SaveVersions(data!);
+            _version = res.Version;
+            SaveVersions(res.Text);
         }
     }
 

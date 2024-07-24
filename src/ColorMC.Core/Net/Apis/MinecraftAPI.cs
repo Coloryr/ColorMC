@@ -86,6 +86,7 @@ public static class MinecraftAPI
         req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
         var data = await WebClient.DownloadClient.SendAsync(req);
         var data1 = await data.Content.ReadAsStringAsync();
+
         return JsonConvert.DeserializeObject<MinecraftNewObj>(data1);
     }
 }

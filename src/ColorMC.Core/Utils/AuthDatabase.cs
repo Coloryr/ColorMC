@@ -12,7 +12,9 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public static class AuthDatabase
 {
-    public static readonly ConcurrentDictionary<(string, AuthType), LoginObj> Auths = new();
+    private static readonly ConcurrentDictionary<(string, AuthType), LoginObj> s_auths = new();
+
+    public static Dictionary<(string, AuthType), LoginObj> Auths => new(s_auths);
 
     public const string Name = "auth.json";
     private static string s_local;
@@ -67,7 +69,7 @@ public static class AuthDatabase
 
             foreach (var item in list)
             {
-                Auths.TryAdd((item.UUID, item.AuthType), item);
+                s_auths.TryAdd((item.UUID, item.AuthType), item);
             }
         }
         catch
@@ -84,7 +86,7 @@ public static class AuthDatabase
         ConfigSave.AddItem(new()
         {
             Name = "auth.json",
-            Obj = Auths.Values,
+            Obj = s_auths.Values,
             Local = s_local
         });
     }
@@ -100,13 +102,13 @@ public static class AuthDatabase
             return;
         }
 
-        if (Auths.ContainsKey((obj.UUID, obj.AuthType)))
+        if (s_auths.ContainsKey((obj.UUID, obj.AuthType)))
         {
-            Auths[(obj.UUID, obj.AuthType)] = obj;
+            s_auths[(obj.UUID, obj.AuthType)] = obj;
         }
         else
         {
-            Auths.TryAdd((obj.UUID, obj.AuthType), obj);
+            s_auths.TryAdd((obj.UUID, obj.AuthType), obj);
         }
 
         Save();
@@ -117,7 +119,7 @@ public static class AuthDatabase
     /// </summary>
     public static LoginObj? Get(string uuid, AuthType type)
     {
-        if (Auths.TryGetValue((uuid, type), out var item))
+        if (s_auths.TryGetValue((uuid, type), out var item))
         {
             return item;
         }
@@ -130,7 +132,7 @@ public static class AuthDatabase
     /// </summary>
     public static void Delete(this LoginObj obj)
     {
-        Auths.TryRemove((obj.UUID, obj.AuthType), out _);
+        s_auths.TryRemove((obj.UUID, obj.AuthType), out _);
         Save();
     }
 
@@ -145,16 +147,22 @@ public static class AuthDatabase
 
         foreach (var item in list)
         {
-            if (Auths.ContainsKey((item.UUID, item.AuthType)))
+            if (s_auths.ContainsKey((item.UUID, item.AuthType)))
             {
-                Auths[(item.UUID, item.AuthType)] = item;
+                s_auths[(item.UUID, item.AuthType)] = item;
             }
             else
             {
-                Auths.TryAdd((item.UUID, item.AuthType), item);
+                s_auths.TryAdd((item.UUID, item.AuthType), item);
             }
         }
 
         return true;
+    }
+
+    public static void ClearAuths()
+    {
+        s_auths.Clear();
+        Save();
     }
 }

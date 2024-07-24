@@ -7,6 +7,7 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -368,8 +369,7 @@ public static class WindowManager
 
     public static void ShowAdd(GameSettingObj obj, ModDisplayModel obj1)
     {
-        var type1 = FuntionUtils.CheckNotNumber(obj1.PID) || FuntionUtils.CheckNotNumber(obj1.FID) ?
-            SourceType.Modrinth : SourceType.CurseForge;
+        var type1 = DownloadItemHelper.TestSourceType(obj1.PID, obj1.FID);
 
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
