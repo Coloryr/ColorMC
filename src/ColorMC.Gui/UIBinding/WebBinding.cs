@@ -434,11 +434,15 @@ public static class WebBinding
                 }
 
                 List<string> version = [];
-                List<(DownloadItemObj Item, ModInfoObj Info)> items = [];
+                List<DownloadModArg> items = [];
                 foreach (var item2 in item1.List)
                 {
                     version.Add(item2.displayName);
-                    items.Add((item2.MakeModDownloadObj(path), item2.MakeModInfo(InstancesPath.Name11)));
+                    items.Add(new()
+                    {
+                        Item = item2.MakeModDownloadObj(path),
+                        Info = item2.MakeModInfo(InstancesPath.Name11)
+                    });
                 }
                 res.Add(item1.Info.ModId, new()
                 {
@@ -482,11 +486,15 @@ public static class WebBinding
                 if (res.ContainsKey(item1.ModId) || obj.Mods.ContainsKey(item1.ModId))
                     continue;
                 List<string> version = [];
-                List<(DownloadItemObj Item, ModInfoObj Info)> items = [];
+                List<DownloadModArg> items = [];
                 foreach (var item2 in item1.List)
                 {
                     version.Add(item2.name);
-                    items.Add((item2.MakeModDownloadObj(obj), item2.MakeModInfo()));
+                    items.Add(new()
+                    {
+                        Item = item2.MakeModDownloadObj(obj),
+                        Info = item2.MakeModInfo()
+                    });
                 }
                 res.Add(item1.ModId, new()
                 {
@@ -517,7 +525,7 @@ public static class WebBinding
     {
         foreach (var item in list)
         {
-            PathHelper.Delete(item.Mod.Local);
+            PathHelper.Delete(item.Model.Local);
         }
 
         var list1 = new List<DownloadItemObj>();
@@ -776,10 +784,10 @@ public static class WebBinding
     /// <param name="game"></param>
     /// <param name="mods"></param>
     /// <returns></returns>
-    public static async Task<List<ModDownloadItemRes>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
+    public static async Task<List<DownloadModItemArg>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
     {
         string path = game.GetModsPath();
-        var list = new ConcurrentBag<ModDownloadItemRes>();
+        var list = new ConcurrentBag<DownloadModItemArg>();
         await Parallel.ForEachAsync(mods, async (item, cancel) =>
         {
             try

@@ -52,7 +52,7 @@ public static class BaseBinding
     /// <summary>
     /// 快捷启动
     /// </summary>
-    private static string s_launch;
+    public static string[] StartLaunch { get; private set; }
 
     /// <summary>
     /// 是否处于添加游戏实例中
@@ -177,38 +177,56 @@ public static class BaseBinding
 
         await GameCloudUtils.StartConnect();
 
-        if (s_launch != null)
+        if (StartLaunch != null)
         {
-            Dispatcher.UIThread.Post(async () =>
+            Launch(StartLaunch);
+        }
+    }
+
+    /// <summary>
+    /// 快捷启动索格实例
+    /// </summary>
+    /// <param name="games"></param>
+    public static void Launch(string[] games)
+    {
+        var list = new List<GameSettingObj>();
+        foreach (var item in games)
+        {
+            var game = InstancesPath.GetGame(item);
+            if (game != null)
             {
-                var game = InstancesPath.GetGame(s_launch);
-                var window = WindowManager.GetMainWindow();
-                if (window == null)
+                list.Add(game);
+            }
+        }
+        if (list.Count == 0)
+        {
+            return;
+        }
+        
+        var window = WindowManager.GetMainWindow();
+        if (window == null)
+        {
+            return;
+        }
+        Dispatcher.UIThread.Post(async () =>
+        {
+            if (window?.Model is { } model)
+            {
+                if (list.Count == 0)
                 {
+                    model.Show(App.Lang("BaseBinding.Error2"));
                     return;
                 }
-                if (window?.Model is { } model)
+                model.Progress(App.Lang("MainWindow.Info3"));
+                var res = await GameBinding.Launch(model, list);
+                model.ProgressClose();
+                if (res.Message != null)
                 {
-                    if (game == null)
-                    {
-                        model.Show(App.Lang("BaseBinding.Error2"));
-                        return;
-                    }
-                    model.Progress(string.Format(App.Lang("BaseBinding.Info1"), game.Name));
-                    var res = await GameBinding.Launch(model, game, hide: true);
-                    if (!res.Res)
-                    {
-                        window.Show();
-                        model.Show(res.Message!);
-                    }
-                    else
-                    {
-                        model.ProgressClose();
-                        window.Hide();
-                    }
+                    window.Show();
+                    model.Show(res.Message!);
                 }
-            });
-        }
+            }
+        });
     }
 
     /// <summary>
@@ -448,9 +466,9 @@ public static class BaseBinding
     /// 设置快捷启动
     /// </summary>
     /// <param name="uuid"></param>
-    public static void SetLaunch(string uuid)
+    public static void SetLaunch(string[] uuid)
     {
-        s_launch = uuid;
+        StartLaunch = uuid;
     }
 
     /// <summary>

@@ -34,6 +34,8 @@ public partial class App : Application
             Logs.Error(temp, e.ExceptionObject as Exception);
             WindowManager.ShowError(temp, e.ExceptionObject as Exception);
         };
+
+        ColorMCGui.StartLock();
     }
 
     public static TopLevel? TopLevel { get; set; }
@@ -95,7 +97,6 @@ public partial class App : Application
             };
         }
 
-        GameSocket.Init();
         UpdateChecker.Init();
         GameCloudUtils.Init(ColorMCGui.RunDir);
         FrpConfigUtils.Init(ColorMCGui.RunDir);

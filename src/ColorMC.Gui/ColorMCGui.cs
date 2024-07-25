@@ -27,6 +27,8 @@ public static class ColorMCGui
         OAuthKey = "aa0dd576-d717-4950-b257-a478d2c20968"
     };
 
+    private static FileStream s_lock;
+
     public static string RunDir { get; private set; }
     public static string[] BaseSha1 { get; private set; }
     public static string InputDir { get; private set; }
@@ -35,6 +37,10 @@ public static class ColorMCGui
 
     public static Func<Control> PhoneGetSetting { get; set; }
     public static Func<FrpType, string> PhoneGetFrp { get; set; }
+    /// <summary>
+    /// 获取一个空闲端口
+    /// </summary>
+    public static Func<int> PhoneGetFreePort { get; set; }
 
     public static bool IsAot { get; private set; }
     public static bool IsMin { get; private set; }
@@ -83,13 +89,13 @@ public static class ColorMCGui
 
         if (args.Length > 0)
         {
-            if (args[0] == "-game" && args.Length != 2)
+            if (args[0] == "-game" && args.Length < 2)
             {
                 return;
             }
             else
             {
-                BaseBinding.SetLaunch(args[1]);
+                BaseBinding.SetLaunch(args[1..]);
             }
         }
 
@@ -97,11 +103,11 @@ public static class ColorMCGui
 
         try
         {
-            if (CheckLock())
+            if (IsLock(out var port))
             {
+                GameSocket.SendMessage(port).Wait();
                 return;
             }
-            StartLock();
 
             s_arg.Local = RunDir;
             ColorMCCore.Init(s_arg);
@@ -111,6 +117,7 @@ public static class ColorMCGui
         }
         catch (Exception e)
         {
+            s_lock?.Dispose();
             PathBinding.OpFile(Logs.Crash("Gui Crash", e));
             App.Close();
         }
@@ -237,9 +244,10 @@ public static class ColorMCGui
             .UsePlatformDetect();
     }
 
-    private static bool CheckLock()
+    private static bool IsLock(out int port)
     {
         var name = RunDir + "lock";
+        port = -1;
         if (File.Exists(name))
         {
             try
@@ -249,10 +257,9 @@ public static class ColorMCGui
             catch
             {
                 using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-                using var writer = new StreamWriter(temp);
-                writer.Write(true);
-                writer.Flush();
-                Environment.Exit(0);
+                byte[] temp1 = new byte[4];
+                temp.ReadExactly(temp1);
+                port = BitConverter.ToInt32(temp1);
                 return true;
             }
         }
@@ -260,39 +267,13 @@ public static class ColorMCGui
         return false;
     }
 
-    private static void StartLock()
+    public static void StartLock()
     {
-        new Thread(() =>
-        {
-            while (!IsClose)
-            {
-                TestLock();
-                if (IsClose)
-                {
-                    return;
-                }
-                App.Show();
-            }
-        })
-        {
-            Name = "ColorMC_Lock"
-        }.Start();
-    }
-
-    private static void TestLock()
-    {
+        GameSocket.Init().Wait();
         string name = RunDir + "lock";
-        using var temp = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-        using var file = MemoryMappedFile.CreateFromFile(temp, null, 100,
-            MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, false);
-        using var reader = file.CreateViewAccessor();
-        reader.Write(0, false);
-        while (!IsClose)
-        {
-            Thread.Sleep(100);
-            var data = reader.ReadBoolean(0);
-            if (data)
-                break;
-        }
+        s_lock = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        var data = BitConverter.GetBytes(GameSocket.Port);
+        s_lock.Write(data);
+        s_lock.Flush();
     }
 }
