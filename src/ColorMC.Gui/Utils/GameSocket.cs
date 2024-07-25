@@ -37,14 +37,14 @@ public static class GameSocket
     private static IChannel _channel;
 
     /// <summary>
-    /// ¿Í»§¶ËĞÅµÀ
+    /// å®¢æˆ·ç«¯ä¿¡é“
     /// </summary>
     private static readonly List<IChannel> _channels = [];
 
     /// <summary>
-    /// »ñÈ¡ËùÓĞÕıÔÚÊ¹ÓÃµÄ¶Ë¿Ú
+    /// è·å–æ‰€æœ‰æ­£åœ¨ä½¿ç”¨çš„ç«¯å£
     /// </summary>
-    /// <returns>¶Ë¿ÚÁĞ±í</returns>
+    /// <returns>ç«¯å£åˆ—è¡¨</returns>
     private static List<int> PortIsUsed()
     {
         var ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
@@ -61,9 +61,9 @@ public static class GameSocket
     }
 
     /// <summary>
-    /// »ñÈ¡Ò»¸öÃ»ÓĞÊ¹ÓÃµÄ¶Ë¿Ú
+    /// è·å–ä¸€ä¸ªæ²¡æœ‰ä½¿ç”¨çš„ç«¯å£
     /// </summary>
-    /// <returns>¶Ë¿Ú</returns>
+    /// <returns>ç«¯å£</returns>
     private static int GetFirstAvailablePort()
     {
         var portUsed = PortIsUsed();
@@ -84,7 +84,7 @@ public static class GameSocket
     }
 
     /// <summary>
-    /// Æô¶¯ÓÎÏ·¶Ë¿Ú·şÎñÆ÷
+    /// å¯åŠ¨æ¸¸æˆç«¯å£æœåŠ¡å™¨
     /// </summary>
     /// <returns></returns>
     private static async Task<int> RunServerAsync()
@@ -128,7 +128,7 @@ public static class GameSocket
     }
 
     /// <summary>
-    /// Í£Ö¹ÓÎÏ·¶Ë¿Ú·şÎñÆ÷
+    /// åœæ­¢æ¸¸æˆç«¯å£æœåŠ¡å™¨
     /// </summary>
     private static async void Stop()
     {
@@ -139,7 +139,7 @@ public static class GameSocket
     }
 
     /// <summary>
-    /// ·¢ËÍÊı¾İµ½ËùÓĞ¿Í»§¶Ë
+    /// å‘é€æ•°æ®åˆ°æ‰€æœ‰å®¢æˆ·ç«¯
     /// </summary>
     /// <param name="byteBuffer"></param>
     private static void SendMessage(IByteBuffer byteBuffer)
@@ -162,6 +162,10 @@ public static class GameSocket
 
     public static async Task SendMessage(int port)
     {
+        if (port <= 0)
+        {
+            return;
+        }
         var group = new MultithreadEventLoopGroup();
         try
         {
@@ -271,19 +275,19 @@ public static class GameSocket
                 {
                     int type = buffer.ReadInt();
 
-                    //ÓÎÏ·ÄÚÊó±ê
+                    //æ¸¸æˆå†…é¼ æ ‡
                     if (type == TypeGameMouseState)
                     {
                         string uuid = buffer.ReadString();
                         var value = buffer.ReadBoolean();
                         GameJoystick.SetMouse(uuid, value);
                     }
-                    //Ç°Ì¨Æô¶¯Æ÷
+                    //å‰å°å¯åŠ¨å™¨
                     else if (type == TypeLaunchShow)
                     {
                         App.Show();
                     }
-                    //Æô¶¯ÓÎÏ·ÊµÀı
+                    //å¯åŠ¨æ¸¸æˆå®ä¾‹
                     else if (type == TypeLaunchStart)
                     {
                         BaseBinding.Launch(buffer.ReadStringList());
