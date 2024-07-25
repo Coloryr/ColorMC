@@ -333,6 +333,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Silk.NET.SDL" Version="2.21.0" />
     <PackageReference Include="SkiaSharp" Version="2.88.8" />
+	<PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
+	<PackageReference Include="DotNetty.Common" Version="0.7.6" />
+	<PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />

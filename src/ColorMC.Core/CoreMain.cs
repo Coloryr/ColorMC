@@ -174,10 +174,6 @@ public static class ColorMCCore
     /// 手机端打开网页
     /// </summary>
     public static Action<string?> PhoneOpenUrl { get; set; }
-    /// <summary>
-    /// 获取一个空闲端口
-    /// </summary>
-    public static Func<int> GetFreePort { get; set; }
 
     /// <summary>
     /// 是否为新运行

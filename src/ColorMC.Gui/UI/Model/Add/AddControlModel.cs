@@ -1038,7 +1038,11 @@ public partial class AddControlModel : GameModel, IAddWindow
                     //添加模组信息
                     ModList.Clear();
                     ModList.AddRange(list.List);
-                    _modsave = (list.Item!, list.Info!);
+                    _modsave = new()
+                    {
+                        Item = list.Item!,
+                        Info = list.Info!
+                    };
                     ModDownloadDisplay = true;
                     ModList.ForEach(item =>
                     {

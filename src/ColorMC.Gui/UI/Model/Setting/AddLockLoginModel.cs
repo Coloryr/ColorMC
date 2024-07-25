@@ -7,7 +7,7 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class AddLockLoginModel : ObservableObject
 {
-    public string[] Items => UserBinding.GetLockLoginType();
+    public string[] Items { get; init; } = LanguageBinding.GetLockLoginType();
 
     [ObservableProperty]
     private int _index;

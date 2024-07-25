@@ -47,13 +47,6 @@ public record ModDownloadRes
     public List<DownloadModModel> List;
 }
 
-public record ModDownloadItemRes
-{
-    public DownloadItemObj Item;
-    public ModInfoObj Info;
-    public ModDisplayModel Model;
-}
-
 public record GetJavaListRes
 {
     public bool Res;
