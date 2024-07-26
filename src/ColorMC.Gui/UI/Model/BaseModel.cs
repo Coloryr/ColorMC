@@ -152,6 +152,11 @@ public partial class BaseModel : ObservableObject
         _info6 = new(Name);
     }
 
+    partial void OnHeadChoiseDisplayChanged(bool value)
+    {
+        
+    }
+
     [RelayCommand]
     public void ChoiseClick()
     {

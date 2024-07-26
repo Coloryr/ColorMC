@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
-using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.Objs;

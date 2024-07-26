@@ -119,10 +119,10 @@ public static class OpenJ9Api
             return null;
         }
 
-        return new() 
+        return new()
         {
-            Arch = arch, 
-            Os = system, 
+            Arch = arch,
+            Os = system,
             MainVersion = mainversion,
             Download = obj2.downloads
         };

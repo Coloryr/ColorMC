@@ -36,7 +36,14 @@ public partial class AddGameModel
     {
         if (value != null)
         {
-            Type = GameBinding.CheckType(value);
+            try
+            {
+                Type = GameBinding.CheckType(value);
+            }
+            catch
+            {
+                Model.Show(App.Lang("AddGameWindow.Tab2.Error4"));
+            }
         }
     }
 

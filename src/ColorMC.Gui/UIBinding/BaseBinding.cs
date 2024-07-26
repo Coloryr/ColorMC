@@ -202,7 +202,7 @@ public static class BaseBinding
         {
             return;
         }
-        
+
         var window = WindowManager.GetMainWindow();
         if (window == null)
         {
@@ -533,7 +533,7 @@ public static class BaseBinding
     /// <returns></returns>
     public static async Task<FrpLaunchRes> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
-        
+
         string file;
         string dir;
         string version = FrpVersion;

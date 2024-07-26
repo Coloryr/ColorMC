@@ -259,11 +259,9 @@ public partial class AddControlModel : GameModel, IAddWindow
             {
                 OptifineDisplay = false;
             });
-            Model.HeadChoiseDisplay = false;
         }
         else
         {
-            Model.HeadChoiseDisplay = true;
             Model.PopBack();
             Type = 0;
             DownloadSource = 0;
@@ -278,11 +276,9 @@ public partial class AddControlModel : GameModel, IAddWindow
             {
                 VersionDisplay = false;
             });
-            Model.HeadChoiseDisplay = false;
         }
         else
         {
-            Model.HeadChoiseDisplay = true;
             Model.PopBack();
         }
     }
@@ -295,11 +291,9 @@ public partial class AddControlModel : GameModel, IAddWindow
             {
                 ModDownloadDisplay = false;
             });
-            Model.HeadChoiseDisplay = false;
         }
         else
         {
-            Model.HeadChoiseDisplay = true;
             Model.PopBack();
             if (_last != null)
             {
