@@ -469,7 +469,7 @@ public static class Launch
             jvm.Add($"-javaagent:{args.JavaAgent.Trim()}");
         }
 
-        if (mixinport > 0 && jvm1.MajorVersion > 8)
+        if (mixinport > 0 && jvm1.MajorVersion >= 8)
         {
             GameHelper.ReadyColorMCASM();
             jvm.Add("-Dcolormc.mixin.port=" + mixinport);
@@ -846,13 +846,13 @@ public static class Launch
         var argDic = new Dictionary<string, string>()
         {
             {"${auth_player_name}", login.UserName },
-            {"${version_name}",version_name },
-            {"${game_directory}",gameDir },
-            {"${assets_root}",assetsPath },
-            {"${assets_index_name}",assetsIndexName },
-            {"${auth_uuid}",login.UUID },
-            {"${auth_access_token}",string.IsNullOrWhiteSpace(login.AccessToken) ? "0" : login.AccessToken },
-            {"${game_assets}",assetsPath },
+            {"${version_name}", version_name },
+            {"${game_directory}", gameDir },
+            {"${assets_root}", assetsPath },
+            {"${assets_index_name}", assetsIndexName },
+            {"${auth_uuid}", login.UUID },
+            {"${auth_access_token}", string.IsNullOrWhiteSpace(login.AccessToken) ? "0" : login.AccessToken },
+            {"${game_assets}", assetsPath },
             {"${user_properties}", "{}" },
             {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "mojang" },
             {"${version_type}", "release" },
@@ -924,7 +924,7 @@ public static class Launch
             return obj.GetLoaderMainClass();
         }
 
-        return "";
+        return version.mainClass;
     }
 
     /// <summary>

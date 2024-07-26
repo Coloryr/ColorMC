@@ -117,10 +117,12 @@ public static class ColorMCGui
         }
         catch (Exception e)
         {
-            s_lock?.Dispose();
             PathBinding.OpFile(Logs.Crash("Gui Crash", e));
             App.Close();
         }
+
+        s_lock.Close();
+        s_lock.Dispose();
     }
 
     public static void Close()
@@ -134,6 +136,8 @@ public static class ColorMCGui
         if (SystemInfo.Os != OsType.Android)
         {
             IsClose = true;
+            s_lock.Close();
+            s_lock.Dispose();
             Thread.Sleep(500);
             Process.Start($"{(SystemInfo.Os == OsType.Windows ?
                     "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");
