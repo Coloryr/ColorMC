@@ -29,8 +29,11 @@ public static class Logs
         s_local = dir;
         try
         {
-            s_writer = File.AppendText(s_local + "logs.log");
-            s_writer.AutoFlush = true;
+            var stream = File.Open(s_local + "logs.log", FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
+            s_writer = new(stream)
+            {
+                AutoFlush = true
+            };
             s_run = true;
             t_log.Start();
         }

@@ -34,8 +34,8 @@ public static class AssetsPath
     /// <param name="dir">运行目录</param>
     public static void Init(string dir)
     {
-        BaseDir = dir + "/" + Name;
-        ObjectsDir = BaseDir + "/" + Name2;
+        BaseDir = Path.GetFullPath(dir + "/" + Name);
+        ObjectsDir = Path.GetFullPath(BaseDir + "/" + Name2);
 
         Directory.CreateDirectory(BaseDir);
 
