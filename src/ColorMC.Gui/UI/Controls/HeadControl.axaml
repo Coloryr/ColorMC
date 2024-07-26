@@ -19,6 +19,7 @@
                 DockPanel.Dock="Right"
                 Orientation="Horizontal">
                 <Button
+                    Name="Choise"
                     Width="80"
                     Height="35"
                     Background="Transparent"

@@ -21,7 +21,7 @@ public static class DownloadItemHelper
 {
     public static SourceType TestSourceType(string? pid, string? fid)
     {
-        return FuntionUtils.CheckNotNumber(pid) || FuntionUtils.CheckNotNumber(fid) 
+        return FuntionUtils.CheckNotNumber(pid) || FuntionUtils.CheckNotNumber(fid)
             ? SourceType.Modrinth : SourceType.CurseForge;
     }
 

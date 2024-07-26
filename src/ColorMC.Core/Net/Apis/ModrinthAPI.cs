@@ -300,7 +300,7 @@ public static class ModrinthAPI
             if (res == null)
                 return;
 
-            list.Add(new() 
+            list.Add(new()
             {
                 Name = res.name,
                 ModId = res.project_id,

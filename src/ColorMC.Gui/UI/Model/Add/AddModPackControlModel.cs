@@ -78,11 +78,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
             {
                 Display = false;
             });
-            Model.HeadChoiseDisplay = false;
         }
         else
         {
-            Model.HeadChoiseDisplay = true;
             Model.PopBack();
         }
     }

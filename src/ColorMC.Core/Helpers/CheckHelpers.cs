@@ -256,7 +256,7 @@ public static class CheckHelpers
                 if (assets == null)
                 {
                     //不存在json文件
-                    var res = await GameAPI.GetAssets(game.assetIndex.url) 
+                    var res = await GameAPI.GetAssets(game.assetIndex.url)
                         ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Launch.Error2"));
                     assets = res.Assets;
                     game.AddIndex(res.Text);

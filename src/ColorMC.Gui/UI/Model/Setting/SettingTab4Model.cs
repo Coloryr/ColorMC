@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ColorMC.Core.Config;
+﻿using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;

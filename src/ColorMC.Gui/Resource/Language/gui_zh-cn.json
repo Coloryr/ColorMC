@@ -654,6 +654,7 @@
 	"AddGameWindow.Tab2.Error1": "导入错误",
 	"AddGameWindow.Tab2.Error2": "没有选择压缩包",
 	"AddGameWindow.Tab2.Error3": "没有选择压缩包类型",
+	"AddGameWindow.Tab2.Error4": "该压缩包无法判断类型",
 	"AddGameWindow.Tab3.Text1": "导入路径",
 	"AddGameWindow.Tab3.Text2": "选择路径",
 	"AddGameWindow.Tab3.Text3": "扫描文件",

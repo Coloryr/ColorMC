@@ -6,7 +6,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UIBinding;
@@ -137,7 +136,7 @@ public static class JavaBinding
 
         return new() { State = true };
     }
-    
+
     /// <summary>
     /// 获取推荐路径
     /// </summary>

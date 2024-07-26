@@ -28,13 +28,13 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Hook;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using ColorMC.Gui.Hook;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using SkiaSharp;
@@ -343,7 +343,7 @@ public static class GameBinding
         if (list.Count == 0)
         {
             return new()
-            { 
+            {
                 Message = App.Lang("GameBinding.Error6")
             };
         }
@@ -460,7 +460,7 @@ public static class GameBinding
         }
 
         return new()
-        { 
+        {
             Done = list2,
             Fail = list1,
             User = user
@@ -859,7 +859,7 @@ public static class GameBinding
         catch (Exception e)
         {
             string temp = string.Format(App.Lang("GameBinding.Error14"), obj.Local);
-            Logs.Error(temp, e); 
+            Logs.Error(temp, e);
             return new() { Message = temp };
         }
     }
@@ -2400,19 +2400,19 @@ public static class GameBinding
                 .AppendLine($"{App.Lang("GameBinding.Info6")}{obj.Version}");
             if (obj.ModPack)
             {
-                info.AppendLine(string.Format(App.Lang("GameBinding.Info12"), 
+                info.AppendLine(string.Format(App.Lang("GameBinding.Info12"),
                     obj.ModPackType.GetName(), obj.PID, obj.FID));
             }
             if (obj.Loader != Loaders.Normal)
             {
                 if (obj.Loader == Loaders.Custom)
                 {
-                    info.AppendLine(string.Format(App.Lang("GameBinding.Info8"), 
+                    info.AppendLine(string.Format(App.Lang("GameBinding.Info8"),
                         GetGameLoader(obj), obj.CustomLoader?.OffLib));
                 }
                 else
                 {
-                    info.AppendLine(string.Format(App.Lang("GameBinding.Info7"), 
+                    info.AppendLine(string.Format(App.Lang("GameBinding.Info7"),
                         obj.Loader.GetName(), obj.LoaderVersion));
                 }
 
@@ -2422,13 +2422,13 @@ public static class GameBinding
 
                     foreach (var item in list)
                     {
-                        info.AppendLine(string.Format(App.Lang("GameBinding.Info10"), 
-                            item.name, item.modid,item.authorList?.MakeString(), 
-                            Path.GetFileName(item.Local), item.Disable, item.CoreMod, 
+                        info.AppendLine(string.Format(App.Lang("GameBinding.Info10"),
+                            item.name, item.modid, item.authorList?.MakeString(),
+                            Path.GetFileName(item.Local), item.Disable, item.CoreMod,
                             item.Sha1, item.Loader.GetName()));
                         if (obj.Mods.Values.FirstOrDefault(item => item.SHA1 == item.SHA1) is { } item1)
                         {
-                            info.AppendLine(string.Format(App.Lang("GameBinding.Info11"), 
+                            info.AppendLine(string.Format(App.Lang("GameBinding.Info11"),
                                 item1.Type.GetName(), item1.ModId, item1.FileId));
                         }
                     }

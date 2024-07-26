@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -507,7 +506,7 @@ public static class WebBinding
             }
         }
 
-        return new() 
+        return new()
         {
             Item = data.MakeModDownloadObj(obj),
             Info = data.MakeModInfo(),
@@ -1108,7 +1107,7 @@ public static class WebBinding
                         Download = res.Download
                     };
                 }
-                break;                 
+                break;
             case 1:
                 return await GetZuluList();
             case 2:
@@ -1129,7 +1128,7 @@ public static class WebBinding
                 {
                     Res = true,
                     Download = GetGraalvmList()
-                };  
+                };
         }
 
         return new();
@@ -1195,11 +1194,11 @@ public static class WebBinding
                 });
             }
 
-            return new() 
+            return new()
             {
                 Res = true,
                 Arch = arch,
-                Os = os, 
+                Os = os,
                 MainVersion = mainversion,
                 Download = list1
             };
