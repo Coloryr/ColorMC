@@ -459,7 +459,7 @@ public static class ThemeManager
             TopGridColor = Brush.Parse("#FFFFFFFF"),
             OverBGColor = Brush.Parse("#FFFFFFFF"),
             OverBrushColor = Brush.Parse("#FFe5e5e5"),
-            SelectItemBG = Brush.Parse("#FFE8E8E8"),
+            SelectItemBG = Brush.Parse("#D1E0E0E0"),
             SelectItemOver = Brush.Parse("#FFCCCCCC"),
         };
 
