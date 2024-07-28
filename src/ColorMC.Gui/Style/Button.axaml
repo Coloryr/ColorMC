@@ -109,7 +109,6 @@
                         ContentTemplate="{TemplateBinding ContentTemplate}"
                         CornerRadius="{TemplateBinding CornerRadius}"
                         RecognizesAccessKey="True" />
-
                 </Panel>
             </ControlTemplate>
         </Setter>
