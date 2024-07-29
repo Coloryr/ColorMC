@@ -368,7 +368,7 @@ public partial class SettingModel
     [RelayCommand]
     public void OpenRunDir()
     {
-        PathBinding.OpPath(PathType.RunPath);
+        PathBinding.OpenPath(PathType.RunPath);
     }
 
     [RelayCommand]

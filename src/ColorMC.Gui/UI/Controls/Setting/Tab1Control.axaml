@@ -62,7 +62,7 @@
                                 Command="{Binding Open1}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="90"
@@ -72,7 +72,7 @@
                                 Command="{Binding Import1}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </StackPanel>
@@ -91,7 +91,7 @@
                                 Command="{Binding Open2}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="90"
@@ -101,7 +101,7 @@
                                 Command="{Binding Import2}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </StackPanel>
@@ -120,7 +120,7 @@
                                 Command="{Binding Open3}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="90"
@@ -130,7 +130,7 @@
                                 Command="{Binding Import3}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </StackPanel>
@@ -149,7 +149,7 @@
                                 Command="{Binding Open4}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
                                 Width="90"
@@ -159,7 +159,7 @@
                                 Command="{Binding Import3}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </StackPanel>

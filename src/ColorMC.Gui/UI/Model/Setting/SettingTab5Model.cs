@@ -142,7 +142,7 @@ public partial class SettingModel
 
     private void OpenJavaPath()
     {
-        PathBinding.OpPath(PathType.JavaPath);
+        PathBinding.OpenPath(PathType.JavaPath);
     }
 
     public void Load(int mainversion)

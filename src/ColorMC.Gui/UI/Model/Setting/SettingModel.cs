@@ -105,6 +105,11 @@ public partial class SettingModel : MenuModel
                     },
                     new SubMenuItemModel()
                     {
+                        Name = App.Lang("SettingWindow.Tab1.Text18"),
+                        Func = DumpUser
+                    },
+                    new SubMenuItemModel()
+                    {
                         Name = App.Lang("SettingWindow.Tab1.Text2"),
                         Func = ClearUser
                     },

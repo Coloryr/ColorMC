@@ -205,7 +205,7 @@ public partial class GameConfigEditModel : GameModel
     public void Open()
     {
         var dir = Obj.GetGamePath();
-        PathBinding.OpFile(Path.GetFullPath(dir + "/" + File));
+        PathBinding.OpenFileWithExplorer(Path.GetFullPath(dir + "/" + File));
     }
 
     [RelayCommand]

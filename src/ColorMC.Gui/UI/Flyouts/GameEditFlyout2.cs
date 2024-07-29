@@ -18,7 +18,7 @@ public class GameEditFlyout2
         [
             (App.Lang("Button.OpFile"), true, ()=>
             {
-                PathBinding.OpPath(_model.World);
+                PathBinding.OpenPath(_model.World);
             }),
             (App.Lang("GameEditWindow.Flyouts.Text11"), CheckHelpers.IsGameVersion120(_model.World.Game.Version), ()=>
             {

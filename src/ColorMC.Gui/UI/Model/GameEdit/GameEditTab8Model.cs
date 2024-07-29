@@ -86,7 +86,7 @@ public partial class GameEditModel
 
     private void OpenResource()
     {
-        PathBinding.OpPath(_obj, PathType.ResourcepackPath);
+        PathBinding.OpenPath(_obj, PathType.ResourcepackPath);
     }
 
     public async void DeleteResource(ResourcepackObj obj)

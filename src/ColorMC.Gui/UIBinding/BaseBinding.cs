@@ -452,7 +452,7 @@ public static class BaseBinding
                 shortcut.Arguments = "-game " + obj.UUID;
                 shortcut.WorkingDirectory = ColorMCGui.RunDir;
                 shortcut.Save();
-                PathBinding.OpFile(file);
+                PathBinding.OpenFileWithExplorer(file);
             }
             catch (Exception e)
             {

@@ -15,7 +15,7 @@ public class GameEditFlyout7
         [
             (App.Lang("Button.OpFile"), true, ()=>
             {
-                PathBinding.OpFile(_model.SchematicItem!.Local);
+                PathBinding.OpenFileWithExplorer(_model.SchematicItem!.Local);
             }),
             (App.Lang("Button.Delete"), true, ()=>
             {

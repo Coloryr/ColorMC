@@ -20,7 +20,7 @@ public class GameEditFlyout3
         [
             (App.Lang("Button.OpFile"), true, ()=>
             {
-                PathBinding.OpFile(_obj.Local);
+                PathBinding.OpenFileWithExplorer(_obj.Local);
             }),
             (App.Lang("GameEditWindow.Flyouts.Text12"), true, ()=>
             {

@@ -15,7 +15,7 @@ public class GameEditFlyout6
         [
             (App.Lang("Button.OpFile"), true, ()=>
             {
-                PathBinding.OpFile(_obj.ShaderpackItem!.Local);
+                PathBinding.OpenFileWithExplorer(_obj.ShaderpackItem!.Local);
             }),
             (App.Lang("Button.Delete"), true, ()=>
             {

@@ -7,6 +7,10 @@
     <Application.Styles>
         <FluentTheme />
         <dialog:DialogHostStyles />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
         <StyleInclude Source="/Style/Svg.axaml" />
         <StyleInclude Source="/Style/Button.axaml" />
         <StyleInclude Source="/Style/RadioButton.axaml" />
@@ -24,12 +28,8 @@
         <StyleInclude Source="/Style/ListBox.axaml" />
         <StyleInclude Source="/Style/Slider.axaml" />
         <StyleInclude Source="/Style/ToggleSwitch.axaml" />
-        <StyleInclude Source="/UI/Views/HyperLink.axaml" />
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
-        <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
-        <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+        <StyleInclude Source="/Style/WindowNotificationManager.axaml" />
         <StyleInclude Source="/Style/ColorPicker.axaml" />
-        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     </Application.Styles>
     <Application.Resources>
         <ResourceDictionary>

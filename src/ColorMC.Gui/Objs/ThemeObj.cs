@@ -45,4 +45,5 @@ public record ThemeObj
     public IBrush OverBrushColor;
     public IBrush SelectItemBG;
     public IBrush SelectItemOver;
+    public IBrush MenuBG;
 }

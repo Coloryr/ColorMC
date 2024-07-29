@@ -15,7 +15,7 @@ public class GameEditFlyout4
         [
             (App.Lang("Button.OpFile"), true, ()=>
             {
-                PathBinding.OpFile(_model.Screenshot);
+                PathBinding.OpenFileWithExplorer(_model.Screenshot);
             }),
             (App.Lang("GameEditWindow.Tab9.Text1"), true, ()=>
             {

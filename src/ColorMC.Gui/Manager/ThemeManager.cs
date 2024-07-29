@@ -8,7 +8,6 @@ using Avalonia.Threading;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 
-
 namespace ColorMC.Gui.Manager;
 
 public static class ThemeManager
@@ -26,15 +25,13 @@ public static class ThemeManager
     private static readonly Random s_random = new();
 
     private static readonly double s_fontTitleSize = 17;
-    private static readonly Thickness s_borderPadding = new(6, 6, 15, 6);
-    private static readonly Thickness s_borderPadding1 = new(6);
 
     private static ThemeObj s_theme;
 
     private static BoxShadows s_buttonShadow;
 
     public static readonly BoxShadows BorderShadows = new(BoxShadow.Parse("0 0 3 1 #1A000000"), [BoxShadow.Parse("0 0 5 -1 #1A000000")]);
-    public static BoxShadows BorderSelecrShadows;
+    public static BoxShadows BorderSelecrShadows { get; private set; }
 
     private static readonly IBrush[] s_colors = [Brush.Parse("#3b82f6"), Brush.Parse("#22c55e"),
         Brush.Parse("#eab308"), Brush.Parse("#ef4444"), Brush.Parse("#a855f7"),
@@ -244,6 +241,10 @@ public static class ThemeManager
         else if (key == "SelectItemOver")
         {
             return s_theme.SelectItemOver;
+        }
+        else if (key == "MenuBG")
+        {
+            return s_theme.MenuBG;
         }
         else if (key == "RandomColor")
         {
@@ -461,6 +462,7 @@ public static class ThemeManager
             OverBrushColor = Brush.Parse("#FFe5e5e5"),
             SelectItemBG = Brush.Parse("#D1E0E0E0"),
             SelectItemOver = Brush.Parse("#FFCCCCCC"),
+            MenuBG = Brush.Parse("#FFF4F4F5"),
         };
 
         s_dark = new()
@@ -485,6 +487,7 @@ public static class ThemeManager
             OverBrushColor = Brush.Parse("#FF1d1d1d"),
             SelectItemBG = Brush.Parse("#FF353535"),
             SelectItemOver = Brush.Parse("#FF454545"),
+            MenuBG = Brush.Parse("#FFF4F4F5"),
         };
     }
 }

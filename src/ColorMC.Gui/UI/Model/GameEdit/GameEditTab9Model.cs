@@ -31,7 +31,7 @@ public partial class GameEditModel
 
     private void OpenScreenshot()
     {
-        PathBinding.OpPath(_obj, PathType.ScreenshotsPath);
+        PathBinding.OpenPath(_obj, PathType.ScreenshotsPath);
     }
 
     private async void ClearScreenshot()

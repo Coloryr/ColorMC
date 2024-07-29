@@ -22,7 +22,7 @@ public partial class GameEditModel
     [RelayCommand]
     public void OpenSchematic()
     {
-        PathBinding.OpPath(_obj, PathType.SchematicsPath);
+        PathBinding.OpenPath(_obj, PathType.SchematicsPath);
     }
 
     public async void LoadSchematic()

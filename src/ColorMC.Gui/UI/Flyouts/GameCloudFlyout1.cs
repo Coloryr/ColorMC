@@ -16,7 +16,7 @@ public class GameCloudFlyout1
         [
             (App.Lang("Button.OpFile"), model.HaveLocal, () =>
             {
-                PathBinding.OpPath(_model.World);
+                PathBinding.OpenPath(_model.World);
             }),
             (App.Lang("GameCloudWindow.Flyouts.Text1"), model.HaveLocal, _model.Upload),
             (App.Lang("GameCloudWindow.Flyouts.Text2"), model.HaveCloud, _model.Download),

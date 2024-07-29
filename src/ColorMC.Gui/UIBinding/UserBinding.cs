@@ -23,7 +23,7 @@ public static class UserBinding
 {
     public static event Action? UserEdit;
 
-    private static readonly List<(AuthType, string)> s_lockUser = [];
+    private static readonly List<UserKeyObj> s_lockUser = [];
     private static bool s_notDisplayUserLock;
 
     /// <summary>
@@ -88,7 +88,7 @@ public static class UserBinding
     /// 获取所有账户
     /// </summary>
     /// <returns></returns>
-    public static Dictionary<(string, AuthType), LoginObj> GetAllUser()
+    public static Dictionary<UserKeyObj, LoginObj> GetAllUser()
     {
         return AuthDatabase.Auths;
     }
@@ -176,9 +176,10 @@ public static class UserBinding
     /// <param name="obj"></param>
     public static void AddLockUser(LoginObj obj)
     {
-        if (!s_lockUser.Contains((obj.AuthType, obj.UUID)))
+        var key = obj.GetKey();
+        if (!s_lockUser.Contains(key))
         {
-            s_lockUser.Add((obj.AuthType, obj.UUID));
+            s_lockUser.Add(key);
         }
     }
 
@@ -188,7 +189,7 @@ public static class UserBinding
     /// <param name="obj"></param>
     public static void UnLockUser(LoginObj obj)
     {
-        s_lockUser.Remove((obj.AuthType, obj.UUID));
+        s_lockUser.Remove(obj.GetKey());
     }
 
     /// <summary>
@@ -198,7 +199,7 @@ public static class UserBinding
     /// <returns></returns>
     public static bool IsLock(LoginObj obj)
     {
-        return s_lockUser.Contains((obj.AuthType, obj.UUID));
+        return s_lockUser.Contains(obj.GetKey());
     }
 
     /// <summary>
@@ -330,7 +331,7 @@ public static class UserBinding
     /// <returns></returns>
     public static bool HaveOnline()
     {
-        return AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
+        return AuthDatabase.Auths.Keys.Any(a => a.Type == AuthType.OAuth);
     }
 
     /// <summary>
@@ -365,7 +366,7 @@ public static class UserBinding
         }
         if (login.AuthType == AuthType.Offline)
         {
-            var have = AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
+            var have = AuthDatabase.Auths.Keys.Any(a => a.Type == AuthType.OAuth);
             if (!have)
             {
                 WebBinding.OpenWeb(WebType.Minecraft);
