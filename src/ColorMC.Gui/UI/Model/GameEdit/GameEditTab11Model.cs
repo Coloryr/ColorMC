@@ -22,7 +22,7 @@ public partial class GameEditModel
 
     private void OpenShaderpack()
     {
-        PathBinding.OpPath(_obj, PathType.ShaderpacksPath);
+        PathBinding.OpenPath(_obj, PathType.ShaderpacksPath);
     }
 
     public async void LoadShaderpack()

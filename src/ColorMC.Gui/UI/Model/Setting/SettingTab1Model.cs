@@ -245,18 +245,27 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab1.Info4"));
     }
 
+    private async void DumpUser()
+    {
+        var res = await PathBinding.SaveFile(FileType.User, null);
+        if (res == true)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab1.Info17"));
+        }
+    }
+
     private void OpenDownloadPath()
     {
-        PathBinding.OpPath(PathType.DownloadPath);
+        PathBinding.OpenPath(PathType.DownloadPath);
     }
 
     private void Open()
     {
-        PathBinding.OpPath(PathType.BasePath);
+        PathBinding.OpenPath(PathType.BasePath);
     }
 
     private void OpenPicPath()
     {
-        PathBinding.OpPath(PathType.PicPath);
+        PathBinding.OpenPath(PathType.PicPath);
     }
 }

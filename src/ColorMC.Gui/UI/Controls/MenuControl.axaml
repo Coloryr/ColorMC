@@ -50,7 +50,7 @@
             <Border
                 HorizontalAlignment="Left"
                 VerticalAlignment="Stretch"
-                Background="{setting:Theme TopBGColor}">
+                Background="{setting:Theme MenuBG}">
                 <Decorator Name="SidePanel2" />
             </Border>
         </Border>

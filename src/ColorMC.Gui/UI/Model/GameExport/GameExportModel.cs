@@ -149,7 +149,7 @@ public partial class GameExportModel : MenuModel
             return;
         }
 
-        PathBinding.OpFile(SelectMod.Obj.Local);
+        PathBinding.OpenFileWithExplorer(SelectMod.Obj.Local);
     }
 
     [RelayCommand]

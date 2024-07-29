@@ -5,22 +5,15 @@ namespace ColorMC.Core.Nbt;
 /// <summary>
 /// 数据输入流
 /// </summary>
-public class DataInputStream : IDisposable
+public class DataInputStream(Stream stream) : IDisposable
 {
-    private readonly Stream _baseStream;
-
-    public DataInputStream(Stream stream)
-    {
-        _baseStream = stream;
-    }
-
     /// <summary>
     /// 读一定长度的字节
     /// </summary>
     /// <param name="bytes">要读的数据</param>
     public void Read(byte[] bytes)
     {
-        _baseStream.ReadExactly(bytes, 0, bytes.Length);
+        stream.ReadExactly(bytes, 0, bytes.Length);
     }
 
     /// <summary>
@@ -39,7 +32,7 @@ public class DataInputStream : IDisposable
     /// <returns>值</returns>
     public byte ReadByte()
     {
-        var temp = _baseStream.ReadByte();
+        var temp = stream.ReadByte();
         if (temp < 0)
             throw new IOException();
 
@@ -53,7 +46,7 @@ public class DataInputStream : IDisposable
     public short ReadShort()
     {
         var temp = new byte[2];
-        _baseStream.ReadExactly(temp, 0, 2);
+        stream.ReadExactly(temp, 0, 2);
         Array.Reverse(temp);
         return BitConverter.ToInt16(temp, 0);
     }
@@ -65,7 +58,7 @@ public class DataInputStream : IDisposable
     public int ReadInt()
     {
         var temp = new byte[4];
-        _baseStream.ReadExactly(temp, 0, 4);
+        stream.ReadExactly(temp, 0, 4);
         Array.Reverse(temp);
         return BitConverter.ToInt32(temp, 0);
     }
@@ -77,7 +70,7 @@ public class DataInputStream : IDisposable
     public long ReadLong()
     {
         var temp = new byte[8];
-        _baseStream.ReadExactly(temp, 0, 8);
+        stream.ReadExactly(temp, 0, 8);
         Array.Reverse(temp);
         return BitConverter.ToInt64(temp, 0);
     }
@@ -89,7 +82,7 @@ public class DataInputStream : IDisposable
     public float ReadFloat()
     {
         var temp = new byte[4];
-        _baseStream.ReadExactly(temp, 0, 4);
+        stream.ReadExactly(temp, 0, 4);
         Array.Reverse(temp);
         return BitConverter.ToSingle(temp, 0);
     }
@@ -101,7 +94,7 @@ public class DataInputStream : IDisposable
     public double ReadDouble()
     {
         var temp = new byte[8];
-        _baseStream.ReadExactly(temp, 0, 8);
+        stream.ReadExactly(temp, 0, 8);
         Array.Reverse(temp);
         return BitConverter.ToDouble(temp, 0);
     }
@@ -116,7 +109,7 @@ public class DataInputStream : IDisposable
         if (length == 0)
             return "";
         var temp = new byte[length];
-        _baseStream.ReadExactly(temp, 0, length);
+        stream.ReadExactly(temp, 0, length);
 
         return Encoding.UTF8.GetString(temp);
     }
@@ -126,7 +119,7 @@ public class DataInputStream : IDisposable
     /// </summary>
     public void Dispose()
     {
-        _baseStream.Dispose();
+        stream.Dispose();
         GC.SuppressFinalize(this);
     }
 }

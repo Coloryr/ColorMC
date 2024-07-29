@@ -60,7 +60,7 @@ public partial class GameEditModel
     [RelayCommand]
     public void OpenMod()
     {
-        PathBinding.OpPath(_obj, PathType.ModPath);
+        PathBinding.OpenPath(_obj, PathType.ModPath);
     }
 
     [RelayCommand]

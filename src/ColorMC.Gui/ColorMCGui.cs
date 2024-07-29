@@ -116,7 +116,7 @@ public static class ColorMCGui
         }
         catch (Exception e)
         {
-            PathBinding.OpFile(Logs.Crash("Gui Crash", e));
+            PathBinding.OpenFileWithExplorer(Logs.Crash("Gui Crash", e));
             App.Close();
         }
 

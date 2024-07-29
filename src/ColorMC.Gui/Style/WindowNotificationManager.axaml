@@ -1,0 +1,16 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <NotificationCard Classes="information">
+                <TextBlock Text="123" />
+            </NotificationCard>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="NotificationCard:information /template/ Panel#PART_HeaderBar">
+        <Setter Property="Background" Value="{setting:Theme MainColor}" />
+    </Style>
+</Styles>

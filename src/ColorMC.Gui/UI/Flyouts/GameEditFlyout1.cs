@@ -54,7 +54,7 @@ public class GameEditFlyout1
             }),
             (App.Lang("Button.OpFile"), single, ()=>
             {
-                PathBinding.OpFile(obj.Local);
+                PathBinding.OpenFileWithExplorer(obj.Local);
             }),
             (App.Lang("GameEditWindow.Flyouts.Text6"), true, async ()=>
             {

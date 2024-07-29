@@ -12,9 +12,9 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public static class AuthDatabase
 {
-    private static readonly ConcurrentDictionary<(string, AuthType), LoginObj> s_auths = new();
+    private static readonly ConcurrentDictionary<UserKeyObj, LoginObj> s_auths = new();
 
-    public static Dictionary<(string, AuthType), LoginObj> Auths => new(s_auths);
+    public static Dictionary<UserKeyObj, LoginObj> Auths => new(s_auths);
 
     public const string Name = "auth.json";
     private static string s_local;
@@ -43,15 +43,7 @@ public static class AuthDatabase
         }
         else
         {
-            string file1 = AppContext.BaseDirectory + Name;
-            if (File.Exists(file1))
-            {
-                PathHelper.MoveFile(file1, s_local);
-            }
-            else
-            {
-                Save();
-            }
+            Save();
         }
     }
 
@@ -69,7 +61,7 @@ public static class AuthDatabase
 
             foreach (var item in list)
             {
-                s_auths.TryAdd((item.UUID, item.AuthType), item);
+                s_auths.TryAdd(item.GetKey(), item);
             }
         }
         catch
@@ -102,13 +94,15 @@ public static class AuthDatabase
             return;
         }
 
-        if (s_auths.ContainsKey((obj.UUID, obj.AuthType)))
+        var key = obj.GetKey();
+
+        if (s_auths.ContainsKey(key))
         {
-            s_auths[(obj.UUID, obj.AuthType)] = obj;
+            s_auths[key] = obj;
         }
         else
         {
-            s_auths.TryAdd((obj.UUID, obj.AuthType), obj);
+            s_auths.TryAdd(key, obj);
         }
 
         Save();
@@ -119,7 +113,7 @@ public static class AuthDatabase
     /// </summary>
     public static LoginObj? Get(string uuid, AuthType type)
     {
-        if (s_auths.TryGetValue((uuid, type), out var item))
+        if (s_auths.TryGetValue(new() { UUID = uuid, Type = type }, out var item))
         {
             return item;
         }
@@ -132,7 +126,7 @@ public static class AuthDatabase
     /// </summary>
     public static void Delete(this LoginObj obj)
     {
-        s_auths.TryRemove((obj.UUID, obj.AuthType), out _);
+        s_auths.TryRemove(obj.GetKey(), out _);
         Save();
     }
 
@@ -141,19 +135,24 @@ public static class AuthDatabase
     /// </summary>
     public static bool LoadData(string dir)
     {
-        var list = JsonConvert.DeserializeObject<List<LoginObj>>(dir);
+        var data = PathHelper.ReadText(dir);
+        if (data == null)
+            return false;
+        var list = JsonConvert.DeserializeObject<List<LoginObj>>(data);
         if (list == null)
             return false;
 
         foreach (var item in list)
         {
-            if (s_auths.ContainsKey((item.UUID, item.AuthType)))
+            var key = item.GetKey();
+
+            if (s_auths.ContainsKey(key))
             {
-                s_auths[(item.UUID, item.AuthType)] = item;
+                s_auths[key] = item;
             }
             else
             {
-                s_auths.TryAdd((item.UUID, item.AuthType), item);
+                s_auths.TryAdd(key, item);
             }
         }
 

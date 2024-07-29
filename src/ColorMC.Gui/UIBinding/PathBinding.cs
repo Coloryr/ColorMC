@@ -74,7 +74,7 @@ public static class PathBinding
     /// 在资源管理器打开路径
     /// </summary>
     /// <param name="item">路径</param>
-    private static void OpPath(string item)
+    private static void OpenPathWithExplorer(string item)
     {
         item = Path.GetFullPath(item);
         switch (SystemInfo.Os)
@@ -96,36 +96,36 @@ public static class PathBinding
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="type">路径类型</param>
-    public static void OpPath(GameSettingObj obj, PathType type)
+    public static void OpenPath(GameSettingObj obj, PathType type)
     {
         switch (type)
         {
             case PathType.ShaderpacksPath:
-                OpPath(obj.GetShaderpacksPath());
+                OpenPathWithExplorer(obj.GetShaderpacksPath());
                 break;
             case PathType.ResourcepackPath:
-                OpPath(obj.GetResourcepacksPath());
+                OpenPathWithExplorer(obj.GetResourcepacksPath());
                 break;
             case PathType.WorldBackPath:
-                OpPath(obj.GetWorldBackupPath());
+                OpenPathWithExplorer(obj.GetWorldBackupPath());
                 break;
             case PathType.SavePath:
-                OpPath(obj.GetSavesPath());
+                OpenPathWithExplorer(obj.GetSavesPath());
                 break;
             case PathType.GamePath:
-                OpPath(obj.GetGamePath());
+                OpenPathWithExplorer(obj.GetGamePath());
                 break;
             case PathType.SchematicsPath:
-                OpPath(obj.GetSchematicsPath());
+                OpenPathWithExplorer(obj.GetSchematicsPath());
                 break;
             case PathType.ScreenshotsPath:
-                OpPath(obj.GetScreenshotsPath());
+                OpenPathWithExplorer(obj.GetScreenshotsPath());
                 break;
             case PathType.ModPath:
-                OpPath(obj.GetModsPath());
+                OpenPathWithExplorer(obj.GetModsPath());
                 break;
             case PathType.BasePath:
-                OpPath(obj.GetBasePath());
+                OpenPathWithExplorer(obj.GetBasePath());
                 break;
         }
     }
@@ -134,24 +134,24 @@ public static class PathBinding
     /// 打开路径
     /// </summary>
     /// <param name="type">路径类型</param>
-    public static void OpPath(PathType type)
+    public static void OpenPath(PathType type)
     {
         switch (type)
         {
             case PathType.BasePath:
-                OpPath(ColorMCCore.BaseDir);
+                OpenPathWithExplorer(ColorMCCore.BaseDir);
                 break;
             case PathType.RunPath:
-                OpPath(AppContext.BaseDirectory);
+                OpenPathWithExplorer(AppContext.BaseDirectory);
                 break;
             case PathType.DownloadPath:
-                OpPath(DownloadManager.DownloadDir);
+                OpenPathWithExplorer(DownloadManager.DownloadDir);
                 break;
             case PathType.JavaPath:
-                OpPath(JvmPath.BaseDir + JvmPath.Name1);
+                OpenPathWithExplorer(JvmPath.BaseDir + JvmPath.Name1);
                 break;
             case PathType.PicPath:
-                OpPath(ImageUtils.Local);
+                OpenPathWithExplorer(ImageUtils.Local);
                 break;
         }
     }
@@ -160,16 +160,16 @@ public static class PathBinding
     /// 打开路径
     /// </summary>
     /// <param name="obj">世界存储</param>
-    public static void OpPath(WorldObj obj)
+    public static void OpenPath(WorldObj obj)
     {
-        OpPath(obj.Local);
+        OpenPathWithExplorer(obj.Local);
     }
 
     /// <summary>
     /// 在资源管理器打开文件
     /// </summary>
     /// <param name="item">文件</param>
-    public static void OpFile(string item)
+    public static void OpenFileWithExplorer(string item)
     {
         switch (SystemInfo.Os)
         {
@@ -281,8 +281,27 @@ public static class PathBinding
 
         switch (type)
         {
-            case FileType.World:
+            case FileType.User:
                 var file = await SaveFile(top,
+                    App.Lang("PathBinding.Text41"), ".json", "user.json");
+                if (file == null)
+                    break;
+
+                try
+                {
+                    var name = file.GetPath();
+                    PathHelper.WriteText(file.GetPath()!,
+                    JsonConvert.SerializeObject(AuthDatabase.Auths.Values, Formatting.Indented));
+
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.Lang("PathBinding.Errro2"), e);
+                    return false;
+                }
+            case FileType.World:
+                file = await SaveFile(top,
                     App.Lang("PathBinding.Text18"), ".zip", "world.zip");
                 if (file == null)
                     break;
@@ -666,7 +685,7 @@ public static class PathBinding
                 s.Add(stream, InstancesPath.Name14);
                 s.CommitUpdate();
 
-                OpFile(name);
+                OpenFileWithExplorer(name);
                 return true;
             }
             catch (Exception e)

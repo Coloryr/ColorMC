@@ -1161,7 +1161,7 @@ public static class GameBinding
         var res = await obj.AddWorldZipAsync(file);
         if (!res)
         {
-            PathBinding.OpFile(file);
+            PathBinding.OpenFileWithExplorer(file);
         }
 
         return res;
@@ -1309,8 +1309,9 @@ public static class GameBinding
     public static void DeleteConfig(GameSettingObj obj)
     {
         obj.JvmArg = null;
-        obj.JvmName = "";
-        obj.JvmLocal = "";
+        obj.JvmName = null;
+        obj.JvmLocal = null;
+        obj.Window = null;
         obj.StartServer = null;
         obj.ProxyHost = null;
         obj.AdvanceJvm = null;

@@ -55,7 +55,7 @@ public partial class GameEditModel
 
     private void OpenBackupWorld()
     {
-        PathBinding.OpPath(_obj, PathType.WorldBackPath);
+        PathBinding.OpenPath(_obj, PathType.WorldBackPath);
     }
 
     private async void BackupWorld()
@@ -112,7 +112,7 @@ public partial class GameEditModel
 
     private void OpenWorld()
     {
-        PathBinding.OpPath(_obj, PathType.SavePath);
+        PathBinding.OpenPath(_obj, PathType.SavePath);
     }
 
     private void AddWorld()

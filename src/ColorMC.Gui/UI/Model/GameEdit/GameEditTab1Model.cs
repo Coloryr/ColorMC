@@ -528,7 +528,7 @@ public partial class GameEditModel
 
     private void OpPath()
     {
-        PathBinding.OpPath(_obj, PathType.BasePath);
+        PathBinding.OpenPath(_obj, PathType.BasePath);
     }
 
     private void OpenServerPack()
