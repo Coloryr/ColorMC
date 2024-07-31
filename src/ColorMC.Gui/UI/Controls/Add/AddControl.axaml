@@ -6,6 +6,7 @@
     xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="600"
     d:DesignWidth="800"
@@ -19,9 +20,9 @@
                     Classes="t2"
                     DockPanel.Dock="Top"
                     IsEnabled="{Binding !IsDownload}">
-                    <StackPanel Margin="15">
-                        <StackPanel IsVisible="{Binding MinMode}">
-                            <DockPanel Margin="0,0,0,10">
+                    <StackPanel Margin="15,15,5,15">
+                        <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                            <DockPanel MinWidth="200" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                                 <ComboBox
                                     Height="30"
@@ -30,34 +31,7 @@
                                     ItemsSource="{Binding TypeList}"
                                     SelectedIndex="{Binding Type}" />
                             </DockPanel>
-                            <DockPanel Margin="0,0,0,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text2}" />
-                                <ComboBox
-                                    Height="30"
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding DownloadSourceList}"
-                                    SelectedIndex="{Binding DownloadSource}" />
-                            </DockPanel>
-                            <DockPanel Margin="0,0,0,10" IsEnabled="{Binding SourceLoad}">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
-                                <ComboBox
-                                    Height="30"
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding GameVersionList}"
-                                    SelectedItem="{Binding GameVersion}" />
-                            </DockPanel>
-                        </StackPanel>
-                        <WrapPanel Name="Panel" IsVisible="{Binding !MinMode}">
-                            <DockPanel Width="180" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
-                                <ComboBox
-                                    Height="30"
-                                    HorizontalAlignment="Stretch"
-                                    IsEnabled="{ReflectionBinding !Set}"
-                                    ItemsSource="{Binding TypeList}"
-                                    SelectedIndex="{Binding Type}" />
-                            </DockPanel>
-                            <DockPanel Width="180" Margin="0,0,10,10">
+                            <DockPanel MinWidth="200" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text2}" />
                                 <ComboBox
                                     Height="30"
@@ -66,8 +40,8 @@
                                     SelectedIndex="{Binding DownloadSource}" />
                             </DockPanel>
                             <DockPanel
-                                Width="180"
-                                Margin="0,0,0,10"
+                                MinWidth="200"
+                                Margin="0,0,10,10"
                                 IsEnabled="{Binding SourceLoad}">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                                 <ComboBox
@@ -76,9 +50,9 @@
                                     ItemsSource="{Binding GameVersionList}"
                                     SelectedItem="{Binding GameVersion}" />
                             </DockPanel>
-                        </WrapPanel>
-                        <StackPanel IsEnabled="{Binding SourceLoad}" IsVisible="{Binding MinMode}">
-                            <DockPanel Margin="0,0,0,10">
+                        </panel:WrapPanelWithStretch>
+                        <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}" IsEnabled="{Binding SourceLoad}">
+                            <DockPanel MinWidth="200" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text4}" />
                                 <ComboBox
                                     Height="30"
@@ -86,7 +60,7 @@
                                     ItemsSource="{Binding SortTypeList}"
                                     SelectedIndex="{Binding SortType}" />
                             </DockPanel>
-                            <DockPanel Margin="0,0,0,10">
+                            <DockPanel MinWidth="200" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text5}" />
                                 <ComboBox
                                     Height="30"
@@ -94,26 +68,8 @@
                                     ItemsSource="{Binding CategorieList}"
                                     SelectedIndex="{Binding Categorie}" />
                             </DockPanel>
-                        </StackPanel>
-                        <WrapPanel IsEnabled="{Binding SourceLoad}" IsVisible="{Binding !MinMode}">
-                            <DockPanel Width="180" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text4}" />
-                                <ComboBox
-                                    Height="30"
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding SortTypeList}"
-                                    SelectedIndex="{Binding SortType}" />
-                            </DockPanel>
-                            <DockPanel Width="180" Margin="0,0,0,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text5}" />
-                                <ComboBox
-                                    Height="30"
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding CategorieList}"
-                                    SelectedIndex="{Binding Categorie}" />
-                            </DockPanel>
-                        </WrapPanel>
-                        <DockPanel IsEnabled="{Binding SourceLoad}">
+                        </panel:WrapPanelWithStretch>
+                        <DockPanel Margin="0,0,10,0" IsEnabled="{Binding SourceLoad}">
                             <StackPanel
                                 Margin="10,0,0,0"
                                 DockPanel.Dock="Right"
@@ -149,7 +105,7 @@
                             </TextBox>
                         </DockPanel>
                         <StackPanel
-                            Margin="0,10,0,0"
+                            Margin="0,10,10,0"
                             HorizontalAlignment="Right"
                             IsVisible="{Binding MinMode}"
                             Orientation="Horizontal">
@@ -176,7 +132,6 @@
                         </StackPanel>
                     </StackPanel>
                 </Border>
-
                 <Panel>
                     <StackPanel>
                         <ItemsControl
