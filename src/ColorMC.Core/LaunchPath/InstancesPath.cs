@@ -994,7 +994,7 @@ public static class InstancesPath
     /// <param name="dir">根目录方式复制</param>
     /// <returns></returns>
     public static async Task CopyFile(this GameSettingObj obj,
-        string local, List<string>? unselect, bool dir)
+        string local, List<string>? unselect, bool dir, ColorMCCore.ZipUpdate? state)
     {
         local = Path.GetFullPath(local);
         var list = PathHelper.GetAllFile(local);
@@ -1006,12 +1006,15 @@ public static class InstancesPath
         var local1 = dir ? obj.GetBasePath() : obj.GetGamePath();
         await Task.Run(() =>
         {
+            int index = 0;
             foreach (var item in list)
             {
                 var path = item.FullName[basel..];
                 var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
                 info.Directory?.Create();
+                state?.Invoke(info.FullName, index, list.Count);
                 PathHelper.CopyFile(item.FullName, info.FullName);
+                index++;
             }
         });
     }

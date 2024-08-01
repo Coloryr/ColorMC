@@ -339,12 +339,13 @@ public partial class MainModel
 
     public async void Launch(ICollection<GameItemModel> list)
     {
-        IsLaunch = true;
         var res = await Model.ShowWait(App.Lang("MainWindow.Info41"));
         if (!res)
         {
             return;
         }
+
+        IsLaunch = true;
 
         var list1 = new List<GameSettingObj>();
         foreach (var item in list)

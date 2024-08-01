@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="600"
     d:DesignWidth="800"
@@ -16,11 +17,11 @@
             Classes="t2"
             DockPanel.Dock="Top">
             <DockPanel>
-                <StackPanel
-                    Margin="15,15,15,-10"
-                    DockPanel.Dock="Top"
-                    IsVisible="{Binding MinMode}">
-                    <DockPanel Margin="0,0,0,10">
+                <panel:WrapPanelWithStretch
+                    Margin="15,15,5,-10"
+                    AutoMax="{Binding MinMode}"
+                    DockPanel.Dock="Top">
+                    <DockPanel MinWidth="150" Margin="0,0,10,10">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text7}" />
                         <ComboBox
                             HorizontalAlignment="Stretch"
@@ -28,21 +29,21 @@
                             SelectedIndex="{Binding TypeIndex}"
                             SelectedItem="{Binding JavaType}" />
                     </DockPanel>
-                    <DockPanel Margin="0,0,0,10">
+                    <DockPanel MinWidth="150" Margin="0,0,10,10">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text2}" />
                         <ComboBox
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding SystemList}"
                             SelectedItem="{Binding System}" />
                     </DockPanel>
-                    <DockPanel Margin="0,0,0,10">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
+                    <DockPanel MinWidth="80" Margin="0,0,10,10">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text8}" />
                         <ComboBox
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding VersionList}"
                             SelectedItem="{Binding Version}" />
                     </DockPanel>
-                    <DockPanel Margin="0,0,0,10">
+                    <DockPanel MinWidth="150" Margin="0,0,10,10">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text4}" />
                         <ComboBox
                             HorizontalAlignment="Stretch"
@@ -50,42 +51,7 @@
                             SelectedIndex="{Binding ArchIndex}"
                             SelectedItem="{Binding Arch}" />
                     </DockPanel>
-                </StackPanel>
-                <WrapPanel
-                    Margin="15,15,15,-10"
-                    DockPanel.Dock="Top"
-                    IsVisible="{Binding !MinMode}">
-                    <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text2}" />
-                        <ComboBox
-                            Width="120"
-                            ItemsSource="{Binding JavaTypeList}"
-                            SelectedIndex="{Binding TypeIndex}"
-                            SelectedItem="{Binding JavaType}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text2}" />
-                        <ComboBox
-                            Width="120"
-                            ItemsSource="{Binding SystemList}"
-                            SelectedItem="{Binding System}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
-                        <ComboBox
-                            Width="70"
-                            ItemsSource="{Binding VersionList}"
-                            SelectedItem="{Binding Version}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text4}" />
-                        <ComboBox
-                            Width="120"
-                            ItemsSource="{Binding ArchList}"
-                            SelectedIndex="{Binding ArchIndex}"
-                            SelectedItem="{Binding Arch}" />
-                    </StackPanel>
-                </WrapPanel>
+                </panel:WrapPanelWithStretch>
                 <TextBlock
                     Margin="15,0,15,15"
                     DockPanel.Dock="Bottom"

@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="450"
@@ -13,11 +14,11 @@
     mc:Ignorable="d">
     <ScrollViewer VerticalScrollBarVisibility="Visible">
         <Border Margin="20,10,20,20" Classes="t2">
-            <DockPanel Margin="15">
+            <DockPanel Margin="15,15,5,15">
                 <Button
                     Width="100"
                     Height="35"
-                    Margin="-2,-2,-3,-2"
+                    Margin="-2,-2,7,-2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Classes="top"
@@ -29,11 +30,11 @@
                 <StackPanel>
                     <TextBox
                         Height="30"
-                        Margin="0,0,0,10"
+                        Margin="0,0,10,10"
                         HorizontalAlignment="Stretch"
                         Text="{Binding Name}"
                         Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
-                    <DockPanel Margin="0,0,0,10">
+                    <DockPanel Margin="0,0,10,10">
                         <Button
                             Width="100"
                             Height="35"
@@ -61,18 +62,15 @@
                             Path="/Resource/Icon/AddMenu/item2.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
                     </StackPanel>
-                    <ComboBox
-                        Margin="0,0,0,10"
-                        HorizontalAlignment="Stretch"
-                        IsVisible="{Binding MinMode}"
-                        ItemsSource="{Binding PackTypeList}"
-                        SelectedIndex="{Binding Type}" />
-                    <ComboBox
-                        Width="200"
-                        Margin="0,0,5,10"
-                        IsVisible="{Binding !MinMode}"
-                        ItemsSource="{Binding PackTypeList}"
-                        SelectedIndex="{Binding Type}" />
+                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding PackTypeList}"
+                                SelectedIndex="{Binding Type}" />
+                        </DockPanel>
+                    </panel:WrapPanelWithStretch>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
@@ -81,40 +79,26 @@
                             Path="/Resource/Icon/GameEdit/svg3.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                     </StackPanel>
-                    <StackPanel IsVisible="{Binding MinMode}">
-                        <ComboBox
-                            Margin="0,0,0,10"
-                            HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding GroupList}"
-                            SelectedItem="{Binding Group}" />
+                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding GroupList}"
+                                SelectedItem="{Binding Group}" />
+                        </DockPanel>
                         <Button
                             Width="100"
                             Height="35"
-                            Margin="-2,-3,-3,7"
+                            Margin="-2,-3,7,7"
                             HorizontalAlignment="Right"
-                            Classes="top"
-                            Command="{Binding AddGroup}"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text9}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                            ToolTip.VerticalOffset="-30" />
-                    </StackPanel>
-                    <WrapPanel IsVisible="{Binding !MinMode}" Orientation="Horizontal">
-                        <ComboBox
-                            Width="200"
-                            Margin="0,0,10,10"
-                            ItemsSource="{Binding GroupList}"
-                            SelectedItem="{Binding Group}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,-3,7"
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding AddGroup}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text84}"
                             ToolTip.VerticalOffset="-30" />
-                    </WrapPanel>
+                    </panel:WrapPanelWithStretch>
                 </StackPanel>
             </DockPanel>
         </Border>
