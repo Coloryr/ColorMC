@@ -121,7 +121,7 @@
                             <Button
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,3,-2"
+                                Margin="-2,-3,-3,-2"
                                 Classes="top"
                                 Command="{Binding LoaderVersionLoad}"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text12}"
@@ -129,7 +129,7 @@
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </panel:WrapPanelWithStretch>
-                    <StackPanel IsEnabled="{Binding CustomLoader}">
+                    <StackPanel IsEnabled="{Binding CustomLoader}" IsVisible="{Binding CustomLoader}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="0,0,0,5" Text="{setting:Localize GameEditWindow.Tab1.Text15}" />
                             <TextBlock Margin="0,0,0,5" Text="{Binding LoaderInfo}" />
@@ -214,24 +214,24 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text51}"
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
-                    <DockPanel>
+                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
                         <TextBlock Width="110" Text="{setting:Localize GameEditWindow.Tab1.Text8}" />
                         <TextBox
                             MinWidth="200"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Stretch"
                             IsEnabled="{Binding ModPack}"
                             Text="{Binding PID}"
                             Watermark="{setting:Localize GameEditWindow.Tab1.Text8}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,10,0,0">
+                    </panel:WrapPanelWithStretch>
+                    <panel:WrapPanelWithStretch Margin="0,10,0,0" AutoMax="{Binding MinMode}">
                         <TextBlock Width="110" Text="{setting:Localize GameEditWindow.Tab1.Text9}" />
                         <TextBox
-                            Width="200"
-                            HorizontalAlignment="Left"
+                            MinWidth="200"
+                            HorizontalAlignment="Stretch"
                             IsEnabled="{Binding ModPack}"
                             Text="{Binding FID}"
                             Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
-                    </DockPanel>
+                    </panel:WrapPanelWithStretch>
                 </StackPanel>
             </Border>
         </StackPanel>
