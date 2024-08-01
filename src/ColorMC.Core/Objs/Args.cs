@@ -165,6 +165,7 @@ public record AddGameArg
     public string? Group;
     public ColorMCCore.Request? Request;
     public ColorMCCore.GameOverwirte? Overwirte;
+    public ColorMCCore.ZipUpdate? State;
 }
 
 /// <summary>

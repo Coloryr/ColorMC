@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="450"
@@ -12,9 +13,9 @@
     x:DataType="model:AddGameModel"
     mc:Ignorable="d">
     <Border Margin="20,10,20,20" Classes="t2">
-        <DockPanel Margin="15">
-            <StackPanel Margin="0,0,0,10" DockPanel.Dock="Top">
-                <DockPanel>
+        <DockPanel Margin="15,15,5,15">
+            <StackPanel DockPanel.Dock="Top">
+                <DockPanel Margin="0,0,10,0">
                     <Button
                         Width="100"
                         Height="35"
@@ -33,11 +34,17 @@
                         Text="{Binding Name}"
                         Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
                 </DockPanel>
-                <DockPanel Margin="0,0,0,10">
+                <panel:WrapPanelWithStretch LeftMax="True">
+                    <TextBox
+                        Height="30"
+                        MinWidth="230"
+                        Margin="0,0,10,10"
+                        HorizontalAlignment="Stretch"
+                        Text="{Binding SelectPath}"
+                        Watermark="{setting:Localize AddGameWindow.Tab3.Text1}" />
                     <StackPanel
-                        Margin="10,0,0,0"
-                        DockPanel.Dock="Right"
-                        IsVisible="{Binding !MinMode}"
+                        Margin="0,0,10,10"
+                        HorizontalAlignment="Right"
                         Orientation="Horizontal">
                         <Button
                             Width="100"
@@ -58,86 +65,40 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text88}"
                             ToolTip.VerticalOffset="-30" />
                     </StackPanel>
-                    <TextBox
-                        Height="30"
+                </panel:WrapPanelWithStretch>
+                <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
+                    <svg:SvgControl
+                        Width="24"
+                        Height="24"
+                        Margin="0,0,5,0"
+                        Path="/Resource/Icon/GameEdit/svg3.svg" />
+                    <TextBlock
                         Margin="0,0,0,0"
-                        HorizontalAlignment="Stretch"
-                        Text="{Binding SelectPath}"
-                        Watermark="{setting:Localize AddGameWindow.Tab3.Text1}" />
-                </DockPanel>
-                <StackPanel
-                    Margin="0,0,0,10"
-                    HorizontalAlignment="Right"
-                    IsVisible="{Binding MinMode}"
-                    Orientation="Horizontal">
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-2,-3,-2"
-                        Classes="top"
-                        Command="{Binding SelectLocal}"
-                        Content="{setting:Localize AddGameWindow.Tab3.Text2}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text87}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="7,-2,-3,-2"
-                        Classes="top"
-                        Command="{Binding RefashFiles}"
-                        Content="{setting:Localize AddGameWindow.Tab3.Text3}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text88}"
-                        ToolTip.VerticalOffset="-30" />
+                        FontSize="{setting:Style FontTitle}"
+                        Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                 </StackPanel>
-                <DockPanel>
-                    <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameEdit/svg3.svg" />
-                        <TextBlock
-                            Margin="0,0,0,0"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
-                    </StackPanel>
-                    <DockPanel IsVisible="{Binding !MinMode}">
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,-3,7"
-                            Classes="top"
-                            Command="{Binding AddGroup}"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text9}"
-                            DockPanel.Dock="Right"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                            ToolTip.VerticalOffset="-30" />
+                <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                    <DockPanel MinWidth="230" Margin="0,0,10,10">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
                         <ComboBox
-                            Margin="0,0,10,10"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding GroupList}"
                             SelectedItem="{Binding Group}" />
                     </DockPanel>
-                </DockPanel>
-                <DockPanel IsVisible="{Binding MinMode}">
                     <Button
                         Width="100"
                         Height="35"
-                        Margin="-2,-3,-3,7"
+                        Margin="-2,-3,7,7"
+                        HorizontalAlignment="Right"
                         Classes="top"
                         Command="{Binding AddGroup}"
                         Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                         DockPanel.Dock="Right"
                         ToolTip.Tip="{setting:Localize ToolTip.Text84}"
                         ToolTip.VerticalOffset="-30" />
-                    <ComboBox
-                        Margin="0,0,10,10"
-                        HorizontalAlignment="Stretch"
-                        ItemsSource="{Binding GroupList}"
-                        SelectedItem="{Binding Group}" />
-                </DockPanel>
+                </panel:WrapPanelWithStretch>
             </StackPanel>
-            <TreeDataGrid Source="{Binding Files}" />
+            <TreeDataGrid Margin="0,0,10,0" Source="{Binding Files}" />
         </DockPanel>
     </Border>
 </UserControl>

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Threading;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -117,7 +118,7 @@ public partial class AddGameModel
 
         Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
         var res = await GameBinding.AddGame(Name, SelectPath, _fileModel.GetUnSelectItems(),
-            Group, Tab2GameRequest, Tab2GameOverwirte, true);
+            Group, Tab2GameRequest, Tab2GameOverwirte, Update, true);
         Model.ProgressClose();
 
         if (!res)
@@ -170,7 +171,7 @@ public partial class AddGameModel
         foreach (var item in list)
         {
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
-            var res = await GameBinding.AddGame(null, item, null, Group, Tab2GameRequest, Tab2GameOverwirte, false);
+            var res = await GameBinding.AddGame(null, item, null, Group, Tab2GameRequest, Tab2GameOverwirte, Update, false);
             Model.ProgressClose();
 
             if (!res)
@@ -189,5 +190,18 @@ public partial class AddGameModel
             model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
             WindowClose();
         }
+    }
+
+    private void Update(string text, int size, int all)
+    {
+        if (text.Length > 40)
+        {
+            text = "..." + text[^40..];
+        }
+        Dispatcher.UIThread.Post(() =>
+        {
+            Model.ProgressUpdate(text);
+            Model.ProgressUpdate((double)size / all * 100);
+        });
     }
 }

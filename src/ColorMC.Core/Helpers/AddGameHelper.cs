@@ -110,7 +110,7 @@ public static class AddGameHelper
             };
         }
 
-        await game.CopyFile(arg.Local, arg.Unselect, ismmc);
+        await game.CopyFile(arg.Local, arg.Unselect, ismmc, arg.State);
 
         return new GameRes
         {

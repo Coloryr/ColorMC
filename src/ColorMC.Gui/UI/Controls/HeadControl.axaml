@@ -60,7 +60,8 @@
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 CornerRadius="5"
-                DockPanel.Dock="Left">
+                DockPanel.Dock="Left"
+                IsHitTestVisible="False">
                 <Border.Background>
                     <ImageBrush Source="{Binding Icon}" Stretch="UniformToFill" />
                 </Border.Background>
@@ -69,12 +70,14 @@
                 Name="TitleShow"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
+                IsHitTestVisible="False"
                 Text="{Binding Title}"
                 TextTrimming="CharacterEllipsis" />
             <TextBlock
                 Name="TitleShow1"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
+                IsHitTestVisible="False"
                 Text="{Binding Title1}"
                 TextTrimming="CharacterEllipsis" />
         </DockPanel>

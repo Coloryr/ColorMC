@@ -17,10 +17,10 @@
             TextWrapping="Wrap" />
         <ProgressBar
             Height="10"
-            CornerRadius="20"
             Margin="0,10,0,0"
+            CornerRadius="20"
             IsIndeterminate="{Binding Indeterminate}"
-            ShowProgressText="{Binding !Indeterminate}"
+            ShowProgressText="False"
             Value="{Binding Value}" />
     </StackPanel>
 </UserControl>
