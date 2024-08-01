@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
@@ -74,7 +74,6 @@ public class WrapPanelWithStretch : Panel
                 totalWidth = 0;
             }
 
-            child.Measure(new Size(minWidth, double.PositiveInfinity));
             totalWidth += minWidth;
             lineHeight = Math.Max(lineHeight, childSize.Height);
         }
@@ -90,108 +89,119 @@ public class WrapPanelWithStretch : Panel
         double totalHeight = 0;
         double lineHeight = 0;
 
+        //上一个控件的高度
         double widthToUse = 0;
         Control? last = null;
         bool left = LeftMax;
-        var size = new Rect();
+        bool right = AutoMax;
         var controls = new Stack<(Control con, Rect size)>();
 
         foreach (var child in Children)
         {
             var childSize = child.DesiredSize;
+            //控件占用的宽度
             double minWidth = GetWidth(child);
 
             lineHeight = Math.Max(lineHeight, childSize.Height);
 
+            //是否需要换行
             if (totalWidth + minWidth > finalSize.Width)
             {
+                //最左边的最大
                 if (left)
                 {
                     totalWidth = finalSize.Width;
+                    //从右往左排序
                     while (controls.TryPop(out var item))
                     {
-                        minWidth = GetWidth(child);
-
+                        //是否是最左边的
                         if (controls.Count == 0)
                         {
-                            size = new Rect(0, totalHeight, totalWidth, lineHeight);
-                            item.con.Arrange(size);
+                            item.con.Arrange(new(0, totalHeight, totalWidth, lineHeight));
                         }
                         else
                         {
-                            totalWidth -= minWidth;
-                            size = new Rect(totalWidth, totalHeight, minWidth, lineHeight);
-                            item.con.Arrange(size);
+                            totalWidth -= item.size.Width;
+                            item.con.Arrange(new(totalWidth, totalHeight, item.size.Width, lineHeight));
                         }
                     }
                 }
                 else
                 {
+                    //设置为最大高度
                     while (controls.TryPop(out var item))
                     {
                         item.con.Arrange(new(item.size.X, item.size.Y, item.size.Width, lineHeight));
                     }
 
-                    if (last != null && AutoMax)
+                    //是否是最右边的
+                    if (last != null && right)
                     {
-                        last.Arrange(new Rect(totalWidth - widthToUse, totalHeight, 
+                        last.Arrange(new(totalWidth - widthToUse, totalHeight, 
                             finalSize.Width - totalWidth + widthToUse, lineHeight));
                         last = null;
                     }
                 }
+
                 totalHeight += lineHeight;
                 totalWidth = 0;
             }
 
+            //是否是最后一个控件
             if (child == Children[^1])
             {
+                //左边控件最大
                 if (left)
                 {
                     controls.Push((child, new()));
                     totalWidth = finalSize.Width;
+                    //从右往左排序
                     while (controls.TryPop(out var item))
                     {
-                        minWidth = GetWidth(child);
                         if (controls.Count == 0)
                         {
-                            size = new Rect(0, totalHeight,
-                            totalWidth, child.DesiredSize.Height);
-                            item.con.Arrange(size);
+                            item.con.Arrange(new(0, totalHeight, totalWidth, lineHeight));
                         }
                         else
                         {
-                            totalWidth -= minWidth;
-                            size = new Rect(totalWidth, totalHeight, minWidth, lineHeight);
-                            item.con.Arrange(size);
+                            totalWidth -= item.size.Width;
+                            item.con.Arrange(new(totalWidth, totalHeight, item.size.Width, lineHeight));
                         }
                     }
-                    
-                }
-                else if (AutoMax)
-                {
-                    size = new Rect(totalWidth, totalHeight, finalSize.Width - totalWidth, lineHeight);
-                    child.Arrange(size);
                 }
                 else
                 {
-                    widthToUse = minWidth;
-                    size = new Rect(totalWidth, totalHeight, widthToUse, lineHeight);
-                    child.Arrange(size);
+                    //设置这行所有控件最大高度
+                    while (controls.TryPop(out var item))
+                    {
+                        item.con.Arrange(new(item.size.X, item.size.Y, item.size.Width, lineHeight));
+                    }
+
+                    //右边控件最大
+                    if (right)
+                    {
+                        child.Arrange(new(totalWidth, totalHeight, finalSize.Width - totalWidth, lineHeight));
+                    }
+                    //默认排序
+                    else
+                    {
+                        child.Arrange(new(totalWidth, totalHeight, minWidth, lineHeight));
+                    }
                 }
             }
             else
             {
                 widthToUse = minWidth;
-                size = new Rect(totalWidth, totalHeight, widthToUse, lineHeight);
+                var size = new Rect(totalWidth, totalHeight, widthToUse, lineHeight);
                 child.Arrange(size);
                 totalWidth += widthToUse;
-            }
 
-            controls.Push((child, size));
+                controls.Push((child, size));
 
-            if (!left)
-            {
-                last = child;
+                if (!left)
+                {
+                    last = child;
+                }
             }
         }
 
