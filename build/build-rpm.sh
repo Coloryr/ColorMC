@@ -135,7 +135,7 @@ build_rpm_min()
             $bindir/colormc/$line
     done
 
-    rpmbuild -bb --target=$2 $base_dir/SPECS/build.spec --define "_topdir %{getenv:PWD}/src/build_out/$1-dotnet/colormc_rpm"
+    rpmbuild -bb --target=$2 $base_dir/SPECS/build.spec --define "_topdir %{getenv:PWD}/src/build_out/$1-min/colormc_rpm"
 
     cp $base_dir/RPMS/$2/colormc-$version-1.$2.rpm ./build_out/$rpm
 
