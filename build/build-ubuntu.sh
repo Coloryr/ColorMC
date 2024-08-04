@@ -173,6 +173,8 @@ build_appimage_aot()
     appimg=colormc-linux-$main_version$version-aot-$1.AppImage
     
     build_dir=$build_run/$1
+    
+    mkdir $build_dir
 
     echo "build $appimg"
 
@@ -203,6 +205,8 @@ build_appimage_min()
     appimg=colormc-linux-$main_version$version-min-$1.AppImage
     
     build_dir=$build_run/$1
+
+    mkdir $build_dir
 
     echo "build $appimg"
 
