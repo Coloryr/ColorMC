@@ -138,11 +138,17 @@ if [ ! -f "$build_run/deb2appimage.AppImage" ];then
     mv ./deb2appimage-0.0.5-x86_64.AppImage $build_run/deb2appimage.AppImage
 fi
 
+chmod a+x $build_run/deb2appimage.AppImage
+
+sudo apt-get install libfuse2 curl -y
+
 build_appimage()
 {
     appimg=colormc-linux-$main_version$version-$1.AppImage
     
     build_dir=$build_run/$1
+    
+    mkdir $build_dir
 
     echo "build $appimg"
 
@@ -154,10 +160,6 @@ build_appimage()
     sed -i "s/%version%/$main_version$version/g" $build_dir/appimg.json
     sed -i "s/%arch%/$arch/g" $build_dir/appimg.json
     sed -i "s/%deb_name%/$deb_name/g" $build_dir/appimg.json
-
-    chmod a+x $build_dir/deb2appimage.AppImage
-
-    sudo apt-get install libfuse2 curl -y
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
@@ -187,10 +189,6 @@ build_appimage_aot()
     sed -i "s/%arch%/$arch/g" $build_dir/appimg.json
     sed -i "s/%deb_name%/$deb_name/g" $build_dir/appimg.json
 
-    chmod a+x $build_dir/deb2appimage.AppImage
-
-    sudo apt-get install libfuse2 curl -y
-
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
     sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$1.AppImage
@@ -218,10 +216,6 @@ build_appimage_min()
     sed -i "s/%version%/$main_version$version/g" $build_dir/appimg.json
     sed -i "s/%arch%/$arch/g" $build_dir/appimg.json
     sed -i "s/%deb_name%/$deb_name/g" $build_dir/appimg.json
-
-    chmod a+x $build_dir/deb2appimage.AppImage
-
-    sudo apt-get install libfuse2 curl -y
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
