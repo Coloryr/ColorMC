@@ -66,8 +66,7 @@ build_osx_min()
     base=./src/build_out/$1-min
     base_dir="$base/ColorMC.app/Contents"
 
-
-    dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1
+    dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1-min
 
     mkdir $base/ColorMC.app
     mkdir $base_dir
