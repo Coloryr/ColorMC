@@ -180,4 +180,75 @@ public partial class AddGameModel : TopModel
         _fileModel = null!;
         Files = null!;
     }
+
+    /// <summary>
+    /// 请求
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    private async Task<bool> GameOverwirte(GameSettingObj obj)
+    {
+        Model.ProgressClose();
+        var test = await Model.ShowWait(
+            string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
+        Model.Progress();
+        return test;
+    }
+
+    /// <summary>
+    /// 请求
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
+    private async Task<bool> GameRequest(string text)
+    {
+        Model.ProgressClose();
+        var test = await Model.ShowWait(text);
+        Model.Progress();
+        return test;
+    }
+
+    /// <summary>
+    /// 添加进度
+    /// </summary>
+    /// <param name="state"></param>
+    private void PackState(CoreRunState state)
+    {
+        if (state == CoreRunState.Read)
+        {
+            Model.Progress(App.Lang("AddGameWindow.Tab2.Info1"));
+        }
+        else if (state == CoreRunState.Init)
+        {
+            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info2"));
+        }
+        else if (state == CoreRunState.GetInfo)
+        {
+            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info3"));
+        }
+        else if (state == CoreRunState.Download)
+        {
+            Model.ProgressUpdate(-1);
+            if (!ConfigBinding.WindowMode())
+            {
+                Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info4"));
+            }
+            else
+            {
+                Model.ProgressClose();
+            }
+        }
+        else if (state == CoreRunState.DownloadDone)
+        {
+            if (ConfigBinding.WindowMode())
+            {
+                Model.Progress(App.Lang("AddGameWindow.Tab2.Info4"));
+            }
+        }
+        else if (state == CoreRunState.End)
+        {
+            Name = "";
+            Group = "";
+        }
+    }
 }

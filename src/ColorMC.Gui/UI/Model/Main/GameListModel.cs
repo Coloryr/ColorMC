@@ -35,6 +35,11 @@ public partial class MainModel
     [ObservableProperty]
     private string _gameSearchText;
 
+    [ObservableProperty]
+    private string _lastGameName;
+    [ObservableProperty]
+    private bool _haveLast;
+
     partial void OnGameSearchTextChanged(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -90,6 +95,21 @@ public partial class MainModel
     {
         _isCancel = true;
         _semaphore.Release();
+    }
+
+    [RelayCommand]
+    public void LaunchLast()
+    {
+        if (!HaveLast)
+        {
+            return;
+        }
+
+        if (Game != null)
+        {
+            Launch(Game);
+        }
+        HaveLast = false;
     }
 
     public void IconChange(string uuid)
@@ -257,6 +277,11 @@ public partial class MainModel
 
                 Select(last);
             }
+            if (last != null)
+            {
+                HaveLast = true;
+                LastGameName = string.Format(App.Lang("MainWindow.Text26"), last.Name);
+            }
         }
 
         OnPropertyChanged(SwitchView);
@@ -264,6 +289,7 @@ public partial class MainModel
 
     public void Select(GameItemModel? obj)
     {
+        HaveLast = false;
         if (Game != null)
         {
             Game.IsSelect = false;

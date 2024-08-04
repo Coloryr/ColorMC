@@ -118,7 +118,7 @@ public partial class AddGameModel
 
         Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
         var res = await GameBinding.AddGame(Name, SelectPath, _fileModel.GetUnSelectItems(),
-            Group, Tab2GameRequest, Tab2GameOverwirte, Update, true);
+            Group, GameRequest, GameOverwirte, Update, true);
         Model.ProgressClose();
 
         if (!res)
@@ -171,7 +171,7 @@ public partial class AddGameModel
         foreach (var item in list)
         {
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
-            var res = await GameBinding.AddGame(null, item, null, Group, Tab2GameRequest, Tab2GameOverwirte, Update, false);
+            var res = await GameBinding.AddGame(null, item, null, Group, GameRequest, GameOverwirte, Update, false);
             Model.ProgressClose();
 
             if (!res)

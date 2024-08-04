@@ -191,6 +191,6 @@ public static class UpdateChecker
         {
             return;
         }
-        window.Model.Show(App.Lang("SettingWindow.Tab3.Error2"));
+        window.Model.Notify(App.Lang("SettingWindow.Tab3.Error2"));
     }
 }

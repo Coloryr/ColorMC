@@ -153,7 +153,7 @@ public class WrapPanelWithStretch : Panel
                 //左边控件最大
                 if (left)
                 {
-                    controls.Push((child, new()));
+                    controls.Push((child, new(0, 0, minWidth, lineHeight)));
                     totalWidth = finalSize.Width;
                     //从右往左排序
                     while (controls.TryPop(out var item))
