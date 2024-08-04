@@ -51,6 +51,7 @@ build_osx()
     cd ./src/build_out/$1-dotnet
     zip -r $zip_name ./ColorMC.app
     mv $zip_name ../../../build_out/$zip_name
+    cd ../../../
 
     echo "$zip_name build done"
 }
@@ -93,6 +94,7 @@ build_osx_min()
     cd ./src/build_out/$1-min
     zip -r $zip_name ./ColorMC.app
     mv $zip_name ../../../build_out/$zip_name
+    cd ../../../
 
     echo "$zip_name build done"
 }
