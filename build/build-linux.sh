@@ -37,7 +37,7 @@ build_linux_min()
 {
     echo "build colormc-$main_version$version-$1-min version: $version"
 
-    dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1-aot
+    dotnet publish ./src/ColorMC.Launcher -p:PublishProfile=$1-min
 
     echo "colormc-$main_version$version-$1-min build done"
 }
