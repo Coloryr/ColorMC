@@ -47,4 +47,4 @@ build_linux linux-arm64
 build_linux_min linux-x64
 build_linux_min linux-arm64
 build_linux_aot linux-x64
-build_linux_aot linux-arm64
+# build_linux_aot linux-arm64
