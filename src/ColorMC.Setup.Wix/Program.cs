@@ -23,6 +23,24 @@ namespace ColorMC.Setup.Wix
                             new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
         }
 
+        private static Dir BuildX64Min()
+        {
+            return new Dir(@"%ProgramFiles%\ColorMC",
+                            new File(@"..\build_out\win-x64-min\ColorMC.Launcher.exe",
+                                new FileShortcut("ColorMC") { WorkingDirectory = "[INSTALLDIR]" }),
+                            new File(@"..\build_out\win-x64-min\ColorMC.Core.pdb"),
+                            new File(@"..\build_out\win-x64-min\ColorMC.Gui.pdb"),
+                            new File(@"..\build_out\win-x64-min\Live2DCSharpSDK.App.pdb"),
+                            new File(@"..\build_out\win-x64-min\Live2DCSharpSDK.Framework.pdb"),
+                            new File(@"..\build_out\win-x64-min\ColorMC.Launcher.pdb"),
+                            new File(@"..\build_out\win-x64-min\av_libglesv2.dll"),
+                            new File(@"..\build_out\win-x64-min\libHarfBuzzSharp.dll"),
+                            new File(@"..\build_out\win-x64-min\libSkiaSharp.dll"),
+                            new File(@"..\build_out\win-x64-min\SDL2.dll"),
+                            new File(@"..\build_out\win-x64-min\X11.pdb"),
+                            new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
+        }
+
         private static Dir BuildX64AOT()
         {
             return new Dir(@"%ProgramFiles%\ColorMC",
@@ -81,7 +99,7 @@ namespace ColorMC.Setup.Wix
                 Platform = platform,
                 BannerImage = "game.png",
                 BackgroundImage = "game.png",
-                Version = new Version(1, 25),
+                Version = new Version(1, 28),
                 Description = "A Minecraft Launcher"
             };
 
@@ -115,8 +133,10 @@ namespace ColorMC.Setup.Wix
         {
             Build(BuildX64(), "colormc-x64", Platform.x64);
             Build(BuildX64AOT(), "colormc-x64-aot", Platform.x64);
+            Build(BuildX64Min(), "colormc-x64-min", Platform.x64);
             //Build(BuildArm64(), "colormc-arm64", Platform.arm64);
             //Build(BuildArm64AOT(), "colormc-arm64-aot", Platform.arm64);
+            //Build(BuildX64Min(), "colormc-x64-min", Platform.arm64);
         }
     }
 }
