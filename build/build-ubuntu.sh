@@ -170,7 +170,7 @@ build_appimage()
 
 build_appimage_aot()
 {
-    appimg=colormc-linux-$main_version$version-$1.AppImage
+    appimg=colormc-linux-$main_version$version-aot-$1.AppImage
     
     build_dir=$build_run/$1
 
@@ -200,7 +200,7 @@ build_appimage_aot()
 
 build_appimage_min()
 {
-    appimg=colormc-linux-$main_version$version-$1.AppImage
+    appimg=colormc-linux-$main_version$version-min-$1.AppImage
     
     build_dir=$build_run/$1
 

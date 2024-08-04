@@ -57,7 +57,7 @@ build_osx()
 
 build_osx_min()
 {
-    zip_name="colormc-macos-$main_version$version-$2-min.zip"
+    zip_name="colormc-macos-$main_version$version-min-$2.zip"
 
     echo "build $zip_name"
 

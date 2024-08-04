@@ -162,6 +162,18 @@ jobs:
         name: "colormc-linux-x86_64-appimage"
         path: build_out/colormc-linux-${{ env.MAINVERSION }}${{ env.VERSION }}-x86_64.AppImage
 
+    - name: 上传 colormc-linux-aot-x86_64-appimage
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-linux-aot-x86_64-appimage"
+        path: build_out/colormc-linux-${{ env.MAINVERSION }}${{ env.VERSION }}-aot-x86_64.AppImage
+
+    - name: 上传 colormc-linux-min-x86_64-appimage
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-linux-min-x86_64-appimage"
+        path: build_out/colormc-linux-${{ env.MAINVERSION }}${{ env.VERSION }}-min-x86_64.AppImage
+
   build-macos:
     runs-on: ubuntu-latest
     steps:
@@ -185,11 +197,29 @@ jobs:
         chmod a+x ./build/build-macos.sh
         ./build/build-macos.sh
 
-    - name: 上传 ZIP
+    - name: 上传 colormc-macos-x86_64
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-macos-x64"
-        path: build_out/
+        name: "colormc-macos-x86_64"
+        path: build_out/colormc-macos-${{ env.MAINVERSION }}${{ env.VERSION }}-x86_64.zip
+
+    - name: 上传 colormc-macos-min-x86_64
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-macos-min-x86_64"
+        path: build_out/colormc-macos-${{ env.MAINVERSION }}${{ env.VERSION }}-min-x86_64.zip
+
+    - name: 上传 colormc-macos-aarch64
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-macos-aarch64"
+        path: build_out/colormc-macos-${{ env.MAINVERSION }}${{ env.VERSION }}-aarch64.zip
+
+    - name: 上传 colormc-macos-min-aarch64
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-macos-min-aarch64"
+        path: build_out/colormc-macos-${{ env.MAINVERSION }}${{ env.VERSION }}-min-aarch64.zip
 
   build-windows:
     runs-on: windows-latest
@@ -201,6 +231,8 @@ jobs:
       run: |
         $version = Get-Content ./build/version
         echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        $mainversion = Get-Content ./build/main_version
+        echo "MAINVERSION=$mainversion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
@@ -228,45 +260,66 @@ jobs:
       run: |
         cd .\src\ColorMC.Setup.Wix
         dotnet build
+        COPY src\ColorMC.Setup.Wix\colormc-x64.msi src\ColorMC.Setup.Wix\colormc-windows-${{ env.MAINVERSION }}${{ env.VERSION }}-x64.msi 
+        COPY src\ColorMC.Setup.Wix\colormc-x64-aot.msi src\ColorMC.Setup.Wix\colormc-windows-${{ env.MAINVERSION }}${{ env.VERSION }}-aot-x64.msi 
+        COPY src\ColorMC.Setup.Wix\colormc-x64-min.msi src\ColorMC.Setup.Wix\colormc-windows-${{ env.MAINVERSION }}${{ env.VERSION }}-min-x64.msi 
 
-    - name: 上传
+    - name: 上传 colormc-windows-x64-msi
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-x64-msi"
-        path: src/ColorMC.Setup.Wix/colormc-x64.msi
+        path: src/ColorMC.Setup.Wix/colormc-windows-${{ env.MAINVERSION }}${{ env.VERSION }}-x64.msi
 
-    - name: 上传
+    - name: 上传 colormc-windows-x64-aot-msi
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-x64-aot-msi"
-        path: src/ColorMC.Setup.Wix/colormc-x64-aot.msi
+        path: src/ColorMC.Setup.Wix/colormc-windows-${{ env.MAINVERSION }}${{ env.VERSION }}-aot-x64.msi
 
-    - name: 上传
+    - name: 上传 colormc-windows-x64-min-msi
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-windows-x64"
+        name: "colormc-windows-x64-min-msi"
+        path: src/ColorMC.Setup.Wix/colormc-windows-${{ env.MAINVERSION }}${{ env.VERSION }}-min-x64.msi
+
+    - name: 上传 colormc-windows-x86_64
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-x86_64"
         path: src/build_out/win-x64-dotnet/colormc/**
     
-    - name: 上传
+    - name: 上传 colormc-windows-aot-x86_64
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-aot-x86_64"
+        path: src/build_out/win-x64-aot/colormc/**
+
+    - name: 上传 colormc-windows-min-x86_64
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-min-x86_64"
+        path: src/build_out/win-x64-min/colormc/**
+
+    - name: 上传 colormc-windows-x86
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-x86"
         path: src/build_out/win-x86-dotnet/colormc/**
 
-    - name: 上传
+    - name: 上传 colormc-windows-arm64
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-arm64"
         path: src/build_out/win-arm64-dotnet/colormc/**
 
-    - name: 上传
+    - name: 上传 colormc-windows-aot-arm64
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-windows-x64-aot"
-        path: src/build_out/win-x64-aot/colormc/**
-
-    - name: 上传
-      uses: actions/upload-artifact@v4
-      with:
-        name: "colormc-windows-arm64-aot"
+        name: "colormc-windows-aot-arm64"
         path: src/build_out/win-arm64-aot/colormc/**
+
+    - name: 上传 colormc-windows-min-arm64
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-windows-min-arm64"
+        path: src/build_out/win-arm64-min/colormc/**

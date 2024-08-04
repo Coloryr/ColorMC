@@ -46,15 +46,16 @@
                     Background="Transparent"
                     BorderBrush="Transparent">
                     <Border
-                        Padding="2"
-                        Background="Transparent"
-                        BorderThickness="3">
+                        Padding="5"
+                        Background="White"
+                        BorderThickness="3"
+                        CornerRadius="5">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#f3f3f3" />
-                                        <Setter Property="BorderBrush" Value="#FF5ABED6" />
+                                        <Setter Property="Background" Value="#FFFEFEFE" />
+                                        <Setter Property="BorderBrush" Value="#FFD4D4D8" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -81,15 +82,16 @@
                     Background="Transparent"
                     BorderBrush="Transparent">
                     <Border
-                        Padding="2"
-                        Background="Transparent"
-                        BorderThickness="3">
+                        Padding="5"
+                        Background="White"
+                        BorderThickness="3"
+                        CornerRadius="5">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#f3f3f3" />
-                                        <Setter Property="BorderBrush" Value="#FF5ABED6" />
+                                        <Setter Property="Background" Value="#FFFEFEFE" />
+                                        <Setter Property="BorderBrush" Value="#FFD4D4D8" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -127,13 +129,14 @@
             <Border
                 Width="100"
                 Height="25"
-                Background="#FF5ABED6"
-                BorderBrush="#FFb7bac1"
-                CornerRadius="3">
+                Background="White"
+                BorderBrush="#FFD4D4D8"
+                BorderThickness="1"
+                CornerRadius="5">
                 <TextBlock
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Foreground="White"
+                    Foreground="Black"
                     Text="退出" />
             </Border>
         </Button>

@@ -99,13 +99,14 @@
                     <Border
                         Width="100"
                         Height="25"
-                        Background="#FF5ABED6"
-                        BorderBrush="#FFb7bac1"
-                        CornerRadius="3">
+                        Background="White"
+                        BorderBrush="#FFD4D4D8"
+                        BorderThickness="1"
+                        CornerRadius="5">
                         <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Foreground="White"
+                            Foreground="Black"
                             Text="修改位置" />
                     </Border>
                 </Button>
@@ -126,13 +127,14 @@
                 <Border
                     Width="100"
                     Height="25"
-                    Background="#FF5ABED6"
-                    BorderBrush="#FFb7bac1"
-                    CornerRadius="3">
+                    Background="White"
+                    BorderBrush="#FFD4D4D8"
+                    BorderThickness="1"
+                    CornerRadius="5">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Foreground="White"
+                        Foreground="Black"
                         Text="取消安装" />
                 </Border>
             </Button>
