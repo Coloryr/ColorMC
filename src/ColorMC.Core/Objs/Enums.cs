@@ -391,7 +391,7 @@ public enum OsType
 public enum CoreRunState
 {
     Read, Init, GetInfo, Start, End,
-    Download,
+    Download, DownloadDone,
     Error,
 }
 

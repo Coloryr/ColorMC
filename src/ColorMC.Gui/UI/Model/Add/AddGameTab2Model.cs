@@ -77,36 +77,6 @@ public partial class AddGameModel
     }
 
     /// <summary>
-    /// 添加进度
-    /// </summary>
-    /// <param name="state"></param>
-    private void PackState(CoreRunState state)
-    {
-        if (state == CoreRunState.Read)
-        {
-            Model.Progress(App.Lang("AddGameWindow.Tab2.Info1"));
-        }
-        else if (state == CoreRunState.Init)
-        {
-            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info2"));
-        }
-        else if (state == CoreRunState.GetInfo)
-        {
-            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info3"));
-        }
-        else if (state == CoreRunState.Download)
-        {
-            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info4"));
-            Model.ProgressUpdate(-1);
-        }
-        else if (state == CoreRunState.End)
-        {
-            Name = "";
-            Group = "";
-        }
-    }
-
-    /// <summary>
     /// 添加游戏实例
     /// </summary>
     /// <param name="type">压缩包类型</param>
@@ -124,7 +94,7 @@ public partial class AddGameModel
         (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
-        }, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
+        }, GameRequest, GameOverwirte, (size, now) =>
         {
             Model.ProgressUpdate((double)now / size);
         }, PackState);
@@ -155,30 +125,5 @@ public partial class AddGameModel
         ZipLocal = file;
     }
 
-    /// <summary>
-    /// 请求
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    private async Task<bool> Tab2GameOverwirte(GameSettingObj obj)
-    {
-        Model.ProgressClose();
-        var test = await Model.ShowWait(
-            string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
-        Model.Progress();
-        return test;
-    }
-
-    /// <summary>
-    /// 请求
-    /// </summary>
-    /// <param name="text"></param>
-    /// <returns></returns>
-    private async Task<bool> Tab2GameRequest(string text)
-    {
-        Model.ProgressClose();
-        var test = await Model.ShowWait(text);
-        Model.Progress();
-        return test;
-    }
+    
 }

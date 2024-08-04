@@ -286,6 +286,25 @@
                                             ToolTip.VerticalOffset="-30" />
                                     </StackPanel>
                                 </Border>
+                                <Border
+                                    Margin="0,0,0,10"
+                                    Classes="t2"
+                                    IsVisible="{Binding HaveLast}">
+                                    <StackPanel Margin="15">
+                                        <TextBlock
+                                            Margin="0,0,0,5"
+                                            FontSize="16"
+                                            Text="{Binding LastGameName}"
+                                            TextTrimming="CharacterEllipsis" />
+                                        <Button
+                                            Height="35"
+                                            Margin="-3"
+                                            HorizontalAlignment="Stretch"
+                                            Classes="top"
+                                            Command="{Binding LaunchLast}"
+                                            Content="{setting:Localize MainWindow.Text27}" />
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </Decorator>
                     </ScrollViewer>

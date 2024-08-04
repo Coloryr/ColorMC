@@ -383,7 +383,7 @@ public partial class AddGameModel
     {
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallCurseForge(data, data1, Name, Group,
-            ZipUpdate, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
+            ZipUpdate, GameRequest, GameOverwirte, (size, now) =>
             {
                 Model.ProgressUpdate((double)now / size);
             }, PackState);
@@ -408,7 +408,7 @@ public partial class AddGameModel
     {
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallModrinth(data, data1, Name, Group,
-            ZipUpdate, Tab2GameRequest, Tab2GameOverwirte, (size, now) =>
+            ZipUpdate, GameRequest, GameOverwirte, (size, now) =>
             {
                 Model.ProgressUpdate((double)now / size);
             }, PackState);

@@ -480,6 +480,8 @@ public static class ModPackHelper
 
         await DownloadManager.StartAsync([.. list.List]);
 
+        arg.Update2?.Invoke(CoreRunState.DownloadDone);
+
         return new GameRes { State = true, Game = game };
     }
 

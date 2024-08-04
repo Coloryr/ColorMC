@@ -38,7 +38,7 @@ public partial class MainModel
         if (data == null)
         {
             IsHaveNews = false;
-            Model.Show("News加载失败");
+            Model.Notify("News加载失败");
             return;
         }
 
