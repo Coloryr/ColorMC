@@ -80,7 +80,8 @@ public static class WindowManager
                 AllWindow.Model.HeadDisplay = false;
                 AllWindow.Opened();
             }
-            else if (SystemInfo.Os == OsType.Linux)
+            else if (SystemInfo.Os == OsType.Linux ||
+                (SystemInfo.Os == OsType.Windows && !SystemInfo.IsWin11))
             {
                 var win = new SingleBorderWindow();
                 AllWindow = win.Win;
