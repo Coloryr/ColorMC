@@ -4,9 +4,9 @@ using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class LinuxControl : UserControl
+public partial class BorderControl : UserControl
 {
-    public LinuxControl()
+    public BorderControl()
     {
         InitializeComponent();
 

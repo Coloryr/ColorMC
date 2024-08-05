@@ -34,7 +34,9 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
     {
         InitializeComponent();
 
-        DataContext = new BaseModel("AllControl");
+        var model = new BaseModel("AllControl");
+        model.PropertyChanged += Model_PropertyChanged;
+        DataContext = model;
 
         PointerPressed += AllControl_PointerPressed;
         PointerReleased += AllControl_PointerReleased;
@@ -72,6 +74,11 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         if (e.PropertyName == BaseModel.InfoShow)
         {
             windowNotification.Show(Model.NotifyText);
+        }
+        else if (e.PropertyName == BaseModel.GetTopLevelName
+            && DataContext is BaseModel model)
+        {
+            model.SetTopLevel(TopLevel.GetTopLevel(this));
         }
     }
 
@@ -236,10 +243,5 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
     {
         ICon.WindowStateChange(windowState);
         Head.WindowStateChange(windowState);
-    }
-
-    public void SetSize(int width, int height)
-    {
-
     }
 }

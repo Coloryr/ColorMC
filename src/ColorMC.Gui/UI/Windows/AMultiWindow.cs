@@ -82,6 +82,11 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         {
             windowNotification.Show(Model.NotifyText);
         }
+        else if (e.PropertyName == BaseModel.GetTopLevelName
+            && DataContext is BaseModel model)
+        {
+            model.SetTopLevel(GetTopLevel(this));
+        }
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -177,19 +182,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         {
             WindowManager.LastWindow = null;
         }
-        if (App.TopLevel == this)
-        {
-            if (ConfigBinding.WindowMode())
-            {
-                App.TopLevel = GetTopLevel(WindowManager.AllWindow);
-            }
-            else
-            {
-                var win = WindowManager.GetMainWindow();
-                App.TopLevel = win as Window;
-            }
-        }
-
+        
         App.Clear();
         App.TestClose();
     }
@@ -197,7 +190,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     private void Window_Activated(object? sender, EventArgs e)
     {
         WindowManager.LastWindow = this;
-        App.TopLevel = this;
+        //App.TopLevel = this;
     }
 
     private void PicUpdate()

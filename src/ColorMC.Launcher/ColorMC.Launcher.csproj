@@ -11,10 +11,6 @@
 		<IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
 	</PropertyGroup>
 	
-	<PropertyGroup>
-		<ApplicationManifest>app.manifest</ApplicationManifest>
-	</PropertyGroup>
-	
 	<ItemGroup>
 		<None Remove=".gitignore" />
 		<None Remove="Resources\MiSans-Regular.ttf" />

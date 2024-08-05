@@ -59,7 +59,7 @@ public class GameEditFlyout1
             (App.Lang("GameEditWindow.Flyouts.Text6"), true, async ()=>
             {
                 var list = new List<IStorageFile>();
-                if (App.TopLevel is { } top)
+                if (TopLevel.GetTopLevel(con) is { } top)
                 {
                     foreach (var item in mods)
                     {
@@ -69,7 +69,7 @@ public class GameEditFlyout1
 
                         list.Add(data);
                     }
-                    await BaseBinding.CopyFileClipboard(list);
+                    await BaseBinding.CopyFileClipboard(top, list);
                 }
             }),
             (App.Lang("GameEditWindow.Flyouts.Text3"), single, ()=>

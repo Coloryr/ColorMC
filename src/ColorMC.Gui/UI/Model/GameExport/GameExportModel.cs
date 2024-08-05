@@ -216,7 +216,12 @@ public partial class GameExportModel : MenuModel
         }
 
         Model.Progress(App.Lang("GameExportWindow.Info1"));
-        var file = await PathBinding.Export(this);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.Export(top, this);
         Model.ProgressClose();
         if (file == null)
         {

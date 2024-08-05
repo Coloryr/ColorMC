@@ -112,9 +112,13 @@ public partial class GameLogModel : GameModel
         }
         else
         {
+            var top = Model.GetTopLevel();
+            if (top == null)
+            {
+                return;
+            }
             Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), null);
-
-            await BaseBinding.CopyTextClipboard(url);
+            await BaseBinding.CopyTextClipboard(top, url);
             Model.Notify(App.Lang("GameLogWindow.Info7"));
         }
     }

@@ -1,5 +1,5 @@
 <Window
-    x:Class="ColorMC.Gui.UI.Windows.MultiLinuxWindow"
+    x:Class="ColorMC.Gui.UI.Windows.MultiBorderWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -34,7 +34,7 @@
         <model:BaseModel />
     </Design.DataContext>
     <Panel>
-        <view1:LinuxControl />
+        <view1:BorderControl />
         <Panel
             Name="MainView"
             Margin="10"

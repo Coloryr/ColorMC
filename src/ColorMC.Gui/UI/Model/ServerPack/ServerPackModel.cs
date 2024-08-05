@@ -86,9 +86,16 @@ public partial class ServerPackModel : MenuModel
 
     public async void Gen()
     {
-        var local = await PathBinding.SelectPath(PathType.ServerPackPath);
-        if (local == null)
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
             return;
+        }
+        var local = await PathBinding.SelectPath(top, PathType.ServerPackPath);
+        if (local == null)
+        {
+            return;
+        }
 
         Obj.Text = Text;
 

@@ -46,7 +46,12 @@ public partial class SettingModel
             return;
         }
 
-        var path = await PathBinding.SelectPath(PathType.RunDir);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var path = await PathBinding.SelectPath(top, PathType.RunDir);
         if (path == null)
         {
             return;
@@ -61,7 +66,12 @@ public partial class SettingModel
     [RelayCommand]
     public async Task Open1()
     {
-        var file = await PathBinding.SelectFile(FileType.Config);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.Config);
         if (file.Item1 != null)
         {
             Local1 = file.Item1;
@@ -71,7 +81,12 @@ public partial class SettingModel
     [RelayCommand]
     public async Task Open2()
     {
-        var file = await PathBinding.SelectFile(FileType.AuthConfig);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.AuthConfig);
         if (file.Item1 != null)
         {
             Local2 = file.Item1;
@@ -81,7 +96,13 @@ public partial class SettingModel
     [RelayCommand]
     public async Task Open3()
     {
-        var file = await PathBinding.SelectFile(FileType.Config);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+
+        var file = await PathBinding.SelectFile(top, FileType.Config);
         if (file.Item1 != null)
         {
             Local3 = file.Item1;
@@ -91,7 +112,12 @@ public partial class SettingModel
     [RelayCommand]
     public async Task Open4()
     {
-        var file = await PathBinding.SelectFile(FileType.Config);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.Config);
         if (file.Item1 != null)
         {
             Local4 = file.Item1;
@@ -247,7 +273,12 @@ public partial class SettingModel
 
     private async void DumpUser()
     {
-        var res = await PathBinding.SaveFile(FileType.User, null);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var res = await PathBinding.SaveFile(top, FileType.User, null);
         if (res == true)
         {
             Model.Notify(App.Lang("SettingWindow.Tab1.Info17"));

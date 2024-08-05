@@ -1,4 +1,5 @@
 ﻿using System;
+using Avalonia.Controls;
 using AvaloniaEdit.Document;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
@@ -40,7 +41,12 @@ public partial class ErrorModel : TopModel
 
     public async void Save()
     {
-        await PathBinding.SaveFile(FileType.Text, new[] { Text.Text });
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        await PathBinding.SaveFile(top, FileType.Text, [Text.Text]);
     }
 
     public async void Push()
@@ -66,9 +72,13 @@ public partial class ErrorModel : TopModel
         }
         else
         {
+            var top = Model.GetTopLevel();
+            if (top == null)
+            {
+                return;
+            }
             Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), null);
-
-            await BaseBinding.CopyTextClipboard(url);
+            await BaseBinding.CopyTextClipboard(top, url!);
             Model.Notify(App.Lang("GameLogWindow.Info7"));
         }
     }

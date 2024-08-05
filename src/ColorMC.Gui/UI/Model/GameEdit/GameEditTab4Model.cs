@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
@@ -173,7 +174,25 @@ public partial class GameEditModel
 
     private async void ImportMod()
     {
-        var file = await PathBinding.AddFile(_obj, FileType.Mod);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var res = await PathBinding.AddFile(top, _obj, FileType.Schematic);
+
+        if (res == null)
+            return;
+
+        if (res == false)
+        {
+            Model.Show(App.Lang("GameEditWindow.Tab11.Error1"));
+            return;
+        }
+
+        Model.Show(App.Lang("GameEditWindow.Tab11.Info1"));
+        LoadSchematic();
+        var file = await PathBinding.AddFile(top, _obj, FileType.Mod);
 
         if (file == null)
             return;

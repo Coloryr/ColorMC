@@ -283,7 +283,12 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     [RelayCommand]
     public async Task Save()
     {
-        var res = await PathBinding.SaveFile(FileType.Skin, null);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var res = await PathBinding.SaveFile(top, FileType.Skin, null);
         if (res == true)
         {
             Model.Notify(App.Lang("ConfigEditWindow.Info9"));
@@ -329,7 +334,12 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     [RelayCommand]
     public void Edit()
     {
-        UserBinding.EditSkin();
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        UserBinding.EditSkin(top);
     }
 
     public void SkinLoadDone()

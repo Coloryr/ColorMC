@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -288,11 +289,11 @@ public static class GameBinding
     /// <param name="model"></param>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static async Task SetGameIconFromFile(BaseModel model, GameSettingObj obj)
+    public static async Task SetGameIconFromFile(TopLevel top, BaseModel model, GameSettingObj obj)
     {
         try
         {
-            var file = await PathBinding.SelectFile(FileType.Icon);
+            var file = await PathBinding.SelectFile(top, FileType.Icon);
             if (file.Item1 != null)
             {
                 bool resize = await model.ShowWait(App.Lang("GameBinding.Info14"));
@@ -1589,9 +1590,9 @@ public static class GameBinding
     /// 复制服务器地址到剪贴板
     /// </summary>
     /// <param name="obj"></param>
-    public static async void CopyServer(ServerInfoObj obj)
+    public static async void CopyServer(TopLevel top, ServerInfoObj obj)
     {
-        await BaseBinding.CopyTextClipboard($"{obj.Name}\n{obj.IP}");
+        await BaseBinding.CopyTextClipboard(top, $"{obj.Name}\n{obj.IP}");
     }
 
     /// <summary>

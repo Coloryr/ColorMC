@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Avalonia.Controls;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
@@ -36,7 +37,12 @@ public partial class GameEditModel
 
     private async void AddSchematic()
     {
-        var res = await PathBinding.AddFile(_obj, FileType.Schematic);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var res = await PathBinding.AddFile(top, _obj, FileType.Schematic);
 
         if (res == null)
             return;

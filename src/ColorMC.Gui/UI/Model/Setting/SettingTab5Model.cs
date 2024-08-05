@@ -59,7 +59,12 @@ public partial class SettingModel
     [RelayCommand]
     public async Task SelectJava()
     {
-        var file = await PathBinding.SelectFile(FileType.Java);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.Java);
         if (file.Item1 != null)
         {
             JavaLocal = file.Item1;
@@ -78,7 +83,12 @@ public partial class SettingModel
 
     private async void AddJavaZip()
     {
-        var file = await PathBinding.SelectFile(FileType.JavaZip);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.JavaZip);
         if (file.Item1 == null || file.Item2 == null)
         {
             return;
