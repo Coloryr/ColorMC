@@ -1,24 +1,30 @@
 using Avalonia;
 using Avalonia.Controls;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class MultiLinuxWindow : AMultiWindow
+public partial class MultiBorderWindow : AMultiWindow
 {
     public override HeadControl Head => HeadControl;
 
-    public MultiLinuxWindow()
+    public MultiBorderWindow()
     {
         InitializeComponent();
     }
 
-    public MultiLinuxWindow(BaseUserControl con)
+    public MultiBorderWindow(BaseUserControl con)
     {
         InitializeComponent();
 
-        SystemDecorations = SystemDecorations.BorderOnly;
         PropertyChanged += OnPropertyChanged;
+
+        if (SystemInfo.Os == OsType.Linux)
+        {
+            SystemDecorations = SystemDecorations.BorderOnly;
+        }
 
         InitMultiWindow(con);
     }

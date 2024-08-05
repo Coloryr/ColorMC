@@ -348,7 +348,12 @@ public partial class SettingModel
     [RelayCommand]
     public async Task InstallCore()
     {
-        var file = await PathBinding.SelectFile(FileType.Live2DCore);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.Live2DCore);
         if (file.Item1 != null)
         {
             Model.Progress(App.Lang("SettingWindow.Tab2.Info11"));
@@ -415,7 +420,12 @@ public partial class SettingModel
     [RelayCommand]
     public async Task OpenPic()
     {
-        var file = await PathBinding.SelectFile(FileType.Pic);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.Pic);
         if (file.Item1 != null)
         {
             Pic = file.Item1;
@@ -455,7 +465,12 @@ public partial class SettingModel
     [RelayCommand]
     public async Task OpenLive2D()
     {
-        var file = await PathBinding.SelectFile(FileType.Live2D);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.Live2D);
         if (file.Item1 != null)
         {
             Live2DModel = file.Item1;

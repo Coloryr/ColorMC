@@ -202,13 +202,8 @@ public static class PathBinding
     /// <param name="window">窗口</param>
     /// <param name="type">类型</param>
     /// <returns>路径</returns>
-    public static async Task<string?> SelectPath(PathType type)
+    public static async Task<string?> SelectPath(TopLevel top, PathType type)
     {
-        var top = App.TopLevel;
-        if (top == null)
-        {
-            return null;
-        }
         switch (type)
         {
             case PathType.ServerPackPath:
@@ -271,14 +266,8 @@ public static class PathBinding
     /// <param name="type">类型</param>
     /// <param name="arg">参数</param>
     /// <returns>结果</returns>
-    public static async Task<bool?> SaveFile(FileType type, object[]? arg)
+    public static async Task<bool?> SaveFile(TopLevel top, FileType type, object[]? arg)
     {
-        var top = App.TopLevel;
-        if (top == null)
-        {
-            return false;
-        }
-
         switch (type)
         {
             case FileType.User:
@@ -384,22 +373,22 @@ public static class PathBinding
     /// <summary>
     /// 打开文件
     /// </summary>
-    /// <param name="window">窗口</param>
+    /// <param name="top">窗口</param>
     /// <param name="title">标题</param>
     /// <param name="ext">后缀</param>
     /// <param name="name">名字</param>
     /// <param name="multiple">多选</param>
     /// <param name="storage">首选路径</param>
     /// <returns></returns>
-    private static async Task<IReadOnlyList<IStorageFile>?> SelectFile(TopLevel? window, string title,
+    private static async Task<IReadOnlyList<IStorageFile>?> SelectFile(TopLevel? top, string title,
         string[]? ext, string name, bool multiple = false, DirectoryInfo? storage = null)
     {
-        if (window == null)
+        if (top == null)
             return null;
 
-        var defaultFolder = storage == null ? null : await window.StorageProvider.TryGetFolderFromPathAsync(storage.FullName);
+        var defaultFolder = storage == null ? null : await top.StorageProvider.TryGetFolderFromPathAsync(storage.FullName);
 
-        return await window.StorageProvider.OpenFilePickerAsync(new()
+        return await top.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = title,
             AllowMultiple = multiple,
@@ -420,14 +409,8 @@ public static class PathBinding
     /// <param name="window">窗口</param>
     /// <param name="type">类型</param>
     /// <returns>路径</returns>
-    public static async Task<(string?, string?)> SelectFile(FileType type)
+    public static async Task<(string?, string?)> SelectFile(TopLevel top, FileType type)
     {
-        var top = App.TopLevel;
-        if (top == null)
-        {
-            return (null, null);
-        }
-
         switch (type)
         {
             case FileType.Java:
@@ -576,14 +559,8 @@ public static class PathBinding
         return (null, null);
     }
 
-    public static async Task<bool?> AddFile(GameSettingObj obj, FileType type)
+    public static async Task<bool?> AddFile(TopLevel top, GameSettingObj obj, FileType type)
     {
-        var top = App.TopLevel;
-        if (top == null)
-        {
-            return false;
-        }
-
         switch (type)
         {
             case FileType.Schematic:
@@ -641,14 +618,8 @@ public static class PathBinding
         return null;
     }
 
-    public static async Task<bool?> Export(GameExportModel model)
+    public static async Task<bool?> Export(TopLevel top, GameExportModel model)
     {
-        var top = App.TopLevel;
-        if (top == null)
-        {
-            return false;
-        }
-
         if (model.Type == PackType.ColorMC)
         {
             var file = await SaveFile(top, App.Lang("PathBinding.Text40"),

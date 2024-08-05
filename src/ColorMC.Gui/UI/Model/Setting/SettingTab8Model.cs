@@ -285,7 +285,12 @@ public partial class SettingModel
         {
             return;
         }
-        var res = await PathBinding.SaveFile(FileType.InputConfig, [Obj.Name, Obj]);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var res = await PathBinding.SaveFile(top, FileType.InputConfig, [Obj.Name, Obj]);
         if (res == null)
         {
             return;
@@ -302,7 +307,12 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ImportInputConfig()
     {
-        var file = await PathBinding.SelectFile(FileType.InputConfig);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.InputConfig);
         if (file.Item1 == null)
         {
             return;

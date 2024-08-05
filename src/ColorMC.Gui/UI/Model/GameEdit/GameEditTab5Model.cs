@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
@@ -122,7 +123,13 @@ public partial class GameEditModel
 
     private async void ImportWorld()
     {
-        var file = await PathBinding.AddFile(_obj, FileType.World);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+
+        var file = await PathBinding.AddFile(top, _obj, FileType.World);
         if (file == null)
             return;
 
@@ -186,8 +193,14 @@ public partial class GameEditModel
 
     public async void Export(WorldModel obj)
     {
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info4"));
-        var file = await PathBinding.SaveFile(FileType.World, [obj]);
+        var file = await PathBinding.SaveFile(top, FileType.World, [obj]);
         Model.ProgressClose();
         if (file == null)
             return;

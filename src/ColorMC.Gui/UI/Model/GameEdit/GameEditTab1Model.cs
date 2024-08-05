@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -495,7 +496,12 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task SelectLoader()
     {
-        var file = await PathBinding.SelectFile(FileType.Loader);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.Loader);
         if (file.Item1 == null)
         {
             return;
@@ -511,6 +517,7 @@ public partial class GameEditModel
             Model.Show(res.Message!);
         }
     }
+
     private void ExportGame()
     {
         WindowManager.ShowGameExport(_obj);

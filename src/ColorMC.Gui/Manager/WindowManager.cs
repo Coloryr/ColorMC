@@ -82,7 +82,7 @@ public static class WindowManager
             }
             else if (SystemInfo.Os == OsType.Linux)
             {
-                var win = new SingleLinuxWindow();
+                var win = new SingleBorderWindow();
                 AllWindow = win.Win;
                 win.Show();
             }
@@ -92,11 +92,6 @@ public static class WindowManager
                 AllWindow = win.Win;
                 win.Show();
             }
-
-            Dispatcher.UIThread.Post(() =>
-            {
-                App.TopLevel ??= TopLevel.GetTopLevel(AllWindow);
-            });
         }
 
         if (!ShowCustom())
@@ -117,6 +112,47 @@ public static class WindowManager
             return con1.Window;
 
         return AllWindow!;
+    }
+
+    private static void ShowWindow(BaseUserControl con)
+    {
+        AMultiWindow win;
+        if (SystemInfo.Os == OsType.Linux ||
+            (SystemInfo.Os == OsType.Windows && !SystemInfo.IsWin11))
+        {
+            win = new MultiBorderWindow(con);
+        }
+        else
+        {
+            win = new MultiWindow(con);
+        }
+        con.SetBaseModel(win.Model);
+        win.Show();
+    }
+
+    public static void AWindow(BaseUserControl con, bool newwindow = false)
+    {
+        if (ConfigBinding.WindowMode())
+        {
+            if (newwindow)
+            {
+                if (SystemInfo.Os == OsType.Android)
+                {
+                    return;
+                }
+
+                ShowWindow(con);
+            }
+            else
+            {
+                con.SetBaseModel(AllWindow!.Model);
+                AllWindow.Add(con);
+            }
+        }
+        else
+        {
+            ShowWindow(con);
+        }
     }
 
     public static bool ShowCustom(bool test = false)
@@ -170,52 +206,6 @@ public static class WindowManager
         }
 
         return false;
-    }
-
-    public static void AWindow(BaseUserControl con, bool newwindow = false)
-    {
-        if (ConfigBinding.WindowMode())
-        {
-            if (newwindow)
-            {
-                if (SystemInfo.Os == OsType.Android)
-                {
-                    return;
-                }
-
-                AMultiWindow win;
-                if (SystemInfo.Os == OsType.Linux)
-                {
-                    win = new MultiLinuxWindow(con);
-                }
-                else
-                {
-                    win = new MultiWindow(con);
-                }
-                con.SetBaseModel(win.Model);
-                win.Show();
-            }
-            else
-            {
-                con.SetBaseModel(AllWindow!.Model);
-                AllWindow.Add(con);
-            }
-        }
-        else
-        {
-            AMultiWindow win;
-            if (SystemInfo.Os == OsType.Linux)
-            {
-                win = new MultiLinuxWindow(con);
-            }
-            else
-            {
-                win = new MultiWindow(con);
-            }
-            App.TopLevel ??= win;
-            con.SetBaseModel(win.Model);
-            win.Show();
-        }
     }
 
     public static void ShowAddGame(string? group, bool isDir = false, string? file = null)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
@@ -248,7 +249,7 @@ public static class UserBinding
     /// <summary>
     /// ±à¼­Æ¤·ô
     /// </summary>
-    public static async void EditSkin()
+    public static async void EditSkin(TopLevel top)
     {
         var obj = GetLastUser();
         if (obj == null)
@@ -259,7 +260,7 @@ public static class UserBinding
         switch (obj.AuthType)
         {
             case AuthType.Offline:
-                var file = await PathBinding.SelectFile(FileType.Head);
+                var file = await PathBinding.SelectFile(top, FileType.Head);
                 if (file.Item1 != null)
                 {
                     obj.SaveSkin(file.Item1);

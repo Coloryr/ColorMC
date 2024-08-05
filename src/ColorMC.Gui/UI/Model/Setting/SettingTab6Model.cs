@@ -205,7 +205,12 @@ public partial class SettingModel
     [RelayCommand]
     public async Task SelectMusic()
     {
-        var file = await PathBinding.SelectFile(FileType.Music);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.Music);
         if (file.Item1 == null)
         {
             return;

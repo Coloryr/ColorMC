@@ -683,7 +683,12 @@ public partial class UsersControlModel : TopModel
                 UserBinding.OAuthCancel();
             });
         BaseBinding.OpUrl($"{url}?otc={code}");
-        await BaseBinding.CopyTextClipboard(code);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        await BaseBinding.CopyTextClipboard(top, code);
     }
 
     public override void Close()

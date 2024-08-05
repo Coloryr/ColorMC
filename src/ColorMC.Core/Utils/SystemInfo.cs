@@ -37,6 +37,10 @@ public static class SystemInfo
     /// 是否为64位处理器
     /// </summary>
     public static bool Is64Bit { get; private set; }
+    /// <summary>
+    /// 是否为Windows11
+    /// </summary>
+    public static bool IsWin11 { get; private set; }
 
     /// <summary>
     /// 初始化
@@ -72,6 +76,14 @@ public static class SystemInfo
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             Os = OsType.Windows;
+
+            var os = Environment.OSVersion;
+            var version = os.Version;
+
+            if (version.Major > 10 || (version.Major == 10 && version.Build >= 22000))
+            {
+                IsWin11 = true;
+            }
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {

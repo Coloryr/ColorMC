@@ -1,25 +1,29 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class SingleLinuxWindow : ABaseWindow
+public partial class SingleBorderWindow : ABaseWindow
 {
     public override ITopWindow ICon => Win;
 
-    public SingleLinuxWindow()
+    public SingleBorderWindow()
     {
         InitializeComponent();
 
         Closed += UserWindow_Closed;
         Closing += SingleWindow_Closing;
+        PropertyChanged += OnPropertyChanged;
 
         DataContext = Win.DataContext;
 
-        PropertyChanged += OnPropertyChanged;
-
-        SystemDecorations = SystemDecorations.BorderOnly;
+        if (SystemInfo.Os == OsType.Linux)
+        {
+            SystemDecorations = SystemDecorations.BorderOnly;
+        }
 
         InitBaseWindow();
     }

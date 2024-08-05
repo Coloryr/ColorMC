@@ -44,7 +44,12 @@ public class MainFlyout
             (App.Lang("MainWindow.Flyouts.Text7"), true, obj.EditGroup),
             (App.Lang("MainWindow.Flyouts.Text8"), true, async ()=>
             {
-                await GameBinding.SetGameIconFromFile(obj.Model, obj.Obj);
+                var top = TopLevel.GetTopLevel(con);
+                if (top == null)
+                {
+                    return;
+                }
+                await GameBinding.SetGameIconFromFile(top, obj.Model, obj.Obj);
                 obj.LoadIcon();
             }),
             (App.Lang("MainWindow.Flyouts.Text15"), SystemInfo.Os == OsType.Windows, ()=>

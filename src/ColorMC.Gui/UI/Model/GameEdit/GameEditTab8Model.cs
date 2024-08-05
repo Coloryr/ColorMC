@@ -70,7 +70,12 @@ public partial class GameEditModel
 
     private async void ImportResource()
     {
-        var file = await PathBinding.AddFile(_obj, FileType.Resourcepack);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.AddFile(top, _obj, FileType.Resourcepack);
         if (file == null)
             return;
 

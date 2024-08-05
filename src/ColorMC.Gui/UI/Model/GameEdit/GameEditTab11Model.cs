@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Avalonia.Controls;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
@@ -37,7 +38,12 @@ public partial class GameEditModel
 
     private async void ImportShaderpack()
     {
-        var res = await PathBinding.AddFile(_obj, FileType.Shaderpack);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var res = await PathBinding.AddFile(top, _obj, FileType.Shaderpack);
         if (res == null)
             return;
 
@@ -50,7 +56,6 @@ public partial class GameEditModel
         Model.Notify(App.Lang("GameEditWindow.Tab11.Info1"));
         LoadShaderpack();
     }
-
 
     private void AddShaderpack()
     {

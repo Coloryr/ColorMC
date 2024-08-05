@@ -38,7 +38,7 @@ public partial class App : Application
         ColorMCGui.StartLock();
     }
 
-    public static TopLevel? TopLevel { get; set; }
+    //public static TopLevel? TopLevel { get; set; }
 
     public static readonly SelfCrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));

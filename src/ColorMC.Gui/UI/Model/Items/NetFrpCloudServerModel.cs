@@ -37,7 +37,12 @@ public partial class NetFrpCloudServerModel : SelectItemModel
     [RelayCommand]
     public async Task Copy()
     {
-        await BaseBinding.CopyTextClipboard(IP);
+        var top = Top.Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        await BaseBinding.CopyTextClipboard(top, IP);
     }
 
     [RelayCommand]

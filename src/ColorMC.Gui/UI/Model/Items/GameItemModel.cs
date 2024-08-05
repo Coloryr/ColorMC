@@ -212,7 +212,7 @@ public partial class GameItemModel : GameModel
             $"{time4.TotalHours:#}:{time4.Minutes:00}:{time4.Seconds:00}");
     }
 
-    public async void Move(PointerEventArgs e)
+    public async void Move(TopLevel? top, PointerEventArgs e)
     {
         var dragData = new DataObject();
         dragData.Set(BaseBinding.DrapType, this);
@@ -221,7 +221,11 @@ public partial class GameItemModel : GameModel
         if (SystemInfo.Os != OsType.Android)
         {
             var files = new List<IStorageFolder>();
-            var item = await App.TopLevel!.StorageProvider
+            if (top == null)
+            {
+                return;
+            }
+            var item = await top.StorageProvider
                    .TryGetFolderFromPathAsync(Obj.GetBasePath());
             files.Add(item!);
             dragData.Set(DataFormats.Files, files);

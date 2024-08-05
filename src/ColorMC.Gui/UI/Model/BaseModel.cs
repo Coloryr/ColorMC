@@ -21,6 +21,7 @@ public partial class BaseModel : ObservableObject
 {
     public const string InfoShow = "InfoShow";
     public const string IconName = "Icon";
+    public const string GetTopLevelName = "GetTopLevel";
 
     /// <summary>
     /// 进度条
@@ -51,6 +52,7 @@ public partial class BaseModel : ObservableObject
 
     private Action? _choiseClick;
     private Action? _choise1Click;
+    private TopLevel? _top;
 
     public string NotifyText;
 
@@ -691,6 +693,19 @@ public partial class BaseModel : ObservableObject
         NoWork();
 
         return !_info6.IsCancel;
+    }
+
+    public void SetTopLevel(TopLevel? top)
+    {
+        _top = top;
+    }
+
+    public TopLevel? GetTopLevel()
+    {
+        OnPropertyChanged(GetTopLevelName);
+        var top = _top;
+        _top = null;
+        return top;
     }
 
     private void DClose()

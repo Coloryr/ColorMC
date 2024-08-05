@@ -233,9 +233,9 @@ public static class BaseBinding
     /// 复制到剪贴板
     /// </summary>
     /// <param name="text">文本</param>
-    public static async Task CopyTextClipboard(string text)
+    public static async Task CopyTextClipboard(TopLevel top, string text)
     {
-        if (App.TopLevel?.Clipboard is { } clipboard)
+        if (top.Clipboard is { } clipboard)
         {
             await clipboard.SetTextAsync(text);
         }
@@ -245,9 +245,9 @@ public static class BaseBinding
     /// 复制到剪贴板
     /// </summary>
     /// <param name="file">文件列表</param>
-    public static async Task CopyFileClipboard(List<IStorageFile> file)
+    public static async Task CopyFileClipboard(TopLevel top, List<IStorageFile> file)
     {
-        if (App.TopLevel?.Clipboard is { } clipboard)
+        if (top.Clipboard is { } clipboard)
         {
             var obj = new DataObject();
             obj.Set(DataFormats.Files, file);

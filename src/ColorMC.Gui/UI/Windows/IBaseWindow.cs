@@ -65,6 +65,4 @@ public interface IBaseWindow
             window.Hide();
         }
     }
-
-    void SetSize(int width, int height);
 }

@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
@@ -56,14 +58,16 @@ public partial class ErrorControl : BaseUserControl
 
     public override void SetModel(BaseModel model)
     {
+        ErrorModel amodel;
         if (_type)
         {
-            DataContext = new ErrorModel(model, _data, _e, _close);
+            amodel = new ErrorModel(model, _data, _e, _close);
         }
         else
         {
-            DataContext = new ErrorModel(model, _data ?? "", _e1, _close);
+            amodel = new ErrorModel(model, _data ?? "", _e1, _close);
         }
+        DataContext = amodel;
     }
 
     public override Bitmap GetIcon()

@@ -151,7 +151,7 @@ public partial class GameControl : UserControl
             if (Math.Sqrt(Math.Pow(Math.Abs(pos.X - point.X), 2) + Math.Pow(Math.Abs(pos.Y - point.Y), 2)) > 30)
             {
                 LongPressed.Cancel();
-                model.Move(e);
+                model.Move(TopLevel.GetTopLevel(this), e);
                 e.Handled = true;
             }
         }

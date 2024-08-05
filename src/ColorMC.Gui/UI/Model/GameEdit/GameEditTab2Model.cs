@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -412,7 +413,12 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task OpenJava()
     {
-        var file = await PathBinding.SelectFile(FileType.Java);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFile(top, FileType.Java);
         if (file.Item1 != null)
         {
             JvmLocal = file.Item1;
