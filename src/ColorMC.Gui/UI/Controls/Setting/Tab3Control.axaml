@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignWidth="800"
@@ -23,46 +24,16 @@
                                 Path="/Resource/Icon/Setting/svg7.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                         </StackPanel>
-                        <WrapPanel IsVisible="{Binding !MinMode}">
-                            <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
-                                <TextBlock
-                                    Margin="0,0,5,0"
-                                    HorizontalAlignment="Center"
-                                    Text="{setting:Localize Text.DownloadSource}" />
-                                <ComboBox
-                                    Width="110"
-                                    ItemsSource="{Binding SourceList}"
-                                    SelectedIndex="{Binding Source}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
-                                <TextBlock
-                                    Margin="0,0,5,0"
-                                    HorizontalAlignment="Center"
-                                    Text="{setting:Localize SettingWindow.Tab3.Text2}" />
-                                <NumericUpDown
-                                    Width="110"
-                                    Height="30"
-                                    FormatString="N0"
-                                    Minimum="1"
-                                    Value="{Binding Thread}" />
-                            </StackPanel>
-                        </WrapPanel>
-                        <StackPanel IsVisible="{Binding MinMode}">
-                            <DockPanel Margin="0,0,0,5">
-                                <TextBlock
-                                    Margin="0,0,5,0"
-                                    HorizontalAlignment="Center"
-                                    Text="{setting:Localize Text.DownloadSource}" />
+                        <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
+                            <DockPanel MinWidth="230" Margin="0,0,10,10">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.DownloadSource}" />
                                 <ComboBox
                                     HorizontalAlignment="Stretch"
                                     ItemsSource="{Binding SourceList}"
                                     SelectedIndex="{Binding Source}" />
                             </DockPanel>
-                            <DockPanel Margin="0,0,0,5">
-                                <TextBlock
-                                    Margin="0,0,5,0"
-                                    HorizontalAlignment="Center"
-                                    Text="{setting:Localize SettingWindow.Tab3.Text2}" />
+                            <DockPanel MinWidth="230" Margin="0,0,10,10">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab3.Text2}" />
                                 <NumericUpDown
                                     Height="30"
                                     HorizontalAlignment="Stretch"
@@ -70,7 +41,7 @@
                                     Minimum="1"
                                     Value="{Binding Thread}" />
                             </DockPanel>
-                        </StackPanel>
+                        </panel:WrapPanelWithStretch>
                         <WrapPanel>
                             <ToggleSwitch
                                 Margin="0,0,20,0"
@@ -130,7 +101,7 @@
                                 Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
                         </Grid>
                         <Button
-                            Width="90"
+                            Width="100"
                             Height="35"
                             Margin="-2,-2,-3,-2"
                             HorizontalAlignment="Right"
@@ -184,14 +155,14 @@
                             OnContent="{setting:Localize SettingWindow.Tab3.Text15}" />
                         <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-3,3,-2"
                                 Classes="top"
                                 Command="{Binding StartCheck}"
                                 Content="{setting:Localize SettingWindow.Tab3.Text16}" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-3,-3,-2"
                                 Classes="top"
@@ -222,7 +193,7 @@
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
                     <Button
-                        Width="90"
+                        Width="100"
                         Height="35"
                         Margin="-2,-2,-3,-2"
                         HorizontalAlignment="Right"

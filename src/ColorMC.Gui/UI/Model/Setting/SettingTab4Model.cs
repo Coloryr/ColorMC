@@ -51,6 +51,8 @@ public partial class SettingModel
     private bool _closeBefore;
     [ObservableProperty]
     private bool _safeLog4j;
+    [ObservableProperty]
+    private bool _customGc;
 
     [ObservableProperty]
     private GCType _gC;
@@ -143,6 +145,8 @@ public partial class SettingModel
 
     partial void OnGCChanged(GCType value)
     {
+        CustomGc = value == GCType.User;
+
         SetGc();
     }
 

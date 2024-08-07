@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
@@ -15,7 +16,7 @@
         <StackPanel Margin="0,0,10,15">
             <Panel Margin="10,5,10,3">
                 <Border Classes="t2">
-                    <StackPanel Margin="15">
+                    <StackPanel Margin="15,15,5,15">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <svg:SvgControl
                                 Width="24"
@@ -30,71 +31,45 @@
                             IsChecked="{Binding InputEnable}"
                             OffContent="{setting:Localize SettingWindow.Tab8.Text2}"
                             OnContent="{setting:Localize SettingWindow.Tab8.Text2}" />
-                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                            <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text3}" />
-                            <TextBlock Margin="0,0,5,0" Text="{Binding InputNum}" />
-                        </StackPanel>
-                        <StackPanel
-                            Margin="0,0,0,10"
-                            IsVisible="{Binding !MinMode}"
-                            Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
-                            <ComboBox
-                                Width="200"
-                                ItemsSource="{Binding InputNames}"
-                                SelectedIndex="{Binding InputIndex}" />
-                        </StackPanel>
-                        <DockPanel Margin="0,0,0,10" IsVisible="{Binding MinMode}">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding InputNames}"
-                                SelectedIndex="{Binding InputIndex}" />
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text3}" />
+                            <TextBlock Text="{Binding InputNum}" />
                         </DockPanel>
-                        <WrapPanel IsVisible="{Binding !MinMode}">
-                            <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
+                        <panel:WrapPanelWithStretch Margin="0,0,0,10" AutoMax="{Binding MinMode}">
+                            <DockPanel MinWidth="230">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
                                 <ComboBox
-                                    Width="200"
-                                    Margin="0,0,5,0"
-                                    ItemsSource="{Binding Configs}"
-                                    SelectedIndex="{Binding SelectConfig}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text6}" />
-                                <ComboBox
-                                    Width="200"
-                                    Margin="0,0,5,0"
-                                    ItemsSource="{Binding Configs}"
-                                    SelectedIndex="{Binding NowConfig}" />
-                            </StackPanel>
-                        </WrapPanel>
-                        <StackPanel IsVisible="{Binding MinMode}">
-                            <DockPanel Margin="0,0,0,10">
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding InputNames}"
+                                    SelectedIndex="{Binding InputIndex}" />
+                            </DockPanel>
+                        </panel:WrapPanelWithStretch>
+                        <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                            <DockPanel MinWidth="230" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
                                 <ComboBox
                                     HorizontalAlignment="Stretch"
                                     ItemsSource="{Binding Configs}"
                                     SelectedIndex="{Binding SelectConfig}" />
                             </DockPanel>
-                            <DockPanel Margin="0,0,0,10">
+                            <DockPanel MinWidth="230" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text6}" />
                                 <ComboBox
                                     HorizontalAlignment="Stretch"
                                     ItemsSource="{Binding Configs}"
                                     SelectedIndex="{Binding NowConfig}" />
                             </DockPanel>
-                        </StackPanel>
-                        <WrapPanel Margin="0,0,0,-5">
+                        </panel:WrapPanelWithStretch>
+                        <WrapPanel Margin="0,0,10,-5">
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,3"
                                 Classes="top"
                                 Command="{Binding NewInputConfig}"
                                 Content="{setting:Localize Button.Add}" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,3"
                                 Classes="top"
@@ -102,7 +77,7 @@
                                 Content="{setting:Localize SettingWindow.Tab8.Text32}"
                                 IsEnabled="{Binding InputExist}" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,3"
                                 Classes="top"
@@ -110,14 +85,14 @@
                                 Content="{setting:Localize Button.Delete}"
                                 IsEnabled="{Binding InputExist}" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,3"
                                 Classes="top"
                                 Command="{Binding ImportInputConfig}"
                                 Content="{setting:Localize Button.Input}" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,3"
                                 Classes="top"
@@ -150,7 +125,7 @@
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab8.Text8}" />
                         <Button
-                            Width="90"
+                            Width="100"
                             Height="35"
                             Margin="-2,-3,-3,-2"
                             HorizontalAlignment="Right"
@@ -214,7 +189,7 @@
                             FontSize="{setting:Style FontTitle}"
                             Text="{setting:Localize SettingWindow.Tab8.Text12}" />
                         <Button
-                            Width="90"
+                            Width="100"
                             Height="35"
                             Margin="-2,-3,-3,-2"
                             HorizontalAlignment="Right"
@@ -227,17 +202,21 @@
                         DockPanel.Dock="Bottom"
                         Text="{setting:Localize SettingWindow.Tab8.Text16}"
                         TextWrapping="Wrap" />
-
-                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text15}" />
-                        <Slider
-                            Width="150"
-                            Margin="0,-10,5,-10"
-                            Maximum="1"
-                            Value="{Binding ToBackValue}" />
-                        <TextBlock Width="50" Text="{Binding ToBackValue}" />
-                    </StackPanel>
-
+                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}" DockPanel.Dock="Bottom">
+                        <DockPanel MinWidth="260">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text15}" />
+                            <TextBlock
+                                Width="50"
+                                Margin="0,0,5,0"
+                                DockPanel.Dock="Right"
+                                Text="{Binding ToBackValue}" />
+                            <Slider
+                                Margin="0,-10,5,-10"
+                                HorizontalAlignment="Stretch"
+                                Maximum="1"
+                                Value="{Binding ToBackValue}" />
+                        </DockPanel>
+                    </panel:WrapPanelWithStretch>
                     <DataGrid
                         Name="DataGrid2"
                         Height="300"
@@ -299,159 +278,139 @@
                             Path="/Resource/Icon/Setting/svg24.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab8.Text17}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,5" IsVisible="{Binding !MinMode}">
-                        <StackPanel Margin="0,0,60,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text18}" />
-                            <ComboBox
-                                Width="150"
-                                ItemsSource="{Binding AxisType}"
-                                SelectedIndex="{Binding InputRotateAxis}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text19}" />
-                            <ComboBox
-                                Width="150"
-                                ItemsSource="{Binding AxisType}"
-                                SelectedIndex="{Binding InputCursorAxis}" />
-                        </StackPanel>
-                    </WrapPanel>
-                    <StackPanel Margin="0,0,0,5" IsVisible="{Binding MinMode}">
-                        <DockPanel Margin="0,0,0,5">
+                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text18}" />
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 ItemsSource="{Binding AxisType}"
                                 SelectedIndex="{Binding InputRotateAxis}" />
                         </DockPanel>
-                        <DockPanel Margin="0,0,0,5">
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text19}" />
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 ItemsSource="{Binding AxisType}"
                                 SelectedIndex="{Binding InputCursorAxis}" />
                         </DockPanel>
-                    </StackPanel>
+                    </panel:WrapPanelWithStretch>
                     <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text20}" />
-                    <WrapPanel Margin="0,0,0,10">
-                        <StackPanel
-                            Width="250"
-                            Margin="0,0,20,0"
-                            Orientation="Horizontal">
+                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
+                        <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text22}" />
                             <Panel>
-                                <StackPanel Margin="0,-10,0,0" Orientation="Horizontal">
+                                <DockPanel Margin="0,-10,0,0">
+                                    <TextBlock
+                                        Width="50"
+                                        DockPanel.Dock="Right"
+                                        Text="{Binding RotateDeath, FallbackValue=20000}" />
                                     <Slider
-                                        Width="150"
                                         Margin="0,0,5,0"
+                                        HorizontalAlignment="Stretch"
                                         LargeChange="100"
                                         Maximum="32767"
                                         SmallChange="1"
                                         Value="{Binding RotateDeath, FallbackValue=20000}" />
-                                    <TextBlock Width="50" Text="{Binding RotateDeath, FallbackValue=20000}" />
-                                </StackPanel>
-                                <StackPanel Margin="0,15,0,-5" Orientation="Horizontal">
+                                </DockPanel>
+                                <DockPanel Margin="0,15,0,-5">
+                                    <TextBlock
+                                        Width="50"
+                                        DockPanel.Dock="Right"
+                                        Text="{Binding NowAxis2, FallbackValue=20000}" />
                                     <ProgressBar
-                                        Width="150"
                                         Height="4"
-                                        MinWidth="150"
-                                        MaxWidth="150"
+                                        MinWidth="10"
                                         Margin="0,0,5,0"
+                                        HorizontalAlignment="Stretch"
                                         BorderBrush="Transparent"
                                         Maximum="32767"
                                         Value="{Binding NowAxis2, FallbackValue=20000}" />
-                                    <TextBlock Width="50" Text="{Binding NowAxis2, FallbackValue=20000}" />
-                                </StackPanel>
+                                </DockPanel>
                             </Panel>
-                        </StackPanel>
-                        <StackPanel
-                            Width="250"
-                            Margin="0,0,15,0"
-                            Orientation="Horizontal">
+                        </DockPanel>
+                        <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text21}" />
                             <Panel>
-                                <StackPanel Margin="0,-10,0,0" Orientation="Horizontal">
+                                <DockPanel Margin="0,-10,0,0">
+                                    <TextBlock
+                                        Width="50"
+                                        DockPanel.Dock="Right"
+                                        Text="{Binding CursorDeath, FallbackValue=20000}" />
                                     <Slider
-                                        Width="150"
                                         Margin="0,0,5,0"
+                                        HorizontalAlignment="Stretch"
                                         LargeChange="100"
                                         Maximum="32767"
                                         SmallChange="1"
                                         Value="{Binding CursorDeath, FallbackValue=20000}" />
-                                    <TextBlock Width="50" Text="{Binding CursorDeath, FallbackValue=20000}" />
-                                </StackPanel>
-                                <StackPanel Margin="0,15,0,-5" Orientation="Horizontal">
+                                </DockPanel>
+                                <DockPanel Margin="0,15,0,-5">
+                                    <TextBlock
+                                        Width="50"
+                                        DockPanel.Dock="Right"
+                                        Text="{Binding NowAxis1, FallbackValue=20000}" />
                                     <ProgressBar
-                                        Width="150"
                                         Height="4"
-                                        MinWidth="150"
-                                        MaxWidth="150"
+                                        MinWidth="10"
                                         Margin="0,0,5,0"
+                                        HorizontalAlignment="Stretch"
                                         BorderBrush="Transparent"
                                         Maximum="32767"
                                         Value="{Binding NowAxis1, FallbackValue=20000}" />
-                                    <TextBlock Width="50" Text="{Binding NowAxis1, FallbackValue=20000}" />
-                                </StackPanel>
+                                </DockPanel>
                             </Panel>
-                        </StackPanel>
-                    </WrapPanel>
-                    <WrapPanel>
-                        <StackPanel
-                            Width="250"
-                            Margin="0,0,20,0"
-                            Orientation="Horizontal">
+                        </DockPanel>
+                    </panel:WrapPanelWithStretch>
+                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
+                        <DockPanel MinWidth="260" Margin="0,0,10,-10">
                             <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text23}" />
-                            <Slider
-                                Width="150"
+                            <TextBlock
+                                Width="50"
                                 Margin="0,-10,5,0"
+                                DockPanel.Dock="Right"
+                                Text="{Binding RotateRate, StringFormat='{}{0:0.00}'}" />
+                            <Slider
+                                Margin="0,-10,5,0"
+                                HorizontalAlignment="Stretch"
                                 LargeChange="0.1"
                                 Maximum="2"
                                 Minimum="0.01"
                                 SmallChange="0.01"
                                 Value="{Binding RotateRate}" />
+                        </DockPanel>
+                        <DockPanel MinWidth="260" Margin="0,0,10,-10">
+                            <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text24}" />
                             <TextBlock
                                 Width="50"
-                                Margin="0,-10,0,0"
-                                Text="{Binding RotateRate, StringFormat='{}{0:0.00}'}" />
-                        </StackPanel>
-                        <StackPanel
-                            Width="250"
-                            Margin="0,0,15,0"
-                            Orientation="Horizontal">
-                            <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text24}" />
-                            <Slider
-                                Width="150"
                                 Margin="0,-10,5,0"
+                                DockPanel.Dock="Right"
+                                Text="{Binding CursorRate, StringFormat='{}{0:0.00}'}" />
+                            <Slider
+                                Margin="0,-10,5,0"
+                                HorizontalAlignment="Stretch"
                                 LargeChange="0.1"
                                 Maximum="2"
                                 Minimum="0.01"
                                 SmallChange="0.01"
                                 Value="{Binding CursorRate}" />
+                        </DockPanel>
+                        <DockPanel MinWidth="260" Margin="0,0,10,-10">
+                            <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text30}" />
                             <TextBlock
                                 Width="50"
                                 Margin="0,-10,0,0"
-                                Text="{Binding CursorRate, StringFormat='{}{0:0.00}'}" />
-                        </StackPanel>
-                    </WrapPanel>
-                    <StackPanel
-                        Width="250"
-                        Margin="0,-10,0,-10"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                        <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text30}" />
-                        <Slider
-                            Width="150"
-                            Margin="0,-10,5,0"
-                            LargeChange="0.1"
-                            Maximum="2"
-                            Minimum="0.01"
-                            SmallChange="0.01"
-                            Value="{Binding DownRate}" />
-                        <TextBlock
-                            Width="50"
-                            Margin="0,-10,0,0"
-                            Text="{Binding DownRate, StringFormat='{}{0:0.00}'}" />
-                    </StackPanel>
+                                DockPanel.Dock="Right"
+                                Text="{Binding DownRate, StringFormat='{}{0:0.00}'}" />
+                            <Slider
+                                Margin="0,-10,5,0"
+                                HorizontalAlignment="Stretch"
+                                LargeChange="0.1"
+                                Maximum="2"
+                                Minimum="0.01"
+                                SmallChange="0.01"
+                                Value="{Binding DownRate}" />
+                        </DockPanel>
+                    </panel:WrapPanelWithStretch>
                 </StackPanel>
             </Border>
             <Border
@@ -475,17 +434,17 @@
                         IsChecked="{Binding ItemCycle}"
                         OffContent="{setting:Localize SettingWindow.Tab8.Text26}"
                         OnContent="{setting:Localize SettingWindow.Tab8.Text26}" />
-                    <WrapPanel Margin="0,0,0,-5" IsEnabled="{Binding ItemCycle}">
-                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
+                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" IsEnabled="{Binding ItemCycle}">
+                        <StackPanel Margin="0,0,20,10" Orientation="Horizontal">
                             <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text27}" />
-                            <TextBlock Text="{Binding ItemCycleLeft}" />
+                            <TextBlock Width="20" Text="{Binding ItemCycleLeft}" />
                             <Svg
                                 Width="30"
                                 Height="30"
                                 Margin="0,0,5,0"
                                 Path="{Binding CycleLeftIcon}" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-3,3,-2"
                                 Classes="top"
@@ -493,16 +452,16 @@
                                 CommandParameter="{x:False}"
                                 Content="{setting:Localize SettingWindow.Tab8.Text28}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                             <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text29}" />
-                            <TextBlock Text="{Binding ItemCycleRight}" />
+                            <TextBlock Width="20" Text="{Binding ItemCycleRight}" />
                             <Svg
                                 Width="30"
                                 Height="30"
                                 Margin="0,0,5,0"
                                 Path="{Binding CycleRightIcon}" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-3,3,-2"
                                 Classes="top"
@@ -510,7 +469,7 @@
                                 CommandParameter="{x:True}"
                                 Content="{setting:Localize SettingWindow.Tab8.Text28}" />
                         </StackPanel>
-                    </WrapPanel>
+                    </panel:WrapPanelWithStretch>
                 </StackPanel>
             </Border>
         </StackPanel>

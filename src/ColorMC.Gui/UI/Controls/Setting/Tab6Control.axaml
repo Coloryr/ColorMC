@@ -6,6 +6,7 @@
     xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Setting"
@@ -72,7 +73,7 @@
                     </StackPanel>
                 </Border>
                 <Border Margin="10,5,10,3" Classes="t2">
-                    <StackPanel Margin="15">
+                    <StackPanel Margin="15,15,5,15">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <svg:SvgControl
                                 Width="24"
@@ -81,30 +82,25 @@
                                 Path="/Resource/Icon/Setting/svg18.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text27}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
                             <ToggleSwitch
-                                Margin="0,0,10,0"
+                                Margin="0,0,10,10"
                                 IsChecked="{Binding EnableOneGame}"
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text7}"
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text7}" />
                             <ComboBox
-                                Width="175"
+                                MinWidth="200"
+                                Margin="0,0,10,10"
                                 IsEnabled="{Binding EnableOneGame}"
                                 IsVisible="{Binding !MinMode}"
                                 ItemsSource="{Binding GameList}"
                                 SelectedIndex="{Binding Game}" />
-                        </StackPanel>
-                        <ComboBox
-                            HorizontalAlignment="Stretch"
-                            IsEnabled="{Binding EnableOneGame}"
-                            IsVisible="{Binding MinMode}"
-                            ItemsSource="{Binding GameList}"
-                            SelectedIndex="{Binding Game}" />
+                        </panel:WrapPanelWithStretch>
                         <DockPanel>
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
-                                Margin="-2,-2,-3,-2"
+                                Margin="-2,-2,7,-2"
                                 Classes="top"
                                 Command="{Binding AddLockLogin}"
                                 Content="{setting:Localize SettingWindow.Tab6.Text33}"
@@ -119,7 +115,7 @@
                         <DataGrid
                             Name="LockLoginList"
                             Height="150"
-                            Margin="-10,-5,-10,-10"
+                            Margin="-10,-5,0,-10"
                             CanUserResizeColumns="True"
                             IsEnabled="{Binding EnableOneLogin}"
                             ItemsSource="{Binding Locks}"
@@ -210,27 +206,30 @@
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text26}"
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text26}" />
                         </WrapPanel>
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <TextBlock Text="{setting:Localize SettingWindow.Tab6.Text18}" />
-                            <Slider
-                                Width="150"
-                                Height="40"
-                                Margin="5,-10,5,0"
-                                HorizontalAlignment="Left"
-                                Foreground="{setting:Theme MainColor}"
-                                IsEnabled="{Binding EnableMusic}"
-                                IsSnapToTickEnabled="True"
-                                LargeChange="1"
-                                Maximum="100"
-                                Minimum="0"
-                                SmallChange="1"
-                                TickFrequency="1"
-                                Value="{Binding Volume}" />
-                            <TextBlock
-                                Width="40"
-                                Margin="0,0,5,0"
-                                Text="{Binding Volume, StringFormat='{}{0}%'}" />
-                        </StackPanel>
+                        <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                            <DockPanel MinWidth="260">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text18}" />
+                                <TextBlock
+                                    Width="40"
+                                    Margin="0,0,5,0"
+                                    DockPanel.Dock="Right"
+                                    Text="{Binding Volume, StringFormat='{}{0}%'}" />
+                                <Slider
+                                    Height="40"
+                                    Margin="5,-10,5,0"
+                                    HorizontalAlignment="Stretch"
+                                    Foreground="{setting:Theme MainColor}"
+                                    IsEnabled="{Binding EnableMusic}"
+                                    IsSnapToTickEnabled="True"
+                                    LargeChange="1"
+                                    Maximum="100"
+                                    Minimum="0"
+                                    SmallChange="1"
+                                    TickFrequency="1"
+                                    Value="{Binding Volume}" />
+
+                            </DockPanel>
+                        </panel:WrapPanelWithStretch>
                         <TextBox
                             Margin="0,5,0,5"
                             Classes="input1"
@@ -238,7 +237,7 @@
                             Text="{Binding Music}"
                             Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
                         <Button
-                            Width="90"
+                            Width="100"
                             Height="35"
                             Margin="-2,-2,-3,-2"
                             HorizontalAlignment="Right"
@@ -248,7 +247,7 @@
                             IsEnabled="{Binding EnableMusic}" />
                         <WrapPanel Margin="0,0,0,-5">
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-3,-6,3,-2"
                                 Classes="top"
@@ -256,7 +255,7 @@
                                 Content="{setting:Localize SettingWindow.Tab6.Text19}"
                                 IsEnabled="{Binding EnableMusic}" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"
@@ -264,7 +263,7 @@
                                 Content="{setting:Localize SettingWindow.Tab6.Text21}"
                                 IsEnabled="{Binding EnableMusic}" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"
@@ -272,7 +271,7 @@
                                 Content="{setting:Localize SettingWindow.Tab6.Text23}"
                                 IsEnabled="{Binding EnableMusic}" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"

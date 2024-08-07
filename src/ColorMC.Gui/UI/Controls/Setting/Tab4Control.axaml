@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignWidth="800"
@@ -113,9 +114,9 @@
                 Margin="10,5,10,3"
                 Classes="t2"
                 IsEnabled="{Binding !Phone}">
-                <StackPanel Margin="15">
+                <StackPanel Margin="15,15,5,15">
                     <!--  分辨率  -->
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
@@ -125,36 +126,9 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text9}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,-5" IsVisible="{Binding !MinMode}">
-                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
-                            <NumericUpDown
-                                Width="150"
-                                Height="30"
-                                FormatString="N0"
-                                IsEnabled="{Binding !FullScreen}"
-                                Minimum="1"
-                                Value="{Binding Width}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text11}" />
-                            <NumericUpDown
-                                Width="150"
-                                Height="30"
-                                FormatString="N0"
-                                IsEnabled="{Binding !FullScreen}"
-                                Minimum="1"
-                                Value="{Binding Height}" />
-                        </StackPanel>
-                        <ToggleSwitch
-                            Margin="0,0,0,5"
-                            IsChecked="{Binding FullScreen}"
-                            OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
-                            OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
-                    </WrapPanel>
-                    <StackPanel IsVisible="{Binding MinMode}">
-                        <DockPanel Margin="0,0,0,5">
-                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
+                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
                             <NumericUpDown
                                 Height="30"
                                 HorizontalAlignment="Stretch"
@@ -163,8 +137,8 @@
                                 Minimum="1"
                                 Value="{Binding Width}" />
                         </DockPanel>
-                        <DockPanel Margin="0,0,0,5">
-                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text11}" />
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text11}" />
                             <NumericUpDown
                                 Height="30"
                                 HorizontalAlignment="Stretch"
@@ -174,15 +148,15 @@
                                 Value="{Binding Height}" />
                         </DockPanel>
                         <ToggleSwitch
-                            Margin="0,0,0,5"
+                            Margin="0,0,10,10"
                             IsChecked="{Binding FullScreen}"
                             OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
                             OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
-                    </StackPanel>
+                    </panel:WrapPanelWithStretch>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Margin="15">
+                <StackPanel Margin="15,15,5,15">
                     <!--  Jvm内存  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -194,29 +168,9 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text1}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,5" IsVisible="{Binding !MinMode}">
-                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
-                            <NumericUpDown
-                                Width="150"
-                                Height="30"
-                                FormatString="N0"
-                                Minimum="1"
-                                Value="{Binding MinMemory}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,20,5" Orientation="Horizontal">
-                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text5}" />
-                            <NumericUpDown
-                                Width="150"
-                                Height="30"
-                                FormatString="N0"
-                                Minimum="1"
-                                Value="{Binding MaxMemory}" />
-                        </StackPanel>
-                    </WrapPanel>
-                    <StackPanel Margin="0,0,0,5" IsVisible="{Binding MinMode}">
-                        <DockPanel Margin="0,0,0,5">
-                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
+                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
                             <NumericUpDown
                                 Height="30"
                                 HorizontalAlignment="Stretch"
@@ -224,8 +178,8 @@
                                 Minimum="1"
                                 Value="{Binding MinMemory}" />
                         </DockPanel>
-                        <DockPanel Margin="0,0,0,5">
-                            <TextBlock Width="110" Text="{setting:Localize SettingWindow.Tab4.Text5}" />
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text5}" />
                             <NumericUpDown
                                 Height="30"
                                 HorizontalAlignment="Stretch"
@@ -233,68 +187,60 @@
                                 Minimum="1"
                                 Value="{Binding MaxMemory}" />
                         </DockPanel>
-                    </StackPanel>
+                    </panel:WrapPanelWithStretch>
                     <!--  Jvm参数  -->
-                    <StackPanel
-                        Margin="0,0,0,10"
-                        IsVisible="{Binding !MinMode}"
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Width="110"
-                            HorizontalAlignment="Center"
-                            Text="{setting:Localize SettingWindow.Tab4.Text2}" />
-                        <ComboBox
-                            Width="150"
-                            ItemsSource="{Binding GCTypeList}"
-                            SelectedIndex="{Binding GC}" />
-                    </StackPanel>
-                    <DockPanel Margin="0,0,0,10" IsVisible="{Binding MinMode}">
-                        <TextBlock
-                            Width="110"
-                            HorizontalAlignment="Center"
-                            Text="{setting:Localize SettingWindow.Tab4.Text2}" />
-                        <ComboBox
-                            HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding GCTypeList}"
-                            SelectedIndex="{Binding GC}" />
-                    </DockPanel>
+                    <panel:WrapPanelWithStretch Margin="0,0,0,10" AutoMax="{Binding MinMode}">
+                        <DockPanel MinWidth="230">
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                HorizontalAlignment="Center"
+                                Text="{setting:Localize SettingWindow.Tab4.Text2}" />
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding GCTypeList}"
+                                SelectedIndex="{Binding GC}" />
+                        </DockPanel>
+                    </panel:WrapPanelWithStretch>
                     <TextBox
-                        Margin="0,0,0,10"
-                        IsEnabled="False"
+                        Margin="0,0,10,10"
+                        IsEnabled="{Binding CustomGc}"
                         Text="{Binding GCArg}"
                         Watermark="{setting:Localize SettingWindow.Tab4.Text3}" />
                     <!--  Jvm附加参数  -->
                     <TextBox
-                        Margin="0,0,0,10"
+                        Margin="0,0,10,10"
                         Text="{Binding JavaAgent}"
                         Watermark="{setting:Localize SettingWindow.Tab4.Text6}" />
                     <TextBox
                         Height="100"
-                        Margin="0,0,0,10"
+                        Margin="0,0,10,10"
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding JvmArg}"
                         Watermark="{setting:Localize SettingWindow.Tab4.Text7}" />
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,0"
+                        Margin="0,5,10,0"
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding GameArg}"
                         Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
                     <TextBlock
-                        Margin="0,0,0,10"
+                        Margin="0,0,10,10"
                         Text="{setting:Localize GameEditWindow.Tab2.Text25}"
                         TextWrapping="Wrap" />
                     <TextBox
                         Height="100"
-                        Margin="0,5,0,0"
+                        Margin="0,5,10,0"
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding JvmEnv}"
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text34}" />
-                    <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text35}" TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        Text="{setting:Localize GameEditWindow.Tab2.Text35}"
+                        TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">

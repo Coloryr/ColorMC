@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.ServerPack"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -13,41 +14,34 @@
     <Decorator Margin="0,0,10,15">
         <Border Margin="10,5,10,3" Classes="t2">
             <DockPanel>
-                <StackPanel Margin="15,15,15,0" DockPanel.Dock="Top">
-                    <DockPanel>
-                        <TextBlock
-                            Margin="0,0,5,0"
-                            DockPanel.Dock="Left"
-                            Text="{setting:Localize ServerPackWindow.Tab4.Text1}" />
+                <StackPanel Margin="15,15,5,0" DockPanel.Dock="Top">
+                    <panel:WrapPanelWithStretch LeftMax="True">
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize ServerPackWindow.Tab4.Text1}" />
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding NameList}"
+                                SelectedItem="{Binding Group}" />
+                        </DockPanel>
+                        <DockPanel MinWidth="230" Margin="0,0,10,10">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize ServerPackWindow.Tab4.Text2}" />
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding FuntionList}"
+                                SelectedIndex="{Binding Funtion}" />
+                        </DockPanel>
                         <Button
-                            Width="80"
+                            Width="100"
                             Height="35"
-                            Margin="-2,-2,-3,-3"
+                            Margin="-2,-2,7,7"
                             Classes="top"
                             Command="{Binding AddFile}"
                             Content="{setting:Localize Button.Add}"
-                            DockPanel.Dock="Right"
                             ToolTip.Tip="{setting:Localize ToolTip.Text119}"
                             ToolTip.VerticalOffset="-30" />
-                        <ComboBox
-                            Width="140"
-                            Margin="0,0,10,0"
-                            HorizontalAlignment="Stretch"
-                            DockPanel.Dock="Right"
-                            ItemsSource="{Binding FuntionList}"
-                            SelectedIndex="{Binding Funtion}" />
-                        <TextBlock
-                            Margin="0,0,5,0"
-                            DockPanel.Dock="Right"
-                            Text="{setting:Localize ServerPackWindow.Tab4.Text2}" />
-                        <ComboBox
-                            Margin="0,0,10,0"
-                            HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding NameList}"
-                            SelectedItem="{Binding Group}" />
-                    </DockPanel>
+                    </panel:WrapPanelWithStretch>
                     <TextBlock
-                        Margin="0,5,0,0"
+                        Margin="0,0,10,0"
                         DockPanel.Dock="Bottom"
                         Text="{setting:Localize ServerPackWindow.Tab4.Text3}" />
                 </StackPanel>

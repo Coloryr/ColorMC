@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -14,22 +15,23 @@
     <Panel Margin="0,0,10,15">
         <Border Margin="10,5,10,3" Classes="t2">
             <DockPanel>
-                <StackPanel
-                    Margin="15,15,15,0"
-                    DockPanel.Dock="Top"
-                    IsVisible="{Binding MinMode}">
-                    <DockPanel Margin="0,0,0,10">
-                        <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
+                <panel:WrapPanelWithStretch
+                    Margin="15,15,5,-10"
+                    AutoMax="True"
+                    DockPanel.Dock="Top">
+                    <DockPanel MinWidth="180" Margin="0,0,10,10">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
                         <ComboBox
                             HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
                             ItemsSource="{Binding ModFilterList}"
                             SelectedIndex="{Binding ModFilter}" />
                     </DockPanel>
-                    <DockPanel>
+                    <DockPanel MinWidth="230" Margin="0,0,10,10">
                         <Button
                             Width="100"
                             Height="35"
-                            Margin="-2,-2,-3,-2"
+                            Margin="-2,-2,-3,-3"
                             Classes="top"
                             Command="{Binding LoadMod}"
                             Content="{setting:Localize Button.Refash}"
@@ -37,37 +39,11 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text55}"
                             ToolTip.VerticalOffset="-30" />
                         <TextBox
-                            Margin="0,0,10,0"
+                            Margin="0,0,5,0"
                             Text="{Binding ModText}"
                             Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
                     </DockPanel>
-                </StackPanel>
-                <DockPanel
-                    Margin="15,15,15,0"
-                    DockPanel.Dock="Top"
-                    IsVisible="{Binding !MinMode}">
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-2,-3,-2"
-                        Classes="top"
-                        Command="{Binding LoadMod}"
-                        Content="{setting:Localize Button.Refash}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text55}"
-                        ToolTip.VerticalOffset="-30" />
-                    <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
-                    <ComboBox
-                        Width="100"
-                        Margin="0,0,10,0"
-                        VerticalAlignment="Center"
-                        ItemsSource="{Binding ModFilterList}"
-                        SelectedIndex="{Binding ModFilter}" />
-                    <TextBox
-                        Margin="0,0,10,0"
-                        Text="{Binding ModText}"
-                        Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
-                </DockPanel>
+                </panel:WrapPanelWithStretch>
                 <DataGrid
                     Name="DataGrid1"
                     Margin="5"

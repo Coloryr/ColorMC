@@ -22,7 +22,7 @@
                             Watermark="{setting:Localize SettingWindow.Tab1.Text14}" />
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,-2"
                                 Classes="top"
@@ -32,7 +32,7 @@
                                 ToolTip.Tip="{setting:Localize ToolTip.Text131}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,-3,-2"
                                 Classes="top"
@@ -55,7 +55,7 @@
                             Watermark="{setting:Localize SettingWindow.Tab1.Text5}" />
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,-2"
                                 Classes="top"
@@ -65,7 +65,7 @@
                                 ToolTip.Tip="{setting:Localize ToolTip.Text120}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,-3,-2"
                                 Classes="top"
@@ -84,7 +84,7 @@
                             Watermark="{setting:Localize SettingWindow.Tab1.Text7}" />
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,-2"
                                 Classes="top"
@@ -94,7 +94,7 @@
                                 ToolTip.Tip="{setting:Localize ToolTip.Text120}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,-3,-2"
                                 Classes="top"
@@ -113,7 +113,7 @@
                             Watermark="{setting:Localize SettingWindow.Tab1.Text9}" />
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,-2"
                                 Classes="top"
@@ -123,7 +123,7 @@
                                 ToolTip.Tip="{setting:Localize ToolTip.Text120}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,-3,-2"
                                 Classes="top"
@@ -142,7 +142,7 @@
                             Watermark="{setting:Localize SettingWindow.Tab1.Text11}" />
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,-2"
                                 Classes="top"
@@ -152,7 +152,7 @@
                                 ToolTip.Tip="{setting:Localize ToolTip.Text120}"
                                 ToolTip.VerticalOffset="-30" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,-3,-2"
                                 Classes="top"
