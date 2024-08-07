@@ -156,7 +156,7 @@ public partial class BaseModel : ObservableObject
 
     partial void OnHeadChoiseDisplayChanged(bool value)
     {
-        
+
     }
 
     [RelayCommand]

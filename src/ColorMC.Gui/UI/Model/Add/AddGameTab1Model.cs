@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
