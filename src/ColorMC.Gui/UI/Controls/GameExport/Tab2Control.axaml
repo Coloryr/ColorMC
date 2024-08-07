@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameExport"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -13,32 +14,39 @@
     <Decorator Margin="0,0,10,15">
         <Border Margin="10,5,10,3" Classes="t2">
             <DockPanel>
-                <DockPanel Margin="15,15,15,0" DockPanel.Dock="Top">
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-3,-2,-3"
-                        Classes="top"
-                        Command="{Binding OpenMod}"
-                        Content="{setting:Localize Button.OpFile}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text113}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-3,3,-3"
-                        Classes="top"
-                        Command="{Binding LoadMod}"
-                        Content="{setting:Localize Button.Refash}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text55}"
-                        ToolTip.VerticalOffset="-30" />
+                <panel:WrapPanelWithStretch
+                    Margin="15,15,5,-10"
+                    DockPanel.Dock="Top"
+                    LeftMax="True">
                     <TextBox
-                        Margin="0,0,10,0"
+                        MinWidth="230"
+                        Margin="0,0,10,10"
                         Text="{Binding Text}"
                         Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
-                </DockPanel>
+                    <StackPanel
+                        Margin="0,0,10,10"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-3,3,-3"
+                            Classes="top"
+                            Command="{Binding OpenMod}"
+                            Content="{setting:Localize Button.OpFile}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text113}"
+                            ToolTip.VerticalOffset="-30" />
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-3,-3,-3"
+                            Classes="top"
+                            Command="{Binding LoadMod}"
+                            Content="{setting:Localize Button.Refash}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text55}"
+                            ToolTip.VerticalOffset="-30" />
+                    </StackPanel>
+                </panel:WrapPanelWithStretch>
                 <DataGrid
                     Name="DataGrid1"
                     Margin="5"

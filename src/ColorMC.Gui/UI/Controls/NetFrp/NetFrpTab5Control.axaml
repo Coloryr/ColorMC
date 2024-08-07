@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.NetFrp"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
@@ -17,34 +18,33 @@
             Margin="10,5,10,3"
             Classes="t2"
             DockPanel.Dock="Top">
-            <StackPanel Margin="15">
-                <DockPanel Margin="0,0,0,-5">
-                    <StackPanel
-                        Margin="0,0,0,5"
-                        DockPanel.Dock="Right"
-                        Orientation="Horizontal">
-                        <Button
-                            Width="120"
-                            Height="35"
-                            Margin="-2,-2,3,-2"
-                            Classes="top"
-                            Command="{Binding GetChannelOpenFrp}"
-                            Content="{setting:Localize NetFrpWindow.Tab1.Text6}"
-                            DockPanel.Dock="Right" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,3,-2"
-                            Classes="top"
-                            Command="{Binding OpenUrlOpenFrp}"
-                            Content="{setting:Localize NetFrpWindow.Tab1.Text14}" />
-                    </StackPanel>
-                    <TextBox
-                        Margin="0,0,10,5"
-                        Text="{Binding KeyOpenFrp}"
-                        Watermark="{setting:Localize NetFrpWindow.Tab1.Text1}" />
-                </DockPanel>
-            </StackPanel>
+            <panel:WrapPanelWithStretch Margin="15,15,5,5" LeftMax="True">
+                <TextBox
+                    MinWidth="230"
+                    Margin="0,0,10,10"
+                    Text="{Binding KeyOpenFrp}"
+                    Watermark="{setting:Localize NetFrpWindow.Tab1.Text1}" />
+                <StackPanel
+                    Margin="0,0,10,10"
+                    DockPanel.Dock="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="120"
+                        Height="35"
+                        Margin="-2,-2,3,-2"
+                        Classes="top"
+                        Command="{Binding GetChannelOpenFrp}"
+                        Content="{setting:Localize NetFrpWindow.Tab1.Text6}"
+                        DockPanel.Dock="Right" />
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="-2,-2,-3,-2"
+                        Classes="top"
+                        Command="{Binding OpenUrlOpenFrp}"
+                        Content="{setting:Localize NetFrpWindow.Tab1.Text14}" />
+                </StackPanel>
+            </panel:WrapPanelWithStretch>
         </Border>
 
         <Panel>
