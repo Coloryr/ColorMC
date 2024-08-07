@@ -1608,7 +1608,7 @@ public static class GameBinding
             var mod = new List<ModDisplayModel>();
             foreach (var item in list)
             {
-                if (item.Obj.modid == null || item.Obj.Disable)
+                if (item.Obj.modid == null || item.Obj.Disable || item.Obj.CoreMod)
                     continue;
                 modid.Add(item.Obj.modid);
                 if (item.Obj.InJar?.Count > 0)
@@ -1621,10 +1621,15 @@ public static class GameBinding
                 mod.Add(item);
             }
             modid.Add("forge");
+            modid.Add("Forge");
+            modid.Add("mod_MinecraftForge");
+
             modid.Add("fabric");
             modid.Add("minecraft");
             modid.Add("java");
             modid.Add("fabricloader");
+
+            modid.Add("neoforge");
 
             var lost = new ConcurrentBag<(string, List<string>)>();
 
@@ -1640,14 +1645,19 @@ public static class GameBinding
                 {
                     foreach (var item1 in item.Obj.requiredMods)
                     {
-                        var list2 = item1.Split(",");
-                        list1.AddRange(list2);
-                        foreach (var item2 in list2)
+                        var item2 = item1;
+                        if (item2.Contains("@["))
                         {
-                            if (modid.Contains(item2))
-                            {
-                                list1.Remove(item2);
-                            }
+                            item2 = StringHelper.RemovePartAfterSymbol(item1, '@');
+                        }
+                        if (item2.StartsWith("required-after:"))
+                        {
+                            item2 = StringHelper.ReplaceFirst(item2, "required-after:", "");
+                        }
+
+                        if (!modid.Contains(item2))
+                        {
+                            list1.Add(item2);
                         }
                     }
                 }
@@ -1656,12 +1666,25 @@ public static class GameBinding
                     foreach (var item1 in item.Obj.dependencies)
                     {
                         var list2 = item1.Split(",");
-                        list1.AddRange(list2);
                         foreach (var item2 in list2)
                         {
-                            if (modid.Contains(item2))
+                            if (item2 == ")")
                             {
-                                list1.Remove(item2);
+                                continue;
+                            }
+                            var item3 = item2;
+                            if (item2.Contains("@["))
+                            {
+                                item3 = StringHelper.RemovePartAfterSymbol(item2, '@');
+                            }
+                            if (item3.StartsWith("required-after:"))
+                            {
+                                item3 = StringHelper.ReplaceFirst(item3, "required-after:", "");
+                            }
+
+                            if (!modid.Contains(item3))
+                            {
+                                list1.Add(item3);
                             }
                         }
                     }

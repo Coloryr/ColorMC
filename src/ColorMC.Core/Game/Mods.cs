@@ -37,11 +37,11 @@ public static class Mods
         var files = info.GetFiles();
 
         //多线程同时检查
-        await Parallel.ForEachAsync(files, new ParallelOptions()
-        {
-            MaxDegreeOfParallelism = 1
-        }, async (item, cancel) =>
-        //await Parallel.ForEachAsync(files, async (item, cancel) =>
+        //await Parallel.ForEachAsync(files, new ParallelOptions()
+        //{
+        //    MaxDegreeOfParallelism = 1
+        //}, async (item, cancel) =>
+        await Parallel.ForEachAsync(files, async (item, cancel) =>
         {
             if (item.Extension is not (".zip" or ".jar" or ".disable" or ".disabled"))
             {
