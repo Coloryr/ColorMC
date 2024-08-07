@@ -30,6 +30,7 @@ public static class Logs
         try
         {
             var stream = File.Open(s_local + "logs.log", FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
+            stream.Seek(0, SeekOrigin.End);
             s_writer = new(stream)
             {
                 AutoFlush = true
