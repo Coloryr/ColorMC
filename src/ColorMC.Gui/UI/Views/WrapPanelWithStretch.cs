@@ -137,7 +137,7 @@ public class WrapPanelWithStretch : Panel
                     //是否是最右边的
                     if (last != null && right)
                     {
-                        last.Arrange(new(totalWidth - widthToUse, totalHeight, 
+                        last.Arrange(new(totalWidth - widthToUse, totalHeight,
                             finalSize.Width - totalWidth + widthToUse, lineHeight));
                         last = null;
                     }

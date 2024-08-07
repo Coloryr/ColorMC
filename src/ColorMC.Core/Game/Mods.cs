@@ -6,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Tomlyn;
 using Tomlyn.Model;
@@ -725,7 +724,7 @@ public static class Mods
                 }
                 catch (Exception)
                 {
-                    
+
                 }
             }
 

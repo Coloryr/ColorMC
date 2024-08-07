@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using Avalonia.Controls;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;

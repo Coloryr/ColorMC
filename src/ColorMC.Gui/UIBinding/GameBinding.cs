@@ -108,7 +108,7 @@ public static class GameBinding
     /// <param name="overwirte"></param>
     /// <returns></returns>
     public static async Task<bool> AddGame(string? name, string local, List<string>? unselect,
-        string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte, 
+        string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.ZipUpdate state, bool open)
     {
         var res = await AddGameHelper.AddGame(new()

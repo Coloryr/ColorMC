@@ -11,7 +11,6 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -182,7 +181,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         {
             WindowManager.LastWindow = null;
         }
-        
+
         App.Clear();
         App.TestClose();
     }
