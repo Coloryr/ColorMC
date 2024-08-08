@@ -273,9 +273,10 @@ public static class Launch
                 {
                     arg.Add(item2!);
                 }
-                else if (obj2.value is List<string> list)
+                else if (obj2.value is JArray list)
                 {
-                    arg.AddRange(list);
+                    var list1 = list.ToObject<List<string>>()!;
+                    arg.AddRange(list1);
                 }
             }
         }

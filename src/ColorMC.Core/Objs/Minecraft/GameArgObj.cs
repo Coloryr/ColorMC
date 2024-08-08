@@ -53,6 +53,7 @@ public record GameArgObj
             {
                 public string name { get; set; }
                 public string version { get; set; }
+                public string arch { get; set; }
             }
             public string action { get; set; }
             public OS os { get; set; }

@@ -40,8 +40,6 @@ public partial class App : Application
         }
     }
 
-    //public static TopLevel? TopLevel { get; set; }
-
     public static readonly SelfCrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
     public static readonly SelfCrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));

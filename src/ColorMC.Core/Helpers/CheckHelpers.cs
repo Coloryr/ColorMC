@@ -21,7 +21,7 @@ public static class CheckHelpers
     /// </summary>
     public static bool CheckAllow(List<GameArgObj.Libraries.Rules> list)
     {
-        bool download = true;
+        bool allow = true;
         if (list == null)
         {
             return true;
@@ -34,57 +34,69 @@ public static class CheckHelpers
             {
                 if (item2.os == null)
                 {
-                    download = true;
+                    allow = true;
                     continue;
                 }
                 var os = item2.os.name;
 
                 if (os == "osx" && SystemInfo.Os == OsType.MacOS)
                 {
-                    download = true;
+                    allow = true;
                 }
                 else if (os == "windows" && SystemInfo.Os == OsType.Windows)
                 {
-                    download = true;
+                    allow = true;
                 }
                 else if (os == "linux" && SystemInfo.Os == OsType.Linux)
                 {
-                    download = true;
+                    allow = true;
                 }
                 else
                 {
-                    download = false;
+                    allow = false;
+                }
+
+                var arch = item2.os.arch;
+                if (arch == "x86" && !SystemInfo.IsArm)
+                {
+                    allow = true;
                 }
             }
             else if (action == "disallow")
             {
                 if (item2.os == null)
                 {
-                    download = false;
+                    allow = false;
                     continue;
                 }
                 var os = item2.os.name;
 
                 if (os == "osx" && SystemInfo.Os == OsType.MacOS)
                 {
-                    download = false;
+                    allow = false;
                 }
                 else if (os == "windows" && SystemInfo.Os == OsType.Windows)
                 {
-                    download = false;
+                    allow = false;
                 }
                 else if (os == "linux" && SystemInfo.Os == OsType.Linux)
                 {
-                    download = false;
+                    allow = false;
                 }
                 else
                 {
-                    download = true;
+                    allow = true;
+                }
+
+                var arch = item2.os.arch;
+                if (arch == "x86" && !SystemInfo.IsArm)
+                {
+                    allow = false;
                 }
             }
         }
 
-        return download;
+        return allow;
     }
 
     public static bool IsGameVersionV2(this GameSettingObj obj)

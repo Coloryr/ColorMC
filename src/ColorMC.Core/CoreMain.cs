@@ -217,6 +217,8 @@ public static class ColorMCCore
         WebClient.Init();
 
         Logs.Info(LanguageHelper.Get("Core.Info1"));
+        Logs.Info(SystemInfo.SystemName);
+        Logs.Info(SystemInfo.System);
     }
 
     /// <summary>
