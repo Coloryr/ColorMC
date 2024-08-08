@@ -33,8 +33,8 @@ public static class AddGameHelper
         bool isfind = false;
         bool ismmc = false;
 
-        var file1 = Path.GetFullPath(arg.Local + "/" + "mmc-pack.json");
-        var file2 = Path.GetFullPath(arg.Local + "/" + "instance.cfg");
+        var file1 = Path.GetFullPath(arg.Local + "/mmc-pack.json");
+        var file2 = Path.GetFullPath(arg.Local + "/instance.cfg");
         if (File.Exists(file1) && File.Exists(file2))
         {
             try
