@@ -1966,24 +1966,25 @@ public static class GameBinding
     /// </summary>
     /// <param name="local"></param>
     /// <returns></returns>
-    public static PackType CheckType(string local)
+    public static PackType? CheckType(string local)
     {
-        Stream? stream = PathHelper.OpenRead(local);
-
-        if (stream == null)
-        {
-            return PackType.ColorMC;
-        }
-
+        Stream? stream = null;
         try
         {
+            stream = PathHelper.OpenRead(local);
+
+            if (stream == null)
+            {
+                return null;
+            }
+
             if (local.EndsWith(".mrpack"))
             {
                 return PackType.Modrinth;
             }
             if (local.EndsWith(".zip"))
             {
-                using ZipFile zFile = new(stream);
+                using var zFile = new ZipFile(stream);
                 foreach (ZipEntry item in zFile)
                 {
                     if (item.Name.EndsWith("game.json"))
@@ -2011,11 +2012,11 @@ public static class GameBinding
         }
         finally
         {
-            stream.Close();
-            stream.Dispose();
+            stream?.Close();
+            stream?.Dispose();
         }
 
-        return PackType.ColorMC;
+        return null;
     }
 
     /// <summary>
