@@ -157,7 +157,6 @@ public static class ColorMCGui
         s_arg.Local = RunDir;
         ColorMCCore.Init(s_arg);
         GuiConfigUtils.Init(RunDir);
-        FrpConfigUtils.Init(RunDir);
     }
 
     public static void SetRuntimeState(bool aot, bool min)
