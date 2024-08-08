@@ -34,7 +34,10 @@ public partial class App : Application
             WindowManager.ShowError(temp, e.ExceptionObject as Exception);
         };
 
-        ColorMCGui.StartLock();
+        if (SystemInfo.Os != OsType.Android)
+        {
+            ColorMCGui.StartLock();
+        }
     }
 
     //public static TopLevel? TopLevel { get; set; }
