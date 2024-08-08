@@ -35,7 +35,7 @@
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text3}" />
                             <TextBlock Text="{Binding InputNum}" />
                         </DockPanel>
-                        <panel:WrapPanelWithStretch Margin="0,0,0,10" AutoMax="{Binding MinMode}">
+                        <panel:WrapPanelWithStretch Margin="0,0,10,10" AutoMax="{Binding MinMode}">
                             <DockPanel MinWidth="230">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
                                 <ComboBox
@@ -269,7 +269,7 @@
                 Margin="10,5,10,3"
                 Classes="t2"
                 IsEnabled="{Binding InputExist}">
-                <StackPanel Margin="15">
+                <StackPanel Margin="15,15,5,15">
                     <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"

@@ -18,6 +18,9 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 {
     private WindowNotificationManager windowNotification;
 
+    public abstract int DefaultWidth { get; }
+    public abstract int DefaultHeight { get; }
+
     public override BaseUserControl ICon => _con;
 
     private BaseUserControl _con;
@@ -41,6 +44,8 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         {
             SetChild(con1);
         }
+
+        con.SetBaseModel(model);
 
         Closed += UserWindow_Closed;
         Activated += Window_Activated;
@@ -123,6 +128,18 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
             if (!res)
             {
                 _isClose = true;
+                if (WindowState == WindowState.Minimized)
+                {
+                    WindowState = WindowState.Normal;
+                }
+                WindowManager.SaveWindowState(_con.UseName, new()
+                {
+                    X = Position.X,
+                    Y = Position.Y,
+                    Width = (int)Width,
+                    Height = (int)Height,
+                    WindowState = WindowState
+                });
                 Close();
             }
         });
@@ -135,6 +152,62 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 
     private void FindGoodPos()
     {
+        var state = WindowManager.GetWindowState(_con.UseName);
+        if (state != null)
+        {
+            WindowState = state.WindowState;
+
+            if (state.WindowState != WindowState.Maximized)
+            {
+                int newX = state.X;
+                int newY = state.Y;
+                int newWidth = state.Width;
+                int newHeight = state.Height;
+
+                var sec1 = Screens.ScreenFromWindow(this);
+                if (sec1 == null)
+                {
+                    return;
+                }
+
+                var screenBounds = sec1.Bounds;
+
+                if (newY < 0)
+                {
+                    newY = 0;
+                }
+                if (newY > screenBounds.Height - (newHeight / 2))
+                {
+                    newY = Math.Min(0, screenBounds.Height - newHeight);
+                }
+
+                if (newX < screenBounds.X)
+                {
+                    newX = screenBounds.X;
+                }
+                if (newX > screenBounds.Width - (newWidth / 2))
+                {
+                    newX = Math.Min(0, screenBounds.Right - newWidth);
+                }
+
+                if (newWidth < MinWidth)
+                {
+                    newWidth = DefaultWidth;
+                }
+                if (newHeight < MinHeight)
+                {
+                    newHeight = DefaultHeight;
+                }
+
+                //Avalonia bug
+                Position = new(newX - 1, newY - 31);
+                Width = newWidth;
+                Height = newHeight;
+            }
+
+            return;
+        }
+
         var basewindow = WindowManager.LastWindow;
 
         if (basewindow == null || basewindow.WindowState == WindowState.Minimized)
