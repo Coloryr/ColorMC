@@ -516,8 +516,7 @@ public static class BaseBinding
             if (item.IsFile && item.Name.Contains(file))
             {
                 using var stream1 = zip.GetInputStream(item);
-                using var stream2 = PathHelper.OpenWrite(file1);
-                await stream1.CopyToAsync(stream2);
+                await PathHelper.WriteBytesAsync(file1, stream1);
                 return true;
             }
         }

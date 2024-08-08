@@ -1002,9 +1002,8 @@ public static class DownloadItemHelper
                         }
 
                         {
-                            using var write = PathHelper.OpenWrite(local);
                             using var stream3 = zFile.GetInputStream(item1);
-                            await stream3.CopyToAsync(write, cancel);
+                            await PathHelper.WriteBytesAsync(local, stream3);
                         }
                     }
                 }

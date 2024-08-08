@@ -272,7 +272,7 @@ internal class DownloadThread
 
                     //创建临时文件
                     var file = Path.GetFullPath(DownloadManager.DownloadDir + '/' + Guid.NewGuid().ToString());
-                    using var stream = PathHelper.OpenWrite(file);
+                    using var stream = PathHelper.OpenWrite(file, true);
 
                     int bytesRead;
                     //写文件

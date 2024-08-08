@@ -129,7 +129,7 @@ public static class OpenFrpApi
                     continue;
                 }
 
-                using var filestream = PathHelper.OpenWrite(FrpPath.GetOpenFrpLocal(version));
+                using var filestream = PathHelper.OpenWrite(FrpPath.GetOpenFrpLocal(version), true);
                 tarArchive.CopyEntryContents(filestream);
 
                 break;
@@ -148,9 +148,7 @@ public static class OpenFrpApi
                     continue;
                 }
 
-                using var filestream = PathHelper.OpenWrite(FrpPath.GetOpenFrpLocal(version));
-                using var stream1 = s.GetInputStream(item);
-                stream1.CopyTo(filestream);
+                PathHelper.WriteBytes(FrpPath.GetOpenFrpLocal(version), s.GetInputStream(item));
                 break;
             }
         }

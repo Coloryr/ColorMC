@@ -20,9 +20,8 @@ public static class ChunkMca
         using var stream = new MemoryStream();
         WriteChunk(data, stream);
         WriteHead(data, stream);
-        using var stream1 = PathHelper.OpenWrite(file);
         stream.Seek(0, SeekOrigin.Begin);
-        stream.CopyTo(stream1);
+        PathHelper.WriteBytes(file, stream);
     }
 
     /// <summary>

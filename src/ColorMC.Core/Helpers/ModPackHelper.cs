@@ -341,8 +341,8 @@ public static class ModPackHelper
     public static async Task<GameRes> InstallCurseForgeModPackAsync(InstallModPackZipArg arg)
     {
         arg.Update2?.Invoke(CoreRunState.Read);
-        using ZipFile zFile = new(PathHelper.OpenRead(arg.Zip));
-        using MemoryStream stream1 = new();
+        using var zFile = new ZipFile(PathHelper.OpenRead(arg.Zip));
+        using var stream1 = new MemoryStream();
         bool find = false;
         //获取主信息
         foreach (ZipEntry e in zFile)
@@ -749,8 +749,8 @@ public static class ModPackHelper
     public static async Task<GameRes> InstallModrinthModPackAsync(InstallModPackZipArg arg)
     {
         arg.Update2?.Invoke(CoreRunState.Read);
-        using ZipFile zFile = new(PathHelper.OpenRead(arg.Zip));
-        using MemoryStream stream1 = new();
+        using var zFile = new ZipFile(PathHelper.OpenRead(arg.Zip));
+        using var stream1 = new MemoryStream();
         bool find = false;
         //获取主信息
         foreach (ZipEntry e in zFile)

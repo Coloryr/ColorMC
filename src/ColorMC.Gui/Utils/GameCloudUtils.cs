@@ -444,8 +444,7 @@ public static class GameCloudUtils
             if (res.IsSuccessStatusCode)
             {
                 using var data = res.Content.ReadAsStream();
-                using var stream = PathHelper.OpenWrite(local);
-                await data.CopyToAsync(stream);
+                await PathHelper.WriteBytesAsync(local, data);
                 return 100;
             }
             else if (res.StatusCode == HttpStatusCode.BadRequest)
@@ -722,8 +721,7 @@ public static class GameCloudUtils
             else if (res.IsSuccessStatusCode)
             {
                 using var data = res.Content.ReadAsStream();
-                using var stream = PathHelper.OpenWrite(local);
-                await data.CopyToAsync(stream);
+                await PathHelper.WriteBytesAsync(local, data);
                 return 100;
             }
 

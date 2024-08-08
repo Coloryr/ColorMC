@@ -147,7 +147,7 @@ public static class PathHelper
     public static void CopyFile(string file1, string file2)
     {
         using var stream = OpenRead(file1);
-        using var stream1 = OpenWrite(file2);
+        using var stream1 = OpenWrite(file2, true);
         if (stream == null)
         {
             return;
@@ -243,7 +243,7 @@ public static class PathHelper
         }
         if (File.Exists(local))
         {
-            return File.Open(local, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+            return File.Open(local, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
 
         return null;
@@ -254,11 +254,12 @@ public static class PathHelper
     /// </summary>
     /// <param name="local">路径</param>
     /// <returns>流</returns>
-    public static Stream OpenWrite(string local)
+    public static Stream OpenWrite(string local, bool create)
     {
         var info = new FileInfo(local);
         info.Directory?.Create();
-        return File.Open(local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        return File.Open(local, create ? FileMode.Create : FileMode.OpenOrCreate,
+            FileAccess.ReadWrite, FileShare.ReadWrite);
     }
 
     /// <summary>
@@ -327,7 +328,7 @@ public static class PathHelper
     {
         var info = new FileInfo(local);
         info.Directory?.Create();
-        using var stream = OpenWrite(local);
+        using var stream = OpenWrite(local, true);
         stream.Write(data, 0, data.Length);
     }
 
@@ -340,7 +341,7 @@ public static class PathHelper
     {
         var info = new FileInfo(local);
         info.Directory?.Create();
-        using var stream = OpenWrite(local);
+        using var stream = OpenWrite(local, true);
         data.CopyTo(stream);
     }
 
@@ -354,7 +355,7 @@ public static class PathHelper
     {
         var info = new FileInfo(local);
         info.Directory?.Create();
-        using var stream = OpenWrite(local);
+        using var stream = OpenWrite(local, true);
         return data.CopyToAsync(stream);
     }
 
