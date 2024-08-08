@@ -34,15 +34,16 @@ public partial class AddGameModel
     /// <param name="value"></param>
     partial void OnZipLocalChanged(string? value)
     {
-        if (value != null)
+        if (value != null && Type == null)
         {
-            try
-            {
-                Type = GameBinding.CheckType(value);
-            }
-            catch
+            var res = GameBinding.CheckType(value);
+            if (res == null)
             {
                 Model.Show(App.Lang("AddGameWindow.Tab2.Error4"));
+            }
+            else 
+            {
+                Type = res;
             }
         }
     }

@@ -155,13 +155,17 @@ public static class AddGameHelper
                         }
 
                         if (!find)
+                        {
                             break;
+                        }
 
                         game = JsonConvert.DeserializeObject<GameSettingObj>
                             (Encoding.UTF8.GetString(stream1.ToArray()));
 
                         if (game == null)
+                        {
                             break;
+                        }
 
                         game = await InstancesPath.CreateGame(new CreateGameArg
                         {
@@ -171,7 +175,9 @@ public static class AddGameHelper
                         });
 
                         if (game == null)
+                        {
                             break;
+                        }
 
                         foreach (ZipEntry e in zFile)
                         {
@@ -290,7 +296,9 @@ public static class AddGameHelper
                         });
 
                         if (game == null)
+                        {
                             break;
+                        }
 
                         foreach (ZipEntry e in zFile)
                         {
@@ -341,13 +349,17 @@ public static class AddGameHelper
                         }
 
                         if (!find)
+                        {
                             break;
+                        }
 
                         var obj = JsonConvert.DeserializeObject<HMCLObj>
                             (Encoding.UTF8.GetString(stream1.ToArray()));
 
                         if (obj == null)
+                        {
                             break;
+                        }
 
                         game = obj.ToColorMC();
                         if (!string.IsNullOrWhiteSpace(arg.Name))
@@ -410,9 +422,13 @@ public static class AddGameHelper
                     {
                         arg.Update2?.Invoke(CoreRunState.Read);
 
-                        arg.Name ??= Path.GetFileName(arg.Dir);
+                        if (string.IsNullOrWhiteSpace(arg.Name))
+                        {
+                            arg.Name = Path.GetFileName(arg.Dir);
+                        }
 
                         arg.Update2?.Invoke(CoreRunState.Start);
+
                         game = await InstancesPath.CreateGame(new CreateGameArg
                         {
                             Game = new()
@@ -426,10 +442,46 @@ public static class AddGameHelper
 
                         if (game != null)
                         {
-                            await new ZipUtils(ZipUpdate: arg.Zip).UnzipAsync(game!.GetGamePath(), arg.Dir, stream4!);
+                            await new ZipUtils(ZipUpdate: arg.Zip).UnzipAsync(game.GetGamePath(), arg.Dir, stream4!);
                             arg.Update2?.Invoke(CoreRunState.End);
                             import = true;
+
+                            //尝试解析版本号
+                            var files = Directory.GetFiles(game!.GetGamePath());
+                            foreach (var item in files)
+                            {
+                                if (!item.EndsWith(".json"))
+                                {
+                                    continue;
+                                }
+
+                                try
+                                {
+                                    var obj1 = JsonConvert.DeserializeObject<OfficialObj>(PathHelper.ReadText(item)!);
+                                    if (obj1 == null || obj1.id == null)
+                                    {
+                                        continue;
+                                    }
+                                    var game1 = obj1.ToColorMC();
+                                    if (game1 == null)
+                                    {
+                                        continue;
+                                    }
+
+                                    game.Version = game1.Version;
+                                    game.Loader = game1.Loader;
+                                    game.LoaderVersion = game1.LoaderVersion;
+                                    game.Save();
+                                    break;
+                                }
+                                catch
+                                {
+
+                                }
+                            }
+
                         }
+
                         break;
                     }
             }
