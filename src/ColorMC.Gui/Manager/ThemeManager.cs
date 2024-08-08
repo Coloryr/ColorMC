@@ -5,6 +5,8 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 
@@ -72,7 +74,10 @@ public static class ThemeManager
         }
 
         LoadColor();
-        LoadFont();
+        if (SystemInfo.Os != OsType.Android)
+        {
+            LoadFont();
+        }
 
         RgbColor.Load();
         ColorSel.Load();
