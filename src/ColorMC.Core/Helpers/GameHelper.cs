@@ -789,8 +789,8 @@ public static class GameHelper
     /// <returns></returns>
     public static bool IsMMCVersion(string dir)
     {
-        var file1 = Path.GetFullPath(dir + "/" + "mmc-pack.json");
-        var file2 = Path.GetFullPath(dir + "/" + "instance.cfg");
+        var file1 = Path.GetFullPath(dir + "/mmc-pack.json");
+        var file2 = Path.GetFullPath(dir + "/instance.cfg");
         if (File.Exists(file1) && File.Exists(file2))
         {
             return true;
