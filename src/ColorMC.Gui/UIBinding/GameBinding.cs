@@ -2049,8 +2049,7 @@ public static class GameBinding
 
                     if (fileName != string.Empty)
                     {
-                        using var streamWriter = PathHelper.OpenWrite(filename);
-
+                        using var streamWriter = PathHelper.OpenWrite(filename, true);
                         s.CopyTo(streamWriter);
                     }
                 }

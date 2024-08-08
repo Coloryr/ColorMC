@@ -151,7 +151,7 @@ public static class Worlds
             .ToString("yyyy_MM_dd_HH_mm_ss") + ".zip");
 
         await new ZipUtils().ZipFileAsync(world.Local, file);
-        using var s = new ZipFile(PathHelper.OpenRead(file));
+        using var s = new ZipFile(PathHelper.OpenWrite(file, false));
         var info = new { name = world.LevelName };
         var data = JsonConvert.SerializeObject(info);
         var data1 = Encoding.UTF8.GetBytes(data);

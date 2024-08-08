@@ -27,7 +27,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     {
         if (zipDir[^1] != Path.DirectorySeparatorChar)
             zipDir += Path.DirectorySeparatorChar;
-        using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile));
+        using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile, true));
         s.SetLevel(9);
         Size = PathHelper.GetAllFile(zipDir).Count;
         Now = 0;
@@ -92,7 +92,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     /// <returns></returns>
     public async Task ZipFileAsync(string zipFile, List<string> zipList, string path)
     {
-        using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile));
+        using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile, true));
         s.SetLevel(9);
         Size = zipList.Count;
         Now = 0;
@@ -178,9 +178,8 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
                         }
                         file = $"{info.Directory!.FullName}/{PathHelper.ReplaceFileName(info.Name)}";
                     }
-                    using var stream1 = PathHelper.OpenWrite(file);
                     using var stream2 = s.GetInputStream(theEntry);
-                    await stream2.CopyToAsync(stream1);
+                    await PathHelper.WriteBytesAsync(file, stream2);
                 }
             }
         }

@@ -618,6 +618,12 @@ public static class PathBinding
         return null;
     }
 
+    /// <summary>
+    /// 导出
+    /// </summary>
+    /// <param name="top"></param>
+    /// <param name="model"></param>
+    /// <returns></returns>
     public static async Task<bool?> Export(TopLevel top, GameExportModel model)
     {
         if (model.Type == PackType.ColorMC)
@@ -648,7 +654,7 @@ public static class PathBinding
                 await new ZipUtils().ZipFileAsync(model.Obj.GetBasePath(),
                     name, list);
 
-                using var s = new ZipFile(PathHelper.OpenRead(name));
+                using var s = new ZipFile(PathHelper.OpenWrite(name, false));
                 var data = JsonConvert.SerializeObject(obj1);
                 var data1 = Encoding.UTF8.GetBytes(data);
                 using var stream = new ZipFileStream(data1);

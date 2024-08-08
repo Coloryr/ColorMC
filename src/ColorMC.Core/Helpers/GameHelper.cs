@@ -340,9 +340,8 @@ public static class GameHelper
                     continue;
                 }
 
-                using var stream1 = PathHelper.OpenWrite(file);
                 using var stream2 = zFile.GetInputStream(e);
-                stream2.CopyTo(stream1);
+                PathHelper.WriteBytes(file, stream2);
             }
         }
     }
