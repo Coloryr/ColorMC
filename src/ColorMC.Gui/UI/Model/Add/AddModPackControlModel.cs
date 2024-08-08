@@ -423,19 +423,6 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
     }
 
-    public void Wheel(double y)
-    {
-        _count += y;
-        if (_count > 5)
-        {
-            Back();
-        }
-        else if (_count < -5)
-        {
-            Next();
-        }
-    }
-
     public override void Close()
     {
         if (Display)

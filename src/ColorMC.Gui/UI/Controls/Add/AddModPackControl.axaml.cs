@@ -23,9 +23,6 @@ public partial class AddModPackControl : BaseUserControl
         PackFiles.DoubleTapped += PackFiles_DoubleTapped;
 
         ModPackFiles.PointerPressed += ModPackFiles_PointerPressed;
-
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-        ScrollViewer1.ScrollChanged += ScrollViewer1_ScrollChanged;
     }
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
@@ -62,29 +59,6 @@ public partial class AddModPackControl : BaseUserControl
     public override Bitmap GetIcon()
     {
         return ImageManager.GameIcon;
-    }
-
-    private void ScrollViewer1_ScrollChanged(object? sender, ScrollChangedEventArgs e)
-    {
-        if (e.ExtentDelta == e.OffsetDelta || e.ExtentDelta.Y < 0)
-        {
-            return;
-        }
-        if (DataContext is AddModPackControlModel model)
-        {
-            if (model.EmptyDisplay)
-            {
-                return;
-            }
-        }
-    }
-
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (DataContext is AddModPackControlModel model)
-        {
-            model.Wheel(e.Delta.Y);
-        }
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)

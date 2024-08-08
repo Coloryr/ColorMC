@@ -35,8 +35,6 @@ public partial class AddControl : BaseUserControl
         VersionDisplay.PointerPressed += VersionDisplay_PointerPressed;
         OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
         ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
-
-        ScrollViewer1.ScrollChanged += ScrollViewer1_ScrollChanged;
     }
 
     public override void SetModel(BaseModel model)
@@ -144,21 +142,6 @@ public partial class AddControl : BaseUserControl
         else if (e.PropertyName == "ScrollToHome")
         {
             ScrollViewer1.ScrollToHome();
-        }
-    }
-
-    private void ScrollViewer1_ScrollChanged(object? sender, ScrollChangedEventArgs e)
-    {
-        if (e.ExtentDelta == e.OffsetDelta || e.ExtentDelta.Y < 0)
-        {
-            return;
-        }
-        if (DataContext is AddControlModel model)
-        {
-            if (model.EmptyDisplay)
-            {
-                return;
-            }
         }
     }
 

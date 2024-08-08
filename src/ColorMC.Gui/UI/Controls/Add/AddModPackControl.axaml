@@ -104,17 +104,27 @@
                 </Border>
 
                 <Panel>
-                    <ItemsControl
-                        Margin="0,0,0,5"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        ItemsSource="{Binding DisplayList}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <item:FileItemControl DataContext="{Binding}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <StackPanel>
+                        <ItemsControl
+                            Margin="0,0,0,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            ItemsSource="{Binding DisplayList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <item:FileItemControl DataContext="{Binding}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button
+                            Height="35"
+                            Margin="6,0,6,5"
+                            HorizontalAlignment="Stretch"
+                            Classes="top"
+                            Command="{Binding Next}"
+                            Content="{setting:Localize AddModPackWindow.Text14}"
+                            IsVisible="{Binding !EmptyDisplay}" />
+                    </StackPanel>
                     <Border
                         Margin="10,5,10,10"
                         Classes="t1"
