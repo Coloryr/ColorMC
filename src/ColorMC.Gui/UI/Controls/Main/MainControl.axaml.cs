@@ -187,7 +187,10 @@ public partial class MainControl : BaseUserControl
 
     public override void WindowStateChange(WindowState state)
     {
-        (DataContext as MainModel)!.Render = state != WindowState.Minimized;
+        if (DataContext is MainModel model)
+        {
+            model.Render = state != WindowState.Minimized;
+        }
     }
 
     public override void Closed()

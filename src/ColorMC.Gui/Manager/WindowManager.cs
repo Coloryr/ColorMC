@@ -7,6 +7,7 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
@@ -33,6 +34,7 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Manager;
 
@@ -70,8 +72,19 @@ public static class WindowManager
         WindowTransparencyLevel.Mica
     ];
 
-    public static void Init()
+    private static Dictionary<string, WindowStateObj> s_WindowState;
+
+    private static string s_file;
+
+    public static void Init(string path)
     {
+        s_file = Path.GetFullPath(path + "/window.json");
+        LoadState();
+        if (s_WindowState == null)
+        {
+            s_WindowState = [];
+            SaveState();
+        }
         if (ConfigBinding.WindowMode())
         {
             if (SystemInfo.Os == OsType.Android)
@@ -101,6 +114,70 @@ public static class WindowManager
         }
     }
 
+    private static void LoadState()
+    {
+        if (File.Exists(s_file))
+        {
+            try
+            {
+                var data = PathHelper.ReadText(s_file);
+                if (data == null)
+                {
+                    return;
+                }
+                var state = JsonConvert.DeserializeObject<Dictionary<string, WindowStateObj>>(data);
+                if (state == null)
+                {
+                    return;
+                }
+
+                s_WindowState = state;
+            }
+            catch (Exception e)
+            {
+                Logs.Error("", e);
+            }
+        }
+    }
+
+    private static void SaveState()
+    {
+        ConfigSave.AddItem(new()
+        {
+            Name = "ColorMC_Window",
+            Local = s_file,
+            Obj = s_WindowState
+        });
+    }
+
+    public static WindowStateObj? GetWindowState(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return null;
+        }
+        if (s_WindowState.TryGetValue(name, out var state))
+        {
+            return state;
+        }
+
+        return null;
+    }
+
+    public static void SaveWindowState(string name, WindowStateObj state)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return;
+        }
+        if (!s_WindowState.TryAdd(name, state))
+        {
+            s_WindowState[name] = state;
+        }
+
+        SaveState();
+    }
+
     public static IBaseWindow FindRoot(object? con)
     {
         if (con is SingleControl all)
@@ -127,7 +204,6 @@ public static class WindowManager
         {
             win = new MultiWindow(con);
         }
-        con.SetBaseModel(win.Model);
         win.Show();
     }
 

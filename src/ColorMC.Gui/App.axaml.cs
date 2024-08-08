@@ -110,7 +110,7 @@ public partial class App : Application
         ThemeManager.Init();
         ImageManager.Init();
 
-        WindowManager.Init();
+        WindowManager.Init(ColorMCGui.RunDir);
 
         if (ColorMCGui.RunType != RunType.AppBuilder)
         {

@@ -10,6 +10,9 @@ public partial class MultiBorderWindow : AMultiWindow
 {
     public override HeadControl Head => HeadControl;
 
+    public override int DefaultWidth => 780;
+    public override int DefaultHeight => 470;
+
     public MultiBorderWindow()
     {
         InitializeComponent();
