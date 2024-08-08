@@ -115,6 +115,11 @@ public partial class App : Application
 
         WindowManager.Init(ColorMCGui.RunDir);
 
+        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
+        {
+            singleViewPlatform.MainView = WindowManager.AllWindow;
+        }
+
         if (ColorMCGui.RunType != RunType.AppBuilder)
         {
             Task.Run(() =>
