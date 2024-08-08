@@ -84,8 +84,8 @@ public partial class AddGameControl : BaseUserControl
     {
         if (DataContext is AddGameModel model)
         {
-            model.DefaultGroup = group;
-            model.Group = group;
+            model.DefaultGroup ??= group;
+            model.Group ??= group;
         }
     }
 
