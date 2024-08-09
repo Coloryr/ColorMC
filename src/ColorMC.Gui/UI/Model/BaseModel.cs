@@ -154,6 +154,11 @@ public partial class BaseModel : ObservableObject
         _info6 = new(Name);
     }
 
+    partial void OnTitleChanged(string? value)
+    {
+        
+    }
+
     partial void OnHeadChoiseDisplayChanged(bool value)
     {
 

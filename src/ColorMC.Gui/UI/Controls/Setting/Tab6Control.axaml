@@ -156,7 +156,7 @@
                             OnContent="{setting:Localize SettingWindow.Tab6.Text30}" />
                         <WrapPanel HorizontalAlignment="Right">
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,3,-2"
                                 Classes="top"
@@ -164,7 +164,7 @@
                                 Content="{setting:Localize SettingWindow.Tab6.Text10}"
                                 DockPanel.Dock="Left" />
                             <Button
-                                Width="90"
+                                Width="100"
                                 Height="35"
                                 Margin="-2,-2,-3,-2"
                                 Classes="top"
@@ -227,7 +227,6 @@
                                     SmallChange="1"
                                     TickFrequency="1"
                                     Value="{Binding Volume}" />
-
                             </DockPanel>
                         </panel:WrapPanelWithStretch>
                         <TextBox

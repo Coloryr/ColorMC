@@ -174,7 +174,7 @@ public partial class MainModel
         var config = GuiConfigUtils.Config.ServerCustom;
         if (config?.PlayMusic == true)
         {
-            Model.Title = App.Lang("Name") + " " + App.Lang("MainWindow.Info33");
+            Model.Title = "ColorMC " + App.Lang("MainWindow.Info33");
             MusicDisplay = true;
         }
         else
