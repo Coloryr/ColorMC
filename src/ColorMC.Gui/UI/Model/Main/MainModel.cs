@@ -16,6 +16,12 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class MainModel : TopModel, IMainTop
 {
+    private static readonly string[] _icons = 
+    [
+        "/Resource/Icon/play.svg",
+        "/Resource/Icon/pause.svg"
+    ];
+
     public const string SwitchView = "SwitchView";
 
     public bool IsLaunch;
@@ -56,7 +62,10 @@ public partial class MainModel : TopModel, IMainTop
     private string _helloText;
 
     [ObservableProperty]
-    private float _musicVolume;
+    private string _audioIcon = _icons[1];
+
+    [ObservableProperty]
+    private int _musicVolume;
 
     private bool _isNewUpdate;
     private string _updateStr;
@@ -68,7 +77,14 @@ public partial class MainModel : TopModel, IMainTop
         ImageManager.SkinChange += SkinChange;
         UserBinding.UserEdit += LoadUser;
 
+        MusicVolume = GuiConfigUtils.Config.ServerCustom.Volume;
+
         ShowHello();
+    }
+
+    partial void OnMusicVolumeChanged(int value)
+    {
+        BaseBinding.SetVolume(value);
     }
 
     [RelayCommand]
@@ -122,14 +138,14 @@ public partial class MainModel : TopModel, IMainTop
         if (_isplay)
         {
             BaseBinding.MusicPause();
-
-            Model.Title = App.Lang("Name");
+            AudioIcon = _icons[0];
+            Model.Title = "ColorMC";
         }
         else
         {
             BaseBinding.MusicPlay();
-
-            Model.Title = App.Lang("Name") + " " + App.Lang("MainWindow.Info33");
+            AudioIcon = _icons[1];
+            Model.Title = "ColorMC " + App.Lang("MainWindow.Info33");
         }
 
         _isplay = !_isplay;
