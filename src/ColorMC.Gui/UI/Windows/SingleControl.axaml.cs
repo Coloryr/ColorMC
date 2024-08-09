@@ -28,11 +28,15 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
 
     public BaseModel Model => (DataContext as BaseModel)!;
 
+    public string UseName { get; init; }
+
     private WindowNotificationManager windowNotification;
 
     public SingleControl()
     {
         InitializeComponent();
+
+        UseName = ToString() ?? "SingleControl";
 
         var model = new BaseModel("AllControl");
         model.PropertyChanged += Model_PropertyChanged;

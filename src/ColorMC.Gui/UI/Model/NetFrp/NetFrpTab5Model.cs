@@ -64,7 +64,7 @@ public partial class NetFrpModel
     [RelayCommand]
     public void OpenUrlOpenFrp()
     {
-        WebBinding.OpenWeb(WebType.SakuraFrp);
+        WebBinding.OpenWeb(WebType.OpenFrp);
     }
 
     public async void LoadOpenFrp()

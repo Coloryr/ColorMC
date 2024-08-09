@@ -10,6 +10,9 @@ public partial class SingleBorderWindow : ABaseWindow
 {
     public override ITopWindow ICon => Win;
 
+    public override int DefaultWidth => 780;
+    public override int DefaultHeight => 470;
+
     public SingleBorderWindow()
     {
         InitializeComponent();
@@ -26,6 +29,7 @@ public partial class SingleBorderWindow : ABaseWindow
         }
 
         InitBaseWindow();
+        SetWindowState();
     }
 
     private async void SingleWindow_Closing(object? sender, WindowClosingEventArgs e)
