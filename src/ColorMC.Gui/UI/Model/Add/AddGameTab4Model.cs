@@ -63,14 +63,14 @@ public partial class AddGameModel
         var res3 = await GameBinding.DownloadCloud(obj, Group, Model.ShowWait,
             Tab1GameOverwirte);
         Model.ProgressClose();
-        if (!res3.Item1)
+        if (!res3.State)
         {
-            Model.Show(res3.Item2!);
+            Model.Show(res3.Message!);
             return;
         }
 
         WindowManager.ShowGameCloud(GameBinding.GetGame(obj.UUID!)!);
-        Done();
+        Done(res3.Message);
     }
 
     /// <summary>
@@ -99,13 +99,16 @@ public partial class AddGameModel
         var res1 = await GameBinding.DownloadServerPack(Model, Name, Group, Text,
             Tab1GameOverwirte);
         Model.ProgressClose();
-        if (!res1.Item1 && res1.Item2 != null)
+        if (!res1.State)
         {
-            Model.Show(res1.Item2!);
+            if (res1.Message != null)
+            {
+                Model.Show(res1.Message!);
+            }
         }
         else
         {
-            Done();
+            Done(res1.Message!);
         }
     }
 }

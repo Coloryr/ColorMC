@@ -119,7 +119,7 @@ public partial class AddGameModel
             WindowManager.ShowGameEdit(res.Game!);
         }
 
-        WindowClose();
+        Done(res.Game!.UUID);
     }
 
     /// <summary>

@@ -20,7 +20,7 @@ public partial class MainGamesControl : UserControl
             if (DataContext is MainModel model)
             {
                 model.SearchClose();
-                model.Select(null);
+                model.Select(obj: null);
             }
         }
     }

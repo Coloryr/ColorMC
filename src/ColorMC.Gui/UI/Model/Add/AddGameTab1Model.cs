@@ -298,12 +298,15 @@ public partial class AddGameModel
                 var res1 = await GameBinding.SetGameLoader(game, LoaderLocal);
                 if (!res1.State)
                 {
-                    Model.ShowOk(App.Lang("AddGameWindow.Tab1.Error18"), Done);
+                    Model.ShowOk(App.Lang("AddGameWindow.Tab1.Error18"), () => 
+                    {
+                        Done(game.UUID);
+                    });
                     return;
                 }
             }
 
-            Done();
+            Done(game.UUID);
         }
     }
 
@@ -394,13 +397,13 @@ public partial class AddGameModel
             }, PackState);
         Model.ProgressClose();
 
-        if (!res)
+        if (!res.State)
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
         }
         else
         {
-            Done();
+            Done(res.Game!.UUID);
         }
     }
 
@@ -419,13 +422,13 @@ public partial class AddGameModel
             }, PackState);
         Model.ProgressClose();
 
-        if (!res)
+        if (!res.State)
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
         }
         else
         {
-            Done();
+            Done(res.Game!.UUID);
         }
     }
 
@@ -482,10 +485,11 @@ public partial class AddGameModel
     /// <summary>
     /// 添加完成
     /// </summary>
-    private void Done()
+    private void Done(string? uuid)
     {
         var model = WindowManager.MainWindow?.DataContext as MainModel;
         model?.Model.Notify(App.Lang("AddGameWindow.Tab1.Info7"));
+        model?.Select(uuid);
         Dispatcher.UIThread.Post(WindowClose);
     }
 }
