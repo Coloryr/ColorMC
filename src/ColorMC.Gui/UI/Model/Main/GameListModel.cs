@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -277,7 +278,7 @@ public partial class MainModel
 
                 Select(last);
             }
-            if (last != null)
+            if (last != null && LastGameName == null)
             {
                 HaveLast = true;
                 LastGameName = string.Format(App.Lang("MainWindow.Text26"), last.Name);
@@ -285,6 +286,27 @@ public partial class MainModel
         }
 
         OnPropertyChanged(SwitchView);
+    }
+
+    public void Select(string? uuid)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (uuid == null)
+            {
+                Select(obj: null);
+            }
+            GameItemModel? model;
+            foreach (var item in GameGroups)
+            {
+                model = item.Find(uuid);
+                if (model != null)
+                {
+                    Select(model);
+                    return;
+                }
+            }
+        });
     }
 
     public void Select(GameItemModel? obj)

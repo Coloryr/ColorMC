@@ -107,7 +107,7 @@ public static class GameBinding
     /// <param name="request"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<bool> AddGame(string? name, string local, List<string>? unselect,
+    public static async Task<GameRes> AddGame(string? name, string local, List<string>? unselect,
         string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.ZipUpdate state, bool open)
     {
@@ -124,7 +124,7 @@ public static class GameBinding
 
         if (!res.State)
         {
-            return false;
+            return res;
         }
 
         if (res.Game != null && open)
@@ -132,7 +132,7 @@ public static class GameBinding
             WindowManager.ShowGameEdit(res.Game);
         }
 
-        return true;
+        return res;
     }
 
     /// <summary>
@@ -227,13 +227,13 @@ public static class GameBinding
     /// <param name="update"></param>
     /// <param name="update2"></param>
     /// <returns></returns>
-    public static async Task<bool> InstallCurseForge(CurseForgeModObj.Data data,
+    public static async Task<GameRes> InstallCurseForge(CurseForgeModObj.Data data,
         CurseForgeObjList.Data data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        var res = await AddGameHelper.InstallCurseForge(new DownloadCurseForgeArg
+        return await AddGameHelper.InstallCurseForge(new DownloadCurseForgeArg
         {
             Data = data,
             Data1 = data1,
@@ -245,8 +245,6 @@ public static class GameBinding
             Update = update,
             Update2 = update2
         });
-
-        return res.State;
     }
 
     /// <summary>
@@ -262,12 +260,12 @@ public static class GameBinding
     /// <param name="update"></param>
     /// <param name="update2"></param>
     /// <returns></returns>
-    public static async Task<bool> InstallModrinth(ModrinthVersionObj data,
+    public static async Task<GameRes> InstallModrinth(ModrinthVersionObj data,
         ModrinthSearchObj.Hit data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
-        var res = await AddGameHelper.InstallModrinth(new DownloadModrinthArg
+        return await AddGameHelper.InstallModrinth(new DownloadModrinthArg
         {
             Data = data,
             Data1 = data1,
@@ -279,8 +277,6 @@ public static class GameBinding
             Update = update,
             Update2 = update2
         });
-
-        return res.State;
     }
 
     /// <summary>
@@ -2071,7 +2067,7 @@ public static class GameBinding
     /// <param name="request"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> DownloadCloud(CloundListObj obj, string? group,
+    public static async Task<MessageRes> DownloadCloud(CloundListObj obj, string? group,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
         var game = await InstancesPath.CreateGame(new CreateGameArg
@@ -2087,7 +2083,7 @@ public static class GameBinding
         });
         if (game == null)
         {
-            return (false, App.Lang("GameBinding.Error9"));
+            return new() { Message = App.Lang("GameBinding.Error9") };
         }
 
         var cloud = new CloudDataObj()
@@ -2135,12 +2131,12 @@ public static class GameBinding
                 var res1 = await DownloadManager.StartAsync(list);
                 if (!res1)
                 {
-                    return (false, App.Lang("GameBinding.Error10"));
+                    return new() { Message = App.Lang("GameBinding.Error10") };
                 }
             }
         }
 
-        return (true, null);
+        return new() { State = true, Message = game.UUID };
     }
 
     /// <summary>
@@ -2199,7 +2195,7 @@ public static class GameBinding
     /// <param name="text"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<(bool, string?)> DownloadServerPack(BaseModel model,
+    public static async Task<MessageRes> DownloadServerPack(BaseModel model,
         string? name, string? group, string text, ColorMCCore.GameOverwirte overwirte)
     {
         try
@@ -2207,12 +2203,12 @@ public static class GameBinding
             var data = await WebClient.GetStringAsync(text + "server.json");
             if (!data.State)
             {
-                return (false, App.Lang("GameBinding.Error11"));
+                return new() { Message = App.Lang("GameBinding.Error11") };
             }
             var obj = JsonConvert.DeserializeObject<ServerPackObj>(data.Message!);
             if (obj == null)
             {
-                return (false, App.Lang("GameBinding.Error12"));
+                return new() { Message = App.Lang("GameBinding.Error12") };
             }
 
             var game = obj.Game;
@@ -2237,7 +2233,7 @@ public static class GameBinding
 
             if (game == null)
             {
-                return (false, App.Lang("GameBinding.Error9"));
+                return new() { Message = App.Lang("GameBinding.Error9") };
             }
 
             model.Progress(App.Lang("GameBinding.Info16"));
@@ -2261,18 +2257,18 @@ public static class GameBinding
                     await game.Remove(model.ShowWait);
                 });
 
-                return (false, null);
+                return new();
             }
 
             PathHelper.WriteText(game.GetServerPackFile(), data.Message!);
 
-            return (true, null);
+            return new() { State = true, Message = game.UUID };
         }
         catch (Exception e)
         {
             string temp = App.Lang("GameBinding.Error12");
             Logs.Error(temp, e);
-            return (false, temp);
+            return new() { Message = temp };
         }
     }
 

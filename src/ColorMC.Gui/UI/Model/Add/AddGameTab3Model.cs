@@ -121,15 +121,13 @@ public partial class AddGameModel
             Group, GameRequest, GameOverwirte, Update, true);
         Model.ProgressClose();
 
-        if (!res)
+        if (!res.State)
         {
             Model.Show(App.Lang("AddGameWindow.Tab3.Error1"));
             return;
         }
 
-        var model = WindowManager.MainWindow?.DataContext as MainModel;
-        model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
-        WindowClose();
+        Done(res.Game!.UUID);
     }
 
     /// <summary>
@@ -172,28 +170,30 @@ public partial class AddGameModel
     private async Task Import(List<string> list)
     {
         BaseBinding.IsAddGames = true;
-        bool ok = true;
+        bool ok = false;
         foreach (var item in list)
         {
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
             var res = await GameBinding.AddGame(null, item, null, Group, GameRequest, GameOverwirte, Update, false);
             Model.ProgressClose();
 
-            if (!res)
+            if (!res.State)
             {
-                Model.Show(App.Lang("AddGameWindow.Tab3.Error1"));
-                ok = false;
-                return;
+                var res1 = await Model.ShowWait(App.Lang("AddGameWindow.Tab3.Error5"));
+                if (!res1)
+                {
+                    return;
+                }
+                continue;
             }
+
+            ok = true;
         }
         BaseBinding.IsAddGames = false;
 
         if (ok)
         {
-            WindowManager.MainWindow?.LoadMain();
-            var model = WindowManager.MainWindow?.DataContext as MainModel;
-            model?.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
-            WindowClose();
+            Done(null);
         }
     }
 
