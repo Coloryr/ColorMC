@@ -61,8 +61,6 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     [ObservableProperty]
     private bool _sourceLoad;
 
-    private double _count;
-
     private readonly string _useName;
 
     public AddModPackControlModel(BaseModel model) : base(model)
@@ -397,7 +395,6 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
 
         Page -= 1;
-        _count = 0;
     }
 
     public void Next()
@@ -408,7 +405,6 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
 
         Page += 1;
-        _count = 0;
     }
 
     public void Reload1()

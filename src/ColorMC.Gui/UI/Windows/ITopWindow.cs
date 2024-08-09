@@ -6,6 +6,8 @@ namespace ColorMC.Gui.UI.Windows;
 
 public interface ITopWindow
 {
+    public string UseName { get; }
+
     public void Opened();
     public void WindowStateChange(WindowState state);
     public Task<bool> OnKeyDown(object? sender, KeyEventArgs e);
