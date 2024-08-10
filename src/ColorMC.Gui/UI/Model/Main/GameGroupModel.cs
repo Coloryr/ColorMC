@@ -86,25 +86,31 @@ public partial class GameGroupModel : TopModel
 
     public bool DropIn(IDataObject data)
     {
-        return data.Get(BaseBinding.DrapType) is not GameItemModel c
-            || !_items.ContainsValue(c);
+        return data.Get(BaseBinding.DrapType) is not string c
+            || !_items.ContainsKey(c);
     }
 
     public void Drop(IDataObject data)
     {
-        if (data.Get(BaseBinding.DrapType) is not GameItemModel c)
+        if (data.Get(BaseBinding.DrapType) is not string c)
         {
             return;
         }
 
-        c.IsDrop = false;
-
-        if (_items.ContainsValue(c))
+        var game = _top.GetGame(c);
+        if (game == null)
         {
             return;
         }
 
-        GameBinding.MoveGameGroup(c.Obj, Key);
+        game.IsDrop = false;
+
+        if (_items.ContainsKey(c))
+        {
+            return;
+        }
+
+        GameBinding.MoveGameGroup(game.Obj, Key);
     }
 
     public GameItemModel? Find(string? uuid)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
@@ -431,5 +432,11 @@ public partial class MainModel
             }
         }
         IsLaunch = false;
+    }
+
+    public GameItemModel? GetGame(string uuid)
+    {
+        return GameGroups.Select(item => item.Find(uuid)).Where(item => item != null)
+            .FirstOrDefault();
     }
 }

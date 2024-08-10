@@ -9,4 +9,5 @@ public interface IMainTop
     void Launch(ICollection<GameItemModel> list);
     void Select(GameItemModel? model);
     void EditGroup(GameItemModel model);
+    GameItemModel? GetGame(string uuid);
 }
