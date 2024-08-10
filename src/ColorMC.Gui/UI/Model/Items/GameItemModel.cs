@@ -215,7 +215,7 @@ public partial class GameItemModel : GameModel
     public async void Move(TopLevel? top, PointerEventArgs e)
     {
         var dragData = new DataObject();
-        dragData.Set(BaseBinding.DrapType, this);
+        dragData.Set(BaseBinding.DrapType, Obj.UUID);
         IsDrop = true;
 
         if (SystemInfo.Os != OsType.Android)
