@@ -23,6 +23,7 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Zip;
@@ -189,20 +190,6 @@ public static class BaseBinding
     /// <param name="games"></param>
     public static void Launch(string[] games)
     {
-        var list = new List<GameSettingObj>();
-        foreach (var item in games)
-        {
-            var game = InstancesPath.GetGame(item);
-            if (game != null)
-            {
-                list.Add(game);
-            }
-        }
-        if (list.Count == 0)
-        {
-            return;
-        }
-
         var window = WindowManager.GetMainWindow();
         if (window == null)
         {
@@ -210,21 +197,9 @@ public static class BaseBinding
         }
         Dispatcher.UIThread.Post(async () =>
         {
-            if (window?.Model is { } model)
+            if (window?.Model is IMainTop model)
             {
-                if (list.Count == 0)
-                {
-                    model.Show(App.Lang("BaseBinding.Error2"));
-                    return;
-                }
-                model.Progress(App.Lang("MainWindow.Info3"));
-                var res = await GameBinding.Launch(model, list);
-                model.ProgressClose();
-                if (res.Message != null)
-                {
-                    window.Show();
-                    model.Show(res.Message!);
-                }
+                model.Launch(games);
             }
         });
     }
