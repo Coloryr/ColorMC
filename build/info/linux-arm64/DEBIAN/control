@@ -2,7 +2,7 @@ Package: ColorMC
 Version: %version%                
 Section: free             
 Prioritt: optional        
-Architecture: aarch64     
+Architecture: aarch64,arm64     
 Maintainer: coloryr    
 Description: ColorMC        
 

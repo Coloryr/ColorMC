@@ -79,8 +79,13 @@ public partial class GameGroupModel : TopModel
     }
 
     [RelayCommand]
-    public void LaunchAll()
+    public async Task LaunchAll()
     {
+        var res = await Model.ShowWait(App.Lang("MainWindow.Info41"));
+        if (!res)
+        {
+            return;
+        }
         _top.Launch(_items.Values);
     }
 

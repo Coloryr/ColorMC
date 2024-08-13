@@ -388,12 +388,10 @@ public partial class MainModel
 
     public async void Launch(ICollection<GameItemModel> list)
     {
-        var res = await Model.ShowWait(App.Lang("MainWindow.Info41"));
-        if (!res)
+        if (IsLaunch)
         {
             return;
         }
-
         IsLaunch = true;
 
         var list1 = new List<GameSettingObj>();
@@ -434,9 +432,32 @@ public partial class MainModel
         IsLaunch = false;
     }
 
+    public void Launch(string[] list)
+    {
+        var list1 = new List<GameItemModel>();
+        foreach (var item in list)
+        {
+            if (GetGame(item) is { } game)
+            {
+                list1.Add(game);
+            }
+        }
+        if (list1.Count > 0)
+        {
+            Launch(list1);
+        }
+    }
+
     public GameItemModel? GetGame(string uuid)
     {
-        return GameGroups.Select(item => item.Find(uuid)).Where(item => item != null)
-            .FirstOrDefault();
+        foreach (var item in GameGroups)
+        {
+            if (item.Find(uuid) is { } game)
+            {
+                return game;
+            }
+        }
+
+        return null;
     }
 }
