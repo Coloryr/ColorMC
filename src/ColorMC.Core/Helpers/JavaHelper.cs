@@ -247,34 +247,20 @@ public static class JavaHelper
         try
         {
             var list = new List<JavaInfo>();
-            using var p = new Process();
-            p.StartInfo.RedirectStandardInput = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
-            if (SystemInfo.Os == OsType.Windows)
-            {
-                p.StartInfo.FileName = "where";
-                p.StartInfo.Arguments = "javaw";
-            }
-            else if (SystemInfo.Os == OsType.Linux)
-            {
-                p.StartInfo.FileName = "which";
-                p.StartInfo.Arguments = "java";
-            }
-            else if (SystemInfo.Os == OsType.MacOS)
-            {
-                p.StartInfo.FileName = "which";
-                p.StartInfo.Arguments = "java";
-            }
-            p.Start();
 
-            var result = p.StandardOutput.ReadToEnd();
-            var list1 = result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            //简单扫描
+            var list1 = SystemInfo.Os switch
+            {
+                OsType.Windows => GetList("where", "javaw"),
+                _ => GetList("which", "java"),
+            };
 
             foreach (var item in list1)
             {
+                if (string.IsNullOrWhiteSpace(item))
+                {
+                    continue;
+                }
                 var info = GetJavaInfo(item);
                 if (info != null)
                 {
@@ -331,22 +317,46 @@ public static class JavaHelper
                 if (SystemInfo.System.Contains("Ubuntu") ||
                     SystemInfo.System.Contains("Debian"))
                 {
-                    using var p1 = new Process();
-                    p.StartInfo.RedirectStandardInput = true;
-                    p.StartInfo.RedirectStandardOutput = true;
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.CreateNoWindow = true;
-                    p.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
-                    p.StartInfo.FileName = "update-alternatives";
-                    p.StartInfo.Arguments = "--list java";
-                    p.Start();
-
-                    result = p.StandardOutput.ReadToEnd();
-                    list1 = result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    list1 = GetList("update-alternatives", "--list java");
 
                     foreach (var item in list1)
                     {
+                        if (string.IsNullOrWhiteSpace(item))
+                        {
+                            continue;
+                        }
                         var info = GetJavaInfo(item);
+                        if (info != null)
+                        {
+                            list.Add(info);
+                        }
+                    }
+                }
+                else if (SystemInfo.SystemName.Contains("Arch") 
+                    || SystemInfo.SystemName.Contains("Manjaro"))
+                {
+                    list1 = GetList("sh", "-c \"pacman -Qs jre jdk | grep jdk\"");
+
+                    foreach (var item in list1)
+                    {
+                        if (string.IsNullOrWhiteSpace(item))
+                        {
+                            continue;
+                        }
+                        var list2 = item.Split(' ');
+                        var list3 = GetList("pacman", "-Ql " + list2[0]);
+                        var item1 = list3.Where(item => item.EndsWith("/java"))
+                            .FirstOrDefault();
+                        if (item1 == null)
+                        {
+                            continue;
+                        }
+                        var list4 = item1.Split(' ');
+                        if (list4.Length < 2)
+                        {
+                            continue;
+                        }
+                        var info = GetJavaInfo(list4[1]);
                         if (info != null)
                         {
                             list.Add(info);
@@ -362,5 +372,24 @@ public static class JavaHelper
             Logs.Error(LanguageHelper.Get("Core.Jvm.Error10"), e);
             return null;
         }
+    }
+
+    private static string[] GetList(string file, string arg)
+    {
+        using var p = new Process();
+        p.StartInfo.RedirectStandardInput = true;
+        p.StartInfo.RedirectStandardOutput = true;
+        p.StartInfo.RedirectStandardError = true;
+        p.StartInfo.UseShellExecute = false;
+        p.StartInfo.CreateNoWindow = true;
+        p.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
+        p.StartInfo.FileName = file;
+        p.StartInfo.Arguments = arg;
+        p.Start();
+        p.WaitForExit();
+
+        var result = p.StandardOutput.ReadToEnd();
+        var result1 = p.StandardError.ReadToEnd();
+        return result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
     }
 }

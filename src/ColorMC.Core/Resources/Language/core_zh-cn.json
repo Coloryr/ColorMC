@@ -101,7 +101,7 @@
   "Core.Login.Error20": "LittleSkin：刷新登录发生错误",
   "Core.Login.Error21": "登录码获取失败",
   "Core.Login.Error22": "数据解析错误",
-  "Core.Login.Error23": "没有账户数据",
+  "Core.Login.Error23": "没有或者存在多个账户数据，请尝试使用用户名登录",
   "Core.Login.Error24": "数据为空",
   "Core.Game.Error1": "游戏实例：模组解析失败",
   "Core.Game.Error2": "游戏实例：材质包解析失败",
