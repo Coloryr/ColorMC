@@ -1,7 +1,5 @@
 # ColorMC 一个全平台Minecraft PC启动器
 
-**ColorMC A27 正在制作中，尽情期待**
-
 交流QQ群：571239090
 
 多语言  
