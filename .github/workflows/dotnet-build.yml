@@ -142,19 +142,19 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-linux-aarch64-deb"
-        path: build_out/colormc-linux-${{ env.MAINVERSION }}${{ env.VERSION }}-aarch64.deb
+        path: build_out/colormc-linux-${{ env.MAINVERSION }}${{ env.VERSION }}-arm64.deb
 
     # - name: 上传 colormc-linux-aot-aarch64-deb
     #   uses: actions/upload-artifact@v4
     #   with:
     #     name: "colormc-linux-aot-aarch64-deb"
-    #     path: build_out/colormc-linux-${{ env.MAINVERSION }}${{ env.VERSION }}-aot-aarch64.deb
+    #     path: build_out/colormc-linux-${{ env.MAINVERSION }}${{ env.VERSION }}-aot-arm64.deb
 
     - name: 上传 colormc-linux-min-aarch64-de
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-linux-min-aarch64-deb"
-        path: build_out/colormc-linux-${{ env.MAINVERSION }}${{ env.VERSION }}-min-aarch64.deb
+        path: build_out/colormc-linux-${{ env.MAINVERSION }}${{ env.VERSION }}-min-arm64.deb
     
     - name: 上传 linux-x64-appimage.deb
       uses: actions/upload-artifact@v4

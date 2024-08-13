@@ -123,11 +123,11 @@ build_deb_min()
 }
 
 build_deb linux-x64 x86_64
-build_deb linux-arm64 aarch64
+build_deb linux-arm64 arm64
 build_deb_aot linux-x64 x86_64
-# build_deb_aot linux-arm64 aarch64
+# build_deb_aot linux-arm64 arm64
 build_deb_min linux-x64 x86_64
-build_deb_min linux-arm64 aarch64
+build_deb_min linux-arm64 arm64
 
 build_run=./build_run
 
