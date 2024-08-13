@@ -357,6 +357,7 @@ public static class DownloadItemHelper
     {
         var list = new ConcurrentBag<DownloadItemObj>();
         var list1 = new HashSet<string>();
+        //待补全的native
         var natives = new ConcurrentDictionary<string, bool>();
         Parallel.ForEach(obj.libraries, (item1) =>
         {
@@ -388,24 +389,23 @@ public static class DownloadItemHelper
                 {
                     var index = item1.name.LastIndexOf(':');
                     string key = item1.name[..index];
-                    if (item1.name.EndsWith("arm64"))
+                    if (item1.name.EndsWith("arm64") || item1.name.EndsWith("aarch_64"))
                     {
                         natives.TryRemove(key, out _);
-                        //if (!SystemInfo.IsArm)
-                        //{
-                        //    return;
-                        //}
                     }
-                    else if (item1.name.EndsWith("x86"))
+                    //else if (item1.name.EndsWith("x86") || item1.name.EndsWith("x86_64"))
+                    //{
+                    //    if (SystemInfo.IsArm && !natives.ContainsKey(key))
+                    //    {
+                    //        natives.TryAdd(key, true);
+                    //    }
+                    //}
+                    else
                     {
                         if (SystemInfo.IsArm && !natives.ContainsKey(key))
                         {
                             natives.TryAdd(key, true);
                         }
-                        //if (SystemInfo.Is64Bit)
-                        //{
-                        //    return;
-                        //}
                     }
                 }
 
@@ -496,6 +496,15 @@ public static class DownloadItemHelper
                 var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-{system}-arm64.jar";
 
                 var item3 = await LocalMaven.MakeItemAsync(name, dir);
+                if (item3 != null)
+                {
+                    list.Add(item3);
+                }
+
+                name = item + $":{path[1]}-{path[2]}-natives-{system}-aarch_64";
+                dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-{system}-aarch_64.jar";
+
+                item3 = await LocalMaven.MakeItemAsync(name, dir);
                 if (item3 != null)
                 {
                     list.Add(item3);
