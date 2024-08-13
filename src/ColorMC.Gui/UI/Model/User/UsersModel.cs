@@ -222,6 +222,7 @@ public partial class UsersControlModel : TopModel
                     EnableName = true;
                     Name = "";
                 }
+                EnableName = false;
                 EnableUser = true;
                 User = "";
                 EnablePassword = true;
