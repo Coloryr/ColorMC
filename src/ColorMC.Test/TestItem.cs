@@ -616,4 +616,17 @@ public static class TestItem
         using var stream = File.OpenWrite("output.png");
         image.CopyTo(stream);
     }
+
+    public static void Item37()
+    {
+        SystemInfo.Os = OsType.Linux;
+        SystemInfo.IsArm = true;
+
+        var list = CheckHelpers.CheckGameFileAsync(new()
+        { 
+            Version = "1.21.1",
+            DirName = "test1",
+            Name = "test1"
+        }, CancellationToken.None).Result;
+    }
 }
