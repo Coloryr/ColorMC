@@ -44,9 +44,9 @@ public static class PlayerSkinAPI
                 FileInfo info = new(file);
                 info.Directory?.Create();
                 var data2 = await WebClient.GetBytesAsync(url.textures.SKIN.url);
-                if (data2.Item1)
+                if (data2.State)
                 {
-                    PathHelper.WriteBytes(file, data2.Item2!);
+                    PathHelper.WriteBytes(file, data2.Data!);
                     skin = true;
                 }
             }
@@ -64,9 +64,9 @@ public static class PlayerSkinAPI
                 FileInfo info = new(file);
                 info.Directory?.Create();
                 var data2 = await WebClient.GetBytesAsync(url.textures.CAPE.url);
-                if (data2.Item1)
+                if (data2.State)
                 {
-                    PathHelper.WriteBytes(file, data2.Item2!);
+                    PathHelper.WriteBytes(file, data2.Data!);
                     cape = true;
                 }
             }

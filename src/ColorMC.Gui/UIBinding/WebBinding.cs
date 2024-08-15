@@ -482,8 +482,11 @@ public static class WebBinding
             var list2 = await ModrinthAPI.GetModDependencies(data, obj.Version, obj.Loader);
             foreach (var item1 in list2)
             {
-                if (res.ContainsKey(item1.ModId) || obj.Mods.ContainsKey(item1.ModId))
+                if (res.ContainsKey(item1.ModId) || obj.Mods.ContainsKey(item1.ModId)
+                    || item1.ModId == data.project_id)
+                {
                     continue;
+                }
                 List<string> version = [];
                 List<DownloadModArg> items = [];
                 foreach (var item2 in item1.List)

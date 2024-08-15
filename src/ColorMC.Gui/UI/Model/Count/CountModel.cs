@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Count;
 
-public partial class CountModel : ObservableObject
+public partial class CountModel : TopModel
 {
     [ObservableProperty]
     private long _count;
@@ -52,7 +52,7 @@ public partial class CountModel : ObservableObject
 
     public ObservableCollection<string> Game { get; init; } = [];
 
-    public CountModel()
+    public CountModel(BaseModel model) : base(model)
     {
         _date1 = _date = DateTime.Now;
         var data = Core.Utils.GameCount.Count;
@@ -214,5 +214,10 @@ public partial class CountModel : ObservableObject
             GameCountDone = count3;
             GameCountToday = count4;
         }
+    }
+
+    public override void Close()
+    {
+        
     }
 }

@@ -198,6 +198,24 @@ public record MessageRes
 }
 
 /// <summary>
+/// 二进制结果
+/// </summary>
+public record BytesRes
+{
+    public bool State;
+    public byte[]? Data;
+}
+
+/// <summary>
+/// 流结果
+/// </summary>
+public record StreamRes
+{
+    public bool State;
+    public Stream? Stream;
+}
+
+/// <summary>
 /// 数字结果
 /// </summary>
 public record IntRes

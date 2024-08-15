@@ -49,15 +49,15 @@ public static class GameAPI
         try
         {
             var data = await WebClient.GetBytesAsync(url);
-            if (data.Item1 == false)
+            if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return (null, null);
             }
             return (JsonConvert
-                .DeserializeObject<GameArgObj>(Encoding.UTF8.GetString(data.Item2!)),
-                data.Item2);
+                .DeserializeObject<GameArgObj>(Encoding.UTF8.GetString(data.Data!)),
+                data.Data);
         }
         catch (Exception e)
         {

@@ -46,9 +46,9 @@ public partial class AddJavaControl : BaseUserControl
         WindowManager.AddJavaWindow = null;
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
-        DataContext = new AddJavaControlModel(model, NeedJava);
+        return new AddJavaControlModel(model, NeedJava);
     }
 
     public override Bitmap GetIcon()

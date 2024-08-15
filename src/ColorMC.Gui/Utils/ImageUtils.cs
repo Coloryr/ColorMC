@@ -51,11 +51,11 @@ public static class ImageUtils
             try
             {
                 var data1 = await WebClient.GetStreamAsync(url);
-                if (data1.Item1)
+                if (data1.State)
                 {
                     if (zoom)
                     {
-                        using var image1 = SKBitmap.Decode(data1.Item2!);
+                        using var image1 = SKBitmap.Decode(data1.Stream!);
                         using var image2 = Resize(image1, 100, 100);
                         using var data = image2.Encode(SKEncodedImageFormat.Png, 100);
                         PathHelper.WriteBytes(Local + sha1, data.AsSpan().ToArray());
@@ -64,7 +64,7 @@ public static class ImageUtils
                     else
                     {
                         using var stream1 = new MemoryStream();
-                        data1.Item2!.CopyTo(stream1);
+                        data1.Stream!.CopyTo(stream1);
                         PathHelper.WriteBytes(Local + sha1, stream1.ToArray());
                         return new Bitmap(Local + sha1);
                     }

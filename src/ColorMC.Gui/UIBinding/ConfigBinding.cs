@@ -184,7 +184,7 @@ public static class ConfigBinding
     /// <param name="value"></param>
     public static void SetDownloadSource(SourceLocal value)
     {
-        if (DownloadManager.State != DownloadState.End)
+        if (BaseBinding.IsDownload)
         {
             return;
         }
@@ -202,7 +202,7 @@ public static class ConfigBinding
     /// <param name="value"></param>
     public static void SetDownloadThread(int value)
     {
-        if (DownloadManager.State != DownloadState.End)
+        if (BaseBinding.IsDownload)
         {
             return;
         }
@@ -221,7 +221,7 @@ public static class ConfigBinding
     /// <param name="password"></param>
     public static void SetDownloadProxy(string ip, ushort port, string user, string password)
     {
-        if (DownloadManager.State != DownloadState.End)
+        if (BaseBinding.IsDownload)
         {
             return;
         }
@@ -244,7 +244,7 @@ public static class ConfigBinding
     /// <param name="v3"></param>
     public static void SetDownloadProxyEnable(bool v1, bool v2, bool v3)
     {
-        if (DownloadManager.State != DownloadState.End)
+        if (BaseBinding.IsDownload)
         {
             return;
         }
@@ -266,7 +266,7 @@ public static class ConfigBinding
     /// <param name="v3"></param>
     public static void SetDownloadCheck(bool v1, bool v2, bool v3)
     {
-        if (DownloadManager.State != DownloadState.End)
+        if (BaseBinding.IsDownload)
         {
             return;
         }

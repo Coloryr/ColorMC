@@ -30,11 +30,9 @@ public abstract class BaseUserControl : UserControl, ITopWindow
     public abstract Bitmap GetIcon();
     public void SetBaseModel(BaseModel model)
     {
-        SetModel(model);
-        if (DataContext is TopModel model1)
-        {
-            model1.PropertyChanged += Model_PropertyChanged;
-        }
+        var topmodel = GenModel(model);
+        topmodel.PropertyChanged += Model_PropertyChanged;
+        DataContext = topmodel;
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -45,7 +43,7 @@ public abstract class BaseUserControl : UserControl, ITopWindow
         }
     }
 
-    public abstract void SetModel(BaseModel model);
+    public abstract TopModel GenModel(BaseModel model);
     public virtual void WindowStateChange(WindowState state) { }
     public virtual Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
     {

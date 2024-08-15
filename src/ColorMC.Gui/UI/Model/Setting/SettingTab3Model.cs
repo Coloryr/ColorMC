@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ColorMC.Core.Config;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -15,7 +16,7 @@ public partial class SettingModel
     public string[] SourceList { get; init; } = LanguageBinding.GetDownloadSources();
 
     [ObservableProperty]
-    private int _source;
+    private SourceLocal _source;
     [ObservableProperty]
     private int? _thread = 5;
 
@@ -32,8 +33,6 @@ public partial class SettingModel
     [ObservableProperty]
     private string _serverInfo;
 
-    [ObservableProperty]
-    private bool _isDownload;
     [ObservableProperty]
     private bool _loginProxy;
     [ObservableProperty]
@@ -90,15 +89,27 @@ public partial class SettingModel
         if (_httpLoad)
             return;
 
+        if (BaseBinding.IsDownload)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab3.Error3"));
+            return;
+        }
+
         ConfigBinding.SetDownloadThread(value ?? 5);
     }
 
-    partial void OnSourceChanged(int value)
+    partial void OnSourceChanged(SourceLocal value)
     {
         if (_httpLoad)
             return;
 
-        ConfigBinding.SetDownloadSource((SourceLocal)value);
+        if (BaseBinding.IsDownload)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab3.Error3"));
+            return;
+        }
+
+        ConfigBinding.SetDownloadSource(value);
     }
 
     [RelayCommand]
@@ -150,6 +161,12 @@ public partial class SettingModel
     [RelayCommand]
     public void SetProxy()
     {
+        if (BaseBinding.IsDownload)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab3.Error3"));
+            return;
+        }
+
         ConfigBinding.SetDownloadProxy(IP, Port ?? 1080, User, Password);
     }
 
@@ -167,12 +184,10 @@ public partial class SettingModel
     {
         _httpLoad = true;
 
-        IsDownload = BaseBinding.IsDownload;
-
         var config = ConfigUtils.Config;
         if (config is { } con)
         {
-            Source = (int)con.Http.Source;
+            Source = con.Http.Source;
 
             Thread = con.Http.DownloadThread;
 
@@ -202,6 +217,12 @@ public partial class SettingModel
         if (_httpLoad)
             return;
 
+        if (BaseBinding.IsDownload)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab3.Error3"));
+            return;
+        }
+
         ConfigBinding.SetDownloadCheck(CheckFile, AutoDownload, CheckUpdate);
     }
 
@@ -209,6 +230,12 @@ public partial class SettingModel
     {
         if (_httpLoad)
             return;
+
+        if (BaseBinding.IsDownload)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab3.Error3"));
+            return;
+        }
 
         ConfigBinding.SetDownloadProxyEnable(LoginProxy, DownloadProxy, GameProxy);
     }

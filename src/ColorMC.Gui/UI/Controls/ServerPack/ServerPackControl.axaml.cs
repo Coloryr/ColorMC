@@ -46,7 +46,7 @@ public partial class ServerPackControl : MenuControl
         WindowManager.ServerPackWindows.Remove(_obj.UUID);
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
         var pack = GameBinding.GetServerPack(_obj);
         if (pack == null)
@@ -62,7 +62,7 @@ public partial class ServerPackControl : MenuControl
             GameBinding.SaveServerPack(pack);
         }
 
-        DataContext = new ServerPackModel(model, pack);
+        return new ServerPackModel(model, pack);
     }
 
     protected override Control ViewChange(int old, int index)

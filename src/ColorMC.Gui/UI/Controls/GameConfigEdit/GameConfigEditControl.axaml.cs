@@ -128,17 +128,18 @@ public partial class GameConfigEditControl : BaseUserControl
         WindowManager.ConfigEditWindows.Remove(key);
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
         var amodel = new GameConfigEditModel(model, _obj, _world);
         amodel.PropertyChanged += Model_PropertyChanged;
-        DataContext = amodel;
 
         var icon = ImageManager.GetGameIcon(_obj);
         if (icon != null)
         {
             model.Icon = icon;
         }
+
+        return amodel;
     }
 
     public override Bitmap GetIcon()
