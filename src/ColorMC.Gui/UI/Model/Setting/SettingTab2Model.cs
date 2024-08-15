@@ -33,9 +33,7 @@ public partial class SettingModel
     [ObservableProperty]
     private bool _windowMode;
     [ObservableProperty]
-    private bool _isDefaultFont;
-    [ObservableProperty]
-    private bool _enableFontList;
+    private bool _isCutsomFont;
     [ObservableProperty]
     private bool _enablePicResize;
     [ObservableProperty]
@@ -236,7 +234,15 @@ public partial class SettingModel
 
         OnPropertyChanged("Hide");
 
-        ConfigBinding.SetFont(value.FontName, IsDefaultFont);
+        ConfigBinding.SetFont(value.FontName, !IsCutsomFont);
+    }
+
+    partial void OnIsCutsomFontChanged(bool value)
+    {
+        if (_load || FontItem == null)
+            return;
+
+        ConfigBinding.SetFont(FontItem.FontName, !IsCutsomFont);
     }
 
     partial void OnEnableWindowTranChanged(bool value)
@@ -311,23 +317,6 @@ public partial class SettingModel
             await ConfigBinding.SetBackLimit(value, PicResize);
             Model.ProgressClose();
         }
-    }
-
-    partial void OnIsDefaultFontChanged(bool value)
-    {
-        if (value == true)
-        {
-            EnableFontList = false;
-        }
-        else
-        {
-            EnableFontList = true;
-        }
-
-        if (_load)
-            return;
-
-        ConfigBinding.SetFont(FontItem?.FontName, value);
     }
 
     partial void OnLanguageChanged(LanguageType value)
@@ -542,8 +531,7 @@ public partial class SettingModel
             }
             MainColor = Color.Parse(con.ColorMain);
             EnableRGB = con.RGB;
-            IsDefaultFont = con.FontDefault;
-            EnableFontList = !IsDefaultFont;
+            IsCutsomFont = !con.FontDefault;
             WindowMode = con.WindowMode;
             EnablePicResize = con.BackLimit;
             EnableWindowTran = con.WindowTran;
