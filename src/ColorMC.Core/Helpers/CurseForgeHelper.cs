@@ -273,4 +273,77 @@ public static class CurseForgeHelper
 
         return (path, path1);
     }
+
+    /// <summary>
+    /// 获取Mod依赖
+    /// </summary>
+    /// <param name="data">Mod</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="loader">加载器</param>
+    /// <returns></returns>
+
+    public static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>>
+      GetModDependencies(CurseForgeModObj.Data data, string mc, Loaders loader, bool dep)
+    {
+        var ids = new ConcurrentBag<long>();
+        return await GetModDependencies(data, mc, loader, dep, ids);
+    }
+
+    public static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>> GetModDependencies(CurseForgeModObj.Data data, string mc, Loaders loader, bool dep, ConcurrentBag<long> ids)
+    {
+        if (data.dependencies == null || data.dependencies.Count == 0)
+        {
+            return [];
+        }
+        var list = new ConcurrentBag<GetCurseForgeModDependenciesRes>();
+        await Parallel.ForEachAsync(data.dependencies, async (item, cancel) =>
+        {
+            if (ids.Contains(item.modId))
+            {
+                return;
+            }
+
+            var opt = item.relationType != 2 && dep;
+            var res1 = await CurseForgeAPI.GetCurseForgeFiles(item.modId.ToString(), mc, loader: loader);
+            if (res1 == null || res1.data.Count == 0)
+            {
+                return;
+            }
+            var res2 = await CurseForgeAPI.GetModInfo(item.modId);
+            if (res2 == null)
+            {
+                return;
+            }
+
+            var mod = new GetCurseForgeModDependenciesRes()
+            {
+                Name = res2.Data.name,
+                ModId = res2.Data.id,
+                Opt = !opt,
+                List = res1.data
+            };
+            list.Add(mod);
+            ids.Add(item.modId);
+
+            foreach (var item3 in data.dependencies)
+            {
+                if (ids.Contains(item3.modId))
+                {
+                    continue;
+                }
+
+                foreach (var item5 in await GetModDependencies(res1.data[0], mc, loader, opt, ids))
+                {
+                    if (ids.Contains(item5.ModId))
+                    {
+                        continue;
+                    }
+                    list.Add(item5);
+                    ids.Add(item5.ModId);
+                }
+            }
+        });
+
+        return list;
+    }
 }

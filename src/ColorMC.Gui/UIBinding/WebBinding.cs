@@ -423,11 +423,12 @@ public static class WebBinding
         var res = new Dictionary<string, DownloadModModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
-            var res1 = await CurseForgeAPI.GetModDependencies(data, obj.Version, obj.Loader, true);
+            var res1 = await CurseForgeHelper.GetModDependencies(data, obj.Version, obj.Loader, true);
 
             foreach (var item1 in res1)
             {
-                if (res.ContainsKey(item1.Info.ModId) || obj.Mods.ContainsKey(item1.Info.ModId))
+                var modid = item1.ModId.ToString();
+                if (res.ContainsKey(modid) || obj.Mods.ContainsKey(modid) || data.id == item1.ModId)
                 {
                     continue;
                 }
@@ -443,14 +444,14 @@ public static class WebBinding
                         Info = item2.MakeModInfo(InstancesPath.Name11)
                     });
                 }
-                res.Add(item1.Info.ModId, new()
+                res.Add(modid, new()
                 {
                     Download = false,
-                    Name = item1.Info.Name,
+                    Name = item1.Name,
                     ModVersion = version,
                     Items = items,
                     SelectVersion = 0,
-                    Optional = item1.Info.Opt
+                    Optional = item1.Opt
                 });
             }
         }
@@ -479,7 +480,7 @@ public static class WebBinding
         var res = new Dictionary<string, DownloadModModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
-            var list2 = await ModrinthAPI.GetModDependencies(data, obj.Version, obj.Loader);
+            var list2 = await ModrinthHelper.GetModDependencies(data, obj.Version, obj.Loader);
             foreach (var item1 in list2)
             {
                 if (res.ContainsKey(item1.ModId) || obj.Mods.ContainsKey(item1.ModId)
