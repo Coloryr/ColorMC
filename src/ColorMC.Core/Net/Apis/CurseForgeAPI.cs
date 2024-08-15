@@ -366,46 +366,4 @@ public static class CurseForgeAPI
             return null;
         }
     }
-
-    /// <summary>
-    /// 获取Mod依赖
-    /// </summary>
-    /// <param name="data">Mod</param>
-    /// <param name="mc">游戏版本</param>
-    /// <param name="loader">加载器</param>
-    /// <returns></returns>
-    public static async Task<ConcurrentBag<((string Name, string ModId, bool Opt) Info,
-        List<CurseForgeModObj.Data> List)>>
-       GetModDependencies(CurseForgeModObj.Data data, string mc, Loaders loader, bool dep, ConcurrentBag<long>? ids = null)
-    {
-        ids ??= [];
-        var list = new ConcurrentBag<((string Name, string ModId, bool Opt) Info,
-        List<CurseForgeModObj.Data> List)>();
-        if (data.dependencies == null || data.dependencies.Count == 0)
-        {
-            return list;
-        }
-        await Parallel.ForEachAsync(data.dependencies, async (item, cancel) =>
-        {
-            if (ids.Contains(item.modId))
-                return;
-            var opt = item.relationType != 2 && dep;
-            var res1 = await GetCurseForgeFiles(item.modId.ToString(), mc, loader: loader);
-            if (res1 == null || res1.data.Count == 0)
-                return;
-            var res2 = await GetModInfo(item.modId);
-            if (res2 == null)
-                return;
-
-            list.Add(((res2.Data.name, res2.Data.id.ToString(), !opt), res1.data));
-            ids.Add(item.modId);
-
-            foreach (var item3 in await GetModDependencies(res1.data[0], mc, loader, opt, ids))
-            {
-                list.Add(item3);
-            }
-        });
-
-        return list;
-    }
 }

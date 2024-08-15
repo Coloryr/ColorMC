@@ -238,4 +238,93 @@ public static class ModrinthHelper
         }
         return new() { Data = count, State = true };
     }
+
+    /// <summary>
+    /// 获取Mod依赖
+    /// </summary>
+    /// <param name="data">mod</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="loader">加载器</param>
+    /// <returns></returns>
+    public static async Task<ConcurrentBag<GetModrinthModDependenciesRes>>
+        GetModDependencies(ModrinthVersionObj data, string mc, Loaders loader)
+    {
+        var list = new ConcurrentBag<string>();
+        return await GetModDependencies(data, mc, loader, list);
+    }
+
+    private static async Task<ConcurrentBag<GetModrinthModDependenciesRes>>
+        GetModDependencies(ModrinthVersionObj data, string mc, Loaders loader,
+        ConcurrentBag<string> ids)
+    {
+        if (data.dependencies == null || data.dependencies.Count == 0)
+        {
+            return [];
+        }
+        var list = new ConcurrentBag<GetModrinthModDependenciesRes>();
+        //await Parallel.ForEachAsync(data.dependencies, new ParallelOptions()
+        //{
+        //    MaxDegreeOfParallelism = 1
+        //}, async (item, cancel) =>
+        await Parallel.ForEachAsync(data.dependencies, async (item, cancel) =>
+        {
+            if (ids.Contains(item.project_id))
+            {
+                return;
+            }
+
+            ModrinthVersionObj? res = null;
+            var info = await ModrinthAPI.GetProject(item.project_id);
+            if (info == null)
+            {
+                return;
+            }
+            if (item.version_id == null)
+            {
+                var res1 = await ModrinthAPI.GetFileVersions(item.project_id, mc, loader);
+                if (res1 == null || res1.Count == 0)
+                {
+                    return;
+                }
+                res = res1[0];
+            }
+            else
+            {
+                res = await ModrinthAPI.GetVersion(item.project_id, item.version_id);
+            }
+
+            if (res == null)
+            {
+                return;
+            }
+
+            var mod = new GetModrinthModDependenciesRes()
+            {
+                Name = info.title,
+                ModId = res.project_id,
+                List = [res]
+            };
+            ids.Add(res.project_id);
+            list.Add(mod);
+
+            foreach (var item3 in data.dependencies)
+            {
+                if (ids.Contains(item3.project_id))
+                {
+                    continue;
+                }
+                foreach (var item5 in await GetModDependencies(res, mc, loader, ids))
+                {
+                    if (ids.Contains(item5.ModId))
+                    {
+                        continue;
+                    }
+                    ids.Add(item5.ModId);
+                    list.Add(item5);
+                }
+            }
+        });
+
+        return list;
+    }
 }

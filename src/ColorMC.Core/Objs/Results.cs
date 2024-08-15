@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using ColorMC.Core.Game;
+using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
@@ -264,4 +265,15 @@ public record GetModrinthModDependenciesRes
     public string Name;
     public string ModId;
     public List<ModrinthVersionObj> List;
+}
+
+/// <summary>
+/// 获取模组依赖列表
+/// </summary>
+public record GetCurseForgeModDependenciesRes
+{
+    public string Name;
+    public long ModId;
+    public bool Opt;
+    public List<CurseForgeModObj.Data> List;
 }

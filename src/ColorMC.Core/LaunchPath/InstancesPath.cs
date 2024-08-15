@@ -915,10 +915,13 @@ public static class InstancesPath
         var remove = new List<string>();
         foreach (var item in obj.Mods)
         {
+            var name = item.Value.File
+                .Replace(".jar", "")
+                .Replace(".zip", "");
             bool find = false;
             foreach (var item1 in list)
             {
-                if (item.Value.File == item1.Name)
+                if (item1.Name.Contains(name))
                 {
                     find = true;
                     break;
