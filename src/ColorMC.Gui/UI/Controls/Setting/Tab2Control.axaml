@@ -82,7 +82,7 @@
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text47}" />
                     </StackPanel>
                     <panel:WrapPanelWithStretch Margin="0,0,0,-5" AutoMax="{Binding MinMode}">
-                        <DockPanel MinWidth="200" Margin="0,0,10,10">
+                        <DockPanel MinWidth="180" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text1}" />
                             <ComboBox
                                 HorizontalAlignment="Stretch"
@@ -91,14 +91,14 @@
                         </DockPanel>
                         <ToggleSwitch
                             Margin="0,0,10,10"
-                            IsChecked="{Binding IsDefaultFont}"
+                            IsChecked="{Binding IsCutsomFont}"
                             OffContent="{setting:Localize SettingWindow.Tab2.Text20}"
                             OnContent="{setting:Localize SettingWindow.Tab2.Text20}" />
                         <ComboBox
                             MinWidth="180"
                             Margin="0,0,10,10"
                             HorizontalAlignment="Stretch"
-                            IsEnabled="{Binding EnableFontList}"
+                            IsEnabled="{Binding IsCutsomFont}"
                             ItemsSource="{Binding FontList}"
                             SelectedItem="{Binding FontItem}">
                             <ComboBox.ItemTemplate>
