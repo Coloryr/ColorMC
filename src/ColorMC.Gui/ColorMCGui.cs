@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Logging;
 using Avalonia.Media;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
@@ -242,7 +243,11 @@ public static class ColorMCGui
             .With(opt)
             .With(opt1)
             .With(opt2)
+#if DEBUG
+            .LogToTrace(LogEventLevel.Information)
+#else
             .LogToTrace()
+#endif
             .UsePlatformDetect();
     }
 
