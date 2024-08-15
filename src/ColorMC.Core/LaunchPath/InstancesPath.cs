@@ -1084,9 +1084,9 @@ public static class InstancesPath
     public static async Task<bool> SetGameIconFromUrl(this GameSettingObj obj, string url)
     {
         var data = await WebClient.GetBytesAsync(url);
-        if (data.Item1)
+        if (data.State)
         {
-            PathHelper.WriteBytes(obj.GetIconFile(), data.Item2!);
+            PathHelper.WriteBytes(obj.GetIconFile(), data.Data!);
             ColorMCCore.OnInstanceIconChange(obj);
             return true;
         }

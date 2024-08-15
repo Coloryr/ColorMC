@@ -81,9 +81,9 @@ public partial class SettingControl : MenuControl
         (DataContext as SettingModel)!.LoadUISetting();
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
-        DataContext = new SettingModel(model);
+        return new SettingModel(model);
     }
 
     protected override Control ViewChange(int old, int index)

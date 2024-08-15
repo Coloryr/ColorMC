@@ -25,9 +25,9 @@ public partial class CountControl : BaseUserControl
         Window.SetTitle(Title);
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
-        DataContext = new CountModel();
+        return new CountModel(model);
     }
 
     public override Bitmap GetIcon()

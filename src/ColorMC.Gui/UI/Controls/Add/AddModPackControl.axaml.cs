@@ -49,11 +49,11 @@ public partial class AddModPackControl : BaseUserControl
         (DataContext as AddModPackControlModel)!.Source = 0;
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
         var amodel = new AddModPackControlModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;
-        DataContext = amodel;
+        return amodel;
     }
 
     public override Bitmap GetIcon()

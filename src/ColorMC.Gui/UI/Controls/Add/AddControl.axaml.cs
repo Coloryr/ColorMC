@@ -36,11 +36,11 @@ public partial class AddControl : BaseUserControl
         ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
         var amodel = new AddControlModel(model, _obj);
         amodel.PropertyChanged += Model_PropertyChanged;
-        DataContext = amodel;
+        return amodel;
     }
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)

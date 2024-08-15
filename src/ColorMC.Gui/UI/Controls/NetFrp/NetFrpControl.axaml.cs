@@ -41,9 +41,9 @@ public partial class NetFrpControl : MenuControl
         }
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
-        DataContext = new NetFrpModel(model);
+        return new NetFrpModel(model);
     }
 
     protected override Control ViewChange(int old, int index)

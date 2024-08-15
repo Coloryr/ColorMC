@@ -37,12 +37,12 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         DataContext = model;
         _con = con;
 
+        con.SetBaseModel(model);
+
         if (_con is UserControl con1)
         {
             SetChild(con1);
         }
-
-        con.SetBaseModel(model);
 
         Closed += UserWindow_Closed;
         Activated += Window_Activated;

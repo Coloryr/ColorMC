@@ -27,8 +27,8 @@ public partial class UIControl : BaseUserControl
         (DataContext as UIModel)?.Load();
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
-        DataContext = new UIModel(model);
+        return new UIModel(model);
     }
 }

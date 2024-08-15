@@ -69,10 +69,9 @@ public partial class UsersControl : BaseUserControl
         (DataContext as UsersControlModel)!.SetAdd();
     }
 
-    public override void SetModel(BaseModel model)
+    public override UsersControlModel GenModel(BaseModel model)
     {
-        var amodel = new UsersControlModel(model);
-        DataContext = amodel;
+        return new UsersControlModel(model);
     }
 
     public override Bitmap GetIcon()

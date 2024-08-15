@@ -969,6 +969,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             if (list.Count == 0)
             {
                 Model.Show(App.Lang("AddWindow.Error6"));
+                IsDownload = false;
                 return;
             }
 
@@ -977,6 +978,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             var res1 = await Model.ShowCombo(App.Lang("AddWindow.Info7"), world);
             if (res1.Cancel)
             {
+                IsDownload = false;
                 return;
             }
             var item = list[res1.Index];
@@ -1015,16 +1017,19 @@ public partial class AddControlModel : GameModel, IAddWindow
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddWindow.Error9"));
+                    IsDownload = false;
                     return;
                 }
                 if (list.List!.Count == 0)
                 {
-                    res = await WebBinding.DownloadMod(Obj,
-                        new List<DownloadModArg>() { new()
+                    res = await WebBinding.DownloadMod(Obj, new List<DownloadModArg>() 
+                    { 
+                        new()
                         {
                             Item = list.Item!,
                             Info = list.Info!
-                        } });
+                        } 
+                    });
                     IsDownload = false;
                 }
                 else

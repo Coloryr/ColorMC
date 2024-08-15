@@ -316,15 +316,16 @@ public partial class MainControl : BaseUserControl
         (DataContext as MainModel)!.ShowMessage(message);
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
         var amodel = new MainModel(model);
         amodel.PropertyChanged += Amodel_PropertyChanged;
-        DataContext = amodel;
 
         var config = GuiConfigUtils.Config.Live2D;
         amodel.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
         amodel.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
+
+        return amodel;
     }
 
     private void Amodel_PropertyChanged(object? sender, PropertyChangedEventArgs e)

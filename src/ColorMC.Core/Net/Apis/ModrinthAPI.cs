@@ -164,7 +164,7 @@ public static class ModrinthAPI
     /// </summary>
     /// <param name="id">项目ID</param>
     /// <param name="version">版本ID</param>
-    public static async Task<ModrinthVersionObj?> GetProject(string id)
+    public static async Task<ModrinthProjectObj?> GetProject(string id)
     {
         try
         {
@@ -173,7 +173,7 @@ public static class ModrinthAPI
             {
                 return null;
             }
-            return JsonConvert.DeserializeObject<ModrinthVersionObj>(res.Message!);
+            return JsonConvert.DeserializeObject<ModrinthProjectObj>(res.Message!);
         }
         catch (Exception e)
         {
@@ -280,17 +280,37 @@ public static class ModrinthAPI
         GetModDependencies(ModrinthVersionObj data, string mc, Loaders loader)
     {
         var list = new ConcurrentBag<GetModrinthModDependenciesRes>();
+        return await GetModDependencies(data, mc, loader, list);
+    }
+
+    private static async Task<ConcurrentBag<GetModrinthModDependenciesRes>>
+        GetModDependencies(ModrinthVersionObj data, string mc, Loaders loader, 
+        ConcurrentBag<GetModrinthModDependenciesRes> nowlist)
+    {
         if (data.dependencies == null || data.dependencies.Count == 0)
         {
-            return list;
+            return [];
         }
+        //await Parallel.ForEachAsync(data.dependencies, new ParallelOptions()
+        //{
+        //    MaxDegreeOfParallelism = 1
+        //}, async (item, cancel) =>
         await Parallel.ForEachAsync(data.dependencies, async (item, cancel) =>
         {
             ModrinthVersionObj? res = null;
+            var info = await GetProject(item.project_id);
+            if (info == null)
+            {
+                return;
+            }
             if (item.version_id == null)
             {
                 var res1 = await GetFileVersions(item.project_id, mc, loader);
-                res = res1?[0];
+                if (res1 == null || res1.Count == 0)
+                {
+                    return;
+                }
+                res = res1[0];
             }
             else
             {
@@ -298,21 +318,45 @@ public static class ModrinthAPI
             }
 
             if (res == null)
-                return;
-
-            list.Add(new()
             {
-                Name = res.name,
+                return;
+            }
+
+            if (nowlist.Any(item4 => res.project_id == item4.ModId))
+            {
+                return;
+            }
+
+            nowlist.Add(new()
+            {
+                Name = info.title,
                 ModId = res.project_id,
                 List = [res]
             });
 
-            foreach (var item3 in await GetModDependencies(res, mc, loader))
+            foreach (var item3 in data.dependencies)
             {
-                list.Add(item3);
+                if (nowlist.Any(item4 => item3.project_id == item4.ModId))
+                {
+                    continue;
+                }
+                else
+                {
+                    foreach (var item5 in await GetModDependencies(res, mc, loader, nowlist))
+                    {
+                        if (nowlist.Any(item4 => item5.ModId == item4.ModId))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            nowlist.Add(item5);
+                        }
+                    }
+                }
             }
         });
 
-        return list;
+        return nowlist;
     }
 }

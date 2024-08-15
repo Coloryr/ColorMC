@@ -54,7 +54,7 @@ public partial class ErrorControl : BaseUserControl
         }
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
         ErrorModel amodel;
         if (_type)
@@ -65,7 +65,7 @@ public partial class ErrorControl : BaseUserControl
         {
             amodel = new ErrorModel(model, _data ?? "", _e1, _close);
         }
-        DataContext = amodel;
+        return amodel;
     }
 
     public override Bitmap GetIcon()

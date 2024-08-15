@@ -27,16 +27,16 @@ public static class WebClient
     /// </summary>
     public static void Init()
     {
+        var http = ConfigUtils.Config.Http;
+
         Logs.Info(LanguageHelper.Get("Core.Http.Info5"));
-        if (ConfigUtils.Config.Http.DownloadProxy ||
-            ConfigUtils.Config.Http.GameProxy ||
-            ConfigUtils.Config.Http.LoginProxy)
+        if (http.DownloadProxy || http.GameProxy || http.LoginProxy)
         {
             Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info6"),
-               ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort));
+               http.ProxyIP, http.ProxyPort));
         }
 
-        Source = ConfigUtils.Config.Http.Source;
+        Source = http.Source;
 
         DownloadClient?.CancelPendingRequests();
         DownloadClient?.Dispose();
@@ -45,12 +45,11 @@ public static class WebClient
         LoginClient?.Dispose();
 
         //代理
-        if (ConfigUtils.Config.Http.DownloadProxy
-            && !string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
+        if (http.DownloadProxy && !string.IsNullOrWhiteSpace(http.ProxyIP))
         {
             DownloadClient = new(new HttpClientHandler()
             {
-                Proxy = new WebProxy(ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort),
+                Proxy = new WebProxy(http.ProxyIP, http.ProxyPort),
             });
         }
         else
@@ -58,17 +57,18 @@ public static class WebClient
             DownloadClient = new();
         }
 
+        DownloadClient.DefaultRequestVersion = HttpVersion.Version11;
+        DownloadClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
         DownloadClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
         DownloadClient.DefaultRequestHeaders.UserAgent.Clear();
         DownloadClient.DefaultRequestHeaders.UserAgent
             .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
 
-        if (ConfigUtils.Config.Http.LoginProxy
-             && !string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
+        if (http.LoginProxy && !string.IsNullOrWhiteSpace(http.ProxyIP))
         {
             LoginClient = new(new HttpClientHandler()
             {
-                Proxy = new WebProxy(ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort)
+                Proxy = new WebProxy(http.ProxyIP, http.ProxyPort)
             });
         }
         else
@@ -76,6 +76,8 @@ public static class WebClient
             LoginClient = new();
         }
 
+        LoginClient.DefaultRequestVersion = HttpVersion.Version11;
+        LoginClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
         LoginClient.DefaultRequestHeaders.UserAgent.Clear();
         LoginClient.DefaultRequestHeaders.UserAgent
             .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
@@ -106,16 +108,16 @@ public static class WebClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<(bool, byte[]?)> GetBytesAsync(string url)
+    public static async Task<BytesRes> GetBytesAsync(string url)
     {
         var data = await DownloadClient.GetAsync(url);
         if (data.StatusCode != HttpStatusCode.OK)
         {
-            return (false, null);
+            return new();
         }
 
         var data1 = await data.Content.ReadAsByteArrayAsync();
-        return (true, data1);
+        return  new() { State = true, Data = data1 };
     }
 
     /// <summary>
@@ -123,16 +125,16 @@ public static class WebClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<(bool, Stream?)> GetStreamAsync(string url)
+    public static async Task<StreamRes> GetStreamAsync(string url)
     {
         var data = await DownloadClient.GetAsync(url);
         if (data.StatusCode != HttpStatusCode.OK)
         {
-            return (false, null);
+            return new();
         }
 
         var data1 = await data.Content.ReadAsStreamAsync();
-        return (true, data1);
+        return new() { State = true, Stream = data1 };
     }
 
     /// <summary>
@@ -157,11 +159,12 @@ public static class WebClient
     public static async Task<JObject?> LoginPostJsonAsync(string url, object arg)
     {
         var data1 = JsonConvert.SerializeObject(arg);
-        StringContent content = new(data1, MediaTypeHeaderValue.Parse("application/json"));
+        var content = new StringContent(data1, MediaTypeHeaderValue.Parse("application/json"));
         using var message = await LoginClient.PostAsync(url, content);
         var data = await message.Content.ReadAsStringAsync();
         return JObject.Parse(data);
     }
+
     /// <summary>
     /// 请求数据
     /// </summary>
@@ -170,7 +173,7 @@ public static class WebClient
     /// <returns>数据</returns>
     public static async Task<JObject?> LoginPostAsync(string url, Dictionary<string, string> arg)
     {
-        FormUrlEncodedContent content = new(arg);
+        var content = new FormUrlEncodedContent(arg);
         using var message = await LoginClient.PostAsync(url, content);
         var data = await message.Content.ReadAsStringAsync();
         return JObject.Parse(data);

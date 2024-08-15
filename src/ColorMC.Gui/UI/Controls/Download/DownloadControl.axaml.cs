@@ -32,10 +32,9 @@ public partial class DownloadControl : BaseUserControl
         return DataContext is DownloadModel model && !await model.Stop();
     }
 
-    public override void SetModel(BaseModel model)
+    public override TopModel GenModel(BaseModel model)
     {
-        var amodel = new DownloadModel(model);
-        DataContext = amodel;
+        return new DownloadModel(model);
     }
 
     public override Bitmap GetIcon()
