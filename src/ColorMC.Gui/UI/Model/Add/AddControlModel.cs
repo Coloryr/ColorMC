@@ -30,7 +30,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// 显示的下载模组项目列表
     /// </summary>
-    public ObservableCollection<DownloadModModel> DownloadModList { get; init; } = [];
+    public ObservableCollection<FileModVersionModel> DownloadModList { get; init; } = [];
     /// <summary>
     /// 显示的下载类型列表
     /// </summary>
@@ -42,7 +42,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// 显示的文件列表
     /// </summary>
-    public ObservableCollection<FileDisplayModel> FileList { get; init; } = [];
+    public ObservableCollection<FileVersionItemModel> FileList { get; init; } = [];
     /// <summary>
     /// 显示的项目列表
     /// </summary>
@@ -71,7 +71,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// Mod下载项目显示列表
     /// </summary>
-    public readonly List<DownloadModModel> ModList = [];
+    public readonly List<FileModVersionModel> ModList = [];
     /// <summary>
     /// 高清修复列表
     /// </summary>
@@ -129,12 +129,12 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// 项目
     /// </summary>
     [ObservableProperty]
-    private FileDisplayModel? _file;
+    private FileVersionItemModel? _file;
     /// <summary>
     /// 下载的模组
     /// </summary>
     [ObservableProperty]
-    private DownloadModModel? _mod;
+    private FileModVersionModel? _mod;
 
     /// <summary>
     /// 是否在下载
@@ -146,6 +146,11 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// </summary>
     [ObservableProperty]
     private bool _emptyDisplay = true;
+    /// <summary>
+    /// 是否没有项目
+    /// </summary>
+    [ObservableProperty]
+    private bool _emptyVersionDisplay = true;
     /// <summary>
     /// 高清修复列表显示
     /// </summary>
@@ -458,7 +463,8 @@ public partial class AddControlModel : GameModel, IAddWindow
 
             foreach (var item in data)
             {
-                DisplayList.Add(new(item, this));
+                item.Add = this;
+                DisplayList.Add(item);
             }
 
             _last = null;
@@ -492,14 +498,16 @@ public partial class AddControlModel : GameModel, IAddWindow
                     {
                         item.IsDownload = true;
                     }
-                    DisplayList.Add(new(item, this));
+                    item.Add = this;
+                    DisplayList.Add(item);
                 }
             }
             else
             {
                 foreach (var item in data)
                 {
-                    DisplayList.Add(new(item, this));
+                    item.Add = this;
+                    DisplayList.Add(item);
                 }
             }
 
@@ -547,7 +555,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             item.Name));
         if (res)
         {
-            Install1(item);
+            Install(item);
         }
     }
 
@@ -697,6 +705,17 @@ public partial class AddControlModel : GameModel, IAddWindow
         }
 
         Page += 1;
+    }
+
+    [RelayCommand]
+    public void NextVersion()
+    {
+        if (_load)
+        {
+            return;
+        }
+
+        PageDownload++;
     }
 
     public async void LoadSourceData()
@@ -934,7 +953,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// 开始下载文件
     /// </summary>
     /// <param name="data"></param>
-    public async void Install1(FileDisplayModel data)
+    public async void Install(FileVersionItemModel data)
     {
         var type = SourceTypeList[DownloadSource];
         if (Set)
@@ -952,12 +971,22 @@ public partial class AddControlModel : GameModel, IAddWindow
             return;
         }
 
+        if (_now == FileType.Mod && Obj.Mods.ContainsKey(data.ID))
+        {
+            var res1 = await Model.ShowWait(App.Lang("AddWindow.Info15"));
+            if (!res1)
+            {
+                return;
+            }
+        }
+
         var last = _last!;
         IsDownload = true;
         if (last != null)
         {
             last.NowDownload = true;
         }
+
         VersionDisplay = false;
         bool res = false;
 
@@ -1142,13 +1171,13 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         FileList.Clear();
 
-        List<FileDisplayModel>? list = null;
+        List<FileVersionItemModel>? list = null;
         var type = SourceTypeList[DownloadSource];
         if (type == SourceType.McMod)
         {
             if (_lastType == SourceType.McMod)
             {
-                var obj1 = (_last!.Data.Data as McModSearchItemObj)!;
+                var obj1 = (_last!.Data as McModSearchItemObj)!;
                 if (obj1.curseforge_id != null && obj1.modrinth_id != null)
                 {
                     var res = await Model.ShowCombo(App.Lang("AddWindow.Info14"), SourceTypeNameList);
@@ -1188,15 +1217,15 @@ public partial class AddControlModel : GameModel, IAddWindow
         if (type == SourceType.CurseForge)
         {
             EnablePage = true;
-            list = await WebBinding.GetPackFileList(type, id ??
-                (_last!.Data.Data as CurseForgeObjList.Data)!.id.ToString(), PageDownload,
+            list = await WebBinding.GetFileList(type, id ??
+                (_last!.Data as CurseForgeObjList.Data)!.id.ToString(), PageDownload,
                 GameVersionDownload, Obj.Loader, _now);
         }
         else if (type == SourceType.Modrinth)
         {
             EnablePage = false;
-            list = await WebBinding.GetPackFileList(type, id ??
-                (_last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, PageDownload,
+            list = await WebBinding.GetFileList(type, id ??
+                (_last!.Data as ModrinthSearchObj.Hit)!.project_id, PageDownload,
                 GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
         }
 
@@ -1211,6 +1240,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         {
             foreach (var item in list)
             {
+                item.Add = this;
                 if (Obj.Mods.TryGetValue(item.ID, out var value)
                     && value.FileId == item.ID1)
                 {
@@ -1223,9 +1253,12 @@ public partial class AddControlModel : GameModel, IAddWindow
         {
             foreach (var item in list)
             {
+                item.Add = this;
                 FileList.Add(item);
             }
         }
+
+        EmptyVersionDisplay = FileList.Count == 0;
 
         Model.ProgressClose();
     }
@@ -1274,6 +1307,19 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
+    /// 上一页
+    /// </summary>
+    public void BackVersion()
+    {
+        if (_load || PageDownload <= 0)
+        {
+            return;
+        }
+
+        Page -= 1;
+    }
+
+    /// <summary>
     /// 重载
     /// </summary>
     public void Reload()
@@ -1312,6 +1358,16 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         SetSelect(item);
         Install();
+    }
+
+    public void SetSelect(FileVersionItemModel item)
+    {
+        if (File != null)
+        {
+            File.IsSelect = false;
+        }
+        File = item;
+        item.IsSelect = true;
     }
 
     /// <summary>

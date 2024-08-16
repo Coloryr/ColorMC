@@ -258,12 +258,12 @@ public static class ColorMCCore
     }
 
     /// <summary>
-    /// 启动器产生错误
+    /// 启动器产生错误，并打开窗口显示
     /// </summary>
     /// <param name="text"></param>
     /// <param name="e"></param>
     /// <param name="close"></param>
-    public static void OnError(string text, Exception? e, bool close)
+    internal static void OnError(string text, Exception? e, bool close)
     {
         Error?.Invoke(text, e, close);
         Logs.Error(text, e);
@@ -274,7 +274,7 @@ public static class ColorMCCore
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="text"></param>
-    public static void OnGameLog(GameSettingObj obj, string? text)
+    internal static void OnGameLog(GameSettingObj obj, string? text)
     {
         GameLog?.Invoke(obj, text);
     }
@@ -283,18 +283,18 @@ public static class ColorMCCore
     /// 语言重载
     /// </summary>
     /// <param name="type"></param>
-    public static void OnLanguageReload(LanguageType type)
+    internal static void OnLanguageReload(LanguageType type)
     {
         LanguageReload?.Invoke(type);
     }
 
     /// <summary>
-    /// 游戏推出
+    /// 游戏退出
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="obj1"></param>
     /// <param name="code"></param>
-    public static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
+    internal static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
     {
         Games.TryRemove(obj.UUID, out _);
         GameExit?.Invoke(obj, obj1, code);

@@ -1,0 +1,36 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.FileModVersionControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    x:DataType="model:FileModVersionModel"
+    mc:Ignorable="d">
+    <Border
+        Margin="10,5,10,5"
+        Background="{setting:Theme ItemBG}"
+        BoxShadow="{Binding Border}"
+        CornerRadius="5">
+        <DockPanel Margin="15">
+            <CheckBox Content="{setting:Localize AddWindow.Text11}" IsChecked="{Binding Download}" />
+            <DockPanel Margin="15,0,0,0">
+                <TextBlock
+                    Margin="0,0,0,5"
+                    DockPanel.Dock="Top"
+                    FontSize="16"
+                    Foreground="{setting:Theme MainColor}"
+                    Text="{Binding Name, FallbackValue=1234}" />
+                <DockPanel>
+                    <TextBlock Margin="0,0,10,0" Text="{setting:Localize Text.Version}" />
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{Binding Version}"
+                        SelectedIndex="{Binding SelectVersion}" />
+                </DockPanel>
+            </DockPanel>
+        </DockPanel>
+    </Border>
+</UserControl>

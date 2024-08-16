@@ -37,7 +37,7 @@ public static class WebBinding
     private const string Arm64 = "Arm64";
 
     /// <summary>
-    /// »ñÈ¡ÕûºÏ°üÁĞ±í
+    /// è·å–æ•´åˆåŒ…åˆ—è¡¨
     /// </summary>
     /// <param name="type"></param>
     /// <param name="version"></param>
@@ -46,7 +46,7 @@ public static class WebBinding
     /// <param name="sort"></param>
     /// <param name="categoryId"></param>
     /// <returns></returns>
-    public static async Task<List<FileItemDisplayModel>?> GetModPackList(SourceType type, string? version,
+    public static async Task<List<FileItemModel>?> GetModPackList(SourceType type, string? version,
         string? filter, int page, int sort, string categoryId)
     {
         version ??= "";
@@ -72,22 +72,13 @@ public static class WebBinding
                     _ => 1
                 }, categoryId: categoryId);
             if (list == null)
+            {
                 return null;
-            var list1 = new List<FileItemDisplayModel>();
+            }
+            var list1 = new List<FileItemModel>();
             list.data.ForEach(item =>
             {
-                list1.Add(new()
-                {
-                    Name = item.name,
-                    Summary = item.summary,
-                    Author = item.authors.GetString(),
-                    DownloadCount = item.downloadCount,
-                    ModifiedDate = item.dateModified,
-                    Logo = item.logo?.url,
-                    FileType = FileType.ModPack,
-                    SourceType = SourceType.CurseForge,
-                    Data = item
-                });
+                list1.Add(new(item, FileType.ModPack));
             });
 
             return list1;
@@ -96,22 +87,13 @@ public static class WebBinding
         {
             var list = await ModrinthAPI.GetModPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId);
             if (list == null)
+            {
                 return null;
-            var list1 = new List<FileItemDisplayModel>();
+            }
+            var list1 = new List<FileItemModel>();
             list.hits.ForEach(item =>
             {
-                list1.Add(new()
-                {
-                    Name = item.title,
-                    Summary = item.description,
-                    Author = item.author,
-                    DownloadCount = item.downloads,
-                    ModifiedDate = item.date_modified,
-                    Logo = item.icon_url,
-                    FileType = FileType.ModPack,
-                    SourceType = SourceType.Modrinth,
-                    Data = item
-                });
+                list1.Add(new(item, FileType.ModPack));
             });
 
             return list1;
@@ -121,7 +103,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ÕûºÏ°üÎÄ¼şÁĞ±í
+    /// è·å–æ–‡ä»¶åˆ—è¡¨
     /// </summary>
     /// <param name="type"></param>
     /// <param name="id"></param>
@@ -130,7 +112,7 @@ public static class WebBinding
     /// <param name="loader"></param>
     /// <param name="type1"></param>
     /// <returns></returns>
-    public static async Task<List<FileDisplayModel>?> GetPackFileList(SourceType type, string id,
+    public static async Task<List<FileVersionItemModel>?> GetFileList(SourceType type, string id,
         int page, string? mc, Loaders loader, FileType type1 = FileType.ModPack)
     {
         if (type == SourceType.CurseForge)
@@ -139,21 +121,10 @@ public static class WebBinding
             if (list == null)
                 return null;
 
-            var list1 = new List<FileDisplayModel>();
+            var list1 = new List<FileVersionItemModel>();
             list.data.ForEach(item =>
             {
-                list1.Add(new()
-                {
-                    ID = item.modId.ToString(),
-                    ID1 = item.id.ToString(),
-                    Name = item.displayName,
-                    Size = UIUtils.MakeFileSize1(item.fileLength),
-                    Download = item.downloadCount,
-                    Time = DateTime.Parse(item.fileDate).ToString(),
-                    FileType = type1,
-                    SourceType = SourceType.CurseForge,
-                    Data = item
-                });
+                list1.Add(new(item, type1));
             });
 
             return list1;
@@ -164,22 +135,10 @@ public static class WebBinding
             if (list == null)
                 return null;
 
-            var list1 = new List<FileDisplayModel>();
+            var list1 = new List<FileVersionItemModel>();
             list.ForEach(item =>
             {
-                var file = item.files.FirstOrDefault(a => a.primary) ?? item.files[0];
-                list1.Add(new()
-                {
-                    ID = item.project_id,
-                    ID1 = item.id,
-                    Name = item.name,
-                    Size = UIUtils.MakeFileSize1(file.size),
-                    Download = item.downloads,
-                    Time = DateTime.Parse(item.date_published).ToString(),
-                    FileType = type1,
-                    SourceType = SourceType.Modrinth,
-                    Data = item
-                });
+                list1.Add(new(item, type1));
             });
 
             return list1;
@@ -189,7 +148,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ÏÂÔØÔ´ÁĞ±í
+    /// è·å–ä¸‹è½½æºåˆ—è¡¨
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
@@ -219,7 +178,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ÎÄ¼şÁĞ±í
+    /// è·å–æ–‡ä»¶åˆ—è¡¨
     /// </summary>
     /// <param name="now"></param>
     /// <param name="type"></param>
@@ -230,7 +189,7 @@ public static class WebBinding
     /// <param name="categoryId"></param>
     /// <param name="loader"></param>
     /// <returns></returns>
-    public static async Task<List<FileItemDisplayModel>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
+    public static async Task<List<FileItemModel>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
     {
         version ??= "";
         filter ??= "";
@@ -332,7 +291,7 @@ public static class WebBinding
             };
             if (list == null)
                 return null;
-            var list1 = new List<FileItemDisplayModel>();
+            var list1 = new List<FileItemModel>();
             var modlist = new List<string>();
             list.data.ForEach(item =>
             {
@@ -342,19 +301,9 @@ public static class WebBinding
             list.data.ForEach(item =>
             {
                 var id = item.id.ToString();
-                list1.Add(new()
+                list1.Add(new(item, now)
                 {
-                    ID = id,
-                    Name = item.name,
-                    Summary = item.summary,
-                    Author = item.authors.GetString(),
-                    DownloadCount = item.downloadCount,
-                    ModifiedDate = item.dateModified,
-                    Logo = item.logo?.url,
-                    FileType = now,
-                    SourceType = SourceType.CurseForge,
-                    Data = item,
-                    Data1 = list2?.TryGetValue(id, out var data1) == true ? data1 : null
+                    McMod = list2?.TryGetValue(id, out var data1) == true ? data1 : null
                 });
             });
 
@@ -372,8 +321,7 @@ public static class WebBinding
             };
             if (list == null)
                 return null;
-            var list1 = new List<FileItemDisplayModel>();
-
+            var list1 = new List<FileItemModel>();
             var modlist = new List<string>();
             list.hits.ForEach(item =>
             {
@@ -382,19 +330,9 @@ public static class WebBinding
             var list2 = await ColorMCAPI.GetMcModFromMO(modlist);
             list.hits.ForEach(item =>
             {
-                list1.Add(new()
+                list1.Add(new(item, now)
                 {
-                    ID = item.project_id,
-                    Name = item.title,
-                    Summary = item.description,
-                    Author = item.author,
-                    DownloadCount = item.downloads,
-                    ModifiedDate = item.date_modified,
-                    Logo = item.icon_url,
-                    FileType = FileType.ModPack,
-                    SourceType = SourceType.Modrinth,
-                    Data = item,
-                    Data1 = list2?.TryGetValue(item.project_id, out var data1) == true
+                    McMod = list2?.TryGetValue(item.project_id, out var data1) == true
                         ? data1 : null
                 });
             });
@@ -406,7 +344,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡Ä£×éÏÂÔØÁĞ±í
+    /// è·å–æ¨¡ç»„ä¸‹è½½åˆ—è¡¨
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="data"></param>
@@ -420,7 +358,7 @@ public static class WebBinding
 
         string path = obj.GetModsPath();
 
-        var res = new Dictionary<string, DownloadModModel>();
+        var res = new Dictionary<string, FileModVersionModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
             var res1 = await CurseForgeHelper.GetModDependencies(data, obj.Version, obj.Loader, true);
@@ -465,7 +403,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡Ä£×éÏÂÔØÁĞ±í
+    /// è·å–æ¨¡ç»„ä¸‹è½½åˆ—è¡¨
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="data"></param>
@@ -477,7 +415,7 @@ public static class WebBinding
             return new();
         }
 
-        var res = new Dictionary<string, DownloadModModel>();
+        var res = new Dictionary<string, FileModVersionModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
             var list2 = await ModrinthHelper.GetModDependencies(data, obj.Version, obj.Loader);
@@ -519,7 +457,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ÏÂÔØÄ£×é
+    /// ä¸‹è½½æ¨¡ç»„
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="list"></param>
@@ -544,7 +482,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ÏÂÔØÄ£×é
+    /// ä¸‹è½½æ¨¡ç»„
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="list"></param>
@@ -564,7 +502,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ÏÂÔØ×ÊÔ´
+    /// ä¸‹è½½èµ„æº
     /// </summary>
     /// <param name="type"></param>
     /// <param name="obj"></param>
@@ -624,7 +562,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ÏÂÔØ×ÊÔ´
+    /// ä¸‹è½½èµ„æº
     /// </summary>
     /// <param name="type"></param>
     /// <param name="obj"></param>
@@ -662,7 +600,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ÏÂÔØµØÍ¼×ÊÔ´
+    /// ä¸‹è½½åœ°å›¾èµ„æº
     /// </summary>
     /// <param name="obj1"></param>
     /// <param name="data"></param>
@@ -688,7 +626,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ÏÂÔØµØÍ¼×ÊÔ´
+    /// ä¸‹è½½åœ°å›¾èµ„æº
     /// </summary>
     /// <param name="obj1"></param>
     /// <param name="data"></param>
@@ -713,56 +651,39 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡Ô­Õ¾µØÖ·
+    /// è·å–åŸç«™åœ°å€
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static string? GetUrl(this FileItemDisplayModel obj)
+    public static string GetUrl(this CurseForgeObjList.Data obj)
     {
-        if (obj.SourceType == SourceType.CurseForge)
-        {
-            return (obj.Data as CurseForgeObjList.Data)!.links.websiteUrl;
-        }
-        else if (obj.SourceType == SourceType.Modrinth)
-        {
-            var obj1 = (obj.Data as ModrinthSearchObj.Hit)!;
-            return obj.FileType switch
-            {
-                FileType.ModPack => "https://modrinth.com/modpack/",
-                FileType.Shaderpack => "https://modrinth.com/shaders/",
-                FileType.Resourcepack => "https://modrinth.com/resourcepacks/",
-                FileType.DataPacks => "https://modrinth.com/datapacks/",
-                _ => "https://modrinth.com/mod/"
-            } + obj1.project_id;
-        }
+        return obj.links.websiteUrl;
+    }
 
-        return null;
+    public static string GetUrl(this ModrinthSearchObj.Hit obj, FileType fileType)
+    {
+        return fileType switch
+        {
+            FileType.ModPack => "https://modrinth.com/modpack/",
+            FileType.Shaderpack => "https://modrinth.com/shaders/",
+            FileType.Resourcepack => "https://modrinth.com/resourcepacks/",
+            FileType.DataPacks => "https://modrinth.com/datapacks/",
+            _ => "https://modrinth.com/mod/"
+        } + obj.project_id;
     }
 
     /// <summary>
-    /// »ñÈ¡McModµØÖ·
+    /// è·å–McModåœ°å€
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static string? GetMcMod(this FileItemDisplayModel obj)
+    public static string? GetUrl(this McModSearchItemObj obj)
     {
-        if ((obj.SourceType == SourceType.CurseForge
-            || obj.SourceType == SourceType.Modrinth)
-            && obj.Data1 is McModSearchItemObj obj1)
-        {
-            return $"https://www.mcmod.cn/class/{obj1.mcmod_id}.html";
-        }
-        else if (obj.SourceType == SourceType.McMod)
-        {
-            var obj2 = (obj.Data as McModSearchItemObj)!;
-            return $"https://www.mcmod.cn/class/{obj2.mcmod_id}.html";
-        }
-
-        return null;
+        return $"https://www.mcmod.cn/class/{obj.mcmod_id}.html";
     }
 
     /// <summary>
-    /// »ñÈ¡¸ßÇåĞŞ¸´ÁĞ±í
+    /// è·å–é«˜æ¸…ä¿®å¤åˆ—è¡¨
     /// </summary>
     /// <returns></returns>
     public static async Task<List<OptifineObj>?> GetOptifine()
@@ -771,7 +692,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ÏÂÔØ¸ßÇåĞŞ¸´
+    /// ä¸‹è½½é«˜æ¸…ä¿®å¤
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="item"></param>
@@ -782,7 +703,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ¼ì²éÄ£×é¸üĞÂ
+    /// æ£€æŸ¥æ¨¡ç»„æ›´æ–°
     /// </summary>
     /// <param name="game"></param>
     /// <param name="mods"></param>
@@ -802,7 +723,7 @@ public static class WebBinding
 
                 var type1 = DownloadItemHelper.TestSourceType(item.PID, item.FID);
 
-                var list1 = await GetPackFileList(type1, item.PID, 0,
+                var list1 = await GetFileList(type1, item.PID, 0,
                    game.Version, game.Loader, FileType.Mod);
                 if (list1 == null || list1.Count == 0)
                 {
@@ -846,7 +767,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ´ò¿ªMcModÍøÒ³
+    /// æ‰“å¼€McModç½‘é¡µ
     /// </summary>
     /// <param name="obj"></param>
     public static void OpenMcmod(ModDisplayModel obj)
@@ -855,7 +776,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ËÑË÷Ä£×é
+    /// æœç´¢æ¨¡ç»„
     /// </summary>
     /// <param name="name"></param>
     /// <param name="page"></param>
@@ -864,34 +785,23 @@ public static class WebBinding
     /// <param name="modtype"></param>
     /// <param name="sort"></param>
     /// <returns></returns>
-    public static async Task<List<FileItemDisplayModel>?> SearchMcmod(string name, int page, Loaders loader, string version, string modtype, int sort)
+    public static async Task<List<FileItemModel>?> SearchMcmod(string name, int page, Loaders loader, string version, string modtype, int sort)
     {
         var list = await ColorMCAPI.GetMcMod(name, page, loader, version, modtype, sort);
         if (list == null)
             return null;
 
-        var list1 = new List<FileItemDisplayModel>();
+        var list1 = new List<FileItemModel>();
         foreach (var item in list.Values)
         {
-            list1.Add(new()
-            {
-                Logo = item.mcmod_icon.StartsWith("//")
-                    ? "https:" + item.mcmod_icon : item.mcmod_icon,
-                Name = item.mcmod_name,
-                Summary = item.mcmod_text,
-                Author = item.mcmod_author,
-                FileType = FileType.Mod,
-                SourceType = SourceType.McMod,
-                Data = item,
-                ModifiedDate = item.mcmod_update_time.ToString()
-            });
+            list1.Add(new(item, FileType.Mod));
         }
 
         return list1;
     }
 
     /// <summary>
-    /// ´ò¿ªÍøÒ³
+    /// æ‰“å¼€ç½‘é¡µ
     /// </summary>
     /// <param name="type"></param>
     public static void OpenWeb(WebType type)
@@ -922,7 +832,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ForgeÖ§³ÖµÄÓÎÏ·°æ±¾
+    /// è·å–Forgeæ”¯æŒçš„æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     /// <returns></returns>
     public static Task<List<string>?> GetForgeSupportVersion()
@@ -930,7 +840,7 @@ public static class WebBinding
         return ForgeAPI.GetSupportVersion(false, WebClient.Source);
     }
     /// <summary>
-    /// »ñÈ¡FabricÖ§³ÖµÄÓÎÏ·°æ±¾
+    /// è·å–Fabricæ”¯æŒçš„æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     /// <returns></returns>
     public static Task<List<string>?> GetFabricSupportVersion()
@@ -938,7 +848,7 @@ public static class WebBinding
         return FabricAPI.GetSupportVersion(WebClient.Source);
     }
     /// <summary>
-    /// »ñÈ¡QuiltÖ§³ÖµÄÓÎÏ·°æ±¾
+    /// è·å–Quiltæ”¯æŒçš„æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     /// <returns></returns>
     public static Task<List<string>?> GetQuiltSupportVersion()
@@ -946,7 +856,7 @@ public static class WebBinding
         return QuiltAPI.GetSupportVersion(WebClient.Source);
     }
     /// <summary>
-    /// »ñÈ¡NeoForgeÖ§³ÖµÄÓÎÏ·°æ±¾
+    /// è·å–NeoForgeæ”¯æŒçš„æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     /// <returns></returns>
     public static Task<List<string>?> GetNeoForgeSupportVersion()
@@ -954,7 +864,7 @@ public static class WebBinding
         return ForgeAPI.GetSupportVersion(true, WebClient.Source);
     }
     /// <summary>
-    /// »ñÈ¡OptifineÖ§³ÖµÄÓÎÏ·°æ±¾
+    /// è·å–Optifineæ”¯æŒçš„æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     /// <returns></returns>
     public static async Task<List<string>?> GetOptifineSupportVersion()
@@ -963,45 +873,45 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡Forge°æ±¾
+    /// è·å–Forgeç‰ˆæœ¬
     /// </summary>
-    /// <param name="version">ÓÎÏ·°æ±¾</param>
+    /// <param name="version">æ¸¸æˆç‰ˆæœ¬</param>
     /// <returns></returns>
     public static Task<List<string>?> GetForgeVersion(string version)
     {
         return ForgeAPI.GetVersionList(false, version, WebClient.Source);
     }
     /// <summary>
-    /// »ñÈ¡Fabric°æ±¾
+    /// è·å–Fabricç‰ˆæœ¬
     /// </summary>
-    /// <param name="version">ÓÎÏ·°æ±¾</param>
+    /// <param name="version">æ¸¸æˆç‰ˆæœ¬</param>
     /// <returns></returns>
     public static Task<List<string>?> GetFabricVersion(string version)
     {
         return FabricAPI.GetLoaders(version, WebClient.Source);
     }
     /// <summary>
-    /// »ñÈ¡Quilt°æ±¾
+    /// è·å–Quiltç‰ˆæœ¬
     /// </summary>
-    /// <param name="version">ÓÎÏ·°æ±¾</param>
+    /// <param name="version">æ¸¸æˆç‰ˆæœ¬</param>
     /// <returns></returns>
     public static Task<List<string>?> GetQuiltVersion(string version)
     {
         return QuiltAPI.GetLoaders(version, WebClient.Source);
     }
     /// <summary>
-    /// »ñÈ¡NeoForge°æ±¾
+    /// è·å–NeoForgeç‰ˆæœ¬
     /// </summary>
-    /// <param name="version">ÓÎÏ·°æ±¾</param>
+    /// <param name="version">æ¸¸æˆç‰ˆæœ¬</param>
     /// <returns></returns>
     public static Task<List<string>?> GetNeoForgeVersion(string version)
     {
         return ForgeAPI.GetVersionList(true, version, WebClient.Source);
     }
     /// <summary>
-    /// »ñÈ¡Optifine°æ±¾
+    /// è·å–Optifineç‰ˆæœ¬
     /// </summary>
-    /// <param name="version">ÓÎÏ·°æ±¾</param>
+    /// <param name="version">æ¸¸æˆç‰ˆæœ¬</param>
     /// <returns></returns>
     public static async Task<List<string>?> GetOptifineVersion(string version)
     {
@@ -1023,7 +933,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ÏòMcloÉÏ´«ÈÕÖ¾
+    /// å‘Mcloä¸Šä¼ æ—¥å¿—
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -1033,7 +943,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ColorMC¸üĞÂÈÕÖ¾
+    /// è·å–ColorMCæ›´æ–°æ—¥å¿—
     /// </summary>
     /// <returns></returns>
     public static Task<string?> GetNewLog()
@@ -1042,7 +952,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡Ó³ÉäÁĞ±í
+    /// è·å–æ˜ å°„åˆ—è¡¨
     /// </summary>
     /// <returns></returns>
     public static async Task<List<NetFrpCloudServerModel>?> GetFrpServer()
@@ -1061,7 +971,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ¹²ÏíÓ³Éä
+    /// å…±äº«æ˜ å°„
     /// </summary>
     /// <param name="token"></param>
     /// <param name="ip"></param>
@@ -1725,7 +1635,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡JavaÀàĞÍ
+    /// è·å–Javaç±»å‹
     /// </summary>
     /// <returns></returns>
     public static List<string> GetJavaType()
@@ -1734,7 +1644,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// ´ò¿ª×¢²áÍøÒ³
+    /// æ‰“å¼€æ³¨å†Œç½‘é¡µ
     /// </summary>
     /// <param name="type"></param>
     /// <param name="name"></param>
@@ -1755,7 +1665,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// »ñÈ¡Minecraft News
+    /// è·å–Minecraft News
     /// </summary>
     /// <returns></returns>
     public static async Task<MinecraftNewObj?> LoadNews()

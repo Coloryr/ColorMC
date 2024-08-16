@@ -1,0 +1,39 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.FileVersionItemControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    x:DataType="model:FileVersionItemModel"
+    mc:Ignorable="d">
+    <Border
+        Margin="10,5,10,5"
+        Background="{setting:Theme ItemBG}"
+        BoxShadow="{Binding Border}"
+        CornerRadius="5">
+        <DockPanel Margin="15">
+            <CheckBox
+                Content="{setting:Localize Text.Downloaded}"
+                IsChecked="{Binding IsDownload}"
+                IsEnabled="False" />
+            <StackPanel Margin="15,0,0,0">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding Size, FallbackValue=123}" />
+                    <TextBlock
+                        FontSize="16"
+                        Foreground="{setting:Theme MainColor}"
+                        Text="{Binding Name, FallbackValue=123}"
+                        TextTrimming="CharacterEllipsis" />
+                </DockPanel>
+                <WrapPanel Margin="0,5,0,0">
+                    <TextBlock Text="{setting:Localize FileItemControl.Text1}" />
+                    <TextBlock Margin="0,0,10,0" Text="{Binding Download, FallbackValue=123}" />
+                    <TextBlock Text="{setting:Localize AddModPackWindow.Text16}" />
+                    <TextBlock Text="{Binding Time, FallbackValue=123}" />
+                </WrapPanel>
+            </StackPanel>
+        </DockPanel>
+    </Border>
+</UserControl>

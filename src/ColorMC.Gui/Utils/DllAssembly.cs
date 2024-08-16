@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
+using ColorMC.Core;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UIBinding;
@@ -44,7 +46,13 @@ public class DllAssembly : AssemblyLoadContext
             {
                 if (item2 == typeof(ICustomControl))
                 {
-                    Plugin = (Activator.CreateInstance(item1) as ICustomControl)!;
+                    var plugin = (Activator.CreateInstance(item1) as ICustomControl)!;
+                    if (plugin.LauncherApi != ColorMCCore.TopVersion)
+                    {
+                        Logs.Error("CustomControl API Version error");
+                        return;
+                    }
+                    Plugin = plugin;
                     Window = Plugin.GetControl();
                     IsLoad = true;
                     return;
