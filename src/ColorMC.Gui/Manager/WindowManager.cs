@@ -279,7 +279,7 @@ public static class WindowManager
         {
             var data = App.Lang("WindowManager.Error1");
             Logs.Error(data, e);
-            ShowError(data, e, true);
+            ShowError(data, e, !test);
         }
 
         return false;

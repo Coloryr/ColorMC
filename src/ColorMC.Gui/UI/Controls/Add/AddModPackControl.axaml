@@ -14,9 +14,9 @@
     mc:Ignorable="d">
     <Panel>
         <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
-            <DockPanel Margin="10,0,10,10">
+            <DockPanel Margin="10">
                 <Border
-                    Margin="10,10,10,5"
+                    Margin="10,0,10,5"
                     Classes="t2"
                     DockPanel.Dock="Top">
                     <StackPanel Margin="15,15,5,15">
@@ -102,7 +102,6 @@
                         </panel:WrapPanelWithStretch>
                     </StackPanel>
                 </Border>
-
                 <Panel>
                     <StackPanel>
                         <ItemsControl
@@ -137,14 +136,17 @@
                 </Panel>
             </DockPanel>
         </ScrollViewer>
-        <Decorator Name="ModPackFiles" IsVisible="False">
-            <Border
-                Margin="20,10,20,20"
-                Classes="t2"
-                DockPanel.Dock="Top">
-                <DockPanel>
+        <ScrollViewer
+            Name="ModPackFiles"
+            IsVisible="False"
+            VerticalScrollBarVisibility="Visible">
+            <DockPanel Margin="10">
+                <Border
+                    Margin="10,0,10,5"
+                    Classes="t2"
+                    DockPanel.Dock="Top">
                     <panel:WrapPanelWithStretch
-                        Margin="15,15,5,-5"
+                        Margin="15,15,5,5"
                         AutoMax="{Binding MinMode}"
                         DockPanel.Dock="Top">
                         <DockPanel MinWidth="190" Margin="0,0,10,10">
@@ -191,33 +193,39 @@
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </panel:WrapPanelWithStretch>
-                    <DataGrid
-                        Name="PackFiles"
-                        Margin="5"
-                        CanUserResizeColumns="True"
-                        ItemsSource="{Binding FileList}"
-                        SelectedItem="{Binding Item}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn
-                                Binding="{Binding Name}"
-                                Header="{setting:Localize Text.Name}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Size}"
-                                Header="{setting:Localize Text.Size}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Download}"
-                                Header="{setting:Localize AddModPackWindow.Text15}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Time}"
-                                Header="{setting:Localize AddModPackWindow.Text16}"
-                                IsReadOnly="True" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </Border>
-        </Decorator>
+                </Border>
+                <Panel>
+                    <StackPanel>
+                        <ItemsControl
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            ItemsSource="{Binding FileList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <item:FileVersionItemControl DataContext="{Binding}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button
+                            Height="35"
+                            Margin="6,0,6,5"
+                            HorizontalAlignment="Stretch"
+                            Classes="top"
+                            Command="{Binding NextVersion}"
+                            Content="{setting:Localize AddModPackWindow.Text14}"
+                            IsVisible="{Binding !EmptyVersionDisplay}" />
+                    </StackPanel>
+                    <Border
+                        Margin="10,5,10,10"
+                        Classes="t1"
+                        IsVisible="{Binding EmptyVersionDisplay}">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="30"
+                            Text="{setting:Localize AddModPackWindow.Text13}" />
+                    </Border>
+                </Panel>
+            </DockPanel>
+        </ScrollViewer>
     </Panel>
 </UserControl>

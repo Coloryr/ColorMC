@@ -39,7 +39,7 @@ public record ModDownloadRes
 {
     public DownloadItemObj Item;
     public ModInfoObj Info;
-    public List<DownloadModModel> List;
+    public List<FileModVersionModel> List;
 }
 
 public record GetJavaListRes

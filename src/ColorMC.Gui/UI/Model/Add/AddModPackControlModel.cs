@@ -18,7 +18,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 public partial class AddModPackControlModel : TopModel, IAddWindow
 {
     public string[] SourceList { get; init; } = LanguageBinding.GetSourceList();
-    public ObservableCollection<FileDisplayModel> FileList { get; init; } = [];
+    public ObservableCollection<FileVersionItemModel> FileList { get; init; } = [];
     public ObservableCollection<string> GameVersionList { get; init; } = [];
     public ObservableCollection<string> CategorieList { get; init; } = [];
     public ObservableCollection<string> SortTypeList { get; init; } = [];
@@ -29,7 +29,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     private bool _load = false;
 
     [ObservableProperty]
-    private FileDisplayModel _item;
+    private FileVersionItemModel _item;
 
     [ObservableProperty]
     private int _source = -1;
@@ -57,9 +57,10 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     private bool _display = false;
     [ObservableProperty]
     private bool _emptyDisplay = true;
-
     [ObservableProperty]
     private bool _sourceLoad;
+    [ObservableProperty]
+    private bool _emptyVersionDisplay;
 
     private readonly string _useName;
 
@@ -173,7 +174,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
             string.Format(App.Lang("AddModPackWindow.Info1"), Item.Name));
         if (res)
         {
-            Install1(Item);
+            Install(Item);
         }
     }
 
@@ -266,7 +267,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Load1();
     }
 
-    public void Install1(FileDisplayModel data)
+    public void Install(FileVersionItemModel data)
     {
         var select = _last;
         WindowClose();
@@ -275,13 +276,13 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         {
             WindowManager.AddGameWindow?.Install(
                 (data.Data as CurseForgeModObj.Data)!,
-                (select!.Data?.Data as CurseForgeObjList.Data)!);
+                (select!.Data as CurseForgeObjList.Data)!);
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
             WindowManager.AddGameWindow?.Install(
                 (data.Data as ModrinthVersionObj)!,
-                (select!.Data?.Data as ModrinthSearchObj.Hit)!);
+                (select!.Data as ModrinthSearchObj.Hit)!);
         }
     }
 
@@ -328,7 +329,8 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         DisplayList.Clear();
         foreach (var item in data)
         {
-            DisplayList.Add(new(item, this));
+            item.Add = this;
+            DisplayList.Add(item);
         }
         OnPropertyChanged(nameof(DisplayList));
 
@@ -346,19 +348,19 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
         FileList.Clear();
         Model.Progress(App.Lang("AddModPackWindow.Info3"));
-        List<FileDisplayModel>? list = null;
+        List<FileVersionItemModel>? list = null;
         if (Source == 0)
         {
             PageEnable1 = true;
-            list = await WebBinding.GetPackFileList((SourceType)Source,
-                (_last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), Page1 ?? 0,
+            list = await WebBinding.GetFileList((SourceType)Source,
+                (_last!.Data as CurseForgeObjList.Data)!.id.ToString(), Page1 ?? 0,
                 GameVersion1, Loaders.Normal);
         }
         else if (Source == 1)
         {
             PageEnable1 = false;
-            list = await WebBinding.GetPackFileList((SourceType)Source,
-                (_last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, Page1 ?? 0,
+            list = await WebBinding.GetFileList((SourceType)Source,
+                (_last!.Data as ModrinthSearchObj.Hit)!.project_id, Page1 ?? 0,
                 GameVersion1, Loaders.Normal);
         }
         if (list == null)
@@ -367,7 +369,14 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
             Model.ProgressClose();
             return;
         }
-        FileList.AddRange(list);
+
+        foreach (var item in list)
+        {
+            item.Add = this;
+            FileList.Add(item);
+        }
+
+        EmptyVersionDisplay = FileList.Count == 0;
 
         Model.ProgressClose();
     }
@@ -435,5 +444,35 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
         DisplayList.Clear();
         _last = null;
+    }
+
+    public void SetSelect(FileVersionItemModel item)
+    {
+        if (Item != null)
+        {
+            Item.IsSelect = false;
+        }
+        Item = item;
+        item.IsSelect = true;
+    }
+
+    public void BackVersion()
+    {
+        if (_load || Page1 <= 0)
+        {
+            return;
+        }
+
+        Page1 -= 1;
+    }
+
+    public void NextVersion()
+    {
+        if (_load)
+        {
+            return;
+        }
+
+        Page1 += 1;
     }
 }

@@ -345,4 +345,9 @@
     <ProjectReference Include="..\..\X11.Net\X11\X11.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="UI\Controls\Items\FileVersionItemControl.axaml.cs">
+      <DependentUpon>FileVersionItemControl.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

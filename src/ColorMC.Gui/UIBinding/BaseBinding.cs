@@ -394,8 +394,7 @@ public static class BaseBinding
     {
         try
         {
-            WindowManager.ShowCustom(true);
-            return true;
+            return WindowManager.ShowCustom(true);
         }
         catch (Exception ex)
         {

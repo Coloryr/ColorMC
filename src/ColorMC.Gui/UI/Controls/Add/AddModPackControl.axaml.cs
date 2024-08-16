@@ -20,8 +20,6 @@ public partial class AddModPackControl : BaseUserControl
         Title = App.Lang("AddModPackWindow.Title");
         UseName = ToString() ?? "AddModPackControl";
 
-        PackFiles.DoubleTapped += PackFiles_DoubleTapped;
-
         ModPackFiles.PointerPressed += ModPackFiles_PointerPressed;
     }
 
@@ -93,10 +91,5 @@ public partial class AddModPackControl : BaseUserControl
             await (DataContext as AddModPackControlModel)!.Download();
             e.Handled = true;
         }
-    }
-
-    private async void PackFiles_DoubleTapped(object? sender, RoutedEventArgs e)
-    {
-        await (DataContext as AddModPackControlModel)!.Download();
     }
 }

@@ -8,15 +8,13 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
-using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
-public partial class FileItemControl : UserControl
+public partial class FileVersionItemControl : UserControl
 {
-    public FileItemControl()
+    public FileVersionItemControl()
     {
         InitializeComponent();
 
@@ -46,7 +44,7 @@ public partial class FileItemControl : UserControl
 
     private void FileItemControl_PointerExited(object? sender, PointerEventArgs e)
     {
-        if (DataContext is FileItemModel model)
+        if (DataContext is FileVersionItemModel model)
         {
             model.Top = false;
         }
@@ -54,7 +52,7 @@ public partial class FileItemControl : UserControl
 
     private void FileItemControl_PointerEntered(object? sender, PointerEventArgs e)
     {
-        if (DataContext is FileItemModel model)
+        if (DataContext is FileVersionItemModel model)
         {
             model.Top = true;
         }
@@ -62,36 +60,19 @@ public partial class FileItemControl : UserControl
 
     private void FileItemControl_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        (DataContext as FileItemModel)?.Install();
+        (DataContext as FileVersionItemModel)?.Install();
     }
 
     private void FileItemControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is not FileItemModel model)
+        if (DataContext is not FileVersionItemModel model)
         {
             return;
         }
         model.SetSelect();
 
-        void OpenFlyout()
-        {
-            var url = model.Url;
-            var url1 = model.McMod?.GetUrl();
-            if (url == null && url1 == null)
-            {
-                return;
-            }
-
-            _ = new UrlFlyout((sender as Control)!, url, url1);
-            e.Handled = true;
-        }
-
         var ev = e.GetCurrentPoint(this);
-        if (ev.Properties.IsRightButtonPressed)
-        {
-            OpenFlyout();
-        }
-        else if (ev.Properties.IsXButton1Pressed)
+        if (ev.Properties.IsXButton1Pressed)
         {
             model.Back();
             e.Handled = true;
@@ -100,16 +81,6 @@ public partial class FileItemControl : UserControl
         {
             model.Next();
             e.Handled = true;
-        }
-        else
-        {
-            LongPressed.Pressed(() =>
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    OpenFlyout();
-                });
-            });
         }
     }
 

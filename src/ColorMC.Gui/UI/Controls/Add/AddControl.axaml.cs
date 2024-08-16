@@ -27,9 +27,7 @@ public partial class AddControl : BaseUserControl
         Title = string.Format(App.Lang("AddWindow.Title"), obj.Name);
         UseName = (ToString() ?? "GameSettingObj") + ":" + obj.UUID;
 
-        VersionFiles.DoubleTapped += VersionFiles_DoubleTapped;
         OptifineFiles.DoubleTapped += OptifineFiles_DoubleTapped;
-        ModDownloadFiles.DoubleTapped += ModDownloadFiles_DoubleTapped;
 
         VersionDisplay.PointerPressed += VersionDisplay_PointerPressed;
         OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
@@ -171,22 +169,9 @@ public partial class AddControl : BaseUserControl
             e.Handled = true;
         }
     }
-    private void ModDownloadFiles_DoubleTapped(object? sender, TappedEventArgs e)
-    {
-        var item = (DataContext as AddControlModel)!.Mod;
-        if (item != null)
-        {
-            item.Download = !item.Download;
-        }
-    }
 
     private async void OptifineFiles_DoubleTapped(object? sender, TappedEventArgs e)
     {
         await (DataContext as AddControlModel)!.DownloadOptifine();
-    }
-
-    private async void VersionFiles_DoubleTapped(object? sender, RoutedEventArgs e)
-    {
-        await (DataContext as AddControlModel)!.GoFile();
     }
 }

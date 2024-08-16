@@ -13,7 +13,10 @@
     x:DataType="model:AddControlModel"
     mc:Ignorable="d">
     <Panel>
-        <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
+        <ScrollViewer
+            Name="ScrollViewer1"
+            IsVisible="True"
+            VerticalScrollBarVisibility="Visible">
             <DockPanel Margin="10">
                 <Border
                     Margin="10,0,10,5"
@@ -142,14 +145,17 @@
                 </Panel>
             </DockPanel>
         </ScrollViewer>
-        <Decorator Name="VersionDisplay" IsVisible="False">
-            <Border
-                Margin="20,10,20,20"
-                Classes="t2"
-                DockPanel.Dock="Top">
-                <DockPanel>
+        <ScrollViewer
+            Name="VersionDisplay"
+            IsVisible="False"
+            VerticalScrollBarVisibility="Visible">
+            <DockPanel Margin="10">
+                <Border
+                    Margin="10,0,10,5"
+                    Classes="t2"
+                    DockPanel.Dock="Top">
                     <panel:WrapPanelWithStretch
-                        Margin="15,15,5,-5"
+                        Margin="15,15,5,5"
                         AutoMax="{Binding MinMode}"
                         DockPanel.Dock="Top">
                         <DockPanel MinWidth="190" Margin="0,0,10,10">
@@ -196,38 +202,40 @@
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </panel:WrapPanelWithStretch>
-                    <DataGrid
-                        Name="VersionFiles"
-                        Margin="5,0,5,5"
-                        CanUserResizeColumns="True"
-                        ItemsSource="{Binding FileList}"
-                        SelectedItem="{Binding File}">
-                        <DataGrid.Columns>
-                            <DataGridCheckBoxColumn
-                                Binding="{Binding IsDownload}"
-                                Header="{setting:Localize Text.Downloaded}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Name}"
-                                Header="{setting:Localize Text.Name}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Size}"
-                                Header="{setting:Localize Text.Size}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Download}"
-                                Header="{setting:Localize AddModPackWindow.Text15}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Time}"
-                                Header="{setting:Localize AddModPackWindow.Text16}"
-                                IsReadOnly="True" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </Border>
-        </Decorator>
+                </Border>
+                <Panel>
+                    <StackPanel>
+                        <ItemsControl
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            ItemsSource="{Binding FileList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <item:FileVersionItemControl DataContext="{Binding}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button
+                            Height="35"
+                            Margin="6,0,6,5"
+                            HorizontalAlignment="Stretch"
+                            Classes="top"
+                            Command="{Binding NextVersion}"
+                            Content="{setting:Localize AddModPackWindow.Text14}"
+                            IsVisible="{Binding !EmptyVersionDisplay}" />
+                    </StackPanel>
+                    <Border
+                        Margin="10,5,10,10"
+                        Classes="t1"
+                        IsVisible="{Binding EmptyVersionDisplay}">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="30"
+                            Text="{setting:Localize AddModPackWindow.Text13}" />
+                    </Border>
+                </Panel>
+            </DockPanel>
+        </ScrollViewer>
         <Decorator Name="OptifineDisplay" IsVisible="False">
             <Border Margin="20,10,20,20" Classes="t2">
                 <DockPanel>
@@ -296,10 +304,16 @@
                 </DockPanel>
             </Border>
         </Decorator>
-        <Decorator Name="ModDownloadDisplay" IsVisible="False">
-            <Border Margin="20,10,20,20" Classes="t2">
-                <DockPanel>
-                    <WrapPanel Margin="15,15,5,-5" DockPanel.Dock="Top">
+        <ScrollViewer
+            Name="ModDownloadDisplay"
+            IsVisible="False"
+            VerticalScrollBarVisibility="Visible">
+            <DockPanel Margin="10">
+                <Border
+                    Margin="10,0,10,5"
+                    Classes="t2"
+                    DockPanel.Dock="Top">
+                    <WrapPanel Margin="15,15,5,15" DockPanel.Dock="Top">
                         <TextBlock Margin="0,0,20,0" Text="{setting:Localize AddWindow.Text7}" />
                         <ToggleSwitch
                             Margin="0,0,10,0"
@@ -327,34 +341,18 @@
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </WrapPanel>
-                    <DataGrid
-                        Name="ModDownloadFiles"
-                        Margin="5"
-                        CanUserResizeColumns="True"
-                        ItemsSource="{Binding DownloadModList}"
-                        SelectedItem="{Binding Mod}">
-                        <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{Binding Download}" Header="{setting:Localize AddWindow.Text11}" />
-                            <DataGridTextColumn
-                                Binding="{Binding Name}"
-                                Header="{setting:Localize AddWindow.Text12}"
-                                IsReadOnly="True" />
-                            <DataGridTemplateColumn Header="{setting:Localize Text.Version}">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox
-                                            Margin="0,5,0,5"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Stretch"
-                                            ItemsSource="{Binding Version}"
-                                            SelectedIndex="{Binding SelectVersion}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </Border>
-        </Decorator>
+                </Border>
+                <ItemsControl
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    ItemsSource="{Binding DownloadModList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <item:FileModVersionControl DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+        </ScrollViewer>
     </Panel>
 </UserControl>

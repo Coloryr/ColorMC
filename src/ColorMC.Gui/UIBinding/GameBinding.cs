@@ -2458,7 +2458,7 @@ public static class GameBinding
                 }
             }
         });
-        WindowManager.ShowError(App.Lang("GameBinding.Info13"), info.ToString(), false);
+        WindowManager.ShowError(App.Lang("GameBinding.Info13"), info.ToString());
     }
 
     /// <summary>

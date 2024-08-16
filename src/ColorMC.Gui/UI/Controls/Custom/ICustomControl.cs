@@ -2,5 +2,6 @@
 
 public interface ICustomControl
 {
+    public string LauncherApi { get; }
     public BaseUserControl GetControl();
 }
