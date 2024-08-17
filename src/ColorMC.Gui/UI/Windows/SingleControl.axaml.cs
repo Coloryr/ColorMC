@@ -245,7 +245,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
 
     public void WindowStateChange(WindowState windowState)
     {
-        ICon.WindowStateChange(windowState);
+        ICon?.WindowStateChange(windowState);
         Head.WindowStateChange(windowState);
     }
 }
