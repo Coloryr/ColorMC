@@ -13,7 +13,7 @@ public class GameEditFlyout3
 
     public GameEditFlyout3(Control con, ResourcePackModel model)
     {
-        _top = model.Top;
+        _top = model.TopModel;
         _obj = model.Pack;
 
         _ = new FlyoutsControl(

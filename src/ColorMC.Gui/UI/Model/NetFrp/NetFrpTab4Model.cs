@@ -45,7 +45,7 @@ public partial class NetFrpModel
         }
         foreach (var item in list)
         {
-            item.Top = this;
+            item.TopModel = this;
             CloudServers.Add(item);
         }
 

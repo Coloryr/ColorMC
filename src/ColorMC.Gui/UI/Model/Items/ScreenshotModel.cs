@@ -9,7 +9,7 @@ public partial class ScreenshotModel(GameEditModel top, string obj) : SelectItem
 {
     public string Screenshot => obj;
 
-    public GameEditModel Top => top;
+    public GameEditModel TopModel => top;
 
     public string Name { get; } = Path.GetFileName(obj);
 
@@ -34,7 +34,7 @@ public partial class ScreenshotModel(GameEditModel top, string obj) : SelectItem
 
     public void Select()
     {
-        Top.SetSelectScreenshot(this);
+        TopModel.SetSelectScreenshot(this);
     }
 
     public void Close()

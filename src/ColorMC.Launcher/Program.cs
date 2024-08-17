@@ -103,7 +103,7 @@ public static class Program
             {
                 _inputDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.ColorMC/";
 
-                string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/";
+                path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/";
                 if (Directory.Exists(path))
                 {
                     Directory.Move(path, _inputDir);
