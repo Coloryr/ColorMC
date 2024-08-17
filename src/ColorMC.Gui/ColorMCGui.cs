@@ -75,15 +75,26 @@ public static class ColorMCGui
         {
             RunDir = SystemInfo.Os switch
             {
-                OsType.Linux => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/",
+                OsType.Linux => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.ColorMC/",
                 OsType.MacOS => "/Users/shared/ColorMC/",
                 _ => AppContext.BaseDirectory
             };
+
+
+            if (SystemInfo.Os == OsType.Linux)
+            {
+                string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/";
+                if (Directory.Exists(path))
+                {
+                    Directory.Move(path, RunDir);
+                }
+            }
         }
         else
         {
             RunDir = InputDir;
         }
+
 
         Console.WriteLine($"RunDir: {RunDir}");
 
