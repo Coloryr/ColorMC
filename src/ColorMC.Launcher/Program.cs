@@ -106,7 +106,7 @@ public static class Program
                 string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/";
                 if (Directory.Exists(path))
                 {
-                    Directory.Move(path, RunDir);
+                    Directory.Move(path, _inputDir);
                 }
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
