@@ -19,7 +19,7 @@ public class GameEditFlyout4
             }),
             (App.Lang("GameEditWindow.Tab9.Text1"), true, ()=>
             {
-                _model.Top.DeleteScreenshot(_model);
+                _model.TopModel.DeleteScreenshot(_model);
             })
         ], con);
     }

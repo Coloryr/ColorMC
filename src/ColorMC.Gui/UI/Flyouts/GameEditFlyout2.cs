@@ -22,11 +22,11 @@ public class GameEditFlyout2
             }),
             (App.Lang("GameEditWindow.Flyouts.Text11"), CheckHelpers.IsGameVersion120(_model.World.Game.Version), ()=>
             {
-                _model.Top.LaunchWorld(_model);
+                _model.TopModel.LaunchWorld(_model);
             }),
             (App.Lang("GameEditWindow.Flyouts.Text7"), true, ()=>
             {
-                _model.Top.Export(_model);
+                _model.TopModel.Export(_model);
             }),
             (App.Lang("GameEditWindow.Flyouts.Text10"), true, ()=>
             {
@@ -34,11 +34,11 @@ public class GameEditFlyout2
             }),
             (App.Lang("GameEditWindow.Flyouts.Text9"), !_model.World.Broken, ()=>
             {
-                _model.Top.BackupWorld(_model);
+                _model.TopModel.BackupWorld(_model);
             }),
             (App.Lang("GameEditWindow.Flyouts.Text8"), !_model.World.Broken, ()=>
             {
-                _model.Top.DeleteWorld(_model);
+                _model.TopModel.DeleteWorld(_model);
             })
         ], con);
     }

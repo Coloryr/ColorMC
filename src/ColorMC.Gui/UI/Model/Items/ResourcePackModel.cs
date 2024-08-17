@@ -9,7 +9,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class ResourcePackModel : SelectItemModel
 {
-    public readonly GameEditModel Top;
+    public readonly GameEditModel TopModel;
     public readonly ResourcepackObj Pack;
 
     public string Local => Path.GetFileName(Pack.Local);
@@ -21,7 +21,7 @@ public partial class ResourcePackModel : SelectItemModel
 
     public ResourcePackModel(GameEditModel top, ResourcepackObj pack)
     {
-        Top = top;
+        TopModel = top;
         Pack = pack;
         Pic = Pack.Icon == null ? ImageManager.GameIcon : GetImage();
     }
@@ -34,7 +34,7 @@ public partial class ResourcePackModel : SelectItemModel
 
     public void Select()
     {
-        Top.SetSelectResource(this);
+        TopModel.SetSelectResource(this);
     }
 
     public void Close()

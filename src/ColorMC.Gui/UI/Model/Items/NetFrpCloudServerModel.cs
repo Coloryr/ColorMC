@@ -26,18 +26,18 @@ public partial class NetFrpCloudServerModel : SelectItemModel
     public string Max { get; set; }
 
     [JsonIgnore]
-    public NetFrpModel Top;
+    public NetFrpModel TopModel;
 
     [RelayCommand]
     public void Join()
     {
-        Top.Join(this);
+        TopModel.Join(this);
     }
 
     [RelayCommand]
     public async Task Copy()
     {
-        var top = Top.Model.GetTopLevel();
+        var top = TopModel.Model.GetTopLevel();
         if (top == null)
         {
             return;
@@ -48,6 +48,6 @@ public partial class NetFrpCloudServerModel : SelectItemModel
     [RelayCommand]
     public void Test()
     {
-        Top.Test(this);
+        TopModel.Test(this);
     }
 }

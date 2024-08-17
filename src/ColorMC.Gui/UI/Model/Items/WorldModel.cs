@@ -17,7 +17,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 public partial class WorldModel : SelectItemModel
 {
     public readonly WorldObj World;
-    public readonly GameEditModel Top;
+    public readonly GameEditModel TopModel;
 
     [ObservableProperty]
     private bool _empty;
@@ -36,7 +36,7 @@ public partial class WorldModel : SelectItemModel
 
     public WorldModel(GameEditModel top, WorldObj world)
     {
-        Top = top;
+        TopModel = top;
         World = world;
         Pic = World.Icon != null ? new Bitmap(World.Icon) : ImageManager.GameIcon;
     }
@@ -62,16 +62,16 @@ public partial class WorldModel : SelectItemModel
 
     private async void Load1()
     {
-        Top.Model.Progress(App.Lang("GameEditWindow.Tab5.Info16"));
+        TopModel.Model.Progress(App.Lang("GameEditWindow.Tab5.Info16"));
         IsSelect = false;
         await Load();
         IsSelect = true;
-        Top.Model.ProgressClose();
+        TopModel.Model.ProgressClose();
     }
 
     public void Select()
     {
-        Top.SetSelectWorld(this);
+        TopModel.SetSelectWorld(this);
     }
 
     public void DisE()
@@ -102,14 +102,14 @@ public partial class WorldModel : SelectItemModel
 
     public async void Delete(DataPackModel item)
     {
-        var res = await Top.Model.ShowWait(
+        var res = await TopModel.Model.ShowWait(
             string.Format(App.Lang("GameEditWindow.Tab5.Info15"), item.Name));
         if (!res)
         {
             return;
         }
 
-        res = await GameBinding.DeleteDataPack(item, Top.Model.ShowWait);
+        res = await GameBinding.DeleteDataPack(item, TopModel.Model.ShowWait);
         if (res)
         {
             Load1();
@@ -118,14 +118,14 @@ public partial class WorldModel : SelectItemModel
 
     public async void Delete(IEnumerable<DataPackModel> items)
     {
-        var res = await Top.Model.ShowWait(
+        var res = await TopModel.Model.ShowWait(
             string.Format(App.Lang("GameEditWindow.Tab5.Info14"), items.Count()));
         if (!res)
         {
             return;
         }
 
-        res = await GameBinding.DeleteDataPack(items, Top.Model.ShowWait);
+        res = await GameBinding.DeleteDataPack(items, TopModel.Model.ShowWait);
         if (res)
         {
             Load1();

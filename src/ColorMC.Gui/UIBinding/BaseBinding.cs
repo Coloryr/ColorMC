@@ -185,7 +185,7 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 快捷启动索格实例
+    /// 快捷启动实例
     /// </summary>
     /// <param name="games"></param>
     public static void Launch(string[] games)
@@ -195,7 +195,7 @@ public static class BaseBinding
         {
             return;
         }
-        Dispatcher.UIThread.Post(async () =>
+        Dispatcher.UIThread.Post(() =>
         {
             if (window?.Model is IMainTop model)
             {
