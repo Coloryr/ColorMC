@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Input;
@@ -6,8 +8,10 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
+using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -173,5 +177,10 @@ public partial class AddControl : BaseUserControl
     private async void OptifineFiles_DoubleTapped(object? sender, TappedEventArgs e)
     {
         await (DataContext as AddControlModel)!.DownloadOptifine();
+    }
+
+    public void GoUpgrade(ICollection<ModUpgradeModel> list)
+    {
+        (DataContext as AddControlModel)!.Upgrade(list);
     }
 }

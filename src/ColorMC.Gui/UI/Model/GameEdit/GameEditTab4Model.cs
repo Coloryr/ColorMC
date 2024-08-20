@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
@@ -147,6 +148,10 @@ public partial class GameEditModel
         }
         _isModSet = false;
     }
+
+    /// <summary>
+    /// 检查模组更新
+    /// </summary>
     private async void CheckMod()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info10"));
@@ -158,11 +163,7 @@ public partial class GameEditModel
                 App.Lang("GameEditWindow.Tab4.Info11"), res.Count));
             if (res1)
             {
-                Model.Progress(App.Lang("GameEditWindow.Tab4.Info12"));
-                await WebBinding.DownloadMod(_obj, res);
-                Model.ProgressClose();
-
-                await LoadMod();
+                WebBinding.UpgradeMod(_obj, res);
             }
         }
         else
@@ -312,13 +313,13 @@ public partial class GameEditModel
     private void DisplayMod(List<string> list)
     {
         ModList.Clear();
+        ModFilter = 3;
+        var builder = new StringBuilder();
         foreach (var item in list)
         {
-            var list1 = from item1 in _modItems
-                        where item1.Modid == item
-                        select item1;
-            ModList.AddRange(list1);
+            builder.Append(item).Append(',');
         }
+        ModText = builder.ToString();
     }
 
     private void LoadMod1()
@@ -331,35 +332,77 @@ public partial class GameEditModel
         else
         {
             string fil = ModText.ToLower();
+            var args = fil.Split(',').ToList();
+            ModList.Clear();
             switch (ModFilter)
             {
                 case 0:
-                    var list = from item in _modItems
-                               where item.Name.Contains(fil, StringComparison.OrdinalIgnoreCase)
-                               select item;
-                    ModList.Clear();
-                    ModList.AddRange(list);
+                    foreach (var item in _modItems)
+                    {
+                        foreach (var item1 in args)
+                        {
+                            if (string.IsNullOrWhiteSpace(item1))
+                            {
+                                continue;
+                            }
+                            if (item.Name.Contains(item1, StringComparison.OrdinalIgnoreCase))
+                            {
+                                ModList.Add(item);
+                                break;
+                            }
+                        }
+                    }
                     break;
                 case 1:
-                    list = from item in _modItems
-                           where item.Local.Contains(fil, StringComparison.OrdinalIgnoreCase)
-                           select item;
-                    ModList.Clear();
-                    ModList.AddRange(list);
+                    foreach (var item in _modItems)
+                    {
+                        foreach (var item1 in args)
+                        {
+                            if (string.IsNullOrWhiteSpace(item1))
+                            {
+                                continue;
+                            }
+                            if (item.Local.Contains(item1, StringComparison.OrdinalIgnoreCase))
+                            {
+                                ModList.Add(item);
+                                break;
+                            }
+                        }
+                    }
                     break;
                 case 2:
-                    list = from item in _modItems
-                           where item.Author.Contains(fil, StringComparison.OrdinalIgnoreCase)
-                           select item;
-                    ModList.Clear();
-                    ModList.AddRange(list);
+                    foreach (var item in _modItems)
+                    {
+                        foreach (var item1 in args)
+                        {
+                            if (string.IsNullOrWhiteSpace(item1))
+                            {
+                                continue;
+                            }
+                            if (item.Author.Contains(item1, StringComparison.OrdinalIgnoreCase))
+                            {
+                                ModList.Add(item);
+                                break;
+                            }
+                        }
+                    }
                     break;
                 case 3:
-                    list = from item in _modItems
-                           where item.Modid?.Contains(fil, StringComparison.OrdinalIgnoreCase) == true
-                           select item;
-                    ModList.Clear();
-                    ModList.AddRange(list);
+                    foreach (var item in _modItems)
+                    {
+                        foreach (var item1 in args)
+                        {
+                            if (string.IsNullOrWhiteSpace(item1))
+                            {
+                                continue;
+                            }
+                            if (item.Modid.Contains(item1, StringComparison.OrdinalIgnoreCase))
+                            {
+                                ModList.Add(item);
+                                break;
+                            }
+                        }
+                    }
                     break;
             }
         }

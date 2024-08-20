@@ -11,5 +11,5 @@ public record DownloadModArg
 
 public record DownloadModItemArg : DownloadModArg
 {
-    public ModDisplayModel Model;
+    public string Local;
 }

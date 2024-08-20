@@ -468,6 +468,22 @@ public static class WindowManager
         }
     }
 
+    public static void ShowAddUpgade(GameSettingObj obj, ICollection<ModUpgradeModel> list)
+    {
+        if (AddWindows.TryGetValue(obj.UUID, out var value))
+        {
+            value.Window.TopActivate();
+            value.GoUpgrade(list);
+        }
+        else
+        {
+            var con = new AddControl(obj);
+            AddWindows.Add(obj.UUID, con);
+            AWindow(con);
+            con.GoUpgrade(list);
+        }
+    }
+
     public static void ShowAdd(GameSettingObj obj, FileType type)
     {
         if (AddWindows.TryGetValue(obj.UUID, out var value))
