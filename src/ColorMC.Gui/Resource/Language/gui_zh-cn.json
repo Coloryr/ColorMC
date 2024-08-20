@@ -707,6 +707,7 @@
 	"AddWindow.Text12": "所需前置",
 	"AddWindow.Text13": "打开MC百科",
 	"AddWindow.Text14": "Forge版本",
+	"AddWindow.Text15": "选择需要升级的模组",
 	"AddWindow.Info1": "是否下载资源 {0}",
 	"AddWindow.Info2": "正在搜索资源中",
 	"AddWindow.Info3": "正在获取资源版本中",

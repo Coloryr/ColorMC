@@ -382,15 +382,7 @@ public static class WebBinding
                         Info = item2.MakeModInfo(InstancesPath.Name11)
                     });
                 }
-                res.Add(modid, new()
-                {
-                    Download = false,
-                    Name = item1.Name,
-                    ModVersion = version,
-                    Items = items,
-                    SelectVersion = 0,
-                    Optional = item1.Opt
-                });
+                res.Add(modid, new(item1.Name, version, items, item1.Opt));
             }
         }
 
@@ -437,14 +429,7 @@ public static class WebBinding
                         Info = item2.MakeModInfo()
                     });
                 }
-                res.Add(item1.ModId, new()
-                {
-                    Download = false,
-                    Name = item1.Name,
-                    ModVersion = version,
-                    Items = items,
-                    SelectVersion = 0
-                });
+                res.Add(item1.ModId, new(item1.Name, version, items, false));
             }
         }
 
@@ -454,6 +439,11 @@ public static class WebBinding
             Info = data.MakeModInfo(),
             List = [.. res.Values]
         };
+    }
+
+    public static void UpgradeMod(GameSettingObj obj, ICollection<ModUpgradeModel> list)
+    {
+        WindowManager.ShowAddUpgade(obj, list);
     }
 
     /// <summary>
@@ -466,7 +456,7 @@ public static class WebBinding
     {
         foreach (var item in list)
         {
-            PathHelper.Delete(item.Model.Local);
+            PathHelper.Delete(item.Local);
         }
 
         var list1 = new List<DownloadItemObj>();
@@ -708,10 +698,10 @@ public static class WebBinding
     /// <param name="game"></param>
     /// <param name="mods"></param>
     /// <returns></returns>
-    public static async Task<List<DownloadModItemArg>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
+    public static async Task<List<ModUpgradeModel>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
     {
         string path = game.GetModsPath();
-        var list = new ConcurrentBag<DownloadModItemArg>();
+        var list = new ConcurrentBag<ModUpgradeModel>();
         await Parallel.ForEachAsync(mods, async (item, cancel) =>
         {
             try
@@ -725,43 +715,50 @@ public static class WebBinding
 
                 var list1 = await GetFileList(type1, item.PID, 0,
                    game.Version, game.Loader, FileType.Mod);
-                if (list1 == null || list1.Count == 0)
+                if (list1 == null || list1.Count == 0
+                || list1[0].ID1 == item.FID)
                 {
                     return;
                 }
-                var item1 = list1[0];
-                if (item1.ID1 != item.FID)
+
+                item.IsNew = true;
+
+                List<string> version = [];
+                List<DownloadModArg> items = [];
+                foreach (var item1 in list1)
                 {
+                    if (item1.ID1 == item.FID)
+                    {
+                        continue;
+                    }
+
                     if (item1.Data is CurseForgeModObj.Data data)
                     {
-                        list.Add(new()
+                        version.Add(data.displayName);
+                        items.Add(new()
                         {
                             Item = data.MakeModDownloadObj(path),
-                            Info = data.MakeModInfo(InstancesPath.Name11),
-                            Model = item
+                            Info = data.MakeModInfo(InstancesPath.Name11)
                         });
                     }
                     else if (item1.Data is ModrinthVersionObj data1)
                     {
-                        list.Add(new()
+                        version.Add(data1.name);
+                        items.Add(new()
                         {
                             Item = data1.MakeModDownloadObj(game),
-                            Info = data1.MakeModInfo(),
-                            Model = item
+                            Info = data1.MakeModInfo()
                         });
                     }
                 }
+
+                list.Add(new(item.Local, item.Name, version, items, false));
             }
             catch (Exception e)
             {
                 Logs.Error(App.Lang("WebBinding.Error1"), e);
             }
         });
-
-        foreach (var item in list)
-        {
-            item.Model.IsNew = true;
-        }
 
         return [.. list];
     }

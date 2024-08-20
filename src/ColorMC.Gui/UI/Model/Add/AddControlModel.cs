@@ -96,7 +96,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <summary>
     /// 下载的模组项目
     /// </summary>
-    private DownloadModArg _modsave;
+    private DownloadModArg? _modsave;
     /// <summary>
     /// 是否在加载
     /// </summary>
@@ -191,6 +191,11 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// </summary>
     [ObservableProperty]
     private bool _sourceLoad;
+    /// <summary>
+    /// 是否为模组升级模式
+    /// </summary>
+    [ObservableProperty]
+    private bool _isUpgrade;
 
     /// <summary>
     /// 下载类型
@@ -243,12 +248,19 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// </summary>
     [ObservableProperty]
     private string? _gameVersionDownload;
+    [ObservableProperty]
+    private string? _modDownloadText = App.Lang("AddWindow.Text7");
 
     private readonly string _useName;
 
     public AddControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
         _useName = ToString() ?? "AddControlModel";
+    }
+
+    partial void OnIsUpgradeChanged(bool value)
+    {
+        ModDownloadText = App.Lang(value ? "AddWindow.Text15" : "AddWindow.Text7");
     }
 
     partial void OnLoadMoreModChanged(bool value)
@@ -285,27 +297,6 @@ public partial class AddControlModel : GameModel, IAddWindow
         else
         {
             Model.PopBack();
-        }
-    }
-
-    partial void OnModDownloadDisplayChanged(bool value)
-    {
-        if (value)
-        {
-            Model.PushBack(back: () =>
-            {
-                ModDownloadDisplay = false;
-            });
-        }
-        else
-        {
-            Model.PopBack();
-            if (_last != null)
-            {
-                _last.NowDownload = false;
-            }
-            DownloadModList.Clear();
-            IsDownload = false;
         }
     }
 
@@ -451,7 +442,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         if (type == SourceType.McMod)
         {
             //McMod搜索源
-            var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0, Obj.Loader, Obj.Version, Categories[Categorie], SortType);
+            var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0, Obj.Loader, GameVersion ?? "", Categories[Categorie], SortType);
             if (data == null)
             {
                 Model.ProgressClose();
@@ -620,11 +611,30 @@ public partial class AddControlModel : GameModel, IAddWindow
     public async Task DownloadMod()
     {
         Model.Progress(App.Lang("AddWindow.Info5"));
-        var list = DownloadModList.Where(item => item.Download)
-                        .Select(item => item.Items[item.SelectVersion]).ToList();
-        list.Add(_modsave);
         bool res;
-        res = await WebBinding.DownloadMod(Obj, list);
+        if (DownloadModList.Any(item => item is ModUpgradeModel))
+        {
+            var list = DownloadModList.Where(item => item is ModUpgradeModel && item.Download)
+                .Select(item => new DownloadModItemArg()
+                {
+                    Info = item.Items[item.SelectVersion].Info,
+                    Item = item.Items[item.SelectVersion].Item,
+                    Local = (item as ModUpgradeModel)!.Local
+                }).ToList();
+
+            res = await WebBinding.DownloadMod(Obj, list);
+        }
+        else
+        {
+            var list = DownloadModList.Where(item => item.Download)
+                                .Select(item => item.Items[item.SelectVersion]).ToList();
+            if (_modsave != null)
+            {
+                list.Add(_modsave);
+            }
+
+            res = await WebBinding.DownloadMod(Obj, list);
+        }
         Model.ProgressClose();
         if (!res)
         {
@@ -643,8 +653,7 @@ public partial class AddControlModel : GameModel, IAddWindow
                 _last.IsDownload = true;
             }
         }
-        IsDownload = false;
-        ModDownloadDisplay = false;
+        CloseModDownloadDisplay();
     }
 
     /// <summary>
@@ -1071,7 +1080,7 @@ public partial class AddControlModel : GameModel, IAddWindow
                         Item = list.Item!,
                         Info = list.Info!
                     };
-                    ModDownloadDisplay = true;
+                    OpenModDownloadDisplay();
                     ModList.ForEach(item =>
                     {
                         if (item.Optional == false)
@@ -1387,6 +1396,46 @@ public partial class AddControlModel : GameModel, IAddWindow
                                           where item1.MCVersion == item
                                           select item1);
         }
+    }
+
+    public void Upgrade(ICollection<ModUpgradeModel> list)
+    {
+        IsUpgrade = true;
+        if (ModDownloadDisplay)
+        {
+            CloseModDownloadDisplay();
+        }
+        ModList.Clear();
+        ModList.AddRange(list);
+        OpenModDownloadDisplay();
+        _modsave = null;
+        ModList.ForEach(item =>
+        {
+            item.Download = true;
+        });
+        ModsLoad();
+    }
+
+    private void OpenModDownloadDisplay()
+    {
+        ModDownloadDisplay = true;
+        Model.PushBack(back: CloseModDownloadDisplay);
+    }
+
+    private void CloseModDownloadDisplay()
+    {
+        if (IsUpgrade)
+        {
+            WindowClose();
+        }
+        ModDownloadDisplay = false;
+        Model.PopBack();
+        if (_last != null)
+        {
+            _last.NowDownload = false;
+        }
+        DownloadModList.Clear();
+        IsDownload = false;
     }
 
     private void ClearList()

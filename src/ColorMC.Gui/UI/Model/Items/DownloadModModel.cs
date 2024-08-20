@@ -32,4 +32,19 @@ public partial class FileModVersionModel : SelectItemModel
     /// 下载项目列表
     /// </summary>
     public List<DownloadModArg> Items;
+
+    public FileModVersionModel(string name, List<string> version, List<DownloadModArg> items, bool opt)
+    {
+        Download = false;
+        Name = name;
+        ModVersion = version;
+        Items = items;
+        SelectVersion = 0;
+        Optional = opt;
+    }
+}
+
+public partial class ModUpgradeModel(string local, string name, List<string> version, List<DownloadModArg> items, bool opt) : FileModVersionModel(name, version, items, opt)
+{
+    public string Local = local;
 }

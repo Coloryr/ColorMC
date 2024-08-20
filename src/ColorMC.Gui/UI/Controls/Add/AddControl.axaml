@@ -314,10 +314,11 @@
                     Classes="t2"
                     DockPanel.Dock="Top">
                     <WrapPanel Margin="15,15,5,15" DockPanel.Dock="Top">
-                        <TextBlock Margin="0,0,20,0" Text="{setting:Localize AddWindow.Text7}" />
+                        <TextBlock Margin="0,0,20,0" Text="{Binding ModDownloadText}" />
                         <ToggleSwitch
                             Margin="0,0,10,0"
                             IsChecked="{Binding LoadMoreMod}"
+                            IsVisible="{Binding !IsUpgrade}"
                             OffContent="{setting:Localize AddWindow.Text9}"
                             OnContent="{setting:Localize AddWindow.Text9}" />
                         <StackPanel Orientation="Horizontal">
