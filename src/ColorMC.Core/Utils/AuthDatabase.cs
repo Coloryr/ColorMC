@@ -40,7 +40,7 @@ public static class AuthDatabase
         if (SystemInfo.Os == OsType.Windows)
         {
             var path1 = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/ColorMC/" + Name);
-            if (File.Exists(path1))
+            if (File.Exists(path1) && !File.Exists(s_local))
             {
                 File.Move(path1, s_local);
             }
