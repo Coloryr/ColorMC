@@ -266,7 +266,7 @@ public static class WindowManager
                     CustomWindow = dll;
                 }
                 AWindow(dll.Window, test);
-                var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/custom";
+                var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/ColorMC/custom";
                 if (!File.Exists(path))
                 {
                     File.WriteAllText(path, "custom");

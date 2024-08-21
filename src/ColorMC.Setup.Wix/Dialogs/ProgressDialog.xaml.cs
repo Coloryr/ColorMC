@@ -48,15 +48,15 @@ namespace ColorMC.Setup.Wix
         {
             if (session.IsUninstalling())
             {
-                DialogTitleLabel.Text = "ColorMC 卸载";
+                DialogTitleLabel.Text = "ColorMC Uninstall";
             }
             else if (session.IsRepairing())
             {
-                DialogTitleLabel.Text = "ColorMC 修复";
+                DialogTitleLabel.Text = "ColorMC Repair";
             }
             else if (session.IsInstalling())
             {
-                DialogTitleLabel.Text = "ColorMC 安装";
+                DialogTitleLabel.Text = "ColorMC Installer";
             }
 
             // `Localize` resolves [...] titles and descriptions into the localized strings stored in MSI resources tables
@@ -125,8 +125,8 @@ namespace ColorMC.Setup.Wix
                 if (Uac.IsEnabled())
                 {
                     return
-                        "请同意管理员权限才能继续安装\n" +
-                        "它一般在任务栏中";
+                        "Please agree to administrator privileges to continue installation\n" +
+                        "It is usually located in the taskbar";
                 }
                 else
                     return null;

@@ -7,7 +7,7 @@
     xmlns:wixsharp="clr-namespace:WixSharp.UI.WPF;assembly=WixSharp.UI.WPF"
     d:DesignHeight="408"
     d:DesignWidth="512"
-    DialogTitle="ColorMC 安装"
+    DialogTitle="ColorMC Installer"
     mc:Ignorable="d">
     <wixsharp:WpfDialog.Resources>
         <Style TargetType="Button">
@@ -33,7 +33,7 @@
             VerticalAlignment="Top"
             FontSize="20"
             FontWeight="Bold">
-            ColorMC 卸载
+            ColorMC Installer
         </TextBlock>
 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -69,7 +69,7 @@
                                 Margin="0,5,0,0"
                                 HorizontalAlignment="Center"
                                 Foreground="Black"
-                                Text="修复ColorMC" />
+                                Text="Repair ColorMC" />
                         </StackPanel>
                     </Border>
                 </Button>
@@ -105,7 +105,7 @@
                                 Margin="0,5,0,0"
                                 HorizontalAlignment="Center"
                                 Foreground="Black"
-                                Text="卸载ColorMC" />
+                                Text="Uninstall ColorMC" />
                         </StackPanel>
                     </Border>
                 </Button>
@@ -115,7 +115,8 @@
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Text="卸载不会删除游戏文件！" />
+                FontSize="20"
+                Text="Uninstalling will not delete game files!" />
         </StackPanel>
 
         <Button
@@ -137,7 +138,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Foreground="Black"
-                    Text="退出" />
+                    Text="Cancel" />
             </Border>
         </Button>
     </Grid>

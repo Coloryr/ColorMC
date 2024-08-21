@@ -28,15 +28,24 @@ public static class AuthDatabase
         Logs.Info(LanguageHelper.Get("Core.Auth.Info1"));
 
         var path = (SystemInfo.Os == OsType.MacOS ?
-            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) :
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData))
-            + "/ColorMC/";
+            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/.ColorMC/" :
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "/ColorMC/";
 
         Logs.Info(path);
 
         Directory.CreateDirectory(path);
 
         s_local = Path.GetFullPath(path + Name);
+
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            var path1 = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/ColorMC/" + Name);
+            if (File.Exists(path1))
+            {
+                File.Move(path1, s_local);
+            }
+        }
+
         if (File.Exists(s_local))
         {
             Load();

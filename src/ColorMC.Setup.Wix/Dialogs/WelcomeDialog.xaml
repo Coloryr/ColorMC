@@ -8,7 +8,7 @@
     d:DesignHeight="408"
     d:DesignWidth="512"
     Background="#f3f3f3"
-    DialogTitle="ColorMC 安装"
+    DialogTitle="ColorMC Installer"
     mc:Ignorable="d">
     <wixsharp:WpfDialog.Resources>
         <Style TargetType="Button">
@@ -33,7 +33,7 @@
             VerticalAlignment="Top"
             FontSize="20"
             FontWeight="Bold"
-            Text="ColorMC 安装" />
+            Text="ColorMC Installer" />
         <StackPanel VerticalAlignment="Center">
             <Button
                 x:Name="GoNext"
@@ -64,7 +64,7 @@
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
                             Foreground="Black"
-                            Text="现在安装" />
+                            Text="Install Now" />
                     </StackPanel>
                 </Border>
             </Button>
@@ -72,7 +72,7 @@
             <TextBlock
                 Margin="27,0,20,5"
                 HorizontalAlignment="Left"
-                Text="安装路径" />
+                Text="Install Path" />
 
             <TextBox
                 x:Name="InstallDirPath"
@@ -81,14 +81,14 @@
                 VerticalAlignment="Bottom"
                 BorderBrush="Black"
                 BorderThickness="0,0,0,1"
-                Text="安装路径" />
+                Text="Install Path" />
             <Grid>
                 <CheckBox
                     x:Name="CreateShortcut"
                     Margin="20,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="创建桌面快捷方式" />
+                    Content="Create desktop shortcut" />
                 <Button
                     x:Name="ChangeInstallDir"
                     Margin="0,0,20,0"
@@ -107,7 +107,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Foreground="Black"
-                            Text="修改位置" />
+                            Text="Select path" />
                     </Border>
                 </Button>
             </Grid>
@@ -135,7 +135,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Foreground="Black"
-                        Text="取消安装" />
+                        Text="Cancel" />
                 </Border>
             </Button>
         </StackPanel>
