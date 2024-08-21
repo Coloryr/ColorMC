@@ -31,7 +31,6 @@ public static class ColorMCGui
 
     public static string RunDir { get; private set; }
     public static string[] BaseSha1 { get; private set; }
-    public static string InputDir { get; private set; }
 
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
 
@@ -70,31 +69,6 @@ public static class ColorMCGui
         };
 
         RunType = RunType.Program;
-
-        if (string.IsNullOrWhiteSpace(InputDir))
-        {
-            RunDir = SystemInfo.Os switch
-            {
-                OsType.Linux => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.ColorMC/",
-                OsType.MacOS => "/Users/shared/ColorMC/",
-                _ => AppContext.BaseDirectory
-            };
-
-
-            if (SystemInfo.Os == OsType.Linux)
-            {
-                string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/";
-                if (Directory.Exists(path))
-                {
-                    Directory.Move(path, RunDir);
-                }
-            }
-        }
-        else
-        {
-            RunDir = InputDir;
-        }
-
 
         Console.WriteLine($"RunDir: {RunDir}");
 
@@ -184,7 +158,7 @@ public static class ColorMCGui
 
     public static void SetInputDir(string dir)
     {
-        InputDir = dir;
+        RunDir = dir;
     }
 
     public static void SetCrash(bool crash)

@@ -8,7 +8,7 @@
     xmlns:wixsharp="clr-namespace:WixSharp.UI.WPF;assembly=WixSharp.UI.WPF"
     d:DesignHeight="408"
     d:DesignWidth="512"
-    DialogTitle="ColorMC 安装"
+    DialogTitle="ColorMC Installer"
     mc:Ignorable="d">
     <wixsharp:WpfDialog.Resources>
         <Style TargetType="Button">
@@ -34,7 +34,7 @@
             VerticalAlignment="Top"
             FontSize="20"
             FontWeight="Bold"
-            Text="ColorMC 安装" />
+            Text="ColorMC Installer" />
 
         <StackPanel Margin="20,10" VerticalAlignment="Center">
             <StackPanel
@@ -42,7 +42,7 @@
                 Margin="0,40,0,0"
                 Orientation="Horizontal">
                 <TextBlock x:Name="CurrentStatus">
-                    当前进度
+                    Current progress
                 </TextBlock>
                 <TextBlock x:Name="CurrentAction" TextWrapping="WrapWithOverflow" />
             </StackPanel>
@@ -83,7 +83,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Foreground="Black"
-                    Text="取消" />
+                    Text="Cancel" />
             </Border>
         </Button>
     </Grid>

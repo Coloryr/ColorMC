@@ -99,16 +99,16 @@ namespace ColorMC.Setup.Wix
                 Platform = platform,
                 BannerImage = "game.png",
                 BackgroundImage = "game.png",
-                Version = new Version(1, 28),
-                Description = "A Minecraft Launcher"
+                Version = new Version(1, 29),
+                Description = "A Minecraft Launcher",
+                OutFileName = file,
+                Scope = InstallScope.perUser
             };
 
-            project.Scope = InstallScope.perMachine;
-
-            if (platform == Platform.arm64)
-            {
-                project.InstallerVersion = 500;
-            }
+            //if (platform == Platform.arm64)
+            //{
+            //    project.InstallerVersion = 500;
+            //}
             project.ControlPanelInfo.Comments = "ColorMC";
             project.ControlPanelInfo.HelpLink = "https://github.com/Coloryr/ColorMC";
             project.ControlPanelInfo.UrlInfoAbout = "https://github.com/Coloryr/ColorMC";
@@ -125,15 +125,14 @@ namespace ColorMC.Setup.Wix
             project.ManagedUI.ModifyDialogs.Add<MaintenanceTypeDialog>()
                                            .Add<ProgressDialog>()
                                            .Add<ExitDialog>();
-            project.OutFileName = file;
             project.BuildMsi();
         }
 
         static void Main()
         {
-            Build(BuildX64(), "colormc-x64", Platform.x64);
-            Build(BuildX64AOT(), "colormc-x64-aot", Platform.x64);
-            Build(BuildX64Min(), "colormc-x64-min", Platform.x64);
+            Build(BuildX64(), "colormc-win-x64", Platform.x64);
+            Build(BuildX64AOT(), "colormc-win-x64-aot", Platform.x64);
+            Build(BuildX64Min(), "colormc-win-x64-min", Platform.x64);
             //Build(BuildArm64(), "colormc-arm64", Platform.arm64);
             //Build(BuildArm64AOT(), "colormc-arm64-aot", Platform.arm64);
             //Build(BuildX64Min(), "colormc-x64-min", Platform.arm64);

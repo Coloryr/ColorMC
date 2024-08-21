@@ -87,7 +87,7 @@ public static class Program
     public static void Main(string[] args)
     {
 #if !DEBUG
-        var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/run";
+        var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/ColorMC/run";
         if (File.Exists(path))
         {
             var dir = File.ReadAllText(path);
@@ -135,10 +135,9 @@ public static class Program
         }
         catch
         {
-            //有没有权限写文件
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
-            return;
+            //没有权限写文件
+            _inputDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/";
+            _inputDir = Path.GetFullPath(_inputDir);
         }
 
         _loadDir = _inputDir + "dll";
@@ -148,6 +147,7 @@ public static class Program
         try
         {
 #if DEBUG
+            Gui.ColorMCGui.SetInputDir(AppContext.BaseDirectory);
             Gui.ColorMCGui.Main(args);
 #else
 
@@ -186,17 +186,6 @@ public static class Program
         return Gui.ColorMCGui.BuildAvaloniaApp();
     }
 #else
-    public static AppBuilder BuildAvaloniaApp()
-    {
-        return AppBuilder.Configure<App>()
-                .With(new FontManagerOptions
-                {
-                    DefaultFamilyName = Font,
-                })
-                .LogToTrace()
-                .UsePlatformDetect();
-    }
-
 #if !AOT
     private static bool NotHaveDll()
     {

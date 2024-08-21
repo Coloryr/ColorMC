@@ -7,7 +7,7 @@
     xmlns:wixsharp="clr-namespace:WixSharp.UI.WPF;assembly=WixSharp.UI.WPF"
     d:DesignHeight="408"
     d:DesignWidth="512"
-    DialogTitle="ColorMC 安装"
+    DialogTitle="ColorMC Installer"
     mc:Ignorable="d">
     <wixsharp:WpfDialog.Resources>
         <Style TargetType="Button">
@@ -55,7 +55,7 @@
             VerticalAlignment="Top"
             FontSize="20"
             FontWeight="Bold"
-            Text="ColorMC 操作完成" />
+            Text="ColorMC Done" />
 
         <Button
             x:Name="ViewLog"
@@ -63,7 +63,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Style="{StaticResource Link}">
-            查看日志
+            View Logs
         </Button>
 
         <Button
@@ -85,7 +85,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Foreground="Black"
-                    Text="退出" />
+                    Text="Exit" />
             </Border>
         </Button>
     </Grid>

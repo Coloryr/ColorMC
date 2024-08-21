@@ -31,7 +31,7 @@ public partial class SettingModel
             return;
         }
 
-        var path1 = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/run";
+        var path1 = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/ColorMC/run";
         PathHelper.Delete(path1);
 
         ColorMCGui.Reboot();
@@ -57,7 +57,7 @@ public partial class SettingModel
             return;
         }
 
-        var path1 = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/ColorMC/run";
+        var path1 = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/ColorMC/run";
         PathHelper.WriteText(path1, path);
 
         ColorMCGui.Reboot();
