@@ -506,7 +506,6 @@ public static class BaseBinding
     /// <returns></returns>
     public static async Task<FrpLaunchRes> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
-
         string file;
         string dir;
         string version = FrpVersion;

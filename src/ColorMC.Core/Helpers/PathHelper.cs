@@ -351,12 +351,12 @@ public static class PathHelper
     /// <param name="local"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static Task WriteBytesAsync(string local, Stream data)
+    public static async Task WriteBytesAsync(string local, Stream data)
     {
         var info = new FileInfo(local);
         info.Directory?.Create();
         using var stream = OpenWrite(local, true);
-        return data.CopyToAsync(stream);
+        await data.CopyToAsync(stream);
     }
 
     /// <summary>
