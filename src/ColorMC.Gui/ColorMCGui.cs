@@ -9,6 +9,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Logging;
 using Avalonia.Media;
+using Avalonia.Vulkan;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -178,7 +179,15 @@ public static class ColorMCGui
         GuiConfigUtils.Init(RunDir);
 
         var config = GuiConfigUtils.Config.Render.Windows;
-        var opt = new Win32PlatformOptions();
+        var opt = new Win32PlatformOptions()
+        {
+            RenderingMode = 
+            [
+                Win32RenderingMode.Wgl, 
+                Win32RenderingMode.AngleEgl,
+                Win32RenderingMode.Software
+            ]
+        };
         if (SystemInfo.IsArm)
         {
             opt.RenderingMode = [Win32RenderingMode.Wgl];
@@ -190,6 +199,24 @@ public static class ColorMCGui
         if (config.OverlayPopups is { } value1)
         {
             opt.OverlayPopups = value1;
+        }
+        if (config.UseAngleEgl is true)
+        {
+            opt.RenderingMode = [Win32RenderingMode.AngleEgl, Win32RenderingMode.Software];
+        }
+        else if (config.UseVulkan is true)
+        {
+            opt.RenderingMode = 
+            [
+                Win32RenderingMode.Vulkan, 
+                Win32RenderingMode.Wgl, 
+                Win32RenderingMode.AngleEgl, 
+                Win32RenderingMode.Software
+            ];
+        }
+        else if (config.UseSoftware is true)
+        {
+            opt.RenderingMode = [Win32RenderingMode.Software];
         }
 
         var config1 = GuiConfigUtils.Config.Render.X11;
@@ -228,6 +255,13 @@ public static class ColorMCGui
             .With(opt)
             .With(opt1)
             .With(opt2)
+            .With(new VulkanOptions
+            {
+                VulkanInstanceCreationOptions = new()
+                {
+                    UseDebug = true
+                }
+            })
 #if DEBUG
             .LogToTrace(LogEventLevel.Information)
 #else
