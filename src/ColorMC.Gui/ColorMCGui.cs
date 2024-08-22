@@ -178,89 +178,10 @@ public static class ColorMCGui
 
         GuiConfigUtils.Init(RunDir);
 
-        var config = GuiConfigUtils.Config.Render.Windows;
-        var opt = new Win32PlatformOptions()
-        {
-            RenderingMode = 
-            [
-                Win32RenderingMode.Wgl, 
-                Win32RenderingMode.AngleEgl,
-                Win32RenderingMode.Software
-            ]
-        };
-        if (SystemInfo.IsArm)
-        {
-            opt.RenderingMode = [Win32RenderingMode.Wgl];
-        }
-        if (config.ShouldRenderOnUIThread is { } value)
-        {
-            opt.ShouldRenderOnUIThread = value;
-        }
-        if (config.OverlayPopups is { } value1)
-        {
-            opt.OverlayPopups = value1;
-        }
-        if (config.UseAngleEgl is true)
-        {
-            opt.RenderingMode = [Win32RenderingMode.AngleEgl, Win32RenderingMode.Software];
-        }
-        else if (config.UseVulkan is true)
-        {
-            opt.RenderingMode = 
-            [
-                Win32RenderingMode.Vulkan, 
-                Win32RenderingMode.Wgl, 
-                Win32RenderingMode.AngleEgl, 
-                Win32RenderingMode.Software
-            ];
-        }
-        else if (config.UseSoftware is true)
-        {
-            opt.RenderingMode = [Win32RenderingMode.Software];
-        }
-
-        var config1 = GuiConfigUtils.Config.Render.X11;
-        var opt1 = new X11PlatformOptions();
-        if (config1.UseDBusMenu is { } value2)
-        {
-            opt1.UseDBusMenu = value2;
-        }
-        if (config1.UseDBusFilePicker is { } value3)
-        {
-            opt1.UseDBusFilePicker = value3;
-        }
-        if (config1.OverlayPopups is { } value4)
-        {
-            opt1.OverlayPopups = value4;
-        }
-        if (SystemInfo.IsArm)
-        {
-            opt1.RenderingMode = [X11RenderingMode.Egl];
-        }
-        else if (config1.SoftwareRender == true)
-        {
-            opt1.RenderingMode = [X11RenderingMode.Software];
-        }
-
-        var opt2 = new MacOSPlatformOptions()
-        {
-            DisableDefaultApplicationMenuItems = true,
-        };
-
-        return AppBuilder.Configure<App>()
+        var builder = AppBuilder.Configure<App>()
             .With(new FontManagerOptions
             {
                 DefaultFamilyName = Font,
-            })
-            .With(opt)
-            .With(opt1)
-            .With(opt2)
-            .With(new VulkanOptions
-            {
-                VulkanInstanceCreationOptions = new()
-                {
-                    UseDebug = true
-                }
             })
 #if DEBUG
             .LogToTrace(LogEventLevel.Information)
@@ -268,6 +189,115 @@ public static class ColorMCGui
             .LogToTrace()
 #endif
             .UsePlatformDetect();
+
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            var config = GuiConfigUtils.Config.Render.Windows;
+            var opt = new Win32PlatformOptions()
+            {
+                RenderingMode =
+                [
+                    Win32RenderingMode.Wgl,
+                    Win32RenderingMode.AngleEgl,
+                    Win32RenderingMode.Software
+                ]
+            };
+
+            if (config.ShouldRenderOnUIThread is { } value)
+            {
+                opt.ShouldRenderOnUIThread = value;
+            }
+            if (config.OverlayPopups is { } value1)
+            {
+                opt.OverlayPopups = value1;
+            }
+            if (config.UseAngleEgl is true)
+            {
+                opt.RenderingMode = [Win32RenderingMode.AngleEgl, Win32RenderingMode.Software];
+            }
+            else if (config.UseVulkan is true)
+            {
+                opt.RenderingMode =
+                [
+                    Win32RenderingMode.Vulkan,
+                    Win32RenderingMode.Wgl,
+                    Win32RenderingMode.AngleEgl,
+                    Win32RenderingMode.Software
+                ];
+            }
+            else if (config.UseSoftware is true)
+            {
+                opt.RenderingMode = [Win32RenderingMode.Software];
+            }
+            else if (SystemInfo.IsArm)
+            {
+                opt.RenderingMode = 
+                [
+                    Win32RenderingMode.Wgl, 
+                    Win32RenderingMode.Software
+                ];
+            }
+            builder.With(opt);
+        }
+        else if (SystemInfo.Os == OsType.Linux)
+        {
+            var config = GuiConfigUtils.Config.Render.X11;
+            var opt = new X11PlatformOptions();
+            if (config.UseDBusMenu is { } value2)
+            {
+                opt.UseDBusMenu = value2;
+            }
+            if (config.UseDBusFilePicker is { } value3)
+            {
+                opt.UseDBusFilePicker = value3;
+            }
+            if (config.OverlayPopups is { } value4)
+            {
+                opt.OverlayPopups = value4;
+            }
+
+            if (config.UseEgl is true)
+            {
+                opt.RenderingMode =
+                [
+                    X11RenderingMode.Egl,
+                    X11RenderingMode.Software
+                ];
+            }
+            else if (config.UseVulkan is true)
+            {
+                opt.RenderingMode =
+                [
+                    X11RenderingMode.Vulkan,
+                    X11RenderingMode.Glx,
+                    X11RenderingMode.Egl,
+                    X11RenderingMode.Software
+                ];
+            }
+            else if (config.UseSoftware == true)
+            {
+                opt.RenderingMode = [X11RenderingMode.Software];
+            }
+            else if (SystemInfo.IsArm)
+            {
+                opt.RenderingMode = 
+                [
+                    X11RenderingMode.Egl, 
+                    X11RenderingMode.Software
+                ];
+            }
+            builder.With(opt);
+        }
+        else if (SystemInfo.Os == OsType.MacOS)
+        {
+            var opt = new MacOSPlatformOptions()
+            {
+                DisableDefaultApplicationMenuItems = true,
+            };
+            builder.With(opt);
+        }
+
+        return builder;
     }
 
     private static bool IsLock(out int port)
