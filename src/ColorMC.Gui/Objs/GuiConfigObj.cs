@@ -151,7 +151,9 @@ public record X11RenderSetting
     public bool? UseDBusMenu { get; set; }
     public bool? UseDBusFilePicker { get; set; }
     public bool? OverlayPopups { get; set; }
-    public bool? SoftwareRender { get; set; }
+    public bool? UseEgl { get; set; }
+    public bool? UseVulkan { get; set; }
+    public bool? UseSoftware { get; set; }
 }
 
 /// <summary>
