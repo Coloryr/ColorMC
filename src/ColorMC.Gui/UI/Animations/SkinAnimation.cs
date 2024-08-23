@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using Avalonia.Threading;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.Skin;
+using ColorMC.Gui.UI.Controls.Skin.OpenGL;
 using ColorMC.Gui.UI.Model.Skin;
 
 namespace ColorMC.Gui.UI.Animations;

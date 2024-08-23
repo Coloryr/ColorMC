@@ -214,7 +214,46 @@ public partial class GameEditModel
     {
         LangList.Clear();
         _langList.Clear();
-        await LangLoad();
+        if (_obj.Version == null)
+        {
+            return;
+        }
+
+        IsLoad = true;
+        Model.Title1 = App.Lang("GameEditWindow.Tab1.Info9");
+        var list = await Task.Run(() =>
+        {
+            var version = VersionPath.GetVersion(_obj.Version);
+            if (version != null)
+            {
+                var ass = AssetsPath.GetIndex(version);
+                if (ass != null)
+                {
+                    return ass.GetLangs();
+                }
+            }
+
+            return GameLang.GetLangs(null);
+        });
+
+        var opt = _obj.GetOptions();
+        int a = 0;
+
+        opt.TryGetValue("lang", out string? lang);
+
+        foreach (var item in list)
+        {
+            LangList.Add(item.Value);
+            _langList.Add(item.Key);
+
+            if (lang != null && lang == item.Key)
+            {
+                Lang = a;
+            }
+            a++;
+        }
+        IsLoad = false;
+        Model.Title1 = "";
     }
 
     [RelayCommand]
@@ -344,12 +383,17 @@ public partial class GameEditModel
     public async Task LoaderVersionLoad()
     {
         EnableLoader = false;
+        LoaderVersionList.Clear();
+
+        if (_loaderTypeList.Count <= LoaderType || LoaderType == -1)
+        {
+            return;
+        }
 
         var loader = _loaderTypeList[LoaderType];
         switch (loader)
         {
             case Loaders.Normal:
-                LoaderVersionList.Clear();
                 break;
             case Loaders.Forge:
                 IsLoad = true;
@@ -364,7 +408,6 @@ public partial class GameEditModel
                 }
 
                 EnableLoader = true;
-                LoaderVersionList.Clear();
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.NeoForge:
@@ -380,7 +423,6 @@ public partial class GameEditModel
                 }
 
                 EnableLoader = true;
-                LoaderVersionList.Clear();
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.Fabric:
@@ -396,7 +438,6 @@ public partial class GameEditModel
                 }
 
                 EnableLoader = true;
-                LoaderVersionList.Clear();
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.Quilt:
@@ -412,7 +453,6 @@ public partial class GameEditModel
                 }
 
                 EnableLoader = true;
-                LoaderVersionList.Clear();
                 LoaderVersionList.AddRange(list);
                 break;
             case Loaders.OptiFine:
@@ -428,7 +468,6 @@ public partial class GameEditModel
                 }
 
                 EnableLoader = true;
-                LoaderVersionList.Clear();
                 LoaderVersionList.AddRange(list);
                 break;
         }
@@ -438,6 +477,9 @@ public partial class GameEditModel
     public async Task LoaderReload()
     {
         _gameLoad = true;
+
+        var loaderType = _loaderTypeList[LoaderType];
+        var loaderVersion = LoaderVersion;
 
         LoaderVersion = null;
         LoaderVersionList.Clear();
@@ -459,6 +501,16 @@ public partial class GameEditModel
             LoaderTypeList.Add(item.GetName());
         }
 
+        if (_loaderTypeList.Contains(loaderType))
+        {
+            LoaderType = _loaderTypeList.IndexOf(loaderType);
+            if (loaderVersion != null)
+            {
+                LoaderVersionList.Add(loaderVersion);
+                LoaderVersion = loaderVersion;
+            }
+        }
+
         IsLoad = false;
         Model.Title1 = "";
 
@@ -470,8 +522,6 @@ public partial class GameEditModel
     {
         _gameLoad = true;
 
-        _loaderTypeList.Clear();
-        LoaderTypeList.Clear();
         EnableLoader = false;
         IsLoad = true;
         Model.Title1 = App.Lang("GameEditWindow.Tab1.Info12");
@@ -483,9 +533,6 @@ public partial class GameEditModel
             Model.Show(App.Lang("GameEditWindow.Tab1.Error4"));
             return;
         }
-
-        LoaderVersion = null;
-        LoaderType = 0;
 
         GameVersionLoad();
 
@@ -578,6 +625,7 @@ public partial class GameEditModel
 
     private async void GameVersionLoad()
     {
+        var version = GameVersion;
         GameVersionList.Clear();
         switch (VersionType)
         {
@@ -593,6 +641,10 @@ public partial class GameEditModel
         }
 
         GameVersionList.AddRange(await GameBinding.GetGameVersions(_obj.GameType));
+        if (GameVersionList.Contains(version))
+        {
+            GameVersion = version;
+        }
     }
 
     private void GroupLoad()
@@ -604,56 +656,6 @@ public partial class GameEditModel
     public void GameStateChange()
     {
         GameRun = GameManager.IsGameRun(_obj);
-    }
-
-    public async Task LangLoad()
-    {
-        if (LangList.Count > 1)
-        {
-            return;
-        }
-        LangList.Clear();
-        _langList.Clear();
-        if (_obj.Version == null)
-        {
-            return;
-        }
-
-        IsLoad = true;
-        Model.Title1 = App.Lang("GameEditWindow.Tab1.Info9");
-        var list = await Task.Run(() =>
-        {
-            var version = VersionPath.GetVersion(_obj.Version);
-            if (version != null)
-            {
-                var ass = AssetsPath.GetIndex(version);
-                if (ass != null)
-                {
-                    return ass.GetLangs();
-                }
-            }
-
-            return GameLang.GetLangs(null);
-        });
-
-        var opt = _obj.GetOptions();
-        int a = 0;
-
-        opt.TryGetValue("lang", out string? lang);
-
-        foreach (var item in list)
-        {
-            LangList.Add(item.Value);
-            _langList.Add(item.Key);
-
-            if (lang != null && lang == item.Key)
-            {
-                Lang = a;
-            }
-            a++;
-        }
-        IsLoad = false;
-        Model.Title1 = "";
     }
 
     public async void GameLoad()
@@ -678,22 +680,19 @@ public partial class GameEditModel
 
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
+        _loaderTypeList.Add(Loaders.Custom);
+        LoaderTypeList.Add(Loaders.Custom.GetName());
 
         if (_obj.Loader == Loaders.Custom)
         {
-            _loaderTypeList.Add(Loaders.Custom);
-            LoaderTypeList.Add(Loaders.Custom.GetName());
-
             LoaderType = 1;
-
-            CustomLoader = true;
         }
         else if (_obj.Loader != Loaders.Normal)
         {
             _loaderTypeList.Add(_obj.Loader);
             LoaderTypeList.Add(_obj.Loader.GetName());
 
-            LoaderType = 1;
+            LoaderType = 2;
 
             EnableLoader = false;
             LoaderVersionList.Clear();
@@ -701,13 +700,6 @@ public partial class GameEditModel
             {
                 LoaderVersionList.Add(new(_obj.LoaderVersion));
             }
-        }
-        else
-        {
-            _loaderTypeList.Add(Loaders.Custom);
-            LoaderTypeList.Add(Loaders.Custom.GetName());
-
-            LoaderType = 0;
         }
 
         GameVersionLoad();

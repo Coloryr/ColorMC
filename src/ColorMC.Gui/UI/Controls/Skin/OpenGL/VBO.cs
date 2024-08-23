@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.InteropServices;
 
-namespace ColorMC.Gui.UI.Controls.Skin;
+namespace ColorMC.Gui.UI.Controls.Skin.OpenGL;
 
 internal record VAOItem
 {
