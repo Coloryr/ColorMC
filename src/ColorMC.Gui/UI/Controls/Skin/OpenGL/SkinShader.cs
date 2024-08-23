@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Avalonia.OpenGL;
 
-namespace ColorMC.Gui.UI.Controls.Skin;
+namespace ColorMC.Gui.UI.Controls.Skin.OpenGL;
 
 public static class SkinShader
 {
@@ -58,9 +58,9 @@ void main()
 
     private static string GetShader(GlVersion gl, bool fragment, string shader)
     {
-        var version = (gl.Type == GlProfileType.OpenGL ?
+        var version = gl.Type == GlProfileType.OpenGL ?
             RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 150 : 120 :
-            100);
+            100;
         var data = "#version " + version + "\n";
         if (gl.Type == GlProfileType.OpenGLES)
             data += "precision mediump float;\n";
