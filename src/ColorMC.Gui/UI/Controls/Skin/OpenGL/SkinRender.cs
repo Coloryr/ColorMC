@@ -78,53 +78,10 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
         DataContextChanged += SkinRender_DataContextChanged;
 
-        PointerMoved += SkinTop_PointerMoved;
-        PointerPressed += SkinTop_PointerPressed;
-        PointerWheelChanged += SkinTop_PointerWheelChanged;
-    }
-
-    private void SkinTop_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        if (e.Delta.Y > 0)
-        {
-            AddDis(0.05f);
-        }
-        else
-        {
-            AddDis(-0.05f);
-        }
-    }
-
-    private void SkinTop_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        var pro = e.GetCurrentPoint(this);
-        _xdiff = (float)pro.Position.X;
-        _ydiff = -(float)pro.Position.Y;
-    }
-
-    private void SkinTop_PointerMoved(object? sender, PointerEventArgs e)
-    {
-        var pro = e.GetCurrentPoint(this);
-        if (pro.Properties.IsLeftButtonPressed)
-        {
-            float y = (float)pro.Position.X - _xdiff;
-            float x = (float)pro.Position.Y + _ydiff;
-
-            _xdiff = (float)pro.Position.X;
-            _ydiff = -(float)pro.Position.Y;
-
-            Rot(x, y);
-        }
-        else if (pro.Properties.IsRightButtonPressed)
-        {
-            float x = (float)pro.Position.X - _xdiff;
-            float y = (float)pro.Position.Y + _ydiff;
-
-            _xdiff = (float)pro.Position.X;
-            _ydiff = -(float)pro.Position.Y;
-
-            Pos(x / ((float)Bounds.Width / 8), -y / ((float)Bounds.Height / 8));
-        }
+        PointerWheelChanged += OpenGlPageControl_PointerWheelChanged;
+        PointerPressed += OpenGlPageControl_PointerPressed;
+        PointerReleased += OpenGlPageControl_PointerReleased;
+        PointerMoved += OpenGlPageControl_PointerMoved;
     }
 
     private void SkinRender_DataContextChanged(object? sender, EventArgs e)
@@ -258,11 +215,6 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         _texture1 = gl.GenTexture();
 
         CheckError(gl);
-
-        PointerWheelChanged += OpenGlPageControl_PointerWheelChanged;
-        PointerPressed += OpenGlPageControl_PointerPressed;
-        PointerReleased += OpenGlPageControl_PointerReleased;
-        PointerMoved += OpenGlPageControl_PointerMoved;
 
         LoadSkin(gl);
 

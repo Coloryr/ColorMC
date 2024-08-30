@@ -45,6 +45,6 @@ public class NbtByteArray : NbtBase, IEnumerable<byte>
     internal override void Write(DataOutputStream stream)
     {
         stream.Write(Value.Count);
-        stream.Write(Value.ToArray());
+        stream.Write([.. Value]);
     }
 }
