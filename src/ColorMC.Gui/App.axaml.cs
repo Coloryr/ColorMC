@@ -99,12 +99,11 @@ public partial class App : Application
         FrpLaunch.Init(ColorMCGui.RunDir);
         CoreManager.Init();
         ThemeManager.Init();
-        ImageManager.Init();
+        ImageManager.Init(ColorMCGui.RunDir);
         WindowManager.Init(ColorMCGui.RunDir);
 
         SdlUtils.Init();
         UpdateUtils.Init();
-        ImageUtils.Init(ColorMCGui.RunDir);
         GameCloudUtils.Init(ColorMCGui.RunDir);
 
         BaseBinding.Init();
@@ -122,7 +121,7 @@ public partial class App : Application
                 BaseBinding.Init1();
             });
         }
-        _ = ImageManager.LoadImage();
+        _ = ImageManager.LoadBGImage();
     }
 
     public static void Clear()

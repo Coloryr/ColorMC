@@ -135,7 +135,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.BackImage = dir;
         GuiConfigUtils.Save();
 
-        await ImageManager.LoadImage();
+        await ImageManager.LoadBGImage();
     }
 
     /// <summary>
@@ -150,7 +150,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.BackLimit = enable;
         GuiConfigUtils.Save();
 
-        await ImageManager.LoadImage();
+        await ImageManager.LoadBGImage();
     }
 
     /// <summary>
