@@ -13,7 +13,7 @@
     mc:Ignorable="d">
     <Decorator Margin="10,0,10,10">
         <Border
-            Margin="10,10,10,5"
+            Margin="10,10,10,10"
             Classes="t2"
             DockPanel.Dock="Top">
             <DockPanel>

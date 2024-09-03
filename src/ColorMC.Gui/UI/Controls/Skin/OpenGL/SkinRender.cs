@@ -25,8 +25,6 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
     private bool _switchSkin = false;
 
     private float _dis = 1;
-    private float _xdiff = 0;
-    private float _ydiff = 0;
     private Vector2 _rotXY;
     private Vector2 _diffXY;
 

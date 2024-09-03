@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "X11", "..\X11.Net\X11\X11.c
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorMC.CustomGui", "ColorMC.CustomGui\ColorMC.CustomGui.csproj", "{8543640C-A015-475F-90A1-CCA2B768C402}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Live2DCSharpSDK.OpenGL", "..\Live2DCSharpSDK\Live2DCSharpSDK.OpenGL\Live2DCSharpSDK.OpenGL.csproj", "{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -199,6 +201,26 @@ Global
 		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|x64.Build.0 = Release|Any CPU
 		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|x86.ActiveCfg = Release|Any CPU
 		{8543640C-A015-475F-90A1-CCA2B768C402}.Release|x86.Build.0 = Release|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Debug|ARM.Build.0 = Debug|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Debug|x64.Build.0 = Debug|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Debug|x86.Build.0 = Debug|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Release|ARM.Build.0 = Release|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Release|ARM64.Build.0 = Release|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Release|x64.ActiveCfg = Release|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Release|x64.Build.0 = Release|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Release|x86.ActiveCfg = Release|Any CPU
+		{5C2AE23D-ADCD-4B5D-A6CC-2FC137511EFA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
