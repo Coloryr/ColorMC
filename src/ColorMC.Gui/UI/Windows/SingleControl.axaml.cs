@@ -128,7 +128,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
                 controls.Add(con3);
             }
             Controls.Child = con2;
-            App.CrossFade300.Start(null, con2);
+            ThemeManager.CrossFade300.Start(null, con2);
 
             Model.PushBack(Back);
             con.Opened();

@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.NetFrp"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:view1="clr-namespace:ColorMC.Gui.UI.Controls"
     d:DesignHeight="450"

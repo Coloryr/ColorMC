@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -18,24 +16,21 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Frp;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Net.Apis;
+using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Player;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Zip;
-using Silk.NET.SDL;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class BaseBinding
 {
     public const string DrapType = "Game";
-
-    public const string FrpVersion = "0.51.0-sakura-7.2";
 
     /// <summary>
     /// 是否为第一次启动
@@ -45,8 +40,6 @@ public static class BaseBinding
     /// 是否正在下载
     /// </summary>
     public static bool IsDownload => DownloadManager.State != DownloadState.End;
-
-    public static bool SdlInit { get; private set; }
 
     public static event Action? LoadDone;
 
@@ -71,102 +64,10 @@ public static class BaseBinding
     /// </summary>
     public static void Init()
     {
-        ColorMCCore.Error += WindowManager.ShowError;
-        ColorMCCore.LanguageReload += LanguageReload;
-        ColorMCCore.GameLog += (obj, d) =>
-        {
-            GameManager.AddGameLog(obj.UUID, d);
-        };
-        ColorMCCore.OnDownload = WindowManager.ShowDownload;
-        ColorMCCore.GameExit += GameExit;
-        ColorMCCore.InstanceChange += InstanceChange;
-        ColorMCCore.InstanceIconChange += InstanceIconChange;
-
-        if (ColorMCGui.RunType == RunType.Program && SystemInfo.Os != OsType.Android)
-        {
-            try
-            {
-                var sdl = Sdl.GetApi();
-                if (sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) == 0)
-                {
-                    InputControl.Init(sdl);
-                    Media.Init(sdl);
-                    SdlInit = true;
-                }
-            }
-            catch (Exception e)
-            {
-                Logs.Error(App.Lang("BaseBinding.Error1"), e);
-            }
-        }
-
         InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>
         {
             LongPressed.Released();
         }, handledEventsToo: true);
-    }
-
-    private static void InstanceIconChange(GameSettingObj obj)
-    {
-        WindowManager.MainWindow?.IconChange(obj.UUID);
-    }
-
-    private static void InstanceChange()
-    {
-        WindowManager.MainWindow?.LoadMain();
-    }
-
-    /// <summary>
-    /// 游戏退出时
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="obj1"></param>
-    /// <param name="code"></param>
-    private static void GameExit(GameSettingObj obj, LoginObj obj1, int code)
-    {
-        GameManager.GameExit(obj.UUID);
-        GameCount.GameClose(obj);
-        UserBinding.UnLockUser(obj1);
-        Dispatcher.UIThread.Post(() =>
-        {
-            WindowManager.MainWindow?.GameClose(obj.UUID);
-        });
-        if (code != 0 && !ColorMCGui.IsClose)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                WindowManager.ShowGameLog(obj);
-                WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text3"));
-            });
-        }
-        else
-        {
-            if (GameCloudUtils.Connect && !ColorMCGui.IsClose)
-            {
-                Task.Run(() =>
-                {
-                    GameBinding.CheckCloudAndOpen(obj);
-                });
-            }
-            else
-            {
-                App.TestClose();
-            }
-        }
-
-        GameBinding.GameStateUpdate(obj);
-    }
-
-    /// <summary>
-    /// 语言重载
-    /// </summary>
-    /// <param name="type"></param>
-    private static void LanguageReload(LanguageType type)
-    {
-        App.LoadLanguage(type);
-        LangMananger.Reload();
-
-        ColorMCGui.Reboot();
     }
 
     /// <summary>
@@ -504,154 +405,8 @@ public static class BaseBinding
     /// <param name="item1"></param>
     /// <param name="model"></param>
     /// <returns></returns>
-    public static async Task<FrpLaunchRes> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
+    public static Task<FrpLaunchRes> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
-        string file;
-        string dir;
-        string version = FrpVersion;
-        if (SystemInfo.Os == OsType.Android)
-        {
-            file = ColorMCGui.PhoneGetFrp.Invoke(item1.FrpType);
-            dir = FrpPath.BaseDir;
-        }
-        else
-        {
-            DownloadItemObj? obj = null;
-            string? local = "";
-            if (item1.FrpType == FrpType.SakuraFrp)
-            {
-                var obj1 = await SakuraFrpApi.GetDownload();
-                if (obj1 == null)
-                {
-                    return new();
-                }
-                version = obj1.frpc.ver;
-                obj = SakuraFrpApi.BuildFrpItem(obj1);
-                local = obj?.Local;
-            }
-            else if (item1.FrpType == FrpType.OpenFrp)
-            {
-                (obj, local) = await OpenFrpApi.BuildFrpItem();
-            }
-            if (obj == null)
-            {
-                return new();
-            }
-            if (!File.Exists(obj.Local))
-            {
-                var res = await DownloadManager.StartAsync([obj]);
-                if (!res)
-                {
-                    return new();
-                }
-            }
-            file = local!;
-            var info2 = new FileInfo(file);
-            dir = info2.DirectoryName!;
-        }
-        string? info = null;
-        if (item1.FrpType == FrpType.SakuraFrp)
-        {
-            info = await SakuraFrpApi.GetChannelConfig(item1.Key, item1.ID, version);
-        }
-        else if (item1.FrpType == FrpType.OpenFrp)
-        {
-            var temp = await OpenFrpApi.GetChannelConfig(item1.Key, item1.ID);
-            if (temp != null && temp.proxies?.Count > 0)
-            {
-                info = temp.proxies.Values.First();
-            }
-        }
-        if (info == null)
-        {
-            return new();
-        }
-
-        var lines = info.Split("\n");
-        var builder = new StringBuilder();
-        string outip = "";
-        if (item1.FrpType == FrpType.SakuraFrp)
-        {
-            string ip = "";
-
-            foreach (var item2 in lines)
-            {
-                var item3 = item2.Trim();
-                if (item3.StartsWith("login_fail_exit"))
-                {
-                    builder.AppendLine("login_fail_exit = true");
-                }
-                else if (item3.StartsWith("server_addr"))
-                {
-                    ip = item3.Split("=")[1].Trim();
-                    builder.AppendLine(item3);
-                }
-                else if (item3.StartsWith("local_port"))
-                {
-                    builder.AppendLine($"local_port = {model.Port}");
-                }
-                else
-                {
-                    builder.AppendLine(item3);
-                }
-            }
-
-            File.WriteAllText(dir + "/server.ini", builder.ToString());
-
-            outip = ip + ":" + item1.Remote;
-        }
-        else if (item1.FrpType == FrpType.OpenFrp)
-        {
-            foreach (var item2 in lines)
-            {
-                var item3 = item2.Trim();
-                if (item3.StartsWith("local_port"))
-                {
-                    builder.AppendLine($"local_port = {model.Port}");
-                }
-                else
-                {
-                    builder.AppendLine(item3);
-                }
-            }
-
-            File.WriteAllText(dir + "/server.ini", builder.ToString());
-
-            outip = item1.Remote;
-        }
-
-        try
-        {
-            if (SystemInfo.Os != OsType.Windows)
-            {
-                PathBinding.Chmod(file);
-            }
-
-            var p = new Process
-            {
-                StartInfo = new ProcessStartInfo()
-                {
-                    FileName = file,
-                    WorkingDirectory = dir,
-                    Arguments = "-c server.ini",
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                }
-            };
-
-            return new()
-            {
-                Res = true,
-                Process = p,
-                IP = outip
-            };
-        }
-        catch (Exception e)
-        {
-            Logs.Error(App.Lang("BaseBinding.Error6"), e);
-        }
-
-        return new();
+        return FrpLaunch.StartFrp(item1, model);
     }
 }

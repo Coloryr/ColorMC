@@ -91,7 +91,7 @@ public static class ColorMCGui
         {
             if (IsLock(out var port))
             {
-                GameSocket.SendMessage(port).Wait();
+                LaunchSocketUtils.SendMessage(port).Wait();
                 return;
             }
 
@@ -325,10 +325,10 @@ public static class ColorMCGui
 
     public static void StartLock()
     {
-        GameSocket.Init().Wait();
+        LaunchSocketUtils.Init().Wait();
         string name = RunDir + "lock";
         s_lock = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-        var data = BitConverter.GetBytes(GameSocket.Port);
+        var data = BitConverter.GetBytes(LaunchSocketUtils.Port);
         s_lock.Write(data);
         s_lock.Flush();
     }

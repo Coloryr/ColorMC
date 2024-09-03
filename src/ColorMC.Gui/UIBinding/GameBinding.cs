@@ -30,9 +30,10 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
@@ -360,7 +361,7 @@ public static class GameBinding
             GameManager.ClearGameLog(item.UUID);
         }
 
-        var port = GameSocket.Port;
+        var port = LaunchSocketUtils.Port;
 
         //锁定账户
         UserBinding.AddLockUser(user);
@@ -508,7 +509,7 @@ public static class GameBinding
 
         GameManager.ClearGameLog(obj.UUID);
 
-        var port = GameSocket.Port;
+        var port = LaunchSocketUtils.Port;
 
         //锁定账户
         UserBinding.AddLockUser(user);
@@ -2566,7 +2567,7 @@ public static class GameBinding
                     var run = true;
                     var uuid = GuiConfigUtils.Config.Input.NowConfig;
 
-                    if (string.IsNullOrWhiteSpace(uuid) || !InputConfigUtils.Configs.ContainsKey(uuid))
+                    if (string.IsNullOrWhiteSpace(uuid) || !JoystickConfig.Configs.ContainsKey(uuid))
                     {
                         run = await model.ShowWait(App.Lang("BaseBinding.Error7"));
                     }

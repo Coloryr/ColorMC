@@ -6,9 +6,9 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.Frp;
 
-public static class FrpConfigUtils
+public static class FrpConfig
 {
     public static FrpConfigObj Config { get; set; }
 

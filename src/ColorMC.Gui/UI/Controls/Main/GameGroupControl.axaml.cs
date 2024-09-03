@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Main;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -10,7 +11,7 @@ public partial class GameGroupControl : UserControl
     {
         InitializeComponent();
 
-        Expander_Head.ContentTransition = App.CrossFade300;
+        Expander_Head.ContentTransition = ThemeManager.CrossFade300;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);

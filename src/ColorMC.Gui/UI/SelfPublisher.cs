@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.UI;
 
 public class SelfPublisher<T> : IObservable<T>
 {

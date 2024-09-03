@@ -8,16 +8,16 @@ using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UIBinding;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.UI;
 
-public class DllAssembly : AssemblyLoadContext
+public class UIAssembly : AssemblyLoadContext
 {
     public ICustomControl Plugin { get; init; }
 
     public bool IsLoad { get; private set; }
     public BaseUserControl Window { get; private set; }
 
-    public DllAssembly() : base("ColorMC.Custom", true)
+    public UIAssembly() : base("ColorMC.Custom", true)
     {
         var local1 = Path.GetFullPath(BaseBinding.GetRunDir() + "ColorMC.CustomGui.dll");
         var local2 = Path.GetFullPath(BaseBinding.GetRunDir() + "ColorMC.CustomGui.pdb");

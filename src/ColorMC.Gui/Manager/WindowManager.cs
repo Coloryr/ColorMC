@@ -13,6 +13,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Count;
@@ -47,7 +48,7 @@ public static class WindowManager
     public static UsersControl? UserWindow { get; set; }
     public static MainControl? MainWindow { get; set; }
     public static AddGameControl? AddGameWindow { get; set; }
-    public static DllAssembly? CustomWindow { get; set; }
+    public static UIAssembly? CustomWindow { get; set; }
     public static AddModPackControl? AddModPackWindow { get; set; }
     public static SettingControl? SettingWindow { get; set; }
     public static SkinControl? SkinWindow { get; set; }
@@ -257,7 +258,7 @@ public static class WindowManager
                 return false;
             }
 
-            var dll = new DllAssembly();
+            var dll = new UIAssembly();
 
             if (dll.IsLoad)
             {

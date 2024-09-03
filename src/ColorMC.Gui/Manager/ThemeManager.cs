@@ -8,6 +8,8 @@ using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI;
+using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.Manager;
@@ -39,6 +41,12 @@ public static class ThemeManager
         Brush.Parse("#eab308"), Brush.Parse("#ef4444"), Brush.Parse("#a855f7"),
         Brush.Parse("#ec4899"), Brush.Parse("#14b8a6"), Brush.Parse("#6366f1"),
         Brush.Parse("#f97316"), Brush.Parse("#06b6d4"), Brush.Parse("#84cc16")];
+
+    public static readonly SelfCrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
+    //public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
+    //public static readonly SelfCrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));
+    public static readonly SelfPageSlide PageSlide500 = new(TimeSpan.FromMilliseconds(500));
+    public static readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
     private static FontFamily s_font = new(FontFamily.DefaultFontFamilyName);
 
@@ -79,10 +87,18 @@ public static class ThemeManager
             LoadFont();
         }
 
-        RgbColor.Load();
+        RgbColorUtils.Load();
         ColorSel.Load();
 
         Reload();
+        LoadPageSlide();
+    }
+
+    public static void LoadPageSlide()
+    {
+        var style = GuiConfigUtils.Config.Style;
+        PageSlide500.Duration = TimeSpan.FromMilliseconds(style.AmTime);
+        PageSlide500.Fade = style.AmFade;
     }
 
     private static void LoadColor()
@@ -217,7 +233,7 @@ public static class ThemeManager
         }
         else if (key == "MainColor")
         {
-            return RgbColor.IsEnable() ? RgbColor.GetColor() : s_theme.MainColor;
+            return RgbColorUtils.IsEnable() ? RgbColorUtils.GetColor() : s_theme.MainColor;
         }
         else if (key == "FontColor")
         {
@@ -443,7 +459,7 @@ public static class ThemeManager
 
     static ThemeManager()
     {
-        RgbColor.ColorChanged += RgbColor_ColorChanged;
+        RgbColorUtils.ColorChanged += RgbColor_ColorChanged;
 
         s_light = new()
         {

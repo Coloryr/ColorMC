@@ -8,7 +8,7 @@ using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Player;
+using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Skin;
 using SkiaSharp;
 using System.IO.Compression;

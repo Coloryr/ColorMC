@@ -8,9 +8,9 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.Joystick;
 
-public static class InputConfigUtils
+public static class JoystickConfig
 {
     public static readonly Dictionary<string, InputControlObj> Configs = [];
 

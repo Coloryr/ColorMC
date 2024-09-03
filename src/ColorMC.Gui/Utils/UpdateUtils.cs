@@ -15,7 +15,7 @@ namespace ColorMC.Gui.Utils;
 /// <summary>
 /// 启动器更新器
 /// </summary>
-public static class UpdateChecker
+public static class UpdateUtils
 {
     public static readonly string[] WebSha1s = ["", "", "", ""];
     public static readonly string[] Sha1s = ["", "", "", ""];

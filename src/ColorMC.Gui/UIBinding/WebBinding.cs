@@ -960,9 +960,9 @@ public static class WebBinding
             return null;
         }
 
-        GameSocket.Clear();
+        LaunchSocketUtils.Clear();
         var list2 = list1.ToObject<List<NetFrpCloudServerModel>>();
-        list2?.ForEach(GameSocket.AddServerInfo);
+        list2?.ForEach(LaunchSocketUtils.AddServerInfo);
 
         return list2;
     }

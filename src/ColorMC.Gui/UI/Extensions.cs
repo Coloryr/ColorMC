@@ -5,7 +5,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using ColorMC.Gui.Manager;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.UI;
 
 public class ColorsExtension(string key) : MarkupExtension, IObservable<IBrush>
 {
