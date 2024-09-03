@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using DotNetty.Buffers;
@@ -17,7 +18,7 @@ using DotNetty.Transport.Channels.Sockets;
 
 namespace ColorMC.Gui.Utils;
 
-public static class GameSocket
+public static class LaunchSocketUtils
 {
     public static readonly List<NetFrpCloudServerModel> Servers = [];
 

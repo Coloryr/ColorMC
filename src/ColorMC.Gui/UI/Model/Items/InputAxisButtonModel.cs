@@ -1,6 +1,5 @@
 ﻿using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Setting;
-using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;

@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 
 namespace ColorMC.Gui.UI.Controls;
@@ -81,7 +82,7 @@ public abstract partial class MenuControl : BaseUserControl
             _control.SidePanel3.IsVisible = true;
             Dispatcher.UIThread.Post(() =>
             {
-                App.SidePageSlide300.Start(null, _control.SidePanel2, _cancel1.Token);
+                ThemeManager.SidePageSlide300.Start(null, _control.SidePanel2, _cancel1.Token);
             });
         }
         else if (e.PropertyName == MenuModel.SideClose)
@@ -89,7 +90,7 @@ public abstract partial class MenuControl : BaseUserControl
             _cancel1.Cancel();
             _cancel1.Dispose();
             _cancel1 = new();
-            App.SidePageSlide300.Start(_control.SidePanel2, null, _cancel1.Token);
+            ThemeManager.SidePageSlide300.Start(_control.SidePanel2, null, _cancel1.Token);
             _control.SidePanel3.IsVisible = false;
         }
 
@@ -142,12 +143,12 @@ public partial class BaseMenuControl : UserControl
         if (!dir)
         {
             Content2.Child = control;
-            _ = App.PageSlide500.Start(Content1, Content2, dir1, token);
+            _ = ThemeManager.PageSlide500.Start(Content1, Content2, dir1, token);
         }
         else
         {
             Content1.Child = control;
-            _ = App.PageSlide500.Start(Content2, Content1, dir1, token);
+            _ = ThemeManager.PageSlide500.Start(Content2, Content1, dir1, token);
         }
     }
 }

@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading;
 using Avalonia.Input;
 using Avalonia.Win32.Input;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.Hook;
 
@@ -89,7 +89,7 @@ public class Win32Native : INative
 
     public void SendKey(InputKeyObj key, bool down, bool message)
     {
-        if (InputControl.IsEditMode)
+        if (JoystickInput.IsEditMode)
         {
             return;
         }

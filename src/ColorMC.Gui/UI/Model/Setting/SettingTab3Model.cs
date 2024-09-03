@@ -130,14 +130,14 @@ public partial class SettingModel
     [RelayCommand]
     public void StartUpdate()
     {
-        UpdateChecker.StartUpdate();
+        UpdateUtils.StartUpdate();
     }
 
     [RelayCommand]
     public async Task StartCheck()
     {
         Model.Progress(App.Lang("SettingWindow.Tab3.Info1"));
-        var res = await UpdateChecker.CheckOne();
+        var res = await UpdateUtils.CheckOne();
         Model.ProgressClose();
         if (res.Item1 == null)
         {
@@ -149,7 +149,7 @@ public partial class SettingModel
             var res1 = await Model.ShowTextWait(App.Lang("SettingWindow.Tab3.Info2"), res.Item2!);
             if (res1)
             {
-                UpdateChecker.StartUpdate();
+                UpdateUtils.StartUpdate();
             }
         }
         else

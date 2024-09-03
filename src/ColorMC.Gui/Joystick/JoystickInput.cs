@@ -5,9 +5,9 @@ using System.Text;
 using Silk.NET.SDL;
 using Thread = System.Threading.Thread;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.Joystick;
 
-public static class InputControl
+public static class JoystickInput
 {
     private static bool _isRun;
     private static Sdl _sdl;

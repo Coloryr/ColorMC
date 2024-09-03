@@ -5,7 +5,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.Utils;
 
 
 namespace ColorMC.Gui.UI.Controls;

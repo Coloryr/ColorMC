@@ -4,7 +4,7 @@ using System.Globalization;
 using Avalonia.Data.Converters;
 using ColorMC.Core.Nbt;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.UI;
 
 public class FileIconConverter : IMultiValueConverter
 {

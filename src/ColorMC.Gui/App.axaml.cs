@@ -12,9 +12,11 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Frp;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -39,12 +41,6 @@ public partial class App : Application
             ColorMCGui.StartLock();
         }
     }
-
-    public static readonly SelfCrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
-    public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
-    public static readonly SelfCrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));
-    public static readonly SelfPageSlide PageSlide500 = new(TimeSpan.FromMilliseconds(500));
-    public static readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
     public static event Action? OnClose;
 
@@ -97,21 +93,21 @@ public partial class App : Application
             };
         }
 
-        UpdateChecker.Init();
-        GameCloudUtils.Init(ColorMCGui.RunDir);
-        FrpConfigUtils.Init(ColorMCGui.RunDir);
-        ImageUtils.Init(ColorMCGui.RunDir);
-        InputConfigUtils.Init(ColorMCGui.RunDir);
-        FrpPath.Init(ColorMCGui.RunDir);
+        JoystickConfig.Init(ColorMCGui.RunDir);
+        FrpConfig.Init(ColorMCGui.RunDir);
 
-        LoadPageSlide();
-
-        BaseBinding.Init();
-
+        FrpLaunch.Init(ColorMCGui.RunDir);
+        CoreManager.Init();
         ThemeManager.Init();
         ImageManager.Init();
-
         WindowManager.Init(ColorMCGui.RunDir);
+
+        SdlUtils.Init();
+        UpdateUtils.Init();
+        ImageUtils.Init(ColorMCGui.RunDir);
+        GameCloudUtils.Init(ColorMCGui.RunDir);
+
+        BaseBinding.Init();
 
         if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
@@ -127,12 +123,6 @@ public partial class App : Application
             });
         }
         _ = ImageManager.LoadImage();
-    }
-
-    public static void LoadPageSlide()
-    {
-        PageSlide500.Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime);
-        PageSlide500.Fade = GuiConfigUtils.Config.Style.AmFade;
     }
 
     public static void Clear()

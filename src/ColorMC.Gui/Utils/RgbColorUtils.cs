@@ -5,7 +5,7 @@ using Avalonia.Media.Immutable;
 
 namespace ColorMC.Gui.Utils;
 
-public static class RgbColor
+public static class RgbColorUtils
 {
     private static readonly Thread t_tick = new(Tick)
     {
@@ -23,7 +23,7 @@ public static class RgbColor
 
     public static event Action? ColorChanged;
 
-    static RgbColor()
+    static RgbColorUtils()
     {
         t_tick.Start();
         App.OnClose += App_OnClose;

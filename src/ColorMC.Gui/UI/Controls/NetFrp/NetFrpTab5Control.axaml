@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.NetFrp"
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
     d:DesignHeight="450"

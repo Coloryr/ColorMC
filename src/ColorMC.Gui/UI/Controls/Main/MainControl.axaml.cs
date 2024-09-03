@@ -213,7 +213,7 @@ public partial class MainControl : BaseUserControl
             Start.Child = con1;
             Start.IsVisible = true;
             await con1.Start();
-            await App.CrossFade300.Start(Start, MainView, CancellationToken.None);
+            await ThemeManager.CrossFade300.Start(Start, MainView, CancellationToken.None);
             Start.IsVisible = false;
         }
 

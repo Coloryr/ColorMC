@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.GameConfigEdit"
     d:DesignHeight="450"

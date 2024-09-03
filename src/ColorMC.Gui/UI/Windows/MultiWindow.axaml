@@ -9,7 +9,7 @@
     xmlns:info="clr-namespace:ColorMC.Gui.UI.Controls.Info"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="{Binding Title}"

@@ -98,13 +98,13 @@ public partial class AddControl : BaseUserControl
             {
                 if (model.OptifineDisplay == true)
                 {
-                    App.CrossFade300.Start(null, OptifineDisplay);
-                    App.CrossFade300.Start(ScrollViewer1, null);
+                    ThemeManager.CrossFade300.Start(null, OptifineDisplay);
+                    ThemeManager.CrossFade300.Start(ScrollViewer1, null);
                 }
                 else
                 {
-                    App.CrossFade300.Start(OptifineDisplay, null);
-                    App.CrossFade300.Start(null, ScrollViewer1);
+                    ThemeManager.CrossFade300.Start(OptifineDisplay, null);
+                    ThemeManager.CrossFade300.Start(null, ScrollViewer1);
                 }
             });
         }
@@ -114,13 +114,13 @@ public partial class AddControl : BaseUserControl
             {
                 if (model.ModDownloadDisplay == true)
                 {
-                    App.CrossFade300.Start(null, ModDownloadDisplay);
-                    App.CrossFade300.Start(ScrollViewer1, null);
+                    ThemeManager.CrossFade300.Start(null, ModDownloadDisplay);
+                    ThemeManager.CrossFade300.Start(ScrollViewer1, null);
                 }
                 else
                 {
-                    App.CrossFade300.Start(ModDownloadDisplay, null);
-                    App.CrossFade300.Start(null, ScrollViewer1);
+                    ThemeManager.CrossFade300.Start(ModDownloadDisplay, null);
+                    ThemeManager.CrossFade300.Start(null, ScrollViewer1);
                 }
             });
         }
@@ -130,13 +130,13 @@ public partial class AddControl : BaseUserControl
             {
                 if (model.VersionDisplay == true)
                 {
-                    App.CrossFade300.Start(null, VersionDisplay);
-                    App.CrossFade300.Start(ScrollViewer1, null);
+                    ThemeManager.CrossFade300.Start(null, VersionDisplay);
+                    ThemeManager.CrossFade300.Start(ScrollViewer1, null);
                 }
                 else
                 {
-                    App.CrossFade300.Start(VersionDisplay, null);
-                    App.CrossFade300.Start(null, ScrollViewer1);
+                    ThemeManager.CrossFade300.Start(VersionDisplay, null);
+                    ThemeManager.CrossFade300.Start(null, ScrollViewer1);
                 }
             });
         }

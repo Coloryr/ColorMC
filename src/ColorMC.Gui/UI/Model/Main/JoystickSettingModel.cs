@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using ColorMC.Gui.Utils;
+using ColorMC.Gui.Joystick;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Event = Silk.NET.SDL.Event;
@@ -39,7 +39,7 @@ public partial class JoystickSettingModel : ObservableObject
             ConfigUUID = UUIDs.IndexOf(config);
         }
 
-        InputControl.OnEvent += Event;
+        JoystickInput.OnEvent += Event;
     }
 
     [RelayCommand]
@@ -73,7 +73,7 @@ public partial class JoystickSettingModel : ObservableObject
     private void Load()
     {
         Controls.Clear();
-        foreach (var item in InputControl.GetNames())
+        foreach (var item in JoystickInput.GetNames())
         {
             Controls.Add(item);
         }
@@ -83,7 +83,7 @@ public partial class JoystickSettingModel : ObservableObject
     {
         UUIDs.Clear();
         Configs.Clear();
-        foreach (var item in InputConfigUtils.Configs)
+        foreach (var item in JoystickConfig.Configs)
         {
             UUIDs.Add(item.Key);
             Configs.Add(item.Value.Name);

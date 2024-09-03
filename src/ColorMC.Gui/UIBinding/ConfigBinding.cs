@@ -6,9 +6,11 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Frp;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Player;
 using ColorMC.Gui.Utils;
 
 
@@ -64,7 +66,7 @@ public static class ConfigBinding
     /// <returns></returns>
     public static bool LoadFrpConfig(string local)
     {
-        return FrpConfigUtils.Load(local, true);
+        return FrpConfig.Load(local, true);
     }
 
     /// <summary>
@@ -664,7 +666,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Style.AmFade = value1;
         GuiConfigUtils.Save();
 
-        App.LoadPageSlide();
+        ThemeManager.LoadPageSlide();
     }
 
     /// <summary>
@@ -693,9 +695,9 @@ public static class ConfigBinding
     /// <param name="key"></param>
     public static void SetFrpKeySakura(string key)
     {
-        FrpConfigUtils.Config.SakuraFrp ??= new();
-        FrpConfigUtils.Config.SakuraFrp.Key = key;
-        FrpConfigUtils.Save();
+        FrpConfig.Config.SakuraFrp ??= new();
+        FrpConfig.Config.SakuraFrp.Key = key;
+        FrpConfig.Save();
     }
 
     /// <summary>
@@ -704,9 +706,9 @@ public static class ConfigBinding
     /// <param name="key"></param>
     public static void SetFrpKeyOpenFrp(string key)
     {
-        FrpConfigUtils.Config.OpenFrp ??= new();
-        FrpConfigUtils.Config.OpenFrp.Key = key;
-        FrpConfigUtils.Save();
+        FrpConfig.Config.OpenFrp ??= new();
+        FrpConfig.Config.OpenFrp.Key = key;
+        FrpConfig.Save();
     }
 
     /// <summary>
@@ -716,10 +718,10 @@ public static class ConfigBinding
     /// <returns></returns>
     public static InputControlObj NewInput(string name)
     {
-        var obj = InputConfigUtils.MakeInputControl();
+        var obj = JoystickConfig.MakeInputControl();
         obj.Name = name;
-        InputConfigUtils.PutConfig(obj);
-        InputConfigUtils.Save(obj);
+        JoystickConfig.PutConfig(obj);
+        JoystickConfig.Save(obj);
 
         return obj;
     }
@@ -732,7 +734,7 @@ public static class ConfigBinding
     public static void SaveInput(InputControlObj obj, bool item)
     {
         obj.ItemCycle = item;
-        InputConfigUtils.Save(obj);
+        JoystickConfig.Save(obj);
     }
 
     /// <summary>
@@ -758,7 +760,7 @@ public static class ConfigBinding
         {
             obj.Keys[key] = obj1;
         }
-        InputConfigUtils.Save(obj);
+        JoystickConfig.Save(obj);
     }
 
     /// <summary>
@@ -769,7 +771,7 @@ public static class ConfigBinding
     public static void DeleteInput(InputControlObj obj, byte key)
     {
         obj.Keys.Remove(key);
-        InputConfigUtils.Save(obj);
+        JoystickConfig.Save(obj);
     }
 
     /// <summary>
@@ -784,7 +786,7 @@ public static class ConfigBinding
         {
             obj.AxisKeys[uuid] = obj1;
         }
-        InputConfigUtils.Save(obj);
+        JoystickConfig.Save(obj);
     }
 
     /// <summary>
@@ -796,7 +798,7 @@ public static class ConfigBinding
     {
         if (obj.AxisKeys.Remove(key))
         {
-            InputConfigUtils.Save(obj);
+            JoystickConfig.Save(obj);
         }
     }
 
@@ -810,7 +812,7 @@ public static class ConfigBinding
     {
         obj.ItemCycleLeft = left;
         obj.ItemCycleRight = right;
-        InputConfigUtils.Save(obj);
+        JoystickConfig.Save(obj);
     }
 
     /// <summary>
@@ -824,7 +826,7 @@ public static class ConfigBinding
         obj.RotateRate = value;
         obj.CursorRate = value1;
         obj.DownRate = value2;
-        InputConfigUtils.Save(obj);
+        JoystickConfig.Save(obj);
     }
 
     /// <summary>
@@ -837,7 +839,7 @@ public static class ConfigBinding
     {
         obj.RotateAxis = inputRotateAxis;
         obj.CursorAxis = inputCursorAxis;
-        InputConfigUtils.Save(obj);
+        JoystickConfig.Save(obj);
     }
 
     /// <summary>
@@ -850,7 +852,7 @@ public static class ConfigBinding
     {
         obj.RotateDeath = inputRotate;
         obj.CursorDeath = inputCursor;
-        InputConfigUtils.Save(obj);
+        JoystickConfig.Save(obj);
     }
 
     /// <summary>
@@ -870,8 +872,8 @@ public static class ConfigBinding
     /// <param name="obj"></param>
     public static void SaveInputConfig(InputControlObj obj)
     {
-        InputConfigUtils.PutConfig(obj);
-        InputConfigUtils.Save(obj);
+        JoystickConfig.PutConfig(obj);
+        JoystickConfig.Save(obj);
     }
 
     /// <summary>
@@ -880,7 +882,7 @@ public static class ConfigBinding
     /// <param name="obj"></param>
     public static void RemoveInputConfig(InputControlObj obj)
     {
-        InputConfigUtils.Remove(obj);
+        JoystickConfig.Remove(obj);
     }
 
     /// <summary>

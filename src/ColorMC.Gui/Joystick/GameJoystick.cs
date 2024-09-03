@@ -9,11 +9,12 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Main;
+using ColorMC.Gui.Utils;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.Joystick;
 
 public class GameJoystick
 {
@@ -25,7 +26,7 @@ public class GameJoystick
     private readonly GameSettingObj _obj;
 
     private double _cursorNowX, _cursorNowY;
-    private IntPtr _gameController;
+    private nint _gameController;
     private int _joystickID, _controlIndex;
     private string? _configUUID;
     private bool _isExit;
@@ -71,13 +72,13 @@ public class GameJoystick
 
         unsafe
         {
-            _gameController = new(InputControl.Open(_controlIndex));
+            _gameController = new(JoystickInput.Open(_controlIndex));
         }
 
-        if (_gameController != IntPtr.Zero)
+        if (_gameController != nint.Zero)
         {
-            InputControl.OnEvent += Event;
-            _joystickID = InputControl.GetJoystickID(_gameController);
+            JoystickInput.OnEvent += Event;
+            _joystickID = JoystickInput.GetJoystickID(_gameController);
         }
 
         new Thread(() =>
@@ -131,7 +132,7 @@ public class GameJoystick
         if (!GuiConfigUtils.Config.Input.Enable
             || sdlEvent.Cbutton.Which != _joystickID
             || string.IsNullOrWhiteSpace(_configUUID)
-            || !InputConfigUtils.Configs.TryGetValue(_configUUID, out var config))
+            || !JoystickConfig.Configs.TryGetValue(_configUUID, out var config))
         {
             return;
         }
@@ -144,7 +145,7 @@ public class GameJoystick
 
             var axis = (GameControllerAxis)axisEvent.Axis;
 
-            var axisFixValue = (float)axisValue / config.DownRate * (MouseMode ? config.CursorRate : config.RotateRate);
+            var axisFixValue = axisValue / config.DownRate * (MouseMode ? config.CursorRate : config.RotateRate);
             var deathSize = MouseMode ? config.CursorDeath : config.RotateDeath;
             var choiseAxis = MouseMode ? config.CursorAxis : config.RotateAxis;
             //左摇杆
@@ -303,10 +304,10 @@ public class GameJoystick
         {
             return;
         }
-        if (_gameController != IntPtr.Zero)
+        if (_gameController != nint.Zero)
         {
-            InputControl.Close(_gameController);
-            _gameController = IntPtr.Zero;
+            JoystickInput.Close(_gameController);
+            _gameController = nint.Zero;
             _joystickID = 0;
         }
 
@@ -315,12 +316,12 @@ public class GameJoystick
 
         unsafe
         {
-            _gameController = new(InputControl.Open(_controlIndex));
+            _gameController = new(JoystickInput.Open(_controlIndex));
         }
 
-        if (_gameController != IntPtr.Zero)
+        if (_gameController != nint.Zero)
         {
-            _joystickID = InputControl.GetJoystickID(_gameController);
+            _joystickID = JoystickInput.GetJoystickID(_gameController);
         }
     }
 

@@ -6,7 +6,7 @@
     xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"

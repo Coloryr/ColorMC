@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Main;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -114,7 +115,7 @@ public partial class Live2dControl : UserControl
         {
             return;
         }
-        await App.CrossFade300.Start(null, Border1, _cancel.Token);
+        await ThemeManager.CrossFade300.Start(null, Border1, _cancel.Token);
         if (_cancel.Token.IsCancellationRequested)
         {
             return;
@@ -124,6 +125,6 @@ public partial class Live2dControl : UserControl
         {
             return;
         }
-        await App.CrossFade300.Start(Border1, null, _cancel.Token);
+        await ThemeManager.CrossFade300.Start(Border1, null, _cancel.Token);
     }
 }

@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Media;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Utils;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.UI;
 
 /// <summary>
 /// 颜色设定

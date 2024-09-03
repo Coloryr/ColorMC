@@ -121,7 +121,7 @@ public partial class MainModel : TopModel, IMainTop
             }
             else
             {
-                UpdateChecker.StartUpdate();
+                UpdateUtils.StartUpdate();
             }
         }
     }
@@ -264,7 +264,7 @@ public partial class MainModel : TopModel, IMainTop
         }
         if (config1.Http?.CheckUpdate == true)
         {
-            var data = await UpdateChecker.Check();
+            var data = await UpdateUtils.Check();
             if (!data.Item1)
             {
                 return;

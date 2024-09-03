@@ -10,7 +10,7 @@ using ColorMC.Gui.Player.Decoder.Mp3;
 using Silk.NET.SDL;
 using Thread = System.Threading.Thread;
 
-namespace ColorMC.Gui.Player;
+namespace ColorMC.Gui.MusicPlayer;
 
 /// <summary>
 /// 音频播放
@@ -203,7 +203,7 @@ public static class Media
                 _lastLen = length;
             }
 
-            Marshal.Copy(input, 0, new IntPtr(cvt.Buf), length);
+            Marshal.Copy(input, 0, new nint(cvt.Buf), length);
             cvt.Len = length;
 
             fixed (AudioCVT* ptr = &cvt)
