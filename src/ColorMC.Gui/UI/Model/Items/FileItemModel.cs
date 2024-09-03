@@ -54,6 +54,8 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     public object Data;
 
+    private bool close;
+
     public FileItemModel(CurseForgeObjList.Data data, FileType type)
     {
         Data = data;
@@ -131,6 +133,10 @@ public partial class FileItemModel : SelectItemModel
 
     private async Task<Bitmap?> GetImage()
     {
+        if (close)
+        {
+            return null;
+        }
         if (_img != null)
         {
             return _img;
@@ -143,7 +149,7 @@ public partial class FileItemModel : SelectItemModel
         {
             await Task.Run(() =>
             {
-                _img = ImageUtils.Load(Logo, true).Result;
+                _img = ImageManager.Load(Logo, true).Result;
             });
             return _img;
         }
@@ -179,11 +185,14 @@ public partial class FileItemModel : SelectItemModel
         Add?.Next();
     }
 
-    public async void Close()
+    public void Close()
     {
-        if (await GetImage() != ImageManager.GameIcon)
+        close = true;
+        if (_img != ImageManager.GameIcon)
         {
             _img?.Dispose();
+            _img = null;
+            OnPropertyChanged(nameof(Image));
         }
     }
 }

@@ -151,7 +151,7 @@ public static class PathBinding
                 OpenPathWithExplorer(JvmPath.BaseDir + JvmPath.Name1);
                 break;
             case PathType.PicPath:
-                OpenPathWithExplorer(ImageUtils.Local);
+                OpenPathWithExplorer(ImageManager.Local);
                 break;
         }
     }

@@ -41,6 +41,7 @@ public static class Worlds
             var world = await ReadWorld(item);
             if (world != null)
             {
+                world.Game = game;
                 list.Add(world);
             }
         });
