@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
-using Live2DCSharpSDK.Framework.Rendering.OpenGL;
+using Live2DCSharpSDK.OpenGL;
 
 namespace ColorMC.Gui.UI;
 

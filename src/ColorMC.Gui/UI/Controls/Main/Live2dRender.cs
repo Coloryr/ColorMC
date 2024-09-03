@@ -16,6 +16,7 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
 using Live2DCSharpSDK.App;
 using Live2DCSharpSDK.Framework.Motion;
+using Live2DCSharpSDK.OpenGL;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -181,7 +182,7 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
         try
         {
-            _lapp = new(new AvaloniaApi(this, gl), Logs.Info);
+            _lapp = new LAppDelegateOpenGL(new AvaloniaApi(this, gl), Logs.Info);
             _change = true;
             CheckError(gl);
             _init = true;
