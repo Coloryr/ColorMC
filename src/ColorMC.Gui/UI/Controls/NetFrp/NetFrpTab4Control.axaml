@@ -13,6 +13,30 @@
     x:DataType="model:NetFrpModel"
     mc:Ignorable="d">
     <DockPanel Margin="0,0,10,15">
+        <Border
+            Margin="10,5,10,3"
+            Classes="t2"
+            DockPanel.Dock="Top">
+            <StackPanel Margin="15">
+                <DockPanel>
+                    <Button
+                        Width="120"
+                        Height="35"
+                        Margin="-2,-2,3,-2"
+                        Classes="top"
+                        Command="{Binding GetCloud}"
+                        Content="{setting:Localize NetFrpWindow.Tab4.Text2}"
+                        DockPanel.Dock="Right" />
+                    <TextBlock Text="{setting:Localize GameBinding.Info6}" />
+                    <ComboBox
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding Versions}"
+                        SelectedItem="{Binding Version}" />
+                </DockPanel>
+            </StackPanel>
+        </Border>
+
         <view1:ServerMotdControl
             Margin="10,5,10,3"
             DockPanel.Dock="Top"

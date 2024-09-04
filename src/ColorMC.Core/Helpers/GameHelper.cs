@@ -715,6 +715,16 @@ public static class GameHelper
             return list;
         }
 
+        if (type == GameType.All)
+        {
+            foreach (var item in ver.versions)
+            {
+                list.Add(item.id);
+            }
+
+            return list;
+        }
+
         foreach (var item in ver.versions)
         {
             if (item.type == "release")

@@ -22,6 +22,7 @@
                 <TextBox
                     MinWidth="230"
                     Margin="0,0,10,10"
+                    PasswordChar="*"
                     Text="{Binding KeyOpenFrp}"
                     Watermark="{setting:Localize NetFrpWindow.Tab1.Text1}" />
                 <StackPanel

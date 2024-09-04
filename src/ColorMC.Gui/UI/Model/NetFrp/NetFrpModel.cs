@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Frp;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
@@ -18,15 +19,7 @@ public partial class NetFrpModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item4.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text4"),
-                SubMenu =
-                [
-                    new SubMenuItemModel()
-                    {
-                        Func = GetCloud,
-                        Name = App.Lang("NetFrpWindow.Tab4.Text2")
-                    }
-                ]
+                Text = App.Lang("NetFrpWindow.Tabs.Text4")
             },
             new()
             {
@@ -61,21 +54,24 @@ public partial class NetFrpModel : MenuModel
 
     public async Task<bool> Open()
     {
-        var user = UserBinding.GetLastUser();
+        _isLoadSakura = true;
 
-        if (user?.AuthType != AuthType.OAuth)
+        if (FrpConfig.Config.SakuraFrp is { } con)
         {
-            Model.ShowOk(App.Lang("NetFrpWindow.Tab4.Error1"), WindowClose);
-            return false;
+            KeySakura = con.Key;
         }
-        Model.Progress(App.Lang("NetFrpWindow.Tab4.Info2"));
-        var res = await UserBinding.TestLogin(user);
-        Model.ProgressClose();
-        if (!res)
+
+        _isLoadSakura = false;
+
+        _isLoadOpenFrp = true;
+
+        if (FrpConfig.Config.OpenFrp is { } con1)
         {
-            Model.ShowOk(App.Lang("NetFrpWindow.Tab4.Error2"), WindowClose);
-            return false;
+            KeyOpenFrp = con1.Key;
         }
+
+        _isLoadOpenFrp = false;
+
         if (!string.IsNullOrWhiteSpace(KeySakura))
         {
             await GetChannelSakura();
@@ -84,6 +80,10 @@ public partial class NetFrpModel : MenuModel
         {
             await GetChannelOpenFrp();
         }
+
+        var list = await GameBinding.GetGameVersions(GameType.All);
+        Versions.Add("");
+        Versions.AddRange(list);
 
         return true;
     }

@@ -351,5 +351,8 @@
     <Compile Update="UI\Controls\Items\FileVersionItemControl.axaml.cs">
       <DependentUpon>FileVersionItemControl.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Controls\Items\OptifineVersionItemControl.axaml.cs">
+      <DependentUpon>OptifineVersionItemControl.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

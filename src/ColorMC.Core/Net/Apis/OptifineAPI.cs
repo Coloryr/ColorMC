@@ -70,6 +70,12 @@ public static class OptifineAPI
                         .Replace("OptiFine_", "");
                     mc = mc[..(mc.IndexOf('_'))];
 
+                    var temp5 = temp3.Split(".");
+                    if (temp5.Length == 3 && temp5[2].Length == 4)
+                    {
+                        temp3 = $"{temp5[2]}.{temp5[1]}.{temp5[0]}";
+                    }
+
                     list.Add(new()
                     {
                         FileName = file,

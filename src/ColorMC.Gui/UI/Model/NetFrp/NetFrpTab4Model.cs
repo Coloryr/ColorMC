@@ -8,6 +8,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
@@ -19,24 +20,30 @@ public partial class NetFrpModel
     private bool _isCloudEmpty = true;
 
     [ObservableProperty]
+    private string _version;
+
+    [ObservableProperty]
     private (string?, ushort) _iPPort;
 
+    public List<string> Versions { get; init; } = [];
+
+    partial void OnVersionChanged(string value)
+    {
+        GetCloud();
+    }
+
+    [RelayCommand]
     public void GetCloud()
     {
         IsCloudEmpty = true;
-
-        Model.HeadChoiseDisplay = false;
-
         LoadCloud();
-
-        Model.HeadChoiseDisplay = true;
     }
 
     public async void LoadCloud()
     {
         Model.Progress(App.Lang("NetFrpWindow.Tab4.Info1"));
         CloudServers.Clear();
-        var list = await WebBinding.GetFrpServer();
+        var list = await WebBinding.GetFrpServer(Version);
         Model.ProgressClose();
         if (list == null)
         {
@@ -45,8 +52,10 @@ public partial class NetFrpModel
         }
         foreach (var item in list)
         {
-            item.TopModel = this;
-            CloudServers.Add(item);
+            CloudServers.Add(new(item)
+            {
+                TopModel = this
+            });
         }
 
         IsCloudEmpty = CloudServers.Count == 0;

@@ -103,7 +103,7 @@ public partial class FileVersionItemModel : SelectItemModel
         Add?.NextVersion();
     }
 
-    internal void Install()
+    public void Install()
     {
         Add?.Install(this);
     }

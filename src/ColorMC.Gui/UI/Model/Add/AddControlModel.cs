@@ -21,12 +21,12 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddControlModel : GameModel, IAddWindow
+public partial class AddControlModel : GameModel, IAddOptifineWindow
 {
     /// <summary>
     /// 显示的高清修复列表
     /// </summary>
-    public ObservableCollection<OptifineObj> DownloadOptifineList { get; init; } = [];
+    public ObservableCollection<OptifineVersionItemModel> DownloadOptifineList { get; init; } = [];
     /// <summary>
     /// 显示的下载模组项目列表
     /// </summary>
@@ -61,70 +61,10 @@ public partial class AddControlModel : GameModel, IAddWindow
     public ObservableCollection<string> CategorieList { get; init; } = [];
 
     /// <summary>
-    /// 下载源列表
-    /// </summary>
-    public readonly List<SourceType> SourceTypeList = [];
-    /// <summary>
-    /// 类型列表
-    /// </summary>
-    public readonly Dictionary<int, string> Categories = [];
-    /// <summary>
-    /// Mod下载项目显示列表
-    /// </summary>
-    public readonly List<FileModVersionModel> ModList = [];
-    /// <summary>
-    /// 高清修复列表
-    /// </summary>
-    public readonly List<OptifineObj> OptifineList = [];
-    /// <summary>
-    /// 下载源列表
-    /// </summary>
-    private readonly List<string> SourceTypeNameList =
-    [
-        SourceType.CurseForge.GetName(),
-        SourceType.Modrinth.GetName(),
-    ];
-
-    /// <summary>
-    /// 当前文件类型
-    /// </summary>
-    private FileType _now;
-    /// <summary>
-    /// 下载项目
-    /// </summary>
-    private FileItemModel? _last;
-    /// <summary>
-    /// 下载的模组项目
-    /// </summary>
-    private DownloadModArg? _modsave;
-    /// <summary>
-    /// 是否在加载
-    /// </summary>
-    private bool _load = false;
-    /// <summary>
-    /// 是否关闭
-    /// </summary>
-    private bool _close = false;
-
-    /// <summary>
-    /// 上一个下载源
-    /// </summary>
-    private SourceType _lastType = SourceType.McMod;
-    /// <summary>
-    /// 上一个下载ID
-    /// </summary>
-    private string _lastId;
-
-    /// <summary>
-    /// 是否已经显示
-    /// </summary>
-    public bool Display { get; set; }
-
-    /// <summary>
     /// 高清修复项目
     /// </summary>
     [ObservableProperty]
-    private OptifineObj? _optifineItem;
+    private OptifineVersionItemModel? _optifineItem;
     /// <summary>
     /// 项目
     /// </summary>
@@ -196,6 +136,8 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// </summary>
     [ObservableProperty]
     private bool _isUpgrade;
+    [ObservableProperty]
+    private bool _emptyOptifineDisplay;
 
     /// <summary>
     /// 下载类型
@@ -250,6 +192,66 @@ public partial class AddControlModel : GameModel, IAddWindow
     private string? _gameVersionDownload;
     [ObservableProperty]
     private string? _modDownloadText = App.Lang("AddWindow.Text7");
+
+    /// <summary>
+    /// 下载源列表
+    /// </summary>
+    private readonly List<SourceType> _sourceTypeList = [];
+    /// <summary>
+    /// 类型列表
+    /// </summary>
+    private readonly Dictionary<int, string> _categories = [];
+    /// <summary>
+    /// Mod下载项目显示列表
+    /// </summary>
+    private readonly List<FileModVersionModel> _modList = [];
+    /// <summary>
+    /// 高清修复列表
+    /// </summary>
+    private readonly List<OptifineVersionItemModel> _optifineList = [];
+    /// <summary>
+    /// 下载源列表
+    /// </summary>
+    private readonly List<string> _sourceTypeNameList =
+    [
+        SourceType.CurseForge.GetName(),
+        SourceType.Modrinth.GetName(),
+    ];
+
+    /// <summary>
+    /// 当前文件类型
+    /// </summary>
+    private FileType _now;
+    /// <summary>
+    /// 下载项目
+    /// </summary>
+    private FileItemModel? _last;
+    /// <summary>
+    /// 下载的模组项目
+    /// </summary>
+    private DownloadModArg? _modsave;
+    /// <summary>
+    /// 是否在加载
+    /// </summary>
+    private bool _load = false;
+    /// <summary>
+    /// 是否关闭
+    /// </summary>
+    private bool _close = false;
+
+    /// <summary>
+    /// 上一个下载源
+    /// </summary>
+    private SourceType _lastType = SourceType.McMod;
+    /// <summary>
+    /// 上一个下载ID
+    /// </summary>
+    private string _lastId;
+
+    /// <summary>
+    /// 是否已经显示
+    /// </summary>
+    public bool Display { get; set; }
 
     private readonly string _useName;
 
@@ -337,9 +339,9 @@ public partial class AddControlModel : GameModel, IAddWindow
         FileList.Clear();
         DownloadSourceList.Clear();
 
-        SourceTypeList.Clear();
-        SourceTypeList.AddRange(WebBinding.GetSourceList(_now));
-        SourceTypeList.ForEach(item => DownloadSourceList.Add(item.GetName()));
+        _sourceTypeList.Clear();
+        _sourceTypeList.AddRange(WebBinding.GetSourceList(_now));
+        _sourceTypeList.ForEach(item => DownloadSourceList.Add(item.GetName()));
 
         _load = false;
 
@@ -436,13 +438,13 @@ public partial class AddControlModel : GameModel, IAddWindow
     [RelayCommand]
     public async Task GetList()
     {
-        var type = SourceTypeList[DownloadSource];
+        var type = _sourceTypeList[DownloadSource];
 
         Model.Progress(App.Lang("AddWindow.Info2"));
         if (type == SourceType.McMod)
         {
             //McMod搜索源
-            var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0, Obj.Loader, GameVersion ?? "", Categories[Categorie], SortType);
+            var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0, Obj.Loader, GameVersion ?? "", _categories[Categorie], SortType);
             if (data == null)
             {
                 Model.ProgressClose();
@@ -470,7 +472,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             var data = await WebBinding.GetList(_now, type,
                 GameVersion, Name, Page ?? 0,
                 SortType, Categorie < 0 ? "" :
-                    Categories[Categorie], Obj.Loader);
+                    _categories[Categorie], Obj.Loader);
 
             if (data == null)
             {
@@ -582,7 +584,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     public async Task LoadOptifineList()
     {
         GameVersionList.Clear();
-        OptifineList.Clear();
+        _optifineList.Clear();
         DownloadOptifineList.Clear();
         Model.Progress(App.Lang("AddWindow.Info13"));
         var list = await WebBinding.GetOptifine();
@@ -593,7 +595,13 @@ public partial class AddControlModel : GameModel, IAddWindow
             return;
         }
 
-        OptifineList.AddRange(list);
+        foreach (var item in list)
+        {
+            _optifineList.Add(new(item)
+            {
+                Add = this
+            });
+        }
 
         GameVersionList.Add("");
         GameVersionList.AddRange(from item2 in list
@@ -671,38 +679,6 @@ public partial class AddControlModel : GameModel, IAddWindow
     }
 
     /// <summary>
-    /// 下载高清修复
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task DownloadOptifine()
-    {
-        if (OptifineItem == null)
-        {
-            return;
-        }
-
-        var res = await Model.ShowWait(string.Format(
-            App.Lang("AddWindow.Info10"), OptifineItem.Version));
-        if (!res)
-        {
-            return;
-        }
-        Model.Progress(App.Lang("AddWindow.Info11"));
-        var res1 = await WebBinding.DownloadOptifine(Obj, OptifineItem);
-        Model.ProgressClose();
-        if (res1.State == false)
-        {
-            Model.Show(res1.Message!);
-        }
-        else
-        {
-            Model.Notify(App.Lang("Text.Downloaded"));
-            OptifineDisplay = false;
-        }
-    }
-
-    /// <summary>
     /// 下一页
     /// </summary>
     [RelayCommand]
@@ -741,7 +717,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         CategorieList.Clear();
 
         ClearList();
-        var type = SourceTypeList[DownloadSource];
+        var type = _sourceTypeList[DownloadSource];
 
         //CF搜索源
         if (type == SourceType.CurseForge)
@@ -759,12 +735,12 @@ public partial class AddControlModel : GameModel, IAddWindow
                 return;
             }
 
-            Categories.Clear();
-            Categories.Add(0, "");
+            _categories.Clear();
+            _categories.Add(0, "");
             int a = 1;
             foreach (var item in list1)
             {
-                Categories.Add(a++, item.Key);
+                _categories.Add(a++, item.Key);
             }
 
             var list2 = new List<string>() { "" };
@@ -805,12 +781,12 @@ public partial class AddControlModel : GameModel, IAddWindow
             }
             GameVersionList.AddRange(list);
 
-            Categories.Clear();
-            Categories.Add(0, "");
+            _categories.Clear();
+            _categories.Add(0, "");
             int a = 1;
             foreach (var item in list1)
             {
-                Categories.Add(a++, item.Key);
+                _categories.Add(a++, item.Key);
             }
 
             var list2 = new List<string>() { "" };
@@ -848,18 +824,18 @@ public partial class AddControlModel : GameModel, IAddWindow
             }
             GameVersionList.AddRange(list.versions);
 
-            Categories.Clear();
-            Categories.Add(0, "");
+            _categories.Clear();
+            _categories.Add(0, "");
             int a = 1;
             foreach (var item in list.types)
             {
-                Categories.Add(a++, item);
+                _categories.Add(a++, item);
             }
 
             SortTypeList.Add("");
             SortTypeList.AddRange(list.sorts);
 
-            CategorieList.AddRange(Categories.Values);
+            CategorieList.AddRange(_categories.Values);
 
             if (GameVersionList.Contains(Obj.Version))
             {
@@ -885,11 +861,11 @@ public partial class AddControlModel : GameModel, IAddWindow
         DownloadModList.Clear();
         if (LoadMoreMod)
         {
-            DownloadModList.AddRange(ModList);
+            DownloadModList.AddRange(_modList);
         }
         else
         {
-            foreach (var item in ModList)
+            foreach (var item in _modList)
             {
                 if (!item.Optional)
                 {
@@ -964,7 +940,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     /// <param name="data"></param>
     public async void Install(FileVersionItemModel data)
     {
-        var type = SourceTypeList[DownloadSource];
+        var type = _sourceTypeList[DownloadSource];
         if (Set)
         {
             if (type == SourceType.CurseForge)
@@ -1073,15 +1049,15 @@ public partial class AddControlModel : GameModel, IAddWindow
                 else
                 {
                     //添加模组信息
-                    ModList.Clear();
-                    ModList.AddRange(list.List);
+                    _modList.Clear();
+                    _modList.AddRange(list.List);
                     _modsave = new()
                     {
                         Item = list.Item!,
                         Info = list.Info!
                     };
                     OpenModDownloadDisplay();
-                    ModList.ForEach(item =>
+                    _modList.ForEach(item =>
                     {
                         if (item.Optional == false)
                         {
@@ -1162,7 +1138,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             return;
         }
 
-        if (DownloadSource < SourceTypeList.Count)
+        if (DownloadSource < _sourceTypeList.Count)
         {
             res = await Model.ShowWait(App.Lang("AddModPackWindow.Info5"));
             if (res)
@@ -1181,7 +1157,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         FileList.Clear();
 
         List<FileVersionItemModel>? list = null;
-        var type = SourceTypeList[DownloadSource];
+        var type = _sourceTypeList[DownloadSource];
         if (type == SourceType.McMod)
         {
             if (_lastType == SourceType.McMod)
@@ -1189,7 +1165,7 @@ public partial class AddControlModel : GameModel, IAddWindow
                 var obj1 = (_last!.Data as McModSearchItemObj)!;
                 if (obj1.curseforge_id != null && obj1.modrinth_id != null)
                 {
-                    var res = await Model.ShowCombo(App.Lang("AddWindow.Info14"), SourceTypeNameList);
+                    var res = await Model.ShowCombo(App.Lang("AddWindow.Info14"), _sourceTypeNameList);
                     if (res.Cancel)
                     {
                         return;
@@ -1388,14 +1364,16 @@ public partial class AddControlModel : GameModel, IAddWindow
         var item = GameVersionOptifine;
         if (string.IsNullOrWhiteSpace(item))
         {
-            DownloadOptifineList.AddRange(OptifineList);
+            DownloadOptifineList.AddRange(_optifineList);
         }
         else
         {
-            DownloadOptifineList.AddRange(from item1 in OptifineList
+            DownloadOptifineList.AddRange(from item1 in _optifineList
                                           where item1.MCVersion == item
                                           select item1);
         }
+
+        EmptyOptifineDisplay = DownloadOptifineList.Count == 0;
     }
 
     public void Upgrade(ICollection<ModUpgradeModel> list)
@@ -1405,11 +1383,11 @@ public partial class AddControlModel : GameModel, IAddWindow
         {
             CloseModDownloadDisplay();
         }
-        ModList.Clear();
-        ModList.AddRange(list);
+        _modList.Clear();
+        _modList.AddRange(list);
         OpenModDownloadDisplay();
         _modsave = null;
-        ModList.ForEach(item =>
+        _modList.ForEach(item =>
         {
             item.Download = true;
         });
@@ -1447,6 +1425,38 @@ public partial class AddControlModel : GameModel, IAddWindow
         DisplayList.Clear();
     }
 
+    public void SetSelect(OptifineVersionItemModel item)
+    {
+        if (OptifineItem != null)
+        {
+            OptifineItem.IsSelect = false;
+        }
+        OptifineItem = item;
+        item.IsSelect = true;
+    }
+
+    public async void Install(OptifineVersionItemModel item)
+    {
+        var res = await Model.ShowWait(string.Format(
+            App.Lang("AddWindow.Info10"), item.Version));
+        if (!res)
+        {
+            return;
+        }
+        Model.Progress(App.Lang("AddWindow.Info11"));
+        var res1 = await WebBinding.DownloadOptifine(Obj, item.Obj);
+        Model.ProgressClose();
+        if (res1.State == false)
+        {
+            Model.Show(res1.Message!);
+        }
+        else
+        {
+            Model.Notify(App.Lang("Text.Downloaded"));
+            OptifineDisplay = false;
+        }
+    }
+
     public override void Close()
     {
         if (VersionDisplay || OptifineDisplay || ModDownloadDisplay)
@@ -1457,8 +1467,8 @@ public partial class AddControlModel : GameModel, IAddWindow
         _close = true;
         _load = true;
         Model.RemoveChoiseData(_useName);
-        ModList.Clear();
-        OptifineList.Clear();
+        _modList.Clear();
+        _optifineList.Clear();
         DownloadOptifineList.Clear();
         DownloadModList.Clear();
         FileList.Clear();

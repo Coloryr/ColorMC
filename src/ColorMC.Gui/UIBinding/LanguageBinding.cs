@@ -290,4 +290,15 @@ public static class LanguageBinding
             App.Lang("Type.Guide.Item2"),
         ];
     }
+
+    public static string[] GetLoader()
+    {
+        return
+        [
+            Loaders.Forge.GetName(),
+            Loaders.Fabric.GetName(),
+            Loaders.Quilt.GetName(),
+            Loaders.NeoForge.GetName(),
+        ];
+    }
 }
