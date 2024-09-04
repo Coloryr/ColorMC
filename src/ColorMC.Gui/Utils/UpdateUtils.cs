@@ -9,6 +9,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Net.Apis;
 
 namespace ColorMC.Gui.Utils;
 
@@ -56,7 +57,7 @@ public static class UpdateUtils
 
         try
         {
-            var obj = await ColorMCAPI.GetUpdateIndex();
+            var obj = await ColorMCCloudAPI.GetUpdateIndex();
             if (obj == null)
             {
                 UpdateCheckFail();
@@ -94,7 +95,7 @@ public static class UpdateUtils
             {
                 Name = "ColorMC.Core.dll",
                 SHA1 = WebSha1s[0],
-                Url = $"{ColorMCAPI.CheckUrl}ColorMC.Core.dll",
+                Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Core.dll",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Core.dll",
                 Overwrite = true,
                 UseColorMCHead = true
@@ -103,7 +104,7 @@ public static class UpdateUtils
             {
                 Name = "ColorMC.Core.pdb",
                 SHA1 = WebSha1s[1],
-                Url = $"{ColorMCAPI.CheckUrl}ColorMC.Core.pdb",
+                Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Core.pdb",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Core.pdb",
                 Overwrite = true,
                 UseColorMCHead = true
@@ -112,7 +113,7 @@ public static class UpdateUtils
             {
                 Name = "ColorMC.Gui.dll",
                 SHA1 = WebSha1s[2],
-                Url = $"{ColorMCAPI.CheckUrl}ColorMC.Gui.dll",
+                Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Gui.dll",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Gui.dll",
                 Overwrite = true,
                 UseColorMCHead = true
@@ -121,7 +122,7 @@ public static class UpdateUtils
             {
                 Name = "ColorMC.Gui.pdb",
                 SHA1 = WebSha1s[3],
-                Url = $"{ColorMCAPI.CheckUrl}ColorMC.Gui.pdb",
+                Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Gui.pdb",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Gui.pdb",
                 Overwrite = true,
                 UseColorMCHead = true
@@ -148,7 +149,7 @@ public static class UpdateUtils
 
         try
         {
-            var obj = await ColorMCAPI.GetUpdateSha1();
+            var obj = await ColorMCCloudAPI.GetUpdateSha1();
             if (obj == null || obj.TryGetValue("res", out _))
             {
                 WindowManager.ShowError(App.Lang("SettingWindow.Tab3.Error2"), "Json Error");

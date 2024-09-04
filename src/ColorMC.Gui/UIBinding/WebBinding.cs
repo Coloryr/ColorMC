@@ -21,8 +21,11 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UIBinding;
@@ -945,23 +948,23 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<string?> GetNewLog()
     {
-        return ColorMCAPI.GetNewLog();
+        return ColorMCCloudAPI.GetNewLog();
     }
 
     /// <summary>
     /// 获取映射列表
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<NetFrpCloudServerModel>?> GetFrpServer()
+    public static async Task<List<FrpCloudObj>?> GetFrpServer(string version)
     {
-        var list = await ColorMCAPI.GetCloudServer();
+        var list = await ColorMCCloudAPI.GetCloudServer(version);
         if (list == null || list?["list"] is not { } list1)
         {
             return null;
         }
 
         LaunchSocketUtils.Clear();
-        var list2 = list1.ToObject<List<NetFrpCloudServerModel>>();
+        var list2 = list1.ToObject<List<FrpCloudObj>>();
         list2?.ForEach(LaunchSocketUtils.AddServerInfo);
 
         return list2;
@@ -973,9 +976,9 @@ public static class WebBinding
     /// <param name="token"></param>
     /// <param name="ip"></param>
     /// <returns></returns>
-    public static Task<bool> ShareIP(string token, string ip)
+    public static Task<bool> ShareIP(string token, string ip, FrpShareModel model)
     {
-        return ColorMCAPI.PutCloudServer(token, ip);
+        return ColorMCCloudAPI.PutCloudServer(token, ip, model);
     }
 
     public static async Task<GetJavaListRes> GetJavaList(int type, int os, int mainversion)

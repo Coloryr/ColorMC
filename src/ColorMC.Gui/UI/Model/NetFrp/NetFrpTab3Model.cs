@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Document;
+using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
@@ -116,19 +118,57 @@ public partial class NetFrpModel
 
     public async void Share()
     {
+        var model = new FrpShareModel();
+        _ = ushort.TryParse(_localIP, out var port);
+
+        var info = await ServerMotd.GetServerInfo("localhost", port);
+        var version = "";
+        if (info?.Version?.Name is { } version1)
+        {
+            version = version1;
+        }
+        await model.Init(version);
+        var res1 = await DialogHost.Show(model, "ShareCon");
+        if (res1 is not true)
+        {
+            return;
+        }
+
+        if (model.Text?.Length > 80)
+        {
+            Model.Show(App.Lang("NetFrpWindow.Tab3.Error3"));
+            return;
+        }
+
+        if (IsRuning == false)
+        {
+            Model.Show(App.Lang("NetFrpWindow.Tab3.Error2"));
+            return;
+        }
+
         var res = await Model.ShowWait(App.Lang("NetFrpWindow.Tab3.Info3"));
         if (!res)
         {
             return;
         }
+
         var user = UserBinding.GetLastUser();
-        if (user == null || user.AuthType != AuthType.OAuth)
+        if (user?.AuthType != AuthType.OAuth)
         {
-            Model.Show(App.Lang("NetFrpWindow.Tab4.Error1"));
+            Model.ShowOk(App.Lang("NetFrpWindow.Tab4.Error1"), WindowClose);
             return;
         }
+        Model.Progress(App.Lang("NetFrpWindow.Tab4.Info2"));
+        res = await UserBinding.TestLogin(user);
+        Model.ProgressClose();
+        if (!res)
+        {
+            Model.ShowOk(App.Lang("NetFrpWindow.Tab4.Error2"), WindowClose);
+            return;
+        }
+
         Model.Progress(App.Lang("NetFrpWindow.Tab3.Info5"));
-        res = await WebBinding.ShareIP(user.AccessToken, _remoteIP);
+        res = await WebBinding.ShareIP(user.AccessToken, _remoteIP, model);
         Model.ProgressClose();
         if (!res)
         {

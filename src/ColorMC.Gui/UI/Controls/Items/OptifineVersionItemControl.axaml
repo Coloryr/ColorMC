@@ -1,0 +1,39 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.OptifineVersionItemControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    x:DataType="model:OptifineVersionItemModel"
+    mc:Ignorable="d">
+    <Border
+        Margin="10,5,10,5"
+        Background="{setting:Theme ItemBG}"
+        BoxShadow="{Binding Border}"
+        CornerRadius="5">
+        <WrapPanel Margin="20,15,15,15">
+            <TextBlock
+                Width="140"
+                Margin="0,0,10,0"
+                DockPanel.Dock="Top"
+                FontSize="16"
+                Foreground="{setting:Theme MainColor}"
+                Text="{Binding Version, FallbackValue=1234}" />
+            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                <TextBlock Text="{setting:Localize GameBinding.Info6}" />
+                <TextBlock Text="{Binding MCVersion}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Text="{setting:Localize AddWindow.Text14}" />
+                <TextBlock VerticalAlignment="Center" Text="{Binding Forge}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                <TextBlock Text="{setting:Localize AddModPackWindow.Text16}" />
+                <TextBlock Text="{Binding Date}" />
+            </StackPanel>
+        </WrapPanel>
+
+    </Border>
+</UserControl>

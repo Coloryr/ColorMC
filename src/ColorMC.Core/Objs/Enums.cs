@@ -51,7 +51,11 @@ public enum GameType
     /// <summary>
     /// 其他版本
     /// </summary>
-    Other
+    Other,
+    /// <summary>
+    /// 所有版本
+    /// </summary>
+    All
 }
 
 /// <summary>

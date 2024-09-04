@@ -1,0 +1,51 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.NetFrp.FrpShareControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.NetFrp"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    x:DataType="model:FrpShareModel"
+    mc:Ignorable="d">
+    <StackPanel Margin="5">
+        <TextBlock Margin="0,0,0,10" Text="{setting:Localize NetFrpWindow.Tab3.Text4}" />
+        <DockPanel Width="300">
+            <TextBlock Text="{setting:Localize GameBinding.Info6}" />
+            <ComboBox
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding VersionList}"
+                SelectedItem="{Binding Version}" />
+        </DockPanel>
+        <CheckBox Content="{setting:Localize NetFrpWindow.Tab3.Text7}" IsChecked="{Binding IsLoader}" />
+        <DockPanel
+            Width="300"
+            Margin="0,0,0,10"
+            IsEnabled="{Binding IsLoader}">
+            <TextBlock Text="{setting:Localize NetFrpWindow.Tab3.Text5}" />
+            <ComboBox
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Loaders}"
+                SelectedIndex="{Binding Loader}" />
+        </DockPanel>
+        <DockPanel Width="300" Margin="0,0,0,10">
+            <TextBlock Text="{setting:Localize NetFrpWindow.Tab3.Text6}" />
+            <TextBox Height="60" Text="{Binding Text}" />
+        </DockPanel>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button
+                Width="100"
+                Height="35"
+                Margin="0,0,20,0"
+                Classes="top"
+                Command="{Binding Confirm}"
+                Content="{setting:Localize Button.Confirm}" />
+            <Button
+                Width="100"
+                Height="35"
+                Classes="top"
+                Command="{Binding Cancel}"
+                Content="{setting:Localize Button.Cancel}" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

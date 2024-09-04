@@ -9,6 +9,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
+using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using DotNetty.Buffers;
@@ -20,7 +21,7 @@ namespace ColorMC.Gui.Utils;
 
 public static class LaunchSocketUtils
 {
-    public static readonly List<NetFrpCloudServerModel> Servers = [];
+    public static readonly List<FrpCloudObj> Servers = [];
 
     public static int Port { get; private set; }
 
@@ -251,9 +252,9 @@ public static class LaunchSocketUtils
         Servers.Clear();
     }
 
-    public static void AddServerInfo(NetFrpCloudServerModel model)
+    public static void AddServerInfo(FrpCloudObj obj)
     {
-        Servers.Add(model);
+        Servers.Add(obj);
     }
 
     private class GameServerHandler : ChannelHandlerAdapter
@@ -341,7 +342,7 @@ public static class LaunchSocketUtils
         return buf;
     }
 
-    private static void SendServerInfo(NetFrpCloudServerModel model)
+    private static void SendServerInfo(FrpCloudObj model)
     {
         var buf = Unpooled.Buffer();
 

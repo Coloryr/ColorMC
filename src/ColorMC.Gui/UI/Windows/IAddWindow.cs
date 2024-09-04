@@ -13,3 +13,9 @@ public interface IAddWindow
     void BackVersion();
     void NextVersion();
 }
+
+public interface IAddOptifineWindow : IAddWindow
+{
+    public void SetSelect(OptifineVersionItemModel item);
+    public void Install(OptifineVersionItemModel item);
+}

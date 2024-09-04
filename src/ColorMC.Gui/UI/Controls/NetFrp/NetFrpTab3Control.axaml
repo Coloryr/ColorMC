@@ -4,26 +4,38 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.NetFrp"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:view2="clr-namespace:ColorMC.Gui.UI.Controls.NetFrp"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:NetFrpModel"
     mc:Ignorable="d">
-    <Decorator Margin="0,0,10,15">
-        <Border Margin="10,5,10,3" Classes="t2">
-            <ae:TextEditor
-                Margin="5"
-                Document="{Binding Text}"
-                FontSize="14"
-                FontWeight="Normal"
-                Foreground="{setting:Theme FontColor}"
-                HorizontalScrollBarVisibility="Auto"
-                IsReadOnly="True"
-                ShowLineNumbers="True"
-                VerticalScrollBarVisibility="Visible"
-                WordWrap="true" />
-        </Border>
-    </Decorator>
+    <dialog:DialogHost
+        DisableOpeningAnimation="True"
+        Identifier="ShareCon"
+        OverlayBackground="Transparent">
+        <dialog:DialogHost.DataTemplates>
+            <DataTemplate DataType="model:FrpShareModel">
+                <view2:FrpShareControl DataContext="{Binding}" />
+            </DataTemplate>
+        </dialog:DialogHost.DataTemplates>
+        <Decorator Margin="0,0,10,15">
+            <Border Margin="10,5,10,3" Classes="t2">
+                <ae:TextEditor
+                    Margin="5"
+                    Document="{Binding Text}"
+                    FontSize="14"
+                    FontWeight="Normal"
+                    Foreground="{setting:Theme FontColor}"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsReadOnly="True"
+                    ShowLineNumbers="True"
+                    VerticalScrollBarVisibility="Visible"
+                    WordWrap="true" />
+            </Border>
+        </Decorator>
+    </dialog:DialogHost>
 </UserControl>

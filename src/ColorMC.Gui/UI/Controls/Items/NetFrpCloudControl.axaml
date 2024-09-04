@@ -9,6 +9,8 @@
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     x:DataType="model:NetFrpCloudServerModel"
     Design.Width="320"
+    ToolTip.Tip="{Binding Tips}"
+    ToolTip.VerticalOffset="-30"
     mc:Ignorable="d">
     <Border
         Margin="10,5,10,5"
@@ -66,6 +68,14 @@
                         <TextBlock Text="{Binding Now, FallbackValue=1}" />
                         <TextBlock Text="/" />
                         <TextBlock Text="{Binding Max, FallbackValue=8}" />
+                    </StackPanel>
+                </WrapPanel>
+                <WrapPanel IsVisible="{Binding HaveCustom}" Orientation="Horizontal">
+                    <TextBlock Margin="0,0,0,0" Text="{setting:Localize GameBinding.Info6}" />
+                    <TextBlock Margin="0,0,10,0" Text="{Binding Obj.Custom.Version, FallbackValue=1.12}" />
+                    <StackPanel IsVisible="{Binding Obj.Custom.IsLoader, FallbackValue=false}" Orientation="Horizontal">
+                        <TextBlock Text="{setting:Localize NetFrpWindow.Tab4.Text3}" />
+                        <TextBlock Text="{Binding LoaderName}" />
                     </StackPanel>
                 </WrapPanel>
             </StackPanel>

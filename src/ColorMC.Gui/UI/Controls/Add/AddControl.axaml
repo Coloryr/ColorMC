@@ -236,14 +236,20 @@
                 </Panel>
             </DockPanel>
         </ScrollViewer>
-        <Decorator Name="OptifineDisplay" IsVisible="False">
-            <Border Margin="20,10,20,20" Classes="t2">
-                <DockPanel>
+        <ScrollViewer
+            Name="OptifineDisplay"
+            IsVisible="False"
+            VerticalScrollBarVisibility="Visible">
+            <DockPanel Margin="10">
+                <Border
+                    Margin="10,0,10,5"
+                    Classes="t2"
+                    DockPanel.Dock="Top">
                     <panel:WrapPanelWithStretch
-                        Margin="15,15,5,-5"
+                        Margin="15,15,5,5"
                         AutoMax="{Binding MinMode}"
                         DockPanel.Dock="Top">
-                        <DockPanel MinWidth="190" Margin="0,0,10,10">
+                        <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                             <ComboBox
                                 Height="30"
@@ -252,10 +258,7 @@
                                 ItemsSource="{Binding GameVersionList}"
                                 SelectedItem="{Binding GameVersionOptifine}" />
                         </DockPanel>
-                        <StackPanel
-                            Margin="0,1,10,10"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal">
+                        <Decorator Margin="0,1,10,10">
                             <Button
                                 Width="100"
                                 Height="35"
@@ -265,45 +268,32 @@
                                 Content="{setting:Localize AddModPackWindow.Text10}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text77}"
                                 ToolTip.VerticalOffset="-30" />
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-3,-3,-3"
-                                Classes="top"
-                                Command="{Binding DownloadOptifine}"
-                                Content="{setting:Localize AddModPackWindow.Text12}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text78}"
-                                ToolTip.VerticalOffset="-30" />
-                        </StackPanel>
+                        </Decorator>
                     </panel:WrapPanelWithStretch>
-                    <DataGrid
-                        Name="OptifineFiles"
-                        Margin="5"
-                        CanUserResizeColumns="True"
-                        ItemsSource="{Binding DownloadOptifineList}"
-                        SelectedItem="{Binding OptifineItem}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn
-                                Binding="{Binding Version}"
-                                Header="{setting:Localize Text.GameVersion}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding MCVersion}"
-                                Header="{setting:Localize Text.Version}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Forge}"
-                                Header="{setting:Localize AddWindow.Text14}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Binding="{Binding Date}"
-                                Header="{setting:Localize AddModPackWindow.Text16}"
-                                IsReadOnly="True" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </Border>
-        </Decorator>
+                </Border>
+                <Panel>
+                    <ItemsControl
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{Binding DownloadOptifineList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <item:OptifineVersionItemControl DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Border
+                        Margin="10,5,10,10"
+                        Classes="t1"
+                        IsVisible="{Binding EmptyOptifineDisplay}">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="30"
+                            Text="{setting:Localize AddModPackWindow.Text13}" />
+                    </Border>
+                </Panel>
+            </DockPanel>
+        </ScrollViewer>
         <ScrollViewer
             Name="ModDownloadDisplay"
             IsVisible="False"
