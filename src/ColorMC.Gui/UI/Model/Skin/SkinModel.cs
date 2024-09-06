@@ -5,11 +5,18 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MinecraftSkinRender;
 
 namespace ColorMC.Gui.UI.Model.Skin;
 
 public partial class SkinModel(BaseModel model) : TopModel(model)
 {
+    public const string RotateName = "Rotate";
+    public const string ScollName = "Scoll";
+    public const string PosName = "Pos";
+    public const string RotName = "Rot";
+    public const string LoadName = "Load";
+
     public string[] SkinTypeList { get; init; } = LanguageBinding.GetSkinType();
     public string[] SkinRotateList { get; init; } = LanguageBinding.GetSkinRotateName();
 
@@ -55,9 +62,6 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     [ObservableProperty]
     private float _minZ;
 
-    public bool IsLoad;
-    public bool IsLoading;
-
     public Vector3 ArmRotate;
     public Vector3 LegRotate;
     public Vector3 HeadRotate;
@@ -65,12 +69,30 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     public float X;
     public float Y;
 
+    private bool _load;
+
     public int Fps
     {
         set
         {
             NowFps = $"{value}Fps";
         }
+    }
+
+    partial void OnSteveModelTypeChanged(SkinType value)
+    {
+        _load = true;
+        Type = ((int)value) - 1;
+        _load = false;
+    }
+
+    partial void OnTypeChanged(int value)
+    {
+        if (_load)
+        {
+            return;
+        }
+        SteveModelType = (SkinType)(Type + 1);
     }
 
     partial void OnRotateXChanged(float value)
@@ -90,7 +112,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
                 return;
         }
 
-        OnPropertyChanged("Rotate");
+        OnPropertyChanged(RotateName);
     }
 
     partial void OnRotateYChanged(float value)
@@ -110,7 +132,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
                 return;
         }
 
-        OnPropertyChanged("Rotate");
+        OnPropertyChanged(RotateName);
     }
 
     partial void OnRotateZChanged(float value)
@@ -130,7 +152,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
                 return;
         }
 
-        OnPropertyChanged("Rotate");
+        OnPropertyChanged(RotateName);
     }
 
     partial void OnRotateTypeChanged(int value)
@@ -166,20 +188,6 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
         RotateX = rotate.X;
         RotateY = rotate.Y;
         RotateZ = rotate.Z;
-    }
-
-    partial void OnTypeChanged(int value)
-    {
-        if (Type == (int)SkinType.Unkonw)
-        {
-            Model.Show(App.Lang("SkinWindow.Info1"));
-            Type = (int)SteveModelType;
-            return;
-        }
-        if (IsLoading == false)
-        {
-            SteveModelType = (SkinType)Type;
-        }
     }
 
     [RelayCommand]
@@ -220,7 +228,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
                 Y = -0.05f;
                 break;
         }
-        OnPropertyChanged("Pos");
+        OnPropertyChanged(PosName);
     }
 
     [RelayCommand]
@@ -277,7 +285,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
                 break;
         }
 
-        OnPropertyChanged("Dis");
+        OnPropertyChanged(ScollName);
     }
 
     [RelayCommand]
@@ -322,13 +330,15 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
         RotateY = 0;
         RotateZ = 0;
 
-        OnPropertyChanged("Rotate");
+        OnPropertyChanged(RotateName);
     }
 
     [RelayCommand]
     public async Task Load()
     {
         await UserBinding.LoadSkin();
+
+        OnPropertyChanged(LoadName);
     }
 
     [RelayCommand]
@@ -340,11 +350,6 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
             return;
         }
         UserBinding.EditSkin(top);
-    }
-
-    public void SkinLoadDone()
-    {
-        OnPropertyChanged("SkinLoadDone");
     }
 
     public override void Close()

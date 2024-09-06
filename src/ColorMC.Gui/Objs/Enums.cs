@@ -39,29 +39,6 @@ public enum GameEditWindowType
 }
 
 /// <summary>
-/// 皮肤类型
-/// </summary>
-public enum SkinType
-{
-    /// <summary>
-    /// 1.7旧版
-    /// </summary>
-    Old,
-    /// <summary>
-    /// 1.8新版
-    /// </summary>
-    New,
-    /// <summary>
-    /// 1.8新版纤细
-    /// </summary>
-    NewSlim,
-    /// <summary>
-    /// 未知的类型
-    /// </summary>
-    Unkonw
-}
-
-/// <summary>
 /// 颜色类型
 /// </summary>
 public enum ColorType

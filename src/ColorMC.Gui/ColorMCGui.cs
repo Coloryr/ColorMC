@@ -197,7 +197,7 @@ public static class ColorMCGui
             {
                 RenderingMode =
                 [
-                    Win32RenderingMode.Wgl,
+                    //Win32RenderingMode.Wgl,
                     Win32RenderingMode.AngleEgl,
                     Win32RenderingMode.Software
                 ]
@@ -220,7 +220,6 @@ public static class ColorMCGui
                 opt.RenderingMode =
                 [
                     Win32RenderingMode.Vulkan,
-                    Win32RenderingMode.Wgl,
                     Win32RenderingMode.AngleEgl,
                     Win32RenderingMode.Software
                 ];

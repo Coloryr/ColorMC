@@ -4,3 +4,6 @@
 [submodule "X11.Net"]
 	path = X11.Net
 	url = https://github.com/Coloryr/X11.Net
+[submodule "MinecraftSkinRender"]
+	path = MinecraftSkinRender
+	url = https://github.com/Coloryr/MinecraftSkinRender.git
