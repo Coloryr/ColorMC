@@ -83,7 +83,7 @@ public partial class SkinControl : BaseUserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "SkinLoadDone")
+        if (e.PropertyName == nameof(SkinModel.HaveSkin))
         {
             if ((DataContext as SkinModel)!.HaveSkin)
             {

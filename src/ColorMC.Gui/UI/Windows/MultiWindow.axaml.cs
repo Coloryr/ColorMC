@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Controls;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -19,6 +20,12 @@ public partial class MultiWindow : AMultiWindow
         InitializeComponent();
 
         InitMultiWindow(con);
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            //this.RendererDiagnostics.
+
+        });
     }
 
     protected override void SetChild(Control control)
