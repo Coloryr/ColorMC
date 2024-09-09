@@ -298,7 +298,7 @@ public partial class AddGameModel
                 var res1 = await GameBinding.SetGameLoader(game, LoaderLocal);
                 if (!res1.State)
                 {
-                    Model.ShowOk(App.Lang("AddGameWindow.Tab1.Error18"), () => 
+                    Model.ShowOk(App.Lang("AddGameWindow.Tab1.Error18"), () =>
                     {
                         Done(game.UUID);
                     });

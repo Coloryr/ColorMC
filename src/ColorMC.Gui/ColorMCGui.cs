@@ -9,7 +9,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Logging;
 using Avalonia.Media;
-using Avalonia.Vulkan;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -193,15 +192,7 @@ public static class ColorMCGui
         if (SystemInfo.Os == OsType.Windows)
         {
             var config = GuiConfigUtils.Config.Render.Windows;
-            var opt = new Win32PlatformOptions()
-            {
-                RenderingMode =
-                [
-                    //Win32RenderingMode.Wgl,
-                    Win32RenderingMode.AngleEgl,
-                    Win32RenderingMode.Software
-                ]
-            };
+            var opt = new Win32PlatformOptions();
 
             if (config.ShouldRenderOnUIThread is { } value)
             {
@@ -211,16 +202,15 @@ public static class ColorMCGui
             {
                 opt.OverlayPopups = value1;
             }
-            if (config.UseAngleEgl is true)
+            if (config.Wgl is true)
             {
-                opt.RenderingMode = [Win32RenderingMode.AngleEgl, Win32RenderingMode.Software];
+                opt.RenderingMode = [Win32RenderingMode.Wgl, Win32RenderingMode.Software];
             }
             else if (config.UseVulkan is true)
             {
                 opt.RenderingMode =
                 [
                     Win32RenderingMode.Vulkan,
-                    Win32RenderingMode.AngleEgl,
                     Win32RenderingMode.Software
                 ];
             }
@@ -230,9 +220,9 @@ public static class ColorMCGui
             }
             else if (SystemInfo.IsArm)
             {
-                opt.RenderingMode = 
+                opt.RenderingMode =
                 [
-                    Win32RenderingMode.Wgl, 
+                    Win32RenderingMode.Wgl,
                     Win32RenderingMode.Software
                 ];
             }
@@ -268,8 +258,6 @@ public static class ColorMCGui
                 opt.RenderingMode =
                 [
                     X11RenderingMode.Vulkan,
-                    X11RenderingMode.Glx,
-                    X11RenderingMode.Egl,
                     X11RenderingMode.Software
                 ];
             }
@@ -279,9 +267,9 @@ public static class ColorMCGui
             }
             else if (SystemInfo.IsArm)
             {
-                opt.RenderingMode = 
+                opt.RenderingMode =
                 [
-                    X11RenderingMode.Egl, 
+                    X11RenderingMode.Egl,
                     X11RenderingMode.Software
                 ];
             }

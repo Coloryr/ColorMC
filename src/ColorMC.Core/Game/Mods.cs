@@ -17,6 +17,8 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Mods
 {
+    private static readonly char[] s_separator = ['\n'];
+
     /// <summary>
     /// 获取Mod列表
     /// </summary>
@@ -713,7 +715,7 @@ public static class Mods
         }
         catch (Exception)
         {
-            var lines = data.Split(new[] { '\n' }, StringSplitOptions.None);
+            var lines = data.Split(s_separator, StringSplitOptions.None);
             var token = new JObject();
             foreach (var line in lines)
             {

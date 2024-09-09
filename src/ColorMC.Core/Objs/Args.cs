@@ -145,7 +145,7 @@ public record UnzipBackupWorldArg
 /// <summary>
 /// 导入文件夹参数
 /// </summary>
-public record AddGameArg
+public record AddGameFolderArg
 {
     /// <summary>
     /// 位置

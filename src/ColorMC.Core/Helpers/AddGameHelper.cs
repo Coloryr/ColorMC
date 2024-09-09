@@ -22,12 +22,13 @@ public static class AddGameHelper
     /// <param name="request"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<GameRes> AddGame(AddGameArg arg)
+    public static async Task<GameRes> AddGameFolder(AddGameFolderArg arg)
     {
         if (string.IsNullOrWhiteSpace(arg.Local))
         {
             throw new Exception("Local is empty");
         }
+
         GameSettingObj? game = null;
 
         bool isfind = false;

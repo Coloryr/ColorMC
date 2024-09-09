@@ -10,7 +10,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs.Frp;
-using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using DotNetty.Buffers;
 using DotNetty.Transport.Bootstrapping;

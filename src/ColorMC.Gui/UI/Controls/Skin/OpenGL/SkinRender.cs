@@ -43,7 +43,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         var model = (sender as SkinModel)!;
         if (e.PropertyName == nameof(SkinModel.SteveModelType))
         {
-            Dispatcher.UIThread.Post(() => 
+            Dispatcher.UIThread.Post(() =>
             {
                 skin.SetSkinType(model.SteveModelType);
             });
@@ -78,7 +78,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         }
         else if (e.PropertyName == SkinModel.RotateName)
         {
-            Dispatcher.UIThread.Post(() => 
+            Dispatcher.UIThread.Post(() =>
             {
                 skin.ArmRotate = model.ArmRotate;
                 skin.LegRotate = model.LegRotate;

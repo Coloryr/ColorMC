@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
@@ -76,18 +73,18 @@ public static class ColorMCCloudAPI
             RequestUri = new Uri(ColorMCAPI.BaseUrl + "frp"),
         };
         httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
-        httpRequest.Content = new StringContent(JsonConvert.SerializeObject(new 
-            { 
-                token, 
-                ip, 
-                custom = new 
-                { 
-                    model.Version,
-                    model.Loader,
-                    model.IsLoader,
-                    model.Text
-                } 
-            }));
+        httpRequest.Content = new StringContent(JsonConvert.SerializeObject(new
+        {
+            token,
+            ip,
+            custom = new
+            {
+                model.Version,
+                model.Loader,
+                model.IsLoader,
+                model.Text
+            }
+        }));
 
         try
         {

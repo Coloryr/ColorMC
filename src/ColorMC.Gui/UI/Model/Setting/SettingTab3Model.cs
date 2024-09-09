@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using ColorMC.Core.Config;
-using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;

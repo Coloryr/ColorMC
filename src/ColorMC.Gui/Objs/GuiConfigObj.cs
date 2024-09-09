@@ -138,7 +138,7 @@ public record WindowsRenderSetting
 {
     public bool? ShouldRenderOnUIThread { get; set; }
     public bool? OverlayPopups { get; set; }
-    public bool? UseAngleEgl { get; set; }
+    public bool? Wgl { get; set; }
     public bool? UseVulkan { get; set; }
     public bool? UseSoftware { get; set; }
 }

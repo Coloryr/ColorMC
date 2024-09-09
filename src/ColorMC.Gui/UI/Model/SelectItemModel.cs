@@ -30,7 +30,7 @@ public partial class SelectItemModel : ObservableObject
         IsSelectChanged(value);
     }
 
-    protected virtual void IsSelectChanged(bool value) 
+    protected virtual void IsSelectChanged(bool value)
     {
         EnableButton = Top || IsSelect;
     }

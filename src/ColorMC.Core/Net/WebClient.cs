@@ -117,7 +117,7 @@ public static class WebClient
         }
 
         var data1 = await data.Content.ReadAsByteArrayAsync();
-        return  new() { State = true, Data = data1 };
+        return new() { State = true, Data = data1 };
     }
 
     /// <summary>

@@ -15,6 +15,6 @@ public partial class NetFrpLocalModel(NetFrpModel top, string motd, string port)
     [RelayCommand]
     public void Start()
     {
-        top.StartThisLan(this);
+        top.StartThisFrp(this);
     }
 }

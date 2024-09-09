@@ -152,7 +152,7 @@ public abstract class ABaseWindow : Window
                 Height = newHeight;
             }
 
-            return true; 
+            return true;
         }
 
         return false;

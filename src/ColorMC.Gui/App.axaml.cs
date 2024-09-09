@@ -17,7 +17,6 @@ using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
@@ -105,8 +104,6 @@ public partial class App : Application
         SdlUtils.Init();
         UpdateUtils.Init();
         GameCloudUtils.Init(ColorMCGui.RunDir);
-
-        BaseBinding.Init();
 
         if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {

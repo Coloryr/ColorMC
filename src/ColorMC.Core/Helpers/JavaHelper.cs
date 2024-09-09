@@ -332,7 +332,7 @@ public static class JavaHelper
                         }
                     }
                 }
-                else if (SystemInfo.SystemName.Contains("Arch") 
+                else if (SystemInfo.SystemName.Contains("Arch")
                     || SystemInfo.SystemName.Contains("Manjaro"))
                 {
                     list1 = GetList("sh", "-c \"pacman -Qs jre jdk | grep jdk\"");
