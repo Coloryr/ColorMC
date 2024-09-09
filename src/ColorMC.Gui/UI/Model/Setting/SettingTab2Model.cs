@@ -494,14 +494,15 @@ public partial class SettingModel
         _load = true;
 
         FontList.Clear();
-        BaseBinding.GetFontList().ForEach(item =>
+
+        foreach (var item in BaseBinding.GetFontList())
         {
             FontList.Add(new()
             {
                 FontName = item.Name,
                 FontFamily = item
             });
-        });
+        }
 
         var config = GuiConfigUtils.Config;
         if (config is { } con)

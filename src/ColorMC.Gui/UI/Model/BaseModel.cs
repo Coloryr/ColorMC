@@ -156,7 +156,7 @@ public partial class BaseModel : ObservableObject
 
     partial void OnTitleChanged(string? value)
     {
-        
+
     }
 
     partial void OnHeadChoiseDisplayChanged(bool value)

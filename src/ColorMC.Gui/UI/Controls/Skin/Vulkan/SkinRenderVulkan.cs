@@ -81,7 +81,7 @@
 //        }
 //        catch (Exception e)
 //        {
-            
+
 //        }
 //    }
 
@@ -158,7 +158,7 @@
 //            return;
 //        using (_resources.Swapchain.BeginDraw(pixelSize, out var image))
 //        {
-            
+
 //        }
 //    }
 //}

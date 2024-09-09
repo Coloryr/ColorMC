@@ -218,6 +218,6 @@ public partial class CountModel : TopModel
 
     public override void Close()
     {
-        
+
     }
 }

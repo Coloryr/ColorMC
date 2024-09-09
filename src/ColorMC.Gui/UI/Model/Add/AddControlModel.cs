@@ -10,7 +10,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
@@ -1036,13 +1035,13 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                 }
                 if (list.List!.Count == 0)
                 {
-                    res = await WebBinding.DownloadMod(Obj, new List<DownloadModArg>() 
-                    { 
+                    res = await WebBinding.DownloadMod(Obj, new List<DownloadModArg>()
+                    {
                         new()
                         {
                             Item = list.Item!,
                             Info = list.Info!
-                        } 
+                        }
                     });
                     IsDownload = false;
                 }

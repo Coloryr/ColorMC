@@ -588,71 +588,80 @@ public static class InstancesPath
     /// <returns>结果</returns>
     public static async Task<GameSettingObj?> CreateGame(CreateGameArg arg)
     {
-        var game = arg.Game;
-        if (HaveGameWithName(game.Name))
-        {
-            if (arg.Overwirte == null || await arg.Overwirte(game) == false)
-            {
-                if (arg.Request != null && await arg.Request(LanguageHelper.Get("Core.Game.Error20")) == false)
-                {
-                    return null;
-                }
-                int a = 1;
-                do
-                {
-                    game.Name += $"({a})";
-                }
-                while (!HaveGameWithName(game.Name));
-            }
-        }
-
-        if (string.IsNullOrWhiteSpace(game.Name))
-        {
-            throw new ArgumentException("Name can't be empty");
-        }
-        var value = s_installGames.Values.FirstOrDefault(item => item.DirName == game.Name);
-        if (value != null
-            && s_installGames.Remove(value.UUID, out var temp)
-            && !await Remove(temp, arg.Request))
-        {
-            return null;
-        }
-
-        game.DirName = game.Name;
-
-        var dir = game.GetBasePath();
-        if (!await PathHelper.DeleteFilesAsync(new DeleteFilesArg
-        {
-            Local = dir,
-            Request = arg.Request
-        }))
-        {
-            return null;
-        }
-
         try
         {
-            Directory.CreateDirectory(dir);
-            Directory.CreateDirectory(game.GetGamePath());
+            DisableWatcher = true;
+
+            var game = arg.Game;
+            if (HaveGameWithName(game.Name))
+            {
+                if (arg.Overwirte == null || await arg.Overwirte(game) == false)
+                {
+                    if (arg.Request != null && await arg.Request(LanguageHelper.Get("Core.Game.Error20")) == false)
+                    {
+                        return null;
+                    }
+                    int a = 1;
+                    do
+                    {
+                        game.Name += $"({a})";
+                    }
+                    while (!HaveGameWithName(game.Name));
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(game.Name))
+            {
+                throw new ArgumentException("Name can't be empty");
+            }
+            var value = s_installGames.Values.FirstOrDefault(item => item.DirName == game.Name);
+            if (value != null
+                && s_installGames.Remove(value.UUID, out var temp)
+                && !await Remove(temp, arg.Request))
+            {
+                return null;
+            }
+
+            game.DirName = game.Name;
+
+            var dir = game.GetBasePath();
+            if (!await PathHelper.DeleteFilesAsync(new DeleteFilesArg
+            {
+                Local = dir,
+                Request = arg.Request
+            }))
+            {
+                return null;
+            }
+
+            try
+            {
+                Directory.CreateDirectory(dir);
+                Directory.CreateDirectory(game.GetGamePath());
+            }
+            catch (Exception e)
+            {
+                Logs.Error(string.Format(LanguageHelper.Get("Core.Game.Error15"), game.Name), e);
+                return null;
+            }
+
+            game.Mods ??= [];
+            game.LaunchData ??= new()
+            {
+                AddTime = DateTime.Now,
+                LastPlay = new()
+            };
+
+            game.Save();
+            game.SaveLaunchData();
+            game.AddToGroup();
+
+            return game;
         }
-        catch (Exception e)
+        finally
         {
-            Logs.Error(string.Format(LanguageHelper.Get("Core.Game.Error15"), game.Name), e);
-            return null;
+            DisableWatcher = false;
         }
-
-        game.Mods ??= [];
-        game.LaunchData ??= new()
-        {
-            AddTime = DateTime.Now,
-            LastPlay = new()
-        };
-
-        game.Save();
-        game.SaveLaunchData();
-        game.AddToGroup();
-
-        return game;
     }
 
     /// <summary>

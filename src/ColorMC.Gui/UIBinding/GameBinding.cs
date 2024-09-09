@@ -112,7 +112,7 @@ public static class GameBinding
         string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.ZipUpdate state, bool open)
     {
-        var res = await AddGameHelper.AddGame(new()
+        var res = await AddGameHelper.AddGameFolder(new()
         {
             Local = local,
             Name = name,

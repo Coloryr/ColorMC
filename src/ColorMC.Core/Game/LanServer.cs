@@ -24,6 +24,7 @@ public class LanServer
         _data = Encoding.UTF8.GetBytes(LanGameHelper.MakeMotd(_motd, _port));
 
         _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         _send = new IPEndPoint(IPAddress.Parse("224.0.2.60"), 4445);
         _isRun = true;
         new Thread(Run)

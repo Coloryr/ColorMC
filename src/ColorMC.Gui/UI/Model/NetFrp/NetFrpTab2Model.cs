@@ -28,7 +28,7 @@ public partial class NetFrpModel
         IsLocalEmpty = true;
     }
 
-    public async void StartThisLan(NetFrpLocalModel local)
+    public async void StartThisFrp(NetFrpLocalModel local)
     {
         if (RemotesSakura.Count == 0 && RemotesOpenFrp.Count == 0)
         {

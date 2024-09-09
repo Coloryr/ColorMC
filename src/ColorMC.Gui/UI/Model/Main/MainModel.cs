@@ -16,7 +16,7 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class MainModel : TopModel, IMainTop
 {
-    private static readonly string[] _icons = 
+    private static readonly string[] _icons =
     [
         "/Resource/Icon/play.svg",
         "/Resource/Icon/pause.svg"

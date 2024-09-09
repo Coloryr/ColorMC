@@ -13,14 +13,12 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Frp;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
@@ -57,17 +55,6 @@ public static class BaseBinding
         {
             InstancesPath.DisableWatcher = value;
         }
-    }
-
-    /// <summary>
-    /// 初始化
-    /// </summary>
-    public static void Init()
-    {
-        InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>
-        {
-            LongPressed.Released();
-        }, handledEventsToo: true);
     }
 
     /// <summary>
@@ -171,7 +158,7 @@ public static class BaseBinding
     /// 获取字体列表
     /// </summary>
     /// <returns></returns>
-    public static List<FontFamily> GetFontList()
+    public static FontFamily[] GetFontList()
     {
         return [.. FontManager.Current.SystemFonts];
     }

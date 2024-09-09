@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Net.Http.Headers;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;

@@ -1,7 +1,6 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.Setting;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
@@ -108,6 +109,11 @@ public static class WindowManager
                 win.Show();
             }
         }
+
+        InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>
+        {
+            LongPressed.Released();
+        }, handledEventsToo: true);
 
         if (!ShowCustom())
         {

@@ -1,7 +1,5 @@
 using System.IO;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
-using MinecraftSkinRender;
 using SkiaSharp;
 
 namespace ColorMC.Gui.Skin;

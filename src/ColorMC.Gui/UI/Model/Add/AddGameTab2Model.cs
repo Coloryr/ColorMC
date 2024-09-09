@@ -41,7 +41,7 @@ public partial class AddGameModel
             {
                 Model.Show(App.Lang("AddGameWindow.Tab2.Error4"));
             }
-            else 
+            else
             {
                 Type = res;
             }
