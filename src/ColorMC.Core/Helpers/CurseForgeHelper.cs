@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Text;
+using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
@@ -200,10 +201,22 @@ public static class CurseForgeHelper
             foreach (var item in res1)
             {
                 var path = await GetItemPath(arg.Game, item);
-                list.Add(item.MakeModDownloadObj(path.Item1));
+                var item1 = item.MakeModDownloadObj(path.Item1);
+                list.Add(item1);
                 var modid = item.modId.ToString();
                 arg.Game.Mods.Remove(modid);
-                arg.Game.Mods.Add(modid, item.MakeModInfo(path.Item2));
+
+                if (path.Item3 == FileType.Mod)
+                {
+                    arg.Game.Mods.Add(modid, item.MakeModInfo(path.Item2));
+                }
+                else if (path.Item3 == FileType.World)
+                {
+                    item1.Later = (test) =>
+                    {
+                        arg.Game.AddWorldZipAsync(item1.Local, test).Wait();
+                    };
+                }
 
                 now++;
                 arg.Update?.Invoke(size, now);
@@ -247,10 +260,11 @@ public static class CurseForgeHelper
     /// <param name="game"></param>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static async Task<(string, string)> GetItemPath(GameSettingObj game, CurseForgeModObj.Data item)
+    public static async Task<(string, string, FileType)> GetItemPath(GameSettingObj game, CurseForgeModObj.Data item)
     {
         var path = game.GetModsPath();
         var path1 = InstancesPath.Name11;
+        var type = FileType.Mod;
         if (!item.fileName.EndsWith(".jar"))
         {
             var info1 = await CurseForgeAPI.GetModInfo(item.modId);
@@ -261,17 +275,26 @@ public static class CurseForgeHelper
                 {
                     path = game.GetResourcepacksPath();
                     path1 = InstancesPath.Name8;
+                    type = FileType.Resourcepack;
                 }
                 else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassShaderpack)
                     || info1.Data.classId == CurseForgeAPI.ClassShaderpack)
                 {
                     path = game.GetShaderpacksPath();
                     path1 = InstancesPath.Name9;
+                    type = FileType.Shaderpack;
+                }
+                else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassWorld)
+                    || info1.Data.classId == CurseForgeAPI.ClassWorld)
+                {
+                    path = game.GetSavesPath();
+                    path1 = InstancesPath.Name12;
+                    type = FileType.World;
                 }
             }
         }
 
-        return (path, path1);
+        return (path, path1, type);
     }
 
     /// <summary>

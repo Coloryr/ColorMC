@@ -60,21 +60,15 @@ public static class Worlds
         Directory.Move(world.Local, Path.GetFullPath(dir + "/" + world.LevelName));
     }
 
-    /// <summary>
-    /// 导入世界压缩包
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="file">文件位置</param>
-    /// <returns>结果</returns>
-    public static async Task<bool> AddWorldZipAsync(this GameSettingObj obj, string file)
+    public static async Task<bool> AddWorldZipAsync(this GameSettingObj obj, string name, Stream file)
     {
         var dir = obj.GetSavesPath();
-        var info = new FileInfo(file);
+        var info = new FileInfo(name);
         dir = Path.GetFullPath(dir + "/" + info.Name[..^info.Extension.Length] + "/");
         Directory.CreateDirectory(dir);
         try
         {
-            using ZipFile zFile = new(file);
+            using var zFile = new ZipFile(file);
             using var stream1 = new MemoryStream();
             var dir1 = "";
             var find = false;
@@ -115,6 +109,22 @@ public static class Worlds
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// 导入世界压缩包
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件位置</param>
+    /// <returns>结果</returns>
+    public static async Task<bool> AddWorldZipAsync(this GameSettingObj obj, string file)
+    {
+        using var stream = PathHelper.OpenRead(file);
+        if (stream == null)
+        {
+            return false;
+        }
+        return await obj.AddWorldZipAsync(file, stream);
     }
 
     /// <summary>
