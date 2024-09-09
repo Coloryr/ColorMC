@@ -151,7 +151,7 @@ public static class LegacyLogin
                 {
                     State = LoginState.Error,
                     Message = msg
-                }; ;
+                };
             }
             return new LegacyLoginRes
             {

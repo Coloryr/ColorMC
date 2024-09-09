@@ -347,6 +347,34 @@ public static class GameHelper
     }
 
     /// <summary>
+    /// 解压native
+    /// </summary>
+    /// <param name="version">游戏版本</param>
+    /// <param name="stream">文件流</param>
+    public static void UnpackSave(string version, Stream stream)
+    {
+        using var zFile = new ZipFile(stream);
+        foreach (ZipEntry e in zFile)
+        {
+            if (e.Name.StartsWith("META-INF"))
+            {
+                continue;
+            }
+            else if (e.IsFile)
+            {
+                var file = Path.GetFullPath(LibrariesPath.GetNativeDir(version) + "/" + e.Name);
+                if (File.Exists(file))
+                {
+                    continue;
+                }
+
+                using var stream2 = zFile.GetInputStream(e);
+                PathHelper.WriteBytes(file, stream2);
+            }
+        }
+    }
+
+    /// <summary>
     /// MMC配置转ColorMC
     /// </summary>
     /// <param name="mmc">MMC储存</param>
