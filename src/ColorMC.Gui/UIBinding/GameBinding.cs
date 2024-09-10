@@ -231,8 +231,7 @@ public static class GameBinding
     public static async Task<GameRes> InstallCurseForge(CurseForgeModObj.Data data,
         CurseForgeObjList.Data data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
-        ColorMCCore.PackUpdate update,
-        ColorMCCore.PackState update2)
+        ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
         return await AddGameHelper.InstallCurseForge(new DownloadCurseForgeArg
         {

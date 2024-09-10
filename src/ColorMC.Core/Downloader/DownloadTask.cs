@@ -29,6 +29,8 @@ internal class DownloadTask
     private int _doneSize;
     private int _threadCount;
 
+    private readonly object _lock = new();
+
     /// <summary>
     /// 处理完成信号量
     /// </summary>
@@ -113,7 +115,10 @@ internal class DownloadTask
     /// </summary>
     public void ThreadDone()
     {
-        _threadCount++;
+        lock (_lock)
+        {
+            _threadCount++;
+        }
         if (_threadCount >= ConfigUtils.Config.Http.DownloadThread)
         {
             //任务结束
