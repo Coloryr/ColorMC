@@ -69,7 +69,6 @@ public static class Worlds
         try
         {
             using var zFile = new ZipFile(file);
-            using var stream1 = new MemoryStream();
             var dir1 = "";
             var find = false;
             foreach (ZipEntry e in zFile)
@@ -93,11 +92,7 @@ public static class Worlds
                 {
                     using var stream = zFile.GetInputStream(e);
                     var file1 = Path.GetFullPath(dir + e.Name[dir1.Length..]);
-                    var info2 = new FileInfo(file1);
-                    info2.Directory?.Create();
-                    using FileStream stream3 = new(file1, FileMode.Create,
-                        FileAccess.ReadWrite, FileShare.ReadWrite);
-                    await stream.CopyToAsync(stream3);
+                    await PathHelper.WriteBytesAsync(file1, stream);
                 }
             }
 

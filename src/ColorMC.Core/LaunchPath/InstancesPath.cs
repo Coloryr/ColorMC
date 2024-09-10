@@ -602,11 +602,14 @@ public static class InstancesPath
                         return null;
                     }
                     int a = 1;
+                    string name;
                     do
                     {
-                        game.Name += $"({a})";
+                        name = game.Name + $"({a++})";
                     }
-                    while (!HaveGameWithName(game.Name));
+                    while (HaveGameWithName(name));
+
+                    game.Name = name;
                 }
             }
 

@@ -409,11 +409,15 @@ public static class Mods
             using var stream = new MemoryStream();
             await stream1.CopyToAsync(stream);
             var model = Toml.Parse(stream.ToArray()).ToModel();
-            if (model["mods"] is not TomlTableArray model1)
+            TomlTable? model2 = null;
+            if (model["mods"] is TomlArray array)
             {
-                return null;
+                model2 = array.FirstOrDefault() as TomlTable;
             }
-            var model2 = model1[0];
+            else if (model["mods"] is TomlTableArray model1)
+            {
+                model2 = model1[0];
+            }
             if (model2 == null)
             {
                 return null;

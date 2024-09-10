@@ -105,15 +105,12 @@ public static class AddGameHelper
         });
         if (game == null)
         {
-            return new GameRes
-            {
-                State = false
-            };
+            return new();
         }
 
         await game.CopyFile(arg.Local, arg.Unselect, ismmc, arg.State);
 
-        return new GameRes
+        return new()
         {
             State = true,
             Game = game
@@ -131,17 +128,15 @@ public static class AddGameHelper
     {
         GameSettingObj? game = null;
         bool import = false;
-        Stream? stream4 = null;
         try
         {
-            stream4 = PathHelper.OpenRead(arg.Dir);
             switch (arg.Type)
             {
                 //ColorMC格式
                 case PackType.ColorMC:
                     {
                         arg.Update2?.Invoke(CoreRunState.Read);
-                        using ZipFile zFile = new(stream4);
+                        using var zFile = new ZipFile(arg.Dir);
                         using var stream1 = new MemoryStream();
                         bool find = false;
                         foreach (ZipEntry e in zFile)
@@ -234,7 +229,7 @@ public static class AddGameHelper
                 case PackType.MMC:
                     {
                         arg.Update2?.Invoke(CoreRunState.Read);
-                        using ZipFile zFile = new(stream4);
+                        using var zFile = new ZipFile(arg.Dir);
                         using var stream1 = new MemoryStream();
                         using var stream2 = new MemoryStream();
                         bool find = false;
@@ -308,11 +303,7 @@ public static class AddGameHelper
                                 using var stream = zFile.GetInputStream(e);
                                 string file = Path.GetFullPath(game.GetBasePath() + "/" +
                                     e.Name[path.Length..]);
-                                FileInfo info2 = new(file);
-                                info2.Directory?.Create();
-                                using FileStream stream3 = new(file, FileMode.Create,
-                                    FileAccess.ReadWrite, FileShare.ReadWrite);
-                                await stream.CopyToAsync(stream3);
+                                await PathHelper.WriteBytesAsync(file, stream);
                             }
                         }
 
@@ -324,7 +315,7 @@ public static class AddGameHelper
                 case PackType.HMCL:
                     {
                         arg.Update2?.Invoke(CoreRunState.Read);
-                        using ZipFile zFile = new(stream4);
+                        using var zFile = new ZipFile(arg.Dir);
                         using var stream1 = new MemoryStream();
                         using var stream2 = new MemoryStream();
                         bool find = false;
@@ -405,12 +396,7 @@ public static class AddGameHelper
                                     file = game.GetIconFile();
                                 }
                                 using var stream = zFile.GetInputStream(e);
-
-                                FileInfo info2 = new(file);
-                                info2.Directory?.Create();
-                                using FileStream stream3 = new(file, FileMode.Create,
-                                    FileAccess.ReadWrite, FileShare.ReadWrite);
-                                await stream.CopyToAsync(stream3);
+                                await PathHelper.WriteBytesAsync(file, stream);
                             }
                         }
 
@@ -422,7 +408,7 @@ public static class AddGameHelper
                 case PackType.ZipPack:
                     {
                         arg.Update2?.Invoke(CoreRunState.Read);
-
+                        using var stream4 = PathHelper.OpenRead(arg.Dir);
                         if (string.IsNullOrWhiteSpace(arg.Name))
                         {
                             arg.Name = Path.GetFileName(arg.Dir);
@@ -490,10 +476,6 @@ public static class AddGameHelper
         catch (Exception e)
         {
             ColorMCCore.OnError(LanguageHelper.Get("Core.Pack.Error2"), e, false);
-        }
-        finally
-        {
-            stream4?.Dispose();
         }
         if (!import && game != null)
         {

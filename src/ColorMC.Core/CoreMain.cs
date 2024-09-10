@@ -149,7 +149,8 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端启动
     /// </summary>
-    public static Func<LoginObj, GameSettingObj, JavaInfo, List<string>, Dictionary<string, string>, IGameHandel> PhoneGameLaunch { internal get; set; }
+    public static Func<LoginObj, GameSettingObj, JavaInfo, List<string>, 
+        Dictionary<string, string>, IGameHandel> PhoneGameLaunch { internal get; set; }
     /// <summary>
     /// 手机端Jvm安装
     /// </summary>
@@ -169,7 +170,8 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端Jvm运行
     /// </summary>
-    public static Func<GameSettingObj, JavaInfo, string, List<string>, Dictionary<string, string>, Process> PhoneJvmRun { internal get; set; }
+    public static Func<GameSettingObj, JavaInfo, string, List<string>, 
+        Dictionary<string, string>, Process> PhoneJvmRun { internal get; set; }
     /// <summary>
     /// 手机端打开网页
     /// </summary>
@@ -212,7 +214,6 @@ public static class ColorMCCore
 
         LanguageHelper.Load(LanguageType.zh_cn);
         Logs.Init(BaseDir);
-        ToolPath.Init(BaseDir);
         ConfigUtils.Init(BaseDir);
         WebClient.Init();
 
@@ -230,6 +231,7 @@ public static class ColorMCCore
         GameCount.Init(BaseDir);
         JvmPath.Init(BaseDir);
         LocalMaven.Init(BaseDir);
+        ToolPath.Init(BaseDir);
         DownloadManager.Init(BaseDir);
         AuthDatabase.Init();
         MinecraftPath.Init(BaseDir);
