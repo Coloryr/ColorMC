@@ -90,7 +90,7 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
     /// </summary>
     public List<string> GetKeys()
     {
-        return new(Entries.Keys.ToList());
+        return new([.. Entries.Keys]);
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
     /// </summary>
     public List<NbtBase> GetValues()
     {
-        return new(Entries.Values.ToList());
+        return new([.. Entries.Values]);
     }
 
     /// <summary>
