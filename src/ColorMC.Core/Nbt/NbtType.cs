@@ -24,7 +24,8 @@ public enum ZipType
 {
     None,
     GZip,
-    Zlib
+    Zlib,
+    LZ4
 }
 
 public static class NbtTypes

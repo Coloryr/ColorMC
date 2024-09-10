@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Helpers;
+using K4os.Compression.LZ4.Streams;
 
 namespace ColorMC.Core.Nbt;
 
@@ -171,7 +172,7 @@ public abstract class NbtBase
             return null;
         }
         DataInputStream stream2;
-        var data = new byte[2];
+        var data = new byte[3];
         await stream.ReadExactlyAsync(data);
         stream.Seek(0, SeekOrigin.Begin);
         ZipType zip = ZipType.None;
@@ -186,6 +187,12 @@ public abstract class NbtBase
             var steam1 = new ZLibStream(stream, CompressionMode.Decompress);
             stream2 = new DataInputStream(steam1);
             zip = ZipType.Zlib;
+        }
+        else if (data[0] == 0x4C && data[1] == 0x5A && data[2] == 0x34)
+        {
+            var steam1 = LZ4Stream.Decode(stream);
+            stream2 = new DataInputStream(steam1);
+            zip = ZipType.LZ4;
         }
         else
         {
@@ -254,12 +261,13 @@ public abstract class NbtBase
 
     public static void Save(NbtBase nbt, Stream stream)
     {
-        DataOutputStream steam2 = nbt.ZipType switch
+        var steam2 = new DataOutputStream(nbt.ZipType switch
         {
-            ZipType.GZip => new DataOutputStream(new GZipStream(stream, CompressionLevel.Optimal)),
-            ZipType.Zlib => new DataOutputStream(new ZLibStream(stream, CompressionLevel.Optimal)),
-            _ => new DataOutputStream(stream)
-        };
+            ZipType.GZip => new GZipStream(stream, CompressionLevel.Optimal),
+            ZipType.Zlib => new ZLibStream(stream, CompressionLevel.Optimal),
+            ZipType.LZ4 => LZ4Stream.Encode(stream),
+            _ => stream
+        });
 
         steam2.Write((byte)nbt.NbtType);
         if (nbt.NbtType != NbtType.NbtEnd)
