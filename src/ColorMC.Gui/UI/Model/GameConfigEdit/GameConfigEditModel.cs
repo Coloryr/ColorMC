@@ -537,7 +537,7 @@ public partial class GameConfigEditModel : GameModel
         {
             var model1 = new NbtDialogAddModel(UseName)
             {
-                Key = model.Nbt.Value.ToString(),
+                Key = model.Nbt.Value,
                 DisplayType = false,
                 Title = App.Lang("ConfigEditWindow.Info6"),
                 Title1 = App.Lang("ConfigEditWindow.Info4"),

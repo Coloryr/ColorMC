@@ -276,7 +276,7 @@ public static class ColorMCCore
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="text"></param>
-    internal static void OnGameLog(GameSettingObj obj, string? text)
+    public static void OnGameLog(GameSettingObj obj, string? text)
     {
         GameLog?.Invoke(obj, text);
     }
@@ -296,7 +296,7 @@ public static class ColorMCCore
     /// <param name="obj"></param>
     /// <param name="obj1"></param>
     /// <param name="code"></param>
-    internal static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
+    public static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
     {
         Games.TryRemove(obj.UUID, out _);
         GameExit?.Invoke(obj, obj1, code);

@@ -63,7 +63,7 @@ public abstract class NbtBase
                     (this as NbtDouble)!.Value = double.Parse(value);
                     break;
                 case NbtType.NbtString:
-                    (this as NbtString)!.Value = value!;
+                    (this as NbtString)!.Value = value;
                     break;
             };
         }
