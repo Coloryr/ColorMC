@@ -1,6 +1,7 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Login;
 
@@ -52,7 +53,7 @@ public static class LittleSkin
             obj.Auth.Text1 = server!;
         }
 
-        return obj;
+        return await LegacyLogin.RefreshAsync(server1 + "api/yggdrasil", obj.Auth, true);
     }
 
     /// <summary>
@@ -80,13 +81,9 @@ public static class LittleSkin
 
         if (await LegacyLogin.ValidateAsync(server + "/authserver/validate", obj))
         {
-            return new LegacyLoginRes
-            {
-                State = LoginState.Done,
-                Auth = obj,
-            };
+            return await LegacyLogin.RefreshAsync(server, obj, false);
         }
 
-        return await LegacyLogin.RefreshAsync(server, obj);
+        return new() { State = LoginState.Error };
     }
 }

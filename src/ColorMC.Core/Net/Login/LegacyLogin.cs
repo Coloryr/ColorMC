@@ -117,22 +117,40 @@ public static class LegacyLogin
     /// </summary>
     /// <param name="server">服务器地址</param>
     /// <param name="obj">保存的账户</param>
-    public static async Task<LegacyLoginRes> RefreshAsync(string server, LoginObj obj)
+    public static async Task<LegacyLoginRes> RefreshAsync(string server, LoginObj obj, bool select)
     {
-        var obj1 = new RefreshObj
-        {
-            accessToken = obj.AccessToken,
-            clientToken = obj.ClientToken
-        };
         HttpRequestMessage message = new()
         {
             Method = HttpMethod.Post,
             RequestUri = new(server + "/authserver/refresh")
         };
         message.Headers.UserAgent.Add(new("ColorMC", ColorMCCore.Version));
-        message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
-            MediaTypeHeaderValue.Parse("application/json"));
 
+        if (select)
+        {
+            var obj1 = new RefreshObj
+            {
+                accessToken = obj.AccessToken,
+                clientToken = obj.ClientToken,
+                selectedProfile = new()
+                {
+                    name = obj.UserName,
+                    id = obj.UUID
+                }
+            };
+            message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
+            MediaTypeHeaderValue.Parse("application/json"));
+        }
+        else
+        {
+            var obj1 = new RefreshObj
+            {
+                accessToken = obj.AccessToken,
+                clientToken = obj.ClientToken
+            };
+            message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
+            MediaTypeHeaderValue.Parse("application/json"));
+        }
         var res = await WebClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
@@ -142,7 +160,7 @@ public static class LegacyLogin
                 Message = LanguageHelper.Get("Core.Login.Error24")
             };
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
-        if (obj2 == null || obj2.selectedProfile == null)
+        if (obj2 == null || (obj2.selectedProfile == null && !select))
         {
             var jobj = JObject.Parse(data);
             if (jobj?["errorMessage"]?.ToString() is { } msg)
@@ -159,8 +177,11 @@ public static class LegacyLogin
                 Message = LanguageHelper.Get("Core.Login.Error22")
             };
         }
-        obj.UserName = obj2.selectedProfile.name;
-        obj.UUID = obj2.selectedProfile.id;
+        if (obj2.selectedProfile != null)
+        {
+            obj.UserName = obj2.selectedProfile.name;
+            obj.UUID = obj2.selectedProfile.id;
+        }
         obj.AccessToken = obj2.accessToken;
         obj.ClientToken = obj2.clientToken;
 
