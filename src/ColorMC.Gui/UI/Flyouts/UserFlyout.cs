@@ -17,12 +17,12 @@ public class UserFlyout
             {
                  _obj.Select();
             }),
-            (App.Lang("UserWindow.Flyouts.Text2"), _obj.AuthType != AuthType.Offline, ()=>
+            (App.Lang("UserWindow.Flyouts.Text2"), _obj.AuthType is not AuthType.Offline, ()=>
             {
                 _obj.Refresh();
             }),
-            (App.Lang("UserWindow.Flyouts.Text3"), _obj.AuthType != AuthType.Offline
-                && _obj.AuthType != AuthType.OAuth, ()=>
+            (App.Lang("UserWindow.Flyouts.Text3"), _obj.AuthType is not AuthType.Offline
+                or AuthType.OAuth, ()=>
                 {
                     _obj.ReLogin();
                 }),

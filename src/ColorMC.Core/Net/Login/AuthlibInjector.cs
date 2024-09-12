@@ -1,5 +1,6 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Login;
 
@@ -25,7 +26,7 @@ public static class AuthlibInjector
         obj.Auth!.AuthType = AuthType.AuthlibInjector;
         obj.Auth.Text1 = server;
 
-        return obj;
+        return await LegacyLogin.RefreshAsync(server, obj.Auth, true);
     }
 
     /// <summary>
@@ -36,12 +37,9 @@ public static class AuthlibInjector
     {
         if (await LegacyLogin.ValidateAsync(obj.Text1 + "/authserver/validate", obj))
         {
-            return new LegacyLoginRes
-            {
-                State = LoginState.Done,
-                Auth = obj
-            };
+            return await LegacyLogin.RefreshAsync(obj.Text1, obj, false);
         }
-        return await LegacyLogin.RefreshAsync(obj.Text1, obj);
+
+        return new() { State = LoginState.Error };
     }
 }

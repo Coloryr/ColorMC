@@ -578,6 +578,7 @@ public static class Launch
             }
             jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
             jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+            jvm.Add("-Dauthlibinjector.side=client");
         }
         else if (login.AuthType == AuthType.LittleSkin)
         {
@@ -588,6 +589,7 @@ public static class Launch
             }
             jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
             jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+            jvm.Add("-Dauthlibinjector.side=client");
         }
         else if (login.AuthType == AuthType.SelfLittleSkin)
         {
@@ -598,6 +600,7 @@ public static class Launch
             }
             jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
             jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+            jvm.Add("-Dauthlibinjector.side=client");
         }
 
         //log4j2-xml
@@ -1360,7 +1363,10 @@ public static class Launch
         else
         {
             larg.Auth = res1.Auth!;
-            larg.Auth.Save();
+            if (larg.Auth.AuthType is AuthType.OAuth or AuthType.Nide8)
+            {
+                larg.Auth.Save();
+            }
         }
 
         if (token.IsCancellationRequested)

@@ -46,6 +46,6 @@ public static class Nide8
             };
         }
 
-        return await LegacyLogin.RefreshAsync(server, obj);
+        return await LegacyLogin.RefreshAsync(server, obj, false);
     }
 }
