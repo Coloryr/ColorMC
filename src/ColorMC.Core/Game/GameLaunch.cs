@@ -1363,10 +1363,7 @@ public static class Launch
         else
         {
             larg.Auth = res1.Auth!;
-            if (larg.Auth.AuthType is AuthType.OAuth or AuthType.Nide8)
-            {
-                larg.Auth.Save();
-            }
+            larg.Auth.Save();
         }
 
         if (token.IsCancellationRequested)
