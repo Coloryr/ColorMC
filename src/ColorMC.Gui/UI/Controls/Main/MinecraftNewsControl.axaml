@@ -11,16 +11,26 @@
     d:DesignWidth="800"
     x:DataType="model:MainModel"
     mc:Ignorable="d">
-    <ItemsControl ItemsSource="{Binding News}">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <WrapPanel HorizontalAlignment="Center" />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <view:NewsItemControl Margin="0,0,10,10" HorizontalAlignment="Center" />
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+    <DockPanel>
+        <Button
+            Height="35"
+            Margin="6,0,6,5"
+            HorizontalAlignment="Stretch"
+            Classes="top"
+            Command="{Binding NewsNextPage}"
+            Content="{setting:Localize MainWindow.Text28}"
+            DockPanel.Dock="Bottom" />
+        <ItemsControl ItemsSource="{Binding News}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <view:NewsItemControl Margin="0,0,10,10" HorizontalAlignment="Center" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DockPanel>
 </UserControl>

@@ -23,6 +23,8 @@ public partial class MainModel
     [ObservableProperty]
     private Bitmap? _newsImage;
 
+    private int newsPage = 0;
+
     [RelayCommand]
     public async Task LoadNews()
     {
@@ -33,7 +35,7 @@ public partial class MainModel
         var temp = NewsImage;
         NewsImage = null;
         temp?.Dispose();
-        var data = await WebBinding.LoadNews();
+        var data = await WebBinding.LoadNews(newsPage++);
         IsLoadNews = false;
         if (data == null)
         {
@@ -56,6 +58,22 @@ public partial class MainModel
         else
         {
             IsHaveNews = false;
+        }
+    }
+
+    [RelayCommand]
+    public async Task NewsNextPage()
+    {
+        var data = await WebBinding.LoadNews(newsPage++);
+        if (data == null)
+        {
+            Model.Notify("News加载失败");
+            return;
+        }
+
+        foreach (var item in data.ArticleGrid)
+        {
+            News.Add(new(item));
         }
     }
 }
