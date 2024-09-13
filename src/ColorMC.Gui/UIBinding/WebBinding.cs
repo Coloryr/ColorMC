@@ -1667,11 +1667,11 @@ public static class WebBinding
     /// 获取Minecraft News
     /// </summary>
     /// <returns></returns>
-    public static async Task<MinecraftNewObj?> LoadNews()
+    public static async Task<MinecraftNewObj?> LoadNews(int page)
     {
         try
         {
-            return await MinecraftAPI.GetMinecraftNew();
+            return await MinecraftAPI.GetMinecraftNew(page);
         }
         catch (Exception e)
         {
