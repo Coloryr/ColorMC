@@ -27,8 +27,6 @@ public partial class GameEditModel
     private readonly List<Loaders> _loaderTypeList = [];
     private readonly List<string> _langList = [];
 
-    private bool _gameLoad = false;
-
     [ObservableProperty]
     private string _gameVersion;
     [ObservableProperty]
@@ -61,6 +59,10 @@ public partial class GameEditModel
     private bool _offLib;
     [ObservableProperty]
     private bool _isLoad;
+    [ObservableProperty]
+    private bool _gameVersionEmpty;
+
+    private bool _gameLoad;
 
     partial void OnIsLoadChanged(bool value)
     {
@@ -139,6 +141,12 @@ public partial class GameEditModel
     async partial void OnGameVersionChanged(string value)
     {
         if (_gameLoad)
+        {
+            return;
+        }
+
+        GameVersionEmpty = string.IsNullOrWhiteSpace(GameVersion);
+        if (GameVersionEmpty)
         {
             return;
         }
@@ -254,6 +262,8 @@ public partial class GameEditModel
         }
         IsLoad = false;
         Model.Title1 = "";
+
+        Model.Notify(App.Lang("GameEditWindow.Tab1.Info16"));
     }
 
     [RelayCommand]
@@ -471,11 +481,17 @@ public partial class GameEditModel
                 LoaderVersionList.AddRange(list);
                 break;
         }
+        Model.Notify(App.Lang("GameEditWindow.Tab1.Info15"));
     }
 
     [RelayCommand]
     public async Task LoaderReload()
     {
+        if (GameVersionEmpty)
+        {
+            return;
+        }
+
         _gameLoad = true;
 
         var loaderType = _loaderTypeList[LoaderType];
@@ -515,6 +531,8 @@ public partial class GameEditModel
         Model.Title1 = "";
 
         _gameLoad = false;
+
+        Model.Notify(App.Lang("GameEditWindow.Tab1.Info14"));
     }
 
     [RelayCommand]
@@ -537,6 +555,8 @@ public partial class GameEditModel
         GameVersionLoad();
 
         _gameLoad = false;
+
+        Model.Notify(App.Lang("GameEditWindow.Tab1.Info13"));
     }
 
     [RelayCommand]
@@ -711,6 +731,9 @@ public partial class GameEditModel
         }
         ModPack = _obj.ModPack;
         GameVersion = _obj.Version;
+
+        GameVersionEmpty = string.IsNullOrWhiteSpace(GameVersion);
+
         Group = _obj.GroupName;
         FID = _obj.FID;
         PID = _obj.PID;
@@ -750,6 +773,17 @@ public partial class GameEditModel
                 _langList.Add(list.Key);
 
                 Lang = 0;
+            }
+            else
+            {
+                var list1 = GameLang.GetLangs(null);
+                if (list1.TryGetValue(lang, out var name))
+                {
+                    LangList.Add(name);
+                    _langList.Add(lang);
+
+                    Lang = 0;
+                }
             }
         }
 
