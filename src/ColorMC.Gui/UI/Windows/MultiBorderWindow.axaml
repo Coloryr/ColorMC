@@ -14,12 +14,12 @@
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     xmlns:view1="clr-namespace:ColorMC.Gui.UI.Windows"
     Title="{Binding Title}"
-    Width="780"
-    Height="470"
-    MinWidth="355"
-    MinHeight="470"
-    d:DesignHeight="470"
-    d:DesignWidth="780"
+    Width="770"
+    Height="460"
+    MinWidth="345"
+    MinHeight="460"
+    d:DesignHeight="460"
+    d:DesignWidth="770"
     x:DataType="model:BaseModel"
     Background="Transparent"
     ExtendClientAreaChromeHints="NoChrome"
@@ -37,7 +37,7 @@
         <view1:BorderControl />
         <Panel
             Name="MainView"
-            Margin="10"
+            Margin="5"
             Background="{setting:Theme WindowTranColor}">
             <Image
                 IsVisible="{Binding BgVisible}"

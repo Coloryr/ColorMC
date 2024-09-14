@@ -10,8 +10,8 @@ public partial class SingleBorderWindow : ABaseWindow
 {
     public override ITopWindow ICon => Win;
 
-    public override int DefaultWidth => 780;
-    public override int DefaultHeight => 470;
+    public override int DefaultWidth => 770;
+    public override int DefaultHeight => 460;
 
     public SingleBorderWindow()
     {
@@ -57,7 +57,7 @@ public partial class SingleBorderWindow : ABaseWindow
             }
             else
             {
-                Win.Margin = new Thickness(10);
+                Win.Margin = new Thickness(5);
             }
         }
     }
