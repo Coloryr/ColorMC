@@ -10,8 +10,8 @@ public partial class MultiBorderWindow : AMultiWindow
 {
     public override HeadControl Head => HeadControl;
 
-    public override int DefaultWidth => 780;
-    public override int DefaultHeight => 470;
+    public override int DefaultWidth => 770;
+    public override int DefaultHeight => 460;
 
     public MultiBorderWindow()
     {
@@ -42,7 +42,7 @@ public partial class MultiBorderWindow : AMultiWindow
             }
             else
             {
-                MainView.Margin = new Thickness(10);
+                MainView.Margin = new Thickness(5);
             }
         }
     }
