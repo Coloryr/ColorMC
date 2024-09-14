@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,21 +68,43 @@ public static class LaunchSocketUtils
     /// <returns>端口</returns>
     private static int GetFirstAvailablePort()
     {
-        var portUsed = PortIsUsed();
-        if (portUsed.Count > 5000)
+        try
         {
-            return -1;
-        }
-        var random = new Random();
-        do
-        {
-            int temp = random.Next() % 65535;
-            if (!portUsed.Contains(temp))
+            var portUsed = PortIsUsed();
+            if (portUsed.Count > 5000)
             {
-                return temp;
+                return -1;
             }
+            var random = new Random();
+            do
+            {
+                int temp = random.Next() % 65535;
+                if (!portUsed.Contains(temp))
+                {
+                    return temp;
+                }
+            }
+            while (true);
         }
-        while (true);
+        catch
+        {
+            var random = new Random();
+            do
+            {
+                try
+                {
+                    int port = random.Next(65535);
+                    using var socket = new TcpListener(IPAddress.Any, port);
+                    socket.Start();
+                    socket.Stop();
+                    return port;
+                }
+                catch
+                {
+
+                }
+            } while (true);
+        }
     }
 
     /// <summary>
