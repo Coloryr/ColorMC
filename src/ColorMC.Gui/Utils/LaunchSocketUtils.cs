@@ -146,7 +146,7 @@ public static class LaunchSocketUtils
         }
         catch (Exception e)
         {
-            Logs.Crash("netty error", e);
+            PathBinding.OpenFileWithExplorer(Logs.Crash("netty error", e));
             return 0;
         }
     }

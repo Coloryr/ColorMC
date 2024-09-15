@@ -65,7 +65,7 @@ public static class ColorMCGui
                 Logs.Error(App.Lang("App.Error1"), e.Exception);
                 return;
             }
-            Logs.Crash(App.Lang("App.Error1"), e.Exception);
+            PathBinding.OpenFileWithExplorer(Logs.Crash(App.Lang("App.Error1"), e.Exception));
         };
 
         RunType = RunType.Program;

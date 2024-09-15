@@ -79,7 +79,7 @@ public static class LittleSkin
 
         server += "api/yggdrasil";
 
-        if (await LegacyLogin.ValidateAsync(server + "/authserver/validate", obj))
+        if (await LegacyLogin.ValidateAsync(server, obj))
         {
             return await LegacyLogin.RefreshAsync(server, obj, false);
         }
