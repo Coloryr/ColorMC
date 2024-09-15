@@ -208,7 +208,7 @@ public static class LegacyLogin
         HttpRequestMessage message = new()
         {
             Method = HttpMethod.Post,
-            RequestUri = new(server)
+            RequestUri = new(server + "/authserver/validate")
         };
         message.Headers.UserAgent.Add(new("ColorMC", ColorMCCore.Version));
         message.Content = new StringContent(JsonConvert.SerializeObject(obj1),

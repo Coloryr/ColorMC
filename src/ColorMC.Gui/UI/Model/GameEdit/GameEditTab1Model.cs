@@ -721,6 +721,10 @@ public partial class GameEditModel
                 LoaderVersionList.Add(new(_obj.LoaderVersion));
             }
         }
+        else
+        {
+            LoaderType = 0;
+        }
 
         GameVersionLoad();
         GroupLoad();

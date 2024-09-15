@@ -37,7 +37,7 @@ public static class Nide8
     public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj)
     {
         string server = UrlHelper.Nide8 + obj.Text1;
-        if (await LegacyLogin.ValidateAsync(server + "/authserver/validate", obj))
+        if (await LegacyLogin.ValidateAsync(server, obj))
         {
             return new LegacyLoginRes
             {

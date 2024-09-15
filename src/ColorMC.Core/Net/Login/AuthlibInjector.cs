@@ -35,7 +35,7 @@ public static class AuthlibInjector
     /// <param name="obj">保存的账户</param>
     public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj)
     {
-        if (await LegacyLogin.ValidateAsync(obj.Text1 + "/authserver/validate", obj))
+        if (await LegacyLogin.ValidateAsync(obj.Text1, obj))
         {
             return await LegacyLogin.RefreshAsync(obj.Text1, obj, false);
         }
