@@ -49,6 +49,7 @@ build_osx()
     chmod a+x $dir/ColorMC.Launcher
 
     cd ./src/build_out/$1-dotnet
+    codesign --force --deep --sign - ColorMC.app
     zip -r $zip_name ./ColorMC.app
     mv $zip_name ../../../build_out/$zip_name
     cd ../../../

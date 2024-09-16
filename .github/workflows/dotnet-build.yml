@@ -175,7 +175,7 @@ jobs:
         path: build_out/colormc-linux-${{ env.MAINVERSION }}${{ env.VERSION }}-min-x86_64.AppImage
 
   build-macos:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
     - name: 设置.NET Core
