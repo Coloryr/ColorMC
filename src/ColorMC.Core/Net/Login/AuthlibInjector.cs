@@ -26,6 +26,11 @@ public static class AuthlibInjector
         obj.Auth!.AuthType = AuthType.AuthlibInjector;
         obj.Auth.Text1 = server;
 
+        if (obj.IsOne)
+        {
+            return obj;
+        }
+
         return await LegacyLogin.RefreshAsync(server, obj.Auth, true);
     }
 
