@@ -68,7 +68,7 @@ public static class LegacyLogin
             };
         }
 
-        if (obj2.selectedProfile == null && obj2.availableProfiles?.Count > 0)
+        if (obj2.selectedProfile == null && obj2.availableProfiles.Count > 0)
         {
             foreach (var item in obj2.availableProfiles)
             {
@@ -108,7 +108,8 @@ public static class LegacyLogin
                 UUID = obj2.selectedProfile.id,
                 AccessToken = obj2.accessToken,
                 ClientToken = obj2.clientToken
-            }
+            },
+            IsOne = obj2.availableProfiles.Count <= 1
         };
     }
 
@@ -154,23 +155,25 @@ public static class LegacyLogin
         var res = await WebClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
+        {
             return new LegacyLoginRes
             {
                 State = LoginState.Error,
                 Message = LanguageHelper.Get("Core.Login.Error24")
             };
+        }
+        if (data.Contains("error") && data.Contains("errorMessage"))
+        {
+            var jobj = JObject.Parse(data);
+            return new LegacyLoginRes
+            {
+                State = LoginState.Error,
+                Message = jobj["errorMessage"]!.ToString()
+            };
+        }
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
         if (obj2 == null || (obj2.selectedProfile == null && !select))
         {
-            var jobj = JObject.Parse(data);
-            if (jobj?["errorMessage"]?.ToString() is { } msg)
-            {
-                return new LegacyLoginRes
-                {
-                    State = LoginState.Error,
-                    Message = msg
-                };
-            }
             return new LegacyLoginRes
             {
                 State = LoginState.DataError,
