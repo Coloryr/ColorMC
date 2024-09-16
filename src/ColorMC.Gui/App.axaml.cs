@@ -101,7 +101,10 @@ public partial class App : Application
         ImageManager.Init(ColorMCGui.RunDir);
         WindowManager.Init(ColorMCGui.RunDir);
 
-        SdlUtils.Init();
+        if (SystemInfo.Os == OsType.MacOS && !SystemInfo.IsArm)
+        {
+            SdlUtils.Init();
+        }
         UpdateUtils.Init();
         GameCloudUtils.Init(ColorMCGui.RunDir);
 
