@@ -1,4 +1,9 @@
 {
+	"App.Text1": "添加账户",
+	"App.Text2": "添加实例",
+	"App.Text3": "启动器窗口",
+	"App.Text4": "启动器设置",
+	"App.Text5": "退出启动器",
 	"MainWindow.Text2": "1.添加账户",
 	"MainWindow.Text4": "2.设置JAVA",
 	"MainWindow.Text6": "3.添加游戏",

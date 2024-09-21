@@ -17,6 +17,7 @@ using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
@@ -52,6 +53,15 @@ public partial class App : Application
 
     public override void Initialize()
     {
+        if (ConfigUtils.Config == null)
+        {
+            LoadLanguage(LanguageType.zh_cn);
+        }
+        else
+        {
+            LoadLanguage(ConfigUtils.Config.Language);
+        }
+
         AvaloniaXamlLoader.Load(this);
     }
 
@@ -71,15 +81,6 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
 
         Life = ApplicationLifetime;
-
-        if (ConfigUtils.Config == null)
-        {
-            LoadLanguage(LanguageType.zh_cn);
-        }
-        else
-        {
-            LoadLanguage(ConfigUtils.Config.Language);
-        }
 
         if (PlatformSettings is { } setting)
         {
@@ -122,6 +123,8 @@ public partial class App : Application
             });
         }
         _ = ImageManager.LoadBGImage();
+
+        DataContext = new AppModel();
     }
 
     public static void Clear()
