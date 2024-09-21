@@ -32,6 +32,7 @@
     <Design.DataContext>
         <model:BaseModel />
     </Design.DataContext>
+
     <Panel Background="{setting:Theme WindowTranColor}">
         <Image
             IsVisible="{Binding BgVisible}"

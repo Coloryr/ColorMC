@@ -43,7 +43,7 @@
                     HorizontalAlignment="Left"
                     Text="{Binding NowTemp, FallbackValue=Speed}" />
                 <TextBlock
-                    Width="50"
+                    Width="80"
                     Margin="0,0,10,0"
                     Text="{Binding State, FallbackValue=下载中}" />
                 <StackPanel Orientation="Horizontal">

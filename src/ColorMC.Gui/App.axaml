@@ -3,7 +3,22 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
-    Name="ColorMC">
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
+    x:DataType="model:AppModel"
+    x:Name="ColorMC">
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem Command="{Binding AddGame}" Header="{setting:Localize App.Text2}" />
+            <NativeMenuItem Command="{Binding AddUser}" Header="{setting:Localize App.Text1}" />
+            <NativeMenuItemSeparator />
+            <NativeMenuItem Command="{Binding ShowMain}" Header="{setting:Localize App.Text3}" />
+            <NativeMenuItem Command="{Binding ShowSetting}" Header="{setting:Localize App.Text4}" />
+            <NativeMenuItemSeparator />
+            <NativeMenuItem Command="{Binding Exit}" Header="{setting:Localize App.Text5}" />
+            <NativeMenuItem Header="Test">
+        <NativeMenu>
+    </NativeMenu.Menu>
     <Application.Styles>
         <FluentTheme />
         <dialog:DialogHostStyles />
