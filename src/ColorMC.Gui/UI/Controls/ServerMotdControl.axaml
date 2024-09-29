@@ -18,18 +18,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
-                <DockPanel Margin="5,0,0,0">
-                    <Button
-                        Name="Button2"
-                        Width="38"
-                        Height="38"
-                        Margin="-3"
-                        VerticalAlignment="Top"
-                        Classes="top"
-                        DockPanel.Dock="Right"
-                        IsVisible="False">
-                        <svg:SvgControl Path="/Resource/Icon/reload.svg" />
-                    </Button>
+                <Decorator Margin="5,0,0,0">
                     <StackPanel Margin="64,0,0,0" VerticalAlignment="Center">
                         <TextBlock
                             Name="StackPanel1"
@@ -74,7 +63,7 @@
                             </StackPanel>
                         </WrapPanel>
                     </StackPanel>
-                </DockPanel>
+                </Decorator>
             </Panel>
             <Panel
                 Name="Grid1"
@@ -95,6 +84,17 @@
                 IsVisible="False">
                 <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text5}" />
             </Panel>
+            <Button
+                Name="Button2"
+                Width="38"
+                Height="38"
+                Margin="7"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Classes="top"
+                IsVisible="False">
+                <svg:SvgControl Path="/Resource/Icon/reload.svg" />
+            </Button>
         </Panel>
     </Border>
 </UserControl>
