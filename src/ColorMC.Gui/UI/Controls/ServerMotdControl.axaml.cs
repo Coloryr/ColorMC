@@ -45,7 +45,8 @@ public partial class ServerMotdControl : UserControl
         {
             var data = IPPort;
             _ip = data.Item1;
-            if (_port == 0)
+            _port = data.Item2;
+            if (_port <= 0)
             {
                 var ip = _ip;
                 if (ip == null)
