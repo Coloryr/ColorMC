@@ -78,16 +78,11 @@ public static class BaseBinding
     /// <param name="games"></param>
     public static void Launch(string[] games)
     {
-        var window = WindowManager.GetMainWindow();
-        if (window == null)
-        {
-            return;
-        }
         Dispatcher.UIThread.Post(() =>
         {
-            if (window?.Model is IMainTop model)
+            if (WindowManager.MainWindow != null)
             {
-                model.Launch(games);
+                (WindowManager.MainWindow.DataContext as IMainTop)?.Launch(games);
             }
         });
     }

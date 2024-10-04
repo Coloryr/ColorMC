@@ -12,11 +12,11 @@ namespace ColorMC.Gui.UI.Animations;
 /// Transitions between two pages by sliding them horizontally or vertically.
 /// </summary>
 /// <remarks>
-/// Initializes a new instance of the <see cref="SelfPageSlide"/> class.
+/// Initializes a new instance of the <see cref="SelfPageSlideY"/> class.
 /// </remarks>
 /// <param name="duration">The duration of the animation.</param>
 /// <param name="orientation">The axis on which the animation should occur</param>
-public class SelfPageSlideSide(TimeSpan duration)
+public class SelfPageSlideX(TimeSpan duration)
 {
     public bool Mirror { get; set; }
 
