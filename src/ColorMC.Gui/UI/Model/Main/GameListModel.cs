@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
@@ -393,6 +394,12 @@ public partial class MainModel
         }
         IsLaunch = true;
 
+        if (list.Count == 1)
+        {
+            Launch(list.First());
+            return;
+        }
+
         var list1 = new List<GameSettingObj>();
         foreach (var item in list)
         {
@@ -428,6 +435,7 @@ public partial class MainModel
                 WindowManager.ShowUser(relogin: true);
             }
         }
+
         IsLaunch = false;
     }
 
