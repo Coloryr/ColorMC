@@ -45,8 +45,8 @@ public static class ThemeManager
     public static readonly SelfCrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     //public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
     //public static readonly SelfCrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));
-    public static readonly SelfPageSlide PageSlide500 = new(TimeSpan.FromMilliseconds(500));
-    public static readonly SelfPageSlideSide SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
+    public static readonly SelfPageSlideY PageSlide500 = new(TimeSpan.FromMilliseconds(500));
+    public static readonly SelfPageSlideX SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
     private static FontFamily s_font = new(FontFamily.DefaultFontFamilyName);
 
