@@ -139,7 +139,7 @@ public static class ThemeManager
 
     public static IBrush GetColor(string key)
     {
-        if (key == "WindowBG")
+        if (key == nameof(ThemeObj.WindowBG))
         {
             if (ImageManager.BackBitmap != null)
             {
@@ -151,7 +151,7 @@ public static class ThemeManager
             }
             return s_theme.WindowBG;
         }
-        else if (key == "WindowTranColor")
+        else if (key == nameof(ThemeObj.WindowTranColor))
         {
             if (GuiConfigUtils.Config.WindowTran)
             {
@@ -174,7 +174,7 @@ public static class ThemeManager
             }
             return Brushes.Transparent;
         }
-        else if (key == "ItemBG")
+        else if (key == nameof(ThemeObj.ItemBG))
         {
             return s_theme.ItemBG;
         }
@@ -186,7 +186,7 @@ public static class ThemeManager
             }
             return s_theme.MainGroupBG;
         }
-        else if (key == "MainGroupBorder")
+        else if (key == nameof(ThemeObj.MainGroupBorder))
         {
             if (GuiConfigUtils.Config.WindowTran && ImageManager.BackBitmap == null)
             {
@@ -203,67 +203,67 @@ public static class ThemeManager
             }
             return Brushes.Transparent;
         }
-        else if (key == "ProgressBarBG")
+        else if (key == nameof(ThemeObj.ProgressBarBG))
         {
             return s_theme.ProgressBarBG;
         }
-        else if (key == "GameItemBG")
+        else if (key == nameof(ThemeObj.GameItemBG))
         {
             return s_theme.GameItemBG;
         }
-        else if (key == "TopViewBG")
+        else if (key == nameof(ThemeObj.TopViewBG))
         {
             return s_theme.TopViewBG;
         }
-        else if (key == "AllBorder")
+        else if (key == nameof(ThemeObj.AllBorder))
         {
             return s_theme.AllBorder;
         }
-        else if (key == "ButtonBG")
+        else if (key == nameof(ThemeObj.ButtonBG))
         {
             return s_theme.ButtonBG;
         }
-        else if (key == "ButtonOver")
+        else if (key == nameof(ThemeObj.ButtonOver))
         {
             return s_theme.ButtonOver;
         }
-        else if (key == "ButtonBorder")
+        else if (key == nameof(ThemeObj.ButtonBorder))
         {
             return s_theme.ButtonBorder;
         }
-        else if (key == "MainColor")
+        else if (key == nameof(ThemeObj.MainColor))
         {
             return RgbColorUtils.IsEnable() ? RgbColorUtils.GetColor() : s_theme.MainColor;
         }
-        else if (key == "FontColor")
+        else if (key == nameof(ThemeObj.FontColor))
         {
             return s_theme.FontColor;
         }
-        else if (key == "TopBGColor")
+        else if (key == nameof(ThemeObj.TopBGColor))
         {
             return s_theme.TopBGColor;
         }
-        else if (key == "TopGridColor")
+        else if (key == nameof(ThemeObj.TopGridColor))
         {
             return s_theme.TopGridColor;
         }
-        else if (key == "OverBGColor")
+        else if (key == nameof(ThemeObj.OverBGColor))
         {
             return s_theme.OverBGColor;
         }
-        else if (key == "OverBrushColor")
+        else if (key == nameof(ThemeObj.OverBrushColor))
         {
             return s_theme.OverBrushColor;
         }
-        else if (key == "SelectItemBG")
+        else if (key == nameof(ThemeObj.SelectItemBG))
         {
             return s_theme.SelectItemBG;
         }
-        else if (key == "SelectItemOver")
+        else if (key == nameof(ThemeObj.SelectItemOver))
         {
             return s_theme.SelectItemOver;
         }
-        else if (key == "MenuBG")
+        else if (key == nameof(ThemeObj.MenuBG))
         {
             return s_theme.MenuBG;
         }
