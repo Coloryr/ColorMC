@@ -8,11 +8,39 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model;
 using Avalonia.Layout;
+using Avalonia.Threading;
+using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.UI.Controls;
 
 public partial class HeadControl : UserControl
 {
+    private class ButtonBack
+    {
+        private readonly IBrush _color;
+        private readonly Button _button;
+
+        public ButtonBack(Button button, IBrush basecolor)
+        {
+            _color = basecolor;
+            _button = button;
+
+            button.Background = _color;
+        }
+
+        public void SetColor(bool hide)
+        {
+            if (hide)
+            {
+                _button.Background = ThemeManager.GetColor(nameof(ThemeObj.ProgressBarBG));
+            }
+            else
+            {
+                _button.Background = _color;
+            }
+        }
+    }
     private readonly Button _buttonClose;
     private readonly Button _buttonMax;
     private readonly Button _buttonMin;
@@ -24,6 +52,8 @@ public partial class HeadControl : UserControl
         "/Resource/Icon/Head/max1.svg",
         "/Resource/Icon/Head/max.svg"
     ];
+
+    private bool _isLost;
 
     public HeadControl()
     {
@@ -39,23 +69,25 @@ public partial class HeadControl : UserControl
 
         DataContextChanged += HeadControl_DataContextChanged;
 
-        if (SystemInfo.Os != OsType.MacOS)
+        var time = DateTime.Now;
+        if ((time.Day == 1 && time.Month == 4) ? SystemInfo.Os != OsType.MacOS : SystemInfo.Os == OsType.MacOS)
         {
             StackPanel2.HorizontalAlignment = HorizontalAlignment.Center;
             Icons.IsVisible = false;
             var img1 = new HeadImg() { IsVisible = false, Path = "/Resource/Icon/Head/min.svg" };
             _buttonMin = new Button()
             {
-                Width = 15,
-                Height = 15,
+                Width = 13,
+                Height = 13,
                 Content = img1,
-                Margin = new Thickness(25,0,0,0),
+                Margin = new Thickness(20, 0, 0, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 BorderThickness = new Thickness(0),
                 BorderBrush = Brushes.Transparent,
-                CornerRadius = new CornerRadius(20),
-                Background = Brush.Parse("#febb2c")
+                CornerRadius = new CornerRadius(20)
             };
+            _buttonMin.Classes.Add("none");
+            var select1 = new ButtonBack(_buttonMin, Brush.Parse("#febb2c"));
             _buttonMin.PointerEntered += (a, b) => { img1.IsVisible = true; };
             _buttonMin.PointerExited += (a, b) => { img1.IsVisible = false; };
 
@@ -67,38 +99,67 @@ public partial class HeadControl : UserControl
             MaxObservale.Notify(MaxIcon[0]);
             _buttonMax = new Button()
             {
-                Width = 15,
-                Height = 15,
+                Width = 13,
+                Height = 13,
                 Content = max,
-                Margin = new Thickness(50, 0, 0, 0),
+                Margin = new Thickness(40, 0, 0, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 BorderThickness = new Thickness(0),
                 BorderBrush = Brushes.Transparent,
-                CornerRadius = new CornerRadius(20),
-                Background = Brush.Parse("#29c73f")
+                CornerRadius = new CornerRadius(20)
             };
+            _buttonMax.Classes.Add("none");
+            var select2 = new ButtonBack(_buttonMax, Brush.Parse("#29c73f"));
             _buttonMax.PointerEntered += (a, b) => { max.IsVisible = true; };
             _buttonMax.PointerExited += (a, b) => { max.IsVisible = false; };
 
             var img2 = new HeadImg() { IsVisible = false, Path = "/Resource/Icon/Head/close.svg" };
             _buttonClose = new Button()
             {
-                Width = 15,
-                Height = 15,
+                Width = 13,
+                Height = 13,
                 Content = img2,
-                Margin = new Thickness(5, 0, 0, 0),
+                Margin = new Thickness(0, 0, 0, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 BorderThickness = new Thickness(0),
                 BorderBrush = Brushes.Transparent,
-                CornerRadius = new CornerRadius(20),
-                Background = Brush.Parse("#fe5f59")
+                CornerRadius = new CornerRadius(20)
             };
+            _buttonClose.Classes.Add("none");
+            var select3 = new ButtonBack(_buttonClose, Brush.Parse("#fe5f59"));
             _buttonClose.PointerEntered += (a, b) => { img2.IsVisible = true; };
             _buttonClose.PointerExited += (a, b) => { img2.IsVisible = false; };
 
-            Panel1.Children.Add(_buttonClose);
-            Panel1.Children.Add(_buttonMin);
-            Panel1.Children.Add(_buttonMax);
+            var panel3 = new Panel()
+            {
+                Background = Brushes.Transparent,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(10, 0, 0, 0)
+            };
+
+            panel3.Children.Add(_buttonClose);
+            panel3.Children.Add(_buttonMin);
+            panel3.Children.Add(_buttonMax);
+            Panel1.Children.Add(panel3);
+            panel3.PointerEntered += (a, b) =>
+            {
+                if (_isLost)
+                {
+                    select1.SetColor(false);
+                    select2.SetColor(false);
+                    select3.SetColor(false);
+                }
+            };
+            panel3.PointerExited += (a, b) =>
+            {
+                if (_isLost)
+                {
+                    select1.SetColor(true);
+                    select2.SetColor(true);
+                    select3.SetColor(true);
+                }
+            };
 
             Pandl2.Children.Remove(StackPanel2);
             Panel1.Children.Add(StackPanel2);
@@ -106,6 +167,29 @@ public partial class HeadControl : UserControl
             StackPanel1.HorizontalAlignment = HorizontalAlignment.Right;
             StackPanel2.MaxWidth = 500;
             StackPanel2.HorizontalAlignment = HorizontalAlignment.Center;
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (VisualRoot is Window window)
+                {
+                    window.Activated += (a, b) =>
+                    {
+                        _isLost = false;
+
+                        select1.SetColor(false);
+                        select2.SetColor(false);
+                        select3.SetColor(false);
+                    };
+                    window.Deactivated += (a, b) =>
+                    {
+                        _isLost = true;
+
+                        select1.SetColor(true);
+                        select2.SetColor(true);
+                        select3.SetColor(true);
+                    };
+                }
+            });
         }
         else
         {
@@ -147,7 +231,6 @@ public partial class HeadControl : UserControl
             StackPanel1.Children.Add(_buttonMax);
             StackPanel1.Children.Add(_buttonClose);
         }
-
 
         _buttonMin.Click += ButtonMin_Click;
         _buttonMax.Click += ButtonMax_Click;
