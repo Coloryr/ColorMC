@@ -13,7 +13,8 @@
     mc:Ignorable="d">
     <Panel RenderOptions.TextRenderingMode="Antialias">
         <Border Name="Border1" Background="Transparent" />
-        <DockPanel>
+        <Panel Name="Panel1" />
+        <DockPanel Name="Pandl2">
             <StackPanel
                 Name="StackPanel1"
                 DockPanel.Dock="Right"
@@ -66,20 +67,23 @@
                     <ImageBrush Source="{Binding Icon}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
-            <TextBlock
-                Name="TitleShow"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                IsHitTestVisible="False"
-                Text="{Binding Title}"
-                TextTrimming="CharacterEllipsis" />
-            <TextBlock
-                Name="TitleShow1"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                IsHitTestVisible="False"
-                Text="{Binding Title1}"
-                TextTrimming="CharacterEllipsis" />
+            <DockPanel Name="StackPanel2">
+                <TextBlock
+                    Name="TitleShow1"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Right"
+                    IsHitTestVisible="False"
+                    Text="{Binding Title1}"
+                    TextTrimming="CharacterEllipsis" />
+                <TextBlock
+                    Name="TitleShow"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    IsHitTestVisible="False"
+                    Text="{Binding Title}"
+                    TextTrimming="CharacterEllipsis" />
+            </DockPanel>
         </DockPanel>
     </Panel>
 </UserControl>
