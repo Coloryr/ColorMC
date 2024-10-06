@@ -228,7 +228,7 @@ public static class ImageManager
         {
             try
             {
-                var data1 = await WebClient.GetStreamAsync(url);
+                var data1 = await CoreHttpClient.GetStreamAsync(url);
                 if (data1.State)
                 {
                     if (zoom)
@@ -273,7 +273,7 @@ public static class ImageManager
                 Stream? stream1 = null;
                 if (file.StartsWith("https://") || file.StartsWith("http://"))
                 {
-                    var res = await WebClient.DownloadClient.GetAsync(file);
+                    var res = await CoreHttpClient.DownloadClient.GetAsync(file);
                     stream1 = res.Content.ReadAsStream();
                 }
                 else if (file.StartsWith("ColorMC.Gui"))

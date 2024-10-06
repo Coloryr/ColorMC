@@ -836,7 +836,7 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<List<string>?> GetForgeSupportVersion()
     {
-        return ForgeAPI.GetSupportVersion(false, WebClient.Source);
+        return ForgeAPI.GetSupportVersion(false, CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取Fabric支持的游戏版本
@@ -844,7 +844,7 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<List<string>?> GetFabricSupportVersion()
     {
-        return FabricAPI.GetSupportVersion(WebClient.Source);
+        return FabricAPI.GetSupportVersion(CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取Quilt支持的游戏版本
@@ -852,7 +852,7 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<List<string>?> GetQuiltSupportVersion()
     {
-        return QuiltAPI.GetSupportVersion(WebClient.Source);
+        return QuiltAPI.GetSupportVersion(CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取NeoForge支持的游戏版本
@@ -860,7 +860,7 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<List<string>?> GetNeoForgeSupportVersion()
     {
-        return ForgeAPI.GetSupportVersion(true, WebClient.Source);
+        return ForgeAPI.GetSupportVersion(true, CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取Optifine支持的游戏版本
@@ -878,7 +878,7 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<List<string>?> GetForgeVersion(string version)
     {
-        return ForgeAPI.GetVersionList(false, version, WebClient.Source);
+        return ForgeAPI.GetVersionList(false, version, CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取Fabric版本
@@ -887,7 +887,7 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<List<string>?> GetFabricVersion(string version)
     {
-        return FabricAPI.GetLoaders(version, WebClient.Source);
+        return FabricAPI.GetLoaders(version, CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取Quilt版本
@@ -896,7 +896,7 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<List<string>?> GetQuiltVersion(string version)
     {
-        return QuiltAPI.GetLoaders(version, WebClient.Source);
+        return QuiltAPI.GetLoaders(version, CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取NeoForge版本
@@ -905,7 +905,7 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<List<string>?> GetNeoForgeVersion(string version)
     {
-        return ForgeAPI.GetVersionList(true, version, WebClient.Source);
+        return ForgeAPI.GetVersionList(true, version, CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取Optifine版本

@@ -3,6 +3,7 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using ColorMC.Core.Net.Motd;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Utils;
 
@@ -11,6 +12,16 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class UIUtils
 {
+    public static string GetName(this DnsType type)
+    {
+        return type switch
+        {
+            DnsType.DnsOver => App.Lang("Type.Dns.DnsOver"),
+            DnsType.DnsOverHttps => App.Lang("Type.Dns.DnsOverHttps"),
+            _ => "Unkown"
+        };
+    }
+
     /// <summary>
     /// 找到控件
     /// </summary>

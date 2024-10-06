@@ -730,7 +730,7 @@ public static class CheckHelpers
             {
                 list.Add(new()
                 {
-                    Url = UrlHelper.DownloadFabric(item.url + name.Path, WebClient.Source),
+                    Url = UrlHelper.DownloadFabric(item.url + name.Path, CoreHttpClient.Source),
                     Name = name.Name,
                     Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}")
                 });
@@ -765,7 +765,7 @@ public static class CheckHelpers
             {
                 list.Add(new()
                 {
-                    Url = UrlHelper.DownloadQuilt(item.url + name.Path, WebClient.Source),
+                    Url = UrlHelper.DownloadQuilt(item.url + name.Path, CoreHttpClient.Source),
                     Name = name.Name,
                     Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}")
                 });

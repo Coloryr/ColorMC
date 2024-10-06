@@ -22,7 +22,7 @@ public static class ColorMCCloudAPI
         {
             var req = new HttpRequestMessage(HttpMethod.Get, ColorMCAPI.BaseUrl + "update/log");
             req.Headers.Add("ColorMC", ColorMCCore.Version);
-            var data = await WebClient.DownloadClient.SendAsync(req);
+            var data = await CoreHttpClient.DownloadClient.SendAsync(req);
             return await data.Content.ReadAsStringAsync();
         }
         catch (Exception e)
@@ -36,7 +36,7 @@ public static class ColorMCCloudAPI
     {
         var req = new HttpRequestMessage(HttpMethod.Get, ColorMCAPI.BaseUrl + "update/index.json");
         req.Headers.Add("ColorMC", ColorMCCore.Version);
-        var data = await WebClient.DownloadClient.SendAsync(req);
+        var data = await CoreHttpClient.DownloadClient.SendAsync(req);
         return JObject.Parse(await data.Content.ReadAsStringAsync());
     }
 
@@ -44,7 +44,7 @@ public static class ColorMCCloudAPI
     {
         var req = new HttpRequestMessage(HttpMethod.Get, CheckUrl + "sha1.json");
         req.Headers.Add("ColorMC", ColorMCCore.Version);
-        var data = await WebClient.DownloadClient.SendAsync(req);
+        var data = await CoreHttpClient.DownloadClient.SendAsync(req);
         string text = await data.Content.ReadAsStringAsync();
         return JObject.Parse(text);
     }
@@ -55,7 +55,7 @@ public static class ColorMCCloudAPI
         {
             var req = new HttpRequestMessage(HttpMethod.Get, ColorMCAPI.BaseUrl + "frplist?version=" + version);
             req.Headers.Add("ColorMC", ColorMCCore.Version);
-            var data = await WebClient.DownloadClient.SendAsync(req);
+            var data = await CoreHttpClient.DownloadClient.SendAsync(req);
             return JObject.Parse(await data.Content.ReadAsStringAsync());
         }
         catch (Exception e)
@@ -88,7 +88,7 @@ public static class ColorMCCloudAPI
 
         try
         {
-            var data = await WebClient.DownloadClient.SendAsync(httpRequest);
+            var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
             {

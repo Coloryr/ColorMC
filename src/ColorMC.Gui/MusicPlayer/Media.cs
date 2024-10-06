@@ -482,11 +482,11 @@ public static class Media
 
         try
         {
-            var res = await Core.Net.WebClient.DownloadClient.GetAsync(url);
+            var res = await Core.Net.CoreHttpClient.DownloadClient.GetAsync(url);
             if (res.StatusCode == HttpStatusCode.Redirect)
             {
                 var url1 = res.Headers.Location;
-                res = await Core.Net.WebClient.DownloadClient.GetAsync(url1);
+                res = await Core.Net.CoreHttpClient.DownloadClient.GetAsync(url1);
                 return await PlayMp3(res.Content.ReadAsStream());
             }
 

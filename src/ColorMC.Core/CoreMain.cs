@@ -14,8 +14,8 @@ namespace ColorMC.Core;
 
 public static class ColorMCCore
 {
-    public const string TopVersion = "A30";
-    public const string DateVersion = "20241004";
+    public const string TopVersion = "A31";
+    public const string DateVersion = "20241006";
 
     /// <summary>
     /// 版本号
@@ -215,7 +215,7 @@ public static class ColorMCCore
         LanguageHelper.Load(LanguageType.zh_cn);
         Logs.Init(BaseDir);
         ConfigUtils.Init(BaseDir);
-        WebClient.Init();
+        CoreHttpClient.Init();
 
         Logs.Info(LanguageHelper.Get("Core.Info1"));
         Logs.Info(SystemInfo.SystemName);

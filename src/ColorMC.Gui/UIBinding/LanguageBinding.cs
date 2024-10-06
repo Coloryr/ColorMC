@@ -131,6 +131,16 @@ public static class LanguageBinding
         ];
     }
 
+    public static string[] GetDns()
+    {
+        return
+        [
+            App.Lang("Type.Dns.Item1"),
+            App.Lang("Type.Dns.Item2"),
+            App.Lang("Type.Dns.Item3")
+        ];
+    }
+
     /// <summary>
     /// 获取窗口透明选项
     /// </summary>

@@ -3,189 +3,266 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Setting"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="0,0,10,15">
-            <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg7.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text23}" />
-                    </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.DownloadSource}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding SourceList}"
-                                SelectedIndex="{Binding Source}" />
-                        </DockPanel>
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab3.Text2}" />
-                            <NumericUpDown
-                                Height="30"
-                                HorizontalAlignment="Stretch"
-                                FormatString="N0"
-                                Minimum="1"
-                                Value="{Binding Thread}" />
-                        </DockPanel>
-                    </panel:WrapPanelWithStretch>
-                    <WrapPanel>
-                        <ToggleSwitch
-                            Margin="0,0,20,0"
-                            IsChecked="{Binding CheckFile}"
-                            OffContent="{setting:Localize SettingWindow.Tab3.Text11}"
-                            OnContent="{setting:Localize SettingWindow.Tab3.Text11}" />
-                        <ToggleSwitch
-                            IsChecked="{Binding AutoDownload}"
-                            OffContent="{setting:Localize SettingWindow.Tab3.Text19}"
-                            OnContent="{setting:Localize SettingWindow.Tab3.Text19}" />
-                    </WrapPanel>
-                    <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text24}" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-            <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg8.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text3}" />
-                    </StackPanel>
-                    <Grid Margin="0,0,0,5" ColumnDefinitions="3*,1*">
-                        <TextBox
-                            Grid.Column="0"
-                            Margin="0,0,10,5"
-                            Text="{Binding IP}"
-                            Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
-                        <TextBox
-                            Grid.Column="1"
-                            Margin="0,0,0,5"
-                            MaxLength="5"
-                            Text="{Binding Port}"
-                            Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
-                    </Grid>
-                    <Grid Margin="0,0,0,0" ColumnDefinitions="*,*">
-                        <TextBox
-                            Grid.Column="0"
-                            Margin="0,0,10,5"
-                            Text="{Binding User}"
-                            Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
-                        <TextBox
-                            Grid.Column="1"
-                            Margin="0,0,0,5"
-                            PasswordChar="*"
-                            Text="{Binding Password}"
-                            Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
-                    </Grid>
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-2,-3,-2"
-                        HorizontalAlignment="Right"
-                        Classes="top"
-                        Command="{Binding SetProxy}"
-                        Content="{setting:Localize SettingWindow.Tab2.Text60}" />
-                    <WrapPanel>
-                        <ToggleSwitch
-                            Margin="0,0,20,0"
-                            IsChecked="{Binding LoginProxy}"
-                            OffContent="{setting:Localize SettingWindow.Tab3.Text8}"
-                            OnContent="{setting:Localize SettingWindow.Tab3.Text8}" />
-                        <ToggleSwitch
-                            Margin="0,0,20,0"
-                            IsChecked="{Binding DownloadProxy}"
-                            OffContent="{setting:Localize SettingWindow.Tab3.Text9}"
-                            OnContent="{setting:Localize SettingWindow.Tab3.Text9}" />
-                        <ToggleSwitch
-                            IsChecked="{Binding GameProxy}"
-                            OffContent="{setting:Localize SettingWindow.Tab3.Text10}"
-                            OnContent="{setting:Localize SettingWindow.Tab3.Text10}" />
-                    </WrapPanel>
-                    <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-            <Border
-                Margin="10,5,10,3"
-                Classes="t2"
-                IsEnabled="{Binding !Phone}">
-                <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg9.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text14}" />
-                    </StackPanel>
-                    <WrapPanel Margin="0,-5,0,-5">
-                        <ToggleSwitch
-                            Margin="0,5,20,0"
-                            IsChecked="{Binding CheckUpdate}"
-                            OffContent="{setting:Localize SettingWindow.Tab3.Text15}"
-                            OnContent="{setting:Localize SettingWindow.Tab3.Text15}" />
-                        <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-3,3,-2"
-                                Classes="top"
-                                Command="{Binding StartCheck}"
-                                Content="{setting:Localize SettingWindow.Tab3.Text16}" />
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-3,-3,-2"
-                                Classes="top"
-                                Command="{Binding StartUpdate}"
-                                Content="{setting:Localize SettingWindow.Tab3.Text17}" />
+    <dialog:DialogHost
+        Background="{setting:Theme ButtonBG}"
+        DisableOpeningAnimation="True"
+        Identifier="NetworkSetting"
+        OverlayBackground="Transparent">
+        <dialog:DialogHost.DataTemplates>
+            <DataTemplate DataType="model:AddDnsModel">
+                <view:AddDnsControl />
+            </DataTemplate>
+        </dialog:DialogHost.DataTemplates>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="0,0,10,15">
+                <Border Margin="10,5,10,3" Classes="t2">
+                    <StackPanel Margin="15">
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,5,0"
+                                Path="/Resource/Icon/Setting/svg7.svg" />
+                            <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                         </StackPanel>
-                    </WrapPanel>
-                </StackPanel>
-            </Border>
-            <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg10.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text20}" />
+                        <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
+                            <DockPanel MinWidth="230" Margin="0,0,10,10">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.DownloadSource}" />
+                                <ComboBox
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding SourceList}"
+                                    SelectedIndex="{Binding Source}" />
+                            </DockPanel>
+                            <DockPanel MinWidth="230" Margin="0,0,10,10">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab3.Text2}" />
+                                <NumericUpDown
+                                    Height="30"
+                                    HorizontalAlignment="Stretch"
+                                    FormatString="N0"
+                                    Minimum="1"
+                                    Value="{Binding Thread}" />
+                            </DockPanel>
+                        </panel:WrapPanelWithStretch>
+                        <WrapPanel>
+                            <ToggleSwitch
+                                Margin="0,0,20,0"
+                                IsChecked="{Binding CheckFile}"
+                                OffContent="{setting:Localize SettingWindow.Tab3.Text11}"
+                                OnContent="{setting:Localize SettingWindow.Tab3.Text11}" />
+                            <ToggleSwitch
+                                IsChecked="{Binding AutoDownload}"
+                                OffContent="{setting:Localize SettingWindow.Tab3.Text19}"
+                                OnContent="{setting:Localize SettingWindow.Tab3.Text19}" />
+                        </WrapPanel>
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text24}" TextWrapping="Wrap" />
                     </StackPanel>
-                    <TextBlock Margin="5,0,0,5" Text="{Binding ServerInfo}" />
-                    <TextBox
-                        Height="100"
-                        Margin="0,0,0,5"
-                        AcceptsReturn="True"
-                        Classes="input2"
-                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        Text="{Binding ServerKey}"
-                        TextWrapping="Wrap"
-                        Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-2,-3,-2"
-                        HorizontalAlignment="Right"
-                        Classes="top"
-                        Command="{Binding GameCloudConnect}"
-                        Content="{setting:Localize SettingWindow.Tab3.Text22}" />
-                </StackPanel>
-            </Border>
-        </StackPanel>
-    </ScrollViewer>
+                </Border>
+                <Border Margin="10,5,10,3" Classes="t2">
+                    <StackPanel Margin="15">
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,5,0"
+                                Path="/Resource/Icon/Setting/svg8.svg" />
+                            <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text3}" />
+                        </StackPanel>
+                        <Grid Margin="0,0,0,5" ColumnDefinitions="3*,1*">
+                            <TextBox
+                                Grid.Column="0"
+                                Margin="0,0,10,5"
+                                Text="{Binding IP}"
+                                Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="0,0,0,5"
+                                MaxLength="5"
+                                Text="{Binding Port}"
+                                Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
+                        </Grid>
+                        <Grid Margin="0,0,0,0" ColumnDefinitions="*,*">
+                            <TextBox
+                                Grid.Column="0"
+                                Margin="0,0,10,5"
+                                Text="{Binding User}"
+                                Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="0,0,0,5"
+                                PasswordChar="*"
+                                Text="{Binding Password}"
+                                Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
+                        </Grid>
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-2,-3,-2"
+                            HorizontalAlignment="Right"
+                            Classes="top"
+                            Command="{Binding SetProxy}"
+                            Content="{setting:Localize SettingWindow.Tab2.Text60}" />
+                        <WrapPanel>
+                            <ToggleSwitch
+                                Margin="0,0,20,0"
+                                IsChecked="{Binding LoginProxy}"
+                                OffContent="{setting:Localize SettingWindow.Tab3.Text8}"
+                                OnContent="{setting:Localize SettingWindow.Tab3.Text8}" />
+                            <ToggleSwitch
+                                Margin="0,0,20,0"
+                                IsChecked="{Binding DownloadProxy}"
+                                OffContent="{setting:Localize SettingWindow.Tab3.Text9}"
+                                OnContent="{setting:Localize SettingWindow.Tab3.Text9}" />
+                            <ToggleSwitch
+                                IsChecked="{Binding GameProxy}"
+                                OffContent="{setting:Localize SettingWindow.Tab3.Text10}"
+                                OnContent="{setting:Localize SettingWindow.Tab3.Text10}" />
+                        </WrapPanel>
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+                <Border Margin="10,5,10,3" Classes="t2">
+                    <StackPanel Margin="15">
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,5,0"
+                                Path="/Resource/Icon/Setting/svg34.svg" />
+                            <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text25}" />
+                        </StackPanel>
+                        <WrapPanel Margin="0,0,0,-10">
+                            <CheckBox
+                                Margin="0,0,10,10"
+                                Content="{setting:Localize SettingWindow.Tab3.Text26}"
+                                IsChecked="{Binding DnsEnable}" />
+                            <CheckBox
+                                Margin="0,0,0,10"
+                                Content="{setting:Localize SettingWindow.Tab3.Text31}"
+                                IsChecked="{Binding DnsProxy}" />
+                        </WrapPanel>
+                        <StackPanel IsEnabled="{Binding DnsEnable}">
+                            <panel:WrapPanelWithStretch Margin="0,0,0,10" AutoMax="{Binding MinMode}">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab3.Text27}" />
+                                <ComboBox
+                                    MinWidth="230"
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding DnsList}"
+                                    SelectedIndex="{Binding DnsType}" />
+                            </panel:WrapPanelWithStretch>
+                            <Panel Margin="0,0,0,10">
+                                <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text28}" />
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-3,-3,-2"
+                                    HorizontalAlignment="Right"
+                                    Classes="top"
+                                    Command="{Binding AddDnsItem}"
+                                    Content="{setting:Localize Button.Add}"
+                                    Focusable="False" />
+                            </Panel>
+                            <DataGrid
+                                Name="DataGrid1"
+                                Height="200"
+                                Margin="-10,-10,-10,5"
+                                AutoGenerateColumns="False"
+                                CanUserResizeColumns="True"
+                                CanUserSortColumns="False"
+                                ItemsSource="{Binding Dns}"
+                                SelectedItem="{Binding DnsItem}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        Binding="{Binding Type}"
+                                        Header="{setting:Localize SettingWindow.Tab3.Text29}"
+                                        IsReadOnly="True" />
+                                    <DataGridTextColumn
+                                        Binding="{Binding Url}"
+                                        Header="{setting:Localize SettingWindow.Tab3.Text30}"
+                                        IsReadOnly="True" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border
+                    Margin="10,5,10,3"
+                    Classes="t2"
+                    IsEnabled="{Binding !Phone}">
+                    <StackPanel Margin="15">
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,5,0"
+                                Path="/Resource/Icon/Setting/svg9.svg" />
+                            <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text14}" />
+                        </StackPanel>
+                        <WrapPanel Margin="0,-5,0,-5">
+                            <ToggleSwitch
+                                Margin="0,5,20,0"
+                                IsChecked="{Binding CheckUpdate}"
+                                OffContent="{setting:Localize SettingWindow.Tab3.Text15}"
+                                OnContent="{setting:Localize SettingWindow.Tab3.Text15}" />
+                            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-3,3,-2"
+                                    Classes="top"
+                                    Command="{Binding StartCheck}"
+                                    Content="{setting:Localize SettingWindow.Tab3.Text16}" />
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-3,-3,-2"
+                                    Classes="top"
+                                    Command="{Binding StartUpdate}"
+                                    Content="{setting:Localize SettingWindow.Tab3.Text17}" />
+                            </StackPanel>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+                <Border Margin="10,5,10,3" Classes="t2">
+                    <StackPanel Margin="15">
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,5,0"
+                                Path="/Resource/Icon/Setting/svg10.svg" />
+                            <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text20}" />
+                        </StackPanel>
+                        <TextBlock Margin="5,0,0,5" Text="{Binding ServerInfo}" />
+                        <TextBox
+                            Height="100"
+                            Margin="0,0,0,5"
+                            AcceptsReturn="True"
+                            Classes="input2"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            Text="{Binding ServerKey}"
+                            TextWrapping="Wrap"
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-2,-3,-2"
+                            HorizontalAlignment="Right"
+                            Classes="top"
+                            Command="{Binding GameCloudConnect}"
+                            Content="{setting:Localize SettingWindow.Tab3.Text22}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </dialog:DialogHost>
 </UserControl>

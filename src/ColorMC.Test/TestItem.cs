@@ -1,4 +1,6 @@
-﻿using ColorMC.Core.Downloader;
+﻿using Ae.Dns.Client;
+using Ae.Dns.Protocol;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -12,6 +14,8 @@ using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Skin;
 using SkiaSharp;
 using System.IO.Compression;
+using System.Net;
+using CoreHttpClient = ColorMC.Core.Net.CoreHttpClient;
 
 namespace ColorMC.Test;
 
@@ -184,7 +188,7 @@ public static class TestItem
 
         CancellationToken token = CancellationToken.None;
 
-        WebClient.Source = SourceLocal.Offical;
+        CoreHttpClient.Source = SourceLocal.Offical;
 
         DesktopGameHandel? process;
         //process = game.StartGame(login).Result;
@@ -628,5 +632,34 @@ public static class TestItem
             DirName = "test1",
             Name = "test1"
         }, CancellationToken.None).Result;
+    }
+
+    public static void Item38()
+    {
+        //using var cloudFlare1 = new DnsUdpClient(IPAddress.Parse("1.1.1.1"));
+        //using var cloudFlare2 = new DnsUdpClient(IPAddress.Parse("1.0.0.1"));
+        //using var google1 = new DnsUdpClient(IPAddress.Parse("8.8.8.8"));
+        //using var google2 = new DnsUdpClient(IPAddress.Parse("8.8.4.4"));
+
+        //// Construct the race: you must pass at least two clients
+        //using var dnsClient = new DnsRacerClient(cloudFlare1, cloudFlare2, google1, google2);
+
+        using var httpClient = new HttpClient
+        {
+            BaseAddress = new Uri("https://223.5.5.5/dns-query")
+        };
+
+        using var dnsClient = new DnsHttpClient(httpClient);
+
+        // Create an HttpClient with the DnsDelegatingHandler
+        using var httpClient1 = new HttpClient(new DnsDelegatingHandler(dnsClient)
+        {
+            InnerHandler = new SocketsHttpHandler()
+        });
+
+        // Make a request to GET www.google.com using the DNS middleware
+        HttpResponseMessage response = httpClient1.GetAsync("https://www.github.com/").Result;
+
+        Console.WriteLine(response.StatusCode);
     }
 }

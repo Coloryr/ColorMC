@@ -283,5 +283,4 @@
             </StackPanel>
         </ScrollViewer>
     </dialog:DialogHost>
-
 </UserControl>

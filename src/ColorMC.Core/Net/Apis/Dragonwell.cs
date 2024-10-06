@@ -14,7 +14,7 @@ public static class Dragonwell
     /// </summary>
     public static async Task<DragonwellObj?> GetJavaList()
     {
-        var data = await WebClient.DownloadClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead);
+        var data = await CoreHttpClient.DownloadClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead);
         if (data == null)
             return null;
         var str = await data.Content.ReadAsStringAsync();

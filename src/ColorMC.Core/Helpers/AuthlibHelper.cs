@@ -53,7 +53,7 @@ public static class AuthlibHelper
         return new()
         {
             SHA256 = obj.checksums.sha256,
-            Url = UrlHelper.DownloadAuthlibInjector(obj, WebClient.Source),
+            Url = UrlHelper.DownloadAuthlibInjector(obj, CoreHttpClient.Source),
             Name = $"moe.yushi:authlibinjector:{obj.version}",
             Local = $"{LibrariesPath.BaseDir}/moe/yushi/authlibinjector/" +
             $"{obj.version}/authlib-injector-{obj.version}.jar",
@@ -66,7 +66,7 @@ public static class AuthlibHelper
     /// <returns>Nide8Injector下载实例</returns>
     public static async Task<MakeDownloadItemRes> ReadyNide8()
     {
-        var data = await WebClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/");
+        var data = await CoreHttpClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/");
         if (data.State == false)
         {
             return new MakeDownloadItemRes
@@ -129,8 +129,8 @@ public static class AuthlibHelper
     {
         try
         {
-            string url = UrlHelper.AuthlibInjectorMeta(WebClient.Source);
-            var meta = await WebClient.GetStringAsync(url);
+            string url = UrlHelper.AuthlibInjectorMeta(CoreHttpClient.Source);
+            var meta = await CoreHttpClient.GetStringAsync(url);
             if (meta.State == false)
             {
                 return LocalAuthLib;
@@ -142,7 +142,7 @@ public static class AuthlibHelper
             }
             var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).ToList()[0];
 
-            var info = await WebClient.GetStringAsync(UrlHelper.AuthlibInjector(item, WebClient.Source));
+            var info = await CoreHttpClient.GetStringAsync(UrlHelper.AuthlibInjector(item, CoreHttpClient.Source));
             if (info.State == false)
             {
                 return LocalAuthLib;

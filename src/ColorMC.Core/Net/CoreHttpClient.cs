@@ -1,5 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
+using Ae.Dns.Client;
+using Ae.Dns.Protocol;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -12,7 +14,7 @@ namespace ColorMC.Core.Net;
 /// <summary>
 /// 网络客户端
 /// </summary>
-public static class WebClient
+public static class CoreHttpClient
 {
     /// <summary>
     /// 下载源
@@ -22,12 +24,15 @@ public static class WebClient
     public static HttpClient DownloadClient { get; private set; }
     public static HttpClient LoginClient { get; private set; }
 
+    private static List<IDnsClient> _dnsClients = [];
+
     /// <summary>
     /// 初始化
     /// </summary>
     public static void Init()
     {
         var http = ConfigUtils.Config.Http;
+        var dns = ConfigUtils.Config.Dns;
 
         Logs.Info(LanguageHelper.Get("Core.Http.Info5"));
         if (http.DownloadProxy || http.GameProxy || http.LoginProxy)
@@ -44,17 +49,84 @@ public static class WebClient
         LoginClient?.CancelPendingRequests();
         LoginClient?.Dispose();
 
-        //代理
-        if (http.DownloadProxy && !string.IsNullOrWhiteSpace(http.ProxyIP))
+        foreach (var item in _dnsClients)
         {
-            DownloadClient = new(new HttpClientHandler()
+            item.Dispose();
+        }
+
+        _dnsClients.Clear();
+
+        IDnsClient? dnsClient=null;
+        WebProxy? proxy = null;
+
+        //代理
+        if (!string.IsNullOrWhiteSpace(http.ProxyIP))
+        {
+            proxy = new WebProxy(http.ProxyIP, http.ProxyPort);
+        }
+        //Dns
+        if (dns.Enable)
+        {
+            if (dns.DnsType is DnsType.DnsOver or DnsType.DnsOverHttpsWithUdp)
             {
-                Proxy = new WebProxy(http.ProxyIP, http.ProxyPort),
+                foreach (var item in dns.Dns)
+                {
+                    _dnsClients.Add(new DnsUdpClient(IPAddress.Parse(item)));
+                }
+            }
+            if (dns.DnsType is DnsType.DnsOverHttps or DnsType.DnsOverHttpsWithUdp)
+            {
+                foreach (var item in dns.Https)
+                {
+                    if (dns.HttpProxy)
+                    {
+                        _dnsClients.Add(new SelfHttpDnsClient(item, proxy));
+                    }
+                    else
+                    {
+                        _dnsClients.Add(new SelfHttpDnsClient(item));
+                    }
+                }
+            }
+            if (_dnsClients.Count > 1)
+            {
+                dnsClient = new DnsRacerClient([.. _dnsClients]);
+                _dnsClients.Add(dnsClient);
+            }
+            else if (_dnsClients.Count > 0)
+            {
+                dnsClient = _dnsClients[0];
+            }
+        }
+
+
+        if (dnsClient != null)
+        {
+            DownloadClient = new(new DnsDelegatingHandler(dnsClient)
+            {
+                InnerHandler = new SocketsHttpHandler()
+                {
+                    Proxy = http.DownloadProxy ? proxy : null
+                }
+            });
+            LoginClient = new(new DnsDelegatingHandler(dnsClient)
+            {
+                InnerHandler = new SocketsHttpHandler()
+                {
+                    Proxy = http.LoginProxy ? proxy : null
+                }
             });
         }
         else
         {
-            DownloadClient = new();
+            DownloadClient = new(new HttpClientHandler()
+            {
+                Proxy = http.DownloadProxy ? proxy : null
+            });
+            LoginClient = new(new HttpClientHandler()
+            {
+                Proxy = http.LoginProxy ? proxy : null
+            });
         }
 
         DownloadClient.DefaultRequestVersion = HttpVersion.Version11;
@@ -63,27 +135,16 @@ public static class WebClient
         DownloadClient.DefaultRequestHeaders.UserAgent.Clear();
         DownloadClient.DefaultRequestHeaders.UserAgent
             .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
-
-        if (http.LoginProxy && !string.IsNullOrWhiteSpace(http.ProxyIP))
-        {
-            LoginClient = new(new HttpClientHandler()
-            {
-                Proxy = new WebProxy(http.ProxyIP, http.ProxyPort)
-            });
-        }
-        else
-        {
-            LoginClient = new();
-        }
+        DownloadClient.Timeout = TimeSpan.FromSeconds(10);
 
         LoginClient.DefaultRequestVersion = HttpVersion.Version11;
         LoginClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
+        LoginClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
         LoginClient.DefaultRequestHeaders.UserAgent.Clear();
         LoginClient.DefaultRequestHeaders.UserAgent
             .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
-
         LoginClient.Timeout = TimeSpan.FromSeconds(10);
-        DownloadClient.Timeout = TimeSpan.FromSeconds(10);
+
     }
 
     /// <summary>

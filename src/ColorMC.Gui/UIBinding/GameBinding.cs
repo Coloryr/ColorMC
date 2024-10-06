@@ -2200,7 +2200,7 @@ public static class GameBinding
     {
         try
         {
-            var data = await WebClient.GetStringAsync(text + "server.json");
+            var data = await CoreHttpClient.GetStringAsync(text + "server.json");
             if (!data.State)
             {
                 return new() { Message = App.Lang("GameBinding.Error11") };

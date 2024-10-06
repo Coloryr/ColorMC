@@ -20,7 +20,7 @@ public static class SakuraFrpApi
     {
         try
         {
-            var data = await WebClient.LoginClient.GetStringAsync($"{Url}user/info?token={key}");
+            var data = await CoreHttpClient.LoginClient.GetStringAsync($"{Url}user/info?token={key}");
 
             return JsonConvert.DeserializeObject<SakuraFrpUserObj>(data);
         }
@@ -36,7 +36,7 @@ public static class SakuraFrpApi
     {
         try
         {
-            var data = await WebClient.LoginClient.GetStringAsync($"{Url}tunnels?token={key}");
+            var data = await CoreHttpClient.LoginClient.GetStringAsync($"{Url}tunnels?token={key}");
 
             return JsonConvert.DeserializeObject<List<SakuraFrpChannelObj>>(data);
         }
@@ -55,7 +55,7 @@ public static class SakuraFrpApi
             var content = new StringContent(JsonConvert.SerializeObject(new { query = id }),
                 MediaTypeHeaderValue.Parse("application/json"));
 
-            var data = await WebClient.LoginClient.PostAsync($"{Url}tunnel/config?token={key}&frpc={version}", content);
+            var data = await CoreHttpClient.LoginClient.PostAsync($"{Url}tunnel/config?token={key}&frpc={version}", content);
             var str = await data.Content.ReadAsStringAsync();
             if (str.StartsWith('{'))
             {
@@ -131,7 +131,7 @@ public static class SakuraFrpApi
     {
         try
         {
-            var data = await WebClient.LoginClient.GetStringAsync($"{Url}system/clients");
+            var data = await CoreHttpClient.LoginClient.GetStringAsync($"{Url}system/clients");
 
             return JsonConvert.DeserializeObject<SakuraFrpDownloadObj>(data);
         }
