@@ -1100,7 +1100,7 @@ public static class InstancesPath
     {
         try
         {
-            var data = await WebClient.GetBytesAsync(url);
+            var data = await CoreHttpClient.GetBytesAsync(url);
             if (data.State)
             {
                 PathHelper.WriteBytes(obj.GetIconFile(), data.Data!);

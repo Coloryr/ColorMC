@@ -25,6 +25,15 @@ public record HttpObj
     public bool AutoDownload { get; set; }
 }
 
+public record DnsObj
+{ 
+    public bool Enable { get; set; }
+    public List<string> Dns { get; set; }
+    public List<string> Https { get; set; }
+    public DnsType DnsType { get; set; }
+    public bool HttpProxy { get; set; }
+}
+
 public record WindowSettingObj
 {
     /// <summary>
@@ -148,6 +157,7 @@ public record ConfigObj
     public List<JvmConfigObj> JavaList { get; set; }
 
     public HttpObj Http { get; set; }
+    public DnsObj Dns { get; set; }
     public RunArgObj DefaultJvmArg { get; set; }
     public WindowSettingObj Window { get; set; }
     public GameCheckObj GameCheck { get; set; }

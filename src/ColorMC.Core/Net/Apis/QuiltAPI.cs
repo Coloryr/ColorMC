@@ -24,7 +24,7 @@ public static class QuiltAPI
                 return s_supportVersion;
 
             string url = $"{UrlHelper.GetQuiltMeta(local)}/game";
-            var data = await WebClient.GetStringAsync(url);
+            var data = await CoreHttpClient.GetStringAsync(url);
             if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
@@ -61,7 +61,7 @@ public static class QuiltAPI
         try
         {
             string url = UrlHelper.GetQuiltMeta(local);
-            var data = await WebClient.GetStringAsync(url);
+            var data = await CoreHttpClient.GetStringAsync(url);
             if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
@@ -86,7 +86,7 @@ public static class QuiltAPI
         try
         {
             string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}";
-            var data = await WebClient.GetStringAsync(url);
+            var data = await CoreHttpClient.GetStringAsync(url);
             if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
@@ -122,7 +122,7 @@ public static class QuiltAPI
         try
         {
             string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}/{version}/profile/json";
-            var data = await WebClient.GetStringAsync(url);
+            var data = await CoreHttpClient.GetStringAsync(url);
             if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),

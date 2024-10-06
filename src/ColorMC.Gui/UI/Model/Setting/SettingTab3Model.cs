@@ -1,10 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -13,11 +18,19 @@ public partial class SettingModel
     private bool _httpLoad = true;
 
     public string[] SourceList { get; init; } = LanguageBinding.GetDownloadSources();
+    public string[] DnsList { get; init; } = LanguageBinding.GetDns();
+
+    public ObservableCollection<DnsItemModel> Dns { get; init; } = [];
 
     [ObservableProperty]
     private SourceLocal _source;
     [ObservableProperty]
     private int? _thread = 5;
+    [ObservableProperty]
+    private DnsType _dnsType;
+
+    [ObservableProperty]
+    private DnsItemModel _dnsItem;
 
     [ObservableProperty]
     private string _iP;
@@ -44,6 +57,10 @@ public partial class SettingModel
     private bool _checkUpdate;
     [ObservableProperty]
     private bool _autoDownload;
+    [ObservableProperty]
+    private bool _dnsEnable;
+    [ObservableProperty]
+    private bool _dnsProxy;
 
     partial void OnServerKeyChanged(string value)
     {
@@ -95,6 +112,21 @@ public partial class SettingModel
         }
 
         ConfigBinding.SetDownloadThread(value ?? 5);
+    }
+
+    partial void OnDnsEnableChanged(bool value)
+    {
+        SetDns();
+    }
+
+    partial void OnDnsProxyChanged(bool value)
+    {
+        SetDns();
+    }
+
+    partial void OnDnsTypeChanged(DnsType value)
+    {
+        SetDns();
     }
 
     partial void OnSourceChanged(SourceLocal value)
@@ -169,6 +201,75 @@ public partial class SettingModel
         ConfigBinding.SetDownloadProxy(IP, Port ?? 1080, User, Password);
     }
 
+    [RelayCommand]
+    public async Task AddDnsItem()
+    {
+        if (BaseBinding.IsDownload)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab3.Error3"));
+            return;
+        }
+
+        var model = new AddDnsModel();
+        var res = await DialogHost.Show(model, "NetworkSetting");
+        if (res is not true)
+        {
+            return;
+        }
+
+        var url = model.Url;
+
+        if (model.IsDns)
+        {
+            if (!IPAddress.TryParse(url, out _))
+            {
+                Model.Show(App.Lang("SettingWindow.Tab3.Error4"));
+                return;
+            }
+
+            if (Dns.Any(item => item.Dns == DnsType.DnsOver && item.Url == url))
+            {
+                Model.Show(App.Lang("SettingWindow.Tab3.Error6"));
+                return;
+            }
+
+            Dns.Add(new(url, DnsType.DnsOver));
+            ConfigBinding.AddDns(url, DnsType.DnsOver);
+        }
+
+        if (model.IsHttps)
+        {
+            if (!url.StartsWith("https://"))
+            {
+                Model.Show(App.Lang("SettingWindow.Tab3.Error4"));
+                return;
+            }
+
+            if (Dns.Any(item => item.Dns == DnsType.DnsOverHttps && item.Url == url))
+            {
+                Model.Show(App.Lang("SettingWindow.Tab3.Error6"));
+                return;
+            }
+
+            Dns.Add(new(url, DnsType.DnsOverHttps));
+            ConfigBinding.AddDns(url, DnsType.DnsOverHttps);
+        }
+
+        Model.Notify(App.Lang("UserWindow.Info12"));
+    }
+
+    public void DeleteDns(DnsItemModel model)
+    {
+        if (BaseBinding.IsDownload)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab3.Error3"));
+            return;
+        }
+
+        Dns.Remove(model);
+        ConfigBinding.RemoveDns(model.Url, model.Dns);
+    }
+
     public async void TestGameCloudConnect()
     {
         await GameCloudUtils.StartConnect();
@@ -201,6 +302,20 @@ public partial class SettingModel
             CheckFile = con.Http.CheckFile;
             AutoDownload = con.Http.AutoDownload;
             CheckUpdate = con.Http.CheckUpdate;
+            DnsEnable = con.Dns.Enable;
+            DnsProxy = con.Dns.HttpProxy;
+            DnsType = con.Dns.DnsType;
+
+            Dns.Clear();
+
+            foreach (var item in con.Dns.Dns)
+            {
+                Dns.Add(new(item, DnsType.DnsOver));
+            }
+            foreach (var item in con.Dns.Https)
+            {
+                Dns.Add(new(item, DnsType.DnsOverHttps));
+            }
         }
         var config1 = GuiConfigUtils.Config;
         if (config1 is { } con1)
@@ -237,5 +352,19 @@ public partial class SettingModel
         }
 
         ConfigBinding.SetDownloadProxyEnable(LoginProxy, DownloadProxy, GameProxy);
+    }
+
+    private void SetDns()
+    {
+        if (_httpLoad)
+            return;
+
+        if (BaseBinding.IsDownload)
+        {
+            Model.Notify(App.Lang("SettingWindow.Tab3.Error3"));
+            return;
+        }
+
+        ConfigBinding.SetDns(DnsEnable, DnsType, DnsProxy);
     }
 }

@@ -406,3 +406,8 @@ public enum DownloadState
 {
     Start, End
 }
+
+public enum DnsType
+{ 
+    DnsOver, DnsOverHttps, DnsOverHttpsWithUdp
+}

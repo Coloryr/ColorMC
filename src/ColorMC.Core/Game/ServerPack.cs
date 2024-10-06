@@ -470,14 +470,14 @@ public static class ServerPack
     public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj, ServerPackCheckArg arg)
     {
         var obj2 = obj.GetServerPack();
-        var res = await WebClient.GetStringAsync(obj.ServerUrl + "sha1");
+        var res = await CoreHttpClient.GetStringAsync(obj.ServerUrl + "sha1");
         if (!res.State)
         {
             return false;
         }
         if (obj2.Sha1 == null || obj2.Sha1 != res.Message)
         {
-            var res1 = await WebClient.GetStringAsync(obj.ServerUrl + "server.json");
+            var res1 = await CoreHttpClient.GetStringAsync(obj.ServerUrl + "server.json");
             if (!res1.State)
             {
                 return false;

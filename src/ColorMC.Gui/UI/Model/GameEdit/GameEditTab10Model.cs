@@ -45,7 +45,7 @@ public partial class GameEditModel
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
         await GameBinding.AddServer(_obj, Text1, Text2);
         Model.ProgressClose();
-        Model.Notify(App.Lang("GameEditWindow.Tab10.Info3"));
+        Model.Notify(App.Lang("UserWindow.Info12"));
         LoadServer();
     }
 

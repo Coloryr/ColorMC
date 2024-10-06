@@ -42,7 +42,7 @@ public static class AdoptiumApi
             return _javaVersion;
         }
         string url = $"{AdoptiumUrl}v3/info/available_releases";
-        var data = await WebClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        var data = await CoreHttpClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
         if (data == null)
             return null;
         var str = await data.Content.ReadAsStringAsync();
@@ -75,7 +75,7 @@ public static class AdoptiumApi
         {
             url = $"{AdoptiumUrl}v3/assets/latest/{version}/hotspot?os={GetOs(os)}";
         }
-        var data = await WebClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        var data = await CoreHttpClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
         if (data == null)
             return null;
         var str = await data.Content.ReadAsStringAsync();

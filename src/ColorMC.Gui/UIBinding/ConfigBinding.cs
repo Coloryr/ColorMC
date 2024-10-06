@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
@@ -37,7 +38,7 @@ public static class ConfigBinding
         var res = ConfigUtils.Load(dir, true);
         if (res)
         {
-            WebClient.Init();
+            CoreHttpClient.Init();
         }
 
         return res;
@@ -194,7 +195,7 @@ public static class ConfigBinding
         ConfigUtils.Config.Http.Source = value;
         ConfigUtils.Save();
 
-        WebClient.Init();
+        CoreHttpClient.Init();
     }
 
     /// <summary>
@@ -234,7 +235,7 @@ public static class ConfigBinding
         ConfigUtils.Config.Http.ProxyPassword = password;
         ConfigUtils.Save();
 
-        WebClient.Init();
+        CoreHttpClient.Init();
     }
 
     /// <summary>
@@ -256,7 +257,7 @@ public static class ConfigBinding
         ConfigUtils.Config.Http.GameProxy = v3;
         ConfigUtils.Save();
 
-        WebClient.Init();
+        CoreHttpClient.Init();
     }
 
     /// <summary>
@@ -363,7 +364,7 @@ public static class ConfigBinding
         ConfigUtils.Config.Window = obj;
         ConfigUtils.Save();
 
-        WebClient.Init();
+        CoreHttpClient.Init();
     }
 
     /// <summary>
@@ -909,5 +910,74 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         UserBinding.ReloadSkin();
+    }
+
+    /// <summary>
+    /// 设置DNS
+    /// </summary>
+    /// <param name="dnsEnable"></param>
+    /// <param name="dnsType"></param>
+    public static void SetDns(bool dnsEnable, DnsType dnsType, bool v2)
+    {
+        if (BaseBinding.IsDownload)
+        {
+            return;
+        }
+
+        ConfigUtils.Config.Dns ??= ConfigUtils.MakeDnsConfig();
+        ConfigUtils.Config.Dns.Enable = dnsEnable;
+        ConfigUtils.Config.Dns.DnsType = dnsType;
+        ConfigUtils.Config.Dns.HttpProxy = v2;
+        ConfigUtils.Save();
+
+        CoreHttpClient.Init();
+    }
+
+    /// <summary>
+    /// 设置DNS
+    /// </summary>
+    public static void AddDns(string url, DnsType dnsOver)
+    {
+        if (BaseBinding.IsDownload)
+        {
+            return;
+        }
+        ConfigUtils.Config.Dns ??= ConfigUtils.MakeDnsConfig();
+        if (dnsOver == DnsType.DnsOver)
+        {
+            ConfigUtils.Config.Dns.Dns.Add(url);
+        }
+        else
+        {
+            ConfigUtils.Config.Dns.Https.Add(url);
+        }
+        ConfigUtils.Save();
+
+        CoreHttpClient.Init();
+    }
+
+    /// <summary>
+    /// 删除Dns
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="dns"></param>
+    public static void RemoveDns(string url, DnsType dns)
+    {
+        if (BaseBinding.IsDownload)
+        {
+            return;
+        }
+        ConfigUtils.Config.Dns ??= ConfigUtils.MakeDnsConfig();
+        if (dns == DnsType.DnsOver)
+        {
+            ConfigUtils.Config.Dns.Dns.Remove(url);
+        }
+        else
+        {
+            ConfigUtils.Config.Dns.Https.Remove(url);
+        }
+        ConfigUtils.Save();
+
+        CoreHttpClient.Init();
     }
 }

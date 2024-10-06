@@ -25,7 +25,7 @@ public static class CurseForgeAPI
     private static async Task<string> Send(HttpRequestMessage httpRequest)
     {
         httpRequest.Headers.Add("x-api-key", ColorMCCore.CoreArg.CurseForgeKey ?? throw new Exception("CurseForge key is empty"));
-        var data = await WebClient.DownloadClient.SendAsync(httpRequest);
+        var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
         return await data.Content.ReadAsStringAsync();
     }
 

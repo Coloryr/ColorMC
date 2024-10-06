@@ -25,7 +25,7 @@ public static class MinecraftAPI
     public static async Task<ProfileNameObj?> GetMinecraftProfileNameAsync(string name)
     {
         string url = $"{ProfileName}/{name}";
-        var data = await WebClient.LoginClient.GetStringAsync(url);
+        var data = await CoreHttpClient.LoginClient.GetStringAsync(url);
 
         return JsonConvert.DeserializeObject<ProfileNameObj>(data);
     }
@@ -39,7 +39,7 @@ public static class MinecraftAPI
     {
         HttpRequestMessage message = new(HttpMethod.Get, Profile);
         message.Headers.Add("Authorization", $"Bearer {accessToken}");
-        var data = await WebClient.LoginClient.SendAsync(message);
+        var data = await CoreHttpClient.LoginClient.SendAsync(message);
         var data1 = await data.Content.ReadAsStringAsync();
 
         return JsonConvert.DeserializeObject<MinecraftProfileObj>(data1); ;
@@ -54,7 +54,7 @@ public static class MinecraftAPI
     public static async Task<UserProfileObj?> GetUserProfile(string? uuid, string? url = null)
     {
         url ??= $"{UserProfile}/{uuid}";
-        var data = await WebClient.LoginClient.GetStringAsync(url);
+        var data = await CoreHttpClient.LoginClient.GetStringAsync(url);
 
         return JsonConvert.DeserializeObject<UserProfileObj>(data);
     }
@@ -64,7 +64,7 @@ public static class MinecraftAPI
     /// </summary>
     public static async Task<MinecraftLoginRes> GetMinecraftAsync(string xstsUhs, string xstsToken)
     {
-        var json = await WebClient.LoginPostJsonAsync(LoginXbox, new
+        var json = await CoreHttpClient.LoginPostJsonAsync(LoginXbox, new
         {
             identityToken = $"XBL3.0 x={xstsUhs};{xstsToken}"
         });
@@ -97,7 +97,7 @@ public static class MinecraftAPI
         var url = string.Format(News, page + 1);
         var req = new HttpRequestMessage(HttpMethod.Get, url);
         req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-        var data = await WebClient.DownloadClient.SendAsync(req);
+        var data = await CoreHttpClient.DownloadClient.SendAsync(req);
         var data1 = await data.Content.ReadAsStringAsync();
 
         return JsonConvert.DeserializeObject<MinecraftNewObj>(data1);

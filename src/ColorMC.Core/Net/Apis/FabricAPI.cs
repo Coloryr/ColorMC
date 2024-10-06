@@ -21,7 +21,7 @@ public static class FabricAPI
         try
         {
             string url = UrlHelper.GetFabricMeta(local);
-            var data = await WebClient.GetStringAsync(url);
+            var data = await CoreHttpClient.GetStringAsync(url);
             if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
@@ -47,7 +47,7 @@ public static class FabricAPI
         try
         {
             string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}/{version}/profile/json";
-            var data = await WebClient.GetStringAsync(url);
+            var data = await CoreHttpClient.GetStringAsync(url);
             if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
@@ -72,7 +72,7 @@ public static class FabricAPI
         try
         {
             string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}";
-            var data = await WebClient.GetStringAsync(url);
+            var data = await CoreHttpClient.GetStringAsync(url);
             if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
@@ -112,7 +112,7 @@ public static class FabricAPI
                 return s_supportVersion;
 
             string url = $"{UrlHelper.GetFabricMeta(local)}/game";
-            var data = await WebClient.GetStringAsync(url);
+            var data = await CoreHttpClient.GetStringAsync(url);
             if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),

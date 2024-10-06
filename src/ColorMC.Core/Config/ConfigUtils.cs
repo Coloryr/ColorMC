@@ -76,6 +76,9 @@ public static class ConfigUtils
             obj.DefaultJvmArg ??= MakeJvmArgConfig();
             obj.Window ??= MakeWindowSettingConfig();
             obj.GameCheck ??= MakeGameCheckConfig();
+            obj.Dns ??= MakeDnsConfig();
+            obj.Dns.Dns ??= [];
+            obj.Dns.Https ??= [];
 
             Config = obj;
         }
@@ -105,6 +108,15 @@ public static class ConfigUtils
             Local = s_local,
             Obj = Config
         });
+    }
+
+    public static DnsObj MakeDnsConfig()
+    {
+        return new()
+        {
+            Dns = ["1.1.1.1", "1.0.0.1", "8.8.8.8", "8.8.4.4"],
+            Https = ["https://223.5.5.5/dns-query"]
+        };
     }
 
     public static ConfigObj MakeDefaultConfig()

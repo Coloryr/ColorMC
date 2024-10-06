@@ -22,7 +22,7 @@ public static class McloAPI
                 { "content", arg }
             });
 
-            var data = await WebClient.DownloadClient.SendAsync(httpRequest);
+            var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;

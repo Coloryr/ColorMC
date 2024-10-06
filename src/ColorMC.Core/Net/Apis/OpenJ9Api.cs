@@ -17,7 +17,7 @@ public static class OpenJ9Api
     /// </summary>
     public static async Task<GetOpenJ9ListRes?> GetJavaList()
     {
-        var data = await WebClient.GetStringAsync(Url);
+        var data = await CoreHttpClient.GetStringAsync(Url);
         if (!data.State)
         {
             return null;

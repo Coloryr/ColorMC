@@ -35,7 +35,7 @@ public static class ColorMCAPI
             httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
             httpRequest.Content = new StringContent(JsonConvert.SerializeObject(new { type, ids }));
 
-            var data = await WebClient.DownloadClient.SendAsync(httpRequest);
+            var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
@@ -96,7 +96,7 @@ public static class ColorMCAPI
         {
             var req = new HttpRequestMessage(HttpMethod.Post, BaseUrl + "getmcmodgroup");
             req.Headers.Add("ColorMC", ColorMCCore.Version);
-            var data = await WebClient.DownloadClient.SendAsync(req);
+            var data = await CoreHttpClient.DownloadClient.SendAsync(req);
             var data1 = await data.Content.ReadAsStringAsync();
             var obj = JObject.Parse(data1);
             if (!obj.TryGetValue("res", out var value) || value.Type != JTokenType.Integer
@@ -131,7 +131,7 @@ public static class ColorMCAPI
         };
         httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
 
-        var data = await WebClient.DownloadClient.SendAsync(httpRequest);
+        var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
         var str = await data.Content.ReadAsStringAsync();
 
         return JsonConvert.DeserializeObject<PojavLauncherTeamObj>(str);

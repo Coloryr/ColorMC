@@ -43,7 +43,7 @@ public static class PlayerSkinAPI
                 var file = Path.GetFullPath(obj.GetSkinFile());
                 FileInfo info = new(file);
                 info.Directory?.Create();
-                var data2 = await WebClient.GetBytesAsync(url.textures.SKIN.url);
+                var data2 = await CoreHttpClient.GetBytesAsync(url.textures.SKIN.url);
                 if (data2.State)
                 {
                     PathHelper.WriteBytes(file, data2.Data!);
@@ -63,7 +63,7 @@ public static class PlayerSkinAPI
                 var file = Path.GetFullPath(obj.GetCapeFile());
                 FileInfo info = new(file);
                 info.Directory?.Create();
-                var data2 = await WebClient.GetBytesAsync(url.textures.CAPE.url);
+                var data2 = await CoreHttpClient.GetBytesAsync(url.textures.CAPE.url);
                 if (data2.State)
                 {
                     PathHelper.WriteBytes(file, data2.Data!);

@@ -151,6 +151,7 @@
     <None Remove="Resource\Icon\Setting\svg31.svg" />
     <None Remove="Resource\Icon\Setting\svg32.svg" />
     <None Remove="Resource\Icon\Setting\svg33.svg" />
+    <None Remove="Resource\Icon\Setting\svg34.svg" />
     <None Remove="Resource\Icon\Setting\svg4.svg" />
     <None Remove="Resource\Icon\Setting\svg5.svg" />
     <None Remove="Resource\Icon\Setting\svg6.svg" />
@@ -290,6 +291,7 @@
     <AvaloniaResource Include="Resource\Icon\Setting\svg31.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg32.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg33.svg" />
+    <AvaloniaResource Include="Resource\Icon\Setting\svg34.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg4.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg5.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg6.svg" />
@@ -355,6 +357,9 @@
     </Compile>
     <Compile Update="UI\Controls\Items\OptifineVersionItemControl.axaml.cs">
       <DependentUpon>OptifineVersionItemControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\Setting\AddDnsControl.axaml.cs">
+      <DependentUpon>AddDnsControl.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

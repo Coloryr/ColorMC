@@ -571,7 +571,7 @@ public static class Launch
         }
         else if (login.AuthType == AuthType.AuthlibInjector)
         {
-            var res = await WebClient.GetStringAsync(login.Text1);
+            var res = await CoreHttpClient.GetStringAsync(login.Text1);
             if (!res.State)
             {
                 throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
@@ -582,7 +582,7 @@ public static class Launch
         }
         else if (login.AuthType == AuthType.LittleSkin)
         {
-            var res = await WebClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
+            var res = await CoreHttpClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
             if (!res.State)
             {
                 throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
@@ -593,7 +593,7 @@ public static class Launch
         }
         else if (login.AuthType == AuthType.SelfLittleSkin)
         {
-            var res = await WebClient.GetStringAsync($"{login.Text1}api/yggdrasil");
+            var res = await CoreHttpClient.GetStringAsync($"{login.Text1}api/yggdrasil");
             if (!res.State)
             {
                 throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
