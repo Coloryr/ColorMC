@@ -51,109 +51,67 @@ public partial class GameLogControl : BaseUserControl
 
         private LogLevel FindLast(DocumentLine line, int max)
         {
-            if (line == null)
+            if (line == null || max == 0)
             {
                 return LogLevel.None;
             }
-            for (int a = 0; a < max; a++)
+
+            var level = GetLogLevel(line);
+            if (level != LogLevel.Base)
             {
-                string lineText = CurrentContext.Document.GetText(line);
-
-                if (lineText.Contains("/INFO] "))
-                {
-                    return LogLevel.Info;
-                }
-                else if (lineText.Contains("/WARN] "))
-                {
-                    return LogLevel.Warn;
-                }
-                else if (lineText.Contains("/ERROR] ") || lineText.Contains(" [STDERR]: "))
-                {
-                    return LogLevel.Error;
-                }
-                else if (lineText.Contains("/DEBUG] "))
-                {
-                    return LogLevel.Debug;
-                }
-                else if (lineText.Contains("/FATAL] "))
-                {
-                    return LogLevel.Fatal;
-                }
-
-                return FindLast(line.PreviousLine, max - 1);
+                return level;
             }
 
-            return LogLevel.None;
+            return FindLast(line.PreviousLine, max - 1);
+        }
+
+        private LogLevel GetLogLevel(DocumentLine line)
+        {
+            string lineText = CurrentContext.Document.GetText(line);
+
+            if (lineText.Contains("/WARN] "))
+            {
+                return LogLevel.Warn;
+            }
+            else if (lineText.Contains("/ERROR] ") || lineText.Contains(" [STDERR]: "))
+            {
+                return LogLevel.Error;
+            }
+            else if (lineText.Contains("/DEBUG] "))
+            {
+                return LogLevel.Debug;
+            }
+            else if (lineText.Contains("/FATAL] "))
+            {
+                return LogLevel.Fatal;
+            }
+            else if (lineText.Contains("/INFO] "))
+            {
+                return LogLevel.Info;
+            }
+
+            return LogLevel.Base;
         }
 
         protected override void ColorizeLine(DocumentLine line)
         {
             string lineText = CurrentContext.Document.GetText(line);
 
-            bool info = lineText.Contains("/INFO] ");
-            bool warn = lineText.Contains("/WARN] ");
-            bool error = lineText.Contains("/ERROR] ") || lineText.Contains(" [STDERR]: ");
-            bool debug = lineText.Contains("/DEBUG] ");
-            bool fatal = lineText.Contains("/FATAL] ");
+            var level2 = GetLogLevel(line);
 
-            if (warn)
+            if (level2 != LogLevel.Base)
             {
-                level = LogLevel.Warn;
+                level = level2;
                 ChangeLinePart(
                     line.Offset,
                     line.Offset + lineText.Length,
                     visualLine =>
                     {
-                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.WarnColor);
-                    }
-                );
-            }
-            else if (error)
-            {
-                level = LogLevel.Error;
-                ChangeLinePart(
-                    line.Offset,
-                    line.Offset + lineText.Length,
-                    visualLine =>
-                    {
-                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.ErrorColor);
-                    }
-                );
-            }
-            else if (debug)
-            {
-                level = LogLevel.Debug;
-                ChangeLinePart(
-                    line.Offset,
-                    line.Offset + lineText.Length,
-                    visualLine =>
-                    {
-                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.DebugColor);
-                    }
-                );
-            }
-            else if (fatal)
-            {
-                level = LogLevel.Fatal;
-                ChangeLinePart(
-                    line.Offset,
-                    line.Offset + lineText.Length,
-                    visualLine =>
-                    {
-                        visualLine.BackgroundBrush = Brushes.White;
-                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.ErrorColor);
-                    }
-                );
-            }
-            else if (info)
-            {
-                level = LogLevel.Info;
-                ChangeLinePart(
-                    line.Offset,
-                    line.Offset + lineText.Length,
-                    visualLine =>
-                    {
-                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.InfoColor);
+                        if (level2 == LogLevel.Fatal)
+                        {
+                            visualLine.BackgroundBrush = Brushes.White;
+                        }
+                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.GetColor(level2));
                     }
                 );
             }
