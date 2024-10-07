@@ -45,10 +45,8 @@ public partial class GameLogControl : BaseUserControl
         TextEditor1.TextArea.TextView.LineTransformers.Add(new LogTransformer());
     }
 
-    class LogTransformer : DocumentColorizingTransformer
+    private class LogTransformer : DocumentColorizingTransformer
     {
-        private LogLevel level = LogLevel.None;
-
         private LogLevel FindLast(DocumentLine line, int max)
         {
             if (line == null || max == 0)
@@ -99,49 +97,21 @@ public partial class GameLogControl : BaseUserControl
 
             var level2 = GetLogLevel(line);
 
-            if (level2 != LogLevel.Base)
+            if (level2 == LogLevel.Base)
             {
-                level = level2;
-                ChangeLinePart(
-                    line.Offset,
-                    line.Offset + lineText.Length,
-                    visualLine =>
+                level2 = FindLast(line, 50);
+            }
+
+            ChangeLinePart(line.Offset,line.Offset + lineText.Length,
+                visualLine =>
+                {
+                    if (level2 == LogLevel.Fatal)
                     {
-                        if (level2 == LogLevel.Fatal)
-                        {
-                            visualLine.BackgroundBrush = Brushes.White;
-                        }
-                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.GetColor(level2));
+                        visualLine.BackgroundBrush = Brushes.White;
                     }
-                );
-            }
-            else if (level != LogLevel.None)
-            {
-                var level1 = FindLast(line, 50);
-                ChangeLinePart(
-                    line.Offset,
-                    line.Offset + lineText.Length,
-                        visualLine =>
-                        {
-                            if (level1 == LogLevel.Fatal)
-                            {
-                                visualLine.BackgroundBrush = Brushes.White;
-                            }
-                            visualLine.TextRunProperties.SetForegroundBrush(ColorManager.GetColor(level1));
-                        }
-                    );
-            }
-            else
-            {
-                ChangeLinePart(
-                line.Offset,
-                line.Offset + lineText.Length,
-                    visualLine =>
-                    {
-                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.NoneColor);
-                    }
-                );
-            }
+                    visualLine.TextRunProperties.SetForegroundBrush(ColorManager.GetColor(level2));
+                }
+            );
         }
     }
 
