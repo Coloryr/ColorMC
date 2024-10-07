@@ -67,23 +67,23 @@ public partial class GameLogControl : BaseUserControl
         {
             string lineText = CurrentContext.Document.GetText(line);
 
-            if (lineText.Contains("/WARN] "))
+            if (lineText.Contains("/WARN]"))
             {
                 return LogLevel.Warn;
             }
-            else if (lineText.Contains("/ERROR] ") || lineText.Contains(" [STDERR]: "))
+            else if (lineText.Contains("/ERROR]") || lineText.Contains("[STDERR]") || lineText.Contains("[java.lang.Throwable$WrappedPrintStream:println:-1]"))
             {
                 return LogLevel.Error;
             }
-            else if (lineText.Contains("/DEBUG] "))
+            else if (lineText.Contains("/DEBUG]"))
             {
                 return LogLevel.Debug;
             }
-            else if (lineText.Contains("/FATAL] "))
+            else if (lineText.Contains("/FATAL]"))
             {
                 return LogLevel.Fatal;
             }
-            else if (lineText.Contains("/INFO] "))
+            else if (lineText.Contains("/INFO]"))
             {
                 return LogLevel.Info;
             }
