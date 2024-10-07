@@ -212,6 +212,15 @@ public record HeadSetting
     public int Y { get; set; }
 }
 
+public record LogColorSetting
+{ 
+    public string Info { get; set; }
+    public string Warn { get; set; }
+    public string Error { get; set; }
+    public string Debug { get; set; }
+    public string None { get; set; }
+}
+
 /// <summary>
 /// Gui配置文件
 /// </summary>
@@ -262,6 +271,10 @@ public record GuiConfigObj
     /// 渲染设置
     /// </summary>
     public RenderSetting Render { get; set; }
+    /// <summary>
+    /// 日志着色
+    /// </summary>
+    public LogColorSetting LogColor { get; set; }
 
     /// <summary>
     /// 主题色类型

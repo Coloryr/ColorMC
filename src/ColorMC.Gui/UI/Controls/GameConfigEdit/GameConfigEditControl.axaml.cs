@@ -1,10 +1,14 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Threading;
-using AvaloniaEdit.Indentation.CSharp;
+using AvaloniaEdit.Document;
+using AvaloniaEdit.Rendering;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Manager;
@@ -19,6 +23,9 @@ public partial class GameConfigEditControl : BaseUserControl
     private readonly WorldObj _world;
     private readonly GameSettingObj _obj;
 
+    //private readonly TextMate.Installation textMateInstallation;
+    //private readonly RegistryOptions registryOptions;
+
     public GameConfigEditControl()
     {
         InitializeComponent();
@@ -28,10 +35,10 @@ public partial class GameConfigEditControl : BaseUserControl
 
         TextEditor1.KeyDown += NbtViewer_KeyDown;
         TextEditor1.TextArea.TextEntered += TextEditor1_TextInput;
-        TextEditor1.TextArea.Background = Brushes.Transparent;
-        TextEditor1.Options.ShowBoxForControlCharacters = true;
-        TextEditor1.TextArea.IndentationStrategy =
-            new CSharpIndentationStrategy(TextEditor1.Options);
+
+
+        //registryOptions = new RegistryOptions(ThemeManager.NowTheme == PlatformThemeVariant.Light ? ThemeName.LightPlus : ThemeName.DarkPlus);
+        //textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
     }
 
     private void TextEditor1_TextInput(object? sender, TextInputEventArgs e)
@@ -70,6 +77,18 @@ public partial class GameConfigEditControl : BaseUserControl
         {
             NbtViewer.Scroll!.Offset = new(0, (DataContext as GameConfigEditModel)!.TurnTo * 25);
         }
+        //else if (e.PropertyName == nameof(GameConfigEditModel.File))
+        //{
+        //    var model = (DataContext as GameConfigEditModel)!;
+        //    var info = new FileInfo(model.File);
+        //    var lang = registryOptions.GetLanguageByExtension(info.Extension);
+        //    if (lang == null)
+        //    {
+        //        return;
+        //    }
+        //    var temp = registryOptions.GetScopeByLanguageId(lang.Id);
+        //    textMateInstallation.SetGrammar(temp);
+        //}
     }
 
     private void NbtViewer_KeyDown(object? sender, KeyEventArgs e)

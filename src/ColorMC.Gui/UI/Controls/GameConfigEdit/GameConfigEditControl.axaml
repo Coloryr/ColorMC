@@ -122,12 +122,14 @@
                     Foreground="{setting:Theme FontColor}"
                     HorizontalScrollBarVisibility="Auto"
                     IsVisible="{Binding !NbtEnable}"
+                    RenderOptions.TextRenderingMode="Antialias"
                     ShowLineNumbers="True"
                     VerticalScrollBarVisibility="Visible"
                     WordWrap="True" />
                 <TreeDataGrid
                     Name="NbtViewer"
                     IsVisible="{Binding NbtEnable}"
+                    RenderOptions.TextRenderingMode="Antialias"
                     ScrollViewer.HorizontalScrollBarVisibility="Visible"
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                     Source="{Binding Source}" />

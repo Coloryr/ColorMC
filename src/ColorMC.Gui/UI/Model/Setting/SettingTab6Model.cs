@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Media;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -306,8 +307,8 @@ public partial class SettingModel
             SlowVolume = config.SlowVolume;
             Loop = config.MusicLoop;
 
-            MotdFontColor = ColorSel.MotdColor.ToColor();
-            MotdBackColor = ColorSel.MotdBackColor.ToColor();
+            MotdFontColor = ColorManager.MotdColor.ToColor();
+            MotdBackColor = ColorManager.MotdBackColor.ToColor();
             if (config.GameName == null)
             {
                 Game = -1;

@@ -2,7 +2,10 @@ using System.ComponentModel;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Threading;
+using AvaloniaEdit.Document;
+using AvaloniaEdit.Rendering;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
@@ -33,7 +36,88 @@ public partial class GameLogControl : BaseUserControl
 
         TextEditor1.PointerWheelChanged += TextEditor1_PointerWheelChanged;
         TextEditor1.TextArea.PointerWheelChanged += TextEditor1_PointerWheelChanged;
+
+        //var registryOptions = new RegistryOptions(ThemeManager.NowTheme == PlatformThemeVariant.Light ? ThemeName.LightPlus : ThemeName.DarkPlus);
+        //var textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
+        //var lang = registryOptions.GetLanguageByExtension(".log");
+        //var temp = registryOptions.GetScopeByLanguageId(lang.Id);
+        //textMateInstallation.SetGrammar(temp);
+
+        TextEditor1.TextArea.TextView.LineTransformers.Add(new LogTransformer());
     }
+
+    class LogTransformer : DocumentColorizingTransformer
+    {
+        protected override void ColorizeLine(DocumentLine line)
+        {
+            string lineText = CurrentContext.Document.GetText(line);
+
+            bool info = lineText.Contains("/INFO] ");
+            bool warn = lineText.Contains("/WARN] ");
+            bool error = lineText.Contains("/ERROR] ") || lineText.Contains(" [STDERR]: ");
+            bool debug = lineText.Contains("/DEBUG] ");
+            bool fatal = lineText.Contains("/FATAL] ");
+
+            if (warn)
+            {
+                ChangeLinePart(
+                    line.Offset,
+                    line.Offset + lineText.Length,
+                    visualLine =>
+                    {
+                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.WarnColor);
+                    }
+                );
+            }
+            else if (error)
+            {
+                ChangeLinePart(
+                    line.Offset,
+                    line.Offset + lineText.Length,
+                    visualLine =>
+                    {
+                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.ErrorColor);
+                    }
+                );
+            }
+            else if (debug)
+            {
+                ChangeLinePart(
+                    line.Offset,
+                    line.Offset + lineText.Length,
+                    visualLine =>
+                    {
+                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.DebugColor);
+                    }
+                );
+            }
+            else if (fatal)
+            {
+                ChangeLinePart(
+                    line.Offset,
+                    line.Offset + lineText.Length,
+                    visualLine =>
+                    {
+                        visualLine.BackgroundBrush = Brushes.White;
+                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.ErrorColor);
+                    }
+                );
+            }
+            else if (fatal)
+            {
+                ChangeLinePart(
+                    line.Offset,
+                    line.Offset + lineText.Length,
+                    visualLine =>
+                    {
+                        visualLine.BackgroundBrush = Brushes.White;
+                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.NoneColor);
+                    }
+                );
+            }
+        }
+    }
+
 
     public override void Update()
     {

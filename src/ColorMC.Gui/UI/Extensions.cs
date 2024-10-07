@@ -16,7 +16,7 @@ public class ColorsExtension(string key) : MarkupExtension, IObservable<IBrush>
 
     public IDisposable Subscribe(IObserver<IBrush> observer)
     {
-        return ColorSel.Add(key, observer);
+        return ColorManager.Add(key, observer);
     }
 }
 

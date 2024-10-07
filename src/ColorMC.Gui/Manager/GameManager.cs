@@ -4,6 +4,7 @@ using System.Text;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.Manager;
 
@@ -16,7 +17,7 @@ public static class GameManager
     /// <summary>
     /// 游戏日志
     /// </summary>
-    public static readonly Dictionary<string, GameLogObj> GameLogs = [];
+    public static readonly Dictionary<string, GameLog> GameLogs = [];
 
     /// <summary>
     /// 游戏实例是否在运行
@@ -80,7 +81,7 @@ public static class GameManager
         }
 
         //清空日志
-        if (GameLogs.TryGetValue(uuid, out GameLogObj? value))
+        if (GameLogs.TryGetValue(uuid, out GameLog? value))
         {
             value.Clear();
         }
