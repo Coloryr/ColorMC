@@ -5,6 +5,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameLog;
 
@@ -76,7 +77,7 @@ public partial class GameLogControl : BaseUserControl
         });
     }
 
-    public void Log(string? data)
+    public void Log(GameLogItemObj? data)
     {
         if (data == null)
             return;

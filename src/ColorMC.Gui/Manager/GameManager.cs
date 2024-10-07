@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Manager;
 
@@ -15,7 +16,7 @@ public static class GameManager
     /// <summary>
     /// 游戏日志
     /// </summary>
-    public static readonly Dictionary<string, StringBuilder> GameLogs = [];
+    public static readonly Dictionary<string, GameLogObj> GameLogs = [];
 
     /// <summary>
     /// 游戏实例是否在运行
@@ -34,16 +35,21 @@ public static class GameManager
         return RunGames.Count > 0;
     }
 
-    public static void AddGameLog(string uuid, string? data)
+    /// <summary>
+    /// 游戏进程有日志
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="data"></param>
+    public static void AddGameLog(GameSettingObj obj, string? data)
     {
-        if (GameLogs.TryGetValue(uuid, out var log))
+        if (GameLogs.TryGetValue(obj.UUID, out var log))
         {
-            log.Append(data).Append(Environment.NewLine);
-        }
+            var item = log.AddLog(data);
 
-        if (WindowManager.GameLogWindows.TryGetValue(uuid, out var win))
-        {
-            win.Log(data);
+            if (item != null && WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var win))
+            {
+                win.Log(item);
+            }
         }
     }
 
@@ -74,7 +80,7 @@ public static class GameManager
         }
 
         //清空日志
-        if (GameLogs.TryGetValue(uuid, out StringBuilder? value))
+        if (GameLogs.TryGetValue(uuid, out GameLogObj? value))
         {
             value.Clear();
         }
@@ -84,11 +90,11 @@ public static class GameManager
         }
     }
 
-    public static string? GetGameLog(string uuid)
+    public static List<GameLogItemObj>? GetGameLog(string uuid, LogLevel level)
     {
         if (GameLogs.TryGetValue(uuid, out var data))
         {
-            return data.ToString();
+            return data.GetLog(level);
         }
 
         return null;

@@ -17,9 +17,9 @@
             Margin="10,0,10,10"
             Classes="t2"
             DockPanel.Dock="Top">
-            <DockPanel Margin="15">
-                <StackPanel Margin="0,0,0,10" DockPanel.Dock="Top">
-                    <panel:WrapPanelWithStretch>
+            <StackPanel Margin="15">
+                <StackPanel Margin="0,0,0,10">
+                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
                         <ToggleSwitch
                             Margin="0,0,10,10"
                             VerticalAlignment="Center"
@@ -42,7 +42,7 @@
                         <Button
                             Width="100"
                             Height="35"
-                            Margin="-2,-3,3,-3"
+                            Margin="-2,-3,3,7"
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding Launch}"
@@ -53,7 +53,7 @@
                         <Button
                             Width="100"
                             Height="35"
-                            Margin="-2,-3,3,-3"
+                            Margin="-2,-3,3,7"
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding Stop}"
@@ -64,7 +64,7 @@
                         <Button
                             Width="100"
                             Height="35"
-                            Margin="-2,-3,3,-3"
+                            Margin="-2,-3,3,7"
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding Load1}"
@@ -73,7 +73,7 @@
                         <Button
                             Width="100"
                             Height="35"
-                            Margin="-2,-3,3,-3"
+                            Margin="-2,-3,3,7"
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding Search}"
@@ -82,7 +82,7 @@
                         <Button
                             Width="100"
                             Height="35"
-                            Margin="-2,-3,3,-3"
+                            Margin="-2,-3,3,7"
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding Push}"
@@ -90,8 +90,49 @@
                             ToolTip.VerticalOffset="-30" />
                     </WrapPanel>
                 </StackPanel>
-
-            </DockPanel>
+                <WrapPanel Margin="0,0,0,0" IsEnabled="{Binding !IsFile}">
+                    <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameLogWindow.Text9}" />
+                    <CheckBox
+                        Margin="0,0,10,0"
+                        Content="{setting:Localize GameLogWindow.Text10}"
+                        IsChecked="{Binding EnableInfo}" />
+                    <CheckBox
+                        Margin="0,0,10,0"
+                        Content="{setting:Localize GameLogWindow.Text11}"
+                        IsChecked="{Binding EnableWarn}" />
+                    <CheckBox
+                        Margin="0,0,10,0"
+                        Content="{setting:Localize GameLogWindow.Text12}"
+                        IsChecked="{Binding EnableError}" />
+                    <CheckBox
+                        Margin="0,0,10,0"
+                        Content="{setting:Localize GameLogWindow.Text13}"
+                        IsChecked="{Binding EnableDebug}" />
+                    <CheckBox
+                        Margin="0,0,10,0"
+                        Content="{setting:Localize GameLogWindow.Text14}"
+                        IsChecked="{Binding EnableNone}" />
+                </WrapPanel>
+                <panel:WrapPanelWithStretch
+                    Margin="0,0,0,-10"
+                    AutoMax="{Binding MinMode}"
+                    IsEnabled="{Binding !IsFile}">
+                    <DockPanel MinWidth="230" Margin="0,0,10,10">
+                        <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameLogWindow.Text15}" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding Threads}"
+                            SelectedItem="{Binding SelectThread}" />
+                    </DockPanel>
+                    <DockPanel MinWidth="230" Margin="0,0,10,10">
+                        <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameLogWindow.Text16}" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding Categorys}"
+                            SelectedItem="{Binding SelectCategory}" />
+                    </DockPanel>
+                </panel:WrapPanelWithStretch>
+            </StackPanel>
         </Border>
         <ae:TextEditor
             Name="TextEditor1"
@@ -102,6 +143,7 @@
             Foreground="{setting:Theme FontColor}"
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
+            RenderOptions.TextRenderingMode="Antialias"
             ShowLineNumbers="True"
             VerticalScrollBarVisibility="Visible"
             WordWrap="{Binding IsWordWrap}" />
