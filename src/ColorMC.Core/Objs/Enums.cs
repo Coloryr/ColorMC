@@ -408,6 +408,6 @@ public enum DownloadState
 }
 
 public enum DnsType
-{ 
+{
     DnsOver, DnsOverHttps, DnsOverHttpsWithUdp
 }

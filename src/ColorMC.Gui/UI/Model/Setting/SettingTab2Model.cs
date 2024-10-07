@@ -564,7 +564,7 @@ public partial class SettingModel
             {
                 MainColor = color;
             }
-            
+
             EnableRGB = con.RGB;
             IsCutsomFont = !con.FontDefault;
             WindowMode = con.WindowMode;
