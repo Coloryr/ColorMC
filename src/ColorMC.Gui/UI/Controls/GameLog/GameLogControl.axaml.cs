@@ -47,6 +47,45 @@ public partial class GameLogControl : BaseUserControl
 
     class LogTransformer : DocumentColorizingTransformer
     {
+        private LogLevel level = LogLevel.None;
+
+        private LogLevel FindLast(DocumentLine line, int max)
+        {
+            if (line == null)
+            {
+                return LogLevel.None;
+            }
+            for (int a = 0; a < max; a++)
+            {
+                string lineText = CurrentContext.Document.GetText(line);
+
+                if (lineText.Contains("/INFO] "))
+                {
+                    return LogLevel.Info;
+                }
+                else if (lineText.Contains("/WARN] "))
+                {
+                    return LogLevel.Warn;
+                }
+                else if (lineText.Contains("/ERROR] ") || lineText.Contains(" [STDERR]: "))
+                {
+                    return LogLevel.Error;
+                }
+                else if (lineText.Contains("/DEBUG] "))
+                {
+                    return LogLevel.Debug;
+                }
+                else if (lineText.Contains("/FATAL] "))
+                {
+                    return LogLevel.Fatal;
+                }
+
+                return FindLast(line.PreviousLine, max - 1);
+            }
+
+            return LogLevel.None;
+        }
+
         protected override void ColorizeLine(DocumentLine line)
         {
             string lineText = CurrentContext.Document.GetText(line);
@@ -59,6 +98,7 @@ public partial class GameLogControl : BaseUserControl
 
             if (warn)
             {
+                level = LogLevel.Warn;
                 ChangeLinePart(
                     line.Offset,
                     line.Offset + lineText.Length,
@@ -70,6 +110,7 @@ public partial class GameLogControl : BaseUserControl
             }
             else if (error)
             {
+                level = LogLevel.Error;
                 ChangeLinePart(
                     line.Offset,
                     line.Offset + lineText.Length,
@@ -81,6 +122,7 @@ public partial class GameLogControl : BaseUserControl
             }
             else if (debug)
             {
+                level = LogLevel.Debug;
                 ChangeLinePart(
                     line.Offset,
                     line.Offset + lineText.Length,
@@ -92,6 +134,7 @@ public partial class GameLogControl : BaseUserControl
             }
             else if (fatal)
             {
+                level = LogLevel.Fatal;
                 ChangeLinePart(
                     line.Offset,
                     line.Offset + lineText.Length,
@@ -102,14 +145,37 @@ public partial class GameLogControl : BaseUserControl
                     }
                 );
             }
-            else if (fatal)
+            else if (info)
             {
+                level = LogLevel.Info;
                 ChangeLinePart(
                     line.Offset,
                     line.Offset + lineText.Length,
                     visualLine =>
                     {
-                        visualLine.BackgroundBrush = Brushes.White;
+                        visualLine.TextRunProperties.SetForegroundBrush(ColorManager.InfoColor);
+                    }
+                );
+            }
+            else if (level != LogLevel.None)
+            {
+                var level1 = FindLast(line, 50);
+                ChangeLinePart(
+                    line.Offset,
+                    line.Offset + lineText.Length,
+                        visualLine =>
+                        {
+                            visualLine.TextRunProperties.SetForegroundBrush(ColorManager.GetColor(level1));
+                        }
+                    );
+            }
+            else
+            {
+                ChangeLinePart(
+                line.Offset,
+                line.Offset + lineText.Length,
+                    visualLine =>
+                    {
                         visualLine.TextRunProperties.SetForegroundBrush(ColorManager.NoneColor);
                     }
                 );

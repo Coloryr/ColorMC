@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Media;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.Utils;
 
@@ -91,6 +92,19 @@ public static class ColorManager
                 }
             }
         }
+    }
+
+    public static IBrush GetColor(LogLevel level)
+    {
+        return level switch
+        {
+            LogLevel.Info => InfoColor,
+            LogLevel.Warn => WarnColor,
+            LogLevel.Debug => DebugColor,
+            LogLevel.Error => ErrorColor,
+            LogLevel.Fatal => ErrorColor,
+            _ => NoneColor
+        };
     }
 
     private static IBrush GetColor(string key)
