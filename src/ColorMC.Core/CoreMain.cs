@@ -15,7 +15,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A31";
-    public const string DateVersion = "20241006";
+    public const string DateVersion = "20241007";
 
     /// <summary>
     /// 版本号
@@ -149,8 +149,9 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端启动
     /// </summary>
-    public static Func<LoginObj, GameSettingObj, JavaInfo, List<string>, 
-        Dictionary<string, string>, IGameHandel> PhoneGameLaunch { internal get; set; }
+    public static Func<LoginObj, GameSettingObj, JavaInfo, List<string>,
+        Dictionary<string, string>, IGameHandel> PhoneGameLaunch
+    { internal get; set; }
     /// <summary>
     /// 手机端Jvm安装
     /// </summary>
@@ -170,8 +171,9 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端Jvm运行
     /// </summary>
-    public static Func<GameSettingObj, JavaInfo, string, List<string>, 
-        Dictionary<string, string>, Process> PhoneJvmRun { internal get; set; }
+    public static Func<GameSettingObj, JavaInfo, string, List<string>,
+        Dictionary<string, string>, Process> PhoneJvmRun
+    { internal get; set; }
     /// <summary>
     /// 手机端打开网页
     /// </summary>

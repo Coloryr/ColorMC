@@ -1,14 +1,8 @@
 ﻿using System.ComponentModel;
-using System.IO;
-using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.Threading;
-using AvaloniaEdit.Document;
-using AvaloniaEdit.Rendering;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Manager;

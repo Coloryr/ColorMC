@@ -56,7 +56,7 @@ public static class CoreHttpClient
 
         _dnsClients.Clear();
 
-        IDnsClient? dnsClient=null;
+        IDnsClient? dnsClient = null;
         WebProxy? proxy = null;
 
         //代理

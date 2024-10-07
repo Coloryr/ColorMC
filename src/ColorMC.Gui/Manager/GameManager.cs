@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;

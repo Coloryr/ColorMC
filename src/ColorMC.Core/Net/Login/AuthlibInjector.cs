@@ -1,6 +1,5 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Login;
 

@@ -26,7 +26,7 @@ public record HttpObj
 }
 
 public record DnsObj
-{ 
+{
     public bool Enable { get; set; }
     public List<string> Dns { get; set; }
     public List<string> Https { get; set; }
