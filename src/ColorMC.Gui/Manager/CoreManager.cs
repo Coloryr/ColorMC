@@ -15,10 +15,7 @@ public static class CoreManager
     {
         ColorMCCore.Error += WindowManager.ShowError;
         ColorMCCore.LanguageReload += LanguageReload;
-        ColorMCCore.GameLog += (obj, d) =>
-        {
-            GameManager.AddGameLog(obj.UUID, d);
-        };
+        ColorMCCore.GameLog += GameManager.AddGameLog;
         ColorMCCore.OnDownload = WindowManager.ShowDownload;
         ColorMCCore.GameExit += GameExit;
         ColorMCCore.InstanceChange += InstanceChange;

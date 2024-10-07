@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading;
@@ -9,6 +10,7 @@ using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -25,6 +27,9 @@ public partial class GameLogModel : GameModel
 
     public ObservableCollection<string> FileList { get; init; } = [];
 
+    public ObservableCollection<string> Threads { get; init; } = [""];
+    public ObservableCollection<string> Categorys { get; init; } = [""];
+
     [ObservableProperty]
     private TextDocument _text;
 
@@ -37,11 +42,33 @@ public partial class GameLogModel : GameModel
     [ObservableProperty]
     private string? _file;
 
-    public string Temp { get; private set; } = "";
-    public ConcurrentQueue<string> _queue = new();
+    [ObservableProperty]
+    private string? _selectThread;
+    [ObservableProperty]
+    private string? _selectCategory;
 
+    [ObservableProperty]
+    private bool _enableNone = true;
+    [ObservableProperty]
+    private bool _enableInfo = true;
+    [ObservableProperty]
+    private bool _enableWarn = true;
+    [ObservableProperty]
+    private bool _enableError = true;
+    [ObservableProperty]
+    private bool _enableDebug = true;
+    [ObservableProperty]
+    private bool _isFile;
+
+    public string Temp { get; private set; } = "";
+
+    private ConcurrentQueue<string> _queue = new();
+
+
+    private List<GameLogItemObj> _logs;
     private readonly Thread _timer;
     private bool _run;
+    private bool _load;
 
     public GameLogModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
@@ -63,18 +90,13 @@ public partial class GameLogModel : GameModel
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            if (GameManager.GetGameLog(Obj.UUID) is { } text)
-            {
-                Text = new(text);
-            }
-            else
-            {
-                Text = new();
-            }
+            IsFile = false;
+            LoadLast();
             OnPropertyChanged(NameTop);
             return;
         }
 
+        IsFile = true;
         Model.Progress(App.Lang("GameLogWindow.Info1"));
         var data = await GameBinding.ReadLog(Obj, value);
         Model.ProgressClose();
@@ -86,6 +108,41 @@ public partial class GameLogModel : GameModel
 
         Text = new(data);
         OnPropertyChanged(NameTop);
+    }
+
+    partial void OnSelectThreadChanged(string? value)
+    {
+        LoadLast1();
+    }
+
+    partial void OnSelectCategoryChanged(string? value)
+    {
+        LoadLast1();
+    }
+
+    partial void OnEnableNoneChanged(bool value)
+    {
+        LoadLast();
+    }
+
+    partial void OnEnableInfoChanged(bool value)
+    {
+        LoadLast();
+    }
+
+    partial void OnEnableWarnChanged(bool value)
+    {
+        LoadLast();
+    }
+
+    partial void OnEnableErrorChanged(bool value)
+    {
+        LoadLast();
+    }
+
+    partial void OnEnableDebugChanged(bool value)
+    {
+        LoadLast();
     }
 
     [RelayCommand]
@@ -186,11 +243,40 @@ public partial class GameLogModel : GameModel
         IsAuto = false;
     }
 
-    public void Log(string data)
+    public void Log(GameLogItemObj data)
     {
+        if (!EnableNone && data.Level == LogLevel.None)
+        {
+            return;
+        }
+        if (!EnableInfo && data.Level == LogLevel.Info)
+        {
+            return;
+        }
+        if (!EnableWarn && data.Level == LogLevel.Warn)
+        {
+            return;
+        }
+        if (!EnableError && data.Level == LogLevel.Error)
+        {
+            return;
+        }
+        if (!EnableDebug && data.Level == LogLevel.Debug)
+        {
+            return;
+        }
         if (string.IsNullOrWhiteSpace(File))
         {
-            _queue.Enqueue(data + Environment.NewLine);
+            _queue.Enqueue(data.Log + Environment.NewLine);
+
+            if (!string.IsNullOrWhiteSpace(data.Category) && !Categorys.Contains(data.Category))
+            {
+                Categorys.Add(data.Category);
+            }
+            if (!string.IsNullOrWhiteSpace(data.Thread) && !Threads.Contains(data.Thread))
+            {
+                Threads.Add(data.Thread);
+            }
         }
     }
 
@@ -234,15 +320,94 @@ public partial class GameLogModel : GameModel
         _run = false;
     }
 
-    public void LoadLast()
+    private void LoadLast()
     {
-        if (GameManager.GetGameLog(Obj.UUID) is { } text)
+        if (IsFile)
         {
-            Text = new(text);
+            return;
+        }
+        _load = true;
+
+        Threads.Clear();
+        Threads.Add("");
+        Categorys.Clear();
+        Categorys.Add("");
+
+        if (GameManager.GetGameLog(Obj.UUID, BuildLevel()) is { } text)
+        {
+            _logs = text;
+            var builder = new StringBuilder();
+            foreach (var item in text)
+            {
+                if (!string.IsNullOrWhiteSpace(item.Category) && !Categorys.Contains(item.Category))
+                {
+                    Categorys.Add(item.Category);
+                }
+                if (!string.IsNullOrWhiteSpace(item.Thread) && !Threads.Contains(item.Thread))
+                {
+                    Threads.Add(item.Thread);
+                }
+
+                builder.AppendLine(item.Log);
+            }
+            Text = new(builder.ToString());
         }
         else
         {
             Text = new();
         }
+
+        _load = false;
+    }
+
+    private void LoadLast1()
+    {
+        if (_load || IsFile)
+        {
+            return;
+        }
+        var builder = new StringBuilder();
+        bool cap = string.IsNullOrWhiteSpace(SelectCategory);
+        bool thr = string.IsNullOrWhiteSpace(SelectThread);
+        foreach (var item in _logs)
+        {
+            if (!cap && item.Category != SelectCategory)
+            {
+                continue;
+            }
+            if (!thr && item.Thread != SelectThread)
+            {
+                continue;
+            }
+
+            builder.AppendLine(item.Log);
+        }
+        Text = new(builder.ToString());
+    }
+
+    private LogLevel BuildLevel()
+    {
+        LogLevel level = LogLevel.Base;
+        if (EnableNone)
+        {
+            level |= LogLevel.None;
+        }
+        if (EnableInfo)
+        {
+            level |= LogLevel.Info;
+        }
+        if (EnableWarn)
+        {
+            level |= LogLevel.Warn;
+        }
+        if (EnableError)
+        {
+            level |= LogLevel.Error;
+        }
+        if (EnableDebug)
+        {
+            level |= LogLevel.Debug;
+        }
+        return level;
     }
 }
