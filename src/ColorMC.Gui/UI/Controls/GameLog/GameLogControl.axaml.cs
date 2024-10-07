@@ -123,6 +123,10 @@ public partial class GameLogControl : BaseUserControl
                     line.Offset + lineText.Length,
                         visualLine =>
                         {
+                            if (level1 == LogLevel.Fatal)
+                            {
+                                visualLine.BackgroundBrush = Brushes.White;
+                            }
                             visualLine.TextRunProperties.SetForegroundBrush(ColorManager.GetColor(level1));
                         }
                     );
