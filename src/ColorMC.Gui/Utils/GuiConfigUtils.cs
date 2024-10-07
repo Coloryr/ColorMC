@@ -101,6 +101,11 @@ public static class GuiConfigUtils
                 Config.Input = new();
                 save = true;
             }
+            if (Config.LogColor == null)
+            {
+                Config.LogColor = MakeLogColorConfig();
+                save = true;
+            }
 
             if (save)
             {
@@ -200,7 +205,20 @@ public static class GuiConfigUtils
             Live2D = MakeLive2DConfig(),
             Style = MakeStyleSettingConfig(),
             Head = MakeHeadSettingConfig(),
+            LogColor = MakeLogColorConfig(),
             Input = new()
+        };
+    }
+
+    public static LogColorSetting MakeLogColorConfig()
+    {
+        return new()
+        {
+            Info = "#000000",
+            Warn = "#8B8B00",
+            Error = "#FF0000",
+            Debug = "#BEBEBE",
+            None = "#000000"
         };
     }
 

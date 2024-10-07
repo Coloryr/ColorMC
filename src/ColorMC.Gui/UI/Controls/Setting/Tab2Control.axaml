@@ -363,7 +363,7 @@
                         OffContent="{setting:Localize SettingWindow.Tab2.Text13}"
                         OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
                     <panel:WrapPanelWithStretch
-                        Margin="0,0,0,-10"
+                        Margin="0,0,0,0"
                         AutoMax="{Binding MinMode}"
                         IsEnabled="{Binding EnableRGB}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
@@ -407,6 +407,29 @@
                                 Value="{Binding RgbV2}" />
                         </DockPanel>
                     </panel:WrapPanelWithStretch>
+                    <TextBlock Margin="0,0,0,5" Text="{setting:Localize SettingWindow.Tab2.Text62}" />
+                    <WrapPanel Margin="0,0,0,-5">
+                        <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text10}" />
+                            <ColorPicker Color="{Binding InfoColor}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text11}" />
+                            <ColorPicker Color="{Binding WarnColor}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text12}" />
+                            <ColorPicker Color="{Binding ErrorColor}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text13}" />
+                            <ColorPicker Color="{Binding DebugColor}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text14}" />
+                            <ColorPicker Color="{Binding NoneColor}" />
+                        </StackPanel>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">

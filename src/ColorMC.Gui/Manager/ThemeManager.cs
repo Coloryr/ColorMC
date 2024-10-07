@@ -88,7 +88,7 @@ public static class ThemeManager
         }
 
         RgbColorUtils.Load();
-        ColorSel.Load();
+        ColorManager.Load();
 
         Reload();
         LoadPageSlide();
@@ -355,7 +355,7 @@ public static class ThemeManager
 
     public static void Remove()
     {
-        ColorSel.Remove();
+        ColorManager.Remove();
 
         foreach (var item in s_colorList.Values)
         {

@@ -31,6 +31,17 @@ public partial class SettingModel
     private Color _mainColor;
 
     [ObservableProperty]
+    private Color _infoColor;
+    [ObservableProperty]
+    private Color _warnColor;
+    [ObservableProperty]
+    private Color _errorColor;
+    [ObservableProperty]
+    private Color _noneColor;
+    [ObservableProperty]
+    private Color _debugColor;
+
+    [ObservableProperty]
     private bool _windowMode;
     [ObservableProperty]
     private bool _isCutsomFont;
@@ -260,17 +271,11 @@ public partial class SettingModel
 
     partial void OnRgbV1Changed(int value)
     {
-        if (_load)
-            return;
-
         SetRgb();
     }
 
     partial void OnRgbV2Changed(int value)
     {
-        if (_load)
-            return;
-
         SetRgb();
     }
 
@@ -332,6 +337,31 @@ public partial class SettingModel
     partial void OnWindowTranTypeChanged(int value)
     {
         SaveWindowSetting();
+    }
+
+    partial void OnInfoColorChanged(Color value)
+    {
+        SetLogColor();
+    }
+
+    partial void OnWarnColorChanged(Color value)
+    {
+        SetLogColor();
+    }
+
+    partial void OnErrorColorChanged(Color value)
+    {
+        SetLogColor();
+    }
+
+    partial void OnDebugColorChanged(Color value)
+    {
+        SetLogColor();
+    }
+
+    partial void OnNoneColorChanged(Color value)
+    {
+        SetLogColor();
     }
 
     [RelayCommand]
@@ -530,7 +560,11 @@ public partial class SettingModel
                     IsDarkColor = true;
                     break;
             }
-            MainColor = Color.Parse(con.ColorMain);
+            if (Color.TryParse(con.ColorMain, out var color))
+            {
+                MainColor = color;
+            }
+            
             EnableRGB = con.RGB;
             IsCutsomFont = !con.FontDefault;
             WindowMode = con.WindowMode;
@@ -568,6 +602,27 @@ public partial class SettingModel
 
             HeadX = con.Head.X;
             HeadY = con.Head.Y;
+
+            if (Color.TryParse(con.LogColor.Info, out color))
+            {
+                InfoColor = color;
+            }
+            if (Color.TryParse(con.LogColor.Warn, out color))
+            {
+                WarnColor = color;
+            }
+            if (Color.TryParse(con.LogColor.Error, out color))
+            {
+                ErrorColor = color;
+            }
+            if (Color.TryParse(con.LogColor.Debug, out color))
+            {
+                DebugColor = color;
+            }
+            if (Color.TryParse(con.LogColor.None, out color))
+            {
+                NoneColor = color;
+            }
         }
         var config1 = ConfigUtils.Config;
         if (config1 is { } con1)
@@ -616,6 +671,17 @@ public partial class SettingModel
 
     private void SetRgb()
     {
+        if (_load)
+            return;
+
         ConfigBinding.SetRgb(RgbV1, RgbV2);
+    }
+
+    private void SetLogColor()
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetLogColor(InfoColor, WarnColor, ErrorColor, DebugColor, NoneColor);
     }
 }

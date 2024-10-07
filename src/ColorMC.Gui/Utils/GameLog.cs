@@ -4,19 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ColorMC.Gui.Objs;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Utils;
 
-public record GameLogItemObj
-{
-    public string Log { get; init; }
-    public string Thread { get; init; }
-    public string Time { get; init; }
-    public string Category { get; init; }
-    public LogLevel Level { get; init; }
-}
-
-public partial class GameLogObj
+public partial class GameLog
 {
     private const string s_pattern = @"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:? \[(.*?)\](?: (.*))?";
     private const string s_pattern1 = @"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:?";
@@ -121,6 +113,7 @@ public partial class GameLogObj
             "info" => LogLevel.Info,
             "warn" => LogLevel.Warn,
             "error" => LogLevel.Error,
+            "fatal" => LogLevel.Error,
             "debug" => LogLevel.Debug,
             _ => LogLevel.None,
         };

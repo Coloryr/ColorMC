@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Avalonia.Media;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
@@ -979,5 +980,19 @@ public static class ConfigBinding
         ConfigUtils.Save();
 
         CoreHttpClient.Init();
+    }
+
+    public static void SetLogColor(Color infoColor, Color warnColor, Color errorColor, Color debugColor, Color noneColor)
+    {
+        GuiConfigUtils.Config.LogColor ??= GuiConfigUtils.MakeLogColorConfig();
+        GuiConfigUtils.Config.LogColor.Info = infoColor.ToString();
+        GuiConfigUtils.Config.LogColor.Warn = warnColor.ToString();
+        GuiConfigUtils.Config.LogColor.Error = errorColor.ToString();
+        GuiConfigUtils.Config.LogColor.Debug = debugColor.ToString();
+        GuiConfigUtils.Config.LogColor.None = noneColor.ToString();
+
+        GuiConfigUtils.Save();
+
+        ThemeManager.Init();
     }
 }
