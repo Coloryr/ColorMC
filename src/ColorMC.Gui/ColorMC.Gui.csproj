@@ -97,6 +97,8 @@
     <None Remove="Resource\Icon\Item\clipboard.svg" />
     <None Remove="Resource\Icon\Item\download.svg" />
     <None Remove="Resource\Icon\Item\ping.svg" />
+    <None Remove="Resource\Icon\Item\star.svg" />
+    <None Remove="Resource\Icon\Item\star_1.svg" />
     <None Remove="Resource\Icon\Item\web.svg" />
     <None Remove="Resource\Icon\launch.svg" />
     <None Remove="Resource\Icon\left.svg" />
@@ -239,6 +241,8 @@
     <AvaloniaResource Include="Resource\Icon\Item\clipboard.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\download.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\ping.svg" />
+    <AvaloniaResource Include="Resource\Icon\Item\star.svg" />
+    <AvaloniaResource Include="Resource\Icon\Item\star_1.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\web.svg" />
     <AvaloniaResource Include="Resource\Icon\launch.svg" />
     <AvaloniaResource Include="Resource\Icon\left.svg" />

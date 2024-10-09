@@ -95,13 +95,12 @@ public partial class App : Application
 
         JoystickConfig.Init(ColorMCGui.RunDir);
         FrpConfig.Init(ColorMCGui.RunDir);
-
         FrpLaunch.Init(ColorMCGui.RunDir);
         CoreManager.Init();
         ThemeManager.Init();
+        GameManager.Init(ColorMCGui.RunDir);
         ImageManager.Init(ColorMCGui.RunDir);
         WindowManager.Init(ColorMCGui.RunDir);
-
         if (SystemInfo.Os == OsType.MacOS && !SystemInfo.IsArm)
         {
             SdlUtils.Init();

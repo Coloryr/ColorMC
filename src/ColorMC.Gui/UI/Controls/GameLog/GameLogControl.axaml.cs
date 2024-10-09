@@ -71,7 +71,8 @@ public partial class GameLogControl : BaseUserControl
             {
                 return LogLevel.Warn;
             }
-            else if (lineText.Contains("/ERROR]") || lineText.Contains("[STDERR]") || lineText.Contains("[java.lang.Throwable$WrappedPrintStream:println:-1]"))
+            else if (lineText.Contains("/ERROR]") || lineText.Contains("[STDERR]") 
+                || lineText.Contains("[java.lang.Throwable$WrappedPrintStream:println:-1]"))
             {
                 return LogLevel.Error;
             }

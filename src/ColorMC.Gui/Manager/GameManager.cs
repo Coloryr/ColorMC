@@ -1,8 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using ColorMC.Core;
+using ColorMC.Core.Config;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
+using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Manager;
 
@@ -16,6 +22,77 @@ public static class GameManager
     /// 游戏日志
     /// </summary>
     public static readonly Dictionary<string, GameLog> GameLogs = [];
+
+    /// <summary>
+    /// 标星实例
+    /// </summary>
+    public static readonly List<string> StarGames = [];
+
+    private static string s_file;
+
+    public static void Init(string path)
+    {
+        s_file = Path.GetFullPath(path + "/star.json");
+        LoadState();
+    }
+
+    private static void LoadState()
+    {
+        if (File.Exists(s_file))
+        {
+            try
+            {
+                var data = PathHelper.ReadText(s_file);
+                if (data == null)
+                {
+                    return;
+                }
+                var state = JsonConvert.DeserializeObject<List<string>>(data);
+                if (state == null)
+                {
+                    return;
+                }
+
+                StarGames.AddRange(state);
+            }
+            catch (Exception e)
+            {
+                Logs.Error("", e);
+            }
+        }
+    }
+
+    private static void SaveStar()
+    {
+        ConfigSave.AddItem(new()
+        {
+            Name = "ColorMC_Star",
+            Local = s_file,
+            Obj = StarGames
+        });
+    }
+
+    public static bool IsStar(string uuid)
+    {
+        return StarGames.Contains(uuid);
+    }
+
+    public static void AddStar(string uuid)
+    {
+        if (!StarGames.Contains(uuid))
+        {
+            StarGames.Add(uuid);
+            SaveStar();
+        }
+    }
+
+    public static void RemoveStar(string uuid)
+    {
+        if (StarGames.Remove(uuid))
+        {
+            SaveStar();
+        }
+    }
 
     /// <summary>
     /// 游戏实例是否在运行
