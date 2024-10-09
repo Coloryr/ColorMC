@@ -467,4 +467,31 @@ public partial class MainModel
 
         return null;
     }
+
+    public void DoStar(GameItemModel model)
+    {
+        model.IsStar = !model.IsStar;
+        if (model.IsStar)
+        {
+            GameManager.AddStar(model.Obj.UUID);
+            foreach (var group in GameGroups)
+            {
+                if (group.Star(model.Obj.UUID))
+                {
+                    return;
+                }
+            }
+        }
+        else
+        {
+            GameManager.RemoveStar(model.Obj.UUID);
+            foreach (var group in GameGroups)
+            {
+                if (group.UnStar(model.Obj.UUID))
+                {
+                    return;
+                }
+            }
+        }
+    }
 }

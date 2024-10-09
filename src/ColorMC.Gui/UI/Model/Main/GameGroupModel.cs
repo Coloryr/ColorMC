@@ -9,6 +9,7 @@ using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -60,6 +61,27 @@ public partial class GameGroupModel : TopModel
 
             foreach (var item in _items)
             {
+                if (!GameManager.IsStar(item.Key))
+                {
+                    continue;
+                }
+                Thread.Sleep(50);
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    GameList.Add(item.Value);
+                    if (res)
+                    {
+                        item.Value.Index = index++;
+                    }
+                });
+            }
+
+            foreach (var item in _items)
+            {
+                if (GameManager.IsStar(item.Key))
+                {
+                    continue;
+                }
                 Thread.Sleep(50);
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -243,5 +265,41 @@ public partial class GameGroupModel : TopModel
                 item.LoadIcon();
             }
         }
+    }
+
+    public bool Star(string uuid)
+    {
+        foreach (var item in GameList)
+        {
+            if (item.IsNew)
+            {
+                continue;
+            }
+            else if (item.UUID == uuid)
+            {
+                GameList.Move(GameList.IndexOf(item), 0);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool UnStar(string uuid)
+    {
+        foreach (var item in GameList)
+        {
+            if (item.IsNew)
+            {
+                continue;
+            }
+            else if (item.UUID == uuid)
+            {
+                GameList.Move(GameList.IndexOf(item), GameList.Count - 2);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

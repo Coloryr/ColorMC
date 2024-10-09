@@ -104,5 +104,28 @@
                     TextWrapping="{Binding Wrap}" />
             </StackPanel>
         </Button>
+        <Decorator>
+            <Decorator.Styles>
+                <Style Selector="Button">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                    </Style>
+                </Style>
+            </Decorator.Styles>
+            <Button
+                Width="15"
+                Height="15"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                ClipToBounds="False"
+                Command="{Binding DoStar}"
+                CornerRadius="20"
+                IsVisible="{Binding StarVis}">
+                <svg:SvgControl Path="{Binding Star}" />
+            </Button>
+        </Decorator>
     </Panel>
 </UserControl>

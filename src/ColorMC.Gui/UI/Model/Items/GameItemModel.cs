@@ -23,6 +23,8 @@ namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class GameItemModel : GameModel
 {
+    private static readonly string[] s_star = ["/Resource/Icon/Item/star.svg", "/Resource/Icon/Item/star_1.svg"];
+
     [ObservableProperty]
     private bool _isSelect;
     [ObservableProperty]
@@ -56,6 +58,13 @@ public partial class GameItemModel : GameModel
 
     public string Name => Obj.Name;
     public string UUID => Obj.UUID;
+
+    [ObservableProperty]
+    private string _star = s_star[1];
+    [ObservableProperty]
+    private bool _isStar;
+    [ObservableProperty]
+    private bool _starVis;
 
     [ObservableProperty]
     private bool _oneGame;
@@ -96,6 +105,13 @@ public partial class GameItemModel : GameModel
         _top = top;
         _group = obj.GroupName;
         LoadIcon();
+        IsStar = GameManager.IsStar(obj.UUID);
+    }
+
+    partial void OnIsStarChanged(bool value)
+    {
+        Star = s_star[value ? 0 : 1];
+        StarVis = value || IsOver;
     }
 
     partial void OnOneGameChanged(bool value)
@@ -138,6 +154,7 @@ public partial class GameItemModel : GameModel
 
     partial void OnIsOverChanged(bool value)
     {
+        StarVis = value || IsStar;
         ButtonShow = value || IsSelect;
     }
 
@@ -156,6 +173,13 @@ public partial class GameItemModel : GameModel
         }
 
         ButtonShow = value || IsOver;
+    }
+
+    [RelayCommand]
+    public void DoStar()
+    {
+        _top?.DoStar(this);
+        IsOver = false;
     }
 
     [RelayCommand]

@@ -10,5 +10,6 @@ public interface IMainTop
     void Launch(string[] list);
     void Select(GameItemModel? model);
     void EditGroup(GameItemModel model);
+    void DoStar(GameItemModel model);
     GameItemModel? GetGame(string uuid);
 }

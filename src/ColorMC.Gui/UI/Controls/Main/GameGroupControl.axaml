@@ -42,9 +42,6 @@
                     <Style Selector="Expander:down /template/ Border#ExpanderContent">
                         <Setter Property="Padding" Value="8,0,8,8" />
                     </Style>
-                    <!--<Style Selector="Expander:pointerover /template/ Border#ExpanderContent">
-                <Setter Property="BorderBrush" Value="Transparent" />
-            </Style>-->
                 </Expander.Styles>
                 <Panel>
                     <ItemsControl
