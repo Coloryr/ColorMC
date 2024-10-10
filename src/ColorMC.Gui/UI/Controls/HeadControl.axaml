@@ -58,7 +58,8 @@
                 Name="Icons"
                 Width="25"
                 Height="25"
-                Margin="5,0,0,0"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 CornerRadius="5"
                 DockPanel.Dock="Left"
@@ -67,19 +68,17 @@
                     <ImageBrush Source="{Binding Icon}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
-            <DockPanel Name="StackPanel2">
+            <DockPanel Name="StackPanel2" VerticalAlignment="Center">
                 <TextBlock
                     Name="TitleShow1"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
+                    Margin="5,0,5,0"
                     DockPanel.Dock="Right"
                     IsHitTestVisible="False"
                     Text="{Binding Title1}"
                     TextTrimming="CharacterEllipsis" />
                 <TextBlock
                     Name="TitleShow"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
+                    Margin="5,0,5,0"
                     IsHitTestVisible="False"
                     Text="{Binding Title}"
                     TextTrimming="CharacterEllipsis" />

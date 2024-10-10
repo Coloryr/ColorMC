@@ -8,8 +8,8 @@
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     VerticalAlignment="Top"
     mc:Ignorable="d">
-    <Border Background="{setting:Colors MotdBack}" CornerRadius="5">
-        <Panel>
+    <Panel>
+        <Border Background="{setting:Colors MotdBack}" CornerRadius="5">
             <Panel Margin="10">
                 <Image
                     Name="Image1"
@@ -65,36 +65,38 @@
                     </StackPanel>
                 </Decorator>
             </Panel>
-            <Panel
-                Name="Grid1"
-                Background="{setting:Theme TopBGColor}"
-                IsVisible="False">
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text4}" />
-                    <ProgressBar
-                        Height="10"
-                        Margin="10,0,10,0"
-                        CornerRadius="20"
-                        IsIndeterminate="True" />
-                </StackPanel>
-            </Panel>
-            <Panel
-                Name="Grid2"
-                Background="{setting:Theme TopBGColor}"
-                IsVisible="False">
-                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text5}" />
-            </Panel>
-            <Button
-                Name="Button2"
-                Width="38"
-                Height="38"
-                Margin="7"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Classes="top"
-                IsVisible="False">
-                <svg:SvgControl Path="/Resource/Icon/reload.svg" />
-            </Button>
-        </Panel>
-    </Border>
+        </Border>
+        <Border
+            Name="Grid1"
+            Background="{setting:Theme TopBGColor}"
+            CornerRadius="5"
+            IsVisible="False">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text4}" />
+                <ProgressBar
+                    Height="10"
+                    Margin="10,0,10,0"
+                    CornerRadius="20"
+                    IsIndeterminate="True" />
+            </StackPanel>
+        </Border>
+        <Border
+            Name="Grid2"
+            Background="{setting:Theme TopBGColor}"
+            CornerRadius="5"
+            IsVisible="False">
+            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text5}" />
+        </Border>
+        <Button
+            Name="Button2"
+            Width="38"
+            Height="38"
+            Margin="7"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Classes="top"
+            IsVisible="False">
+            <svg:SvgControl Path="/Resource/Icon/reload.svg" />
+        </Button>
+    </Panel>
 </UserControl>
