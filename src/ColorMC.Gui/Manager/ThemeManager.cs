@@ -508,7 +508,7 @@ public static class ThemeManager
             OverBrushColor = Brush.Parse("#FF1d1d1d"),
             SelectItemBG = Brush.Parse("#FF353535"),
             SelectItemOver = Brush.Parse("#FF454545"),
-            MenuBG = Brush.Parse("#FFF4F4F5"),
+            MenuBG = Brush.Parse("#FF2c2c2c"),
         };
     }
 }
