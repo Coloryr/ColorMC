@@ -611,6 +611,12 @@ public static class Launch
             jvm.Add(game.logging.client.argument.Replace("${path}", obj1.Local));
         }
 
+        jvm.Add($"-Dcolormc.dir={ColorMCCore.BaseDir}");
+        jvm.Add($"-Dcolormc.game.uuid={obj.UUID}");
+        jvm.Add($"-Dcolormc.game.name={obj.Name}");
+        jvm.Add($"-Dcolormc.game.version={obj.Version}");
+        jvm.Add($"-Dcolormc.game.dir={obj.GetGamePath()}");
+
         return jvm;
     }
 
