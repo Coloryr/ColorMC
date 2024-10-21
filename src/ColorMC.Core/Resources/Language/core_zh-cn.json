@@ -274,5 +274,8 @@
   "Type.FileType.Optifne": "高清修复",
   "Type.FileType.Other": "未知的资源类型",
   "Type.Loaders.Normal": "无",
-  "Type.Loaders.Custom": "自定义"
+  "Type.Loaders.Custom": "自定义",
+  "Type.SideType.Client": "客户端",
+  "Type.SideType.Server": "服务端",
+  "Type.SideType.Both": "两端"
 }

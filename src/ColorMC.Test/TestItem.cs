@@ -361,21 +361,21 @@ public static class TestItem
 
         foreach (var item in list)
         {
-            Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
+            Console.WriteLine($"{item.ModId} {item.Name} {item.Description}");
         }
 
         list = Mods.GetModsAsync(games[1], false).Result;
 
         foreach (var item in list)
         {
-            Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
+            Console.WriteLine($"{item.ModId} {item.Name} {item.Description}");
         }
 
         list = Mods.GetModsAsync(games[2], false).Result;
 
         foreach (var item in list)
         {
-            Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
+            Console.WriteLine($"{item.ModId} {item.Name} {item.Description}");
         }
     }
 
