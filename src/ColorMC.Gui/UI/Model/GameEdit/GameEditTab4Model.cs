@@ -34,6 +34,17 @@ public partial class GameEditModel
     [ObservableProperty]
     private bool _displayModFilter = true;
 
+    [ObservableProperty]
+    private bool _displayModId = true;
+    [ObservableProperty]
+    private bool _displayModName = true;
+    [ObservableProperty]
+    private bool _displayModVersion = true;
+    [ObservableProperty]
+    private bool _displayModLoader = true;
+    [ObservableProperty]
+    private bool _displayModSide = true;
+
     private bool _isModSet;
 
     partial void OnModTextChanged(string value)
@@ -81,7 +92,8 @@ public partial class GameEditModel
 
         _modItems.AddRange(res);
 
-        var list = res.Where(a => a.Obj.ReadFail == false && !a.Obj.Disable && !string.IsNullOrWhiteSpace(a.Obj.modid)).GroupBy(a => a.Obj.modid);
+        var list = res.Where(a => a.Obj.ReadFail == false && !a.Obj.Disable
+            && !string.IsNullOrWhiteSpace(a.Obj.ModId)).GroupBy(a => a.Obj.ModId);
         var list1 = new List<string>();
 
         foreach (var item in list)

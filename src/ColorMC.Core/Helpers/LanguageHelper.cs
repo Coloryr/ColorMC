@@ -85,6 +85,16 @@ public static class LanguageHelper
         };
     }
 
+    public static string GetName(this SideType state)
+    {
+        return state switch
+        {
+            SideType.Client => Get("Type.SideType.Client"),
+            SideType.Server => Get("Type.SideType.Server"),
+            _ => Get("Type.SideType.Both")
+        };
+    }
+
     public static string GetName(this LoginState state)
     {
         return state switch

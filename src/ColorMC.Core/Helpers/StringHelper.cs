@@ -286,4 +286,40 @@ public static partial class StringHelper
 
         return input.Substring(0, index) + newValue + input.Substring(index + oldValue.Length);
     }
+
+    public static string MakeString(HashSet<string>? strings)
+    {
+        if (strings == null)
+            return "";
+        string temp = "";
+        foreach (var item in strings)
+        {
+            temp += item + ",";
+        }
+
+        if (temp.Length > 0)
+        {
+            return temp[..^1];
+        }
+
+        return temp;
+    }
+
+    public static string MakeString(HashSet<Loaders>? strings)
+    {
+        if (strings == null)
+            return "";
+        string temp = "";
+        foreach (var item in strings)
+        {
+            temp += item + ",";
+        }
+
+        if (temp.Length > 0)
+        {
+            return temp[..^1];
+        }
+
+        return temp;
+    }
 }
