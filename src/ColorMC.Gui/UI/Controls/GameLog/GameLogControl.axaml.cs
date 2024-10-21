@@ -71,7 +71,7 @@ public partial class GameLogControl : BaseUserControl
             {
                 return LogLevel.Warn;
             }
-            else if (lineText.Contains("/ERROR]") || lineText.Contains("[STDERR]") 
+            else if (lineText.Contains("/ERROR]") || lineText.Contains("[STDERR]")
                 || lineText.Contains("[java.lang.Throwable$WrappedPrintStream:println:-1]"))
             {
                 return LogLevel.Error;
@@ -103,7 +103,7 @@ public partial class GameLogControl : BaseUserControl
                 level2 = FindLast(line, 50);
             }
 
-            ChangeLinePart(line.Offset,line.Offset + lineText.Length,
+            ChangeLinePart(line.Offset, line.Offset + lineText.Length,
                 visualLine =>
                 {
                     if (level2 == LogLevel.Fatal)

@@ -36,7 +36,7 @@ public enum Loaders
 }
 
 public enum SideType
-{ 
+{
     None, Client, Server, Both
 }
 
