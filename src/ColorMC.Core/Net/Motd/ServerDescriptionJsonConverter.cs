@@ -1,4 +1,4 @@
-using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.MinecraftAPI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

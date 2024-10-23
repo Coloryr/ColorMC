@@ -1,6 +1,7 @@
 using System.IO;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
