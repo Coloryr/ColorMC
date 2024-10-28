@@ -139,7 +139,7 @@ public sealed class Bitstream : IDisposable
      */
     public void Dispose()
     {
-        stream.Close();
+        stream.Dispose();
     }
 
     /**
