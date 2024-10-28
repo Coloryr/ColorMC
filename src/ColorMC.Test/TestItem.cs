@@ -611,7 +611,7 @@ public static class TestItem
         var sdl = Silk.NET.SDL.Sdl.GetApi();
         var res = sdl.Init(Silk.NET.SDL.Sdl.InitAudio);
 
-        Media.Init(sdl);
+        Media.Init();
         Media.PlayMusic("H:\\music.mp3", false, 100);
     }
     public static void Item36()
