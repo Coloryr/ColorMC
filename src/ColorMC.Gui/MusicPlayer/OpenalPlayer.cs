@@ -138,17 +138,25 @@ public class OpenALPlayer : IPlayer
             }
         }
 
-        al.GetSourceProperty(_alSource, GetSourceInteger.BuffersQueued, out int value);
-        al.GetSourceProperty(_alSource, GetSourceInteger.BuffersProcessed, out int value1);
-        if (value - value1 > 100)
+        int value, value1;
+
+        do
         {
-            uint temp;
-            unsafe
+            al.GetSourceProperty(_alSource, GetSourceInteger.BuffersQueued, out value);
+            al.GetSourceProperty(_alSource, GetSourceInteger.BuffersProcessed, out value1);
+            while (value1 > 0)
             {
-                al.SourceUnqueueBuffers(_alSource, 1, &temp);
-                al.DeleteBuffer(temp);
+                uint temp;
+                unsafe
+                {
+                    al.SourceUnqueueBuffers(_alSource, 1, &temp);
+                    al.DeleteBuffer(temp);
+                }
+                value1--;
             }
+            Thread.Sleep(5);
         }
+        while (value - value1 > 100);
     }
 
     public void WaitDone()
