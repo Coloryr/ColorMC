@@ -37,7 +37,16 @@ public static class Media
     /// <summary>
     /// 音量 0 - 1
     /// </summary>
-    public static float Volume { get; set; }
+    public static float Volume
+    {
+        set 
+        {
+            if (s_player != null)
+            {
+                s_player.Volume = value;
+            }
+        }
+    }
 
     /// <summary>
     /// 循环播放
