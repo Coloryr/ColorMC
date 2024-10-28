@@ -15,6 +15,7 @@ using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
 using Live2DCSharpSDK.App;
+using Live2DCSharpSDK.Framework;
 using Live2DCSharpSDK.Framework.Motion;
 using Live2DCSharpSDK.OpenGL;
 
@@ -182,7 +183,23 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
         try
         {
-            _lapp = new LAppDelegateOpenGL(new AvaloniaApi(this, gl), Logs.Info);
+            // Cubism SDK の初期化
+            var cubismAllocator = new LAppAllocator();
+            var cubismOption = new CubismOption()
+            {
+                LogFunction = Logs.Info,
+                LoggingLevel = LAppDefine.CubismLoggingLevel
+            };
+            CubismFramework.StartUp(cubismAllocator, cubismOption);
+        }
+        catch
+        {
+            return;
+        }
+
+        try
+        {
+            _lapp = new LAppDelegateOpenGL(new AvaloniaApi(this, gl));
             _change = true;
             CheckError(gl);
             _init = true;
