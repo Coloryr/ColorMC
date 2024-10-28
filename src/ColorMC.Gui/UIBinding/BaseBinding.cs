@@ -140,8 +140,7 @@ public static class BaseBinding
                     '"' + url + '"');
                 break;
             case OsType.MacOS:
-                Process.Start("open", "-a Safari " +
-                    '"' + url + '"');
+                Process.Start("open", '"' + url + '"');
                 break;
             case OsType.Android:
                 ColorMCCore.PhoneOpenUrl(url);
