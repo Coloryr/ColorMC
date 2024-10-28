@@ -170,7 +170,7 @@ public class SdlPlayer : IPlayer
 
     public void Write(int numChannels, int bitsPerSample, byte[] buff, int length, int sampleRate)
     {
-        AudioMakeCov(numChannels, bitsPerSample, sampleRate);
+        AudioMakeCov(numChannels, sampleRate, bitsPerSample / 8);
         var data = AudioCov(buff, length);
 
         _sdl.QueueAudio<byte>(_deviceId, data, (uint)data.Length);
