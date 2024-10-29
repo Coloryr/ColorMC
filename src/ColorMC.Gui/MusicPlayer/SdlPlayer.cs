@@ -18,8 +18,10 @@ public class SdlPlayer : IPlayer
 
     private int _lastChannel;
     private int _lastFreq;
-    private  int _lastBps;
+    private int _lastBps;
     private int _lastLen;
+
+    private int _tickCount;
 
     public float Volume { get; set; }
 
@@ -128,6 +130,28 @@ public class SdlPlayer : IPlayer
             _lastFreq = freq;
             _lastBps = bps;
         }
+
+        int bps1 = 0;
+        switch (audioSpec.Format)
+        {
+            case Sdl.AudioS8:
+            case Sdl.AudioU8:
+                bps1 = 1;
+                break;
+            case Sdl.AudioS16:
+            case Sdl.AudioS16Msb:
+            case Sdl.AudioU16Msb:
+                bps1 = 2;
+                break;
+            case Sdl.AudioS32:
+            case Sdl.AudioS32Msb:
+            case Sdl.AudioF32Sys:
+            case Sdl.AudioF32Msb:
+                bps1 = 4;
+                break;
+        }
+
+        _tickCount = (int)(audioSpec.Freq * 0.01 * audioSpec.Channels * bps1);
     }
 
     private byte[] AudioCov(byte[] input, int length)
@@ -175,9 +199,11 @@ public class SdlPlayer : IPlayer
 
         _sdl.QueueAudio<byte>(_deviceId, data, (uint)data.Length);
 
-        while (_sdl.GetQueuedAudioSize(_deviceId) > 50000)
+        uint size = _sdl.GetQueuedAudioSize(_deviceId);
+        while (size > _tickCount)
         {
             Thread.Sleep(5);
+            size = _sdl.GetQueuedAudioSize(_deviceId);
         }
     }
 

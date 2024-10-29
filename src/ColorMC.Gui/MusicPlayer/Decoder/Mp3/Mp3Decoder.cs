@@ -87,10 +87,28 @@ public class Mp3Decoder : IDisposable
         output.ClearBuffer();
         IFrameDecoder decoder = RetrieveDecoder(header, bitstream, layer);
         decoder.DecodeFrame();
-        bitstream.CloseFrame();
         pack.Buff = ToByteArray(output.Buffer, 0, output.GetBufferLength());
         pack.Len = output.GetBufferLength() * 2;
+        pack.Time = header.MsPerFrame();
+        bitstream.CloseFrame();
         return pack;
+    }
+
+    public double GetTimeCount()
+    {
+        double duration = 0;
+        var frame = bitstream.ReadFrame();
+        while (frame != null)
+        {
+            duration += frame.MsPerFrame();
+            bitstream.CloseFrame();
+            frame = bitstream.ReadFrame();
+        }
+
+        bitstream.Reset();
+        Load();
+
+        return duration;
     }
 
     public void Dispose()

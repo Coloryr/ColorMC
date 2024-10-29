@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -178,6 +179,14 @@ public partial class MainModel
         {
             Model.Title = "ColorMC " + App.Lang("MainWindow.Info33");
             MusicDisplay = true;
+
+            DispatcherTimer.Run(() =>
+            {
+                MusicName = BaseBinding.GetMusicName();
+                MusicNow = BaseBinding.GetMusicNow();
+
+                return MusicDisplay;
+            }, TimeSpan.FromMilliseconds(20));
         }
         else
         {

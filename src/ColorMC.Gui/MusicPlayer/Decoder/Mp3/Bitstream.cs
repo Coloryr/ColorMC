@@ -473,4 +473,9 @@ public sealed class Bitstream : IDisposable
         }
         return totalBytesRead;
     }
+
+    public void Reset()
+    {
+        stream.Seek(0, SeekOrigin.Begin);
+    }
 }
