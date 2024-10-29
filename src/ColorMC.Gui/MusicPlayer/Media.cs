@@ -2,7 +2,6 @@ using System;
 using System.Buffers.Binary;
 using System.IO;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using ColorMC.Core.Objs;
@@ -52,6 +51,11 @@ public static class Media
     /// 循环播放
     /// </summary>
     public static bool Loop { get; set; }
+
+    public static TimeSpan NowTime { get; private set; } = TimeSpan.Zero;
+    public static TimeSpan MusicTime { get; private set; } = TimeSpan.Zero;
+
+    public static string MusicName { get; private set; }
 
     /// <summary>
     /// 初始化播放器
@@ -286,11 +290,19 @@ public static class Media
 
         s_cancel = new();
 
+        if (isurl)
+        {
+            stream = new BufferedStream(stream);
+        }
+
         var decoder = new Mp3Decoder(stream);
         if (!decoder.Load())
         {
             return (false, "mp3 file error");
         }
+        
+        MusicTime = TimeSpan.FromMilliseconds(decoder.GetTimeCount());
+        NowTime = TimeSpan.Zero;
 
         _ = Task.Run(() =>
         {
@@ -309,7 +321,9 @@ public static class Media
                         break;
                     }
 
-                    s_player?.Write(2, 16, frame.Buff, frame.Len, decoder.outputFrequency);
+                    s_player?.Write(decoder.outputChannels, 16, frame.Buff, frame.Len, decoder.outputFrequency);
+
+                    NowTime += TimeSpan.FromMilliseconds(frame.Time);
 
                     count++;
                 }
@@ -399,6 +413,8 @@ public static class Media
         {
             return;
         }
+
+        MusicName = Path.GetFileName(file);
 
         s_musicFile = file;
 
