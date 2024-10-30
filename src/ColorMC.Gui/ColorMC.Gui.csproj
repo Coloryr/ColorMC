@@ -346,6 +346,7 @@
 	<PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
 	<PackageReference Include="DotNetty.Common" Version="0.7.6" />
 	<PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
+	<PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
