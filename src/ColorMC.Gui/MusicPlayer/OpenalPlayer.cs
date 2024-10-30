@@ -156,7 +156,7 @@ public class OpenALPlayer : IPlayer
             }
             Thread.Sleep(5);
         }
-        while (value - value1 > 100);
+        while (value - value1 > 20);
     }
 
     public void WaitDone()

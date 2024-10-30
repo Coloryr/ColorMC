@@ -186,7 +186,7 @@ public partial class MainModel
                 MusicNow = BaseBinding.GetMusicNow();
 
                 return MusicDisplay;
-            }, TimeSpan.FromMilliseconds(20));
+            }, TimeSpan.FromMilliseconds(500));
         }
         else
         {
