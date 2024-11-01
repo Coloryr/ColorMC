@@ -85,6 +85,8 @@ public partial class GameEditModel
     private bool _randomTitle;
     [ObservableProperty]
     private bool _cycTitle;
+    [ObservableProperty]
+    private bool _preRunSame;
 
     private bool _configLoad;
 
@@ -359,6 +361,16 @@ public partial class GameEditModel
         _obj.Save();
     }
 
+    partial void OnPreRunSameChanged(bool value)
+    {
+        if (_configLoad)
+            return;
+
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.PreRunSame = value;
+        _obj.Save();
+    }
+
     partial void OnJvmLocalChanged(string? value)
     {
         if (string.IsNullOrWhiteSpace(JvmLocal))
@@ -474,6 +486,7 @@ public partial class GameEditModel
             JvmEnv = config.JvmEnv;
             PostRunCmd = config.LaunchPostData;
             PerRunCmd = config.LaunchPreData;
+            PreRunSame = config.PreRunSame;
             RemoveJvmArg = config.RemoveJvmArg ?? false;
             RemoveGameArg = config.RemoveGameArg ?? false;
 

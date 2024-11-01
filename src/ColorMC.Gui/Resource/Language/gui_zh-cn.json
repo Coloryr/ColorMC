@@ -280,6 +280,7 @@
 	"SettingWindow.Tab4.Text22": "校验完整性",
 	"SettingWindow.Tab4.Text23": "启用安全log4j",
 	"SettingWindow.Tab4.Text24": "游戏文件检查",
+	"SettingWindow.Tab4.Text25": "同时启动游戏",
 	"SettingWindow.Tab5.Text1": "添加Java路径",
 	"SettingWindow.Tab5.Text2": "Java名字",
 	"SettingWindow.Tab5.Text3": "Java路径",
