@@ -177,7 +177,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text33}" />
                     </StackPanel>
-                    <StackPanel Margin="0,0,0,5">
+                    <WrapPanel Margin="0,0,0,5">
                         <ToggleSwitch
                             Margin="0,0,10,0"
                             IsChecked="{Binding PerRun}"
@@ -187,7 +187,7 @@
                             IsChecked="{Binding PreRunSame}"
                             OffContent="{setting:Localize SettingWindow.Tab4.Text25}"
                             OnContent="{setting:Localize SettingWindow.Tab4.Text25}" />
-                    </StackPanel>
+                    </WrapPanel>
                     <TextBox
                         Height="100"
                         Margin="0,0,0,10"
