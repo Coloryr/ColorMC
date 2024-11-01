@@ -279,8 +279,8 @@ public static class WindowManager
                     File.WriteAllText(path, "custom");
                     CustomWindow?.Window.Window.Model.Show(App.Lang("WindowManager.Info1"));
                 }
+                return true;
             }
-            return true;
         }
         catch (Exception e)
         {
