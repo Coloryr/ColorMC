@@ -125,7 +125,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="cmd">命令</param>
-    public static void CmdRun(this GameSettingObj obj, string cmd, Dictionary<string, string> env)
+    public static void CmdRun(this GameSettingObj obj, string cmd, Dictionary<string, string> env, bool runsame)
     {
         var args = cmd.Split('\n');
         var file = Path.GetFullPath(obj.GetBasePath() + "/" + args[0].Trim());
@@ -145,7 +145,7 @@ public static class Launch
         {
             info.ArgumentList.Add(args[a].Trim());
         }
-        using var p = new Process()
+        var p = new Process()
         {
             EnableRaisingEvents = true,
             StartInfo = info
@@ -162,7 +162,11 @@ public static class Launch
         p.Start();
         p.BeginOutputReadLine();
         p.BeginErrorReadLine();
-        p.WaitForExit();
+        if (!runsame)
+        {
+            p.WaitForExit();
+            p.Dispose();
+        }
     }
 
     /// <summary>
@@ -1595,11 +1599,12 @@ public static class Launch
         }
 
         //启动前运行
-        if ((obj.JvmArg?.LaunchPre == true || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
+        if (obj.JvmArg?.LaunchPre == true || ConfigUtils.Config.DefaultJvmArg.LaunchPre)
         {
             var cmd1 = obj.JvmArg?.LaunchPreData;
             var cmd2 = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
             var start = string.IsNullOrWhiteSpace(cmd1) ? cmd2 : cmd1;
+            var prerun = obj.JvmArg == null ? ConfigUtils.Config.DefaultJvmArg.PreRunSame : obj.JvmArg.PreRunSame;
             if (!string.IsNullOrWhiteSpace(start) &&
                 (larg.Pre == null || await larg.Pre(true)))
             {
@@ -1622,7 +1627,7 @@ public static class Launch
                     stopwatch.Start();
                     larg.Update2?.Invoke(obj, LaunchState.LaunchPre);
                     start = ReplaceArg(obj, path!, arg, start);
-                    obj.CmdRun(start, env);
+                    obj.CmdRun(start, env, prerun);
                     stopwatch.Stop();
                     string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                         obj.Name, stopwatch.Elapsed.ToString());
@@ -1764,7 +1769,7 @@ public static class Launch
                     stopwatch.Start();
                     larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
                     start = ReplaceArg(obj, path!, arg, start);
-                    obj.CmdRun(start, env);
+                    obj.CmdRun(start, env, false);
                     stopwatch.Stop();
                     ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
                         obj.Name, stopwatch.Elapsed.ToString()));

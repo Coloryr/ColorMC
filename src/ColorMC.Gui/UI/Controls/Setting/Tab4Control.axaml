@@ -260,7 +260,11 @@
                             Margin="0,0,10,0"
                             Content="{setting:Localize SettingWindow.Tab4.Text23}"
                             IsChecked="{Binding SafeLog4j}" />
-                        <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PreRun}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text20}"
+                            IsChecked="{Binding PreRun}" />
+                        <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text25}" IsChecked="{Binding PreRunSame}" />
                     </StackPanel>
                     <TextBox
                         Height="100"
