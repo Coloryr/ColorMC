@@ -151,14 +151,16 @@
                                 IsChecked="{Binding DnsProxy}" />
                         </WrapPanel>
                         <StackPanel IsEnabled="{Binding DnsEnable}">
-                            <panel:WrapPanelWithStretch Margin="0,0,0,10" AutoMax="{Binding MinMode}">
+                            <DockPanel
+                                Width="230"
+                                Margin="0,0,0,10"
+                                HorizontalAlignment="Left">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab3.Text27}" />
                                 <ComboBox
-                                    MinWidth="230"
                                     HorizontalAlignment="Stretch"
                                     ItemsSource="{Binding DnsList}"
                                     SelectedIndex="{Binding DnsType}" />
-                            </panel:WrapPanelWithStretch>
+                            </DockPanel>
                             <Panel Margin="0,0,0,10">
                                 <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text28}" />
                                 <Button
