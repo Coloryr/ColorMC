@@ -124,11 +124,11 @@ build_deb_min()
     echo "$deb build done"
 }
 
-build_deb linux-x64 x86_64
+build_deb linux-x64 amd64
 build_deb linux-arm64 arm64
-build_deb_aot linux-x64 x86_64
+build_deb_aot linux-x64 amd64
 # build_deb_aot linux-arm64 arm64
-build_deb_min linux-x64 x86_64
+build_deb_min linux-x64 amd64
 build_deb_min linux-arm64 arm64
 
 build_run=./build_run
@@ -228,6 +228,6 @@ build_appimage_min()
     echo "$appimg build done"
 }
 
-build_appimage x86_64
-build_appimage_aot x86_64
-build_appimage_min x86_64
+build_appimage amd64
+build_appimage_aot amd64
+build_appimage_min amd64
