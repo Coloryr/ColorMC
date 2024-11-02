@@ -38,7 +38,7 @@ public static class Media
     /// </summary>
     public static float Volume
     {
-        set 
+        set
         {
             if (s_player != null)
             {
@@ -300,7 +300,7 @@ public static class Media
         {
             return (false, "mp3 file error");
         }
-        
+
         MusicTime = TimeSpan.FromMilliseconds(decoder.GetTimeCount());
         NowTime = TimeSpan.Zero;
 

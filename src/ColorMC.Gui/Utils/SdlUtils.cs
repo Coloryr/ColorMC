@@ -2,7 +2,6 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
-using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
 using Silk.NET.SDL;
 
