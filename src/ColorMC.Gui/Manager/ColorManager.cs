@@ -16,11 +16,9 @@ public static class ColorManager
     public static IBrush MotdColor { get; private set; } = Brush.Parse("#FFFFFFFF");
     public static IBrush MotdBackColor { get; private set; } = Brush.Parse("#FF000000");
 
-    public static IBrush InfoColor { get; private set; } = Brushes.Black;
     public static IBrush WarnColor { get; private set; } = Brush.Parse("#8B8B00");
     public static IBrush ErrorColor { get; private set; } = Brushes.Red;
     public static IBrush DebugColor { get; private set; } = Brushes.Gray;
-    public static IBrush NoneColor { get; private set; } = Brushes.Black;
 
 
     private static readonly Dictionary<string, List<WeakReference<IObserver<IBrush>>>> s_colorList = [];
@@ -35,11 +33,9 @@ public static class ColorManager
             MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
             MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
 
-            InfoColor = Brush.Parse(GuiConfigUtils.Config.LogColor.Info);
             WarnColor = Brush.Parse(GuiConfigUtils.Config.LogColor.Warn);
             ErrorColor = Brush.Parse(GuiConfigUtils.Config.LogColor.Error);
             DebugColor = Brush.Parse(GuiConfigUtils.Config.LogColor.Debug);
-            NoneColor = Brush.Parse(GuiConfigUtils.Config.LogColor.None);
 
             Reload();
         }
@@ -98,12 +94,11 @@ public static class ColorManager
     {
         return level switch
         {
-            LogLevel.Info => InfoColor,
             LogLevel.Warn => WarnColor,
             LogLevel.Debug => DebugColor,
             LogLevel.Error => ErrorColor,
             LogLevel.Fatal => ErrorColor,
-            _ => NoneColor
+            _ => ThemeManager.NowThemeColor.FontColor
         };
     }
 

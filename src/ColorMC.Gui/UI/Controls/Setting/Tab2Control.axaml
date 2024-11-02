@@ -410,10 +410,6 @@
                     <TextBlock Margin="0,0,0,5" Text="{setting:Localize SettingWindow.Tab2.Text62}" />
                     <WrapPanel Margin="0,0,0,-5">
                         <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text10}" />
-                            <ColorPicker Color="{Binding InfoColor}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text11}" />
                             <ColorPicker Color="{Binding WarnColor}" />
                         </StackPanel>
@@ -424,10 +420,6 @@
                         <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text13}" />
                             <ColorPicker Color="{Binding DebugColor}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text14}" />
-                            <ColorPicker Color="{Binding NoneColor}" />
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
