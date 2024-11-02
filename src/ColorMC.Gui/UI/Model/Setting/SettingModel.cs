@@ -76,7 +76,7 @@ public partial class SettingModel : MenuModel
                         Func = FindJava
                     },
                     new SubMenuItemModel()
-                    { 
+                    {
                         Name = App.Lang("SettingWindow.Tab5.Text12"),
                         Func = FindJavaDir
                     },

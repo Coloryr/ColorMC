@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Gui.MusicPlayer;
+﻿namespace ColorMC.Gui.MusicPlayer;
 
 /// <summary>
 /// 音频输出
