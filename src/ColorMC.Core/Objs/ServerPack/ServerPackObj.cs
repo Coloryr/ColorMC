@@ -1,4 +1,6 @@
-﻿namespace ColorMC.Core.Objs.ServerPack;
+﻿using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs.ServerPack;
 
 /// <summary>
 /// 服务器实例
@@ -24,5 +26,6 @@ public record ServerPackObj
     /// <summary>
     /// 游戏实例
     /// </summary>
-    public required GameSettingObj Game { get; set; }
+    [JsonIgnore]
+    public GameSettingObj Game { get; set; }
 }

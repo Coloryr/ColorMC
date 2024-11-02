@@ -13,7 +13,7 @@ public static class GameLogSetting
 {
     public const string Name = "logsetting.json";
 
-    private static Dictionary<string, GameLogSettingObj> s_datas;
+    private readonly static Dictionary<string, GameLogSettingObj> s_datas = [];
 
     public static GameLogSettingObj ReadConfig(GameSettingObj obj)
     {
