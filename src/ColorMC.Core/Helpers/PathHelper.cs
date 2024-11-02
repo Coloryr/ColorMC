@@ -34,7 +34,7 @@ public static class PathHelper
     /// <summary>
     /// 获取名字
     /// </summary>
-    public static (string Path, string Name) ToPathAndName(string input)
+    public static string NameToPath(string input)
     {
         var arg = input.Split(':');
         var arg1 = arg[0].Split('.');
@@ -43,19 +43,18 @@ public static class PathHelper
         {
             path += arg1[a] + '/';
         }
-        string name;
         if (arg.Length > 3)
         {
             path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}-{arg[3]}.jar";
-            name = $"{arg[1]}-{arg[2]}-{arg[3]}.jar";
+            //name = $"{arg[1]}-{arg[2]}-{arg[3]}.jar";
         }
         else
         {
             path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}.jar";
-            name = $"{arg[1]}-{arg[2]}.jar";
+            //name = $"{arg[1]}-{arg[2]}.jar";
         }
 
-        return (path, name);
+        return path;
     }
 
     /// <summary>
