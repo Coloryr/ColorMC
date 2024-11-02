@@ -682,7 +682,7 @@ public static class DownloadItemHelper
                     }
                     else if (!string.IsNullOrWhiteSpace(item.url))
                     {
-                        var path = PathHelper.ToPathAndName(item.name);
+                        var path = PathHelper.NameToPath(item.name);
                         info.libraries.Add(new()
                         {
                             name = item.name,
@@ -690,8 +690,8 @@ public static class DownloadItemHelper
                             {
                                 artifact = new()
                                 {
-                                    url = item.url + path.Path,
-                                    path = path.Path
+                                    url = item.url + path,
+                                    path = path
                                 }
                             }
                         });
@@ -772,12 +772,12 @@ public static class DownloadItemHelper
 
         foreach (var item in meta1.libraries)
         {
-            var name = PathHelper.ToPathAndName(item.name);
+            var name = PathHelper.NameToPath(item.name);
             list.Add(new()
             {
-                Url = UrlHelper.DownloadQuilt(item.url + name.Path, CoreHttpClient.Source),
-                Name = name.Name,
-                Local = $"{LibrariesPath.BaseDir}/{name.Path}"
+                Url = UrlHelper.DownloadQuilt(item.url + name, CoreHttpClient.Source),
+                Name = item.name,
+                Local = $"{LibrariesPath.BaseDir}/{name}"
             });
 
         }
@@ -844,12 +844,12 @@ public static class DownloadItemHelper
 
         foreach (var item in meta1.libraries)
         {
-            var name = PathHelper.ToPathAndName(item.name);
+            var name = PathHelper.NameToPath(item.name);
             list.Add(new()
             {
-                Url = UrlHelper.DownloadQuilt(item.url + name.Path, CoreHttpClient.Source),
-                Name = name.Name,
-                Local = $"{LibrariesPath.BaseDir}/{name.Path}"
+                Url = UrlHelper.DownloadQuilt(item.url + name, CoreHttpClient.Source),
+                Name = item.name,
+                Local = $"{LibrariesPath.BaseDir}/{name}"
             });
         }
 

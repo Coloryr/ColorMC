@@ -724,15 +724,15 @@ public static class CheckHelpers
             if (cancel.IsCancellationRequested)
                 break;
 
-            var name = PathHelper.ToPathAndName(item.name);
-            string file = $"{LibrariesPath.BaseDir}/{name.Path}";
+            var name = PathHelper.NameToPath(item.name);
+            string file = $"{LibrariesPath.BaseDir}/{name}";
             if (!File.Exists(file))
             {
                 list.Add(new()
                 {
-                    Url = UrlHelper.DownloadFabric(item.url + name.Path, CoreHttpClient.Source),
-                    Name = name.Name,
-                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}")
+                    Url = UrlHelper.DownloadFabric(item.url + name, CoreHttpClient.Source),
+                    Name = item.name,
+                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}")
                 });
                 continue;
             }
@@ -759,15 +759,15 @@ public static class CheckHelpers
             if (cancel.IsCancellationRequested)
                 return null;
 
-            var name = PathHelper.ToPathAndName(item.name);
-            string file = $"{LibrariesPath.BaseDir}/{name.Path}";
+            var name = PathHelper.NameToPath(item.name);
+            string file = $"{LibrariesPath.BaseDir}/{name}";
             if (!File.Exists(file))
             {
                 list.Add(new()
                 {
-                    Url = UrlHelper.DownloadQuilt(item.url + name.Path, CoreHttpClient.Source),
-                    Name = name.Name,
-                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}")
+                    Url = UrlHelper.DownloadQuilt(item.url + name, CoreHttpClient.Source),
+                    Name = item.name,
+                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}")
                 });
                 continue;
             }
