@@ -48,7 +48,9 @@ public static class ServerPack
         old ??= new()
         {
             Mod = [],
-            Game = obj.Game
+            Game = obj.Game,
+            Config = [],
+            Resourcepack = []
         };
 
         state?.Invoke(LanguageHelper.Get("Core.ServerPack.Info2"));
