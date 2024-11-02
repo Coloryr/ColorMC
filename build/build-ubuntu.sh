@@ -221,13 +221,13 @@ build_appimage_min()
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
-    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$1.AppImage
-    chmod a+x build_out/colormc-$main_version$version-$1.AppImage
-    mv build_out/colormc-$main_version$version-$1.AppImage build_out/$appimg
+    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$2.AppImage
+    chmod a+x build_out/colormc-$main_version$version-$2.AppImage
+    mv build_out/colormc-$main_version$version-$2.AppImage build_out/$appimg
 
     echo "$appimg build done"
 }
 
-build_appimage amd64
-build_appimage_aot amd64
-build_appimage_min amd64
+build_appimage amd64 x86_64
+build_appimage_aot amd64 x86_64
+build_appimage_min amd64 x86_64
