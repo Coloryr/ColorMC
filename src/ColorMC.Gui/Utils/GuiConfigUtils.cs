@@ -214,11 +214,9 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            Info = "#000000",
             Warn = "#8B8B00",
             Error = "#FF0000",
-            Debug = "#BEBEBE",
-            None = "#000000"
+            Debug = "#BEBEBE"
         };
     }
 

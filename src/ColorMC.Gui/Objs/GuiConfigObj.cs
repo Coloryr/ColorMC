@@ -214,11 +214,9 @@ public record HeadSetting
 
 public record LogColorSetting
 {
-    public string Info { get; set; }
     public string Warn { get; set; }
     public string Error { get; set; }
     public string Debug { get; set; }
-    public string None { get; set; }
 }
 
 /// <summary>

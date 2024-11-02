@@ -982,14 +982,12 @@ public static class ConfigBinding
         CoreHttpClient.Init();
     }
 
-    public static void SetLogColor(Color infoColor, Color warnColor, Color errorColor, Color debugColor, Color noneColor)
+    public static void SetLogColor(string warnColor, string errorColor, string debugColor)
     {
         GuiConfigUtils.Config.LogColor ??= GuiConfigUtils.MakeLogColorConfig();
-        GuiConfigUtils.Config.LogColor.Info = infoColor.ToString();
-        GuiConfigUtils.Config.LogColor.Warn = warnColor.ToString();
-        GuiConfigUtils.Config.LogColor.Error = errorColor.ToString();
-        GuiConfigUtils.Config.LogColor.Debug = debugColor.ToString();
-        GuiConfigUtils.Config.LogColor.None = noneColor.ToString();
+        GuiConfigUtils.Config.LogColor.Warn = warnColor;
+        GuiConfigUtils.Config.LogColor.Error = errorColor;
+        GuiConfigUtils.Config.LogColor.Debug = debugColor;
 
         GuiConfigUtils.Save();
 
