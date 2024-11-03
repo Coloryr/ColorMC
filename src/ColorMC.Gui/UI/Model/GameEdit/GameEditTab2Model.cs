@@ -90,7 +90,6 @@ public partial class GameEditModel
 
     private bool _configLoad;
 
-
     partial void OnCycTitleChanged(bool value)
     {
         if (_configLoad)

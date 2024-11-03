@@ -95,7 +95,7 @@ public partial class DownloadModel : TopModel
             DisplayList.Clear();
             _downloadList.Clear();
             BaseBinding.DownloadStop();
-
+            Model.Notify(App.Lang("DownloadWindow.Info5"));
             return true;
         }
         else

@@ -242,6 +242,8 @@ public partial class AddGameModel
                 CustomLoader = true;
                 break;
         }
+
+        Model.Notify(App.Lang("AddGameWindow.Tab1.Info22"));
     }
 
     /// <summary>
@@ -355,6 +357,8 @@ public partial class AddGameModel
 
         LoaderType = 0;
         _load = false;
+
+        Model.Notify(App.Lang("AddGameWindow.Tab1.Info24"));
     }
 
     /// <summary>
@@ -380,6 +384,8 @@ public partial class AddGameModel
         }
 
         GameVersionUpdate();
+
+        Model.Notify(App.Lang("AddGameWindow.Tab1.Info23"));
     }
 
     /// <summary>

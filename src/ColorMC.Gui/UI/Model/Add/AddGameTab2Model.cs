@@ -44,6 +44,7 @@ public partial class AddGameModel
             else
             {
                 Type = res;
+                Model.Notify(string.Format(App.Lang("AddGameWindow.Tab2.Info7"), res.ToString()));
             }
         }
     }
