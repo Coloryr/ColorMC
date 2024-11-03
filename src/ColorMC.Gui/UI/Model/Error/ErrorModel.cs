@@ -45,7 +45,11 @@ public partial class ErrorModel : TopModel
         {
             return;
         }
-        await PathBinding.SaveFile(top, FileType.Text, [Text.Text]);
+        var res = await PathBinding.SaveFile(top, FileType.Text, [Text.Text]);
+        if (res == true)
+        {
+            Model.Notify(App.Lang("ErrorWindow.Info1"));
+        }
     }
 
     public async void Push()

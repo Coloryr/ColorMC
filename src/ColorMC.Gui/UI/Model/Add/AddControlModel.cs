@@ -511,6 +511,8 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         }
 
         OnPropertyChanged("ScrollToHome");
+
+        Model.Notify(App.Lang("AddWindow.Info16"));
     }
 
     /// <summary>
@@ -608,6 +610,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                                  select newgroup.Key);
 
         LoadOptifineVersion();
+        Model.Notify(App.Lang("AddWindow.Info16"));
     }
 
     /// <summary>
@@ -1245,6 +1248,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         EmptyVersionDisplay = FileList.Count == 0;
 
         Model.ProgressClose();
+        Model.Notify(App.Lang("AddWindow.Info16"));
     }
 
     /// <summary>

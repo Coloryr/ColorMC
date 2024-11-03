@@ -29,7 +29,7 @@ public partial class GameEditModel
 
     partial void OnResourceTextChanged(string value)
     {
-
+        LoadResource1();
     }
 
     [RelayCommand]

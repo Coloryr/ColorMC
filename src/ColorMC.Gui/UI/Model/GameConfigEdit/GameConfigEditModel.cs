@@ -165,6 +165,7 @@ public partial class GameConfigEditModel : GameModel
             Text = new(text);
         }
         IsEdit = false;
+        Model.Notify(App.Lang("ConfigEditWindow.Info10"));
     }
 
     [RelayCommand]
@@ -264,6 +265,7 @@ public partial class GameConfigEditModel : GameModel
             var list = GameBinding.GetAllConfig(Obj);
             _items.AddRange(list);
         }
+        Model.Notify(App.Lang("ConfigEditWindow.Info11"));
         Load1();
     }
 
@@ -383,6 +385,7 @@ public partial class GameConfigEditModel : GameModel
         {
             model.Add("", NbtType.NbtEnd);
         }
+        Model.Notify(App.Lang("onfigEditWindow.Info12"));
         Edit();
     }
 
@@ -414,6 +417,7 @@ public partial class GameConfigEditModel : GameModel
         {
             item?.Top?.Remove(item);
         }
+        Model.Notify(App.Lang("onfigEditWindow.Info13"));
         Edit();
     }
 
@@ -453,6 +457,7 @@ public partial class GameConfigEditModel : GameModel
         }
 
         model.EditKey(model.Key!, model1.Key);
+        Model.Notify(App.Lang("onfigEditWindow.Info14"));
         Edit();
     }
 
@@ -562,7 +567,7 @@ public partial class GameConfigEditModel : GameModel
                 Model.Show(App.Lang("ConfigEditWindow.Error3"));
             }
         }
-
+        Model.Notify(App.Lang("onfigEditWindow.Info14"));
         model.Update();
         Edit();
     }

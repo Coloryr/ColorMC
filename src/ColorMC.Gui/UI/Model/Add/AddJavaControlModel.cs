@@ -220,6 +220,7 @@ public partial class AddJavaControlModel : TopModel
 
             Model.ChoiseEnable = true;
             Model.ProgressClose();
+            Model.Notify(App.Lang("AddJavaWindow.Info6"));
         }
         else
         {

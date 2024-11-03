@@ -27,6 +27,8 @@ public partial class GameEditModel
             ScreenshotList.Add(new(this, item));
         }
         ScreenshotEmptyDisplay = ScreenshotList.Count == 0;
+
+        Model.Notify(App.Lang("GameEditWindow.Tab9.Info4"));
     }
 
     private void OpenScreenshot()

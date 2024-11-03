@@ -103,6 +103,7 @@ public partial class GameEditModel
         }
 
         _obj.SaveOptions(opt);
+        Model.Notify(App.Lang("GameEditWindow.Tab1.Text17"));
     }
 
     partial void OnVersionTypeChanged(int value)

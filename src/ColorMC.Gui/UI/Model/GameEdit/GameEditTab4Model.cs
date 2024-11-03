@@ -119,7 +119,7 @@ public partial class GameEditModel
         }
         else
         {
-            Model.Show(string.Format(App.Lang("GameEditWindow.Tab4.Info20"), res1.Data));
+            Model.Notify(string.Format(App.Lang("GameEditWindow.Tab4.Info20"), res1.Data));
         }
         _isModSet = false;
     }
@@ -139,6 +139,7 @@ public partial class GameEditModel
             if (res1)
             {
                 WebBinding.UpgradeMod(_obj, res);
+                Model.Notify(App.Lang("GameEditWindow.Tab4.Info22"));
             }
         }
         else
@@ -336,6 +337,8 @@ public partial class GameEditModel
                 return;
             }
         }
+
+        Model.Notify(App.Lang("GameEditWindow.Tab4.Info23"));
 
         LoadMod1();
     }
