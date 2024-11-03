@@ -93,6 +93,11 @@ public partial class GameEditModel : MenuModel
                 [
                     new SubMenuItemModel()
                     {
+                        Name = App.Lang("Button.RefashList"),
+                        Func = LoadMods
+                    },
+                    new SubMenuItemModel()
+                    {
                         Name = App.Lang("GameEditWindow.Tab4.Text8"),
                         Func = ImportMod
                     },
