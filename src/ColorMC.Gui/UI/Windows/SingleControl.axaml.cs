@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Gui.Manager;
@@ -77,7 +79,12 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
     {
         if (e.PropertyName == BaseModel.InfoShow)
         {
-            windowNotification.Show(Model.NotifyText);
+            windowNotification.Show(new TextBlock()
+            {
+                Margin = new Thickness(20, 0, 20, 0),
+                TextWrapping = TextWrapping.Wrap,
+                Text = Model.NotifyText
+            });
         }
         else if (e.PropertyName == BaseModel.GetTopLevelName
             && DataContext is BaseModel model)

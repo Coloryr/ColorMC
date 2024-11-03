@@ -11,9 +11,9 @@
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock
             FontSize="20"
+            HorizontalAlignment="Center"
             Foreground="{setting:Theme FontColor}"
             Text="{Binding Text}"
-            TextAlignment="Center"
             TextWrapping="Wrap" />
         <ProgressBar
             Height="10"

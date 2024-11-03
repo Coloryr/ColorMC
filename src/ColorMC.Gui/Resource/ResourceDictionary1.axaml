@@ -10,8 +10,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Width="30"
-                HorizontalAlignment="Center"
-                TextAlignment="Center">
+                HorizontalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{x:Static icon:IconConverter.FileIconConverter}">
                         <Binding Path="IsDirectory" />
@@ -26,8 +25,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Width="30"
-                HorizontalAlignment="Center"
-                TextAlignment="Center">
+                HorizontalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{x:Static icon:IconConverter.NbtIconConverter}">
                         <Binding Path="NbtType" />
