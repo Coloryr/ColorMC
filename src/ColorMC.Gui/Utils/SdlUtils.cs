@@ -2,7 +2,6 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
-using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
 using Silk.NET.SDL;
 
@@ -11,6 +10,7 @@ namespace ColorMC.Gui.Utils;
 public static class SdlUtils
 {
     public static bool SdlInit { get; private set; }
+    public static Sdl Sdl { get; private set; }
 
     public static void Init()
     {
@@ -18,11 +18,10 @@ public static class SdlUtils
         {
             try
             {
-                var sdl = Sdl.GetApi();
-                if (sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) == 0)
+                Sdl = Sdl.GetApi();
+                if (Sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) == 0)
                 {
-                    JoystickInput.Init(sdl);
-                    Media.Init(sdl);
+                    JoystickInput.Init(Sdl);
                     SdlInit = true;
                 }
             }

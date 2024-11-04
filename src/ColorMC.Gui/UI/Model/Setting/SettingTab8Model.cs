@@ -86,24 +86,24 @@ public partial class SettingModel
     [ObservableProperty]
     private float _downRate;
 
-    private readonly List<string> UUIDs = [];
-    private short leftX, leftY, rightX, rightY;
+    private readonly List<string> _controlUUIDs = [];
+    private short _leftX, _leftY, _rightX, _rightY;
 
-    private Action<byte>? input;
-    private Action<byte, bool>? inputAxis;
-    private Action<InputKeyObj>? inputKey;
+    private Action<byte>? _input;
+    private Action<byte, bool>? _inputAxis;
+    private Action<InputKeyObj>? _inputKey;
 
-    private IntPtr controlPtr;
-    private int joystickID;
+    private IntPtr _controlPtr;
+    private int _joystickID;
 
-    private InputControlObj? Obj;
+    private InputControlObj? _controlObj;
 
-    private bool isInputConfigLoad;
-    private bool isInputLoad;
+    private bool _isInputConfigLoad;
+    private bool _isInputLoad;
 
     partial void OnNowConfigChanged(int value)
     {
-        if (isInputLoad)
+        if (_isInputLoad)
         {
             return;
         }
@@ -112,13 +112,13 @@ public partial class SettingModel
             ConfigBinding.SaveNowInputConfig(null);
             return;
         }
-        else if (UUIDs.Count <= value)
+        else if (_controlUUIDs.Count <= value)
         {
             NowConfig = -1;
             return;
         }
 
-        var uuid = UUIDs[value];
+        var uuid = _controlUUIDs[value];
 
         ConfigBinding.SaveNowInputConfig(uuid);
     }
@@ -126,127 +126,127 @@ public partial class SettingModel
     partial void OnSelectConfigChanged(int value)
     {
         InputExist = value != -1;
-        if (isInputLoad || value == -1)
+        if (_isInputLoad || value == -1)
         {
             return;
         }
-        else if (UUIDs.Count <= value)
+        else if (_controlUUIDs.Count <= value)
         {
             SelectConfig = -1;
             return;
         }
 
-        string uuid = UUIDs[value];
+        string uuid = _controlUUIDs[value];
 
-        JoystickConfig.Configs.TryGetValue(uuid, out Obj);
-        if (Obj != null)
+        JoystickConfig.Configs.TryGetValue(uuid, out _controlObj);
+        if (_controlObj != null)
         {
-            LoadInputConfig(Obj);
+            LoadInputConfig(_controlObj);
         }
     }
 
     partial void OnRotateDeathChanged(int value)
     {
-        if (isInputConfigLoad || Obj == null)
+        if (_isInputConfigLoad || _controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputDeath(Obj, RotateDeath, CursorDeath);
+        ConfigBinding.SetInputDeath(_controlObj, RotateDeath, CursorDeath);
     }
 
     partial void OnCursorDeathChanged(int value)
     {
-        if (isInputConfigLoad || Obj == null)
+        if (_isInputConfigLoad || _controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputDeath(Obj, RotateDeath, CursorDeath);
+        ConfigBinding.SetInputDeath(_controlObj, RotateDeath, CursorDeath);
     }
 
     partial void OnDownRateChanged(float value)
     {
-        if (isInputConfigLoad || Obj == null)
+        if (_isInputConfigLoad || _controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputRate(Obj, RotateRate, CursorRate, DownRate);
+        ConfigBinding.SetInputRate(_controlObj, RotateRate, CursorRate, DownRate);
     }
 
     partial void OnCursorRateChanged(float value)
     {
-        if (isInputConfigLoad || Obj == null)
+        if (_isInputConfigLoad || _controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputRate(Obj, RotateRate, CursorRate, DownRate);
+        ConfigBinding.SetInputRate(_controlObj, RotateRate, CursorRate, DownRate);
     }
 
     partial void OnRotateRateChanged(float value)
     {
-        if (isInputConfigLoad || Obj == null)
+        if (_isInputConfigLoad || _controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputRate(Obj, RotateRate, CursorRate, DownRate);
+        ConfigBinding.SetInputRate(_controlObj, RotateRate, CursorRate, DownRate);
     }
 
     partial void OnItemCycleChanged(bool value)
     {
-        if (isInputConfigLoad || Obj == null)
+        if (_isInputConfigLoad || _controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.SaveInput(Obj, ItemCycle);
+        ConfigBinding.SaveInput(_controlObj, ItemCycle);
     }
 
     partial void OnItemCycleLeftChanged(byte value)
     {
         CycleLeftIcon = IconConverter.GetInputKeyIcon(ItemCycleLeft);
 
-        if (isInputConfigLoad || Obj == null)
+        if (_isInputConfigLoad || _controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.SetItemCycle(Obj, ItemCycleLeft, ItemCycleRight);
+        ConfigBinding.SetItemCycle(_controlObj, ItemCycleLeft, ItemCycleRight);
     }
 
     partial void OnItemCycleRightChanged(byte value)
     {
         CycleRightIcon = IconConverter.GetInputKeyIcon(ItemCycleRight);
 
-        if (isInputConfigLoad || Obj == null)
+        if (_isInputConfigLoad || _controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.SetItemCycle(Obj, ItemCycleLeft, ItemCycleRight);
+        ConfigBinding.SetItemCycle(_controlObj, ItemCycleLeft, ItemCycleRight);
     }
 
     partial void OnInputCursorAxisChanged(int value)
     {
-        if (isInputConfigLoad || Obj == null)
+        if (_isInputConfigLoad || _controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputAxis(Obj, InputRotateAxis, InputCursorAxis);
+        ConfigBinding.SetInputAxis(_controlObj, InputRotateAxis, InputCursorAxis);
     }
 
     partial void OnInputRotateAxisChanged(int value)
     {
-        if (isInputConfigLoad || Obj == null)
+        if (_isInputConfigLoad || _controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.SetInputAxis(Obj, InputRotateAxis, InputCursorAxis);
+        ConfigBinding.SetInputAxis(_controlObj, InputRotateAxis, InputCursorAxis);
     }
 
     partial void OnInputIndexChanged(int value)
@@ -256,22 +256,22 @@ public partial class SettingModel
         {
             unsafe
             {
-                controlPtr = new(JoystickInput.Open(InputIndex));
+                _controlPtr = new(JoystickInput.Open(InputIndex));
             }
-            if (controlPtr == IntPtr.Zero)
+            if (_controlPtr == IntPtr.Zero)
             {
                 Model.Show(App.Lang("SettingWindow.Tab8.Error1"));
             }
             else
             {
-                joystickID = JoystickInput.GetJoystickID(controlPtr);
+                _joystickID = JoystickInput.GetJoystickID(_controlPtr);
             }
         }
     }
 
     partial void OnInputEnableChanged(bool value)
     {
-        if (isInputConfigLoad)
+        if (_isInputConfigLoad)
         {
             return;
         }
@@ -282,7 +282,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ExportInputConfig()
     {
-        if (Obj == null)
+        if (_controlObj == null)
         {
             return;
         }
@@ -291,7 +291,7 @@ public partial class SettingModel
         {
             return;
         }
-        var res = await PathBinding.SaveFile(top, FileType.InputConfig, [Obj.Name, Obj]);
+        var res = await PathBinding.SaveFile(top, FileType.InputConfig, [_controlObj.Name, _controlObj]);
         if (res == null)
         {
             return;
@@ -330,7 +330,7 @@ public partial class SettingModel
 
         ConfigBinding.SaveInputConfig(obj);
         Configs.Add(obj.Name);
-        UUIDs.Add(obj.UUID);
+        _controlUUIDs.Add(obj.UUID);
 
         Model.Notify(App.Lang("SettingWindow.Tab8.Info15"));
     }
@@ -338,21 +338,21 @@ public partial class SettingModel
     [RelayCommand]
     public async Task DeleteInputConfig()
     {
-        if (Obj == null)
+        if (_controlObj == null)
         {
             return;
         }
 
-        var res = await Model.ShowWait(string.Format(App.Lang("SettingWindow.Tab8.Info1"), Obj.Name));
+        var res = await Model.ShowWait(string.Format(App.Lang("SettingWindow.Tab8.Info1"), _controlObj.Name));
         if (!res)
         {
             return;
         }
 
-        ConfigBinding.RemoveInputConfig(Obj);
+        ConfigBinding.RemoveInputConfig(_controlObj);
 
-        UUIDs.Remove(Obj.UUID);
-        Configs.Remove(Obj.Name);
+        _controlUUIDs.Remove(_controlObj.UUID);
+        Configs.Remove(_controlObj.Name);
 
         if (Configs.Count > 0)
         {
@@ -363,18 +363,18 @@ public partial class SettingModel
     [RelayCommand]
     public async Task RenameInputConfig()
     {
-        if (Obj == null)
+        if (_controlObj == null)
         {
             return;
         }
 
-        var (Cancel, Text1) = await Model.ShowEdit(App.Lang("SettingWindow.Tab8.Info2"), Obj.Name);
+        var (Cancel, Text1) = await Model.ShowEdit(App.Lang("SettingWindow.Tab8.Info2"), _controlObj.Name);
         if (Cancel || string.IsNullOrWhiteSpace(Text1))
         {
             return;
         }
 
-        Obj.Name = Text1;
+        _controlObj.Name = Text1;
         var last = SelectConfig;
         var now = NowConfig == last;
         Configs[SelectConfig] = Text1;
@@ -384,7 +384,7 @@ public partial class SettingModel
             NowConfig = last;
         }
 
-        ConfigBinding.SaveInputConfig(Obj);
+        ConfigBinding.SaveInputConfig(_controlObj);
     }
 
     [RelayCommand]
@@ -397,7 +397,7 @@ public partial class SettingModel
         }
 
         var obj = ConfigBinding.NewInput(Text);
-        UUIDs.Add(obj.UUID);
+        _controlUUIDs.Add(obj.UUID);
         Configs.Add(obj.Name);
 
         SelectConfig = Configs.Count - 1;
@@ -406,7 +406,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task AddAxisInput()
     {
-        if (Obj == null)
+        if (_controlObj == null)
         {
             return;
         }
@@ -441,14 +441,14 @@ public partial class SettingModel
             End = key1.Item2 ? short.MaxValue : short.MinValue
         };
         InputAxisList.Add(item1);
-        ConfigBinding.AddAxisInput(Obj, item1.UUID, item1.GenObj());
+        ConfigBinding.AddAxisInput(_controlObj, item1.UUID, item1.GenObj());
         Model.Notify(App.Lang("SettingWindow.Tab8.Info5"));
     }
 
     [RelayCommand]
     public async Task AddInput()
     {
-        if (Obj == null)
+        if (_controlObj == null)
         {
             return;
         }
@@ -489,7 +489,7 @@ public partial class SettingModel
             Obj = key2
         };
         InputList.Add(item1);
-        ConfigBinding.AddInput(Obj, item1.InputKey, item1.Obj);
+        ConfigBinding.AddInput(_controlObj, item1.InputKey, item1.Obj);
         Model.Notify(App.Lang("SettingWindow.Tab8.Info7"));
     }
 
@@ -521,12 +521,12 @@ public partial class SettingModel
 
     public void InputSave(InputAxisButtonModel model)
     {
-        if (Obj == null)
+        if (_controlObj == null)
         {
             return;
         }
 
-        ConfigBinding.AddAxisInput(Obj, model.UUID, model.GenObj());
+        ConfigBinding.AddAxisInput(_controlObj, model.UUID, model.GenObj());
     }
 
     private void StartRead()
@@ -543,11 +543,11 @@ public partial class SettingModel
         {
             if (InputCursorAxis == 0)
             {
-                NowAxis1 = Math.Max(leftX, leftY);
+                NowAxis1 = Math.Max(_leftX, _leftY);
             }
             else
             {
-                NowAxis1 = Math.Max(rightX, rightY);
+                NowAxis1 = Math.Max(_rightX, _rightY);
             }
         });
     }
@@ -558,34 +558,34 @@ public partial class SettingModel
         {
             if (InputRotateAxis == 0)
             {
-                NowAxis2 = Math.Max(leftX, leftY);
+                NowAxis2 = Math.Max(_leftX, _leftY);
             }
             else
             {
-                NowAxis2 = Math.Max(rightX, rightY);
+                NowAxis2 = Math.Max(_rightX, _rightY);
             }
         });
     }
 
     public void LoadInput()
     {
-        isInputLoad = true;
+        _isInputLoad = true;
         Configs.Clear();
-        UUIDs.Clear();
+        _controlUUIDs.Clear();
         InputEnable = GuiConfigUtils.Config.Input.Enable;
 
         foreach (var item in JoystickConfig.Configs)
         {
-            UUIDs.Add(item.Key);
+            _controlUUIDs.Add(item.Key);
             Configs.Add(item.Value.Name);
         }
 
         if (GuiConfigUtils.Config.Input.NowConfig != null)
         {
-            NowConfig = UUIDs.IndexOf(GuiConfigUtils.Config.Input.NowConfig);
+            NowConfig = _controlUUIDs.IndexOf(GuiConfigUtils.Config.Input.NowConfig);
         }
 
-        isInputLoad = false;
+        _isInputLoad = false;
 
         if (Configs.Count > 0)
         {
@@ -595,7 +595,7 @@ public partial class SettingModel
 
     private void LoadInputConfig(InputControlObj config)
     {
-        isInputConfigLoad = true;
+        _isInputConfigLoad = true;
         InputList.Clear();
         InputAxisList.Clear();
 
@@ -635,11 +635,15 @@ public partial class SettingModel
         ItemCycleLeft = config.ItemCycleLeft;
         ItemCycleRight = config.ItemCycleRight;
 
-        isInputConfigLoad = false;
+        _isInputConfigLoad = false;
     }
 
     public void ReloadInput()
     {
+        if (!InputInit)
+        {
+            return;
+        }
         InputNum = JoystickInput.Count;
 
         InputNames.Clear();
@@ -662,7 +666,7 @@ public partial class SettingModel
 
     public async void SetKeyButton(InputButtonModel item)
     {
-        if (Obj == null)
+        if (_controlObj == null)
         {
             return;
         }
@@ -682,44 +686,44 @@ public partial class SettingModel
 
         if (item is InputAxisButtonModel model)
         {
-            ConfigBinding.AddAxisInput(Obj, model.UUID, model.GenObj());
+            ConfigBinding.AddAxisInput(_controlObj, model.UUID, model.GenObj());
         }
         else
         {
-            ConfigBinding.AddInput(Obj, item.InputKey, item.Obj);
+            ConfigBinding.AddInput(_controlObj, item.InputKey, item.Obj);
         }
         Model.Notify(App.Lang("SettingWindow.Tab8.Info9"));
     }
 
     public void DeleteInput(InputButtonModel item)
     {
-        if (Obj == null)
+        if (_controlObj == null)
         {
             return;
         }
         if (item is InputAxisButtonModel model)
         {
             InputAxisList.Remove(model);
-            ConfigBinding.DeleteAxisInput(Obj, model.UUID);
+            ConfigBinding.DeleteAxisInput(_controlObj, model.UUID);
         }
         else
         {
             InputList.Remove(item);
-            ConfigBinding.DeleteInput(Obj, item.InputKey);
+            ConfigBinding.DeleteInput(_controlObj, item.InputKey);
         }
         Model.Notify(App.Lang("SettingWindow.Tab8.Info10"));
     }
 
     public void InputMouse(KeyModifiers modifiers, PointerPointProperties properties)
     {
-        if (inputKey == null)
+        if (_inputKey == null)
         {
             return;
         }
 
         if (properties.IsMiddleButtonPressed)
         {
-            inputKey.Invoke(new()
+            _inputKey.Invoke(new()
             {
                 MouseButton = MouseButton.Middle,
                 KeyModifiers = modifiers
@@ -727,7 +731,7 @@ public partial class SettingModel
         }
         else if (properties.IsRightButtonPressed)
         {
-            inputKey.Invoke(new()
+            _inputKey.Invoke(new()
             {
                 MouseButton = MouseButton.Right,
                 KeyModifiers = modifiers
@@ -735,7 +739,7 @@ public partial class SettingModel
         }
         else if (properties.IsLeftButtonPressed)
         {
-            inputKey.Invoke(new()
+            _inputKey.Invoke(new()
             {
                 MouseButton = MouseButton.Left,
                 KeyModifiers = modifiers
@@ -743,7 +747,7 @@ public partial class SettingModel
         }
         else if (properties.IsXButton1Pressed)
         {
-            inputKey.Invoke(new()
+            _inputKey.Invoke(new()
             {
                 MouseButton = MouseButton.XButton1,
                 KeyModifiers = modifiers
@@ -751,7 +755,7 @@ public partial class SettingModel
         }
         else if (properties.IsXButton2Pressed)
         {
-            inputKey.Invoke(new()
+            _inputKey.Invoke(new()
             {
                 MouseButton = MouseButton.XButton2,
                 KeyModifiers = modifiers
@@ -761,7 +765,7 @@ public partial class SettingModel
 
     public bool InputKey(KeyModifiers modifiers, Key key)
     {
-        if (inputKey == null)
+        if (_inputKey == null)
         {
             return false;
         }
@@ -779,7 +783,7 @@ public partial class SettingModel
             modifiers = KeyModifiers.None;
         }
 
-        inputKey?.Invoke(new()
+        _inputKey?.Invoke(new()
         {
             Key = key,
             KeyModifiers = modifiers
@@ -793,9 +797,9 @@ public partial class SettingModel
         JoystickInput.IsEditMode = true;
         InputKeyObj? keys = null;
         bool output = false;
-        inputKey = (key) =>
+        _inputKey = (key) =>
         {
-            inputKey = null;
+            _inputKey = null;
             keys = key;
             output = true;
         };
@@ -820,9 +824,9 @@ public partial class SettingModel
     {
         byte? keys = null;
         bool output = false;
-        input = (key) =>
+        _input = (key) =>
         {
-            input = null;
+            _input = null;
             keys = key;
             output = true;
         };
@@ -846,9 +850,9 @@ public partial class SettingModel
         byte keys = 0;
         bool output = false;
         bool positives = false;
-        inputAxis = (key, positive) =>
+        _inputAxis = (key, positive) =>
         {
-            inputAxis = null;
+            _inputAxis = null;
             positives = positive;
             keys = key;
             output = true;
@@ -878,7 +882,7 @@ public partial class SettingModel
             return;
         }
 
-        if (sdlEvent.Cbutton.Which != joystickID)
+        if (sdlEvent.Cbutton.Which != _joystickID)
         {
             return;
         }
@@ -900,28 +904,28 @@ public partial class SettingModel
 
             if (axisEvent.Axis == (uint)GameControllerAxis.Leftx)
             {
-                leftX = axisFixValue;
+                _leftX = axisFixValue;
                 UpdateType1();
             }
             else if (axisEvent.Axis == (uint)GameControllerAxis.Lefty)
             {
-                leftY = axisFixValue;
+                _leftY = axisFixValue;
                 UpdateType1();
             }
             else if (axisEvent.Axis == (uint)GameControllerAxis.Rightx)
             {
-                rightX = axisFixValue;
+                _rightX = axisFixValue;
                 UpdateType2();
             }
             else if (axisEvent.Axis == (uint)GameControllerAxis.Righty)
             {
-                rightY = axisFixValue;
+                _rightY = axisFixValue;
                 UpdateType2();
             }
 
             if (axisFixValue > 2000)
             {
-                inputAxis?.Invoke(sdlEvent.Caxis.Axis, axisValue > 0);
+                _inputAxis?.Invoke(sdlEvent.Caxis.Axis, axisValue > 0);
             }
 
             Dispatcher.UIThread.Post(() =>
@@ -937,17 +941,17 @@ public partial class SettingModel
         }
         else if (type == EventType.Controllerbuttondown)
         {
-            input?.Invoke(sdlEvent.Cbutton.Button);
+            _input?.Invoke(sdlEvent.Cbutton.Button);
         }
     }
 
     private void InputClose()
     {
-        joystickID = 0;
-        if (controlPtr != IntPtr.Zero)
+        _joystickID = 0;
+        if (_controlPtr != IntPtr.Zero)
         {
-            JoystickInput.Close(controlPtr);
-            controlPtr = IntPtr.Zero;
+            JoystickInput.Close(_controlPtr);
+            _controlPtr = IntPtr.Zero;
         }
     }
 

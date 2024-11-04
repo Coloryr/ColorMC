@@ -128,7 +128,8 @@ public static class ConfigUtils
             Http = MakeHttpConfig(),
             DefaultJvmArg = MakeJvmArgConfig(),
             Window = MakeWindowSettingConfig(),
-            GameCheck = MakeGameCheckConfig()
+            GameCheck = MakeGameCheckConfig(),
+            Dns = MakeDnsConfig()
         };
     }
 

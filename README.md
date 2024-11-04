@@ -2,7 +2,7 @@
 
 交流QQ群：571239090
 
-多语言  
+加入多语言翻译（帮帮忙）  
 https://crowdin.com/project/colormc
 
 [English](./README_EN.md)

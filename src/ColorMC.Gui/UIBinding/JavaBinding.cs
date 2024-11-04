@@ -181,4 +181,13 @@ public static class JavaBinding
     {
         return Task.Run(JavaHelper.FindJava);
     }
+
+    /// <summary>
+    /// ËÑË÷Java
+    /// </summary>
+    /// <returns></returns>
+    public static Task<List<JavaInfo>?> FindJava(string local)
+    {
+        return Task.Run(() => JavaHelper.FindJava(local));
+    }
 }

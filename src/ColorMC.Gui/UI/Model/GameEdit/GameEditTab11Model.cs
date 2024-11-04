@@ -33,6 +33,7 @@ public partial class GameEditModel
         Model.ProgressClose();
 
         ShaderpackEmptyDisplay = ShaderpackList.Count == 0;
+        Model.Notify(App.Lang("GameEditWindow.Tab10.Info8"));
     }
 
     private async void ImportShaderpack()
@@ -70,8 +71,13 @@ public partial class GameEditModel
         }
     }
 
-    public void DeleteShaderpack(ShaderpackObj obj)
+    public async void DeleteShaderpack(ShaderpackObj obj)
     {
+        var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab11.Info2"));
+        if (!res)
+        {
+            return;
+        }
         GameBinding.DeleteShaderpack(obj);
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         LoadShaderpack();

@@ -1,48 +1,25 @@
-﻿
-
-using Newtonsoft.Json;
-
-namespace ColorMC.Core.Objs.Minecraft;
+﻿namespace ColorMC.Core.Objs.Minecraft;
 
 /// <summary>
 /// 游戏Mod
 /// </summary>
 public record ModObj
 {
-    public string modid { get; set; }
-    public string name { get; set; }
-    public string? description { get; set; }
-    public string mcversion { get; set; }
-    public string? version { get; set; }
-    public List<string>? authorList { get; set; }
-    public string credits { get; set; }
-    public List<string> dependants { get; set; }
-    public List<string> dependencies { get; set; }
-    public List<string> requiredMods { get; set; }
-    public string parent { get; set; }
-    public string logoFile { get; set; }
-    public List<string> screenshots { get; set; }
-    public string updateUrl { get; set; }
-    public string? url { get; set; }
-
-    [JsonIgnore]
+    public string ModId { get; set; }
+    public string Name { get; set; }
+    public string? Description { get; set; }
+    public string? Version { get; set; }
+    public HashSet<string> Author { get; set; }
+    public string? Url { get; set; }
     public string Local { get; set; }
-    [JsonIgnore]
+    public HashSet<string> Dependants { get; set; }
+    public HashSet<Loaders> Loaders { get; set; }
+    public SideType Side { get; set; }
     public bool Disable { get; set; }
-    [JsonIgnore]
-    public Loaders Loader { get; set; }
-    [JsonIgnore]
-    public bool V2 { get; set; }
-    [JsonIgnore]
     public bool CoreMod { get; set; }
-    [JsonIgnore]
     public bool ReadFail { get; set; }
-    [JsonIgnore]
     public string Sha1 { get; set; }
-    [JsonIgnore]
     public string Sha256 { get; set; }
-    [JsonIgnore]
     public GameSettingObj Game { get; set; }
-    [JsonIgnore]
     public List<ModObj> InJar { get; set; }
 }

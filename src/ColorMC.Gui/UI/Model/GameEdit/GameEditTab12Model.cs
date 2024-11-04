@@ -32,6 +32,7 @@ public partial class GameEditModel
         SchematicList.AddRange(await GameBinding.GetSchematics(_obj));
         Model.ProgressClose();
         SchematicEmptyDisplay = SchematicList.Count == 0;
+        Model.Notify(App.Lang("GameEditWindow.Tab12.Info1"));
     }
 
     private async void AddSchematic()
@@ -52,7 +53,7 @@ public partial class GameEditModel
             return;
         }
 
-        Model.Show(App.Lang("GameEditWindow.Tab11.Info1"));
+        Model.Notify(App.Lang("GameEditWindow.Tab11.Info1"));
         LoadSchematic();
     }
 
@@ -65,10 +66,15 @@ public partial class GameEditModel
         }
     }
 
-    public void DeleteSchematic(SchematicObj obj)
+    public async void DeleteSchematic(SchematicObj obj)
     {
+        var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab12.Info2"));
+        if (!res)
+        {
+            return;
+        }
         GameBinding.DeleteSchematic(obj);
-        Model.Show(App.Lang("GameEditWindow.Tab10.Info5"));
+        Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         LoadSchematic();
     }
 }

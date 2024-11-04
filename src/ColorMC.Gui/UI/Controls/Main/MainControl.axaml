@@ -198,7 +198,10 @@
                                     IsVisible="{Binding MusicDisplay}">
                                     <StackPanel Margin="15">
                                         <Panel Margin="0,0,0,5">
-                                            <TextBlock FontSize="16" Text="{setting:Localize MainWindow.Text14}" />
+                                            <TextBlock
+                                                FontSize="16"
+                                                Text="{Binding MusicName}"
+                                                TextTrimming="CharacterEllipsis" />
                                             <Button
                                                 Width="30"
                                                 Height="30"
@@ -212,26 +215,26 @@
                                                 <svg:SvgControl Path="{Binding AudioIcon}" />
                                             </Button>
                                         </Panel>
-                                        <Panel>
-                                            <TextBlock Text="{setting:Localize SettingWindow.Tab6.Text18}" />
+                                        <TextBlock Margin="0,0,0,5" Text="{Binding MusicNow}" />
+                                        <DockPanel>
+                                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab6.Text18}}" />
                                             <TextBlock
-                                                Width="40"
-                                                Margin="0,0,5,0"
-                                                HorizontalAlignment="Right"
+                                                Width="35"
+                                                VerticalAlignment="Center"
+                                                DockPanel.Dock="Right"
                                                 Text="{Binding MusicVolume, StringFormat='{}{0}%', FallbackValue=100%}" />
-                                        </Panel>
-                                        <Slider
-                                            Height="40"
-                                            Margin="0,-10,0,-10"
-                                            HorizontalAlignment="Stretch"
-                                            Foreground="{setting:Theme MainColor}"
-                                            IsSnapToTickEnabled="True"
-                                            LargeChange="1"
-                                            Maximum="100"
-                                            Minimum="0"
-                                            SmallChange="1"
-                                            TickFrequency="1"
-                                            Value="{Binding MusicVolume}" />
+                                            <Slider
+                                                Margin="2,-15,2,-15"
+                                                HorizontalAlignment="Stretch"
+                                                Foreground="{setting:Theme MainColor}"
+                                                IsSnapToTickEnabled="True"
+                                                LargeChange="1"
+                                                Maximum="100"
+                                                Minimum="0"
+                                                SmallChange="1"
+                                                TickFrequency="1"
+                                                Value="{Binding MusicVolume}" />
+                                        </DockPanel>
                                     </StackPanel>
                                 </Border>
                                 <Border

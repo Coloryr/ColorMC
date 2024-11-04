@@ -307,8 +307,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
     private async void Load()
     {
-        if (Source == 2 && Categorie == 4
-            && Text?.Length < 3)
+        if (Source == 2 && Categorie == 4 && Text?.Length < 3)
         {
             Model.Show(App.Lang("AddModPackWindow.Error6"));
             return;
@@ -339,6 +338,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         EmptyDisplay = DisplayList.Count == 0;
 
         Model.ProgressClose();
+        Model.Notify(App.Lang("AddWindow.Info16"));
     }
 
     private async void Load1()
@@ -379,6 +379,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         EmptyVersionDisplay = FileList.Count == 0;
 
         Model.ProgressClose();
+        Model.Notify(App.Lang("AddWindow.Info16"));
     }
 
     public void Install(FileItemModel item)

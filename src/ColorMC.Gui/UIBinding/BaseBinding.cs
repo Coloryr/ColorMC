@@ -140,8 +140,7 @@ public static class BaseBinding
                     '"' + url + '"');
                 break;
             case OsType.MacOS:
-                Process.Start("open", "-a Safari " +
-                    '"' + url + '"');
+                Process.Start("open", '"' + url + '"');
                 break;
             case OsType.Android:
                 ColorMCCore.PhoneOpenUrl(url);
@@ -390,5 +389,16 @@ public static class BaseBinding
     public static Task<FrpLaunchRes> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
         return FrpLaunch.StartFrp(item1, model);
+    }
+
+    public static string GetMusicName()
+    {
+        return Media.MusicName;
+    }
+
+    public static string GetMusicNow()
+    {
+        return $"{(int)Media.NowTime.TotalMinutes:00}:{Media.NowTime.Seconds:00}" +
+            $"/{(int)Media.MusicTime.TotalMinutes:00}:{Media.MusicTime.Seconds:00}";
     }
 }

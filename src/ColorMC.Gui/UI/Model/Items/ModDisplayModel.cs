@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
@@ -14,13 +13,14 @@ public partial class ModDisplayModel : ObservableObject
     [ObservableProperty]
     private bool _enable;
 
+    public string Side => Obj.Side.GetName();
     public string Name { get; init; }
-    public string Modid => Obj.modid;
-    public string Version => Obj.version + (IsNew ? " " + App.Lang("GameEditWindow.Tab4.Info21") : "");
+    public string Modid => Obj.ModId;
+    public string Version => Obj.Version + (IsNew ? " " + App.Lang("GameEditWindow.Tab4.Info21") : "");
     public string Local => Obj.Local;
-    public string Author => MakeString(Obj.authorList);
-    public string? Url => Obj.url;
-    public string Loader => Obj.Loader.GetName();
+    public string Author => StringHelper.MakeString(Obj.Author);
+    public string? Url => Obj.Url;
+    public string Loader => StringHelper.MakeString(Obj.Loaders);
     public string Source { get; init; }
     public string? PID => Obj1?.ModId;
     public string? FID => Obj1?.FileId;
@@ -40,7 +40,7 @@ public partial class ModDisplayModel : ObservableObject
         Obj = obj;
         Obj1 = obj1;
 
-        Name = obj.ReadFail ? App.Lang("GameBinding.Info15") : obj.name;
+        Name = obj.ReadFail ? App.Lang("GameBinding.Info15") : obj.Name;
         Enable = !obj.Disable;
         if (string.IsNullOrWhiteSpace(PID) || string.IsNullOrWhiteSpace(FID))
         {
@@ -55,24 +55,6 @@ public partial class ModDisplayModel : ObservableObject
     public void LocalChange()
     {
         OnPropertyChanged(nameof(Local));
-    }
-
-    private static string MakeString(List<string>? strings)
-    {
-        if (strings == null)
-            return "";
-        string temp = "";
-        foreach (var item in strings)
-        {
-            temp += item + ",";
-        }
-
-        if (temp.Length > 0)
-        {
-            return temp[..^1];
-        }
-
-        return temp;
     }
 }
 

@@ -35,6 +35,11 @@ public enum Loaders
     Custom
 }
 
+public enum SideType
+{
+    None, Client, Server, Both
+}
+
 /// <summary>
 /// 游戏版本类型
 /// </summary>

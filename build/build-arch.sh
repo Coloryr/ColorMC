@@ -24,9 +24,10 @@ build_arch()
 
     mkdir $base_dir
 
-    pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
-        "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "X11.pdb"
-        "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher")
+    pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
+        "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so"
+        "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb" "Live2DCSharpSDK.OpenGL.pdb" 
+        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb" "X11.pdb")
 
     for line in ${pdbs[@]}
     do
@@ -104,9 +105,10 @@ build_arch_min()
 
     mkdir $base_dir
 
-    pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
-        "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "X11.pdb"
-        "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher")
+    pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
+        "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so"
+        "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb" "Live2DCSharpSDK.OpenGL.pdb" 
+        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb" "X11.pdb")
 
     for line in ${pdbs[@]}
     do

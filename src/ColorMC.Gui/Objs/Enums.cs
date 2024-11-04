@@ -149,6 +149,6 @@ public enum LogLevel : int
     Warn = 0b00000100,
     Error = 0b00001000,
     Debug = 0b00010000,
-    All =  0b00011111,
+    All = 0b00011111,
     Fatal = 0b00100000,
 }

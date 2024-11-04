@@ -56,10 +56,16 @@ public partial class GameEditModel
         ServerList.AddRange(await GameBinding.GetServers(_obj));
         Model.ProgressClose();
         ServerEmptyDisplay = ServerList.Count == 0;
+        Model.Notify(App.Lang("GameEditWindow.Tab10.Info7"));
     }
 
     public async void DeleteServer(ServerInfoObj obj)
     {
+        var res = await Model.ShowWait("GameEditWindow.Tab10.Info9");
+        if (!res)
+        {
+            return;
+        }
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
         await GameBinding.DeleteServer(_obj, obj);
         Model.ProgressClose();

@@ -111,7 +111,7 @@ public partial class GameItemModel : GameModel
     partial void OnIsStarChanged(bool value)
     {
         Star = s_star[value ? 0 : 1];
-        StarVis = value || IsOver;
+        StarVis = (value || IsOver) && !IsNew;
     }
 
     partial void OnOneGameChanged(bool value)
@@ -154,7 +154,7 @@ public partial class GameItemModel : GameModel
 
     partial void OnIsOverChanged(bool value)
     {
-        StarVis = value || IsStar;
+        StarVis = (value || IsStar) && !IsNew;
         ButtonShow = value || IsSelect;
     }
 

@@ -38,9 +38,9 @@ public partial class ModExportModel : ObservableObject
         Reload();
     }
 
-    public string Name => Obj.name;
-    public string Modid => Obj.modid;
-    public string Loader => Obj.Loader.GetName();
+    public string Name => Obj.Name;
+    public string Modid => Obj.ModId;
+    public string Loader => StringHelper.MakeString(Obj.Loaders);
     public SourceType? Source { get; init; }
 
     partial void OnPIDChanged(string? value)

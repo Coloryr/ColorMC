@@ -26,7 +26,8 @@ build_deb()
 
     pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
         "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so"
-        "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb" "X11.pdb")
+        "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb" "Live2DCSharpSDK.OpenGL.pdb" 
+        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb" "X11.pdb")
 
     cp -r ./build/info/linux/* $base_dir
     cp -r ./build/info/$1/* $base_dir
@@ -98,7 +99,8 @@ build_deb_min()
 
     pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
         "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so"
-        "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb"  "X11.pdb")
+        "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb" "Live2DCSharpSDK.OpenGL.pdb" 
+        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb" "X11.pdb")
 
     cp -r ./build/info/linux/* $base_dir
     cp -r ./build/info/$1/* $base_dir
@@ -122,11 +124,11 @@ build_deb_min()
     echo "$deb build done"
 }
 
-build_deb linux-x64 x86_64
+build_deb linux-x64 amd64
 build_deb linux-arm64 arm64
-build_deb_aot linux-x64 x86_64
+build_deb_aot linux-x64 amd64
 # build_deb_aot linux-arm64 arm64
-build_deb_min linux-x64 x86_64
+build_deb_min linux-x64 amd64
 build_deb_min linux-arm64 arm64
 
 build_run=./build_run
@@ -144,7 +146,7 @@ sudo apt-get install libfuse2 curl -y
 
 build_appimage()
 {
-    appimg=colormc-linux-$main_version$version-$1.AppImage
+    appimg=colormc-linux-$main_version$version-$2.AppImage
     
     build_dir=$build_run/$1
     
@@ -163,18 +165,18 @@ build_appimage()
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
-    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$1.AppImage
-    chmod a+x build_out/colormc-$main_version$version-$1.AppImage
-    mv build_out/colormc-$main_version$version-$1.AppImage build_out/$appimg
+    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$2.AppImage
+    chmod a+x build_out/colormc-$main_version$version-$2.AppImage
+    mv build_out/colormc-$main_version$version-$2.AppImage build_out/$appimg
 
     echo "$appimg build done"
 }
 
 build_appimage_aot()
 {
-    appimg=colormc-linux-$main_version$version-aot-$1.AppImage
+    appimg=colormc-linux-$main_version$version-aot-$2.AppImage
     
-    build_dir=$build_run/$1
+    build_dir=$build_run/$1-aot
     
     mkdir $build_dir
 
@@ -191,18 +193,18 @@ build_appimage_aot()
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
-    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$1.AppImage
-    chmod a+x build_out/colormc-$main_version$version-$1.AppImage
-    mv build_out/colormc-$main_version$version-$1.AppImage build_out/$appimg
+    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$2.AppImage
+    chmod a+x build_out/colormc-$main_version$version-$2.AppImage
+    mv build_out/colormc-$main_version$version-$2.AppImage build_out/$appimg
 
     echo "$appimg build done"
 }
 
 build_appimage_min()
 {
-    appimg=colormc-linux-$main_version$version-min-$1.AppImage
+    appimg=colormc-linux-$main_version$version-min-$2.AppImage
     
-    build_dir=$build_run/$1
+    build_dir=$build_run/$1-min
 
     mkdir $build_dir
 
@@ -219,13 +221,13 @@ build_appimage_min()
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
-    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$1.AppImage
-    chmod a+x build_out/colormc-$main_version$version-$1.AppImage
-    mv build_out/colormc-$main_version$version-$1.AppImage build_out/$appimg
+    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$2.AppImage
+    chmod a+x build_out/colormc-$main_version$version-$2.AppImage
+    mv build_out/colormc-$main_version$version-$2.AppImage build_out/$appimg
 
     echo "$appimg build done"
 }
 
-build_appimage x86_64
-build_appimage_aot x86_64
-build_appimage_min x86_64
+build_appimage amd64 x86_64
+build_appimage_aot amd64 x86_64
+build_appimage_min amd64 x86_64

@@ -99,6 +99,10 @@ public abstract class ABaseWindow : Window
 
     protected bool SetWindowState()
     {
+        if (ColorMCGui.RunType != RunType.Program)
+        {
+            return true;
+        }
         var state = WindowManager.GetWindowState(ICon.UseName);
         if (state != null)
         {

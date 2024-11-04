@@ -421,101 +421,86 @@ public static class CheckHelpers
             list1.Add(Task.Run(() =>
             {
                 var mods = PathHelper.GetAllFile(obj.GetModsPath());
-                FileInfo? mod = null;
+                var shas = new Dictionary<string, string>();
                 int find = 0;
-                ModInfoObj?[] array = [.. obj.Mods.Values];
-                for (int a = 0; a < array.Length; a++)
+                var array = new LinkedList<ModInfoObj>(obj.Mods.Values);
+                var node = array.First;
+                while (node != null)
                 {
                     if (cancel.IsCancellationRequested)
                     {
                         return;
                     }
 
-                    var item = array[a];
+                    var item = node.Value;
+                    bool isfind = false;
                     foreach (var item1 in mods)
                     {
                         if (item == null || item.Path != "mods")
                         {
                             continue;
                         }
-                        if (item1.FullName.ToLower().EndsWith(item.File.ToLower()))
-                        {
-                            if (ConfigUtils.Config.GameCheck.CheckModSha1)
-                            {
-                                using var file = PathHelper.OpenRead(item1.FullName)!;
-                                if (HashHelper.GenSha1(file) != item.SHA1)
-                                {
-                                    continue;
-                                }
-                            }
-                            mod = item1;
-                            break;
-                        }
-                    }
-                    if (mod != null)
-                    {
-                        mods.Remove(mod);
-                        find++;
-                        mod = null;
-                        array[a] = null;
-                    }
-                }
-                //添加缺失的mod
-                if (find != array.Length)
-                {
-                    foreach (var item in array)
-                    {
-                        if (cancel.IsCancellationRequested)
-                        {
-                            return;
-                        }
-                        if (item == null)
+                        var file1 = Path.GetFileNameWithoutExtension(item1.FullName.ToLower());
+                        var file2 = Path.GetFileNameWithoutExtension(item.File.ToLower());
+                        if (file1 != file2)
                         {
                             continue;
                         }
 
-                        if (item.Path != "mods")
+                        if (ConfigUtils.Config.GameCheck.CheckModSha1)
                         {
-                            var path = Path.GetFullPath($"{obj.GetGamePath()}/{item.Path}/{item.File}");
-                            if (File.Exists(path))
+                            if (shas.TryGetValue(item1.FullName, out var sha1))
                             {
-                                if (ConfigUtils.Config.GameCheck.CheckModSha1)
+                                if (sha1 != item.SHA1)
                                 {
-                                    using var file = PathHelper.OpenRead(path)!;
-                                    if (HashHelper.GenSha1(file) != item.SHA1)
-                                    {
-                                        list.Add(new()
-                                        {
-                                            Url = item.Url,
-                                            Name = item.Name,
-                                            Local = path,
-                                            SHA1 = item.SHA1
-                                        });
-                                    }
+                                    continue;
                                 }
                             }
                             else
                             {
-                                list.Add(new()
+                                using var file = PathHelper.OpenRead(item1.FullName)!;
+                                sha1 = HashHelper.GenSha1(file);
+                                shas.TryAdd(item1.FullName, sha1);
+                                if (sha1 != item.SHA1)
                                 {
-                                    Url = item.Url,
-                                    Name = item.Name,
-                                    Local = path,
-                                    SHA1 = item.SHA1
-                                });
+                                    continue;
+                                }
                             }
                         }
-                        else
-                        {
-                            list.Add(new()
-                            {
-                                Url = item.Url,
-                                Name = item.Name,
-                                Local = obj.GetModsPath() + item.File,
-                                SHA1 = item.SHA1
-                            });
-                        }
+
+                        mods.Remove(item1);
+                        find++;
+                        array.Remove(node);
+                        isfind = true;
+                        break;
                     }
+                    if (!isfind)
+                    {
+                        node = node.Next;
+                    }
+                }
+
+               
+                if (find == array.Count)
+                {
+                    return;
+                }
+
+                //添加缺失的mod
+                foreach (var item in array.Where(item1 => item1 != null))
+                {
+                    if (cancel.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                    var path = Path.GetFullPath($"{obj.GetGamePath()}/{item.Path}/{item.File}");
+                    list.Add(new()
+                    {
+                        Url = item.Url,
+                        Name = item.Name,
+                        Local = path,
+                        SHA1 = item.SHA1
+                    });
                 }
             }, cancel));
         }
@@ -724,15 +709,15 @@ public static class CheckHelpers
             if (cancel.IsCancellationRequested)
                 break;
 
-            var name = PathHelper.ToPathAndName(item.name);
-            string file = $"{LibrariesPath.BaseDir}/{name.Path}";
+            var name = PathHelper.NameToPath(item.name);
+            string file = $"{LibrariesPath.BaseDir}/{name}";
             if (!File.Exists(file))
             {
                 list.Add(new()
                 {
-                    Url = UrlHelper.DownloadFabric(item.url + name.Path, CoreHttpClient.Source),
-                    Name = name.Name,
-                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}")
+                    Url = UrlHelper.DownloadFabric(item.url + name, CoreHttpClient.Source),
+                    Name = item.name,
+                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}")
                 });
                 continue;
             }
@@ -759,15 +744,15 @@ public static class CheckHelpers
             if (cancel.IsCancellationRequested)
                 return null;
 
-            var name = PathHelper.ToPathAndName(item.name);
-            string file = $"{LibrariesPath.BaseDir}/{name.Path}";
+            var name = PathHelper.NameToPath(item.name);
+            string file = $"{LibrariesPath.BaseDir}/{name}";
             if (!File.Exists(file))
             {
                 list.Add(new()
                 {
-                    Url = UrlHelper.DownloadQuilt(item.url + name.Path, CoreHttpClient.Source),
-                    Name = name.Name,
-                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}")
+                    Url = UrlHelper.DownloadQuilt(item.url + name, CoreHttpClient.Source),
+                    Name = item.name,
+                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}")
                 });
                 continue;
             }

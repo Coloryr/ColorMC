@@ -1,6 +1,6 @@
 # Maintainer: coloryr <402067010@qq.com>
 
-pkgname=colormc-bin
+pkgname=colormc
 pkgver=%ver%
 pkgrel=%rel%
 pkgdesc="A Minecraft Launcher"

@@ -52,8 +52,8 @@ public class ModComparer : IComparer<ModObj>
             return 0;
         }
 
-        var b3 = string.IsNullOrWhiteSpace(x.name);
-        var b4 = string.IsNullOrWhiteSpace(y.name);
+        var b3 = string.IsNullOrWhiteSpace(x.ModId);
+        var b4 = string.IsNullOrWhiteSpace(y.ModId);
         if (x == y)
         {
             return 0;
@@ -84,7 +84,7 @@ public class ModComparer : IComparer<ModObj>
         }
         else
         {
-            return x.name.CompareTo(y.name);
+            return x.ModId.CompareTo(y.ModId);
         }
     }
 }

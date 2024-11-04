@@ -52,14 +52,14 @@ public static class Program
     /// <summary>
     /// 加载路径
     /// </summary>
-    public const string TopVersion = "A31";
+    public const string TopVersion = "A32";
 
     public static readonly string[] BaseSha1 =
     [
-        "ce94d6f7ce80a7c9415696680e34cf9537f7b716",
-        "adc39906ec815b808244a7e9ccab7a13f0ac33c2",
-        "9bb388dac0d726708339d327537362b65dea89c7",
-        "71d984cf82c31f0777c980cd5d897de02f8f7dd7"
+        "737c5e2ae6b4f248a2b123f8525f73502282c754",
+        "5d3a25f1cb3b06e7495499c0f396fc8b825bd2f0",
+        "5a2b037927ffb22f2cba883758462b582da7add4",
+        "6a620a30aa9a1e5f88966bff92172b9ad7a600a9"
     ];
 
     public delegate void IN(string[] args);

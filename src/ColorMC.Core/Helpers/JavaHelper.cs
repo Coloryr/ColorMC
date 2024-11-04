@@ -236,12 +236,37 @@ public static class JavaHelper
         }
         return [];
     }
+
+    public static List<JavaInfo>? FindJava(string local)
+    {
+        try
+        {
+            var list = new List<JavaInfo>();
+            var list1 = PathHelper.GetAllFile(local)
+                .Where(item=>item.Name == "javaw.exe" || item.Name == "java.exe");
+            foreach (var item in list1)
+            {
+                var info = GetJavaInfo(item.FullName);
+                if (info != null)
+                {
+                    list.Add(info);
+                }
+            }
+
+            return list;
+        }
+        catch(Exception e)
+        {
+            Logs.Error("error on find java", e);
+            return null;
+        }
+    }
 #pragma warning restore CA1416
 
-    /// <summary>
-    /// 查找本机所有Java
-    /// </summary>
-    /// <returns></returns>
+        /// <summary>
+        /// 查找本机所有Java
+        /// </summary>
+        /// <returns></returns>
     public static List<JavaInfo>? FindJava()
     {
         try

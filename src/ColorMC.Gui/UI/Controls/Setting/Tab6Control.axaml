@@ -194,15 +194,18 @@
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text16}" />
                             <ToggleSwitch
                                 Margin="0,0,10,0"
+                                IsChecked="{Binding SlowVolume}"
                                 IsEnabled="{Binding EnableMusic}"
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text22}"
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text22}" />
                             <ToggleSwitch
-                                IsEnabled="{Binding Loop}"
+                                IsChecked="{Binding Loop}"
+                                IsEnabled="{Binding EnableMusic}"
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text37}"
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text37}" />
                             <ToggleSwitch
-                                IsEnabled="{Binding RunPause}"
+                                IsChecked="{Binding RunPause}"
+                                IsEnabled="{Binding EnableMusic}"
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text26}"
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text26}" />
                         </WrapPanel>
@@ -244,39 +247,35 @@
                             Command="{Binding SelectMusic}"
                             Content="{setting:Localize Button.Select}"
                             IsEnabled="{Binding EnableMusic}" />
-                        <WrapPanel Margin="0,0,0,-5">
+                        <WrapPanel Margin="0,0,0,-5" IsEnabled="{Binding EnableMusic}">
                             <Button
                                 Width="100"
                                 Height="35"
                                 Margin="-3,-6,3,-2"
                                 Classes="top"
                                 Command="{Binding MusicStart}"
-                                Content="{setting:Localize SettingWindow.Tab6.Text19}"
-                                IsEnabled="{Binding EnableMusic}" />
+                                Content="{setting:Localize SettingWindow.Tab6.Text19}" />
                             <Button
                                 Width="100"
                                 Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"
                                 Command="{Binding MusicPause}"
-                                Content="{setting:Localize SettingWindow.Tab6.Text21}"
-                                IsEnabled="{Binding EnableMusic}" />
+                                Content="{setting:Localize SettingWindow.Tab6.Text21}" />
                             <Button
                                 Width="100"
                                 Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"
                                 Command="{Binding MusicPlay}"
-                                Content="{setting:Localize SettingWindow.Tab6.Text23}"
-                                IsEnabled="{Binding EnableMusic}" />
+                                Content="{setting:Localize SettingWindow.Tab6.Text23}" />
                             <Button
                                 Width="100"
                                 Height="35"
                                 Margin="-2,-6,3,-2"
                                 Classes="top"
                                 Command="{Binding MusicStop}"
-                                Content="{setting:Localize SettingWindow.Tab6.Text20}"
-                                IsEnabled="{Binding EnableMusic}" />
+                                Content="{setting:Localize SettingWindow.Tab6.Text20}" />
                         </WrapPanel>
                     </StackPanel>
                 </Border>

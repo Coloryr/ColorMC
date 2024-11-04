@@ -236,6 +236,16 @@ public static class PathBinding
                     return res[0].GetPath();
                 }
                 break;
+            case PathType.JavaPath:
+                res = await top.StorageProvider.OpenFolderPickerAsync(new()
+                {
+                    Title = App.Lang("SettingWindow.Tab5.Info9")
+                });
+                if (res?.Any() == true)
+                {
+                    return res[0].GetPath();
+                }
+                break;
         }
 
         return null;

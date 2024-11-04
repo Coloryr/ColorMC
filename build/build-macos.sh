@@ -29,10 +29,10 @@ build_osx()
     mkdir $base/ColorMC.app
     mkdir $base_dir
 
-    files=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
-        "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "ColorMC.Launcher"
+    files=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
         "libAvaloniaNative.dylib" "libHarfBuzzSharp.dylib" "libSkiaSharp.dylib"
-        "libSDL2-2.0.dylib" "X11.pdb")
+        "libSDL2-2.0.dylib" "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb"
+        "Live2DCSharpSDK.OpenGL.pdb" "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb" "X11.pdb")
 
     cp -r ./build/info/osx/* $base_dir
 
@@ -73,10 +73,10 @@ build_osx_min()
     mkdir $base/ColorMC.app
     mkdir $base_dir
 
-    files=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
-        "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "ColorMC.Launcher"
+    files=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
         "libAvaloniaNative.dylib" "libHarfBuzzSharp.dylib" "libSkiaSharp.dylib"
-        "libSDL2-2.0.dylib" "X11.pdb")
+        "libSDL2-2.0.dylib" "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb"
+        "Live2DCSharpSDK.OpenGL.pdb" "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb" "X11.pdb")
 
     cp -r ./build/info/osx/* $base_dir
 

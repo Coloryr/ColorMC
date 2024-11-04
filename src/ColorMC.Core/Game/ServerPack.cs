@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
@@ -40,54 +41,100 @@ public static class ServerPack
         //替换旧的实例
         obj.Game.CopyObj(obj.Game);
 
-        var list5 = new List<DownloadItemObj>();
+        var list5 = new ConcurrentBag<DownloadItemObj>();
 
         var path = obj.Game.GetModsPath();
 
         old ??= new()
         {
             Mod = [],
-            Game = obj.Game
+            Game = obj.Game,
+            Config = [],
+            Resourcepack = []
         };
 
         state?.Invoke(LanguageHelper.Get("Core.ServerPack.Info2"));
 
-        //区分新旧mod
-        ServerModItemObj?[] list1 = [.. obj.Mod];
-        ServerModItemObj?[] list2 = [.. old.Mod];
-
-        for (int a = 0; a < list2.Length; a++)
+        var task1 = Task.Run(async () =>
         {
-            var item1 = list1[a];
-            for (int b = 0; b < list2.Length; b++)
+            //区分新旧mod
+            ServerModItemObj?[] list1 = [.. obj.Mod];
+            ServerModItemObj?[] list2 = [.. old.Mod];
+
+            for (int a = 0; a < list2.Length; a++)
             {
-                var item2 = list2[a];
-                if (item2 == null)
+                var item1 = list1[a];
+                for (int b = 0; b < list2.Length; b++)
+                {
+                    var item2 = list2[a];
+                    if (item2 == null)
+                    {
+                        continue;
+                    }
+                    if (item2.Sha256 == item1?.Sha256 || item2.File == item1?.File)
+                    {
+                        list1[a] = null;
+                        list2[a] = null;
+                        break;
+                    }
+                }
+            }
+
+            var list3 = list1.ToList();
+            var list4 = list2.ToList();
+            list3.RemoveAll(a => a == null);
+            list4.RemoveAll(a => a == null);
+
+            //添加新mod
+            foreach (var item in list3)
+            {
+                if (item == null)
                 {
                     continue;
                 }
-                if (item2.Sha256 == item1?.Sha256 || item2.File == item1?.File)
+                if (item.Source == null)
                 {
-                    list1[a] = null;
-                    list2[a] = null;
-                    break;
+                    list5.Add(new()
+                    {
+                        Name = item.File,
+                        Local = Path.GetFullPath(path + item.File),
+                        SHA256 = item.Sha256,
+                        Url = obj.Game.ServerUrl + item.Url,
+                        UseColorMCHead = true
+                    });
+                }
+                else
+                {
+                    list5.Add(new()
+                    {
+                        Name = item.File,
+                        Local = Path.GetFullPath(path + item.File),
+                        SHA256 = item.Sha256,
+                        Url = UrlHelper.MakeDownloadUrl(item.Source, item.Projcet!, item.FileId!, item.File),
+                    });
                 }
             }
-        }
 
-        var list3 = list1.ToList();
-        var list4 = list2.ToList();
-        list3.RemoveAll(a => a == null);
-        list4.RemoveAll(a => a == null);
+            var mods = await obj.Game.GetModsAsync(true);
 
-        //添加新mod
-        foreach (var item in list3)
-        {
-            if (item == null)
+            //删除旧mod
+            foreach (var item in list4)
             {
-                continue;
+                if (item == null)
+                {
+                    continue;
+                }
+
+                mods.Find(a => a.Sha256 == item.Sha256)?.Delete();
             }
-            if (item.Source == null)
+        });
+
+        var task2 = Task.Run(() =>
+        {
+            //检查资源包
+            path = obj.Game.GetResourcepacksPath();
+
+            foreach (var item in obj.Resourcepack)
             {
                 list5.Add(new()
                 {
@@ -98,88 +145,59 @@ public static class ServerPack
                     UseColorMCHead = true
                 });
             }
-            else
+        });
+
+        var task3 = Task.Run(() =>
+        {
+            //检查配置文件
+            path = obj.Game.GetGamePath();
+            var path1 = obj.Game.GetBasePath();
+
+            foreach (var item in obj.Config)
             {
-                list5.Add(new()
+                if (item.IsZip)
                 {
-                    Name = item.File,
-                    Local = Path.GetFullPath(path + item.File),
-                    SHA256 = item.Sha256,
-                    Url = UrlHelper.MakeDownloadUrl(item.Source, item.Projcet!, item.FileId!, item.File),
-                });
-            }
-        }
-
-        var mods = await obj.Game.GetModsAsync(true);
-
-        //删除旧mod
-        foreach (var item in list4)
-        {
-            if (item == null)
-            {
-                continue;
-            }
-
-            mods.Find(a => a.Sha256 == item.Sha256)?.Delete();
-        }
-
-        //检查资源包
-        path = obj.Game.GetResourcepacksPath();
-
-        foreach (var item in obj.Resourcepack)
-        {
-            list5.Add(new()
-            {
-                Name = item.File,
-                Local = Path.GetFullPath(path + item.File),
-                SHA256 = item.Sha256,
-                Url = obj.Game.ServerUrl + item.Url,
-                UseColorMCHead = true
-            });
-        }
-
-        //检查配置文件
-        path = obj.Game.GetGamePath();
-        var path1 = obj.Game.GetBasePath();
-
-        foreach (var item in obj.Config)
-        {
-            if (item.IsZip)
-            {
-                list5.Add(new()
-                {
-                    Name = item.FileName,
-                    Local = Path.GetFullPath(path1 + "/" + item.FileName),
-                    SHA256 = item.Sha256,
-                    Url = obj.Game.ServerUrl + item.Url,
-                    Overwrite = true,
-                    UseColorMCHead = true,
-                    Later = (stream) =>
+                    list5.Add(new()
                     {
-                        if (item.IsZip)
+                        Name = item.FileName,
+                        Local = Path.GetFullPath(path1 + "/" + item.FileName),
+                        SHA256 = item.Sha256,
+                        Url = obj.Game.ServerUrl + item.Url,
+                        Overwrite = true,
+                        UseColorMCHead = true,
+                        Later = (stream) =>
                         {
-                            new ZipUtils().UnzipAsync(Path.GetFullPath(path + "/" + item.Group), "", stream).Wait();
+                            if (item.IsZip)
+                            {
+                                new ZipUtils().UnzipAsync(Path.GetFullPath(path + "/" + item.Group), "", stream).Wait();
+                            }
                         }
-                    }
-                });
-            }
-            else
-            {
-                list5.Add(new()
+                    });
+                }
+                else
                 {
-                    Name = item.Group + item.FileName,
-                    Local = Path.GetFullPath(path + "/" + item.Group + item.FileName),
-                    SHA256 = item.Sha256,
-                    Overwrite = true,
-                    UseColorMCHead = true,
-                    Url = obj.Game.ServerUrl + item.Url
-                });
+                    if (old.Config.Any(item1 => !item1.IsZip && item1.Sha256 == item.Sha256))
+                    {
+                        continue;
+                    }
+                    list5.Add(new()
+                    {
+                        Name = item.Group + item.FileName,
+                        Local = Path.GetFullPath(path + "/" + item.Group + item.FileName),
+                        SHA256 = item.Sha256,
+                        Overwrite = true,
+                        UseColorMCHead = true,
+                        Url = obj.Game.ServerUrl + item.Url
+                    });
+                }
             }
-        }
+        });
+
+        await Task.WhenAll(task1, task2, task3);
 
         state?.Invoke(LanguageHelper.Get("Core.ServerPack.Info3"));
         //开始下载
-        var res = await DownloadManager.StartAsync(list5);
+        var res = await DownloadManager.StartAsync([.. list5]);
         state?.Invoke(null);
         return res;
     }
@@ -220,7 +238,7 @@ public static class ServerPack
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>服务器实例</returns>
-    public static ServerPackObj? GetOldServerPack(this GameSettingObj obj)
+    private static ServerPackObj? GetOldServerPack(this GameSettingObj obj)
     {
         var file = obj.GetServerPackOldFile();
         ServerPackObj? obj1 = null;

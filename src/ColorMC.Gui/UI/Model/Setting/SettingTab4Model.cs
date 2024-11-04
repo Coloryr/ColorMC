@@ -53,6 +53,8 @@ public partial class SettingModel
     private bool _safeLog4j;
     [ObservableProperty]
     private bool _customGc;
+    [ObservableProperty]
+    private bool _preRunSame;
 
     [ObservableProperty]
     private GCType _gC;
@@ -121,6 +123,11 @@ public partial class SettingModel
     partial void OnJavaAgentChanged(string? value)
     {
         SetArg();
+    }
+
+    partial void OnPreRunSameChanged(bool value)
+    {
+        SetCommand();
     }
 
     partial void OnPreRunChanged(bool value)
@@ -215,6 +222,7 @@ public partial class SettingModel
             PostCmd = con.DefaultJvmArg.LaunchPostData;
             PreCmd = con.DefaultJvmArg.LaunchPreData;
             JvmEnv = con.DefaultJvmArg.JvmEnv;
+            PreRunSame = con.DefaultJvmArg.PreRunSame;
 
             FullScreen = con.Window.FullScreen ?? false;
             CheckCore = con.GameCheck.CheckCore;
@@ -275,7 +283,7 @@ public partial class SettingModel
         if (_argLoad)
             return;
 
-        ConfigBinding.SetRunCommand(PreRun, PostRun, PreCmd, PostCmd);
+        ConfigBinding.SetRunCommand(PreRun, PostRun, PreCmd, PostCmd, PreRunSame);
     }
 
     private void SetGameCheck()
