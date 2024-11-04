@@ -10,10 +10,10 @@
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock
-            HorizontalAlignment="Center"
             FontSize="20"
             Foreground="{setting:Theme FontColor}"
             Text="{Binding Text}"
+            TextAlignment="Center"
             TextWrapping="Wrap" />
         <StackPanel
             Margin="0,10,0,0"
