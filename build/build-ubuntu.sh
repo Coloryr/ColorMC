@@ -146,7 +146,7 @@ sudo apt-get install libfuse2 curl -y
 
 build_appimage()
 {
-    appimg=colormc-linux-$main_version$version-$1.AppImage
+    appimg=colormc-linux-$main_version$version-$2.AppImage
     
     build_dir=$build_run/$1
     
@@ -174,9 +174,9 @@ build_appimage()
 
 build_appimage_aot()
 {
-    appimg=colormc-linux-$main_version$version-aot-$1.AppImage
+    appimg=colormc-linux-$main_version$version-aot-$2.AppImage
     
-    build_dir=$build_run/$1
+    build_dir=$build_run/$1-aot
     
     mkdir $build_dir
 
@@ -202,9 +202,9 @@ build_appimage_aot()
 
 build_appimage_min()
 {
-    appimg=colormc-linux-$main_version$version-min-$1.AppImage
+    appimg=colormc-linux-$main_version$version-min-$2.AppImage
     
-    build_dir=$build_run/$1
+    build_dir=$build_run/$1-min
 
     mkdir $build_dir
 
