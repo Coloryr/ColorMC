@@ -1,0 +1,22 @@
+# Maintainer: coloryr <402067010@qq.com>
+
+pkgname=colormc-bin
+pkgver=%ver%
+pkgrel=%rel%
+pkgdesc="A Minecraft Launcher"
+url="https://www.github.com/Coloryr/ColorMC"
+arch=('x86_64')
+packager="colormc"
+license=('Apache 2.0')
+source=('%source%')
+sha256sums=('%sha%')
+OPTIONS=(!strip)
+install=colormc.install
+
+package() {
+    tar -I zstd -xf %file% -C "$pkgdir"
+    rm "$pkgdir/.BUILDINFO"
+    rm "$pkgdir/.INSTALL"
+    rm "$pkgdir/.MTREE"
+    rm "$pkgdir/.PKGINFO"
+}
