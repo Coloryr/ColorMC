@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-VER=31
-REL=3
-URL='https://github.com/Coloryr/ColorMC/releases/download/a31.2024.10.16/colormc-linux-a31-1-x86_64.pkg.tar.zst'
-TARGET='colormc-linux-a31-1-x86_64.pkg.tar.zst'
+VER=32
+REL=1
+URL='https://github.com/Coloryr/ColorMC/releases/download/a32.2024.11.4-2/colormc-linux-a32-1-x86_64.pkg.tar.zst'
+TARGET='colormc-linux-a32-1-x86_64.pkg.tar.zst'
 POSTURL=$(echo $URL | sed 's/\//\\\//g')
 wget $URL -O $TARGET
 SUM=$(sha256sum $TARGET | cut -f1 -d' ')
