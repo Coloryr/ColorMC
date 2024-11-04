@@ -16,6 +16,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     public const string PosName = "Pos";
     public const string RotName = "Rot";
     public const string LoadName = "Load";
+    public const string ResetName = "Reset";
 
     public string[] SkinTypeList { get; init; } = LanguageBinding.GetSkinType();
     public string[] SkinRotateList { get; init; } = LanguageBinding.GetSkinRotateName();
@@ -350,6 +351,12 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
             return;
         }
         UserBinding.EditSkin(top);
+    }
+
+    [RelayCommand]
+    public void ResetPos()
+    {
+        OnPropertyChanged(ResetName);
     }
 
     public override void Close()

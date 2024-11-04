@@ -73,6 +73,8 @@ public partial class AddGameModel
             Files = _fileModel.Source;
 
             CanInput = true;
+
+            Model.Notify(App.Lang("AddGameWindow.Tab3.Info5"));
         }
         else
         {
@@ -192,6 +194,10 @@ public partial class AddGameModel
         if (ok)
         {
             Done(null);
+        }
+        else
+        {
+            Model.Show(App.Lang("AddGameWindow.Tab3.Error6"));
         }
     }
 

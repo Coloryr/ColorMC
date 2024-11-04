@@ -13,9 +13,22 @@ public partial class GameGroupControl : UserControl
 
         Expander_Head.ContentTransition = ThemeManager.CrossFade300;
 
+        PointerEntered += GameGroupControl_PointerEntered;
+        PointerExited += GameGroupControl_PointerExited;
+
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    private void GameGroupControl_PointerExited(object? sender, PointerEventArgs e)
+    {
+        Button1.IsVisible = false;
+    }
+
+    private void GameGroupControl_PointerEntered(object? sender, PointerEventArgs e)
+    {
+        Button1.IsVisible = true;
     }
 
     private void DragEnter(object? sender, DragEventArgs e)

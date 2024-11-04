@@ -112,6 +112,45 @@ public partial class SettingModel
         LoadJava();
     }
 
+    public async void FindJavaDir()
+    {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            return;
+        }
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectPath(top, PathType.JavaPath);
+        if (file == null)
+        {
+            return;
+        }
+
+        var res = await Model.ShowWait(string.Format(App.Lang("AddGameWindow.Tab3.Info3"), file));
+        if (!res)
+        {
+            return;
+        }
+
+        JavaFinding = true;
+        Model.Title1 = App.Lang("SettingWindow.Tab5.Info8");
+        var list = await JavaBinding.FindJava(file);
+        Model.Title1 = null;
+        JavaFinding = false;
+        if (list == null)
+        {
+            Model.Show(App.Lang("SettingWindow.Tab5.Error1"));
+            return;
+        }
+
+        list.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
+        LoadJava();
+        Model.Notify(App.Lang("SettingWindow.Tab5.Info4"));
+    }
+
     public async void FindJava()
     {
         if (SystemInfo.Os == OsType.Android)

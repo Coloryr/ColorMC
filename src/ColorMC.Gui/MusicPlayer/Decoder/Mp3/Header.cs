@@ -103,7 +103,7 @@ public sealed class Header
             h_padding_bit;
 
     private bool h_vbr;
-    private int h_vbr_frames;
+    public int VbrFrames { get; set; }
     private int h_vbr_bytes;
     private byte syncmode = Bitstream.INITIAL_SYNC;
     private Crc16 crc;
@@ -273,7 +273,7 @@ public sealed class Header
             {
                 //Yes.
                 h_vbr = true;
-                h_vbr_frames = -1;
+                VbrFrames = -1;
                 h_vbr_bytes = -1;
                 h_vbr_toc = new byte[100];
 
@@ -286,7 +286,7 @@ public sealed class Header
                 if ((flags[3] & 1) != 0)
                 {
                     Array.Copy(firstframe, offset + length, tmp, 0, tmp.Length);
-                    h_vbr_frames = (int)((tmp[0] << 24) & 0xFF000000) | ((tmp[1] << 16) & 0x00FF0000) | ((tmp[2] << 8) & 0x0000FF00) | ((tmp[3]) & 0x000000FF);
+                    VbrFrames = (int)((tmp[0] << 24) & 0xFF000000) | ((tmp[1] << 16) & 0x00FF0000) | ((tmp[2] << 8) & 0x0000FF00) | ((tmp[3]) & 0x000000FF);
                     length += 4;
                 }
                 // Read size (if available).
@@ -325,7 +325,7 @@ public sealed class Header
             {
                 //Yes.
                 h_vbr = true;
-                h_vbr_frames = -1;
+                VbrFrames = -1;
                 h_vbr_bytes = -1;
                 // Bytes.
                 int length = 4 + 6;
@@ -334,7 +334,7 @@ public sealed class Header
                 length += 4;
                 // Frames.
                 Array.Copy(firstframe, offset + length, tmp, 0, tmp.Length);
-                h_vbr_frames = (int)((tmp[0] << 24) & 0xFF000000) | ((tmp[1] << 16) & 0x00FF0000) | ((tmp[2] << 8) & 0x0000FF00) | ((tmp[3]) & 0x000000FF);
+                VbrFrames = (int)((tmp[0] << 24) & 0xFF000000) | ((tmp[1] << 16) & 0x00FF0000) | ((tmp[2] << 8) & 0x0000FF00) | ((tmp[3]) & 0x000000FF);
             }
         }
         catch (IndexOutOfRangeException e)
@@ -476,7 +476,7 @@ public sealed class Header
     {
         if (h_vbr)
         {
-            return ((int)((h_vbr_bytes * 8) / (MsPerFrame() * h_vbr_frames))) * 1000;
+            return ((int)((h_vbr_bytes * 8) / (MsPerFrame() * VbrFrames))) * 1000;
         }
         else return bitrates[Version, Layer - 1, BitrateIndex];
     }

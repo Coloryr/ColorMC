@@ -41,7 +41,7 @@ public partial class GameEditControl : MenuControl
             switch (model.NowView)
             {
                 case 2:
-                    await model.LoadMod();
+                    model.LoadMods();
                     break;
                 case 3:
                     await model.LoadWorld();
@@ -97,7 +97,7 @@ public partial class GameEditControl : MenuControl
                 _tab2 ??= new();
                 return _tab2;
             case 2:
-                _ = model.LoadMod();
+                model.LoadMod();
                 return _tab4 ??= new();
             case 3:
                 _ = model.LoadWorld();

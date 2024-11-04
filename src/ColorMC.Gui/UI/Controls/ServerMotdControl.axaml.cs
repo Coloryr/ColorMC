@@ -8,7 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Net.Motd;
-using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls;
@@ -82,6 +82,8 @@ public partial class ServerMotdControl : UserControl
 
     private async void Update()
     {
+        Button2.IsVisible = false;
+
         Grid1.IsVisible = true;
 
         _firstLine = true;
@@ -95,6 +97,7 @@ public partial class ServerMotdControl : UserControl
         var port = _port;
         if (ip == null)
         {
+            Button2.IsVisible = true;
             return;
         }
 
@@ -123,6 +126,8 @@ public partial class ServerMotdControl : UserControl
             Grid2.IsVisible = true;
         }
         Grid1.IsVisible = false;
+
+        Button2.IsVisible = true;
     }
 
     public void MakeText(Chat chat)

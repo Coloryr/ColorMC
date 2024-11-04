@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Avalonia.Media;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
@@ -300,13 +299,14 @@ public static class ConfigBinding
     /// <param name="v2"></param>
     /// <param name="v3"></param>
     /// <param name="v4"></param>
-    public static void SetRunCommand(bool v1, bool v2, string? v3, string? v4)
+    public static void SetRunCommand(bool v1, bool v2, string? v3, string? v4, bool v5)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
         ConfigUtils.Config.DefaultJvmArg.LaunchPre = v1;
         ConfigUtils.Config.DefaultJvmArg.LaunchPost = v2;
         ConfigUtils.Config.DefaultJvmArg.LaunchPreData = v3;
         ConfigUtils.Config.DefaultJvmArg.LaunchPostData = v4;
+        ConfigUtils.Config.DefaultJvmArg.PreRunSame = v5;
         ConfigUtils.Save();
     }
 
@@ -981,14 +981,12 @@ public static class ConfigBinding
         CoreHttpClient.Init();
     }
 
-    public static void SetLogColor(Color infoColor, Color warnColor, Color errorColor, Color debugColor, Color noneColor)
+    public static void SetLogColor(string warnColor, string errorColor, string debugColor)
     {
         GuiConfigUtils.Config.LogColor ??= GuiConfigUtils.MakeLogColorConfig();
-        GuiConfigUtils.Config.LogColor.Info = infoColor.ToString();
-        GuiConfigUtils.Config.LogColor.Warn = warnColor.ToString();
-        GuiConfigUtils.Config.LogColor.Error = errorColor.ToString();
-        GuiConfigUtils.Config.LogColor.Debug = debugColor.ToString();
-        GuiConfigUtils.Config.LogColor.None = noneColor.ToString();
+        GuiConfigUtils.Config.LogColor.Warn = warnColor;
+        GuiConfigUtils.Config.LogColor.Error = errorColor;
+        GuiConfigUtils.Config.LogColor.Debug = debugColor;
 
         GuiConfigUtils.Save();
 

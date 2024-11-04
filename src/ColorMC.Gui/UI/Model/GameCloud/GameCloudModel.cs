@@ -138,7 +138,6 @@ public partial class GameCloudModel : MenuModel
             return;
         }
 
-
         Model.Notify(App.Lang("GameCloudWindow.Info6"));
         Enable = false;
     }
@@ -214,6 +213,7 @@ public partial class GameCloudModel : MenuModel
             Model.Show(App.Lang("GameCloudWindow.Error6"));
             return;
         }
+        Model.Notify(App.Lang("GameCloudWindow.Info15"));
         await LoadCloud();
         if (_configHave)
         {
@@ -292,6 +292,7 @@ public partial class GameCloudModel : MenuModel
         _files.SetSelectItems(list);
 
         Source = _files.Source;
+        Model.Notify(App.Lang("GameCloudWindow.Info19"));
     }
 
     public void SetSelectWorld(WorldCloudModel item)
@@ -307,8 +308,10 @@ public partial class GameCloudModel : MenuModel
     public async void LoadWorld()
     {
         WorldCloudList.Clear();
+        Model.Progress(App.Lang("GameCloudWindow.Info20"));
         var res = await GameCloudUtils.GetWorldList(Obj);
         var worlds = await GameBinding.GetWorlds(Obj);
+        Model.ProgressClose();
         if (res != null)
         {
             foreach (var item in res)
@@ -329,6 +332,7 @@ public partial class GameCloudModel : MenuModel
         {
             WorldCloudList.Add(new(this, item));
         }
+        Model.Notify(App.Lang("GameCloudWindow.Info21"));
     }
 
     public override void Close()
@@ -489,6 +493,7 @@ public partial class GameCloudModel : MenuModel
             }
             Model.ProgressClose();
         }
+        Model.Notify(App.Lang("GameCloudWindow.Info22"));
         PathHelper.Delete(local);
         LoadWorld();
     }

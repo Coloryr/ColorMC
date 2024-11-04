@@ -139,7 +139,7 @@ public sealed class Bitstream : IDisposable
      */
     public void Dispose()
     {
-        stream.Close();
+        stream.Dispose();
     }
 
     /**
@@ -472,5 +472,10 @@ public sealed class Bitstream : IDisposable
             len -= bytesread;
         }
         return totalBytesRead;
+    }
+
+    public void Reset()
+    {
+        stream.Seek(0, SeekOrigin.Begin);
     }
 }

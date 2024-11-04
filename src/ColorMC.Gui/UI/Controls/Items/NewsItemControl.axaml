@@ -13,7 +13,8 @@
         <Image
             Width="230"
             Height="230"
-            Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadIcon}}" />
+            Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadIcon}}"
+            Stretch="UniformToFill" />
         <DockPanel VerticalAlignment="Bottom">
             <Border
                 Name="Border1"

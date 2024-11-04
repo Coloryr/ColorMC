@@ -51,9 +51,10 @@ internal class Program
     {
         var text = File.Exists("tmp/sha1.json")
             ? File.ReadAllText("tmp/sha1.json") : "{\"text\":\"\"}";
+        var dir = AppContext.BaseDirectory;
         var obj = JObject.Parse(text);
         {
-            using var file = File.OpenRead($"tmp/ColorMC.Core.dll");
+            using var file = File.OpenRead($"{dir}tmp/ColorMC.Core.dll");
             var sha1 = GenSha1(file); ;
             if (!obj.TryAdd("core.dll", sha1))
             {
@@ -62,7 +63,7 @@ internal class Program
             Console.WriteLine($"ColorMC.Core.dll:{obj["core.dll"]}");
         }
         {
-            using var file = File.OpenRead($"tmp/ColorMC.Core.pdb");
+            using var file = File.OpenRead($"{dir}tmp/ColorMC.Core.pdb");
             var sha1 = GenSha1(file); ;
             if (!obj.TryAdd("core.pdb", sha1))
             {
@@ -71,7 +72,7 @@ internal class Program
             Console.WriteLine($"ColorMC.Core.pdb:{obj["core.pdb"]}");
         }
         {
-            using var file = File.OpenRead($"tmp/ColorMC.Gui.dll");
+            using var file = File.OpenRead($"{dir}tmp/ColorMC.Gui.dll");
             var sha1 = GenSha1(file); ;
             if (!obj.TryAdd("gui.dll", sha1))
             {
@@ -80,7 +81,7 @@ internal class Program
             Console.WriteLine($"ColorMC.Gui.dll:{obj["gui.dll"]}");
         }
         {
-            using var file = File.OpenRead($"tmp/ColorMC.Gui.pdb");
+            using var file = File.OpenRead($"{dir}tmp/ColorMC.Gui.pdb");
             var sha1 = GenSha1(file); ;
             if (!obj.TryAdd("gui.pdb", sha1))
             {
@@ -88,7 +89,7 @@ internal class Program
             }
             Console.WriteLine($"ColorMC.Gui.pdb:{obj["gui.pdb"]}");
         }
-        File.WriteAllText("tmp/sha1.json", obj.ToString(Formatting.Indented));
+        File.WriteAllText($"{dir}tmp/sha1.json", obj.ToString(Formatting.Indented));
     }
 
     public static string GenSha1(Stream stream)

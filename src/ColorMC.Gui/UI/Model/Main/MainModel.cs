@@ -67,6 +67,11 @@ public partial class MainModel : TopModel, IMainTop
     [ObservableProperty]
     private int _musicVolume;
 
+    [ObservableProperty]
+    private string _musicName;
+    [ObservableProperty]
+    private string _musicNow;
+
     private bool _isNewUpdate;
     private string _updateStr;
 

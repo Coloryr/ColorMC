@@ -30,7 +30,7 @@ public static class ThemeManager
 
     private static readonly double s_fontTitleSize = 17;
 
-    private static ThemeObj s_theme;
+    public static ThemeObj NowThemeColor { get; private set; }
 
     private static BoxShadows s_buttonShadow;
 
@@ -74,11 +74,11 @@ public static class ThemeManager
 
         if (NowTheme == PlatformThemeVariant.Light)
         {
-            s_theme = s_light;
+            NowThemeColor = s_light;
         }
         else
         {
-            s_theme = s_dark;
+            NowThemeColor = s_dark;
         }
 
         LoadColor();
@@ -103,8 +103,8 @@ public static class ThemeManager
 
     private static void LoadColor()
     {
-        s_theme.MainColor = Brush.Parse(GuiConfigUtils.Config.ColorMain);
-        var color = s_theme.MainColor.ToColor();
+        NowThemeColor.MainColor = Brush.Parse(GuiConfigUtils.Config.ColorMain);
+        var color = NowThemeColor.MainColor.ToColor();
         var color1 = new Color(255, color.R, color.G, color.B);
 
         s_buttonShadow = new(new BoxShadow
@@ -143,19 +143,19 @@ public static class ThemeManager
         {
             if (ImageManager.BackBitmap != null)
             {
-                return new SolidColorBrush(s_theme.WindowBG.ToColor(), 0.75);
+                return new SolidColorBrush(NowThemeColor.WindowBG.ToColor(), 0.75);
             }
             else if (GuiConfigUtils.Config.WindowTran)
             {
                 return Brushes.Transparent;
             }
-            return s_theme.WindowBG;
+            return NowThemeColor.WindowBG;
         }
         else if (key == nameof(ThemeObj.WindowTranColor))
         {
             if (GuiConfigUtils.Config.WindowTran)
             {
-                return s_theme.WindowTranColor;
+                return NowThemeColor.WindowTranColor;
             }
             else if (NowTheme == PlatformThemeVariant.Light)
             {
@@ -170,27 +170,27 @@ public static class ThemeManager
         {
             if (ImageManager.BackBitmap != null)
             {
-                return new SolidColorBrush(s_theme.WindowBG.ToColor(), 0.75);
+                return new SolidColorBrush(NowThemeColor.WindowBG.ToColor(), 0.75);
             }
             return Brushes.Transparent;
         }
         else if (key == nameof(ThemeObj.ItemBG))
         {
-            return s_theme.ItemBG;
+            return NowThemeColor.ItemBG;
         }
         else if (key == "MainGroupBG")
         {
             if (ImageManager.BackBitmap != null)
             {
-                return new SolidColorBrush(s_theme.MainGroupBG.ToColor(), 0.75);
+                return new SolidColorBrush(NowThemeColor.MainGroupBG.ToColor(), 0.75);
             }
-            return s_theme.MainGroupBG;
+            return NowThemeColor.MainGroupBG;
         }
         else if (key == nameof(ThemeObj.MainGroupBorder))
         {
             if (GuiConfigUtils.Config.WindowTran && ImageManager.BackBitmap == null)
             {
-                return s_theme.MainGroupBorder;
+                return NowThemeColor.MainGroupBorder;
             }
 
             return Brushes.Transparent;
@@ -199,73 +199,73 @@ public static class ThemeManager
         {
             if (ImageManager.BackBitmap != null)
             {
-                return new SolidColorBrush(s_theme.MainGroupBG.ToColor(), 0.75);
+                return new SolidColorBrush(NowThemeColor.MainGroupBG.ToColor(), 0.75);
             }
             return Brushes.Transparent;
         }
         else if (key == nameof(ThemeObj.ProgressBarBG))
         {
-            return s_theme.ProgressBarBG;
+            return NowThemeColor.ProgressBarBG;
         }
         else if (key == nameof(ThemeObj.GameItemBG))
         {
-            return s_theme.GameItemBG;
+            return NowThemeColor.GameItemBG;
         }
         else if (key == nameof(ThemeObj.TopViewBG))
         {
-            return s_theme.TopViewBG;
+            return NowThemeColor.TopViewBG;
         }
         else if (key == nameof(ThemeObj.AllBorder))
         {
-            return s_theme.AllBorder;
+            return NowThemeColor.AllBorder;
         }
         else if (key == nameof(ThemeObj.ButtonBG))
         {
-            return s_theme.ButtonBG;
+            return NowThemeColor.ButtonBG;
         }
         else if (key == nameof(ThemeObj.ButtonOver))
         {
-            return s_theme.ButtonOver;
+            return NowThemeColor.ButtonOver;
         }
         else if (key == nameof(ThemeObj.ButtonBorder))
         {
-            return s_theme.ButtonBorder;
+            return NowThemeColor.ButtonBorder;
         }
         else if (key == nameof(ThemeObj.MainColor))
         {
-            return RgbColorUtils.IsEnable() ? RgbColorUtils.GetColor() : s_theme.MainColor;
+            return RgbColorUtils.IsEnable() ? RgbColorUtils.GetColor() : NowThemeColor.MainColor;
         }
         else if (key == nameof(ThemeObj.FontColor))
         {
-            return s_theme.FontColor;
+            return NowThemeColor.FontColor;
         }
         else if (key == nameof(ThemeObj.TopBGColor))
         {
-            return s_theme.TopBGColor;
+            return NowThemeColor.TopBGColor;
         }
         else if (key == nameof(ThemeObj.TopGridColor))
         {
-            return s_theme.TopGridColor;
+            return NowThemeColor.TopGridColor;
         }
         else if (key == nameof(ThemeObj.OverBGColor))
         {
-            return s_theme.OverBGColor;
+            return NowThemeColor.OverBGColor;
         }
         else if (key == nameof(ThemeObj.OverBrushColor))
         {
-            return s_theme.OverBrushColor;
+            return NowThemeColor.OverBrushColor;
         }
         else if (key == nameof(ThemeObj.SelectItemBG))
         {
-            return s_theme.SelectItemBG;
+            return NowThemeColor.SelectItemBG;
         }
         else if (key == nameof(ThemeObj.SelectItemOver))
         {
-            return s_theme.SelectItemOver;
+            return NowThemeColor.SelectItemOver;
         }
         else if (key == nameof(ThemeObj.MenuBG))
         {
-            return s_theme.MenuBG;
+            return NowThemeColor.MenuBG;
         }
         else if (key == "RandomColor")
         {
@@ -508,7 +508,7 @@ public static class ThemeManager
             OverBrushColor = Brush.Parse("#FF1d1d1d"),
             SelectItemBG = Brush.Parse("#FF353535"),
             SelectItemOver = Brush.Parse("#FF454545"),
-            MenuBG = Brush.Parse("#FFF4F4F5"),
+            MenuBG = Brush.Parse("#FF2c2c2c"),
         };
     }
 }

@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Gui.Manager;
@@ -81,7 +82,12 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     {
         if (e.PropertyName == BaseModel.InfoShow)
         {
-            windowNotification.Show(Model.NotifyText);
+            windowNotification.Show(new TextBlock()
+            {
+                Margin = new Thickness(20, 0, 20, 0),
+                TextWrapping = TextWrapping.Wrap,
+                Text = Model.NotifyText
+            });
         }
         else if (e.PropertyName == BaseModel.GetTopLevelName
             && DataContext is BaseModel model)

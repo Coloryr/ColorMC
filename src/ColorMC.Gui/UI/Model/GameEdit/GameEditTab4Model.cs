@@ -34,6 +34,17 @@ public partial class GameEditModel
     [ObservableProperty]
     private bool _displayModFilter = true;
 
+    [ObservableProperty]
+    private bool _displayModId = true;
+    [ObservableProperty]
+    private bool _displayModName = true;
+    [ObservableProperty]
+    private bool _displayModVersion = true;
+    [ObservableProperty]
+    private bool _displayModLoader = true;
+    [ObservableProperty]
+    private bool _displayModSide = true;
+
     private bool _isModSet;
 
     partial void OnModTextChanged(string value)
@@ -65,45 +76,9 @@ public partial class GameEditModel
     }
 
     [RelayCommand]
-    public async Task LoadMod()
+    public void LoadMod()
     {
-        Model.Progress(App.Lang("GameEditWindow.Tab4.Info1"));
-        _modItems.Clear();
-        var res = await GameBinding.GetGameMods(_obj);
-        Model.ProgressClose();
-        if (res == null)
-        {
-            Model.Show(App.Lang("GameEditWindow.Tab4.Error1"));
-            return;
-        }
-
-        int count = 0;
-
-        _modItems.AddRange(res);
-
-        var list = res.Where(a => a.Obj.ReadFail == false && !a.Obj.Disable && !string.IsNullOrWhiteSpace(a.Obj.modid)).GroupBy(a => a.Obj.modid);
-        var list1 = new List<string>();
-
-        foreach (var item in list)
-        {
-            if (item.Count() > 1)
-            {
-                count++;
-                list1.Add(item.Key);
-            }
-        }
-        if (list1.Count != 0)
-        {
-            var res1 = await Model.ShowWait(string.Format(App
-                     .Lang("GameEditWindow.Tab4.Info14"), count));
-            if (res1)
-            {
-                DisplayMod(list1);
-                return;
-            }
-        }
-
-        LoadMod1();
+        LoadMods();
     }
 
     private async void DependTestMod()
@@ -144,7 +119,7 @@ public partial class GameEditModel
         }
         else
         {
-            Model.Show(string.Format(App.Lang("GameEditWindow.Tab4.Info20"), res1.Data));
+            Model.Notify(string.Format(App.Lang("GameEditWindow.Tab4.Info20"), res1.Data));
         }
         _isModSet = false;
     }
@@ -164,6 +139,7 @@ public partial class GameEditModel
             if (res1)
             {
                 WebBinding.UpgradeMod(_obj, res);
+                Model.Notify(App.Lang("GameEditWindow.Tab4.Info22"));
             }
         }
         else
@@ -204,7 +180,7 @@ public partial class GameEditModel
         }
 
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info2"));
-        await LoadMod();
+        LoadMods();
     }
 
     public async void DropMod(IDataObject data)
@@ -212,7 +188,7 @@ public partial class GameEditModel
         var res = await GameBinding.AddFile(_obj, data, FileType.Mod);
         if (res)
         {
-            await LoadMod();
+            LoadMods();
         }
     }
 
@@ -262,6 +238,7 @@ public partial class GameEditModel
         }
         if (GameManager.IsGameRun(_obj))
         {
+            Model.Notify(App.Lang("GameEditWindow.Tab4.Error6"));
             return;
         }
         var res = GameBinding.ModEnableDisable(item.Obj);
@@ -320,6 +297,50 @@ public partial class GameEditModel
             builder.Append(item).Append(',');
         }
         ModText = builder.ToString();
+    }
+
+    public async void LoadMods()
+    {
+        Model.Progress(App.Lang("GameEditWindow.Tab4.Info1"));
+        _modItems.Clear();
+        var res = await GameBinding.GetGameMods(_obj);
+        Model.ProgressClose();
+        if (res == null)
+        {
+            Model.Show(App.Lang("GameEditWindow.Tab4.Error1"));
+            return;
+        }
+
+        int count = 0;
+
+        _modItems.AddRange(res);
+
+        var list = res.Where(a => a.Obj.ReadFail == false && !a.Obj.Disable
+            && !string.IsNullOrWhiteSpace(a.Obj.ModId)).GroupBy(a => a.Obj.ModId);
+        var list1 = new List<string>();
+
+        foreach (var item in list)
+        {
+            if (item.Count() > 1)
+            {
+                count++;
+                list1.Add(item.Key);
+            }
+        }
+        if (list1.Count != 0)
+        {
+            var res1 = await Model.ShowWait(string.Format(App
+                     .Lang("GameEditWindow.Tab4.Info14"), count));
+            if (res1)
+            {
+                DisplayMod(list1);
+                return;
+            }
+        }
+
+        Model.Notify(App.Lang("GameEditWindow.Tab4.Info23"));
+
+        LoadMod1();
     }
 
     private void LoadMod1()

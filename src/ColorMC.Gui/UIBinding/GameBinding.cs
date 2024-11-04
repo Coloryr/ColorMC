@@ -26,6 +26,7 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
@@ -1604,14 +1605,14 @@ public static class GameBinding
             var mod = new List<ModDisplayModel>();
             foreach (var item in list)
             {
-                if (item.Obj.modid == null || item.Obj.Disable || item.Obj.CoreMod)
+                if (item.Obj.ModId == null || item.Obj.Disable || item.Obj.CoreMod)
                     continue;
-                modid.Add(item.Obj.modid);
+                modid.Add(item.Obj.ModId);
                 if (item.Obj.InJar?.Count > 0)
                 {
                     foreach (var item1 in item.Obj.InJar)
                     {
-                        modid.Add(item1.modid);
+                        modid.Add(item1.ModId);
                     }
                 }
                 mod.Add(item);
@@ -1637,9 +1638,9 @@ public static class GameBinding
                 }
 
                 var list1 = new List<string>();
-                if (item.Obj.requiredMods != null)
+                if (item.Obj.Dependants != null)
                 {
-                    foreach (var item1 in item.Obj.requiredMods)
+                    foreach (var item1 in item.Obj.Dependants)
                     {
                         var item2 = item1;
                         if (item2.Contains("@["))
@@ -1657,9 +1658,9 @@ public static class GameBinding
                         }
                     }
                 }
-                if (item.Obj.dependencies != null)
+                if (item.Obj.Dependants != null)
                 {
-                    foreach (var item1 in item.Obj.dependencies)
+                    foreach (var item1 in item.Obj.Dependants)
                     {
                         var list2 = item1.Split(",");
                         foreach (var item2 in list2)
@@ -1800,13 +1801,13 @@ public static class GameBinding
         var list = new List<ModDisplayModel>();
         foreach (var item1 in items)
         {
-            if (!item1.Enable || item1.Obj.modid == item.Obj.modid)
+            if (!item1.Enable || item1.Obj.ModId == item.Obj.ModId)
             {
                 continue;
             }
-            if (item1.Obj.dependencies != null)
+            if (item1.Obj.Dependants != null)
             {
-                if (item1.Obj.dependencies.Contains(item.Obj.modid))
+                if (item1.Obj.Dependants.Contains(item.Obj.ModId))
                 {
                     list.Add(item1);
                     continue;
@@ -1815,7 +1816,7 @@ public static class GameBinding
                 {
                     foreach (var item2 in item.Obj.InJar)
                     {
-                        if (item1.Obj.dependencies.Contains(item2.modid))
+                        if (item1.Obj.Dependants.Contains(item2.ModId))
                         {
                             list.Add(item1);
                             break;
@@ -1823,9 +1824,9 @@ public static class GameBinding
                     }
                 }
             }
-            else if (item1.Obj.requiredMods != null)
+            else if (item1.Obj.Dependants != null)
             {
-                if (item1.Obj.requiredMods.Contains(item.Obj.modid))
+                if (item1.Obj.Dependants.Contains(item.Obj.ModId))
                 {
                     list.Add(item1);
                     continue;
@@ -1834,7 +1835,7 @@ public static class GameBinding
                 {
                     foreach (var item2 in item.Obj.InJar)
                     {
-                        if (item1.Obj.requiredMods.Contains(item2.modid))
+                        if (item1.Obj.Dependants.Contains(item2.ModId))
                         {
                             list.Add(item1);
                             break;
@@ -2446,9 +2447,9 @@ public static class GameBinding
                     foreach (var item in list)
                     {
                         info.AppendLine(string.Format(App.Lang("GameBinding.Info10"),
-                            item.name, item.modid, item.authorList?.MakeString(),
+                            item.Name, item.ModId, StringHelper.MakeString(item.Author),
                             Path.GetFileName(item.Local), item.Disable, item.CoreMod,
-                            item.Sha1, item.Loader.GetName()));
+                            item.Sha1, StringHelper.MakeString(item.Loaders)));
                         if (obj.Mods.Values.FirstOrDefault(item => item.SHA1 == item.SHA1) is { } item1)
                         {
                             info.AppendLine(string.Format(App.Lang("GameBinding.Info11"),
@@ -2647,26 +2648,5 @@ public static class GameBinding
 
             }
         });
-    }
-
-    /// <summary>
-    /// 拼接字符串
-    /// </summary>
-    /// <param name="list"></param>
-    /// <returns></returns>
-    private static string MakeString(this List<string> list)
-    {
-        var str = new StringBuilder();
-        foreach (var item in list)
-        {
-            str.Append(item).Append(", ");
-        }
-
-        if (str.Length > 0)
-        {
-            return str.ToString()[..^1];
-        }
-
-        return "";
     }
 }

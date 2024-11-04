@@ -200,6 +200,8 @@ public partial class GameExportModel : MenuModel
             }
         });
 
+        Model.Notify(App.Lang("GameExportWindow.Info8"));
+
         Load1();
     }
 

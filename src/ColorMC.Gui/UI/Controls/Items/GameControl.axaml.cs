@@ -6,6 +6,7 @@ using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
@@ -26,8 +27,8 @@ public partial class GameControl : UserControl
         PointerEntered += GameControl_PointerEntered;
         PointerExited += GameControl_PointerExited;
 
-        AddHandler(PointerPressedEvent, GameControl_PointerPressed, Avalonia.Interactivity.RoutingStrategies.Tunnel);
-        AddHandler(PointerReleasedEvent, GameControl_PointerReleased, Avalonia.Interactivity.RoutingStrategies.Tunnel);
+        AddHandler(PointerPressedEvent, GameControl_PointerPressed, RoutingStrategies.Tunnel);
+        AddHandler(PointerReleasedEvent, GameControl_PointerReleased, RoutingStrategies.Tunnel);
 
         PointerMoved += GameControl_PointerMoved;
         DoubleTapped += GameControl_DoubleTapped;

@@ -146,7 +146,7 @@ public static class LibrariesPath
                 if (item.Later == null)
                 {
                     //不添加lwjgl
-                    if (item.Name.Contains("org.lwjgl") && SystemInfo.Os == OsType.Android)
+                    if (SystemInfo.Os == OsType.Android && item.Name.Contains("org.lwjgl"))
                     {
                         continue;
                     }
@@ -162,7 +162,7 @@ public static class LibrariesPath
                 if (item.Later == null)
                 {
                     //不添加lwjgl
-                    if (item.Name.Contains("org.lwjgl") && SystemInfo.Os == OsType.Android)
+                    if (SystemInfo.Os == OsType.Android && item.Name.Contains("org.lwjgl"))
                     {
                         continue;
                     }
@@ -195,9 +195,9 @@ public static class LibrariesPath
             var fabric = obj.GetFabricObj()!;
             foreach (var item in fabric.libraries)
             {
-                var name = PathHelper.ToPathAndName(item.name);
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(name.Name),
-                    Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
+                var name = PathHelper.NameToPath(item.name);
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.name),
+                    Path.GetFullPath($"{BaseDir}/{name}"));
             }
         }
         else if (obj.Loader == Loaders.Quilt)
@@ -205,9 +205,9 @@ public static class LibrariesPath
             var quilt = obj.GetQuiltObj()!;
             foreach (var item in quilt.libraries)
             {
-                var name = PathHelper.ToPathAndName(item.name);
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(name.Name),
-                    Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
+                var name = PathHelper.NameToPath(item.name);
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.name),
+                    Path.GetFullPath($"{BaseDir}/{name}"));
             }
         }
         else if (obj.Loader == Loaders.OptiFine)

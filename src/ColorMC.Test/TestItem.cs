@@ -361,21 +361,21 @@ public static class TestItem
 
         foreach (var item in list)
         {
-            Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
+            Console.WriteLine($"{item.ModId} {item.Name} {item.Description}");
         }
 
         list = Mods.GetModsAsync(games[1], false).Result;
 
         foreach (var item in list)
         {
-            Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
+            Console.WriteLine($"{item.ModId} {item.Name} {item.Description}");
         }
 
         list = Mods.GetModsAsync(games[2], false).Result;
 
         foreach (var item in list)
         {
-            Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
+            Console.WriteLine($"{item.ModId} {item.Name} {item.Description}");
         }
     }
 
@@ -611,7 +611,7 @@ public static class TestItem
         var sdl = Silk.NET.SDL.Sdl.GetApi();
         var res = sdl.Init(Silk.NET.SDL.Sdl.InitAudio);
 
-        Media.Init(sdl);
+        Media.Init();
         Media.PlayMusic("H:\\music.mp3", false, 100);
     }
     public static void Item36()

@@ -11,7 +11,6 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Skin;
 using MinecraftSkinRender;
 using MinecraftSkinRender.OpenGL;
-using Silk.NET.OpenGL;
 
 namespace ColorMC.Gui.UI.Controls.Skin.OpenGL;
 
@@ -211,7 +210,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
         CheckError(gl);
 
-        skin = new(GL.GetApi(gl.GetProcAddress));
+        skin = new(new AvaloniaApi(gl));
         skin.SetBackColor(new(0, 0, 0, 0));
         skin.SetCape(model.EnableCape);
         skin.SetTopModel(model.EnableTop);

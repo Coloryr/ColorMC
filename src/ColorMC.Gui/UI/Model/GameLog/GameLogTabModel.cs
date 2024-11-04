@@ -36,9 +36,9 @@ public partial class GameLogModel : GameModel
     [ObservableProperty]
     private bool _isGameRun;
     [ObservableProperty]
-    private bool _isWordWrap = true;
+    private bool _isWordWrap;
     [ObservableProperty]
-    private bool _isAuto = true;
+    private bool _isAuto;
     [ObservableProperty]
     private string? _file;
 
@@ -48,15 +48,15 @@ public partial class GameLogModel : GameModel
     private string? _selectCategory;
 
     [ObservableProperty]
-    private bool _enableNone = true;
+    private bool _enableNone;
     [ObservableProperty]
-    private bool _enableInfo = true;
+    private bool _enableInfo;
     [ObservableProperty]
-    private bool _enableWarn = true;
+    private bool _enableWarn;
     [ObservableProperty]
-    private bool _enableError = true;
+    private bool _enableError;
     [ObservableProperty]
-    private bool _enableDebug = true;
+    private bool _enableDebug;
     [ObservableProperty]
     private bool _isFile;
 
@@ -64,6 +64,7 @@ public partial class GameLogModel : GameModel
 
     private ConcurrentQueue<string> _queue = new();
 
+    private GameLogSettingObj _setting;
 
     private List<GameLogItemObj> _logs;
     private readonly Thread _timer;
@@ -84,6 +85,15 @@ public partial class GameLogModel : GameModel
         });
         _run = true;
         _timer.Start();
+
+        _setting = GameLogSetting.ReadConfig(obj);
+        _enableDebug = _setting.EnableDebug;
+        _enableError = _setting.EnableError;
+        _enableInfo = _setting.EnableInfo;
+        _enableNone = _setting.EnableNone;
+        _enableWarn = _setting.EnableWarn;
+        _isAuto = _setting.Auto;
+        _isWordWrap = _setting.WordWrap;
     }
 
     async partial void OnFileChanged(string? value)
@@ -120,29 +130,56 @@ public partial class GameLogModel : GameModel
         LoadLast1();
     }
 
+    partial void OnIsAutoChanged(bool value)
+    {
+        _setting.Auto = value;
+        GameLogSetting.WriteConfig(Obj, _setting);
+    }
+
+    partial void OnIsWordWrapChanged(bool value)
+    {
+        _setting.WordWrap = value;
+        GameLogSetting.WriteConfig(Obj, _setting);
+    }
+
     partial void OnEnableNoneChanged(bool value)
     {
         LoadLast();
+
+        _setting.EnableNone = value;
+        GameLogSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableInfoChanged(bool value)
     {
         LoadLast();
+
+        _setting.EnableInfo = value;
+        GameLogSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableWarnChanged(bool value)
     {
         LoadLast();
+
+        _setting.EnableWarn = value;
+        GameLogSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableErrorChanged(bool value)
     {
         LoadLast();
+
+        _setting.EnableError = value;
+        GameLogSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableDebugChanged(bool value)
     {
         LoadLast();
+
+        _setting.EnableDebug = value;
+        GameLogSetting.WriteConfig(Obj, _setting);
     }
 
     [RelayCommand]

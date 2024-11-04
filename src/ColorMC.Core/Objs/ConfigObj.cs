@@ -132,6 +132,7 @@ public record RunArgObj
     public uint? MinMemory { get; set; }
 
     public bool LaunchPre { get; set; }
+    public bool PreRunSame { get; set; }
     public string? LaunchPreData { get; set; }
     public bool LaunchPost { get; set; }
     public string? LaunchPostData { get; set; }

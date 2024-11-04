@@ -748,13 +748,19 @@ public partial class UsersControlModel : TopModel
     {
         Model.PushBack(() =>
         {
-            DialogHost.Close("UsersControl");
+            if (DialogHost.IsDialogOpen("UsersControl"))
+            {
+                DialogHost.Close("UsersControl");
+            }
             Model.PopBack();
         });
 
         Dispatcher.UIThread.Post(() =>
         {
-            DialogHost.Show(this, "UsersControl");
+            if (!DialogHost.IsDialogOpen("UsersControl"))
+            {
+                DialogHost.Show(this, "UsersControl");
+            }
         });
     }
 
