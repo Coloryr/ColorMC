@@ -433,13 +433,14 @@ public static class CheckHelpers
                     }
 
                     var item = node.Value;
-                    bool isfind = false;
-                    foreach (var item1 in mods)
+                    if (item.Path != "mods")
                     {
-                        if (item == null || item.Path != "mods")
-                        {
-                            continue;
-                        }
+                        array.Remove(item);
+                        continue;
+                    }
+                    bool isfind = false;
+                    foreach (var item1 in mods.ToArray())
+                    {
                         var file1 = Path.GetFileNameWithoutExtension(item1.FullName.ToLower());
                         var file2 = Path.GetFileNameWithoutExtension(item.File.ToLower());
                         if (file1 != file2)
@@ -470,18 +471,19 @@ public static class CheckHelpers
 
                         mods.Remove(item1);
                         find++;
+                        var node1 = node.Next;
                         array.Remove(node);
+                        node = node1;
                         isfind = true;
                         break;
                     }
                     if (!isfind)
                     {
-                        node = node.Next;
+                        node = node?.Next;
                     }
                 }
 
-               
-                if (find == array.Count)
+                if (array.Count == 0)
                 {
                     return;
                 }
