@@ -99,6 +99,7 @@
                     HorizontalAlignment="Center"
                     FontSize="13"
                     Text="{Binding Name, FallbackValue=1234}"
+                    TextAlignment="Center"
                     TextTrimming="{Binding Trim}"
                     TextWrapping="{Binding Wrap}" />
             </StackPanel>
