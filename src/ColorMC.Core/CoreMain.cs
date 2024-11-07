@@ -15,7 +15,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A32";
-    public const string DateVersion = "20241105";
+    public const string DateVersion = "20241107";
 
     /// <summary>
     /// 版本号
