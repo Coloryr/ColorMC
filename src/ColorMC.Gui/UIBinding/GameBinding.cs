@@ -1805,41 +1805,19 @@ public static class GameBinding
             {
                 continue;
             }
-            if (item1.Obj.Dependants != null)
+            if (item1.Obj.Dependants?.Contains(item.Obj.ModId) == true)
             {
-                if (item1.Obj.Dependants.Contains(item.Obj.ModId))
-                {
-                    list.Add(item1);
-                    continue;
-                }
-                else if (item.Obj.InJar != null)
-                {
-                    foreach (var item2 in item.Obj.InJar)
-                    {
-                        if (item1.Obj.Dependants.Contains(item2.ModId))
-                        {
-                            list.Add(item1);
-                            break;
-                        }
-                    }
-                }
+                list.Add(item1);
+                continue;
             }
-            else if (item1.Obj.Dependants != null)
+            if (item.Obj.InJar != null)
             {
-                if (item1.Obj.Dependants.Contains(item.Obj.ModId))
+                foreach (var item2 in item.Obj.InJar)
                 {
-                    list.Add(item1);
-                    continue;
-                }
-                else if (item.Obj.InJar != null)
-                {
-                    foreach (var item2 in item.Obj.InJar)
+                    if (item1.Obj.Dependants?.Contains(item2.ModId) == true)
                     {
-                        if (item1.Obj.Dependants.Contains(item2.ModId))
-                        {
-                            list.Add(item1);
-                            break;
-                        }
+                        list.Add(item1);
+                        break;
                     }
                 }
             }

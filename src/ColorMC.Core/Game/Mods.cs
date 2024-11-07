@@ -530,10 +530,20 @@ public static class Mods
                                     mod.Side = SideType.Server;
                                 }
                             }
-                            else if (item3.TryGetValue("mandatory", out item4)
-                                && item4?.ToString()?.ToLower() == "true")
+                            else
                             {
-                                mod.Dependants.Add(modid);
+                                if (item3.TryGetValue("mandatory", out item4)
+                                    && item4?.ToString()?.ToLower() == "true")
+                                {
+                                    mod.Dependants.Add(modid);
+                                    continue;
+                                }
+                                if (item3.TryGetValue("type", out item4)
+                                    && item4?.ToString()?.ToLower() == "required")
+                                {
+                                    mod.Dependants.Add(modid);
+                                    continue;
+                                }
                             }
                         }
                     }
@@ -647,14 +657,42 @@ public static class Mods
         //core mod
         item1 = zFile.GetEntry("META-INF/services/cpw.mods.modlauncher.api.ITransformationService");
         var item5 = zFile.GetEntry("META-INF/services/net.minecraftforge.forgespi.language.IModLanguageProvider");
+        var item7 = zFile.GetEntry("META-INF/services/net.neoforged.neoforgespi.language.IModLanguageLoader");
         var item6 = zFile.GetEntry("META-INF/MANIFEST.MF");
         if (item6 != null)
         {
-
             using var stream12 = zFile.GetInputStream(item6);
             using var reader = new StreamReader(stream12);
             var con = Options.ReadOptions(reader.ReadToEnd());
-            if (item1 != null || item5 != null)
+            if (item7 != null)
+            {
+                mod.CoreMod = true;
+                if (!istest)
+                {
+                    if (!con.TryGetValue("Automatic-Module-Name", out string? name)
+                        && !con.TryGetValue("Specification-Title", out name)
+                        && !con.TryGetValue("Implementation-Title", out name)
+                        && !con.TryGetValue("Automatic-Module-Name", out name))
+                    {
+                        name = "";
+                    }
+                    name = name.Trim();
+                    mod.Loaders.Add(Loaders.NeoForge);
+
+                    if (con.TryGetValue("Implementation-Version", out string? version))
+                    {
+                        mod.Version = version;
+                    }
+
+                    mod.Name = name;
+                    mod.ModId = name.ToLower();
+
+                    await JarInJar(mod, zFile);
+
+                    istest = true;
+                }
+            }
+            else if (item1 != null || item5 != null)
             {
                 mod.CoreMod = true;
                 if (!istest)
