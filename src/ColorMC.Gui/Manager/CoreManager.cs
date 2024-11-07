@@ -78,7 +78,10 @@ public static class CoreManager
             }
             else
             {
-                App.TestClose();
+                Dispatcher.UIThread.Post(() =>
+                {
+                    App.TestClose();
+                });
             }
         }
 
