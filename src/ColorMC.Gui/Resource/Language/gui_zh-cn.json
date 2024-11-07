@@ -518,6 +518,8 @@
 	"GameEditWindow.Tab4.Text13": "文件ID",
 	"GameEditWindow.Tab4.Text14": "加载侧",
 	"GameEditWindow.Tab4.Text15": "备注",
+	"GameEditWindow.Tab4.Text16": "已启用",
+	"GameEditWindow.Tab4.Text17": "已禁用",
 	"GameEditWindow.Tab4.Info1": "正在加载模组列表",
 	"GameEditWindow.Tab4.Info2": "添加完成",
 	"GameEditWindow.Tab4.Info3": "删除完成",
