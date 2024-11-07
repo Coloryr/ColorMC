@@ -13,7 +13,6 @@ public partial class Tab4Control : UserControl
     {
         InitializeComponent();
 
-        DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
@@ -50,11 +49,6 @@ public partial class Tab4Control : UserControl
         {
             LongPressed.Pressed(() => Flyout((sender as Control)!));
         }
-    }
-
-    private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
-    {
-        (DataContext as GameEditModel)!.DisEMod();
     }
 
     private void Flyout(Control control)

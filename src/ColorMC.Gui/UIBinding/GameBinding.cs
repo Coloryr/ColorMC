@@ -818,7 +818,7 @@ public static class GameBinding
     /// <param name="obj"></param>
     /// <param name="sha256"></param>
     /// <returns></returns>
-    public static async Task<List<ModDisplayModel>> GetGameMods(GameSettingObj obj,
+    public static async Task<List<ModDisplayModel>> GetGameMods(GameSettingObj obj, IModEdit? edit,
         bool sha256 = false)
     {
         var list = new List<ModDisplayModel>();
@@ -831,7 +831,7 @@ public static class GameBinding
         list1.ForEach(item =>
         {
             var obj1 = obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
-            list.Add(new ModDisplayModel(item, obj1));
+            list.Add(new ModDisplayModel(item, obj1, edit));
         });
         return list;
     }

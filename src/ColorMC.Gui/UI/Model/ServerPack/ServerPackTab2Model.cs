@@ -97,7 +97,7 @@ public partial class ServerPackModel
     public async void LoadMod()
     {
         ModList.Clear();
-        var mods = await GameBinding.GetGameMods(Obj.Game, true);
+        var mods = await GameBinding.GetGameMods(Obj.Game, null, true);
 
         Obj.Mod?.RemoveAll(a => mods.Find(b => a.Sha256 == b.Obj.Sha256) == null);
 

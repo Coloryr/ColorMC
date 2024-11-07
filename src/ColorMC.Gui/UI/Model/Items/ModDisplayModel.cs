@@ -1,6 +1,8 @@
+using System;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UI.Model.GameEdit;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -10,6 +12,8 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// </summary>
 public partial class ModDisplayModel : ObservableObject
 {
+    public const string ModTextName = "ModText";
+
     [ObservableProperty]
     private bool _enable;
     [ObservableProperty]
@@ -37,8 +41,11 @@ public partial class ModDisplayModel : ObservableObject
     /// </summary>
     public ModObj Obj;
 
-    public ModDisplayModel(ModObj obj, ModInfoObj? obj1)
+    private readonly IModEdit? _top;
+
+    public ModDisplayModel(ModObj obj, ModInfoObj? obj1, IModEdit? top)
     {
+        _top = top;
         Obj = obj;
         Obj1 = obj1;
 
@@ -52,6 +59,11 @@ public partial class ModDisplayModel : ObservableObject
         {
             Source = DownloadItemHelper.TestSourceType(PID, FID).GetName();
         }
+    }
+
+    partial void OnTextChanged(string? value)
+    {
+        _top?.EditModText(this);
     }
 
     public void LocalChange()

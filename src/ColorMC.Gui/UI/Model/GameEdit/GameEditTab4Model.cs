@@ -16,7 +16,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditModel
+public partial class GameEditModel : IModEdit
 {
     public ObservableCollection<ModDisplayModel> ModList { get; init; } = [];
     public string[] ModFilterList { get; init; } = LanguageBinding.GetFilterName();
@@ -45,6 +45,8 @@ public partial class GameEditModel
     private bool _displayModLoader = true;
     [ObservableProperty]
     private bool _displayModSide = true;
+    [ObservableProperty]
+    private bool _displayModText = true;
 
     private bool _isModSet;
 
@@ -53,6 +55,12 @@ public partial class GameEditModel
     partial void OnModTextChanged(string value)
     {
         LoadMod1();
+    }
+
+    partial void OnDisplayModTextChanged(bool value)
+    {
+        _setting.Mod.EnableText = value;
+        GameGuiSetting.WriteConfig(_obj, _setting);
     }
 
     partial void OnDisplayModIdChanged(bool value)
@@ -117,12 +125,14 @@ public partial class GameEditModel
     private void LoadSetting()
     {
         _setting = GameGuiSetting.ReadConfig(_obj);
-
-        DisplayModId = _setting.Mod.EnableModId;
-        DisplayModName = _setting.Mod.EnableName;
-        DisplayModVersion = _setting.Mod.EnableVersion;
-        DisplayModLoader = _setting.Mod.EnableLoader;
-        DisplayModSide = _setting.Mod.EnableSide;
+#pragma warning disable MVVMTK0034
+        _displayModText = _setting.Mod.EnableText;
+        _displayModId = _setting.Mod.EnableModId;
+        _displayModName = _setting.Mod.EnableName;
+        _displayModVersion = _setting.Mod.EnableVersion;
+        _displayModLoader = _setting.Mod.EnableLoader;
+        _displayModSide = _setting.Mod.EnableSide;
+#pragma warning restore MVVMTK0034
     }
 
     private async void DependTestMod()
@@ -347,7 +357,7 @@ public partial class GameEditModel
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info1"));
         _modItems.Clear();
-        var res = await GameBinding.GetGameMods(_obj);
+        var res = await GameBinding.GetGameMods(_obj, this);
         Model.ProgressClose();
         if (res == null)
         {
@@ -382,9 +392,31 @@ public partial class GameEditModel
             }
         }
 
+        DisplayModText = false;
+
+        foreach (var item in _modItems)
+        {
+            if (_setting.ModName.TryGetValue(item.Obj.Sha1, out var temp))
+            {
+                item.Text = temp;
+            }
+
+            DisplayModText = true;
+        }
+
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info23"));
 
         LoadMod1();
+    }
+
+    public void EditModText(ModDisplayModel item)
+    {
+        if (!_setting.ModName.TryAdd(item.Obj.Sha1, item.Text))
+        {
+            _setting.ModName[item.Obj.Sha1] = item.Text;
+        }
+
+        GameGuiSetting.WriteConfig(_obj, _setting);
     }
 
     private void LoadMod1()

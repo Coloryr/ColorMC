@@ -281,7 +281,7 @@ public partial class GameCloudModel : MenuModel
         {
             list.Add(Obj.GetConfigPath());
             list.Add(Obj.GetOptionsFile());
-            foreach (var mod in await GameBinding.GetGameMods(Obj))
+            foreach (var mod in await GameBinding.GetGameMods(Obj, null))
             {
                 if (mod.Obj1 == null)
                 {

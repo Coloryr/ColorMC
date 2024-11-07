@@ -32,6 +32,7 @@ public record GameModSettingObj
     public bool EnableVersion { get; set; }
     public bool EnableLoader { get; set; }
     public bool EnableSide { get; set; }
+    public bool EnableText { get; set; }
 }
 
 public record GameGuiSettingObj
@@ -44,5 +45,8 @@ public record GameGuiSettingObj
     /// 模组显示设置
     /// </summary>
     public GameModSettingObj Mod { get; set; }
-    public Dictionary<string, string> ModName { get; set; }
+    /// <summary>
+    /// 备注
+    /// </summary>
+    public Dictionary<string, string?> ModName { get; set; }
 }
