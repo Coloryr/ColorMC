@@ -64,7 +64,7 @@ public partial class GameLogModel : GameModel
 
     private ConcurrentQueue<string> _queue = new();
 
-    private GameLogSettingObj _setting;
+    private GameGuiSettingObj _setting;
 
     private List<GameLogItemObj> _logs;
     private readonly Thread _timer;
@@ -86,14 +86,14 @@ public partial class GameLogModel : GameModel
         _run = true;
         _timer.Start();
 
-        _setting = GameLogSetting.ReadConfig(obj);
-        _enableDebug = _setting.EnableDebug;
-        _enableError = _setting.EnableError;
-        _enableInfo = _setting.EnableInfo;
-        _enableNone = _setting.EnableNone;
-        _enableWarn = _setting.EnableWarn;
-        _isAuto = _setting.Auto;
-        _isWordWrap = _setting.WordWrap;
+        _setting = GameGuiSetting.ReadConfig(obj);
+        _enableDebug = _setting.Log.EnableDebug;
+        _enableError = _setting.Log.EnableError;
+        _enableInfo = _setting.Log.EnableInfo;
+        _enableNone = _setting.Log.EnableNone;
+        _enableWarn = _setting.Log.EnableWarn;
+        _isAuto = _setting.Log.Auto;
+        _isWordWrap = _setting.Log.WordWrap;
     }
 
     async partial void OnFileChanged(string? value)
@@ -132,54 +132,54 @@ public partial class GameLogModel : GameModel
 
     partial void OnIsAutoChanged(bool value)
     {
-        _setting.Auto = value;
-        GameLogSetting.WriteConfig(Obj, _setting);
+        _setting.Log.Auto = value;
+        GameGuiSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnIsWordWrapChanged(bool value)
     {
-        _setting.WordWrap = value;
-        GameLogSetting.WriteConfig(Obj, _setting);
+        _setting.Log.WordWrap = value;
+        GameGuiSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableNoneChanged(bool value)
     {
         LoadLast();
 
-        _setting.EnableNone = value;
-        GameLogSetting.WriteConfig(Obj, _setting);
+        _setting.Log.EnableNone = value;
+        GameGuiSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableInfoChanged(bool value)
     {
         LoadLast();
 
-        _setting.EnableInfo = value;
-        GameLogSetting.WriteConfig(Obj, _setting);
+        _setting.Log.EnableInfo = value;
+        GameGuiSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableWarnChanged(bool value)
     {
         LoadLast();
 
-        _setting.EnableWarn = value;
-        GameLogSetting.WriteConfig(Obj, _setting);
+        _setting.Log.EnableWarn = value;
+        GameGuiSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableErrorChanged(bool value)
     {
         LoadLast();
 
-        _setting.EnableError = value;
-        GameLogSetting.WriteConfig(Obj, _setting);
+        _setting.Log.EnableError = value;
+        GameGuiSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableDebugChanged(bool value)
     {
         LoadLast();
 
-        _setting.EnableDebug = value;
-        GameLogSetting.WriteConfig(Obj, _setting);
+        _setting.Log.EnableDebug = value;
+        GameGuiSetting.WriteConfig(Obj, _setting);
     }
 
     [RelayCommand]

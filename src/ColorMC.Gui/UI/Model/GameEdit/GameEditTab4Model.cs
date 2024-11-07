@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -47,9 +48,41 @@ public partial class GameEditModel
 
     private bool _isModSet;
 
+    private GameGuiSettingObj _setting;
+
     partial void OnModTextChanged(string value)
     {
         LoadMod1();
+    }
+
+    partial void OnDisplayModIdChanged(bool value)
+    {
+        _setting.Mod.EnableModId = value;
+        GameGuiSetting.WriteConfig(_obj, _setting);
+    }
+
+    partial void OnDisplayModNameChanged(bool value)
+    {
+        _setting.Mod.EnableName = value;
+        GameGuiSetting.WriteConfig(_obj, _setting);
+    }
+
+    partial void OnDisplayModVersionChanged(bool value)
+    {
+        _setting.Mod.EnableVersion = value;
+        GameGuiSetting.WriteConfig(_obj, _setting);
+    }
+
+    partial void OnDisplayModLoaderChanged(bool value)
+    {
+        _setting.Mod.EnableLoader = value;
+        GameGuiSetting.WriteConfig(_obj, _setting);
+    }
+
+    partial void OnDisplayModSideChanged(bool value)
+    {
+        _setting.Mod.EnableSide = value;
+        GameGuiSetting.WriteConfig(_obj, _setting);
     }
 
     partial void OnModFilterChanged(int value)
@@ -79,6 +112,17 @@ public partial class GameEditModel
     public void LoadMod()
     {
         LoadMods();
+    }
+
+    private void LoadSetting()
+    {
+        _setting = GameGuiSetting.ReadConfig(_obj);
+
+        DisplayModId = _setting.Mod.EnableModId;
+        DisplayModName = _setting.Mod.EnableName;
+        DisplayModVersion = _setting.Mod.EnableVersion;
+        DisplayModLoader = _setting.Mod.EnableLoader;
+        DisplayModSide = _setting.Mod.EnableSide;
     }
 
     private async void DependTestMod()

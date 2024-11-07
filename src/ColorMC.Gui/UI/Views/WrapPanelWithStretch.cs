@@ -60,7 +60,11 @@ public class WrapPanelWithStretch : Panel
     {
         double totalWidth = 0;
         double totalHeight = 0;
+        double lineWidth = 0;
         double lineHeight = 0;
+
+        bool left = LeftMax;
+        bool right = AutoMax;
 
         foreach (var child in Children)
         {
@@ -68,25 +72,39 @@ public class WrapPanelWithStretch : Panel
             var childSize = child.DesiredSize;
             double minWidth = GetWidth(child);
 
-            if (totalWidth + minWidth > availableSize.Width && totalWidth > 0)
+            if (lineWidth + minWidth > availableSize.Width && lineWidth > 0)
             {
                 totalHeight += lineHeight;
-                totalWidth = 0;
+                if (totalWidth < lineWidth)
+                {
+                    totalWidth = lineWidth;
+                }
+                lineWidth = 0;
             }
 
-            totalWidth += minWidth;
+            lineWidth += minWidth;
             lineHeight = Math.Max(lineHeight, childSize.Height);
+            if (totalWidth < lineWidth)
+            {
+                totalWidth = lineWidth;
+            }
         }
 
         totalHeight += lineHeight;
 
-        return new Size(availableSize.Width, totalHeight);
+        if (left || right)
+        {
+            return new Size(availableSize.Width, totalHeight);
+        }
+
+        return new Size(totalWidth, totalHeight);
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
         double totalWidth = 0;
         double totalHeight = 0;
+        double lineWidth = 0;
         double lineHeight = 0;
 
         //上一个控件的高度
@@ -105,24 +123,24 @@ public class WrapPanelWithStretch : Panel
             lineHeight = Math.Max(lineHeight, childSize.Height);
 
             //是否需要换行
-            if (totalWidth + minWidth > finalSize.Width)
+            if (lineWidth + minWidth > finalSize.Width)
             {
                 //最左边的最大
                 if (left)
                 {
-                    totalWidth = finalSize.Width;
+                    lineWidth = finalSize.Width;
                     //从右往左排序
                     while (controls.TryPop(out var item))
                     {
                         //是否是最左边的
                         if (controls.Count == 0)
                         {
-                            item.con.Arrange(new(0, totalHeight, totalWidth, lineHeight));
+                            item.con.Arrange(new(0, totalHeight, lineWidth, lineHeight));
                         }
                         else
                         {
-                            totalWidth -= item.size.Width;
-                            item.con.Arrange(new(totalWidth, totalHeight, item.size.Width, lineHeight));
+                            lineWidth -= item.size.Width;
+                            item.con.Arrange(new(lineWidth, totalHeight, item.size.Width, lineHeight));
                         }
                     }
                 }
@@ -137,14 +155,18 @@ public class WrapPanelWithStretch : Panel
                     //是否是最右边的
                     if (last != null && right)
                     {
-                        last.Arrange(new(totalWidth - widthToUse, totalHeight,
-                            finalSize.Width - totalWidth + widthToUse, lineHeight));
+                        last.Arrange(new(lineWidth - widthToUse, totalHeight,
+                            finalSize.Width - lineWidth + widthToUse, lineHeight));
                         last = null;
                     }
                 }
 
                 totalHeight += lineHeight;
-                totalWidth = 0;
+                if (lineWidth > totalWidth)
+                {
+                    totalWidth = lineWidth;
+                }
+                lineWidth = 0;
             }
 
             //是否是最后一个控件
@@ -154,18 +176,18 @@ public class WrapPanelWithStretch : Panel
                 if (left)
                 {
                     controls.Push((child, new(0, 0, minWidth, lineHeight)));
-                    totalWidth = finalSize.Width;
+                    lineWidth = finalSize.Width;
                     //从右往左排序
                     while (controls.TryPop(out var item))
                     {
                         if (controls.Count == 0)
                         {
-                            item.con.Arrange(new(0, totalHeight, totalWidth, lineHeight));
+                            item.con.Arrange(new(0, totalHeight, lineWidth, lineHeight));
                         }
                         else
                         {
-                            totalWidth -= item.size.Width;
-                            item.con.Arrange(new(totalWidth, totalHeight, item.size.Width, lineHeight));
+                            lineWidth -= item.size.Width;
+                            item.con.Arrange(new(lineWidth, totalHeight, item.size.Width, lineHeight));
                         }
                     }
                 }
@@ -180,21 +202,28 @@ public class WrapPanelWithStretch : Panel
                     //右边控件最大
                     if (right)
                     {
-                        child.Arrange(new(totalWidth, totalHeight, finalSize.Width - totalWidth, lineHeight));
+                        child.Arrange(new(lineWidth, totalHeight, finalSize.Width - lineWidth, lineHeight));
                     }
                     //默认排序
                     else
                     {
-                        child.Arrange(new(totalWidth, totalHeight, minWidth, lineHeight));
+                        child.Arrange(new(lineWidth, totalHeight, minWidth, lineHeight));
                     }
+                }
+
+                totalHeight += lineHeight;
+                lineWidth += minWidth;
+                if (lineWidth > totalWidth)
+                {
+                    totalWidth = lineWidth;
                 }
             }
             else
             {
                 widthToUse = minWidth;
-                var size = new Rect(totalWidth, totalHeight, widthToUse, lineHeight);
+                var size = new Rect(lineWidth, totalHeight, widthToUse, lineHeight);
                 child.Arrange(size);
-                totalWidth += widthToUse;
+                lineWidth += widthToUse;
 
                 controls.Push((child, size));
 
@@ -205,6 +234,11 @@ public class WrapPanelWithStretch : Panel
             }
         }
 
-        return finalSize;
+        if (left || right)
+        {
+            return finalSize;
+        }
+
+        return new(totalWidth, totalHeight);
     }
 }
