@@ -30,7 +30,7 @@ public partial class GameEditModel : IModEdit
     private string _modText;
 
     [ObservableProperty]
-    private int modFilter;
+    private int _modFilter;
 
     [ObservableProperty]
     private bool _displayModFilter = true;
@@ -47,6 +47,9 @@ public partial class GameEditModel : IModEdit
     private bool _displayModSide = true;
     [ObservableProperty]
     private bool _displayModText = true;
+
+    [ObservableProperty]
+    private bool _enableModText = true;
 
     private bool _isModSet;
 
@@ -95,6 +98,12 @@ public partial class GameEditModel : IModEdit
 
     partial void OnModFilterChanged(int value)
     {
+        EnableModText = value switch
+        {
+            <= 3 => true,
+            _ => false
+        };
+
         LoadMod1();
     }
 
@@ -495,6 +504,26 @@ public partial class GameEditModel : IModEdit
                                 break;
                             }
                         }
+                    }
+                    break;
+                case 4:
+                    foreach (var item in _modItems)
+                    {
+                        if (item.Enable != true)
+                        {
+                            continue;
+                        }
+                        ModList.Add(item);
+                    }
+                    break;
+                case 5:
+                    foreach (var item in _modItems)
+                    {
+                        if (item.Enable != false)
+                        {
+                            continue;
+                        }
+                        ModList.Add(item);
                     }
                     break;
             }

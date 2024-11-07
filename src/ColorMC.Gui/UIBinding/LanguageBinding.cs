@@ -79,7 +79,9 @@ public static class LanguageBinding
             App.Lang("Text.Name"),
             App.Lang("Text.FileName"),
             App.Lang("Text.Author"),
-            "modid"
+            "modid",
+            App.Lang("GameEditWindow.Tab4.Text16"),
+            App.Lang("GameEditWindow.Tab4.Text17"),
         ];
     }
 
