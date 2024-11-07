@@ -17,22 +17,25 @@
             Margin="10,0,10,10"
             Classes="t2"
             DockPanel.Dock="Top">
-            <StackPanel Margin="15">
-                <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+            <WrapPanel Margin="15,15,15,5">
+                <panel:WrapPanelWithStretch
+                    Margin="0,0,0,10"
+                    HorizontalAlignment="Left"
+                    AutoMax="{Binding MinMode}">
                     <ToggleSwitch
-                        Margin="0,0,10,10"
+                        Margin="0,0,10,0"
                         VerticalAlignment="Center"
                         IsChecked="{Binding IsWordWrap}"
                         OffContent="{setting:Localize GameLogWindow.Text1}"
                         OnContent="{setting:Localize GameLogWindow.Text1}" />
                     <ToggleSwitch
-                        Margin="0,0,10,10"
+                        Margin="0,0,10,0"
                         IsChecked="{Binding IsAuto}"
                         OffContent="{setting:Localize GameLogWindow.Text2}"
                         OnContent="{setting:Localize GameLogWindow.Text2}" />
                     <ComboBox
                         MinWidth="200"
-                        Margin="0,0,10,10"
+                        Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"
                         ItemsSource="{Binding FileList}"
                         SelectedItem="{Binding File}" />
@@ -89,7 +92,7 @@
                         ToolTip.VerticalOffset="-30" />
                 </WrapPanel>
                 <WrapPanel
-                    Margin="0,10,0,0"
+                    Margin="0,0,0,10"
                     IsEnabled="{Binding !IsFile}"
                     IsVisible="{Binding !IsFile}">
                     <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameLogWindow.Text9}" />
@@ -115,7 +118,6 @@
                         IsChecked="{Binding EnableNone}" />
                 </WrapPanel>
                 <panel:WrapPanelWithStretch
-                    Margin="0,0,0,-10"
                     AutoMax="{Binding MinMode}"
                     IsEnabled="{Binding !IsFile}"
                     IsVisible="{Binding !IsFile}">
@@ -134,7 +136,7 @@
                             SelectedItem="{Binding SelectCategory}" />
                     </DockPanel>
                 </panel:WrapPanelWithStretch>
-            </StackPanel>
+            </WrapPanel>
         </Border>
         <ae:TextEditor
             Name="TextEditor1"

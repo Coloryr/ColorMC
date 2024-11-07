@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -21,6 +22,8 @@ public partial class GameEditModel : MenuModel
         {
             Phone = true;
         }
+
+        LoadSetting();
 
         _titleText = string.Format(App.Lang("GameEditWindow.Tab2.Text13"), _obj.Name);
 

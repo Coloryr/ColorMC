@@ -12,6 +12,8 @@ public partial class ModDisplayModel : ObservableObject
 {
     [ObservableProperty]
     private bool _enable;
+    [ObservableProperty]
+    private string? _text;
 
     public string Side => Obj.Side.GetName();
     public string Name { get; init; }
