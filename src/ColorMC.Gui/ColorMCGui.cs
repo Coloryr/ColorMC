@@ -183,7 +183,7 @@ public static class ColorMCGui
                 DefaultFamilyName = Font,
             })
 #if DEBUG
-            .LogToTrace(LogEventLevel.Information)
+            //.LogToTrace(LogEventLevel.Information)
 #else
             .LogToTrace()
 #endif

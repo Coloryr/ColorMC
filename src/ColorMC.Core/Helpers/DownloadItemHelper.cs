@@ -359,6 +359,7 @@ public static class DownloadItemHelper
         var list1 = new HashSet<string>();
         //待补全的native
         var natives = new ConcurrentDictionary<string, bool>();
+        var nativesarm = new ConcurrentBag<string>();
         Parallel.ForEach(obj.libraries, (item1) =>
         {
             bool download = CheckHelpers.CheckAllow(item1.rules);
@@ -391,6 +392,7 @@ public static class DownloadItemHelper
                     string key = item1.name[..index];
                     if (item1.name.EndsWith("arm64") || item1.name.EndsWith("aarch_64"))
                     {
+                        nativesarm.Add(key);
                         natives.TryRemove(key, out _);
                     }
                     //else if (item1.name.EndsWith("x86") || item1.name.EndsWith("x86_64"))
@@ -402,10 +404,7 @@ public static class DownloadItemHelper
                     //}
                     else
                     {
-                        if (SystemInfo.IsArm && !natives.ContainsKey(key))
-                        {
-                            natives.TryAdd(key, true);
-                        }
+                        natives.TryAdd(key, true);
                     }
                 }
 
@@ -477,6 +476,10 @@ public static class DownloadItemHelper
         //Arm处理
         if (SystemInfo.IsArm)
         {
+            foreach (var item in nativesarm)
+            {
+                natives.TryRemove(item, out _);
+            }
             foreach (var item in natives.Keys)
             {
                 var path = item.Split(':');
