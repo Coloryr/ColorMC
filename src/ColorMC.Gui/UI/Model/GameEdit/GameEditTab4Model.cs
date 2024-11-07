@@ -392,16 +392,12 @@ public partial class GameEditModel : IModEdit
             }
         }
 
-        DisplayModText = false;
-
         foreach (var item in _modItems)
         {
             if (_setting.ModName.TryGetValue(item.Obj.Sha1, out var temp))
             {
                 item.Text = temp;
             }
-
-            DisplayModText = true;
         }
 
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info23"));
