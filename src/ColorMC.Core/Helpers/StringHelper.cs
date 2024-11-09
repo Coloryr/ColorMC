@@ -11,15 +11,15 @@ namespace ColorMC.Core.Helpers;
 public static partial class StringHelper
 {
     [GeneratedRegex("\\b\\d+(.\\d+)+\\b")]
-    public static partial Regex VersionRegex();
+    private static partial Regex VersionRegex();
 
     /// <summary>
     /// 截取字符串
     /// </summary>
-    /// <param name="input"></param>
-    /// <param name="start"></param>
-    /// <param name="end"></param>
-    /// <returns></returns>
+    /// <param name="input">输入字符串</param>
+    /// <param name="start">开始于</param>
+    /// <param name="end">结束于</param>
+    /// <returns>输出</returns>
     public static string GetString(string input, string start, string end)
     {
         var temp = input.IndexOf(start);
@@ -118,8 +118,8 @@ public static partial class StringHelper
     /// <summary>
     /// 转为HEX格式文本
     /// </summary>
-    /// <param name="temp"></param>
-    /// <returns></returns>
+    /// <param name="temp">数据</param>
+    /// <returns>HEX文本</returns>
     public static string ToHex(byte temp)
     {
         var builder = new StringBuilder();
@@ -139,8 +139,8 @@ public static partial class StringHelper
     /// <summary>
     /// 转为HEX格式文本
     /// </summary>
-    /// <param name="temp"></param>
-    /// <returns></returns>
+    /// <param name="temp">数据</param>
+    /// <returns>HEX文本</returns>
     public static string ToHex(short temp)
     {
         var builder = new StringBuilder();
@@ -160,8 +160,8 @@ public static partial class StringHelper
     /// <summary>
     /// 转为HEX格式文本
     /// </summary>
-    /// <param name="temp"></param>
-    /// <returns></returns>
+    /// <param name="temp">数据</param>
+    /// <returns>HEX文本</returns>
     public static string ToHex(int temp)
     {
         var builder = new StringBuilder();
@@ -181,8 +181,8 @@ public static partial class StringHelper
     /// <summary>
     /// 转为HEX格式文本
     /// </summary>
-    /// <param name="temp"></param>
-    /// <returns></returns>
+    /// <param name="temp">数据</param>
+    /// <returns>HEX文本</returns>
     public static string ToHex(long temp)
     {
         var builder = new StringBuilder();
@@ -202,7 +202,7 @@ public static partial class StringHelper
     /// <summary>
     /// 版本号排序
     /// </summary>
-    /// <param name="list"></param>
+    /// <param name="list">序号</param>
     public static void VersionSort(List<string> list)
     {
         var regex = VersionRegex();
@@ -230,8 +230,8 @@ public static partial class StringHelper
     /// <summary>
     /// 从Steam获取字符串
     /// </summary>
-    /// <param name="stream"></param>
-    /// <returns></returns>
+    /// <param name="stream1">流</param>
+    /// <returns>字符串</returns>
     public static async Task<string> GetStringAsync(Stream stream1)
     {
         var head = Encoding.UTF8.GetPreamble();
@@ -260,6 +260,12 @@ public static partial class StringHelper
         }
     }
 
+    /// <summary>
+    /// 删除符号
+    /// </summary>
+    /// <param name="input">输入数据</param>
+    /// <param name="symbol">符号</param>
+    /// <returns>替换数据</returns>
     public static string RemovePartAfterSymbol(string input, char symbol)
     {
         int index = input.IndexOf(symbol);
@@ -270,6 +276,13 @@ public static partial class StringHelper
         return input; // 如果没有找到符号，就返回原始字符串
     }
 
+    /// <summary>
+    /// 替换字符串第一个数据
+    /// </summary>
+    /// <param name="input">输入数据</param>
+    /// <param name="oldValue">查找内容</param>
+    /// <param name="newValue">替换内容</param>
+    /// <returns>输出结果</returns>
     public static string ReplaceFirst(string input, string oldValue, string newValue)
     {
         if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(oldValue))
@@ -287,6 +300,11 @@ public static partial class StringHelper
         return input.Substring(0, index) + newValue + input.Substring(index + oldValue.Length);
     }
 
+    /// <summary>
+    /// 生成字符串
+    /// </summary>
+    /// <param name="strings">列表</param>
+    /// <returns>输出结果</returns>
     public static string MakeString(HashSet<string>? strings)
     {
         if (strings == null)
@@ -305,6 +323,11 @@ public static partial class StringHelper
         return temp;
     }
 
+    /// <summary>
+    /// 生成字符串
+    /// </summary>
+    /// <param name="strings">列表</param>
+    /// <returns>输出结果</returns>
     public static string MakeString(HashSet<Loaders>? strings)
     {
         if (strings == null)

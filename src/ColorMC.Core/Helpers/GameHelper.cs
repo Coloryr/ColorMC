@@ -31,6 +31,8 @@ public static class GameHelper
     /// <summary>
     /// Forge运行库修改映射
     /// </summary>
+    /// <param name="item">运行库项目</param>
+    /// <returns>运行库项目</returns>
     public static ForgeLaunchObj.Libraries? MakeLibObj(ForgeInstallObj1.VersionInfo.Libraries item)
     {
         var args = item.name.Split(":");
@@ -381,8 +383,9 @@ public static class GameHelper
     /// <param name="mmc1">MMC储存</param>
     /// <param name="icon">图标输出</param>
     /// <returns>游戏设置</returns>
-    public static GameSettingObj ToColorMC(this MMCObj mmc, string mmc1, out string icon)
+    public static MMCToColorMCRes ToColorMC(this MMCObj mmc, string mmc1)
     {
+        var res = new MMCToColorMCRes();
         var list = Options.ReadOptions(mmc1, "=");
         var game = new GameSettingObj
         {
@@ -513,16 +516,13 @@ public static class GameHelper
             }
             game.JvmArg.LaunchPreData = data.ToString();
         }
+        res.Game = game;
         if (list.TryGetValue("iconKey", out item1))
         {
-            icon = item1;
-        }
-        else
-        {
-            icon = "";
+            res.Icon = item1;
         }
 
-        return game;
+        return res;
     }
 
     /// <summary>
@@ -608,8 +608,8 @@ public static class GameHelper
     /// <summary>
     /// 转换到ColorMC数据
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="obj">官方实例</param>
+    /// <returns>游戏实例</returns>
     public static GameSettingObj? ToColorMC(this OfficialObj obj)
     {
         var game = new GameSettingObj()
@@ -733,7 +733,7 @@ public static class GameHelper
     /// 获取所有游戏版本
     /// </summary>
     /// <param name="type">类型</param>
-    /// <returns></returns>
+    /// <returns>游戏版本</returns>
     public static async Task<List<string>> GetGameVersions(GameType type)
     {
         var list = new List<string>();
@@ -784,8 +784,8 @@ public static class GameHelper
     /// <summary>
     /// 是否为Minecraft原版版本
     /// </summary>
-    /// <param name="dir"></param>
-    /// <returns></returns>
+    /// <param name="dir">路径</param>
+    /// <returns>是否存在版本</returns>
     public static bool IsMinecraftVersion(string dir)
     {
         bool find = false;
@@ -822,8 +822,8 @@ public static class GameHelper
     /// <summary>
     /// 是否为MMC版本
     /// </summary>
-    /// <param name="dir"></param>
-    /// <returns></returns>
+    /// <param name="dir">路径</param>
+    /// <returns>是否存在</returns>
     public static bool IsMMCVersion(string dir)
     {
         var file1 = Path.GetFullPath(dir + "/mmc-pack.json");
@@ -839,8 +839,8 @@ public static class GameHelper
     /// <summary>
     /// 扫描目录下的游戏版本
     /// </summary>
-    /// <param name="dir"></param>
-    /// <returns></returns>
+    /// <param name="dir">路径</param>
+    /// <returns>版本列表</returns>
     public static List<string> ScanVersions(string dir)
     {
         var list = new List<string>();

@@ -93,7 +93,7 @@ public static class ConfigSave
         {
             try
             {
-                PathHelper.WriteText(item.Local,
+                PathHelper.WriteText(item.File,
                     JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
             }
             catch (Exception e)
@@ -106,7 +106,7 @@ public static class ConfigSave
     /// <summary>
     /// 添加保存项目
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">保存的项目</param>
     public static void AddItem(ConfigSaveObj obj)
     {
         s_saveQue.Add(obj);

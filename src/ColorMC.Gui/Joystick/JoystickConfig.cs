@@ -74,7 +74,7 @@ public static class JoystickConfig
         ConfigSave.AddItem(new()
         {
             Name = obj.UUID + ".json",
-            Local = s_local + "/" + obj.UUID + ".json",
+            File = s_local + "/" + obj.UUID + ".json",
             Obj = obj
         });
     }

@@ -60,7 +60,7 @@ public static class GameGuiSetting
 
         ConfigSave.AddItem(new()
         {
-            Local = dir,
+            File = dir,
             Name = "GameLogSetting:" + obj.UUID,
             Obj = config
         });

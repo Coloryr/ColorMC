@@ -19,6 +19,8 @@ public static class CheckHelpers
     /// <summary>
     /// 检查是否允许
     /// </summary>
+    /// <param name="list">规则列表</param>
+    /// <returns>是否允许</returns>
     public static bool CheckAllow(List<GameArgObj.Libraries.Rules> list)
     {
         bool allow = true;
@@ -99,49 +101,57 @@ public static class CheckHelpers
         return allow;
     }
 
+    /// <summary>
+    /// 是否为V2版本
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>是否为V2版本</returns>
+    /// <exception cref="FileNotFoundException">没有找到实例信息</exception>
     public static bool IsGameVersionV2(this GameSettingObj obj)
     {
         var version = VersionPath.GetVersion(obj.Version);
         return version == null
-            ? throw new Exception(string.Format(LanguageHelper.Get("Core.Check.Error1"), obj.Version))
+            ? throw new FileNotFoundException(string.Format(LanguageHelper.Get("Core.Check.Error1"), obj.Version))
             : version.IsGameVersionV2();
     }
 
     /// <summary>
-    /// 是否V2版本
+    /// 是否为V2版本
     /// </summary>
+    /// <param name="version">游戏数据</param>
+    /// <returns>是否为V2版本</returns>
     public static bool IsGameVersionV2(this GameArgObj version)
     {
         return version.minimumLauncherVersion > 18;
     }
 
     /// <summary>
-    /// 是否是1.17以上版本
+    /// 是否为1.17以上版本
     /// </summary>
-    /// <param name="version"></param>
-    /// <returns></returns>
+    /// <param name="version">游戏版本</param>
+    /// <returns>是否为1.17以上版本</returns>
     public static bool IsGameVersion117(string version)
     {
-        Version version1 = new(version);
+        var version1 = new Version(version);
         return version1.Minor >= 17;
     }
 
     /// <summary>
     /// 是否是1.20以上版本
     /// </summary>
-    /// <param name="version"></param>
-    /// <returns></returns>
+    /// <param name="version">游戏版本</param>
+    /// <returns>是否是1.20以上版本</returns>
     public static bool IsGameVersion120(string version)
     {
-        Version version1 = new(version);
+        var version1 = new Version(version);
         return version1.Minor >= 20;
     }
 
     /// <summary>
     /// 是否是1.20.2以上版本
     /// </summary>
-    /// <param name="version"></param>
-    /// <returns></returns>
+    /// <param name="version">游戏版本</param>
+    /// <returns>是否是1.20.2以上版本</returns>
     public static bool IsGameVersion1202(string version)
     {
         Version version1 = new(version);
@@ -156,8 +166,8 @@ public static class CheckHelpers
     /// 是否添加任务
     /// </summary>
     /// <param name="obj">下载项目</param>
-    /// <param name="sha1">比较SHA1值</param>
-    /// <returns></returns>
+    /// <param name="sha1">是否比较SHA1值</param>
+    /// <returns>是否需要添加</returns>
     public static bool CheckToAdd(this DownloadItemObj obj, bool sha1)
     {
         if (!File.Exists(obj.Local))
@@ -178,7 +188,8 @@ public static class CheckHelpers
     /// 检查丢失的资源
     /// </summary>
     /// <param name="obj">资源数据</param>
-    /// <returns>丢失列表</returns>
+    /// <param name="cancel">取消Token</param>
+    /// <returns>下载列表</returns>
     public static ConcurrentBag<DownloadItemObj> CheckAssets(this AssetsObj obj, CancellationToken cancel)
     {
         var list1 = new ConcurrentBag<string>();
@@ -206,7 +217,7 @@ public static class CheckHelpers
     /// 检查游戏文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="login">登录的账户</param>
+    /// <param name="cancel">取消Token</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns>下载列表</returns>
     public static async Task<ConcurrentBag<DownloadItemObj>> CheckGameFileAsync(this GameSettingObj obj, CancellationToken cancel)
@@ -214,7 +225,6 @@ public static class CheckHelpers
         var list = new ConcurrentBag<DownloadItemObj>();
 
         //检查游戏启动json
-
         var game = await VersionPath.CheckUpdateAsync(obj.Version);
         if (game == null)
         {
@@ -515,14 +525,14 @@ public static class CheckHelpers
     /// <summary>
     /// 检查外置登录器
     /// </summary>
-    /// <param name="login"></param>
-    /// <returns></returns>
-    /// <exception cref="LaunchException"></exception>
+    /// <param name="login">保存的账户</param>
+    /// <returns>下载项目</returns>
+    /// <exception cref="LaunchException">启动失败</exception>
     public static async Task<DownloadItemObj?> CheckLoginCoreAsync(this LoginObj login)
     {
         var item1 = login.AuthType switch
         {
-            AuthType.Nide8 => await AuthlibHelper.ReadyNide8(),
+            AuthType.Nide8 => await AuthlibHelper.ReadyNide8Async(),
             AuthType.AuthlibInjector => await AuthlibHelper.ReadyAuthlibInjectorAsync(),
             AuthType.LittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(),
             AuthType.SelfLittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(),
@@ -546,7 +556,7 @@ public static class CheckHelpers
     /// <param name="obj">Forge安装数据</param>
     /// <param name="fgversion">Forge版本</param>
     /// <param name="neo">是否为NeoForge</param>
-    /// <returns>结果</returns>
+    /// <returns>是否需要安装</returns>
     public static bool CheckForgeInstall(ForgeInstallObj obj, string fgversion, bool neo)
     {
         //silm
@@ -624,7 +634,8 @@ public static class CheckHelpers
     /// 检查Forge的运行库
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>丢失的库</returns>
+    /// <param name="cancel">取消Token</param>
+    /// <returns>下载列表</returns>
     public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLibAsync(this GameSettingObj obj, CancellationToken cancel)
     {
         var neo = obj.Loader == Loaders.NeoForge;
@@ -697,7 +708,8 @@ public static class CheckHelpers
     /// 检查Fabric的运行库
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>丢失的库</returns>
+    /// <param name="cancel">取消Token</param>
+    /// <returns>下载列表</returns>
     public static List<DownloadItemObj>? CheckFabricLib(this GameSettingObj obj, CancellationToken cancel)
     {
         var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion!);
@@ -732,7 +744,8 @@ public static class CheckHelpers
     /// 检查Quilt的运行库
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>丢失的库</returns>
+    /// <param name="cancel">取消Token</param>
+    /// <returns>下载列表</returns>
     public static List<DownloadItemObj>? CheckQuiltLib(this GameSettingObj obj, CancellationToken cancel)
     {
         var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion!);
@@ -767,7 +780,8 @@ public static class CheckHelpers
     /// 检查游戏运行库
     /// </summary>
     /// <param name="obj">游戏数据</param>
-    /// <returns>丢失的库</returns>
+    /// <param name="cancel">取消Token</param>
+    /// <returns>下载列表</returns>
     public static async Task<List<DownloadItemObj>> CheckGameLibAsync(this GameArgObj obj, CancellationToken cancel)
     {
         var list = new List<DownloadItemObj>();
@@ -810,8 +824,8 @@ public static class CheckHelpers
     /// <summary>
     /// 检测OptiFine是否存在
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>是否存在</returns>
     public static bool CheckOptifineLib(this GameSettingObj obj)
     {
         return File.Exists(LibrariesPath.GetOptiFineLib(obj));

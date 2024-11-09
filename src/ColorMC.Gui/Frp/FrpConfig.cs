@@ -106,7 +106,7 @@ public static class FrpConfig
         ConfigSave.AddItem(new()
         {
             Name = "frp.json",
-            Local = s_local,
+            File = s_local,
             Obj = Config
         });
     }

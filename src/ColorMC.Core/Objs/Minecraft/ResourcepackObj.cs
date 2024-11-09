@@ -1,7 +1,7 @@
 ﻿namespace ColorMC.Core.Objs.Minecraft;
 
 /// <summary>
-/// 资源包
+/// 材质包
 /// </summary>
 public record ResourcepackObj
 {
@@ -10,13 +10,10 @@ public record ResourcepackObj
     /// </summary>
     public string description { get; set; }
     /// <summary>
-    /// 资源包格式
+    /// 材质包格式
     /// </summary>
     public int pack_format { get; set; }
 
-    /// <summary>
-    /// Sha1
-    /// </summary>
     public string Sha1 { get; set; }
     public string Sha256 { get; set; }
     /// <summary>

@@ -119,7 +119,7 @@ public static class InstancesPath
     /// <summary>
     /// 从组中删除游戏实例
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     private static void RemoveFromGroup(this GameSettingObj obj)
     {
         s_installGames.Remove(obj.UUID);
@@ -206,10 +206,10 @@ public static class InstancesPath
     /// <summary>
     /// 加载游戏实例
     /// </summary>
-    /// <param name="item"></param>
-    private static void LoadInstance(string item)
+    /// <param name="dir">游戏路径</param>
+    private static void LoadInstance(string dir)
     {
-        var file = Path.GetFullPath(item + "/" + Name1);
+        var file = Path.GetFullPath(dir + "/" + Name1);
         if (!File.Exists(file))
         {
             return;
@@ -221,7 +221,7 @@ public static class InstancesPath
             var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
             if (game != null)
             {
-                var path = Path.GetFileName(item);
+                var path = Path.GetFileName(dir);
                 if (path != game.DirName)
                 {
                     game.DirName = path;
@@ -305,8 +305,8 @@ public static class InstancesPath
     /// <summary>
     /// 是否存在该名字的实例
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
+    /// <param name="name">实例名字</param>
+    /// <returns>是否存在</returns>
     public static bool HaveGameWithName(string name)
     {
         return s_installGames.Values.Any(item => item.Name == name);
@@ -321,7 +321,7 @@ public static class InstancesPath
         ConfigSave.AddItem(new()
         {
             Name = $"game-{obj.UUID}",
-            Local = obj.GetGameJsonFile(),
+            File = obj.GetGameJsonFile(),
             Obj = obj
         });
     }
@@ -780,8 +780,8 @@ public static class InstancesPath
     /// <summary>
     /// 复制游戏实例存储
     /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns>游戏实例</returns>
+    /// <param name="obj">目标游戏实例</param>
+    /// <param name="now">复制到的游戏实例</param>
     public static void CopyObj(this GameSettingObj obj, GameSettingObj now)
     {
         now.Version = obj.Version;
@@ -813,6 +813,8 @@ public static class InstancesPath
     /// </summary>
     /// <param name="obj">原始实例</param>
     /// <param name="name">新的名字</param>
+    /// <param name="request">操作请求</param>
+    /// <param name="overwirte">操作请求</param>
     /// <returns>复制结果</returns>
     public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
@@ -827,7 +829,7 @@ public static class InstancesPath
         });
         if (obj1 != null)
         {
-            await PathHelper.CopyDir(GetGamePath(obj), GetGamePath(obj1));
+            await PathHelper.CopyDirAsync(GetGamePath(obj), GetGamePath(obj1));
             string file = obj.GetIconFile();
             if (File.Exists(file))
             {
@@ -862,7 +864,7 @@ public static class InstancesPath
         ConfigSave.AddItem(new()
         {
             Name = $"game-mod-{obj.Name}",
-            Local = obj.GetModInfoJsonFile(),
+            File = obj.GetModInfoJsonFile(),
             Obj = obj.Mods
         });
     }
@@ -879,7 +881,7 @@ public static class InstancesPath
         ConfigSave.AddItem(new()
         {
             Name = $"game-launch-{obj.Name}",
-            Local = obj.GetLaunchFile(),
+            File = obj.GetLaunchFile(),
             Obj = obj.LaunchData
         });
     }
@@ -989,6 +991,8 @@ public static class InstancesPath
     /// 删除游戏实例
     /// </summary>
     /// <param name="obj">游戏实例</param>
+    /// <param name="request">操作请求</param>
+    /// <returns></returns>
     public static Task<bool> Remove(this GameSettingObj obj, ColorMCCore.Request? request)
     {
         obj.RemoveFromGroup();
@@ -1007,8 +1011,8 @@ public static class InstancesPath
     /// <param name="local">目标地址</param>
     /// <param name="unselect">未选择的文件</param>
     /// <param name="dir">根目录方式复制</param>
-    /// <returns></returns>
-    public static async Task CopyFile(this GameSettingObj obj,
+    /// <param name="state">操作请求</param>
+    public static async Task CopyFileAsync(this GameSettingObj obj,
         string local, List<string>? unselect, bool dir, ColorMCCore.ZipUpdate? state)
     {
         local = Path.GetFullPath(local);
@@ -1035,11 +1039,11 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取自定义加载器数据
+    /// 获取自定义加载器名字
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static async Task<string?> GetGameLoaderInfo(this GameSettingObj obj)
+    /// <param name="obj">游戏实例</param>
+    /// <returns>加载器名字</returns>
+    public static async Task<string?> GetGameLoaderInfoAsync(this GameSettingObj obj)
     {
         var file = obj.GetGameLoaderFile();
         if (File.Exists(file))
@@ -1067,7 +1071,7 @@ public static class InstancesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="path">自定义加载器路径</param>
-    /// <returns></returns>
+    /// <returns>数据</returns>
     public static async Task<MessageRes> SetGameLoader(this GameSettingObj obj, string path)
     {
         if (!File.Exists(path))
@@ -1093,10 +1097,10 @@ public static class InstancesPath
     /// <summary>
     /// 设置游戏实例图标
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <param name="url">网址</param>
-    /// <returns></returns>
-    public static async Task<bool> SetGameIconFromUrl(this GameSettingObj obj, string url)
+    /// <returns>是否成功设置</returns>
+    public static async Task<bool> SetGameIconFromUrlAsync(this GameSettingObj obj, string url)
     {
         try
         {
@@ -1119,9 +1123,9 @@ public static class InstancesPath
     /// <summary>
     /// 设置游戏实例图标
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <param name="file">文件地址</param>
-    /// <returns></returns>
+    /// <returns>是否成功设置</returns>
     public static bool SetGameIconFromFile(this GameSettingObj obj, string file)
     {
         if (!File.Exists(file))
@@ -1138,7 +1142,7 @@ public static class InstancesPath
     /// <summary>
     /// 设置游戏实例图标
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <param name="data">图片数据</param>
     public static void SetGameIconFromBytes(this GameSettingObj obj, byte[] data)
     {
@@ -1149,7 +1153,7 @@ public static class InstancesPath
     /// <summary>
     /// 设置游戏实例图标
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <param name="data">图片数据</param>
     public static void SetGameIconFromStream(this GameSettingObj obj, byte[] data)
     {

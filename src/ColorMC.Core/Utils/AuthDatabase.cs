@@ -88,7 +88,7 @@ public static class AuthDatabase
         {
             Name = "auth.json",
             Obj = s_auths.Values,
-            Local = s_local
+            File = s_local
         });
     }
 

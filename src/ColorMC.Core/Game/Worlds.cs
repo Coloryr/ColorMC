@@ -60,6 +60,13 @@ public static class Worlds
         Directory.Move(world.Local, Path.GetFullPath(dir + "/" + world.LevelName));
     }
 
+    /// <summary>
+    /// 导入世界
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="name">名字</param>
+    /// <param name="file">导入的文件</param>
+    /// <returns>是否成功导入</returns>
     public static async Task<bool> AddWorldZipAsync(this GameSettingObj obj, string name, Stream file)
     {
         var dir = obj.GetSavesPath();
@@ -111,7 +118,7 @@ public static class Worlds
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件位置</param>
-    /// <returns>结果</returns>
+    /// <returns>是否成功导入</returns>
     public static async Task<bool> AddWorldZipAsync(this GameSettingObj obj, string file)
     {
         using var stream = PathHelper.OpenRead(file);
@@ -171,8 +178,8 @@ public static class Worlds
     /// 还原世界
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="item1">文件</param>
-    /// <returns>还原结果</returns>
+    /// <param name="arg">参数</param>
+    /// <returns>是否成功还原</returns>
     public static async Task<bool> UnzipBackupWorldAsync(this GameSettingObj obj, UnzipBackupWorldArg arg)
     {
         var local = "";
@@ -236,8 +243,8 @@ public static class Worlds
     /// <summary>
     /// 读取世界信息
     /// </summary>
-    /// <param name="dir"></param>
-    /// <returns></returns>
+    /// <param name="dir">文件夹</param>
+    /// <returns>世界储存</returns>
     private static async Task<WorldObj?> ReadWorld(DirectoryInfo dir)
     {
         var file = Path.GetFullPath(dir.FullName + "/level.dat");

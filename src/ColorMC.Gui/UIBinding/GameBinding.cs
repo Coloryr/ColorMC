@@ -183,7 +183,7 @@ public static class GameBinding
     /// <returns></returns>
     public static Task<List<string>?> GetCurseForgeGameVersions()
     {
-        return CurseForgeHelper.GetGameVersions();
+        return CurseForgeHelper.GetGameVersionsAsync();
     }
 
     /// <summary>
@@ -192,7 +192,7 @@ public static class GameBinding
     /// <returns></returns>
     public static Task<List<string>?> GetModrinthGameVersions()
     {
-        return ModrinthHelper.GetGameVersion();
+        return ModrinthHelper.GetGameVersionAsync();
     }
 
     /// <summary>
@@ -203,7 +203,7 @@ public static class GameBinding
     public static Task<Dictionary<string, string>?> GetCurseForgeCategories(
         FileType type = FileType.ModPack)
     {
-        return CurseForgeHelper.GetCategories(type);
+        return CurseForgeHelper.GetCategoriesAsync(type);
     }
 
     /// <summary>
@@ -213,7 +213,7 @@ public static class GameBinding
     /// <returns></returns>
     public static Task<Dictionary<string, string>?> GetModrinthCategories(FileType type = FileType.ModPack)
     {
-        return ModrinthHelper.GetModrinthCategories(type);
+        return ModrinthHelper.GetModrinthCategoriesAsync(type);
     }
 
     /// <summary>
@@ -1254,7 +1254,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static List<string> GetScreenshots(GameSettingObj obj)
+    public static List<ScreenshotObj> GetScreenshots(GameSettingObj obj)
     {
         return obj.GetScreenshots();
     }
@@ -2447,7 +2447,7 @@ public static class GameBinding
     /// <returns></returns>
     public static async Task<string> GetGameLoader(GameSettingObj obj)
     {
-        var res = await obj.GetGameLoaderInfo();
+        var res = await obj.GetGameLoaderInfoAsync();
         if (res != null)
         {
             return res;
@@ -2486,7 +2486,7 @@ public static class GameBinding
     /// <returns></returns>
     public static Task<IntRes> AutoMarkMods(GameSettingObj obj, bool cov)
     {
-        return ModrinthHelper.AutoMark(obj, cov);
+        return ModrinthHelper.AutoMarkAsync(obj, cov);
     }
 
     /// <summary>

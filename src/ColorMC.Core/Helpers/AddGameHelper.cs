@@ -15,13 +15,8 @@ public static class AddGameHelper
     /// <summary>
     /// 导入文件夹
     /// </summary>
-    /// <param name="name">实例名字</param>
-    /// <param name="local">位置</param>
-    /// <param name="unselect">排除的文件</param>
-    /// <param name="group">游戏群组</param>
-    /// <param name="request"></param>
-    /// <param name="overwirte"></param>
-    /// <returns></returns>
+    /// <param name="arg">参数</param>
+    /// <returns>导入结果</returns>
     public static async Task<GameRes> AddGameFolder(AddGameFolderArg arg)
     {
         if (string.IsNullOrWhiteSpace(arg.Local))
@@ -44,8 +39,9 @@ public static class AddGameHelper
                 if (mmc != null)
                 {
                     var mmc1 = PathHelper.ReadText(file2)!;
-                    game = mmc.ToColorMC(mmc1, out var icon);
-                    game.Icon = icon + ".png";
+                    var res = mmc.ToColorMC(mmc1);
+                    game = res.Game;
+                    game.Icon = res.Icon + ".png";
                     ismmc = true;
                     isfind = true;
                 }
@@ -72,7 +68,6 @@ public static class AddGameHelper
                     if (obj1 != null && obj1.id != null)
                     {
                         game = obj1.ToColorMC();
-                        isfind = true;
                         break;
                     }
                 }
@@ -108,7 +103,7 @@ public static class AddGameHelper
             return new();
         }
 
-        await game.CopyFile(arg.Local, arg.Unselect, ismmc, arg.State);
+        await game.CopyFileAsync(arg.Local, arg.Unselect, ismmc, arg.State);
 
         return new()
         {
@@ -120,10 +115,8 @@ public static class AddGameHelper
     /// <summary>
     /// 导入整合包
     /// </summary>
-    /// <param name="dir">压缩包路径</param>
-    /// <param name="type">类型</param>
-    /// <param name="type">名字</param>
-    /// <param name="type">群组</param>
+    /// <param name="arg">参数</param>
+    /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallZip(InstallZipArg arg)
     {
         GameSettingObj? game = null;
@@ -488,10 +481,8 @@ public static class AddGameHelper
     /// <summary>
     /// 安装Modrinth整合包
     /// </summary>
-    /// <param name="data">整合包信息</param>
-    /// <param name="name">名字</param>
-    /// <param name="group">群组</param>
-    /// <returns>结果</returns>
+    /// <param name="arg">整合包信息</param>
+    /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallModrinth(DownloadModrinthArg arg)
     {
         var file = arg.Data.files.FirstOrDefault(a => a.primary) ?? arg.Data.files[0];
@@ -529,7 +520,7 @@ public static class AddGameHelper
 
             if (arg.Data1.icon_url != null)
             {
-                await res2.Game.SetGameIconFromUrl(arg.Data1.icon_url);
+                await res2.Game.SetGameIconFromUrlAsync(arg.Data1.icon_url);
             }
         }
 
@@ -539,10 +530,8 @@ public static class AddGameHelper
     /// <summary>
     /// 安装curseforge整合包
     /// </summary>
-    /// <param name="data">整合包信息</param>
-    /// <param name="name">名字</param>
-    /// <param name="group">群组</param>
-    /// <returns>结果</returns>
+    /// <param name="arg">整合包信息</param>
+    /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallCurseForge(DownloadCurseForgeArg arg)
     {
         arg.Data.FixDownloadUrl();
@@ -578,7 +567,7 @@ public static class AddGameHelper
 
             if (arg.Data1.logo != null)
             {
-                await res2.Game.SetGameIconFromUrl(arg.Data1.logo.url);
+                await res2.Game.SetGameIconFromUrlAsync(arg.Data1.logo.url);
             }
         }
 

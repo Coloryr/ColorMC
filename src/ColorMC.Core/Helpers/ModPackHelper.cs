@@ -19,9 +19,8 @@ public static class ModPackHelper
     /// <summary>
     /// 升级CurseForge整合包
     /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="data">数据</param>
-    /// <returns>结果</returns>
+    /// <param name="arg">参数</param>
+    /// <returns>是否升级完成</returns>
     public static async Task<bool> UpdateModPack(UpdateCurseForgeModPackArg arg)
     {
         arg.Data.FixDownloadUrl();
@@ -58,9 +57,8 @@ public static class ModPackHelper
     /// <summary>
     /// 更新Modrinth整合包
     /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="data"></param>
-    /// <returns>升级结果</returns>
+    /// <param name="arg">参数</param>
+    /// <returns>是否升级完成</returns>
     public static async Task<bool> UpdateModPack(UpdateModrinthModPackArg arg)
     {
         var file = arg.Data.files.FirstOrDefault(a => a.primary) ?? arg.Data.files[0];
@@ -97,10 +95,9 @@ public static class ModPackHelper
     /// <summary>
     /// 升级CurseForge整合包
     /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="zip">压缩包路径</param>
-    /// <returns>结果</returns>
-    public static async Task<bool> UpdateCurseForgeModPackAsync(UpdateModPackArg arg)
+    /// <param name="arg">参数</param>
+    /// <returns>是否升级完成</returns>
+    private static async Task<bool> UpdateCurseForgeModPackAsync(UpdateModPackArg arg)
     {
         using var zFile = new ZipFile(arg.Zip);
         using var stream1 = new MemoryStream();
@@ -249,13 +246,13 @@ public static class ModPackHelper
                     return false;
                 }
 
-                var path1 = await CurseForgeHelper.GetItemPath(arg.Game, res.data);
+                var path1 = await CurseForgeHelper.GetItemPathAsync(arg.Game, res.data);
                 var modid = res.data.modId.ToString();
-                var item1 = res.data.MakeModDownloadObj(path1.Item1);
+                var item1 = res.data.MakeModDownloadObj(path1.File);
                 list1.Add(item1);
-                if (path1.Item3 == FileType.Mod)
+                if (path1.FileType == FileType.Mod)
                 {
-                    arg.Game.Mods.Add(modid, res.data.MakeModInfo(path1.Item2));
+                    arg.Game.Mods.Add(modid, res.data.MakeModInfo(path1.Name));
                 }
             }
         }
@@ -267,7 +264,7 @@ public static class ModPackHelper
             var obj1 = arg.Game.CopyObj();
             obj1.Mods.Clear();
 
-            var list = await CurseForgeHelper.GetModInfo(new GetCurseForgeModInfoArg
+            var list = await CurseForgeHelper.GetModInfoAsync(new GetCurseForgeModInfoArg
             {
                 Game = obj1,
                 Info = info,
@@ -337,11 +334,8 @@ public static class ModPackHelper
     /// <summary>
     /// 安装CurseForge整合包
     /// </summary>
-    /// <param name="zip">压缩包文件</param>
-    /// <param name="name">实例名字</param>
-    /// <param name="group">实例组</param>
-    /// <returns>Res安装结果
-    /// Game游戏实例</returns>
+    /// <param name="arg">参数</param>
+    /// <returns>安装结果</returns>
     public static async Task<GameRes> InstallCurseForgeModPackAsync(InstallModPackZipArg arg)
     {
         arg.Update2?.Invoke(CoreRunState.Read);
@@ -467,7 +461,7 @@ public static class ModPackHelper
         arg.Update2?.Invoke(CoreRunState.GetInfo);
 
         //获取Mod信息
-        var list = await CurseForgeHelper.GetModInfo(new GetCurseForgeModInfoArg
+        var list = await CurseForgeHelper.GetModInfoAsync(new GetCurseForgeModInfoArg
         {
             Game = game,
             Info = info,
@@ -492,10 +486,9 @@ public static class ModPackHelper
     /// <summary>
     /// 升级Modrinth整合包
     /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="zip">整合包路径</param>
+    /// <param name="arg">参数</param>
     /// <returns>升级结果</returns>
-    public static async Task<bool> UpdateModrinthModPackAsync(UpdateModPackArg arg)
+    private static async Task<bool> UpdateModrinthModPackAsync(UpdateModPackArg arg)
     {
         using var zFile = new ZipFile(PathHelper.OpenRead(arg.Zip));
         using var stream1 = new MemoryStream();
@@ -745,11 +738,8 @@ public static class ModPackHelper
     /// <summary>
     /// 安装Modrinth整合包
     /// </summary>
-    /// <param name="zip">文件路径</param>
-    /// <param name="name">实例名字</param>
-    /// <param name="group">实例组</param>
-    /// <returns>Res安装结果
-    /// Game游戏实例</returns>
+    /// <param name="arg">参数</param>
+    /// <returns>安装结果</returns>
     public static async Task<GameRes> InstallModrinthModPackAsync(InstallModPackZipArg arg)
     {
         arg.Update2?.Invoke(CoreRunState.Read);

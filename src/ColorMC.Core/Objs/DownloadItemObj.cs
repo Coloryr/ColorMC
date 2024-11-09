@@ -24,10 +24,6 @@ public record DownloadItemObj
     /// 覆盖
     /// </summary>
     public bool Overwrite { get; set; } = false;
-    /// <summary>
-    /// 使用ColorMC请求头
-    /// </summary>
-    public bool UseColorMCHead { get; set; } = false;
 
     /// <summary>
     /// 总大小

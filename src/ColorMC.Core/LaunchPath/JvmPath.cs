@@ -44,8 +44,8 @@ public static class JvmPath
     /// <summary>
     /// 获取路径
     /// </summary>
-    /// <param name="info"></param>
-    /// <returns></returns>
+    /// <param name="info">Java信息</param>
+    /// <returns>路径</returns>
     public static string GetPath(this JavaInfo info)
     {
         if (info.Path.StartsWith(Name1))
@@ -59,10 +59,7 @@ public static class JvmPath
     /// <summary>
     /// 安装Java
     /// </summary>
-    /// <param name="file">文件名</param>
-    /// <param name="name">Java名</param>
-    /// <param name="sha256">验证</param>
-    /// <param name="url">地址</param>
+    /// <param name="arg">参数</param>
     /// <returns>结果</returns>
     public static async Task<MessageRes> InstallAsync(InstallJvmArg arg)
     {
@@ -143,9 +140,8 @@ public static class JvmPath
     /// <summary>
     /// 解压
     /// </summary>
-    /// <param name="name">名字</param>
-    /// <param name="file">文件</param>
-    /// <returns></returns>
+    /// <param name="arg">参数</param>
+    /// <returns>结果</returns>
     public static async Task<MessageRes> UnzipJavaAsync(UnzipArg arg)
     {
         string path = BaseDir + Name1 + "/" + arg.Name;
@@ -332,7 +328,7 @@ public static class JvmPath
     /// 获取Java信息
     /// </summary>
     /// <param name="name">名字</param>
-    /// <returns>信息</returns>
+    /// <returns>Java信息</returns>
     public static JavaInfo? GetInfo(string? name)
     {
         if (name == null)
@@ -361,7 +357,7 @@ public static class JvmPath
     /// <summary>
     /// 找到合适的Java
     /// </summary>
-    /// <param name="obj">游戏实例</param>
+    /// <param name="jv">主版本</param>
     /// <returns>Java信息</returns>
     public static JavaInfo? FindJava(int jv)
     {

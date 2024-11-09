@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -6,6 +6,9 @@ using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Downloader;
 
+/// <summary>
+/// 下载任务
+/// </summary>
 internal class DownloadTask
 {
     internal CancellationToken Token => _cancel.Token;
@@ -27,15 +30,21 @@ internal class DownloadTask
     /// 已下载数量
     /// </summary>
     private int _doneSize;
-    private int _threadCount;
-
-    private readonly object _lock = new();
+    /// <summary>
+    /// 结束线程数量
+    /// </summary>
+    private int _doneThreadCount;
 
     /// <summary>
     /// 处理完成信号量
     /// </summary>
     private readonly Semaphore _semaphore;
 
+    /// <summary>
+    /// 下载任务
+    /// </summary>
+    /// <param name="list">下载项目列表</param>
+    /// <param name="arg">下载参数</param>
     public DownloadTask(ICollection<DownloadItemObj> list, DownloadArg arg)
     {
         var names = new List<string>();
@@ -61,6 +70,10 @@ internal class DownloadTask
         _allSize = _items.Count;
     }
 
+    /// <summary>
+    /// 等待下载完成
+    /// </summary>
+    /// <returns>是否成功下载</returns>
     public Task<bool> WaitDone()
     {
         return Task.Run(() =>
@@ -76,11 +89,17 @@ internal class DownloadTask
         });
     }
 
+    /// <summary>
+    /// 更新数据
+    /// </summary>
     public void Update()
     {
         _arg.UpdateTask?.Invoke(_allSize, _doneSize);
     }
 
+    /// <summary>
+    /// 取消下载
+    /// </summary>
     public void Cancel()
     {
         _items.Clear();
@@ -90,7 +109,7 @@ internal class DownloadTask
     /// <summary>
     /// 获取下载项目
     /// </summary>
-    /// <returns></returns>
+    /// <returns>下载项目</returns>
     public DownloadItemObj? GetItem()
     {
         if (_items.TryDequeue(out var item))
@@ -115,11 +134,11 @@ internal class DownloadTask
     /// </summary>
     public void ThreadDone()
     {
-        lock (_lock)
+        lock (this)
         {
-            _threadCount++;
+            _doneThreadCount++;
         }
-        if (_threadCount >= ConfigUtils.Config.Http.DownloadThread)
+        if (_doneThreadCount >= DownloadManager.ThreadCount)
         {
             //任务结束
             _semaphore.Release();

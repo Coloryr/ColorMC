@@ -13,8 +13,8 @@ public static class ChunkMca
     /// <summary>
     /// 保存区块文件
     /// </summary>
-    /// <param name="data">数据</param>
-    /// <param name="file">文件</param>
+    /// <param name="data">区块数据</param>
+    /// <param name="file">文件名</param>
     public static void Save(this ChunkDataObj data, string file)
     {
         using var stream = new MemoryStream();
@@ -27,7 +27,7 @@ public static class ChunkMca
     /// <summary>
     /// 写区块数据到流中
     /// </summary>
-    /// <param name="data">数据</param>
+    /// <param name="data">区块数据</param>
     /// <param name="stream">保存用的流</param>
     private static void WriteChunk(ChunkDataObj data, Stream stream)
     {
@@ -59,7 +59,7 @@ public static class ChunkMca
             item.Save(stream1);
             var data1 = stream1.ToArray();
             int len = data1.Length + 5;
-            int pos = ChunkUtils.ChunkToHeadPos(item.X, item.Z);
+            int pos = ChunkUtils.ChunkToHeadPos(new(item.X, item.Z));
             var temp = data.Pos[pos];
             temp.Time = time;
             temp.Pos = now / 4096;
@@ -155,7 +155,7 @@ public static class ChunkMca
     /// 从流中读区块数据
     /// </summary>
     /// <param name="data">区块数据</param>
-    /// <param name="stream">流</param>
+    /// <param name="stream">要读取的流</param>
     private static async Task ReadChunkAsync(ChunkDataObj data, Stream stream)
     {
         var list = new NbtList()
@@ -217,7 +217,7 @@ public static class ChunkMca
     /// <summary>
     /// 从流中读区块头
     /// </summary>
-    /// <param name="stream">文件流</param>
+    /// <param name="stream">要读取的流</param>
     /// <returns>区块数据</returns>
     private static async Task<ChunkDataObj?> ReadHeadAsync(Stream stream)
     {

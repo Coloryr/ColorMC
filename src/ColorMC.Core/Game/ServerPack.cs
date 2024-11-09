@@ -32,7 +32,8 @@ public static class ServerPack
     /// 开始更新
     /// </summary>
     /// <param name="obj">服务器实例</param>
-    /// <returns>结果</returns>
+    /// <param name="state">更新参数</param>
+    /// <returns>是否更新完成</returns>
     public static async Task<bool> UpdateAsync(this ServerPackObj obj, ColorMCCore.UpdateState? state)
     {
         PathHelper.Delete(obj.Game.GetServerPackFile());
@@ -99,8 +100,7 @@ public static class ServerPack
                         Name = item.File,
                         Local = Path.GetFullPath(path + item.File),
                         SHA256 = item.Sha256,
-                        Url = obj.Game.ServerUrl + item.Url,
-                        UseColorMCHead = true
+                        Url = obj.Game.ServerUrl + item.Url
                     });
                 }
                 else
@@ -141,8 +141,7 @@ public static class ServerPack
                     Name = item.File,
                     Local = Path.GetFullPath(path + item.File),
                     SHA256 = item.Sha256,
-                    Url = obj.Game.ServerUrl + item.Url,
-                    UseColorMCHead = true
+                    Url = obj.Game.ServerUrl + item.Url
                 });
             }
         });
@@ -164,7 +163,6 @@ public static class ServerPack
                         SHA256 = item.Sha256,
                         Url = obj.Game.ServerUrl + item.Url,
                         Overwrite = true,
-                        UseColorMCHead = true,
                         Later = (stream) =>
                         {
                             if (item.IsZip)
@@ -186,7 +184,6 @@ public static class ServerPack
                         Local = Path.GetFullPath(path + "/" + item.Group + item.FileName),
                         SHA256 = item.Sha256,
                         Overwrite = true,
-                        UseColorMCHead = true,
                         Url = obj.Game.ServerUrl + item.Url
                     });
                 }
@@ -269,7 +266,7 @@ public static class ServerPack
         ConfigSave.AddItem(new()
         {
             Name = $"game-server-{obj.Game.Name}",
-            Local = obj.Game.GetServerPackFile(),
+            File = obj.Game.GetServerPackFile(),
             Obj = obj
         });
     }
@@ -278,6 +275,7 @@ public static class ServerPack
     /// 生成服务器实例
     /// </summary>
     /// <param name="obj">服务器实例</param>
+    /// <param name="arg">参数</param>
     /// <returns>创建结果</returns>
     public static async Task<bool> GenServerPackAsync(this ServerPackObj obj, ServerPackGenArg arg)
     {
@@ -483,8 +481,8 @@ public static class ServerPack
     /// 检查服务器实例
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="url">网址</param>
-    /// <returns>结果</returns>
+    /// <param name="arg">参数</param>
+    /// <returns>是否检查成功</returns>
     public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj, ServerPackCheckArg arg)
     {
         var obj2 = obj.GetServerPack();

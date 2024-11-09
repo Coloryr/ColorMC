@@ -87,22 +87,4 @@ public static class Options
 
         return options;
     }
-
-    /// <summary>
-    /// 组合字符串
-    /// </summary>
-    /// <param name="input"></param>
-    /// <param name="index"></param>
-    /// <param name="sp"></param>
-    /// <returns></returns>
-    //private static string MakeString(string[] input, int index, string sp)
-    //{
-    //    var temp = "";
-    //    for (int i = index; i < input.Length; i++)
-    //    {
-    //        temp += input[i] + sp;
-    //    }
-
-    //    return temp[0..^(sp.Length)];
-    //}
 }

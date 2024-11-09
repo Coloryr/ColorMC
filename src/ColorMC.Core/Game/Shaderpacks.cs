@@ -62,7 +62,7 @@ public static class Shaderpacks
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
-    /// <returns>结果</returns>
+    /// <returns>是否添加成功</returns>
     public static async Task<bool> AddShaderpackAsync(this GameSettingObj obj, List<string> file)
     {
         var dir = obj.GetShaderpacksPath();

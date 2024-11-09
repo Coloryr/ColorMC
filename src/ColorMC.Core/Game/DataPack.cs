@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
@@ -18,7 +18,7 @@ public static class DataPack
     /// 获取数据包列表
     /// </summary>
     /// <param name="world">世界存储</param>
-    /// <returns>列表</returns>
+    /// <returns>数据包列表</returns>
     public static List<DataPackObj> GetDataPacks(this WorldObj world)
     {
         var list = new List<DataPackObj>();
@@ -29,10 +29,16 @@ public static class DataPack
             return list;
         }
 
+        //查找数据包的NBT
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
+        if (nbt == null)
+        {
+            return list;
+        }
         var ens = nbt?.TryGet<NbtList>("Enabled");
         var dis = nbt?.TryGet<NbtList>("Disabled");
 
+        //从压缩包读取数据包
         var files = Directory.GetFiles(path);
         foreach (var item in files)
         {
@@ -65,6 +71,7 @@ public static class DataPack
             }
         }
 
+        //从文件夹读取数据包
         var paths = Directory.GetDirectories(path);
         foreach (var item in paths)
         {
@@ -96,9 +103,9 @@ public static class DataPack
     /// <summary>
     /// 禁用/启用世界数据包
     /// </summary>
-    /// <param name="list">数据包列表</param>
     /// <param name="world">世界储存</param>
-    /// <returns></returns>
+    /// <param name="list">数据包列表</param>
+    /// <returns>是否成功设置</returns>
     public static bool DisableOrEnableDataPack(this WorldObj world, IEnumerable<DataPackObj> list)
     {
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
@@ -119,45 +126,43 @@ public static class DataPack
         {
             foreach (var item in ens)
             {
-                if (item is NbtString str)
+                if (item is NbtString str && str.Value == obj.Name)
                 {
-                    if (str.Value == obj.Name)
-                    {
-                        nbten = str;
-                        enable = true;
-                        break;
-                    }
+                    nbten = str;
+                    enable = true;
+                    break;
                 }
             }
             foreach (var item in dis)
             {
-                if (item is NbtString str)
+                if (item is NbtString str && str.Value == obj.Name)
                 {
-                    if (str.Value == obj.Name)
-                    {
-                        nbtdi = str;
-                        disable = true;
-                        break;
-                    }
+                    nbtdi = str;
+                    disable = true;
+                    break;
                 }
             }
 
             if (enable && disable)
             {
+                //启用
                 dis.Remove(nbtdi!);
             }
             else if (enable)
             {
+                //禁用
                 ens.Remove(nbten!);
                 dis.Add(nbten!);
             }
             else if (disable)
             {
+                //启用
                 dis.Remove(nbtdi!);
                 ens.Add(nbtdi!);
             }
             else
             {
+                //启用
                 ens.Add(new NbtString() { Value = obj.Name });
             }
         }
@@ -171,7 +176,8 @@ public static class DataPack
     /// 删除世界数据包
     /// </summary>
     /// <param name="world">世界存储</param>
-    /// <returns>是否删除</returns>
+    /// <param name="arg">删除参数</param>
+    /// <returns>是否删除成功</returns>
     public static async Task<bool> DeleteDataPackAsync(this WorldObj world, DataPackDeleteArg arg)
     {
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
@@ -239,7 +245,7 @@ public static class DataPack
     /// <param name="ens">已启用的数据包</param>
     /// <param name="dis">已禁用的数据包</param>
     /// <param name="data">数据包内容</param>
-    /// <returns></returns>
+    /// <returns>数据包信息</returns>
     private static DataPackObj? CheckPack(string path, NbtList? ens, NbtList? dis, JObject data)
     {
         if (data.TryGetValue("pack", out var obj) && obj is JObject obj1)

@@ -11,8 +11,8 @@ public static class HashHelper
     /// <summary>
     /// 获取MD5值
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
+    /// <param name="data">数据</param>
+    /// <returns>MD5值</returns>
     public static string GenMd5(byte[] data)
     {
         var text = new StringBuilder();
@@ -25,8 +25,8 @@ public static class HashHelper
     /// <summary>
     /// 获取SHA1值
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
+    /// <param name="data">数据</param>
+    /// <returns>Sha1值</returns>
     public static string GenSha1(byte[] data)
     {
         var text = new StringBuilder();
@@ -39,8 +39,8 @@ public static class HashHelper
     /// <summary>
     /// 获取SHA1值
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">数据</param>
+    /// <returns>Sha1值</returns>
     public static string GenSha1(string input)
     {
         return GenSha1(Encoding.UTF8.GetBytes(input));
@@ -48,8 +48,8 @@ public static class HashHelper
     /// <summary>
     /// 获取SHA256值
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">数据</param>
+    /// <returns>Sha256值</returns>
     public static string GenSha256(string input)
     {
         return GenSha256(Encoding.UTF8.GetBytes(input));
@@ -57,8 +57,8 @@ public static class HashHelper
     /// <summary>
     /// 获取SHA1值
     /// </summary>
-    /// <param name="stream"></param>
-    /// <returns></returns>
+    /// <param name="stream">数据</param>
+    /// <returns>Sha1值</returns>
     public static string GenSha1(Stream stream)
     {
         var text = new StringBuilder();
@@ -72,8 +72,8 @@ public static class HashHelper
     /// <summary>
     /// 获取MD5值
     /// </summary>
-    /// <param name="stream"></param>
-    /// <returns></returns>
+    /// <param name="stream">数据</param>
+    /// <returns>MD5值</returns>
     public static string GenMd5(Stream stream)
     {
         var text = new StringBuilder();
@@ -87,8 +87,8 @@ public static class HashHelper
     /// <summary>
     /// 获取SHA1值
     /// </summary>
-    /// <param name="stream"></param>
-    /// <returns></returns>
+    /// <param name="stream">数据</param>
+    /// <returns>Sha1值</returns>
     public static async Task<string> GenSha1Async(Stream stream)
     {
         var text = new StringBuilder();
@@ -101,8 +101,8 @@ public static class HashHelper
     /// <summary>
     /// 获取SHA256值
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
+    /// <param name="data">数据</param>
+    /// <returns>Sha256值</returns>
     public static string GenSha256(byte[] data)
     {
         var text = new StringBuilder();
@@ -115,8 +115,8 @@ public static class HashHelper
     /// <summary>
     /// 获取SHA256值
     /// </summary>
-    /// <param name="stream"></param>
-    /// <returns></returns>
+    /// <param name="stream">数据</param>
+    /// <returns>Sha256值</returns>
     public static string GenSha256(Stream stream)
     {
         var text = new StringBuilder();
@@ -130,8 +130,8 @@ public static class HashHelper
     /// <summary>
     /// 获取SHA256值
     /// </summary>
-    /// <param name="stream"></param>
-    /// <returns></returns>
+    /// <param name="stream">数据</param>
+    /// <returns>Sha256值</returns>
     public static async Task<string> GenSha256Async(Stream stream)
     {
         var text = new StringBuilder();
@@ -145,8 +145,8 @@ public static class HashHelper
     /// <summary>
     /// 获取SHA512值
     /// </summary>
-    /// <param name="stream"></param>
-    /// <returns></returns>
+    /// <param name="stream">数据</param>
+    /// <returns>Sha512值</returns>
     public static async Task<string> GenSha512Async(Stream stream)
     {
         var text = new StringBuilder();
@@ -160,8 +160,8 @@ public static class HashHelper
     /// <summary>
     /// 生成Base64
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">数据</param>
+    /// <returns>Base64</returns>
     public static string GenBase64(string input)
     {
         return Convert.ToBase64String(Encoding.UTF8.GetBytes(input));
@@ -169,8 +169,8 @@ public static class HashHelper
     /// <summary>
     /// 反解Base64
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">Base64数据</param>
+    /// <returns>原始数据</returns>
     public static string DeBase64(string input)
     {
         return Encoding.UTF8.GetString(Convert.FromBase64String(input));

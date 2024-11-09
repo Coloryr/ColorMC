@@ -363,7 +363,7 @@ public static class WebBinding
         var res = new Dictionary<string, FileModVersionModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
-            var res1 = await CurseForgeHelper.GetModDependencies(data, obj.Version, obj.Loader, true);
+            var res1 = await CurseForgeHelper.GetModDependenciesAsync(data, obj.Version, obj.Loader);
 
             foreach (var item1 in res1)
             {
@@ -412,7 +412,7 @@ public static class WebBinding
         var res = new Dictionary<string, FileModVersionModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
-            var list2 = await ModrinthHelper.GetModDependencies(data, obj.Version, obj.Loader);
+            var list2 = await ModrinthHelper.GetModDependenciesAsync(data, obj.Version, obj.Loader);
             foreach (var item1 in list2)
             {
                 if (res.ContainsKey(item1.ModId) || obj.Mods.ContainsKey(item1.ModId)

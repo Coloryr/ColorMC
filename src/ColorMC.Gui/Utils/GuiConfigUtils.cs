@@ -140,7 +140,7 @@ public static class GuiConfigUtils
         ConfigSave.AddItem(new()
         {
             Name = "gui.json",
-            Local = s_local,
+            File = s_local,
             Obj = Config
         });
     }

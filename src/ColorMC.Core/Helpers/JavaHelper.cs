@@ -150,6 +150,12 @@ public static class JavaHelper
     }
 
 #pragma warning disable CA1416 // 验证平台兼容性
+
+    /// <summary>
+    /// 获取所有Java版本
+    /// </summary>
+    /// <param name="javaKeyPath">注册表路径</param>
+    /// <returns>Java版本</returns>
     private static List<string> GetOracleJavaInstallPath(string javaKeyPath)
     {
         try
@@ -179,6 +185,11 @@ public static class JavaHelper
         return [];
     }
 
+    /// <summary>
+    /// 获取所有Java版本
+    /// </summary>
+    /// <param name="javaKeyPath">注册表路径</param>
+    /// <returns>Java版本</returns>
     private static List<string> GetAdoptiumJavaInstallPath(string javaKeyPath)
     {
         try
@@ -208,6 +219,11 @@ public static class JavaHelper
         return [];
     }
 
+    /// <summary>
+    /// 获取所有Java版本
+    /// </summary>
+    /// <param name="javaKeyPath">注册表路径</param>
+    /// <returns>Java版本</returns>
     private static List<string> GetZuluJavaInstallPath(string javaKeyPath)
     {
         try
@@ -236,7 +252,13 @@ public static class JavaHelper
         }
         return [];
     }
+#pragma warning restore CA1416
 
+    /// <summary>
+    /// 获取所有Java版本
+    /// </summary>
+    /// <param name="local">文件路径</param>
+    /// <returns>Java版本</returns>
     public static List<JavaInfo>? FindJava(string local)
     {
         try
@@ -261,144 +283,153 @@ public static class JavaHelper
             return null;
         }
     }
-#pragma warning restore CA1416
 
-        /// <summary>
-        /// 查找本机所有Java
-        /// </summary>
-        /// <returns></returns>
-    public static List<JavaInfo>? FindJava()
+    /// <summary>
+    /// 查找本机所有Java
+    /// </summary>
+    /// <returns>Java列表</returns>
+    public static async Task<List<JavaInfo>?> FindJava()
     {
-        try
+        bool ex = false;
+        var list = new List<JavaInfo>();
+
+        await Task.Run(() =>
         {
-            var list = new List<JavaInfo>();
-
-            //简单扫描
-            var list1 = SystemInfo.Os switch
+            try
             {
-                OsType.Windows => GetList("where", "javaw"),
-                _ => GetList("which", "java"),
-            };
+                //简单扫描
+                var list1 = SystemInfo.Os switch
+                {
+                    OsType.Windows => GetList("where", "javaw"),
+                    _ => GetList("which", "java"),
+                };
 
-            foreach (var item in list1)
-            {
-                if (string.IsNullOrWhiteSpace(item))
+                foreach (var item in list1)
                 {
-                    continue;
+                    if (string.IsNullOrWhiteSpace(item))
+                    {
+                        continue;
+                    }
+                    var info = GetJavaInfo(item);
+                    if (info != null)
+                    {
+                        list.Add(info);
+                    }
                 }
-                var info = GetJavaInfo(item);
-                if (info != null)
-                {
-                    list.Add(info);
-                }
-            }
 
-            //扫描注册表
-            if (SystemInfo.Os == OsType.Windows)
-            {
-                foreach (var item in GetOracleJavaInstallPath(@"SOFTWARE\JavaSoft\Java Runtime Environment\"))
+                //扫描注册表
+                if (SystemInfo.Os == OsType.Windows)
                 {
-                    var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
-                    if (info != null)
+                    foreach (var item in GetOracleJavaInstallPath(@"SOFTWARE\JavaSoft\Java Runtime Environment\"))
                     {
-                        list.Add(info);
-                    }
-                }
-                foreach (var item in GetOracleJavaInstallPath(@"SOFTWARE\JavaSoft\JDK\"))
-                {
-                    var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
-                    if (info != null)
-                    {
-                        list.Add(info);
-                    }
-                }
-                foreach (var item in GetAdoptiumJavaInstallPath(@"SOFTWARE\Eclipse Adoptium\JDK\"))
-                {
-                    var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
-                    if (info != null)
-                    {
-                        list.Add(info);
-                    }
-                }
-                foreach (var item in GetAdoptiumJavaInstallPath(@"SOFTWARE\Eclipse Adoptium\JDK\"))
-                {
-                    var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
-                    if (info != null)
-                    {
-                        list.Add(info);
-                    }
-                }
-                foreach (var item in GetZuluJavaInstallPath(@"SOFTWARE\Azul Systems\Zulu\"))
-                {
-                    var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
-                    if (info != null)
-                    {
-                        list.Add(info);
-                    }
-                }
-            }
-            else if (SystemInfo.Os == OsType.Linux)
-            {
-                if (SystemInfo.System.Contains("Ubuntu") ||
-                    SystemInfo.System.Contains("Debian"))
-                {
-                    list1 = GetList("update-alternatives", "--list java");
-
-                    foreach (var item in list1)
-                    {
-                        if (string.IsNullOrWhiteSpace(item))
+                        var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                        if (info != null)
                         {
-                            continue;
+                            list.Add(info);
                         }
-                        var info = GetJavaInfo(item);
+                    }
+                    foreach (var item in GetOracleJavaInstallPath(@"SOFTWARE\JavaSoft\JDK\"))
+                    {
+                        var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                        if (info != null)
+                        {
+                            list.Add(info);
+                        }
+                    }
+                    foreach (var item in GetAdoptiumJavaInstallPath(@"SOFTWARE\Eclipse Adoptium\JDK\"))
+                    {
+                        var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                        if (info != null)
+                        {
+                            list.Add(info);
+                        }
+                    }
+                    foreach (var item in GetAdoptiumJavaInstallPath(@"SOFTWARE\Eclipse Adoptium\JDK\"))
+                    {
+                        var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                        if (info != null)
+                        {
+                            list.Add(info);
+                        }
+                    }
+                    foreach (var item in GetZuluJavaInstallPath(@"SOFTWARE\Azul Systems\Zulu\"))
+                    {
+                        var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
                         if (info != null)
                         {
                             list.Add(info);
                         }
                     }
                 }
-                else if (SystemInfo.SystemName.Contains("Arch")
-                    || SystemInfo.SystemName.Contains("Manjaro"))
+                else if (SystemInfo.Os == OsType.Linux)
                 {
-                    list1 = GetList("sh", "-c \"pacman -Qs jre jdk | grep jdk\"");
-
-                    foreach (var item in list1)
+                    if (SystemInfo.System.Contains("Ubuntu") ||
+                        SystemInfo.System.Contains("Debian"))
                     {
-                        if (string.IsNullOrWhiteSpace(item))
+                        list1 = GetList("update-alternatives", "--list java");
+
+                        foreach (var item in list1)
                         {
-                            continue;
+                            if (string.IsNullOrWhiteSpace(item))
+                            {
+                                continue;
+                            }
+                            var info = GetJavaInfo(item);
+                            if (info != null)
+                            {
+                                list.Add(info);
+                            }
                         }
-                        var list2 = item.Split(' ');
-                        var list3 = GetList("pacman", "-Ql " + list2[0]);
-                        var item1 = list3.Where(item => item.EndsWith("/java"))
-                            .FirstOrDefault();
-                        if (item1 == null)
+                    }
+                    else if (SystemInfo.SystemName.Contains("Arch")
+                        || SystemInfo.SystemName.Contains("Manjaro"))
+                    {
+                        list1 = GetList("sh", "-c \"pacman -Qs jre jdk | grep jdk\"");
+
+                        foreach (var item in list1)
                         {
-                            continue;
-                        }
-                        var list4 = item1.Split(' ');
-                        if (list4.Length < 2)
-                        {
-                            continue;
-                        }
-                        var info = GetJavaInfo(list4[1]);
-                        if (info != null)
-                        {
-                            list.Add(info);
+                            if (string.IsNullOrWhiteSpace(item))
+                            {
+                                continue;
+                            }
+                            var list2 = item.Split(' ');
+                            var list3 = GetList("pacman", "-Ql " + list2[0]);
+                            var item1 = list3.Where(item => item.EndsWith("/java"))
+                                .FirstOrDefault();
+                            if (item1 == null)
+                            {
+                                continue;
+                            }
+                            var list4 = item1.Split(' ');
+                            if (list4.Length < 2)
+                            {
+                                continue;
+                            }
+                            var info = GetJavaInfo(list4[1]);
+                            if (info != null)
+                            {
+                                list.Add(info);
+                            }
                         }
                     }
                 }
             }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.Get("Core.Jvm.Error10"), e);
+                ex = true;
+            }
+        });
 
-            return list;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Jvm.Error10"), e);
-            return null;
-        }
+        return ex ? null : list;
     }
 
+    /// <summary>
+    /// 执行并获取控制台数据
+    /// </summary>
+    /// <param name="file">文件</param>
+    /// <param name="arg">参数</param>
+    /// <returns>数据</returns>
     private static string[] GetList(string file, string arg)
     {
         using var p = new Process();
@@ -415,6 +446,6 @@ public static class JavaHelper
 
         var result = p.StandardOutput.ReadToEnd();
         var result1 = p.StandardError.ReadToEnd();
-        return result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+        return result.Split([Environment.NewLine], StringSplitOptions.None);
     }
 }

@@ -82,7 +82,7 @@ public static class LocalMaven
         ConfigSave.AddItem(new()
         {
             Name = Name1,
-            Local = s_local,
+            File = s_local,
             Obj = s_items
         });
     }

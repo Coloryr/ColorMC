@@ -1,6 +1,7 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
 
 namespace ColorMC.Core.Game;
 
@@ -14,9 +15,9 @@ public static class Screenshots
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>截图列表</returns>
-    public static List<string> GetScreenshots(this GameSettingObj game)
+    public static List<ScreenshotObj> GetScreenshots(this GameSettingObj game)
     {
-        var list = new List<string>();
+        var list = new List<ScreenshotObj>();
         var dir = game.GetScreenshotsPath();
         if (!Directory.Exists(dir))
         {
@@ -24,7 +25,14 @@ public static class Screenshots
             return list;
         }
 
-        list.AddRange(Directory.GetFiles(dir));
+        foreach (var item in Directory.GetFiles(dir))
+        {
+            list.Add(new()
+            {
+                File = item,
+                Name = Path.GetFileName(item)
+            });
+        }
         return list;
     }
 
@@ -35,21 +43,23 @@ public static class Screenshots
     public static void ClearScreenshots(this GameSettingObj game)
     {
         var dir = game.GetScreenshotsPath();
-        if (Directory.Exists(dir))
+        if (!Directory.Exists(dir))
         {
-            foreach (var item in Directory.GetFiles(dir))
-            {
-                PathHelper.Delete(item);
-            }
+            return;
+        }
+
+        foreach (var item in Directory.GetFiles(dir))
+        {
+            PathHelper.Delete(item);
         }
     }
 
     /// <summary>
     /// 删除屏幕截图
     /// </summary>
-    /// <param name="file"></param>
-    public static void Delete(string file)
+    /// <param name="item">截图文件</param>
+    public static void Delete(ScreenshotObj item)
     {
-        PathHelper.Delete(file);
+        PathHelper.Delete(item.File);
     }
 }
