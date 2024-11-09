@@ -1145,7 +1145,7 @@ public static class Launch
                 {
                     if (JvmPath.Jvms.Count == 0)
                     {
-                        var list1 = JavaHelper.FindJava();
+                        var list1 = await JavaHelper.FindJava();
                         list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
                     }
                     var jv = game.javaVersion.majorVersion;
@@ -1485,7 +1485,7 @@ public static class Launch
         {
             if (JvmPath.Jvms.Count == 0)
             {
-                var list1 = JavaHelper.FindJava();
+                var list1 = await JavaHelper.FindJava();
                 list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
             }
             var jv = game.javaVersion.majorVersion;

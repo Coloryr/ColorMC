@@ -386,9 +386,9 @@ internal class DownloadThread
                     if (time == 5)
                     {
                         var res = UrlHelper.UrlChange(item.Url);
-                        if (res.Item1)
+                        if (res != null)
                         {
-                            item.Url = res.Item2!;
+                            item.Url = res;
                             time = 0;
                             continue;
                         }

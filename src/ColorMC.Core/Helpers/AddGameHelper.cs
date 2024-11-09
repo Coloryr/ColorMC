@@ -259,7 +259,8 @@ public static class AddGameHelper
 
                         var mmc1 = Encoding.UTF8.GetString(stream2.ToArray());
 
-                        game = mmc.ToColorMC(mmc1, out var icon);
+                        var res = mmc.ToColorMC(mmc1);
+                        game = res.Game;
 
                         if (!string.IsNullOrWhiteSpace(arg.Name))
                         {
@@ -273,9 +274,9 @@ public static class AddGameHelper
                         {
                             game.Name = new FileInfo(arg.Dir).Name;
                         }
-                        if (!string.IsNullOrWhiteSpace(icon))
+                        if (!string.IsNullOrWhiteSpace(res.Icon))
                         {
-                            game.Icon = icon + ".png";
+                            game.Icon = res.Icon + ".png";
                         }
                         game = await InstancesPath.CreateGame(new CreateGameArg
                         {

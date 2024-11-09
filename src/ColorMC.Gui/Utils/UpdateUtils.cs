@@ -96,8 +96,7 @@ public static class UpdateUtils
                 SHA1 = WebSha1s[0],
                 Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Core.dll",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Core.dll",
-                Overwrite = true,
-                UseColorMCHead = true
+                Overwrite = true
             },
             new()
             {
@@ -105,8 +104,7 @@ public static class UpdateUtils
                 SHA1 = WebSha1s[1],
                 Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Core.pdb",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Core.pdb",
-                Overwrite = true,
-                UseColorMCHead = true
+                Overwrite = true
             },
             new()
             {
@@ -114,8 +112,7 @@ public static class UpdateUtils
                 SHA1 = WebSha1s[2],
                 Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Gui.dll",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Gui.dll",
-                Overwrite = true,
-                UseColorMCHead = true
+                Overwrite = true
             },
             new()
             {
@@ -123,8 +120,7 @@ public static class UpdateUtils
                 SHA1 = WebSha1s[3],
                 Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Gui.pdb",
                 Local = $"{ColorMCGui.RunDir}dll/ColorMC.Gui.pdb",
-                Overwrite = true,
-                UseColorMCHead = true
+                Overwrite = true
             }
         };
 

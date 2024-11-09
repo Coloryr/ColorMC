@@ -284,7 +284,7 @@ public partial class GameConfigEditModel : GameModel
                 IsEdit = false;
             }
             File = chunkflie;
-            var (X, Z) = ChunkUtils.PosToChunk(fmodel.PosX ?? 0, fmodel.PosZ ?? 0);
+            var pos = ChunkUtils.PosToChunk(new(fmodel.PosX ?? 0, fmodel.PosZ ?? 0));
             await Task.Run(() =>
             {
                 while (ChunkData == null)
@@ -295,7 +295,7 @@ public partial class GameConfigEditModel : GameModel
             ChunkNbt? nbt = null;
             foreach (ChunkNbt item in ChunkData!.Nbt.Cast<ChunkNbt>())
             {
-                if (item.X == X && item.Z == Z)
+                if (item.X == pos.X && item.Z == pos.Y)
                 {
                     nbt = item;
                     break;

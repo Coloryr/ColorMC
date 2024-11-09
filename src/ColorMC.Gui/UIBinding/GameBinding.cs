@@ -1235,7 +1235,7 @@ public static class GameBinding
     /// 删除截图
     /// </summary>
     /// <param name="file"></param>
-    public static void DeleteScreenshot(string file)
+    public static void DeleteScreenshot(ScreenshotObj file)
     {
         Screenshots.Delete(file);
     }
