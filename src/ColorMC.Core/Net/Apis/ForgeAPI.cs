@@ -78,19 +78,19 @@ public static class ForgeAPI
     /// 获取版本列表
     /// </summary>
     /// <param name="mc">游戏版本</param>
-    /// <param name="local">下载源</param>
+    /// <param name="source">下载源</param>
     /// <returns>版本列表</returns>
-    public static async Task<List<string>?> GetVersionList(bool neo, string mc, SourceLocal? local = null)
+    public static async Task<List<string>?> GetVersionList(bool neo, string mc, SourceLocal? source = null)
     {
         try
         {
             bool v222 = CheckHelpers.IsGameVersion1202(mc);
             List<string> list = [];
-            if (local == SourceLocal.BMCLAPI)
+            if (source == SourceLocal.BMCLAPI)
             {
                 string url = neo
-                    ? UrlHelper.NeoForgeVersions(mc, local, v222)
-                    : UrlHelper.ForgeVersions(mc, local);
+                    ? UrlHelper.NeoForgeVersions(mc, v222, source)
+                    : UrlHelper.ForgeVersions(mc, source);
                 var data = await CoreHttpClient.GetStringAsync(url);
                 if (data.State == false)
                 {
@@ -191,7 +191,7 @@ public static class ForgeAPI
     /// <returns></returns>
     public static async Task LoadFromSource(string mc, bool neo)
     {
-        var url = neo ? UrlHelper.NeoForgeVersions(mc, SourceLocal.Offical, false) :
+        var url = neo ? UrlHelper.NeoForgeVersions(mc, false, SourceLocal.Offical) :
                     UrlHelper.ForgeVersion(SourceLocal.Offical);
         var html = await CoreHttpClient.GetStringAsync(url);
         if (html.State == false)
@@ -282,7 +282,7 @@ public static class ForgeAPI
 
         if (neo)
         {
-            url = UrlHelper.NeoForgeVersions(mc, SourceLocal.Offical, true);
+            url = UrlHelper.NeoForgeVersions(mc, true, SourceLocal.Offical);
 
             html = await CoreHttpClient.GetStringAsync(url);
             if (html.State == false)

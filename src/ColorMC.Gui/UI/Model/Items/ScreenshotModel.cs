@@ -8,6 +8,8 @@ namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class ScreenshotModel(GameEditModel top, ScreenshotObj obj) : SelectItemModel
 {
+    public ScreenshotObj Obj => obj;
+
     public string Screenshot => obj.File;
 
     public GameEditModel TopModel => top;
