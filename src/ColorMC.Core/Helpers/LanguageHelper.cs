@@ -22,6 +22,7 @@ public static class LanguageHelper
     /// <summary>
     /// 加载语言文件
     /// </summary>
+    /// <param name="type">语言列表</param>
     public static void Load(LanguageType type)
     {
         string name = type switch
@@ -38,6 +39,7 @@ public static class LanguageHelper
     /// <summary>
     /// 切换语言文件
     /// </summary>
+    /// <param name="type">语言列表</param>
     public static void Change(LanguageType type)
     {
         if (s_nowType == type)
@@ -51,8 +53,8 @@ public static class LanguageHelper
     /// <summary>
     /// 取语言
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
+    /// <param name="input">获取语言键</param>
+    /// <returns>语言</returns>
     public static string Get(string input)
     {
         return s_language.GetLanguage(input);

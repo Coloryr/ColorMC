@@ -732,9 +732,8 @@ public static class DownloadItemHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
-    /// <returns>State下载状态
-    /// List下载项目列表</returns>
-    public static async Task<List<DownloadItemObj>?> BuildFabricAsync(string mc, string version)
+    /// <returns>下载项目列表</returns>
+    private static async Task<List<DownloadItemObj>?> BuildFabricAsync(string mc, string version)
     {
         var list = new List<DownloadItemObj>();
         var meta = await FabricAPI.GetMeta(CoreHttpClient.Source);
@@ -792,8 +791,7 @@ public static class DownloadItemHelper
     /// 获取Quilt下载项目
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>State下载状态
-    /// List下载项目列表</returns>
+    /// <returns>下载项目列表</returns>
     public static Task<List<DownloadItemObj>?> BuildQuilt(GameSettingObj obj)
     {
         return BuildQuiltAsync(obj.Version, obj.LoaderVersion);
@@ -804,9 +802,8 @@ public static class DownloadItemHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">quilt版本</param>
-    /// <returns>State下载状态
-    /// List下载项目列表</returns>
-    public static async Task<List<DownloadItemObj>?> BuildQuiltAsync(string mc, string? version = null)
+    /// <returns>下载项目列表</returns>
+    private static async Task<List<DownloadItemObj>?> BuildQuiltAsync(string mc, string? version = null)
     {
         var list = new List<DownloadItemObj>();
         var meta = await QuiltAPI.GetMeta(CoreHttpClient.Source);
@@ -863,8 +860,7 @@ public static class DownloadItemHelper
     /// 获取Optifine下载项目
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>State下载状态
-    /// List下载项目列表</returns>
+    /// <returns>下载项目列表</returns>
     public static Task<DownloadItemObj?> BuildOptifine(GameSettingObj obj)
     {
         return BuildOptifineAsync(obj.Version, obj.LoaderVersion!);
@@ -875,8 +871,8 @@ public static class DownloadItemHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">optifine版本</param>
-    /// <returns></returns>
-    public static async Task<DownloadItemObj?> BuildOptifineAsync(string mc, string version)
+    /// <returns>下载项目列表</returns>
+    private static async Task<DownloadItemObj?> BuildOptifineAsync(string mc, string version)
     {
         var list = await OptifineAPI.GetOptifineVersion();
         if (list == null)
@@ -909,8 +905,8 @@ public static class DownloadItemHelper
     /// <summary>
     /// 获取自定义加载器运行库下载列表
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>下载项目列表</returns>
     public static Task<MakeDownloadNameItemsRes?> DecodeLoaderJarAsync(GameSettingObj obj)
     {
         return DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), CancellationToken.None);
@@ -919,9 +915,9 @@ public static class DownloadItemHelper
     /// <summary>
     /// 获取自定义加载器运行库下载列表
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="path"></param>
-    /// <returns></returns>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="path">下载路径</param>
+    /// <returns>下载项目列表</returns>
     public static Task<MakeDownloadNameItemsRes?> DecodeLoaderJarAsync(GameSettingObj obj, string path)
     {
         return DecodeLoaderJarAsync(obj, path, CancellationToken.None);
@@ -930,10 +926,10 @@ public static class DownloadItemHelper
     /// <summary>
     /// 获取自定义加载器运行库下载列表
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="path"></param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="path">下载路径</param>
+    /// <param name="cancel">取消Token</param>
+    /// <returns>下载项目列表</returns>
     public static async Task<MakeDownloadNameItemsRes?> DecodeLoaderJarAsync(GameSettingObj obj, string path, CancellationToken cancel)
     {
         using var zFile = new ZipFile(path);
@@ -964,7 +960,7 @@ public static class DownloadItemHelper
 
         var list = new ConcurrentBag<DownloadItemObj>();
 
-        async Task Unpack(ForgeInstallObj obj1)
+        async Task UnpackAsync(ForgeInstallObj obj1)
         {
             foreach (var item in obj1.libraries)
             {
@@ -1030,7 +1026,7 @@ public static class DownloadItemHelper
             var data = Encoding.UTF8.GetString(array1);
             var obj1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
 
-            await Unpack(obj1);
+            await UnpackAsync(obj1);
 
             if (cancel.IsCancellationRequested)
             {
@@ -1041,7 +1037,7 @@ public static class DownloadItemHelper
             data = Encoding.UTF8.GetString(array1);
             var obj2 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
 
-            await Unpack(obj1);
+            await UnpackAsync(obj1);
 
             name = obj1.version;
             if (!obj1.version.StartsWith(obj1.profile))

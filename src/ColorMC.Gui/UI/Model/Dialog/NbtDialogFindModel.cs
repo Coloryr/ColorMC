@@ -77,9 +77,9 @@ public partial class NbtDialogFindModel : ObservableObject
 
     private void PosChange()
     {
-        var (X, Z) = ChunkUtils.PosToChunk(PosX ?? 0, PosZ ?? 0);
-        Chunk = $"({X},{Z})";
-        (X, Z) = ChunkUtils.ChunkToRegion(X, Z);
-        ChunkFile = $"r.{X}.{Z}.mca";
+        var pos = ChunkUtils.PosToChunk(new(PosX ?? 0, PosZ ?? 0));
+        Chunk = $"({pos.X},{pos.Y})";
+        pos = ChunkUtils.ChunkToRegion(pos);
+        ChunkFile = $"r.{pos.X}.{pos.Y}.mca";
     }
 }

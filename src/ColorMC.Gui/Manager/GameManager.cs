@@ -67,7 +67,7 @@ public static class GameManager
         ConfigSave.AddItem(new()
         {
             Name = "ColorMC_Star",
-            Local = s_file,
+            File = s_file,
             Obj = StarGames
         });
     }

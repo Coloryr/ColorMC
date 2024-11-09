@@ -13,6 +13,7 @@ namespace ColorMC.Core.Helpers;
 public static class ModrinthHelper
 {
     private static List<ModrinthCategoriesObj>? s_categories;
+
     private static List<string>? s_gameVersions;
 
     /// <summary>
@@ -73,9 +74,9 @@ public static class ModrinthHelper
     /// <summary>
     /// 获取MO分组
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public static async Task<Dictionary<string, string>?> GetModrinthCategories(FileType type)
+    /// <param name="type">文件类型</param>
+    /// <returns>分组列表</returns>
+    public static async Task<Dictionary<string, string>?> GetModrinthCategoriesAsync(FileType type)
     {
         if (s_categories == null)
         {
@@ -106,7 +107,8 @@ public static class ModrinthHelper
     /// <summary>
     /// 获取所有游戏版本
     /// </summary>
-    public static async Task<List<string>?> GetGameVersion()
+    /// <returns>版本列表</returns>
+    public static async Task<List<string>?> GetGameVersionAsync()
     {
         if (s_gameVersions != null)
         {
@@ -134,10 +136,8 @@ public static class ModrinthHelper
     /// <summary>
     /// 获取Modrinth整合包Mod信息
     /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="info">信息</param>
-    /// <param name="notify">通知</param>
-    /// <returns>信息</returns>
+    /// <param name="arg">参数</param>
+    /// <returns>下载列表</returns>
     public static List<DownloadItemObj> GetModrinthModInfo(GetModrinthModInfoArg arg)
     {
         var list = new List<DownloadItemObj>();
@@ -184,10 +184,10 @@ public static class ModrinthHelper
     /// <summary>
     /// 自动标记mod
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="cov"></param>
-    /// <returns></returns>
-    public static async Task<IntRes> AutoMark(GameSettingObj obj, bool cov)
+    /// <param name="obj">游戏实例</param>
+    /// <param name="cov">是否覆盖之前的标记</param>
+    /// <returns>标记结果</returns>
+    public static async Task<IntRes> AutoMarkAsync(GameSettingObj obj, bool cov)
     {
         var list = await obj.GetModsAsync();
         var mods1 = obj.Mods.Values.ToArray();
@@ -242,20 +242,27 @@ public static class ModrinthHelper
     /// <summary>
     /// 获取Mod依赖
     /// </summary>
-    /// <param name="data">mod</param>
+    /// <param name="data">mod数据</param>
     /// <param name="mc">游戏版本</param>
     /// <param name="loader">加载器</param>
-    /// <returns></returns>
+    /// <returns>模组列表</returns>
     public static async Task<ConcurrentBag<GetModrinthModDependenciesRes>>
-        GetModDependencies(ModrinthVersionObj data, string mc, Loaders loader)
+        GetModDependenciesAsync(ModrinthVersionObj data, string mc, Loaders loader)
     {
         var list = new ConcurrentBag<string>();
-        return await GetModDependencies(data, mc, loader, list);
+        return await GetModDependenciesAsync(data, mc, loader, list);
     }
 
+    /// <summary>
+    /// 获取Mod依赖
+    /// </summary>
+    /// <param name="data">mod数据</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="loader">加载器</param>
+    /// <param name="ids">已经标记的列表</param>
+    /// <returns>模组列表</returns>
     private static async Task<ConcurrentBag<GetModrinthModDependenciesRes>>
-        GetModDependencies(ModrinthVersionObj data, string mc, Loaders loader,
-        ConcurrentBag<string> ids)
+        GetModDependenciesAsync(ModrinthVersionObj data, string mc, Loaders loader, ConcurrentBag<string> ids)
     {
         if (data.dependencies == null || data.dependencies.Count == 0)
         {
@@ -313,7 +320,7 @@ public static class ModrinthHelper
                 {
                     continue;
                 }
-                foreach (var item5 in await GetModDependencies(res, mc, loader, ids))
+                foreach (var item5 in await GetModDependenciesAsync(res, mc, loader, ids))
                 {
                     if (ids.Contains(item5.ModId))
                     {

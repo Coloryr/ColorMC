@@ -40,15 +40,19 @@ internal class DownloadThread
     /// </summary>
     private DownloadTask _task;
 
+    /// <summary>
+    /// 线程号
+    /// </summary>
     private readonly int _index;
 
     /// <summary>
     /// 初始化下载器
     /// </summary>
-    /// <param name="index">标号</param>
+    /// <param name="index">线程号</param>
     public DownloadThread(int index)
     {
         _index = index;
+        _run = true;
         _thread = new(() =>
         {
             while (_run)
@@ -59,7 +63,6 @@ internal class DownloadThread
         {
             Name = $"ColorMC_DownloadThread{index}"
         };
-        _run = true;
         _thread.Start();
     }
 
@@ -121,9 +124,10 @@ internal class DownloadThread
     }
 
     /// <summary>
-    /// 检查暂停
+    /// 检查是否需要暂停
     /// </summary>
-    private void ChckPause(DownloadItemObj item)
+    /// <param name="item">下载项目</param>
+    private void CheckPause(DownloadItemObj item)
     {
         if (_pause)
         {
@@ -133,6 +137,11 @@ internal class DownloadThread
         }
     }
 
+    /// <summary>
+    /// 检查下载文件完整
+    /// </summary>
+    /// <param name="item">下载项目</param>
+    /// <returns>是否完整</returns>
     private bool CheckFile(DownloadItemObj item)
     {
         if (!string.IsNullOrWhiteSpace(item.MD5))
@@ -200,7 +209,7 @@ internal class DownloadThread
         DownloadItemObj? item;
         while ((item = _task.GetItem()) != null)
         {
-            ChckPause(item);
+            CheckPause(item);
 
             if (_cancel.IsCancellationRequested)
             {
@@ -246,7 +255,7 @@ internal class DownloadThread
             {
                 try
                 {
-                    ChckPause(item);
+                    CheckPause(item);
 
                     if (_cancel.IsCancellationRequested)
                     {
@@ -255,10 +264,6 @@ internal class DownloadThread
 
                     //网络请求
                     var req = new HttpRequestMessage(HttpMethod.Get, item.Url);
-                    if (item.UseColorMCHead)
-                    {
-                        req.Headers.Add("ColorMC", ColorMCCore.Version);
-                    }
                     var data = CoreHttpClient.DownloadClient.Send(req,
                         HttpCompletionOption.ResponseHeadersRead, _cancel.Token);
                     item.AllSize = (data.Content.Headers.ContentLength ?? 0);
@@ -272,7 +277,7 @@ internal class DownloadThread
 
                     //创建临时文件
                     var file = Path.GetFullPath(DownloadManager.DownloadDir + '/' + Guid.NewGuid().ToString());
-                    using var stream = PathHelper.OpenWrite(file, true);
+                    var stream = PathHelper.OpenWrite(file, true);
 
                     int bytesRead;
                     //写文件
@@ -280,7 +285,7 @@ internal class DownloadThread
                     {
                         stream.WriteAsync(buffer, 0, bytesRead, _cancel.Token).Wait();
 
-                        ChckPause(item);
+                        CheckPause(item);
 
                         if (_cancel.IsCancellationRequested)
                         {
@@ -292,7 +297,7 @@ internal class DownloadThread
                         item.Update(_index);
                     }
 
-                    ChckPause(item);
+                    CheckPause(item);
 
                     if (_cancel.IsCancellationRequested)
                     {
@@ -340,7 +345,7 @@ internal class DownloadThread
                     item.State = DownloadItemState.Action;
                     item.Update(_index);
 
-                    ChckPause(item);
+                    CheckPause(item);
 
                     if (_cancel.IsCancellationRequested)
                     {

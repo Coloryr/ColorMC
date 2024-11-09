@@ -173,6 +173,16 @@ public record MakeDownloadItemsRes
 }
 
 /// <summary>
+/// 获取下载项目信息
+/// </summary>
+public record ItemPathRes
+{
+    public string File;
+    public string Name;
+    public FileType FileType;
+}
+
+/// <summary>
 /// 创建一些下载项目，附带项目名字
 /// </summary>
 public record MakeDownloadNameItemsRes
@@ -277,4 +287,13 @@ public record GetCurseForgeModDependenciesRes
     public long ModId;
     public bool Opt;
     public List<CurseForgeModObj.Data> List;
+}
+
+/// <summary>
+/// 转换
+/// </summary>
+public record MMCToColorMCRes
+{
+    public GameSettingObj Game;
+    public string Icon;
 }

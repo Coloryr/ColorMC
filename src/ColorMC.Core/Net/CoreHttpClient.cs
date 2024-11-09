@@ -24,7 +24,7 @@ public static class CoreHttpClient
     public static HttpClient DownloadClient { get; private set; }
     public static HttpClient LoginClient { get; private set; }
 
-    private static List<IDnsClient> _dnsClients = [];
+    private readonly static List<IDnsClient> _dnsClients = [];
 
     /// <summary>
     /// 初始化

@@ -1,3 +1,5 @@
+using ColorMC.Core.Objs;
+
 namespace ColorMC.Core.Chunk;
 
 /// <summary>
@@ -8,35 +10,28 @@ public static class ChunkUtils
     /// <summary>
     /// 坐标转区块坐标
     /// </summary>
-    public static (int X, int Z) PosToChunk(int x, int z)
+    /// <param name="pos">坐标 X Z</param>
+    /// <returns>>区块 X Z</returns>
+    public static PointPos PosToChunk(PointPos pos)
     {
-        return (x >> 4, z >> 4);
+        return new(pos.X >> 4, pos.Y >> 4);
     }
 
     /// <summary>
     /// 区块转MCA坐标
     /// </summary>
-    public static (int X, int Z) ChunkToRegion(int x, int z)
+    /// <param name="pos">区块 X Z</param>
+    /// <returns>MCA X Z</returns>
+    public static PointPos ChunkToRegion(PointPos pos)
     {
-        return (x >> 5, z >> 5);
+        return new(pos.X >> 5, pos.Y >> 5);
     }
-
-    //public static (int, int) PosToRegion(int x, int z)
-    //{
-    //    (x, z) = PosToChunk(x, z);
-    //    return ChunkToRegion(x, z);
-    //}
-
-    //public static int PosToChunkPos(int x, int y, int z)
-    //{
-    //    return y << 8 | z << 4 | x;
-    //}
 
     /// <summary>
     /// 区块坐标转文件头位置
     /// </summary>
-    public static int ChunkToHeadPos(int x, int z)
+    public static int ChunkToHeadPos(PointPos pos)
     {
-        return (x & 31) + (z & 31) * 32;
+        return (pos.X & 31) + (pos.Y & 31) * 32;
     }
 }

@@ -22,6 +22,9 @@ public static class AuthlibHelper
     /// </summary>
     public static string NowNide8Injector { get; private set; }
 
+    /// <summary>
+    /// 现有的authlib储存
+    /// </summary>
     private static readonly AuthlibInjectorObj LocalAuthLib = new()
     {
         build_number = 53,
@@ -33,6 +36,7 @@ public static class AuthlibHelper
     /// <summary>
     /// 创建Nide8Injector下载实例
     /// </summary>
+    /// <param name="version">版本</param>
     /// <returns>下载实例</returns>
     private static DownloadItemObj BuildNide8Item(string version)
     {
@@ -64,7 +68,7 @@ public static class AuthlibHelper
     /// 初始化Nide8Injector，存在不下载
     /// </summary>
     /// <returns>Nide8Injector下载实例</returns>
-    public static async Task<MakeDownloadItemRes> ReadyNide8()
+    public static async Task<MakeDownloadItemRes> ReadyNide8Async()
     {
         var data = await CoreHttpClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/");
         if (data.State == false)
@@ -124,7 +128,6 @@ public static class AuthlibHelper
     /// 获取AuthlibInjector信息
     /// </summary>
     /// <returns>信息</returns>
-    /// <exception cref="Exception">获取失败</exception>
     private static async Task<AuthlibInjectorObj> GetAuthlibInjectorObjAsync()
     {
         try

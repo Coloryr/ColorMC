@@ -100,7 +100,7 @@ public static class GameCloudUtils
         ConfigSave.AddItem(new()
         {
             Name = Name,
-            Local = s_file,
+            File = s_file,
             Obj = s_datas
         });
     }

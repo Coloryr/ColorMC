@@ -12,8 +12,8 @@ public static class PathHelper
     /// <summary>
     /// 检查非法名字
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
+    /// <param name="name">名字</param>
+    /// <returns>是否合理</returns>
     public static bool FileHasInvalidChars(string name)
     {
         return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0
@@ -23,8 +23,8 @@ public static class PathHelper
     /// <summary>
     /// 检查路径非法名字
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
+    /// <param name="name">名字</param>
+    /// <returns>是否合理</returns>
     public static bool PathHasInvalidChars(string name)
     {
         return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidPathChars()) >= 0
@@ -34,6 +34,8 @@ public static class PathHelper
     /// <summary>
     /// 获取名字
     /// </summary>
+    /// <param name="input">名字</param>
+    /// <returns>路径</returns>
     public static string NameToPath(string input)
     {
         var arg = input.Split(':');
@@ -119,6 +121,8 @@ public static class PathHelper
     /// <summary>
     /// 复制文件夹
     /// </summary>
+    /// <param name="dir">输入路径</param>
+    /// <param name="dir1">输出路径</param>
     private static void Copys(string dir, string dir1)
     {
         Directory.CreateDirectory(dir1);
@@ -141,8 +145,8 @@ public static class PathHelper
     /// <summary>
     /// 复制文件
     /// </summary>
-    /// <param name="file1">源</param>
-    /// <param name="file2">目的</param>
+    /// <param name="file1">输入文件</param>
+    /// <param name="file2">输出文件</param>
     public static void CopyFile(string file1, string file2)
     {
         using var stream = OpenRead(file1);
@@ -157,8 +161,8 @@ public static class PathHelper
     /// <summary>
     /// 搬运文件
     /// </summary>
-    /// <param name="file1">源</param>
-    /// <param name="file2">目的</param>
+    /// <param name="file1">输入文件</param>
+    /// <param name="file2">输出文件</param>
     public static void MoveFile(string file1, string file2)
     {
         CopyFile(file1, file2);
@@ -168,7 +172,10 @@ public static class PathHelper
     /// <summary>
     /// 复制文件夹
     /// </summary>
-    public static Task CopyDir(string dir, string dir1)
+    /// <param name="dir">输入路径</param>
+    /// <param name="dir1">输出路径</param>
+    /// <returns></returns>
+    public static Task CopyDirAsync(string dir, string dir1)
     {
         return Task.Run(() =>
         {
@@ -179,6 +186,8 @@ public static class PathHelper
     /// <summary>
     /// 删除文件夹
     /// </summary>
+    /// <param name="arg">参数</param>
+    /// <returns>是否成功删除</returns>
     public static async Task<bool> DeleteFilesAsync(DeleteFilesArg arg)
     {
         if (!Directory.Exists(arg.Local))
@@ -216,7 +225,7 @@ public static class PathHelper
     /// </summary>
     /// <param name="local">路径</param>
     /// <param name="name">文件名</param>
-    /// <returns>文件名</returns>
+    /// <returns>完整路径</returns>
     public static string? GetFile(string local, string name)
     {
         var list = GetAllFile(local);
@@ -252,6 +261,7 @@ public static class PathHelper
     /// 写文件
     /// </summary>
     /// <param name="local">路径</param>
+    /// <param name="create">是否创建</param>
     /// <returns>流</returns>
     public static Stream OpenWrite(string local, bool create)
     {
@@ -361,8 +371,8 @@ public static class PathHelper
     /// <summary>
     /// 替换文件名非法字符
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
+    /// <param name="name">输入名字</param>
+    /// <returns>替换结果</returns>
     public static string ReplaceFileName(string name)
     {
         var chars = Path.GetInvalidFileNameChars().ToList();

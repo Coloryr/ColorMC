@@ -152,7 +152,7 @@ public static class WindowManager
         ConfigSave.AddItem(new()
         {
             Name = "ColorMC_Window",
-            Local = s_file,
+            File = s_file,
             Obj = s_WindowState
         });
     }

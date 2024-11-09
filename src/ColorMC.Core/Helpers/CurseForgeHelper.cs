@@ -19,7 +19,7 @@ public static class CurseForgeHelper
     /// <summary>
     /// 修正下载地址
     /// </summary>
-    /// <param name="item"></param>
+    /// <param name="item">CurseForge数据</param>
     public static void FixDownloadUrl(this CurseForgeModObj.Data item)
     {
         item.downloadUrl ??= $"{UrlHelper.CurseForgeDownload}files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
@@ -29,7 +29,7 @@ public static class CurseForgeHelper
     /// 创建下载项目
     /// </summary>
     /// <param name="data">CurseForge数据</param>
-    /// <param name="obj">游戏实例</param>
+    /// <param name="path">下载路径</param>
     /// <returns>下载项目</returns>
     public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.Data data, string path)
     {
@@ -48,7 +48,8 @@ public static class CurseForgeHelper
     /// <summary>
     /// 创建Mod信息
     /// </summary>
-    /// <param name="data"></param>
+    /// <param name="data">CurseForge数据</param>
+    /// <param name="path">路径名字</param>
     /// <returns>Mod信息</returns>
     public static ModInfoObj MakeModInfo(this CurseForgeModObj.Data data, string path)
     {
@@ -70,7 +71,7 @@ public static class CurseForgeHelper
     /// <summary>
     /// 获取作者名字
     /// </summary>
-    /// <param name="authors"></param>
+    /// <param name="authors">作者列表</param>
     /// <returns>作者名字</returns>
     public static string GetString(this List<CurseForgeObjList.Data.Authors> authors)
     {
@@ -90,9 +91,9 @@ public static class CurseForgeHelper
     /// <summary>
     /// 获取CF分组
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public static async Task<Dictionary<string, string>?> GetCategories(FileType type)
+    /// <param name="type">文件类型</param>
+    /// <returns>分组列表</returns>
+    public static async Task<Dictionary<string, string>?> GetCategoriesAsync(FileType type)
     {
         if (s_categories == null)
         {
@@ -124,7 +125,7 @@ public static class CurseForgeHelper
     /// 获取CurseForge支持的游戏版本
     /// </summary>
     /// <returns>游戏版本</returns>
-    public static async Task<List<string>?> GetGameVersions()
+    public static async Task<List<string>?> GetGameVersionsAsync()
     {
         if (s_supportVersion != null)
         {
@@ -181,12 +182,9 @@ public static class CurseForgeHelper
     /// <summary>
     /// 获取CurseForge整合包Mod信息
     /// </summary>
-    /// <param name="game">游戏实例</param>
-    /// <param name="info">整合包信息</param>
-    /// <param name="notify">是否通知</param>
-    /// <returns>Res安装结果
-    /// Game游戏实例</returns>
-    public static async Task<MakeDownloadItemsRes> GetModInfo(GetCurseForgeModInfoArg arg)
+    /// <param name="arg">获取信息</param>
+    /// <returns>项目信息</returns>
+    public static async Task<MakeDownloadItemsRes> GetModInfoAsync(GetCurseForgeModInfoArg arg)
     {
         var size = arg.Info.files.Count;
         var now = 0;
@@ -200,17 +198,17 @@ public static class CurseForgeHelper
 
             foreach (var item in res1)
             {
-                var path = await GetItemPath(arg.Game, item);
-                var item1 = item.MakeModDownloadObj(path.Item1);
+                var path = await GetItemPathAsync(arg.Game, item);
+                var item1 = item.MakeModDownloadObj(path.File);
                 list.Add(item1);
                 var modid = item.modId.ToString();
                 arg.Game.Mods.Remove(modid);
 
-                if (path.Item3 == FileType.Mod)
+                if (path.FileType == FileType.Mod)
                 {
-                    arg.Game.Mods.Add(modid, item.MakeModInfo(path.Item2));
+                    arg.Game.Mods.Add(modid, item.MakeModInfo(path.Name));
                 }
-                else if (path.Item3 == FileType.World)
+                else if (path.FileType == FileType.World)
                 {
                     item1.Later = (test) =>
                     {
@@ -235,12 +233,12 @@ public static class CurseForgeHelper
                     return;
                 }
 
-                var path = await GetItemPath(arg.Game, res.data);
+                var path = await GetItemPathAsync(arg.Game, res.data);
 
-                list.Add(res.data.MakeModDownloadObj(path.Item1));
+                list.Add(res.data.MakeModDownloadObj(path.File));
                 var modid = res.data.modId.ToString();
                 arg.Game.Mods.Remove(modid);
-                arg.Game.Mods.Add(modid, res.data.MakeModInfo(path.Item2));
+                arg.Game.Mods.Add(modid, res.data.MakeModInfo(path.Name));
 
                 now++;
                 arg.Update?.Invoke(size, now);
@@ -257,62 +255,72 @@ public static class CurseForgeHelper
     /// <summary>
     /// 构建CurseForge资源所在的文件夹
     /// </summary>
-    /// <param name="game"></param>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public static async Task<(string, string, FileType)> GetItemPath(GameSettingObj game, CurseForgeModObj.Data item)
+    /// <param name="game">游戏实例</param>
+    /// <param name="item">CurseForge资源信息</param>
+    /// <returns>下载信息</returns>
+    public static async Task<ItemPathRes> GetItemPathAsync(this GameSettingObj game, CurseForgeModObj.Data item)
     {
-        var path = game.GetModsPath();
-        var path1 = InstancesPath.Name11;
-        var type = FileType.Mod;
-        if (!item.fileName.EndsWith(".jar"))
+        var item1 = new ItemPathRes()
         {
-            var info1 = await CurseForgeAPI.GetModInfo(item.modId);
-            if (info1 != null)
+            File = game.GetModsPath(),
+            Name = InstancesPath.Name11,
+            FileType = FileType.Mod
+        };
+
+        var info1 = await CurseForgeAPI.GetModInfo(item.modId);
+        if (info1 != null)
+        {
+            if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack)
+                || info1.Data.classId == CurseForgeAPI.ClassResourcepack)
             {
-                if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack)
-                    || info1.Data.classId == CurseForgeAPI.ClassResourcepack)
-                {
-                    path = game.GetResourcepacksPath();
-                    path1 = InstancesPath.Name8;
-                    type = FileType.Resourcepack;
-                }
-                else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassShaderpack)
-                    || info1.Data.classId == CurseForgeAPI.ClassShaderpack)
-                {
-                    path = game.GetShaderpacksPath();
-                    path1 = InstancesPath.Name9;
-                    type = FileType.Shaderpack;
-                }
-                else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassWorld)
-                    || info1.Data.classId == CurseForgeAPI.ClassWorld)
-                {
-                    path = game.GetSavesPath();
-                    path1 = InstancesPath.Name12;
-                    type = FileType.World;
-                }
+                item1.File = game.GetResourcepacksPath();
+                item1.Name = InstancesPath.Name8;
+                item1.FileType = FileType.Resourcepack;
+            }
+            else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassShaderpack)
+                || info1.Data.classId == CurseForgeAPI.ClassShaderpack)
+            {
+                item1.File = game.GetShaderpacksPath();
+                item1.Name = InstancesPath.Name9;
+                item1.FileType = FileType.Shaderpack;
+            }
+            else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassWorld)
+                || info1.Data.classId == CurseForgeAPI.ClassWorld)
+            {
+                item1.File = game.GetSavesPath();
+                item1.Name = InstancesPath.Name12;
+                item1.FileType = FileType.World;
             }
         }
 
-        return (path, path1, type);
+        return item1;
     }
 
     /// <summary>
     /// 获取Mod依赖
     /// </summary>
-    /// <param name="data">Mod</param>
+    /// <param name="data">CurseForge信息</param>
     /// <param name="mc">游戏版本</param>
     /// <param name="loader">加载器</param>
-    /// <returns></returns>
+    /// <returns>模组列表</returns>
 
     public static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>>
-      GetModDependencies(CurseForgeModObj.Data data, string mc, Loaders loader, bool dep)
+      GetModDependenciesAsync(CurseForgeModObj.Data data, string mc, Loaders loader)
     {
         var ids = new ConcurrentBag<long>();
-        return await GetModDependencies(data, mc, loader, dep, ids);
+        return await GetModDependenciesAsync(data, mc, loader, ids);
     }
 
-    public static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>> GetModDependencies(CurseForgeModObj.Data data, string mc, Loaders loader, bool dep, ConcurrentBag<long> ids)
+    /// <summary>
+    /// 获取Mod依赖
+    /// </summary>
+    /// <param name="data">CurseForge信息</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="loader">加载器</param>
+    /// <param name="ids">已经获取的列表</param>
+    /// <returns>模组列表</returns>
+    private static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>> 
+        GetModDependenciesAsync(CurseForgeModObj.Data data, string mc, Loaders loader, ConcurrentBag<long> ids)
     {
         if (data.dependencies == null || data.dependencies.Count == 0)
         {
@@ -326,7 +334,7 @@ public static class CurseForgeHelper
                 return;
             }
 
-            var opt = item.relationType != 2 && dep;
+            var opt = item.relationType != 2;
             var res1 = await CurseForgeAPI.GetCurseForgeFiles(item.modId.ToString(), mc, loader: loader);
             if (res1 == null || res1.data.Count == 0)
             {
@@ -355,7 +363,7 @@ public static class CurseForgeHelper
                     continue;
                 }
 
-                foreach (var item5 in await GetModDependencies(res1.data[0], mc, loader, opt, ids))
+                foreach (var item5 in await GetModDependenciesAsync(res1.data[0], mc, loader, ids))
                 {
                     if (ids.Contains(item5.ModId))
                     {

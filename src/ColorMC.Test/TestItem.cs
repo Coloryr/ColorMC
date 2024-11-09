@@ -75,13 +75,13 @@ public static class TestItem
         else
         {
             var item = res.loader.First();
-            var list = DownloadItemHelper.BuildFabricAsync("1.19.2", item.version).Result;
-            if (list == null)
-            {
-                Console.WriteLine("下载列表获取失败");
-                return;
-            }
-            DownloadManager.StartAsync(list).Wait();
+            //var list = DownloadItemHelper.BuildFabricAsync("1.19.2", item.version).Result;
+            //if (list == null)
+            //{
+            //    Console.WriteLine("下载列表获取失败");
+            //    return;
+            //}
+            //DownloadManager.StartAsync(list).Wait();
         }
     }
 
@@ -574,7 +574,7 @@ public static class TestItem
         game.Version = "1.20.1";
         game.Loader = Loaders.NeoForge;
         game.LoaderVersion = "47.1.76";
-        game.MakeInstallForgeArg(true);
+        //game.MakeInstallForgeArg(true);
     }
 
     public static void Item32()
@@ -597,13 +597,13 @@ public static class TestItem
 
     public static void Item34()
     {
-        var regex = StringHelper.VersionRegex();
-        var version = regex.Match("15.0.1");
-        Version version1;
-        version1 = new Version(version.Groups[0].Value + version.Groups[1].Value);
+        //var regex = StringHelper.VersionRegex();
+        //var version = regex.Match("15.0.1");
+        //Version version1;
+        //version1 = new Version(version.Groups[0].Value + version.Groups[1].Value);
 
-        version = regex.Match("0.10.6+build.214");
-        version1 = new Version(version.Groups[0].Value + version.Groups[1].Value);
+        //version = regex.Match("0.10.6+build.214");
+        //version1 = new Version(version.Groups[0].Value + version.Groups[1].Value);
     }
 
     public static void Item35()

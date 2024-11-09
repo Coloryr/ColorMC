@@ -20,7 +20,7 @@ public static class Schematic
     /// 读取结构文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>列表</returns>
+    /// <returns>结构文件列表</returns>
     public static async Task<ConcurrentBag<SchematicObj>> GetSchematicsAsync(this GameSettingObj obj)
     {
         var list = new ConcurrentBag<SchematicObj>();

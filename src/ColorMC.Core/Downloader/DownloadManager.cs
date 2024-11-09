@@ -21,11 +21,25 @@ public static class DownloadManager
     public static string DownloadDir { get; private set; }
 
     /// <summary>
+    /// 当前下载线程数
+    /// </summary>
+    internal static int ThreadCount => s_threads.Count;
+
+    /// <summary>
     /// 下载线程
     /// </summary>
     private static readonly List<DownloadThread> s_threads = [];
+    /// <summary>
+    /// 下载任务
+    /// </summary>
     private static readonly ConcurrentQueue<DownloadTask> s_tasks = [];
+    /// <summary>
+    /// 当前任务
+    /// </summary>
     private static DownloadTask? s_nowTask;
+    /// <summary>
+    /// 是否停止
+    /// </summary>
     private static bool s_stop;
 
     /// <summary>
@@ -88,33 +102,24 @@ public static class DownloadManager
     }
 
     /// <summary>
-    /// 调用GUI的方式下载
+    /// 开始下载
     /// </summary>
-    /// <param name="list"></param>
-    /// <returns></returns>
+    /// <param name="list">下载列表</param>
+    /// <returns>是否成功</returns>
     public static async Task<bool> StartAsync(ICollection<DownloadItemObj> list)
     {
         if (s_stop)
         {
             return false;
         }
-        DownloadArg arg;
-        if (ColorMCCore.OnDownload == null)
-        {
-            arg = new();
-            return await StartAsync(list, arg);
-        }
-        else
-        {
-            arg = ColorMCCore.OnDownload();
-            return await StartAsync(list, arg);
-        }
+        var arg = ColorMCCore.OnDownload != null ? ColorMCCore.OnDownload() : new();
+
+        return await StartAsync(list, arg);
     }
 
     /// <summary>
     /// 下载错误
     /// </summary>
-    /// <param name="index">下载器号</param>
     /// <param name="item">下载项目</param>
     /// <param name="e">错误内容</param>
     internal static void Error(DownloadItemObj item, Exception e)
@@ -125,7 +130,7 @@ public static class DownloadManager
     /// <summary>
     /// 下载任务完成
     /// </summary>
-    /// <param name="arg"></param>
+    /// <param name="arg">下载参数</param>
     internal static void TaskDone(DownloadArg arg)
     {
         s_nowTask = null;
@@ -179,8 +184,9 @@ public static class DownloadManager
     /// 开始下载
     /// </summary>
     /// <param name="list">下载列表</param>
-    /// <returns>结果</returns>
-    private static async Task<bool> StartAsync(ICollection<DownloadItemObj> list, DownloadArg arg)
+    /// <param name="arg">下载参数</param>
+    /// <returns>是否完成</returns>
+    private static Task<bool> StartAsync(ICollection<DownloadItemObj> list, DownloadArg arg)
     {
         var task = new DownloadTask(list, arg);
         s_tasks.Enqueue(task);
@@ -197,7 +203,7 @@ public static class DownloadManager
                 s_tasks.Count + (s_nowTask != null ? 1 : 0));
         }
 
-        return await task.WaitDone();
+        return task.WaitDone();
     }
 
     /// <summary>
@@ -229,8 +235,7 @@ public static class DownloadManager
     /// <summary>
     /// 开始下载任务
     /// </summary>
-    /// <param name="task"></param>
-    /// <param name="token"></param>
+    /// <param name="task">下载任务</param>
     private static void Start(DownloadTask task)
     {
         task.Update();

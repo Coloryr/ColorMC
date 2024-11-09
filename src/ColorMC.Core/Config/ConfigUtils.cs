@@ -31,8 +31,11 @@ public static class ConfigUtils
     }
 
     /// <summary>
-    /// 加载
+    /// 加载配置文件
     /// </summary>
+    /// <param name="local">路径</param>
+    /// <param name="quit">出错后直接返回</param>
+    /// <returns>是否加载成功</returns>
     public static bool Load(string local, bool quit = false)
     {
         Logs.Info(LanguageHelper.Get("Core.Config.Info1"));
@@ -97,7 +100,7 @@ public static class ConfigUtils
     }
 
     /// <summary>
-    /// 保存
+    /// 保存配置文件
     /// </summary>
     public static void Save()
     {
@@ -105,20 +108,15 @@ public static class ConfigUtils
         ConfigSave.AddItem(new()
         {
             Name = "config.json",
-            Local = s_local,
+            File = s_local,
             Obj = Config
         });
     }
 
-    public static DnsObj MakeDnsConfig()
-    {
-        return new()
-        {
-            Dns = ["1.1.1.1", "1.0.0.1", "8.8.8.8", "8.8.4.4"],
-            Https = ["https://223.5.5.5/dns-query"]
-        };
-    }
-
+    /// <summary>
+    /// 创建新的配置文件
+    /// </summary>
+    /// <returns>配置内容</returns>
     public static ConfigObj MakeDefaultConfig()
     {
         return new()
@@ -133,6 +131,23 @@ public static class ConfigUtils
         };
     }
 
+    /// <summary>
+    /// 创建新的配置文件
+    /// </summary>
+    /// <returns>配置内容</returns>
+    public static DnsObj MakeDnsConfig()
+    {
+        return new()
+        {
+            Dns = ["1.1.1.1", "1.0.0.1", "8.8.8.8", "8.8.4.4"],
+            Https = ["https://223.5.5.5/dns-query"]
+        };
+    }
+
+    /// <summary>
+    /// 创建新的配置文件
+    /// </summary>
+    /// <returns>配置内容</returns>
     public static HttpObj MakeHttpConfig()
     {
         return new()
@@ -147,6 +162,10 @@ public static class ConfigUtils
         };
     }
 
+    /// <summary>
+    /// 创建新的配置文件
+    /// </summary>
+    /// <returns>配置内容</returns>
     public static RunArgObj MakeJvmArgConfig()
     {
         return new()
@@ -157,6 +176,10 @@ public static class ConfigUtils
         };
     }
 
+    /// <summary>
+    /// 创建新的配置文件
+    /// </summary>
+    /// <returns>配置内容</returns>
     public static WindowSettingObj MakeWindowSettingConfig()
     {
         return new()
@@ -166,6 +189,10 @@ public static class ConfigUtils
         };
     }
 
+    /// <summary>
+    /// 创建新的配置文件
+    /// </summary>
+    /// <returns>配置内容</returns>
     public static GameCheckObj MakeGameCheckConfig()
     {
         return new()

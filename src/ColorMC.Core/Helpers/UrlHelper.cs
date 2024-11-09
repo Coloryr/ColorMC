@@ -61,7 +61,7 @@ public static class UrlHelper
     /// 修正Forge下载地址
     /// </summary>
     /// <param name="mc">游戏版本号</param>
-    /// <returns></returns>
+    /// <returns>修正的名字</returns>
     public static string FixForgeUrl(string mc)
     {
         if (mc == "1.7.2")
@@ -105,11 +105,14 @@ public static class UrlHelper
     }
 
     /// <summary>
-    /// 下载地址
+    /// 下载地址转换
     /// </summary>
-    public static string Download(string url, SourceLocal? local)
+    /// <param name="url">原始下载地址</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string Download(string url, SourceLocal? source)
     {
-        string? to = local switch
+        string? to = source switch
         {
             SourceLocal.BMCLAPI => BMCLAPI,
             _ => null
@@ -130,20 +133,23 @@ public static class UrlHelper
     /// <summary>
     /// 游戏下载
     /// </summary>
-    /// <param name="mc"></param>
-    /// <param name="local"></param>
-    /// <returns></returns>
-    public static string DownloadGame(string mc, SourceLocal? local)
+    /// <param name="mc">游戏版本</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string DownloadGame(string mc, SourceLocal? source)
     {
         return $"{BMCLAPI}version/{mc}/client";
     }
 
     /// <summary>
-    /// 运行库地址
+    /// 运行库下载地址
     /// </summary>
-    public static string DownloadLibraries(string url, SourceLocal? local)
+    /// <param name="url">原始地址</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string DownloadLibraries(string url, SourceLocal? source)
     {
-        string? to = local switch
+        string? to = source switch
         {
             SourceLocal.BMCLAPI => BMCLAPI + "maven/",
             _ => null
@@ -161,9 +167,12 @@ public static class UrlHelper
     /// <summary>
     /// 资源文件地址
     /// </summary>
-    public static string DownloadAssets(string uuid, SourceLocal? local)
+    /// <param name="uuid">资源UUID</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string DownloadAssets(string uuid, SourceLocal? source)
     {
-        string? url = local switch
+        string? url = source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}assets/{uuid[..2]}/{uuid}",
             _ => $"{MinecraftResources}{uuid[..2]}/{uuid}"
@@ -175,9 +184,13 @@ public static class UrlHelper
     /// <summary>
     /// Forge地址
     /// </summary>
-    public static string DownloadForgeJar(string mc, string version, SourceLocal? local)
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string DownloadForgeJar(string mc, string version, SourceLocal? source)
     {
-        string? url = local switch
+        string? url = source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/{mc}-{version}/",
             _ => $"{Forge}net/minecraftforge/forge/{mc}-{version}/"
@@ -189,13 +202,15 @@ public static class UrlHelper
     /// <summary>
     /// NeoForge地址
     /// </summary>
-    public static string DownloadNeoForgeJar(string mc, string version, SourceLocal? local)
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">neoforge版本</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string DownloadNeoForgeJar(string mc, string version, SourceLocal? source)
     {
         var v2222 = CheckHelpers.IsGameVersion1202(mc);
-        var baseurl = v2222
-            ? $"neoforge/{version}/"
-            : $"forge/{mc}-{version}/";
-        string? url = local switch
+        var baseurl = v2222 ? $"neoforge/{version}/" : $"forge/{mc}-{version}/";
+        string? url = source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/neoforged/{baseurl}",
             _ => $"{NeoForge}net/neoforged/{baseurl}"
@@ -207,9 +222,12 @@ public static class UrlHelper
     /// <summary>
     /// Forge运行库地址
     /// </summary>
-    public static string DownloadForgeLib(string url, SourceLocal? local)
+    /// <param name="url">下载地址</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string DownloadForgeLib(string url, SourceLocal? source)
     {
-        string? to = local switch
+        string? to = source switch
         {
             SourceLocal.BMCLAPI => BMCLAPI + "maven/",
             _ => null
@@ -225,9 +243,12 @@ public static class UrlHelper
     /// <summary>
     /// NeoForge运行库地址
     /// </summary>
-    public static string DownloadNeoForgeLib(string url, SourceLocal? local)
+    /// <param name="url">下载地址</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string DownloadNeoForgeLib(string url, SourceLocal? source)
     {
-        string? to = local switch
+        string? to = source switch
         {
             SourceLocal.BMCLAPI => BMCLAPI + "maven/",
             _ => null
@@ -245,9 +266,11 @@ public static class UrlHelper
     /// <summary>
     /// Fabric地址
     /// </summary>
-    public static string GetFabricMeta(SourceLocal? local)
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string GetFabricMeta(SourceLocal? source)
     {
-        string? url = local switch
+        string? url = source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}fabric-meta/v2/versions",
             _ => $"{FabricMeta}v2/versions"
@@ -259,9 +282,11 @@ public static class UrlHelper
     /// <summary>
     /// Quilt地址
     /// </summary>
-    public static string GetQuiltMeta(SourceLocal? local)
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string GetQuiltMeta(SourceLocal? source)
     {
-        string? url = local switch
+        string? url = source switch
         {
             //SourceLocal.BMCLAPI => $"{BMCLAPI}quilt-meta/v3/versions",
             _ => $"{QuiltMeta}v3/versions"
@@ -273,9 +298,12 @@ public static class UrlHelper
     /// <summary>
     /// Fabric地址
     /// </summary>
-    public static string DownloadFabric(string url, SourceLocal? local)
+    /// <param name="url">下载地址</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string DownloadFabric(string url, SourceLocal? source)
     {
-        string? replace = local switch
+        string? replace = source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}maven/",
             _ => null
@@ -290,9 +318,12 @@ public static class UrlHelper
     /// <summary>
     /// Quilt地址
     /// </summary>
-    public static string DownloadQuilt(string url, SourceLocal? local)
+    /// <param name="url">下载地址</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string DownloadQuilt(string url, SourceLocal? source)
     {
-        string? replace = local switch
+        string? replace = source switch
         {
             //SourceLocal.BMCLAPI => BMCLAPI + "maven/",
             _ => null
@@ -307,9 +338,11 @@ public static class UrlHelper
     /// <summary>
     /// 外置登录信息地址
     /// </summary>
-    public static string AuthlibInjectorMeta(SourceLocal? local)
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string AuthlibInjectorMeta(SourceLocal? source)
     {
-        return local switch
+        return source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifacts.json",
             _ => $"{Authlib}artifacts.json"
@@ -319,9 +352,12 @@ public static class UrlHelper
     /// <summary>
     /// 外置登录地址
     /// </summary>
-    public static string AuthlibInjector(AuthlibInjectorMetaObj.Artifacts obj, SourceLocal? local)
+    /// <param name="obj">外置登录项目</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string AuthlibInjector(AuthlibInjectorMetaObj.Artifacts obj, SourceLocal? source)
     {
-        return local switch
+        return source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifact/{obj.build_number}.json",
             _ => $"{Authlib}artifact/{obj.build_number}.json"
@@ -331,9 +367,12 @@ public static class UrlHelper
     /// <summary>
     /// 外置登录下载地址
     /// </summary>
-    public static string DownloadAuthlibInjector(AuthlibInjectorObj obj, SourceLocal? local)
+    /// <param name="obj">外置登录项目</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string DownloadAuthlibInjector(AuthlibInjectorObj obj, SourceLocal? source)
     {
-        return local switch
+        return source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
             _ => $"{Authlib}artifact/{obj.build_number}/authlib-injector-{obj.version}.jar"
@@ -343,9 +382,11 @@ public static class UrlHelper
     /// <summary>
     /// Forge版本地址
     /// </summary>
-    public static string ForgeVersion(SourceLocal? local)
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string ForgeVersion(SourceLocal? source)
     {
-        return local switch
+        return source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft",
             _ => $"{Forge}net/minecraftforge/forge/maven-metadata.xml"
@@ -355,9 +396,12 @@ public static class UrlHelper
     /// <summary>
     /// Forge版本地址
     /// </summary>
-    public static string ForgeVersions(string version, SourceLocal? local)
+    /// <param name="version">版本</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string ForgeVersions(string version, SourceLocal? source)
     {
-        return local switch
+        return source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
             _ => $"{Forge}net/minecraftforge/forge/maven-metadata.xml"
@@ -367,9 +411,12 @@ public static class UrlHelper
     /// <summary>
     /// NeoForge版本地址
     /// </summary>
-    public static string NeoForgeVersion(SourceLocal? local, string version)
+    /// <param name="version">版本</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string NeoForgeVersion(string version, SourceLocal? source)
     {
-        return local switch
+        return source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{version}",
             _ => $"{NeoForge}net/neoforged/forge/maven-metadata.xml"
@@ -380,11 +427,14 @@ public static class UrlHelper
     /// NeoForge版本地址
     /// </summary>
     /// <param name="mc">游戏版本</param>
-    public static string NeoForgeVersions(string mc, SourceLocal? local, bool v222)
+    /// <param name="v222">是否为新版本</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string NeoForgeVersions(string mc, bool v222, SourceLocal? source)
     {
         if (v222)
         {
-            return local switch
+            return source switch
             {
                 SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
                 _ => $"{NeoForge}net/neoforged/neoforge/maven-metadata.xml"
@@ -392,7 +442,7 @@ public static class UrlHelper
         }
         else
         {
-            return local switch
+            return source switch
             {
                 SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
                 _ => $"{NeoForge}net/neoforged/forge/maven-metadata.xml"
@@ -401,37 +451,39 @@ public static class UrlHelper
     }
 
     /// <summary>
-    /// Url地址变换
+    /// 下载地址变换
     /// </summary>
-    /// <param name="old"></param>
-    /// <returns></returns>
-    public static (bool, string?) UrlChange(string old)
+    /// <param name="old">旧的地址</param>
+    /// <returns>下载地址</returns>
+    public static string? UrlChange(string old)
     {
         if (CoreHttpClient.Source == SourceLocal.Offical)
         {
             if (old.StartsWith(Forge))
             {
-                return (true, old.Replace(Forge, $"{BMCLAPI}maven"));
+                return old.Replace(Forge, $"{BMCLAPI}maven");
             }
             else if (old.StartsWith(MinecraftLib))
             {
-                return (true, old.Replace(MinecraftLib, $"{BMCLAPI}maven"));
+                return old.Replace(MinecraftLib, $"{BMCLAPI}maven");
             }
             else if (old.StartsWith(Fabric))
             {
-                return (true, old.Replace(Fabric, $"{BMCLAPI}maven"));
+                return old.Replace(Fabric, $"{BMCLAPI}maven");
             }
         }
 
-        return (false, null);
+        return null;
     }
 
     /// <summary>
     /// Optifine信息
     /// </summary>
-    public static string GetOptifine(SourceLocal? local)
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string GetOptifine(SourceLocal? source)
     {
-        return local switch
+        return source switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}optifine/versionList",
             _ => $"{OptiFine}downloads"
@@ -441,9 +493,12 @@ public static class UrlHelper
     /// <summary>
     /// Optifine下载
     /// </summary>
-    public static string OptifineDownload(OptifineListObj obj, SourceLocal? local)
+    /// <param name="obj">Optifine项目</param>
+    /// <param name="source">下载源</param>
+    /// <returns>下载地址</returns>
+    public static string OptifineDownload(OptifineListObj obj, SourceLocal? source)
     {
-        return local switch
+        return source switch
         {
             _ => $"{BMCLAPI}optifine/{obj.mcversion}/{obj.type}/{obj.patch}"
         };
@@ -452,6 +507,11 @@ public static class UrlHelper
     /// <summary>
     /// 创建下载地址
     /// </summary>
+    /// <param name="type">资源类型</param>
+    /// <param name="pid">项目ID</param>
+    /// <param name="fid">文件ID</param>
+    /// <param name="file">文件名</param>
+    /// <returns>下载地址</returns>
     public static string MakeDownloadUrl(SourceType? type, string pid, string fid, string file)
     {
         if (type == SourceType.CurseForge)
@@ -470,6 +530,10 @@ public static class UrlHelper
     /// <summary>
     /// 创建下载地址
     /// </summary>
+    /// <param name="item">服务器项目</param>
+    /// <param name="type">文件类型</param>
+    /// <param name="url">原始地址</param>
+    /// <returns>下载地址</returns>
     public static string MakeUrl(ServerModItemObj item, FileType type, string url)
     {
         if (string.IsNullOrWhiteSpace(item.Projcet) || string.IsNullOrWhiteSpace(item.FileId))

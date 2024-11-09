@@ -1,7 +1,7 @@
 ﻿namespace ColorMC.Core.Objs.Minecraft;
 
 /// <summary>
-/// 数据包储存
+/// 数据包信息
 /// </summary>
 public record DataPackObj
 {

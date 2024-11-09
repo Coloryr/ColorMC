@@ -31,8 +31,9 @@ public static class Launch
     /// 获取Forge安装参数
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>参数</returns>
-    public static List<string> MakeInstallForgeArg(this GameSettingObj obj, bool v2)
+    /// <param name="v2">是否为1.13以上版本</param>
+    /// <returns>安装参数</returns>
+    private static List<string> MakeInstallForgeArg(this GameSettingObj obj, bool v2)
     {
         var jvm = new List<string>
         {
@@ -97,7 +98,7 @@ public static class Launch
     /// <param name="arg">JVM参数</param>
     /// <param name="item">命令</param>
     /// <returns>参数</returns>
-    public static string ReplaceArg(this GameSettingObj obj, string jvm, List<string> arg, string item)
+    private static string ReplaceArg(this GameSettingObj obj, string jvm, List<string> arg, string item)
     {
         static string GetString(List<string> arg)
         {
@@ -125,11 +126,18 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="cmd">命令</param>
-    public static void CmdRun(this GameSettingObj obj, string cmd, Dictionary<string, string> env, bool runsame)
+    /// <param name="env"></param>
+    /// <param name="runsame">是否不等待结束</param>
+    private static void CmdRun(this GameSettingObj obj, string cmd, Dictionary<string, string> env, bool runsame)
     {
         var args = cmd.Split('\n');
-        var file = Path.GetFullPath(obj.GetBasePath() + "/" + args[0].Trim());
-        var arglist = new List<string>();
+        var name = args[0].Trim();
+        var file = Path.GetFullPath(obj.GetBasePath() + "/" + name);
+
+        if (!File.Exists(file))
+        {
+            file = name;
+        }
 
         var info = new ProcessStartInfo(file)
         {
@@ -159,6 +167,13 @@ public static class Launch
             ColorMCCore.OnGameLog(obj, b.Data);
         };
 
+        if (runsame)
+        {
+            p.Exited += (a, b) =>
+            {
+                p.Dispose();
+            };
+        }
         p.Start();
         p.BeginOutputReadLine();
         p.BeginErrorReadLine();
@@ -169,15 +184,7 @@ public static class Launch
         }
     }
 
-    /// <summary>
-    /// 手机执行命令
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="start"></param>
-    /// <param name="jvm1"></param>
-    /// <param name="env"></param>
-    /// <returns></returns>
-    public static int PhoneCmdRun(this GameSettingObj obj, string start, JavaInfo jvm1, Dictionary<string, string> env)
+    private static int PhoneCmdRun(this GameSettingObj obj, string start, JavaInfo jvm1, Dictionary<string, string> env)
     {
         var args = start.Split('\n');
         var arglist = new List<string>();
@@ -189,15 +196,7 @@ public static class Launch
         return PhoneCmdRun(obj, arglist, jvm1, env);
     }
 
-    /// <summary>
-    /// 手机执行命令
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="start"></param>
-    /// <param name="jvm1"></param>
-    /// <param name="env"></param>
-    /// <returns></returns>
-    public static int PhoneCmdRun(this GameSettingObj obj, List<string> arglist, JavaInfo jvm1, Dictionary<string, string> env)
+    private static int PhoneCmdRun(this GameSettingObj obj, List<string> arglist, JavaInfo jvm1, Dictionary<string, string> env)
     {
         var res2 = ColorMCCore.PhoneJvmRun(obj, jvm1, obj.GetGamePath(), arglist, env);
         res2.StartInfo.RedirectStandardError = true;
@@ -224,7 +223,7 @@ public static class Launch
     /// <summary>
     /// V1版Jvm参数
     /// </summary>
-    private static readonly List<string> V1JvmArg =
+    private static readonly string[] V1JvmArg =
     [
         "-Djava.library.path=${natives_directory}", "-cp", "${classpath}"
     ];
@@ -234,12 +233,12 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>参数</returns>
-    public static List<string> MakeV2JvmArg(this GameSettingObj obj)
+    private static List<string> MakeV2JvmArg(this GameSettingObj obj)
     {
         var game = VersionPath.GetVersion(obj.Version)!;
         if (game.arguments == null)
         {
-            return V1JvmArg;
+            return V1JvmArg.ToList();
         }
 
         var arg = new List<string>();
@@ -319,7 +318,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>启动参数</returns>
-    public static List<string> MakeV1GameArg(this GameSettingObj obj)
+    private static List<string> MakeV1GameArg(this GameSettingObj obj)
     {
         if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
@@ -433,11 +432,12 @@ public static class Launch
     /// 创建Jvm参数
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="v2">V2模式</param>
     /// <param name="login">登录的账户</param>
+    /// <param name="jvm1">选择的Java</param>
+    /// <param name="mixinport">注入通信端口</param>
     /// <returns>Jvm参数</returns>
-    public static async Task<List<string>> MakeJvmArgAsync(this GameSettingObj obj,
-        LoginObj login, JavaInfo jvm1, int? mixinport)
+    private static async Task<List<string>> MakeJvmArgAsync(this GameSettingObj obj,
+        LoginObj login, JavaInfo jvm1, int? mixinport = null)
     {
         RunArgObj args;
 
@@ -628,7 +628,8 @@ public static class Launch
     /// 创建游戏启动参数
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="v2">V2模式</param>
+    /// <param name="world">启动的世界</param>
+    /// <param name="server">加入的服务器</param>
     /// <returns>游戏启动参数</returns>
     private static List<string> MakeGameArg(this GameSettingObj obj, WorldObj? world, ServerObj? server)
     {
@@ -691,8 +692,7 @@ public static class Launch
             {
                 server = obj.StartServer;
             }
-            if (server != null && !string.IsNullOrWhiteSpace(server.IP)
-                && server.Port != null)
+            if (server != null && !string.IsNullOrWhiteSpace(server.IP) && server.Port != null)
             {
                 if (CheckHelpers.IsGameVersion120(obj.Version))
                 {
@@ -784,9 +784,9 @@ public static class Launch
     /// 创建Classpath
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="v2">是否为v2版本</param>
-    /// <returns>结果</returns>
-    public static async Task<string> MakeClassPathAsync(this GameSettingObj obj, bool enableasm)
+    /// <param name="enableasm">是否添加注入</param>
+    /// <returns>classpath</returns>
+    private static async Task<string> MakeClassPathAsync(this GameSettingObj obj, bool enableasm)
     {
         var libraries = await obj.GetLibsAsync();
         var classpath = new StringBuilder();
@@ -838,8 +838,8 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="login">登录的账户</param>
     /// <param name="args">所有参数参数</param>
-    /// <param name="v2">V2模式</param>
-    private static void ReplaceAll(GameSettingObj obj, LoginObj login, List<string> args, string classpath)
+    /// <param name="classpath">classpath</param>
+    private static void ReplaceAll(this GameSettingObj obj, LoginObj login, List<string> args, string classpath)
     {
         var version = VersionPath.GetVersion(obj.Version)!;
         var assetsPath = AssetsPath.BaseDir;
@@ -945,16 +945,16 @@ public static class Launch
     /// 创建所有启动参数
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="login">登录的账户</param>
-    /// <returns></returns>
+    /// <param name="arg">游戏启动参数</param>
+    /// <returns>参数列表</returns>
     private static async Task<List<string>> MakeArgAsync(this GameSettingObj obj, GameMakeArg arg)
     {
         var list = new List<string>();
         var jvmarg = await obj.MakeJvmArgAsync(arg.Login, arg.Jvm, arg.Mixinport);
         var classpath = await obj.MakeClassPathAsync(arg.Mixinport > 0);
         var gamearg = obj.MakeGameArg(arg.World, arg.Server);
-        ReplaceAll(obj, arg.Login, jvmarg, classpath);
-        ReplaceAll(obj, arg.Login, gamearg, classpath);
+        obj.ReplaceAll(arg.Login, jvmarg, classpath);
+        obj.ReplaceAll(arg.Login, gamearg, classpath);
         //jvm
         list.AddRange(jvmarg);
 
@@ -970,10 +970,10 @@ public static class Launch
     /// <summary>
     /// 同时启动多个实例
     /// </summary>
-    /// <param name="objs"></param>
-    /// <param name="larg"></param>
-    /// <param name="token"></param>
-    /// <returns></returns>
+    /// <param name="objs">启动的游戏列表</param>
+    /// <param name="larg">启动参数</param>
+    /// <param name="token">取消Token</param>
+    /// <returns>启动结果</returns>
     public static async Task<Dictionary<GameSettingObj, GameLaunchRes>>
         StartGameAsync(this ICollection<GameSettingObj> objs, GameLaunchArg larg, CancellationToken token)
     {
@@ -1326,10 +1326,10 @@ public static class Launch
     /// 启动游戏
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="login">登录的账户</param>
-    /// <param name="jvmCfg">使用的Java</param>
+    /// <param name="larg">启动参数</param>
+    /// <param name="token">取消Token</param>
     /// <exception cref="LaunchException">启动错误</exception>
-    /// <returns></returns>
+    /// <returns>游戏句柄</returns>
     public static async Task<IGameHandel?> StartGameAsync(this GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
     {
         var stopwatch = new Stopwatch();

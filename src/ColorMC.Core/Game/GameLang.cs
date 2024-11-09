@@ -25,51 +25,46 @@ public static class GameLang
         {
             foreach (var item in obj.objects)
             {
-                if (item.Key.StartsWith(Name1) && AssetsPath.ReadAsset(item.Value.hash) is { } str)
+                if (!item.Key.StartsWith(Name1) || AssetsPath.ReadAsset(item.Value.hash) is not { } str)
+                {
+                    continue;
+                }
+
+                try
                 {
                     if (str.StartsWith('{'))
                     {
-                        try
-                        {
-                            var data = JsonConvert.DeserializeObject<LangObj>(str)!;
-                            list.Add(item.Key.Replace(Name1, "").Replace(".json", ""),
-                                    data.Name + "-" + data.Region);
-                        }
-                        catch
-                        {
-
-                        }
+                        var data = JsonConvert.DeserializeObject<LangObj>(str)!;
+                        list.Add(item.Key.Replace(Name1, "").Replace(".json", ""),
+                                data.Name + "-" + data.Region);
                     }
                     else
                     {
-                        try
+                        var temp1 = str.Split("\n");
+                        string? name = null, region = null;
+                        foreach (var item1 in temp1)
                         {
-                            var temp1 = str.Split("\n");
-                            string? name = null, region = null;
-                            foreach (var item1 in temp1)
+                            if (item1.StartsWith("language.name="))
                             {
-                                if (item1.StartsWith("language.name="))
-                                {
-                                    name = item1[14..];
-                                }
-                                else if (item1.StartsWith("language.region="))
-                                {
-                                    region = item1[16..];
-                                }
-                                if (name != null && region != null)
-                                {
-                                    break;
-                                }
+                                name = item1[14..];
                             }
-
-                            list.Add(item.Key.Replace(Name1, "").Replace(".lang", ""),
-                                       (name ?? "") + "-" + (region ?? ""));
+                            else if (item1.StartsWith("language.region="))
+                            {
+                                region = item1[16..];
+                            }
+                            if (name != null && region != null)
+                            {
+                                break;
+                            }
                         }
-                        catch
-                        {
 
-                        }
+                        list.Add(item.Key.Replace(Name1, "").Replace(".lang", ""),
+                                   (name ?? "") + "-" + (region ?? ""));
                     }
+                }
+                catch
+                {
+
                 }
             }
         }
@@ -84,37 +79,35 @@ public static class GameLang
     /// 获取语言列表
     /// </summary>
     /// <param name="obj">资源数据</param>
-    /// <returns>语言列表</returns>
-    public static LangRes? GetLang(this AssetsObj? obj, string temp)
+    /// <param name="key">资源键</param>
+    /// <returns>语言键值</returns>
+    public static LangRes? GetLang(this AssetsObj? obj, string key)
     {
         if (obj != null)
         {
             foreach (var item in obj.objects)
             {
-                if (item.Key.StartsWith(Name1) && item.Key.Contains(temp)
-                    && AssetsPath.ReadAsset(item.Value.hash) is { } str)
+                try
                 {
-                    try
+                    if (item.Key.StartsWith(Name1) && item.Key.Contains(key)
+                        && AssetsPath.ReadAsset(item.Value.hash) is { } str)
                     {
                         var data = JsonConvert.DeserializeObject<LangObj>(str)!;
                         return new LangRes
                         {
-                            Key = (item.Key.Replace(Name1, "").Replace(".json", "")),
+                            Key = item.Key.Replace(Name1, "").Replace(".json", ""),
                             Name = data.Name + "-" + data.Region
                         };
                     }
-                    catch
-                    {
+                }
+                catch
+                {
 
-                    }
                 }
             }
         }
 
-        //list.TryAdd("zh_cn", "简体中文");
-        //list.TryAdd("en_us", "English");
-
-        if (temp == "zh_cn")
+        if (key == "zh_cn")
         {
             return new LangRes
             {
@@ -122,7 +115,7 @@ public static class GameLang
                 Name = "简体中文"
             };
         }
-        else if (temp == "en_us")
+        else if (key == "en_us")
         {
             return new LangRes
             {

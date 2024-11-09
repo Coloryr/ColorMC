@@ -23,6 +23,7 @@ public static class Mods
     /// 获取Mod列表
     /// </summary>
     /// <param name="obj">游戏实例</param>
+    /// <param name="sha256">是否获取SHA256</param>
     /// <returns>Mod列表</returns>
     public static async Task<List<ModObj>> GetModsAsync(this GameSettingObj obj, bool sha256 = false)
     {
@@ -38,11 +39,11 @@ public static class Mods
         var files = info.GetFiles();
 
         //多线程同时检查
-        await Parallel.ForEachAsync(files, new ParallelOptions()
-        {
-            MaxDegreeOfParallelism = 1
-        }, async (item, cancel) =>
-        //await Parallel.ForEachAsync(files, async (item, cancel) =>
+        //await Parallel.ForEachAsync(files, new ParallelOptions()
+        //{
+        //    MaxDegreeOfParallelism = 1
+        //}, async (item, cancel) =>
+        await Parallel.ForEachAsync(files, async (item, cancel) =>
         {
             if (item.Extension is not (".zip" or ".jar" or ".disable" or ".disabled"))
             {
@@ -206,8 +207,8 @@ public static class Mods
     /// <summary>
     /// 检查有无mod存在
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>是否存在</returns>
     public static bool GetModFast(this GameSettingObj obj)
     {
         string dir = obj.GetModsPath();
@@ -233,6 +234,7 @@ public static class Mods
     /// <summary>
     /// 作者分割
     /// </summary>
+    /// <param name="obj">作者名</param>
     /// <returns>整理好的作者名</returns>
     private static List<string> ToStringList(this string obj)
     {
@@ -251,6 +253,7 @@ public static class Mods
     /// <summary>
     /// 作者分割
     /// </summary>
+    /// <param name="array">数据</param>
     /// <returns>整理好的作者名</returns>
     private static List<string> ToStringList(this JArray array)
     {
@@ -273,6 +276,7 @@ public static class Mods
     /// <summary>
     /// 作者分割
     /// </summary>
+    /// <param name="array">数据</param>
     /// <returns>整理好的作者名</returns>
     private static List<string> ToStringList(this JObject array)
     {
@@ -286,11 +290,11 @@ public static class Mods
     }
 
     /// <summary>
-    /// 找到指定obj
+    /// 找到指定数据
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">数据</param>
     /// <param name="key">键名</param>
-    /// <returns>obj</returns>
+    /// <returns>数据</returns>
     private static JToken? FindKey(this JObject obj, string key)
     {
         foreach (var item in obj)
@@ -316,11 +320,11 @@ public static class Mods
     }
 
     /// <summary>
-    /// 找到指定obj
+    /// 找到指定数据
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">数据</param>
     /// <param name="key">键名</param>
-    /// <returns>obj</returns>
+    /// <returns>数据</returns>
     private static JToken? FindKey(this JArray obj, string key)
     {
         foreach (var item in obj)
@@ -338,7 +342,12 @@ public static class Mods
         return null;
     }
 
-    private static async Task JarInJar(ModObj obj, ZipFile zFile)
+    /// <summary>
+    /// 获取JarInJar列表
+    /// </summary>
+    /// <param name="obj">游戏Mod</param>
+    /// <param name="zFile">Mod压缩包</param>
+    private static async Task CheckJarInJarAsync(ModObj obj, ZipFile zFile)
     {
         obj.InJar ??= [];
         foreach (ZipEntry item3 in zFile)
@@ -366,15 +375,18 @@ public static class Mods
     /// <returns>游戏Mod</returns>
     private static async Task<ModObj?> ReadModAsync(ZipFile zFile)
     {
-        //forge 1.13以下
-        var item1 = zFile.GetEntry("mcmod.info");
         bool istest = false;
         var mod = new ModObj()
         {
+            ModId = "",
+            Name = "",
             Loaders = [],
             Dependants = [],
             Author = []
         };
+
+        //forge 1.13以下
+        var item1 = zFile.GetEntry("mcmod.info");
         if (item1 != null)
         {
             using var stream1 = zFile.GetInputStream(item1);
@@ -446,11 +458,10 @@ public static class Mods
         item1 = zFile.GetEntry("META-INF/mods.toml");
         if (item1 == null)
         {
-            //neoforge1.20.5
+            //neoforge 1.20.5及以上
             item1 = zFile.GetEntry("META-INF/neoforge.mods.toml");
             neoforge = true;
         }
-
         if (item1 != null)
         {
             mod.Loaders.Add(neoforge ? Loaders.NeoForge : Loaders.Forge);
@@ -549,7 +560,7 @@ public static class Mods
                     }
                 }
 
-                await JarInJar(mod, zFile);
+                await CheckJarInJarAsync(mod, zFile);
                 istest = true;
             }
         }
@@ -602,7 +613,7 @@ public static class Mods
                     }
                 }
 
-                await JarInJar(mod, zFile);
+                await CheckJarInJarAsync(mod, zFile);
 
                 istest = true;
             }
@@ -649,7 +660,7 @@ public static class Mods
                     }
                 }
 
-                await JarInJar(mod, zFile);
+                await CheckJarInJarAsync(mod, zFile);
                 istest = true;
             }
         }
@@ -667,6 +678,7 @@ public static class Mods
             if (item7 != null)
             {
                 mod.CoreMod = true;
+                mod.Loaders.Add(Loaders.NeoForge);
                 if (!istest)
                 {
                     if (!con.TryGetValue("Automatic-Module-Name", out string? name)
@@ -677,7 +689,6 @@ public static class Mods
                         name = "";
                     }
                     name = name.Trim();
-                    mod.Loaders.Add(Loaders.NeoForge);
 
                     if (con.TryGetValue("Implementation-Version", out string? version))
                     {
@@ -687,7 +698,7 @@ public static class Mods
                     mod.Name = name;
                     mod.ModId = name.ToLower();
 
-                    await JarInJar(mod, zFile);
+                    await CheckJarInJarAsync(mod, zFile);
 
                     istest = true;
                 }
@@ -695,6 +706,7 @@ public static class Mods
             else if (item1 != null || item5 != null)
             {
                 mod.CoreMod = true;
+                mod.Loaders.Add(Loaders.Forge);
                 if (!istest)
                 {
                     if (!con.TryGetValue("Specification-Title", out string? name)
@@ -704,11 +716,10 @@ public static class Mods
                         name = "";
                     }
                     name = name.Trim();
-                    mod.Loaders.Add(Loaders.Forge);
                     mod.Name = name;
                     mod.ModId = name.ToLower();
 
-                    await JarInJar(mod, zFile);
+                    await CheckJarInJarAsync(mod, zFile);
 
                     istest = true;
                 }
@@ -716,10 +727,10 @@ public static class Mods
             else if (con.TryGetValue("FMLCorePlugin", out string? fml))
             {
                 mod.CoreMod = true;
+                mod.Loaders.Add(Loaders.Forge);
                 if (!istest)
                 {
                     fml = fml.Trim();
-                    mod.Loaders.Add(Loaders.Forge);
                     mod.Name = fml;
                     mod.ModId = fml.ToLower();
 
@@ -742,9 +753,9 @@ public static class Mods
             if (obj2 != null)
             {
                 mod.CoreMod = true;
+                mod.Loaders.Add(Loaders.Forge);
                 if (!istest)
                 {
-                    mod.Loaders.Add(Loaders.Forge);
                     if (obj2["modId"]?["value"]?.ToString() is { } str)
                     {
                         mod.ModId = str;
@@ -791,10 +802,8 @@ public static class Mods
                     stream2.Seek(0, SeekOrigin.Begin);
                     using var zFile1 = new ZipFile(stream2);
                     var inmod = await ReadModAsync(zFile1);
-                    if (inmod != null
-                        && !string.IsNullOrWhiteSpace(inmod.Name)
-                         && !string.IsNullOrWhiteSpace(inmod.ModId)
-                         && !inmod.CoreMod)
+                    if (inmod != null && !string.IsNullOrWhiteSpace(inmod.Name)
+                         && !string.IsNullOrWhiteSpace(inmod.ModId) && !inmod.CoreMod)
                     {
                         return inmod;
                     }
@@ -810,6 +819,11 @@ public static class Mods
         return null;
     }
 
+    /// <summary>
+    /// 解析数据
+    /// </summary>
+    /// <param name="data">Json数据</param>
+    /// <returns>数据</returns>
     private static JToken Parse(string data)
     {
         try
@@ -827,7 +841,7 @@ public static class Mods
                     JToken parsedLine = JToken.Parse("{" + line + "}");
                     token.Add(parsedLine.First);
                 }
-                catch (Exception)
+                catch
                 {
 
                 }
