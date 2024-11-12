@@ -13,8 +13,8 @@ namespace ColorMC.Core.Utils;
 public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     ColorMCCore.Request? GameRequest = null)
 {
-    private int Size = 0;
-    private int Now = 0;
+    private int _size = 0;
+    private int _now = 0;
 
     /// <summary>
     /// 压缩文件
@@ -29,8 +29,8 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             zipDir += Path.DirectorySeparatorChar;
         using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile, true));
         s.SetLevel(9);
-        Size = PathHelper.GetAllFile(zipDir).Count;
-        Now = 0;
+        _size = PathHelper.GetAllFile(zipDir).Count;
+        _now = 0;
         await ZipAsync(zipDir, s, zipDir, filter);
         await s.FinishAsync(CancellationToken.None);
         s.Close();
@@ -62,8 +62,8 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             }
             else
             {
-                Now++;
-                ZipUpdate?.Invoke(Path.GetFileName(file), Now, Size);
+                _now++;
+                ZipUpdate?.Invoke(Path.GetFileName(file), _now, _size);
                 using var fs = PathHelper.OpenRead(file)!;
 
                 byte[] buffer = new byte[fs.Length];
@@ -94,8 +94,8 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     {
         using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile, true));
         s.SetLevel(9);
-        Size = zipList.Count;
-        Now = 0;
+        _size = zipList.Count;
+        _now = 0;
         var crc = new Crc32();
 
         foreach (var item in zipList)
@@ -111,8 +111,8 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             }
             else
             {
-                Now++;
-                ZipUpdate?.Invoke(item, Now, Size);
+                _now++;
+                ZipUpdate?.Invoke(item, _now, _size);
                 using var fs = PathHelper.OpenRead(item)!;
 
                 byte[] buffer = new byte[fs.Length];
@@ -143,7 +143,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
         {
             using var gzipStream = new GZipInputStream(stream);
             var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
-            Size = tarArchive.RecordSize;
+            _size = tarArchive.RecordSize;
             tarArchive.ProgressMessageEvent += TarArchive_ProgressMessageEvent;
             tarArchive.ExtractContents(path);
             tarArchive.Close();
@@ -151,11 +151,11 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
         else
         {
             using var s = new ZipFile(stream);
-            Size = (int)s.Count;
+            _size = (int)s.Count;
             foreach (ZipEntry theEntry in s)
             {
-                Now++;
-                ZipUpdate?.Invoke(theEntry.Name, Now, Size);
+                _now++;
+                ZipUpdate?.Invoke(theEntry.Name, _now, _size);
 
                 var file = $"{path}/{theEntry.Name}";
                 var info = new FileInfo(file);
@@ -197,8 +197,8 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     {
         if (entry != null && message == null)
         {
-            Now++;
-            ZipUpdate?.Invoke(entry.Name, Now, Size);
+            _now++;
+            ZipUpdate?.Invoke(entry.Name, _now, _size);
         }
     }
 }

@@ -1207,6 +1207,7 @@
 	"Config.Error3": "读取手柄配置文件错误",
 	"Config.Error4": "颜色数据读取失败",
 	"App.Error1": "线程错误",
+	"App.Error2": "读取统计信息错误",
 	"ToolTip.Text7": "请选中到bin文件夹内的java",
 	"ToolTip.Text9": "打开皮肤查看窗口",
 	"ToolTip.Text11": "登录并启动游戏",

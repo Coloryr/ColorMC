@@ -22,7 +22,6 @@ public class ShaderpackObjComparer : IComparer<ShaderpackObj>
 }
 
 /// <summary>
-/// 
 /// 结构体比较器
 /// </summary>
 public class SchematicObjComparer : IComparer<SchematicObj>

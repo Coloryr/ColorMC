@@ -15,7 +15,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A32";
-    public const string DateVersion = "20241109";
+    public const string DateVersion = "20241112";
 
     /// <summary>
     /// 版本号
@@ -93,7 +93,7 @@ public static class ColorMCCore
     /// 下载器状态更新
     /// </summary>
     /// <param name="state">状态</param>
-    public delegate void DownloadUpdate(int thread, DownloadState state, int count);
+    public delegate void DownloadUpdate(int thread, bool state, int count);
     /// <summary>
     /// 下载任务状态更新
     /// </summary>
@@ -230,7 +230,6 @@ public static class ColorMCCore
     public static void Init1()
     {
         ConfigSave.Init();
-        GameCount.Init(BaseDir);
         JvmPath.Init(BaseDir);
         LocalMaven.Init(BaseDir);
         ToolPath.Init(BaseDir);

@@ -77,7 +77,7 @@ public partial class SettingModel
 
     partial void OnCheckUpdateChanged(bool value)
     {
-        SetDownloadCheck();
+        SetCheckUpdate();
     }
 
     partial void OnAutoDownloadChanged(bool value)
@@ -301,7 +301,6 @@ public partial class SettingModel
             GameProxy = con.Http.GameProxy;
             CheckFile = con.Http.CheckFile;
             AutoDownload = con.Http.AutoDownload;
-            CheckUpdate = con.Http.CheckUpdate;
             DnsEnable = con.Dns.Enable;
             DnsProxy = con.Dns.HttpProxy;
             DnsType = con.Dns.DnsType;
@@ -322,8 +321,17 @@ public partial class SettingModel
         {
             ServerKey = con1.ServerKey;
             ServerInfo = GameCloudUtils.Info;
+            CheckUpdate = con1.CheckUpdate;
         }
         _httpLoad = false;
+    }
+
+    private void SetCheckUpdate()
+    {
+        if (_httpLoad)
+            return;
+
+        ConfigBinding.SetUpdateCheck(CheckUpdate);
     }
 
     private void SetDownloadCheck()
@@ -337,7 +345,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SetDownloadCheck(CheckFile, AutoDownload, CheckUpdate);
+        ConfigBinding.SetDownloadCheck(CheckFile, AutoDownload);
     }
 
     private void SetProxyEnable()

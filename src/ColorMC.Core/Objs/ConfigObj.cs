@@ -2,26 +2,65 @@
 
 public record JvmConfigObj
 {
+    /// <summary>
+    /// 名字
+    /// </summary>
     public string Name { get; set; }
+    /// <summary>
+    /// 路径
+    /// </summary>
     public string Local { get; set; }
 }
 
 public record HttpObj
 {
+    /// <summary>
+    /// 下载源
+    /// </summary>
     public SourceLocal Source { get; set; }
+    /// <summary>
+    /// 下载线程数
+    /// </summary>
     public int DownloadThread { get; set; }
+
+    /// <summary>
+    /// 代理地址
+    /// </summary>
     public string ProxyIP { get; set; }
+    /// <summary>
+    /// 代理端口
+    /// </summary>
     public ushort ProxyPort { get; set; }
+    /// <summary>
+    /// 代理用户
+    /// </summary>
     public string ProxyUser { get; set; }
+    /// <summary>
+    /// 代理密码
+    /// </summary>
     public string ProxyPassword { get; set; }
 
+    /// <summary>
+    /// 登录使用代理
+    /// </summary>
     public bool LoginProxy { get; set; }
+    /// <summary>
+    /// 下载使用代理
+    /// </summary>
     public bool DownloadProxy { get; set; }
+    /// <summary>
+    /// 游戏使用代理
+    /// </summary>
     public bool GameProxy { get; set; }
 
+    /// <summary>
+    /// 检查下载文件完整性
+    /// </summary>
     public bool CheckFile { get; set; }
-    public bool CheckUpdate { get; set; }
 
+    /// <summary>
+    /// 自动下载缺失文件
+    /// </summary>
     public bool AutoDownload { get; set; }
 }
 
@@ -67,7 +106,6 @@ public record WindowSettingObj
     /// </summary>
     public int TitleDelay { get; set; }
 }
-
 
 public enum GCType
 {

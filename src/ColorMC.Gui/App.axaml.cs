@@ -101,6 +101,7 @@ public partial class App : Application
         GameManager.Init(ColorMCGui.RunDir);
         ImageManager.Init(ColorMCGui.RunDir);
         WindowManager.Init(ColorMCGui.RunDir);
+        GameCount.Init(ColorMCGui.RunDir);
         if (SystemInfo.Os != OsType.MacOS)
         {
             SdlUtils.Init();

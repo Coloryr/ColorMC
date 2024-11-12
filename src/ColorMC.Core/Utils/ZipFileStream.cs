@@ -8,6 +8,7 @@ namespace ColorMC.Core.Utils;
 public class ZipFileStream : IStaticDataSource, IDisposable
 {
     private readonly MemoryStream Memory;
+
     public ZipFileStream(byte[] data)
     {
         Memory = new(data);

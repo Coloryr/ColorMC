@@ -1,9 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Gui.Utils;
 
 /// <summary>
 /// 游戏统计
@@ -35,7 +43,7 @@ public static class GameCount
 
         s_isRun = true;
 
-        ColorMCCore.Stop += ColorMCCore_Stop;
+        App.OnClose += Count_Stop;
 
         new Thread(Run)
         {
@@ -45,7 +53,7 @@ public static class GameCount
         Read();
     }
 
-    private static void ColorMCCore_Stop()
+    private static void Count_Stop()
     {
         s_isRun = false;
     }
@@ -120,7 +128,7 @@ public static class GameCount
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.GameCount.Error1"), e, false);
+            Logs.Error(LanguageHelper.Get("App.Error2"), e);
         }
 
         if (Count == null)
@@ -271,13 +279,9 @@ public static class GameCount
         var now = DateTime.Now;
         lock (s_timeList)
         {
-            if (s_timeList.ContainsKey(uuid))
+            if (!s_timeList.TryAdd(uuid, now))
             {
                 s_timeList[uuid] = now;
-            }
-            else
-            {
-                s_timeList.Add(uuid, now);
             }
 
             if (s_spanTimeList.ContainsKey(uuid))
@@ -306,7 +310,7 @@ public static class GameCount
             }
             else
             {
-                Count.GameRuns.Add(uuid, new() { time });
+                Count.GameRuns.Add(uuid, [time]);
             }
 
             var log = new CountObj.LaunchLog()
@@ -320,7 +324,7 @@ public static class GameCount
             }
             else
             {
-                Count.LaunchLogs.Add(uuid, new() { log });
+                Count.LaunchLogs.Add(uuid, [log]);
             }
 
             Task.Run(Save);
@@ -353,7 +357,7 @@ public static class GameCount
             }
             else
             {
-                Count.LaunchLogs.Add(uuid, new() { log });
+                Count.LaunchLogs.Add(uuid, [log]);
             }
 
             Task.Run(Save);

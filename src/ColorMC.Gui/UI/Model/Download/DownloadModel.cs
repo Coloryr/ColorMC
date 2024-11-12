@@ -153,9 +153,9 @@ public partial class DownloadModel : TopModel
         _downloadList.Clear();
     }
 
-    public void DownloadUpdate(int thread, DownloadState state, int count)
+    public void DownloadUpdate(int thread, bool state, int count)
     {
-        if (state == DownloadState.Start)
+        if (state == true)
         {
             if (_downloadList.Count == 0 || _downloadList.Count != thread)
             {
@@ -172,7 +172,7 @@ public partial class DownloadModel : TopModel
             }
             Size = count;
         }
-        else if (state == DownloadState.End)
+        else if (state == false)
         {
             Dispatcher.UIThread.Post(WindowClose);
         }

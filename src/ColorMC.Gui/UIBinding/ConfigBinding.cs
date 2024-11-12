@@ -265,7 +265,7 @@ public static class ConfigBinding
     /// <param name="v1"></param>
     /// <param name="v2"></param>
     /// <param name="v3"></param>
-    public static void SetDownloadCheck(bool v1, bool v2, bool v3)
+    public static void SetDownloadCheck(bool v1, bool v2)
     {
         if (BaseBinding.IsDownload)
         {
@@ -275,8 +275,17 @@ public static class ConfigBinding
         ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
         ConfigUtils.Config.Http.CheckFile = v1;
         ConfigUtils.Config.Http.AutoDownload = v2;
-        ConfigUtils.Config.Http.CheckUpdate = v3;
         ConfigUtils.Save();
+    }
+
+    /// <summary>
+    /// 设置自动更新检查
+    /// </summary>
+    /// <param name="v1"></param>
+    public static void SetUpdateCheck(bool v1)
+    {
+        GuiConfigUtils.Config.CheckUpdate = v1;
+        GuiConfigUtils.Save();
     }
 
     /// <summary>

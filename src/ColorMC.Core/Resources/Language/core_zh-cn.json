@@ -156,7 +156,6 @@
   "Core.Tool.Error1": "mcaselector下载失败",
   "Core.Tool.Error2": "mcaselector启动失败，没有java",
   "Core.Check.Error1": "没有Minecraft {0} 版本信息",
-  "Core.GameCount.Error1": "读取统计信息错误",
   "Core.DataPack.Error1": "数据包 {0} 信息读取错误",
   "Core.DataPack.Error2": "数据包操作错误",
   "Type.AuthType.Offline": "离线",
@@ -275,6 +274,7 @@
   "Type.FileType.Other": "未知的资源类型",
   "Type.Loaders.Normal": "无",
   "Type.Loaders.Custom": "自定义",
+  "Type.SideType.None": "无法判断",
   "Type.SideType.Client": "客户端",
   "Type.SideType.Server": "服务端",
   "Type.SideType.Both": "两端"

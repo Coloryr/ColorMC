@@ -55,7 +55,7 @@ public partial class CountModel : TopModel
     public CountModel(BaseModel model) : base(model)
     {
         _date1 = _date = DateTime.Now;
-        var data = Core.Utils.GameCount.Count;
+        var data = Utils.GameCount.Count;
         if (data == null)
         {
             _count = 0;
@@ -106,7 +106,7 @@ public partial class CountModel : TopModel
 
     partial void OnDateChanged(DateTime value)
     {
-        var data = Core.Utils.GameCount.Count;
+        var data = Utils.GameCount.Count;
         if (data == null)
         {
             DateCount = 0;
@@ -124,7 +124,7 @@ public partial class CountModel : TopModel
 
     partial void OnDate1Changed(DateTime value)
     {
-        var data = Core.Utils.GameCount.Count;
+        var data = Utils.GameCount.Count;
         if (data == null)
         {
             TimeDate = "";
@@ -157,7 +157,7 @@ public partial class CountModel : TopModel
         if (_list.Count == 0)
             return;
 
-        var data = Core.Utils.GameCount.Count;
+        var data = Utils.GameCount.Count;
         if (data == null)
         {
             return;

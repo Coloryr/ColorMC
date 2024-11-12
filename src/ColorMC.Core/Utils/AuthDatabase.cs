@@ -22,11 +22,11 @@ public static class AuthDatabase
     /// <summary>
     /// 初始化
     /// </summary>
-    /// <param name="dir">运行的路径</param>
     public static void Init()
     {
         Logs.Info(LanguageHelper.Get("Core.Auth.Info1"));
 
+        //存在用户文件夹
         var path = (SystemInfo.Os == OsType.MacOS ?
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/.ColorMC/" :
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "/ColorMC/";
@@ -36,15 +36,6 @@ public static class AuthDatabase
         Directory.CreateDirectory(path);
 
         s_local = Path.GetFullPath(path + Name);
-
-        if (SystemInfo.Os == OsType.Windows)
-        {
-            var path1 = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/ColorMC/" + Name);
-            if (File.Exists(path1) && !File.Exists(s_local))
-            {
-                File.Move(path1, s_local);
-            }
-        }
 
         if (File.Exists(s_local))
         {
@@ -168,6 +159,9 @@ public static class AuthDatabase
         return true;
     }
 
+    /// <summary>
+    /// 清空账户
+    /// </summary>
     public static void ClearAuths()
     {
         s_auths.Clear();
