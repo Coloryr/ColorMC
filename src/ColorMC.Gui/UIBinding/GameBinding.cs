@@ -221,7 +221,6 @@ public static class GameBinding
     /// </summary>
     /// <param name="data"></param>
     /// <param name="data1"></param>
-    /// <param name="name"></param>
     /// <param name="group"></param>
     /// <param name="zip"></param>
     /// <param name="request"></param>
@@ -230,7 +229,7 @@ public static class GameBinding
     /// <param name="update2"></param>
     /// <returns></returns>
     public static async Task<GameRes> InstallCurseForge(CurseForgeModObj.DataObj data,
-        CurseForgeObjList.DataObj data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
+        CurseForgeObjList.DataObj data1, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
@@ -238,7 +237,6 @@ public static class GameBinding
         {
             Data = data,
             Data1 = data1,
-            Name = name,
             Group = group,
             Zip = zip,
             Request = request,
@@ -253,7 +251,6 @@ public static class GameBinding
     /// </summary>
     /// <param name="data"></param>
     /// <param name="data1"></param>
-    /// <param name="name"></param>
     /// <param name="group"></param>
     /// <param name="zip"></param>
     /// <param name="request"></param>
@@ -262,7 +259,7 @@ public static class GameBinding
     /// <param name="update2"></param>
     /// <returns></returns>
     public static async Task<GameRes> InstallModrinth(ModrinthVersionObj data,
-        ModrinthSearchObj.HitObj data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
+        ModrinthSearchObj.HitObj data1, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
@@ -270,7 +267,6 @@ public static class GameBinding
         {
             Data = data,
             Data1 = data1,
-            Name = name,
             Group = group,
             Zip = zip,
             Request = request,

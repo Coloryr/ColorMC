@@ -1,9 +1,11 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -45,6 +47,8 @@ public partial class AddGameModel : TopModel
     /// 是否在加载中
     /// </summary>
     private bool _load = false;
+
+    private bool _keep = false;
 
     public AddGameModel(BaseModel model) : base(model)
     {
@@ -249,6 +253,34 @@ public partial class AddGameModel : TopModel
         {
             Name = "";
             Group = "";
+        }
+    }
+
+    /// <summary>
+    /// 添加完成
+    /// </summary>
+    private async void Done(string? uuid)
+    {
+        Model.Notify(App.Lang("AddGameWindow.Tab1.Info7"));
+
+        Name = "";
+
+        if (_keep)
+        {
+            return;
+        }
+
+        var model = WindowManager.MainWindow?.DataContext as MainModel;
+        model?.Select(uuid);
+
+        var res = await Model.ShowWait(App.Lang("AddGameWindow.Tab1.Info25"));
+        if (res != true)
+        {
+            Dispatcher.UIThread.Post(WindowClose);
+        }
+        else
+        {
+            _keep = true;
         }
     }
 }

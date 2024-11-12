@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -61,6 +63,8 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     private bool _sourceLoad;
     [ObservableProperty]
     private bool _emptyVersionDisplay;
+
+    private bool _keep = false;
 
     private readonly string _useName;
 
@@ -267,22 +271,149 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Load1();
     }
 
-    public void Install(FileVersionItemModel data)
+    private void ZipUpdate(string text, int size, int all)
+    {
+        string temp = App.Lang("AddGameWindow.Tab1.Info21");
+        Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {text} {size}/{all}"));
+    }
+
+    /// <summary>
+    /// 请求
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
+    private async Task<bool> GameRequest(string text)
+    {
+        Model.ProgressClose();
+        var test = await Model.ShowWait(text);
+        Model.Progress();
+        return test;
+    }
+
+    /// <summary>
+    /// 请求
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    private async Task<bool> GameOverwirte(GameSettingObj obj)
+    {
+        Model.ProgressClose();
+        var test = await Model.ShowWait(
+            string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
+        Model.Progress();
+        return test;
+    }
+
+    /// <summary>
+    /// 添加进度
+    /// </summary>
+    /// <param name="state"></param>
+    private void PackState(CoreRunState state)
+    {
+        if (state == CoreRunState.Read)
+        {
+            Model.Progress(App.Lang("AddGameWindow.Tab2.Info1"));
+        }
+        else if (state == CoreRunState.Init)
+        {
+            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info2"));
+        }
+        else if (state == CoreRunState.GetInfo)
+        {
+            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info3"));
+        }
+        else if (state == CoreRunState.Download)
+        {
+            Model.ProgressUpdate(-1);
+            if (!ConfigBinding.WindowMode())
+            {
+                Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info4"));
+            }
+            else
+            {
+                Model.ProgressClose();
+            }
+        }
+        else if (state == CoreRunState.DownloadDone)
+        {
+            if (ConfigBinding.WindowMode())
+            {
+                Model.Progress(App.Lang("AddGameWindow.Tab2.Info4"));
+            }
+        }
+    }
+
+    private void UpdateProcess(int size, int now)
+    {
+        Model.ProgressUpdate((double)now / size);
+    }
+
+    public async void Install(FileVersionItemModel data)
     {
         var select = _last;
-        WindowClose();
-        WindowManager.ShowAddGame(null);
+        string? group = WindowManager.AddGameWindow?.GetGroup();
         if (data.SourceType == SourceType.CurseForge)
         {
-            WindowManager.AddGameWindow?.Install(
-                (data.Data as CurseForgeModObj.DataObj)!,
-                (select!.Data as CurseForgeObjList.DataObj)!);
+            Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
+
+            var res = await GameBinding.InstallCurseForge((data.Data as CurseForgeModObj.DataObj)!,
+                (select!.Data as CurseForgeObjList.DataObj)!, group,
+                ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
+            Model.ProgressClose();
+
+            if (!res.State)
+            {
+                Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
+            }
+            else
+            {
+                Done(res.Game!.UUID);
+            }
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
-            WindowManager.AddGameWindow?.Install(
-                (data.Data as ModrinthVersionObj)!,
-                (select!.Data as ModrinthSearchObj.HitObj)!);
+            Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
+            var res = await GameBinding.InstallModrinth((data.Data as ModrinthVersionObj)!,
+                (select!.Data as ModrinthSearchObj.HitObj)!, group,
+                ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
+            Model.ProgressClose();
+
+            if (!res.State)
+            {
+                Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
+            }
+            else
+            {
+                Done(res.Game!.UUID);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 添加完成
+    /// </summary>
+    private async void Done(string? uuid)
+    {
+        Model.Notify(App.Lang("AddGameWindow.Tab1.Info7"));
+
+        Display = false;
+
+        if (_keep)
+        {
+            return;
+        }
+
+        var model = WindowManager.MainWindow?.DataContext as MainModel;
+        model?.Select(uuid);
+
+        var res = await Model.ShowWait(App.Lang("AddGameWindow.Tab1.Info25"));
+        if (res != true)
+        {
+            Dispatcher.UIThread.Post(WindowClose);
+        }
+        else
+        {
+            _keep = true;
         }
     }
 

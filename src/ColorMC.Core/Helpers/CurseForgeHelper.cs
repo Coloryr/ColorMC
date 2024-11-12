@@ -196,7 +196,7 @@ public static class CurseForgeHelper
         {
             var res1 = res.Distinct(CurseForgeDataComparer.Instance);
 
-            foreach (var item in res1)
+            await Parallel.ForEachAsync(res1, async (item, cancel) =>
             {
                 var path = await GetItemPathAsync(arg.Game, item);
                 var item1 = item.MakeModDownloadObj(path.File);
@@ -218,7 +218,7 @@ public static class CurseForgeHelper
 
                 now++;
                 arg.Update?.Invoke(size, now);
-            }
+            });
         }
         else
         {
@@ -266,6 +266,10 @@ public static class CurseForgeHelper
             Name = InstancesPath.Name11,
             FileType = FileType.Mod
         };
+        if (item.FileName.EndsWith(".jar"))
+        {
+            return item1;
+        }
 
         var info1 = await CurseForgeAPI.GetModInfo(item.ModId);
         if (info1 != null)
