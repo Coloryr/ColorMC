@@ -1,9 +1,13 @@
-﻿namespace ColorMC.Core.Objs.Mclo;
+﻿using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs.Mclo;
 
 public record McloResObj
 {
-    public bool success { get; set; }
-    public string id { get; set; }
-    public string url { get; set; }
-    public string raw { get; set; }
+    [JsonProperty("success")]
+    public bool Success { get; set; }
+    //public string id { get; set; }
+    [JsonProperty("url")]
+    public string Url { get; set; }
+    //public string raw { get; set; }
 }

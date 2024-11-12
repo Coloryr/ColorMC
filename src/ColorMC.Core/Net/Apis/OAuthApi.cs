@@ -65,10 +65,10 @@ public static class OAuthApi
                 Message = LanguageHelper.Get("Core.Login.Error22")
             };
         }
-        s_code = obj1.user_code;
-        s_url = obj1.verification_uri;
-        s_deviceCode = obj1.device_code;
-        s_expiresIn = obj1.expires_in;
+        s_code = obj1.UserCode;
+        s_url = obj1.VerificationUri;
+        s_deviceCode = obj1.DeviceCode;
+        s_expiresIn = obj1.ExpiresIn;
 
         return new OAuthGetCodeRes
         {

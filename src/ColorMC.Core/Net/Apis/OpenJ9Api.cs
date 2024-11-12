@@ -11,7 +11,7 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class OpenJ9Api
 {
-    private const string Url = "https://developer.ibm.com/middleware/v1/contents/static/semeru-runtime-downloads";
+    public const string Url = "https://developer.ibm.com/middleware/v1/contents/static/semeru-runtime-downloads";
     /// <summary>
     /// 获取列表
     /// </summary>
@@ -24,13 +24,13 @@ public static class OpenJ9Api
         }
 
         var obj = JsonConvert.DeserializeObject<OpenJ9Obj>(data.Message!);
-        if (obj == null || obj.error)
+        if (obj == null || obj.Error)
         {
             return null;
         }
 
-        var item1 = obj.results[0].content;
-        var item2 = obj.results[0].pagepost_custom_js_value;
+        var item1 = obj.Results[0].Content;
+        var item2 = obj.Results[0].PagepostCustomJsValue;
 
         var doc = new HtmlDocument();
         doc.LoadHtml(item1);
@@ -124,7 +124,7 @@ public static class OpenJ9Api
             Arch = arch,
             Os = system,
             MainVersion = mainversion,
-            Download = obj2.downloads
+            Download = obj2.Downloads
         };
     }
 }

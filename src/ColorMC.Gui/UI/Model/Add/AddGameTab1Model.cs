@@ -393,7 +393,7 @@ public partial class AddGameModel
     /// </summary>
     /// <param name="data">数据</param>
     /// <param name="data1">数据</param>
-    public async void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
+    public async void Install(CurseForgeModObj.DataObj data, CurseForgeObjList.DataObj data1)
     {
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallCurseForge(data, data1, Name, Group,
@@ -418,7 +418,7 @@ public partial class AddGameModel
     /// </summary>
     /// <param name="data">数据</param>
     /// <param name="data1">数据</param>
-    public async void Install(ModrinthVersionObj data, ModrinthSearchObj.Hit data1)
+    public async void Install(ModrinthVersionObj data, ModrinthSearchObj.HitObj data1)
     {
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallModrinth(data, data1, Name, Group,

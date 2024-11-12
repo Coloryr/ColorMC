@@ -1,4 +1,5 @@
-﻿using static ColorMC.Core.Objs.Minecraft.GameArgObj.Libraries.Downloads;
+﻿using ColorMC.Core.Objs.Minecraft;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.Objs.Loader;
 
@@ -7,33 +8,47 @@ namespace ColorMC.Core.Objs.Loader;
 /// </summary>
 public record ForgeLaunchObj
 {
-    public record Logging
-    {
+    //public record Logging
+    //{
 
-    }
-    public record Libraries
+    //}
+    public record LibrariesObj
     {
-        public record Downloads
+        public record DownloadsObj
         {
-            public Artifact artifact { get; set; }
+            [JsonProperty("artifact")]
+            public GameArgObj.LibrariesObj.DownloadsObj.ArtifactObj Artifact { get; set; }
         }
-        public string name { get; set; }
-        public Downloads downloads { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("downloads")]
+        public DownloadsObj Downloads { get; set; }
     }
-    public record Arguments
+    public record ArgumentsObj
     {
-        public List<string> game { get; set; }
-        public List<string> jvm { get; set; }
+        [JsonProperty("game")]
+        public List<string> Game { get; set; }
+        [JsonProperty("jvm")]
+        public List<string> Jvm { get; set; }
     }
-    public List<string> _comment_ { get; set; }
-    public string id { get; set; }
-    public string time { get; set; }
-    public string releaseTime { get; set; }
-    public string type { get; set; }
-    public string mainClass { get; set; }
-    public string inheritsFrom { get; set; }
-    public Logging logging { get; set; }
-    public string minecraftArguments { get; set; }
-    public Arguments arguments { get; set; }
-    public List<Libraries> libraries { get; set; }
+    //public List<string> _comment_ { get; set; }
+    //[JsonProperty("id")]
+    //public string Id { get; set; }
+    //[JsonProperty("time")]
+    //public string Time { get; set; }
+    //[JsonProperty("releaseTime")]
+    //public string ReleaseTime { get; set; }
+    //[JsonProperty("type")]
+    //public string Type { get; set; }
+    [JsonProperty("mainClass")]
+    public string MainClass { get; set; }
+    //[JsonProperty("inheritsFrom")]
+    //public string InheritsFrom { get; set; }
+    //public Logging logging { get; set; }
+    [JsonProperty("minecraftArguments")]
+    public string MinecraftArguments { get; set; }
+    [JsonProperty("arguments")]
+    public ArgumentsObj Arguments { get; set; }
+    [JsonProperty("libraries")]
+    public List<LibrariesObj> Libraries { get; set; }
 }

@@ -52,7 +52,7 @@ public partial class WorldModel : SelectItemModel
     public async Task Load()
     {
         DataPackList.Clear();
-        var list = await Task.Run(World.GetDataPacks);
+        var list = await GameBinding.GetWorldDataPackAsync(World);
         foreach (var item in list)
         {
             DataPackList.Add(new(item));

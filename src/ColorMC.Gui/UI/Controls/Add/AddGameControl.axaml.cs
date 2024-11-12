@@ -54,12 +54,12 @@ public partial class AddGameControl : BaseUserControl
         return ImageManager.GameIcon;
     }
 
-    public void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
+    public void Install(CurseForgeModObj.DataObj data, CurseForgeObjList.DataObj data1)
     {
         (DataContext as AddGameModel)?.Install(data, data1);
     }
 
-    public void Install(ModrinthVersionObj data, ModrinthSearchObj.Hit data1)
+    public void Install(ModrinthVersionObj data, ModrinthSearchObj.HitObj data1)
     {
         (DataContext as AddGameModel)?.Install(data, data1);
     }

@@ -696,26 +696,26 @@ public static class PathBinding
 
             var obj = new CurseForgePackObj()
             {
-                name = model.Name,
-                author = model.Author,
-                version = model.Version,
-                manifestType = "minecraftModpack",
-                manifestVersion = 1,
-                overrides = "overrides",
-                minecraft = new()
+                Name = model.Name,
+                Author = model.Author,
+                Version = model.Version,
+                ManifestType = "minecraftModpack",
+                ManifestVersion = 1,
+                Overrides = "overrides",
+                Minecraft = new()
                 {
-                    version = model.Obj.Version,
-                    modLoaders = []
+                    Version = model.Obj.Version,
+                    ModLoaders = []
                 },
-                files = []
+                Files = []
             };
 
             if (model.Obj.Loader != Loaders.Normal)
             {
-                obj.minecraft.modLoaders.Add(new()
+                obj.Minecraft.ModLoaders.Add(new()
                 {
-                    id = $"{model.Obj.Loader.ToString().ToLower()}-{model.Obj.LoaderVersion}",
-                    primary = true
+                    Id = $"{model.Obj.Loader.ToString().ToLower()}-{model.Obj.LoaderVersion}",
+                    Primary = true
                 });
             }
 
@@ -723,23 +723,23 @@ public static class PathBinding
             {
                 if (item.Export)
                 {
-                    obj.files.Add(new()
+                    obj.Files.Add(new()
                     {
-                        fileID = int.Parse(item.FID!),
-                        projectID = int.Parse(item.PID!),
-                        required = true
+                        FileID = int.Parse(item.FID!),
+                        ProjectID = int.Parse(item.PID!),
+                        Required = true
                     });
                 }
             }
 
-            var data = await CurseForgeAPI.GetModsInfo(obj.files);
+            var data = await CurseForgeAPI.GetModsInfo(obj.Files);
             StringBuilder html = new();
             html.AppendLine("<ul>");
             if (data != null)
             {
-                foreach (var item in data.data)
+                foreach (var item in data.Data)
                 {
-                    html.AppendLine($"<li><a href=\"{item.links.websiteUrl}\">{item.name} (by {item.authors.GetString()})</a></li>");
+                    html.AppendLine($"<li><a href=\"{item.Links.WebsiteUrl}\">{item.Name} (by {item.Authors.GetString()})</a></li>");
                 }
             }
             html.AppendLine("</ul>");
@@ -831,26 +831,26 @@ public static class PathBinding
 
             var obj = new ModrinthPackObj()
             {
-                formatVersion = 1,
-                name = model.Name,
-                versionId = model.Version,
-                summary = model.Summary,
-                files = [],
-                dependencies = []
+                FormatVersion = 1,
+                Name = model.Name,
+                VersionId = model.Version,
+                Summary = model.Summary,
+                Files = [],
+                Dependencies = []
             };
 
-            obj.dependencies.Add("minecraft", model.Obj.Version);
+            obj.Dependencies.Add("minecraft", model.Obj.Version);
             switch (model.Obj.Loader)
             {
                 case Loaders.Forge:
                 case Loaders.NeoForge:
-                    obj.dependencies.Add("forge", model.Obj.LoaderVersion!);
+                    obj.Dependencies.Add("forge", model.Obj.LoaderVersion!);
                     break;
                 case Loaders.Fabric:
-                    obj.dependencies.Add("fabric-loader", model.Obj.LoaderVersion!);
+                    obj.Dependencies.Add("fabric-loader", model.Obj.LoaderVersion!);
                     break;
                 case Loaders.Quilt:
-                    obj.dependencies.Add("quilt-loader", model.Obj.LoaderVersion!);
+                    obj.Dependencies.Add("quilt-loader", model.Obj.LoaderVersion!);
                     break;
             }
 
@@ -858,32 +858,32 @@ public static class PathBinding
             {
                 if (item.Source != null)
                 {
-                    obj.files.Add(new()
+                    obj.Files.Add(new()
                     {
-                        path = item.Obj1!.Name,
-                        hashes = new()
+                        Path = item.Obj1!.Name,
+                        Hashes = new()
                         {
-                            sha1 = item.Sha1,
-                            sha512 = item.Sha512
+                            Sha1 = item.Sha1,
+                            Sha512 = item.Sha512
                         },
-                        downloads = [item.Url],
-                        fileSize = item.FileSize
+                        Downloads = [item.Url],
+                        FileSize = item.FileSize
                     });
                 }
             }
 
             foreach (var item in model.OtherFiles)
             {
-                obj.files.Add(new()
+                obj.Files.Add(new()
                 {
-                    path = item.Path,
-                    hashes = new()
+                    Path = item.Path,
+                    Hashes = new()
                     {
-                        sha1 = item.Sha1,
-                        sha512 = item.Sha512
+                        Sha1 = item.Sha1,
+                        Sha512 = item.Sha512
                     },
-                    downloads = [item.Url],
-                    fileSize = item.FileSize
+                    Downloads = [item.Url],
+                    FileSize = item.FileSize
                 });
             }
 

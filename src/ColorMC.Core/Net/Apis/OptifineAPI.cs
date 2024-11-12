@@ -102,10 +102,10 @@ public static class OptifineAPI
                 {
                     list.Add(new()
                     {
-                        FileName = item.filename,
-                        Version = $"{item.type}_{item.patch}",
-                        MCVersion = item.mcversion,
-                        Forge = item.forge,
+                        FileName = item.Filename,
+                        Version = $"{item.Type}_{item.Patch}",
+                        MCVersion = item.Mcversion,
+                        Forge = item.Forge,
                         Url1 = UrlHelper.OptifineDownload(item, CoreHttpClient.Source),
                         Local = CoreHttpClient.Source
                     });

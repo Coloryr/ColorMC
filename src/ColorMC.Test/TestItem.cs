@@ -45,7 +45,7 @@ public static class TestItem
         else
         {
             //GameDownload.Download(version.versions.First()).Wait();
-            var list = DownloadItemHelper.BuildVersionDownloadAsync(version.versions.Where(a => a.id == "1.12.2").First()).Result;
+            var list = DownloadItemHelper.BuildVersionDownloadAsync(version.Versions.Where(a => a.Id == "1.12.2").First()).Result;
             if (list == null)
             {
                 Console.WriteLine("下载列表获取失败");
@@ -74,7 +74,7 @@ public static class TestItem
         }
         else
         {
-            var item = res.loader.First();
+            var item = res.Loader.First();
             //var list = DownloadItemHelper.BuildFabricAsync("1.19.2", item.version).Result;
             //if (list == null)
             //{
@@ -101,7 +101,7 @@ public static class TestItem
         }
         else
         {
-            var data = list.data[6];
+            var data = list.Data[6];
 
             //var item2 = PackDownload.MakeCurseForge(data.latestFiles[0]);
             //DownloadManager.Start(new() { item2 }).Wait();
@@ -465,8 +465,8 @@ public static class TestItem
     public static void Item21()
     {
         var list = ModrinthAPI.GetModPackList().Result;
-        var item = list!.hits.First();
-        var list1 = ModrinthAPI.GetFileVersions(item.project_id, "", Loaders.Fabric).Result;
+        var item = list!.Hits.First();
+        var list1 = ModrinthAPI.GetFileVersions(item.ProjectId, "", Loaders.Fabric).Result;
         var item1 = list1!.First();
 
         AddGameHelper.InstallModrinth(new DownloadModrinthArg

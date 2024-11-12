@@ -1,19 +1,28 @@
-﻿namespace ColorMC.Core.Objs.CurseForge;
+﻿using Newtonsoft.Json;
 
+namespace ColorMC.Core.Objs.CurseForge;
+
+/// <summary>
+/// CurseForge分类数据
+/// </summary>
 public record CurseForgeCategoriesObj
 {
-    public record Data
+    public record DataObj
     {
-        public int id { get; set; }
-        public int gameId { get; set; }
-        public string name { get; set; }
-        public string slug { get; set; }
-        public string url { get; set; }
-        public string iconUrl { get; set; }
-        public string dateModified { get; set; }
-        public int classId { get; set; }
-        public int parentCategoryId { get; set; }
-        public int displayIndex { get; set; }
+        [JsonProperty("id")]
+        public int Id { get; set; }
+        //public int gameId { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        //public string slug { get; set; }
+        //public string url { get; set; }
+        //public string iconUrl { get; set; }
+        //public string dateModified { get; set; }
+        [JsonProperty("classId")]
+        public int ClassId { get; set; }
+        //public int parentCategoryId { get; set; }
+        //public int displayIndex { get; set; }
     }
-    public List<Data> data { get; set; }
+    [JsonProperty("data")]
+    public List<DataObj> Data { get; set; }
 }

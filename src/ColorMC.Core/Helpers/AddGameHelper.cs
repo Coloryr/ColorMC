@@ -65,7 +65,7 @@ public static class AddGameHelper
                 try
                 {
                     var obj1 = JsonConvert.DeserializeObject<OfficialObj>(PathHelper.ReadText(item)!);
-                    if (obj1 != null && obj1.id != null)
+                    if (obj1 != null && obj1.Id != null)
                     {
                         game = obj1.ToColorMC();
                         break;
@@ -103,7 +103,13 @@ public static class AddGameHelper
             return new();
         }
 
-        await game.CopyFileAsync(arg.Local, arg.Unselect, ismmc, arg.State);
+        await game.CopyFileAsync(new()
+        { 
+            Local = arg.Local,
+            Unselect = arg.Unselect,
+            Dir = ismmc, 
+            State = arg.State 
+        });
 
         return new()
         {
@@ -375,7 +381,7 @@ public static class AddGameHelper
                                 (Encoding.UTF8.GetString(stream2.ToArray()));
                             if (obj1 != null)
                             {
-                                overrides = obj1.overrides;
+                                overrides = obj1.Overrides;
                             }
                         }
 
@@ -439,7 +445,7 @@ public static class AddGameHelper
                                 try
                                 {
                                     var obj1 = JsonConvert.DeserializeObject<OfficialObj>(PathHelper.ReadText(item)!);
-                                    if (obj1 == null || obj1.id == null)
+                                    if (obj1 == null || obj1.Id == null)
                                     {
                                         continue;
                                     }
@@ -486,13 +492,13 @@ public static class AddGameHelper
     /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallModrinth(DownloadModrinthArg arg)
     {
-        var file = arg.Data.files.FirstOrDefault(a => a.primary) ?? arg.Data.files[0];
+        var file = arg.Data.Files.FirstOrDefault(a => a.Primary) ?? arg.Data.Files[0];
         var item = new DownloadItemObj()
         {
-            Url = file.url,
-            Name = file.filename,
-            SHA1 = file.hashes.sha1,
-            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.filename),
+            Url = file.Url,
+            Name = file.Filename,
+            SHA1 = file.Hashes.Sha1,
+            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.Filename),
         };
 
         var res1 = await DownloadManager.StartAsync([item]);
@@ -515,13 +521,13 @@ public static class AddGameHelper
         });
         if (res2.State)
         {
-            res2.Game!.PID = arg.Data.project_id;
-            res2.Game.FID = arg.Data.id;
+            res2.Game!.PID = arg.Data.ProjectId;
+            res2.Game.FID = arg.Data.Id;
             res2.Game.Save();
 
-            if (arg.Data1.icon_url != null)
+            if (arg.Data1.IconUrl != null)
             {
-                await res2.Game.SetGameIconFromUrlAsync(arg.Data1.icon_url);
+                await res2.Game.SetGameIconFromUrlAsync(arg.Data1.IconUrl);
             }
         }
 
@@ -539,9 +545,9 @@ public static class AddGameHelper
 
         var item = new DownloadItemObj()
         {
-            Url = arg.Data.downloadUrl,
-            Name = arg.Data.fileName,
-            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + arg.Data.fileName),
+            Url = arg.Data.DownloadUrl,
+            Name = arg.Data.FileName,
+            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + arg.Data.FileName),
         };
 
         var res1 = await DownloadManager.StartAsync([item]);
@@ -562,13 +568,13 @@ public static class AddGameHelper
         });
         if (res2.State)
         {
-            res2.Game!.PID = arg.Data.modId.ToString();
-            res2.Game.FID = arg.Data.id.ToString();
+            res2.Game!.PID = arg.Data.ModId.ToString();
+            res2.Game.FID = arg.Data.Id.ToString();
             res2.Game.Save();
 
-            if (arg.Data1.logo != null)
+            if (arg.Data1.Logo != null)
             {
-                await res2.Game.SetGameIconFromUrlAsync(arg.Data1.logo.url);
+                await res2.Game.SetGameIconFromUrlAsync(arg.Data1.Logo.Url);
             }
         }
 

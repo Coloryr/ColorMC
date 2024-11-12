@@ -40,7 +40,7 @@ public class ProtocolHandler(TcpClient tcp)
     /// <param name="offset">Amount of bytes to read</param>
     /// <param name="cache">Cache of bytes to read from</param>
     /// <returns>The data read from the cache as an array</returns>
-    private static byte[] ReadData(int offset, List<byte> cache)
+    public static byte[] ReadData(int offset, List<byte> cache)
     {
         byte[] result = cache.Take(offset).ToArray();
         cache.RemoveRange(0, offset);

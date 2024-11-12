@@ -44,7 +44,7 @@ public static class GameAuth
                 };
             }
             now = AuthState.XBox;
-            var res3 = await OAuthApi.GetXBLAsync(res2.Obj!.access_token);
+            var res3 = await OAuthApi.GetXBLAsync(res2.Obj!.AccessToken);
             if (res3.State != LoginState.Done)
             {
                 return new LoginRes
@@ -78,7 +78,7 @@ public static class GameAuth
             }
 
             var profile = await MinecraftAPI.GetMinecraftProfileAsync(res5.AccessToken!);
-            if (profile == null || string.IsNullOrWhiteSpace(profile.id))
+            if (profile == null || string.IsNullOrWhiteSpace(profile.Id))
             {
                 return new LoginRes
                 {
@@ -94,11 +94,11 @@ public static class GameAuth
                 LoginState = LoginState.Done,
                 Auth = new()
                 {
-                    Text1 = res2.Obj!.refresh_token,
+                    Text1 = res2.Obj!.RefreshToken,
                     AuthType = AuthType.OAuth,
                     AccessToken = res5.AccessToken!,
-                    UserName = profile.name,
-                    UUID = profile.id
+                    UserName = profile.Name,
+                    UUID = profile.Id
                 }
             };
         }
@@ -135,7 +135,7 @@ public static class GameAuth
         try
         {
             var profile = await MinecraftAPI.GetMinecraftProfileAsync(obj.AccessToken);
-            if (profile != null && !string.IsNullOrWhiteSpace(profile.id))
+            if (profile != null && !string.IsNullOrWhiteSpace(profile.Id))
             {
                 return new LoginRes
                 {
@@ -154,7 +154,7 @@ public static class GameAuth
                     Message = LanguageHelper.Get("Core.Login.Error1")
                 };
             }
-            var res2 = await OAuthApi.GetXBLAsync(res1.Obj!.access_token);
+            var res2 = await OAuthApi.GetXBLAsync(res1.Obj!.AccessToken);
             if (res2.State != LoginState.Done)
             {
                 return new LoginRes
@@ -186,7 +186,7 @@ public static class GameAuth
             }
 
             profile = await MinecraftAPI.GetMinecraftProfileAsync(res4.AccessToken!);
-            if (profile == null || string.IsNullOrWhiteSpace(profile.id))
+            if (profile == null || string.IsNullOrWhiteSpace(profile.Id))
             {
                 return new LoginRes
                 {
@@ -196,9 +196,9 @@ public static class GameAuth
                 };
             }
 
-            obj.UserName = profile!.name;
-            obj.UUID = profile.id;
-            obj.Text1 = res1.Obj!.refresh_token;
+            obj.UserName = profile!.Name;
+            obj.UUID = profile.Id;
+            obj.Text1 = res1.Obj!.RefreshToken;
             obj.AccessToken = res4.AccessToken!;
 
             return new LoginRes

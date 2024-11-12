@@ -355,12 +355,12 @@ public static class UrlHelper
     /// <param name="obj">外置登录项目</param>
     /// <param name="source">下载源</param>
     /// <returns>下载地址</returns>
-    public static string AuthlibInjector(AuthlibInjectorMetaObj.Artifacts obj, SourceLocal? source)
+    public static string AuthlibInjector(AuthlibInjectorMetaObj.ArtifactsObj obj, SourceLocal? source)
     {
         return source switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifact/{obj.build_number}.json",
-            _ => $"{Authlib}artifact/{obj.build_number}.json"
+            SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifact/{obj.BuildNumber}.json",
+            _ => $"{Authlib}artifact/{obj.BuildNumber}.json"
         };
     }
 
@@ -374,8 +374,8 @@ public static class UrlHelper
     {
         return source switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
-            _ => $"{Authlib}artifact/{obj.build_number}/authlib-injector-{obj.version}.jar"
+            SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifact/{obj.BuildNumber}/authlib-injector-{obj.Version}.jar",
+            _ => $"{Authlib}artifact/{obj.BuildNumber}/authlib-injector-{obj.Version}.jar"
         };
     }
 
@@ -500,7 +500,7 @@ public static class UrlHelper
     {
         return source switch
         {
-            _ => $"{BMCLAPI}optifine/{obj.mcversion}/{obj.type}/{obj.patch}"
+            _ => $"{BMCLAPI}optifine/{obj.Mcversion}/{obj.Type}/{obj.Patch}"
         };
     }
 

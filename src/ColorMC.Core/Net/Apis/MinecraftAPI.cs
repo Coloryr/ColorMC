@@ -1,7 +1,6 @@
 using System.Net.Http.Headers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.MinecraftAPI;
-using ColorMC.Core.Objs.MoJang;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;

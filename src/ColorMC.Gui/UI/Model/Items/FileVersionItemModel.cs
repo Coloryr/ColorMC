@@ -59,16 +59,16 @@ public partial class FileVersionItemModel : SelectItemModel
     /// </summary>
     public object Data;
 
-    public FileVersionItemModel(CurseForgeModObj.Data data, FileType type)
+    public FileVersionItemModel(CurseForgeModObj.DataObj data, FileType type)
     {
         Data = data;
 
-        ID = data.modId.ToString();
-        ID1 = data.id.ToString();
-        Name = data.displayName;
-        Size = UIUtils.MakeFileSize1(data.fileLength);
-        Download = data.downloadCount;
-        Time = DateTime.Parse(data.fileDate);
+        ID = data.ModId.ToString();
+        ID1 = data.Id.ToString();
+        Name = data.DisplayName;
+        Size = UIUtils.MakeFileSize1(data.FileLength);
+        Download = data.DownloadCount;
+        Time = DateTime.Parse(data.FileDate);
         FileType = type;
         SourceType = SourceType.CurseForge;
     }
@@ -77,13 +77,13 @@ public partial class FileVersionItemModel : SelectItemModel
     {
         Data = data;
 
-        ID = data.project_id;
-        ID1 = data.id;
-        Name = data.name;
-        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
-        Size = UIUtils.MakeFileSize1(file.size);
-        Download = data.downloads;
-        Time = DateTime.Parse(data.date_published);
+        ID = data.ProjectId;
+        ID1 = data.Id;
+        Name = data.Name;
+        var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
+        Size = UIUtils.MakeFileSize1(file.Size);
+        Download = data.Downloads;
+        Time = DateTime.Parse(data.DatePublished);
         FileType = type1;
         SourceType = SourceType.Modrinth;
     }

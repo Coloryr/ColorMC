@@ -6,6 +6,55 @@ using ColorMC.Core.Objs.Minecraft;
 namespace ColorMC.Core.Utils;
 
 /// <summary>
+/// 光影包比较器
+/// </summary>
+public class ShaderpackObjComparer : IComparer<ShaderpackObj>
+{
+    public static readonly ShaderpackObjComparer Instance = new();
+    public int Compare(ShaderpackObj? x, ShaderpackObj? y)
+    {
+        if (x == null || y == null)
+        {
+            return 0;
+        }
+        return y.Name.CompareTo(x.Name);
+    }
+}
+
+/// <summary>
+/// 
+/// 结构体比较器
+/// </summary>
+public class SchematicObjComparer : IComparer<SchematicObj>
+{
+    public static readonly SchematicObjComparer Instance = new();
+    public int Compare(SchematicObj? x, SchematicObj? y)
+    {
+        if (x == null || y == null)
+        {
+            return 0;
+        }
+        return y.Name.CompareTo(x.Name);
+    }
+}
+
+/// <summary>
+/// 数据包比较器
+/// </summary>
+public class DataPackObjComparer : IComparer<DataPackObj>
+{
+    public static readonly DataPackObjComparer Instance = new();
+    public int Compare(DataPackObj? x, DataPackObj? y)
+    {
+        if (x == null || y == null)
+        {
+            return 0;
+        }
+        return y.Name.CompareTo(x.Name);
+    }
+}
+
+/// <summary>
 /// CurseForge比较器
 /// </summary>
 public class VersionStrObjComparer : IComparer<VersionStrObj>
@@ -24,17 +73,17 @@ public class VersionStrObjComparer : IComparer<VersionStrObj>
 /// <summary>
 /// CurseForge比较器
 /// </summary>
-public class CurseForgeDataComparer : IEqualityComparer<CurseForgeModObj.Data>
+public class CurseForgeDataComparer : IEqualityComparer<CurseForgeModObj.DataObj>
 {
     public static readonly CurseForgeDataComparer Instance = new();
-    public bool Equals(CurseForgeModObj.Data? x, CurseForgeModObj.Data? y)
+    public bool Equals(CurseForgeModObj.DataObj? x, CurseForgeModObj.DataObj? y)
     {
-        return x?.id == y?.id;
+        return x?.Id == y?.Id;
     }
 
-    public int GetHashCode([DisallowNull] CurseForgeModObj.Data obj)
+    public int GetHashCode([DisallowNull] CurseForgeModObj.DataObj obj)
     {
-        return obj.id;
+        return obj.Id;
     }
 }
 

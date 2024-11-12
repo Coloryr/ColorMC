@@ -150,11 +150,11 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取Mod信息
     /// </summary>
-    public static async Task<CurseForgeModObj?> GetMod(CurseForgePackObj.Files obj)
+    public static async Task<CurseForgeModObj?> GetMod(CurseForgePackObj.FilesObj obj)
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForge}mods/{obj.projectID}/files/{obj.fileID}";
+            string temp = $"{UrlHelper.CurseForge}mods/{obj.ProjectID}/files/{obj.FileID}";
             var data = await Send(new()
             {
                 Method = HttpMethod.Get,
@@ -175,18 +175,19 @@ public static class CurseForgeAPI
 
     private record Arg2
     {
-        public List<CurseForgeModObj.Data> data { get; set; }
+        [JsonProperty("data")]
+        public List<CurseForgeModObj.DataObj> Data { get; set; }
     }
 
     /// <summary>
     /// 查询Mod信息
     /// </summary>
-    public static async Task<List<CurseForgeModObj.Data>?> GetMods(List<CurseForgePackObj.Files> obj)
+    public static async Task<List<CurseForgeModObj.DataObj>?> GetMods(List<CurseForgePackObj.FilesObj> obj)
     {
         try
         {
             var arg1 = new { fileIds = new List<long>() };
-            obj.ForEach(a => arg1.fileIds.Add(a.fileID));
+            obj.ForEach(a => arg1.fileIds.Add(a.FileID));
             var data = await Send(new()
             {
                 Method = HttpMethod.Post,
@@ -197,7 +198,7 @@ public static class CurseForgeAPI
             {
                 return null;
             }
-            return JsonConvert.DeserializeObject<Arg2>(data)?.data;
+            return JsonConvert.DeserializeObject<Arg2>(data)?.Data;
         }
         catch (Exception e)
         {
@@ -310,12 +311,12 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取Mod信息
     /// </summary>
-    public static async Task<CurseForgeObjList?> GetModsInfo(List<CurseForgePackObj.Files> obj)
+    public static async Task<CurseForgeObjList?> GetModsInfo(List<CurseForgePackObj.FilesObj> obj)
     {
         try
         {
             var arg1 = new { modIds = new List<long>(), filterPcOnly = true };
-            obj.ForEach(a => arg1.modIds.Add(a.projectID));
+            obj.ForEach(a => arg1.modIds.Add(a.ProjectID));
             var data = await Send(new()
             {
                 Method = HttpMethod.Post,

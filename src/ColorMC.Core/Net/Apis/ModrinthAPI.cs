@@ -30,18 +30,19 @@ public static class ModrinthAPI
     /// <param name="type2">类型1</param>
     /// <param name="type3">类型2</param>
     /// <returns></returns>
-    private static async Task<ModrinthSearchObj?> Search(string version, string query, int sortOrder, int offset, int limit, string categoryId, string type2, string? type3)
+    private static async Task<ModrinthSearchObj?> Search(string version, string query, int sortOrder, 
+        int offset, int limit, string categoryId, string type2, string? type3)
     {
         try
         {
             var list = new List<MFacetsObj>
             {
-                MFacetsObj.BuildProjectType(new() { type2 })
+                ModrinthHelper.BuildProjectType(new() { type2 })
             };
 
             if (!string.IsNullOrWhiteSpace(version))
             {
-                list.Add(MFacetsObj.BuildVersions(new() { version }));
+                list.Add(ModrinthHelper.BuildVersions(new() { version }));
             }
 
             var list1 = new List<string>();
@@ -55,20 +56,20 @@ public static class ModrinthAPI
             }
             if (list1.Count != 0)
             {
-                list.Add(MFacetsObj.BuildCategories(list1));
+                list.Add(ModrinthHelper.BuildCategories(list1));
             }
 
             var type = sortOrder switch
             {
-                1 => MSortingObj.Downloads,
-                2 => MSortingObj.Follows,
-                3 => MSortingObj.Newest,
-                4 => MSortingObj.Updated,
-                _ => MSortingObj.Relevance
+                1 => ModrinthHelper.Downloads,
+                2 => ModrinthHelper.Follows,
+                3 => ModrinthHelper.Newest,
+                4 => ModrinthHelper.Updated,
+                _ => ModrinthHelper.Relevance
             };
 
             var url = $"{UrlHelper.Modrinth}search?query={query}&index={type.Data}&offset={offset}" +
-                $"&limit={limit}&facets={MFacetsObj.Build(list)}";
+                $"&limit={limit}&facets={ModrinthHelper.BuildFacets(list)}";
             var res = await CoreHttpClient.DownloadClient.GetStringAsync(url);
             return JsonConvert.DeserializeObject<ModrinthSearchObj>(res);
         }

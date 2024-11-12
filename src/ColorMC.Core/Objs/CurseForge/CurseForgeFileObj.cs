@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace ColorMC.Core.Objs.CurseForge;
 
 /// <summary>
@@ -5,5 +7,6 @@ namespace ColorMC.Core.Objs.CurseForge;
 /// </summary>
 public record CurseForgeFileObj
 {
-    public List<CurseForgeModObj.Data> data { get; set; }
+    [JsonProperty("data")]
+    public List<CurseForgeModObj.DataObj> Data { get; set; }
 }

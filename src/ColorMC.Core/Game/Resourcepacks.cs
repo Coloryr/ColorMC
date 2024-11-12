@@ -30,8 +30,15 @@ public static class Resourcepacks
             info.Create();
             return list;
         }
-
-        await Parallel.ForEachAsync(info.GetFiles(), async (item, cancel) =>
+        var files = info.GetFiles();
+#if false
+        await Parallel.ForEachAsync(files, new ParallelOptions()
+        {
+            MaxDegreeOfParallelism = 1
+        }, async (item, cancel) =>
+#else
+        await Parallel.ForEachAsync(files, async (item, cancel) =>
+#endif
         {
             using var stream = PathHelper.OpenRead(item.FullName)!;
             string sha1 = HashHelper.GenSha1(stream);
@@ -146,18 +153,18 @@ public static class Resourcepacks
             var obj2 = obj1["pack"] as JObject;
             if (obj2!["pack_format"] is { } item2)
             {
-                obj.pack_format = (int)item2;
+                obj.PackFormat = (int)item2;
             }
             if (obj2.ContainsKey("description"))
             {
                 var obj3 = obj2["description"]!;
                 if (obj3.Type == JTokenType.String)
                 {
-                    obj.description = obj3.ToString();
+                    obj.Description = obj3.ToString();
                 }
                 else if (obj3.Type == JTokenType.Object)
                 {
-                    obj.description = obj3["fallback"]?.ToString() ?? "";
+                    obj.Description = obj3["fallback"]?.ToString() ?? "";
                 }
             }
         }

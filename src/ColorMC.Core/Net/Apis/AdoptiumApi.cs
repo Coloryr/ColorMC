@@ -15,7 +15,7 @@ public static class AdoptiumApi
         "", "Windows", "Linux", "Alpine Linux", "MacOS", "AIX", "Solaris"
     ];
 
-    private static List<string> _javaVersion;
+    private static List<string> s_javaVersion;
 
     /// <summary>
     /// 获取系统类型
@@ -37,9 +37,9 @@ public static class AdoptiumApi
 
     public static async Task<List<string>?> GetJavaVersion()
     {
-        if (_javaVersion != null)
+        if (s_javaVersion != null)
         {
-            return _javaVersion;
+            return s_javaVersion;
         }
         string url = $"{AdoptiumUrl}v3/info/available_releases";
         var data = await CoreHttpClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
@@ -47,14 +47,14 @@ public static class AdoptiumApi
             return null;
         var str = await data.Content.ReadAsStringAsync();
         var obj = JsonConvert.DeserializeObject<AdoptiumJavaVersionObj>(str);
-        if (obj == null || obj.available_releases == null)
+        if (obj == null || obj.AvailableReleases == null)
             return null;
         var list = new List<string>();
-        obj.available_releases.ForEach(item =>
+        obj.AvailableReleases.ForEach(item =>
         {
             list.Add(item.ToString());
         });
-        _javaVersion = list;
+        s_javaVersion = list;
         return list;
     }
 

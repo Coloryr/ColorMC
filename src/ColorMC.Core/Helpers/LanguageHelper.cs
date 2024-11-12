@@ -1,6 +1,7 @@
 using System.Reflection;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Helpers;
@@ -58,6 +59,16 @@ public static class LanguageHelper
     public static string Get(string input)
     {
         return s_language.GetLanguage(input);
+    }
+
+    public static string GetName(this MFacetsObj type)
+    {
+        return Get($"Type.Modrinth.Facets.{type.Data}");
+    }
+
+    public static string GetName(this MSortingObj type)
+    {
+        return Get($"Type.Modrinth.SortingType.{type.Data}");
     }
 
     public static string GetName(this AuthType type)

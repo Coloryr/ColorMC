@@ -27,10 +27,10 @@ public static class AuthlibHelper
     /// </summary>
     private static readonly AuthlibInjectorObj LocalAuthLib = new()
     {
-        build_number = 53,
-        checksums = new() { sha256 = "3bc9ebdc583b36abd2a65b626c4b9f35f21177fbf42a851606eaaea3fd42ee0f" },
-        download_url = "https://authlib-injector.yushi.moe/artifact/53/authlib-injector-1.2.5.jar",
-        version = "1.2.5"
+        BuildNumber = 53,
+        Checksums = new() { Sha256 = "3bc9ebdc583b36abd2a65b626c4b9f35f21177fbf42a851606eaaea3fd42ee0f" },
+        DownloadUrl = "https://authlib-injector.yushi.moe/artifact/53/authlib-injector-1.2.5.jar",
+        Version = "1.2.5"
     };
 
     /// <summary>
@@ -56,11 +56,11 @@ public static class AuthlibHelper
     {
         return new()
         {
-            SHA256 = obj.checksums.sha256,
+            SHA256 = obj.Checksums.Sha256,
             Url = UrlHelper.DownloadAuthlibInjector(obj, CoreHttpClient.Source),
-            Name = $"moe.yushi:authlibinjector:{obj.version}",
+            Name = $"moe.yushi:authlibinjector:{obj.Version}",
             Local = $"{LibrariesPath.BaseDir}/moe/yushi/authlibinjector/" +
-            $"{obj.version}/authlib-injector-{obj.version}.jar",
+            $"{obj.Version}/authlib-injector-{obj.Version}.jar",
         };
     }
 
@@ -143,7 +143,7 @@ public static class AuthlibHelper
             {
                 return LocalAuthLib;
             }
-            var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).ToList()[0];
+            var item = obj.Artifacts.Where(a => a.BuildNumber == obj.LatestBuildNumber).ToList()[0];
 
             var info = await CoreHttpClient.GetStringAsync(UrlHelper.AuthlibInjector(item, CoreHttpClient.Source));
             if (info.State == false)
@@ -177,14 +177,14 @@ public static class AuthlibHelper
                     Url = item1.Url,
                     Have = true,
                     Local = "/moe/yushi/authlibinjector/" +
-                    $"{obj1.version}/authlib-injector-{obj1.version}.jar",
-                    SHA256 = obj1.checksums.sha256
+                    $"{obj1.Version}/authlib-injector-{obj1.Version}.jar",
+                    SHA256 = obj1.Checksums.Sha256
                 });
 
                 NowAuthlibInjector = item1.Local;
                 if (File.Exists(NowAuthlibInjector))
                 {
-                    var sha256 = obj1.checksums?.sha256;
+                    var sha256 = obj1.Checksums?.Sha256;
                     if (!string.IsNullOrWhiteSpace(sha256))
                     {
                         using var stream = PathHelper.OpenRead(NowAuthlibInjector)!;

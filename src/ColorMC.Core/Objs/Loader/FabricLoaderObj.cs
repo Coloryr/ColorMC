@@ -1,44 +1,56 @@
-﻿namespace ColorMC.Core.Objs.Loader;
+﻿using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs.Loader;
 
 public record FabricLoaderObj
 {
-    public record Arguments
+    public record ArgumentsObj
     {
-        public List<string> game { get; set; }
-        public List<string> jvm { get; set; }
+        [JsonProperty("game")]
+        public List<string> Game { get; set; }
+        [JsonProperty("jvm")]
+        public List<string> Jvm { get; set; }
     }
-    public record Libraries
+    public record LibrariesObj
     {
-        public string name { get; set; }
-        public string url { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
     }
-    public string id { get; set; }
-    public string inheritsFrom { get; set; }
-    public string releaseTime { get; set; }
-    public string time { get; set; }
-    public string type { get; set; }
-    public string mainClass { get; set; }
-    public Arguments arguments { get; set; }
-    public List<Libraries> libraries { get; set; }
+    [JsonProperty("id")]
+    public string Id { get; set; }
+    //public string inheritsFrom { get; set; }
+    //public string releaseTime { get; set; }
+    //public string time { get; set; }
+    //public string type { get; set; }
+    [JsonProperty("mainClass")]
+    public string MainClass { get; set; }
+    [JsonProperty("arguments")]
+    public ArgumentsObj Arguments { get; set; }
+    [JsonProperty("libraries")]
+    public List<LibrariesObj> Libraries { get; set; }
 }
 
-public record FabricLoaderObj1
+public record FabricLoaderVersionObj
 {
-    public record Loader
+    public record LoaderObj
     {
-        public string separator { get; set; }
-        public int build { get; set; }
-        public string maven { get; set; }
-        public string version { get; set; }
-        public bool stable { get; set; }
+        //public string separator { get; set; }
+        //public int build { get; set; }
+        //public string maven { get; set; }
+        [JsonProperty("version")]
+        public string Version { get; set; }
+        //public bool stable { get; set; }
     }
-    public record Intermediary
-    {
-        public string maven { get; set; }
-        public string version { get; set; }
-        public bool stable { get; set; }
-    }
-    public Loader loader { get; set; }
-    public Intermediary intermediary { get; set; }
+    //public record Intermediary
+    //{
+    //    public string maven { get; set; }
+    //    public string version { get; set; }
+    //    public bool stable { get; set; }
+    //}
+    [JsonProperty("loader")]
+    public LoaderObj Loader { get; set; }
+    //public Intermediary intermediary { get; set; }
 }
 

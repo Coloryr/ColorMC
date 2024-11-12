@@ -9,17 +9,17 @@ namespace ColorMC.Core.Objs.Minecraft;
 /// </summary>
 public record GameArgObj
 {
-    public record Arguments
+    public record ArgumentsObj
     {
         public record Jvm
         {
-            public List<Libraries.Rules> rules { get; set; }
+            public List<LibrariesObj.RulesObj> rules { get; set; }
             public object value { get; set; }
         }
         public List<object> game { get; set; }
         public List<object> jvm { get; set; }
     }
-    public record AssetIndex
+    public record AssetIndexObj
     {
         public string id { get; set; }
         public string sha1 { get; set; }
@@ -27,7 +27,7 @@ public record GameArgObj
         public long totalSize { get; set; }
         public string url { get; set; }
     }
-    public record Downloads
+    public record DownloadsObj
     {
         public record Download
         {
@@ -40,91 +40,119 @@ public record GameArgObj
         public Download server { get; set; }
         public Download server_mappings { get; set; }
     }
-    public record JavaVersion
+    public record JavaVersionObj
     {
         public string component { get; set; }
         public int majorVersion { get; set; }
     }
-    public record Libraries
+    public record LibrariesObj
     {
-        public record Rules
+        public record RulesObj
         {
-            public record OS
+            public record OsObj
             {
-                public string name { get; set; }
-                public string version { get; set; }
-                public string arch { get; set; }
+                [JsonProperty("name")]
+                public string Name { get; set; }
+                //public string version { get; set; }
+                [JsonProperty("arch")]
+                public string Arch { get; set; }
             }
-            public string action { get; set; }
-            public OS os { get; set; }
+            [JsonProperty("action")]
+            public string Action { get; set; }
+            [JsonProperty("os")]
+            public OsObj Os { get; set; }
         }
-        public record Downloads
+        public record DownloadsObj
         {
-            public record Artifact
+            public record ArtifactObj
             {
-                public string path { get; set; }
-                public string sha1 { get; set; }
-                public long size { get; set; }
-                public string url { get; set; }
+                [JsonProperty("path")]
+                public string Path { get; set; }
+                [JsonProperty("sha1")]
+                public string Sha1 { get; set; }
+                //public long size { get; set; }
+                [JsonProperty("url")]
+                public string Url { get; set; }
             }
-            public record Classifiers
+            public record ClassifiersObj
             {
                 [JsonProperty("natives-linux")]
-                public Artifact natives_linux { get; set; }
+                public ArtifactObj NativesLinux { get; set; }
                 [JsonProperty("natives-osx")]
-                public Artifact natives_osx { get; set; }
+                public ArtifactObj NativesOsx { get; set; }
                 [JsonProperty("natives-windows")]
-                public Artifact natives_windows { get; set; }
+                public ArtifactObj NativesWindows { get; set; }
                 [JsonProperty("natives-windows-32")]
-                public Artifact natives_windows_32 { get; set; }
+                public ArtifactObj NativesWindows32 { get; set; }
                 [JsonProperty("natives-windows-64")]
-                public Artifact natives_windows_64 { get; set; }
+                public ArtifactObj NativesWindows64 { get; set; }
             }
-            public Classifiers classifiers { get; set; }
-            public Artifact artifact { get; set; }
+            [JsonProperty("classifiers")]
+            public ClassifiersObj Classifiers { get; set; }
+            [JsonProperty("artifact")]
+            public ArtifactObj Artifact { get; set; }
         }
-        public record Natives
-        {
-            public string linux { get; set; }
-            public string osx { get; set; }
-            public string windows { get; set; }
-        }
-        public Natives natives { get; set; }
-        public Downloads downloads { get; set; }
-        public string name { get; set; }
-        public List<Rules> rules { get; set; }
+        //public record Natives
+        //{
+        //    public string linux { get; set; }
+        //    public string osx { get; set; }
+        //    public string windows { get; set; }
+        //}
+        //public Natives natives { get; set; }
+        [JsonProperty("downloads")]
+        public DownloadsObj Downloads { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("rules")]
+        public List<RulesObj> Rules { get; set; }
     }
-    public record Logging
+    public record LoggingObj
     {
-        public record Client
+        public record ClientObj
         {
-            public record File
+            public record FileObj
             {
-                public string id { get; set; }
-                public string sha1 { get; set; }
-                public long size { get; set; }
-                public string url { get; set; }
+                //public string id { get; set; }
+                [JsonProperty("sha1")]
+                public string Sha1 { get; set; }
+                //public long size { get; set; }
+                [JsonProperty("url")]
+                public string Url { get; set; }
             }
-            public string argument { get; set; }
-            public File file { get; set; }
-            public string type { get; set; }
+            [JsonProperty("argument")]
+            public string Argument { get; set; }
+            [JsonProperty("file")]
+            public FileObj File { get; set; }
+            //public string type { get; set; }
         }
-        public Client client { get; set; }
+        [JsonProperty("client")]
+        public ClientObj Client { get; set; }
     }
 
-    public AssetIndex assetIndex { get; set; }
-    public string assets { get; set; }
-    public int complianceLevel { get; set; }
-    public Downloads downloads { get; set; }
-    public string id { get; set; }
-    public JavaVersion javaVersion { get; set; }
-    public List<Libraries> libraries { get; set; }
-    public Logging logging { get; set; }
-    public string mainClass { get; set; }
-    public string minecraftArguments { get; set; }
-    public int minimumLauncherVersion { get; set; }
-    public string releaseTime { get; set; }
-    public string time { get; set; }
-    public string type { get; set; }
-    public Arguments arguments { get; set; }
+    [JsonProperty("assetIndex")]
+    public AssetIndexObj AssetIndex { get; set; }
+    [JsonProperty("assets")]
+    public string Assets { get; set; }
+    //public int complianceLevel { get; set; }
+    [JsonProperty("downloads")]
+    public DownloadsObj Downloads { get; set; }
+    [JsonProperty("id")]
+    public string Id { get; set; }
+    [JsonProperty("javaVersion")]
+    public JavaVersionObj JavaVersion { get; set; }
+    [JsonProperty("libraries")]
+    public List<LibrariesObj> Libraries { get; set; }
+    [JsonProperty("logging")]
+    public LoggingObj Logging { get; set; }
+    [JsonProperty("mainClass")]
+    public string MainClass { get; set; }
+    [JsonProperty("minecraftArguments")]
+    public string MinecraftArguments { get; set; }
+    [JsonProperty("minimumLauncherVersion")]
+    public int MinimumLauncherVersion { get; set; }
+    //public string releaseTime { get; set; }
+    //public string time { get; set; }
+    //public string type { get; set; }
+    [JsonProperty("arguments")]
+    public ArgumentsObj Arguments { get; set; }
 }

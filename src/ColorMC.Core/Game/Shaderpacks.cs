@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -18,15 +19,15 @@ public static class Shaderpacks
     /// <returns>光影包列表</returns>
     public static async Task<List<ShaderpackObj>> GetShaderpacksAsync(this GameSettingObj game)
     {
-        var list = new List<ShaderpackObj>();
         var dir = game.GetShaderpacksPath();
 
         var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
-            info.Create();
-            return list;
+            return [];
         }
+
+        var list = new ConcurrentBag<ShaderpackObj>();
 
         await Task.Run(() =>
         {
@@ -45,7 +46,10 @@ public static class Shaderpacks
             });
         });
 
-        return list;
+        var list1 = list.ToList();
+        list1.Sort(ShaderpackObjComparer.Instance);
+
+        return list1;
     }
 
     /// <summary>

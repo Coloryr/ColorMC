@@ -102,24 +102,24 @@ public static class ForgeAPI
 
                 if (neo)
                 {
-                    var obj = JsonConvert.DeserializeObject<List<NeoForgeVersionObj>>(data.Message!);
+                    var obj = JsonConvert.DeserializeObject<List<NeoForgeVersionBmclApiObj>>(data.Message!);
                     if (obj == null)
                         return null;
 
                     foreach (var item in obj)
                     {
-                        list1.Add(item.version.Replace("neoforge-", ""));
+                        list1.Add(item.Version.Replace("neoforge-", ""));
                     }
                 }
                 else
                 {
-                    var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data.Message!);
+                    var obj = JsonConvert.DeserializeObject<List<ForgeVersionBmclApiObj>>(data.Message!);
                     if (obj == null)
                         return null;
 
                     foreach (var item in obj)
                     {
-                        list1.Add(item.version);
+                        list1.Add(item.Version);
                     }
                 }
 

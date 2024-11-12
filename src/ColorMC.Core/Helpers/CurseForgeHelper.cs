@@ -20,9 +20,9 @@ public static class CurseForgeHelper
     /// 修正下载地址
     /// </summary>
     /// <param name="item">CurseForge数据</param>
-    public static void FixDownloadUrl(this CurseForgeModObj.Data item)
+    public static void FixDownloadUrl(this CurseForgeModObj.DataObj item)
     {
-        item.downloadUrl ??= $"{UrlHelper.CurseForgeDownload}files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
+        item.DownloadUrl ??= $"{UrlHelper.CurseForgeDownload}files/{item.Id / 1000}/{item.Id % 1000}/{item.FileName}";
     }
 
     /// <summary>
@@ -31,17 +31,17 @@ public static class CurseForgeHelper
     /// <param name="data">CurseForge数据</param>
     /// <param name="path">下载路径</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.Data data, string path)
+    public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.DataObj data, string path)
     {
         data.FixDownloadUrl();
 
         return new DownloadItemObj()
         {
-            Url = data.downloadUrl,
-            Name = data.displayName,
-            Local = path + "/" + data.fileName,
-            SHA1 = data.hashes.Where(a => a.algo == 1)
-                    .Select(a => a.value).FirstOrDefault()
+            Url = data.DownloadUrl,
+            Name = data.DisplayName,
+            Local = path + "/" + data.FileName,
+            SHA1 = data.Hashes.Where(a => a.Algo == 1)
+                    .Select(a => a.Value).FirstOrDefault()
         };
     }
 
@@ -51,20 +51,20 @@ public static class CurseForgeHelper
     /// <param name="data">CurseForge数据</param>
     /// <param name="path">路径名字</param>
     /// <returns>Mod信息</returns>
-    public static ModInfoObj MakeModInfo(this CurseForgeModObj.Data data, string path)
+    public static ModInfoObj MakeModInfo(this CurseForgeModObj.DataObj data, string path)
     {
         data.FixDownloadUrl();
 
         return new ModInfoObj()
         {
             Path = path,
-            Name = data.displayName,
-            File = data.fileName,
-            SHA1 = data.hashes.Where(a => a.algo == 1)
-                    .Select(a => a.value).FirstOrDefault(),
-            ModId = data.modId.ToString(),
-            FileId = data.id.ToString(),
-            Url = data.downloadUrl
+            Name = data.DisplayName,
+            File = data.FileName,
+            SHA1 = data.Hashes.Where(a => a.Algo == 1)
+                    .Select(a => a.Value).FirstOrDefault(),
+            ModId = data.ModId.ToString(),
+            FileId = data.Id.ToString(),
+            Url = data.DownloadUrl
         };
     }
 
@@ -73,7 +73,7 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="authors">作者列表</param>
     /// <returns>作者名字</returns>
-    public static string GetString(this List<CurseForgeObjList.Data.Authors> authors)
+    public static string GetString(this List<CurseForgeObjList.DataObj.AuthorsObj> authors)
     {
         if (authors == null || authors.Count == 0)
         {
@@ -82,7 +82,7 @@ public static class CurseForgeHelper
         var builder = new StringBuilder();
         foreach (var item in authors)
         {
-            builder.Append(item.name).Append(',');
+            builder.Append(item.Name).Append(',');
         }
 
         return builder.ToString()[..^1];
@@ -106,8 +106,8 @@ public static class CurseForgeHelper
             s_categories = list6;
         }
 
-        var list7 = from item2 in s_categories.data
-                    where item2.classId == type switch
+        var list7 = from item2 in s_categories.Data
+                    where item2.ClassId == type switch
                     {
                         FileType.Mod => CurseForgeAPI.ClassMod,
                         FileType.World => CurseForgeAPI.ClassWorld,
@@ -115,10 +115,10 @@ public static class CurseForgeHelper
                         FileType.Shaderpack => CurseForgeAPI.ClassShaderpack,
                         _ => CurseForgeAPI.ClassModPack
                     }
-                    orderby item2.name descending
-                    select (item2.name, item2.id);
+                    orderby item2.Name descending
+                    select (item2.Name, item2.Id);
 
-        return list7.ToDictionary(a => a.id.ToString(), a => a.name);
+        return list7.ToDictionary(a => a.Id.ToString(), a => a.Name);
     }
 
     /// <summary>
@@ -137,19 +137,19 @@ public static class CurseForgeHelper
             return null;
         }
 
-        list.data.RemoveAll(a =>
+        list.Data.RemoveAll(a =>
         {
-            return !a.name.StartsWith("Minecraft ");
+            return !a.Name.StartsWith("Minecraft ");
         });
 
-        var list111 = new List<CurseForgeVersionType.Item>();
-        list111.AddRange(from item in list.data
-                         where item.id > 17
-                         orderby item.id descending
+        var list111 = new List<CurseForgeVersionType.DataObj>();
+        list111.AddRange(from item in list.Data
+                         where item.Id > 17
+                         orderby item.Id descending
                          select item);
-        list111.AddRange(from item in list.data
-                         where item.id < 18
-                         orderby item.id ascending
+        list111.AddRange(from item in list.Data
+                         where item.Id < 18
+                         orderby item.Id ascending
                          select item);
 
         var list2 = await CurseForgeAPI.GetCurseForgeVersion();
@@ -164,9 +164,9 @@ public static class CurseForgeHelper
         };
         foreach (var item in list111)
         {
-            var list4 = from item1 in list2.data
-                        where item1.type == item.id
-                        select item1.versions;
+            var list4 = from item1 in list2.Data
+                        where item1.Type == item.Id
+                        select item1.Versions;
             var list5 = list4.FirstOrDefault();
             if (list5 != null)
             {
@@ -186,12 +186,12 @@ public static class CurseForgeHelper
     /// <returns>项目信息</returns>
     public static async Task<MakeDownloadItemsRes> GetModInfoAsync(GetCurseForgeModInfoArg arg)
     {
-        var size = arg.Info.files.Count;
+        var size = arg.Info.Files.Count;
         var now = 0;
         var list = new ConcurrentBag<DownloadItemObj>();
 
         //获取Mod信息
-        var res = await CurseForgeAPI.GetMods(arg.Info.files);
+        var res = await CurseForgeAPI.GetMods(arg.Info.Files);
         if (res != null)
         {
             var res1 = res.Distinct(CurseForgeDataComparer.Instance);
@@ -201,7 +201,7 @@ public static class CurseForgeHelper
                 var path = await GetItemPathAsync(arg.Game, item);
                 var item1 = item.MakeModDownloadObj(path.File);
                 list.Add(item1);
-                var modid = item.modId.ToString();
+                var modid = item.ModId.ToString();
                 arg.Game.Mods.Remove(modid);
 
                 if (path.FileType == FileType.Mod)
@@ -224,21 +224,21 @@ public static class CurseForgeHelper
         {
             //一个个获取
             bool done = true;
-            await Parallel.ForEachAsync(arg.Info.files, async (item, token) =>
+            await Parallel.ForEachAsync(arg.Info.Files, async (item, token) =>
             {
                 var res = await CurseForgeAPI.GetMod(item);
-                if (res == null || res.data == null)
+                if (res == null || res.Data == null)
                 {
                     done = false;
                     return;
                 }
 
-                var path = await GetItemPathAsync(arg.Game, res.data);
+                var path = await GetItemPathAsync(arg.Game, res.Data);
 
-                list.Add(res.data.MakeModDownloadObj(path.File));
-                var modid = res.data.modId.ToString();
+                list.Add(res.Data.MakeModDownloadObj(path.File));
+                var modid = res.Data.ModId.ToString();
                 arg.Game.Mods.Remove(modid);
-                arg.Game.Mods.Add(modid, res.data.MakeModInfo(path.Name));
+                arg.Game.Mods.Add(modid, res.Data.MakeModInfo(path.Name));
 
                 now++;
                 arg.Update?.Invoke(size, now);
@@ -258,7 +258,7 @@ public static class CurseForgeHelper
     /// <param name="game">游戏实例</param>
     /// <param name="item">CurseForge资源信息</param>
     /// <returns>下载信息</returns>
-    public static async Task<ItemPathRes> GetItemPathAsync(this GameSettingObj game, CurseForgeModObj.Data item)
+    public static async Task<ItemPathRes> GetItemPathAsync(this GameSettingObj game, CurseForgeModObj.DataObj item)
     {
         var item1 = new ItemPathRes()
         {
@@ -267,25 +267,25 @@ public static class CurseForgeHelper
             FileType = FileType.Mod
         };
 
-        var info1 = await CurseForgeAPI.GetModInfo(item.modId);
+        var info1 = await CurseForgeAPI.GetModInfo(item.ModId);
         if (info1 != null)
         {
-            if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassResourcepack)
-                || info1.Data.classId == CurseForgeAPI.ClassResourcepack)
+            if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassResourcepack)
+                || info1.Data.ClassId == CurseForgeAPI.ClassResourcepack)
             {
                 item1.File = game.GetResourcepacksPath();
                 item1.Name = InstancesPath.Name8;
                 item1.FileType = FileType.Resourcepack;
             }
-            else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassShaderpack)
-                || info1.Data.classId == CurseForgeAPI.ClassShaderpack)
+            else if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassShaderpack)
+                || info1.Data.ClassId == CurseForgeAPI.ClassShaderpack)
             {
                 item1.File = game.GetShaderpacksPath();
                 item1.Name = InstancesPath.Name9;
                 item1.FileType = FileType.Shaderpack;
             }
-            else if (info1.Data.categories.Any(item => item.classId == CurseForgeAPI.ClassWorld)
-                || info1.Data.classId == CurseForgeAPI.ClassWorld)
+            else if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassWorld)
+                || info1.Data.ClassId == CurseForgeAPI.ClassWorld)
             {
                 item1.File = game.GetSavesPath();
                 item1.Name = InstancesPath.Name12;
@@ -305,7 +305,7 @@ public static class CurseForgeHelper
     /// <returns>模组列表</returns>
 
     public static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>>
-      GetModDependenciesAsync(CurseForgeModObj.Data data, string mc, Loaders loader)
+      GetModDependenciesAsync(CurseForgeModObj.DataObj data, string mc, Loaders loader)
     {
         var ids = new ConcurrentBag<long>();
         return await GetModDependenciesAsync(data, mc, loader, ids);
@@ -320,27 +320,27 @@ public static class CurseForgeHelper
     /// <param name="ids">已经获取的列表</param>
     /// <returns>模组列表</returns>
     private static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>> 
-        GetModDependenciesAsync(CurseForgeModObj.Data data, string mc, Loaders loader, ConcurrentBag<long> ids)
+        GetModDependenciesAsync(CurseForgeModObj.DataObj data, string mc, Loaders loader, ConcurrentBag<long> ids)
     {
-        if (data.dependencies == null || data.dependencies.Count == 0)
+        if (data.Dependencies == null || data.Dependencies.Count == 0)
         {
             return [];
         }
         var list = new ConcurrentBag<GetCurseForgeModDependenciesRes>();
-        await Parallel.ForEachAsync(data.dependencies, async (item, cancel) =>
+        await Parallel.ForEachAsync(data.Dependencies, async (item, cancel) =>
         {
-            if (ids.Contains(item.modId))
+            if (ids.Contains(item.ModId))
             {
                 return;
             }
 
-            var opt = item.relationType != 2;
-            var res1 = await CurseForgeAPI.GetCurseForgeFiles(item.modId.ToString(), mc, loader: loader);
-            if (res1 == null || res1.data.Count == 0)
+            var opt = item.RelationType != 2;
+            var res1 = await CurseForgeAPI.GetCurseForgeFiles(item.ModId.ToString(), mc, loader: loader);
+            if (res1 == null || res1.Data.Count == 0)
             {
                 return;
             }
-            var res2 = await CurseForgeAPI.GetModInfo(item.modId);
+            var res2 = await CurseForgeAPI.GetModInfo(item.ModId);
             if (res2 == null)
             {
                 return;
@@ -348,22 +348,22 @@ public static class CurseForgeHelper
 
             var mod = new GetCurseForgeModDependenciesRes()
             {
-                Name = res2.Data.name,
-                ModId = res2.Data.id,
+                Name = res2.Data.Name,
+                ModId = res2.Data.Id,
                 Opt = !opt,
-                List = res1.data
+                List = res1.Data
             };
             list.Add(mod);
-            ids.Add(item.modId);
+            ids.Add(item.ModId);
 
-            foreach (var item3 in data.dependencies)
+            foreach (var item3 in data.Dependencies)
             {
-                if (ids.Contains(item3.modId))
+                if (ids.Contains(item3.ModId))
                 {
                     continue;
                 }
 
-                foreach (var item5 in await GetModDependenciesAsync(res1.data[0], mc, loader, ids))
+                foreach (var item5 in await GetModDependenciesAsync(res1.Data[0], mc, loader, ids))
                 {
                     if (ids.Contains(item5.ModId))
                     {

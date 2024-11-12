@@ -1,33 +1,47 @@
-﻿namespace ColorMC.Core.Objs.Login;
+﻿using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs.Login;
 
 public record AuthenticateObj
 {
-    public record Agent
+    public record AgentObj
     {
-        public string name { get; set; }
-        public string version { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("version")]
+        public string Version { get; set; }
     }
-    public Agent agent { get; set; }
-    public string username { get; set; }
-    public string password { get; set; }
-    public string clientToken { get; set; }
-    public bool requestUser { get; set; }
+    [JsonProperty("agent")]
+    public AgentObj Agent { get; set; }
+    [JsonProperty("username")]
+    public string Username { get; set; }
+    [JsonProperty("password")]
+    public string Password { get; set; }
+    [JsonProperty("clientToken")]
+    public string ClientToken { get; set; }
+    //public bool requestUser { get; set; }
 }
 
 public record AuthenticateResObj
 {
-    public record SelectedProfile
+    public record SelectedProfileObj
     {
-        public string name { get; set; }
-        public string id { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
     }
-    public record User
-    {
-        public string id { get; set; }
-    }
-    public string accessToken { get; set; }
-    public string clientToken { get; set; }
-    public SelectedProfile selectedProfile { get; set; }
-    public List<SelectedProfile> availableProfiles { get; set; }
-    public User user { get; set; }
+    //public record User
+    //{
+    //    public string id { get; set; }
+    //}
+    [JsonProperty("accessToken")]
+    public string AccessToken { get; set; }
+    [JsonProperty("clientToken")]
+    public string ClientToken { get; set; }
+    [JsonProperty("selectedProfile")]
+    public SelectedProfileObj SelectedProfile { get; set; }
+    [JsonProperty("availableProfiles")]
+    public List<SelectedProfileObj> AvailableProfiles { get; set; }
+    //public User user { get; set; }
 }

@@ -8,7 +8,7 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class Dragonwell
 {
-    private const string Url = "https://dragonwell-jdk.io/releases.json";
+    public const string Url = "https://dragonwell-jdk.io/releases.json";
     /// <summary>
     /// 获取列表
     /// </summary>

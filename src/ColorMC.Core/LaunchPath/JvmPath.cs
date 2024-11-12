@@ -284,7 +284,7 @@ public static class JvmPath
     /// 添加到列表
     /// </summary>
     /// <param name="list">列表</param>
-    public static void AddList(List<JvmConfigObj> list)
+    private static void AddList(List<JvmConfigObj> list)
     {
         Logs.Info(LanguageHelper.Get("Core.Jvm.Info1"));
         Task.Run(() =>

@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -26,16 +27,15 @@ public static class Worlds
     /// <returns>世界列表</returns>
     public static async Task<List<WorldObj>> GetWorldsAsync(this GameSettingObj game)
     {
-        var list = new List<WorldObj>();
         var dir = game.GetSavesPath();
 
         var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
-            info.Create();
-            return list;
+            return [];
         }
 
+        var list = new ConcurrentBag<WorldObj>();
         await Parallel.ForEachAsync(info.GetDirectories(), async (item, cacenl) =>
         {
             var world = await ReadWorld(item);
@@ -46,7 +46,7 @@ public static class Worlds
             }
         });
 
-        return list;
+        return [.. list];
     }
 
     /// <summary>

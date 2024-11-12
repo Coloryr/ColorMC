@@ -82,10 +82,10 @@ public static class LibrariesPath
             if (obj1.Loader is ForgeLaunchObj obj2)
             {
                 var list = new List<(string, string)>();
-                foreach (var item in obj2.libraries)
+                foreach (var item in obj2.Libraries)
                 {
 
-                    list.Add((item.name, Path.GetFullPath($"{BaseDir}/{item.downloads.artifact.path}")));
+                    list.Add((item.Name, Path.GetFullPath($"{BaseDir}/{item.Downloads.Artifact.Path}")));
                 }
 
                 return list;
@@ -106,7 +106,7 @@ public static class LibrariesPath
         {
             if (obj1.Loader is ForgeLaunchObj obj2)
             {
-                return new(obj2.minecraftArguments.Split(" "));
+                return new(obj2.MinecraftArguments.Split(" "));
             }
         }
 
@@ -119,7 +119,7 @@ public static class LibrariesPath
         {
             if (obj1.Loader is ForgeLaunchObj obj2)
             {
-                return obj2.mainClass;
+                return obj2.MainClass;
             }
         }
 
@@ -193,20 +193,20 @@ public static class LibrariesPath
         else if (obj.Loader == Loaders.Fabric)
         {
             var fabric = obj.GetFabricObj()!;
-            foreach (var item in fabric.libraries)
+            foreach (var item in fabric.Libraries)
             {
-                var name = PathHelper.NameToPath(item.name);
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.name),
+                var name = PathHelper.NameToPath(item.Name);
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name),
                     Path.GetFullPath($"{BaseDir}/{name}"));
             }
         }
         else if (obj.Loader == Loaders.Quilt)
         {
             var quilt = obj.GetQuiltObj()!;
-            foreach (var item in quilt.libraries)
+            foreach (var item in quilt.Libraries)
             {
-                var name = PathHelper.NameToPath(item.name);
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.name),
+                var name = PathHelper.NameToPath(item.Name);
+                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name),
                     Path.GetFullPath($"{BaseDir}/{name}"));
             }
         }
