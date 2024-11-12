@@ -1,14 +1,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Gui.Manager;
-using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -389,56 +384,6 @@ public partial class AddGameModel
     }
 
     /// <summary>
-    /// 安装整合包
-    /// </summary>
-    /// <param name="data">数据</param>
-    /// <param name="data1">数据</param>
-    public async void Install(CurseForgeModObj.DataObj data, CurseForgeObjList.DataObj data1)
-    {
-        Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
-        var res = await GameBinding.InstallCurseForge(data, data1, Name, Group,
-            ZipUpdate, GameRequest, GameOverwirte, (size, now) =>
-            {
-                Model.ProgressUpdate((double)now / size);
-            }, PackState);
-        Model.ProgressClose();
-
-        if (!res.State)
-        {
-            Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
-        }
-        else
-        {
-            Done(res.Game!.UUID);
-        }
-    }
-
-    /// <summary>
-    /// 安装整合包
-    /// </summary>
-    /// <param name="data">数据</param>
-    /// <param name="data1">数据</param>
-    public async void Install(ModrinthVersionObj data, ModrinthSearchObj.HitObj data1)
-    {
-        Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
-        var res = await GameBinding.InstallModrinth(data, data1, Name, Group,
-            ZipUpdate, GameRequest, GameOverwirte, (size, now) =>
-            {
-                Model.ProgressUpdate((double)now / size);
-            }, PackState);
-        Model.ProgressClose();
-
-        if (!res.State)
-        {
-            Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
-        }
-        else
-        {
-            Done(res.Game!.UUID);
-        }
-    }
-
-    /// <summary>
     /// 游戏版本读取
     /// </summary>
     private async void GameVersionUpdate()
@@ -482,20 +427,5 @@ public partial class AddGameModel
         return Model.ShowWait(state);
     }
 
-    private void ZipUpdate(string text, int size, int all)
-    {
-        string temp = App.Lang("AddGameWindow.Tab1.Info21");
-        Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {text} {size}/{all}"));
-    }
 
-    /// <summary>
-    /// 添加完成
-    /// </summary>
-    private void Done(string? uuid)
-    {
-        var model = WindowManager.MainWindow?.DataContext as MainModel;
-        model?.Model.Notify(App.Lang("AddGameWindow.Tab1.Info7"));
-        model?.Select(uuid);
-        Dispatcher.UIThread.Post(WindowClose);
-    }
 }

@@ -5,8 +5,6 @@ using System.Linq;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
@@ -52,16 +50,6 @@ public partial class AddGameControl : BaseUserControl
     public override Bitmap GetIcon()
     {
         return ImageManager.GameIcon;
-    }
-
-    public void Install(CurseForgeModObj.DataObj data, CurseForgeObjList.DataObj data1)
-    {
-        (DataContext as AddGameModel)?.Install(data, data1);
-    }
-
-    public void Install(ModrinthVersionObj data, ModrinthSearchObj.HitObj data1)
-    {
-        (DataContext as AddGameModel)?.Install(data, data1);
     }
 
     public void AddFile(string file, bool isDir)
@@ -167,5 +155,10 @@ public partial class AddGameControl : BaseUserControl
                 model.SetFile(item.GetPath()!);
             }
         }
+    }
+
+    public string? GetGroup()
+    {
+        return (DataContext as AddGameModel)?.Group;
     }
 }
