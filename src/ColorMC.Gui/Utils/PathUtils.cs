@@ -24,6 +24,7 @@ public static class PathUtils
         }
         return file.Path.LocalPath;
     }
+
     /// <summary>
     /// 文件转字符串
     /// </summary>

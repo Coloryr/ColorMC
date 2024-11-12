@@ -1540,10 +1540,10 @@ public static class GameBinding
         }
 
         if (await obj.Copy(new()
-        { 
-            Game = data, 
-            Request = request, 
-            Overwirte = overwirte 
+        {
+            Game = data,
+            Request = request,
+            Overwirte = overwirte
         }) == null)
         {
             return false;
@@ -2634,7 +2634,7 @@ public static class GameBinding
     }
 
     public static Task<List<DataPackObj>> GetWorldDataPackAsync(WorldObj world)
-    { 
+    {
         return world.GetDataPacksAsync();
     }
 }

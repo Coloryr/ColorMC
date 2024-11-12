@@ -265,7 +265,7 @@ public static class JavaHelper
         {
             var list = new List<JavaInfo>();
             var list1 = PathHelper.GetAllFile(local)
-                .Where(item=>item.Name == "javaw.exe" || item.Name == "java.exe");
+                .Where(item => item.Name == "javaw.exe" || item.Name == "java.exe");
             foreach (var item in list1)
             {
                 var info = GetJavaInfo(item.FullName);
@@ -277,7 +277,7 @@ public static class JavaHelper
 
             return list;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Logs.Error("error on find java", e);
             return null;

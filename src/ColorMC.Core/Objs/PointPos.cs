@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs;
+﻿namespace ColorMC.Core.Objs;
 
 public struct PointPos
 {
@@ -12,8 +6,8 @@ public struct PointPos
     public int Y;
 
     public PointPos()
-    { 
-        
+    {
+
     }
 
     public PointPos(int x, int y)

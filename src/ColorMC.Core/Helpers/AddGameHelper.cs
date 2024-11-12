@@ -104,11 +104,11 @@ public static class AddGameHelper
         }
 
         await game.CopyFileAsync(new()
-        { 
+        {
             Local = arg.Local,
             Unselect = arg.Unselect,
-            Dir = ismmc, 
-            State = arg.State 
+            Dir = ismmc,
+            State = arg.State
         });
 
         return new()

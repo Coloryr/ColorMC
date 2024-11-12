@@ -30,7 +30,7 @@ public static class ModrinthAPI
     /// <param name="type2">类型1</param>
     /// <param name="type3">类型2</param>
     /// <returns></returns>
-    private static async Task<ModrinthSearchObj?> Search(string version, string query, int sortOrder, 
+    private static async Task<ModrinthSearchObj?> Search(string version, string query, int sortOrder,
         int offset, int limit, string categoryId, string type2, string? type3)
     {
         try

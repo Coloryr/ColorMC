@@ -37,29 +37,29 @@ public static class ModrinthHelper
         return builder.ToString();
     }
 
-    public static readonly MSortingObj Relevance = new() 
-    { 
-        Data = "relevance" 
+    public static readonly MSortingObj Relevance = new()
+    {
+        Data = "relevance"
     };
 
-    public static readonly MSortingObj Downloads = new() 
-    { 
-        Data = "downloads" 
+    public static readonly MSortingObj Downloads = new()
+    {
+        Data = "downloads"
     };
 
-    public static readonly MSortingObj Follows = new() 
-    { 
-        Data = "follows" 
+    public static readonly MSortingObj Follows = new()
+    {
+        Data = "follows"
     };
 
-    public static readonly MSortingObj Newest = new() 
-    { 
-        Data = "newest" 
+    public static readonly MSortingObj Newest = new()
+    {
+        Data = "newest"
     };
 
-    public static readonly MSortingObj Updated = new() 
-    { 
-        Data = "updated" 
+    public static readonly MSortingObj Updated = new()
+    {
+        Data = "updated"
     };
 
     public static MFacetsObj BuildCategories(List<string> values) => new()

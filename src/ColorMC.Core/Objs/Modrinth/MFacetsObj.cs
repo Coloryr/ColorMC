@@ -1,7 +1,4 @@
-﻿using System.Text;
-using ColorMC.Core.Helpers;
-
-namespace ColorMC.Core.Objs.Modrinth;
+﻿namespace ColorMC.Core.Objs.Modrinth;
 
 public record MFacetsObj
 {
