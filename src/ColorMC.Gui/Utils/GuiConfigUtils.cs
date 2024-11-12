@@ -206,7 +206,8 @@ public static class GuiConfigUtils
             Style = MakeStyleSettingConfig(),
             Head = MakeHeadSettingConfig(),
             LogColor = MakeLogColorConfig(),
-            Input = new()
+            Input = new(),
+            CheckUpdate = true
         };
     }
 

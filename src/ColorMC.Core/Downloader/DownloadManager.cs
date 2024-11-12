@@ -14,7 +14,7 @@ public static class DownloadManager
     /// <summary>
     /// 下载状态
     /// </summary>
-    public static DownloadState State { get; private set; } = DownloadState.End;
+    public static bool State { get; private set; }
     /// <summary>
     /// 缓存路径
     /// </summary>
@@ -68,7 +68,7 @@ public static class DownloadManager
         s_nowTask?.Cancel();
         s_tasks.Clear();
         s_threads.ForEach(a => a.DownloadStop());
-        State = DownloadState.End;
+        State = false;
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ public static class DownloadManager
             }
             else
             {
-                State = DownloadState.End;
+                State = false;
                 arg.Update?.Invoke(s_threads.Count, State, 0);
             }
         });
@@ -191,9 +191,9 @@ public static class DownloadManager
         var task = new DownloadTask(list, arg);
         s_tasks.Enqueue(task);
 
-        if (State == DownloadState.End)
+        if (State == false)
         {
-            State = DownloadState.Start;
+            State = true;
             arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count);
             TaskDone(arg);
         }
@@ -229,7 +229,7 @@ public static class DownloadManager
         s_nowTask?.Cancel();
         s_tasks.Clear();
         s_threads.ForEach(a => a.Close());
-        State = DownloadState.End;
+        State = false;
     }
 
     /// <summary>

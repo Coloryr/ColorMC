@@ -267,7 +267,7 @@ public partial class MainModel : TopModel, IMainTop
         {
             LowFps = true;
         }
-        if (config1.Http?.CheckUpdate == true)
+        if (config?.CheckUpdate == true)
         {
             var data = await UpdateUtils.Check();
             if (!data.Item1)

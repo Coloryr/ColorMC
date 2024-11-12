@@ -256,12 +256,18 @@ public record GetOpenJ9ListRes
     public List<OpenJ9FileObj.Download>? Download;
 }
 
+/// <summary>
+/// 获取资源文件
+/// </summary>
 public record GetAssetsRes
 {
     public AssetsObj Assets;
     public string Text;
 }
 
+/// <summary>
+/// 获取版本文件
+/// </summary>
 public record GetVersionsRes
 {
     public VersionObj Version;

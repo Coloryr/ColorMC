@@ -102,6 +102,7 @@ public static class LanguageHelper
     {
         return state switch
         {
+            SideType.None => Get("Type.SideType.None"),
             SideType.Client => Get("Type.SideType.Client"),
             SideType.Server => Get("Type.SideType.Server"),
             _ => Get("Type.SideType.Both")

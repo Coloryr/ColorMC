@@ -414,7 +414,7 @@ public static class Mods
                 mod.Version = obj3["version"]?.ToString();
                 mod.Url = obj3["url"]?.ToString();
                 mod.Loaders.Add(Loaders.Forge);
-                mod.Side = SideType.Both; //无法判断sideonly
+                mod.Side = SideType.None; //无法判断sideonly
 
                 if (obj3.TryGetValue("authorList", out var value))
                 {

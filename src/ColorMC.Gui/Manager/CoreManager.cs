@@ -3,7 +3,6 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 

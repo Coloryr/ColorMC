@@ -37,7 +37,7 @@ public static class BaseBinding
     /// <summary>
     /// 是否正在下载
     /// </summary>
-    public static bool IsDownload => DownloadManager.State != DownloadState.End;
+    public static bool IsDownload => DownloadManager.State;
 
     public static event Action? LoadDone;
 

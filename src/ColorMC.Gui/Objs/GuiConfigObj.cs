@@ -336,5 +336,10 @@ public record GuiConfigObj
     /// 服务器云同步密钥
     /// </summary>
     public string ServerKey { get; set; }
+
+    /// <summary>
+    /// 检查启动器更新
+    /// </summary>
+    public bool CheckUpdate { get; set; }
 }
 

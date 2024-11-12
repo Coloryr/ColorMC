@@ -35,9 +35,27 @@ public enum Loaders
     Custom
 }
 
+/// <summary>
+/// 加载测
+/// </summary>
 public enum SideType
 {
-    None, Client, Server, Both
+    /// <summary>
+    /// 无法检测
+    /// </summary>
+    None, 
+    /// <summary>
+    /// 客户端
+    /// </summary>
+    Client, 
+    /// <summary>
+    /// 服务器
+    /// </summary>
+    Server, 
+    /// <summary>
+    /// 两侧
+    /// </summary>
+    Both
 }
 
 /// <summary>
@@ -402,14 +420,6 @@ public enum CoreRunState
     Read, Init, GetInfo, Start, End,
     Download, DownloadDone,
     Error,
-}
-
-/// <summary>
-/// 运行态
-/// </summary>
-public enum DownloadState
-{
-    Start, End
 }
 
 public enum DnsType

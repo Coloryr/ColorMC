@@ -23,7 +23,7 @@ public record DownloadItemObj
     /// <summary>
     /// 覆盖
     /// </summary>
-    public bool Overwrite { get; set; } = false;
+    public bool Overwrite { get; set; }
 
     /// <summary>
     /// 总大小
