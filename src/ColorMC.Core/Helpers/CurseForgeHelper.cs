@@ -319,7 +319,7 @@ public static class CurseForgeHelper
     /// <param name="loader">加载器</param>
     /// <param name="ids">已经获取的列表</param>
     /// <returns>模组列表</returns>
-    private static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>> 
+    private static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>>
         GetModDependenciesAsync(CurseForgeModObj.DataObj data, string mc, Loaders loader, ConcurrentBag<long> ids)
     {
         if (data.Dependencies == null || data.Dependencies.Count == 0)

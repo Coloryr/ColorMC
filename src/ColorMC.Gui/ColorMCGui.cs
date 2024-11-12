@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Logging;
 using Avalonia.Media;
 using ColorMC.Core;
 using ColorMC.Core.Objs;

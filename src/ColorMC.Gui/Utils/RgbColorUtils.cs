@@ -11,6 +11,7 @@ public static class RgbColorUtils
     {
         Name = "ColorMC_RGB"
     };
+
     private static bool s_rgb;
     private static bool s_run = true;
     private static double s_rgbS = 1;

@@ -20,7 +20,7 @@ public static class GameLang
     /// <returns>语言列表</returns>
     public static Task<Dictionary<string, string>> GetLangsAsync(this AssetsObj? obj)
     {
-        return Task.Run(() => 
+        return Task.Run(() =>
         {
             return GetLangs(obj);
         });
