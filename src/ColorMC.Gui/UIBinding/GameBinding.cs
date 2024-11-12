@@ -229,8 +229,8 @@ public static class GameBinding
     /// <param name="update"></param>
     /// <param name="update2"></param>
     /// <returns></returns>
-    public static async Task<GameRes> InstallCurseForge(CurseForgeModObj.Data data,
-        CurseForgeObjList.Data data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
+    public static async Task<GameRes> InstallCurseForge(CurseForgeModObj.DataObj data,
+        CurseForgeObjList.DataObj data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
@@ -262,7 +262,7 @@ public static class GameBinding
     /// <param name="update2"></param>
     /// <returns></returns>
     public static async Task<GameRes> InstallModrinth(ModrinthVersionObj data,
-        ModrinthSearchObj.Hit data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
+        ModrinthSearchObj.HitObj data1, string? name, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
@@ -1422,7 +1422,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="data"></param>
-    public static void SetModInfo(GameSettingObj obj, CurseForgeModObj.Data? data)
+    public static void SetModInfo(GameSettingObj obj, CurseForgeModObj.DataObj? data)
     {
         if (data == null)
             return;
@@ -1431,13 +1431,13 @@ public static class GameBinding
 
         var obj1 = new ModInfoObj()
         {
-            FileId = data.id.ToString(),
-            ModId = data.modId.ToString(),
-            File = data.fileName,
-            Name = data.displayName,
-            Url = data.downloadUrl,
-            SHA1 = data.hashes.Where(a => a.algo == 1)
-                .Select(a => a.value).FirstOrDefault()
+            FileId = data.Id.ToString(),
+            ModId = data.ModId.ToString(),
+            File = data.FileName,
+            Name = data.DisplayName,
+            Url = data.DownloadUrl,
+            SHA1 = data.Hashes.Where(a => a.Algo == 1)
+                .Select(a => a.Value).FirstOrDefault()
         };
         if (!obj.Mods.TryAdd(obj1.ModId, obj1))
         {
@@ -1459,15 +1459,15 @@ public static class GameBinding
             return;
         }
 
-        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
+        var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
         var obj1 = new ModInfoObj()
         {
-            FileId = data.id.ToString(),
-            ModId = data.project_id,
-            File = file.filename,
-            Name = data.name,
-            Url = file.url,
-            SHA1 = file.hashes.sha1
+            FileId = data.Id.ToString(),
+            ModId = data.ProjectId,
+            File = file.Filename,
+            Name = data.Name,
+            Url = file.Url,
+            SHA1 = file.Hashes.Sha1
         };
         if (!obj.Mods.TryAdd(obj1.ModId, obj1))
         {
@@ -1539,7 +1539,12 @@ public static class GameBinding
             return false;
         }
 
-        if (await obj.Copy(data, request, overwirte) == null)
+        if (await obj.Copy(new()
+        { 
+            Game = data, 
+            Request = request, 
+            Overwirte = overwirte 
+        }) == null)
         {
             return false;
         }
@@ -1756,7 +1761,7 @@ public static class GameBinding
     /// <param name="update"></param>
     /// <param name="update2"></param>
     /// <returns></returns>
-    public static Task<bool> ModPackUpdate(GameSettingObj obj, CurseForgeModObj.Data fid,
+    public static Task<bool> ModPackUpdate(GameSettingObj obj, CurseForgeModObj.DataObj fid,
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
@@ -2626,5 +2631,10 @@ public static class GameBinding
 
             }
         });
+    }
+
+    public static Task<List<DataPackObj>> GetWorldDataPackAsync(WorldObj world)
+    { 
+        return world.GetDataPacksAsync();
     }
 }

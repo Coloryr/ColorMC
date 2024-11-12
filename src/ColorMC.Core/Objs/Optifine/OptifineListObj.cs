@@ -1,11 +1,18 @@
-﻿namespace ColorMC.Core.Objs.OptiFine;
+﻿using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs.OptiFine;
 
 public record OptifineListObj
 {
-    public string _id { get; set; }
-    public string mcversion { get; set; }
-    public string patch { get; set; }
-    public string type { get; set; }
-    public string filename { get; set; }
-    public string forge { get; set; }
+    //public string _id { get; set; }
+    [JsonProperty("mcversion")]
+    public string Mcversion { get; set; }
+    [JsonProperty("patch")]
+    public string Patch { get; set; }
+    [JsonProperty("type")]
+    public string Type { get; set; }
+    [JsonProperty("filename")]
+    public string Filename { get; set; }
+    [JsonProperty("forge")]
+    public string Forge { get; set; }
 }

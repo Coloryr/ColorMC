@@ -80,14 +80,14 @@ public static class FabricAPI
                 return null;
             }
 
-            var list = JsonConvert.DeserializeObject<List<FabricLoaderObj1>>(data.Message!);
+            var list = JsonConvert.DeserializeObject<List<FabricLoaderVersionObj>>(data.Message!);
             if (list == null)
                 return null;
 
             var list1 = new List<string>();
             foreach (var item in list)
             {
-                list1.Add(item.loader.version);
+                list1.Add(item.Loader.Version);
             }
 
             StringHelper.VersionSort(list1);
@@ -119,7 +119,7 @@ public static class FabricAPI
                     new Exception(url), false);
                 return null;
             }
-            var list = JsonConvert.DeserializeObject<List<FabricMetaObj.Game>>(data.Message!);
+            var list = JsonConvert.DeserializeObject<List<FabricMetaObj.GameObj>>(data.Message!);
             if (list == null)
                 return null;
 

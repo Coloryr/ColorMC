@@ -24,27 +24,26 @@ public static class LegacyLogin
     {
         var obj = new AuthenticateObj
         {
-            agent = new()
+            Agent = new()
             {
-                name = "ColorMC",
-                version = ColorMCCore.Version
+                Name = "ColorMC",
+                Version = ColorMCCore.Version
             },
-            username = user,
-            password = pass,
-            clientToken = clientToken
+            Username = user,
+            Password = pass,
+            ClientToken = clientToken
         };
         if (!server.EndsWith('/'))
         {
             server += "/";
         }
-        HttpRequestMessage message = new()
+        var message = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
-            RequestUri = new(server + "authserver/authenticate")
+            RequestUri = new(server + "authserver/authenticate"),
+            Content = new StringContent(JsonConvert.SerializeObject(obj),
+            MediaTypeHeaderValue.Parse("application/json"))
         };
-        message.Headers.UserAgent.Add(new("ColorMC", ColorMCCore.Version));
-        message.Content = new StringContent(JsonConvert.SerializeObject(obj),
-            MediaTypeHeaderValue.Parse("application/json"));
 
         var res = await CoreHttpClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
@@ -68,19 +67,19 @@ public static class LegacyLogin
             };
         }
 
-        if (obj2.selectedProfile == null && obj2.availableProfiles.Count > 0)
+        if (obj2.SelectedProfile == null && obj2.AvailableProfiles.Count > 0)
         {
-            foreach (var item in obj2.availableProfiles)
+            foreach (var item in obj2.AvailableProfiles)
             {
-                if (item.name.Equals(user, StringComparison.CurrentCultureIgnoreCase))
+                if (item.Name.Equals(user, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    obj2.selectedProfile = item;
+                    obj2.SelectedProfile = item;
                     break;
                 }
             }
         }
 
-        if (obj2.selectedProfile == null)
+        if (obj2.SelectedProfile == null)
         {
             var obj1 = JObject.Parse(data);
             if (obj1?["errorMessage"]?.ToString() is { } msg)
@@ -104,12 +103,12 @@ public static class LegacyLogin
             State = LoginState.Done,
             Auth = new()
             {
-                UserName = obj2.selectedProfile.name,
-                UUID = obj2.selectedProfile.id,
-                AccessToken = obj2.accessToken,
-                ClientToken = obj2.clientToken
+                UserName = obj2.SelectedProfile.Name,
+                UUID = obj2.SelectedProfile.Id,
+                AccessToken = obj2.AccessToken,
+                ClientToken = obj2.ClientToken
             },
-            IsOne = obj2.availableProfiles.Count <= 1
+            IsOne = obj2.AvailableProfiles.Count <= 1
         };
     }
 
@@ -120,36 +119,33 @@ public static class LegacyLogin
     /// <param name="obj">保存的账户</param>
     public static async Task<LegacyLoginRes> RefreshAsync(string server, LoginObj obj, bool select)
     {
-        HttpRequestMessage message = new()
+        var message = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
             RequestUri = new(server + "/authserver/refresh")
         };
-        message.Headers.UserAgent.Add(new("ColorMC", ColorMCCore.Version));
 
         if (select)
         {
-            var obj1 = new RefreshObj
+            message.Content = new StringContent(JsonConvert.SerializeObject(new RefreshObj
             {
-                accessToken = obj.AccessToken,
-                clientToken = obj.ClientToken,
-                selectedProfile = new()
+                AccessToken = obj.AccessToken,
+                ClientToken = obj.ClientToken,
+                SelectedProfile = new()
                 {
-                    name = obj.UserName,
-                    id = obj.UUID
+                    Name = obj.UserName,
+                    Id = obj.UUID
                 }
-            };
-            message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
+            }),
             MediaTypeHeaderValue.Parse("application/json"));
         }
         else
         {
-            var obj1 = new RefreshObj
+            message.Content = new StringContent(JsonConvert.SerializeObject(new RefreshObj
             {
-                accessToken = obj.AccessToken,
-                clientToken = obj.ClientToken
-            };
-            message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
+                AccessToken = obj.AccessToken,
+                ClientToken = obj.ClientToken
+            }),
             MediaTypeHeaderValue.Parse("application/json"));
         }
         var res = await CoreHttpClient.LoginClient.SendAsync(message);
@@ -172,7 +168,7 @@ public static class LegacyLogin
             };
         }
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
-        if (obj2 == null || (obj2.selectedProfile == null && !select))
+        if (obj2 == null || (obj2.SelectedProfile == null && !select))
         {
             return new LegacyLoginRes
             {
@@ -180,13 +176,13 @@ public static class LegacyLogin
                 Message = LanguageHelper.Get("Core.Login.Error22")
             };
         }
-        if (obj2.selectedProfile != null)
+        if (obj2.SelectedProfile != null)
         {
-            obj.UserName = obj2.selectedProfile.name;
-            obj.UUID = obj2.selectedProfile.id;
+            obj.UserName = obj2.SelectedProfile.Name;
+            obj.UUID = obj2.SelectedProfile.Id;
         }
-        obj.AccessToken = obj2.accessToken;
-        obj.ClientToken = obj2.clientToken;
+        obj.AccessToken = obj2.AccessToken;
+        obj.ClientToken = obj2.ClientToken;
 
         return new LegacyLoginRes
         {
@@ -203,19 +199,17 @@ public static class LegacyLogin
     /// <returns>可用性</returns>
     public static async Task<bool> ValidateAsync(string server, LoginObj obj)
     {
-        var obj1 = new RefreshObj
-        {
-            accessToken = obj.AccessToken,
-            clientToken = obj.ClientToken
-        };
-        HttpRequestMessage message = new()
+        var message = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
-            RequestUri = new(server + "/authserver/validate")
+            RequestUri = new(server + "/authserver/validate"),
+            Content = new StringContent(JsonConvert.SerializeObject(new RefreshObj
+            {
+                AccessToken = obj.AccessToken,
+                ClientToken = obj.ClientToken
+            }),
+            MediaTypeHeaderValue.Parse("application/json"))
         };
-        message.Headers.UserAgent.Add(new("ColorMC", ColorMCCore.Version));
-        message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
-            MediaTypeHeaderValue.Parse("application/json"));
 
         var res = await CoreHttpClient.LoginClient.SendAsync(message);
         if (res.StatusCode == HttpStatusCode.NoContent)

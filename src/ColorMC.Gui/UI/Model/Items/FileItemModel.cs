@@ -55,17 +55,17 @@ public partial class FileItemModel : SelectItemModel
 
     private bool close;
 
-    public FileItemModel(CurseForgeObjList.Data data, FileType type)
+    public FileItemModel(CurseForgeObjList.DataObj data, FileType type)
     {
         Data = data;
 
-        ID = data.id.ToString();
-        Name = data.name;
-        Summary = data.summary;
-        Author = data.authors.GetString();
-        DownloadCount = data.downloadCount;
-        ModifiedDate = DateTime.Parse(data.dateModified);
-        Logo = data.logo?.url;
+        ID = data.Id.ToString();
+        Name = data.Name;
+        Summary = data.Summary;
+        Author = data.Authors.GetString();
+        DownloadCount = data.DownloadCount;
+        ModifiedDate = DateTime.Parse(data.DateModified);
+        Logo = data.Logo?.Url;
         FileType = type;
         SourceType = SourceType.CurseForge;
         Url = data.GetUrl();
@@ -74,17 +74,17 @@ public partial class FileItemModel : SelectItemModel
         IsModPack = type == FileType.ModPack;
     }
 
-    public FileItemModel(ModrinthSearchObj.Hit data, FileType type)
+    public FileItemModel(ModrinthSearchObj.HitObj data, FileType type)
     {
         Data = data;
 
-        ID = data.project_id;
-        Name = data.title;
-        Summary = data.description;
-        Author = data.author;
-        DownloadCount = data.downloads;
-        ModifiedDate = DateTime.Parse(data.date_modified);
-        Logo = data.icon_url;
+        ID = data.ProjectId;
+        Name = data.Title;
+        Summary = data.Description;
+        Author = data.Author;
+        DownloadCount = data.Downloads;
+        ModifiedDate = DateTime.Parse(data.DateModified);
+        Logo = data.IconUrl;
         FileType = type;
         SourceType = SourceType.Modrinth;
         Url = data.GetUrl(type);
@@ -98,16 +98,16 @@ public partial class FileItemModel : SelectItemModel
         Data = data;
         McMod = data;
 
-        Logo = data.mcmod_icon.StartsWith("//")
-                    ? "https:" + data.mcmod_icon : data.mcmod_icon;
-        Name = data.mcmod_name;
-        Summary = data.mcmod_text;
-        Author = data.mcmod_author;
+        Logo = data.McmodIcon.StartsWith("//")
+                    ? "https:" + data.McmodIcon : data.McmodIcon;
+        Name = data.McmodName;
+        Summary = data.McmodText;
+        Author = data.McmodAuthor;
         FileType = FileType.Mod;
         SourceType = SourceType.McMod;
-        ModifiedDate = data.mcmod_update_time;
+        ModifiedDate = data.McmodUpdateTime;
 
-        HaveDownload = data.curseforge_id != null || data.modrinth_id != null;
+        HaveDownload = data.CurseforgeId != null || data.ModrinthId != null;
         IsModPack = type == FileType.ModPack;
     }
 

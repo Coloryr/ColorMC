@@ -824,18 +824,18 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                 LoadFail();
                 return;
             }
-            GameVersionList.AddRange(list.versions);
+            GameVersionList.AddRange(list.Versions);
 
             _categories.Clear();
             _categories.Add(0, "");
             int a = 1;
-            foreach (var item in list.types)
+            foreach (var item in list.Types)
             {
                 _categories.Add(a++, item);
             }
 
             SortTypeList.Add("");
-            SortTypeList.AddRange(list.sorts);
+            SortTypeList.AddRange(list.Sorts);
 
             CategorieList.AddRange(_categories.Values);
 
@@ -948,7 +948,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
             if (type == SourceType.CurseForge)
             {
                 GameBinding.SetModInfo(Obj,
-                    data.Data as CurseForgeModObj.Data);
+                    data.Data as CurseForgeModObj.DataObj);
             }
             else if (type == SourceType.Modrinth)
             {
@@ -1004,7 +1004,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                 res = type switch
                 {
                     SourceType.CurseForge => await WebBinding.Download(item,
-                        data.Data as CurseForgeModObj.Data),
+                        data.Data as CurseForgeModObj.DataObj),
                     SourceType.Modrinth => await WebBinding.Download(item,
                         data.Data as ModrinthVersionObj),
                     _ => false
@@ -1025,7 +1025,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                 var list = (type == SourceType.McMod ? _lastType : type) switch
                 {
                     SourceType.CurseForge => await WebBinding.GetDownloadModList(Obj,
-                    data.Data as CurseForgeModObj.Data),
+                    data.Data as CurseForgeModObj.DataObj),
                     SourceType.Modrinth => await WebBinding.GetDownloadModList(Obj,
                     data.Data as ModrinthVersionObj),
                     _ => null
@@ -1083,7 +1083,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                 res = type switch
                 {
                     SourceType.CurseForge => await WebBinding.Download(_now, Obj,
-                        data.Data as CurseForgeModObj.Data),
+                        data.Data as CurseForgeModObj.DataObj),
                     SourceType.Modrinth => await WebBinding.Download(_now, Obj,
                         data.Data as ModrinthVersionObj),
                     _ => false
@@ -1165,7 +1165,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
             if (_lastType == SourceType.McMod)
             {
                 var obj1 = (_last!.Data as McModSearchItemObj)!;
-                if (obj1.curseforge_id != null && obj1.modrinth_id != null)
+                if (obj1.CurseforgeId != null && obj1.ModrinthId != null)
                 {
                     var res = await Model.ShowCombo(App.Lang("AddWindow.Info14"), _sourceTypeNameList);
                     if (res.Cancel)
@@ -1173,16 +1173,16 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                         return;
                     }
                     _lastType = type = res.Index == 0 ? SourceType.CurseForge : SourceType.Modrinth;
-                    _lastId = id = type == SourceType.CurseForge ? obj1.curseforge_id : obj1.modrinth_id;
+                    _lastId = id = type == SourceType.CurseForge ? obj1.CurseforgeId : obj1.ModrinthId;
                 }
-                else if (obj1.curseforge_id != null)
+                else if (obj1.CurseforgeId != null)
                 {
-                    _lastId = id = obj1.curseforge_id;
+                    _lastId = id = obj1.CurseforgeId;
                     _lastType = type = SourceType.CurseForge;
                 }
-                else if (obj1.modrinth_id != null)
+                else if (obj1.ModrinthId != null)
                 {
-                    _lastId = id = obj1.modrinth_id;
+                    _lastId = id = obj1.ModrinthId;
                     _lastType = type = SourceType.Modrinth;
                 }
             }
@@ -1205,14 +1205,14 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         {
             EnablePage = true;
             list = await WebBinding.GetFileList(type, id ??
-                (_last!.Data as CurseForgeObjList.Data)!.id.ToString(), PageDownload,
+                (_last!.Data as CurseForgeObjList.DataObj)!.Id.ToString(), PageDownload,
                 GameVersionDownload, Obj.Loader, _now);
         }
         else if (type == SourceType.Modrinth)
         {
             EnablePage = false;
             list = await WebBinding.GetFileList(type, id ??
-                (_last!.Data as ModrinthSearchObj.Hit)!.project_id, PageDownload,
+                (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, PageDownload,
                 GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
         }
 

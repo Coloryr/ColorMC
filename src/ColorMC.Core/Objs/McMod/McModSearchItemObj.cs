@@ -1,21 +1,39 @@
-﻿namespace ColorMC.Core.Objs.McMod;
+﻿using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs.McMod;
 
 public record McModSearchItemObj
 {
-    public int mcmod_id { get; set; }
-    public string mcmod_icon { get; set; }
-    public string mcmod_name { get; set; }
-    public string mcmod_author { get; set; }
-    public string mcmod_text { get; set; }
-    public int mcmod_type { get; set; }
-    public string mcmod_mod_type { get; set; }
-    public string mcmod_mod_subtype { get; set; }
-    public string mcmod_game_version { get; set; }
-    public DateTime mcmod_create_time { get; set; }
-    public DateTime mcmod_update_time { get; set; }
-    public DateTime mcmod_re_time { get; set; }
-    public string? curseforge_url { get; set; }
-    public string? curseforge_id { get; set; }
-    public string? modrinth_url { get; set; }
-    public string? modrinth_id { get; set; }
+    [JsonProperty("mcmod_id")]
+    public int McmodId { get; set; }
+    [JsonProperty("mcmod_icon")]
+    public string McmodIcon { get; set; }
+    [JsonProperty("mcmod_name")]
+    public string McmodName { get; set; }
+    [JsonProperty("mcmod_author")]
+    public string McmodAuthor { get; set; }
+    [JsonProperty("mcmod_text")]
+    public string McmodText { get; set; }
+    [JsonProperty("mcmod_type")]
+    public int McmodType { get; set; }
+    [JsonProperty("mcmod_mod_type")]
+    public string McmodModType { get; set; }
+    [JsonProperty("mcmod_mod_subtype")]
+    public string McmodModSubtype { get; set; }
+    [JsonProperty("mcmod_game_version")]
+    public string McmodGameVersion { get; set; }
+    [JsonProperty("mcmod_create_time")]
+    public DateTime McmodCreateTime { get; set; }
+    [JsonProperty("mcmod_update_time")]
+    public DateTime McmodUpdateTime { get; set; }
+    [JsonProperty("mcmod_re_time")]
+    public DateTime McmodReTime { get; set; }
+    [JsonProperty("curseforge_url")]
+    public string? CurseforgeUrl { get; set; }
+    [JsonProperty("curseforge_id")]
+    public string? CurseforgeId { get; set; }
+    [JsonProperty("modrinth_url")]
+    public string? ModrinthUrl { get; set; }
+    [JsonProperty("modrinth_id")]
+    public string? ModrinthId { get; set; }
 }

@@ -18,20 +18,20 @@ public static class Servers
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>服务器列表</returns>
-    public static async Task<ConcurrentBag<ServerInfoObj>> GetServerInfosAsync(this GameSettingObj game)
+    public static async Task<List<ServerInfoObj>> GetServerInfosAsync(this GameSettingObj game)
     {
-        var list = new ConcurrentBag<ServerInfoObj>();
+        var list = new List<ServerInfoObj>();
         var file = game.GetServersFile();
         if (!File.Exists(file))
         {
-            return list;
+            return [];
         }
 
         try
         {
             if (await NbtBase.Read<NbtCompound>(file) is not { } tag)
             {
-                return list;
+                return [];
             }
 
             var nbtList = tag.TryGet<NbtList>("servers")!;

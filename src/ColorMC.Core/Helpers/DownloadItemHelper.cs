@@ -48,9 +48,9 @@ public static class DownloadItemHelper
         return new DownloadItemObj
         {
             Name = "log4j2-xml",
-            Url = obj.logging.client.file.url,
+            Url = obj.Logging.Client.File.Url,
             Local = Path.GetFullPath($"{VersionPath.BaseDir}/log4j2-xml"),
-            SHA1 = obj.logging.client.file.sha1
+            SHA1 = obj.Logging.Client.File.Sha1
         };
     }
 
@@ -82,9 +82,9 @@ public static class DownloadItemHelper
         var file = LibrariesPath.GetGameFile(mc);
         return new()
         {
-            Url = CoreHttpClient.Source == SourceLocal.Offical ? game.downloads.client.url
+            Url = CoreHttpClient.Source == SourceLocal.Offical ? game.Downloads.client.url
                 : UrlHelper.DownloadGame(mc, CoreHttpClient.Source),
-            SHA1 = game.downloads.client.sha1,
+            SHA1 = game.Downloads.client.sha1,
             Local = file,
             Name = $"{mc}.jar"
         };
@@ -235,7 +235,7 @@ public static class DownloadItemHelper
     /// <param name="v2">是否为V2版本</param>
     /// <param name="install">是否包含安装器</param>
     /// <returns>下载项目列表</returns>
-    public static ICollection<DownloadItemObj> BuildForgeLibs(List<ForgeLaunchObj.Libraries> info, string mc,
+    public static ICollection<DownloadItemObj> BuildForgeLibs(List<ForgeLaunchObj.LibrariesObj> info, string mc,
         string version, bool neo, bool v2, bool install)
     {
         var list = new Dictionary<string, DownloadItemObj>();
@@ -247,23 +247,23 @@ public static class DownloadItemHelper
         //运行库
         foreach (var item1 in info)
         {
-            if (string.IsNullOrWhiteSpace(item1.downloads.artifact.path))
+            if (string.IsNullOrWhiteSpace(item1.Downloads.Artifact.Path))
             {
                 continue;
             }
-            if (string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
+            if (string.IsNullOrWhiteSpace(item1.Downloads.Artifact.Url))
             {
-                string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}");
+                string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.Downloads.Artifact.Path}");
 
                 var temp = new DownloadItemObj
                 {
-                    Name = item1.name,
+                    Name = item1.Name,
                     Local = local,
-                    SHA1 = item1!.downloads.artifact.sha1
+                    SHA1 = item1!.Downloads.Artifact.Sha1
                 };
-                if (!list.TryAdd(item1.name, temp))
+                if (!list.TryAdd(item1.Name, temp))
                 {
-                    list[item1.name] = temp;
+                    list[item1.Name] = temp;
                 }
             }
             else
@@ -271,29 +271,29 @@ public static class DownloadItemHelper
                 var item2 = new DownloadItemObj()
                 {
                     Url = neo ?
-                    UrlHelper.DownloadNeoForgeLib(item1.downloads.artifact.url,
+                    UrlHelper.DownloadNeoForgeLib(item1.Downloads.Artifact.Url,
                         CoreHttpClient.Source) :
-                    UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
+                    UrlHelper.DownloadForgeLib(item1.Downloads.Artifact.Url,
                         CoreHttpClient.Source),
-                    Name = item1.name,
-                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}"),
-                    SHA1 = item1.downloads.artifact.sha1
+                    Name = item1.Name,
+                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.Downloads.Artifact.Path}"),
+                    SHA1 = item1.Downloads.Artifact.Sha1
                 };
-                if (!list.TryAdd(item1.name, item2))
+                if (!list.TryAdd(item1.Name, item2))
                 {
-                    list[item1.name] = item2;
+                    list[item1.Name] = item2;
                 }
             }
 
-            if (item1.name.EndsWith("universal"))
+            if (item1.Name.EndsWith("universal"))
             {
                 universal = true;
             }
-            else if (item1.name.EndsWith("installer"))
+            else if (item1.Name.EndsWith("installer"))
             {
                 installer = true;
             }
-            else if (item1.name.EndsWith("launcher"))
+            else if (item1.Name.EndsWith("launcher"))
             {
                 launcher = true;
             }
@@ -332,7 +332,7 @@ public static class DownloadItemHelper
     public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeLaunchObj info, string mc,
         string version, bool neo, bool v2, bool install)
     {
-        return BuildForgeLibs(info.libraries, mc, version, neo, v2, install);
+        return BuildForgeLibs(info.Libraries, mc, version, neo, v2, install);
     }
 
     /// <summary>
@@ -346,7 +346,7 @@ public static class DownloadItemHelper
     public static ICollection<DownloadItemObj> BuildForgeLibs(ForgeInstallObj info, string mc,
         string version, bool neo, bool v2)
     {
-        return BuildForgeLibs(info.libraries, mc, version, neo, v2, true);
+        return BuildForgeLibs(info.Libraries, mc, version, neo, v2, true);
     }
 
     /// <summary>
@@ -360,21 +360,21 @@ public static class DownloadItemHelper
         //待补全的native
         var natives = new ConcurrentDictionary<string, bool>();
         var nativesarm = new ConcurrentBag<string>();
-        Parallel.ForEach(obj.libraries, (item1) =>
+        Parallel.ForEach(obj.Libraries, (item1) =>
         {
-            bool download = CheckHelpers.CheckAllow(item1.rules);
+            bool download = CheckHelpers.CheckAllow(item1.Rules);
             if (!download)
             {
                 return;
             }
 
             //全系统
-            if (item1.downloads.artifact != null)
+            if (item1.Downloads.Artifact != null)
             {
                 lock (list1)
                 {
-                    if (list1.Contains(item1.downloads.artifact.sha1)
-                        && item1.downloads.classifiers == null)
+                    if (list1.Contains(item1.Downloads.Artifact.Sha1)
+                        && item1.Downloads.Classifiers == null)
                     {
                         return;
                     }
@@ -386,11 +386,11 @@ public static class DownloadItemHelper
                     item1 = GameHelper.ReplaceLib(item1);
                 }
 
-                if (item1.name.Contains("natives"))
+                if (item1.Name.Contains("natives"))
                 {
-                    var index = item1.name.LastIndexOf(':');
-                    string key = item1.name[..index];
-                    if (item1.name.EndsWith("arm64") || item1.name.EndsWith("aarch_64"))
+                    var index = item1.Name.LastIndexOf(':');
+                    string key = item1.Name[..index];
+                    if (item1.Name.EndsWith("arm64") || item1.Name.EndsWith("aarch_64"))
                     {
                         nativesarm.Add(key);
                         natives.TryRemove(key, out _);
@@ -408,31 +408,31 @@ public static class DownloadItemHelper
                     }
                 }
 
-                string file = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}";
+                string file = $"{LibrariesPath.BaseDir}/{item1.Downloads.Artifact.Path}";
 
                 var obj = new DownloadItemObj()
                 {
-                    Name = item1.name,
-                    Url = UrlHelper.DownloadLibraries(item1.downloads.artifact.url, CoreHttpClient.Source),
+                    Name = item1.Name,
+                    Url = UrlHelper.DownloadLibraries(item1.Downloads.Artifact.Url, CoreHttpClient.Source),
                     Local = file,
-                    SHA1 = item1.downloads.artifact.sha1
+                    SHA1 = item1.Downloads.Artifact.Sha1
                 };
                 list.Add(obj);
 
                 lock (list1)
                 {
-                    list1.Add(item1.downloads.artifact.sha1);
+                    list1.Add(item1.Downloads.Artifact.Sha1);
                 }
             }
 
             //分系统
-            if (item1.downloads.classifiers != null)
+            if (item1.Downloads.Classifiers != null)
             {
                 var lib = SystemInfo.Os switch
                 {
-                    OsType.Windows => item1.downloads.classifiers.natives_windows,
-                    OsType.Linux => item1.downloads.classifiers.natives_linux,
-                    OsType.MacOS => item1.downloads.classifiers.natives_osx,
+                    OsType.Windows => item1.Downloads.Classifiers.NativesWindows,
+                    OsType.Linux => item1.Downloads.Classifiers.NativesLinux,
+                    OsType.MacOS => item1.Downloads.Classifiers.NativesOsx,
                     _ => null
                 };
 
@@ -440,34 +440,34 @@ public static class DownloadItemHelper
                 {
                     if (SystemInfo.SystemArch == ArchEnum.x86)
                     {
-                        lib = item1.downloads.classifiers.natives_windows_32;
+                        lib = item1.Downloads.Classifiers.NativesWindows32;
                     }
                     else
                     {
-                        lib = item1.downloads.classifiers.natives_windows_64;
+                        lib = item1.Downloads.Classifiers.NativesWindows64;
                     }
                 }
 
                 if (lib != null)
                 {
-                    if (list1.Contains(lib.sha1))
+                    if (list1.Contains(lib.Sha1))
                         return;
 
-                    natives.TryAdd(item1.name, true);
+                    natives.TryAdd(item1.Name, true);
 
                     var obj1 = new DownloadItemObj()
                     {
-                        Name = item1.name + "-native" + SystemInfo.Os,
-                        Url = UrlHelper.DownloadLibraries(lib.url, CoreHttpClient.Source),
-                        Local = $"{LibrariesPath.BaseDir}/{lib.path}",
-                        SHA1 = lib.sha1,
-                        Later = (test) => GameHelper.UnpackNative(obj.id, test)
+                        Name = item1.Name + "-native" + SystemInfo.Os,
+                        Url = UrlHelper.DownloadLibraries(lib.Url, CoreHttpClient.Source),
+                        Local = $"{LibrariesPath.BaseDir}/{lib.Path}",
+                        SHA1 = lib.Sha1,
+                        Later = (test) => GameHelper.UnpackNative(obj.Id, test)
                     };
 
                     list.Add(obj1);
                     lock (list1)
                     {
-                        list1.Add(lib.sha1);
+                        list1.Add(lib.Sha1);
                     }
                 }
             }
@@ -524,7 +524,7 @@ public static class DownloadItemHelper
     /// <param name="obj">版本数据</param>
     /// <returns>State下载状态
     /// List下载项目列表</returns>
-    public static async Task<List<DownloadItemObj>?> BuildVersionDownloadAsync(VersionObj.Versions obj)
+    public static async Task<List<DownloadItemObj>?> BuildVersionDownloadAsync(VersionObj.VersionsObj obj)
     {
         var list = new List<DownloadItemObj>();
 
@@ -533,20 +533,20 @@ public static class DownloadItemHelper
         {
             return null;
         }
-        var obj2 = await GameAPI.GetAssets(obj1.assetIndex.url);
+        var obj2 = await GameAPI.GetAssets(obj1.AssetIndex.url);
         if (obj2 == null)
         {
             return null;
         }
 
         obj1.AddIndex(obj2.Text);
-        list.Add(BuildGameItem(obj.id));
+        list.Add(BuildGameItem(obj.Id));
 
         list.AddRange(await BuildGameLibsAsync(obj1));
 
-        foreach (var item1 in obj2.Assets.objects)
+        foreach (var item1 in obj2.Assets.Objects)
         {
-            var obj3 = BuildAssetsItem(item1.Key, item1.Value.hash);
+            var obj3 = BuildAssetsItem(item1.Key, item1.Value.Hash);
             if (obj3.CheckToAdd(ConfigUtils.Config.GameCheck.CheckAssetsSha1))
             {
                 list.Add(obj3);
@@ -658,43 +658,38 @@ public static class DownloadItemHelper
         //旧forge
         else
         {
-            ForgeInstallObj1 obj;
+            ForgeInstallNewObj obj;
             byte[] array1 = stream2.ToArray();
             ForgeLaunchObj info;
             try
             {
                 var data = Encoding.UTF8.GetString(array1);
-                obj = JsonConvert.DeserializeObject<ForgeInstallObj1>(data)!;
+                obj = JsonConvert.DeserializeObject<ForgeInstallNewObj>(data)!;
                 info = new()
                 {
-                    id = obj.versionInfo.id,
-                    time = obj.versionInfo.time,
-                    releaseTime = obj.versionInfo.releaseTime,
-                    type = obj.versionInfo.type,
-                    mainClass = obj.versionInfo.mainClass,
-                    inheritsFrom = obj.versionInfo.inheritsFrom,
-                    minecraftArguments = obj.versionInfo.minecraftArguments,
-                    libraries = []
+                    MainClass = obj.VersionInfo.MainClass,
+                    MinecraftArguments = obj.VersionInfo.MinecraftArguments,
+                    Libraries = []
                 };
-                foreach (var item in obj.versionInfo.libraries)
+                foreach (var item in obj.VersionInfo.Libraries)
                 {
                     var item1 = GameHelper.MakeLibObj(item);
                     if (item1 != null)
                     {
-                        info.libraries.Add(item1);
+                        info.Libraries.Add(item1);
                     }
-                    else if (!string.IsNullOrWhiteSpace(item.url))
+                    else if (!string.IsNullOrWhiteSpace(item.Url))
                     {
-                        var path = PathHelper.NameToPath(item.name);
-                        info.libraries.Add(new()
+                        var path = PathHelper.NameToPath(item.Name);
+                        info.Libraries.Add(new()
                         {
-                            name = item.name,
-                            downloads = new()
+                            Name = item.Name,
+                            Downloads = new()
                             {
-                                artifact = new()
+                                Artifact = new()
                                 {
-                                    url = item.url + path,
-                                    path = path
+                                    Url = item.Url + path,
+                                    Path = path
                                 }
                             }
                         });
@@ -742,22 +737,22 @@ public static class DownloadItemHelper
             return null;
         }
 
-        FabricMetaObj.Loader? fabric;
+        FabricMetaObj.LoaderObj? fabric;
 
         if (version != null)
         {
-            fabric = meta.loader.Where(a => a.version == version).FirstOrDefault();
+            fabric = meta.Loader.Where(a => a.Version == version).FirstOrDefault();
         }
         else
         {
-            fabric = meta.loader.Where(a => a.stable == true).FirstOrDefault();
+            fabric = meta.Loader.Where(a => a.Stable == true).FirstOrDefault();
         }
         if (fabric == null)
         {
             return null;
         }
 
-        version = fabric.version;
+        version = fabric.Version;
 
         var data = await FabricAPI.GetLoader(mc, version, CoreHttpClient.Source);
         if (data == null)
@@ -772,13 +767,13 @@ public static class DownloadItemHelper
 
         VersionPath.AddGame(meta1, data, mc, version);
 
-        foreach (var item in meta1.libraries)
+        foreach (var item in meta1.Libraries)
         {
-            var name = PathHelper.NameToPath(item.name);
+            var name = PathHelper.NameToPath(item.Name);
             list.Add(new()
             {
-                Url = UrlHelper.DownloadQuilt(item.url + name, CoreHttpClient.Source),
-                Name = item.name,
+                Url = UrlHelper.DownloadQuilt(item.Url + name, CoreHttpClient.Source),
+                Name = item.Name,
                 Local = $"{LibrariesPath.BaseDir}/{name}"
             });
 
@@ -812,22 +807,22 @@ public static class DownloadItemHelper
             return null;
         }
 
-        QuiltMetaObj.Loader? quilt;
+        QuiltMetaObj.LoaderObj? quilt;
 
         if (version != null)
         {
-            quilt = meta.loader.Where(a => a.version == version).FirstOrDefault();
+            quilt = meta.Loader.Where(a => a.Version == version).FirstOrDefault();
         }
         else
         {
-            quilt = meta.loader.FirstOrDefault();
+            quilt = meta.Loader.FirstOrDefault();
         }
         if (quilt == null)
         {
             return null;
         }
 
-        version = quilt.version;
+        version = quilt.Version;
 
         var data = await QuiltAPI.GetLoader(mc, version, CoreHttpClient.Source);
         if (data == null)
@@ -842,13 +837,13 @@ public static class DownloadItemHelper
 
         VersionPath.AddGame(meta1, data, mc, version);
 
-        foreach (var item in meta1.libraries)
+        foreach (var item in meta1.Libraries)
         {
-            var name = PathHelper.NameToPath(item.name);
+            var name = PathHelper.NameToPath(item.Name);
             list.Add(new()
             {
-                Url = UrlHelper.DownloadQuilt(item.url + name, CoreHttpClient.Source),
-                Name = item.name,
+                Url = UrlHelper.DownloadQuilt(item.Url + name, CoreHttpClient.Source),
+                Name = item.Name,
                 Local = $"{LibrariesPath.BaseDir}/{name}"
             });
         }
@@ -962,21 +957,21 @@ public static class DownloadItemHelper
 
         async Task UnpackAsync(ForgeInstallObj obj1)
         {
-            foreach (var item in obj1.libraries)
+            foreach (var item in obj1.Libraries)
             {
                 if (cancel.IsCancellationRequested)
                 {
                     return;
                 }
-                if (!string.IsNullOrWhiteSpace(item.downloads.artifact.url))
+                if (!string.IsNullOrWhiteSpace(item.Downloads.Artifact.Url))
                 {
-                    string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}");
+                    string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
                     {
                         using var read = PathHelper.OpenRead(local);
                         if (read != null)
                         {
                             string sha1 = HashHelper.GenSha1(read);
-                            if (sha1 == item.downloads.artifact.sha1)
+                            if (sha1 == item.Downloads.Artifact.Sha1)
                             {
                                 continue;
                             }
@@ -985,24 +980,24 @@ public static class DownloadItemHelper
 
                     list.Add(new()
                     {
-                        Name = item.name,
-                        Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}"),
-                        SHA1 = item.downloads.artifact.sha1,
-                        Url = item.downloads.artifact.url
+                        Name = item.Name,
+                        Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}"),
+                        SHA1 = item.Downloads.Artifact.Sha1,
+                        Url = item.Downloads.Artifact.Url
                     });
                 }
                 else
                 {
-                    var item1 = zFile.GetEntry($"maven/{item.downloads.artifact.path}");
+                    var item1 = zFile.GetEntry($"maven/{item.Downloads.Artifact.Path}");
                     if (item1 != null)
                     {
-                        string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}");
+                        string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
                         {
                             using var read = PathHelper.OpenRead(local);
                             if (read != null)
                             {
                                 string sha1 = HashHelper.GenSha1(read);
-                                if (sha1 == item.downloads.artifact.sha1)
+                                if (sha1 == item.Downloads.Artifact.Sha1)
                                 {
                                     continue;
                                 }
@@ -1039,10 +1034,10 @@ public static class DownloadItemHelper
 
             await UnpackAsync(obj1);
 
-            name = obj1.version;
-            if (!obj1.version.StartsWith(obj1.profile))
+            name = obj1.Version;
+            if (!obj1.Version.StartsWith(obj1.Profile))
             {
-                name = $"{obj1.profile}-{obj1.version}";
+                name = $"{obj1.Profile}-{obj1.Version}";
             }
 
             obj.CustomLoader ??= new();

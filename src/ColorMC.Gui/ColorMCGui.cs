@@ -23,6 +23,7 @@ public static class ColorMCGui
 {
     private static readonly CoreInitArg s_arg = new()
     {
+        Local = "",
         CurseForgeKey = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m",
         OAuthKey = "aa0dd576-d717-4950-b257-a478d2c20968"
     };

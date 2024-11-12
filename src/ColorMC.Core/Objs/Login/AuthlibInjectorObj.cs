@@ -1,24 +1,34 @@
-﻿namespace ColorMC.Core.Objs.Login;
+﻿using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs.Login;
 
 public record AuthlibInjectorMetaObj
 {
-    public record Artifacts
+    public record ArtifactsObj
     {
-        public int build_number { get; set; }
-        public string version { get; set; }
+        [JsonProperty("build_number")]
+        public int BuildNumber { get; set; }
+        //public string version { get; set; }
     }
-    public int latest_build_number { get; set; }
-    public List<Artifacts> artifacts { get; set; }
+    [JsonProperty("latest_build_number")]
+    public int LatestBuildNumber { get; set; }
+    [JsonProperty("artifacts")]
+    public List<ArtifactsObj> Artifacts { get; set; }
 }
 
 public record AuthlibInjectorObj
 {
-    public record Checksums
+    public record ChecksumsObj
     {
-        public string sha256 { get; set; }
+        [JsonProperty("sha256")]
+        public string Sha256 { get; set; }
     }
-    public int build_number { get; set; }
-    public string version { get; set; }
-    public string download_url { get; set; }
-    public Checksums checksums { get; set; }
+    [JsonProperty("build_number")]
+    public int BuildNumber { get; set; }
+    [JsonProperty("version")]
+    public string Version { get; set; }
+    [JsonProperty("download_url")]
+    public string DownloadUrl { get; set; }
+    [JsonProperty("checksums")]
+    public ChecksumsObj Checksums { get; set; }
 }

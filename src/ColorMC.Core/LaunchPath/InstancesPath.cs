@@ -80,7 +80,7 @@ public static class InstancesPath
     /// 添加游戏实例到组
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static void AddToGroup(this GameSettingObj obj)
+    private static void AddToGroup(this GameSettingObj obj)
     {
         while (string.IsNullOrWhiteSpace(obj.UUID)
             || s_installGames.ContainsKey(obj.UUID))
@@ -812,20 +812,17 @@ public static class InstancesPath
     /// 复制实例
     /// </summary>
     /// <param name="obj">原始实例</param>
-    /// <param name="name">新的名字</param>
-    /// <param name="request">操作请求</param>
-    /// <param name="overwirte">操作请求</param>
-    /// <returns>复制结果</returns>
-    public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name,
-        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
+    /// <param name="arg">复制参数</param>
+    /// <returns>复制的实例</returns>
+    public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, CopyGameArg arg)
     {
         var obj1 = obj.CopyObj();
-        obj1.Name = name;
+        obj1.Name = arg.Game;
         obj1 = await CreateGame(new CreateGameArg
         {
             Game = obj1,
-            Request = request,
-            Overwirte = overwirte
+            Request = arg.Request,
+            Overwirte = arg.Overwirte
         });
         if (obj1 != null)
         {
@@ -992,7 +989,7 @@ public static class InstancesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="request">操作请求</param>
-    /// <returns></returns>
+    /// <returns>是否成功删除</returns>
     public static Task<bool> Remove(this GameSettingObj obj, ColorMCCore.Request? request)
     {
         obj.RemoveFromGroup();
@@ -1005,24 +1002,21 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 复制文件
+    /// 复制游戏文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="local">目标地址</param>
-    /// <param name="unselect">未选择的文件</param>
-    /// <param name="dir">根目录方式复制</param>
-    /// <param name="state">操作请求</param>
+    /// <param name="arg">复制参数</param>
     public static async Task CopyFileAsync(this GameSettingObj obj,
-        string local, List<string>? unselect, bool dir, ColorMCCore.ZipUpdate? state)
+        CopyGameFileArg arg)
     {
-        local = Path.GetFullPath(local);
-        var list = PathHelper.GetAllFile(local);
-        if (unselect != null)
+        arg.Local = Path.GetFullPath(arg.Local);
+        var list = PathHelper.GetAllFile(arg.Local);
+        if (arg.Unselect != null)
         {
-            list.RemoveAll(item => unselect.Contains(item.FullName));
+            list.RemoveAll(item => arg.Unselect.Contains(item.FullName));
         }
-        int basel = local.Length;
-        var local1 = dir ? obj.GetBasePath() : obj.GetGamePath();
+        int basel = arg.Local.Length;
+        var local1 = arg.Dir ? obj.GetBasePath() : obj.GetGamePath();
         await Task.Run(() =>
         {
             int index = 0;
@@ -1031,7 +1025,7 @@ public static class InstancesPath
                 var path = item.FullName[basel..];
                 var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
                 info.Directory?.Create();
-                state?.Invoke(info.FullName, index, list.Count);
+                arg.State?.Invoke(info.FullName, index, list.Count);
                 PathHelper.CopyFile(item.FullName, info.FullName);
                 index++;
             }

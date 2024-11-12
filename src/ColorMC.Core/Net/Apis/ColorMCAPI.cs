@@ -27,13 +27,12 @@ public static class ColorMCAPI
         try
         {
             string temp = $"{BaseUrl}findmod";
-            HttpRequestMessage httpRequest = new()
+            var httpRequest = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(temp),
+                Content = new StringContent(JsonConvert.SerializeObject(new { type, ids }))
             };
-            httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
-            httpRequest.Content = new StringContent(JsonConvert.SerializeObject(new { type, ids }));
 
             var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
@@ -95,7 +94,6 @@ public static class ColorMCAPI
         try
         {
             var req = new HttpRequestMessage(HttpMethod.Post, BaseUrl + "getmcmodgroup");
-            req.Headers.Add("ColorMC", ColorMCCore.Version);
             var data = await CoreHttpClient.DownloadClient.SendAsync(req);
             var data1 = await data.Content.ReadAsStringAsync();
             var obj = JObject.Parse(data1);
@@ -120,20 +118,11 @@ public static class ColorMCAPI
     /// <param name="version">版本</param>
     /// <param name="os">系统</param>
     /// <returns></returns>
-    public static async Task<PojavLauncherTeamObj?> GetJavaList()
+    public static async Task<AndroidJavaObj?> GetJavaList()
     {
         string url = BaseUrl + "update/java.json";
+        var str = await CoreHttpClient.DownloadClient.GetStringAsync(url);
 
-        HttpRequestMessage httpRequest = new()
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri(url),
-        };
-        httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
-
-        var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
-        var str = await data.Content.ReadAsStringAsync();
-
-        return JsonConvert.DeserializeObject<PojavLauncherTeamObj>(str);
+        return JsonConvert.DeserializeObject<AndroidJavaObj>(str);
     }
 }

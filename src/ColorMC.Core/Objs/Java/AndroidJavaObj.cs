@@ -2,7 +2,7 @@
 
 namespace ColorMC.Core.Objs.Java;
 
-public record PojavLauncherTeamItem
+public record AndroidJavaItemObj
 {
     [JsonProperty("name")]
     public string Name { get; set; }
@@ -14,12 +14,12 @@ public record PojavLauncherTeamItem
     public string Url { get; set; }
 }
 
-public record PojavLauncherTeamObj
+public record AndroidJavaObj
 {
     [JsonProperty("jre8")]
-    public List<PojavLauncherTeamItem> Jre8 { get; set; }
+    public List<AndroidJavaItemObj> Jre8 { get; set; }
     [JsonProperty("jre17")]
-    public List<PojavLauncherTeamItem> Jre17 { get; set; }
+    public List<AndroidJavaItemObj> Jre17 { get; set; }
     [JsonProperty("jre21")]
-    public List<PojavLauncherTeamItem> Jre21 { get; set; }
+    public List<AndroidJavaItemObj> Jre21 { get; set; }
 }

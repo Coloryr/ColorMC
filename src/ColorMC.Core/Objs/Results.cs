@@ -286,7 +286,7 @@ public record GetCurseForgeModDependenciesRes
     public string Name;
     public long ModId;
     public bool Opt;
-    public List<CurseForgeModObj.Data> List;
+    public List<CurseForgeModObj.DataObj> List;
 }
 
 /// <summary>

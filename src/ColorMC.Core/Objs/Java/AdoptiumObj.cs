@@ -1,48 +1,63 @@
-﻿namespace ColorMC.Core.Objs.Java;
+﻿using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs.Java;
 
 public record AdoptiumObj
 {
-    public record Binary
+    public record BinaryObj
     {
-        public record Package
+        public record PackageObj
         {
-            public string checksum { get; set; }
-            public string checksum_link { get; set; }
-            public int download_count { get; set; }
-            public string link { get; set; }
-            public string metadata_link { get; set; }
-            public string name { get; set; }
-            public string signature_link { get; set; }
-            public long size { get; set; }
+            [JsonProperty("checksum")]
+            public string Checksum { get; set; }
+            //public string checksum_link { get; set; }
+            //public int download_count { get; set; }
+            [JsonProperty("link")]
+            public string Link { get; set; }
+            //public string metadata_link { get; set; }
+            [JsonProperty("name")]
+            public string Name { get; set; }
+            //public string signature_link { get; set; }
+            [JsonProperty("size")]
+            public long Size { get; set; }
         }
-        public string architecture { get; set; }
-        public int download_count { get; set; }
-        public string heap_size { get; set; }
-        public string image_type { get; set; }
-        public string jvm_impl { get; set; }
-        public string os { get; set; }
-        public Package package { get; set; }
-        public string project { get; set; }
-        public string scm_ref { get; set; }
-        public string updated_at { get; set; }
+        [JsonProperty("architecture")]
+        public string Architecture { get; set; }
+        //public int download_count { get; set; }
+        //public string heap_size { get; set; }
+        [JsonProperty("image_type")]
+        public string ImageType { get; set; }
+        //public string jvm_impl { get; set; }
+        [JsonProperty("os")]
+        public string Os { get; set; }
+        [JsonProperty("package")]
+        public PackageObj Package { get; set; }
+        //public string project { get; set; }
+        [JsonProperty("scm_ref")]
+        public string ScmRef { get; set; }
+        //public string updated_at { get; set; }
     }
-    public record Version
+    public record VersionObj
     {
-        public int build { get; set; }
-        public int major { get; set; }
-        public int minor { get; set; }
-        public string openjdk_version { get; set; }
-        public int security { get; set; }
-        public string semver { get; set; }
+        //public int build { get; set; }
+        //public int major { get; set; }
+        //public int minor { get; set; }
+        [JsonProperty("openjdk_version")]
+        public string OpenjdkVersion { get; set; }
+        //public int security { get; set; }
+        //public string semver { get; set; }
     }
-    public Binary binary { get; set; }
-    public string release_link { get; set; }
-    public string release_name { get; set; }
-    public string vendor { get; set; }
-    public Version version { get; set; }
+    [JsonProperty("binary")]
+    public BinaryObj Binary { get; set; }
+    //public string release_link { get; set; }
+    //public string release_name { get; set; }
+    //public string vendor { get; set; }
+    [JsonProperty("version")]
+    public VersionObj Version { get; set; }
 }
 
 public record AdoptiumJavaVersionObj
 {
-    public List<int> available_releases { get; set; }
+    [JsonProperty("available_releases")]
+    public List<int> AvailableReleases { get; set; }
 }

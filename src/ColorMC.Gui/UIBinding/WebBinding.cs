@@ -78,7 +78,7 @@ public static class WebBinding
                 return null;
             }
             var list1 = new List<FileItemModel>();
-            list.data.ForEach(item =>
+            list.Data.ForEach(item =>
             {
                 list1.Add(new(item, FileType.ModPack));
             });
@@ -93,7 +93,7 @@ public static class WebBinding
                 return null;
             }
             var list1 = new List<FileItemModel>();
-            list.hits.ForEach(item =>
+            list.Hits.ForEach(item =>
             {
                 list1.Add(new(item, FileType.ModPack));
             });
@@ -124,7 +124,7 @@ public static class WebBinding
                 return null;
 
             var list1 = new List<FileVersionItemModel>();
-            list.data.ForEach(item =>
+            list.Data.ForEach(item =>
             {
                 list1.Add(new(item, type1));
             });
@@ -295,14 +295,14 @@ public static class WebBinding
                 return null;
             var list1 = new List<FileItemModel>();
             var modlist = new List<string>();
-            list.data.ForEach(item =>
+            list.Data.ForEach(item =>
             {
-                modlist.Add(item.id.ToString());
+                modlist.Add(item.Id.ToString());
             });
             var list2 = await ColorMCAPI.GetMcModFromCF(modlist);
-            list.data.ForEach(item =>
+            list.Data.ForEach(item =>
             {
-                var id = item.id.ToString();
+                var id = item.Id.ToString();
                 list1.Add(new(item, now)
                 {
                     McMod = list2?.TryGetValue(id, out var data1) == true ? data1 : null
@@ -325,16 +325,16 @@ public static class WebBinding
                 return null;
             var list1 = new List<FileItemModel>();
             var modlist = new List<string>();
-            list.hits.ForEach(item =>
+            list.Hits.ForEach(item =>
             {
-                modlist.Add(item.project_id);
+                modlist.Add(item.ProjectId);
             });
             var list2 = await ColorMCAPI.GetMcModFromMO(modlist);
-            list.hits.ForEach(item =>
+            list.Hits.ForEach(item =>
             {
                 list1.Add(new(item, now)
                 {
-                    McMod = list2?.TryGetValue(item.project_id, out var data1) == true
+                    McMod = list2?.TryGetValue(item.ProjectId, out var data1) == true
                         ? data1 : null
                 });
             });
@@ -351,7 +351,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<ModDownloadRes> GetDownloadModList(GameSettingObj obj, CurseForgeModObj.Data? data)
+    public static async Task<ModDownloadRes> GetDownloadModList(GameSettingObj obj, CurseForgeModObj.DataObj? data)
     {
         if (data == null)
         {
@@ -361,14 +361,14 @@ public static class WebBinding
         string path = obj.GetModsPath();
 
         var res = new Dictionary<string, FileModVersionModel>();
-        if (data.dependencies != null && data.dependencies.Count > 0)
+        if (data.Dependencies != null && data.Dependencies.Count > 0)
         {
             var res1 = await CurseForgeHelper.GetModDependenciesAsync(data, obj.Version, obj.Loader);
 
             foreach (var item1 in res1)
             {
                 var modid = item1.ModId.ToString();
-                if (res.ContainsKey(modid) || obj.Mods.ContainsKey(modid) || data.id == item1.ModId)
+                if (res.ContainsKey(modid) || obj.Mods.ContainsKey(modid) || data.Id == item1.ModId)
                 {
                     continue;
                 }
@@ -377,7 +377,7 @@ public static class WebBinding
                 List<DownloadModArg> items = [];
                 foreach (var item2 in item1.List)
                 {
-                    version.Add(item2.displayName);
+                    version.Add(item2.DisplayName);
                     items.Add(new()
                     {
                         Item = item2.MakeModDownloadObj(path),
@@ -410,13 +410,13 @@ public static class WebBinding
         }
 
         var res = new Dictionary<string, FileModVersionModel>();
-        if (data.dependencies != null && data.dependencies.Count > 0)
+        if (data.Dependencies != null && data.Dependencies.Count > 0)
         {
             var list2 = await ModrinthHelper.GetModDependenciesAsync(data, obj.Version, obj.Loader);
             foreach (var item1 in list2)
             {
                 if (res.ContainsKey(item1.ModId) || obj.Mods.ContainsKey(item1.ModId)
-                    || item1.ModId == data.project_id)
+                    || item1.ModId == data.ProjectId)
                 {
                     continue;
                 }
@@ -424,7 +424,7 @@ public static class WebBinding
                 List<DownloadModArg> items = [];
                 foreach (var item2 in item1.List)
                 {
-                    version.Add(item2.name);
+                    version.Add(item2.Name);
                     items.Add(new()
                     {
                         Item = item2.MakeModDownloadObj(obj),
@@ -500,7 +500,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeModObj.Data? data)
+    public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeModObj.DataObj? data)
     {
         if (data == null)
             return false;
@@ -513,11 +513,11 @@ public static class WebBinding
             case FileType.World:
                 item = new DownloadItemObj()
                 {
-                    Name = data.displayName,
-                    Url = data.downloadUrl,
-                    Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.fileName),
-                    SHA1 = data.hashes.Where(a => a.algo == 1)
-                        .Select(a => a.value).FirstOrDefault(),
+                    Name = data.DisplayName,
+                    Url = data.DownloadUrl,
+                    Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.FileName),
+                    SHA1 = data.Hashes.Where(a => a.Algo == 1)
+                        .Select(a => a.Value).FirstOrDefault(),
                     Overwrite = true
                 };
 
@@ -531,21 +531,21 @@ public static class WebBinding
             case FileType.Resourcepack:
                 return await DownloadManager.StartAsync([new()
                 {
-                    Name = data.displayName,
-                    Url = data.downloadUrl,
-                    Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + data.fileName),
-                    SHA1 = data.hashes.Where(a => a.algo == 1)
-                        .Select(a => a.value).FirstOrDefault(),
+                    Name = data.DisplayName,
+                    Url = data.DownloadUrl,
+                    Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + data.FileName),
+                    SHA1 = data.Hashes.Where(a => a.Algo == 1)
+                        .Select(a => a.Value).FirstOrDefault(),
                     Overwrite = true
                 }]);
             case FileType.Shaderpack:
                 return await DownloadManager.StartAsync([new()
                 {
-                    Name = data.displayName,
-                    Url = data.downloadUrl,
-                    Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + data.fileName),
-                    SHA1 = data.hashes.Where(a => a.algo == 1)
-                        .Select(a => a.value).FirstOrDefault(),
+                    Name = data.DisplayName,
+                    Url = data.DownloadUrl,
+                    Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + data.FileName),
+                    SHA1 = data.Hashes.Where(a => a.Algo == 1)
+                        .Select(a => a.Value).FirstOrDefault(),
                     Overwrite = true
                 }]);
             default:
@@ -567,24 +567,24 @@ public static class WebBinding
             return false;
         }
 
-        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
+        var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
 
         return type switch
         {
             FileType.Resourcepack => await DownloadManager.StartAsync([new()
                 {
-                    Name = data.name,
-                    Url = file.url,
-                    Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + file.filename),
-                    SHA1 = file.hashes.sha1,
+                    Name = data.Name,
+                    Url = file.Url,
+                    Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + file.Filename),
+                    SHA1 = file.Hashes.Sha1,
                     Overwrite = true
                 }]),
             FileType.Shaderpack => await DownloadManager.StartAsync([new()
                 {
-                    Name = data.name,
-                    Url = file.url,
-                    Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + file.filename),
-                    SHA1 = file.hashes.sha1,
+                    Name = data.Name,
+                    Url = file.Url,
+                    Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + file.Filename),
+                    SHA1 = file.Hashes.Sha1,
                     Overwrite = true
                 }]),
             _ => false,
@@ -597,7 +597,7 @@ public static class WebBinding
     /// <param name="obj1"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<bool> Download(WorldObj obj1, CurseForgeModObj.Data? data)
+    public static async Task<bool> Download(WorldObj obj1, CurseForgeModObj.DataObj? data)
     {
         if (data == null)
         {
@@ -608,11 +608,11 @@ public static class WebBinding
 
         return await DownloadManager.StartAsync([new()
         {
-            Name = data.displayName,
-            Url = data.downloadUrl,
-            Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + data.fileName),
-            SHA1 = data.hashes.Where(a => a.algo == 1)
-                .Select(a => a.value).FirstOrDefault(),
+            Name = data.DisplayName,
+            Url = data.DownloadUrl,
+            Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + data.FileName),
+            SHA1 = data.Hashes.Where(a => a.Algo == 1)
+                .Select(a => a.Value).FirstOrDefault(),
             Overwrite = true
         }]);
     }
@@ -630,14 +630,14 @@ public static class WebBinding
             return false;
         }
 
-        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
+        var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
 
         return await DownloadManager.StartAsync([new()
         {
-            Name = data.name,
-            Url = file.url,
-            Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + file.filename),
-            SHA1 = file.hashes.sha1,
+            Name = data.Name,
+            Url = file.Url,
+            Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + file.Filename),
+            SHA1 = file.Hashes.Sha1,
             Overwrite = true
         }]);
     }
@@ -647,12 +647,12 @@ public static class WebBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static string GetUrl(this CurseForgeObjList.Data obj)
+    public static string GetUrl(this CurseForgeObjList.DataObj obj)
     {
-        return obj.links.websiteUrl;
+        return obj.Links.WebsiteUrl;
     }
 
-    public static string GetUrl(this ModrinthSearchObj.Hit obj, FileType fileType)
+    public static string GetUrl(this ModrinthSearchObj.HitObj obj, FileType fileType)
     {
         return fileType switch
         {
@@ -661,7 +661,7 @@ public static class WebBinding
             FileType.Resourcepack => "https://modrinth.com/resourcepacks/",
             FileType.DataPacks => "https://modrinth.com/datapacks/",
             _ => "https://modrinth.com/mod/"
-        } + obj.project_id;
+        } + obj.ProjectId;
     }
 
     /// <summary>
@@ -671,7 +671,7 @@ public static class WebBinding
     /// <returns></returns>
     public static string? GetUrl(this McModSearchItemObj obj)
     {
-        return $"https://www.mcmod.cn/class/{obj.mcmod_id}.html";
+        return $"https://www.mcmod.cn/class/{obj.McmodId}.html";
     }
 
     /// <summary>
@@ -734,9 +734,9 @@ public static class WebBinding
                         continue;
                     }
 
-                    if (item1.Data is CurseForgeModObj.Data data)
+                    if (item1.Data is CurseForgeModObj.DataObj data)
                     {
-                        version.Add(data.displayName);
+                        version.Add(data.DisplayName);
                         items.Add(new()
                         {
                             Item = data.MakeModDownloadObj(path),
@@ -745,7 +745,7 @@ public static class WebBinding
                     }
                     else if (item1.Data is ModrinthVersionObj data1)
                     {
-                        version.Add(data1.name);
+                        version.Add(data1.Name);
                         items.Add(new()
                         {
                             Item = data1.MakeModDownloadObj(game),
@@ -1062,7 +1062,7 @@ public static class WebBinding
                 ""
             };
             arch.AddRange(from item in list
-                          group item by item.arch + '_' + item.hw_bitness into newGroup
+                          group item by item.Arch + '_' + item.HwBitness into newGroup
                           orderby newGroup.Key descending
                           select newGroup.Key);
 
@@ -1071,7 +1071,7 @@ public static class WebBinding
                 ""
             };
             mainversion.AddRange(from item in list
-                                 group item by item.java_version[0] into newGroup
+                                 group item by item.JavaVersion[0] into newGroup
                                  orderby newGroup.Key descending
                                  select newGroup.Key.ToString());
 
@@ -1080,30 +1080,30 @@ public static class WebBinding
                 ""
             };
             os.AddRange(from item in list
-                        group item by item.os into newGroup
+                        group item by item.Os into newGroup
                         orderby newGroup.Key descending
                         select newGroup.Key.ToString());
 
             var list1 = new List<JavaDownloadModel>();
             foreach (var item in list)
             {
-                if (item.name.EndsWith(".deb") || item.name.EndsWith(".rpm")
-                    || item.name.EndsWith(".msi") || item.name.EndsWith(".dmg"))
+                if (item.Name.EndsWith(".deb") || item.Name.EndsWith(".rpm")
+                    || item.Name.EndsWith(".msi") || item.Name.EndsWith(".dmg"))
                 {
                     continue;
                 }
 
                 list1.Add(new()
                 {
-                    Name = item.name,
-                    Arch = item.arch + '_' + item.hw_bitness,
-                    Os = item.os,
-                    MainVersion = item.zulu_version[0].ToString(),
-                    Version = ToStr(item.zulu_version),
+                    Name = item.Name,
+                    Arch = item.Arch + '_' + item.HwBitness,
+                    Os = item.Os,
+                    MainVersion = item.ZuluVersion[0].ToString(),
+                    Version = ToStr(item.ZuluVersion),
                     Size = UIUtils.MakeFileSize1(0),
-                    Url = item.url,
-                    Sha256 = item.sha256_hash,
-                    File = item.name
+                    Url = item.Url,
+                    Sha256 = item.Sha256Hash,
+                    File = item.Name
                 });
             }
 
@@ -1252,26 +1252,26 @@ public static class WebBinding
                 ""
             };
             arch.AddRange(from item in list
-                          group item by item.binary.architecture into newGroup
+                          group item by item.Binary.Architecture into newGroup
                           orderby newGroup.Key descending
                           select newGroup.Key);
 
             var list3 = new List<JavaDownloadModel>();
             foreach (var item in list)
             {
-                if (item.binary.image_type == "debugimage")
+                if (item.Binary.ImageType == "debugimage")
                     continue;
                 list3.Add(new()
                 {
-                    Name = item.binary.scm_ref + "_" + item.binary.image_type,
-                    Arch = item.binary.architecture,
-                    Os = item.binary.os,
+                    Name = item.Binary.ScmRef + "_" + item.Binary.ImageType,
+                    Arch = item.Binary.Architecture,
+                    Os = item.Binary.Os,
                     MainVersion = version,
-                    Version = item.version.openjdk_version,
-                    Size = UIUtils.MakeFileSize1(item.binary.package.size),
-                    Url = item.binary.package.link,
-                    Sha256 = item.binary.package.checksum,
-                    File = item.binary.package.name
+                    Version = item.Version.OpenjdkVersion,
+                    Size = UIUtils.MakeFileSize1(item.Binary.Package.Size),
+                    Url = item.Binary.Package.Link,
+                    Sha256 = item.Binary.Package.Checksum,
+                    File = item.Binary.Package.Name
                 });
             }
 
@@ -1289,14 +1289,14 @@ public static class WebBinding
         }
     }
 
-    private static void AddDragonwell(List<JavaDownloadModel> list, DragonwellObj.Item item)
+    private static void AddDragonwell(List<JavaDownloadModel> list, DragonwellObj.ItemObj item)
     {
         string main = "8";
-        string version = item.version8;
+        string version = item.Version8;
         string file;
-        if (item.xurl8 != null)
+        if (item.Xurl8 != null)
         {
-            file = Path.GetFileName(item.xurl8);
+            file = Path.GetFileName(item.Xurl8);
             list.Add(new()
             {
                 Name = file,
@@ -1305,13 +1305,13 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.xurl8,
+                Url = item.Xurl8,
                 File = file
             });
         }
-        if (item.aurl8 != null)
+        if (item.Aurl8 != null)
         {
-            file = Path.GetFileName(item.aurl8);
+            file = Path.GetFileName(item.Aurl8);
             list.Add(new()
             {
                 Name = file,
@@ -1320,13 +1320,13 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.aurl8,
+                Url = item.Aurl8,
                 File = file
             });
         }
-        if (item.wurl8 != null)
+        if (item.Wurl8 != null)
         {
-            file = Path.GetFileName(item.wurl8);
+            file = Path.GetFileName(item.Wurl8);
             list.Add(new()
             {
                 Name = file,
@@ -1335,16 +1335,16 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.wurl8,
+                Url = item.Wurl8,
                 File = file
             });
         }
 
         main = "11";
-        version = item.version11;
-        if (item.xurl11 != null)
+        version = item.Version11;
+        if (item.Xurl11 != null)
         {
-            file = Path.GetFileName(item.xurl11);
+            file = Path.GetFileName(item.Xurl11);
             list.Add(new()
             {
                 Name = file,
@@ -1353,13 +1353,13 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.xurl11,
+                Url = item.Xurl11,
                 File = file
             });
         }
-        if (item.aurl11 != null)
+        if (item.Aurl11 != null)
         {
-            file = Path.GetFileName(item.aurl11);
+            file = Path.GetFileName(item.Aurl11);
             list.Add(new()
             {
                 Name = file,
@@ -1368,13 +1368,13 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.aurl11,
+                Url = item.Aurl11,
                 File = file
             });
         }
-        if (item.apurl11 != null)
+        if (item.Apurl11 != null)
         {
-            file = Path.GetFileName(item.apurl11);
+            file = Path.GetFileName(item.Apurl11);
             list.Add(new()
             {
                 Name = file,
@@ -1383,13 +1383,13 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.apurl11,
+                Url = item.Apurl11,
                 File = file
             });
         }
-        if (item.wurl11 != null)
+        if (item.Wurl11 != null)
         {
-            file = Path.GetFileName(item.wurl11);
+            file = Path.GetFileName(item.Wurl11);
             list.Add(new()
             {
                 Name = file,
@@ -1398,13 +1398,13 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.wurl11,
+                Url = item.Wurl11,
                 File = file
             });
         }
-        if (item.rurl11 != null)
+        if (item.Rurl11 != null)
         {
-            file = Path.GetFileName(item.rurl11);
+            file = Path.GetFileName(item.Rurl11);
             list.Add(new()
             {
                 Name = file,
@@ -1413,16 +1413,16 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.rurl11,
+                Url = item.Rurl11,
                 File = file
             });
         }
 
         main = "17";
-        version = item.version17;
-        if (item.xurl17 != null)
+        version = item.Version17;
+        if (item.Xurl17 != null)
         {
-            file = Path.GetFileName(item.xurl17);
+            file = Path.GetFileName(item.Xurl17);
             list.Add(new()
             {
                 Name = file,
@@ -1431,13 +1431,13 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.xurl17,
+                Url = item.Xurl17,
                 File = file
             });
         }
-        if (item.aurl17 != null)
+        if (item.Aurl17 != null)
         {
-            file = Path.GetFileName(item.aurl17);
+            file = Path.GetFileName(item.Aurl17);
             list.Add(new()
             {
                 Name = file,
@@ -1446,13 +1446,13 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.aurl17,
+                Url = item.Aurl17,
                 File = file
             });
         }
-        if (item.apurl17 != null)
+        if (item.Apurl17 != null)
         {
-            file = Path.GetFileName(item.apurl17);
+            file = Path.GetFileName(item.Apurl17);
             list.Add(new()
             {
                 Name = file,
@@ -1461,13 +1461,13 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.apurl17,
+                Url = item.Apurl17,
                 File = file
             });
         }
-        if (item.wurl17 != null)
+        if (item.Wurl17 != null)
         {
-            file = Path.GetFileName(item.wurl17);
+            file = Path.GetFileName(item.Wurl17);
             list.Add(new()
             {
                 Name = file,
@@ -1476,7 +1476,7 @@ public static class WebBinding
                 MainVersion = main,
                 Version = version,
                 Size = "0",
-                Url = item.wurl17,
+                Url = item.Wurl17,
                 File = file
             });
         }
@@ -1494,8 +1494,8 @@ public static class WebBinding
 
             var list1 = new List<JavaDownloadModel>();
 
-            AddDragonwell(list1, list.extended);
-            AddDragonwell(list1, list.standard);
+            AddDragonwell(list1, list.Extended);
+            AddDragonwell(list1, list.Standard);
 
             return list1;
         }
@@ -1519,37 +1519,37 @@ public static class WebBinding
 
             foreach (var item in res.Download!)
             {
-                var temp = item.name.Split("<br>");
+                var temp = item.Name.Split("<br>");
                 if (temp.Length != 3)
                 {
                     continue;
                 }
                 var version = temp[0].Replace("<b>", "").Replace("</b>", "");
-                if (item.jdk != null)
+                if (item.Jdk != null)
                     list1.Add(new()
                     {
                         Name = temp[2] + " " + temp[1] + "_jdk",
-                        Os = item.os,
-                        Arch = item.arch,
-                        MainVersion = item.version.ToString(),
+                        Os = item.Os,
+                        Arch = item.Arch,
+                        MainVersion = item.Version.ToString(),
                         Version = version,
                         Size = "0",
-                        Url = item.jdk.opt1.downloadLink,
-                        Sha256 = item.jdk.opt1.checksum,
-                        File = Path.GetFileName(item.jdk.opt1.downloadLink)
+                        Url = item.Jdk.Opt1.DownloadLink,
+                        Sha256 = item.Jdk.Opt1.Checksum,
+                        File = Path.GetFileName(item.Jdk.Opt1.DownloadLink)
                     });
-                if (item.jre != null)
+                if (item.Jre != null)
                     list1.Add(new()
                     {
                         Name = temp[2] + " " + temp[1] + "_jre",
-                        Os = item.os,
-                        Arch = item.arch,
-                        MainVersion = item.version.ToString(),
+                        Os = item.Os,
+                        Arch = item.Arch,
+                        MainVersion = item.Version.ToString(),
                         Version = version,
                         Size = "0",
-                        Url = item.jre.opt1.downloadLink,
-                        Sha256 = item.jre.opt1.checksum,
-                        File = Path.GetFileName(item.jre.opt1.downloadLink)
+                        Url = item.Jre.Opt1.DownloadLink,
+                        Sha256 = item.Jre.Opt1.Checksum,
+                        File = Path.GetFileName(item.Jre.Opt1.DownloadLink)
                     });
             }
 

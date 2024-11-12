@@ -275,14 +275,14 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         if (data.SourceType == SourceType.CurseForge)
         {
             WindowManager.AddGameWindow?.Install(
-                (data.Data as CurseForgeModObj.Data)!,
-                (select!.Data as CurseForgeObjList.Data)!);
+                (data.Data as CurseForgeModObj.DataObj)!,
+                (select!.Data as CurseForgeObjList.DataObj)!);
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
             WindowManager.AddGameWindow?.Install(
                 (data.Data as ModrinthVersionObj)!,
-                (select!.Data as ModrinthSearchObj.Hit)!);
+                (select!.Data as ModrinthSearchObj.HitObj)!);
         }
     }
 
@@ -353,14 +353,14 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         {
             PageEnable1 = true;
             list = await WebBinding.GetFileList((SourceType)Source,
-                (_last!.Data as CurseForgeObjList.Data)!.id.ToString(), Page1 ?? 0,
+                (_last!.Data as CurseForgeObjList.DataObj)!.Id.ToString(), Page1 ?? 0,
                 GameVersion1, Loaders.Normal);
         }
         else if (Source == 1)
         {
             PageEnable1 = false;
             list = await WebBinding.GetFileList((SourceType)Source,
-                (_last!.Data as ModrinthSearchObj.Hit)!.project_id, Page1 ?? 0,
+                (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, Page1 ?? 0,
                 GameVersion1, Loaders.Normal);
         }
         if (list == null)

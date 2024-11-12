@@ -7,32 +7,33 @@ namespace ColorMC.Core.Net.Apis;
 
 public static class McloAPI
 {
+    public const string Url = $"https://api.mclo.gs/1/log";
+
     public static async Task<string?> Push(string arg)
     {
         try
         {
-            string temp = $"https://api.mclo.gs/1/log";
-            HttpRequestMessage httpRequest = new()
+            var httpRequest = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri(temp),
+                RequestUri = new Uri(Url),
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>()
+                {
+                    { "content", arg }
+                })
             };
-            httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
-            httpRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>() {
-                { "content", arg }
-            });
 
             var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
             var obj = JsonConvert.DeserializeObject<McloResObj>(data1)!;
-            if (!obj.success)
+            if (!obj.Success)
             {
                 return null;
             }
 
-            return obj.url;
+            return obj.Url;
         }
         catch (Exception e)
         {

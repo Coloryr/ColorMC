@@ -21,7 +21,7 @@ public static class CheckHelpers
     /// </summary>
     /// <param name="list">规则列表</param>
     /// <returns>是否允许</returns>
-    public static bool CheckAllow(List<GameArgObj.Libraries.Rules> list)
+    public static bool CheckAllow(List<GameArgObj.LibrariesObj.RulesObj> list)
     {
         bool allow = true;
         if (list == null)
@@ -31,15 +31,15 @@ public static class CheckHelpers
 
         foreach (var item2 in list)
         {
-            var action = item2.action;
+            var action = item2.Action;
             if (action == "allow")
             {
-                if (item2.os == null)
+                if (item2.Os == null)
                 {
                     allow = true;
                     continue;
                 }
-                var os = item2.os.name;
+                var os = item2.Os.Name;
 
                 if (os == "osx" && SystemInfo.Os == OsType.MacOS)
                 {
@@ -58,7 +58,7 @@ public static class CheckHelpers
                     allow = false;
                 }
 
-                var arch = item2.os.arch;
+                var arch = item2.Os.Arch;
                 if (arch == "x86" && !SystemInfo.IsArm)
                 {
                     allow = true;
@@ -66,12 +66,12 @@ public static class CheckHelpers
             }
             else if (action == "disallow")
             {
-                if (item2.os == null)
+                if (item2.Os == null)
                 {
                     allow = false;
                     continue;
                 }
-                var os = item2.os.name;
+                var os = item2.Os.Name;
 
                 if (os == "osx" && SystemInfo.Os == OsType.MacOS)
                 {
@@ -90,7 +90,7 @@ public static class CheckHelpers
                     allow = true;
                 }
 
-                var arch = item2.os.arch;
+                var arch = item2.Os.Arch;
                 if (arch == "x86" && !SystemInfo.IsArm)
                 {
                     allow = false;
@@ -122,7 +122,7 @@ public static class CheckHelpers
     /// <returns>是否为V2版本</returns>
     public static bool IsGameVersionV2(this GameArgObj version)
     {
-        return version.minimumLauncherVersion > 18;
+        return version.MinimumLauncherVersion > 18;
     }
 
     /// <summary>
@@ -194,19 +194,19 @@ public static class CheckHelpers
     {
         var list1 = new ConcurrentBag<string>();
         var list = new ConcurrentBag<DownloadItemObj>();
-        Parallel.ForEach(obj.objects, (item) =>
+        Parallel.ForEach(obj.Objects, (item) =>
         {
             if (cancel.IsCancellationRequested)
                 return;
 
-            if (list1.Contains(item.Value.hash))
+            if (list1.Contains(item.Value.Hash))
                 return;
 
-            var obj1 = DownloadItemHelper.BuildAssetsItem(item.Key, item.Value.hash);
+            var obj1 = DownloadItemHelper.BuildAssetsItem(item.Key, item.Value.Hash);
             if (obj1.CheckToAdd(ConfigUtils.Config.GameCheck.CheckAssetsSha1))
             {
                 list.Add(obj1);
-                list1.Add(item.Value.hash);
+                list1.Add(item.Value.Hash);
             }
         });
 
@@ -230,7 +230,7 @@ public static class CheckHelpers
         {
             //不存在游戏
             var var = await VersionPath.GetVersionsAsync();
-            var version = var?.versions.Where(a => a.id == obj.Version).FirstOrDefault()
+            var version = var?.Versions.Where(a => a.Id == obj.Version).FirstOrDefault()
                 ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
             var res1 = await DownloadItemHelper.BuildVersionDownloadAsync(version)
                 ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
@@ -252,13 +252,13 @@ public static class CheckHelpers
         {
             list1.Add(Task.Run(() =>
             {
-                var obj1 = DownloadItemHelper.BuildGameItem(game.id);
+                var obj1 = DownloadItemHelper.BuildGameItem(game.Id);
                 if (obj1.CheckToAdd(ConfigUtils.Config.GameCheck.CheckCoreSha1))
                 {
                     list.Add(obj1);
                 }
 
-                if (game.logging != null)
+                if (game.Logging != null)
                 {
                     obj1 = DownloadItemHelper.BuildLog4jItem(game);
                     if (obj1.CheckToAdd(true))
@@ -278,7 +278,7 @@ public static class CheckHelpers
                 if (assets == null)
                 {
                     //不存在json文件
-                    var res = await GameAPI.GetAssets(game.assetIndex.url)
+                    var res = await GameAPI.GetAssets(game.AssetIndex.url)
                         ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Launch.Error2"));
                     assets = res.Assets;
                     game.AddIndex(res.Text);
@@ -580,7 +580,7 @@ public static class CheckHelpers
         string file;
         if (neo)
         {
-            if (IsGameVersion1202(obj.minecraft))
+            if (IsGameVersion1202(obj.Minecraft))
             {
                 file = $"{LibrariesPath.BaseDir}/net/neoforged/neoforged/{fgversion}" +
                     $"neoforge-{fgversion}-client.jar";
@@ -588,15 +588,15 @@ public static class CheckHelpers
             else
             {
                 file = $"{LibrariesPath.BaseDir}/net/neoforged/forge/{fgversion}" +
-                    $"{obj.minecraft}-{fgversion}/" +
-                    $"forge-{obj.minecraft}-{fgversion}-client.jar";
+                    $"{obj.Minecraft}-{fgversion}/" +
+                    $"forge-{obj.Minecraft}-{fgversion}-client.jar";
             }
         }
         else
         {
             file = $"{LibrariesPath.BaseDir}/net/minecraftforge/forge/" +
-            $"{obj.minecraft}-{fgversion}/" +
-            $"forge-{obj.minecraft}-{fgversion}-client.jar";
+            $"{obj.Minecraft}-{fgversion}/" +
+            $"forge-{obj.Minecraft}-{fgversion}-client.jar";
         }
 
         file = Path.GetFullPath(file);
@@ -718,19 +718,19 @@ public static class CheckHelpers
 
         var list = new List<DownloadItemObj>();
 
-        foreach (var item in fabric.libraries)
+        foreach (var item in fabric.Libraries)
         {
             if (cancel.IsCancellationRequested)
                 break;
 
-            var name = PathHelper.NameToPath(item.name);
+            var name = PathHelper.NameToPath(item.Name);
             string file = $"{LibrariesPath.BaseDir}/{name}";
             if (!File.Exists(file))
             {
                 list.Add(new()
                 {
-                    Url = UrlHelper.DownloadFabric(item.url + name, CoreHttpClient.Source),
-                    Name = item.name,
+                    Url = UrlHelper.DownloadFabric(item.Url + name, CoreHttpClient.Source),
+                    Name = item.Name,
                     Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}")
                 });
                 continue;
@@ -754,19 +754,19 @@ public static class CheckHelpers
 
         var list = new List<DownloadItemObj>();
 
-        foreach (var item in quilt.libraries)
+        foreach (var item in quilt.Libraries)
         {
             if (cancel.IsCancellationRequested)
                 return null;
 
-            var name = PathHelper.NameToPath(item.name);
+            var name = PathHelper.NameToPath(item.Name);
             string file = $"{LibrariesPath.BaseDir}/{name}";
             if (!File.Exists(file))
             {
                 list.Add(new()
                 {
-                    Url = UrlHelper.DownloadQuilt(item.url + name, CoreHttpClient.Source),
-                    Name = item.name,
+                    Url = UrlHelper.DownloadQuilt(item.Url + name, CoreHttpClient.Source),
+                    Name = item.Name,
                     Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}")
                 });
                 continue;

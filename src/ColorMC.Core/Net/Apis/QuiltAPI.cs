@@ -32,14 +32,14 @@ public static class QuiltAPI
                 return null;
             }
 
-            var list = JsonConvert.DeserializeObject<List<QuiltMetaObj.Game>>(data.Message!);
+            var list = JsonConvert.DeserializeObject<List<QuiltMetaObj.GameObj>>(data.Message!);
             if (list == null)
                 return null;
 
             var list1 = new List<string>();
             foreach (var item in list)
             {
-                list1.Add(item.version);
+                list1.Add(item.Version);
             }
 
             s_supportVersion = list1;
@@ -94,14 +94,14 @@ public static class QuiltAPI
                 return null;
             }
 
-            var list = JsonConvert.DeserializeObject<List<FabricLoaderObj1>>(data.Message!);
+            var list = JsonConvert.DeserializeObject<List<FabricLoaderVersionObj>>(data.Message!);
             if (list == null)
                 return null;
 
             var list1 = new List<string>();
             foreach (var item in list)
             {
-                list1.Add(item.loader.version);
+                list1.Add(item.Loader.Version);
             }
             return list1;
         }

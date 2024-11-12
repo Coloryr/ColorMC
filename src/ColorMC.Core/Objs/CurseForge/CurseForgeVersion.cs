@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace ColorMC.Core.Objs.CurseForge;
 
 /// <summary>
@@ -5,13 +7,16 @@ namespace ColorMC.Core.Objs.CurseForge;
 /// </summary>
 public record CurseForgeVersion
 {
-    public record Item
+    public record DataObj
     {
-        public int type { get; set; }
-        public List<string> versions { get; set; }
+        [JsonProperty("type")]
+        public int Type { get; set; }
+        [JsonProperty("versions")]
+        public List<string> Versions { get; set; }
     }
 
-    public List<Item> data { get; set; }
+    [JsonProperty("data")]
+    public List<DataObj> Data { get; set; }
 }
 
 /// <summary>
@@ -19,13 +24,16 @@ public record CurseForgeVersion
 /// </summary>
 public record CurseForgeVersionType
 {
-    public record Item
+    public record DataObj
     {
-        public int id { get; set; }
-        public int gameId { get; set; }
-        public string name { get; set; }
-        public string slug { get; set; }
+        [JsonProperty("id")]
+        public int Id { get; set; }
+        //public int gameId { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        //public string slug { get; set; }
     }
 
-    public List<Item> data { get; set; }
+    [JsonProperty("data")]
+    public List<DataObj> Data { get; set; }
 }

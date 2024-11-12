@@ -21,19 +21,25 @@ public static class Schematic
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>结构文件列表</returns>
-    public static async Task<ConcurrentBag<SchematicObj>> GetSchematicsAsync(this GameSettingObj obj)
+    public static async Task<List<SchematicObj>> GetSchematicsAsync(this GameSettingObj obj)
     {
-        var list = new ConcurrentBag<SchematicObj>();
         var path = obj.GetSchematicsPath();
 
         if (!Directory.Exists(path))
         {
-            Directory.CreateDirectory(path);
-            return list;
+            return [];
         }
 
+        var list = new ConcurrentBag<SchematicObj>();
         var items = Directory.GetFiles(path);
+#if false
+        await Parallel.ForEachAsync(items, new ParallelOptions()
+        {
+            MaxDegreeOfParallelism = 1
+        }, async (item, cancel) =>
+#else
         await Parallel.ForEachAsync(items, async (item, cancel) =>
+#endif
         {
             var info = new FileInfo(item);
             if (info.Extension.Equals(Name1, StringComparison.OrdinalIgnoreCase))
@@ -46,7 +52,10 @@ public static class Schematic
             }
         });
 
-        return list;
+        var list1 = list.ToList();
+        list1.Sort(SchematicObjComparer.Instance);
+
+        return list1;
     }
 
     /// <summary>

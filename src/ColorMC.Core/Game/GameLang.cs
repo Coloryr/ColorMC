@@ -18,16 +18,36 @@ public static class GameLang
     /// </summary>
     /// <param name="obj">资源数据</param>
     /// <returns>语言列表</returns>
+    public static Task<Dictionary<string, string>> GetLangsAsync(this AssetsObj? obj)
+    {
+        return Task.Run(() => 
+        {
+            return GetLangs(obj);
+        });
+    }
+
+    /// <summary>
+    /// 获取语言列表
+    /// </summary>
+    /// <param name="obj">资源数据</param>
+    /// <returns>语言列表</returns>
     public static Dictionary<string, string> GetLangs(this AssetsObj? obj)
     {
         var list = new Dictionary<string, string>();
         if (obj != null)
         {
-            foreach (var item in obj.objects)
+#if false
+            Parallel.ForEach(obj.objects, new()
             {
-                if (!item.Key.StartsWith(Name1) || AssetsPath.ReadAsset(item.Value.hash) is not { } str)
+                MaxDegreeOfParallelism = 1
+            }, (item) =>
+#else
+            Parallel.ForEach(obj.Objects, (item) =>
+#endif
+            {
+                if (!item.Key.StartsWith(Name1) || AssetsPath.ReadAsset(item.Value.Hash) is not { } str)
                 {
-                    continue;
+                    return;
                 }
 
                 try
@@ -66,13 +86,15 @@ public static class GameLang
                 {
 
                 }
-            }
+            });
         }
 
         list.TryAdd("zh_cn", "简体中文-中国大陆");
         list.TryAdd("en_us", "English-United States");
 
-        return list;
+        var sortedByKey = list.OrderBy(kvp => kvp.Key);
+
+        return sortedByKey.ToDictionary();
     }
 
     /// <summary>
@@ -85,12 +107,12 @@ public static class GameLang
     {
         if (obj != null)
         {
-            foreach (var item in obj.objects)
+            foreach (var item in obj.Objects)
             {
                 try
                 {
                     if (item.Key.StartsWith(Name1) && item.Key.Contains(key)
-                        && AssetsPath.ReadAsset(item.Value.hash) is { } str)
+                        && AssetsPath.ReadAsset(item.Value.Hash) is { } str)
                     {
                         var data = JsonConvert.DeserializeObject<LangObj>(str)!;
                         return new LangRes

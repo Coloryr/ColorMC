@@ -33,19 +33,19 @@ public static class GameHelper
     /// </summary>
     /// <param name="item">运行库项目</param>
     /// <returns>运行库项目</returns>
-    public static ForgeLaunchObj.Libraries? MakeLibObj(ForgeInstallObj1.VersionInfo.Libraries item)
+    public static ForgeLaunchObj.LibrariesObj? MakeLibObj(ForgeInstallNewObj.VersionInfoObj.LibrariesObj item)
     {
-        var args = item.name.Split(":");
+        var args = item.Name.Split(":");
         if (args[0] == "net.minecraftforge" && args[1] == "forge")
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        url = ""
+                        Url = ""
                     }
                 }
             };
@@ -54,13 +54,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"net/minecraft/launchwrapper/{args[2]}/launchwrapper-{args[2]}.jar",
-                        url = $"https://libraries.minecraft.net/net/minecraft/launchwrapper/{args[2]}/launchwrapper-{args[2]}.jar"
+                        Path = $"net/minecraft/launchwrapper/{args[2]}/launchwrapper-{args[2]}.jar",
+                        Url = $"https://libraries.minecraft.net/net/minecraft/launchwrapper/{args[2]}/launchwrapper-{args[2]}.jar"
                     }
                 }
             };
@@ -69,13 +69,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"org/ow2/asm/asm-all/{args[2]}/asm-all-{args[2]}.jar",
-                        url = $"https://maven.minecraftforge.net/org/ow2/asm/asm-all/{args[2]}/asm-all-{args[2]}.jar"
+                        Path = $"org/ow2/asm/asm-all/{args[2]}/asm-all-{args[2]}.jar",
+                        Url = $"https://maven.minecraftforge.net/org/ow2/asm/asm-all/{args[2]}/asm-all-{args[2]}.jar"
                     }
                 }
             };
@@ -84,13 +84,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"lzma/lzma/{args[2]}/lzma-{args[2]}.jar",
-                        url = $"https://libraries.minecraft.net/lzma/lzma/{args[2]}/lzma-{args[2]}.jar"
+                        Path = $"lzma/lzma/{args[2]}/lzma-{args[2]}.jar",
+                        Url = $"https://libraries.minecraft.net/lzma/lzma/{args[2]}/lzma-{args[2]}.jar"
                     }
                 }
             };
@@ -99,13 +99,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"net/sf/jopt-simple/jopt-simple/{args[2]}/jopt-simple-{args[2]}.jar",
-                        url = $"https://libraries.minecraft.net/net/sf/jopt-simple/jopt-simple/{args[2]}/jopt-simple-{args[2]}.jar"
+                        Path = $"net/sf/jopt-simple/jopt-simple/{args[2]}/jopt-simple-{args[2]}.jar",
+                        Url = $"https://libraries.minecraft.net/net/sf/jopt-simple/jopt-simple/{args[2]}/jopt-simple-{args[2]}.jar"
                     }
                 }
             };
@@ -114,13 +114,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"com/google/guava/guava/{args[2]}/guava-{args[2]}.jar",
-                        url = $"https://libraries.minecraft.net/com/google/guava/guava/{args[2]}/guava-{args[2]}.jar"
+                        Path = $"com/google/guava/guava/{args[2]}/guava-{args[2]}.jar",
+                        Url = $"https://libraries.minecraft.net/com/google/guava/guava/{args[2]}/guava-{args[2]}.jar"
                     }
                 }
             };
@@ -129,13 +129,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"org/apache/commons/commons-lang3/{args[2]}/commons-lang3-{args[2]}.jar",
-                        url = $"https://maven.minecraftforge.net/org/apache/commons/commons-lang3/{args[2]}/commons-lang3-{args[2]}.jar"
+                        Path = $"org/apache/commons/commons-lang3/{args[2]}/commons-lang3-{args[2]}.jar",
+                        Url = $"https://maven.minecraftforge.net/org/apache/commons/commons-lang3/{args[2]}/commons-lang3-{args[2]}.jar"
                     }
                 }
             };
@@ -144,13 +144,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"net/java/jinput/jinput/{args[2]}/jinput-{args[2]}.jar",
-                        url = $"https://maven.minecraftforge.net/net/java/jinput/jinput/{args[2]}/jinput-{args[2]}.jar"
+                        Path = $"net/java/jinput/jinput/{args[2]}/jinput-{args[2]}.jar",
+                        Url = $"https://maven.minecraftforge.net/net/java/jinput/jinput/{args[2]}/jinput-{args[2]}.jar"
                     }
                 }
             };
@@ -159,13 +159,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"net/java/jutils/jutils/{args[2]}/jutils-{args[2]}.jar",
-                        url = $"https://maven.minecraftforge.net/net/java/jutils/jutils/{args[2]}/jutils-{args[2]}.jar"
+                        Path = $"net/java/jutils/jutils/{args[2]}/jutils-{args[2]}.jar",
+                        Url = $"https://maven.minecraftforge.net/net/java/jutils/jutils/{args[2]}/jutils-{args[2]}.jar"
                     }
                 }
             };
@@ -174,13 +174,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"java3d/vecmath/{args[2]}/vecmath-{args[2]}.jar",
-                        url = $"https://libraries.minecraft.net/java3d/vecmath/{args[2]}/vecmath-{args[2]}.jar"
+                        Path = $"java3d/vecmath/{args[2]}/vecmath-{args[2]}.jar",
+                        Url = $"https://libraries.minecraft.net/java3d/vecmath/{args[2]}/vecmath-{args[2]}.jar"
                     }
                 }
             };
@@ -189,13 +189,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"net/sf/trove4j/trove4j/{args[2]}/trove4j-{args[2]}.jar",
-                        url = $"https://maven.minecraftforge.net/net/sf/trove4j/trove4j/{args[2]}/trove4j-{args[2]}.jar"
+                        Path = $"net/sf/trove4j/trove4j/{args[2]}/trove4j-{args[2]}.jar",
+                        Url = $"https://maven.minecraftforge.net/net/sf/trove4j/trove4j/{args[2]}/trove4j-{args[2]}.jar"
                     }
                 }
             };
@@ -204,13 +204,13 @@ public static class GameHelper
         {
             return new()
             {
-                name = item.name,
-                downloads = new()
+                Name = item.Name,
+                Downloads = new()
                 {
-                    artifact = new()
+                    Artifact = new()
                     {
-                        path = $"io/netty/netty-all/{args[2]}/netty-all-{args[2]}.jar",
-                        url = $"https://maven.minecraftforge.net/io/netty/netty-all/{args[2]}/netty-all-{args[2]}.jar"
+                        Path = $"io/netty/netty-all/{args[2]}/netty-all-{args[2]}.jar",
+                        Url = $"https://maven.minecraftforge.net/io/netty/netty-all/{args[2]}/netty-all-{args[2]}.jar"
                     }
                 }
             };
@@ -278,40 +278,40 @@ public static class GameHelper
     /// </summary>
     /// <param name="item">运行库</param>
     /// <returns>运行库</returns>
-    public static GameArgObj.Libraries ReplaceLib(GameArgObj.Libraries item)
+    public static GameArgObj.LibrariesObj ReplaceLib(GameArgObj.LibrariesObj item)
     {
-        if (item.name.StartsWith("net.java.dev.jna:jna:"))
+        if (item.Name.StartsWith("net.java.dev.jna:jna:"))
         {
-            string[] version = item.name.Split(":")[2].Split(".");
+            string[] version = item.Name.Split(":")[2].Split(".");
             if (int.Parse(version[0]) >= 5 && int.Parse(version[1]) >= 13) return item;
-            item.name = "net.java.dev.jna:jna:5.13.0";
-            item.downloads.artifact.path = "net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
-            item.downloads.artifact.sha1 = "1200e7ebeedbe0d10062093f32925a912020e747";
-            item.downloads.artifact.url =
+            item.Name = "net.java.dev.jna:jna:5.13.0";
+            item.Downloads.Artifact.Path = "net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
+            item.Downloads.Artifact.Sha1 = "1200e7ebeedbe0d10062093f32925a912020e747";
+            item.Downloads.Artifact.Url =
                 CoreHttpClient.Source == SourceLocal.Offical
                 ? $"{UrlHelper.MavenUrl[0]}net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar"
                 : $"{UrlHelper.MavenUrl[1]}net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
         }
-        else if (item.name.StartsWith("com.github.oshi:oshi-core:"))
+        else if (item.Name.StartsWith("com.github.oshi:oshi-core:"))
         {
-            string[] version = item.name.Split(":")[2].Split(".");
+            string[] version = item.Name.Split(":")[2].Split(".");
             if (int.Parse(version[0]) != 6 || int.Parse(version[1]) != 2) return item;
-            item.name = "com.github.oshi:oshi-core:6.3.0";
-            item.downloads.artifact.path = "com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar";
-            item.downloads.artifact.sha1 = "9e98cf55be371cafdb9c70c35d04ec2a8c2b42ac";
-            item.downloads.artifact.url =
+            item.Name = "com.github.oshi:oshi-core:6.3.0";
+            item.Downloads.Artifact.Path = "com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar";
+            item.Downloads.Artifact.Sha1 = "9e98cf55be371cafdb9c70c35d04ec2a8c2b42ac";
+            item.Downloads.Artifact.Url =
                 CoreHttpClient.Source == SourceLocal.Offical
                 ? $"{UrlHelper.MavenUrl[0]}com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar"
                 : $"{UrlHelper.MavenUrl[1]}com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar";
         }
-        else if (item.name.StartsWith("org.ow2.asm:asm-all:"))
+        else if (item.Name.StartsWith("org.ow2.asm:asm-all:"))
         {
-            string[] version = item.name.Split(":")[2].Split(".");
+            string[] version = item.Name.Split(":")[2].Split(".");
             if (int.Parse(version[0]) >= 5) return item;
-            item.name = "org.ow2.asm:asm-all:5.0.4";
-            item.downloads.artifact.path = "org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
-            item.downloads.artifact.sha1 = "e6244859997b3d4237a552669279780876228909";
-            item.downloads.artifact.url =
+            item.Name = "org.ow2.asm:asm-all:5.0.4";
+            item.Downloads.Artifact.Path = "org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
+            item.Downloads.Artifact.Sha1 = "e6244859997b3d4237a552669279780876228909";
+            item.Downloads.Artifact.Url =
                 CoreHttpClient.Source == SourceLocal.Offical
                 ? $"{UrlHelper.MavenUrl[0]}org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar"
                 : $"{UrlHelper.MavenUrl[1]}org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
@@ -392,31 +392,31 @@ public static class GameHelper
             Loader = Loaders.Normal
         };
 
-        foreach (var item in mmc.components)
+        foreach (var item in mmc.Components)
         {
-            if (item.uid == "net.minecraft")
+            if (item.Uid == "net.minecraft")
             {
-                game.Version = item.version;
+                game.Version = item.Version;
             }
-            else if (item.uid == "net.minecraftforge")
+            else if (item.Uid == "net.minecraftforge")
             {
                 game.Loader = Loaders.Forge;
-                game.LoaderVersion = item.version;
+                game.LoaderVersion = item.Version;
             }
-            else if (item.uid == "net.neoforged")
+            else if (item.Uid == "net.neoforged")
             {
                 game.Loader = Loaders.NeoForge;
-                game.LoaderVersion = item.version;
+                game.LoaderVersion = item.Version;
             }
-            else if (item.uid == "net.fabricmc.fabric-loader")
+            else if (item.Uid == "net.fabricmc.fabric-loader")
             {
                 game.Loader = Loaders.Fabric;
-                game.LoaderVersion = item.version;
+                game.LoaderVersion = item.Version;
             }
-            else if (item.uid == "org.quiltmc.quilt-loader")
+            else if (item.Uid == "org.quiltmc.quilt-loader")
             {
                 game.Loader = Loaders.Quilt;
-                game.LoaderVersion = item.version;
+                game.LoaderVersion = item.Version;
             }
         }
         game.JvmArg = new();
@@ -534,43 +534,43 @@ public static class GameHelper
     {
         var game = new GameSettingObj()
         {
-            Name = obj.name,
+            Name = obj.Name,
             Loader = Loaders.Normal
         };
 
-        foreach (var item in obj.addons)
+        foreach (var item in obj.Addons)
         {
-            if (item.id == "game")
+            if (item.Id == "game")
             {
-                game.Version = item.version;
+                game.Version = item.Version;
             }
-            else if (item.id == "forge")
+            else if (item.Id == "forge")
             {
                 game.Loader = Loaders.Forge;
-                game.LoaderVersion = item.version;
+                game.LoaderVersion = item.Version;
             }
-            else if (item.id == "fabric")
+            else if (item.Id == "fabric")
             {
                 game.Loader = Loaders.Fabric;
-                game.LoaderVersion = item.version;
+                game.LoaderVersion = item.Version;
             }
-            else if (item.id == "quilt")
+            else if (item.Id == "quilt")
             {
                 game.Loader = Loaders.Quilt;
-                game.LoaderVersion = item.version;
+                game.LoaderVersion = item.Version;
             }
         }
 
-        if (obj.launchInfo != null)
+        if (obj.LaunchInfo != null)
         {
             game.JvmArg = new()
             {
-                MinMemory = obj.launchInfo.minMemory
+                MinMemory = obj.LaunchInfo.MinMemory
             };
             string data = "";
-            if (obj.launchInfo.launchArgument != null)
+            if (obj.LaunchInfo.LaunchArgument != null)
             {
-                foreach (var item in obj.launchInfo.launchArgument)
+                foreach (var item in obj.LaunchInfo.LaunchArgument)
                 {
                     data += item + " ";
                 }
@@ -585,9 +585,9 @@ public static class GameHelper
             }
 
             data = "";
-            if (obj.launchInfo.javaArgument != null)
+            if (obj.LaunchInfo.JavaArgument != null)
             {
-                foreach (var item in obj.launchInfo.javaArgument)
+                foreach (var item in obj.LaunchInfo.JavaArgument)
                 {
                     data += item + " ";
                 }
@@ -614,16 +614,16 @@ public static class GameHelper
     {
         var game = new GameSettingObj()
         {
-            Name = obj.id,
+            Name = obj.Id,
             Loader = Loaders.Normal
         };
 
-        if (obj.patches != null)
+        if (obj.Patches != null)
         {
-            foreach (var item1 in obj.patches)
+            foreach (var item1 in obj.Patches)
             {
-                var id = item1.id;
-                var version = item1.version ?? "";
+                var id = item1.Id;
+                var version = item1.Version ?? "";
                 if (id == "game")
                 {
                     game.Version = version;
@@ -657,30 +657,30 @@ public static class GameHelper
             {
                 return null;
             }
-            if (!string.IsNullOrWhiteSpace(obj.inheritsFrom))
+            if (!string.IsNullOrWhiteSpace(obj.InheritsFrom))
             {
-                if (versions.versions.Any(item => item.id == obj.inheritsFrom) == true)
+                if (versions.Versions.Any(item => item.Id == obj.InheritsFrom) == true)
                 {
-                    game.Version = obj.inheritsFrom;
+                    game.Version = obj.InheritsFrom;
                 }
             }
             else
             {
-                if (versions.versions.Any(item => item.id == obj.id) == true)
+                if (versions.Versions.Any(item => item.Id == obj.Id) == true)
                 {
-                    game.Version = obj.id;
+                    game.Version = obj.Id;
                 }
             }
 
-            foreach (var item in obj.libraries)
+            foreach (var item in obj.Libraries)
             {
-                if (item.name.Contains("minecraftforge"))
+                if (item.Name.Contains("minecraftforge"))
                 {
-                    var names = item.name.Split(':');
+                    var names = item.Name.Split(':');
                     if (names.Length >= 3 && (names[1] is "forge" or "fmlloader"))
                     {
                         var args = names[2].Split('-');
-                        if (args.Length >= 2 && versions.versions.Any(item => item.id == args[0]))
+                        if (args.Length >= 2 && versions.Versions.Any(item => item.Id == args[0]))
                         {
                             game.Loader = Loaders.Forge;
                             game.LoaderVersion = args[1];
@@ -688,9 +688,9 @@ public static class GameHelper
                         break;
                     }
                 }
-                else if (item.name.Contains("neoforged"))
+                else if (item.Name.Contains("neoforged"))
                 {
-                    if (obj.arguments?.game is { } list)
+                    if (obj.Arguments?.Game is { } list)
                     {
                         for (int a = 0; a < list.Count; a++)
                         {
@@ -703,9 +703,9 @@ public static class GameHelper
                         }
                     }
                 }
-                else if (item.name.Contains("fabricmc"))
+                else if (item.Name.Contains("fabricmc"))
                 {
-                    var names = item.name.Split(':');
+                    var names = item.Name.Split(':');
                     if (names.Length >= 3 && names[1] == "fabric-loader")
                     {
                         game.Loader = Loaders.Fabric;
@@ -713,9 +713,9 @@ public static class GameHelper
                         break;
                     }
                 }
-                else if (item.name.Contains("quiltmc"))
+                else if (item.Name.Contains("quiltmc"))
                 {
-                    var names = item.name.Split(':');
+                    var names = item.Name.Split(':');
                     if (names.Length >= 3 && names[1] == "quilt-loader")
                     {
                         game.Loader = Loaders.Quilt;
@@ -745,35 +745,35 @@ public static class GameHelper
 
         if (type == GameType.All)
         {
-            foreach (var item in ver.versions)
+            foreach (var item in ver.Versions)
             {
-                list.Add(item.id);
+                list.Add(item.Id);
             }
 
             return list;
         }
 
-        foreach (var item in ver.versions)
+        foreach (var item in ver.Versions)
         {
-            if (item.type == "release")
+            if (item.Type == "release")
             {
                 if (type == GameType.Release)
                 {
-                    list.Add(item.id);
+                    list.Add(item.Id);
                 }
             }
-            else if (item.type == "snapshot")
+            else if (item.Type == "snapshot")
             {
                 if (type == GameType.Snapshot)
                 {
-                    list.Add(item.id);
+                    list.Add(item.Id);
                 }
             }
             else
             {
                 if (type == GameType.Other)
                 {
-                    list.Add(item.id);
+                    list.Add(item.Id);
                 }
             }
         }

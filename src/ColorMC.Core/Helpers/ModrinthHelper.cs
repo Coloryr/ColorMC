@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Text;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
@@ -16,6 +17,69 @@ public static class ModrinthHelper
 
     private static List<string>? s_gameVersions;
 
+    public static string BuildFacets(List<MFacetsObj> list)
+    {
+        var builder = new StringBuilder();
+        builder.Append('[');
+        foreach (var item in list)
+        {
+            if (item.Values.Count == 0)
+                continue;
+
+            foreach (var item1 in item.Values)
+            {
+                builder.Append($"[\"{item.Data}:{item1}\"],");
+            }
+
+        }
+        builder.Remove(builder.Length - 1, 1);
+        builder.Append(']');
+        return builder.ToString();
+    }
+
+    public static readonly MSortingObj Relevance = new() 
+    { 
+        Data = "relevance" 
+    };
+
+    public static readonly MSortingObj Downloads = new() 
+    { 
+        Data = "downloads" 
+    };
+
+    public static readonly MSortingObj Follows = new() 
+    { 
+        Data = "follows" 
+    };
+
+    public static readonly MSortingObj Newest = new() 
+    { 
+        Data = "newest" 
+    };
+
+    public static readonly MSortingObj Updated = new() 
+    { 
+        Data = "updated" 
+    };
+
+    public static MFacetsObj BuildCategories(List<string> values) => new()
+    {
+        Data = "categories",
+        Values = values
+    };
+
+    public static MFacetsObj BuildVersions(List<string> values) => new()
+    {
+        Data = "versions",
+        Values = values
+    };
+
+    public static MFacetsObj BuildProjectType(List<string> values) => new()
+    {
+        Data = "project_type",
+        Values = values
+    };
+
     /// <summary>
     /// 创建下载项目
     /// </summary>
@@ -24,13 +88,13 @@ public static class ModrinthHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj MakeModDownloadObj(this ModrinthVersionObj data, GameSettingObj obj)
     {
-        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
+        var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
         return new DownloadItemObj()
         {
-            Name = data.name,
-            Url = file.url,
-            Local = Path.GetFullPath(obj.GetModsPath() + "/" + file.filename),
-            SHA1 = file.hashes.sha1
+            Name = data.Name,
+            Url = file.Url,
+            Local = Path.GetFullPath(obj.GetModsPath() + "/" + file.Filename),
+            SHA1 = file.Hashes.Sha1
         };
     }
 
@@ -40,14 +104,14 @@ public static class ModrinthHelper
     /// <param name="data">数据</param>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj MakeDownloadObj(this ModrinthPackObj.File data, GameSettingObj obj)
+    public static DownloadItemObj MakeDownloadObj(this ModrinthPackObj.FileObj data, GameSettingObj obj)
     {
         return new DownloadItemObj()
         {
-            Url = data.downloads[0],
-            Name = data.path,
-            Local = obj.GetGamePath() + "/" + data.path,
-            SHA1 = data.hashes.sha1
+            Url = data.Downloads[0],
+            Name = data.Path,
+            Local = obj.GetGamePath() + "/" + data.Path,
+            SHA1 = data.Hashes.Sha1
         };
     }
 
@@ -58,16 +122,16 @@ public static class ModrinthHelper
     /// <returns>Mod信息</returns>
     public static ModInfoObj MakeModInfo(this ModrinthVersionObj data)
     {
-        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
+        var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
         return new ModInfoObj()
         {
             Path = "mods",
-            FileId = data.id.ToString(),
-            ModId = data.project_id,
-            File = file.filename,
-            Name = data.name,
-            Url = file.url,
-            SHA1 = file.hashes.sha1
+            FileId = data.Id.ToString(),
+            ModId = data.ProjectId,
+            File = file.Filename,
+            Name = data.Name,
+            Url = file.Url,
+            SHA1 = file.Hashes.Sha1
         };
     }
 
@@ -90,16 +154,16 @@ public static class ModrinthHelper
         }
 
         var list7 = from item2 in s_categories
-                    where item2.project_type == type switch
+                    where item2.ProjectType == type switch
                     {
                         FileType.Shaderpack => ModrinthAPI.ClassShaderpack,
                         FileType.Resourcepack => ModrinthAPI.ClassResourcepack,
                         FileType.ModPack => ModrinthAPI.ClassModPack,
                         _ => ModrinthAPI.ClassMod
                     }
-                    && item2.header == "categories"
-                    orderby item2.name descending
-                    select item2.name;
+                    && item2.Header == "categories"
+                    orderby item2.Name descending
+                    select item2.Name;
 
         return list7.ToDictionary(a => a);
     }
@@ -126,7 +190,7 @@ public static class ModrinthHelper
             ""
         };
 
-        list1.AddRange(from item in list select item.version);
+        list1.AddRange(from item in list select item.Version);
 
         s_gameVersions = list1;
 
@@ -142,18 +206,18 @@ public static class ModrinthHelper
     {
         var list = new List<DownloadItemObj>();
 
-        var size = arg.Info.files.Count;
+        var size = arg.Info.Files.Count;
         var now = 0;
-        foreach (var item in arg.Info.files)
+        foreach (var item in arg.Info.Files)
         {
             var item11 = item.MakeDownloadObj(arg.Game);
             list.Add(item11);
 
-            var url = item.downloads
+            var url = item.Downloads
                 .FirstOrDefault(a => a.StartsWith($"{UrlHelper.ModrinthDownload}data/"));
             if (url == null)
             {
-                url = item.downloads[0];
+                url = item.Downloads[0];
             }
             else
             {
@@ -163,9 +227,9 @@ public static class ModrinthHelper
                 arg.Game.Mods.Remove(modid);
                 arg.Game.Mods.Add(modid, new()
                 {
-                    Path = item.path[..item.path.IndexOf('/')],
-                    Name = item.path,
-                    File = item.path,
+                    Path = item.Path[..item.Path.IndexOf('/')],
+                    Name = item.Path,
+                    File = item.Path,
                     SHA1 = item11.SHA1!,
                     ModId = modid,
                     FileId = fileid,
@@ -213,12 +277,12 @@ public static class ModrinthHelper
             res.Add(new()
             {
                 Path = "mods",
-                Name = data.files[0].filename,
+                Name = data.Files[0].Filename,
                 File = Path.GetFileName(item.Local),
                 SHA1 = item.Sha1,
-                Url = data.files[0].url,
-                ModId = data.project_id,
-                FileId = data.id
+                Url = data.Files[0].Url,
+                ModId = data.ProjectId,
+                FileId = data.Id
             });
             count++;
         });
@@ -264,7 +328,7 @@ public static class ModrinthHelper
     private static async Task<ConcurrentBag<GetModrinthModDependenciesRes>>
         GetModDependenciesAsync(ModrinthVersionObj data, string mc, Loaders loader, ConcurrentBag<string> ids)
     {
-        if (data.dependencies == null || data.dependencies.Count == 0)
+        if (data.Dependencies == null || data.Dependencies.Count == 0)
         {
             return [];
         }
@@ -273,22 +337,22 @@ public static class ModrinthHelper
         //{
         //    MaxDegreeOfParallelism = 1
         //}, async (item, cancel) =>
-        await Parallel.ForEachAsync(data.dependencies, async (item, cancel) =>
+        await Parallel.ForEachAsync(data.Dependencies, async (item, cancel) =>
         {
-            if (ids.Contains(item.project_id))
+            if (ids.Contains(item.ProjectId))
             {
                 return;
             }
 
             ModrinthVersionObj? res = null;
-            var info = await ModrinthAPI.GetProject(item.project_id);
+            var info = await ModrinthAPI.GetProject(item.ProjectId);
             if (info == null)
             {
                 return;
             }
-            if (item.version_id == null)
+            if (item.VersionId == null)
             {
-                var res1 = await ModrinthAPI.GetFileVersions(item.project_id, mc, loader);
+                var res1 = await ModrinthAPI.GetFileVersions(item.ProjectId, mc, loader);
                 if (res1 == null || res1.Count == 0)
                 {
                     return;
@@ -297,7 +361,7 @@ public static class ModrinthHelper
             }
             else
             {
-                res = await ModrinthAPI.GetVersion(item.project_id, item.version_id);
+                res = await ModrinthAPI.GetVersion(item.ProjectId, item.VersionId);
             }
 
             if (res == null)
@@ -307,16 +371,16 @@ public static class ModrinthHelper
 
             var mod = new GetModrinthModDependenciesRes()
             {
-                Name = info.title,
-                ModId = res.project_id,
+                Name = info.Title,
+                ModId = res.ProjectId,
                 List = [res]
             };
-            ids.Add(res.project_id);
+            ids.Add(res.ProjectId);
             list.Add(mod);
 
-            foreach (var item3 in data.dependencies)
+            foreach (var item3 in data.Dependencies)
             {
-                if (ids.Contains(item3.project_id))
+                if (ids.Contains(item3.ProjectId))
                 {
                     continue;
                 }

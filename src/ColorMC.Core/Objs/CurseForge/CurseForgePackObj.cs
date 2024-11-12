@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace ColorMC.Core.Objs.CurseForge;
 
 /// <summary>
@@ -5,28 +7,43 @@ namespace ColorMC.Core.Objs.CurseForge;
 /// </summary>
 public record CurseForgePackObj
 {
-    public record Minecraft
+    public record MinecraftObj
     {
-        public record ModLoaders
+        public record ModLoadersObj
         {
-            public string id { get; set; }
-            public bool primary { get; set; }
+            [JsonProperty("id")]
+            public string Id { get; set; }
+            [JsonProperty("primary")]
+            public bool Primary { get; set; }
         }
-        public string version { get; set; }
-        public List<ModLoaders> modLoaders { get; set; }
+        [JsonProperty("version")]
+        public string Version { get; set; }
+        [JsonProperty("modLoaders")]
+        public List<ModLoadersObj> ModLoaders { get; set; }
     }
-    public record Files
+    public record FilesObj
     {
-        public int projectID { get; set; }
-        public int fileID { get; set; }
-        public bool required { get; set; }
+        [JsonProperty("projectID")]
+        public int ProjectID { get; set; }
+        [JsonProperty("fileID")]
+        public int FileID { get; set; }
+        [JsonProperty("required")]
+        public bool Required { get; set; }
     }
-    public Minecraft minecraft { get; set; }
-    public string manifestType { get; set; }
-    public int manifestVersion { get; set; }
-    public string name { get; set; }
-    public string version { get; set; }
-    public string author { get; set; }
-    public List<Files> files { get; set; }
-    public string overrides { get; set; }
+    [JsonProperty("minecraft")]
+    public MinecraftObj Minecraft { get; set; }
+    [JsonProperty("manifestType")]
+    public string ManifestType { get; set; }
+    [JsonProperty("manifestVersion")]
+    public int ManifestVersion { get; set; }
+    [JsonProperty("name")]
+    public string Name { get; set; }
+    [JsonProperty("version")]
+    public string Version { get; set; }
+    [JsonProperty("author")]
+    public string Author { get; set; }
+    [JsonProperty("files")]
+    public List<FilesObj> Files { get; set; }
+    [JsonProperty("overrides")]
+    public string Overrides { get; set; }
 }

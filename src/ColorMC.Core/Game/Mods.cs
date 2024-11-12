@@ -39,11 +39,14 @@ public static class Mods
         var files = info.GetFiles();
 
         //多线程同时检查
-        //await Parallel.ForEachAsync(files, new ParallelOptions()
-        //{
-        //    MaxDegreeOfParallelism = 1
-        //}, async (item, cancel) =>
+#if false
+        await Parallel.ForEachAsync(files, new ParallelOptions()
+        {
+            MaxDegreeOfParallelism = 1
+        }, async (item, cancel) =>
+#else
         await Parallel.ForEachAsync(files, async (item, cancel) =>
+#endif
         {
             if (item.Extension is not (".zip" or ".jar" or ".disable" or ".disabled"))
             {
@@ -411,7 +414,7 @@ public static class Mods
                 mod.Version = obj3["version"]?.ToString();
                 mod.Url = obj3["url"]?.ToString();
                 mod.Loaders.Add(Loaders.Forge);
-                mod.Side = SideType.Both;
+                mod.Side = SideType.Both; //无法判断sideonly
 
                 if (obj3.TryGetValue("authorList", out var value))
                 {

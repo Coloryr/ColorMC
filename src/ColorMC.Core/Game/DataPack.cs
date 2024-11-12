@@ -19,6 +19,16 @@ public static class DataPack
     /// </summary>
     /// <param name="world">世界存储</param>
     /// <returns>数据包列表</returns>
+    public static Task<List<DataPackObj>> GetDataPacksAsync(this WorldObj world)
+    {
+        return Task.Run(world.GetDataPacks);
+    }
+
+    /// <summary>
+    /// 获取数据包列表
+    /// </summary>
+    /// <param name="world">世界存储</param>
+    /// <returns>数据包列表</returns>
     public static List<DataPackObj> GetDataPacks(this WorldObj world)
     {
         var list = new List<DataPackObj>();
@@ -40,7 +50,14 @@ public static class DataPack
 
         //从压缩包读取数据包
         var files = Directory.GetFiles(path);
-        foreach (var item in files)
+#if false
+        Parallel.ForEach(files, new()
+        {
+            MaxDegreeOfParallelism = 1
+        }, (item) =>
+#else
+        Parallel.ForEach(files, (item) =>
+#endif
         {
             if (item.EndsWith(".zip"))
             {
@@ -51,7 +68,7 @@ public static class DataPack
                     var ent = zip.GetEntry("pack.mcmeta");
                     if (ent == null)
                     {
-                        continue;
+                        return;
                     }
                     using var stream = new MemoryStream();
                     using var stream1 = zip.GetInputStream(ent);
@@ -69,18 +86,25 @@ public static class DataPack
                     Logs.Error(string.Format(LanguageHelper.Get("Core.DataPack.Error1"), item), e);
                 }
             }
-        }
+        });
 
         //从文件夹读取数据包
         var paths = Directory.GetDirectories(path);
-        foreach (var item in paths)
+#if false
+        Parallel.ForEach(paths, new()
+        {
+            MaxDegreeOfParallelism = 1
+        }, (item) =>
+#else
+        Parallel.ForEach(paths, (item) =>
+#endif
         {
             try
             {
                 var file = Path.GetFullPath(item + "/pack.mcmeta");
                 if (!File.Exists(file))
                 {
-                    continue;
+                    return;
                 }
                 var str = PathHelper.ReadText(file)!;
                 var data = JObject.Parse(str);
@@ -95,7 +119,9 @@ public static class DataPack
             {
                 Logs.Error(string.Format(LanguageHelper.Get("Core.DataPack.Error1"), item), e);
             }
-        }
+        });
+
+        list.Sort(DataPackObjComparer.Instance);
 
         return list;
     }

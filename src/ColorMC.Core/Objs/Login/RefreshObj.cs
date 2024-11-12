@@ -1,15 +1,22 @@
-﻿namespace ColorMC.Core.Objs.Login;
+﻿using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs.Login;
 
 public record RefreshObj
 {
-    public record SelectedProfile
+    public record SelectedProfileObj
     {
-        public string name { get; set; }
-        public string id { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
     }
 
-    public string accessToken { get; set; }
-    public string clientToken { get; set; }
-    public bool requestUser { get; set; }
-    public SelectedProfile selectedProfile { get; set; }
+    [JsonProperty("accessToken")]
+    public string AccessToken { get; set; }
+    [JsonProperty("clientToken")]
+    public string ClientToken { get; set; }
+    //public bool requestUser { get; set; }
+    [JsonProperty("selectedProfile")]
+    public SelectedProfileObj SelectedProfile { get; set; }
 }

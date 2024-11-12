@@ -14,8 +14,8 @@ public partial class ResourcePackModel : SelectItemModel
     public readonly ResourcepackObj Pack;
 
     public string Local => Path.GetFileName(Pack.Local);
-    public string PackFormat => Pack.pack_format.ToString();
-    public Chat Description => GameBinding.StringToChat(Pack.description);
+    public string PackFormat => Pack.PackFormat.ToString();
+    public Chat Description => GameBinding.StringToChat(Pack.Description);
     public string Broken => Pack.Broken ? App.Lang("GameEditWindow.Tab8.Info4") : "";
 
     public Bitmap Pic { get; }

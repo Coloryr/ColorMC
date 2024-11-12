@@ -119,7 +119,7 @@ public static class VersionPath
     /// <summary>
     /// 读取版本信息
     /// </summary>
-    public static async Task ReadVersionsAsync()
+    private static async Task ReadVersionsAsync()
     {
         string file = BaseDir + "/version.json";
         if (File.Exists(file))
@@ -146,15 +146,15 @@ public static class VersionPath
     /// 添加版本信息
     /// </summary>
     /// <param name="obj">游戏数据</param>
-    public static async Task<GameArgObj?> AddGameAsync(VersionObj.Versions obj)
+    public static async Task<GameArgObj?> AddGameAsync(VersionObj.VersionsObj obj)
     {
-        var url = UrlHelper.Download(obj.url, CoreHttpClient.Source);
+        var url = UrlHelper.Download(obj.Url, CoreHttpClient.Source);
         (var obj1, var data) = await GameAPI.GetGame(url);
         if (obj1 == null)
         {
             return null;
         }
-        PathHelper.WriteBytes($"{BaseDir}/{obj.id}.json", data!);
+        PathHelper.WriteBytes($"{BaseDir}/{obj.Id}.json", data!);
         return obj1;
     }
 
@@ -166,7 +166,7 @@ public static class VersionPath
     /// <param name="version">加载器版本</param>
     public static void AddGame(FabricLoaderObj obj, string array, string mc, string version)
     {
-        PathHelper.WriteText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"), array);
+        PathHelper.WriteText(Path.GetFullPath($"{FabricDir}/{obj.Id}.json"), array);
 
         var key = $"{mc}-{version}";
         if (!s_fabricLoaders.TryAdd(key, obj))
@@ -263,7 +263,7 @@ public static class VersionPath
     /// <param name="version">加载器版本</param>
     public static void AddGame(QuiltLoaderObj obj, string data, string mc, string version)
     {
-        PathHelper.WriteText(Path.GetFullPath($"{QuiltDir}/{obj.id}.json"), data);
+        PathHelper.WriteText(Path.GetFullPath($"{QuiltDir}/{obj.Id}.json"), data);
 
         var key = $"{mc}-{version}";
         if (!s_quiltLoaders.TryAdd(key, obj))
@@ -319,7 +319,7 @@ public static class VersionPath
         {
             return null;
         }
-        var data = ver.versions.Where(a => a.id == version).FirstOrDefault();
+        var data = ver.Versions.Where(a => a.Id == version).FirstOrDefault();
         if (data != null)
         {
             var file = $"{BaseDir}/{version}.json";
@@ -330,7 +330,7 @@ public static class VersionPath
             }
             var sha1 = await HashHelper.GenSha1Async(temp);
             temp.Close();
-            if (sha1 != data.sha1)
+            if (sha1 != data.Sha1)
             {
                 return await AddGameAsync(data);
             }

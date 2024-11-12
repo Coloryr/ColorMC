@@ -289,7 +289,7 @@ public partial class GameEditModel
             {
                 Model.Notify(App.Lang("GameEditWindow.Tab1.Info4"));
             }
-            else if (list[0].id.ToString() == FID)
+            else if (list[0].Id.ToString() == FID)
             {
                 Model.Notify(App.Lang("GameEditWindow.Tab1.Info5"));
             }
@@ -315,7 +315,7 @@ public partial class GameEditModel
                 else
                 {
                     Model.Notify(App.Lang("GameEditWindow.Tab1.Info7"));
-                    FID = item.id.ToString();
+                    FID = item.Id.ToString();
                 }
             }
         }
@@ -327,11 +327,11 @@ public partial class GameEditModel
             {
                 Model.Show(App.Lang("GameEditWindow.Tab1.Info3"));
             }
-            else if (list.data.Count == 0)
+            else if (list.Data.Count == 0)
             {
                 Model.Notify(App.Lang("GameEditWindow.Tab1.Info4"));
             }
-            else if (list.data[0].id.ToString() == FID)
+            else if (list.Data[0].Id.ToString() == FID)
             {
                 Model.Notify(App.Lang("GameEditWindow.Tab1.Info5"));
             }
@@ -344,7 +344,7 @@ public partial class GameEditModel
                 }
 
                 Model.Progress(App.Lang("GameEditWindow.Tab1.Info8"));
-                var item = list.data[0];
+                var item = list.Data[0];
                 res = await GameBinding.ModPackUpdate(_obj, item, (size, now) =>
                 {
                     Model.ProgressUpdate((double)now / size);
@@ -357,7 +357,7 @@ public partial class GameEditModel
                 else
                 {
                     Model.Notify(App.Lang("GameEditWindow.Tab1.Info7"));
-                    FID = item.id.ToString();
+                    FID = item.Id.ToString();
                 }
             }
         }
@@ -781,7 +781,7 @@ public partial class GameEditModel
             }
             else
             {
-                var list1 = GameLang.GetLangs(null);
+                var list1 = await GameLang.GetLangsAsync(null);
                 if (list1.TryGetValue(lang, out var name))
                 {
                     LangList.Add(name);

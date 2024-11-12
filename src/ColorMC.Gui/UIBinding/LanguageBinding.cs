@@ -187,11 +187,11 @@ public static class LanguageBinding
     {
         return
         [
-            MSortingObj.Relevance.GetName(),
-            MSortingObj.Downloads.GetName(),
-            MSortingObj.Follows.GetName(),
-            MSortingObj.Newest.GetName(),
-            MSortingObj.Updated.GetName()
+            ModrinthHelper.Relevance.GetName(),
+            ModrinthHelper.Downloads.GetName(),
+            ModrinthHelper.Follows.GetName(),
+            ModrinthHelper.Newest.GetName(),
+            ModrinthHelper.Updated.GetName()
         ];
     }
 

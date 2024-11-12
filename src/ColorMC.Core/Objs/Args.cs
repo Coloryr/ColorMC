@@ -5,13 +5,22 @@ using ColorMC.Core.Objs.Modrinth;
 
 namespace ColorMC.Core.Objs;
 
+/// <summary>
+/// 核心初始化参数
+/// </summary>
 public record CoreInitArg
 {
     /// <summary>
     /// 运行的路径
     /// </summary>
-    public string Local;
+    public required string Local;
+    /// <summary>
+    /// OAuth客户端密钥
+    /// </summary>
     public string? OAuthKey;
+    /// <summary>
+    /// CurseForge客户端密钥
+    /// </summary>
     public string? CurseForgeKey;
 }
 
@@ -188,6 +197,17 @@ public record CopyGameArg
     public ColorMCCore.GameOverwirte? Overwirte;
 }
 
+/// <summary>
+/// 复制游戏文件参数
+/// </summary>
+public record CopyGameFileArg
+{
+    public required string Local;
+    public List<string>? Unselect;
+    public bool Dir;
+    public ColorMCCore.ZipUpdate? State;
+}
+
 public abstract record UnpackGameZipArg
 {
     public string? Name;
@@ -214,7 +234,7 @@ public record InstallZipArg : UnpackGameZipArg
 public record DownloadModrinthArg : UnpackGameZipArg
 {
     public required ModrinthVersionObj Data;
-    public required ModrinthSearchObj.Hit Data1;
+    public required ModrinthSearchObj.HitObj Data1;
 }
 
 /// <summary>
@@ -222,8 +242,8 @@ public record DownloadModrinthArg : UnpackGameZipArg
 /// </summary>
 public record DownloadCurseForgeArg : UnpackGameZipArg
 {
-    public required CurseForgeModObj.Data Data;
-    public required CurseForgeObjList.Data Data1;
+    public required CurseForgeModObj.DataObj Data;
+    public required CurseForgeObjList.DataObj Data1;
 }
 
 /// <summary>
@@ -277,7 +297,7 @@ public record UpdateModPackArg
 public record UpdateCurseForgeModPackArg
 {
     public required GameSettingObj Game;
-    public required CurseForgeModObj.Data Data;
+    public required CurseForgeModObj.DataObj Data;
     public ColorMCCore.PackUpdate Update;
     public ColorMCCore.PackState Update2;
 }

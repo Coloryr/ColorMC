@@ -85,7 +85,7 @@ public static class Launch
                 ? obj.GetNeoForgeObj()!
                 : obj.GetForgeObj()!;
 
-        jvm.AddRange(forge1.arguments.game);
+        jvm.AddRange(forge1.Arguments.Game);
 
         return jvm;
     }
@@ -236,14 +236,14 @@ public static class Launch
     private static List<string> MakeV2JvmArg(this GameSettingObj obj)
     {
         var game = VersionPath.GetVersion(obj.Version)!;
-        if (game.arguments == null)
+        if (game.Arguments == null)
         {
             return V1JvmArg.ToList();
         }
 
         var arg = new List<string>();
         //添加原版参数
-        foreach (object item in game.arguments.jvm)
+        foreach (object item in game.Arguments.jvm)
         {
             if (item is string str)
             {
@@ -262,7 +262,7 @@ public static class Launch
             }
             else if (item is JObject obj1)
             {
-                var obj2 = obj1.ToObject<GameArgObj.Arguments.Jvm>();
+                var obj2 = obj1.ToObject<GameArgObj.ArgumentsObj.Jvm>();
                 if (obj2 == null)
                 {
                     continue;
@@ -289,9 +289,9 @@ public static class Launch
         {
             var forge = obj.Loader == Loaders.NeoForge ?
                 obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-            if (forge.arguments.jvm != null)
+            if (forge.Arguments.Jvm != null)
             {
-                foreach (var item in forge.arguments.jvm)
+                foreach (var item in forge.Arguments.Jvm)
                 {
                     arg.Add(item);
                 }
@@ -300,7 +300,7 @@ public static class Launch
         else if (obj.Loader == Loaders.Fabric)
         {
             var fabric = obj.GetFabricObj()!;
-            foreach (var item in fabric.arguments.jvm)
+            foreach (var item in fabric.Arguments.Jvm)
             {
                 arg.Add(item);
             }
@@ -324,12 +324,12 @@ public static class Launch
         {
             var forge = obj.Loader == Loaders.NeoForge ?
                 obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-            return new(forge.minecraftArguments.Split(' '));
+            return new(forge.MinecraftArguments.Split(' '));
         }
         else if (obj.Loader == Loaders.OptiFine)
         {
             var version = VersionPath.GetVersion(obj.Version)!;
-            return new(version.minecraftArguments.Split(' '))
+            return new(version.MinecraftArguments.Split(' '))
             {
                 "--tweakClass",
                 "optifine.OptiFineTweaker"
@@ -342,7 +342,7 @@ public static class Launch
         else
         {
             var version = VersionPath.GetVersion(obj.Version)!;
-            return new(version.minecraftArguments.Split(' '));
+            return new(version.MinecraftArguments.Split(' '));
         }
     }
 
@@ -354,13 +354,13 @@ public static class Launch
     private static List<string> MakeV2GameArg(this GameSettingObj obj)
     {
         var game = VersionPath.GetVersion(obj.Version)!;
-        if (game.arguments == null)
+        if (game.Arguments == null)
         {
             return obj.MakeV1GameArg();
         }
 
         var arg = new List<string>();
-        foreach (object item in game.arguments.game)
+        foreach (object item in game.Arguments.game)
         {
             if (item is string str)
             {
@@ -394,7 +394,7 @@ public static class Launch
         {
             var forge = obj.Loader == Loaders.NeoForge
                 ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-            foreach (var item in forge.arguments.game)
+            foreach (var item in forge.Arguments.Game)
             {
                 arg.Add(item);
             }
@@ -402,7 +402,7 @@ public static class Launch
         else if (obj.Loader == Loaders.Fabric)
         {
             var fabric = obj.GetFabricObj()!;
-            foreach (var item in fabric.arguments.game)
+            foreach (var item in fabric.Arguments.Game)
             {
                 arg.Add(item);
             }
@@ -410,7 +410,7 @@ public static class Launch
         else if (obj.Loader == Loaders.Quilt)
         {
             var quilt = obj.GetQuiltObj()!;
-            foreach (var item in quilt.arguments.game)
+            foreach (var item in quilt.Arguments.Game)
             {
                 arg.Add(item);
             }
@@ -609,10 +609,10 @@ public static class Launch
 
         //log4j2-xml
         var game = VersionPath.GetVersion(obj.Version)!;
-        if (game.logging != null && ConfigUtils.Config.SafeLog4j)
+        if (game.Logging != null && ConfigUtils.Config.SafeLog4j)
         {
             var obj1 = DownloadItemHelper.BuildLog4jItem(game);
-            jvm.Add(game.logging.client.argument.Replace("${path}", obj1.Local));
+            jvm.Add(game.Logging.Client.Argument.Replace("${path}", obj1.Local));
         }
 
         jvm.Add($"-Dcolormc.dir={ColorMCCore.BaseDir}");
@@ -844,7 +844,7 @@ public static class Launch
         var version = VersionPath.GetVersion(obj.Version)!;
         var assetsPath = AssetsPath.BaseDir;
         var gameDir = InstancesPath.GetGamePath(obj);
-        var assetsIndexName = version.assets ?? "legacy";
+        var assetsIndexName = version.Assets ?? "legacy";
 
         var version_name = obj.Loader switch
         {
@@ -903,7 +903,7 @@ public static class Launch
         }
         else if (obj.Loader == Loaders.Normal)
         {
-            return version.mainClass;
+            return version.MainClass;
         }
         //forgewrapper
         else if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
@@ -915,18 +915,18 @@ public static class Launch
             else
             {
                 var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-                return forge.mainClass;
+                return forge.MainClass;
             }
         }
         else if (obj.Loader == Loaders.Fabric)
         {
             var fabric = obj.GetFabricObj()!;
-            return fabric.mainClass;
+            return fabric.MainClass;
         }
         else if (obj.Loader == Loaders.Quilt)
         {
             var quilt = obj.GetQuiltObj()!;
-            return quilt.mainClass;
+            return quilt.MainClass;
         }
         //optifinewrapper
         else if (obj.Loader == Loaders.OptiFine)
@@ -938,7 +938,7 @@ public static class Launch
             return obj.GetLoaderMainClass();
         }
 
-        return version.mainClass;
+        return version.MainClass;
     }
 
     /// <summary>
@@ -1148,7 +1148,7 @@ public static class Launch
                         var list1 = await JavaHelper.FindJava();
                         list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
                     }
-                    var jv = game.javaVersion.majorVersion;
+                    var jv = game.JavaVersion.majorVersion;
                     jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
                     if (jvm == null)
                     {
@@ -1488,7 +1488,7 @@ public static class Launch
                 var list1 = await JavaHelper.FindJava();
                 list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
             }
-            var jv = game.javaVersion.majorVersion;
+            var jv = game.JavaVersion.majorVersion;
             jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
             if (jvm == null)
             {

@@ -51,7 +51,7 @@ public static class AssetsPath
     /// <param name="game">游戏数据</param>
     public static void AddIndex(this GameArgObj game, string data)
     {
-        string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.assets}.json");
+        string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.Assets}.json");
         PathHelper.WriteText(file, data);
     }
 
@@ -62,18 +62,18 @@ public static class AssetsPath
     /// <returns>资源数据</returns>
     public static AssetsObj? GetIndex(this GameArgObj game)
     {
-        if (s_assets.TryGetValue(game.assets, out var temp))
+        if (s_assets.TryGetValue(game.Assets, out var temp))
         {
             return temp;
         }
-        string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.assets}.json");
+        string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.Assets}.json");
         if (!File.Exists(file))
         {
             return null;
         }
 
         var obj = JsonConvert.DeserializeObject<AssetsObj>(PathHelper.ReadText(file)!)!;
-        s_assets.Add(game.assets, obj);
+        s_assets.Add(game.Assets, obj);
         return obj;
     }
 
