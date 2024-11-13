@@ -15,16 +15,6 @@ public partial class DownloadItemModel(int index) : ObservableObject
     [ObservableProperty]
     private string _name;
     /// <summary>
-    /// 总大小
-    /// </summary>
-    [ObservableProperty]
-    private long _allSize;
-    /// <summary>
-    /// 已下载大小
-    /// </summary>
-    [ObservableProperty]
-    private long _nowSize;
-    /// <summary>
     /// 当前状态
     /// </summary>
     [ObservableProperty]
@@ -36,27 +26,47 @@ public partial class DownloadItemModel(int index) : ObservableObject
     private int _errorTime;
 
     [ObservableProperty]
-    private double _nowProgress;
-
-    [ObservableProperty]
     private bool _isNotSize;
 
-    [ObservableProperty]
-    private string _nowTemp;
+    public double NowProgress { get; private set; }
+    public string NowTemp { get; private set; }
 
-    partial void OnNowSizeChanged(long value)
+    private long _nowSize;
+
+    /// <summary>
+    /// 总大小
+    /// </summary>
+    public long AllSize { get; set; }
+    /// <summary>
+    /// 已下载大小
+    /// </summary>
+    public long NowSize 
     {
-        if (AllSize == 0)
+        get
         {
-            IsNotSize = true;
-            NowProgress = 0.0f;
-            NowTemp = $"{(double)NowSize / 1000 / 1000:0.##} MB";
+            return _nowSize;
         }
-        else
+        set
         {
-            NowProgress = (double)NowSize / (double)AllSize * 100;
-            NowTemp = $"{(double)NowSize / 1000 / 1000:0.##} / {AllSize / 1000 / 1000:0.##} MB";
+            _nowSize = value;
+            if (AllSize == 0)
+            {
+                IsNotSize = true;
+                NowProgress = 0.0f;
+                NowTemp = $"{(double)value / 1000 / 1000:0.##} MB";
+            }
+            else
+            {
+                NowProgress = value / (double)AllSize * 100;
+                NowTemp = $"{(double)value / 1000 / 1000:0.##} / {AllSize / 1000 / 1000:0.##} MB";
+            }
         }
+    }
+
+    public void Update()
+    {
+        OnPropertyChanged(nameof(NowTemp));
+        OnPropertyChanged(nameof(NowProgress));
     }
 
     public void Clear()

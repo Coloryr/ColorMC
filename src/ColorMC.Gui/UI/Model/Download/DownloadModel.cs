@@ -36,6 +36,8 @@ public partial class DownloadModel : TopModel
 
     private readonly string _useName;
 
+    private bool _needRun;
+
     public DownloadModel(BaseModel model) : base(model)
     {
         _useName = ToString() ?? "DownloadModel";
@@ -146,6 +148,7 @@ public partial class DownloadModel : TopModel
 
     public override void Close()
     {
+        _needRun = false;
         _timer.Dispose();
         Model.HeadBackEnable = true;
         Model.RemoveChoiseData(_useName);
@@ -189,11 +192,24 @@ public partial class DownloadModel : TopModel
 
     public DownloadArg Start()
     {
+        _needRun = true;
+        DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(50));
+
         return new()
         {
             Update = DownloadUpdate,
             UpdateTask = DownloadTaskUpdate,
             UpdateItem = DownloadItemUpdate
         };
+    }
+
+    private bool Run()
+    {
+        foreach (var item in DisplayList)
+        {
+            item.Update();
+        }
+
+        return _needRun;
     }
 }
