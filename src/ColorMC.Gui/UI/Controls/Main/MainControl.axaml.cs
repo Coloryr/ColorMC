@@ -40,7 +40,13 @@ public partial class MainControl : BaseUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         SizeChanged += MainControl_SizeChanged;
+        HelloText.PointerPressed += HelloText_PointerPressed;
         BaseBinding.LoadDone += LoadDone;
+    }
+
+    private void HelloText_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        (DataContext as MainModel)?.HelloClick();
     }
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)

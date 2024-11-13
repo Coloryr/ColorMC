@@ -40,7 +40,8 @@
                         <Decorator
                             Name="TopRight"
                             Width="200"
-                            DockPanel.Dock="Right">
+                            DockPanel.Dock="Right"
+                            IsVisible="{Binding PlayerDisplay}">
                             <views2:MainUserControl Name="HeadButton" />
                         </Decorator>
                         <Panel
@@ -48,52 +49,64 @@
                             Height="60"
                             Margin="0,0,10,0"
                             DockPanel.Dock="Top">
-                            <StackPanel
+                            <Panel.Styles>
+                                <Style Selector="Button">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                </Style>
+                            </Panel.Styles>
+                            <Panel
                                 Name="Buttons"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                                <StackPanel.Styles>
-                                    <Style Selector="Button">
-                                        <Setter Property="Background" Value="Transparent" />
-                                        <Setter Property="BorderThickness" Value="0" />
-                                    </Style>
-                                </StackPanel.Styles>
-                                <Button
-                                    Width="35"
-                                    Height="35"
-                                    Command="{Binding OpenGuide}"
-                                    CornerRadius="5"
-                                    ToolTip.Tip="{setting:Localize ToolTip.Text70}"
-                                    ToolTip.VerticalOffset="-30">
-                                    <svg:SvgControl Path="/Resource/Icon/book.svg" />
-                                </Button>
-                                <Button
-                                    Width="35"
-                                    Height="35"
-                                    Command="{Binding ShowCount}"
-                                    CornerRadius="5"
-                                    IsVisible="{Binding !IsPhone}"
-                                    ToolTip.Tip="{setting:Localize ToolTip.Text92}"
-                                    ToolTip.VerticalOffset="-30">
-                                    <svg:SvgControl Path="/Resource/Icon/count.svg" />
-                                </Button>
-                                <Button
-                                    Width="35"
-                                    Height="35"
-                                    Command="{Binding ShowSetting}"
-                                    CornerRadius="5"
-                                    ToolTip.Tip="{setting:Localize ToolTip.Text13}"
-                                    ToolTip.VerticalOffset="-30">
-                                    <svg:SvgControl Path="/Resource/Icon/setting.svg" />
-                                </Button>
-                            </StackPanel>
+                                VerticalAlignment="Bottom">
+                                <StackPanel IsVisible="{Binding !MenuDisplay}" Orientation="Horizontal">
+                                    <Button
+                                        Width="35"
+                                        Height="35"
+                                        Command="{Binding ReloadNews}"
+                                        CornerRadius="5"
+                                        IsVisible="{Binding !IsLoadNews}">
+                                        <svg:SvgControl Path="/Resource/Icon/reload.svg" />
+                                    </Button>
+                                </StackPanel>
+                                <StackPanel IsVisible="{Binding MenuDisplay}" Orientation="Horizontal">
+                                    <Button
+                                        Width="35"
+                                        Height="35"
+                                        Command="{Binding OpenGuide}"
+                                        CornerRadius="5"
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text70}"
+                                        ToolTip.VerticalOffset="-30">
+                                        <svg:SvgControl Path="/Resource/Icon/book.svg" />
+                                    </Button>
+                                    <Button
+                                        Width="35"
+                                        Height="35"
+                                        Command="{Binding ShowCount}"
+                                        CornerRadius="5"
+                                        IsVisible="{Binding !IsPhone}"
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text92}"
+                                        ToolTip.VerticalOffset="-30">
+                                        <svg:SvgControl Path="/Resource/Icon/count.svg" />
+                                    </Button>
+                                    <Button
+                                        Width="35"
+                                        Height="35"
+                                        Command="{Binding ShowSetting}"
+                                        CornerRadius="5"
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text13}"
+                                        ToolTip.VerticalOffset="-30">
+                                        <svg:SvgControl Path="/Resource/Icon/setting.svg" />
+                                    </Button>
+                                </StackPanel>
+                            </Panel>
                             <Panel RenderOptions.TextRenderingMode="Antialias">
                                 <TextBlock
                                     VerticalAlignment="Top"
                                     FontSize="24"
                                     Text="{setting:Localize MainWindow.Text23}" />
                                 <TextBlock
+                                    Name="HelloText"
                                     VerticalAlignment="Bottom"
                                     FontSize="16"
                                     Text="{Binding HelloText}" />

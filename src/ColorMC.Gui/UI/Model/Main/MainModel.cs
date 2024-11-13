@@ -51,6 +51,10 @@ public partial class MainModel : TopModel, IMainTop
     private bool _newsDisplay;
     [ObservableProperty]
     private bool _backDisplay;
+    [ObservableProperty]
+    private bool _playerDisplay = true;
+    [ObservableProperty]
+    private bool _menuDisplay = true;
 
     [ObservableProperty]
     private bool _render = true;
@@ -76,6 +80,7 @@ public partial class MainModel : TopModel, IMainTop
     private string _updateStr;
 
     private bool _isGetNewInfo;
+    private int _helloClick;
 
     public MainModel(BaseModel model) : base(model)
     {
@@ -203,11 +208,26 @@ public partial class MainModel : TopModel, IMainTop
     public void OpenNews()
     {
         NewsDisplay = true;
+        PlayerDisplay = false;
+        MenuDisplay = false;
         SideDisplay = false;
         MotdDisplay = false;
         HelloText = App.Lang("MainWindow.Text20");
         Model.PushBack(NewBack);
         OnPropertyChanged(SwitchView);
+    }
+
+    public void HelloClick()
+    {
+        _helloClick++;
+        if (_helloClick == 25)
+        {
+            HelloText = "锟斤拷锟斤拷烫烫烫烫烫烫烫烫烫";
+        }
+        else
+        {
+            HelloText = App.Lang("Hello.Text1");
+        }
     }
 
     private void ShowHello()
@@ -218,6 +238,8 @@ public partial class MainModel : TopModel, IMainTop
     private void NewBack()
     {
         NewsDisplay = false;
+        PlayerDisplay = true;
+        MenuDisplay = true;
         if (!MinMode)
         {
             SideDisplay = true;
