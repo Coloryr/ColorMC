@@ -482,7 +482,7 @@ public partial class MainModel
         model.IsStar = !model.IsStar;
         if (model.IsStar)
         {
-            GameManager.AddStar(model.Obj.UUID);
+            GameManager.AddStar(model.Obj);
             foreach (var group in GameGroups)
             {
                 if (group.Star(model.Obj.UUID))
@@ -493,7 +493,7 @@ public partial class MainModel
         }
         else
         {
-            GameManager.RemoveStar(model.Obj.UUID);
+            GameManager.RemoveStar(model.Obj);
             foreach (var group in GameGroups)
             {
                 if (group.UnStar(model.Obj.UUID))

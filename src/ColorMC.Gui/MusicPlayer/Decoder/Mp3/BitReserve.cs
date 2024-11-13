@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.Player.Decoder.Mp3;
+﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public sealed class BitReserve
 {
@@ -6,67 +6,68 @@ public sealed class BitReserve
     /// Size of the internal buffer to store the reserved bits.
     /// Must be a power of 2. And x8, as each bit is stored as a single entry.
     /// </summary>
-    private const int BUFSIZE = 4096 * 8;
+    private const int s_bufsize = 4096 * 8;
 
-    /**
-     * Mask that can be used to quickly implement the
-     * modulus operation on BUFSIZE.
-     */
-    private const int BUFSIZE_MASK = BUFSIZE - 1;
-    private readonly int[] _buf = new int[BUFSIZE];
+    /// <summary>
+    /// Mask that can be used to quickly implement the
+    /// modulus operation on BUFSIZE.
+    /// </summary>
+    private const int _bufsize_mask = s_bufsize - 1;
+
+    private readonly int[] _buf = new int[s_bufsize];
     private int _offset, _bufByteIdx;
 
     public int Hsstell { get; private set; }
 
-    /**
-     * Read a number bits from the bit stream.
-     *
-     * @param N the number of
-     */
-    public int Hgetbits(int N)
+    /// <summary>
+    /// Read a number bits from the bit stream.
+    /// </summary>
+    /// <param name="n">the number of</param>
+    /// <returns></returns>
+    public int Hgetbits(int n)
     {
-        Hsstell += N;
+        Hsstell += n;
 
         int val = 0;
 
         int pos = _bufByteIdx;
-        if (pos + N < BUFSIZE)
+        if (pos + n < s_bufsize)
         {
-            while (N-- > 0)
+            while (n-- > 0)
             {
                 val <<= 1;
-                val |= ((_buf[pos++] != 0) ? 1 : 0);
+                val |= _buf[pos++] != 0 ? 1 : 0;
             }
         }
         else
         {
-            while (N-- > 0)
+            while (n-- > 0)
             {
                 val <<= 1;
-                val |= ((_buf[pos] != 0) ? 1 : 0);
-                pos = (pos + 1) & BUFSIZE_MASK;
+                val |= _buf[pos] != 0 ? 1 : 0;
+                pos = pos + 1 & _bufsize_mask;
             }
         }
         _bufByteIdx = pos;
         return val;
     }
 
-    /**
-     * Returns next bit from reserve.
-     *
-     * @returns 0 if next bit is reset, or 1 if next bit is set.
-     */
+    /// <summary>
+    /// Returns next bit from reserve.
+    /// </summary>
+    /// <returns>0 if next bit is reset, or 1 if next bit is set.</returns>
     public int Hget1bit()
     {
         Hsstell++;
         int val = _buf[_bufByteIdx];
-        _bufByteIdx = (_bufByteIdx + 1) & BUFSIZE_MASK;
+        _bufByteIdx = _bufByteIdx + 1 & _bufsize_mask;
         return val;
     }
 
-    /**
-     * Write 8 bits into the bit stream.
-     */
+    /// <summary>
+    /// Write 8 bits into the bit stream.
+    /// </summary>
+    /// <param name="val"></param>
     public void Hputbuf(int val)
     {
         int ofs = _offset;
@@ -79,33 +80,35 @@ public sealed class BitReserve
         _buf[ofs++] = val & 0x02;
         _buf[ofs++] = val & 0x01;
 
-        if (ofs == BUFSIZE)
+        if (ofs == s_bufsize)
             _offset = 0;
         else
             _offset = ofs;
 
     }
 
-    /**
-     * Rewind N bits in Stream.
-     */
-    public void RewindNbits(int N)
+    /// <summary>
+    /// Rewind N bits in Stream.
+    /// </summary>
+    /// <param name="n"></param>
+    public void RewindNbits(int n)
     {
-        Hsstell -= N;
-        _bufByteIdx -= N;
+        Hsstell -= n;
+        _bufByteIdx -= n;
         if (_bufByteIdx < 0)
-            _bufByteIdx += BUFSIZE;
+            _bufByteIdx += s_bufsize;
     }
 
-    /**
-     * Rewind N bytes in Stream.
-     */
-    public void RewindNbytes(int N)
+    /// <summary>
+    /// Rewind N bytes in Stream.
+    /// </summary>
+    /// <param name="n"></param>
+    public void RewindNbytes(int n)
     {
-        int bits = (N << 3);
+        int bits = n << 3;
         Hsstell -= bits;
         _bufByteIdx -= bits;
         if (_bufByteIdx < 0)
-            _bufByteIdx += BUFSIZE;
+            _bufByteIdx += s_bufsize;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ColorMC.Gui.Player.Decoder.Mp3;
+namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public sealed class Equalizer
 {
@@ -12,14 +12,7 @@ public sealed class Equalizer
 
     private const int BANDS = 32;
 
-    private readonly float[] settings = new float[BANDS];
-
-    /**
-     * Creates a new <code>Equalizer</code> instance.
-     */
-    public Equalizer()
-    {
-    }
+    private readonly float[] _settings = new float[BANDS];
 
     //	private Equalizer(float b1, float b2, float b3, float b4, float b5,
     //					 float b6, float b7, float b8, float b9, float b10, float b11,
@@ -33,7 +26,7 @@ public sealed class Equalizer
 
         for (int i = 0; i < max; i++)
         {
-            settings[i] = Limit(eq[i]);
+            _settings[i] = Limit(eq[i]);
         }
     }
 
@@ -43,7 +36,7 @@ public sealed class Equalizer
 
         for (int i = 0; i < BANDS; i++)
         {
-            settings[i] = Limit(eq.GetBand(i));
+            _settings[i] = Limit(eq.GetBand(i));
         }
     }
 
@@ -55,7 +48,7 @@ public sealed class Equalizer
     {
         if (eq != this)
         {
-            SetFrom(eq.settings);
+            SetFrom(eq._settings);
         }
     }
 
@@ -67,19 +60,17 @@ public sealed class Equalizer
     {
         for (int i = 0; i < BANDS; i++)
         {
-            settings[i] = 0.0f;
+            _settings[i] = 0.0f;
         }
     }
 
-
-    private float Limit(float eq)
+    private static float Limit(float eq)
     {
         if (eq == BAND_NOT_PRESENT)
             return eq;
         if (eq > 1.0f)
             return 1.0f;
         return Math.Max(eq, -1.0f);
-
     }
 
     abstract public class EQFunction
@@ -92,7 +83,7 @@ public sealed class Equalizer
          * @return the setting of the specified band. This is a value between
          * -1 and +1.
          */
-        public float GetBand(int band)
+        public virtual float GetBand(int band)
         {
             return 0.0f;
         }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text;
 
-namespace ColorMC.Gui.Player.Decoder.Mp3;
+namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public sealed class Header
 {
-    public static readonly int[,] frequencies =
+    public static readonly int[,] Frequencies =
         {{22050, 24000, 16000, 1},
          {44100, 48000, 32000, 1},
          {11025, 12000, 8000, 1}};    // SZD: MPEG25
@@ -94,19 +94,16 @@ public sealed class Header
                     "forbidden"}},
     };
     // VBR support added by E.B
-    private readonly double[] h_vbr_time_per_frame = { -1, 384, 1152, 1152 };
+    private readonly double[] _h_vbr_time_per_frame = [-1, 384, 1152, 1152];
 
-    public short checksum;
-    public int framesize;
-
-    private int h_protection_bit,
-            h_padding_bit;
-
-    private bool h_vbr;
-    public int VbrFrames { get; set; }
-    private int h_vbr_bytes;
-    private byte syncmode = Bitstream.INITIAL_SYNC;
-    private Crc16 crc;
+    private short _checksum;
+    private int _framesize;
+    private int _vbrFrames;
+    private int _h_protection_bit, _h_padding_bit;
+    private bool _h_vbr;
+    private int _h_vbr_bytes;
+    private byte _syncmode = Bitstream.INITIAL_SYNC;
+    private Crc16 _crc;
 
     public int BitrateIndex { get; private set; }
     public int NumberOfSubbands { get; private set; }
@@ -151,25 +148,25 @@ public sealed class Header
         bool sync = false;
         do
         {
-            headerstring = stream.SyncHeader(syncmode);
-            if (syncmode == Bitstream.INITIAL_SYNC)
+            headerstring = stream.SyncHeader(_syncmode);
+            if (_syncmode == Bitstream.INITIAL_SYNC)
             {
-                Version = ((headerstring >>> 19) & 1);
+                Version = (headerstring >>> 19) & 1;
                 if (((headerstring >>> 20) & 1) == 0) // SZD: MPEG2.5 detection
                     if (Version == MPEG2_LSF)
                         Version = MPEG25_LSF;
                     else
                         throw new BitstreamException(BitstreamErrors.UNKNOWN_ERROR, null);
-                if ((SampleFrequency = ((headerstring >>> 10) & 3)) == 3)
+                if ((SampleFrequency = (headerstring >>> 10) & 3) == 3)
                 {
                     throw new BitstreamException(BitstreamErrors.UNKNOWN_ERROR, null);
                 }
             }
             Layer = 4 - (headerstring >>> 17) & 3;
-            h_protection_bit = (headerstring >>> 16) & 1;
+            _h_protection_bit = (headerstring >>> 16) & 1;
             BitrateIndex = (headerstring >>> 12) & 0xF;
-            h_padding_bit = (headerstring >>> 9) & 1;
-            Mode = ((headerstring >>> 6) & 3);
+            _h_padding_bit = (headerstring >>> 9) & 1;
+            Mode = (headerstring >>> 6) & 3;
             ModeExtension = (headerstring >>> 4) & 3;
             if (Mode == JOINT_STEREO)
                 IntensityStereoBound = (ModeExtension << 2) + 4;
@@ -187,12 +184,12 @@ public sealed class Header
                         channel_bitrate = 1;
                     else
                         channel_bitrate -= 4;
-                if ((channel_bitrate == 1) || (channel_bitrate == 2))
+                if (channel_bitrate == 1 || channel_bitrate == 2)
                     if (SampleFrequency == THIRTYTWO)
                         NumberOfSubbands = 12;
                     else
                         NumberOfSubbands = 8;
-                else if ((SampleFrequency == FOURTYEIGHT) || ((channel_bitrate >= 3) && (channel_bitrate <= 5)))
+                else if (SampleFrequency == FOURTYEIGHT || channel_bitrate >= 3 && channel_bitrate <= 5)
                     NumberOfSubbands = 27;
                 else
                     NumberOfSubbands = 30;
@@ -202,22 +199,22 @@ public sealed class Header
             // calculate framesize and nSlots
             CalculateFramesize();
             // read framedata:
-            int framesizeloaded = stream.ReadFrameData(framesize);
+            int framesizeloaded = stream.ReadFrameData(_framesize);
             if (framesizeloaded == 0)
             {
                 throw new BitstreamException(BitstreamErrors.STREAM_EOF, null);
             }
-            if ((framesize >= 0) && (framesizeloaded != framesize))
+            if (_framesize >= 0 && framesizeloaded != _framesize)
             {
                 // Data loaded does not match to expected framesize,
                 // it might be an ID3v1 TAG. (Fix 11/17/04).
                 throw new BitstreamException(BitstreamErrors.INVALIDFRAME, null);
             }
-            if (stream.IsSyncCurrentPosition(syncmode))
+            if (stream.IsSyncCurrentPosition(_syncmode))
             {
-                if (syncmode == Bitstream.INITIAL_SYNC)
+                if (_syncmode == Bitstream.INITIAL_SYNC)
                 {
-                    syncmode = Bitstream.STRICT_SYNC;
+                    _syncmode = Bitstream.STRICT_SYNC;
                     stream.SetSyncword((int)(headerstring & 0xFFF80CC0));
                 }
                 sync = true;
@@ -229,13 +226,13 @@ public sealed class Header
         }
         while (!sync);
         stream.ParseFrame();
-        if (h_protection_bit == 0)
+        if (_h_protection_bit == 0)
         {
             // frame contains a crc checksum
-            checksum = (short)stream.GetBits(16);
-            crc ??= new Crc16();
-            crc.AddBits(headerstring, 16);
-            crcp[0] = crc;
+            _checksum = (short)stream.GetBits(16);
+            _crc ??= new Crc16();
+            _crc.AddBits(headerstring, 16);
+            crcp[0] = _crc;
         }
         else
             crcp[0] = null;
@@ -272,9 +269,9 @@ public sealed class Header
             if (xing == Encoding.UTF8.GetString(tmp))
             {
                 //Yes.
-                h_vbr = true;
-                VbrFrames = -1;
-                h_vbr_bytes = -1;
+                _h_vbr = true;
+                _vbrFrames = -1;
+                _h_vbr_bytes = -1;
                 h_vbr_toc = new byte[100];
 
                 int length = 4;
@@ -286,24 +283,24 @@ public sealed class Header
                 if ((flags[3] & 1) != 0)
                 {
                     Array.Copy(firstframe, offset + length, tmp, 0, tmp.Length);
-                    VbrFrames = (int)((tmp[0] << 24) & 0xFF000000) | ((tmp[1] << 16) & 0x00FF0000) | ((tmp[2] << 8) & 0x0000FF00) | ((tmp[3]) & 0x000000FF);
+                    _vbrFrames = (int)(tmp[0] << 24 & 0xFF000000) | tmp[1] << 16 & 0x00FF0000 | tmp[2] << 8 & 0x0000FF00 | tmp[3] & 0x000000FF;
                     length += 4;
                 }
                 // Read size (if available).
-                if ((flags[3] & (1 << 1)) != 0)
+                if ((flags[3] & 1 << 1) != 0)
                 {
                     Array.Copy(firstframe, offset + length, tmp, 0, tmp.Length);
-                    h_vbr_bytes = (int)((tmp[0] << 24) & 0xFF000000) | ((tmp[1] << 16) & 0x00FF0000) | ((tmp[2] << 8) & 0x0000FF00) | ((tmp[3]) & 0x000000FF);
+                    _h_vbr_bytes = (int)(tmp[0] << 24 & 0xFF000000) | tmp[1] << 16 & 0x00FF0000 | tmp[2] << 8 & 0x0000FF00 | tmp[3] & 0x000000FF;
                     length += 4;
                 }
                 // Read TOC (if available).
-                if ((flags[3] & (byte)(1 << 2)) != 0)
+                if ((flags[3] & 1 << 2) != 0)
                 {
                     Array.Copy(firstframe, offset + length, h_vbr_toc, 0, h_vbr_toc.Length);
                     length += h_vbr_toc.Length;
                 }
                 // Read scale (if available).
-                if ((flags[3] & (byte)(1 << 3)) != 0)
+                if ((flags[3] & 1 << 3) != 0)
                 {
                     Array.Copy(firstframe, offset + length, tmp, 0, tmp.Length);
                 }
@@ -324,17 +321,17 @@ public sealed class Header
             if (vbri == Encoding.UTF8.GetString(tmp))
             {
                 //Yes.
-                h_vbr = true;
-                VbrFrames = -1;
-                h_vbr_bytes = -1;
+                _h_vbr = true;
+                _vbrFrames = -1;
+                _h_vbr_bytes = -1;
                 // Bytes.
                 int length = 4 + 6;
                 Array.Copy(firstframe, offset + length, tmp, 0, tmp.Length);
-                h_vbr_bytes = (int)((tmp[0] << 24) & 0xFF000000) | ((tmp[1] << 16) & 0x00FF0000) | ((tmp[2] << 8) & 0x0000FF00) | ((tmp[3]) & 0x000000FF);
+                _h_vbr_bytes = (int)(tmp[0] << 24 & 0xFF000000) | tmp[1] << 16 & 0x00FF0000 | tmp[2] << 8 & 0x0000FF00 | tmp[3] & 0x000000FF;
                 length += 4;
                 // Frames.
                 Array.Copy(firstframe, offset + length, tmp, 0, tmp.Length);
-                VbrFrames = (int)((tmp[0] << 24) & 0xFF000000) | ((tmp[1] << 16) & 0x00FF0000) | ((tmp[2] << 8) & 0x0000FF00) | ((tmp[3]) & 0x000000FF);
+                _vbrFrames = (int)(tmp[0] << 24 & 0xFF000000) | tmp[1] << 16 & 0x00FF0000 | tmp[2] << 8 & 0x0000FF00 | tmp[3] & 0x000000FF;
             }
         }
         catch (IndexOutOfRangeException e)
@@ -348,7 +345,7 @@ public sealed class Header
      */
     public int Frequency()
     {
-        return frequencies[Version, SampleFrequency];
+        return Frequencies[Version, SampleFrequency];
     }
 
     /**
@@ -356,7 +353,7 @@ public sealed class Header
      */
     public bool Checksums()
     {
-        return h_protection_bit == 0;
+        return _h_protection_bit == 0;
     }
 
     // Seeking and layer III stuff
@@ -367,7 +364,7 @@ public sealed class Header
      */
     public bool ChecksumOK()
     {
-        return checksum == crc.Checksum();
+        return _checksum == _crc.Checksum();
     }
 
     /**
@@ -379,31 +376,31 @@ public sealed class Header
 
         if (Layer == 1)
         {
-            framesize = (12 * bitrates[Version, 0, BitrateIndex]) /
-                    frequencies[Version, SampleFrequency];
-            if (h_padding_bit != 0) framesize++;
-            framesize <<= 2;        // one slot is 4 bytes long
+            _framesize = 12 * bitrates[Version, 0, BitrateIndex] /
+                    Frequencies[Version, SampleFrequency];
+            if (_h_padding_bit != 0) _framesize++;
+            _framesize <<= 2;        // one slot is 4 bytes long
             Slots = 0;
         }
         else
         {
-            framesize = (144 * bitrates[Version, Layer - 1, BitrateIndex]) /
-                    frequencies[Version, SampleFrequency];
-            if (Version == MPEG2_LSF || Version == MPEG25_LSF) framesize >>= 1;    // SZD
-            if (h_padding_bit != 0) framesize++;
+            _framesize = 144 * bitrates[Version, Layer - 1, BitrateIndex] /
+                    Frequencies[Version, SampleFrequency];
+            if (Version == MPEG2_LSF || Version == MPEG25_LSF) _framesize >>= 1;    // SZD
+            if (_h_padding_bit != 0) _framesize++;
             // Layer III slots
             if (Layer == 3)
             {
                 if (Version == MPEG1)
                 {
-                    Slots = framesize - ((Mode == SINGLE_CHANNEL) ? 17 : 32) // side info size
-                            - ((h_protection_bit != 0) ? 0 : 2)               // CRC size
+                    Slots = _framesize - (Mode == SINGLE_CHANNEL ? 17 : 32) // side info size
+                            - (_h_protection_bit != 0 ? 0 : 2)               // CRC size
                             - 4;                                             // header size
                 }
                 else
                 {  // MPEG-2 LSF, SZD: MPEG-2.5 LSF
-                    Slots = framesize - ((Mode == SINGLE_CHANNEL) ? 9 : 17) // side info size
-                            - ((h_protection_bit != 0) ? 0 : 2)               // CRC size
+                    Slots = _framesize - (Mode == SINGLE_CHANNEL ? 9 : 17) // side info size
+                            - (_h_protection_bit != 0 ? 0 : 2)               // CRC size
                             - 4;                                             // header size
                 }
             }
@@ -412,7 +409,7 @@ public sealed class Header
                 Slots = 0;
             }
         }
-        framesize -= 4;             // subtract header size
+        _framesize -= 4;             // subtract header size
     }
 
     /**
@@ -422,11 +419,11 @@ public sealed class Header
      */
     public float MsPerFrame() // E.B
     {
-        if (h_vbr)
+        if (_h_vbr)
         {
-            double tpf = h_vbr_time_per_frame[Layer] / Frequency();
-            if ((Version == MPEG2_LSF) || (Version == MPEG25_LSF)) tpf /= 2;
-            return ((float)(tpf * 1000));
+            double tpf = _h_vbr_time_per_frame[Layer] / Frequency();
+            if (Version == MPEG2_LSF || Version == MPEG25_LSF) tpf /= 2;
+            return (float)(tpf * 1000);
         }
         else
         {
@@ -460,7 +457,7 @@ public sealed class Header
      */
     public string BitrateString()
     {
-        if (h_vbr)
+        if (_h_vbr)
         {
             return Bitrate() / 1000 + " kb/s";
         }
@@ -474,9 +471,9 @@ public sealed class Header
      */
     public int Bitrate()
     {
-        if (h_vbr)
+        if (_h_vbr)
         {
-            return ((int)((h_vbr_bytes * 8) / (MsPerFrame() * VbrFrames))) * 1000;
+            return (int)(_h_vbr_bytes * 8 / (MsPerFrame() * _vbrFrames)) * 1000;
         }
         else return bitrates[Version, Layer - 1, BitrateIndex];
     }

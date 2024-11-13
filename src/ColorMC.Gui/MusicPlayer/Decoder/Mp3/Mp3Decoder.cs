@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ColorMC.Gui.Player.Decoder.Mp3;
+namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public class Mp3Decoder : IDisposable
 {

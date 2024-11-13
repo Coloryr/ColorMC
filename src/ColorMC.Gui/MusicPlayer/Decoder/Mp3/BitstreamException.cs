@@ -1,19 +1,14 @@
 ﻿using System;
 
-namespace ColorMC.Gui.Player.Decoder.Mp3;
+namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
-public class BitstreamException : JavaLayerException
+public class BitstreamException(string msg, Exception? t) : Exception(msg, t)
 {
-    private int Errorcode = BitstreamErrors.UNKNOWN_ERROR;
-
-    public BitstreamException(string msg, Exception? t) : base(msg, t)
-    {
-
-    }
+    private readonly int _errorcode = BitstreamErrors.UNKNOWN_ERROR;
 
     public BitstreamException(int errorcode, Exception? t) : this(GetErrorString(errorcode), t)
     {
-        Errorcode = errorcode;
+        _errorcode = errorcode;
     }
 
     static public string GetErrorString(int errorcode)
@@ -26,6 +21,6 @@ public class BitstreamException : JavaLayerException
 
     public int GetErrorCode()
     {
-        return Errorcode;
+        return _errorcode;
     }
 }

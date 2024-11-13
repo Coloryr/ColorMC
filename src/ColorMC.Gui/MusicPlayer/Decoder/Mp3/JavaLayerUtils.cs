@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace ColorMC.Gui.Player.Decoder.Mp3;
+namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public static class JavaLayerUtils
 {

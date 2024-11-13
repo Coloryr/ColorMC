@@ -1,20 +1,15 @@
 ﻿using System;
 
-namespace ColorMC.Gui.Player.Decoder.Mp3;
+namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
-public class DecoderException : JavaLayerException
+public class DecoderException(string msg, Exception? t) : Exception(msg, t)
 {
-    public DecoderException(string msg, Exception? t) : base(msg, t)
+    public DecoderException(int errorcode, Exception? t) : this(GetErrorString(errorcode), t)
     {
 
     }
 
-    public DecoderException(int errorcode, Exception? t) : this(getErrorString(errorcode), t)
-    {
-
-    }
-
-    static public string getErrorString(int errorcode)
+    public static string GetErrorString(int errorcode)
     {
         // REVIEW: use resource file to map error codes
         // to locale-sensitive strings.

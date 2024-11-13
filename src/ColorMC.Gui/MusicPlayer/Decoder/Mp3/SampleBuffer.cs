@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ColorMC.Gui.Player.Decoder.Mp3;
+namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public class SampleBuffer : Obuffer
 {
@@ -8,9 +8,6 @@ public class SampleBuffer : Obuffer
     private readonly int[] bufferp;
     private readonly int channels;
 
-    /**
-     * Constructor
-     */
     public SampleBuffer(int number_of_channels)
     {
         Buffer = new short[OBUFFERSIZE];
@@ -27,9 +24,11 @@ public class SampleBuffer : Obuffer
         return bufferp[0];
     }
 
-    /**
-     * Takes a 16 Bit PCM sample.
-     */
+    /// <summary>
+    /// Takes a 16 Bit PCM sample.
+    /// </summary>
+    /// <param name="channel"></param>
+    /// <param name="value"></param>
     public override void Append(int channel, short value)
     {
         Buffer[bufferp[channel]] = value;
@@ -46,7 +45,7 @@ public class SampleBuffer : Obuffer
         {
             fs = f[i++];
             fs = fs > 32767.0f ? 32767.0f
-                    : (Math.Max(fs, -32767.0f));
+                    : Math.Max(fs, -32767.0f);
 
             s = (short)fs;
             Buffer[pos] = s;
@@ -56,13 +55,9 @@ public class SampleBuffer : Obuffer
         bufferp[channel] = pos;
     }
 
-    /**
-     *
-     */
     public override void ClearBuffer()
     {
         for (int i = 0; i < channels; ++i)
             bufferp[i] = (short)i;
     }
-
 }

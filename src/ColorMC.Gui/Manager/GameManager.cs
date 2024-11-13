@@ -23,75 +23,24 @@ public static class GameManager
     /// </summary>
     public static readonly Dictionary<string, GameLog> GameLogs = [];
 
-    /// <summary>
-    /// 标星实例
-    /// </summary>
-    public static readonly List<string> StarGames = [];
-
-    private static string s_file;
-
-    public static void Init(string path)
+    public static bool IsStar(GameSettingObj game)
     {
-        s_file = Path.GetFullPath(path + "/star.json");
-        LoadState();
+        var config = GameGuiSetting.ReadConfig(game);
+        return config.IsStar;
     }
 
-    private static void LoadState()
+    public static void AddStar(GameSettingObj game)
     {
-        if (File.Exists(s_file))
-        {
-            try
-            {
-                var data = PathHelper.ReadText(s_file);
-                if (data == null)
-                {
-                    return;
-                }
-                var state = JsonConvert.DeserializeObject<List<string>>(data);
-                if (state == null)
-                {
-                    return;
-                }
-
-                StarGames.AddRange(state);
-            }
-            catch (Exception e)
-            {
-                Logs.Error("", e);
-            }
-        }
+        var config = GameGuiSetting.ReadConfig(game);
+        config.IsStar = true;
+        GameGuiSetting.WriteConfig(game, config);
     }
 
-    private static void SaveStar()
+    public static void RemoveStar(GameSettingObj game)
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = "ColorMC_Star",
-            File = s_file,
-            Obj = StarGames
-        });
-    }
-
-    public static bool IsStar(string uuid)
-    {
-        return StarGames.Contains(uuid);
-    }
-
-    public static void AddStar(string uuid)
-    {
-        if (!StarGames.Contains(uuid))
-        {
-            StarGames.Add(uuid);
-            SaveStar();
-        }
-    }
-
-    public static void RemoveStar(string uuid)
-    {
-        if (StarGames.Remove(uuid))
-        {
-            SaveStar();
-        }
+        var config = GameGuiSetting.ReadConfig(game);
+        config.IsStar = false;
+        GameGuiSetting.WriteConfig(game, config);
     }
 
     /// <summary>

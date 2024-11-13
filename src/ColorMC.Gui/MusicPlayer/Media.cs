@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Player.Decoder.Mp3;
+using ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.MusicPlayer;
@@ -155,16 +155,16 @@ public static class Media
 
         var file = File.OpenRead(filePath);
         var temp = new byte[4];
-        file.Read(temp);
+        file.ReadExactly(temp);
         if (temp[0] != 'R' || temp[1] != 'I' || temp[2] != 'F' || temp[3] != 'F')
         {
             return (false, "Given file is not in RIFF format");
         }
 
-        file.Read(temp);
+        file.ReadExactly(temp);
         var chunkSize = BinaryPrimitives.ReadInt32LittleEndian(temp);
 
-        file.Read(temp);
+        file.ReadExactly(temp);
         if (temp[0] != 'W' || temp[1] != 'A' || temp[2] != 'V' || temp[3] != 'E')
         {
             return (false, "Given file is not in WAVE format");
@@ -177,10 +177,10 @@ public static class Media
 
         while (index < file.Length)
         {
-            file.Read(temp);
+            file.ReadExactly(temp);
             index += 4;
             var identifier = "" + (char)temp[0] + (char)temp[1] + (char)temp[2] + (char)temp[3];
-            file.Read(temp);
+            file.ReadExactly(temp);
             index += 4;
             var size = BinaryPrimitives.ReadInt32LittleEndian(temp);
             if (identifier == "fmt ")
@@ -191,7 +191,7 @@ public static class Media
                 }
                 else
                 {
-                    file.Read(temp, 0, 2);
+                    file.ReadExactly(temp, 0, 2);
                     var audioFormat = BinaryPrimitives.ReadInt16LittleEndian(temp);
                     index += 2;
                     if (audioFormat != 1)
@@ -200,17 +200,17 @@ public static class Media
                     }
                     else
                     {
-                        file.Read(temp, 0, 2);
+                        file.ReadExactly(temp, 0, 2);
                         index += 2;
                         numChannels = BinaryPrimitives.ReadInt16LittleEndian(temp);
-                        file.Read(temp);
+                        file.ReadExactly(temp);
                         index += 4;
                         sampleRate = BinaryPrimitives.ReadInt32LittleEndian(temp);
-                        file.Read(temp);
+                        file.ReadExactly(temp);
                         index += 4;
-                        file.Read(temp, 0, 2);
+                        file.ReadExactly(temp, 0, 2);
                         index += 2;
-                        file.Read(temp, 0, 2);
+                        file.ReadExactly(temp, 0, 2);
                         index += 2;
                         bitsPerSample = BinaryPrimitives.ReadInt16LittleEndian(temp);
                     }
@@ -226,7 +226,7 @@ public static class Media
                     for (int a = 0; a < size; a++)
                     {
                         var length = Math.Min(less, pack);
-                        file.Read(temp, 0, length);
+                        file.ReadExactly(temp, 0, length);
 
                         s_player?.Write(numChannels, bitsPerSample, temp, length, sampleRate);
 

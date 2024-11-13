@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.Player.Decoder.Mp3;
+﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public class HuffcodeTabel
 {
@@ -338,8 +338,8 @@ public class HuffcodeTabel
             {0, 15},
     };
     /* Simulate extern struct                 */
-    public static HuffcodeTabel[] HT = new HuffcodeTabel[HTN]
-    {
+    public static readonly HuffcodeTabel[] HT =
+    [
         new HuffcodeTabel("0  ", 0, 0, 0, ValTab0, 0),
         new HuffcodeTabel("1  ", 2, 2, 0, ValTab1, 7),
         new HuffcodeTabel("2  ", 3, 3, 0, ValTab2, 17),
@@ -374,29 +374,29 @@ public class HuffcodeTabel
         new HuffcodeTabel("31 ", 16, 16, 13, ValTab24, 512),
         new HuffcodeTabel("32 ", 1, 16, 0, ValTab32, 31),
         new HuffcodeTabel("33 ", 1, 16, 0, ValTab33, 31)
-    };
+    ];
 
-    private readonly char tablename0;      /* string, containing table_description   */
-    private readonly char tablename1;      /* string, containing table_description   */
-    private readonly int xlen;                    /* max. x-index+                          */
-    private readonly int ylen;                    /* max. y-index+				          */
-    private readonly int linbits;                /* number of linbits   	                  */
-    private readonly int[,] val;                /* decoder tree		    	              */
-    private readonly int treelen;                /* length of decoder tree  	              */
+    private readonly char _tablename0;      /* string, containing table_description   */
+    private readonly char _tablename1;      /* string, containing table_description   */
+    private readonly int _xlen;                    /* max. x-index+                          */
+    private readonly int _ylen;                    /* max. y-index+				          */
+    private readonly int _linbits;                /* number of linbits   	                  */
+    private readonly int[,] _val;                /* decoder tree		    	              */
+    private readonly int _treelen;                /* length of decoder tree  	              */
 
     /**
      * Big Constructor : Computes all Huffman Tables.
      */
-    private HuffcodeTabel(string S, int XLEN, int YLEN, int LINBITS,
-                        int[,] VAL, int TREELEN)
+    private HuffcodeTabel(string s, int xlen, int ylen, int linbits,
+                        int[,] val, int treelen)
     {
-        tablename0 = S[0];
-        tablename1 = S[1];
-        xlen = XLEN;
-        ylen = YLEN;
-        linbits = LINBITS;
-        val = VAL;
-        treelen = TREELEN;
+        _tablename0 = s[0];
+        _tablename1 = s[1];
+        _xlen = xlen;
+        _ylen = ylen;
+        _linbits = linbits;
+        _val = val;
+        _treelen = treelen;
     }
 
 
@@ -411,15 +411,15 @@ public class HuffcodeTabel
         // 0..31 Huffman code table 0..31
         // 32,33 count1-tables
 
-        int dmask = 1 << ((4 * 8) - 1);
+        int dmask = 1 << 4 * 8 - 1;
         int level;
         int point = 0;
         level = dmask;
 
-        if (h.val == null) return;
+        if (h._val == null) return;
 
         /* table 0 needs no bits */
-        if (h.treelen == 0)
+        if (h._treelen == 0)
         {
             x[0] = y[0] = 0;
             return;
@@ -427,32 +427,32 @@ public class HuffcodeTabel
 
         do
         {
-            if (h.val[point, 0] == 0)
+            if (h._val[point, 0] == 0)
             {   /*end of tree*/
-                x[0] = h.val[point, 1] >>> 4;
-                y[0] = h.val[point, 1] & 0xf;
+                x[0] = h._val[point, 1] >>> 4;
+                y[0] = h._val[point, 1] & 0xf;
                 break;
             }
 
             if (br.Hget1bit() != 0)
             {
-                while (h.val[point, 1] >= MXOFF) point += h.val[point, 1];
-                point += h.val[point, 1];
+                while (h._val[point, 1] >= MXOFF) point += h._val[point, 1];
+                point += h._val[point, 1];
             }
             else
             {
-                while (h.val[point, 0] >= MXOFF) point += h.val[point, 0];
-                point += h.val[point, 0];
+                while (h._val[point, 0] >= MXOFF) point += h._val[point, 0];
+                point += h._val[point, 0];
             }
             level >>>= 1;
             // MDM: ht[0] is always 0;
-        } while ((level != 0) || (point < 0 /*ht[0].treelen*/));
+        } while (level != 0 || point < 0 /*ht[0].treelen*/);
 
-        if (h.tablename0 == '3' && (h.tablename1 == '2' || h.tablename1 == '3'))
+        if (h._tablename0 == '3' && (h._tablename1 == '2' || h._tablename1 == '3'))
         {
-            v[0] = (y[0] >> 3) & 1;
-            w[0] = (y[0] >> 2) & 1;
-            x[0] = (y[0] >> 1) & 1;
+            v[0] = y[0] >> 3 & 1;
+            w[0] = y[0] >> 2 & 1;
+            x[0] = y[0] >> 1 & 1;
             y[0] = y[0] & 1;
 
             /* v, w, x and y are reversed in the bitstream.
@@ -471,14 +471,14 @@ public class HuffcodeTabel
             // x and y are reversed in the test bitstream.
             // Reverse x and y here to make test bitstream work.
 
-            if (h.linbits != 0)
-                if ((h.xlen - 1) == x[0])
-                    x[0] += br.Hgetbits(h.linbits);
+            if (h._linbits != 0)
+                if (h._xlen - 1 == x[0])
+                    x[0] += br.Hgetbits(h._linbits);
             if (x[0] != 0)
                 if (br.Hget1bit() != 0) x[0] = -x[0];
-            if (h.linbits != 0)
-                if ((h.ylen - 1) == y[0])
-                    y[0] += br.Hgetbits(h.linbits);
+            if (h._linbits != 0)
+                if (h._ylen - 1 == y[0])
+                    y[0] += br.Hgetbits(h._linbits);
         }
         if (y[0] != 0)
             if (br.Hget1bit() != 0) y[0] = -y[0];

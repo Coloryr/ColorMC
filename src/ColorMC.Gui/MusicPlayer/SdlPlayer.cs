@@ -10,10 +10,10 @@ namespace ColorMC.Gui.MusicPlayer;
 /// </summary>
 public class SdlPlayer : IPlayer
 {
-    private uint _deviceId;
-    private AudioSpec audioSpec;
-    private Sdl _sdl;
-    private bool deviceOpen;
+    private readonly uint _deviceId;
+    private readonly AudioSpec audioSpec;
+    private readonly Sdl _sdl;
+    private readonly bool deviceOpen;
     private unsafe AudioCVT cvt;
 
     private int _lastChannel;
@@ -34,7 +34,7 @@ public class SdlPlayer : IPlayer
             var spec = new AudioSpec()
             {
                 Format = Sdl.AudioS16Sys,
-                Freq = 44100,
+                Freq = 48000,
                 Channels = 2,
                 Samples = 1024
             };
