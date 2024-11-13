@@ -193,7 +193,7 @@ public partial class DownloadModel : TopModel
     public DownloadArg Start()
     {
         _needRun = true;
-        DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(50));
+        DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
 
         return new()
         {
