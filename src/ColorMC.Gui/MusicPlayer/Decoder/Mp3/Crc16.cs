@@ -1,15 +1,15 @@
-﻿namespace ColorMC.Gui.Player.Decoder.Mp3;
+﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public sealed class Crc16
 {
-    private ushort crc;
+    private ushort _crc;
 
     /**
      * Dummy Constructor
      */
     public Crc16()
     {
-        crc = 0xFFFF;
+        _crc = 0xFFFF;
     }
 
     /**
@@ -17,16 +17,16 @@ public sealed class Crc16
      */
     public void AddBits(int bitstring, int length)
     {
-        int bitmask = 1 << (length - 1);
+        int bitmask = 1 << length - 1;
         do
-            if (((crc & 0x8000) == 0) ^ ((bitstring & bitmask) == 0))
+            if ((_crc & 0x8000) == 0 ^ (bitstring & bitmask) == 0)
             {
-                crc <<= 1;
+                _crc <<= 1;
                 ushort polynomial = 0x8005;
-                crc ^= polynomial;
+                _crc ^= polynomial;
             }
             else
-                crc <<= 1;
+                _crc <<= 1;
         while ((bitmask >>>= 1) != 0);
     }
 
@@ -36,8 +36,8 @@ public sealed class Crc16
      */
     public ushort Checksum()
     {
-        ushort sum = crc;
-        crc = 0xFFFF;
+        ushort sum = _crc;
+        _crc = 0xFFFF;
         return sum;
     }
 }

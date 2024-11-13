@@ -59,10 +59,13 @@ public partial class GameGroupModel : TopModel
                 }
             }
 
+            var list1 = new List<GameItemModel>();
+
             foreach (var item in _items)
             {
-                if (!GameManager.IsStar(item.Key))
+                if (!GameManager.IsStar(item.Value.Obj))
                 {
+                    list1.Add(item.Value);
                     continue;
                 }
                 Thread.Sleep(50);
@@ -76,19 +79,15 @@ public partial class GameGroupModel : TopModel
                 });
             }
 
-            foreach (var item in _items)
+            foreach (var item in list1)
             {
-                if (GameManager.IsStar(item.Key))
-                {
-                    continue;
-                }
                 Thread.Sleep(50);
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    GameList.Add(item.Value);
+                    GameList.Add(item);
                     if (res)
                     {
-                        item.Value.Index = index++;
+                        item.Index = index++;
                     }
                 });
             }

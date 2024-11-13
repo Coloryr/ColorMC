@@ -98,7 +98,6 @@ public partial class App : Application
         FrpLaunch.Init(ColorMCGui.RunDir);
         CoreManager.Init();
         ThemeManager.Init();
-        GameManager.Init(ColorMCGui.RunDir);
         ImageManager.Init(ColorMCGui.RunDir);
         WindowManager.Init(ColorMCGui.RunDir);
         GameCount.Init(ColorMCGui.RunDir);

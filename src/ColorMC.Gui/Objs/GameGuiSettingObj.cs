@@ -45,4 +45,8 @@ public record GameGuiSettingObj
     /// 备注
     /// </summary>
     public Dictionary<string, string?> ModName { get; set; }
+    /// <summary>
+    /// 是否标星
+    /// </summary>
+    public bool IsStar { get; set; }
 }

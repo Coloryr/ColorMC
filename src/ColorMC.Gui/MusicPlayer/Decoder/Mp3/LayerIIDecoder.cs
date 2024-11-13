@@ -1,47 +1,46 @@
-﻿namespace ColorMC.Gui.Player.Decoder.Mp3;
+﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
-/**
- * Implements decoding of MPEG Audio Layer II frames.
- */
+/// <summary>
+/// Implements decoding of MPEG Audio Layer II frames.
+/// </summary>
 public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
 {
-    protected new void CreateSubbands()
+    protected override void CreateSubbands()
     {
         int i;
-        if (mode == Header.SINGLE_CHANNEL)
-            for (i = 0; i < num_subbands; ++i)
-                subbands[i] = new SubbandLayer2(i);
-        else if (mode == Header.JOINT_STEREO)
+        if (Mode == Header.SINGLE_CHANNEL)
+            for (i = 0; i < NumSubbands; ++i)
+                Subbands[i] = new SubbandLayer2(i);
+        else if (Mode == Header.JOINT_STEREO)
         {
-            for (i = 0; i < header.IntensityStereoBound; ++i)
-                subbands[i] = new SubbandLayer2Stereo(i);
-            for (; i < num_subbands; ++i)
-                subbands[i] = new SubbandLayer2IntensityStereo(i);
+            for (i = 0; i < Header.IntensityStereoBound; ++i)
+                Subbands[i] = new SubbandLayer2Stereo(i);
+            for (; i < NumSubbands; ++i)
+                Subbands[i] = new SubbandLayer2IntensityStereo(i);
         }
         else
         {
-            for (i = 0; i < num_subbands; ++i)
-                subbands[i] = new SubbandLayer2Stereo(i);
+            for (i = 0; i < NumSubbands; ++i)
+                Subbands[i] = new SubbandLayer2Stereo(i);
         }
 
     }
 
-    protected new void ReadScaleFactorSelection()
+    protected override void ReadScaleFactorSelection()
     {
-        for (int i = 0; i < num_subbands; ++i)
-            ((SubbandLayer2)subbands[i]).ReadScalefactorSelection(stream, crc);
+        for (int i = 0; i < NumSubbands; ++i)
+            ((SubbandLayer2)Subbands[i]).ReadScalefactorSelection(Stream, Crc);
     }
 
-
-    /**
-     * Class for layer II subbands in single channel mode.
-     */
+    /// <summary>
+    /// Class for layer II subbands in single channel mode.
+    /// </summary>
     public class SubbandLayer2 : Subband
     {
         // this table contains 3 requantized samples for each legal codeword
         // when grouped in 5 bits, i.e. 3 quantizationsteps per sample
-        public static readonly float[] grouping_5bits = new float[]
-        {
+        public static readonly float[] Grouping5bits =
+        [
             -2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f,
             0.0f, -2.0f / 3.0f, -2.0f / 3.0f,
             2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f,
@@ -69,12 +68,12 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             -2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f,
             0.0f, 2.0f / 3.0f, 2.0f / 3.0f,
             2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f
-        };
+        ];
 
         // this table contains 3 requantized samples for each legal codeword
         // when grouped in 7 bits, i.e. 5 quantizationsteps per sample
-        public static readonly float[] grouping_7bits =
-        {
+        public static readonly float[] Grouping7bits =
+        [
             -0.8f, -0.8f, -0.8f, -0.4f, -0.8f, -0.8f, 0.0f, -0.8f, -0.8f, 0.4f, -0.8f, -0.8f, 0.8f, -0.8f, -0.8f,
             -0.8f, -0.4f, -0.8f, -0.4f, -0.4f, -0.8f, 0.0f, -0.4f, -0.8f, 0.4f, -0.4f, -0.8f, 0.8f, -0.4f, -0.8f,
             -0.8f, 0.0f, -0.8f, -0.4f, 0.0f, -0.8f, 0.0f, 0.0f, -0.8f, 0.4f, 0.0f, -0.8f, 0.8f, 0.0f, -0.8f,
@@ -100,12 +99,12 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             -0.8f, 0.0f, 0.8f, -0.4f, 0.0f, 0.8f, 0.0f, 0.0f, 0.8f, 0.4f, 0.0f, 0.8f, 0.8f, 0.0f, 0.8f,
             -0.8f, 0.4f, 0.8f, -0.4f, 0.4f, 0.8f, 0.0f, 0.4f, 0.8f, 0.4f, 0.4f, 0.8f, 0.8f, 0.4f, 0.8f,
             -0.8f, 0.8f, 0.8f, -0.4f, 0.8f, 0.8f, 0.0f, 0.8f, 0.8f, 0.4f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f
-        };
+        ];
 
         // this table contains 3 requantized samples for each legal codeword
         // when grouped in 10 bits, i.e. 9 quantizationsteps per sample
-        public static readonly float[] grouping_10bits =
-        {
+        public static readonly float[] Grouping10bits =
+        [
             -8.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f, -6.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f, -4.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f,
             -2.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f, 0.0f, -8.0f / 9.0f, -8.0f / 9.0f, 2.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f,
             4.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f, 6.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f, 8.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f,
@@ -349,125 +348,130 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             -8.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, -6.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, -4.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f,
             -2.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, 0.0f, 8.0f / 9.0f, 8.0f / 9.0f, 2.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f,
             4.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, 6.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f
-        };
+        ];
 
         // data taken from ISO/IEC DIS 11172, Annexes 3-B.2[abcd] and 3-B.4:
 
         // subbands 0-2 in tables 3-B.2a and 2b: (index is allocation)
-        public static readonly int[] table_ab1_codelength =
+        public static readonly int[] TableAb1Codelength =
         // bits per codeword
-        {0, 5, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+        [0, 5, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
-        public static readonly float[]?[] table_ab1_groupingtables =
+        public static readonly float[]?[] TableAb1Groupingtables =
         // pointer to sample grouping table, or NULL-pointer if ungrouped
-        {null, grouping_5bits, null, null, null, null, null, null, null, null, null, null, null, null, null, null};
+        [null, Grouping5bits, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
 
-        public static readonly float[] table_ab1_factor =
+        public static readonly float[] TableAb1Factor =
         // factor for requantization: (real)sample * factor - 1.0 gives requantized sample
-        {0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 16.0f, 1.0f / 32.0f, 1.0f / 64.0f,
+        [0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 16.0f, 1.0f / 32.0f, 1.0f / 64.0f,
             1.0f / 128.0f, 1.0f / 256.0f, 1.0f / 512.0f, 1.0f / 1024.0f, 1.0f / 2048.0f,
-            1.0f / 4096.0f, 1.0f / 8192.0f, 1.0f / 16384.0f, 1.0f / 32768.0f};
+            1.0f / 4096.0f, 1.0f / 8192.0f, 1.0f / 16384.0f, 1.0f / 32768.0f];
 
-        public static readonly float[] table_ab1_c =
+        public static readonly float[] TableAb1C =
         // factor c for requantization from table 3-B.4
-        {0.0f, 1.33333333333f, 1.14285714286f, 1.06666666666f, 1.03225806452f,
+        [0.0f, 1.33333333333f, 1.14285714286f, 1.06666666666f, 1.03225806452f,
             1.01587301587f, 1.00787401575f, 1.00392156863f, 1.00195694716f, 1.00097751711f,
             1.00048851979f, 1.00024420024f, 1.00012208522f, 1.00006103888f, 1.00003051851f,
-            1.00001525902f};
+            1.00001525902f];
 
-        public static readonly float[] table_ab1_d =
+        public static readonly float[] TableAb1D =
         // addend d for requantization from table 3-B.4
-        {0.0f, 0.50000000000f, 0.25000000000f, 0.12500000000f, 0.06250000000f,
+        [0.0f, 0.50000000000f, 0.25000000000f, 0.12500000000f, 0.06250000000f,
             0.03125000000f, 0.01562500000f, 0.00781250000f, 0.00390625000f, 0.00195312500f,
             0.00097656250f, 0.00048828125f, 0.00024414063f, 0.00012207031f, 0.00006103516f,
-            0.00003051758f};
+            0.00003051758f];
 
         // subbands 3-... tables 3-B.2a and 2b:
-        public static readonly float[]?[] table_ab234_groupingtables =
-        {null, grouping_5bits, grouping_7bits, null, grouping_10bits, null, null, null, null, null, null, null, null, null, null, null};
+        public static readonly float[]?[] TableAb234Groupingtables =
+        [null, Grouping5bits, Grouping7bits, null, Grouping10bits, null, null, null, null, null, null, null, null, null, null, null];
 
         // subbands 3-10 in tables 3-B.2a and 2b:
-        public static readonly int[] table_ab2_codelength =
-        {0, 5, 7, 3, 10, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16};
-        public static readonly float[] table_ab2_factor =
-        {0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 8.0f, 1.0f / 16.0f,
+        public static readonly int[] TableAb2Codelength =
+        [0, 5, 7, 3, 10, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16];
+
+        public static readonly float[] TableAb2Factor =
+        [
+            0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 8.0f, 1.0f / 16.0f,
             1.0f / 32.0f, 1.0f / 64.0f, 1.0f / 128.0f, 1.0f / 256.0f, 1.0f / 512.0f,
-            1.0f / 1024.0f, 1.0f / 2048.0f, 1.0f / 4096.0f, 1.0f / 32768.0f};
-        public static readonly float[] table_ab2_c =
-        {0.0f, 1.33333333333f, 1.60000000000f, 1.14285714286f, 1.77777777777f,
+            1.0f / 1024.0f, 1.0f / 2048.0f, 1.0f / 4096.0f, 1.0f / 32768.0f
+        ];
+        public static readonly float[] TableAb2C =
+        [
+            0.0f, 1.33333333333f, 1.60000000000f, 1.14285714286f, 1.77777777777f,
             1.06666666666f, 1.03225806452f, 1.01587301587f, 1.00787401575f, 1.00392156863f,
             1.00195694716f, 1.00097751711f, 1.00048851979f, 1.00024420024f, 1.00012208522f,
-            1.00001525902f};
-        public static readonly float[] table_ab2_d =
-        {0.0f, 0.50000000000f, 0.50000000000f, 0.25000000000f, 0.50000000000f,
+            1.00001525902f
+        ];
+        public static readonly float[] TableAb2D =
+        [
+            0.0f, 0.50000000000f, 0.50000000000f, 0.25000000000f, 0.50000000000f,
             0.12500000000f, 0.06250000000f, 0.03125000000f, 0.01562500000f, 0.00781250000f,
             0.00390625000f, 0.00195312500f, 0.00097656250f, 0.00048828125f, 0.00024414063f,
-            0.00003051758f};
+            0.00003051758f
+        ];
 
         // subbands 11-22 in tables 3-B.2a and 2b:
-        public static readonly int[] table_ab3_codelength = { 0, 5, 7, 3, 10, 4, 5, 16 };
-        public static readonly float[] table_ab3_factor =
-        {0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 8.0f, 1.0f / 16.0f, 1.0f / 32768.0f};
-        public static readonly float[] table_ab3_c =
-        {0.0f, 1.33333333333f, 1.60000000000f, 1.14285714286f, 1.77777777777f,
-                1.06666666666f, 1.03225806452f, 1.00001525902f};
-        public static readonly float[] table_ab3_d =
-        {0.0f, 0.50000000000f, 0.50000000000f, 0.25000000000f, 0.50000000000f,
-                0.12500000000f, 0.06250000000f, 0.00003051758f};
+        public static readonly int[] TableAb3Codelength = [0, 5, 7, 3, 10, 4, 5, 16];
+        public static readonly float[] TableAb3Factor =
+        [0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 8.0f, 1.0f / 16.0f, 1.0f / 32768.0f];
+        public static readonly float[] TableAb3C =
+        [0.0f, 1.33333333333f, 1.60000000000f, 1.14285714286f, 1.77777777777f,
+                1.06666666666f, 1.03225806452f, 1.00001525902f];
+        public static readonly float[] TableAb3D =
+        [0.0f, 0.50000000000f, 0.50000000000f, 0.25000000000f, 0.50000000000f,
+                0.12500000000f, 0.06250000000f, 0.00003051758f];
 
         // subbands 23-... in tables 3-B.2a and 2b:
-        public static readonly int[] table_ab4_codelength = { 0, 5, 7, 16 };
-        public static readonly float[] table_ab4_factor = { 0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 32768.0f };
-        public static readonly float[] table_ab4_c = { 0.0f, 1.33333333333f, 1.60000000000f, 1.00001525902f };
-        public static readonly float[] table_ab4_d = { 0.0f, 0.50000000000f, 0.50000000000f, 0.00003051758f };
+        public static readonly int[] TableAb4Codelength = [0, 5, 7, 16];
+        public static readonly float[] table_ab4_factor = [0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 32768.0f];
+        public static readonly float[] table_ab4_c = [0.0f, 1.33333333333f, 1.60000000000f, 1.00001525902f];
+        public static readonly float[] table_ab4_d = [0.0f, 0.50000000000f, 0.50000000000f, 0.00003051758f];
 
         // subbands in tables 3-B.2c and 2d:
-        public static readonly int[] table_cd_codelength =
-        {0, 5, 7, 10, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-        public static readonly float[]?[] table_cd_groupingtables =
-        {null, grouping_5bits, grouping_7bits, grouping_10bits, null, null, null, null, null, null, null, null, null, null, null, null};
-        public static readonly float[] table_cd_factor =
-        {0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 8.0f, 1.0f / 16.0f, 1.0f / 32.0f, 1.0f / 64.0f,
+        public static readonly int[] TableCdCodelength =
+        [0, 5, 7, 10, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        public static readonly float[]?[] TableCdGroupingtables =
+        [null, Grouping5bits, Grouping7bits, Grouping10bits, null, null, null, null, null, null, null, null, null, null, null, null];
+        public static readonly float[] TableCdFactor =
+        [
+            0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 8.0f, 1.0f / 16.0f, 1.0f / 32.0f, 1.0f / 64.0f,
             1.0f / 128.0f, 1.0f / 256.0f, 1.0f / 512.0f, 1.0f / 1024.0f, 1.0f / 2048.0f, 1.0f / 4096.0f,
-            1.0f / 8192.0f, 1.0f / 16384.0f};
-        public static readonly float[] table_cd_c =
-        {0.0f, 1.33333333333f, 1.60000000000f, 1.77777777777f, 1.06666666666f,
+            1.0f / 8192.0f, 1.0f / 16384.0f
+        ];
+        public static readonly float[] TableCdC =
+        [
+            0.0f, 1.33333333333f, 1.60000000000f, 1.77777777777f, 1.06666666666f,
             1.03225806452f, 1.01587301587f, 1.00787401575f, 1.00392156863f, 1.00195694716f,
             1.00097751711f, 1.00048851979f, 1.00024420024f, 1.00012208522f, 1.00006103888f,
-            1.00003051851f};
-        public static readonly float[] table_cd_d =
-        {0.0f, 0.50000000000f, 0.50000000000f, 0.50000000000f, 0.12500000000f,
+            1.00003051851f
+        ];
+        public static readonly float[] TableCdD =
+        [
+            0.0f, 0.50000000000f, 0.50000000000f, 0.50000000000f, 0.12500000000f,
             0.06250000000f, 0.03125000000f, 0.01562500000f, 0.00781250000f, 0.00390625000f,
             0.00195312500f, 0.00097656250f, 0.00048828125f, 0.00024414063f, 0.00012207031f,
-            0.00006103516f};
+            0.00006103516f
+        ];
 
+        protected int Subbandnumber;
+        protected int Allocation;
+        protected int Scfsi;
+        protected float Scalefactor1, Scalefactor2, Scalefactor3;
+        protected int[] Codelength = [0];
+        protected float[]?[] Groupingtable = new float[2][];
+        protected float[] Factor = [0.0f];
+        protected int Groupnumber;
+        protected int Samplenumber;
+        protected float[] Samples = new float[3];
+        protected float[] C = [0];
+        protected float[] D = [0];
 
-        protected int subbandnumber;
-        protected int allocation;
-        protected int scfsi;
-        protected float scalefactor1, scalefactor2, scalefactor3;
-        protected int[] codelength = { 0 };
-        protected float[]?[] groupingtable = new float[2][];
-        protected float[] factor = { 0.0f };
-        protected int groupnumber;
-        protected int samplenumber;
-        protected float[] samples = new float[3];
-        protected float[] c = { 0 };
-        protected float[] d = { 0 };
-
-        /**
-         * Constructor
-         */
         public SubbandLayer2(int subbandnumber)
         {
-            this.subbandnumber = subbandnumber;
-            groupnumber = samplenumber = 0;
+            Subbandnumber = subbandnumber;
+            Groupnumber = Samplenumber = 0;
         }
 
-
-        /**
-         *
-         */
         protected int GetAllocationLength(Header header)
         {
             if (header.Version == Header.MPEG1)
@@ -483,15 +487,15 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
 
                 if (channel_bitrate == 1 || channel_bitrate == 2)
                     // table 3-B.2c or 3-B.2d
-                    if (subbandnumber <= 1)
+                    if (Subbandnumber <= 1)
                         return 4;
                     else
                         return 3;
                 else
                     // tables 3-B.2a or 3-B.2b
-                    if (subbandnumber <= 10)
+                    if (Subbandnumber <= 10)
                     return 4;
-                else if (subbandnumber <= 22)
+                else if (Subbandnumber <= 22)
                     return 3;
                 else
                     return 2;
@@ -500,18 +504,15 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             { // MPEG-2 LSF -- Jeff
 
                 // table B.1 of ISO/IEC 13818-3
-                if (subbandnumber <= 3)
+                if (Subbandnumber <= 3)
                     return 4;
-                else if (subbandnumber <= 10)
+                else if (Subbandnumber <= 10)
                     return 3;
                 else
                     return 2;
             }
         }
 
-        /**
-         *
-         */
         protected void PrepareSampleReading(Header header, int allocation,
                                               int channel,
                                               float[] factor, int[] codelength,
@@ -528,44 +529,44 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             if (channel_bitrate == 1 || channel_bitrate == 2)
             {
                 // table 3-B.2c or 3-B.2d
-                groupingtable[channel] = table_cd_groupingtables[allocation];
-                factor[0] = table_cd_factor[allocation];
-                codelength[0] = table_cd_codelength[allocation];
-                c[0] = table_cd_c[allocation];
-                d[0] = table_cd_d[allocation];
+                Groupingtable[channel] = TableCdGroupingtables[allocation];
+                factor[0] = TableCdFactor[allocation];
+                codelength[0] = TableCdCodelength[allocation];
+                c[0] = TableCdC[allocation];
+                d[0] = TableCdD[allocation];
             }
             else
             {
                 // tables 3-B.2a or 3-B.2b
-                if (subbandnumber <= 2)
+                if (Subbandnumber <= 2)
                 {
-                    groupingtable[channel] = table_ab1_groupingtables[allocation];
-                    factor[0] = table_ab1_factor[allocation];
-                    codelength[0] = table_ab1_codelength[allocation];
-                    c[0] = table_ab1_c[allocation];
-                    d[0] = table_ab1_d[allocation];
+                    Groupingtable[channel] = TableAb1Groupingtables[allocation];
+                    factor[0] = TableAb1Factor[allocation];
+                    codelength[0] = TableAb1Codelength[allocation];
+                    c[0] = TableAb1C[allocation];
+                    d[0] = TableAb1D[allocation];
                 }
                 else
                 {
-                    groupingtable[channel] = table_ab234_groupingtables[allocation];
-                    if (subbandnumber <= 10)
+                    Groupingtable[channel] = TableAb234Groupingtables[allocation];
+                    if (Subbandnumber <= 10)
                     {
-                        factor[0] = table_ab2_factor[allocation];
-                        codelength[0] = table_ab2_codelength[allocation];
-                        c[0] = table_ab2_c[allocation];
-                        d[0] = table_ab2_d[allocation];
+                        factor[0] = TableAb2Factor[allocation];
+                        codelength[0] = TableAb2Codelength[allocation];
+                        c[0] = TableAb2C[allocation];
+                        d[0] = TableAb2D[allocation];
                     }
-                    else if (subbandnumber <= 22)
+                    else if (Subbandnumber <= 22)
                     {
-                        factor[0] = table_ab3_factor[allocation];
-                        codelength[0] = table_ab3_codelength[allocation];
-                        c[0] = table_ab3_c[allocation];
-                        d[0] = table_ab3_d[allocation];
+                        factor[0] = TableAb3Factor[allocation];
+                        codelength[0] = TableAb3Codelength[allocation];
+                        c[0] = TableAb3C[allocation];
+                        d[0] = TableAb3D[allocation];
                     }
                     else
                     {
                         factor[0] = table_ab4_factor[allocation];
-                        codelength[0] = table_ab4_codelength[allocation];
+                        codelength[0] = TableAb4Codelength[allocation];
                         c[0] = table_ab4_c[allocation];
                         d[0] = table_ab4_d[allocation];
                     }
@@ -573,74 +574,60 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             }
         }
 
-
-        /**
-         *
-         */
         public override void ReadAllocation(Bitstream stream, Header header, Crc16 crc)
         {
             int length = GetAllocationLength(header);
-            allocation = stream.GetBits(length);
-            if (crc != null)
-                crc.AddBits(allocation, length);
+            Allocation = stream.GetBits(length);
+            crc?.AddBits(Allocation, length);
         }
 
-        /**
-         *
-         */
-        public void ReadScalefactorSelection(Bitstream stream, Crc16 crc)
+        public virtual void ReadScalefactorSelection(Bitstream stream, Crc16 crc)
         {
-            if (allocation != 0)
+            if (Allocation != 0)
             {
-                scfsi = stream.GetBits(2);
-                crc?.AddBits(scfsi, 2);
+                Scfsi = stream.GetBits(2);
+                crc?.AddBits(Scfsi, 2);
             }
         }
 
-        /**
-         *
-         */
         public override void ReadScalefactor(Bitstream stream, Header header)
         {
-            if (allocation != 0)
+            if (Allocation != 0)
             {
-                switch (scfsi)
+                switch (Scfsi)
                 {
                     case 0:
-                        scalefactor1 = scalefactors[stream.GetBits(6)];
-                        scalefactor2 = scalefactors[stream.GetBits(6)];
-                        scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Scalefactor1 = scalefactors[stream.GetBits(6)];
+                        Scalefactor2 = scalefactors[stream.GetBits(6)];
+                        Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
                     case 1:
-                        scalefactor1 = scalefactor2 = scalefactors[stream.GetBits(6)];
-                        scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Scalefactor1 = Scalefactor2 = scalefactors[stream.GetBits(6)];
+                        Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
                     case 2:
-                        scalefactor1 = scalefactor2 = scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Scalefactor1 = Scalefactor2 = Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
                     case 3:
-                        scalefactor1 = scalefactors[stream.GetBits(6)];
-                        scalefactor2 = scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Scalefactor1 = scalefactors[stream.GetBits(6)];
+                        Scalefactor2 = Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
                 }
-                PrepareSampleReading(header, allocation, 0,
-                        factor, codelength, c, d);
+                PrepareSampleReading(header, Allocation, 0,
+                        Factor, Codelength, C, D);
             }
         }
 
-        /**
-         *
-         */
         public override bool ReadSampledata(Bitstream stream)
         {
-            if (allocation != 0)
-                if (groupingtable[0] != null)
+            if (Allocation != 0)
+                if (Groupingtable[0] != null)
                 {
-                    int samplecode = stream.GetBits(codelength[0]);
+                    int samplecode = stream.GetBits(Codelength[0]);
                     // create requantized samples:
                     samplecode += samplecode << 1;
-                    float[] target = samples;
-                    float[] source = groupingtable[0]!;
+                    float[] target = Samples;
+                    float[] source = Groupingtable[0]!;
                     //Bugfix:
                     int tmp = 0;
                     int temp = samplecode;
@@ -657,293 +644,244 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
                 }
                 else
                 {
-                    samples[0] = (float)((stream.GetBits(codelength[0])) * factor[0] - 1.0);
-                    samples[1] = (float)((stream.GetBits(codelength[0])) * factor[0] - 1.0);
-                    samples[2] = (float)((stream.GetBits(codelength[0])) * factor[0] - 1.0);
+                    Samples[0] = (float)(stream.GetBits(Codelength[0]) * Factor[0] - 1.0);
+                    Samples[1] = (float)(stream.GetBits(Codelength[0]) * Factor[0] - 1.0);
+                    Samples[2] = (float)(stream.GetBits(Codelength[0]) * Factor[0] - 1.0);
                 }
 
-            samplenumber = 0;
-            return ++groupnumber == 12;
+            Samplenumber = 0;
+            return ++Groupnumber == 12;
         }
 
-        /**
-         *
-         */
         public override bool PutNextSample(int channels, SynthesisFilter filter1, SynthesisFilter filter2)
         {
-            if ((allocation != 0) && (channels != OutputChannels.RIGHT_CHANNEL))
+            if (Allocation != 0 && channels != OutputChannels.RIGHT_CHANNEL)
             {
-                float sample = samples[samplenumber];
+                float sample = Samples[Samplenumber];
 
-                if (groupingtable[0] == null)
-                    sample = (sample + d[0]) * c[0];
-                if (groupnumber <= 4)
-                    sample *= scalefactor1;
-                else if (groupnumber <= 8)
-                    sample *= scalefactor2;
+                if (Groupingtable[0] == null)
+                    sample = (sample + D[0]) * C[0];
+                if (Groupnumber <= 4)
+                    sample *= Scalefactor1;
+                else if (Groupnumber <= 8)
+                    sample *= Scalefactor2;
                 else
-                    sample *= scalefactor3;
-                filter1.InputSample(sample, subbandnumber);
+                    sample *= Scalefactor3;
+                filter1.InputSample(sample, Subbandnumber);
             }
 
-            return ++samplenumber == 3;
+            return ++Samplenumber == 3;
         }
     }
 
-    /**
-     * Class for layer II subbands in joint stereo mode.
-     */
-    public class SubbandLayer2IntensityStereo : SubbandLayer2
+    /// <summary>
+    /// Class for layer II subbands in joint stereo mode.
+    /// </summary>
+    public class SubbandLayer2IntensityStereo(int subbandnumber) : SubbandLayer2(subbandnumber)
     {
-        protected int channel2_scfsi;
-        protected float channel2_scalefactor1, channel2_scalefactor2, channel2_scalefactor3;
+        protected int Channel2Scfsi;
+        protected float Channel2Scalefactor1, Channel2Scalefactor2, Channel2Scalefactor3;
 
-        /**
-         * Constructor
-         */
-        public SubbandLayer2IntensityStereo(int subbandnumber) : base(subbandnumber)
-        {
-
-        }
-
-        /**
-         *
-         */
         public override void ReadAllocation(Bitstream stream, Header header, Crc16 crc)
         {
             base.ReadAllocation(stream, header, crc);
         }
 
-        /**
-         *
-         */
-        public new void ReadScalefactorSelection(Bitstream stream, Crc16 crc)
+        public override void ReadScalefactorSelection(Bitstream stream, Crc16 crc)
         {
-            if (allocation != 0)
+            if (Allocation != 0)
             {
-                scfsi = stream.GetBits(2);
-                channel2_scfsi = stream.GetBits(2);
+                Scfsi = stream.GetBits(2);
+                Channel2Scfsi = stream.GetBits(2);
                 if (crc != null)
                 {
-                    crc.AddBits(scfsi, 2);
-                    crc.AddBits(channel2_scfsi, 2);
+                    crc.AddBits(Scfsi, 2);
+                    crc.AddBits(Channel2Scfsi, 2);
                 }
             }
         }
 
-        /**
-         *
-         */
-        public new void ReadScalefactor(Bitstream stream, Header header)
+        public override void ReadScalefactor(Bitstream stream, Header header)
         {
-            if (allocation != 0)
+            if (Allocation != 0)
             {
                 base.ReadScalefactor(stream, header);
-                switch (channel2_scfsi)
+                switch (Channel2Scfsi)
                 {
                     case 0:
-                        channel2_scalefactor1 = scalefactors[stream.GetBits(6)];
-                        channel2_scalefactor2 = scalefactors[stream.GetBits(6)];
-                        channel2_scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor1 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor2 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
 
                     case 1:
-                        channel2_scalefactor1 = channel2_scalefactor2 = scalefactors[stream.GetBits(6)];
-                        channel2_scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor1 = Channel2Scalefactor2 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
 
                     case 2:
-                        channel2_scalefactor1 = channel2_scalefactor2 =
-                                channel2_scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor1 = Channel2Scalefactor2 =
+                                Channel2Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
 
                     case 3:
-                        channel2_scalefactor1 = scalefactors[stream.GetBits(6)];
-                        channel2_scalefactor2 = channel2_scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor1 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor2 = Channel2Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
                 }
             }
 
         }
 
-        /**
-         *
-         */
-        public new bool ReadSampledata(Bitstream stream)
+        public override bool ReadSampledata(Bitstream stream)
         {
             return base.ReadSampledata(stream);
         }
 
-        /**
-         *
-         */
-        public new bool PutNextSample(int channels, SynthesisFilter filter1, SynthesisFilter filter2)
+        public override bool PutNextSample(int channels, SynthesisFilter filter1, SynthesisFilter filter2)
         {
-            if (allocation != 0)
+            if (Allocation != 0)
             {
-                float sample = samples[samplenumber];
+                float sample = Samples[Samplenumber];
 
-                if (groupingtable[0] == null)
-                    sample = (sample + d[0]) * c[0];
+                if (Groupingtable[0] == null)
+                    sample = (sample + D[0]) * C[0];
                 if (channels == OutputChannels.BOTH_CHANNELS)
                 {
                     float sample2 = sample;
-                    if (groupnumber <= 4)
+                    if (Groupnumber <= 4)
                     {
-                        sample *= scalefactor1;
-                        sample2 *= channel2_scalefactor1;
+                        sample *= Scalefactor1;
+                        sample2 *= Channel2Scalefactor1;
                     }
-                    else if (groupnumber <= 8)
+                    else if (Groupnumber <= 8)
                     {
-                        sample *= scalefactor2;
-                        sample2 *= channel2_scalefactor2;
+                        sample *= Scalefactor2;
+                        sample2 *= Channel2Scalefactor2;
                     }
                     else
                     {
-                        sample *= scalefactor3;
-                        sample2 *= channel2_scalefactor3;
+                        sample *= Scalefactor3;
+                        sample2 *= Channel2Scalefactor3;
                     }
-                    filter1.InputSample(sample, subbandnumber);
-                    filter2.InputSample(sample2, subbandnumber);
+                    filter1.InputSample(sample, Subbandnumber);
+                    filter2.InputSample(sample2, Subbandnumber);
                 }
                 else if (channels == OutputChannels.LEFT_CHANNEL)
                 {
-                    if (groupnumber <= 4)
-                        sample *= scalefactor1;
-                    else if (groupnumber <= 8)
-                        sample *= scalefactor2;
+                    if (Groupnumber <= 4)
+                        sample *= Scalefactor1;
+                    else if (Groupnumber <= 8)
+                        sample *= Scalefactor2;
                     else
-                        sample *= scalefactor3;
-                    filter1.InputSample(sample, subbandnumber);
+                        sample *= Scalefactor3;
+                    filter1.InputSample(sample, Subbandnumber);
                 }
                 else
                 {
-                    if (groupnumber <= 4)
-                        sample *= channel2_scalefactor1;
-                    else if (groupnumber <= 8)
-                        sample *= channel2_scalefactor2;
+                    if (Groupnumber <= 4)
+                        sample *= Channel2Scalefactor1;
+                    else if (Groupnumber <= 8)
+                        sample *= Channel2Scalefactor2;
                     else
-                        sample *= channel2_scalefactor3;
-                    filter1.InputSample(sample, subbandnumber);
+                        sample *= Channel2Scalefactor3;
+                    filter1.InputSample(sample, Subbandnumber);
                 }
             }
 
-            return ++samplenumber == 3;
+            return ++Samplenumber == 3;
         }
     }
 
-    /**
-     * Class for layer II subbands in stereo mode.
-     */
-    public class SubbandLayer2Stereo : SubbandLayer2
+    /// <summary>
+    /// Class for layer II subbands in stereo mode.
+    /// </summary>
+    public class SubbandLayer2Stereo(int subbandnumber) : SubbandLayer2(subbandnumber)
     {
-        protected int channel2_allocation;
-        protected int channel2_scfsi;
-        protected float channel2_scalefactor1, channel2_scalefactor2, channel2_scalefactor3;
-        protected int[] channel2_codelength = { 0 };
-        protected float[] channel2_factor = { 0 };
-        protected float[] channel2_samples;
-        protected float[] channel2_c = { 0 };
-        protected float[] channel2_d = { 0 };
+        protected int Channel2Allocation;
+        protected int Channel2Scfsi;
+        protected float Channel2Scalefactor1, Channel2Scalefactor2, Channel2Scalefactor3;
+        protected int[] Channel2Codelength = [0];
+        protected float[] Channel2Factor = [0];
+        protected float[] Channel2Samples = new float[3];
+        protected float[] Channel2C = [0];
+        protected float[] Channel2D = [0];
 
-        /**
-         * Constructor
-         */
-        public SubbandLayer2Stereo(int subbandnumber) : base(subbandnumber)
-        {
-
-            channel2_samples = new float[3];
-        }
-
-        /**
-         *
-         */
-        public new void ReadAllocation(Bitstream stream, Header header, Crc16 crc)
+        public override void ReadAllocation(Bitstream stream, Header header, Crc16 crc)
         {
             int length = GetAllocationLength(header);
-            allocation = stream.GetBits(length);
-            channel2_allocation = stream.GetBits(length);
+            Allocation = stream.GetBits(length);
+            Channel2Allocation = stream.GetBits(length);
             if (crc != null)
             {
-                crc.AddBits(allocation, length);
-                crc.AddBits(channel2_allocation, length);
+                crc.AddBits(Allocation, length);
+                crc.AddBits(Channel2Allocation, length);
             }
         }
 
-        /**
-         *
-         */
-        public new void ReadScalefactorSelection(Bitstream stream, Crc16 crc)
+        public override void ReadScalefactorSelection(Bitstream stream, Crc16 crc)
         {
-            if (allocation != 0)
+            if (Allocation != 0)
             {
-                scfsi = stream.GetBits(2);
-                if (crc != null)
-                    crc.AddBits(scfsi, 2);
+                Scfsi = stream.GetBits(2);
+                crc?.AddBits(Scfsi, 2);
             }
-            if (channel2_allocation != 0)
+            if (Channel2Allocation != 0)
             {
-                channel2_scfsi = stream.GetBits(2);
-                if (crc != null)
-                    crc.AddBits(channel2_scfsi, 2);
+                Channel2Scfsi = stream.GetBits(2);
+                crc?.AddBits(Channel2Scfsi, 2);
             }
         }
 
-        /**
-         *
-         */
-        public new void ReadScalefactor(Bitstream stream, Header header)
+        public override void ReadScalefactor(Bitstream stream, Header header)
         {
             base.ReadScalefactor(stream, header);
-            if (channel2_allocation != 0)
+            if (Channel2Allocation != 0)
             {
-                switch (channel2_scfsi)
+                switch (Channel2Scfsi)
                 {
                     case 0:
-                        channel2_scalefactor1 = scalefactors[stream.GetBits(6)];
-                        channel2_scalefactor2 = scalefactors[stream.GetBits(6)];
-                        channel2_scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor1 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor2 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
 
                     case 1:
-                        channel2_scalefactor1 = channel2_scalefactor2 =
+                        Channel2Scalefactor1 = Channel2Scalefactor2 =
                                 scalefactors[stream.GetBits(6)];
-                        channel2_scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
 
                     case 2:
-                        channel2_scalefactor1 = channel2_scalefactor2 =
-                                channel2_scalefactor3 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor1 = Channel2Scalefactor2 =
+                                Channel2Scalefactor3 = scalefactors[stream.GetBits(6)];
                         break;
 
                     case 3:
-                        channel2_scalefactor1 = scalefactors[stream.GetBits(6)];
-                        channel2_scalefactor2 = channel2_scalefactor3 =
+                        Channel2Scalefactor1 = scalefactors[stream.GetBits(6)];
+                        Channel2Scalefactor2 = Channel2Scalefactor3 =
                                 scalefactors[stream.GetBits(6)];
                         break;
                 }
-                PrepareSampleReading(header, channel2_allocation, 1,
-                        channel2_factor, channel2_codelength, channel2_c,
-                        channel2_d);
+                PrepareSampleReading(header, Channel2Allocation, 1,
+                        Channel2Factor, Channel2Codelength, Channel2C,
+                        Channel2D);
             }
         }
 
-        /**
-         *
-         */
-        public new bool ReadSampledata(Bitstream stream)
+        public override bool ReadSampledata(Bitstream stream)
         {
             bool returnvalue = base.ReadSampledata(stream);
 
-            if (channel2_allocation != 0)
-                if (groupingtable[1] != null)
+            if (Channel2Allocation != 0)
+                if (Groupingtable[1] != null)
                 {
-                    int samplecode = stream.GetBits(channel2_codelength[0]);
+                    int samplecode = stream.GetBits(Channel2Codelength[0]);
                     // create requantized samples:
                     samplecode += samplecode << 1;
 
-                    float[] target = channel2_samples;
-                    float[] source = groupingtable[1]!;
+                    float[] target = Channel2Samples;
+                    float[] source = Groupingtable[1]!;
                     int tmp = 0;
                     int temp = samplecode;
                     target[tmp] = source[temp];
@@ -957,39 +895,36 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
                 }
                 else
                 {
-                    channel2_samples[0] = (float)((stream.GetBits(channel2_codelength[0])) *
-                            channel2_factor[0] - 1.0);
-                    channel2_samples[1] = (float)((stream.GetBits(channel2_codelength[0])) *
-                            channel2_factor[0] - 1.0);
-                    channel2_samples[2] = (float)((stream.GetBits(channel2_codelength[0])) *
-                            channel2_factor[0] - 1.0);
+                    Channel2Samples[0] = (float)(stream.GetBits(Channel2Codelength[0]) *
+                            Channel2Factor[0] - 1.0);
+                    Channel2Samples[1] = (float)(stream.GetBits(Channel2Codelength[0]) *
+                            Channel2Factor[0] - 1.0);
+                    Channel2Samples[2] = (float)(stream.GetBits(Channel2Codelength[0]) *
+                            Channel2Factor[0] - 1.0);
                 }
             return returnvalue;
         }
 
-        /**
-         *
-         */
-        public new bool PutNextSample(int channels, SynthesisFilter filter1, SynthesisFilter filter2)
+        public override bool PutNextSample(int channels, SynthesisFilter filter1, SynthesisFilter filter2)
         {
             bool returnvalue = base.PutNextSample(channels, filter1, filter2);
-            if ((channel2_allocation != 0) && (channels != OutputChannels.LEFT_CHANNEL))
+            if (Channel2Allocation != 0 && channels != OutputChannels.LEFT_CHANNEL)
             {
-                float sample = channel2_samples[samplenumber - 1];
+                float sample = Channel2Samples[Samplenumber - 1];
 
-                if (groupingtable[1] == null)
-                    sample = (sample + channel2_d[0]) * channel2_c[0];
+                if (Groupingtable[1] == null)
+                    sample = (sample + Channel2D[0]) * Channel2C[0];
 
-                if (groupnumber <= 4)
-                    sample *= channel2_scalefactor1;
-                else if (groupnumber <= 8)
-                    sample *= channel2_scalefactor2;
+                if (Groupnumber <= 4)
+                    sample *= Channel2Scalefactor1;
+                else if (Groupnumber <= 8)
+                    sample *= Channel2Scalefactor2;
                 else
-                    sample *= channel2_scalefactor3;
+                    sample *= Channel2Scalefactor3;
                 if (channels == OutputChannels.BOTH_CHANNELS)
-                    filter2.InputSample(sample, subbandnumber);
+                    filter2.InputSample(sample, Subbandnumber);
                 else
-                    filter1.InputSample(sample, subbandnumber);
+                    filter1.InputSample(sample, Subbandnumber);
             }
             return returnvalue;
         }

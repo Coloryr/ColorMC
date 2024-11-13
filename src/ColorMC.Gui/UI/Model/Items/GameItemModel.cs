@@ -105,7 +105,7 @@ public partial class GameItemModel : GameModel
         _top = top;
         _group = obj.GroupName;
         LoadIcon();
-        IsStar = GameManager.IsStar(obj.UUID);
+        IsStar = GameManager.IsStar(obj);
     }
 
     partial void OnIsStarChanged(bool value)

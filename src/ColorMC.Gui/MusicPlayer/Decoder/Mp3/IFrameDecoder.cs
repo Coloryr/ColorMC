@@ -1,9 +1,9 @@
-﻿namespace ColorMC.Gui.Player.Decoder.Mp3;
+﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public interface IFrameDecoder
 {
-    /**
-     * Decodes one frame of MPEG audio.
-     */
+    /// <summary>
+    /// Decodes one frame of MPEG audio.
+    /// </summary>
     void DecodeFrame();
 }

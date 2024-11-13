@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.Player.Decoder.Mp3;
+﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public abstract class Obuffer
 {
@@ -26,11 +26,11 @@ public abstract class Obuffer
     /**
      * Clip Sample to 16 Bits
      */
-    private short Clip(float sample)
+    private static short Clip(float sample)
     {
-        return (short)((sample > 32767.0f) ? 32767 :
-                ((sample < -32768.0f) ? -32768 :
-                        (short)sample));
+        return (short)(sample > 32767.0f ? 32767 :
+                sample < -32768.0f ? -32768 :
+                        (short)sample);
     }
 
     /**

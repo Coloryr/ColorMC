@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.Player.Decoder.Mp3;
+﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
 public static class OutputChannels
 {
@@ -21,7 +21,5 @@ public static class OutputChannels
      * Flag to indicate output is mono.
      */
     public const int DOWNMIX_CHANNELS = 3;
-
-
 }
 
