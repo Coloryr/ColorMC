@@ -26,6 +26,13 @@ public partial class MainModel
     private int newsPage = 0;
 
     [RelayCommand]
+    public async Task ReloadNews()
+    {
+        newsPage = 0;
+        await LoadNews();
+    }
+
+    [RelayCommand]
     public async Task LoadNews()
     {
         IsHaveNews = true;
