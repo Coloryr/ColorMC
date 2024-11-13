@@ -126,7 +126,7 @@ public static class FabricAPI
             var list1 = new List<string>();
             foreach (var item in list)
             {
-                list1.Add(item.version);
+                list1.Add(item.Version);
             }
 
             s_supportVersion = list1;

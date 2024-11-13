@@ -6,8 +6,8 @@ public record FabricMetaObj
 {
     public record GameObj
     {
-        [JsonProperty("game")]
-        public string version { get; set; }
+        [JsonProperty("version")]
+        public string Version { get; set; }
         //public bool stable { get; set; }
     }
     //public record Mappings
