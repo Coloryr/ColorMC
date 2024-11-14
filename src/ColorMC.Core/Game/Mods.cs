@@ -586,8 +586,12 @@ public static class Mods
                 mod.Version = obj1["version"]?.ToString();
                 mod.Url = obj1["contact"]?["homepage"]?.ToString();
 
-                var side = obj1["environment"]!.ToString().ToLower();
-                if (side == "*")
+                var side = obj1["environment"]?.ToString().ToLower();
+                if (side == null)
+                {
+                    mod.Side = SideType.None;
+                }
+                else if (side == "*")
                 {
                     mod.Side = SideType.Both;
                 }

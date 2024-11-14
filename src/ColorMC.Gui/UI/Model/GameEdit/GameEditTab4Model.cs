@@ -131,19 +131,6 @@ public partial class GameEditModel : IModEdit
         LoadMods();
     }
 
-    private void LoadSetting()
-    {
-        _setting = GameGuiSetting.ReadConfig(_obj);
-#pragma warning disable MVVMTK0034
-        _displayModText = _setting.Mod.EnableText;
-        _displayModId = _setting.Mod.EnableModId;
-        _displayModName = _setting.Mod.EnableName;
-        _displayModVersion = _setting.Mod.EnableVersion;
-        _displayModLoader = _setting.Mod.EnableLoader;
-        _displayModSide = _setting.Mod.EnableSide;
-#pragma warning restore MVVMTK0034
-    }
-
     private async void DependTestMod()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info15"));
@@ -532,21 +519,30 @@ public partial class GameEditModel : IModEdit
                 case 4:
                     foreach (var item in _modItems)
                     {
-                        if (item.Enable != true)
+                        if (item.Enable)
                         {
-                            continue;
+                            ModList.Add(item);
                         }
-                        ModList.Add(item);
+                        
                     }
                     break;
                 case 5:
                     foreach (var item in _modItems)
                     {
-                        if (item.Enable != false)
+                        if (!item.Enable)
                         {
-                            continue;
+                            ModList.Add(item);
                         }
-                        ModList.Add(item);
+                       
+                    }
+                    break;
+                case 6:
+                    foreach (var item in _modItems)
+                    {
+                        if (item.IsNew)
+                        {
+                            ModList.Add(item);
+                        }
                     }
                     break;
             }

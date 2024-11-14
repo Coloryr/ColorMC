@@ -81,6 +81,7 @@ public static class LanguageBinding
             "modid",
             App.Lang("GameEditWindow.Tab4.Text16"),
             App.Lang("GameEditWindow.Tab4.Text17"),
+            App.Lang("GameEditWindow.Tab4.Text18"),
         ];
     }
 
