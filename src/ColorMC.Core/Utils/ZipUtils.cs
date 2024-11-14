@@ -64,15 +64,13 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             {
                 _now++;
                 ZipUpdate?.Invoke(Path.GetFileName(file), _now, _size);
-                using var fs = PathHelper.OpenRead(file)!;
+                var buffer = PathHelper.ReadByte(file)!;
 
-                byte[] buffer = new byte[fs.Length];
-                await fs.ReadAsync(buffer);
                 string tempfile = file[(staticFile.LastIndexOf("\\") + 1)..];
                 var entry = new ZipEntry(tempfile)
                 {
                     DateTime = DateTime.Now,
-                    Size = fs.Length
+                    Size = buffer.Length
                 };
                 crc.Reset();
                 crc.Update(buffer);
@@ -113,15 +111,12 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             {
                 _now++;
                 ZipUpdate?.Invoke(item, _now, _size);
-                using var fs = PathHelper.OpenRead(item)!;
-
-                byte[] buffer = new byte[fs.Length];
-                await fs.ReadAsync(buffer);
+                var buffer = PathHelper.ReadByte(item)!;
 
                 var entry = new ZipEntry(tempfile)
                 {
                     DateTime = DateTime.Now,
-                    Size = fs.Length
+                    Size = buffer.Length
                 };
                 crc.Reset();
                 crc.Update(buffer);

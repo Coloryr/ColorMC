@@ -7,6 +7,7 @@ using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -140,7 +141,7 @@ public partial class MainModel
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
 
-        DialogHost.Show(this, "MainCon");
+        DialogHost.Show(this, MainControl.DialogName);
 
         GroupItem = obj.Obj.GroupName;
 
@@ -154,7 +155,7 @@ public partial class MainModel
     public async void EditGroup(GameItemModel obj)
     {
         await Set(obj);
-        DialogHost.Close("MainCon");
+        DialogHost.Close(MainControl.DialogName);
 
         if (_isCancel)
         {

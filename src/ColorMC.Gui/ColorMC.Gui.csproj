@@ -339,14 +339,14 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="DialogHost.Avalonia" Version="0.8.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Silk.NET.OpenAL" Version="2.21.0" />
-    <PackageReference Include="Silk.NET.SDL" Version="2.21.0" />
-    <PackageReference Include="SkiaSharp" Version="2.88.8" />
+    <PackageReference Include="Silk.NET.OpenAL" Version="2.22.0" />
+    <PackageReference Include="Silk.NET.SDL" Version="2.22.0" />
+    <PackageReference Include="SkiaSharp" Version="2.88.9" />
 	  
 	<PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
 	<PackageReference Include="DotNetty.Common" Version="0.7.6" />
 	<PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
-	<PackageReference Include="System.Text.Json" Version="8.0.5" />
+	<PackageReference Include="System.Text.Json" Version="9.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />

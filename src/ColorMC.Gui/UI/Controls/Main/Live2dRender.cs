@@ -123,12 +123,12 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "ModelChange")
+        if (e.PropertyName == MainModel.ModelChangeName)
         {
             _change = true;
             Dispatcher.UIThread.Post(RequestNextFrameRendering);
         }
-        else if (e.PropertyName == "ModelDelete")
+        else if (e.PropertyName == MainModel.ModelDeleteName)
         {
             _delete = true;
         }

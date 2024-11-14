@@ -34,12 +34,12 @@ public static class ColorMCGui
 
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
 
-    public static Func<Control> PhoneGetSetting { get; set; }
-    public static Func<FrpType, string> PhoneGetFrp { get; set; }
+    public static Func<Control>? PhoneGetSetting { get; set; }
+    public static Func<FrpType, string>? PhoneGetFrp { get; set; }
     /// <summary>
     /// 获取一个空闲端口
     /// </summary>
-    public static Func<int> PhoneGetFreePort { get; set; }
+    public static Func<int>? PhoneGetFreePort { get; set; }
 
     public static bool IsAot { get; private set; }
     public static bool IsMin { get; private set; }

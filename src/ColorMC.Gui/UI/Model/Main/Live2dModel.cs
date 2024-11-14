@@ -5,6 +5,11 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class MainModel
 {
+    public const string ModelChangeName = "ModelChange";
+    public const string ModelChangeDoneName = "ModelChangeDone";
+    public const string ModelDeleteName = "ModelDelete";
+    public const string ModelTextName = "ModelText";
+
     [ObservableProperty]
     private int _live2dWidth = 300;
     [ObservableProperty]
@@ -25,7 +30,7 @@ public partial class MainModel
     /// </summary>
     public void ChangeModel()
     {
-        OnPropertyChanged("ModelChange");
+        OnPropertyChanged(ModelChangeName);
     }
 
     /// <summary>
@@ -33,7 +38,7 @@ public partial class MainModel
     /// </summary>
     public void ChangeModelDone()
     {
-        OnPropertyChanged("ModelChangeDone");
+        OnPropertyChanged(ModelChangeDoneName);
     }
 
     /// <summary>
@@ -41,7 +46,7 @@ public partial class MainModel
     /// </summary>
     public void DeleteModel()
     {
-        OnPropertyChanged("ModelDelete");
+        OnPropertyChanged(ModelDeleteName);
     }
 
     /// <summary>
@@ -51,6 +56,6 @@ public partial class MainModel
     public void ShowMessage(string message)
     {
         Message = message;
-        OnPropertyChanged("ModelText");
+        OnPropertyChanged(ModelTextName);
     }
 }

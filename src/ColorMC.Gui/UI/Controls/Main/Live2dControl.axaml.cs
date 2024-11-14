@@ -67,7 +67,7 @@ public partial class Live2dControl : UserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "ModelText")
+        if (e.PropertyName == MainModel.ModelTextName)
         {
             Dispatcher.UIThread.Post(() =>
             {
@@ -77,7 +77,7 @@ public partial class Live2dControl : UserControl
                 ShowMessage();
             });
         }
-        else if (e.PropertyName == "ModelChangeDone")
+        else if (e.PropertyName == MainModel.ModelChangeDoneName)
         {
             if (_render.HaveModel)
             {
@@ -90,7 +90,7 @@ public partial class Live2dControl : UserControl
                 _renderTimer.Pause = true;
             }
         }
-        else if (e.PropertyName == "Render")
+        else if (e.PropertyName == nameof(MainModel.Render))
         {
             var model = (sender as MainModel)!;
             if (!model.Render)
@@ -102,7 +102,7 @@ public partial class Live2dControl : UserControl
                 _renderTimer.Pause = false;
             }
         }
-        else if (e.PropertyName == "LowFps")
+        else if (e.PropertyName == nameof(MainModel.LowFps))
         {
             var model = (sender as MainModel)!;
             _renderTimer.LowFps = model.LowFps;

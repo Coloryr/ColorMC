@@ -23,13 +23,15 @@ public partial class MainModel
     [ObservableProperty]
     private Bitmap? _newsImage;
 
-    private int newsPage = 0;
+    private int _newsPage = 0;
 
     [RelayCommand]
     public async Task ReloadNews()
     {
-        newsPage = 0;
+        Model.Progress(App.Lang("UserWindow.Info1"));
+        _newsPage = 0;
         await LoadNews();
+        Model.ProgressClose();
     }
 
     [RelayCommand]
@@ -42,12 +44,12 @@ public partial class MainModel
         var temp = NewsImage;
         NewsImage = null;
         temp?.Dispose();
-        var data = await WebBinding.LoadNews(newsPage++);
+        var data = await WebBinding.LoadNews(_newsPage++);
         IsLoadNews = false;
         if (data == null)
         {
             IsHaveNews = false;
-            Model.Notify("News加载失败");
+            Model.Notify(App.Lang("MainWindow.Error9"));
             return;
         }
 
@@ -71,10 +73,10 @@ public partial class MainModel
     [RelayCommand]
     public async Task NewsNextPage()
     {
-        var data = await WebBinding.LoadNews(newsPage++);
+        var data = await WebBinding.LoadNews(_newsPage++);
         if (data == null)
         {
-            Model.Notify("News加载失败");
+            Model.Notify(App.Lang("MainWindow.Error9"));
             return;
         }
 
