@@ -84,6 +84,7 @@
 	"MainWindow.Error6": "至少登录一个正版账户才能使用映射功能",
 	"MainWindow.Error7": "未知用户类型",
 	"MainWindow.Error8": "{0}\n是否要重新登录账户",
+	"MainWindow.Error9": "News加载失败",
 	"UserWindow.Title": "用户列表",
 	"UserWindow.Text2": "密码",
 	"UserWindow.Text3": "账户类型",

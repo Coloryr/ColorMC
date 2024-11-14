@@ -391,4 +391,16 @@ public static class PathHelper
 
         return builder.ToString();
     }
+
+    public static byte[]? ReadByte(string local)
+    {
+        using var stream = OpenRead(local);
+        if (stream == null)
+        {
+            return null;
+        }
+        using var stream1 = new MemoryStream();
+        stream.CopyTo(stream1);
+        return stream1.ToArray();
+    }
 }
