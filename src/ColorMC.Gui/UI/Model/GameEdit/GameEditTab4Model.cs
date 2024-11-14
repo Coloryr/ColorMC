@@ -264,11 +264,26 @@ public partial class GameEditModel : IModEdit
             return;
         }
 
+        bool error = false;
+
         items.ToList().ForEach(item =>
         {
-            GameBinding.DeleteMod(item.Obj);
-            ModList.Remove(item);
+            try
+            {
+                GameBinding.DeleteMod(item.Obj);
+                ModList.Remove(item);
+            }
+            catch
+            {
+                error = true;
+            }
         });
+
+        if (error)
+        {
+            Model.Show(App.Lang("GameEditWindow.Tab4.Error7"));
+            return;
+        }
 
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
     }
@@ -282,7 +297,15 @@ public partial class GameEditModel : IModEdit
             return;
         }
 
-        GameBinding.DeleteMod(item.Obj);
+        try
+        {
+            GameBinding.DeleteMod(item.Obj);
+        }
+        catch
+        {
+            Model.Show(App.Lang("GameEditWindow.Tab4.Error7"));
+            return;
+        }
         ModList.Remove(item);
 
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));

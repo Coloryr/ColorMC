@@ -546,6 +546,7 @@
 	"GameEditWindow.Tab4.Error4": "有 {0} 个模组标记失败",
 	"GameEditWindow.Tab4.Error5": "这个模组没有标记，无法提供在线下载",
 	"GameEditWindow.Tab4.Error6": "游戏运行中，无法修改状态",
+	"GameEditWindow.Tab4.Error7": "模组删除失败",
 	"GameEditWindow.Tab5.Text1": "备份文件夹",
 	"GameEditWindow.Tab5.Text2": "还原地图备份",
 	"GameEditWindow.Tab5.Text3": "地图编辑器",
