@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -196,5 +197,11 @@ public partial class GameLogControl : BaseUserControl
     private void TextEditor1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         (DataContext as GameLogModel)?.SetNotAuto();
+    }
+
+    public void ReloadTitle()
+    {
+        Title = string.Format(App.Lang("GameLogWindow.Title"), _obj.Name);
+        Window.SetTitle(Title);
     }
 }

@@ -88,7 +88,7 @@ public static class ImageManager
                 Logs.Error(string.Format(App.Lang("ImageManager.Error1"), file), e);
             }
         }
-        if (file1 != null || !File.Exists(file1))
+        if (file1 != null && File.Exists(file1))
         {
             try
             {

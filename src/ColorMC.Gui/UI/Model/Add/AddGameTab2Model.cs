@@ -103,7 +103,7 @@ public partial class AddGameModel
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
         }, GameRequest, GameOverwirte, (size, now) =>
         {
-            Model.ProgressUpdate((double)now / size);
+            Model.ProgressUpdate((double)now / size * 100);
         }, PackState);
         Model.ProgressClose();
         if (!res.State)

@@ -194,24 +194,28 @@ public static class ModPackHelper
 
         var list1 = new List<DownloadItemObj>();
 
+        int b = 0;
+
         if (info3 != null)
         {
             var addlist = new List<CurseForgePackObj.FilesObj>();
             var removelist = new List<CurseForgePackObj.FilesObj>();
 
-            CurseForgePackObj.FilesObj[] temp1 = [.. info.Files];
+            CurseForgePackObj.FilesObj?[] temp1 = [.. info.Files];
             CurseForgePackObj.FilesObj?[] temp2 = [.. info3.Files];
 
-            foreach (var item in temp1)
+            for (int index1 = 0; index1 < temp1.Length; index1++)
             {
-                for (int a = 0; a < temp2.Length; a++)
+                var item = temp1[index1];
+                for (int index2 = 0; index2 < temp2.Length; index2++)
                 {
-                    var item1 = temp2[a];
+                    var item1 = temp2[index2];
                     if (item1 == null)
                         continue;
-                    if (item.ProjectID == item1.ProjectID)
+                    if (item!.ProjectID == item1.ProjectID)
                     {
-                        temp2[a] = null;
+                        temp1[index1] = null;
+                        temp2[index2] = null;
                         if (item.FileID != item1.FileID)
                         {
                             addlist.Add(item1);
@@ -222,11 +226,19 @@ public static class ModPackHelper
                 }
             }
 
-            foreach (var item in temp2)
+            foreach (var item in temp1)
             {
                 if (item != null)
                 {
                     addlist.Add(item);
+                }
+            }
+
+            foreach (var item in temp2)
+            {
+                if (item != null)
+                {
+                    removelist.Add(item);
                 }
             }
 
@@ -236,6 +248,11 @@ public static class ModPackHelper
                 {
                     PathHelper.Delete(Path.GetFullPath($"{path}/{mod.Path}/{mod.File}"));
                 }
+            }
+
+            if (addlist.Count > 0)
+            {
+                arg.Update?.Invoke(addlist.Count, 0);
             }
 
             foreach (var item in addlist)
@@ -252,8 +269,10 @@ public static class ModPackHelper
                 list1.Add(item1);
                 if (path1.FileType == FileType.Mod)
                 {
-                    arg.Game.Mods.Add(modid, res.Data.MakeModInfo(path1.Name));
+                    arg.Game.Mods.TryAdd(modid, res.Data.MakeModInfo(path1.Name));
                 }
+
+                arg.Update?.Invoke(addlist.Count, ++b);
             }
         }
         else

@@ -303,10 +303,7 @@ public partial class GameEditModel
 
                 Model.Progress(App.Lang("GameEditWindow.Tab1.Info8"));
                 var item = list[0];
-                res = await GameBinding.ModPackUpdate(_obj, item, (size, now) =>
-                {
-                    Model.ProgressUpdate((double)now / size);
-                }, PackState);
+                res = await GameBinding.ModPackUpgrade(_obj, item, ProgressUpdate, PackState);
                 Model.ProgressClose();
                 if (!res)
                 {
@@ -345,10 +342,7 @@ public partial class GameEditModel
 
                 Model.Progress(App.Lang("GameEditWindow.Tab1.Info8"));
                 var item = list.Data[0];
-                res = await GameBinding.ModPackUpdate(_obj, item, (size, now) =>
-                {
-                    Model.ProgressUpdate((double)now / size);
-                }, PackState);
+                res = await GameBinding.ModPackUpgrade(_obj, item, ProgressUpdate, PackState);
                 Model.ProgressClose();
                 if (!res)
                 {
@@ -358,6 +352,11 @@ public partial class GameEditModel
                 {
                     Model.Notify(App.Lang("GameEditWindow.Tab1.Info7"));
                     FID = item.Id.ToString();
+                    res = await Model.ShowWait(string.Format(App.Lang("GameEditWindow.Tab1.Info17"), item.DisplayName));
+                    if (res)
+                    {
+                        GameBinding.SetGameName(_obj, item.DisplayName);
+                    }
                 }
             }
         }
@@ -668,15 +667,31 @@ public partial class GameEditModel
         }
     }
 
+    private async void Rename()
+    {
+        var (Cancel, Text1) = await Model.ShowEdit(App.Lang("MainWindow.Info23"), _obj.Name);
+        if (Cancel)
+        {
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(Text1))
+        {
+            Model.Show(App.Lang("MainWindow.Error3"));
+            return;
+        }
+
+        GameBinding.SetGameName(_obj, Text1);
+    }
+
     private void GroupLoad()
     {
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
     }
 
-    public void GameStateChange()
+    private void ProgressUpdate(int size, int now)
     {
-        GameRun = GameManager.IsGameRun(_obj);
+        Model.ProgressUpdate((double)now / size * 100);
     }
 
     public async void GameLoad()

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
@@ -80,5 +81,11 @@ public partial class GameExportControl : MenuControl
     {
         var icon = ImageManager.GetGameIcon(_obj);
         return icon ?? ImageManager.GameIcon;
+    }
+
+    public void ReloadTitle()
+    {
+        Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
+        Window.SetTitle(Title);
     }
 }

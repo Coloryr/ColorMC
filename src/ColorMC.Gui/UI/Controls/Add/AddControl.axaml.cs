@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -59,7 +60,7 @@ public partial class AddControl : BaseUserControl
 
     public override void Closed()
     {
-        WindowManager.AddWindows.Remove(_obj.UUID);
+        WindowManager.GameAddWindows.Remove(_obj.UUID);
     }
 
     public override void Opened()
@@ -172,5 +173,11 @@ public partial class AddControl : BaseUserControl
     public void GoUpgrade(ICollection<ModUpgradeModel> list)
     {
         (DataContext as AddControlModel)!.Upgrade(list);
+    }
+
+    public void ReloadTitle()
+    {
+        Title = string.Format(App.Lang("AddWindow.Title"), _obj.Name);
+        Window.SetTitle(Title);
     }
 }

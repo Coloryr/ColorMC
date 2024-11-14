@@ -58,8 +58,8 @@ public static class WindowManager
     public static NetFrpControl? NetFrpWindow { get; set; }
 
     public static Dictionary<string, GameEditControl> GameEditWindows { get; } = [];
-    public static Dictionary<string, GameConfigEditControl> ConfigEditWindows { get; } = [];
-    public static Dictionary<string, AddControl> AddWindows { get; } = [];
+    public static Dictionary<string, GameConfigEditControl> GameConfigEditWindows { get; } = [];
+    public static Dictionary<string, AddControl> GameAddWindows { get; } = [];
     public static Dictionary<string, ServerPackControl> ServerPackWindows { get; } = [];
     public static Dictionary<string, GameLogControl> GameLogWindows { get; } = [];
     public static Dictionary<string, GameExportControl> GameExportWindows { get; } = [];
@@ -445,7 +445,7 @@ public static class WindowManager
     {
         var type1 = DownloadItemHelper.TestSourceType(obj1.PID, obj1.FID);
 
-        if (AddWindows.TryGetValue(obj.UUID, out var value))
+        if (GameAddWindows.TryGetValue(obj.UUID, out var value))
         {
             value.Window.TopActivate();
             value.GoFile(type1, obj1.PID!);
@@ -453,7 +453,7 @@ public static class WindowManager
         else
         {
             var con = new AddControl(obj);
-            AddWindows.Add(obj.UUID, con);
+            GameAddWindows.Add(obj.UUID, con);
             AWindow(con);
             con.GoFile(type1, obj1.PID!);
         }
@@ -461,7 +461,7 @@ public static class WindowManager
 
     public static Task ShowAddSet(GameSettingObj obj)
     {
-        if (AddWindows.TryGetValue(obj.UUID, out var value))
+        if (GameAddWindows.TryGetValue(obj.UUID, out var value))
         {
             value.Window.TopActivate();
             return value.GoSet();
@@ -469,7 +469,7 @@ public static class WindowManager
         else
         {
             var con = new AddControl(obj);
-            AddWindows.Add(obj.UUID, con);
+            GameAddWindows.Add(obj.UUID, con);
             AWindow(con);
             return con.GoSet();
         }
@@ -477,7 +477,7 @@ public static class WindowManager
 
     public static void ShowAddUpgade(GameSettingObj obj, ICollection<ModUpgradeModel> list)
     {
-        if (AddWindows.TryGetValue(obj.UUID, out var value))
+        if (GameAddWindows.TryGetValue(obj.UUID, out var value))
         {
             value.Window.TopActivate();
             value.GoUpgrade(list);
@@ -485,7 +485,7 @@ public static class WindowManager
         else
         {
             var con = new AddControl(obj);
-            AddWindows.Add(obj.UUID, con);
+            GameAddWindows.Add(obj.UUID, con);
             AWindow(con);
             con.GoUpgrade(list);
         }
@@ -493,7 +493,7 @@ public static class WindowManager
 
     public static void ShowAdd(GameSettingObj obj, FileType type)
     {
-        if (AddWindows.TryGetValue(obj.UUID, out var value))
+        if (GameAddWindows.TryGetValue(obj.UUID, out var value))
         {
             value.Window.TopActivate();
             value.GoTo(type);
@@ -501,7 +501,7 @@ public static class WindowManager
         else
         {
             var con = new AddControl(obj);
-            AddWindows.Add(obj.UUID, con);
+            GameAddWindows.Add(obj.UUID, con);
             AWindow(con);
             con.GoTo(type);
         }
@@ -537,14 +537,14 @@ public static class WindowManager
 
     public static void ShowConfigEdit(GameSettingObj obj)
     {
-        if (ConfigEditWindows.TryGetValue(obj.UUID, out var win1))
+        if (GameConfigEditWindows.TryGetValue(obj.UUID, out var win1))
         {
             win1.Window.TopActivate();
         }
         else
         {
             var con = new GameConfigEditControl(obj);
-            ConfigEditWindows.Add(obj.UUID, con);
+            GameConfigEditWindows.Add(obj.UUID, con);
             AWindow(con);
         }
     }
@@ -552,14 +552,14 @@ public static class WindowManager
     public static void ShowConfigEdit(WorldObj obj)
     {
         string key = obj.Game.UUID + ":" + obj.LevelName;
-        if (ConfigEditWindows.TryGetValue(key, out var win1))
+        if (GameConfigEditWindows.TryGetValue(key, out var win1))
         {
             win1.Window.TopActivate();
         }
         else
         {
             var con = new GameConfigEditControl(obj);
-            ConfigEditWindows.Add(key, con);
+            GameConfigEditWindows.Add(key, con);
             AWindow(con);
         }
     }
@@ -656,7 +656,7 @@ public static class WindowManager
         {
             Dispatcher.UIThread.Post(win5.Window.Close);
         }
-        if (AddWindows.TryGetValue(obj.UUID, out var win1))
+        if (GameAddWindows.TryGetValue(obj.UUID, out var win1))
         {
             Dispatcher.UIThread.Post(win1.Window.Close);
         }
@@ -672,7 +672,7 @@ public static class WindowManager
         {
             Dispatcher.UIThread.Post(win4.Window.Close);
         }
-        foreach (var item in ConfigEditWindows)
+        foreach (var item in GameConfigEditWindows)
         {
             if (item.Key.StartsWith(obj.UUID))
             {
@@ -802,11 +802,11 @@ public static class WindowManager
         {
             (item.GetVisualRoot() as Window)?.Close();
         }
-        foreach (var item in ConfigEditWindows.Values)
+        foreach (var item in GameConfigEditWindows.Values)
         {
             (item.GetVisualRoot() as Window)?.Close();
         }
-        foreach (var item in AddWindows.Values)
+        foreach (var item in GameAddWindows.Values)
         {
             (item.GetVisualRoot() as Window)?.Close();
         }
