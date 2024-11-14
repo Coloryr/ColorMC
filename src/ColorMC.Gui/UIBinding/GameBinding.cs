@@ -1517,6 +1517,30 @@ public static class GameBinding
         obj.Save();
 
         WindowManager.MainWindow?.LoadMain();
+        if (WindowManager.GameEditWindows.TryGetValue(obj.UUID, out var window))
+        {
+            window.ReloadTitle();
+        }
+        if (WindowManager.GameExportWindows.TryGetValue(obj.UUID, out var window1))
+        {
+            window1.ReloadTitle();
+        }
+        if (WindowManager.GameCloudWindows.TryGetValue(obj.UUID, out var window2))
+        {
+            window2.ReloadTitle();
+        }
+        if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var window3))
+        {
+            window3.ReloadTitle();
+        }
+        if (WindowManager.GameConfigEditWindows.TryGetValue(obj.UUID, out var window4))
+        {
+            window4.ReloadTitle();
+        }
+        if (WindowManager.GameAddWindows.TryGetValue(obj.UUID, out var window5))
+        {
+            window5.ReloadTitle();
+        }
     }
 
     /// <summary>
@@ -1757,7 +1781,7 @@ public static class GameBinding
     /// <param name="update"></param>
     /// <param name="update2"></param>
     /// <returns></returns>
-    public static Task<bool> ModPackUpdate(GameSettingObj obj, CurseForgeModObj.DataObj fid,
+    public static Task<bool> ModPackUpgrade(GameSettingObj obj, CurseForgeModObj.DataObj fid,
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
@@ -1778,7 +1802,7 @@ public static class GameBinding
     /// <param name="update"></param>
     /// <param name="update2"></param>
     /// <returns></returns>
-    public static Task<bool> ModPackUpdate(GameSettingObj obj, ModrinthVersionObj fid,
+    public static Task<bool> ModPackUpgrade(GameSettingObj obj, ModrinthVersionObj fid,
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {

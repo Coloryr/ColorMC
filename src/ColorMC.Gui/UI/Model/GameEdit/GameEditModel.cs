@@ -69,6 +69,11 @@ public partial class GameEditModel : MenuModel
                     },
                     new SubMenuItemModel()
                     {
+                        Name = App.Lang("MainWindow.Flyouts.Text10"),
+                        Func = Rename
+                    },
+                    new SubMenuItemModel()
+                    {
                         Name = App.Lang("GameEditWindow.Tab1.Text16"),
                         Func = Delete
                     }

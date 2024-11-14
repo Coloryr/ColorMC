@@ -196,17 +196,19 @@ public static class CurseForgeHelper
         {
             var res1 = res.Distinct(CurseForgeDataComparer.Instance);
 
+            var mods = new ConcurrentDictionary<string, ModInfoObj>(arg.Game.Mods);
+
             await Parallel.ForEachAsync(res1, async (item, cancel) =>
             {
                 var path = await GetItemPathAsync(arg.Game, item);
                 var item1 = item.MakeModDownloadObj(path.File);
                 list.Add(item1);
                 var modid = item.ModId.ToString();
-                arg.Game.Mods.Remove(modid);
+                mods.TryRemove(modid, out _);
 
                 if (path.FileType == FileType.Mod)
                 {
-                    arg.Game.Mods.Add(modid, item.MakeModInfo(path.Name));
+                    mods.TryAdd(modid, item.MakeModInfo(path.Name));
                 }
                 else if (path.FileType == FileType.World)
                 {
@@ -219,6 +221,12 @@ public static class CurseForgeHelper
                 now++;
                 arg.Update?.Invoke(size, now);
             });
+
+            arg.Game.Mods.Clear();
+            foreach (var item in mods)
+            {
+                arg.Game.Mods.Add(item.Key, item.Value);
+            }
         }
         else
         {

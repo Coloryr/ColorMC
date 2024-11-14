@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
@@ -138,7 +139,7 @@ public partial class GameConfigEditControl : BaseUserControl
         {
             key = model.Obj.UUID;
         }
-        WindowManager.ConfigEditWindows.Remove(key);
+        WindowManager.GameConfigEditWindows.Remove(key);
     }
 
     public override TopModel GenModel(BaseModel model)
@@ -159,5 +160,19 @@ public partial class GameConfigEditControl : BaseUserControl
     {
         var icon = ImageManager.GetGameIcon(_obj);
         return icon ?? ImageManager.GameIcon;
+    }
+
+    public void ReloadTitle()
+    {
+        if (_world == null)
+        {
+            Title = string.Format(App.Lang("ConfigEditWindow.Title"),
+                    _obj.Name);
+        }
+        else
+        {
+            Title = string.Format(App.Lang("ConfigEditWindow.Title1"),
+                    _world.Game.Name, _world.LevelName);
+        }
     }
 }

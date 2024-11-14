@@ -145,8 +145,9 @@ public partial class GameEditControl : MenuControl
         }
     }
 
-    public void Started()
+    public void ReloadTitle()
     {
-        (DataContext as GameEditModel)!.GameStateChange();
+        Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
+        Window.SetTitle(Title);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
@@ -69,5 +70,11 @@ public partial class GameCloudControl : MenuControl
             var model = (DataContext as GameCloudModel)!;
             model.NowView = 2;
         });
+    }
+
+    public void ReloadTitle()
+    {
+        Title = string.Format(App.Lang("GameCloudWindow.Title"), Obj.Name);
+        Window.SetTitle(Title);
     }
 }

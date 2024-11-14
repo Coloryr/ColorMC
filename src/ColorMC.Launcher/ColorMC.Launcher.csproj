@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>$(DotnetVersion)</TargetFramework>
 		<Nullable>enable</Nullable>
 		<TrimMode>link</TrimMode>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>

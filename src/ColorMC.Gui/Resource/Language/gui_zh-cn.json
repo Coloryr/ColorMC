@@ -458,6 +458,7 @@
 	"GameEditWindow.Tab1.Info14": "加载器类型已刷新",
 	"GameEditWindow.Tab1.Info15": "加载器版本已刷新",
 	"GameEditWindow.Tab1.Info16": "语言列表已刷新",
+	"GameEditWindow.Tab1.Info17": "是否将实例名字改为 {0}",
 	"GameEditWindow.Tab1.Error1": "游戏运行中，无法删除",
 	"GameEditWindow.Tab1.Error2": "更新失败",
 	"GameEditWindow.Tab1.Error3": "无法检测，没有版本信息",
