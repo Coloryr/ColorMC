@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -22,7 +23,13 @@ public partial class GameEditModel : MenuModel
             Phone = true;
         }
 
-        LoadSetting();
+        _setting = GameGuiSetting.ReadConfig(_obj);
+        _displayModText = _setting.Mod.EnableText;
+        _displayModId = _setting.Mod.EnableModId;
+        _displayModName = _setting.Mod.EnableName;
+        _displayModVersion = _setting.Mod.EnableVersion;
+        _displayModLoader = _setting.Mod.EnableLoader;
+        _displayModSide = _setting.Mod.EnableSide;
 
         _titleText = string.Format(App.Lang("GameEditWindow.Tab2.Text13"), _obj.Name);
 
