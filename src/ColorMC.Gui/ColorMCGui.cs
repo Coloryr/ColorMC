@@ -60,10 +60,9 @@ public static class ColorMCGui
         {
             if (e.Exception.InnerException is DBusException)
             {
-                Logs.Error(App.Lang("App.Error1"), e.Exception);
                 return;
             }
-            PathBinding.OpenFileWithExplorer(Logs.Crash(App.Lang("App.Error1"), e.Exception));
+            Logs.Error(App.Lang("App.Error1"), e.Exception);
         };
 
         RunType = RunType.Program;
