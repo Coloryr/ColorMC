@@ -21,7 +21,7 @@ public static class ModPackHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>是否升级完成</returns>
-    public static async Task<bool> UpdateModPack(UpdateCurseForgeModPackArg arg)
+    public static async Task<bool> UpgradeModPack(UpdateCurseForgeModPackArg arg)
     {
         arg.Data.FixDownloadUrl();
 
@@ -36,7 +36,7 @@ public static class ModPackHelper
         if (!res)
             return false;
 
-        res = await UpdateCurseForgeModPackAsync(new UpdateModPackArg
+        res = await UpgradeCurseForgeModPackAsync(new UpdateModPackArg
         {
             Game = arg.Game,
             Zip = item.Local,
@@ -59,7 +59,7 @@ public static class ModPackHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>是否升级完成</returns>
-    public static async Task<bool> UpdateModPack(UpdateModrinthModPackArg arg)
+    public static async Task<bool> UpgradeModPack(UpdateModrinthModPackArg arg)
     {
         var file = arg.Data.Files.FirstOrDefault(a => a.Primary) ?? arg.Data.Files[0];
         var item = new DownloadItemObj()
@@ -74,7 +74,7 @@ public static class ModPackHelper
         if (!res)
             return false;
 
-        res = await UpdateModrinthModPackAsync(new UpdateModPackArg
+        res = await UpgradeModrinthModPackAsync(new UpdateModPackArg
         {
             Game = arg.Game,
             Zip = item.Local,
@@ -97,7 +97,7 @@ public static class ModPackHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>是否升级完成</returns>
-    private static async Task<bool> UpdateCurseForgeModPackAsync(UpdateModPackArg arg)
+    private static async Task<bool> UpgradeCurseForgeModPackAsync(UpdateModPackArg arg)
     {
         using var zFile = new ZipFile(arg.Zip);
         using var stream1 = new MemoryStream();
@@ -495,7 +495,7 @@ public static class ModPackHelper
 
         arg.Update2?.Invoke(CoreRunState.Download);
 
-        await DownloadManager.StartAsync([.. list.List]);
+        await DownloadManager.StartAsync([.. list.List!]);
 
         arg.Update2?.Invoke(CoreRunState.DownloadDone);
 
@@ -507,7 +507,7 @@ public static class ModPackHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>升级结果</returns>
-    private static async Task<bool> UpdateModrinthModPackAsync(UpdateModPackArg arg)
+    private static async Task<bool> UpgradeModrinthModPackAsync(UpdateModPackArg arg)
     {
         using var zFile = new ZipFile(PathHelper.OpenRead(arg.Zip));
         using var stream1 = new MemoryStream();

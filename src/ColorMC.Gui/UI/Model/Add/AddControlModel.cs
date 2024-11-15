@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.McMod;
@@ -958,12 +960,16 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
             return;
         }
 
-        if (_now == FileType.Mod && Obj.Mods.ContainsKey(data.ID))
+        if (_now == FileType.Mod && Obj.Mods.TryGetValue(data.ID, out var mod))
         {
             var res1 = await Model.ShowWait(App.Lang("AddWindow.Info15"));
             if (!res1)
             {
                 return;
+            }
+            if (mod.Path == "mods")
+            {
+                GameBinding.DeleteMod(Obj, mod);
             }
         }
 

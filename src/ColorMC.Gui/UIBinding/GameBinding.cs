@@ -1785,7 +1785,7 @@ public static class GameBinding
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        return ModPackHelper.UpdateModPack(new UpdateCurseForgeModPackArg
+        return ModPackHelper.UpgradeModPack(new UpdateCurseForgeModPackArg
         {
             Data = fid,
             Game = obj,
@@ -1806,7 +1806,7 @@ public static class GameBinding
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        return ModPackHelper.UpdateModPack(new UpdateModrinthModPackArg
+        return ModPackHelper.UpgradeModPack(new UpdateModrinthModPackArg
         {
             Game = obj,
             Data = fid,
@@ -2656,5 +2656,11 @@ public static class GameBinding
     public static Task<List<DataPackObj>> GetWorldDataPackAsync(WorldObj world)
     {
         return world.GetDataPacksAsync();
+    }
+
+    public static void DeleteMod(GameSettingObj obj, ModInfoObj mod)
+    {
+        var file = Path.GetFullPath($"{obj.GetModsPath()}/{mod.File}");
+        PathHelper.Delete(file);
     }
 }
