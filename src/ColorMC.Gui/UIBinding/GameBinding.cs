@@ -595,6 +595,11 @@ public static class GameBinding
             }
 
             ConfigBinding.SetLastLaunch(obj.UUID);
+            var setting = GameGuiSetting.ReadConfig(obj);
+            if (setting.Log.Show)
+            {
+                WindowManager.ShowGameLog(obj);
+            }
         }
         else
         {
