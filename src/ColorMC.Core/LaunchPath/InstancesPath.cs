@@ -628,14 +628,7 @@ public static class InstancesPath
             game.DirName = game.Name;
 
             var dir = game.GetBasePath();
-            if (!await PathHelper.DeleteFilesAsync(new DeleteFilesArg
-            {
-                Local = dir,
-                Request = arg.Request
-            }))
-            {
-                return null;
-            }
+            await PathHelper.MoveToTrash(dir);
 
             try
             {
@@ -990,15 +983,11 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="request">操作请求</param>
     /// <returns>是否成功删除</returns>
-    public static Task<bool> Remove(this GameSettingObj obj, ColorMCCore.Request? request)
+    public static async Task<bool> Remove(this GameSettingObj obj, ColorMCCore.Request? request)
     {
         obj.RemoveFromGroup();
         PathHelper.Delete(obj.GetGameJsonFile());
-        return PathHelper.DeleteFilesAsync(new DeleteFilesArg
-        {
-            Local = obj.GetBasePath(),
-            Request = request
-        });
+        return await PathHelper.MoveToTrash(obj.GetBasePath());
     }
 
     /// <summary>
