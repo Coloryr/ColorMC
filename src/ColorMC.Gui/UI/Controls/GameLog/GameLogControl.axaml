@@ -33,6 +33,11 @@
                         IsChecked="{Binding IsAuto}"
                         OffContent="{setting:Localize GameLogWindow.Text2}"
                         OnContent="{setting:Localize GameLogWindow.Text2}" />
+                    <ToggleSwitch
+                        Margin="0,0,10,0"
+                        IsChecked="{Binding IsShow}"
+                        OffContent="{setting:Localize GameLogWindow.Text17}"
+                        OnContent="{setting:Localize GameLogWindow.Text17}" />
                     <ComboBox
                         MinWidth="200"
                         Margin="0,0,10,0"

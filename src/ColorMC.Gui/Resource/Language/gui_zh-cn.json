@@ -895,6 +895,7 @@
 	"GameLogWindow.Text14": "其他",
 	"GameLogWindow.Text15": "线程",
 	"GameLogWindow.Text16": "分组",
+	"GameLogWindow.Text17": "自动显示",
 	"GameLogWindow.Info1": "正在读取中",
 	"GameLogWindow.Info2": "读取失败",
 	"GameLogWindow.Info3": "游戏运行中...",

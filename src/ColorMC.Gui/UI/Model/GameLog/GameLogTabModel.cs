@@ -59,12 +59,14 @@ public partial class GameLogModel : GameModel
     private bool _enableDebug;
     [ObservableProperty]
     private bool _isFile;
+    [ObservableProperty]
+    private bool _isShow;
 
     public string Temp { get; private set; } = "";
 
-    private ConcurrentQueue<string> _queue = new();
+    private readonly ConcurrentQueue<string> _queue = new();
 
-    private GameGuiSettingObj _setting;
+    private readonly GameGuiSettingObj _setting;
 
     private List<GameLogItemObj> _logs;
     private readonly Thread _timer;
@@ -94,6 +96,7 @@ public partial class GameLogModel : GameModel
         _enableWarn = _setting.Log.EnableWarn;
         _isAuto = _setting.Log.Auto;
         _isWordWrap = _setting.Log.WordWrap;
+        _isShow = _setting.Log.Show;
     }
 
     async partial void OnFileChanged(string? value)
@@ -128,6 +131,12 @@ public partial class GameLogModel : GameModel
     partial void OnSelectCategoryChanged(string? value)
     {
         LoadLast1();
+    }
+
+    partial void OnIsShowChanged(bool value)
+    {
+        _setting.Log.Show = value;
+        GameGuiSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnIsAutoChanged(bool value)
