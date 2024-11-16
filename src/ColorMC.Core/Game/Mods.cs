@@ -90,6 +90,8 @@ public static class Mods
                 {
                     list.Add(new()
                     {
+                        ModId = "",
+                        Name = "",
                         Local = Path.GetFullPath(item.FullName),
                         Disable = item.Extension is ".disable" or ".disabled",
                         ReadFail = true,
@@ -381,8 +383,6 @@ public static class Mods
         bool istest = false;
         var mod = new ModObj()
         {
-            ModId = "",
-            Name = "",
             Loaders = [],
             Dependants = [],
             Author = []
@@ -392,67 +392,74 @@ public static class Mods
         var item1 = zFile.GetEntry("mcmod.info");
         if (item1 != null)
         {
-            using var stream1 = zFile.GetInputStream(item1);
-            using var stream2 = new MemoryStream();
-            await stream1.CopyToAsync(stream2);
-            var data = Encoding.UTF8.GetString(stream2.ToArray());
-            var obj1 = Parse(data);
-            JObject obj3;
-            if (obj1 is JArray array)
+            try
             {
-                obj3 = (array[0] as JObject)!;
+                using var stream1 = zFile.GetInputStream(item1);
+                using var stream2 = new MemoryStream();
+                await stream1.CopyToAsync(stream2);
+                var data = Encoding.UTF8.GetString(stream2.ToArray());
+                var obj1 = Parse(data);
+                JObject obj3;
+                if (obj1 is JArray array)
+                {
+                    obj3 = (array[0] as JObject)!;
+                }
+                else
+                {
+                    obj3 = (obj1["modList"]![0] as JObject)!;
+                }
+                if (obj3 != null)
+                {
+                    mod.Name = obj3["name"]!.ToString();
+                    mod.ModId = obj3["modid"]!.ToString();
+                    mod.Description = obj3["description"]?.ToString();
+                    mod.Version = obj3["version"]?.ToString();
+                    mod.Url = obj3["url"]?.ToString();
+                    mod.Loaders.Add(Loaders.Forge);
+                    mod.Side = SideType.None; //无法判断sideonly
+
+                    if (obj3.TryGetValue("authorList", out var value))
+                    {
+                        var list1 = value.ToObject<List<string>>()!;
+                        foreach (var item in list1)
+                        {
+                            mod.Author.Add(item);
+                        }
+                    }
+
+                    if (obj3.TryGetValue("dependants", out value))
+                    {
+                        var list1 = value.ToObject<List<string>>()!;
+                        foreach (var item in list1)
+                        {
+                            mod.Dependants.Add(item);
+                        }
+                    }
+
+                    if (obj3.TryGetValue("dependencies", out value))
+                    {
+                        var list1 = value.ToObject<List<string>>()!;
+                        foreach (var item in list1)
+                        {
+                            mod.Dependants.Add(item);
+                        }
+                    }
+
+                    if (obj3.TryGetValue("requiredMods", out value))
+                    {
+                        var list1 = value.ToObject<List<string>>()!;
+                        foreach (var item in list1)
+                        {
+                            mod.Dependants.Add(item);
+                        }
+                    }
+
+                    istest = true;
+                }
             }
-            else
+            catch
             {
-                obj3 = (obj1["modList"]![0] as JObject)!;
-            }
-            if (obj3 != null)
-            {
-                mod.Name = obj3["name"]!.ToString();
-                mod.ModId = obj3["modid"]!.ToString();
-                mod.Description = obj3["description"]?.ToString();
-                mod.Version = obj3["version"]?.ToString();
-                mod.Url = obj3["url"]?.ToString();
-                mod.Loaders.Add(Loaders.Forge);
-                mod.Side = SideType.None; //无法判断sideonly
-
-                if (obj3.TryGetValue("authorList", out var value))
-                {
-                    var list1 = value.ToObject<List<string>>()!;
-                    foreach (var item in list1)
-                    {
-                        mod.Author.Add(item);
-                    }
-                }
-
-                if (obj3.TryGetValue("dependants", out value))
-                {
-                    var list1 = value.ToObject<List<string>>()!;
-                    foreach (var item in list1)
-                    {
-                        mod.Dependants.Add(item);
-                    }
-                }
-
-                if (obj3.TryGetValue("dependencies", out value))
-                {
-                    var list1 = value.ToObject<List<string>>()!;
-                    foreach (var item in list1)
-                    {
-                        mod.Dependants.Add(item);
-                    }
-                }
-
-                if (obj3.TryGetValue("requiredMods", out value))
-                {
-                    var list1 = value.ToObject<List<string>>()!;
-                    foreach (var item in list1)
-                    {
-                        mod.Dependants.Add(item);
-                    }
-                }
-
-                istest = true;
+                
             }
         }
 
@@ -470,101 +477,108 @@ public static class Mods
             mod.Loaders.Add(neoforge ? Loaders.NeoForge : Loaders.Forge);
             if (!istest)
             {
-                using var stream1 = zFile.GetInputStream(item1);
-                using var stream = new MemoryStream();
-                await stream1.CopyToAsync(stream);
-                var model = Toml.Parse(stream.ToArray()).ToModel();
-                TomlTable? model2 = null;
-                if (model["mods"] is TomlArray array)
+                try
                 {
-                    model2 = array.FirstOrDefault() as TomlTable;
-                }
-                else if (model["mods"] is TomlTableArray model1)
-                {
-                    model2 = model1[0];
-                }
-                if (model2 == null)
-                {
-                    return null;
-                }
-                mod.ModId = model2["modId"].ToString()!;
-                mod.Name = model2["displayName"].ToString()!;
-                if (model2.TryGetValue("description", out var item2))
-                {
-                    mod.Description = item2 as string;
-                }
-                if (model2.TryGetValue("version", out item2))
-                {
-                    mod.Version = item2 as string;
-                }
-                if (model2.TryGetValue("authorList", out item2))
-                {
-                    var list = (item2 as string)!.ToStringList();
-                    foreach (var item3 in list)
+                    using var stream1 = zFile.GetInputStream(item1);
+                    using var stream = new MemoryStream();
+                    await stream1.CopyToAsync(stream);
+                    var model = Toml.Parse(stream.ToArray()).ToModel();
+                    TomlTable? model2 = null;
+                    if (model["mods"] is TomlArray array)
                     {
-                        mod.Author.Add(item3);
+                        model2 = array.FirstOrDefault() as TomlTable;
                     }
-                }
-                //forge 1.20
-                else if (model2.TryGetValue("authors", out item2))
-                {
-                    var list = (item2 as string)!.ToStringList();
-                    foreach (var item3 in list)
+                    else if (model["mods"] is TomlTableArray model1)
                     {
-                        mod.Author.Add(item3);
+                        model2 = model1[0];
                     }
-                }
-                if (model2.TryGetValue("displayURL", out item2))
-                {
-                    mod.Url = item2 as string;
-                }
-
-                //依赖项
-                if (model.TryGetValue("dependencies", out var model3) && model3 is TomlTable model4
-                    && model4.FirstOrDefault().Value is TomlTableArray model5)
-                {
-                    foreach (var item3 in model5)
+                    if (model2 == null)
                     {
-                        if (item3.TryGetValue("modId", out item2))
+                        return null;
+                    }
+                    mod.ModId = model2["modId"].ToString()!;
+                    mod.Name = model2["displayName"].ToString()!;
+                    if (model2.TryGetValue("description", out var item2))
+                    {
+                        mod.Description = item2 as string;
+                    }
+                    if (model2.TryGetValue("version", out item2))
+                    {
+                        mod.Version = item2 as string;
+                    }
+                    if (model2.TryGetValue("authorList", out item2))
+                    {
+                        var list = (item2 as string)!.ToStringList();
+                        foreach (var item3 in list)
                         {
-                            var modid = item2.ToString()!;
-                            if (modid == "minecraft" && item3.TryGetValue("side", out var item4))
+                            mod.Author.Add(item3);
+                        }
+                    }
+                    //forge 1.20
+                    else if (model2.TryGetValue("authors", out item2))
+                    {
+                        var list = (item2 as string)!.ToStringList();
+                        foreach (var item3 in list)
+                        {
+                            mod.Author.Add(item3);
+                        }
+                    }
+                    if (model2.TryGetValue("displayURL", out item2))
+                    {
+                        mod.Url = item2 as string;
+                    }
+
+                    //依赖项
+                    if (model.TryGetValue("dependencies", out var model3) && model3 is TomlTable model4
+                        && model4.FirstOrDefault().Value is TomlTableArray model5)
+                    {
+                        foreach (var item3 in model5)
+                        {
+                            if (item3.TryGetValue("modId", out item2))
                             {
-                                var temp = item4.ToString()!.ToLower();
-                                if (temp == "both")
+                                var modid = item2.ToString()!;
+                                if (modid == "minecraft" && item3.TryGetValue("side", out var item4))
                                 {
-                                    mod.Side = SideType.Both;
+                                    var temp = item4.ToString()!.ToLower();
+                                    if (temp == "both")
+                                    {
+                                        mod.Side = SideType.Both;
+                                    }
+                                    else if (temp == "client")
+                                    {
+                                        mod.Side = SideType.Client;
+                                    }
+                                    else if (temp == "server")
+                                    {
+                                        mod.Side = SideType.Server;
+                                    }
                                 }
-                                else if (temp == "client")
+                                else
                                 {
-                                    mod.Side = SideType.Client;
-                                }
-                                else if (temp == "server")
-                                {
-                                    mod.Side = SideType.Server;
-                                }
-                            }
-                            else
-                            {
-                                if (item3.TryGetValue("mandatory", out item4)
-                                    && item4?.ToString()?.ToLower() == "true")
-                                {
-                                    mod.Dependants.Add(modid);
-                                    continue;
-                                }
-                                if (item3.TryGetValue("type", out item4)
-                                    && item4?.ToString()?.ToLower() == "required")
-                                {
-                                    mod.Dependants.Add(modid);
-                                    continue;
+                                    if (item3.TryGetValue("mandatory", out item4)
+                                        && item4?.ToString()?.ToLower() == "true")
+                                    {
+                                        mod.Dependants.Add(modid);
+                                        continue;
+                                    }
+                                    if (item3.TryGetValue("type", out item4)
+                                        && item4?.ToString()?.ToLower() == "required")
+                                    {
+                                        mod.Dependants.Add(modid);
+                                        continue;
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                await CheckJarInJarAsync(mod, zFile);
-                istest = true;
+                    await CheckJarInJarAsync(mod, zFile);
+                    istest = true;
+                }
+                catch
+                { 
+                    
+                }
             }
         }
 
@@ -575,54 +589,61 @@ public static class Mods
             mod.Loaders.Add(Loaders.Fabric);
             if (!istest)
             {
-                using var stream1 = zFile.GetInputStream(item1);
-                using var stream = new MemoryStream();
-                await stream1.CopyToAsync(stream);
-                var data = Encoding.UTF8.GetString(stream.ToArray());
-                var obj1 = JObject.Parse(data);
-                mod.ModId = obj1["id"]!.ToString();
-                mod.Name = obj1["name"]!.ToString();
-                mod.Description = obj1["description"]?.ToString();
-                mod.Version = obj1["version"]?.ToString();
-                mod.Url = obj1["contact"]?["homepage"]?.ToString();
+                try
+                {
+                    using var stream1 = zFile.GetInputStream(item1);
+                    using var stream = new MemoryStream();
+                    await stream1.CopyToAsync(stream);
+                    var data = Encoding.UTF8.GetString(stream.ToArray());
+                    var obj1 = JObject.Parse(data);
+                    mod.ModId = obj1["id"]!.ToString();
+                    mod.Name = obj1["name"]!.ToString();
+                    mod.Description = obj1["description"]?.ToString();
+                    mod.Version = obj1["version"]?.ToString();
+                    mod.Url = obj1["contact"]?["homepage"]?.ToString();
 
-                var side = obj1["environment"]?.ToString().ToLower();
-                if (side == null)
-                {
-                    mod.Side = SideType.None;
-                }
-                else if (side == "*")
-                {
-                    mod.Side = SideType.Both;
-                }
-                else if (side == "client")
-                {
-                    mod.Side = SideType.Client;
-                }
-                else if (side == "server")
-                {
-                    mod.Side = SideType.Server;
-                }
-
-                if (obj1.TryGetValue("authors", out var list) && list is JArray array)
-                {
-                    foreach (var item in array.ToStringList())
+                    var side = obj1["environment"]?.ToString().ToLower();
+                    if (side == null)
                     {
-                        mod.Dependants.Add(item);
+                        mod.Side = SideType.None;
                     }
-                }
-
-                if (obj1.TryGetValue("depends", out var list1) && list1 is JObject array2)
-                {
-                    foreach (var item3 in array2)
+                    else if (side == "*")
                     {
-                        mod.Dependants.Add(item3.Key);
+                        mod.Side = SideType.Both;
                     }
+                    else if (side == "client")
+                    {
+                        mod.Side = SideType.Client;
+                    }
+                    else if (side == "server")
+                    {
+                        mod.Side = SideType.Server;
+                    }
+
+                    if (obj1.TryGetValue("authors", out var list) && list is JArray array)
+                    {
+                        foreach (var item in array.ToStringList())
+                        {
+                            mod.Dependants.Add(item);
+                        }
+                    }
+
+                    if (obj1.TryGetValue("depends", out var list1) && list1 is JObject array2)
+                    {
+                        foreach (var item3 in array2)
+                        {
+                            mod.Dependants.Add(item3.Key);
+                        }
+                    }
+
+                    await CheckJarInJarAsync(mod, zFile);
+
+                    istest = true;
                 }
-
-                await CheckJarInJarAsync(mod, zFile);
-
-                istest = true;
+                catch 
+                {
+                    
+                }
             }
         }
 
@@ -633,42 +654,49 @@ public static class Mods
             mod.Loaders.Add(Loaders.Quilt);
             if (!istest)
             {
-                using var stream1 = zFile.GetInputStream(item1);
-                using var stream = new MemoryStream();
-                await stream1.CopyToAsync(stream);
-                var data = Encoding.UTF8.GetString(stream.ToArray());
-                var obj1 = JObject.Parse(data);
-                if (obj1?["quilt_loader"] is not JObject obj4)
+                try
                 {
-                    return null;
-                }
-                mod.ModId = obj4["id"]!.ToString();
-                mod.Name = obj4["metadata"]!["name"]!.ToString();
-                mod.Description = obj4["metadata"]?["description"]?.ToString();
-                mod.Version = obj4["version"]?.ToString();
-                mod.Url = obj4["contact"]?["homepage"]?.ToString();
-                if (obj4["metadata"]?["contributors"] is JObject array)
-                {
-                    var list = array.ToStringList();
-                    foreach (var item in list)
+                    using var stream1 = zFile.GetInputStream(item1);
+                    using var stream = new MemoryStream();
+                    await stream1.CopyToAsync(stream);
+                    var data = Encoding.UTF8.GetString(stream.ToArray());
+                    var obj1 = JObject.Parse(data);
+                    if (obj1?["quilt_loader"] is not JObject obj4)
                     {
-                        mod.Author.Add(item);
+                        return null;
                     }
-                }
-
-                if (obj4["depends"] is JArray obj5)
-                {
-                    foreach (var item3 in obj5)
+                    mod.ModId = obj4["id"]!.ToString();
+                    mod.Name = obj4["metadata"]!["name"]!.ToString();
+                    mod.Description = obj4["metadata"]?["description"]?.ToString();
+                    mod.Version = obj4["version"]?.ToString();
+                    mod.Url = obj4["contact"]?["homepage"]?.ToString();
+                    if (obj4["metadata"]?["contributors"] is JObject array)
                     {
-                        if (item3?["id"]?.ToString() is string str)
+                        var list = array.ToStringList();
+                        foreach (var item in list)
                         {
-                            mod.Dependants.Add(str);
+                            mod.Author.Add(item);
                         }
                     }
-                }
 
-                await CheckJarInJarAsync(mod, zFile);
-                istest = true;
+                    if (obj4["depends"] is JArray obj5)
+                    {
+                        foreach (var item3 in obj5)
+                        {
+                            if (item3?["id"]?.ToString() is string str)
+                            {
+                                mod.Dependants.Add(str);
+                            }
+                        }
+                    }
+
+                    await CheckJarInJarAsync(mod, zFile);
+                    istest = true;
+                }
+                catch
+                { 
+                    
+                }
             }
         }
 
