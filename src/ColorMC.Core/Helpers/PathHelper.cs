@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using System.Text;
+using ColorMC.Core.Hook;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 
@@ -9,6 +11,79 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class PathHelper
 {
+    /// <summary>
+    /// 将文件夹挪到回收站
+    /// </summary>
+    /// <param name="dir"></param>
+    public static Task<bool> MoveToTrash(string dir)
+    {
+        return Task.Run(() =>
+        {
+            try
+            {
+                if (SystemInfo.Os == OsType.Windows)
+                {
+                    return Win32.MoveToTrash(dir);
+                }
+                else if (SystemInfo.Os == OsType.Linux)
+                {
+                    // 获取用户的主目录
+                    string home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    // 定义垃圾桶路径
+                    string trashPath = Path.Combine(home, ".local", "share", "Trash", "files");
+
+                    if (!Directory.Exists(trashPath))
+                    {
+                        Directory.CreateDirectory(trashPath);
+                    }
+
+                    // 生成唯一的文件名以避免冲突
+                    string fileName = Path.GetFileName(dir);
+                    string destPath = Path.Combine(trashPath, fileName);
+                    int count = 1;
+                    while (File.Exists(destPath) || Directory.Exists(destPath))
+                    {
+                        destPath = Path.Combine(trashPath, $"{fileName}_{count}");
+                        count++;
+                    }
+
+                    // 移动文件或文件夹到垃圾桶
+                    Directory.Move(dir, destPath);
+
+                    return true;
+                }
+                else if (SystemInfo.Os == OsType.MacOS)
+                {
+                    // AppleScript命令
+                    string appleScriptCommand = $"tell application \"Finder\" to delete POSIX file \"{dir}\"";
+
+                    // 使用bash执行AppleScript
+                    var processInfo = new ProcessStartInfo("bash", $"-c \"osascript -e '{appleScriptCommand}'\"")
+                    {
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    };
+
+                    using var process = new Process { StartInfo = processInfo };
+                    process.Start();
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+                    process.WaitForExit();
+
+                    return process.ExitCode == 0;
+                }
+            }
+            catch
+            {
+                
+            }
+
+            return false;
+        });
+    }
+
     /// <summary>
     /// 检查非法名字
     /// </summary>
