@@ -80,6 +80,10 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
+        if (ColorMCGui.IsClose)
+        {
+            return;
+        }
         if (e.PropertyName == BaseModel.InfoShow)
         {
             windowNotification.Show(new TextBlock()

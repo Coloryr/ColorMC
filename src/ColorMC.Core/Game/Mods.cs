@@ -471,6 +471,10 @@ public static class Mods
             //neoforge 1.20.5及以上
             item1 = zFile.GetEntry("META-INF/neoforge.mods.toml");
             neoforge = true;
+            if (item1 == null)
+            {
+                item1 = zFile.GetEntry("neoforge.mods.toml");
+            }
         }
         if (item1 != null)
         {
