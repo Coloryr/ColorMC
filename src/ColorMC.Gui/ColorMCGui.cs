@@ -99,6 +99,10 @@ public static class ColorMCGui
         }
         catch (Exception e)
         {
+            if (IsClose)
+            {
+                return;
+            }
             PathBinding.OpenFileWithExplorer(Logs.Crash("Gui Crash", e));
             App.Close();
         }
