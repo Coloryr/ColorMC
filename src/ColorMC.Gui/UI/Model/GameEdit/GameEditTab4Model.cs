@@ -436,16 +436,46 @@ public partial class GameEditModel : IModEdit
 
     private void LoadMod1()
     {
+        ModList.Clear();
+        switch (ModFilter)
+        {
+            case 4:
+                foreach (var item in _modItems)
+                {
+                    if (item.Enable)
+                    {
+                        ModList.Add(item);
+                    }
+
+                }
+                return;
+            case 5:
+                foreach (var item in _modItems)
+                {
+                    if (!item.Enable)
+                    {
+                        ModList.Add(item);
+                    }
+                }
+                return;
+            case 6:
+                foreach (var item in _modItems)
+                {
+                    if (item.IsNew)
+                    {
+                        ModList.Add(item);
+                    }
+                }
+                return;
+        }
         if (string.IsNullOrWhiteSpace(ModText))
         {
-            ModList.Clear();
             ModList.AddRange(_modItems);
         }
         else
         {
             string fil = ModText.ToLower();
             var args = fil.Split(',').ToList();
-            ModList.Clear();
             switch (ModFilter)
             {
                 case 0:
@@ -513,35 +543,6 @@ public partial class GameEditModel : IModEdit
                                 ModList.Add(item);
                                 break;
                             }
-                        }
-                    }
-                    break;
-                case 4:
-                    foreach (var item in _modItems)
-                    {
-                        if (item.Enable)
-                        {
-                            ModList.Add(item);
-                        }
-
-                    }
-                    break;
-                case 5:
-                    foreach (var item in _modItems)
-                    {
-                        if (!item.Enable)
-                        {
-                            ModList.Add(item);
-                        }
-
-                    }
-                    break;
-                case 6:
-                    foreach (var item in _modItems)
-                    {
-                        if (item.IsNew)
-                        {
-                            ModList.Add(item);
                         }
                     }
                     break;
