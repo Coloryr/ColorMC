@@ -39,7 +39,7 @@ public abstract class BaseUserControl : UserControl, ITopWindow
     {
         if (e.PropertyName == TopModel.WindowCloseName)
         {
-            Window.Close();
+            Window?.Close();
         }
     }
 
