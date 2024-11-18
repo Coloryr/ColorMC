@@ -355,7 +355,7 @@
                             Command="{Binding ColorReset}"
                             Content="{setting:Localize SettingWindow.Tab2.Text12}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text124}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </StackPanel>
                     <!--  RGB模式  -->
                     <ToggleSwitch

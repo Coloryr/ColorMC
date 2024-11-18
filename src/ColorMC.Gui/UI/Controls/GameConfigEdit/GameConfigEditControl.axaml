@@ -63,7 +63,7 @@
                             Content="{setting:Localize ConfigEditWindow.Text3}"
                             DockPanel.Dock="Right"
                             ToolTip.Tip="{setting:Localize ToolTip.Text41}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </panel:WrapPanelWithStretch>
                     <panel:WrapPanelWithStretch AutoMax="True">
                         <Button
@@ -75,7 +75,7 @@
                             Command="{Binding Open}"
                             Content="{setting:Localize Button.OpFile}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                         <Button
                             Width="100"
                             Height="35"
@@ -86,7 +86,7 @@
                             Content="{setting:Localize ConfigEditWindow.Text5}"
                             IsVisible="{Binding IsWorld}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text97}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                         <Button
                             Width="100"
                             Height="35"
@@ -97,7 +97,7 @@
                             Content="{setting:Localize ConfigEditWindow.Text6}"
                             IsVisible="{Binding IsWorld}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text98}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                         <Button
                             Width="100"
                             Height="35"
@@ -109,7 +109,7 @@
                             Content="{setting:Localize ConfigEditWindow.Text2}"
                             IsEnabled="{Binding IsEdit}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text40}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </panel:WrapPanelWithStretch>
                 </StackPanel>
             </Border>

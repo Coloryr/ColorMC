@@ -52,7 +52,7 @@
                             Content="{setting:Localize GameEditWindow.Tab1.Text2}"
                             IsEnabled="{Binding !IsLoad}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </panel:WrapPanelWithStretch>
                     <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}" IsEnabled="{Binding !GameVersionEmpty}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
@@ -73,7 +73,7 @@
                             Content="{setting:Localize Button.Refash}"
                             IsEnabled="{Binding !IsLoad}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text99}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </panel:WrapPanelWithStretch>
                     <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <svg:SvgControl
@@ -117,7 +117,7 @@
                                 Command="{Binding LoaderReload}"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text11}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text83}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -126,7 +126,7 @@
                                 Command="{Binding LoaderVersionLoad}"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text12}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text82}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                         </StackPanel>
                     </panel:WrapPanelWithStretch>
                     <StackPanel IsEnabled="{Binding CustomLoader}" IsVisible="{Binding CustomLoader}">
@@ -149,7 +149,7 @@
                                 Command="{Binding SelectLoader}"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text21}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text127}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                         </Panel>
                     </StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -180,7 +180,7 @@
                             Command="{Binding AddGroup}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </panel:WrapPanelWithStretch>
                 </StackPanel>
             </Border>
@@ -212,7 +212,7 @@
                             Content="{setting:Localize GameEditWindow.Tab1.Text10}"
                             IsEnabled="{Binding ModPack}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text51}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </WrapPanel>
                     <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
                         <TextBlock Width="110" Text="{setting:Localize GameEditWindow.Tab1.Text8}" />

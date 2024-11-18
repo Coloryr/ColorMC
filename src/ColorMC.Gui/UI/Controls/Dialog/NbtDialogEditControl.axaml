@@ -25,7 +25,7 @@
                 Content="{setting:Localize ConfigEditWindow.Text2}"
                 DockPanel.Dock="Right"
                 ToolTip.Tip="{setting:Localize ToolTip.Text40}"
-                ToolTip.VerticalOffset="-30" />
+                 />
             <StackPanel>
                 <StackPanel
                     Margin="5,0,0,0"

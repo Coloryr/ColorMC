@@ -523,7 +523,7 @@ public partial class GameEditModel : IModEdit
                         {
                             ModList.Add(item);
                         }
-                        
+
                     }
                     break;
                 case 5:
@@ -533,7 +533,7 @@ public partial class GameEditModel : IModEdit
                         {
                             ModList.Add(item);
                         }
-                       
+
                     }
                     break;
                 case 6:

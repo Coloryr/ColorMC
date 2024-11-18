@@ -25,7 +25,7 @@
                     DockPanel.Dock="Bottom"
                     IsEnabled="{Binding !IsLoad}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text69}"
-                    ToolTip.VerticalOffset="-30" />
+                     />
                 <StackPanel>
                     <TextBox
                         Height="30"
@@ -66,7 +66,7 @@
                             Command="{Binding LoadVersion}"
                             Content="{setting:Localize GameEditWindow.Tab1.Text2}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </panel:WrapPanelWithStretch>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -110,7 +110,7 @@
                                 Command="{Binding VersionSelect}"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text11}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text83}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -119,7 +119,7 @@
                                 Command="{Binding GetLoader}"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text12}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text82}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                         </StackPanel>
                     </panel:WrapPanelWithStretch>
                     <TextBox
@@ -143,7 +143,7 @@
                             Command="{Binding SelectLoader}"
                             Content="{setting:Localize Button.Select}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text127}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </Panel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -171,7 +171,7 @@
                             Command="{Binding AddGroup}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </panel:WrapPanelWithStretch>
                 </StackPanel>
             </DockPanel>

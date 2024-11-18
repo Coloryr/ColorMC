@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;

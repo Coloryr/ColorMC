@@ -25,7 +25,7 @@
                         Content="{setting:Localize GameCloudWindow.Tab1.Text1}"
                         IsEnabled="{Binding !Enable}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text93}"
-                        ToolTip.VerticalOffset="-30" />
+                         />
                     <Button
                         Width="100"
                         Height="30"
@@ -34,7 +34,7 @@
                         Content="{setting:Localize GameCloudWindow.Tab1.Text3}"
                         IsEnabled="{Binding Enable}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text94}"
-                        ToolTip.VerticalOffset="-30" />
+                         />
                 </StackPanel>
                 <StackPanel IsEnabled="{Binding Enable}">
                     <TextBlock

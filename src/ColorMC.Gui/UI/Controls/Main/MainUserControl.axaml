@@ -76,7 +76,7 @@
                         CornerRadius="5"
                         DockPanel.Dock="Right"
                         ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                        ToolTip.VerticalOffset="-30">
+                        >
                         <svg:SvgControl Path="/Resource/Icon/skin.svg" Stroke="White" />
                     </Button>
                     <StackPanel

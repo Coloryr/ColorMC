@@ -42,7 +42,7 @@
                             DockPanel.Dock="Right"
                             IsEnabled="{Binding HaveLogin}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text26}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                         <ComboBox
                             Height="35"
                             Margin="0,0,10,0"

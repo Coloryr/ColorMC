@@ -40,7 +40,7 @@ public partial class DownloadItemModel(int index) : ObservableObject
     /// <summary>
     /// 已下载大小
     /// </summary>
-    public long NowSize 
+    public long NowSize
     {
         get
         {
