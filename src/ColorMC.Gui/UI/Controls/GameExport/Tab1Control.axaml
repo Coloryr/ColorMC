@@ -47,7 +47,7 @@
                         Content="{setting:Localize GameExportWindow.Tab1.Text2}"
                         DockPanel.Dock="Right"
                         ToolTip.Tip="{setting:Localize ToolTip.Text112}"
-                        ToolTip.VerticalOffset="-30" />
+                         />
                     <TextBlock Text="{setting:Localize GameExportWindow.Tabs.Text5}" />
                 </DockPanel>
                 <StackPanel>

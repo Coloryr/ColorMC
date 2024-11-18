@@ -38,7 +38,7 @@
                             Command="{Binding AddFile}"
                             Content="{setting:Localize Button.Add}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text119}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </panel:WrapPanelWithStretch>
                     <TextBlock
                         Margin="0,0,10,0"

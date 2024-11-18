@@ -106,7 +106,7 @@
                                     Command="{Binding GetList}"
                                     Content="{setting:Localize AddModPackWindow.Text8}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text75}"
-                                    ToolTip.VerticalOffset="-30" />
+                                     />
 
                             </StackPanel>
                         </panel:WrapPanelWithStretch>
@@ -190,7 +190,7 @@
                                 Command="{Binding Refresh1}"
                                 Content="{setting:Localize AddModPackWindow.Text10}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text77}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -199,7 +199,7 @@
                                 Command="{Binding GoFile}"
                                 Content="{setting:Localize AddModPackWindow.Text12}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text78}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                         </StackPanel>
                     </panel:WrapPanelWithStretch>
                 </Border>
@@ -267,7 +267,7 @@
                                 Command="{Binding LoadOptifineList}"
                                 Content="{setting:Localize AddModPackWindow.Text10}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text77}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                         </Decorator>
                     </panel:WrapPanelWithStretch>
                 </Border>
@@ -320,7 +320,7 @@
                                 Command="{Binding DownloadAllMod}"
                                 Content="{setting:Localize AddWindow.Text6}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text79}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -329,7 +329,7 @@
                                 Command="{Binding DownloadMod}"
                                 Content="{setting:Localize AddModPackWindow.Text12}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text80}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                         </StackPanel>
                     </WrapPanel>
                 </Border>

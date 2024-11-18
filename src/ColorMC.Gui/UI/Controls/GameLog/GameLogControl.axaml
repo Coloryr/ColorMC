@@ -56,7 +56,7 @@
                         Content="{setting:Localize GameLogWindow.Text4}"
                         IsEnabled="{Binding !IsGameRun}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text44}"
-                        ToolTip.VerticalOffset="-30" />
+                         />
                     <Button
                         Width="100"
                         Height="35"
@@ -67,7 +67,7 @@
                         Content="{setting:Localize GameLogWindow.Text3}"
                         IsEnabled="{Binding IsGameRun}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text44}"
-                        ToolTip.VerticalOffset="-30" />
+                         />
                     <Button
                         Width="100"
                         Height="35"
@@ -76,7 +76,7 @@
                         Classes="top"
                         Command="{Binding Load1}"
                         Content="{setting:Localize GameLogWindow.Text6}"
-                        ToolTip.VerticalOffset="-30" />
+                         />
                     <Button
                         Width="100"
                         Height="35"
@@ -85,7 +85,7 @@
                         Classes="top"
                         Command="{Binding Search}"
                         Content="{setting:Localize GameLogWindow.Text7}"
-                        ToolTip.VerticalOffset="-30" />
+                         />
                     <Button
                         Width="100"
                         Height="35"
@@ -94,7 +94,7 @@
                         Classes="top"
                         Command="{Binding Push}"
                         Content="{setting:Localize GameLogWindow.Text8}"
-                        ToolTip.VerticalOffset="-30" />
+                         />
                 </WrapPanel>
                 <WrapPanel
                     Margin="0,0,0,10"

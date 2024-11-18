@@ -75,7 +75,7 @@
                         IsEnabled="{Binding !OneGame}"
                         IsVisible="{Binding ButtonShow}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text12}"
-                        ToolTip.VerticalOffset="-30">
+                        >
                         <svg:SvgControl Path="/Resource/Icon/edit.svg" />
                     </Button>
                     <Button
@@ -91,7 +91,7 @@
                         IsEnabled="{Binding !IsLaunching}"
                         IsVisible="{Binding ButtonShow}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text11}"
-                        ToolTip.VerticalOffset="-30">
+                        >
                         <svg:SvgControl Path="/Resource/Icon/launch.svg" />
                     </Button>
                 </Panel>

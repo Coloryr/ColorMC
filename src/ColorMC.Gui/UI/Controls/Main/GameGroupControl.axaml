@@ -85,7 +85,7 @@
                 Command="{Binding LaunchAll}"
                 IsVisible="{Binding !IsPhone}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text132}"
-                ToolTip.VerticalOffset="-30">
+                >
                 <svg:SvgControl Path="/Resource/Icon/launch.svg" />
             </Button>
         </Panel>

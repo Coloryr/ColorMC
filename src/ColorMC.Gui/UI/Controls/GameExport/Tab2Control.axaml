@@ -35,7 +35,7 @@
                             Command="{Binding OpenMod}"
                             Content="{setting:Localize Button.OpFile}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text113}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                         <Button
                             Width="100"
                             Height="35"
@@ -44,7 +44,7 @@
                             Command="{Binding LoadMod}"
                             Content="{setting:Localize Button.Refash}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text55}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </StackPanel>
                 </panel:WrapPanelWithStretch>
                 <DataGrid

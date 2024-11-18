@@ -97,7 +97,7 @@
                                     Command="{Binding Reload}"
                                     Content="{setting:Localize AddModPackWindow.Text8}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text75}"
-                                    ToolTip.VerticalOffset="-30" />
+                                     />
                             </StackPanel>
                         </panel:WrapPanelWithStretch>
                     </StackPanel>
@@ -181,7 +181,7 @@
                                 Command="{Binding Search}"
                                 Content="{setting:Localize AddModPackWindow.Text10}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text77}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -190,7 +190,7 @@
                                 Command="{Binding Download}"
                                 Content="{setting:Localize AddModPackWindow.Text12}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text91}"
-                                ToolTip.VerticalOffset="-30" />
+                                 />
                         </StackPanel>
                     </panel:WrapPanelWithStretch>
                 </Border>

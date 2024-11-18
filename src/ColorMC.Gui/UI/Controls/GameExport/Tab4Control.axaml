@@ -28,7 +28,7 @@
                         Content="{setting:Localize Button.Add}"
                         DockPanel.Dock="Right"
                         ToolTip.Tip="{setting:Localize ToolTip.Text114}"
-                        ToolTip.VerticalOffset="-30" />
+                         />
                     <ComboBox
                         Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"

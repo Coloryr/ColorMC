@@ -26,7 +26,7 @@
                     Content="{setting:Localize AddGameWindow.Text1}"
                     DockPanel.Dock="Bottom"
                     ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                    ToolTip.VerticalOffset="-30" />
+                     />
                 <StackPanel>
                     <TextBox
                         Height="30"
@@ -46,7 +46,7 @@
                             Content="{setting:Localize AddGameWindow.Tab2.Text3}"
                             DockPanel.Dock="Right"
                             ToolTip.Tip="{setting:Localize ToolTip.Text85}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                         <TextBox
                             Height="30"
                             Margin="0,0,10,0"
@@ -97,7 +97,7 @@
                             Command="{Binding AddGroup}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                            ToolTip.VerticalOffset="-30" />
+                             />
                     </panel:WrapPanelWithStretch>
                 </StackPanel>
             </DockPanel>

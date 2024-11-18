@@ -158,7 +158,7 @@ public class LayerIDecoder : IFrameDecoder
     public class SubbandLayer1(int subbandnumber) : Subband
     {
         // Factors and offsets for sample requantization
-        public static readonly float[] table_factor = 
+        public static readonly float[] table_factor =
         [
             0.0f, 1.0f / 2.0f * (4.0f / 3.0f),
             1.0f / 4.0f * (8.0f / 7.0f),
@@ -176,7 +176,7 @@ public class LayerIDecoder : IFrameDecoder
             1.0f / 16384.0f * (32768.0f / 32767.0f)
         ];
 
-        public static readonly float[] table_offset = 
+        public static readonly float[] table_offset =
         [
             0.0f, (1.0f / 2.0f - 1.0f) * (4.0f / 3.0f),
             (1.0f / 4.0f - 1.0f) * (8.0f / 7.0f),

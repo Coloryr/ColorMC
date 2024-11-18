@@ -67,7 +67,7 @@ public sealed class Bitstream : IDisposable
 
     public byte[] Rawid3v2 { get; private set; }
 
-    
+
     private bool _single_ch_mode;
 
     private bool _firstframe;

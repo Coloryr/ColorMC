@@ -76,7 +76,7 @@
                                         Command="{Binding OpenGuide}"
                                         CornerRadius="5"
                                         ToolTip.Tip="{setting:Localize ToolTip.Text70}"
-                                        ToolTip.VerticalOffset="-30">
+                                        >
                                         <svg:SvgControl Path="/Resource/Icon/book.svg" />
                                     </Button>
                                     <Button
@@ -86,7 +86,7 @@
                                         CornerRadius="5"
                                         IsVisible="{Binding !IsPhone}"
                                         ToolTip.Tip="{setting:Localize ToolTip.Text92}"
-                                        ToolTip.VerticalOffset="-30">
+                                        >
                                         <svg:SvgControl Path="/Resource/Icon/count.svg" />
                                     </Button>
                                     <Button
@@ -95,7 +95,7 @@
                                         Command="{Binding ShowSetting}"
                                         CornerRadius="5"
                                         ToolTip.Tip="{setting:Localize ToolTip.Text13}"
-                                        ToolTip.VerticalOffset="-30">
+                                        >
                                         <svg:SvgControl Path="/Resource/Icon/setting.svg" />
                                     </Button>
                                 </StackPanel>
@@ -224,7 +224,7 @@
                                                 Command="{Binding MusicPause}"
                                                 CornerRadius="5"
                                                 ToolTip.Tip="{setting:Localize ToolTip.Text48}"
-                                                ToolTip.VerticalOffset="-30">
+                                                >
                                                 <svg:SvgControl Path="{Binding AudioIcon}" />
                                             </Button>
                                         </Panel>
@@ -269,7 +269,7 @@
                                                 Command="{Binding Upgrade}"
                                                 Content="{setting:Localize MainWindow.Text16}"
                                                 ToolTip.Tip="{setting:Localize ToolTip.Text73}"
-                                                ToolTip.VerticalOffset="-30" />
+                                                 />
                                             <Button
                                                 Height="35"
                                                 Margin="0,-3,0,-3"
@@ -278,7 +278,7 @@
                                                 Command="{Binding NewInfo}"
                                                 Content="{setting:Localize MainWindow.Text17}"
                                                 ToolTip.Tip="{setting:Localize ToolTip.Text74}"
-                                                ToolTip.VerticalOffset="-30" />
+                                                 />
                                         </UniformGrid>
                                     </StackPanel>
                                 </Border>
@@ -299,7 +299,7 @@
                                             Command="{Binding OpenNetFrp}"
                                             Content="{setting:Localize MainWindow.Text19}"
                                             ToolTip.Tip="{setting:Localize ToolTip.Text72}"
-                                            ToolTip.VerticalOffset="-30" />
+                                             />
                                     </StackPanel>
                                 </Border>
                                 <Border
