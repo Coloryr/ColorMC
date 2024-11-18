@@ -807,11 +807,10 @@ public static class WebBinding
     {
         BaseBinding.OpUrl(type switch
         {
-            WebType.Guide => "https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md",
-            WebType.Guide1 => "https://gitee.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md",
+            WebType.Guide => "https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/README.md",
+            WebType.Guide1 => "https://gitee.com/Coloryr/ColorMC_Pic/blob/master/guide/README.md",
             WebType.Mcmod => "https://www.mcmod.cn/",
             WebType.Github => "https://www.github.com/Coloryr/ColorMC",
-            WebType.Sponsor => "https://coloryr.github.io/sponsor.html",
             WebType.Minecraft => "https://www.minecraft.net/",
             WebType.SakuraFrp => "https://www.natfrp.com/user/",
             WebType.Apache2_0 => "https://www.apache.org/licenses/LICENSE-2.0.html",
@@ -824,9 +823,10 @@ public static class WebBinding
             WebType.ColorMCDownload => "https://github.com/Coloryr/ColorMC/releases",
             WebType.EditSkin => "https://www.minecraft.net/en-us/msaprofile/mygames/editskin",
             WebType.LittleSkinEditSkin => "https://littleskin.cn/user/closet",
-            WebType.UIGuide => "https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/README.md",
-            WebType.UIGuide1 => "https://gitee.com/Coloryr/ColorMC_Pic/blob/master/guide/README.md",
-            _ => "https://colormc.coloryr.com"
+            WebType.UIGuide => "https://github.com/Coloryr/ColorMC/blob/master/CustomGui.md",
+            WebType.UIGuide1 => "https://gitee.com/Coloryr/ColorMC/blob/master/CustomGui.md",
+            WebType.Sponsor => "https://afdian.com/a/Color_yr",
+            _ => "https://www.coloryr.com/wordpress/?page_id=27"
         });
     }
 
