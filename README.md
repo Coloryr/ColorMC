@@ -1,36 +1,41 @@
-# ColorMC 一个全平台Minecraft PC启动器
+# <img src="docs/images/icon.png" alt="icon" width="24" height="24"> ColorMC
+![](https://img.shields.io/badge/license-Apache2.0-green)
+![](https://img.shields.io/github/repo-size/Coloryr/ColorMC)
+![](https://img.shields.io/github/stars/Coloryr/ColorMC)
+![](https://img.shields.io/github/contributors/Coloryr/ColorMC)
+![](https://img.shields.io/github/commit-activity/y/Coloryr/ColorMC)
 
-交流QQ群：571239090
+一个全平台Minecraft PC启动器
 
-加入多语言翻译（帮帮忙）  
-https://crowdin.com/project/colormc
+使用.NET8作为运行环境，XAML作为前端语言，C#作为后端语言
 
-[English](./README_EN.md)
+QQ交流群: 571239090
 
-使用dotnet8作为运行环境，XAML作为前端语言，C#作为后端语言
+More Languages: [English](docs/README_EN.md)
 
 [用户手册](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md)
+[加入多语言翻译](https://crowdin.com/project/colormc)(帮帮忙)
 
-![](/image/run.png)  
+## 窗口截图 🪟
+![](/docs/images/run.png)  
 
 **演示动画**
 
-![](/image/GIF.gif)  
+![](/docs/images/GIF.gif)  
 
 ## 支持平台
 - Linux(提供deb pkg rpm)
 - Windows
 - macOs
 
-注意：ARM64平台不能保证其兼容性  
-Windows ARM64 可以运行，渲染有问题  
-Linux ARM64 在`xx派`上可以运行，运行缓慢  
-Mac ARM64 不能运行，可以运行x64版本  
-
-Linux由于发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以需要自行解决
+**注意：ARM64平台不能保证其兼容性  
+Windows ARM64 可以运行，渲染有问题
+Mac ARM64 不能运行，可以运行x64版本
+Linux ARM64 在`xx派`上可以运行，运行缓慢
+(由于Linux发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以需要自行解决)**
 
 ## 安装 
-在Releases或者Actions里面下载构建好的压缩包/安装包  
+在[Releases](https://github.com/Coloryr/ColorMC/releases)或者[Actions](https://github.com/Coloryr/ColorMC/actions)里面下载构建好的压缩包/安装包  
 解压(zip)\安装(msi,deb,pkg)\或直接运行(appimage)即可
 
 Windows下，可以使用winget安装
@@ -42,13 +47,13 @@ winget install colormc
 ## 启动
 
 - 安装完成后启动  
-在windows/macos下解压后双击启动  
-linux下可以双击启动，也可以
+在Windows/MacOS下解压后双击启动  
+Linux下可以双击启动，也可以
 ```
 ColorMC.Launcher
 ```
 
-- 从源码启动（需要安装.net8 sdk）
+- 从源码启动（需要安装.NET8 SDK）
 ```
 git clone https://github.com/Coloryr/ColorMC.git
 cd ColorMC/src/ColorMC.Launcher
@@ -86,7 +91,7 @@ chmod a+x ./build/build-linux.sh
 ./build/build-linux.sh
 ```
 
-打包ubuntu镜像  
+打包Ubuntu镜像  
 **需要在Ubuntu系统中操作**
 ```bash
 chmod a+x ./build/build-ubuntu.sh
@@ -111,7 +116,7 @@ chmod a+x ./build/build-arch.sh
 ```
 
 - 构建`macos`的二进制文件  
-**需要在Ubuntu系统或macos系统中构建，并安装git与dotnet-8-sdk**
+**需要在Ubuntu系统或MacOS系统中构建，并安装git与dotnet-8-sdk**
 ```bash
 git clone https://github.com/Coloryr/ColorMC.git
 cd ColorMC
@@ -140,35 +145,39 @@ git submodule update --init --recursive
 
 ### 使用ColorMC启动器核心
 
-[使用ColorMC启动器核心来开发自己的启动器](Core.md)
+[使用ColorMC启动器核心来开发自己的启动器](docs/Core.md)
 
 ### 项目说明
-- ColorMC.Core 启动器核心
-- ColorMC.CustomGui 自定义启动器界面，[教程](CustomGui.md)
-- ColorMC.Cmd Cli模式 (已废弃)
-- ColorMC.Gui Gui模式
-- ColorMC.Launcher 启动器本体
-- ColorMC.Test 用于启动器测试
-- ColorMC.Setup 用于构建windows的msi安装包
+| 模块                | 说明                               |
+|-------------------|----------------------------------|
+| ColorMC.Core      | 启动器核心                            |
+| ColorMC.CustomGui | 自定义启动器界面 [教程](docs/CustomGui.md) |
+| ColorMC.Cmd       | 命令行模式 (已弃用)                      |
+| ColorMC.Gui       | Gui模式                            |
+| ColorMC.Launcher  | 启动器本体                            |
+| ColorMC.Test      | 用于启动器测试                          |
+| ColorMC.Setup     | 用于构建windows的msi安装包               |
 
 ## 依赖/引用的项目
-[AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) 跨平台UI框架  
-[DialogHost.Avalonia](https://github.com/AvaloniaUtils/DialogHost.Avalonia) 弹窗库
-[CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM工具  
-[Svg.Skia](https://github.com/wieslawsoltes/Svg.Skia) Svg图像显示  
-[SkiaSharp](https://github.com/mono/SkiaSharp) Skia图像库  
-[Silk.NET](https://github.com/dotnet/Silk.NET) 高性能底层库接口
-[Heijden.Dns](https://github.com/softlion/Heijden.Dns) DNS解析  
-[HtmlAgilityPack](https://html-agility-pack.net/) HTML解析器  
-[Jint](https://github.com/sebastienros/jint) JS解析执行器  
-[DotNetty](https://github.com/Azure/DotNetty) 异步通信框架
-[Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
-[SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
-[Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
-[ForgeWrapper](https://github.com/Coloryr/ForgeWrapper) Forge启动器  
-[Live2DCSharpSDK](https://github.com/coloryr/Live2DCSharpSDK) Live2d渲染框架  
-[OptifineWrapper](https://github.com/coloryr/OptifineWrapper) Optifine启动器  
-[ColorMCASM](https://github.com/Coloryr/ColorMCASM) 用于ColorMC与游戏内通信
+| 名称                    | 描述              | 链接                                                             |
+|-----------------------|-----------------|----------------------------------------------------------------|
+| AvaloniaUI            | 跨平台UI框架         | [GitHub](https://github.com/AvaloniaUI/Avalonia)               |
+| DialogHost.Avalonia   | 弹窗库             | [GitHub](https://github.com/AvaloniaUtils/DialogHost.Avalonia) |
+| CommunityToolkit.Mvvm | MVVM工具          | [GitHub](https://github.com/CommunityToolkit/dotnet)           |
+| Svg.Skia              | Svg图像显示         | [GitHub](https://github.com/wieslawsoltes/Svg.Skia)            |
+| SkiaSharp             | Skia图像库         | [GitHub](https://github.com/mono/SkiaSharp)                    |
+| Silk.NET              | 高性能底层库接口        | [GitHub](https://github.com/dotnet/Silk.NET)                   |
+| Heijden.Dns           | DNS解析           | [GitHub](https://github.com/softlion/Heijden.Dns)              |
+| HtmlAgilityPack       | HTML解析器         | [官网](https://html-agility-pack.net/)                           |
+| Jint                  | JS解析执行器         | [GitHub](https://github.com/sebastienros/jint)                 |
+| DotNetty              | 异步通信框架          | [GitHub](https://github.com/Azure/DotNetty)                    |
+| Newtonsoft.Json       | JSON解析器         | [官网](https://www.newtonsoft.com/json)                          |
+| SharpZipLib           | 压缩包处理           | [GitHub](https://github.com/icsharpcode/SharpZipLib)           |
+| Tomlyn                | TOML解析器         | [GitHub](https://github.com/xoofx/Tomlyn)                      |
+| ForgeWrapper          | Forge启动器        | [GitHub](https://github.com/Coloryr/ForgeWrapper)              |
+| Live2DCSharpSDK       | Live2d渲染框架      | [GitHub](https://github.com/coloryr/Live2DCSharpSDK)           |
+| OptifineWrapper       | Optifine启动器     | [GitHub](https://github.com/coloryr/OptifineWrapper)           |
+| ColorMCASM            | 用于ColorMC与游戏内通信 | [GitHub](https://github.com/Coloryr/ColorMCASM)                |
 
 ## 开源协议
 Apache 2.0  
@@ -189,9 +198,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-附属的开源协议  
-MIT  
-BSD
+附属的开源协议: MIT, BSD
 
 ## 使用的IDE开发工具
 [Visual Studio Code](https://code.visualstudio.com/)  
