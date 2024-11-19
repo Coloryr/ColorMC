@@ -108,7 +108,10 @@ public partial class SkinControl : BaseUserControl
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    var model = (DataContext as SkinModel)!;
+                    if (DataContext is not SkinModel model)
+                    {
+                        return;
+                    }
                     model.Fps = fps;
                 });
             }

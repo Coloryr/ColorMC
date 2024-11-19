@@ -37,13 +37,13 @@ public partial class NbtDialogEditControl : UserControl
 
     private void Flyout2(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not NbtDialogEditModel model)
         {
-            var model = (DataContext as NbtDialogEditModel)!;
-            if (model.DataItem != null)
-            {
-                _ = new ConfigFlyout2(control, model, model.DataItem);
-            }
-        });
+            return;
+        }
+        if (model.DataItem != null)
+        {
+            _ = new ConfigFlyout2(control, model, model.DataItem);
+        }
     }
 }

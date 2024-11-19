@@ -73,10 +73,7 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     private void Flyout()
     {
-        Dispatcher.UIThread.Post(() =>
-        {
-            _ = new Live2DFlyout(this);
-        });
+        _ = new Live2DFlyout(this);
     }
 
     private void Live2dTop_PointerReleased(object? sender, PointerReleasedEventArgs e)
@@ -126,7 +123,7 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
         if (e.PropertyName == MainModel.ModelChangeName)
         {
             _change = true;
-            Dispatcher.UIThread.Post(RequestNextFrameRendering);
+            RequestNextFrameRendering();
         }
         else if (e.PropertyName == MainModel.ModelDeleteName)
         {

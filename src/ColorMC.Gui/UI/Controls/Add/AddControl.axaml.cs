@@ -89,51 +89,42 @@ public partial class AddControl : BaseUserControl
         var model = (DataContext as AddControlModel)!;
         if (e.PropertyName == "OptifineDisplay")
         {
-            Dispatcher.UIThread.Post(() =>
+            if (model.OptifineDisplay == true)
             {
-                if (model.OptifineDisplay == true)
-                {
-                    ThemeManager.CrossFade300.Start(null, OptifineDisplay);
-                    ThemeManager.CrossFade300.Start(ScrollViewer1, null);
-                }
-                else
-                {
-                    ThemeManager.CrossFade300.Start(OptifineDisplay, null);
-                    ThemeManager.CrossFade300.Start(null, ScrollViewer1);
-                }
-            });
+                ThemeManager.CrossFade300.Start(null, OptifineDisplay);
+                ThemeManager.CrossFade300.Start(ScrollViewer1, null);
+            }
+            else
+            {
+                ThemeManager.CrossFade300.Start(OptifineDisplay, null);
+                ThemeManager.CrossFade300.Start(null, ScrollViewer1);
+            }
         }
         else if (e.PropertyName == "ModDownloadDisplay")
         {
-            Dispatcher.UIThread.Post(() =>
+            if (model.ModDownloadDisplay == true)
             {
-                if (model.ModDownloadDisplay == true)
-                {
-                    ThemeManager.CrossFade300.Start(null, ModDownloadDisplay);
-                    ThemeManager.CrossFade300.Start(ScrollViewer1, null);
-                }
-                else
-                {
-                    ThemeManager.CrossFade300.Start(ModDownloadDisplay, null);
-                    ThemeManager.CrossFade300.Start(null, ScrollViewer1);
-                }
-            });
+                ThemeManager.CrossFade300.Start(null, ModDownloadDisplay);
+                ThemeManager.CrossFade300.Start(ScrollViewer1, null);
+            }
+            else
+            {
+                ThemeManager.CrossFade300.Start(ModDownloadDisplay, null);
+                ThemeManager.CrossFade300.Start(null, ScrollViewer1);
+            }
         }
         else if (e.PropertyName == "VersionDisplay")
         {
-            Dispatcher.UIThread.Post(() =>
+            if (model.VersionDisplay == true)
             {
-                if (model.VersionDisplay == true)
-                {
-                    ThemeManager.CrossFade300.Start(null, VersionDisplay);
-                    ThemeManager.CrossFade300.Start(ScrollViewer1, null);
-                }
-                else
-                {
-                    ThemeManager.CrossFade300.Start(VersionDisplay, null);
-                    ThemeManager.CrossFade300.Start(null, ScrollViewer1);
-                }
-            });
+                ThemeManager.CrossFade300.Start(null, VersionDisplay);
+                ThemeManager.CrossFade300.Start(ScrollViewer1, null);
+            }
+            else
+            {
+                ThemeManager.CrossFade300.Start(VersionDisplay, null);
+                ThemeManager.CrossFade300.Start(null, ScrollViewer1);
+            }
         }
         else if (e.PropertyName == "ScrollToHome")
         {

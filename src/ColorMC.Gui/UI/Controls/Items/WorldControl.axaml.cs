@@ -70,19 +70,19 @@ public partial class WorldControl : UserControl
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not WorldModel model)
         {
-            var model = (DataContext as WorldModel)!;
-            _ = new GameEditFlyout2(control, model);
-        });
+            return;
+        }
+        _ = new GameEditFlyout2(control, model);
     }
 
     private void Flyout1(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not WorldModel model)
         {
-            var model = (DataContext as WorldModel)!;
-            _ = new GameEditFlyout8(control, DataGridDataPack.SelectedItems, model);
-        });
+            return;
+        }
+        _ = new GameEditFlyout8(control, DataGridDataPack.SelectedItems, model);
     }
 }

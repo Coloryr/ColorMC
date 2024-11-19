@@ -8,6 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.Items;
@@ -29,7 +30,10 @@ public partial class FileVersionItemControl : UserControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        Dispatcher.UIThread.Post(FadeIn);
+        Dispatcher.UIThread.Post(() =>
+        {
+            ItemAnimation.Make().RunAsync(this);
+        });
     }
 
     private void FileItemControl_PointerMoved(object? sender, PointerEventArgs e)

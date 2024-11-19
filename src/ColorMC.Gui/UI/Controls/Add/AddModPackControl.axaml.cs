@@ -61,23 +61,20 @@ public partial class AddModPackControl : BaseUserControl
     {
         if (e.PropertyName == "DisplayList")
         {
-            Dispatcher.UIThread.Post(ScrollViewer1.ScrollToHome);
+            ScrollViewer1.ScrollToHome();
         }
         else if (e.PropertyName == "Display")
         {
-            Dispatcher.UIThread.Post(() =>
+            if ((DataContext as AddModPackControlModel)!.Display)
             {
-                if ((DataContext as AddModPackControlModel)!.Display)
-                {
-                    ThemeManager.CrossFade300.Start(null, ModPackFiles);
-                    ThemeManager.CrossFade300.Start(ScrollViewer1, null);
-                }
-                else
-                {
-                    ThemeManager.CrossFade300.Start(ModPackFiles, null);
-                    ThemeManager.CrossFade300.Start(null, ScrollViewer1);
-                }
-            });
+                ThemeManager.CrossFade300.Start(null, ModPackFiles);
+                ThemeManager.CrossFade300.Start(ScrollViewer1, null);
+            }
+            else
+            {
+                ThemeManager.CrossFade300.Start(ModPackFiles, null);
+                ThemeManager.CrossFade300.Start(null, ScrollViewer1);
+            }
         }
     }
 

@@ -12,6 +12,7 @@ using Avalonia.Styling;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.Items;
@@ -37,7 +38,10 @@ public partial class GameControl : UserControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        Dispatcher.UIThread.Post(FadeIn);
+        Dispatcher.UIThread.Post(() =>
+        {
+            ItemAnimation.Make().RunAsync(this);
+        });
     }
 
     private void FadeIn()
@@ -105,17 +109,14 @@ public partial class GameControl : UserControl
     {
         if (e.PropertyName == "IsDrop" && DataContext is GameItemModel model)
         {
-            Dispatcher.UIThread.Post(() =>
+            if (model.IsDrop == true)
             {
-                if (model.IsDrop == true)
-                {
-                    RenderTransform = new ScaleTransform(0.95, 0.95);
-                }
-                else
-                {
-                    RenderTransform = null;
-                }
-            });
+                RenderTransform = new ScaleTransform(0.95, 0.95);
+            }
+            else
+            {
+                RenderTransform = null;
+            }
         }
     }
 
@@ -215,10 +216,7 @@ public partial class GameControl : UserControl
     {
         if (DataContext is GameItemModel model)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                model.Flyout(control);
-            });
+            model.Flyout(control);
         }
     }
 }

@@ -80,10 +80,7 @@ public abstract partial class MenuControl : BaseUserControl
             _cancel1 = new();
 
             _control.SidePanel3.IsVisible = true;
-            Dispatcher.UIThread.Post(() =>
-            {
-                ThemeManager.SidePageSlide300.Start(null, _control.SidePanel2, _cancel1.Token);
-            });
+            ThemeManager.SidePageSlide300.Start(null, _control.SidePanel2, _cancel1.Token);
         }
         else if (e.PropertyName == MenuModel.SideClose)
         {

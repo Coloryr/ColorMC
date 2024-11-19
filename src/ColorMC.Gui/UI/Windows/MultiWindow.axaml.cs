@@ -20,12 +20,6 @@ public partial class MultiWindow : AMultiWindow
         InitializeComponent();
 
         InitMultiWindow(con);
-
-        Dispatcher.UIThread.Post(() =>
-        {
-            //this.RendererDiagnostics.
-
-        });
     }
 
     protected override void SetChild(Control control)

@@ -116,7 +116,6 @@ public partial class GameLogControl : BaseUserControl
         }
     }
 
-
     public override void Update()
     {
         Dispatcher.UIThread.Post(() =>
@@ -155,7 +154,7 @@ public partial class GameLogControl : BaseUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            (DataContext as GameLogModel)!.Clear();
+            (DataContext as GameLogModel)?.Clear();
         });
     }
 
@@ -166,7 +165,7 @@ public partial class GameLogControl : BaseUserControl
 
         Dispatcher.UIThread.Post(() =>
         {
-            (DataContext as GameLogModel)!.Log(data);
+            (DataContext as GameLogModel)?.Log(data);
         });
     }
 
@@ -174,10 +173,7 @@ public partial class GameLogControl : BaseUserControl
     {
         if (e.PropertyName == GameLogModel.NameEnd)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                TextEditor1.ScrollToLine(TextEditor1.LineCount - 2);
-            });
+            TextEditor1.ScrollToLine(TextEditor1.LineCount - 2);
         }
         else if (e.PropertyName == GameLogModel.NameInsert)
         {
@@ -185,7 +181,7 @@ public partial class GameLogControl : BaseUserControl
         }
         else if (e.PropertyName == GameLogModel.NameTop)
         {
-            Dispatcher.UIThread.Post(TextEditor1.ScrollToHome);
+            TextEditor1.ScrollToHome();
         }
         else if (e.PropertyName == GameLogModel.NameSearch)
         {

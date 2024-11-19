@@ -25,7 +25,6 @@ public partial class UserItemControl : UserControl
     {
         var model = (DataContext as UserDisplayModel)!;
 
-
         var pro = e.GetCurrentPoint(this);
 
         if (pro.Properties.IsRightButtonPressed)
@@ -40,7 +39,7 @@ public partial class UserItemControl : UserControl
 
     private void UserItemControl_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        (DataContext as UserDisplayModel)!.Select();
+        (DataContext as UserDisplayModel)?.Select();
     }
 
     private void Flyout(Control control)

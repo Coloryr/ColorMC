@@ -28,9 +28,10 @@ public partial class Tab10Control : UserControl
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not GameEditModel model)
         {
-            _ = new GameEditFlyout5(control, (DataContext as GameEditModel)!);
-        });
+            return;
+        }
+        _ = new GameEditFlyout5(control, model);
     }
 }

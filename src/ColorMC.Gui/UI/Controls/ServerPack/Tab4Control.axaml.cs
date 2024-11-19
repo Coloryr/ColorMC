@@ -28,10 +28,10 @@ public partial class Tab4Control : UserControl
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not ServerPackModel model)
         {
-            var model = (DataContext as ServerPackModel)!;
-            _ = new ServerPackFlyout1(control, model, model.FileItem);
-        });
+            return;
+        }
+        _ = new ServerPackFlyout1(control, model, model.FileItem);
     }
 }

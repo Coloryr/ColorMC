@@ -43,10 +43,10 @@ public partial class WorldCloudControl : UserControl
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not WorldCloudModel model)
         {
-            var model = (DataContext as WorldCloudModel)!;
-            _ = new GameCloudFlyout1(control, model);
-        });
+            return;
+        }
+        _ = new GameCloudFlyout1(control, model);
     }
 }

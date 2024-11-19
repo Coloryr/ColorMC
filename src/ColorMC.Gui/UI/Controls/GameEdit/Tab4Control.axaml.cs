@@ -60,18 +60,16 @@ public partial class Tab4Control : UserControl
             return;
         }
         (DataContext as GameEditModel)!.DisEMod();
-        //Dispatcher.UIThread.Post(() =>
-        //{
-        //    (DataContext as GameEditModel)!.DisEMod();
-        //});
     }
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not GameEditModel model)
         {
-            var items = DataGrid1.SelectedItems;
-            _ = new GameEditFlyout1(control, items, (DataContext as GameEditModel)!);
-        });
+            return;
+        }
+
+        var items = DataGrid1.SelectedItems;
+        _ = new GameEditFlyout1(control, items, model);
     }
 }

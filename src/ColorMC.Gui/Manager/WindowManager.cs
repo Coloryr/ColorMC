@@ -650,33 +650,33 @@ public static class WindowManager
     {
         if (GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            Dispatcher.UIThread.Post(win.Window.Close);
+            win.Window.Close();
         }
         if (GameLogWindows.TryGetValue(obj.UUID, out var win5))
         {
-            Dispatcher.UIThread.Post(win5.Window.Close);
+            win5.Window.Close();
         }
         if (GameAddWindows.TryGetValue(obj.UUID, out var win1))
         {
-            Dispatcher.UIThread.Post(win1.Window.Close);
+            win1.Window.Close();
         }
         if (GameCloudWindows.TryGetValue(obj.UUID, out var win2))
         {
-            Dispatcher.UIThread.Post(win2.Window.Close);
+            win2.Window.Close();
         }
         if (GameExportWindows.TryGetValue(obj.UUID, out var win3))
         {
-            Dispatcher.UIThread.Post(win3.Window.Close);
+            win3.Window.Close();
         }
         if (ServerPackWindows.TryGetValue(obj.UUID, out var win4))
         {
-            Dispatcher.UIThread.Post(win4.Window.Close);
+            win4.Window.Close();
         }
         foreach (var item in GameConfigEditWindows)
         {
             if (item.Key.StartsWith(obj.UUID))
             {
-                Dispatcher.UIThread.Post(item.Value.Window.Close);
+                item.Value.Window.Close();
             }
         }
     }

@@ -301,23 +301,20 @@ public partial class MainModel
 
     public void Select(string? uuid)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (uuid == null)
         {
-            if (uuid == null)
+            Select(obj: null);
+        }
+        GameItemModel? model;
+        foreach (var item in GameGroups)
+        {
+            model = item.Find(uuid);
+            if (model != null)
             {
-                Select(obj: null);
+                Select(model);
+                return;
             }
-            GameItemModel? model;
-            foreach (var item in GameGroups)
-            {
-                model = item.Find(uuid);
-                if (model != null)
-                {
-                    Select(model);
-                    return;
-                }
-            }
-        });
+        }
     }
 
     public void Select(GameItemModel? obj)

@@ -65,10 +65,7 @@ public partial class MainControl : BaseUserControl
                 else
                 {
                     model.Search();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        con.Search.Focus();
-                    });
+                    con.Search.Focus();
                 }
             }
         }
@@ -263,7 +260,7 @@ public partial class MainControl : BaseUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            (DataContext as MainModel)!.LoadDone();
+            (DataContext as MainModel)?.LoadDone();
         });
     }
 
@@ -271,7 +268,7 @@ public partial class MainControl : BaseUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            (DataContext as MainModel)!.LoadGameItem();
+            (DataContext as MainModel)?.LoadGameItem();
         });
     }
 
@@ -279,7 +276,7 @@ public partial class MainControl : BaseUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            (DataContext as MainModel)!.LoadMotd();
+            (DataContext as MainModel)?.LoadMotd();
         });
     }
 
@@ -287,7 +284,7 @@ public partial class MainControl : BaseUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            (DataContext as MainModel)!.IsDelete();
+            (DataContext as MainModel)?.IsDelete();
         });
     }
 

@@ -11,6 +11,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -531,10 +532,9 @@ public partial class UsersControlModel : TopModel
         {
             Model.Show(App.Lang("UserWindow.Error6"));
             AuthType type;
-            int index = 0;
             if (LockLogin)
             {
-                index = FindLockLogin(obj.AuthType, obj.Text1);
+                var index = FindLockLogin(obj.AuthType, obj.Text1);
                 if (index == -1)
                 {
                     Model.Show(App.Lang("UserWindow.Error9"));
@@ -748,20 +748,17 @@ public partial class UsersControlModel : TopModel
     {
         Model.PushBack(() =>
         {
-            if (DialogHost.IsDialogOpen("UsersControl"))
+            if (DialogHost.IsDialogOpen(UsersControl.DialogName))
             {
-                DialogHost.Close("UsersControl");
+                DialogHost.Close(UsersControl.DialogName);
             }
             Model.PopBack();
         });
 
-        Dispatcher.UIThread.Post(() =>
+        if (!DialogHost.IsDialogOpen(UsersControl.DialogName))
         {
-            if (!DialogHost.IsDialogOpen("UsersControl"))
-            {
-                DialogHost.Show(this, "UsersControl");
-            }
-        });
+            DialogHost.Show(this, UsersControl.DialogName);
+        }
     }
 
     private void CloseShow()
