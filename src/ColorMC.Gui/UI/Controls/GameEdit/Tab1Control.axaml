@@ -25,7 +25,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize Text.GameVersion}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
@@ -54,7 +54,7 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}"
                              />
                     </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}" IsEnabled="{Binding !GameVersionEmpty}">
+                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}" IsEnabled="{Binding !GameVersionEmpty}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab1.Text13}" />
                             <ComboBox
@@ -85,7 +85,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text4}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}" IsEnabled="{Binding !GameVersionEmpty}">
+                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}" IsEnabled="{Binding !GameVersionEmpty}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
@@ -162,7 +162,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="" AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch Margin="" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
                             <ComboBox
@@ -214,7 +214,7 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text51}"
                              />
                     </WrapPanel>
-                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                         <TextBlock Width="110" Text="{setting:Localize GameEditWindow.Tab1.Text8}" />
                         <TextBox
                             MinWidth="200"
@@ -223,7 +223,7 @@
                             Text="{Binding PID}"
                             Watermark="{setting:Localize GameEditWindow.Tab1.Text8}" />
                     </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch Margin="0,10,0,0" AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch Margin="0,10,0,0" RightMax="{Binding MinMode}">
                         <TextBlock Width="110" Text="{setting:Localize GameEditWindow.Tab1.Text9}" />
                         <TextBox
                             MinWidth="200"

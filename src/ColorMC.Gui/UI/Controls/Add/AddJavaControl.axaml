@@ -19,7 +19,7 @@
             <DockPanel>
                 <panel:WrapPanelWithStretch
                     Margin="15,15,5,-10"
-                    AutoMax="{Binding MinMode}"
+                    RightMax="{Binding MinMode}"
                     DockPanel.Dock="Top">
                     <DockPanel MinWidth="150" Margin="0,0,10,10">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text7}" />

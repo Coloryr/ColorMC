@@ -271,6 +271,16 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab1.Info4"));
     }
 
+    private async void ClearWindow()
+    {
+        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info18"));
+        if (!res)
+            return;
+
+        BaseBinding.ClearWindowSetting();
+        Model.Notify(App.Lang("SettingWindow.Tab1.Info19"));
+    }
+
     private async void DumpUser()
     {
         var top = Model.GetTopLevel();

@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
     d:DesignHeight="450"
@@ -14,17 +15,17 @@
     <ScrollViewer>
         <Decorator Margin="0,0,10,15">
             <Border Margin="10,5,10,3" Classes="t2">
-                <WrapPanel
+                <panel:WrapPanelWithStretch
                     Margin="15"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
+                    VerticalAlignment="Center">
                     <Image
                         Name="Image1"
                         Width="160"
                         Height="160"
-                        Margin="60,0,10,0"
+                        Margin="10,0,10,0"
                         HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
                         Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <StackPanel Name="StackPanel1">
@@ -45,66 +46,53 @@
                                 <TextBlock FontSize="20" Text="{Binding RunType}" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel
-                            Name="StackPanel2"
-                            MaxWidth="350"
-                            Margin="0,5,0,0">
+                        <StackPanel Name="StackPanel2" Margin="0,5,0,0">
                             <WrapPanel>
                                 <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
+                                    Margin="0,0,5,0"
                                     Command="{Binding OpenUrl1}"
                                     Content="{setting:Localize SettingWindow.Tab7.Text3}" />
                                 <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
+                                    Margin="0,0,5,0"
                                     Command="{Binding OpenUrl5}"
                                     Content="{setting:Localize SettingWindow.Tab7.Text8}" />
                                 <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
+                                    Margin="0,0,5,0"
                                     Command="{Binding OpenUrl4}"
                                     Content="{setting:Localize SettingWindow.Tab7.Text7}" />
-                                <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
-                                    Command="{Binding OpenUrl3}"
-                                    Content="{setting:Localize SettingWindow.Tab7.Text5}" />
+                                <HyperlinkButton Command="{Binding OpenUrl3}" Content="{setting:Localize SettingWindow.Tab7.Text5}" />
                             </WrapPanel>
                             <WrapPanel>
                                 <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
+                                    Margin="0,0,5,0"
                                     Command="{Binding OpenUrl2}"
                                     Content="{setting:Localize SettingWindow.Tab7.Text4}" />
-                                <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
-                                    Command="{Binding OpenUrl6}"
-                                    Content="{setting:Localize SettingWindow.Tab7.Text9}" />
+                                <HyperlinkButton Command="{Binding OpenUrl6}" Content="{setting:Localize SettingWindow.Tab7.Text9}" />
                             </WrapPanel>
                             <WrapPanel>
                                 <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
+                                    Margin="0,0,5,0"
                                     Command="{Binding OpenUrl7}"
                                     Content="{setting:Localize SettingWindow.Tab7.Text11}" />
                                 <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
+                                    Margin="0,0,5,0"
                                     Command="{Binding OpenUrl8}"
                                     Content="{setting:Localize SettingWindow.Tab7.Text12}" />
-                                <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
-                                    Command="{Binding OpenUrl10}"
-                                    Content="{setting:Localize SettingWindow.Tab7.Text14}" />
+                                <HyperlinkButton Command="{Binding OpenUrl10}" Content="{setting:Localize SettingWindow.Tab7.Text14}" />
                             </WrapPanel>
                             <WrapPanel>
                                 <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
+                                    Margin="0,0,5,0"
                                     Command="{Binding OpenUrl9}"
                                     Content="{setting:Localize SettingWindow.Tab7.Text13}" />
                                 <HyperlinkButton
-                                    HorizontalAlignment="Stretch"
                                     VerticalAlignment="Center"
                                     Command="{Binding OpenUrl11}"
                                     Content="{setting:Localize SettingWindow.Tab7.Text15}" />
                             </WrapPanel>
                         </StackPanel>
                     </StackPanel>
-                </WrapPanel>
+                </panel:WrapPanelWithStretch>
             </Border>
         </Decorator>
     </ScrollViewer>

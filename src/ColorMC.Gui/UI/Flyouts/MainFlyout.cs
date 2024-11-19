@@ -22,13 +22,14 @@ public class MainFlyout
             {
                 WindowManager.ShowAdd(obj.Obj, FileType.Mod);
             }),
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text2"), true, ()=>
-            {
-                WindowManager.ShowGameEdit(obj.Obj);
-            })
+            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text2"), true, null)
             {
                 SubItem =
                 [
+                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text19"), true, ()=>
+                    {
+                        WindowManager.ShowGameEdit(obj.Obj);
+                    }),
                     new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text4"), true, ()=>
                     {
                         WindowManager.ShowGameEdit(obj.Obj, GameEditWindowType.Mod);

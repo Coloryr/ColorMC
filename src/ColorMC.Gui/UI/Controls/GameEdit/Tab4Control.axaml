@@ -17,7 +17,7 @@
             <DockPanel>
                 <panel:WrapPanelWithStretch
                     Margin="15,15,5,-10"
-                    AutoMax="True"
+                    RightMax="True"
                     DockPanel.Dock="Top">
                     <DockPanel MinWidth="180" Margin="0,0,10,10">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab4.Text2}" />

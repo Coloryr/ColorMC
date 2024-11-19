@@ -35,7 +35,7 @@
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text3}" />
                             <TextBlock Text="{Binding InputNum}" />
                         </DockPanel>
-                        <panel:WrapPanelWithStretch Margin="0,0,10,10" AutoMax="{Binding MinMode}">
+                        <panel:WrapPanelWithStretch Margin="0,0,10,10" RightMax="{Binding MinMode}">
                             <DockPanel MinWidth="230">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
                                 <ComboBox
@@ -44,7 +44,7 @@
                                     SelectedIndex="{Binding InputIndex}" />
                             </DockPanel>
                         </panel:WrapPanelWithStretch>
-                        <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                        <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                             <DockPanel MinWidth="230" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
                                 <ComboBox
@@ -202,7 +202,7 @@
                         DockPanel.Dock="Bottom"
                         Text="{setting:Localize SettingWindow.Tab8.Text16}"
                         TextWrapping="Wrap" />
-                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}" DockPanel.Dock="Bottom">
+                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}" DockPanel.Dock="Bottom">
                         <DockPanel MinWidth="260">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text15}" />
                             <TextBlock
@@ -278,7 +278,7 @@
                             Path="/Resource/Icon/Setting/svg24.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab8.Text17}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text18}" />
                             <ComboBox
@@ -295,7 +295,7 @@
                         </DockPanel>
                     </panel:WrapPanelWithStretch>
                     <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text20}" />
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text22}" />
                             <Panel>
@@ -361,7 +361,7 @@
                             </Panel>
                         </DockPanel>
                     </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="260" Margin="0,0,10,-10">
                             <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text23}" />
                             <TextBlock

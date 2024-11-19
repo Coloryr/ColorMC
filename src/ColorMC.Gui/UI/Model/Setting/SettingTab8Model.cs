@@ -658,12 +658,6 @@ public partial class SettingModel
         }
     }
 
-    public void SetTab8Click()
-    {
-        Model.SetChoiseCall(_name, ReloadInput);
-        Model.SetChoiseContent(_name, App.Lang("SettingWindow.Tab8.Info8"));
-    }
-
     public async void SetKeyButton(InputButtonModel item)
     {
         if (_controlObj == null)

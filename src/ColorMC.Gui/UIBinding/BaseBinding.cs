@@ -401,4 +401,9 @@ public static class BaseBinding
         return $"{(int)Media.NowTime.TotalMinutes:00}:{Media.NowTime.Seconds:00}" +
             $"/{(int)Media.MusicTime.TotalMinutes:00}:{Media.MusicTime.Seconds:00}";
     }
+
+    public static void ClearWindowSetting()
+    {
+        WindowManager.Reset();
+    }
 }

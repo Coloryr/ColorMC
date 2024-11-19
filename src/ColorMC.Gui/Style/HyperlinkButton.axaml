@@ -1,0 +1,21 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel>
+                <HyperlinkButton
+                    Width="80"
+                    Height="40"
+                    Margin="20"
+                    Classes="top"
+                    Content="123" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="HyperlinkButton">
+        <Setter Property="Padding" Value="0" />
+    </Style>
+</Styles>
