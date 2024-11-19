@@ -106,7 +106,7 @@
   "Core.Game.Error1": "游戏实例：模组解析失败",
   "Core.Game.Error2": "游戏实例：材质包解析失败",
   "Core.Game.Error3": "游戏实例：导入失败",
-  "Core.Game.Error4": "游戏实例：地图读取失败",
+  "Core.Game.Error4": "游戏实例：存档读取失败",
   "Core.Game.Error7": "游戏实例：服务器数据获取错误",
   "Core.Game.Error8": "游戏实例：读取模组信息错误",
   "Core.Game.Error9": "游戏实例：读取游戏时间信息错误",

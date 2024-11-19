@@ -592,7 +592,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// 下载地图资源
+    /// 下载存档资源
     /// </summary>
     /// <param name="obj1"></param>
     /// <param name="data"></param>
@@ -618,7 +618,7 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// 下载地图资源
+    /// 下载存档资源
     /// </summary>
     /// <param name="obj1"></param>
     /// <param name="data"></param>

@@ -986,7 +986,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         //数据包
         if (_now == FileType.DataPacks)
         {
-            //选择地图
+            //选择存档
             var list = await GameBinding.GetWorlds(Obj);
             if (list.Count == 0)
             {

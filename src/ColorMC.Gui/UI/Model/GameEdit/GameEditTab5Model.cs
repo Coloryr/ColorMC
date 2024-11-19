@@ -51,6 +51,7 @@ public partial class GameEditModel
         LoadWorld1();
 
         Model.ProgressClose();
+        Model.Notify(App.Lang("GameEditWindow.Tab5.Info17"));
     }
 
     private void OpenBackupWorld()

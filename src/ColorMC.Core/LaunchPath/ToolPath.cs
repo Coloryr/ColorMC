@@ -29,7 +29,7 @@ public static class ToolPath
     }
 
     /// <summary>
-    /// 打开地图编辑器
+    /// 打开存档编辑器
     /// </summary>
     /// <returns></returns>
     public static async Task<MessageRes> OpenMapEditAsync()

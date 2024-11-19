@@ -27,8 +27,7 @@
                         Classes="top"
                         Command="{Binding UploadConfig}"
                         Content="{setting:Localize GameCloudWindow.Tab2.Text1}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text95}"
-                         />
+                        ToolTip.Tip="{setting:Localize ToolTip.Text95}" />
                     <Button
                         Width="100"
                         Height="35"
