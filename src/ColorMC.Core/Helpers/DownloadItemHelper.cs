@@ -26,7 +26,7 @@ public static class DownloadItemHelper
     }
 
     /// <summary>
-    /// 地图编辑器下载项目
+    /// 存档编辑器下载项目
     /// </summary>
     /// <returns></returns>
     public static DownloadItemObj BuildMcaselectorItem()
