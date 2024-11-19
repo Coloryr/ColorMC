@@ -20,7 +20,7 @@
                     Classes="t2"
                     DockPanel.Dock="Top">
                     <StackPanel Margin="15,15,5,15">
-                        <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                        <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                             <DockPanel MinWidth="190" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text2}" />
                                 <ComboBox
@@ -147,7 +147,7 @@
                     DockPanel.Dock="Top">
                     <panel:WrapPanelWithStretch
                         Margin="15,15,5,5"
-                        AutoMax="{Binding MinMode}"
+                        RightMax="{Binding MinMode}"
                         DockPanel.Dock="Top">
                         <DockPanel MinWidth="190" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />

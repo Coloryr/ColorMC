@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace ColorMC.Gui.UI.Controls.Main;
+namespace ColorMC.Gui.UI.Controls.Dialog;
 
 public partial class GroupEditControl : UserControl
 {

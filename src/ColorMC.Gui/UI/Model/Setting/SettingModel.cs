@@ -120,6 +120,11 @@ public partial class SettingModel : MenuModel
                     },
                     new SubMenuItemModel()
                     {
+                        Name = App.Lang("SettingWindow.Tab1.Text19"),
+                        Func = ClearWindow
+                    },
+                    new SubMenuItemModel()
+                    {
                         Name = App.Lang("SettingWindow.Tab1.Text3"),
                         Func = Open
                     },
@@ -143,7 +148,15 @@ public partial class SettingModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/Setting/item8.svg",
-            Text = App.Lang("SettingWindow.Tabs.Text8")
+                Text = App.Lang("SettingWindow.Tabs.Text8"),
+                SubMenu =
+                [
+                    new SubMenuItemModel()
+                    { 
+                        Name = App.Lang("SettingWindow.Tab8.Info8"),
+                        Func = ReloadInput
+                    }
+                ]
             },
             new()
             {
@@ -151,11 +164,6 @@ public partial class SettingModel : MenuModel
                 Text = App.Lang("SettingWindow.Tabs.Text7")
             }
         ]);
-    }
-
-    public void RemoveChoise()
-    {
-        Model.RemoveChoiseData(_name);
     }
 
     public override void Close()

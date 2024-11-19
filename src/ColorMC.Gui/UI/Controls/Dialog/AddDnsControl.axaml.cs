@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace ColorMC.Gui.UI.Controls.Setting;
+namespace ColorMC.Gui.UI.Controls.Dialog;
 
 public partial class AddDnsControl : UserControl
 {

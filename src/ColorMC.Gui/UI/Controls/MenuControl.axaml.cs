@@ -13,7 +13,6 @@ namespace ColorMC.Gui.UI.Controls;
 public abstract partial class MenuControl : BaseUserControl
 {
     private CancellationTokenSource _cancel = new();
-    private CancellationTokenSource _cancel1 = new();
 
     private bool _switch1 = false;
 
@@ -75,19 +74,12 @@ public abstract partial class MenuControl : BaseUserControl
     {
         if (e.PropertyName == MenuModel.SideOpen)
         {
-            _cancel1.Cancel();
-            _cancel1.Dispose();
-            _cancel1 = new();
-
             _control.SidePanel3.IsVisible = true;
-            ThemeManager.SidePageSlide300.Start(null, _control.SidePanel2, _cancel1.Token);
+            _control.SidePanel2.IsVisible = true;
         }
         else if (e.PropertyName == MenuModel.SideClose)
         {
-            _cancel1.Cancel();
-            _cancel1.Dispose();
-            _cancel1 = new();
-            ThemeManager.SidePageSlide300.Start(_control.SidePanel2, null, _cancel1.Token);
+            _control.SidePanel2.IsVisible = false;
             _control.SidePanel3.IsVisible = false;
         }
 

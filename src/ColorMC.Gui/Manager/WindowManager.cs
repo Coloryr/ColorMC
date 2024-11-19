@@ -827,4 +827,10 @@ public static class WindowManager
             (item.GetVisualRoot() as Window)?.Close();
         }
     }
+
+    public static void Reset()
+    {
+        s_WindowState.Clear();
+        SaveState();
+    }
 }
