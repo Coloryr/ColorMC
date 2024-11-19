@@ -7,7 +7,7 @@ ColorMC的自定义主界面教程
 本操作需要有一定的编程能力，会写[C#](https://dotnet.microsoft.com/zh-cn/languages/csharp)与[XAML界面](https://docs.avaloniaui.net/)
 
 附带的默认自定义主界面  
-![](image/pic1.png)
+![](images/pic1.png)
 
 ## 开始
 
@@ -42,7 +42,7 @@ git submodule update --init --recursive
 
 将这两个文件放在启动器运行目录(可以在启动器里面打开)
 然后在`启动器设置`->`客户端定制`中开启`自定义主界面`功能即可  
-![](image/pic2.png)
+![](images/pic2.png)
 
 ## 自动更新自定义主界面
 

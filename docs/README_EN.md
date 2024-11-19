@@ -1,20 +1,20 @@
 # ColorMC A new Minecraft Launcher  
 
-[简体中文](./README.md)
+[简体中文](../README.md)
 
 **The following content is machine translation**  
-**Notie: Translations from other languages are not yet ready. If possible, welcome to do the translation together**  
+**Notice: Translations from other languages are not yet ready. If possible, welcome to do the translation together**  
 https://crowdin.com/project/colormc
 
 Using dotnet8 as the runtime environment, XAML as the `UI Front` language, and C # as the `Back-End` language
 
 [User's manual](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md)
 
-![](/image/run.png)  
+![](/docs/images/run.png)  
 
 **Running animation**
 
-![](/image/GIF.gif)  
+![](/docs/images/GIF.gif)  
 
 ## Supporting platforms
 - Linux
