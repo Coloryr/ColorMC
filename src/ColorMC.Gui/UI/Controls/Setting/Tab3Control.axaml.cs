@@ -28,10 +28,10 @@ public partial class Tab3Control : UserControl
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not SettingModel model)
         {
-            var model = (DataContext as SettingModel)!;
-            _ = new SettingFlyout3(control, model, model.DnsItem);
-        });
+            return;
+        }
+        _ = new SettingFlyout3(control, model, model.DnsItem);
     }
 }

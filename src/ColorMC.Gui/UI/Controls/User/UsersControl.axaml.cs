@@ -8,6 +8,8 @@ namespace ColorMC.Gui.UI.Controls.User;
 
 public partial class UsersControl : BaseUserControl
 {
+    public const string DialogName = "UsersControl";
+
     public UsersControl()
     {
         InitializeComponent();

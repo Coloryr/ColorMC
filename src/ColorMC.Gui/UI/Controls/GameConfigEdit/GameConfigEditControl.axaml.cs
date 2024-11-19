@@ -107,15 +107,15 @@ public partial class GameConfigEditControl : BaseUserControl
 
     private void Flyout1(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not GameConfigEditModel model)
         {
-            var model = (DataContext as GameConfigEditModel)!;
-            var item = model.Source.Selection;
-            if (item != null)
-            {
-                _ = new ConfigFlyout1(control, item, model);
-            }
-        });
+            return;
+        }
+        var item = model.Source.Selection;
+        if (item != null)
+        {
+            _ = new ConfigFlyout1(control, item, model);
+        }
     }
 
     public override void Opened()

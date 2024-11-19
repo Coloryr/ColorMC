@@ -584,12 +584,14 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
     [RelayCommand]
     public async Task LoadOptifineList()
     {
+        _load = true;
         GameVersionList.Clear();
         _optifineList.Clear();
         DownloadOptifineList.Clear();
         Model.Progress(App.Lang("AddWindow.Info13"));
         var list = await WebBinding.GetOptifine();
         Model.ProgressClose();
+        _load = false;
         if (list == null)
         {
             Model.Show(App.Lang("AddWindow.Error10"));

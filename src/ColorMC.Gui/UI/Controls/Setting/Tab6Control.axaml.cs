@@ -28,13 +28,13 @@ public partial class Tab6Control : UserControl
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not SettingModel model)
         {
-            var model = (DataContext as SettingModel)!;
-            if (model.LockSelect != null)
-            {
-                _ = new LockLoginFlyout(control, model.LockSelect);
-            }
-        });
+            return;
+        }
+        if (model.LockSelect != null)
+        {
+            _ = new LockLoginFlyout(control, model.LockSelect);
+        }
     }
 }

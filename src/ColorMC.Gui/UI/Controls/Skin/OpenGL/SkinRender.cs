@@ -42,47 +42,29 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         var model = (sender as SkinModel)!;
         if (e.PropertyName == nameof(SkinModel.SteveModelType))
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                skin.SetSkinType(model.SteveModelType);
-            });
+            skin.SetSkinType(model.SteveModelType);
         }
         else if (e.PropertyName == nameof(SkinModel.EnableAnimation))
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                skin.SetAnimation(model.EnableAnimation);
-            });
+            skin.SetAnimation(model.EnableAnimation);
         }
         else if (e.PropertyName == nameof(SkinModel.EnableCape))
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                skin.SetCape(model.EnableCape);
-            });
+            skin.SetCape(model.EnableCape);
         }
         else if (e.PropertyName == nameof(SkinModel.EnableTop))
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                skin.SetTopModel(model.EnableTop);
-            });
+            skin.SetTopModel(model.EnableTop);
         }
         else if (e.PropertyName == nameof(SkinModel.EnableMSAA))
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                skin.SetMSAA(model.EnableMSAA);
-            });
+            skin.SetMSAA(model.EnableMSAA);
         }
         else if (e.PropertyName == SkinModel.RotateName)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                skin.ArmRotate = model.ArmRotate;
-                skin.LegRotate = model.LegRotate;
-                skin.HeadRotate = model.HeadRotate;
-            });
+            skin.ArmRotate = model.ArmRotate;
+            skin.LegRotate = model.LegRotate;
+            skin.HeadRotate = model.HeadRotate;
         }
         else if (e.PropertyName == SkinModel.PosName)
         {

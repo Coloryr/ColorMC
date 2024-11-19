@@ -69,13 +69,10 @@ public partial class Live2dControl : UserControl
     {
         if (e.PropertyName == MainModel.ModelTextName)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                _cancel.Cancel();
-                _cancel = new();
+            _cancel.Cancel();
+            _cancel = new();
 
-                ShowMessage();
-            });
+            ShowMessage();
         }
         else if (e.PropertyName == MainModel.ModelChangeDoneName)
         {

@@ -46,10 +46,10 @@ public partial class ScreenshotControl : UserControl
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not ScreenshotModel model)
         {
-            var model = (DataContext as ScreenshotModel)!;
-            _ = new GameEditFlyout4(control, model);
-        });
+            return;
+        }
+        _ = new GameEditFlyout4(control, model);
     }
 }

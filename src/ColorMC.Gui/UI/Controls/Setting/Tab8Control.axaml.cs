@@ -40,19 +40,19 @@ public partial class Tab8Control : UserControl
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not SettingModel model)
         {
-            var model = (DataContext as SettingModel)!;
-            _ = new SettingFlyout2(control, model, model.InputItem);
-        });
+            return;
+        }
+        _ = new SettingFlyout2(control, model, model.InputItem);
     }
 
     private void Flyout1(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not SettingModel model)
         {
-            var model = (DataContext as SettingModel)!;
-            _ = new SettingFlyout2(control, model, model.InputAxisItem);
-        });
+            return;
+        }
+        _ = new SettingFlyout2(control, model, model.InputAxisItem);
     }
 }

@@ -118,10 +118,10 @@ public partial class ResourcePackControl : UserControl
 
     private void Flyout(Control control)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (DataContext is not ResourcePackModel model)
         {
-            var model = (DataContext as ResourcePackModel)!;
-            _ = new GameEditFlyout3(control, model);
-        });
+            return;
+        }
+        _ = new GameEditFlyout3(control, model);
     }
 }

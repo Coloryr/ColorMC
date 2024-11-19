@@ -2186,10 +2186,7 @@ public static class GameBinding
         var res = await obj.Remove(request);
         if (res)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                WindowManager.CloseGameWindow(obj);
-            });
+            WindowManager.CloseGameWindow(obj);
         }
 
         return res;

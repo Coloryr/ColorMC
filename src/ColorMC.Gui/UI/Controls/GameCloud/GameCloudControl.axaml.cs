@@ -64,11 +64,10 @@ public partial class GameCloudControl : MenuControl
 
     public void GoWorld()
     {
-        Dispatcher.UIThread.Post(() =>
-        {
-            var model = (DataContext as GameCloudModel)!;
-            model.NowView = 2;
-        });
+        if (DataContext is GameCloudModel model)
+        { 
+            model.NowView = 2; 
+        }
     }
 
     public void ReloadTitle()

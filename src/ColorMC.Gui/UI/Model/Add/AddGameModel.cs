@@ -276,7 +276,7 @@ public partial class AddGameModel : TopModel
         var res = await Model.ShowWait(App.Lang("AddGameWindow.Tab1.Info25"));
         if (res != true)
         {
-            Dispatcher.UIThread.Post(WindowClose);
+            WindowClose();
         }
         else
         {
