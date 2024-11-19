@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Flyouts;
@@ -13,24 +14,24 @@ public class UserFlyout
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("UserWindow.Flyouts.Text1"), true, ()=>
+            new FlyoutMenuObj(App.Lang("UserWindow.Flyouts.Text1"), true, ()=>
             {
                  _obj.Select();
             }),
-            (App.Lang("UserWindow.Flyouts.Text2"), _obj.AuthType is not AuthType.Offline, ()=>
+            new FlyoutMenuObj(App.Lang("UserWindow.Flyouts.Text2"), _obj.AuthType is not AuthType.Offline, ()=>
             {
                 _obj.Refresh();
             }),
-            (App.Lang("UserWindow.Flyouts.Text3"), _obj.AuthType is not AuthType.Offline
+            new FlyoutMenuObj(App.Lang("UserWindow.Flyouts.Text3"), _obj.AuthType is not AuthType.Offline
                 or AuthType.OAuth, ()=>
                 {
                     _obj.ReLogin();
                 }),
-            (App.Lang("UserWindow.Flyouts.Text4"), true, ()=>
+            new FlyoutMenuObj(App.Lang("UserWindow.Flyouts.Text4"), true, ()=>
             {
                 _obj.Remove();
             }),
-            (App.Lang("UserWindow.Flyouts.Text5"), _obj.AuthType == AuthType.Offline, ()=>
+            new FlyoutMenuObj(App.Lang("UserWindow.Flyouts.Text5"), _obj.AuthType == AuthType.Offline, ()=>
             {
                 _obj.Edit();
             })

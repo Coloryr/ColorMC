@@ -27,7 +27,7 @@ public partial class GameEditModel
 
     public async void LoadSchematic()
     {
-        Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
+        Model.Progress(App.Lang("GameEditWindow.Tab12.Info3"));
         SchematicList.Clear();
         SchematicList.AddRange(await GameBinding.GetSchematics(_obj));
         Model.ProgressClose();

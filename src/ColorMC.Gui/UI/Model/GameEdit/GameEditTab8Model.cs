@@ -46,6 +46,7 @@ public partial class GameEditModel
         }
 
         LoadResource1();
+        Model.Notify(App.Lang("GameEditWindow.Tab8.Info5"));
     }
 
     private void LoadResource1()

@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Setting;
 
@@ -10,14 +11,14 @@ public class SettingFlyout2
     {
         _ = new FlyoutsControl(
         [
-            (App.Lang("SettingWindow.Flyouts.Text2"), true, ()=>
+            new FlyoutMenuObj(App.Lang("SettingWindow.Flyouts.Text2"), true, ()=>
             {
                 if(data is InputButtonModel key)
                 {
                     model.SetKeyButton(key);
                 }
             }),
-            (App.Lang("SettingWindow.Flyouts.Text3"), true, ()=>
+            new FlyoutMenuObj(App.Lang("SettingWindow.Flyouts.Text3"), true, ()=>
             {
                 if(data is InputButtonModel key)
                 {

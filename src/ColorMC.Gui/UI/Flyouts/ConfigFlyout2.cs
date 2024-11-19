@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 
@@ -10,7 +11,7 @@ public class ConfigFlyout2
     {
         _ = new FlyoutsControl(
         [
-            (App.Lang("Button.Delete"), true, () =>
+            new FlyoutMenuObj(App.Lang("Button.Delete"), true, () =>
             {
                 model.DeleteItem(item);
             }),

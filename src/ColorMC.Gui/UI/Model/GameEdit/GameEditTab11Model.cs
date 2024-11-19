@@ -27,13 +27,13 @@ public partial class GameEditModel
 
     public async void LoadShaderpack()
     {
-        Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
+        Model.Progress(App.Lang("GameEditWindow.Tab11.Info4"));
         ShaderpackList.Clear();
         ShaderpackList.AddRange(await GameBinding.GetShaderpacks(_obj));
         Model.ProgressClose();
 
         ShaderpackEmptyDisplay = ShaderpackList.Count == 0;
-        Model.Notify(App.Lang("GameEditWindow.Tab10.Info8"));
+        Model.Notify(App.Lang("GameEditWindow.Tab11.Info3"));
     }
 
     private async void ImportShaderpack()
