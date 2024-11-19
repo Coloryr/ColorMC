@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Flyouts;
@@ -9,7 +10,7 @@ public class LockLoginFlyout
     {
         _ = new FlyoutsControl(
         [
-            (App.Lang("Button.Delete"), true, model.Delete)
+            new FlyoutMenuObj(App.Lang("Button.Delete"), true, model.Delete)
         ], con);
     }
 }

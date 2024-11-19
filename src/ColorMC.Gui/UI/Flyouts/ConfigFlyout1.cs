@@ -2,6 +2,7 @@
 using Avalonia.Controls.Selection;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
 using ColorMC.Gui.UI.Model.Items;
 
@@ -81,11 +82,11 @@ public class ConfigFlyout1
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("Button.Add"), add, () =>
+            new FlyoutMenuObj(App.Lang("Button.Add"), add, () =>
             {
                 _model.AddItem(_item!);
             }),
-            (App.Lang("Button.Delete"), delete, () =>
+            new FlyoutMenuObj(App.Lang("Button.Delete"), delete, ()=>
             {
                 if (_item == null)
                 {
@@ -96,15 +97,15 @@ public class ConfigFlyout1
                     _model.Delete(_item!);
                 }
             }),
-            (App.Lang("ConfigEditWindow.Flyouts.Text3"), editKey, () =>
+            new FlyoutMenuObj(App.Lang("ConfigEditWindow.Flyouts.Text3"), editKey, () =>
             {
                 _model.SetKey(_item!);
             }),
-            (App.Lang("ConfigEditWindow.Flyouts.Text4"), editValue, () =>
+            new FlyoutMenuObj(App.Lang("ConfigEditWindow.Flyouts.Text4"), editValue, () =>
             {
                 _model.SetValue(_item!);
             }),
-            (App.Lang("ConfigEditWindow.Flyouts.Text5"), true, _model.Find),
+            new FlyoutMenuObj(App.Lang("ConfigEditWindow.Flyouts.Text5"), true, _model.Find),
         ], con);
     }
 }

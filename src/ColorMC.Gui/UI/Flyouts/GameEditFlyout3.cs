@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -18,11 +19,11 @@ public class GameEditFlyout3
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuObj(App.Lang("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenFileWithExplorer(_obj.Local);
             }),
-            (App.Lang("GameEditWindow.Flyouts.Text12"), true, ()=>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text12"), true, ()=>
             {
                 _top.DeleteResource(_obj);
             })

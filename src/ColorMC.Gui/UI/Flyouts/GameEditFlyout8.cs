@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Flyouts;
@@ -26,7 +27,7 @@ public class GameEditFlyout8
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("GameEditWindow.Flyouts.Text1"),
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text1"),
                 !run, ()=>
                 {
                     if (single)
@@ -38,7 +39,7 @@ public class GameEditFlyout8
                         model.DisE(mods);
                     }
                 }),
-            (App.Lang("Button.Delete"), !run, ()=>
+            new FlyoutMenuObj(App.Lang("Button.Delete"), !run, ()=>
             {
                 if (single)
                 {

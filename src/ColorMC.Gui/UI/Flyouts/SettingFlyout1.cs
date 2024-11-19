@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
@@ -15,7 +16,7 @@ public class SettingFlyout1
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("SettingWindow.Flyouts.Text1"), true, ()=>
+            new FlyoutMenuObj(App.Lang("SettingWindow.Flyouts.Text1"), true, ()=>
             {
                 foreach (var item in java)
                 {

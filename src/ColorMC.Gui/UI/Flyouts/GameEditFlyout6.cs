@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
 
@@ -13,11 +14,11 @@ public class GameEditFlyout6
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuObj(App.Lang("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenFileWithExplorer(_obj.ShaderpackItem!.Local);
             }),
-            (App.Lang("Button.Delete"), true, ()=>
+            new FlyoutMenuObj(App.Lang("Button.Delete"), true, ()=>
             {
                 _obj.DeleteShaderpack(_obj.ShaderpackItem!);
             })

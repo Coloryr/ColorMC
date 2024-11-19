@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
@@ -13,11 +14,11 @@ public class GameEditFlyout4
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuObj(App.Lang("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenFileWithExplorer(_model.Screenshot);
             }),
-            (App.Lang("GameEditWindow.Tab9.Text1"), true, ()=>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Tab9.Text1"), true, ()=>
             {
                 _model.TopModel.DeleteScreenshot(_model);
             })

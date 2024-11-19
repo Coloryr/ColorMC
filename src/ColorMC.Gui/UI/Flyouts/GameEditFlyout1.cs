@@ -5,6 +5,7 @@ using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -27,7 +28,7 @@ public class GameEditFlyout1
 
         _ = new FlyoutsControl(
         [
-            (App.Lang("GameEditWindow.Flyouts.Text1"), true, () =>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text1"), true, () =>
             {
                 if (single)
                 {
@@ -41,9 +42,9 @@ public class GameEditFlyout1
                     }
                 }
             }),
-            (App.Lang("GameEditWindow.Flyouts.Text2"), true, ()=>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text2"), true, () =>
             {
-                if (single)
+                if(single)
                 {
                     model.DeleteMod(obj);
                 }
@@ -52,38 +53,36 @@ public class GameEditFlyout1
                     model.DeleteMod(mods);
                 }
             }),
-            (App.Lang("Button.OpFile"), single, ()=>
+            new FlyoutMenuObj(App.Lang("Button.OpFile"), single, () =>
             {
                 PathBinding.OpenFileWithExplorer(obj.Local);
             }),
-            (App.Lang("GameEditWindow.Flyouts.Text6"), true, async ()=>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text6"), true, async() =>
             {
-                var list = new List<IStorageFile>();
-                if (TopLevel.GetTopLevel(con) is { } top)
+                var list = new List <IStorageFile>();
+                if(TopLevel.GetTopLevel(con) is { } top)
                 {
-                    foreach (var item in mods)
+                    foreach(var item in mods)
                     {
                         var data = await top.StorageProvider.TryGetFileFromPathAsync(item.Local);
-                        if (data == null)
+                        if(data == null)
                             continue;
-
                         list.Add(data);
                     }
                     await BaseBinding.CopyFileClipboard(top, list);
                 }
             }),
-            (App.Lang("GameEditWindow.Flyouts.Text3"), single, ()=>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text3"), single, () =>
             {
                 WebBinding.OpenMcmod(obj);
             }),
-            (App.Lang("GameEditWindow.Flyouts.Text4"), single
-                && !string.IsNullOrWhiteSpace(obj?.Url), ()=>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text4"), single 
+                && ! string.IsNullOrWhiteSpace(obj ?.Url), () =>
                 {
-                    BaseBinding.OpUrl(obj!.Url);
+                    BaseBinding.OpUrl(obj !.Url);
                 }),
-            (App.Lang("GameEditWindow.Flyouts.Text5"), single
-                && !string.IsNullOrWhiteSpace(obj?.PID)
-                && !string.IsNullOrWhiteSpace(obj?.FID), ()=>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text5"), single 
+                && ! string.IsNullOrWhiteSpace(obj ?.PID) && ! string.IsNullOrWhiteSpace(obj ?.FID), () =>
                 {
                     WindowManager.ShowAdd(obj!.Obj.Game, obj);
                 }),

@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.ServerPack;
 
@@ -10,7 +11,7 @@ public class ServerPackFlyout1
     {
         _ = new FlyoutsControl(
         [
-            (App.Lang("Button.Delete"), true, ()=>
+            new FlyoutMenuObj(App.Lang("Button.Delete"), true, ()=>
             {
                 model.DeleteFile(obj);
             }),
