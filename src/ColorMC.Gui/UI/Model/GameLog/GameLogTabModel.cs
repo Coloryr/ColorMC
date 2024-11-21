@@ -356,7 +356,10 @@ public partial class GameLogModel : GameModel
 
         if (IsAuto)
         {
-            OnPropertyChanged(NameEnd);
+            Dispatcher.UIThread.Invoke(() =>
+            {
+                OnPropertyChanged(NameEnd);
+            });
         }
     }
 

@@ -1,34 +1,36 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Setting.AddDnsControl"
+    x:Class="ColorMC.Gui.UI.Controls.Dialog.AddLockLoginControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
-    x:DataType="model:AddDnsModel"
+    x:DataType="model:AddLockLoginModel"
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-            <TextBlock Margin="0,0,10,0" Text="{setting:Localize SettingWindow.Tab3.Text29}" />
-            <RadioButton
-                Margin="0,0,5,0"
-                Content="{setting:Localize Type.Dns.DnsOver}"
-                GroupName="Dns"
-                IsChecked="{Binding IsDns}" />
-            <RadioButton
-                Content="{setting:Localize Type.Dns.DnsOverHttps}"
-                GroupName="Dns"
-                IsChecked="{Binding IsHttps}" />
-        </StackPanel>
+        <ComboBox
+            Margin="0,0,0,10"
+            HorizontalAlignment="Stretch"
+            ItemsSource="{Binding Items}"
+            SelectedIndex="{Binding Index}" />
         <TextBox
             MinWidth="300"
             Margin="0,0,0,10"
             Foreground="{setting:Theme FontColor}"
-            Text="{Binding Url}"
+            IsEnabled="{Binding EnableInput}"
+            Text="{Binding InputText}"
             TextAlignment="Center"
             TextWrapping="Wrap"
-            Watermark="{setting:Localize SettingWindow.Tab3.Text30}" />
+            Watermark="{setting:Localize SettingWindow.Tab6.Text31}" />
+        <TextBox
+            MinWidth="300"
+            Foreground="{setting:Theme FontColor}"
+            IsEnabled="{Binding EnableInput}"
+            Text="{Binding InputText1}"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Watermark="{setting:Localize SettingWindow.Tab6.Text32}" />
         <StackPanel
             Margin="0,10,0,0"
             HorizontalAlignment="Center"

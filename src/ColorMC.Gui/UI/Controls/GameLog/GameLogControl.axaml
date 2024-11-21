@@ -21,7 +21,7 @@
                 <panel:WrapPanelWithStretch
                     Margin="0,0,0,10"
                     HorizontalAlignment="Left"
-                    AutoMax="{Binding MinMode}">
+                    RightMax="{Binding MinMode}">
                     <ToggleSwitch
                         Margin="0,0,10,0"
                         VerticalAlignment="Center"
@@ -123,7 +123,7 @@
                         IsChecked="{Binding EnableNone}" />
                 </WrapPanel>
                 <panel:WrapPanelWithStretch
-                    AutoMax="{Binding MinMode}"
+                    RightMax="{Binding MinMode}"
                     IsEnabled="{Binding !IsFile}"
                     IsVisible="{Binding !IsFile}">
                     <DockPanel MinWidth="230" Margin="0,0,10,10">

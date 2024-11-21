@@ -37,7 +37,7 @@
                 Classes="t2"
                 DockPanel.Dock="Top">
                 <StackPanel Margin="15,15,5,15" DockPanel.Dock="Top">
-                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                         <TextBox
                             Width="300"
                             Margin="0,0,10,10"
@@ -65,7 +65,7 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text41}"
                              />
                     </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch AutoMax="True">
+                    <panel:WrapPanelWithStretch RightMax="True">
                         <Button
                             Width="100"
                             Height="35"

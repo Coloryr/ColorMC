@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.User.AddUserControl"
+    x:Class="ColorMC.Gui.UI.Controls.Dialog.AddUserControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -43,15 +43,6 @@
                 Height="35"
                 Margin="-2,-2,1,-2"
                 Classes="top"
-                Command="{Binding Add}"
-                Content="{setting:Localize Button.Add}"
-                DockPanel.Dock="Right"
-                IsEnabled="{Binding !IsAdding}" />
-            <Button
-                Width="100"
-                Height="35"
-                Margin="-2,-2,3,-2"
-                Classes="top"
                 Command="{Binding Cancel}"
                 Content="{setting:Localize Button.Cancel}"
                 DockPanel.Dock="Right" />
@@ -59,6 +50,14 @@
                 Width="100"
                 Height="35"
                 Margin="1,-2,3,-2"
+                Classes="top"
+                Command="{Binding Add}"
+                Content="{setting:Localize Button.Add}"
+                IsEnabled="{Binding !IsAdding}" />
+            <Button
+                Width="100"
+                Height="35"
+                Margin="-2,-2,3,-2"
                 Classes="top"
                 Command="{Binding Register}"
                 Content="{setting:Localize UserWindow.Text7}"

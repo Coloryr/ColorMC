@@ -363,7 +363,7 @@
     <Compile Update="UI\Controls\Items\OptifineVersionItemControl.axaml.cs">
       <DependentUpon>OptifineVersionItemControl.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Controls\Setting\AddDnsControl.axaml.cs">
+    <Compile Update="UI\Controls\Dialog\AddDnsControl.axaml.cs">
       <DependentUpon>AddDnsControl.axaml</DependentUpon>
     </Compile>
   </ItemGroup>

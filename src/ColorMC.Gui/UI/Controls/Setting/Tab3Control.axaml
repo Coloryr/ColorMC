@@ -9,7 +9,7 @@
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Setting"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -35,7 +35,7 @@
                                 Path="/Resource/Icon/Setting/svg7.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                         </StackPanel>
-                        <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
+                        <panel:WrapPanelWithStretch Margin="0,0,0,-10" RightMax="{Binding MinMode}">
                             <DockPanel MinWidth="230" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.DownloadSource}" />
                                 <ComboBox
@@ -140,19 +140,21 @@
                                 Path="/Resource/Icon/Setting/svg34.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text25}" />
                         </StackPanel>
-                        <WrapPanel Margin="0,0,0,-10">
-                            <CheckBox
-                                Margin="0,0,10,10"
-                                Content="{setting:Localize SettingWindow.Tab3.Text26}"
-                                IsChecked="{Binding DnsEnable}" />
-                            <CheckBox
-                                Margin="0,0,0,10"
-                                Content="{setting:Localize SettingWindow.Tab3.Text31}"
-                                IsChecked="{Binding DnsProxy}" />
+                        <WrapPanel>
+                            <ToggleSwitch
+                                Margin="0,0,20,0"
+                                IsChecked="{Binding DnsEnable}"
+                                OffContent="{setting:Localize SettingWindow.Tab3.Text26}"
+                                OnContent="{setting:Localize SettingWindow.Tab3.Text26}" />
+                            <ToggleSwitch
+                                Margin="0,0,20,0"
+                                IsChecked="{Binding DnsProxy}"
+                                OffContent="{setting:Localize SettingWindow.Tab3.Text31}"
+                                OnContent="{setting:Localize SettingWindow.Tab3.Text31}" />
                         </WrapPanel>
                         <StackPanel IsEnabled="{Binding DnsEnable}">
                             <DockPanel
-                                Width="230"
+                                MinWidth="230"
                                 Margin="0,0,0,10"
                                 HorizontalAlignment="Left">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab3.Text27}" />

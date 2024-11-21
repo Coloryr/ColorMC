@@ -598,7 +598,7 @@ public static class Mods
                     var data = Encoding.UTF8.GetString(stream.ToArray());
                     var obj1 = JObject.Parse(data);
                     mod.ModId = obj1["id"]!.ToString();
-                    mod.Name = obj1["name"]!.ToString();
+                    mod.Name = obj1["name"]?.ToString() ?? mod.ModId;
                     mod.Description = obj1["description"]?.ToString();
                     mod.Version = obj1["version"]?.ToString();
                     mod.Url = obj1["contact"]?["homepage"]?.ToString();
