@@ -25,6 +25,7 @@
         <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="/Style/HyperlinkButton.axaml" />
         <StyleInclude Source="/Style/WrapPanelWithStretch.axaml" />
         <StyleInclude Source="/Style/Svg.axaml" />
         <StyleInclude Source="/Style/Button.axaml" />

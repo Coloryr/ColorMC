@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 
@@ -7,16 +8,16 @@ namespace ColorMC.Gui.UI.Views;
 
 public class WrapPanelWithStretch : Panel
 {
-    public static readonly StyledProperty<bool> AutoMaxProperty =
-        AvaloniaProperty.Register<WrapPanelWithStretch, bool>(nameof(AutoMax));
+    public static readonly StyledProperty<bool> RightMaxProperty =
+        AvaloniaProperty.Register<WrapPanelWithStretch, bool>(nameof(RightMax));
 
     public static readonly StyledProperty<bool> LeftMaxProperty =
         AvaloniaProperty.Register<WrapPanelWithStretch, bool>(nameof(LeftMax));
 
-    public bool AutoMax
+    public bool RightMax
     {
-        get => GetValue(AutoMaxProperty);
-        set => SetValue(AutoMaxProperty, value);
+        get => GetValue(RightMaxProperty);
+        set => SetValue(RightMaxProperty, value);
     }
     public bool LeftMax
     {
@@ -27,7 +28,7 @@ public class WrapPanelWithStretch : Panel
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        if (change.Property == AutoMaxProperty
+        if (change.Property == RightMaxProperty
             || change.Property == LeftMaxProperty)
         {
             InvalidateMeasure();
@@ -64,7 +65,7 @@ public class WrapPanelWithStretch : Panel
         double lineHeight = 0;
 
         bool left = LeftMax;
-        bool right = AutoMax;
+        bool right = RightMax;
 
         foreach (var child in Children)
         {
@@ -111,7 +112,7 @@ public class WrapPanelWithStretch : Panel
         double widthToUse = 0;
         Control? last = null;
         bool left = LeftMax;
-        bool right = AutoMax;
+        bool right = RightMax;
         var controls = new Stack<(Control con, Rect size)>();
 
         foreach (var child in Children)
@@ -125,43 +126,63 @@ public class WrapPanelWithStretch : Panel
             //是否需要换行
             if (lineWidth + minWidth > finalSize.Width)
             {
+                double lastheight = 0;
+
                 //最左边的最大
                 if (left)
                 {
                     lineWidth = finalSize.Width;
+
+                    foreach (var (con, size) in controls)
+                    {
+                        lastheight = Math.Max(size.Height, lastheight);
+                    }
+
                     //从右往左排序
                     while (controls.TryPop(out var item))
                     {
                         //是否是最左边的
                         if (controls.Count == 0)
                         {
-                            item.con.Arrange(new(0, totalHeight, lineWidth, lineHeight));
+                            item.con.Arrange(new(0, totalHeight, lineWidth, lastheight));
                         }
                         else
                         {
                             lineWidth -= item.size.Width;
-                            item.con.Arrange(new(lineWidth, totalHeight, item.size.Width, lineHeight));
+                            item.con.Arrange(new(lineWidth, totalHeight, item.size.Width, lastheight));
                         }
                     }
                 }
                 else
                 {
                     //设置为最大高度
-                    while (controls.TryPop(out var item))
+                    foreach (var (con, size) in controls)
                     {
-                        item.con.Arrange(new(item.size.X, item.size.Y, item.size.Width, lineHeight));
+                        lastheight = Math.Max(size.Height, lastheight);
                     }
-
-                    //是否是最右边的
-                    if (last != null && right)
+                    //一行只有一个，给所有宽度
+                    if (controls.Count == 1)
                     {
-                        last.Arrange(new(lineWidth - widthToUse, totalHeight,
-                            finalSize.Width - lineWidth + widthToUse, lineHeight));
-                        last = null;
+                        var (con, size) = controls.Pop();
+                        con.Arrange(new(0, size.Y, finalSize.Width, lastheight));
+                    }
+                    else
+                    {
+                        while (controls.TryPop(out var item))
+                        {
+                            item.con.Arrange(new(item.size.X, item.size.Y, item.size.Width, lastheight));
+                        }
+                        //是否是最右边的
+                        if (last != null && right)
+                        {
+                            last.Arrange(new(lineWidth - widthToUse, totalHeight,
+                                finalSize.Width - lineWidth + widthToUse, lastheight));
+                            last = null;
+                        }
                     }
                 }
 
-                totalHeight += lineHeight;
+                totalHeight += lastheight;
                 if (lineWidth > totalWidth)
                 {
                     totalWidth = lineWidth;

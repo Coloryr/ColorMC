@@ -11,6 +11,7 @@
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:views2="clr-namespace:ColorMC.Gui.UI.Controls.Main"
+    xmlns:views3="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
     d:DesignWidth="800"
     x:DataType="model:MainModel"
     DragDrop.AllowDrop="True"
@@ -22,10 +23,10 @@
         OverlayBackground="Transparent">
         <dialog:DialogHost.DataTemplates>
             <DataTemplate DataType="model:MainModel">
-                <views2:GroupEditControl DataContext="{Binding}" />
+                <views3:GroupEditControl DataContext="{Binding}" />
             </DataTemplate>
             <DataTemplate DataType="model:JoystickSettingModel">
-                <views2:JoystickSettingControl DataContext="{Binding}" />
+                <views3:JoystickSettingControl DataContext="{Binding}" />
             </DataTemplate>
         </dialog:DialogHost.DataTemplates>
         <Panel>
@@ -75,8 +76,7 @@
                                         Height="35"
                                         Command="{Binding OpenGuide}"
                                         CornerRadius="5"
-                                        ToolTip.Tip="{setting:Localize ToolTip.Text70}"
-                                        >
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text70}">
                                         <svg:SvgControl Path="/Resource/Icon/book.svg" />
                                     </Button>
                                     <Button
@@ -85,8 +85,7 @@
                                         Command="{Binding ShowCount}"
                                         CornerRadius="5"
                                         IsVisible="{Binding !IsPhone}"
-                                        ToolTip.Tip="{setting:Localize ToolTip.Text92}"
-                                        >
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text92}">
                                         <svg:SvgControl Path="/Resource/Icon/count.svg" />
                                     </Button>
                                     <Button
@@ -94,8 +93,7 @@
                                         Height="35"
                                         Command="{Binding ShowSetting}"
                                         CornerRadius="5"
-                                        ToolTip.Tip="{setting:Localize ToolTip.Text13}"
-                                        >
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text13}">
                                         <svg:SvgControl Path="/Resource/Icon/setting.svg" />
                                     </Button>
                                 </StackPanel>
@@ -223,8 +221,7 @@
                                                 BorderThickness="0"
                                                 Command="{Binding MusicPause}"
                                                 CornerRadius="5"
-                                                ToolTip.Tip="{setting:Localize ToolTip.Text48}"
-                                                >
+                                                ToolTip.Tip="{setting:Localize ToolTip.Text48}">
                                                 <svg:SvgControl Path="{Binding AudioIcon}" />
                                             </Button>
                                         </Panel>
@@ -268,8 +265,7 @@
                                                 Classes="top"
                                                 Command="{Binding Upgrade}"
                                                 Content="{setting:Localize MainWindow.Text16}"
-                                                ToolTip.Tip="{setting:Localize ToolTip.Text73}"
-                                                 />
+                                                ToolTip.Tip="{setting:Localize ToolTip.Text73}" />
                                             <Button
                                                 Height="35"
                                                 Margin="0,-3,0,-3"
@@ -277,8 +273,7 @@
                                                 Classes="top"
                                                 Command="{Binding NewInfo}"
                                                 Content="{setting:Localize MainWindow.Text17}"
-                                                ToolTip.Tip="{setting:Localize ToolTip.Text74}"
-                                                 />
+                                                ToolTip.Tip="{setting:Localize ToolTip.Text74}" />
                                         </UniformGrid>
                                     </StackPanel>
                                 </Border>
@@ -298,8 +293,7 @@
                                             Classes="top"
                                             Command="{Binding OpenNetFrp}"
                                             Content="{setting:Localize MainWindow.Text19}"
-                                            ToolTip.Tip="{setting:Localize ToolTip.Text72}"
-                                             />
+                                            ToolTip.Tip="{setting:Localize ToolTip.Text72}" />
                                     </StackPanel>
                                 </Border>
                                 <Border

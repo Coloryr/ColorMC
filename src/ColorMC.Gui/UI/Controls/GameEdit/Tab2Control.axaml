@@ -34,7 +34,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text9}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text10}" />
                             <NumericUpDown
@@ -115,7 +115,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text24}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,10,10" AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch Margin="0,0,10,10" RightMax="{Binding MinMode}">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text22}" />
                         <ComboBox
                             MinWidth="200"
@@ -142,7 +142,7 @@
                             Text="{Binding JvmLocal}"
                             Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
                     </DockPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text4}" />
                             <NumericUpDown

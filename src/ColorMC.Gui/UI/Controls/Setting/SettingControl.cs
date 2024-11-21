@@ -89,12 +89,6 @@ public partial class SettingControl : MenuControl
     protected override Control ViewChange(int old, int index)
     {
         var model = (DataContext as SettingModel)!;
-        switch (old)
-        {
-            case 6:
-                model.RemoveChoise();
-                break;
-        }
         switch (index)
         {
             case 0:
@@ -121,7 +115,6 @@ public partial class SettingControl : MenuControl
                 return _tab1 ??= new();
             case 6:
                 model.LoadInput();
-                model.SetTab8Click();
                 return _tab8 ??= new();
             case 7:
                 _tab7 ??= new();

@@ -42,7 +42,7 @@
                             Path="/Resource/Icon/Setting/svg1.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text46}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-5" AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch Margin="0,0,0,-5" RightMax="{Binding MinMode}">
                         <ToggleSwitch
                             Margin="0,0,10,10"
                             VerticalAlignment="Center"
@@ -81,7 +81,7 @@
                             Path="/Resource/Icon/Setting/svg2.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text47}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-5" AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch Margin="0,0,0,-5" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="180" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text1}" />
                             <ComboBox
@@ -126,7 +126,7 @@
                             Path="/Resource/Icon/Setting/svg3.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text39}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" AutoMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text41}" />
                             <TextBlock
@@ -206,7 +206,7 @@
                     </WrapPanel>
                     <panel:WrapPanelWithStretch
                         Margin="0,0,0,0"
-                        AutoMax="{Binding MinMode}"
+                        RightMax="{Binding MinMode}"
                         IsEnabled="{Binding EnableBG}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text4}" />
@@ -240,7 +240,7 @@
                     </panel:WrapPanelWithStretch>
                     <panel:WrapPanelWithStretch
                         Margin="0,0,0,0"
-                        AutoMax="{Binding MinMode}"
+                        RightMax="{Binding MinMode}"
                         IsEnabled="{Binding EnableBG}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text5}" />
@@ -272,7 +272,7 @@
                             Command="{Binding SetPicTran}"
                             Content="{setting:Localize SettingWindow.Tab2.Text60}" />
                     </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch AutoMax="{Binding MinMode}" IsEnabled="{Binding EnableBG}">
+                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}" IsEnabled="{Binding EnableBG}">
                         <ToggleSwitch
                             Margin="0,0,10,10"
                             VerticalAlignment="Center"
@@ -364,7 +364,7 @@
                         OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
                     <panel:WrapPanelWithStretch
                         Margin="0,0,0,0"
-                        AutoMax="{Binding MinMode}"
+                        RightMax="{Binding MinMode}"
                         IsEnabled="{Binding EnableRGB}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text14}" />
@@ -453,7 +453,7 @@
                     </WrapPanel>
                     <panel:WrapPanelWithStretch
                         Margin="0,0,0,-10"
-                        AutoMax="{Binding MinMode}"
+                        RightMax="{Binding MinMode}"
                         IsEnabled="{Binding IsHead3}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text58}" />
@@ -579,7 +579,7 @@
                                 Content="{setting:Localize SettingWindow.Tab2.Text61}"
                                 DockPanel.Dock="Right" />
                         </WrapPanel>
-                        <panel:WrapPanelWithStretch Margin="0,5,0,-5" AutoMax="{Binding MinMode}">
+                        <panel:WrapPanelWithStretch Margin="0,5,0,-5" RightMax="{Binding MinMode}">
                             <ToggleSwitch
                                 Margin="0,0,20,10"
                                 VerticalAlignment="Center"
@@ -599,7 +599,7 @@
                         </panel:WrapPanelWithStretch>
                         <panel:WrapPanelWithStretch
                             Margin="0,0,0,-5"
-                            AutoMax="{Binding MinMode}"
+                            RightMax="{Binding MinMode}"
                             IsEnabled="{Binding EnableLive2D}">
                             <DockPanel MinWidth="260" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text34}" />
