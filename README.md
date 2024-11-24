@@ -201,6 +201,6 @@ limitations under the License.
 附属的开源协议: MIT, BSD
 
 ## 使用的IDE开发工具
-[Visual Studio Code](https://code.visualstudio.com/)  
-[Visual Studio 2022](https://visualstudio.microsoft.com/)  
-![dotMemory logo](https://resources.jetbrains.com/storage/products/company/brand/logos/dotMemory_icon.svg)
+- [Visual Studio Code](https://code.visualstudio.com/)  
+- [Visual Studio 2022](https://visualstudio.microsoft.com/)  
+- ![dotMemory logo](https://resources.jetbrains.com/storage/products/company/brand/logos/dotMemory_icon.svg)
