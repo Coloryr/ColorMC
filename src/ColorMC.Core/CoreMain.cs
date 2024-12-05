@@ -150,8 +150,7 @@ public static class ColorMCCore
     /// 手机端启动
     /// </summary>
     public static Func<LoginObj, GameSettingObj, JavaInfo, List<string>,
-        Dictionary<string, string>, IGameHandel> PhoneGameLaunch
-    { internal get; set; }
+        Dictionary<string, string>, IGameHandel> PhoneGameLaunch { internal get; set; }
     /// <summary>
     /// 手机端Jvm安装
     /// </summary>

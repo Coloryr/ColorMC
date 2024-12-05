@@ -14,6 +14,7 @@ QQ交流群: 571239090
 More Languages: [English](docs/README_EN.md)
 
 [用户手册](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md)
+[更新日志](./log.md)
 [加入多语言翻译](https://crowdin.com/project/colormc)(帮帮忙)
 
 ## 窗口截图 🪟
@@ -29,10 +30,7 @@ More Languages: [English](docs/README_EN.md)
 - macOs
 
 **注意：ARM64平台不能保证其兼容性  
-Windows ARM64 可以运行，渲染有问题
-Mac ARM64 不能运行，可以运行x64版本
-Linux ARM64 在`xx派`上可以运行，运行缓慢
-(由于Linux发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以需要自行解决)**
+由于Linux发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以需要自行解决，我只在自己的虚拟机内测试启动，若有驱动兼容性问题不在我的考虑范围内**
 
 ## 安装 
 在[Releases](https://github.com/Coloryr/ColorMC/releases)或者[Actions](https://github.com/Coloryr/ColorMC/actions)里面下载构建好的压缩包/安装包  
