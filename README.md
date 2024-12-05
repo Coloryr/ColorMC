@@ -11,6 +11,8 @@ https://crowdin.com/project/colormc
 
 [用户手册](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md)
 
+[更新日志](./log.md)
+
 ![](/image/run.png)  
 
 **演示动画**
@@ -23,11 +25,7 @@ https://crowdin.com/project/colormc
 - macOs
 
 注意：ARM64平台不能保证其兼容性  
-Windows ARM64 可以运行，渲染有问题  
-Linux ARM64 在`xx派`上可以运行，运行缓慢  
-Mac ARM64 不能运行，可以运行x64版本  
-
-Linux由于发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以需要自行解决
+Linux由于发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以需要自行解决，我只在自己的虚拟机内测试启动，若有驱动兼容性问题不在我的考虑范围内
 
 ## 安装 
 在Releases或者Actions里面下载构建好的压缩包/安装包  
@@ -153,7 +151,7 @@ git submodule update --init --recursive
 
 ## 依赖/引用的项目
 [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) 跨平台UI框架  
-[DialogHost.Avalonia](https://github.com/AvaloniaUtils/DialogHost.Avalonia) 弹窗库
+[DialogHost.Avalonia](https://github.com/AvaloniaUtils/DialogHost.Avalonia) 弹窗库  
 [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM工具  
 [Svg.Skia](https://github.com/wieslawsoltes/Svg.Skia) Svg图像显示  
 [SkiaSharp](https://github.com/mono/SkiaSharp) Skia图像库  
@@ -161,7 +159,7 @@ git submodule update --init --recursive
 [Heijden.Dns](https://github.com/softlion/Heijden.Dns) DNS解析  
 [HtmlAgilityPack](https://html-agility-pack.net/) HTML解析器  
 [Jint](https://github.com/sebastienros/jint) JS解析执行器  
-[DotNetty](https://github.com/Azure/DotNetty) 异步通信框架
+[DotNetty](https://github.com/Azure/DotNetty) 异步通信框架  
 [Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
 [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
 [Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
