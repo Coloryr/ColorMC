@@ -13,7 +13,8 @@ Built with .NET8 as the runtime environment, XAML as the frontend language, and 
 
 QQ Group: 571239090
 
-[User Manual](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md)  
+[User Manual](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md) -  
+[Changelog](../log.md) -  
 [Join Translation Efforts](https://crowdin.com/project/colormc) (Help us!)
 
 ## Window Screenshots 🪟
@@ -28,15 +29,12 @@ QQ Group: 571239090
 - Windows
 - macOS
 
-**Note: Compatibility on ARM64 platforms is not guaranteed.  
-Windows ARM64 runs but has rendering issues.  
-Mac ARM64 does not run; x64 version is recommended.  
-Linux ARM64 runs on some distributions but is slow.  
-(Due to the diversity of Linux distributions, compatibility may vary. If it doesn't work, you might need to troubleshoot it yourself.)**
+**Note: ARM64 platform compatibility is not guaranteed.  
+Due to the complexity of Linux distributions, compatibility varies between devices. If it doesn’t work, you may need to troubleshoot it yourself. I have only tested the launcher in my own virtual machine. Driver compatibility issues are not within my scope of support.**
 
 ## Installation
-Download pre-built compressed files/installers from [Releases](https://github.com/Coloryr/ColorMC/releases) or [Actions](https://github.com/Coloryr/ColorMC/actions).  
-Extract (zip)/install (msi, deb, pkg)/run directly (appimage).
+Download the pre-built compressed files/installers from [Releases](https://github.com/Coloryr/ColorMC/releases) or [Actions](https://github.com/Coloryr/ColorMC/actions).  
+Extract (zip)/Install (msi, deb, pkg)/or run directly (appimage).
 
 On Windows, you can use winget for installation:
 ```
@@ -48,7 +46,7 @@ The default installation path is `C:\Program Files\ColorMC`.
 
 - After installation:  
   On Windows/macOS, double-click the extracted file to run.  
-  On Linux, double-click or run via:
+  On Linux, double-click to run, or use:
 ```
 ColorMC.Launcher
 ```
@@ -145,4 +143,8 @@ This project is licensed under Apache 2.0. For detailed terms, see the license a
 Recommended tools:
 - Visual Studio Code
 - Visual Studio 2022
-- ![dotMemory logo](https://resources.jetbrains.com/storage/products/company/brand/logos/dotMemory_icon.svg)
+- dotMemory
+
+---
+
+Let me know if you need further adjustments!
