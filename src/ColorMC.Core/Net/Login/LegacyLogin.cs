@@ -67,19 +67,7 @@ public static class LegacyLogin
             };
         }
 
-        if (obj2.SelectedProfile == null && obj2.AvailableProfiles.Count > 0)
-        {
-            foreach (var item in obj2.AvailableProfiles)
-            {
-                if (item.Name.Equals(user, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    obj2.SelectedProfile = item;
-                    break;
-                }
-            }
-        }
-
-        if (obj2.SelectedProfile == null)
+        if (obj2.SelectedProfile == null && obj2.AvailableProfiles == null)
         {
             var obj1 = JObject.Parse(data);
             if (obj1?["errorMessage"]?.ToString() is { } msg)
@@ -96,6 +84,18 @@ public static class LegacyLogin
                 State = LoginState.Error,
                 Message = LanguageHelper.Get("Core.Login.Error23")
             };
+        }
+       
+        if (obj2.SelectedProfile == null && obj2.AvailableProfiles.Count > 0)
+        {
+            foreach (var item in obj2.AvailableProfiles)
+            {
+                if (item.Name.Equals(user, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    obj2.SelectedProfile = item;
+                    break;
+                }
+            }
         }
 
         return new LegacyLoginRes
