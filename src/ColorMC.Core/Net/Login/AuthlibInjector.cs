@@ -18,7 +18,7 @@ public static class AuthlibInjector
     /// <returns></returns>
     public static async Task<LegacyLoginRes> AuthenticateAsync(string clientToken, string user, string pass, string server)
     {
-        var obj = await LegacyLogin.AuthenticateAsync(server, clientToken, user, pass);
+        var obj = await LegacyLogin.AuthenticateAsync(server, clientToken, user, pass, true);
         if (obj.State != LoginState.Done)
             return obj;
 

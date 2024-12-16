@@ -20,14 +20,14 @@ public static class LegacyLogin
     /// <param name="clientToken">客户端代码</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
-    public static async Task<LegacyLoginRes> AuthenticateAsync(string server, string clientToken, string user, string pass)
+    public static async Task<LegacyLoginRes> AuthenticateAsync(string server, string clientToken, string user, string pass, bool useminecraft)
     {
         var obj = new AuthenticateObj
         {
             Agent = new()
             {
-                Name = "ColorMC",
-                Version = ColorMCCore.Version
+                Name = useminecraft ? "Minecraft" : "ColorMC",
+                Version = useminecraft ? 1 : ColorMCCore.VersionNum
             },
             Username = user,
             Password = pass,

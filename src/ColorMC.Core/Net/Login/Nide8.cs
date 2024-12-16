@@ -20,7 +20,7 @@ public static class Nide8
     {
         string url = UrlHelper.Nide8 + server;
 
-        var obj = await LegacyLogin.AuthenticateAsync(url, clientToken, user, pass);
+        var obj = await LegacyLogin.AuthenticateAsync(url, clientToken, user, pass, false);
         if (obj.State != LoginState.Done)
             return obj;
 

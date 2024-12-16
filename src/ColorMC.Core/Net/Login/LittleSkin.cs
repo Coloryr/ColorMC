@@ -42,7 +42,7 @@ public static class LittleSkin
             server1 = server;
         }
 
-        var obj = await LegacyLogin.AuthenticateAsync(server1 + "api/yggdrasil", clientToken, user, pass);
+        var obj = await LegacyLogin.AuthenticateAsync(server1 + "api/yggdrasil", clientToken, user, pass, true);
         if (obj.State != LoginState.Done)
             return obj;
 
