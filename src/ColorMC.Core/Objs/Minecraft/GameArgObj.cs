@@ -150,7 +150,8 @@ public record GameArgObj
     public string MinecraftArguments { get; set; }
     [JsonProperty("minimumLauncherVersion")]
     public int MinimumLauncherVersion { get; set; }
-    //public string releaseTime { get; set; }
+    [JsonProperty("releaseTime")]
+    public string ReleaseTime { get; set; }
     //public string time { get; set; }
     //public string type { get; set; }
     [JsonProperty("arguments")]
