@@ -37,8 +37,8 @@ public static class UserBinding
     /// <param name="input3"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static async Task<MessageRes> AddUser(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth,
-        string? input1, string? input2 = null, string? input3 = null)
+    public static async Task<MessageRes> AddUser(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth, ColorMCCore.Select? select,
+        string? input1 = null, string? input2 = null, string? input3 = null)
     {
         if (type == AuthType.Offline)
         {
@@ -57,9 +57,9 @@ public static class UserBinding
         {
             AuthType.OAuth => await GameAuth.LoginOAuthAsync(loginOAuth),
             AuthType.Nide8 => await GameAuth.LoginNide8Async(input1!, input2!, input3!),
-            AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(input1!, input2!, input3!),
-            AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!),
-            AuthType.SelfLittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, input3!),
+            AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(input1!, input2!, input3!, select),
+            AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, select),
+            AuthType.SelfLittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, select, input3!),
             _ => throw new Exception(App.Lang("UserBinding.Error2"))
         };
 

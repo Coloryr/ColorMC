@@ -16,7 +16,7 @@ public static class ColorMCCore
 {
     public const int VersionNum = 33;
     public const string TopVersion = "A33";
-    public const string DateVersion = "20241119";
+    public const string DateVersion = "20241216";
 
     /// <summary>
     /// 版本号
@@ -116,6 +116,13 @@ public static class ColorMCCore
     /// <param name="obj">游戏实例</param>
     /// <param name="state">当前状态</param>
     public delegate void GameLaunch(GameSettingObj obj, LaunchState state);
+    /// <summary>
+    /// 选择项目
+    /// </summary>
+    /// <param name="title">标题</param>
+    /// <param name="items">项目列表</param>
+    /// <returns>选择的项目</returns>
+    public delegate Task<int> Select(string title, List<string> items);
 
     /// <summary>
     /// 显示下载窗口

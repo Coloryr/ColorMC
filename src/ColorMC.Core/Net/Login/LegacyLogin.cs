@@ -85,30 +85,89 @@ public static class LegacyLogin
                 Message = LanguageHelper.Get("Core.Login.Error23")
             };
         }
-       
-        if (obj2.SelectedProfile == null && obj2.AvailableProfiles.Count > 0)
+        if (obj2.SelectedProfile != null)
         {
-            foreach (var item in obj2.AvailableProfiles)
+            return new LegacyLoginRes
             {
-                if (item.Name.Equals(user, StringComparison.CurrentCultureIgnoreCase))
+                State = LoginState.Done,
+                Auth = new()
                 {
-                    obj2.SelectedProfile = item;
-                    break;
+                    UserName = obj2.SelectedProfile.Name,
+                    UUID = obj2.SelectedProfile.Id,
+                    AccessToken = obj2.AccessToken,
+                    ClientToken = obj2.ClientToken
                 }
+            };
+        }
+        else if (obj2.AvailableProfiles.Count > 0)
+        {
+            if (obj2.AvailableProfiles.Count == 1)
+            {
+                obj2.SelectedProfile = obj2.AvailableProfiles.First();
+
+                return new LegacyLoginRes
+                {
+                    State = LoginState.Done,
+                    Auth = new() 
+                    {
+                        UserName = obj2.SelectedProfile.Name,
+                        UUID = obj2.SelectedProfile.Id,
+                        AccessToken = obj2.AccessToken,
+                        ClientToken = obj2.ClientToken
+                    }
+                };
+            }
+            else
+            {
+                foreach (var item in obj2.AvailableProfiles)
+                {
+                    if (item.Name.Equals(user, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        obj2.SelectedProfile = item;
+                        break;
+                    }
+                }
+                if (obj2.SelectedProfile != null)
+                {
+                    return new LegacyLoginRes
+                    {
+                        State = LoginState.Done,
+                        Auth = new()
+                        {
+                            UserName = obj2.SelectedProfile.Name,
+                            UUID = obj2.SelectedProfile.Id,
+                            AccessToken = obj2.AccessToken,
+                            ClientToken = obj2.ClientToken
+                        }
+                    };
+                }
+
+                var list = new List<LoginObj>();
+                foreach (var item in obj2.AvailableProfiles)
+                {
+                    list.Add(new()
+                    {
+                        UserName = item.Name,
+                        UUID = item.Id
+                    });
+                }
+                return new LegacyLoginRes
+                {
+                    State = LoginState.Done,
+                    Logins = list,
+                    Auth = new()
+                    {
+                        AccessToken = obj2.AccessToken,
+                        ClientToken = obj2.ClientToken
+                    }
+                };
             }
         }
 
         return new LegacyLoginRes
         {
-            State = LoginState.Done,
-            Auth = new()
-            {
-                UserName = obj2.SelectedProfile.Name,
-                UUID = obj2.SelectedProfile.Id,
-                AccessToken = obj2.AccessToken,
-                ClientToken = obj2.ClientToken
-            },
-            IsOne = obj2.AvailableProfiles.Count <= 1
+            State = LoginState.DataError,
+            Message = LanguageHelper.Get("Core.Login.Error22")
         };
     }
 

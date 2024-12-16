@@ -127,7 +127,7 @@ public record LegacyLoginRes
     public LoginState State;
     public LoginObj? Auth;
     public string? Message;
-    public bool IsOne;
+    public List<LoginObj>? Logins;
 }
 
 /// <summary>

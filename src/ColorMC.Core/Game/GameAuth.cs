@@ -313,11 +313,11 @@ public static class GameAuth
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
     /// <returns>登录结果</returns>
-    public static async Task<LoginRes> LoginAuthlibInjectorAsync(string server, string user, string pass)
+    public static async Task<LoginRes> LoginAuthlibInjectorAsync(string server, string user, string pass, ColorMCCore.Select? select)
     {
         try
         {
-            var res1 = await AuthlibInjector.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server);
+            var res1 = await AuthlibInjector.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server, select);
             if (res1.State != LoginState.Done)
             {
                 return new LoginRes
@@ -398,11 +398,11 @@ public static class GameAuth
     /// <param name="pass">密码</param>
     /// <param name="server">自定义皮肤站地址</param>
     /// <returns>登录结果</returns>
-    public static async Task<LoginRes> LoginLittleSkinAsync(string user, string pass, string? server = null)
+    public static async Task<LoginRes> LoginLittleSkinAsync(string user, string pass, ColorMCCore.Select? select, string? server = null)
     {
         try
         {
-            var res1 = await LittleSkin.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server);
+            var res1 = await LittleSkin.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server, select);
             if (res1.State != LoginState.Done)
             {
                 return new LoginRes

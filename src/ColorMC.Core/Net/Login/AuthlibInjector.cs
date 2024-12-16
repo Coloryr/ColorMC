@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 
@@ -16,7 +17,7 @@ public static class AuthlibInjector
     /// <param name="pass">密码</param>
     /// <param name="server">服务器地址</param>
     /// <returns></returns>
-    public static async Task<LegacyLoginRes> AuthenticateAsync(string clientToken, string user, string pass, string server)
+    public static async Task<LegacyLoginRes> AuthenticateAsync(string clientToken, string user, string pass, string server, ColorMCCore.Select? select)
     {
         var obj = await LegacyLogin.AuthenticateAsync(server, clientToken, user, pass, true);
         if (obj.State != LoginState.Done)
@@ -25,9 +26,29 @@ public static class AuthlibInjector
         obj.Auth!.AuthType = AuthType.AuthlibInjector;
         obj.Auth.Text1 = server;
 
-        if (obj.IsOne)
+        if (obj.Logins != null)
         {
-            return obj;
+            if (select != null)
+            {
+                var index = await select(LanguageHelper.Get("Core.Login.Info1"), obj.Logins.Select(item => item.UserName).ToList());
+                if (index >= obj.Logins.Count || index < 0)
+                {
+                    return new()
+                    {
+                        State = LoginState.Error,
+                        Message = LanguageHelper.Get("Core.Login.Error23")
+                    };
+                }
+                var item = obj.Logins[index];
+                obj.Auth!.UUID = item.UUID;
+                obj.Auth.UserName = item.UserName;
+            }
+            else
+            {
+                var item = obj.Logins[0];
+                obj.Auth!.UUID = item.UUID;
+                obj.Auth.UserName = item.UserName;
+            }
         }
 
         return await LegacyLogin.RefreshAsync(server, obj.Auth, true);

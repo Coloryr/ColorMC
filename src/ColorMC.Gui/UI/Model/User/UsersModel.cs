@@ -321,7 +321,7 @@ public partial class UsersControlModel : TopModel
                     Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
-                var res = await UserBinding.AddUser(AuthType.Offline, LoginOAuthCode, name, null);
+                var res = await UserBinding.AddUser(AuthType.Offline, LoginOAuthCode, LoginSelect, name);
                 if (!res.State)
                 {
                     Model.Show(res.Message!);
@@ -335,7 +335,7 @@ public partial class UsersControlModel : TopModel
                 _cancel = false;
                 _isOAuth = true;
                 Model.Progress(App.Lang("UserWindow.Info1"));
-                res = await UserBinding.AddUser(AuthType.OAuth, LoginOAuthCode, null);
+                res = await UserBinding.AddUser(AuthType.OAuth, LoginOAuthCode, LoginSelect);
                 Model.ProgressClose();
                 if (_cancel)
                 {
@@ -366,8 +366,8 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.Nide8, LoginOAuthCode, server,
-                    User, Password);
+                res = await UserBinding.AddUser(AuthType.Nide8, LoginOAuthCode, LoginSelect,
+                    server, User, Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
@@ -393,8 +393,8 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.AuthlibInjector, LoginOAuthCode, server,
-                    User, Password);
+                res = await UserBinding.AddUser(AuthType.AuthlibInjector, LoginOAuthCode,
+                    LoginSelect, server, User, Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
@@ -415,7 +415,7 @@ public partial class UsersControlModel : TopModel
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.LittleSkin, LoginOAuthCode,
-                    User, Password);
+                    LoginSelect, User, Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
@@ -440,8 +440,8 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.SelfLittleSkin, LoginOAuthCode,
-                    User, Password, server);
+                res = await UserBinding.AddUser(AuthType.SelfLittleSkin, LoginOAuthCode, 
+                    LoginSelect, User, Password, server);
                 Model.ProgressClose();
                 if (!res.State)
                 {
@@ -462,6 +462,16 @@ public partial class UsersControlModel : TopModel
         }
         Load();
         IsAdding = false;
+    }
+
+    private async Task<int> LoginSelect(string title, List<string> items)
+    {
+        var res = await Model.ShowCombo(title, items);
+        if (res.Cancel)
+        {
+            return -1;
+        }
+        return res.Index;
     }
 
     [RelayCommand]
