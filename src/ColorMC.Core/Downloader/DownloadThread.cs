@@ -264,9 +264,9 @@ internal class DownloadThread
 
                     //网络请求
                     var req = new HttpRequestMessage(HttpMethod.Get, item.Url);
-                    var data = CoreHttpClient.DownloadClient.Send(req,
-                        HttpCompletionOption.ResponseHeadersRead, _cancel.Token);
-                    item.AllSize = (data.Content.Headers.ContentLength ?? 0);
+                    var data = CoreHttpClient.DownloadClient.SendAsync(req,
+                        HttpCompletionOption.ResponseHeadersRead, _cancel.Token).Result;
+                    item.AllSize = data.Content.Headers.ContentLength ?? 0;
                     item.State = DownloadItemState.GetInfo;
                     item.NowSize = 0;
                     item.Update(_index);
