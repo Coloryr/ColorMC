@@ -73,12 +73,14 @@ public partial class SettingModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab5.Text7"),
-                        Func = FindJava
+                        Func = FindJava,
+                        Hide = Phone
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab5.Text12"),
-                        Func = FindJavaDir
+                        Func = FindJavaDir,
+                        Hide = Phone
                     },
                     new SubMenuItemModel()
                     {
@@ -111,7 +113,8 @@ public partial class SettingModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab1.Text18"),
-                        Func = DumpUser
+                        Func = DumpUser,
+                        Hide = Phone
                     },
                     new SubMenuItemModel()
                     {
@@ -121,27 +124,32 @@ public partial class SettingModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab1.Text19"),
-                        Func = ClearWindow
+                        Func = ClearWindow,
+                        Hide = Phone
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab1.Text3"),
-                        Func = Open
+                        Func = Open,
+                        Hide = Phone
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab5.Text6"),
-                        Func = OpenJavaPath
+                        Func = OpenJavaPath,
+                        Hide = Phone
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab3.Text13"),
-                        Func = OpenDownloadPath
+                        Func = OpenDownloadPath,
+                        Hide = Phone
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab3.Text18"),
-                        Func = OpenPicPath
+                        Func = OpenPicPath,
+                        Hide = Phone
                     }
                 ]
             },
@@ -154,7 +162,8 @@ public partial class SettingModel : MenuModel
                     new SubMenuItemModel()
                     { 
                         Name = App.Lang("SettingWindow.Tab8.Info8"),
-                        Func = ReloadInput
+                        Func = ReloadInput,
+                        Hide = Phone
                     }
                 ]
             },

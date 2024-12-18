@@ -67,7 +67,10 @@
                         <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text24}" TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Border Margin="10,5,10,3" Classes="t2">
+                <Border
+                    Margin="10,5,10,3"
+                    Classes="t2"
+                    IsVisible="{Binding !Phone}">
                     <StackPanel Margin="15">
                         <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                             <svg:SvgControl
@@ -130,7 +133,10 @@
                         <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Border Margin="10,5,10,3" Classes="t2">
+                <Border
+                    Margin="10,5,10,3"
+                    Classes="t2"
+                    IsVisible="{Binding !Phone}">
                     <StackPanel Margin="15">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <svg:SvgControl
