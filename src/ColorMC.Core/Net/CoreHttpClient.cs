@@ -49,93 +49,93 @@ public static class CoreHttpClient
         LoginClient?.CancelPendingRequests();
         LoginClient?.Dispose();
 
-        //if (SystemInfo.Os == OsType.Android)
-        //{
-        //    DownloadClient = new(ColorMCCore.PhoneGetHandel());
-        //    LoginClient = new(ColorMCCore.PhoneGetHandel());
-        //}
-        //else
-        //{
-        foreach (var item in _dnsClients)
+        if (SystemInfo.Os == OsType.Android)
         {
-            item.Dispose();
-        }
-
-        _dnsClients.Clear();
-
-        IDnsClient? dnsClient = null;
-        WebProxy? proxy = null;
-
-        //代理
-        if (!string.IsNullOrWhiteSpace(http.ProxyIP))
-        {
-            proxy = new WebProxy(http.ProxyIP, http.ProxyPort);
-        }
-        //Dns
-        if (dns.Enable)
-        {
-            if (dns.DnsType is DnsType.DnsOver or DnsType.DnsOverHttpsWithUdp)
-            {
-                foreach (var item in dns.Dns)
-                {
-                    _dnsClients.Add(new DnsUdpClient(IPAddress.Parse(item)));
-                }
-            }
-            if (dns.DnsType is DnsType.DnsOverHttps or DnsType.DnsOverHttpsWithUdp)
-            {
-                foreach (var item in dns.Https)
-                {
-                    if (dns.HttpProxy)
-                    {
-                        _dnsClients.Add(new SelfHttpDnsClient(item, proxy));
-                    }
-                    else
-                    {
-                        _dnsClients.Add(new SelfHttpDnsClient(item));
-                    }
-                }
-            }
-            if (_dnsClients.Count > 1)
-            {
-                dnsClient = new DnsRacerClient([.. _dnsClients]);
-                _dnsClients.Add(dnsClient);
-            }
-            else if (_dnsClients.Count > 0)
-            {
-                dnsClient = _dnsClients[0];
-            }
-        }
-
-
-        if (dnsClient != null)
-        {
-            DownloadClient = new(new DnsDelegatingHandler(dnsClient)
-            {
-                InnerHandler = new SocketsHttpHandler()
-                {
-                    Proxy = http.DownloadProxy ? proxy : null
-                }
-            });
-            LoginClient = new(new DnsDelegatingHandler(dnsClient)
-            {
-                InnerHandler = new SocketsHttpHandler()
-                {
-                    Proxy = http.LoginProxy ? proxy : null
-                }
-            });
+            DownloadClient = new();
+            LoginClient = new();
         }
         else
         {
-            DownloadClient = new(new HttpClientHandler()
+            foreach (var item in _dnsClients)
             {
-                Proxy = http.DownloadProxy ? proxy : null
-            });
-            LoginClient = new(new HttpClientHandler()
+                item.Dispose();
+            }
+
+            _dnsClients.Clear();
+
+            IDnsClient? dnsClient = null;
+            WebProxy? proxy = null;
+
+            //代理
+            if (!string.IsNullOrWhiteSpace(http.ProxyIP))
             {
-                Proxy = http.LoginProxy ? proxy : null
-            });
+                proxy = new WebProxy(http.ProxyIP, http.ProxyPort);
+            }
+            //Dns
+            if (dns.Enable)
+            {
+                if (dns.DnsType is DnsType.DnsOver or DnsType.DnsOverHttpsWithUdp)
+                {
+                    foreach (var item in dns.Dns)
+                    {
+                        _dnsClients.Add(new DnsUdpClient(IPAddress.Parse(item)));
+                    }
+                }
+                if (dns.DnsType is DnsType.DnsOverHttps or DnsType.DnsOverHttpsWithUdp)
+                {
+                    foreach (var item in dns.Https)
+                    {
+                        if (dns.HttpProxy)
+                        {
+                            _dnsClients.Add(new SelfHttpDnsClient(item, proxy));
+                        }
+                        else
+                        {
+                            _dnsClients.Add(new SelfHttpDnsClient(item));
+                        }
+                    }
+                }
+                if (_dnsClients.Count > 1)
+                {
+                    dnsClient = new DnsRacerClient([.. _dnsClients]);
+                    _dnsClients.Add(dnsClient);
+                }
+                else if (_dnsClients.Count > 0)
+                {
+                    dnsClient = _dnsClients[0];
+                }
+            }
+
+
+            if (dnsClient != null)
+            {
+                DownloadClient = new(new DnsDelegatingHandler(dnsClient)
+                {
+                    InnerHandler = new SocketsHttpHandler()
+                    {
+                        Proxy = http.DownloadProxy ? proxy : null
+                    }
+                });
+                LoginClient = new(new DnsDelegatingHandler(dnsClient)
+                {
+                    InnerHandler = new SocketsHttpHandler()
+                    {
+                        Proxy = http.LoginProxy ? proxy : null
+                    }
+                });
+            }
+            else
+            {
+                DownloadClient = new(new HttpClientHandler()
+                {
+                    Proxy = http.DownloadProxy ? proxy : null
+                });
+                LoginClient = new(new HttpClientHandler()
+                {
+                    Proxy = http.LoginProxy ? proxy : null
+                });
+            }
         }
-        //}
 
         DownloadClient.DefaultRequestVersion = HttpVersion.Version11;
         DownloadClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
