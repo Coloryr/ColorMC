@@ -143,7 +143,7 @@ public static class BaseBinding
                 Process.Start("open", '"' + url + '"');
                 break;
             case OsType.Android:
-                ColorMCCore.PhoneOpenUrl(url);
+                ColorMCGui.PhoneOpenUrl(url);
                 break;
         }
     }

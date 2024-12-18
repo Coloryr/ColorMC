@@ -51,8 +51,8 @@ public static class CoreHttpClient
 
         if (SystemInfo.Os == OsType.Android)
         {
-            DownloadClient = new();
-            LoginClient = new();
+            DownloadClient = new(ColorMCCore.PhoneGetHandel());
+            LoginClient = new(ColorMCCore.PhoneGetHandel());
         }
         else
         {
@@ -152,7 +152,6 @@ public static class CoreHttpClient
         LoginClient.DefaultRequestHeaders.UserAgent
             .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
         LoginClient.Timeout = TimeSpan.FromSeconds(10);
-
     }
 
     /// <summary>

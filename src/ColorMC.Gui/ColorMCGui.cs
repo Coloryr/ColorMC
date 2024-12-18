@@ -39,6 +39,10 @@ public static class ColorMCGui
     /// 获取一个空闲端口
     /// </summary>
     public static Func<int>? PhoneGetFreePort { get; set; }
+    /// <summary>
+    /// 手机端打开网页
+    /// </summary>
+    public static Action<string?> PhoneOpenUrl { get; set; }
 
     public static bool IsAot { get; private set; }
     public static bool IsMin { get; private set; }

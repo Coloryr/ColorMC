@@ -154,6 +154,7 @@ public static class ColorMCCore
     /// 游戏实例图标修改事件
     /// </summary>
     public static event Action<GameSettingObj>? InstanceIconChange;
+
     /// <summary>
     /// 手机端启动
     /// </summary>
@@ -170,7 +171,7 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端读文件
     /// </summary>
-    public static Func<string, Stream?> PhoneReadFile { get; set; }
+    public static Func<string, Stream?> PhoneReadFile { internal get; set; }
     /// <summary>
     /// 手机端获取运行路径
     /// </summary>
@@ -182,9 +183,9 @@ public static class ColorMCCore
         Dictionary<string, string>, Process> PhoneJvmRun
     { internal get; set; }
     /// <summary>
-    /// 手机端打开网页
+    /// 手机端创建HttpClient
     /// </summary>
-    public static Action<string?> PhoneOpenUrl { get; set; }
+    public static Func<HttpClientHandler> PhoneGetHandel { internal get; set; }
 
     /// <summary>
     /// 是否为新运行

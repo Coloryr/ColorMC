@@ -953,7 +953,7 @@ public static class PathBinding
     {
         try
         {
-            using var stream = ColorMCCore.PhoneReadFile(pic);
+            using var stream = PathHelper.OpenRead(pic);
             if (stream == null)
                 return;
             string file = ColorMCGui.RunDir + "BG";
