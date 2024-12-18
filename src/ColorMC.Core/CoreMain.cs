@@ -185,7 +185,7 @@ public static class ColorMCCore
     /// <summary>
     /// 手机端创建HttpClient
     /// </summary>
-    public static Func<HttpClientHandler> PhoneGetHandel { internal get; set; }
+    public static Func<HttpMessageHandler> PhoneGetHandel { internal get; set; }
 
     /// <summary>
     /// 是否为新运行
