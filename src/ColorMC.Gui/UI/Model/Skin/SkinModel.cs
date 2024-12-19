@@ -83,7 +83,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     partial void OnSteveModelTypeChanged(SkinType value)
     {
         _load = true;
-        Type = ((int)value) - 1;
+        Type = (int)value;
         _load = false;
     }
 
@@ -93,7 +93,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
         {
             return;
         }
-        SteveModelType = (SkinType)(Type + 1);
+        SteveModelType = (SkinType)value;
     }
 
     partial void OnRotateXChanged(float value)
