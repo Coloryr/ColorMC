@@ -44,7 +44,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     [ObservableProperty]
     private bool _enableZ;
     [ObservableProperty]
-    private bool _enableMSAA = true;
+    private bool _enableMSAA = false;
 
     [ObservableProperty]
     private SkinType _steveModelType;
