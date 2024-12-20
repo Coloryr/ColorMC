@@ -130,16 +130,7 @@ public static class LaunchSocketUtils
                     channel.Pipeline.AddLast("colormc", new GameServerHandler());
                 }));
 
-            int port = 0;
-
-            if (SystemInfo.Os == OsType.Android)
-            {
-                port = ColorMCGui.PhoneGetFreePort();
-            }
-            else
-            {
-                port = GetFirstAvailablePort();
-            }
+            int port = GetFirstAvailablePort();
             _channel = await _bootstrap.BindAsync(IPAddress.Any, port);
 
             return port;
