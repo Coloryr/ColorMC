@@ -21,7 +21,7 @@
     <Design.DataContext>
         <model:BaseModel />
     </Design.DataContext>
-    <Panel Background="{setting:Theme WindowTranColor}">
+    <Panel Name="BottomView" Background="{setting:Theme WindowTranColor}">
         <Image
             IsVisible="{Binding BgVisible}"
             Opacity="{Binding BgOpacity}"
@@ -71,4 +71,5 @@
             </dialog:DialogHost>
         </DockPanel>
     </Panel>
+    <Decorator Name="TopView" IsVisible="False" />
 </UserControl>

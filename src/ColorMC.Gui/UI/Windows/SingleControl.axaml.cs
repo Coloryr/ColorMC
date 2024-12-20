@@ -255,4 +255,21 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         ICon?.WindowStateChange(windowState);
         Head.WindowStateChange(windowState);
     }
+
+    public void SetTopView(Control control)
+    {
+        TopView.Child = control;
+    }
+
+    public void BackToBottom()
+    {
+        TopView.IsVisible = false;
+        BottomView.IsVisible = true;
+    }
+
+    public void BackToTop()
+    {
+        TopView.IsVisible = true;
+        BottomView.IsVisible = false;
+    }
 }
