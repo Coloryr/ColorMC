@@ -765,10 +765,13 @@ public partial class UsersControlModel : TopModel
             Model.PopBack();
         });
 
-        if (!DialogHost.IsDialogOpen(UsersControl.DialogName))
+        Dispatcher.UIThread.Post(() =>
         {
-            DialogHost.Show(this, UsersControl.DialogName);
-        }
+            if (!DialogHost.IsDialogOpen(UsersControl.DialogName))
+            {
+                DialogHost.Show(this, UsersControl.DialogName);
+            }
+        });
     }
 
     private void CloseShow()
