@@ -17,7 +17,7 @@ namespace ColorMC.Gui.Frp;
 public static class FrpLaunch
 {
     public const string Name1 = "frp";
-    public const string Name2 = "0.51.0-sakura-8";
+    public const string Name2 = "0.51.0-sakura-9.2";
 
     public static string BaseDir { get; private set; }
 
@@ -77,7 +77,7 @@ public static class FrpLaunch
         string version = Name2;
         if (SystemInfo.Os == OsType.Android)
         {
-            file = ColorMCGui.PhoneGetFrp.Invoke(item1.FrpType);
+            file = ColorMCGui.PhoneGetFrp!(item1.FrpType);
             dir = BaseDir;
         }
         else
