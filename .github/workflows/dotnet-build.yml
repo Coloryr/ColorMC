@@ -13,7 +13,12 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+        token: ${{ secrets.KEY1 }}
+
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
@@ -27,12 +32,12 @@ jobs:
         MAINVERSION=$(cat ./build/main_version)
         echo "MAINVERSION=$MAINVERSION" >> $GITHUB_ENV  
 
-    - name: 更新源码
-      shell: bash
-      working-directory: ./
-      run: |
-        chmod a+x ./build/update.sh
-        ./build/update.sh
+    # - name: 更新源码
+    #   shell: bash
+    #   working-directory: ./
+    #   run: |
+    #     chmod a+x ./build/update.sh
+    #     ./build/update.sh
 
     - name: 构建源码
       shell: bash
@@ -177,7 +182,12 @@ jobs:
   build-macos:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+        token: ${{ secrets.KEY1 }}
+
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
@@ -191,12 +201,12 @@ jobs:
         MAINVERSION=$(cat ./build/main_version)
         echo "MAINVERSION=$MAINVERSION" >> $GITHUB_ENV  
 
-    - name: 更新源码
-      shell: bash
-      working-directory: ./
-      run: |
-        chmod a+x ./build/update.sh
-        ./build/update.sh
+    # - name: 更新源码
+    #   shell: bash
+    #   working-directory: ./
+    #   run: |
+    #     chmod a+x ./build/update.sh
+    #     ./build/update.sh
 
     - name: 构建
       shell: bash
@@ -232,7 +242,11 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+        token: ${{ secrets.KEY1 }}
 
     - name: Read version number
       id: version
@@ -247,10 +261,10 @@ jobs:
       with:
         dotnet-version: 8.0.404
 
-    - name: 更新源码
-      shell: cmd
-      working-directory: ./
-      run: ./build/update.cmd
+    # - name: 更新源码
+    #   shell: cmd
+    #   working-directory: ./
+    #   run: ./build/update.cmd
 
     - name: 构建 源码
       shell: cmd
