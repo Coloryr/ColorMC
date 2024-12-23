@@ -1057,9 +1057,12 @@ public static class InstancesPath
     /// <returns>数据</returns>
     public static async Task<MessageRes> SetGameLoader(this GameSettingObj obj, string path)
     {
-        if (!File.Exists(path))
+        if (SystemInfo.Os != OsType.Android)
         {
-            return new() { Message = LanguageHelper.Get("Core.Game.Error16") };
+            if (!File.Exists(path))
+            {
+                return new() { Message = LanguageHelper.Get("Core.Game.Error16") };
+            }
         }
 
         var list = await DownloadItemHelper.DecodeLoaderJarAsync(obj, path);
