@@ -135,39 +135,21 @@ public static class LibrariesPath
     public static async Task<List<string>> GetLibsAsync(this GameSettingObj obj)
     {
         var v2 = obj.IsGameVersionV2();
-        var list = new Dictionary<LibVersionObj, string>();
+        var loaderList = new Dictionary<LibVersionObj, string>();
+        var gameList = new Dictionary<LibVersionObj, string>();
         var version = VersionPath.GetVersion(obj.Version)!;
 
-        if (obj.Loader == Loaders.Custom && obj.CustomLoader?.OffLib == true)
+        var list4 = await DownloadItemHelper.BuildGameLibsAsync(version);
+        foreach (var item in list4)
         {
-            var list1 = await DownloadItemHelper.BuildGameLibsAsync(version);
-            foreach (var item in list1)
+            if (item.Later == null)
             {
-                if (item.Later == null)
+                //不添加lwjgl
+                if (SystemInfo.Os == OsType.Android && item.Name.Contains("org.lwjgl"))
                 {
-                    //不添加lwjgl
-                    if (SystemInfo.Os == OsType.Android && item.Name.Contains("org.lwjgl"))
-                    {
-                        continue;
-                    }
-                    list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
+                    continue;
                 }
-            }
-        }
-        else
-        {
-            var list1 = await DownloadItemHelper.BuildGameLibsAsync(version);
-            foreach (var item in list1)
-            {
-                if (item.Later == null)
-                {
-                    //不添加lwjgl
-                    if (SystemInfo.Os == OsType.Android && item.Name.Contains("org.lwjgl"))
-                    {
-                        continue;
-                    }
-                    list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
-                }
+                gameList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
             }
         }
 
@@ -182,12 +164,12 @@ public static class LibrariesPath
 
             foreach (var item in list2)
             {
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), item.Local);
+                loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), item.Local);
             }
 
             if (v2)
             {
-                list.AddOrUpdate(new(), GameHelper.ForgeWrapper);
+                loaderList.AddOrUpdate(new(), GameHelper.ForgeWrapper);
             }
         }
         else if (obj.Loader == Loaders.Fabric)
@@ -196,7 +178,7 @@ public static class LibrariesPath
             foreach (var item in fabric.Libraries)
             {
                 var name = PathHelper.NameToPath(item.Name);
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name),
+                loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name),
                     Path.GetFullPath($"{BaseDir}/{name}"));
             }
         }
@@ -206,31 +188,43 @@ public static class LibrariesPath
             foreach (var item in quilt.Libraries)
             {
                 var name = PathHelper.NameToPath(item.Name);
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name),
+                loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name),
                     Path.GetFullPath($"{BaseDir}/{name}"));
             }
         }
         else if (obj.Loader == Loaders.OptiFine)
         {
             GameHelper.ReadyOptifineWrapper();
-            list.AddOrUpdate(new(), GameHelper.OptifineWrapper);
+            loaderList.AddOrUpdate(new(), GameHelper.OptifineWrapper);
         }
         else if (obj.Loader == Loaders.Custom)
         {
             var list2 = obj.GetCustomLoaderLibs();
             foreach (var (Name, Local) in list2)
             {
-                list.AddOrUpdate(FuntionUtils.MakeVersionObj(Name), Local);
+                loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(Name), Local);
             }
         }
 
-        //游戏核心
-        var list3 = new List<string>(list.Values);
-        if (obj.Loader != Loaders.NeoForge)
+        var output = new List<string>();
+
+        if (obj.Loader == Loaders.Custom && obj.CustomLoader?.OffLib == true)
         {
-            list3.Add(GetGameFile(obj.Version));
+            output.AddRange(loaderList.Values);
+            output.AddRange(gameList.Values);
+        }
+        else
+        {
+            output.AddRange(gameList.Values);
+            output.AddRange(loaderList.Values);
         }
 
-        return list3;
+        //游戏核心
+        if (obj.Loader != Loaders.NeoForge)
+        {
+            output.Add(GetGameFile(obj.Version));
+        }
+
+        return output;
     }
 }

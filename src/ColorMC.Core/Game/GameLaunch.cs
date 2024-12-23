@@ -1336,8 +1336,8 @@ public static class Launch
 
         //版本号检测
         if (string.IsNullOrWhiteSpace(obj.Version)
-            || (obj.Loader != Loaders.Normal && string.IsNullOrWhiteSpace(obj.LoaderVersion))
-            || (obj.Loader == Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
+            || (obj.Loader is not (Loaders.Normal or Loaders.Custom) && string.IsNullOrWhiteSpace(obj.LoaderVersion))
+            || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
         {
             throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
         }

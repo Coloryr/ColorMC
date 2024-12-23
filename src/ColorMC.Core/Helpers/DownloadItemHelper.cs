@@ -927,7 +927,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目列表</returns>
     public static async Task<MakeDownloadNameItemsRes?> DecodeLoaderJarAsync(GameSettingObj obj, string path, CancellationToken cancel)
     {
-        using var zFile = new ZipFile(path);
+        using var zFile = new ZipFile(PathHelper.OpenRead(path));
         using var stream1 = new MemoryStream();
         using var stream2 = new MemoryStream();
         var find1 = false;
@@ -1013,6 +1013,64 @@ public static class DownloadItemHelper
             }
         }
 
+        async Task Unpack1Async(ForgeLaunchObj obj1)
+        {
+            foreach (var item in obj1.Libraries)
+            {
+                if (cancel.IsCancellationRequested)
+                {
+                    return;
+                }
+                if (!string.IsNullOrWhiteSpace(item.Downloads.Artifact.Url))
+                {
+                    string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
+                    {
+                        using var read = PathHelper.OpenRead(local);
+                        if (read != null)
+                        {
+                            string sha1 = HashHelper.GenSha1(read);
+                            if (sha1 == item.Downloads.Artifact.Sha1)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+
+                    list.Add(new()
+                    {
+                        Name = item.Name,
+                        Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}"),
+                        SHA1 = item.Downloads.Artifact.Sha1,
+                        Url = item.Downloads.Artifact.Url
+                    });
+                }
+                else
+                {
+                    var item1 = zFile.GetEntry($"maven/{item.Downloads.Artifact.Path}");
+                    if (item1 != null)
+                    {
+                        string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
+                        {
+                            using var read = PathHelper.OpenRead(local);
+                            if (read != null)
+                            {
+                                string sha1 = HashHelper.GenSha1(read);
+                                if (sha1 == item.Downloads.Artifact.Sha1)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+
+                        {
+                            using var stream3 = zFile.GetInputStream(item1);
+                            await PathHelper.WriteBytesAsync(local, stream3);
+                        }
+                    }
+                }
+            }
+        }
+
         string name = "";
 
         try
@@ -1032,7 +1090,7 @@ public static class DownloadItemHelper
             data = Encoding.UTF8.GetString(array1);
             var obj2 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
 
-            await UnpackAsync(obj1);
+            await Unpack1Async(obj2);
 
             name = obj1.Version;
             if (!obj1.Version.StartsWith(obj1.Profile))

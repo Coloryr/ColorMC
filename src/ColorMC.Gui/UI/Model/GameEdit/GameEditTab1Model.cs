@@ -722,6 +722,8 @@ public partial class GameEditModel
         if (_obj.Loader == Loaders.Custom)
         {
             LoaderType = 1;
+            ReadCustomLoader();
+            CustomLoader = true;
         }
         else if (_obj.Loader != Loaders.Normal)
         {
@@ -757,11 +759,6 @@ public partial class GameEditModel
         Group = _obj.GroupName;
         FID = _obj.FID;
         PID = _obj.PID;
-
-        if (_obj.Loader == Loaders.Custom)
-        {
-            ReadCustomLoader();
-        }
 
         OffLib = _obj.CustomLoader?.OffLib ?? false;
 
