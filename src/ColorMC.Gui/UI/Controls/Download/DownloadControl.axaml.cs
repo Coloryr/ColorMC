@@ -17,11 +17,6 @@ public partial class DownloadControl : BaseUserControl
         UseName = ToString() ?? "DownloadControl";
     }
 
-    public override void Opened()
-    {
-        Window.SetTitle(Title);
-    }
-
     public override void Closed()
     {
         WindowManager.DownloadWindow = null;

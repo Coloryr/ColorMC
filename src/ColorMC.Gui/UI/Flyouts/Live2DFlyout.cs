@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
 
@@ -38,11 +37,11 @@ public class Live2DFlyout
         _ = new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("Live2dControl.Flyouts.Text1"), true, null)
-            { 
+            {
                 SubItem = list1
             },
             new FlyoutMenuObj(App.Lang("Live2dControl.Flyouts.Text2"), true, null)
-            { 
+            {
                 SubItem = list3
             },
         ], live2d);

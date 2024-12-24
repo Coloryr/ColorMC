@@ -108,7 +108,7 @@ public static class LegacyLogin
                 return new LegacyLoginRes
                 {
                     State = LoginState.Done,
-                    Auth = new() 
+                    Auth = new()
                     {
                         UserName = obj2.SelectedProfile.Name,
                         UUID = obj2.SelectedProfile.Id,

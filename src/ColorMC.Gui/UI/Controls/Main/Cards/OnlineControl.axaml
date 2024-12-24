@@ -1,0 +1,32 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Main.Cards.OnlineControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    x:DataType="model:MainModel"
+    mc:Ignorable="d">
+    <Border Classes="t2">
+        <Border.Background>
+            <ImageBrush Source="resm:ColorMC.Gui.Resource.Pic.update.png" Stretch="UniformToFill" />
+        </Border.Background>
+        <StackPanel Margin="15">
+            <TextBlock
+                Margin="0,0,0,5"
+                FontSize="16"
+                Foreground="White"
+                Text="{setting:Localize MainWindow.Text18}" />
+            <Button
+                Height="35"
+                Margin="-3"
+                HorizontalAlignment="Stretch"
+                Classes="top"
+                Command="{Binding OpenNetFrp}"
+                Content="{setting:Localize MainWindow.Text19}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text72}" />
+        </StackPanel>
+    </Border>
+</UserControl>

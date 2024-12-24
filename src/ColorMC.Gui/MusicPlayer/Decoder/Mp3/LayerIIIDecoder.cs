@@ -134,7 +134,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private readonly float[][] _prevblck;
     private readonly float[,] _k;
     private readonly int[] _nonzero;
-    private readonly Bitstream _stream;
+    private readonly BitStream _stream;
     private readonly Header _header;
     private readonly SynthesisFilter _filter1, _filter2;
     private readonly Obuffer _buffer;
@@ -177,7 +177,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
     // REVIEW: these constructor arguments should be moved to the
     // decodeFrame() method, where possible, so that one
-    public LayerIIIDecoder(Bitstream stream0, Header header0,
+    public LayerIIIDecoder(BitStream stream0, Header header0,
                            SynthesisFilter filtera, SynthesisFilter filterb,
                            Obuffer buffer0, int which_ch0)
     {

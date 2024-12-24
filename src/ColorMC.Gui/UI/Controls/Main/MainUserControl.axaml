@@ -13,13 +13,7 @@
         <Border.Background>
             <ImageBrush Source="resm:ColorMC.Gui.Resource.Pic.pic1.png" Stretch="UniformToFill" />
         </Border.Background>
-        <Border BorderThickness="0" Classes="t2">
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0%,50%" EndPoint="80%,50%">
-                    <GradientStop Offset="0.0" Color="Black" />
-                    <GradientStop Offset="1.0" Color="#00000000" />
-                </LinearGradientBrush>
-            </Border.Background>
+        <Border Background="#77000000" BorderThickness="0">
             <Border.Styles>
                 <Style Selector="Button#User">
                     <Setter Property="Background" />
@@ -75,8 +69,7 @@
                         Command="{Binding ShowSkin}"
                         CornerRadius="5"
                         DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                        >
+                        ToolTip.Tip="{setting:Localize ToolTip.Text9}">
                         <svg:SvgControl Path="/Resource/Icon/skin.svg" Stroke="White" />
                     </Button>
                     <StackPanel

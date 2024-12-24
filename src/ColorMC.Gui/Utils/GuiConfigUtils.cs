@@ -159,7 +159,8 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            AmTime = 500
+            AmTime = 700,
+            AmFade = true
         };
     }
 

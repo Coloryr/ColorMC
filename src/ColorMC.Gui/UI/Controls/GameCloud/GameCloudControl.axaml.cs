@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
@@ -27,8 +26,6 @@ public partial class GameCloudControl : MenuControl
 
     public override async void Opened()
     {
-        Window.SetTitle(Title);
-
         if (DataContext is GameCloudModel model && await model.Init())
         {
             model.NowView = 0;
@@ -65,8 +62,8 @@ public partial class GameCloudControl : MenuControl
     public void GoWorld()
     {
         if (DataContext is GameCloudModel model)
-        { 
-            model.NowView = 2; 
+        {
+            model.NowView = 2;
         }
     }
 

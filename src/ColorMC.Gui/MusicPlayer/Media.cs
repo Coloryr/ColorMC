@@ -55,8 +55,6 @@ public static class Media
     public static TimeSpan NowTime { get; private set; } = TimeSpan.Zero;
     public static TimeSpan MusicTime { get; private set; } = TimeSpan.Zero;
 
-    public static string MusicName { get; private set; }
-
     /// <summary>
     /// 初始化播放器
     /// </summary>
@@ -271,13 +269,8 @@ public static class Media
     /// </summary>
     /// <param name="stream"></param>
     /// <returns></returns>
-    private static async Task<(bool, string?)> PlayMp3(Stream stream, bool isurl)
+    private static async Task<(bool, string?, Mp3Id3?)> PlayMp3(Stream stream, bool isurl)
     {
-        if (s_player == null)
-        {
-            return (false, null);
-        }
-
         Stop();
 
         await Task.Run(() =>
@@ -298,7 +291,7 @@ public static class Media
         var decoder = new Mp3Decoder(stream);
         if (!decoder.Load())
         {
-            return (false, "mp3 file error");
+            return (false, App.Lang("MediaPlayer.Error3"), null);
         }
 
         MusicTime = TimeSpan.FromMilliseconds(decoder.GetTimeCount());
@@ -351,7 +344,7 @@ public static class Media
             }
         }, s_cancel.Token);
 
-        return (true, null);
+        return (true, null, decoder.GetId3());
     }
 
     /// <summary>
@@ -359,13 +352,8 @@ public static class Media
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    private static async Task<(bool, string?)> PlayMp3(string file)
+    private static async Task<(bool, string?, Mp3Id3?)> PlayMp3(string file)
     {
-        if (s_player == null)
-        {
-            return (false, null);
-        }
-
         var reader = File.OpenRead(file);
         return await PlayMp3(reader, false);
     }
@@ -375,13 +363,8 @@ public static class Media
     /// </summary>
     /// <param name="url"></param>
     /// <returns></returns>
-    private static async Task<(bool, string?)> PlayUrl(string url)
+    private static async Task<(bool, string?, Mp3Id3?)> PlayUrl(string url)
     {
-        if (s_player == null)
-        {
-            return (false, null);
-        }
-
         try
         {
             var res = await Core.Net.CoreHttpClient.DownloadClient.GetAsync(url);
@@ -397,7 +380,7 @@ public static class Media
         catch (Exception e)
         {
             Logs.Error(App.Lang("MediaPlayer.Error2"), e);
-            return (false, null);
+            return (false, App.Lang("MediaPlayer.Error5"), null);
         }
     }
 
@@ -407,14 +390,14 @@ public static class Media
     /// <param name="file">文件或者网址</param>
     /// <param name="value">是否渐变大声</param>
     /// <param name="value1">最大音量 0-100</param>
-    public static async void PlayMusic(string file, bool value, int value1)
+    public static async Task<(bool, string?, Mp3Id3?)> PlayMusic(string file, bool value, int value1)
     {
         if (s_player == null)
         {
-            return;
+            return (false, App.Lang("MediaPlayer.Error4"), null);
         }
 
-        MusicName = Path.GetFileName(file);
+        (bool, string?, Mp3Id3?) res = (false, Path.GetFileName(file), null);
 
         s_musicFile = file;
 
@@ -433,7 +416,7 @@ public static class Media
             {
                 if (file.EndsWith(".mp3"))
                 {
-                    await PlayMp3(file);
+                    res = await PlayMp3(file);
                     play = true;
                 }
                 else if (file.EndsWith(".wav"))
@@ -461,5 +444,7 @@ public static class Media
                 Volume = (float)value1 / 100;
             }
         }
+
+        return res;
     }
 }

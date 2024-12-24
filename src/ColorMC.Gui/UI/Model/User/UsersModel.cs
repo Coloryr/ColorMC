@@ -440,7 +440,7 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.SelfLittleSkin, LoginOAuthCode, 
+                res = await UserBinding.AddUser(AuthType.SelfLittleSkin, LoginOAuthCode,
                     LoginSelect, User, Password, server);
                 Model.ProgressClose();
                 if (!res.State)

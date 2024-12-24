@@ -434,13 +434,22 @@ public static class ModPackHelper
             arg.Name = $"{info.Name}-{info.Version}";
         }
 
+        var gameversion = info.Minecraft.Version;
+        if (VersionPath.CheckUpdateAsync(gameversion) == null)
+        {
+            await VersionPath.GetFromWebAsync();
+            if (VersionPath.CheckUpdateAsync(gameversion) == null)
+            {
+                return new();
+            }
+        }
 
         //创建游戏实例
         var game = new GameSettingObj()
         {
             GroupName = arg.Group,
             Name = arg.Name,
-            Version = info.Minecraft.Version,
+            Version = gameversion,
             ModPack = true,
             Loader = loaders,
             ModPackType = SourceType.CurseForge,
@@ -828,6 +837,16 @@ public static class ModPackHelper
             arg.Name = $"{info.Name}-{info.VersionId}";
         }
 
+        var gameversion = info.Dependencies["minecraft"];
+        if (VersionPath.CheckUpdateAsync(gameversion) == null)
+        {
+            await VersionPath.GetFromWebAsync();
+            if (VersionPath.CheckUpdateAsync(gameversion) == null)
+            {
+                return new();
+            }
+        }
+
         //创建游戏实例
         var game = await InstancesPath.CreateGame(new CreateGameArg
         {
@@ -835,7 +854,7 @@ public static class ModPackHelper
             {
                 GroupName = arg.Group,
                 Name = arg.Name,
-                Version = info.Dependencies["minecraft"],
+                Version = gameversion,
                 ModPack = true,
                 ModPackType = SourceType.Modrinth,
                 Loader = loaders,

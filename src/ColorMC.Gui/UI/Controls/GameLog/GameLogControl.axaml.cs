@@ -126,8 +126,6 @@ public partial class GameLogControl : BaseUserControl
 
     public override void Opened()
     {
-        Window.SetTitle(Title);
-
         (DataContext as GameLogModel)!.Load();
         (DataContext as GameLogModel)!.Load1();
     }

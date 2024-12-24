@@ -30,8 +30,7 @@ public class Mp3Decoder : IDisposable
     public int outputChannels;
     public int bitrate;
     private bool initialized;
-    private Bitstream bitstream;
-    private readonly Stream stream;
+    private readonly BitStream bitstream;
 
     private readonly BuffPack pack = new();
 
@@ -42,17 +41,13 @@ public class Mp3Decoder : IDisposable
 
     public Mp3Decoder(Stream stream)
     {
-        this.stream = stream;
-        Equalizer eq = DEFAULT_PARAMS.GetInitialEqualizerSettings();
+        var eq = DEFAULT_PARAMS.GetInitialEqualizerSettings();
         if (eq != null)
         {
-            /*
-              The Bistream from which the MPEG audio frames are read.
-             */
-            //private Bitstream				stream;
-            Equalizer equalizer = new();
+            var equalizer = new Equalizer();
             equalizer.SetFrom(eq);
         }
+        bitstream = new BitStream(stream);
     }
 
     private byte[] byteBuf = new byte[4096];
@@ -104,6 +99,7 @@ public class Mp3Decoder : IDisposable
             bitstream.CloseFrame();
             frame = bitstream.ReadFrame();
         }
+        bitstream.CloseFrame();
 
         bitstream.Reset();
         Load();
@@ -118,7 +114,6 @@ public class Mp3Decoder : IDisposable
 
     public bool Load()
     {
-        bitstream = new Bitstream(stream);
         var header = bitstream.ReadFrame();
         if (header == null)
         {
@@ -132,7 +127,12 @@ public class Mp3Decoder : IDisposable
         return true;
     }
 
-    protected IFrameDecoder RetrieveDecoder(Header header, Bitstream stream, int layer)
+    public Mp3Id3? GetId3()
+    {
+        return bitstream.Id3;
+    }
+
+    protected IFrameDecoder RetrieveDecoder(Header header, BitStream stream, int layer)
     {
         IFrameDecoder? decoder = null;
 

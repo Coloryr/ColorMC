@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls.Main;
@@ -21,6 +25,9 @@ public partial class MainModel
 {
     public ObservableCollection<string> GroupList { get; init; } = [];
     public ObservableCollection<GameGroupModel> GameGroups { get; init; } = [];
+    private readonly Dictionary<string, GameItemModel> Launchs = [];
+
+    private readonly Semaphore _semaphore = new(0, 2);
 
     [ObservableProperty]
     private GameItemModel? _game;
@@ -39,10 +46,21 @@ public partial class MainModel
     [ObservableProperty]
     private string _gameSearchText;
 
+    /// <summary>
+    /// 上次运行的游戏实例名字
+    /// </summary>
     [ObservableProperty]
     private string _lastGameName;
+    /// <summary>
+    /// 是否有上次运行的游戏实例
+    /// </summary>
     [ObservableProperty]
     private bool _haveLast;
+
+    [ObservableProperty]
+    private bool _haveGameImage;
+    [ObservableProperty]
+    private Bitmap? _gameImage;
 
     partial void OnGameSearchTextChanged(string value)
     {
@@ -183,9 +201,7 @@ public partial class MainModel
 
             DispatcherTimer.Run(() =>
             {
-                MusicName = BaseBinding.GetMusicName();
                 MusicNow = BaseBinding.GetMusicNow();
-
                 return MusicDisplay;
             }, TimeSpan.FromMilliseconds(500));
         }
@@ -293,6 +309,19 @@ public partial class MainModel
             {
                 HaveLast = true;
                 LastGameName = string.Format(App.Lang("MainWindow.Text26"), last.Name);
+                var file = last.Obj.GetIconFile();
+                if (File.Exists(file))
+                {
+                    try
+                    {
+                        GameImage = new Bitmap(file);
+                        HaveGameImage = true;
+                    }
+                    catch
+                    {
+
+                    }
+                }
             }
         }
 
@@ -319,7 +348,11 @@ public partial class MainModel
 
     public void Select(GameItemModel? obj)
     {
-        HaveLast = false;
+        if (HaveLast == true && obj?.UUID != ConfigBinding.GetLastLaunch())
+        {
+            HaveLast = false;
+        }
+
         if (Game != null)
         {
             Game.IsSelect = false;

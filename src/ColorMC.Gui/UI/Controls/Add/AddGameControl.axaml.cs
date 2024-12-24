@@ -43,10 +43,6 @@ public partial class AddGameControl : BaseUserControl
         WindowManager.AddGameWindow = null;
     }
 
-    public override void Opened()
-    {
-        Window.SetTitle(Title);
-    }
     public override Bitmap GetIcon()
     {
         return ImageManager.GameIcon;

@@ -574,14 +574,14 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             }
         }
 
-        public override void ReadAllocation(Bitstream stream, Header header, Crc16 crc)
+        public override void ReadAllocation(BitStream stream, Header header, Crc16 crc)
         {
             int length = GetAllocationLength(header);
             Allocation = stream.GetBits(length);
             crc?.AddBits(Allocation, length);
         }
 
-        public virtual void ReadScalefactorSelection(Bitstream stream, Crc16 crc)
+        public virtual void ReadScalefactorSelection(BitStream stream, Crc16 crc)
         {
             if (Allocation != 0)
             {
@@ -590,7 +590,7 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             }
         }
 
-        public override void ReadScalefactor(Bitstream stream, Header header)
+        public override void ReadScalefactor(BitStream stream, Header header)
         {
             if (Allocation != 0)
             {
@@ -618,7 +618,7 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             }
         }
 
-        public override bool ReadSampledata(Bitstream stream)
+        public override bool ReadSampledata(BitStream stream)
         {
             if (Allocation != 0)
                 if (Groupingtable[0] != null)
@@ -682,12 +682,12 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
         protected int Channel2Scfsi;
         protected float Channel2Scalefactor1, Channel2Scalefactor2, Channel2Scalefactor3;
 
-        public override void ReadAllocation(Bitstream stream, Header header, Crc16 crc)
+        public override void ReadAllocation(BitStream stream, Header header, Crc16 crc)
         {
             base.ReadAllocation(stream, header, crc);
         }
 
-        public override void ReadScalefactorSelection(Bitstream stream, Crc16 crc)
+        public override void ReadScalefactorSelection(BitStream stream, Crc16 crc)
         {
             if (Allocation != 0)
             {
@@ -701,7 +701,7 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             }
         }
 
-        public override void ReadScalefactor(Bitstream stream, Header header)
+        public override void ReadScalefactor(BitStream stream, Header header)
         {
             if (Allocation != 0)
             {
@@ -733,7 +733,7 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
 
         }
 
-        public override bool ReadSampledata(Bitstream stream)
+        public override bool ReadSampledata(BitStream stream)
         {
             return base.ReadSampledata(stream);
         }
@@ -807,7 +807,7 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
         protected float[] Channel2C = [0];
         protected float[] Channel2D = [0];
 
-        public override void ReadAllocation(Bitstream stream, Header header, Crc16 crc)
+        public override void ReadAllocation(BitStream stream, Header header, Crc16 crc)
         {
             int length = GetAllocationLength(header);
             Allocation = stream.GetBits(length);
@@ -819,7 +819,7 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             }
         }
 
-        public override void ReadScalefactorSelection(Bitstream stream, Crc16 crc)
+        public override void ReadScalefactorSelection(BitStream stream, Crc16 crc)
         {
             if (Allocation != 0)
             {
@@ -833,7 +833,7 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             }
         }
 
-        public override void ReadScalefactor(Bitstream stream, Header header)
+        public override void ReadScalefactor(BitStream stream, Header header)
         {
             base.ReadScalefactor(stream, header);
             if (Channel2Allocation != 0)
@@ -869,7 +869,7 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
             }
         }
 
-        public override bool ReadSampledata(Bitstream stream)
+        public override bool ReadSampledata(BitStream stream)
         {
             bool returnvalue = base.ReadSampledata(stream);
 

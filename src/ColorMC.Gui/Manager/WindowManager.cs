@@ -27,6 +27,7 @@ using ColorMC.Gui.UI.Controls.GameExport;
 using ColorMC.Gui.UI.Controls.GameLog;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.NetFrp;
+using ColorMC.Gui.UI.Controls.News;
 using ColorMC.Gui.UI.Controls.ServerPack;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
@@ -56,6 +57,7 @@ public static class WindowManager
     public static AddJavaControl? AddJavaWindow { get; set; }
     public static CountControl? CountWindow { get; set; }
     public static NetFrpControl? NetFrpWindow { get; set; }
+    public static MinecraftNewsControl? NewsWindow { get; set; }
 
     public static Dictionary<string, GameEditControl> GameEditWindows { get; } = [];
     public static Dictionary<string, GameConfigEditControl> GameConfigEditWindows { get; } = [];
@@ -93,7 +95,7 @@ public static class WindowManager
             {
                 AllWindow = new();
                 AllWindow.Model.HeadDisplay = false;
-                AllWindow.Opened();
+                AllWindow.TopOpened();
             }
             else if (SystemInfo.Os == OsType.Linux ||
                 (SystemInfo.Os == OsType.Windows && !SystemInfo.IsWin11))
@@ -624,6 +626,19 @@ public static class WindowManager
         {
             NetFrpWindow = new();
             AWindow(NetFrpWindow);
+        }
+    }
+
+    public static void ShowNews()
+    {
+        if (NewsWindow != null)
+        {
+            NewsWindow.Window.TopActivate();
+        }
+        else
+        {
+            NewsWindow = new();
+            AWindow(NewsWindow);
         }
     }
 

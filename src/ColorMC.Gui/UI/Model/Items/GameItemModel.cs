@@ -210,6 +210,11 @@ public partial class GameItemModel : GameModel
         Pic = GetImage();
     }
 
+    public void ReloadIcon()
+    {
+        Pic = ReloadImage();
+    }
+
     public void Reload()
     {
         IsLaunch = GameManager.IsGameRun(Obj);
@@ -273,6 +278,12 @@ public partial class GameItemModel : GameModel
     private Bitmap GetImage()
     {
         var icon = ImageManager.GetGameIcon(Obj);
+        return icon ?? ImageManager.GameIcon;
+    }
+
+    private Bitmap ReloadImage()
+    {
+        var icon = ImageManager.ReloadImage(Obj);
         return icon ?? ImageManager.GameIcon;
     }
 

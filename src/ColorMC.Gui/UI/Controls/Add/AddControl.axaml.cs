@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
@@ -64,8 +63,6 @@ public partial class AddControl : BaseUserControl
 
     public override void Opened()
     {
-        Window.SetTitle(Title);
-
         (DataContext as AddControlModel)!.Display = true;
     }
 

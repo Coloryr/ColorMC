@@ -36,8 +36,6 @@ public partial class AddJavaControl : BaseUserControl
 
     public override void Opened()
     {
-        Window.SetTitle(Title);
-
         (DataContext as AddJavaControlModel)!.TypeIndex = 0;
     }
 

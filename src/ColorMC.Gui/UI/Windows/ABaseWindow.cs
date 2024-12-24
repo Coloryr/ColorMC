@@ -19,7 +19,7 @@ public abstract class ABaseWindow : Window
 
     protected void InitBaseWindow()
     {
-        Icon = ImageManager.Icon;
+        Icon = ImageManager.WindowIcon;
 
         AddHandler(KeyDownEvent, Window_KeyDown, RoutingStrategies.Tunnel);
 
@@ -47,7 +47,7 @@ public abstract class ABaseWindow : Window
 
     private void UserWindow_Opened(object? sender, EventArgs e)
     {
-        ICon.Opened();
+        ICon.TopOpened();
     }
 
     private void OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)

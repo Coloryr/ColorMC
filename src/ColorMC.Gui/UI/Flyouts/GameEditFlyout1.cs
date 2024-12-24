@@ -76,12 +76,12 @@ public class GameEditFlyout1
             {
                 WebBinding.OpenMcmod(obj);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text4"), single 
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text4"), single
                 && ! string.IsNullOrWhiteSpace(obj ?.Url), () =>
                 {
                     BaseBinding.OpUrl(obj !.Url);
                 }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text5"), single 
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text5"), single
                 && ! string.IsNullOrWhiteSpace(obj ?.PID) && ! string.IsNullOrWhiteSpace(obj ?.FID), () =>
                 {
                     WindowManager.ShowAdd(obj!.Obj.Game, obj);

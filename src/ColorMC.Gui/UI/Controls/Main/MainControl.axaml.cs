@@ -26,7 +26,6 @@ public partial class MainControl : BaseUserControl
     public readonly SelfPageSlideX SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
 
     private MainOneGameControl? _oneGame;
-    private MinecraftNewsControl? _news;
     private MainEmptyControl? _emptyGame;
     private MainGamesControl? _games;
 
@@ -167,12 +166,7 @@ public partial class MainControl : BaseUserControl
     private void SwitchView()
     {
         var model = (DataContext as MainModel)!;
-        if (model.NewsDisplay)
-        {
-            _news ??= new();
-            Content1.Child = _news;
-        }
-        else if (model.IsOneGame || model.IsGameError)
+        if (model.IsOneGame || model.IsGameError)
         {
             _oneGame ??= new();
             Content1.Child = _oneGame;
@@ -207,8 +201,6 @@ public partial class MainControl : BaseUserControl
 
     public override async void Opened()
     {
-        Window.SetTitle(Title);
-
         ChangeLive2DSize();
 
         if (BaseBinding.NewStart)
@@ -345,34 +337,39 @@ public partial class MainControl : BaseUserControl
             {
                 if (model.MinMode)
                 {
-                    //HeadTop.Children.Remove(Buttons);
-                    //ContentTop.Children.Add(Buttons);
                     TopRight.IsVisible = false;
 
+                    Head.Children.Remove(HeadTop);
+                    ContentTop.Children.Add(HeadTop);
+                    HeadTop.Margin = new(0, 0, 0, 10);
+
                     TopRight.Child = null;
-                    ContentTop.Children.Add(HeadButton);
-                    HeadButton.Margin = new(0, 0, 0, 10);
+                    ContentTop.Children.Add(UserButton);
+                    UserButton.Margin = new(0, 0, 0, 10);
 
                     Right.Child = null;
                     ContentTop.Children.Add(RightSide);
                     model.SideDisplay = false;
+
+                    ContentOut.Margin = new(0, 0, 10, 0);
                 }
                 else
                 {
-                    //ContentTop.Children.Remove(Buttons);
-                    //HeadTop.Children.Add(Buttons);
                     TopRight.IsVisible = true;
 
-                    ContentTop.Children.Remove(HeadButton);
-                    TopRight.Child = HeadButton;
-                    HeadButton.Margin = new(0);
+                    ContentTop.Children.Remove(HeadTop);
+                    Head.Children.Add(HeadTop);
+                    HeadTop.Margin = new(0, 0, 10, 0);
+
+                    ContentTop.Children.Remove(UserButton);
+                    TopRight.Child = UserButton;
+                    UserButton.Margin = new(0);
 
                     ContentTop.Children.Remove(RightSide);
                     Right.Child = RightSide;
-                    if (!model.NewsDisplay)
-                    {
-                        model.SideDisplay = true;
-                    }
+                    model.SideDisplay = true;
+
+                    ContentOut.Margin = new(0);
                 }
             }
         }

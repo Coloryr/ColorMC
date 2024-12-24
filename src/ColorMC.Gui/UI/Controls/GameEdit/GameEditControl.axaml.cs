@@ -68,10 +68,6 @@ public partial class GameEditControl : MenuControl
 
         return false;
     }
-    public override void Opened()
-    {
-        Window.SetTitle(Title);
-    }
 
     public override void Closed()
     {

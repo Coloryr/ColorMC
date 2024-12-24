@@ -101,7 +101,6 @@ public partial class SkinControl : BaseUserControl
 
     public override void Opened()
     {
-        Window.SetTitle(Title);
         _renderTimer = new(Skin)
         {
             FpsTick = (fps) =>

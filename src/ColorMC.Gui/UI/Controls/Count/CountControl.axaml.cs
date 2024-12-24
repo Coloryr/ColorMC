@@ -20,11 +20,6 @@ public partial class CountControl : BaseUserControl
         WindowManager.CountWindow = null;
     }
 
-    public override void Opened()
-    {
-        Window.SetTitle(Title);
-    }
-
     public override TopModel GenModel(BaseModel model)
     {
         return new CountModel(model);

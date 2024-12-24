@@ -1,0 +1,120 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Main.Cards.MusicControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    x:DataType="model:MainModel"
+    mc:Ignorable="d">
+    <Border HorizontalAlignment="Stretch" Classes="t2">
+        <Panel>
+            <Border CornerRadius="5">
+                <Border.Background>
+                    <ImageBrush Source="{Binding MusicImage}" Stretch="UniformToFill" />
+                </Border.Background>
+            </Border>
+            <Border
+                Background="#77000000"
+                CornerRadius="5"
+                IsVisible="{Binding HaveMusicImage}" />
+            <StackPanel Margin="15" IsVisible="{Binding !HaveMusicImage}">
+                <DockPanel Margin="0,0,0,5">
+                    <Button
+                        Width="30"
+                        Height="30"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding MusicPause}"
+                        CornerRadius="5"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text48}">
+                        <svg:SvgControl Path="{Binding AudioIcon}" />
+                    </Button>
+                    <TextBlock
+                        HorizontalAlignment="Stretch"
+                        FontSize="16"
+                        Text="{Binding MusicName}"
+                        TextTrimming="CharacterEllipsis" />
+                </DockPanel>
+                <TextBlock Margin="0,0,0,5" Text="{Binding MusicNow}" />
+                <DockPanel>
+                    <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab6.Text18}}" />
+                    <TextBlock
+                        Width="35"
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Right"
+                        Text="{Binding MusicVolume, StringFormat='{}{0}%', FallbackValue=100%}" />
+                    <Slider
+                        Margin="2,-15,2,-15"
+                        HorizontalAlignment="Stretch"
+                        Foreground="{setting:Theme MainColor}"
+                        IsSnapToTickEnabled="True"
+                        LargeChange="1"
+                        Maximum="100"
+                        Minimum="0"
+                        SmallChange="1"
+                        TickFrequency="1"
+                        Value="{Binding MusicVolume}" />
+                </DockPanel>
+            </StackPanel>
+            <StackPanel Margin="15" IsVisible="{Binding HaveMusicImage}">
+                <DockPanel Margin="0,0,0,5">
+                    <Button
+                        Width="30"
+                        Height="30"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding MusicPause}"
+                        CornerRadius="5"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text48}">
+                        <svg:SvgControl
+                            Fill="White"
+                            Path="{Binding AudioIcon}"
+                            Stroke="White" />
+                    </Button>
+                    <TextBlock
+                        HorizontalAlignment="Stretch"
+                        FontSize="16"
+                        Foreground="White"
+                        Text="{Binding MusicName}"
+                        TextTrimming="CharacterEllipsis" />
+                </DockPanel>
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Foreground="White"
+                    Text="{Binding MusicNow}" />
+                <DockPanel>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        Text="{setting:Localize SettingWindow.Tab6.Text18}}" />
+                    <TextBlock
+                        Width="35"
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Right"
+                        Foreground="White"
+                        Text="{Binding MusicVolume, StringFormat='{}{0}%', FallbackValue=100%}" />
+                    <Slider
+                        Margin="2,-15,2,-15"
+                        HorizontalAlignment="Stretch"
+                        Foreground="{setting:Theme MainColor}"
+                        IsSnapToTickEnabled="True"
+                        LargeChange="1"
+                        Maximum="100"
+                        Minimum="0"
+                        SmallChange="1"
+                        TickFrequency="1"
+                        Value="{Binding MusicVolume}" />
+                </DockPanel>
+            </StackPanel>
+        </Panel>
+    </Border>
+</UserControl>

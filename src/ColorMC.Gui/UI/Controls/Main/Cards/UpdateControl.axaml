@@ -1,0 +1,44 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Main.Cards.UpdateControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    x:DataType="model:MainModel"
+    mc:Ignorable="d">
+    <Border HorizontalAlignment="Stretch" Classes="t2">
+        <Border.Background>
+            <ImageBrush Source="resm:ColorMC.Gui.Resource.Pic.update1.png" Stretch="UniformToFill" />
+        </Border.Background>
+        <Border Background="#55000000" BorderThickness="0">
+            <StackPanel Margin="15">
+                <TextBlock
+                    Margin="0,0,0,5"
+                    FontSize="16"
+                    Foreground="White"
+                    Text="{setting:Localize MainWindow.Text15}" />
+                <UniformGrid Columns="2">
+                    <Button
+                        Height="35"
+                        Margin="-3,-3,0,-3"
+                        HorizontalAlignment="Stretch"
+                        Classes="top"
+                        Command="{Binding Upgrade}"
+                        Content="{setting:Localize MainWindow.Text16}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text73}" />
+                    <Button
+                        Height="35"
+                        Margin="0,-3,0,-3"
+                        HorizontalAlignment="Stretch"
+                        Classes="top"
+                        Command="{Binding NewInfo}"
+                        Content="{setting:Localize MainWindow.Text17}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text74}" />
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>

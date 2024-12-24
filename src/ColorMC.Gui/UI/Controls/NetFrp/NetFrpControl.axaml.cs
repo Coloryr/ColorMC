@@ -32,8 +32,6 @@ public partial class NetFrpControl : MenuControl
 
     public override async void Opened()
     {
-        Window.SetTitle(Title);
-
         var model = (DataContext as NetFrpModel)!;
         if (await model.Open())
         {

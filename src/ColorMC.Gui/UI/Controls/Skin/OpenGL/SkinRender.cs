@@ -6,7 +6,6 @@ using Avalonia.Input;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Avalonia.Rendering;
-using Avalonia.Threading;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Skin;
 using MinecraftSkinRender;

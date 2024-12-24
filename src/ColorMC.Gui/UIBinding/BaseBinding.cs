@@ -18,6 +18,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Frp;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
+using ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
@@ -217,30 +218,34 @@ public static class BaseBinding
     /// <summary>
     /// 播放音乐
     /// </summary>
-    public static void MusicStart()
+    public static async Task<(bool, string?, Mp3Id3?)> MusicStart()
     {
         var config = GuiConfigUtils.Config.ServerCustom;
         if (config == null)
         {
-            return;
+            return (false, null, null);
         }
         var file = config.Music;
         if (file == null)
-            return;
+        {
+            return (false, null, null);
+        }
 
         Media.Loop = config.MusicLoop;
-        Media.PlayMusic(file, config.SlowVolume, config.Volume);
+        return await Media.PlayMusic(file, config.SlowVolume, config.Volume);
     }
 
     /// <summary>
     /// 启动后音乐播放
     /// </summary>
-    public static void LoadMusic()
+    public static async Task<(bool, string?, Mp3Id3?)> LoadMusic()
     {
         if (GuiConfigUtils.Config.ServerCustom.PlayMusic)
         {
-            MusicStart();
+            return await MusicStart();
         }
+
+        return (false, null, null);
     }
 
     /// <summary>
@@ -389,11 +394,6 @@ public static class BaseBinding
     public static Task<FrpLaunchRes> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
         return FrpLaunch.StartFrp(item1, model);
-    }
-
-    public static string GetMusicName()
-    {
-        return Media.MusicName;
     }
 
     public static string GetMusicNow()

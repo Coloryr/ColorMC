@@ -108,7 +108,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         Controls.Child = null;
     }
 
-    public void Opened()
+    public void TopOpened()
     {
         PicUpdate();
     }
@@ -122,7 +122,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
             Controls.Child = con1;
             Dispatcher.UIThread.Post(() =>
             {
-                _baseControl.Opened();
+                _baseControl.TopOpened();
             });
         }
         else
@@ -138,7 +138,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
             ThemeManager.CrossFade300.Start(null, con2);
 
             Model.PushBack(Back);
-            con.Opened();
+            con.TopOpened();
         }
 
         _nowControl = con;

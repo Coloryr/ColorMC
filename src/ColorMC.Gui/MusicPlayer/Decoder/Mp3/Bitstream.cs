@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
-public sealed class Bitstream : IDisposable
+public sealed class BitStream : IDisposable
 {
     /// <summary>
     /// Maximum size of the frame buffer.
@@ -65,12 +65,11 @@ public sealed class Bitstream : IDisposable
     /// </summary>
     private int _syncword;
 
-    public byte[] Rawid3v2 { get; private set; }
-
-
     private bool _single_ch_mode;
 
     private bool _firstframe;
+
+    public Mp3Id3? Id3;
 
     private readonly Stream _stream;
     /// <summary>
@@ -78,7 +77,7 @@ public sealed class Bitstream : IDisposable
     /// given InputStream.
     /// </summary>
     /// <param name="stream"></param>
-    public Bitstream(Stream stream)
+    public BitStream(Stream stream)
     {
         _stream = stream;
         LoadID3v2(stream);
@@ -93,23 +92,17 @@ public sealed class Bitstream : IDisposable
     /// <param name="input">MP3 InputStream.</param>
     private void LoadID3v2(Stream input)
     {
-        int size;
         // Read ID3v2 header (10 bytes).
         input.Seek(0, SeekOrigin.Begin);
-        _local += 10;
-        size = ReadID3v2Header(input);
-        input.Seek(10, SeekOrigin.Begin);
 
-        if (size > 0)
+        if (ReadID3v2Header(input))
         {
-            Rawid3v2 = new byte[size];
-            input.ReadExactly(Rawid3v2);
-            _local += Rawid3v2.Length;
+            Id3 = new(input);
+            _local += Id3.Length + 10;
         }
         else
         {
             input.Seek(0, SeekOrigin.Begin);
-            _local = 0;
         }
     }
 
@@ -118,19 +111,16 @@ public sealed class Bitstream : IDisposable
     /// </summary>
     /// <param name="input">MP3 InputStream</param>
     /// <returns>size of ID3v2 frames + header</returns>
-    private static int ReadID3v2Header(Stream input)
+    private static bool ReadID3v2Header(Stream input)
     {
-        byte[] id3header = new byte[4];
-        int size = -10;
+        byte[] id3header = new byte[3];
         input.ReadExactly(id3header, 0, 3);
         // Look for ID3v2
         if (id3header[0] == 'I' && id3header[1] == 'D' && id3header[2] == '3')
         {
-            input.ReadExactly(id3header, 0, 3);
-            input.ReadExactly(id3header, 0, 4);
-            size = (id3header[0] << 21) + (id3header[1] << 14) + (id3header[2] << 7) + id3header[3];
+            return true;
         }
-        return size + 10;
+        return false;
     }
 
     /// <summary>
@@ -159,9 +149,9 @@ public sealed class Bitstream : IDisposable
                 _firstframe = false;
             }
         }
-        catch (BitstreamException ex)
+        catch (BitStreamException ex)
         {
-            if (ex.GetErrorCode() == BitstreamErrors.INVALIDFRAME)
+            if (ex.GetErrorCode() == BitStreamErrors.INVALIDFRAME)
             {
                 // Try to skip this frame.
                 try
@@ -258,7 +248,7 @@ public sealed class Bitstream : IDisposable
     /// </summary>
     /// <param name="syncmode"></param>
     /// <returns></returns>
-    /// <exception cref="BitstreamException"></exception>
+    /// <exception cref="BitStreamException"></exception>
     public int SyncHeader(byte syncmode)
     {
         bool sync;
@@ -267,7 +257,7 @@ public sealed class Bitstream : IDisposable
         int bytesRead = ReadBytes(_syncbuf, 0, 3);
 
         if (bytesRead != 3)
-            throw new BitstreamException(BitstreamErrors.STREAM_EOF, null);
+            throw new BitStreamException(BitStreamErrors.STREAM_EOF, null);
 
         headerstring = _syncbuf[0] << 16 & 0x00FF0000 | _syncbuf[1] << 8 & 0x0000FF00 | _syncbuf[2] & 0x000000FF;
 
@@ -276,7 +266,7 @@ public sealed class Bitstream : IDisposable
             headerstring <<= 8;
 
             if (ReadBytes(_syncbuf, 3, 1) != 1)
-                throw new BitstreamException(BitstreamErrors.STREAM_EOF, null);
+                throw new BitStreamException(BitStreamErrors.STREAM_EOF, null);
 
             headerstring |= _syncbuf[3] & 0x000000FF;
 
@@ -475,6 +465,16 @@ public sealed class Bitstream : IDisposable
 
     public void Reset()
     {
-        _stream.Seek(0, SeekOrigin.Begin);
+        _firstframe = true;
+        if (Id3 != null)
+        {
+            _stream.Seek(Id3.Length + 10, SeekOrigin.Begin);
+            _local = Id3.Length + 10;
+        }
+        else
+        {
+            _stream.Seek(0, SeekOrigin.Begin);
+            _local = 0;
+        }
     }
 }

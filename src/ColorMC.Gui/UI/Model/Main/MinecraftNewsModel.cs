@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
-using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -10,8 +11,6 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class MainModel
 {
-    public ObservableCollection<NewsItemModel> News { get; init; } = [];
-
     [ObservableProperty]
     private string? _displayNews;
 
@@ -23,28 +22,16 @@ public partial class MainModel
     [ObservableProperty]
     private Bitmap? _newsImage;
 
-    private int _newsPage = 0;
-
-    [RelayCommand]
-    public async Task ReloadNews()
-    {
-        Model.Progress(App.Lang("UserWindow.Info1"));
-        _newsPage = 0;
-        await LoadNews();
-        Model.ProgressClose();
-    }
-
     [RelayCommand]
     public async Task LoadNews()
     {
         IsHaveNews = true;
         IsLoadNews = true;
-        News.Clear();
         DisplayNews = null;
         var temp = NewsImage;
         NewsImage = null;
         temp?.Dispose();
-        var data = await WebBinding.LoadNews(_newsPage++);
+        var data = await WebBinding.LoadNews(0);
         IsLoadNews = false;
         if (data == null)
         {
@@ -53,15 +40,12 @@ public partial class MainModel
             return;
         }
 
-        foreach (var item in data.ArticleGrid)
+        if (data.ArticleCount > 0)
         {
-            News.Add(new(item));
-        }
-
-        if (News.Count > 0)
-        {
-            DisplayNews = News[0].Title;
-            NewsImage = await News[0].Image;
+            DisplayNews = data.ArticleGrid[0].DefaultTile.Title.ToUpper();
+            var temp1 = NewsImage;
+            NewsImage = await GetImage(data.ArticleGrid[0].DefaultTile.Image.ImageURL);
+            temp1?.Dispose();
             IsHaveNews = true;
         }
         else
@@ -70,19 +54,22 @@ public partial class MainModel
         }
     }
 
-    [RelayCommand]
-    public async Task NewsNextPage()
+    private async Task<Bitmap?> GetImage(string url)
     {
-        var data = await WebBinding.LoadNews(_newsPage++);
-        if (data == null)
+        Bitmap? _img = null;
+        try
         {
-            Model.Notify(App.Lang("MainWindow.Error9"));
-            return;
+            await Task.Run(() =>
+            {
+                _img = ImageManager.Load("https://www.minecraft.net" + url, false).Result;
+            });
+            return _img;
+        }
+        catch (Exception e)
+        {
+            Logs.Error(App.Lang("AddModPackWindow.Error5"), e);
         }
 
-        foreach (var item in data.ArticleGrid)
-        {
-            News.Add(new(item));
-        }
+        return null;
     }
 }

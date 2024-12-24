@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using ColorMC.Core.Config;
+﻿using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -16,12 +12,6 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class MainModel : TopModel, IMainTop
 {
-    private static readonly string[] _icons =
-    [
-        "/Resource/Icon/play.svg",
-        "/Resource/Icon/pause.svg"
-    ];
-
     public const string SwitchView = "SwitchView";
 
     public bool IsLaunch;
@@ -29,10 +19,6 @@ public partial class MainModel : TopModel, IMainTop
 
     public bool IsPhone { get; } = SystemInfo.Os == OsType.Android;
 
-    private readonly Semaphore _semaphore = new(0, 2);
-    private readonly Dictionary<string, GameItemModel> Launchs = [];
-
-    private bool _isplay = true;
     private bool _isCancel;
 
     [ObservableProperty]
@@ -48,8 +34,6 @@ public partial class MainModel : TopModel, IMainTop
     [ObservableProperty]
     private bool _musicDisplay;
     [ObservableProperty]
-    private bool _newsDisplay;
-    [ObservableProperty]
     private bool _backDisplay;
     [ObservableProperty]
     private bool _playerDisplay = true;
@@ -60,24 +44,10 @@ public partial class MainModel : TopModel, IMainTop
     private bool _render = true;
 
     [ObservableProperty]
-    private bool _haveUpdate;
-
-    [ObservableProperty]
     private string _helloText;
 
     [ObservableProperty]
     private string _audioIcon = _icons[1];
-
-    [ObservableProperty]
-    private int _musicVolume;
-
-    [ObservableProperty]
-    private string _musicName;
-    [ObservableProperty]
-    private string _musicNow;
-
-    private bool _isNewUpdate;
-    private string _updateStr;
 
     private bool _isGetNewInfo;
     private int _helloClick;
@@ -92,73 +62,10 @@ public partial class MainModel : TopModel, IMainTop
         ShowHello();
     }
 
-    partial void OnMusicVolumeChanged(int value)
-    {
-        BaseBinding.SetVolume(value);
-    }
-
-    [RelayCommand]
-    public async Task NewInfo()
-    {
-        if (_isGetNewInfo)
-        {
-            return;
-        }
-        _isGetNewInfo = true;
-
-        var data = await WebBinding.GetNewLog();
-        if (data == null)
-        {
-            Model.Show(App.Lang("MainWindow.Error1"));
-        }
-        else
-        {
-            Model.ShowText(App.Lang("MainWindow.Info40"), data);
-        }
-
-        _isGetNewInfo = false;
-    }
-
-    [RelayCommand]
-    public async Task Upgrade()
-    {
-        var res = await Model.ShowTextWait(App.Lang("BaseBinding.Info2"), _updateStr);
-        if (res)
-        {
-            if (_isNewUpdate)
-            {
-                WebBinding.OpenWeb(WebType.ColorMCDownload);
-            }
-            else
-            {
-                UpdateUtils.StartUpdate();
-            }
-        }
-    }
-
     [RelayCommand]
     public void ShowCount()
     {
         WindowManager.ShowCount();
-    }
-
-    [RelayCommand]
-    public void MusicPause()
-    {
-        if (_isplay)
-        {
-            BaseBinding.MusicPause();
-            AudioIcon = _icons[0];
-            Model.Title = "ColorMC";
-        }
-        else
-        {
-            BaseBinding.MusicPlay();
-            AudioIcon = _icons[1];
-            Model.Title = "ColorMC " + App.Lang("MainWindow.Info33");
-        }
-
-        _isplay = !_isplay;
     }
 
     [RelayCommand]
@@ -207,14 +114,7 @@ public partial class MainModel : TopModel, IMainTop
     [RelayCommand]
     public void OpenNews()
     {
-        NewsDisplay = true;
-        PlayerDisplay = false;
-        MenuDisplay = false;
-        SideDisplay = false;
-        MotdDisplay = false;
-        HelloText = App.Lang("MainWindow.Text20");
-        Model.PushBack(NewBack);
-        OnPropertyChanged(SwitchView);
+        WindowManager.ShowNews();
     }
 
     public void HelloClick()
@@ -233,21 +133,6 @@ public partial class MainModel : TopModel, IMainTop
     private void ShowHello()
     {
         HelloText = App.Lang("Hello.Text1");
-    }
-
-    private void NewBack()
-    {
-        NewsDisplay = false;
-        PlayerDisplay = true;
-        MenuDisplay = true;
-        if (!MinMode)
-        {
-            SideDisplay = true;
-        }
-        LoadMotd();
-        ShowHello();
-        Model.PopBack();
-        OnPropertyChanged(SwitchView);
     }
 
     private void SkinChange()
@@ -281,24 +166,27 @@ public partial class MainModel : TopModel, IMainTop
         LoadMotd();
         _ = LoadNews();
 
-        BaseBinding.LoadMusic();
-
         var config = GuiConfigUtils.Config;
-        var config1 = ConfigUtils.Config;
         if (config.Live2D?.LowFps == true)
         {
             LowFps = true;
         }
         if (config?.CheckUpdate == true)
         {
-            var data = await UpdateUtils.Check();
-            if (!data.Item1)
+            CheckUpdate();
+        }
+
+        var res = await BaseBinding.LoadMusic();
+        if (!res.Item1)
+        {
+            if (!string.IsNullOrWhiteSpace(res.Item2))
             {
-                return;
+                Model.Show(res.Item2);
             }
-            HaveUpdate = true;
-            _isNewUpdate = data.Item2 || ColorMCGui.IsAot || ColorMCGui.IsMin;
-            _updateStr = data.Item3!;
+        }
+        else
+        {
+            SetId3(res.Item2, res.Item3);
         }
     }
 

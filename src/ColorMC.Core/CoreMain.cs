@@ -16,7 +16,7 @@ public static class ColorMCCore
 {
     public const int VersionNum = 34;
     public const string TopVersion = "A34";
-    public const string DateVersion = "20241222";
+    public const string DateVersion = "20241224";
 
     /// <summary>
     /// 版本号
@@ -159,7 +159,8 @@ public static class ColorMCCore
     /// 手机端启动
     /// </summary>
     public static Func<LoginObj, GameSettingObj, JavaInfo, List<string>,
-        Dictionary<string, string>, IGameHandel> PhoneGameLaunch { internal get; set; }
+        Dictionary<string, string>, IGameHandel> PhoneGameLaunch
+    { internal get; set; }
     /// <summary>
     /// 手机端Jvm安装
     /// </summary>

@@ -4,6 +4,7 @@ using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Media;
 using Avalonia.Styling;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Animations;
 
@@ -24,12 +25,12 @@ public static class ItemAnimation
                         new Setter
                         {
                             Property = Visual.OpacityProperty,
-                            Value = 0.0d
+                            Value = GuiConfigUtils.Config.Style.AmFade ? 0.0d : 1.0d
                         },
                         new Setter
                         {
                             Property = TranslateTransform.YProperty,
-                            Value = 10d
+                            Value = 20d
                         }
                     },
                     Cue = new Cue(0d)
@@ -41,15 +42,15 @@ public static class ItemAnimation
                         new Setter
                         {
                             Property = Visual.OpacityProperty,
-                            Value = 1.0d
+                            Value = GuiConfigUtils.Config.Style.AmFade ? 1.0d : 1.0d
                         },
                         new Setter
                         {
                             Property = TranslateTransform.YProperty,
-                            Value = 10d
+                            Value = -10d
                         }
                     },
-                    Cue = new Cue(0.5d)
+                    Cue = new Cue(0.6d)
                 },
                 new KeyFrame
                 {
@@ -64,7 +65,7 @@ public static class ItemAnimation
                     Cue = new Cue(1d)
                 }
             },
-            Duration = TimeSpan.FromMilliseconds(500)
+            Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime)
         };
     }
 }

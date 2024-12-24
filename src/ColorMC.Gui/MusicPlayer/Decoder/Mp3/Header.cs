@@ -102,7 +102,7 @@ public sealed class Header
     private int _h_protection_bit, _h_padding_bit;
     private bool _h_vbr;
     private int _h_vbr_bytes;
-    private byte _syncmode = Bitstream.INITIAL_SYNC;
+    private byte _syncmode = BitStream.INITIAL_SYNC;
     private Crc16 _crc;
 
     public int BitrateIndex { get; private set; }
@@ -141,7 +141,7 @@ public sealed class Header
     /**
      * Read a 32-bit header from the bitstream.
      */
-    public void ReadHeader(Bitstream stream, Crc16?[] crcp)
+    public void ReadHeader(BitStream stream, Crc16?[] crcp)
     {
         int headerstring;
         int channel_bitrate;
@@ -149,17 +149,17 @@ public sealed class Header
         do
         {
             headerstring = stream.SyncHeader(_syncmode);
-            if (_syncmode == Bitstream.INITIAL_SYNC)
+            if (_syncmode == BitStream.INITIAL_SYNC)
             {
                 Version = (headerstring >>> 19) & 1;
                 if (((headerstring >>> 20) & 1) == 0) // SZD: MPEG2.5 detection
                     if (Version == MPEG2_LSF)
                         Version = MPEG25_LSF;
                     else
-                        throw new BitstreamException(BitstreamErrors.UNKNOWN_ERROR, null);
+                        throw new BitStreamException(BitStreamErrors.UNKNOWN_ERROR, null);
                 if ((SampleFrequency = (headerstring >>> 10) & 3) == 3)
                 {
-                    throw new BitstreamException(BitstreamErrors.UNKNOWN_ERROR, null);
+                    throw new BitStreamException(BitStreamErrors.UNKNOWN_ERROR, null);
                 }
             }
             Layer = 4 - (headerstring >>> 17) & 3;
@@ -202,19 +202,19 @@ public sealed class Header
             int framesizeloaded = stream.ReadFrameData(_framesize);
             if (framesizeloaded == 0)
             {
-                throw new BitstreamException(BitstreamErrors.STREAM_EOF, null);
+                throw new BitStreamException(BitStreamErrors.STREAM_EOF, null);
             }
             if (_framesize >= 0 && framesizeloaded != _framesize)
             {
                 // Data loaded does not match to expected framesize,
                 // it might be an ID3v1 TAG. (Fix 11/17/04).
-                throw new BitstreamException(BitstreamErrors.INVALIDFRAME, null);
+                throw new BitStreamException(BitStreamErrors.INVALIDFRAME, null);
             }
             if (stream.IsSyncCurrentPosition(_syncmode))
             {
-                if (_syncmode == Bitstream.INITIAL_SYNC)
+                if (_syncmode == BitStream.INITIAL_SYNC)
                 {
-                    _syncmode = Bitstream.STRICT_SYNC;
+                    _syncmode = BitStream.STRICT_SYNC;
                     stream.SetSyncword((int)(headerstring & 0xFFF80CC0));
                 }
                 sync = true;
@@ -308,7 +308,7 @@ public sealed class Header
         }
         catch (IndexOutOfRangeException e)
         {
-            throw new BitstreamException("XingVBRHeader Corrupted", e);
+            throw new BitStreamException("XingVBRHeader Corrupted", e);
         }
 
         // Trying VBRI header.
@@ -336,7 +336,7 @@ public sealed class Header
         }
         catch (IndexOutOfRangeException e)
         {
-            throw new BitstreamException("VBRIVBRHeader Corrupted", e);
+            throw new BitStreamException("VBRIVBRHeader Corrupted", e);
         }
     }
 

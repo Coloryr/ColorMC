@@ -33,8 +33,6 @@ public partial class ServerPackControl : MenuControl
 
     public override void Opened()
     {
-        Window.SetTitle(Title);
-
         if (DataContext is ServerPackModel model)
         {
             model.NowView = 0;

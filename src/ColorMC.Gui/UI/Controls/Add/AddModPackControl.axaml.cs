@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
@@ -40,8 +39,6 @@ public partial class AddModPackControl : BaseUserControl
 
     public override void Opened()
     {
-        Window.SetTitle(Title);
-
         (DataContext as AddModPackControlModel)!.Source = 0;
     }
 

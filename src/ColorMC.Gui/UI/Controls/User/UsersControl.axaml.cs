@@ -22,11 +22,6 @@ public partial class UsersControl : BaseUserControl
         AddHandler(DragDrop.DropEvent, Drop);
     }
 
-    public override void Opened()
-    {
-        Window.SetTitle(Title);
-    }
-
     public override void Closed()
     {
         WindowManager.UserWindow = null;

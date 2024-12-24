@@ -76,8 +76,6 @@ public partial class SettingControl : MenuControl
 
     public override void Opened()
     {
-        Window.SetTitle(Title);
-
         (DataContext as SettingModel)!.LoadUISetting();
     }
 

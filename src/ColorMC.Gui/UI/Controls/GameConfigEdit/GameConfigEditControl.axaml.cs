@@ -2,7 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Manager;
@@ -120,8 +119,6 @@ public partial class GameConfigEditControl : BaseUserControl
 
     public override void Opened()
     {
-        Window.SetTitle(Title);
-
         var model = (DataContext as GameConfigEditModel)!;
         model.Load();
     }

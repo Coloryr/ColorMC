@@ -160,7 +160,7 @@ public partial class SettingModel : MenuModel
                 SubMenu =
                 [
                     new SubMenuItemModel()
-                    { 
+                    {
                         Name = App.Lang("SettingWindow.Tab8.Info8"),
                         Func = ReloadInput,
                         Hide = Phone

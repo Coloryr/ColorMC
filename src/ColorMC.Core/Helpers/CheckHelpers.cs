@@ -445,6 +445,7 @@ public static class CheckHelpers
                     var item = node.Value;
                     if (item.Path != "mods")
                     {
+                        node = node.Next;
                         array.Remove(item);
                         continue;
                     }

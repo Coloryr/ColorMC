@@ -1,6 +1,6 @@
 ﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
-public static class BitstreamErrors
+public static class BitStreamErrors
 {
     /// <summary>
     /// An undeterminable error occurred.

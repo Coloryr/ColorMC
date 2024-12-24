@@ -2,7 +2,7 @@
 
 public class LayerIDecoder : IFrameDecoder
 {
-    protected Bitstream Stream;
+    protected BitStream Stream;
     protected Header Header;
     protected SynthesisFilter Filter1, Filter2;
     protected Obuffer Buffer;
@@ -18,7 +18,7 @@ public class LayerIDecoder : IFrameDecoder
         Crc = new Crc16();
     }
 
-    public void Create(Bitstream stream0, Header header0,
+    public void Create(BitStream stream0, Header header0,
                        SynthesisFilter filtera, SynthesisFilter filterb,
                        Obuffer buffer0, int which_ch0)
     {
@@ -141,11 +141,11 @@ public class LayerIDecoder : IFrameDecoder
             0.00000190734863f, 0.00000151386361f, 0.00000120155435f, 0.00000000000000f /* illegal scalefactor */
         ];
 
-        public abstract void ReadAllocation(Bitstream stream, Header header, Crc16 crc);
+        public abstract void ReadAllocation(BitStream stream, Header header, Crc16 crc);
 
-        public abstract void ReadScalefactor(Bitstream stream, Header header);
+        public abstract void ReadScalefactor(BitStream stream, Header header);
 
-        public abstract bool ReadSampledata(Bitstream stream);
+        public abstract bool ReadSampledata(BitStream stream);
 
         public abstract bool PutNextSample(int channels, SynthesisFilter filter1, SynthesisFilter filter2);
     }
@@ -202,7 +202,7 @@ public class LayerIDecoder : IFrameDecoder
         protected float Sample;
         protected float Factor, Offset;
 
-        public override void ReadAllocation(Bitstream stream, Header header, Crc16 crc)
+        public override void ReadAllocation(BitStream stream, Header header, Crc16 crc)
         {
             if ((Allocation = stream.GetBits(4)) == 15)
             {
@@ -221,12 +221,12 @@ public class LayerIDecoder : IFrameDecoder
             }
         }
 
-        public override void ReadScalefactor(Bitstream stream, Header header)
+        public override void ReadScalefactor(BitStream stream, Header header)
         {
             if (Allocation != 0) Scalefactor = scalefactors[stream.GetBits(6)];
         }
 
-        public override bool ReadSampledata(Bitstream stream)
+        public override bool ReadSampledata(BitStream stream)
         {
             if (Allocation != 0)
             {
@@ -259,12 +259,12 @@ public class LayerIDecoder : IFrameDecoder
     {
         protected float Channel2Scalefactor;
 
-        public override void ReadAllocation(Bitstream stream, Header header, Crc16 crc)
+        public override void ReadAllocation(BitStream stream, Header header, Crc16 crc)
         {
             base.ReadAllocation(stream, header, crc);
         }
 
-        public override void ReadScalefactor(Bitstream stream, Header header)
+        public override void ReadScalefactor(BitStream stream, Header header)
         {
             if (Allocation != 0)
             {
@@ -273,7 +273,7 @@ public class LayerIDecoder : IFrameDecoder
             }
         }
 
-        public override bool ReadSampledata(Bitstream stream)
+        public override bool ReadSampledata(BitStream stream)
         {
             return base.ReadSampledata(stream);
         }
@@ -316,7 +316,7 @@ public class LayerIDecoder : IFrameDecoder
         protected float Channel2Sample;
         protected float Channel2Factor, Channel2Offset;
 
-        public override void ReadAllocation(Bitstream stream, Header header, Crc16 crc)
+        public override void ReadAllocation(BitStream stream, Header header, Crc16 crc)
         {
             Allocation = stream.GetBits(4);
             Channel2Allocation = stream.GetBits(4);
@@ -339,13 +339,13 @@ public class LayerIDecoder : IFrameDecoder
             }
         }
 
-        public override void ReadScalefactor(Bitstream stream, Header header)
+        public override void ReadScalefactor(BitStream stream, Header header)
         {
             if (Allocation != 0) Scalefactor = scalefactors[stream.GetBits(6)];
             if (Channel2Allocation != 0) Channel2Scalefactor = scalefactors[stream.GetBits(6)];
         }
 
-        public override bool ReadSampledata(Bitstream stream)
+        public override bool ReadSampledata(BitStream stream)
         {
             bool returnvalue = base.ReadSampledata(stream);
             if (Channel2Allocation != 0)

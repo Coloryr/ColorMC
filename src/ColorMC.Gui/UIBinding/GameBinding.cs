@@ -504,6 +504,7 @@ public static class GameBinding
         s_launchCancel = new();
 
         GameManager.ClearGameLog(obj.UUID);
+        GameManager.StartGame(obj);
 
         var port = LaunchSocketUtils.Port;
 
@@ -580,7 +581,6 @@ public static class GameBinding
 
             WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text2"));
 
-            GameManager.StartGame(obj);
             GameCount.LaunchDone(obj);
             GameStateUpdate(obj);
 

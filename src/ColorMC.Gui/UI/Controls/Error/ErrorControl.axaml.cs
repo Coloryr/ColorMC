@@ -40,11 +40,6 @@ public partial class ErrorControl : BaseUserControl
         Title = data;
     }
 
-    public override void Opened()
-    {
-        Window.SetTitle(Title);
-    }
-
     public override void Closed()
     {
         if ((DataContext as ErrorModel)!.NeedClose

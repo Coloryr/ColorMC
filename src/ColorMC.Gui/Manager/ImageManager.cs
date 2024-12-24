@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Threading;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -23,7 +24,7 @@ public static class ImageManager
 {
     public static Bitmap GameIcon { get; private set; }
     public static Bitmap LoadIcon { get; private set; }
-    public static WindowIcon Icon { get; private set; }
+    public static WindowIcon WindowIcon { get; private set; }
 
     public static Bitmap? BackBitmap { get; private set; }
     public static SKBitmap? SkinBitmap { get; private set; }
@@ -46,7 +47,7 @@ public static class ImageManager
         {
             using var asset1 = AssetLoader.Open(new Uri(SystemInfo.Os == OsType.MacOS
                 ? "resm:ColorMC.Gui.macicon.ico" : "resm:ColorMC.Gui.icon.ico"));
-            Icon = new(asset1!);
+            WindowIcon = new(asset1!);
         }
         {
             using var asset1 = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.load.png"));
@@ -168,6 +169,16 @@ public static class ImageManager
         HeadBitmap = null;
         SkinBitmap = null;
         CapeBitmap = null;
+    }
+
+    public static Bitmap? ReloadImage(GameSettingObj obj)
+    {
+        s_gameIcon.Remove(obj.UUID, out var temp);
+        if (temp != null)
+        {
+            Dispatcher.UIThread.Post(temp.Dispose);
+        }
+        return GetGameIcon(obj);
     }
 
     public static Bitmap? GetGameIcon(GameSettingObj obj)

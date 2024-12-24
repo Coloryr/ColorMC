@@ -459,7 +459,7 @@ public static class Mods
             }
             catch
             {
-                
+
             }
         }
 
@@ -577,8 +577,8 @@ public static class Mods
                     istest = true;
                 }
                 catch
-                { 
-                    
+                {
+
                 }
             }
         }
@@ -641,9 +641,9 @@ public static class Mods
 
                     istest = true;
                 }
-                catch 
+                catch
                 {
-                    
+
                 }
             }
         }
@@ -695,8 +695,8 @@ public static class Mods
                     istest = true;
                 }
                 catch
-                { 
-                    
+                {
+
                 }
             }
         }

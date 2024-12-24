@@ -51,6 +51,11 @@ public abstract class BaseUserControl : UserControl, ITopWindow
     }
     public virtual void IPointerPressed(PointerPressedEventArgs e) { }
     public virtual void IPointerReleased(PointerReleasedEventArgs e) { }
+    public void TopOpened()
+    {
+        Window.SetTitle(Title);
+        Opened();
+    }
     public virtual void Opened() { }
     public virtual void Closed() { }
     public virtual void Update() { }

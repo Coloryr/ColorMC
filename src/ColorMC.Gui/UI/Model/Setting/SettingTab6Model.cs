@@ -194,7 +194,7 @@ public partial class SettingModel
     [RelayCommand]
     public void MusicStart()
     {
-        BaseBinding.MusicStart();
+        _ = BaseBinding.MusicStart();
     }
 
     [RelayCommand]

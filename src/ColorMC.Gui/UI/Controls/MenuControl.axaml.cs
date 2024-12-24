@@ -4,7 +4,6 @@ using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Threading;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 

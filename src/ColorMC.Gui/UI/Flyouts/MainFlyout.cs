@@ -49,7 +49,7 @@ public class MainFlyout
                 PathBinding.OpenPath(obj.Obj, PathType.GamePath);
             }),
             new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text18"), true, null)
-            { 
+            {
                 SubItem =
                 [
                     new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text15"), SystemInfo.Os == OsType.Windows, ()=>
@@ -67,7 +67,7 @@ public class MainFlyout
                 ]
             },
             new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text17"), true, null)
-            { 
+            {
                 SubItem =
                 [
                     new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text10"), !run, obj.Rename),
@@ -82,7 +82,7 @@ public class MainFlyout
                             return;
                         }
                         await GameBinding.SetGameIconFromFile(top, obj.Model, obj.Obj);
-                        obj.LoadIcon();
+                        obj.ReloadIcon();
                     }),
                     new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text13"), run, ()=>
                     {

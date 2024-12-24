@@ -2,11 +2,11 @@
 
 namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
-public class BitstreamException(string msg, Exception? t) : Exception(msg, t)
+public class BitStreamException(string msg, Exception? t) : Exception(msg, t)
 {
-    private readonly int _errorcode = BitstreamErrors.UNKNOWN_ERROR;
+    private readonly int _errorcode = BitStreamErrors.UNKNOWN_ERROR;
 
-    public BitstreamException(int errorcode, Exception? t) : this(GetErrorString(errorcode), t)
+    public BitStreamException(int errorcode, Exception? t) : this(GetErrorString(errorcode), t)
     {
         _errorcode = errorcode;
     }

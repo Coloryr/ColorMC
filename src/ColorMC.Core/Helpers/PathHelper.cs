@@ -77,7 +77,7 @@ public static class PathHelper
             }
             catch
             {
-                
+
             }
 
             return false;
