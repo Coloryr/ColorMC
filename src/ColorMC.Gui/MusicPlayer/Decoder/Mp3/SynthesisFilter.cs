@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 
 namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
@@ -36,32 +38,31 @@ public class SynthesisFilter
     private static readonly float cos1_8 = (float)(1.0 / (2.0 * Math.Cos(MY_PI / 8.0)));
     private static readonly float cos3_8 = (float)(1.0 / (2.0 * Math.Cos(MY_PI * 3.0 / 8.0)));
     private static readonly float cos1_4 = (float)(1.0 / (2.0 * Math.Cos(MY_PI / 4.0)));
+    /// <summary>
+    /// d[] split into subarrays of length 16. This provides for
+    /// more faster access by allowing a block of 16 to be addressed
+    /// with static readonlyant offset.
+    /// </summary>
     private static float[] d;
-    /**
-     * d[] split into subarrays of length 16. This provides for
-     * more faster access by allowing a block of 16 to be addressed
-     * with static readonlyant offset.
-     **/
     private static float[][] d16;
     private readonly float[] v1;
     private readonly float[] v2;
     private readonly float[] samples;            // 32 new subband samples
     private readonly int channel;
     private readonly float scalefactor;
-    /**
-     * Compute PCM Samples.
-     */
-
+    /// <summary>
+    /// Compute PCM Samples.
+    /// </summary>
     private readonly float[] _tmpOut = new float[32];
-    private float[] actual_v;            // v1 or v2
-    private int actual_write_pos;    // 0-15
-    private float[] eq;
+    private float[] _actualV;            // v1 or v2
+    private int _actualWritePos;    // 0-15
 
-    /**
-     * Contructor.
-     * The scalefactor scales the calculated float pcm samples to short values
-     * (raw pcm samples are in [-1.0, 1.0], if no violations occur).
-     */
+    /// <summary>
+    /// The scalefactor scales the calculated float pcm samples to short values
+    /// (raw pcm samples are in [-1.0, 1.0], if no violations occur).
+    /// </summary>
+    /// <param name="channelnumber"></param>
+    /// <param name="factor"></param>
     public SynthesisFilter(int channelnumber, float factor)
     {
         if (d == null)
@@ -75,30 +76,36 @@ public class SynthesisFilter
         samples = new float[32];
         channel = channelnumber;
         scalefactor = factor;
-        SetEQ(eq);
 
         Reset();
     }
 
-    /**
-     * Loads the data for the d[] from the resource SFd.ser.
-     *
-     * @return the loaded values for d[].
-     */
+    /// <summary>
+    /// Loads the data for the d[] from the resource SFd.ser.
+    /// </summary>
+    /// <returns>the loaded values for d[].</returns>
     private static float[] Load()
     {
-        return JavaLayerUtils.DeserializeArrayResource();
+        string local = $"ColorMC.Gui.MusicPlayer.Decoder.Mp3.sfd.temp";
+
+        var assm = Assembly.GetExecutingAssembly();
+        using var istr = assm.GetManifestResourceStream(local)!;
+        var stream = new MemoryStream();
+        istr.CopyTo(stream);
+        var values = stream.ToArray();
+
+        var result = new float[values.Length / 4];
+        Buffer.BlockCopy(values, 0, result, 0, values.Length);
+        return result;
     }
 
-    /**
-     * Converts a 1D array into a number of smaller arrays. This is used
-     * to achieve offset + static readonlyant indexing into an array. Each sub-array
-     * represents a block of values of the original array.
-     *
-     * @param array The array to split up into blocks.
-     * @return An array of arrays in which each element in the returned
-     * array will be of length <code>blockSize</code>.
-     */
+    /// <summary>
+    /// Converts a 1D array into a number of smaller arrays. This is used
+    /// to achieve offset + static readonlyant indexing into an array. Each sub-array
+    /// represents a block of values of the original array.
+    /// </summary>
+    /// <param name="array">The array to split up into blocks.</param>
+    /// <returns>An array of arrays in which each element in the returned array will be of length blockSize.</returns>
     private static float[][] SplitArray(float[] array)
     {
         int size = array.Length / 16;
@@ -110,15 +117,13 @@ public class SynthesisFilter
         return split;
     }
 
-    /**
-     * Returns a subarray of an existing array.
-     *
-     * @param array The array to retrieve a subarra from.
-     * @param offs  The offset in the array that corresponds to
-     *              the first index of the subarray.
-     * @param len   The number of indeces in the subarray.
-     * @return The subarray, which may be of length 0.
-     */
+    /// <summary>
+    /// Returns a subarray of an existing array.
+    /// </summary>
+    /// <param name="array">The array to retrieve a subarra from.</param>
+    /// <param name="offs">The offset in the array that corresponds to the first index of the subarray.</param>
+    /// <param name="len">The number of indeces in the subarray.</param>
+    /// <returns>The subarray, which may be of length 0.</returns>
     static private float[] SubArray(float[] array, int offs, int len)
     {
         if (offs + len > array.Length)
@@ -135,28 +140,9 @@ public class SynthesisFilter
         return subarray;
     }
 
-    public void SetEQ(float[]? eq0)
-    {
-        if (eq0 == null)
-        {
-            eq = new float[32];
-            for (int i = 0; i < 32; i++)
-                eq[i] = 1.0f;
-        }
-        else
-        {
-            eq = eq0;
-        }
-        if (eq.Length < 32)
-        {
-            throw new ArgumentException("eq to long", nameof(eq0));
-        }
-
-    }
-
-    /**
-     * Reset the synthesis filter.
-     */
+    /// <summary>
+    /// Reset the synthesis filter.
+    /// </summary>
     public void Reset()
     {
         for (int p = 0; p < 512; p++)
@@ -165,35 +151,29 @@ public class SynthesisFilter
         for (int p2 = 0; p2 < 32; p2++)
             samples[p2] = 0.0f;
 
-        actual_v = v1;
-        actual_write_pos = 15;
+        _actualV = v1;
+        _actualWritePos = 15;
     }
 
-    /**
-     * Inject Sample.
-     */
     public void InputSample(float sample, int subbandnumber)
     {
-        samples[subbandnumber] = eq[subbandnumber] * sample;
+        samples[subbandnumber] = sample;
     }
 
     public void InputSamples(float[] s)
     {
         for (int i = 31; i >= 0; i--)
         {
-            samples[i] = s[i] * eq[i];
+            samples[i] = s[i];
         }
     }
 
-    /**
-     * Compute new values via a fast cosine transform.
-     */
+    /// <summary>
+    /// Compute new values via a fast cosine transform.
+    /// </summary>
     private void ComputeNewV()
     {
-        float new_v0, new_v1, new_v2, new_v3, new_v4, new_v5, new_v6, new_v7, new_v8, new_v9;
-        float new_v10, new_v11, new_v12, new_v13, new_v14, new_v15, new_v16, new_v17, new_v18, new_v19;
-        float new_v20, new_v21, new_v22, new_v23, new_v24, new_v25, new_v26, new_v27, new_v28, new_v29;
-        float new_v30, new_v31;
+        var newValue = new float[32];
 
         float[] s = samples;
 
@@ -318,16 +298,16 @@ public class SynthesisFilter
 
         // this is pretty insane coding
         float tmp1;
-        new_v19/*36-17*/ = -(new_v4 = (new_v12 = p7) + p5) - p6;
-        new_v27/*44-17*/ = -p6 - p7 - p4;
-        new_v6 = (new_v10 = (new_v14 = p15) + p11) + p13;
-        new_v17/*34-17*/ = -(new_v2 = p15 + p13 + p9) - p14;
-        new_v21/*38-17*/ = (tmp1 = -p14 - p15 - p10 - p11) - p13;
-        new_v29/*46-17*/ = -p14 - p15 - p12 - p8;
-        new_v25/*42-17*/ = tmp1 - p12;
-        new_v31/*48-17*/ = -p0;
-        new_v0 = p1;
-        new_v23/*40-17*/ = -(new_v8 = p3) - p2;
+        newValue[19] = -(newValue[4] = (newValue[12] = p7) + p5) - p6;
+        newValue[27] = -p6 - p7 - p4;
+        newValue[6] = (newValue[10] = (newValue[14] = p15) + p11) + p13;
+        newValue[17] = -(newValue[2] = p15 + p13 + p9) - p14;
+        newValue[21] = (tmp1 = -p14 - p15 - p10 - p11) - p13;
+        newValue[29] = -p14 - p15 - p12 - p8;
+        newValue[25] = tmp1 - p12;
+        newValue[31] = -p0;
+        newValue[0] = p1;
+        newValue[23] = -(newValue[8] = p3) - p2;
 
         p0 = (s0 - s31) * cos1_64;
         p1 = (s1 - s30) * cos3_64;
@@ -422,106 +402,105 @@ public class SynthesisFilter
         // manually doing something that a compiler should handle sucks
         // coding like this is hard to read
         float tmp2;
-        new_v5 = (new_v11 = (new_v13 = (new_v15 = p15) + p7) + p11)
+        newValue[5] = (newValue[11] = (newValue[13] = (newValue[15] = p15) + p7) + p11)
                 + p5 + p13;
-        new_v7 = (new_v9 = p15 + p11 + p3) + p13;
-        new_v16/*33-17*/ = -(new_v1 = (tmp1 = p13 + p15 + p9) + p1) - p14;
-        new_v18/*35-17*/ = -(new_v3 = tmp1 + p5 + p7) - p6 - p14;
+        newValue[7] = (newValue[9] = p15 + p11 + p3) + p13;
+        newValue[16] = -(newValue[1] = (tmp1 = p13 + p15 + p9) + p1) - p14;
+        newValue[18] = -(newValue[3] = tmp1 + p5 + p7) - p6 - p14;
 
-        new_v22/*39-17*/ = (tmp1 = -p10 - p11 - p14 - p15)
-                - p13 - p2 - p3;
-        new_v20/*37-17*/ = tmp1 - p13 - p5 - p6 - p7;
-        new_v24/*41-17*/ = tmp1 - p12 - p2 - p3;
-        new_v26/*43-17*/ = tmp1 - p12 - (tmp2 = p4 + p6 + p7);
-        new_v30/*47-17*/ = (tmp1 = -p8 - p12 - p14 - p15) - p0;
-        new_v28/*45-17*/ = tmp1 - tmp2;
+        newValue[22] = (tmp1 = -p10 - p11 - p14 - p15) - p13 - p2 - p3;
+        newValue[20] = tmp1 - p13 - p5 - p6 - p7;
+        newValue[24] = tmp1 - p12 - p2 - p3;
+        newValue[26] = tmp1 - p12 - (tmp2 = p4 + p6 + p7);
+        newValue[30] = (tmp1 = -p8 - p12 - p14 - p15) - p0;
+        newValue[28] = tmp1 - tmp2;
 
         // insert V[0-15] (== new_v[0-15]) into actual v:
         // float[] x2 = actual_v + actual_write_pos;
-        float[] dest = actual_v;
+        float[] dest = _actualV;
 
-        int pos = actual_write_pos;
+        int pos = _actualWritePos;
 
-        dest[pos] = new_v0;
-        dest[16 + pos] = new_v1;
-        dest[32 + pos] = new_v2;
-        dest[48 + pos] = new_v3;
-        dest[64 + pos] = new_v4;
-        dest[80 + pos] = new_v5;
-        dest[96 + pos] = new_v6;
-        dest[112 + pos] = new_v7;
-        dest[128 + pos] = new_v8;
-        dest[144 + pos] = new_v9;
-        dest[160 + pos] = new_v10;
-        dest[176 + pos] = new_v11;
-        dest[192 + pos] = new_v12;
-        dest[208 + pos] = new_v13;
-        dest[224 + pos] = new_v14;
-        dest[240 + pos] = new_v15;
+        dest[pos] = newValue[0];
+        dest[16 + pos] = newValue[1];
+        dest[32 + pos] = newValue[2];
+        dest[48 + pos] = newValue[3];
+        dest[64 + pos] = newValue[4];
+        dest[80 + pos] = newValue[5];
+        dest[96 + pos] = newValue[6];
+        dest[112 + pos] = newValue[7];
+        dest[128 + pos] = newValue[8];
+        dest[144 + pos] = newValue[9];
+        dest[160 + pos] = newValue[10];
+        dest[176 + pos] = newValue[11];
+        dest[192 + pos] = newValue[12];
+        dest[208 + pos] = newValue[13];
+        dest[224 + pos] = newValue[14];
+        dest[240 + pos] = newValue[15];
 
         // V[16] is always 0.0:
         dest[256 + pos] = 0.0f;
 
         // insert V[17-31] (== -new_v[15-1]) into actual v:
-        dest[272 + pos] = -new_v15;
-        dest[288 + pos] = -new_v14;
-        dest[304 + pos] = -new_v13;
-        dest[320 + pos] = -new_v12;
-        dest[336 + pos] = -new_v11;
-        dest[352 + pos] = -new_v10;
-        dest[368 + pos] = -new_v9;
-        dest[384 + pos] = -new_v8;
-        dest[400 + pos] = -new_v7;
-        dest[416 + pos] = -new_v6;
-        dest[432 + pos] = -new_v5;
-        dest[448 + pos] = -new_v4;
-        dest[464 + pos] = -new_v3;
-        dest[480 + pos] = -new_v2;
-        dest[496 + pos] = -new_v1;
+        dest[272 + pos] = -newValue[15];
+        dest[288 + pos] = -newValue[14];
+        dest[304 + pos] = -newValue[13];
+        dest[320 + pos] = -newValue[12];
+        dest[336 + pos] = -newValue[11];
+        dest[352 + pos] = -newValue[10];
+        dest[368 + pos] = -newValue[9];
+        dest[384 + pos] = -newValue[8];
+        dest[400 + pos] = -newValue[7];
+        dest[416 + pos] = -newValue[6];
+        dest[432 + pos] = -newValue[5];
+        dest[448 + pos] = -newValue[4];
+        dest[464 + pos] = -newValue[3];
+        dest[480 + pos] = -newValue[2];
+        dest[496 + pos] = -newValue[1];
 
         // insert V[32] (== -new_v[0]) into other v:
-        dest = actual_v == v1 ? v2 : v1;
+        dest = _actualV == v1 ? v2 : v1;
 
-        dest[pos] = -new_v0;
+        dest[pos] = -newValue[0];
         // insert V[33-48] (== new_v[16-31]) into other v:
-        dest[16 + pos] = new_v16;
-        dest[32 + pos] = new_v17;
-        dest[48 + pos] = new_v18;
-        dest[64 + pos] = new_v19;
-        dest[80 + pos] = new_v20;
-        dest[96 + pos] = new_v21;
-        dest[112 + pos] = new_v22;
-        dest[128 + pos] = new_v23;
-        dest[144 + pos] = new_v24;
-        dest[160 + pos] = new_v25;
-        dest[176 + pos] = new_v26;
-        dest[192 + pos] = new_v27;
-        dest[208 + pos] = new_v28;
-        dest[224 + pos] = new_v29;
-        dest[240 + pos] = new_v30;
-        dest[256 + pos] = new_v31;
+        dest[16 + pos] = newValue[16];
+        dest[32 + pos] = newValue[17];
+        dest[48 + pos] = newValue[18];
+        dest[64 + pos] = newValue[19];
+        dest[80 + pos] = newValue[20];
+        dest[96 + pos] = newValue[21];
+        dest[112 + pos] = newValue[22];
+        dest[128 + pos] = newValue[23];
+        dest[144 + pos] = newValue[24];
+        dest[160 + pos] = newValue[25];
+        dest[176 + pos] = newValue[26];
+        dest[192 + pos] = newValue[27];
+        dest[208 + pos] = newValue[28];
+        dest[224 + pos] = newValue[29];
+        dest[240 + pos] = newValue[30];
+        dest[256 + pos] = newValue[31];
 
         // insert V[49-63] (== new_v[30-16]) into other v:
-        dest[272 + pos] = new_v30;
-        dest[288 + pos] = new_v29;
-        dest[304 + pos] = new_v28;
-        dest[320 + pos] = new_v27;
-        dest[336 + pos] = new_v26;
-        dest[352 + pos] = new_v25;
-        dest[368 + pos] = new_v24;
-        dest[384 + pos] = new_v23;
-        dest[400 + pos] = new_v22;
-        dest[416 + pos] = new_v21;
-        dest[432 + pos] = new_v20;
-        dest[448 + pos] = new_v19;
-        dest[464 + pos] = new_v18;
-        dest[480 + pos] = new_v17;
-        dest[496 + pos] = new_v16;
+        dest[272 + pos] = newValue[30];
+        dest[288 + pos] = newValue[29];
+        dest[304 + pos] = newValue[28];
+        dest[320 + pos] = newValue[27];
+        dest[336 + pos] = newValue[26];
+        dest[352 + pos] = newValue[25];
+        dest[368 + pos] = newValue[24];
+        dest[384 + pos] = newValue[23];
+        dest[400 + pos] = newValue[22];
+        dest[416 + pos] = newValue[21];
+        dest[432 + pos] = newValue[20];
+        dest[448 + pos] = newValue[19];
+        dest[464 + pos] = newValue[18];
+        dest[480 + pos] = newValue[17];
+        dest[496 + pos] = newValue[16];
     }
 
     private void ComputePcmSamples0()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         //int inc = v_inc;
         int dvp = 0;
 
@@ -556,7 +535,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples1()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -591,7 +570,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples2()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -626,7 +605,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples3()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -661,7 +640,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples4()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -696,7 +675,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples5()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -731,7 +710,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples6()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -766,7 +745,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples7()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -801,7 +780,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples8()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -836,7 +815,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples9()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -871,7 +850,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples10()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -906,7 +885,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples11()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -941,7 +920,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples12()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -980,7 +959,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples13()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -1015,7 +994,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples14()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -1050,7 +1029,7 @@ public class SynthesisFilter
 
     private void ComputePcmSamples15()
     {
-        float[] vp = actual_v;
+        float[] vp = _actualV;
         int dvp = 0;
 
         // fat chance of having this loop unroll
@@ -1081,10 +1060,10 @@ public class SynthesisFilter
         } // for
     }
 
-    private void ComputePcmSamples(Obuffer buffer)
+    private void ComputePcmSamples(SampleBuffer buffer)
     {
 
-        switch (actual_write_pos)
+        switch (_actualWritePos)
         {
             case 0:
                 ComputePcmSamples0();
@@ -1136,25 +1115,27 @@ public class SynthesisFilter
                 break;
         }
 
-        buffer?.AppendSamples(channel, _tmpOut);
+        buffer.AppendSamples(channel, _tmpOut);
     }
 
-    /**
-     * Calculate 32 PCM samples and put the into the Obuffer-object.
-     */
-
-    public void CalculatePcmSamples(Obuffer buffer)
+    /// <summary>
+    /// Calculate 32 PCM samples and put the into the Obuffer-object.
+    /// </summary>
+    /// <param name="buffer"></param>
+    public void CalculatePcmSamples(SampleBuffer buffer)
     {
         ComputeNewV();
         ComputePcmSamples(buffer);
 
-        actual_write_pos = actual_write_pos + 1 & 0xf;
-        actual_v = actual_v == v1 ? v2 : v1;
+        _actualWritePos = _actualWritePos + 1 & 0xf;
+        _actualV = _actualV == v1 ? v2 : v1;
 
         // MDM: this may not be necessary. The Layer III decoder always
         // outputs 32 subband samples, but I haven't checked layer I & II.
         for (int p = 0; p < 32; p++)
+        {
             samples[p] = 0.0f;
+        }
     }
 }
 

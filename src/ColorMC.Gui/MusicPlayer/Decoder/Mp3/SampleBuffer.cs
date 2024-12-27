@@ -1,22 +1,20 @@
-﻿using System;
+﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
-namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
-
-public class SampleBuffer : Obuffer
+public class SampleBuffer
 {
-    public readonly short[] Buffer;
-    private readonly int[] bufferp;
+    public readonly float[] Buffer = new float[2 * 1152 * 2];
+
+    private readonly int[] bufferp = new int[2];
     private readonly int channels;
 
-    public SampleBuffer(int number_of_channels)
+    public SampleBuffer(int channel)
     {
-        Buffer = new short[OBUFFERSIZE];
-        bufferp = new int[MAXCHANNELS];
-        channels = number_of_channels;
+        channels = channel;
 
-        for (int i = 0; i < number_of_channels; ++i)
+        for (int i = 0; i < channel; ++i)
+        {
             bufferp[i] = (short)i;
-
+        }
     }
 
     public int GetBufferLength()
@@ -25,39 +23,31 @@ public class SampleBuffer : Obuffer
     }
 
     /// <summary>
-    /// Takes a 16 Bit PCM sample.
+    /// Accepts 32 new PCM samples.
     /// </summary>
     /// <param name="channel"></param>
-    /// <param name="value"></param>
-    public override void Append(int channel, short value)
-    {
-        Buffer[bufferp[channel]] = value;
-        bufferp[channel] += channels;
-    }
-
-    public override void AppendSamples(int channel, float[] f)
+    /// <param name="f"></param>
+    public void AppendSamples(int channel, float[] f)
     {
         int pos = bufferp[channel];
 
-        short s;
-        float fs;
         for (int i = 0; i < 32;)
         {
-            fs = f[i++];
-            fs = fs > 32767.0f ? 32767.0f
-                    : Math.Max(fs, -32767.0f);
-
-            s = (short)fs;
-            Buffer[pos] = s;
+            Buffer[pos] = f[i++] / 32768f / 2;
             pos += channels;
         }
 
         bufferp[channel] = pos;
     }
 
-    public override void ClearBuffer()
+    /// <summary>
+    /// Clears all data in the buffer (for seeking).
+    /// </summary>
+    public void ClearBuffer()
     {
         for (int i = 0; i < channels; ++i)
-            bufferp[i] = (short)i;
+        {
+            bufferp[i] = i;
+        }
     }
 }

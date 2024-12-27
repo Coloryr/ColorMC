@@ -1,4 +1,6 @@
-﻿namespace ColorMC.Gui.MusicPlayer;
+﻿using ColorMC.Gui.MusicPlayer.Decoder;
+
+namespace ColorMC.Gui.MusicPlayer.Players;
 
 /// <summary>
 /// 音频输出
@@ -28,12 +30,7 @@ public interface IPlayer
     /// <summary>
     /// 写数据
     /// </summary>
-    /// <param name="numChannels">通道</param>
-    /// <param name="bitsPerSample">bps</param>
-    /// <param name="buff">数据</param>
-    /// <param name="length">长度</param>
-    /// <param name="sampleRate">采样率</param>
-    void Write(int numChannels, int bitsPerSample, byte[] buff, int length, int sampleRate);
+    void Write(SoundPack pack);
     /// <summary>
     /// 等待播放结束
     /// </summary>

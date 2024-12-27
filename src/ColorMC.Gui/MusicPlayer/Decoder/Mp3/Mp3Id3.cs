@@ -59,7 +59,7 @@ public class Mp3Id3
             int size = temp[0] << 24 | temp[1] << 16 | temp[2] << 8 | temp[3];
             data.ReadExactly(temp, 0, 2);
             pos += 2;
-            int flag = temp[0] << 8 | temp[1];
+            //int flag = temp[0] << 8 | temp[1];
             switch (tag)
             {
                 case TitleTag:
@@ -74,7 +74,7 @@ public class Mp3Id3
                 case PictureTag:
                     int encoding = data.ReadByte();
                     string mimeType = ReadNullTerminatedString(data, encoding);
-                    int pictureType = data.ReadByte();
+                    //int pictureType = data.ReadByte();
                     string description = ReadNullTerminatedString(data, encoding);
                     int imageSize = size - (1 + mimeType.Length + 1 + 1 + description.Length + 1);
                     Image = new byte[imageSize];

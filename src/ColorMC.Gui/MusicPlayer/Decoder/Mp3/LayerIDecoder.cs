@@ -1,34 +1,20 @@
-﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
+﻿using System;
 
-public class LayerIDecoder : IFrameDecoder
+namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
+
+public class LayerIDecoder(BitStream stream0, Mp3Header header0,
+                   SynthesisFilter filtera, SynthesisFilter filterb,
+                   SampleBuffer buffer0) : IFrameDecoder
 {
-    protected BitStream Stream;
-    protected Header Header;
-    protected SynthesisFilter Filter1, Filter2;
-    protected Obuffer Buffer;
-    protected int WhichChannels;
-    protected int Mode;
+    protected BitStream Stream = stream0;
+    protected Mp3Header Header = header0;
+    protected SynthesisFilter FilterLeft = filtera, FilterRight = filterb;
+    protected SampleBuffer Buffer = buffer0;
+    protected ChannelType Mode;
 
     protected int NumSubbands;
     protected Subband[] Subbands;
-    protected Crc16 Crc;    // new Crc16[1] to enable CRC checking.
-
-    public LayerIDecoder()
-    {
-        Crc = new Crc16();
-    }
-
-    public void Create(BitStream stream0, Header header0,
-                       SynthesisFilter filtera, SynthesisFilter filterb,
-                       Obuffer buffer0, int which_ch0)
-    {
-        Stream = stream0;
-        Header = header0;
-        Filter1 = filtera;
-        Filter2 = filterb;
-        Buffer = buffer0;
-        WhichChannels = which_ch0;
-    }
+    protected Crc16 Crc = new();    // new Crc16[1] to enable CRC checking.s
 
     public void DecodeFrame()
     {
@@ -41,7 +27,7 @@ public class LayerIDecoder : IFrameDecoder
         ReadAllocation();
         ReadScaleFactorSelection();
 
-        if (Crc != null || Header.ChecksumOK())
+        if (Crc != null || Header.ChecksumOK)
         {
             ReadScaleFactors();
 
@@ -52,20 +38,30 @@ public class LayerIDecoder : IFrameDecoder
     protected virtual void CreateSubbands()
     {
         int i;
-        if (Mode == Header.SINGLE_CHANNEL)
+        if (Mode == ChannelType.SingelChannel)
+        {
             for (i = 0; i < NumSubbands; ++i)
+            {
                 Subbands[i] = new SubbandLayer1(i);
-        else if (Mode == Header.JOINT_STEREO)
+            }
+        }
+        else if (Mode == ChannelType.JointStereo)
         {
             for (i = 0; i < Header.IntensityStereoBound; ++i)
+            {
                 Subbands[i] = new SubbandLayer1Stereo(i);
+            }
             for (; i < NumSubbands; ++i)
+            {
                 Subbands[i] = new SubbandLayer1IntensityStereo(i);
+            }
         }
         else
         {
             for (i = 0; i < NumSubbands; ++i)
+            {
                 Subbands[i] = new SubbandLayer1Stereo(i);
+            }
         }
     }
 
@@ -91,28 +87,35 @@ public class LayerIDecoder : IFrameDecoder
     {
         bool read_ready = false;
         bool write_ready = false;
-        int mode = Header.Mode;
+        ChannelType mode = Header.Mode;
         int i;
         do
         {
             for (i = 0; i < NumSubbands; ++i)
+            {
                 read_ready = Subbands[i].ReadSampledata(Stream);
+            }
             do
             {
                 for (i = 0; i < NumSubbands; ++i)
-                    write_ready = Subbands[i].PutNextSample(WhichChannels, Filter1, Filter2);
+                {
+                    write_ready = Subbands[i].PutNextSample(FilterLeft, FilterRight);
+                }
 
-                Filter1.CalculatePcmSamples(Buffer);
-                if (WhichChannels == OutputChannels.BOTH_CHANNELS && mode != Header.SINGLE_CHANNEL)
-                    Filter2.CalculatePcmSamples(Buffer);
-            } while (!write_ready);
-        } while (!read_ready);
-
+                FilterLeft.CalculatePcmSamples(Buffer);
+                if (mode != ChannelType.SingelChannel)
+                {
+                    FilterRight.CalculatePcmSamples(Buffer);
+                }
+            }
+            while (!write_ready);
+        }
+        while (!read_ready);
     }
 
-    /**
-     * Abstract base class for subband classes of layer I and II
-     */
+    /// <summary>
+    /// Abstract base class for subband classes of layer I and II
+    /// </summary>
     public abstract class Subband
     {
         /*
@@ -141,13 +144,13 @@ public class LayerIDecoder : IFrameDecoder
             0.00000190734863f, 0.00000151386361f, 0.00000120155435f, 0.00000000000000f /* illegal scalefactor */
         ];
 
-        public abstract void ReadAllocation(BitStream stream, Header header, Crc16 crc);
+        public abstract void ReadAllocation(BitStream stream, Mp3Header header, Crc16 crc);
 
-        public abstract void ReadScalefactor(BitStream stream, Header header);
+        public abstract void ReadScalefactor(BitStream stream, Mp3Header header);
 
         public abstract bool ReadSampledata(BitStream stream);
 
-        public abstract bool PutNextSample(int channels, SynthesisFilter filter1, SynthesisFilter filter2);
+        public abstract bool PutNextSample(SynthesisFilter filter1, SynthesisFilter filter2);
     }
 
     /**
@@ -202,14 +205,12 @@ public class LayerIDecoder : IFrameDecoder
         protected float Sample;
         protected float Factor, Offset;
 
-        public override void ReadAllocation(BitStream stream, Header header, Crc16 crc)
+        public override void ReadAllocation(BitStream stream, Mp3Header header, Crc16 crc)
         {
             if ((Allocation = stream.GetBits(4)) == 15)
             {
                 // CGJ: catch this condition and throw appropriate exception
-                throw new DecoderException(DecoderErrors.ILLEGAL_SUBBAND_ALLOCATION, null);
-                //	 cerr << "WARNING: stream contains an illegal allocation!\n";
-                // MPEG-stream is corrupted!
+                throw new Exception("Illegal Allocation");
             }
 
             crc?.AddBits(Allocation, 4);
@@ -221,7 +222,7 @@ public class LayerIDecoder : IFrameDecoder
             }
         }
 
-        public override void ReadScalefactor(BitStream stream, Header header)
+        public override void ReadScalefactor(BitStream stream, Mp3Header header)
         {
             if (Allocation != 0) Scalefactor = scalefactors[stream.GetBits(6)];
         }
@@ -240,9 +241,9 @@ public class LayerIDecoder : IFrameDecoder
             return false;
         }
 
-        public override bool PutNextSample(int channels, SynthesisFilter filter1, SynthesisFilter filter2)
+        public override bool PutNextSample(SynthesisFilter filter1, SynthesisFilter filter2)
         {
-            if (Allocation != 0 && channels != OutputChannels.RIGHT_CHANNEL)
+            if (Allocation != 0)
             {
                 float scaled_sample = (Sample * Factor + Offset) * Scalefactor;
                 filter1.InputSample(scaled_sample, Subbandnumber);
@@ -259,12 +260,12 @@ public class LayerIDecoder : IFrameDecoder
     {
         protected float Channel2Scalefactor;
 
-        public override void ReadAllocation(BitStream stream, Header header, Crc16 crc)
+        public override void ReadAllocation(BitStream stream, Mp3Header header, Crc16 crc)
         {
             base.ReadAllocation(stream, header, crc);
         }
 
-        public override void ReadScalefactor(BitStream stream, Header header)
+        public override void ReadScalefactor(BitStream stream, Mp3Header header)
         {
             if (Allocation != 0)
             {
@@ -278,28 +279,15 @@ public class LayerIDecoder : IFrameDecoder
             return base.ReadSampledata(stream);
         }
 
-        public override bool PutNextSample(int channels, SynthesisFilter filter1, SynthesisFilter filter2)
+        public override bool PutNextSample(SynthesisFilter filter1, SynthesisFilter filter2)
         {
             if (Allocation != 0)
             {
                 Sample = Sample * Factor + Offset;        // requantization
-                if (channels == OutputChannels.BOTH_CHANNELS)
-                {
-                    float sample1 = Sample * Scalefactor,
+                float sample1 = Sample * Scalefactor,
                             sample2 = Sample * Channel2Scalefactor;
-                    filter1.InputSample(sample1, Subbandnumber);
-                    filter2.InputSample(sample2, Subbandnumber);
-                }
-                else if (channels == OutputChannels.LEFT_CHANNEL)
-                {
-                    float sample1 = Sample * Scalefactor;
-                    filter1.InputSample(sample1, Subbandnumber);
-                }
-                else
-                {
-                    float sample2 = Sample * Channel2Scalefactor;
-                    filter1.InputSample(sample2, Subbandnumber);
-                }
+                filter1.InputSample(sample1, Subbandnumber);
+                filter2.InputSample(sample2, Subbandnumber);
             }
             return true;
         }
@@ -316,7 +304,7 @@ public class LayerIDecoder : IFrameDecoder
         protected float Channel2Sample;
         protected float Channel2Factor, Channel2Offset;
 
-        public override void ReadAllocation(BitStream stream, Header header, Crc16 crc)
+        public override void ReadAllocation(BitStream stream, Mp3Header header, Crc16 crc)
         {
             Allocation = stream.GetBits(4);
             Channel2Allocation = stream.GetBits(4);
@@ -339,7 +327,7 @@ public class LayerIDecoder : IFrameDecoder
             }
         }
 
-        public override void ReadScalefactor(BitStream stream, Header header)
+        public override void ReadScalefactor(BitStream stream, Mp3Header header)
         {
             if (Allocation != 0) Scalefactor = scalefactors[stream.GetBits(6)];
             if (Channel2Allocation != 0) Channel2Scalefactor = scalefactors[stream.GetBits(6)];
@@ -355,17 +343,14 @@ public class LayerIDecoder : IFrameDecoder
             return returnvalue;
         }
 
-        public override bool PutNextSample(int channels, SynthesisFilter filter1, SynthesisFilter filter2)
+        public override bool PutNextSample(SynthesisFilter filter1, SynthesisFilter filter2)
         {
-            base.PutNextSample(channels, filter1, filter2);
-            if (Channel2Allocation != 0 && channels != OutputChannels.LEFT_CHANNEL)
+            base.PutNextSample(filter1, filter2);
+            if (Channel2Allocation != 0)
             {
                 float sample2 = (Channel2Sample * Channel2Factor + Channel2Offset) *
                         Channel2Scalefactor;
-                if (channels == OutputChannels.BOTH_CHANNELS)
-                    filter2.InputSample(sample2, Subbandnumber);
-                else
-                    filter1.InputSample(sample2, Subbandnumber);
+                filter2.InputSample(sample2, Subbandnumber);
             }
             return true;
         }

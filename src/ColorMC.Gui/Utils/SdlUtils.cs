@@ -31,4 +31,22 @@ public static class SdlUtils
             }
         }
     }
+#if DEBUG
+    public static void InitTest()
+    {
+        try
+        {
+            Sdl = Sdl.GetApi();
+            if (Sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) == 0)
+            {
+                JoystickInput.Init(Sdl);
+                SdlInit = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error(App.Lang("BaseBinding.Error1"), e);
+        }
+    }
+#endif
 }

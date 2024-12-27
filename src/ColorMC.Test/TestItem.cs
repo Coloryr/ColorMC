@@ -4,14 +4,15 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.MusicPlayer;
+using ColorMC.Gui.MusicPlayer.Decoder.Flac;
 using ColorMC.Gui.Skin;
+using ColorMC.Gui.Utils;
 using SkiaSharp;
 using System.IO.Compression;
 using System.Net;
@@ -608,11 +609,10 @@ public static class TestItem
 
     public static void Item35()
     {
-        var sdl = Silk.NET.SDL.Sdl.GetApi();
-        var res = sdl.Init(Silk.NET.SDL.Sdl.InitAudio);
+        SdlUtils.InitTest();
 
         Media.Init();
-        Media.PlayMusic("H:\\music.mp3", false, 100);
+        Media.PlayMusic("F:\\music\\AstroNoteS\\空飛ぶ旅 - AstroNoteS.mp3", false, 100);
     }
     public static void Item36()
     {
@@ -661,5 +661,29 @@ public static class TestItem
         HttpResponseMessage response = httpClient1.GetAsync("https://www.github.com/").Result;
 
         Console.WriteLine(response.StatusCode);
+    }
+
+    public static void Item39()
+    {
+        SdlUtils.InitTest();
+
+        Media.Init();
+        //16
+        //Media.PlayMusic("F:\\music\\9-tie\\Naked Blue - 9-tie.flac", false, 100);
+
+        //24
+        Media.PlayMusic("F:\\music\\777☆SISTERS\\Departures -あしたの歌- - 777☆SISTERS.flac", false ,100);
+    }
+
+    public static void Item40()
+    {
+        SdlUtils.InitTest();
+
+        Media.Init();
+        //16
+        //Media.PlayMusic("F:\\music\\9-tie\\Naked Blue - 9-tie.flac", false, 100);
+
+        //24
+        Media.PlayMusic("F:\\music\\777☆SISTERS\\Departures -あしたの歌- - 777☆SISTERS.flac", false, 100);
     }
 }

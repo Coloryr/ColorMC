@@ -6,6 +6,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 {
     public static readonly int[] Pretab =
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 3, 2, 0];
+
     public static readonly float[] TwoToNegativeHalfPow =
     [
         1.0000000000E+00f, 7.0710678119E-01f, 5.0000000000E-01f, 3.5355339059E-01f,
@@ -120,14 +121,14 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         -0.0945741925262f, -0.0409655828852f, -0.0141985685725f, -0.00369997467375f
     ];
 
-    private static /*readonly*/ int[][] s_reorder_table/* = loadReorderTable()*/;    // SZD: will be generated on demand
+    private static int[][] s_reorderTable;    // SZD: will be generated on demand
 
     private readonly double _d43 = 4.0 / 3.0;
 
     // MDM: new_slen is fully initialized before use, no need
     // to reallocate array.
-    private readonly int[] _new_slen = new int[4];
-    private readonly int[] _is_1d;
+    private readonly int[] _newSlen = new int[4];
+    private readonly int[] _is1d;
     private readonly float[][,] _ro;
     private readonly float[][,] _lr;
     private readonly float[] _out1d;
@@ -135,10 +136,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private readonly float[,] _k;
     private readonly int[] _nonzero;
     private readonly BitStream _stream;
-    private readonly Header _header;
+    private readonly Mp3Header _header;
     private readonly SynthesisFilter _filter1, _filter2;
-    private readonly Obuffer _buffer;
-    private readonly int _whichChannels;
+    private readonly SampleBuffer _buffer;
     private readonly BitReserve _br;
     private readonly IIISideInfo _si;
     private readonly Temporaire2[] _scalefac;
@@ -156,7 +156,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private readonly SBI[] _sfBandIndex; // Init in the constructor.
 
     private readonly int[] _scalefacBuffer;
-    //private Sftable _sftable;
+
 
     private readonly int[] _x = [0];
     private readonly int[] _y = [0];
@@ -166,22 +166,19 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private readonly int[] _isPos = new int[576];
     private readonly float[] _isRatio = new float[576];
 
-    // MDM: tsOutCopy and rawout do not need initializing, so the arrays
-    // can be reused.
+
     private readonly float[] _tsOutCopy = new float[18];
     private readonly float[] _rawout = new float[36];
-    // MDM: removed, as this wasn't being used.
+
     private int _checkSumHuff = 0;
     private int _frameStart;
     private int _part2Start;
 
-    // REVIEW: these constructor arguments should be moved to the
-    // decodeFrame() method, where possible, so that one
-    public LayerIIIDecoder(BitStream stream0, Header header0,
+    public LayerIIIDecoder(BitStream stream0, Mp3Header header0,
                            SynthesisFilter filtera, SynthesisFilter filterb,
-                           Obuffer buffer0, int which_ch0)
+                           SampleBuffer buffer0)
     {
-        _is_1d = new int[s_sblimit * s_sslimit + 4];
+        _is1d = new int[s_sblimit * s_sslimit + 4];
         _ro = new float[2][,];
         _ro[0] = new float[s_sblimit, s_sslimit];
         _ro[1] = new float[s_sblimit, s_sslimit];
@@ -235,11 +232,11 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         _sfBandIndex[8] = new SBI(l8, s8);
         // END OF L3TABLE INIT
 
-        if (s_reorder_table == null)
+        if (s_reorderTable == null)
         {    // SZD: generate LUT
-            s_reorder_table = new int[9][];
+            s_reorderTable = new int[9][];
             for (int i = 0; i < 9; i++)
-                s_reorder_table[i] = Reorder(_sfBandIndex[i].s);
+                s_reorderTable[i] = Reorder(_sfBandIndex[i].s);
         }
 
         // Sftable
@@ -257,35 +254,19 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         _filter1 = filtera;
         _filter2 = filterb;
         _buffer = buffer0;
-        _whichChannels = which_ch0;
 
         _frameStart = 0;
-        _channels = _header.Mode == Header.SINGLE_CHANNEL ? 1 : 2;
-        _maxGr = _header.Version == Header.MPEG1 ? 2 : 1;
+        _channels = _header.Mode == ChannelType.SingelChannel ? 1 : 2;
+        _maxGr = _header.Version == VersionType.Mpeg1 ? 2 : 1;
 
-        _sfreq = _header.SampleFrequency +
-                (_header.Version == Header.MPEG1 ? 3 :
-                        _header.Version == Header.MPEG25_LSF ? 6 : 0);    // SZD
+        _sfreq = (int)_header.SampleFrequency +
+                (_header.Version == VersionType.Mpeg1 ? 3 :
+                        _header.Version == VersionType.Mpeg25LSF ? 6 : 0);    // SZD
 
         if (_channels == 2)
         {
-            switch (_whichChannels)
-            {
-                case OutputChannels.LEFT_CHANNEL:
-                case OutputChannels.DOWNMIX_CHANNELS:
-                    _firstChannel = _lastChannel = 0;
-                    break;
-
-                case OutputChannels.RIGHT_CHANNEL:
-                    _firstChannel = _lastChannel = 1;
-                    break;
-
-                case OutputChannels.BOTH_CHANNELS:
-                default:
-                    _firstChannel = 0;
-                    _lastChannel = 1;
-                    break;
-            }
+            _firstChannel = 0;
+            _lastChannel = 1;
         }
         else
         {
@@ -344,13 +325,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         GetSideInfo();
 
         for (i = 0; i < nSlots; i++)
-            _br.Hputbuf(_stream.GetBits(8));
+            _br.Putbuf(_stream.GetBits(8));
 
         main_data_end = _br.Hsstell >>> 3; // of previous frame
 
         if ((flush_main = _br.Hsstell & 7) != 0)
         {
-            _br.Hgetbits(8 - flush_main);
+            _br.Getbits(8 - flush_main);
             main_data_end++;
         }
 
@@ -369,7 +350,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         }
 
         for (; bytes_to_discard > 0; bytes_to_discard--)
-            _br.Hgetbits(8);
+            _br.Getbits(8);
 
         for (gr = 0; gr < _maxGr; gr++)
         {
@@ -377,7 +358,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             {
                 _part2Start = _br.Hsstell;
 
-                if (_header.Version == Header.MPEG1)
+                if (_header.Version == VersionType.Mpeg1)
                     GetScaleFactors(ch, gr);
                 else  // MPEG-2 LSF, SZD: MPEG-2.5 LSF
                     GetLSFScaleFactors(ch, gr);
@@ -387,9 +368,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             }
 
             Stereo(gr);
-
-            if (_whichChannels == OutputChannels.DOWNMIX_CHANNELS && _channels > 1)
-                DoDownmix();
 
             for (ch = _firstChannel; ch <= _lastChannel; ch++)
             {
@@ -402,7 +380,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     for (ss = 1; ss < s_sslimit; ss += 2)
                         _out1d[sb18 + ss] = -_out1d[sb18 + ss];
 
-                if (ch == 0 || _whichChannels == OutputChannels.RIGHT_CHANNEL)
+                if (ch == 0)
                 {
                     for (ss = 0; ss < s_sslimit; ss++)
                     {
@@ -445,7 +423,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private void GetSideInfo()
     {
         int ch, gr;
-        if (_header.Version == Header.MPEG1)
+        if (_header.Version == VersionType.Mpeg1)
         {
             _si.main_data_begin = _stream.GetBits(9);
             if (_channels == 1)
@@ -597,15 +575,15 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             if (gr_info.MixedBlockFlag != 0)
             { // MIXED
                 for (sfb = 0; sfb < 8; sfb++)
-                    _scalefac[ch].l[sfb] = _br.Hgetbits(
+                    _scalefac[ch].l[sfb] = _br.Getbits(
                             s_slen[0, gr_info.ScalefacCompress]);
                 for (sfb = 3; sfb < 6; sfb++)
                     for (window = 0; window < 3; window++)
-                        _scalefac[ch].s[window, sfb] = _br.Hgetbits(
+                        _scalefac[ch].s[window, sfb] = _br.Getbits(
                                 s_slen[0, gr_info.ScalefacCompress]);
                 for (sfb = 6; sfb < 12; sfb++)
                     for (window = 0; window < 3; window++)
-                        _scalefac[ch].s[window, sfb] = _br.Hgetbits(
+                        _scalefac[ch].s[window, sfb] = _br.Getbits(
                                 s_slen[1, gr_info.ScalefacCompress]);
                 for (sfb = 12, window = 0; window < 3; window++)
                     _scalefac[ch].s[window, sfb] = 0;
@@ -614,42 +592,42 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             else
             {  // SHORT
 
-                _scalefac[ch].s[0, 0] = _br.Hgetbits(length0);
-                _scalefac[ch].s[1, 0] = _br.Hgetbits(length0);
-                _scalefac[ch].s[2, 0] = _br.Hgetbits(length0);
-                _scalefac[ch].s[0, 1] = _br.Hgetbits(length0);
-                _scalefac[ch].s[1, 1] = _br.Hgetbits(length0);
-                _scalefac[ch].s[2, 1] = _br.Hgetbits(length0);
-                _scalefac[ch].s[0, 2] = _br.Hgetbits(length0);
-                _scalefac[ch].s[1, 2] = _br.Hgetbits(length0);
-                _scalefac[ch].s[2, 2] = _br.Hgetbits(length0);
-                _scalefac[ch].s[0, 3] = _br.Hgetbits(length0);
-                _scalefac[ch].s[1, 3] = _br.Hgetbits(length0);
-                _scalefac[ch].s[2, 3] = _br.Hgetbits(length0);
-                _scalefac[ch].s[0, 4] = _br.Hgetbits(length0);
-                _scalefac[ch].s[1, 4] = _br.Hgetbits(length0);
-                _scalefac[ch].s[2, 4] = _br.Hgetbits(length0);
-                _scalefac[ch].s[0, 5] = _br.Hgetbits(length0);
-                _scalefac[ch].s[1, 5] = _br.Hgetbits(length0);
-                _scalefac[ch].s[2, 5] = _br.Hgetbits(length0);
-                _scalefac[ch].s[0, 6] = _br.Hgetbits(length1);
-                _scalefac[ch].s[1, 6] = _br.Hgetbits(length1);
-                _scalefac[ch].s[2, 6] = _br.Hgetbits(length1);
-                _scalefac[ch].s[0, 7] = _br.Hgetbits(length1);
-                _scalefac[ch].s[1, 7] = _br.Hgetbits(length1);
-                _scalefac[ch].s[2, 7] = _br.Hgetbits(length1);
-                _scalefac[ch].s[0, 8] = _br.Hgetbits(length1);
-                _scalefac[ch].s[1, 8] = _br.Hgetbits(length1);
-                _scalefac[ch].s[2, 8] = _br.Hgetbits(length1);
-                _scalefac[ch].s[0, 9] = _br.Hgetbits(length1);
-                _scalefac[ch].s[1, 9] = _br.Hgetbits(length1);
-                _scalefac[ch].s[2, 9] = _br.Hgetbits(length1);
-                _scalefac[ch].s[0, 10] = _br.Hgetbits(length1);
-                _scalefac[ch].s[1, 10] = _br.Hgetbits(length1);
-                _scalefac[ch].s[2, 10] = _br.Hgetbits(length1);
-                _scalefac[ch].s[0, 11] = _br.Hgetbits(length1);
-                _scalefac[ch].s[1, 11] = _br.Hgetbits(length1);
-                _scalefac[ch].s[2, 11] = _br.Hgetbits(length1);
+                _scalefac[ch].s[0, 0] = _br.Getbits(length0);
+                _scalefac[ch].s[1, 0] = _br.Getbits(length0);
+                _scalefac[ch].s[2, 0] = _br.Getbits(length0);
+                _scalefac[ch].s[0, 1] = _br.Getbits(length0);
+                _scalefac[ch].s[1, 1] = _br.Getbits(length0);
+                _scalefac[ch].s[2, 1] = _br.Getbits(length0);
+                _scalefac[ch].s[0, 2] = _br.Getbits(length0);
+                _scalefac[ch].s[1, 2] = _br.Getbits(length0);
+                _scalefac[ch].s[2, 2] = _br.Getbits(length0);
+                _scalefac[ch].s[0, 3] = _br.Getbits(length0);
+                _scalefac[ch].s[1, 3] = _br.Getbits(length0);
+                _scalefac[ch].s[2, 3] = _br.Getbits(length0);
+                _scalefac[ch].s[0, 4] = _br.Getbits(length0);
+                _scalefac[ch].s[1, 4] = _br.Getbits(length0);
+                _scalefac[ch].s[2, 4] = _br.Getbits(length0);
+                _scalefac[ch].s[0, 5] = _br.Getbits(length0);
+                _scalefac[ch].s[1, 5] = _br.Getbits(length0);
+                _scalefac[ch].s[2, 5] = _br.Getbits(length0);
+                _scalefac[ch].s[0, 6] = _br.Getbits(length1);
+                _scalefac[ch].s[1, 6] = _br.Getbits(length1);
+                _scalefac[ch].s[2, 6] = _br.Getbits(length1);
+                _scalefac[ch].s[0, 7] = _br.Getbits(length1);
+                _scalefac[ch].s[1, 7] = _br.Getbits(length1);
+                _scalefac[ch].s[2, 7] = _br.Getbits(length1);
+                _scalefac[ch].s[0, 8] = _br.Getbits(length1);
+                _scalefac[ch].s[1, 8] = _br.Getbits(length1);
+                _scalefac[ch].s[2, 8] = _br.Getbits(length1);
+                _scalefac[ch].s[0, 9] = _br.Getbits(length1);
+                _scalefac[ch].s[1, 9] = _br.Getbits(length1);
+                _scalefac[ch].s[2, 9] = _br.Getbits(length1);
+                _scalefac[ch].s[0, 10] = _br.Getbits(length1);
+                _scalefac[ch].s[1, 10] = _br.Getbits(length1);
+                _scalefac[ch].s[2, 10] = _br.Getbits(length1);
+                _scalefac[ch].s[0, 11] = _br.Getbits(length1);
+                _scalefac[ch].s[1, 11] = _br.Getbits(length1);
+                _scalefac[ch].s[2, 11] = _br.Getbits(length1);
                 _scalefac[ch].s[0, 12] = 0;
                 _scalefac[ch].s[1, 12] = 0;
                 _scalefac[ch].s[2, 12] = 0;
@@ -661,36 +639,36 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
             if (_si.ch[ch].scfsi[0] == 0 || gr == 0)
             {
-                _scalefac[ch].l[0] = _br.Hgetbits(length0);
-                _scalefac[ch].l[1] = _br.Hgetbits(length0);
-                _scalefac[ch].l[2] = _br.Hgetbits(length0);
-                _scalefac[ch].l[3] = _br.Hgetbits(length0);
-                _scalefac[ch].l[4] = _br.Hgetbits(length0);
-                _scalefac[ch].l[5] = _br.Hgetbits(length0);
+                _scalefac[ch].l[0] = _br.Getbits(length0);
+                _scalefac[ch].l[1] = _br.Getbits(length0);
+                _scalefac[ch].l[2] = _br.Getbits(length0);
+                _scalefac[ch].l[3] = _br.Getbits(length0);
+                _scalefac[ch].l[4] = _br.Getbits(length0);
+                _scalefac[ch].l[5] = _br.Getbits(length0);
             }
             if (_si.ch[ch].scfsi[1] == 0 || gr == 0)
             {
-                _scalefac[ch].l[6] = _br.Hgetbits(length0);
-                _scalefac[ch].l[7] = _br.Hgetbits(length0);
-                _scalefac[ch].l[8] = _br.Hgetbits(length0);
-                _scalefac[ch].l[9] = _br.Hgetbits(length0);
-                _scalefac[ch].l[10] = _br.Hgetbits(length0);
+                _scalefac[ch].l[6] = _br.Getbits(length0);
+                _scalefac[ch].l[7] = _br.Getbits(length0);
+                _scalefac[ch].l[8] = _br.Getbits(length0);
+                _scalefac[ch].l[9] = _br.Getbits(length0);
+                _scalefac[ch].l[10] = _br.Getbits(length0);
             }
             if (_si.ch[ch].scfsi[2] == 0 || gr == 0)
             {
-                _scalefac[ch].l[11] = _br.Hgetbits(length1);
-                _scalefac[ch].l[12] = _br.Hgetbits(length1);
-                _scalefac[ch].l[13] = _br.Hgetbits(length1);
-                _scalefac[ch].l[14] = _br.Hgetbits(length1);
-                _scalefac[ch].l[15] = _br.Hgetbits(length1);
+                _scalefac[ch].l[11] = _br.Getbits(length1);
+                _scalefac[ch].l[12] = _br.Getbits(length1);
+                _scalefac[ch].l[13] = _br.Getbits(length1);
+                _scalefac[ch].l[14] = _br.Getbits(length1);
+                _scalefac[ch].l[15] = _br.Getbits(length1);
             }
             if (_si.ch[ch].scfsi[3] == 0 || gr == 0)
             {
-                _scalefac[ch].l[16] = _br.Hgetbits(length1);
-                _scalefac[ch].l[17] = _br.Hgetbits(length1);
-                _scalefac[ch].l[18] = _br.Hgetbits(length1);
-                _scalefac[ch].l[19] = _br.Hgetbits(length1);
-                _scalefac[ch].l[20] = _br.Hgetbits(length1);
+                _scalefac[ch].l[16] = _br.Getbits(length1);
+                _scalefac[ch].l[17] = _br.Getbits(length1);
+                _scalefac[ch].l[18] = _br.Getbits(length1);
+                _scalefac[ch].l[19] = _br.Getbits(length1);
+                _scalefac[ch].l[20] = _br.Getbits(length1);
             }
 
             _scalefac[ch].l[21] = 0;
@@ -731,10 +709,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             if (scalefac_comp < 400)
             {
 
-                _new_slen[0] = (scalefac_comp >>> 4) / 5;
-                _new_slen[1] = (scalefac_comp >>> 4) % 5;
-                _new_slen[2] = (scalefac_comp & 0xF) >>> 2;
-                _new_slen[3] = scalefac_comp & 3;
+                _newSlen[0] = (scalefac_comp >>> 4) / 5;
+                _newSlen[1] = (scalefac_comp >>> 4) % 5;
+                _newSlen[2] = (scalefac_comp & 0xF) >>> 2;
+                _newSlen[3] = scalefac_comp & 3;
                 _si.ch[ch].gr[gr].Preflag = 0;
                 blocknumber = 0;
 
@@ -742,10 +720,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             else if (scalefac_comp < 500)
             {
 
-                _new_slen[0] = ((scalefac_comp - 400) >>> 2) / 5;
-                _new_slen[1] = ((scalefac_comp - 400) >>> 2) % 5;
-                _new_slen[2] = scalefac_comp - 400 & 3;
-                _new_slen[3] = 0;
+                _newSlen[0] = ((scalefac_comp - 400) >>> 2) / 5;
+                _newSlen[1] = ((scalefac_comp - 400) >>> 2) % 5;
+                _newSlen[2] = scalefac_comp - 400 & 3;
+                _newSlen[3] = 0;
                 _si.ch[ch].gr[gr].Preflag = 0;
                 blocknumber = 1;
 
@@ -753,10 +731,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             else if (scalefac_comp < 512)
             {
 
-                _new_slen[0] = (scalefac_comp - 500) / 3;
-                _new_slen[1] = (scalefac_comp - 500) % 3;
-                _new_slen[2] = 0;
-                _new_slen[3] = 0;
+                _newSlen[0] = (scalefac_comp - 500) / 3;
+                _newSlen[1] = (scalefac_comp - 500) % 3;
+                _newSlen[2] = 0;
+                _newSlen[3] = 0;
                 _si.ch[ch].gr[gr].Preflag = 1;
                 blocknumber = 2;
             }
@@ -768,28 +746,28 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
             if (int_scalefac_comp < 180)
             {
-                _new_slen[0] = int_scalefac_comp / 36;
-                _new_slen[1] = int_scalefac_comp % 36 / 6;
-                _new_slen[2] = int_scalefac_comp % 36 % 6;
-                _new_slen[3] = 0;
+                _newSlen[0] = int_scalefac_comp / 36;
+                _newSlen[1] = int_scalefac_comp % 36 / 6;
+                _newSlen[2] = int_scalefac_comp % 36 % 6;
+                _newSlen[3] = 0;
                 _si.ch[ch].gr[gr].Preflag = 0;
                 blocknumber = 3;
             }
             else if (int_scalefac_comp < 244)
             {
-                _new_slen[0] = (int_scalefac_comp - 180 & 0x3F) >>> 4;
-                _new_slen[1] = (int_scalefac_comp - 180 & 0xF) >>> 2;
-                _new_slen[2] = int_scalefac_comp - 180 & 3;
-                _new_slen[3] = 0;
+                _newSlen[0] = (int_scalefac_comp - 180 & 0x3F) >>> 4;
+                _newSlen[1] = (int_scalefac_comp - 180 & 0xF) >>> 2;
+                _newSlen[2] = int_scalefac_comp - 180 & 3;
+                _newSlen[3] = 0;
                 _si.ch[ch].gr[gr].Preflag = 0;
                 blocknumber = 4;
             }
             else if (int_scalefac_comp < 255)
             {
-                _new_slen[0] = (int_scalefac_comp - 244) / 3;
-                _new_slen[1] = (int_scalefac_comp - 244) % 3;
-                _new_slen[2] = 0;
-                _new_slen[3] = 0;
+                _newSlen[0] = (int_scalefac_comp - 244) / 3;
+                _newSlen[1] = (int_scalefac_comp - 244) % 3;
+                _newSlen[2] = 0;
+                _newSlen[3] = 0;
                 _si.ch[ch].gr[gr].Preflag = 0;
                 blocknumber = 5;
             }
@@ -804,17 +782,14 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             for (int j = 0; j < NrOfSfbBlock[blocknumber, blocktypenumber, i];
                  j++)
             {
-                _scalefacBuffer[m] = _new_slen[i] == 0 ? 0 :
-                        _br.Hgetbits(_new_slen[i]);
+                _scalefacBuffer[m] = _newSlen[i] == 0 ? 0 :
+                        _br.Getbits(_newSlen[i]);
                 m++;
 
             } // for (unint32 j ...
         } // for (uint32 i ...
     }
 
-    /**
-     *
-     */
     private void GetLSFScaleFactors(int ch, int gr)
     {
         int m = 0;
@@ -918,8 +893,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
             HuffcodeTabel.HuffmanDecoder(h, _x, _y, _v, _w, _br);
 
-            _is_1d[index++] = _x[0];
-            _is_1d[index++] = _y[0];
+            _is1d[index++] = _x[0];
+            _is1d[index++] = _y[0];
 
             _checkSumHuff = _checkSumHuff + _x[0] + _y[0];
         }
@@ -933,10 +908,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
             HuffcodeTabel.HuffmanDecoder(h, _x, _y, _v, _w, _br);
 
-            _is_1d[index++] = _v[0];
-            _is_1d[index++] = _w[0];
-            _is_1d[index++] = _x[0];
-            _is_1d[index++] = _y[0];
+            _is1d[index++] = _v[0];
+            _is1d[index++] = _w[0];
+            _is1d[index++] = _x[0];
+            _is1d[index++] = _y[0];
             _checkSumHuff = _checkSumHuff + _v[0] + _w[0] + _x[0] + _y[0];
             num_bits = _br.Hsstell;
         }
@@ -951,7 +926,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         // Dismiss stuffing bits
         if (num_bits < part2_3_end)
-            _br.Hgetbits(part2_3_end - num_bits);
+            _br.Getbits(part2_3_end - num_bits);
 
         // Zero out rest
 
@@ -961,7 +936,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         // may not be necessary
         for (; index < 576; index++)
-            _is_1d[index] = 0;
+            _is1d[index] = 0;
     }
 
     /**
@@ -986,9 +961,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         }
     }
 
-    /**
-     *
-     */
     private void DequantizeSample(float[,] xr, int ch, int gr)
     {
         GrInfo gr_info = _si.ch[ch].gr[gr];
@@ -1026,14 +998,14 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             // Modif E.B 02/22/99
             int reste = j % s_sslimit;
             int quotien = (j - reste) / s_sslimit;
-            if (_is_1d[j] == 0) xr[quotien, reste] = 0.0f;
+            if (_is1d[j] == 0) xr[quotien, reste] = 0.0f;
             else
             {
-                int abv = _is_1d[j];
+                int abv = _is1d[j];
                 // Pow Array fix (11/17/04)
                 if (abv < T43.Length)
                 {
-                    if (_is_1d[j] > 0) xr[quotien, reste] = g_gain * T43[abv];
+                    if (_is1d[j] > 0) xr[quotien, reste] = g_gain * T43[abv];
                     else
                     {
                         if (-abv < T43.Length) xr[quotien, reste] = -g_gain * T43[-abv];
@@ -1042,7 +1014,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 }
                 else
                 {
-                    if (_is_1d[j] > 0) xr[quotien, reste] = g_gain * (float)Math.Pow(abv, _d43);
+                    if (_is1d[j] > 0) xr[quotien, reste] = g_gain * (float)Math.Pow(abv, _d43);
                     else xr[quotien, reste] = -g_gain * (float)Math.Pow(-abv, _d43);
                 }
             }
@@ -1192,7 +1164,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     for (freq = 0, freq3 = 0; freq < sfb_lines;
                          freq++, freq3 += 3)
                     {
-
                         src_line = sfb_start3 + freq;
                         des_line = sfb_start3 + freq3;
                         // Modif E.B 02/22/99
@@ -1222,7 +1193,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             {  // pure short
                 for (index = 0; index < 576; index++)
                 {
-                    int j = s_reorder_table[_sfreq][index];
+                    int j = s_reorderTable[_sfreq][index];
                     int reste = j % s_sslimit;
                     int quotien = (j - reste) / s_sslimit;
                     _out1d[index] = xr[quotien, reste];
@@ -1265,9 +1236,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             int i;
             int lines, temp, temp2;
 
-            bool ms_stereo = _header.Mode == Header.JOINT_STEREO && (mode_ext & 0x2) != 0;
-            bool i_stereo = _header.Mode == Header.JOINT_STEREO && (mode_ext & 0x1) != 0;
-            bool lsf = _header.Version == Header.MPEG2_LSF || _header.Version == Header.MPEG25_LSF;    // SZD
+            bool ms_stereo = _header.Mode == ChannelType.JointStereo && (mode_ext & 0x2) != 0;
+            bool i_stereo = _header.Mode == ChannelType.JointStereo && (mode_ext & 0x1) != 0;
+            bool lsf = _header.Version == VersionType.Mpeg2LSF || _header.Version == VersionType.Mpeg25LSF;    // SZD
 
             int io_type = gr_info.ScalefacCompress & 1;
 
@@ -1675,22 +1646,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         }
     }
 
-    /**
-     *
-     */
-    private void DoDownmix()
-    {
-        for (int sb = 0; sb < s_sslimit; sb++)
-        {
-            for (int ss = 0; ss < s_sslimit; ss += 3)
-            {
-                _lr[0][sb, ss] = (_lr[0][sb, ss] + _lr[1][sb, ss]) * 0.5f;
-                _lr[0][sb, ss + 1] = (_lr[0][sb, ss + 1] + _lr[1][sb, ss + 1]) * 0.5f;
-                _lr[0][sb, ss + 2] = (_lr[0][sb, ss + 2] + _lr[1][sb, ss + 2]) * 0.5f;
-            }
-        }
-    }
-
     /// <summary>
     /// Fast INV_MDCT.
     /// </summary>
@@ -2081,14 +2036,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             l = new int[23];
             s = new int[3, 13];
         }
-    }
-
-    /***************************************************************/
-
-    public class Sftable(int[] thel, int[] thes)
-    {
-        public int[] l = thel;
-        public int[] s = thes;
     }
 }
 

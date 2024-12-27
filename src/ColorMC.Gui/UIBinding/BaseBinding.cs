@@ -18,7 +18,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Frp;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
-using ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
@@ -218,17 +217,17 @@ public static class BaseBinding
     /// <summary>
     /// 播放音乐
     /// </summary>
-    public static async Task<(bool, string?, Mp3Id3?)> MusicStart()
+    public static async Task<MusicPlayRes> MusicStart()
     {
         var config = GuiConfigUtils.Config.ServerCustom;
         if (config == null)
         {
-            return (false, null, null);
+            return new();
         }
         var file = config.Music;
         if (file == null)
         {
-            return (false, null, null);
+            return new();
         }
 
         Media.Loop = config.MusicLoop;
@@ -238,14 +237,14 @@ public static class BaseBinding
     /// <summary>
     /// 启动后音乐播放
     /// </summary>
-    public static async Task<(bool, string?, Mp3Id3?)> LoadMusic()
+    public static async Task<MusicPlayRes> LoadMusic()
     {
         if (GuiConfigUtils.Config.ServerCustom.PlayMusic)
         {
             return await MusicStart();
         }
 
-        return (false, null, null);
+        return new();
     }
 
     /// <summary>

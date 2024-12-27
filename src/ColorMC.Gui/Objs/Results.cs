@@ -57,3 +57,10 @@ public record GetJavaAdoptiumListRes
     public List<string>? Arch;
     public List<JavaDownloadModel>? Download;
 }
+
+public record MusicPlayRes
+{
+    public bool Res;
+    public string? Message;
+    public MusicInfo? MusicInfo;
+}

@@ -1,12 +1,17 @@
 using System;
-using System.Buffers.Binary;
 using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.MusicPlayer.Decoder;
+using ColorMC.Gui.MusicPlayer.Decoder.Flac;
 using ColorMC.Gui.MusicPlayer.Decoder.Mp3;
+using ColorMC.Gui.MusicPlayer.Decoder.Wav;
+using ColorMC.Gui.MusicPlayer.Players;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.MusicPlayer;
@@ -123,153 +128,7 @@ public static class Media
         s_player?.Stop();
     }
 
-    /// <summary>
-    /// 播放
-    /// </summary>
-    /// <param name="filePath"></param>
-    /// <returns></returns>
-    private static async Task<(bool, string?)> PlayWAV(string filePath)
-    {
-        //没有音频输出
-        if (s_player == null)
-        {
-            return (false, null);
-        }
-
-        Stop();
-
-        //等待解码器停止
-        await Task.Run(() =>
-        {
-            while (Decoding)
-            {
-                Thread.Sleep(10);
-            }
-        });
-
-        s_cancel = new();
-
-        Decoding = true;
-
-        var file = File.OpenRead(filePath);
-        var temp = new byte[4];
-        file.ReadExactly(temp);
-        if (temp[0] != 'R' || temp[1] != 'I' || temp[2] != 'F' || temp[3] != 'F')
-        {
-            return (false, "Given file is not in RIFF format");
-        }
-
-        file.ReadExactly(temp);
-        var chunkSize = BinaryPrimitives.ReadInt32LittleEndian(temp);
-
-        file.ReadExactly(temp);
-        if (temp[0] != 'W' || temp[1] != 'A' || temp[2] != 'V' || temp[3] != 'E')
-        {
-            return (false, "Given file is not in WAVE format");
-        }
-
-        short numChannels = -1;
-        int sampleRate = -1;
-        short bitsPerSample = -1;
-        int index = 12;
-
-        while (index < file.Length)
-        {
-            file.ReadExactly(temp);
-            index += 4;
-            var identifier = "" + (char)temp[0] + (char)temp[1] + (char)temp[2] + (char)temp[3];
-            file.ReadExactly(temp);
-            index += 4;
-            var size = BinaryPrimitives.ReadInt32LittleEndian(temp);
-            if (identifier == "fmt ")
-            {
-                if (size != 16)
-                {
-                    return (false, $"Unknown Audio Format with subchunk1 size {size}");
-                }
-                else
-                {
-                    file.ReadExactly(temp, 0, 2);
-                    var audioFormat = BinaryPrimitives.ReadInt16LittleEndian(temp);
-                    index += 2;
-                    if (audioFormat != 1)
-                    {
-                        return (false, $"Unknown Audio Format with ID {audioFormat}");
-                    }
-                    else
-                    {
-                        file.ReadExactly(temp, 0, 2);
-                        index += 2;
-                        numChannels = BinaryPrimitives.ReadInt16LittleEndian(temp);
-                        file.ReadExactly(temp);
-                        index += 4;
-                        sampleRate = BinaryPrimitives.ReadInt32LittleEndian(temp);
-                        file.ReadExactly(temp);
-                        index += 4;
-                        file.ReadExactly(temp, 0, 2);
-                        index += 2;
-                        file.ReadExactly(temp, 0, 2);
-                        index += 2;
-                        bitsPerSample = BinaryPrimitives.ReadInt16LittleEndian(temp);
-                    }
-                }
-            }
-            else if (identifier == "data")
-            {
-                int less = size;
-                int pack = numChannels * bitsPerSample * 1000;
-                temp = new byte[pack];
-                _ = Task.Run(() =>
-                {
-                    for (int a = 0; a < size; a++)
-                    {
-                        var length = Math.Min(less, pack);
-                        file.ReadExactly(temp, 0, length);
-
-                        s_player?.Write(numChannels, bitsPerSample, temp, length, sampleRate);
-
-
-                        if (s_cancel.IsCancellationRequested)
-                            break;
-
-                        a += length;
-                        less -= length;
-                    }
-                    file.Dispose();
-                });
-                break;
-            }
-            else
-            {
-                file.Seek(size, SeekOrigin.Current);
-                index += size;
-            }
-        }
-
-        Decoding = false;
-
-        if (Loop)
-        {
-            _ = Task.Run(() =>
-            {
-                s_player?.WaitDone();
-                Task.Run(() =>
-                {
-                    Thread.Sleep(500);
-                    _ = PlayWAV(s_musicFile);
-                });
-            });
-        }
-
-        return (true, null);
-    }
-
-    /// <summary>
-    /// 播放Mp3
-    /// </summary>
-    /// <param name="stream"></param>
-    /// <returns></returns>
-    private static async Task<(bool, string?, Mp3Id3?)> PlayMp3(Stream stream, bool isurl)
+    private static async Task<MusicPlayRes> Play(Stream stream, bool isurl, MediaType type)
     {
         Stop();
 
@@ -283,18 +142,22 @@ public static class Media
 
         s_cancel = new();
 
-        if (isurl)
+        IDecoder decoder = type switch
         {
-            stream = new BufferedStream(stream);
+            MediaType.Wav => new WavFile(stream),
+            MediaType.Mp3 => new Mp3File(stream),
+            MediaType.Flac => new FlacFile(stream),
+            _ => throw new Exception("unknow file decoder")
+        };
+        if (!decoder.IsFile)
+        {
+            return new MusicPlayRes()
+            {
+                Message = App.Lang("MediaPlayer.Error5")
+            };
         }
 
-        var decoder = new Mp3Decoder(stream);
-        if (!decoder.Load())
-        {
-            return (false, App.Lang("MediaPlayer.Error3"), null);
-        }
-
-        MusicTime = TimeSpan.FromMilliseconds(decoder.GetTimeCount());
+        MusicTime = TimeSpan.FromSeconds(decoder.GetTimeCount());
         NowTime = TimeSpan.Zero;
 
         _ = Task.Run(() =>
@@ -309,12 +172,12 @@ public static class Media
                     if (s_cancel.IsCancellationRequested)
                         break;
                     var frame = decoder.DecodeFrame();
-                    if (frame == null || frame.Len <= 0 || s_cancel.IsCancellationRequested)
+                    if (frame == null || frame.Length <= 0 || s_cancel.IsCancellationRequested)
                     {
                         break;
                     }
 
-                    s_player?.Write(decoder.outputChannels, 16, frame.Buff, frame.Len, decoder.outputFrequency);
+                    s_player?.Write(frame);
 
                     NowTime += TimeSpan.FromMilliseconds(frame.Time);
 
@@ -333,7 +196,7 @@ public static class Media
                         }
                         else
                         {
-                            _ = PlayMp3(s_musicFile);
+                            _ = Play(s_musicFile);
                         }
                     });
                 }
@@ -344,18 +207,43 @@ public static class Media
             }
         }, s_cancel.Token);
 
-        return (true, null, decoder.GetId3());
+        return new MusicPlayRes()
+        {
+            Res = true,
+            MusicInfo = decoder.GetInfo()
+        };
     }
 
-    /// <summary>
-    /// 播放
-    /// </summary>
-    /// <param name="file"></param>
-    /// <returns></returns>
-    private static async Task<(bool, string?, Mp3Id3?)> PlayMp3(string file)
+    private static async Task<MusicPlayRes> Play(string file)
     {
         var reader = File.OpenRead(file);
-        return await PlayMp3(reader, false);
+        MediaType type = TestMediaType(reader);
+        reader.Seek(0, SeekOrigin.Begin);
+        return await Play(reader, false, type);
+    }
+
+    private static MediaType TestMediaType(Stream stream)
+    {
+        var temp = new byte[4];
+        stream.ReadExactly(temp);
+        if (temp[0] == 'R' && temp[1] == 'I' && temp[2] == 'F' && temp[3] == 'F')
+        {
+            return MediaType.Wav;
+        }
+        else if (temp[0] == 'f' && temp[1] == 'L' && temp[2] == 'a' && temp[3] == 'C')
+        {
+            return MediaType.Flac;
+        }
+        else if (temp[0] == 'I' && temp[1] == 'D' && temp[2] == '3')
+        {
+            return MediaType.Mp3;
+        }
+        else if (temp[0] == 0xFF && temp[1] == 0xE0)
+        {
+            return MediaType.Mp3;
+        }
+
+        return MediaType.Unknow;
     }
 
     /// <summary>
@@ -363,25 +251,25 @@ public static class Media
     /// </summary>
     /// <param name="url"></param>
     /// <returns></returns>
-    private static async Task<(bool, string?, Mp3Id3?)> PlayUrl(string url)
+    private static async Task<MusicPlayRes> PlayUrl(string url)
     {
-        try
+        Stream stream;
+        var res = await CoreHttpClient.DownloadClient.GetAsync(url);
+        if (res.StatusCode == HttpStatusCode.Redirect)
         {
-            var res = await Core.Net.CoreHttpClient.DownloadClient.GetAsync(url);
-            if (res.StatusCode == HttpStatusCode.Redirect)
-            {
-                var url1 = res.Headers.Location;
-                res = await Core.Net.CoreHttpClient.DownloadClient.GetAsync(url1);
-                return await PlayMp3(res.Content.ReadAsStream(), true);
-            }
+            var url1 = res.Headers.Location;
+            res = await CoreHttpClient.DownloadClient.GetAsync(url1);
+            stream = new BufferedStream(res.Content.ReadAsStream());
+        }
+        else
+        {
+            stream = new BufferedStream(res.Content.ReadAsStream());
+        }
 
-            return await PlayMp3(res.Content.ReadAsStream(), true);
-        }
-        catch (Exception e)
-        {
-            Logs.Error(App.Lang("MediaPlayer.Error2"), e);
-            return (false, App.Lang("MediaPlayer.Error5"), null);
-        }
+        MediaType type = TestMediaType(stream);
+        stream.Seek(0, SeekOrigin.Begin);
+
+        return await Play(res.Content.ReadAsStream(), true, type);
     }
 
     /// <summary>
@@ -390,41 +278,49 @@ public static class Media
     /// <param name="file">文件或者网址</param>
     /// <param name="value">是否渐变大声</param>
     /// <param name="value1">最大音量 0-100</param>
-    public static async Task<(bool, string?, Mp3Id3?)> PlayMusic(string file, bool value, int value1)
+    public static async Task<MusicPlayRes> PlayMusic(string file, bool value, int value1)
     {
         if (s_player == null)
         {
-            return (false, App.Lang("MediaPlayer.Error4"), null);
+            return new MusicPlayRes()
+            {
+                Message = App.Lang("MediaPlayer.Error4")
+            };
         }
 
-        (bool, string?, Mp3Id3?) res = (false, Path.GetFileName(file), null);
+        var file1 = Path.GetFileName(file);
+        var res = new MusicPlayRes();
 
         s_musicFile = file;
 
         bool play = false;
         Volume = 0;
 
-        if (file.StartsWith("http://") || file.StartsWith("https://"))
+        try
         {
-            await PlayUrl(file);
-            play = true;
-        }
-        else
-        {
-            file = Path.GetFullPath(file);
-            if (File.Exists(file))
+            if (file.StartsWith("http://") || file.StartsWith("https://"))
             {
-                if (file.EndsWith(".mp3"))
+                await PlayUrl(file);
+                play = true;
+            }
+            else
+            {
+                file = Path.GetFullPath(file);
+                if (File.Exists(file))
                 {
-                    res = await PlayMp3(file);
-                    play = true;
-                }
-                else if (file.EndsWith(".wav"))
-                {
-                    await PlayWAV(file);
-                    play = true;
+                    res = await Play(file);
+                    if (res.Res)
+                    {
+                        play = true;
+                    }
                 }
             }
+        }
+        catch (Exception e)
+        {
+            string text = App.Lang("MediaPlayer.Error2");
+            Logs.Error(text, e);
+            res.Message = text;
         }
         if (play)
         {
@@ -443,6 +339,11 @@ public static class Media
             {
                 Volume = (float)value1 / 100;
             }
+        }
+
+        if (res.Res)
+        {
+            res.Message = file1;
         }
 
         return res;

@@ -3,30 +3,19 @@ using System.IO;
 
 namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
-public sealed class BitStream : IDisposable
+public class BitStream : IDisposable
 {
     /// <summary>
     /// Maximum size of the frame buffer.
     /// </summary>
-    public const int BUFFER_INT_SIZE = 433;
-    /// <summary>
-    /// Synchronization control constant for the initial
-    /// synchronization to the start of a frame.
-    /// </summary>
-    public const byte INITIAL_SYNC = 0;
+    public const int BufferSize = 433;
 
     // max. 1730 bytes per frame: 144 * 384kbit/s / 32000 Hz + 2 Bytes CRC
 
     /// <summary>
-    /// Synchronization control constant for non-initial frame
-    /// synchronizations.
-    /// </summary>
-    public const byte STRICT_SYNC = 1;
-
-    /// <summary>
     /// The frame buffer that holds the data for the current frame.
     /// </summary>
-    private readonly int[] _framebuffer = new int[BUFFER_INT_SIZE];
+    private readonly int[] _framebuffer = new int[BufferSize];
 
     private readonly int[] _bitmask =
     [
@@ -37,15 +26,14 @@ public sealed class BitStream : IDisposable
         0x00001FFF, 0x00003FFF, 0x00007FFF, 0x0000FFFF,
         0x0001FFFF
     ];
-    private readonly Header _header = new();
+
+    private readonly Mp3Header _header = new();
     private readonly byte[] _syncbuf = new byte[4];
     /// <summary>
     /// The bytes read from the stream.
     /// </summary>
-    private readonly byte[] _frame_bytes = new byte[BUFFER_INT_SIZE * 4];
+    private readonly byte[] _frame_bytes = new byte[BufferSize * 4];
     private readonly Crc16[] _crc = new Crc16[1];
-    //private int 			current_frame_number;
-    //private int				last_frame_number;
     private long _local = 0;
     /// <summary>
     /// Number of valid bytes in the frame buffer.
@@ -110,7 +98,7 @@ public sealed class BitStream : IDisposable
     /// Parse ID3v2 tag header to find out size of ID3v2 frames.
     /// </summary>
     /// <param name="input">MP3 InputStream</param>
-    /// <returns>size of ID3v2 frames + header</returns>
+    /// <returns>have header</returns>
     private static bool ReadID3v2Header(Stream input)
     {
         byte[] id3header = new byte[3];
@@ -136,34 +124,19 @@ public sealed class BitStream : IDisposable
     /// </summary>
     /// <returns>the Header describing details of the frame read, 
     /// or null if the end of the stream has been reached.</returns>
-    public Header? ReadFrame()
+    public Mp3Header? ReadFrame()
     {
-        Header? result = null;
-        try
+        var result = ReadNextFrame();
+        if (result == null)
         {
+            CloseFrame();
             result = ReadNextFrame();
-            // E.B, Parse VBR (if any) first frame.
-            if (_firstframe)
-            {
-                result.ParseVBR(_frame_bytes);
-                _firstframe = false;
-            }
         }
-        catch (BitStreamException ex)
+        // E.B, Parse VBR (if any) first frame.
+        if (_firstframe && result != null)
         {
-            if (ex.GetErrorCode() == BitStreamErrors.INVALIDFRAME)
-            {
-                // Try to skip this frame.
-                try
-                {
-                    CloseFrame();
-                    result = ReadNextFrame();
-                }
-                catch
-                {
-
-                }
-            }
+            result.ParseVBR(_frame_bytes);
+            _firstframe = false;
         }
         return result;
     }
@@ -172,22 +145,16 @@ public sealed class BitStream : IDisposable
     /// Read next MP3 frame.
     /// </summary>
     /// <returns>MP3 frame header.</returns>
-    private Header ReadNextFrame()
+    private Mp3Header? ReadNextFrame()
     {
         if (_framesize == -1)
         {
-            NextFrame();
+            if (!_header.ReadHeader(this, _crc))
+            {
+                return null;
+            }
         }
         return _header;
-    }
-
-    /// <summary>
-    /// Read next MP3 frame.
-    /// </summary>
-    private void NextFrame()
-    {
-        // entire frame is read by the header class.
-        _header.ReadHeader(this, _crc);
     }
 
     /// <summary>
@@ -218,7 +185,7 @@ public sealed class BitStream : IDisposable
     /// </summary>
     /// <param name="syncmode"></param>
     /// <returns></returns>
-    public bool IsSyncCurrentPosition(int syncmode)
+    public bool IsSyncCurrentPosition(SyncMode syncmode)
     {
         int read = ReadBytes(_syncbuf, 0, 4);
         int headerstring = (int)(_syncbuf[0] << 24 & 0xFF000000) | _syncbuf[1] << 16 & 0x00FF0000 | _syncbuf[2] << 8 & 0x0000FF00 | _syncbuf[3] & 0x000000FF;
@@ -249,7 +216,7 @@ public sealed class BitStream : IDisposable
     /// <param name="syncmode"></param>
     /// <returns></returns>
     /// <exception cref="BitStreamException"></exception>
-    public int SyncHeader(byte syncmode)
+    public int SyncHeader(SyncMode syncmode)
     {
         bool sync;
         int headerstring;
@@ -257,7 +224,9 @@ public sealed class BitStream : IDisposable
         int bytesRead = ReadBytes(_syncbuf, 0, 3);
 
         if (bytesRead != 3)
-            throw new BitStreamException(BitStreamErrors.STREAM_EOF, null);
+        {
+            return -1;
+        }
 
         headerstring = _syncbuf[0] << 16 & 0x00FF0000 | _syncbuf[1] << 8 & 0x0000FF00 | _syncbuf[2] & 0x000000FF;
 
@@ -266,7 +235,9 @@ public sealed class BitStream : IDisposable
             headerstring <<= 8;
 
             if (ReadBytes(_syncbuf, 3, 1) != 1)
-                throw new BitStreamException(BitStreamErrors.STREAM_EOF, null);
+            {
+                return -1;
+            }
 
             headerstring |= _syncbuf[3] & 0x000000FF;
 
@@ -277,11 +248,11 @@ public sealed class BitStream : IDisposable
         return headerstring;
     }
 
-    public bool IsSyncMark(int headerstring, int syncmode, int word)
+    public bool IsSyncMark(int headerstring, SyncMode syncmode, int word)
     {
         bool sync;
 
-        if (syncmode == INITIAL_SYNC)
+        if (syncmode == SyncMode.Initial)
         {
             sync = (headerstring & 0xFFE00000) == 0xFFE00000;    // SZD: MPEG 2.5
         }
@@ -414,7 +385,7 @@ public sealed class BitStream : IDisposable
         {
             if (_local >= _stream.Length)
             {
-                return 0;
+                return -1;
             }
             int bytesread = _stream.Read(b, offs, len);
             _local += bytesread;

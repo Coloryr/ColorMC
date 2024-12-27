@@ -1,20 +1,20 @@
 ﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
-public sealed class BitReserve
+public class BitReserve
 {
     /// <summary>
     /// Size of the internal buffer to store the reserved bits.
     /// Must be a power of 2. And x8, as each bit is stored as a single entry.
     /// </summary>
-    private const int s_bufsize = 4096 * 8;
+    public const int BufSize = 4096 * 8;
 
     /// <summary>
     /// Mask that can be used to quickly implement the
     /// modulus operation on BUFSIZE.
     /// </summary>
-    private const int _bufsize_mask = s_bufsize - 1;
+    private const int _bufSizeMask = BufSize - 1;
 
-    private readonly int[] _buf = new int[s_bufsize];
+    private readonly int[] _buf = new int[BufSize];
     private int _offset, _bufByteIdx;
 
     public int Hsstell { get; private set; }
@@ -24,14 +24,14 @@ public sealed class BitReserve
     /// </summary>
     /// <param name="n">the number of</param>
     /// <returns></returns>
-    public int Hgetbits(int n)
+    public int Getbits(int n)
     {
         Hsstell += n;
 
         int val = 0;
 
         int pos = _bufByteIdx;
-        if (pos + n < s_bufsize)
+        if (pos + n < BufSize)
         {
             while (n-- > 0)
             {
@@ -45,7 +45,7 @@ public sealed class BitReserve
             {
                 val <<= 1;
                 val |= _buf[pos] != 0 ? 1 : 0;
-                pos = pos + 1 & _bufsize_mask;
+                pos = pos + 1 & _bufSizeMask;
             }
         }
         _bufByteIdx = pos;
@@ -56,11 +56,11 @@ public sealed class BitReserve
     /// Returns next bit from reserve.
     /// </summary>
     /// <returns>0 if next bit is reset, or 1 if next bit is set.</returns>
-    public int Hget1bit()
+    public int Get1bit()
     {
         Hsstell++;
         int val = _buf[_bufByteIdx];
-        _bufByteIdx = _bufByteIdx + 1 & _bufsize_mask;
+        _bufByteIdx = _bufByteIdx + 1 & _bufSizeMask;
         return val;
     }
 
@@ -68,7 +68,7 @@ public sealed class BitReserve
     /// Write 8 bits into the bit stream.
     /// </summary>
     /// <param name="val"></param>
-    public void Hputbuf(int val)
+    public void Putbuf(int val)
     {
         int ofs = _offset;
         _buf[ofs++] = val & 0x80;
@@ -80,11 +80,10 @@ public sealed class BitReserve
         _buf[ofs++] = val & 0x02;
         _buf[ofs++] = val & 0x01;
 
-        if (ofs == s_bufsize)
+        if (ofs == BufSize)
             _offset = 0;
         else
             _offset = ofs;
-
     }
 
     /// <summary>
@@ -96,7 +95,9 @@ public sealed class BitReserve
         Hsstell -= n;
         _bufByteIdx -= n;
         if (_bufByteIdx < 0)
-            _bufByteIdx += s_bufsize;
+        {
+            _bufByteIdx += BufSize;
+        }
     }
 
     /// <summary>
@@ -109,6 +110,8 @@ public sealed class BitReserve
         Hsstell -= bits;
         _bufByteIdx -= bits;
         if (_bufByteIdx < 0)
-            _bufByteIdx += s_bufsize;
+        {
+            _bufByteIdx += BufSize;
+        }
     }
 }

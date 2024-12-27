@@ -177,16 +177,16 @@ public partial class MainModel : TopModel, IMainTop
         }
 
         var res = await BaseBinding.LoadMusic();
-        if (!res.Item1)
+        if (!res.Res)
         {
-            if (!string.IsNullOrWhiteSpace(res.Item2))
+            if (!string.IsNullOrWhiteSpace(res.Message))
             {
-                Model.Show(res.Item2);
+                Model.Show(res.Message);
             }
         }
         else
         {
-            SetId3(res.Item2, res.Item3);
+            SetMusicInfo(res.Message, res.MusicInfo);
         }
     }
 

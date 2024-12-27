@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using ColorMC.Gui.MusicPlayer.Decoder;
 using Silk.NET.SDL;
 using Thread = System.Threading.Thread;
 
-namespace ColorMC.Gui.MusicPlayer;
+namespace ColorMC.Gui.MusicPlayer.Players;
 
 /// <summary>
 /// SDL输出
@@ -14,11 +15,10 @@ public class SdlPlayer : IPlayer
     private readonly AudioSpec audioSpec;
     private readonly Sdl _sdl;
     private readonly bool deviceOpen;
-    private unsafe AudioCVT cvt;
+    private AudioCVT cvt;
 
     private int _lastChannel;
     private int _lastFreq;
-    private int _lastBps;
     private int _lastLen;
 
     private int _tickCount;
@@ -33,10 +33,9 @@ public class SdlPlayer : IPlayer
             AudioSpec spec1;
             var spec = new AudioSpec()
             {
-                Format = Sdl.AudioS16Sys,
-                Freq = 48000,
                 Channels = 2,
-                Samples = 1024
+                Freq = 192000,
+                Format = Sdl.AudioF32Sys
             };
 
             _deviceId = _sdl.OpenAudioDevice((byte*)0, 0, &spec, &spec1, (int)Sdl.AudioAllowAnyChange);
@@ -87,30 +86,14 @@ public class SdlPlayer : IPlayer
     }
 
 
-    private void AudioMakeCov(int chn, int freq, int bps)
+    private void AudioMakeCov(int chn, int freq)
     {
-        if (_lastChannel == chn && _lastFreq == freq && _lastBps == bps)
+        if (_lastChannel == chn && _lastFreq == freq)
         {
             return;
         }
 
-        ushort in_format;
-        if (bps == 1)
-        {
-            in_format = Sdl.AudioU8;
-        }
-        else if (bps == 2)
-        {
-            in_format = Sdl.AudioS16Sys;
-        }
-        else if (bps == 4)
-        {
-            in_format = Sdl.AudioS32Sys;
-        }
-        else
-        {
-            throw new Exception("bps is Unsupported format");
-        }
+        ushort in_format = Sdl.AudioF32Sys;
 
         unsafe
         {
@@ -128,7 +111,6 @@ public class SdlPlayer : IPlayer
             }
             _lastChannel = chn;
             _lastFreq = freq;
-            _lastBps = bps;
         }
 
         int bps1 = 0;
@@ -154,7 +136,7 @@ public class SdlPlayer : IPlayer
         _tickCount = (int)(audioSpec.Freq * 0.01 * audioSpec.Channels * bps1);
     }
 
-    private byte[] AudioCov(byte[] input, int length)
+    private byte[] AudioCov(float[] input, int length)
     {
         unsafe
         {
@@ -165,12 +147,12 @@ public class SdlPlayer : IPlayer
                     _sdl.Free(cvt.Buf);
                 }
 
-                cvt.Buf = (byte*)_sdl.Malloc((nuint)(length * cvt.LenMult));
+                cvt.Buf = (byte*)_sdl.Malloc((nuint)(length * cvt.LenMult * sizeof(float)));
                 _lastLen = length;
             }
 
             Marshal.Copy(input, 0, new nint(cvt.Buf), length);
-            cvt.Len = length;
+            cvt.Len = length * sizeof(float);
 
             fixed (AudioCVT* ptr = &cvt)
             {
@@ -192,10 +174,10 @@ public class SdlPlayer : IPlayer
         }
     }
 
-    public void Write(int numChannels, int bitsPerSample, byte[] buff, int length, int sampleRate)
+    public void Write(SoundPack pack)
     {
-        AudioMakeCov(numChannels, sampleRate, bitsPerSample / 8);
-        var data = AudioCov(buff, length);
+        AudioMakeCov(pack.Channel, pack.SampleRate);
+        var data = AudioCov(pack.Buff, pack.Length);
 
         _sdl.QueueAudio<byte>(_deviceId, data, (uint)data.Length);
 

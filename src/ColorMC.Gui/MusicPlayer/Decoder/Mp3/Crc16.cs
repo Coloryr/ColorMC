@@ -1,20 +1,14 @@
 ﻿namespace ColorMC.Gui.MusicPlayer.Decoder.Mp3;
 
-public sealed class Crc16
+public class Crc16
 {
-    private ushort _crc;
+    private ushort _crc = 0xFFFF;
 
-    /**
-     * Dummy Constructor
-     */
-    public Crc16()
-    {
-        _crc = 0xFFFF;
-    }
-
-    /**
-     * Feed a bitstring to the crc calculation (0 < length <= 32).
-     */
+    /// <summary>
+    /// Feed a bitstring to the crc calculation.
+    /// </summary>
+    /// <param name="bitstring"></param>
+    /// <param name="length">(0 < length <= 32)</param>
     public void AddBits(int bitstring, int length)
     {
         int bitmask = 1 << length - 1;
@@ -30,10 +24,11 @@ public sealed class Crc16
         while ((bitmask >>>= 1) != 0);
     }
 
-    /**
-     * Return the calculated checksum.
-     * Erase it for next calls to add_bits().
-     */
+    /// <summary>
+    /// Return the calculated checksum.
+    /// Erase it for next calls to add_bits().
+    /// </summary>
+    /// <returns></returns>
     public ushort Checksum()
     {
         ushort sum = _crc;

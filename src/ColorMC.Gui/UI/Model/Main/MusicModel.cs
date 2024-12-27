@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using Avalonia.Media.Imaging;
-using ColorMC.Gui.MusicPlayer.Decoder.Mp3;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -55,20 +55,20 @@ public partial class MainModel
         _isplay = !_isplay;
     }
 
-    private void SetId3(string? name, Mp3Id3? id3)
+    private void SetMusicInfo(string? name, MusicInfo? info)
     {
-        if (id3 == null)
+        if (info == null)
         {
             MusicName = name!;
         }
         else
         {
-            MusicName = id3.Title + "\n" + id3.Auther + "\n" + id3.Album;
+            MusicName = info.Title + "\n" + info.Auther + "\n" + info.Album;
             var temp = MusicImage;
-            if (id3.Image != null)
+            if (info.Image != null)
             {
                 HaveMusicImage = true;
-                using var stream = new MemoryStream(id3.Image);
+                using var stream = new MemoryStream(info.Image);
                 MusicImage = new(stream);
 
             }

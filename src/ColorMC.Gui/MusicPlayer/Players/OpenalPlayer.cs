@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.MusicPlayer.Decoder;
 using Silk.NET.OpenAL;
+using Silk.NET.OpenAL.Extensions.EXT;
 
-namespace ColorMC.Gui.MusicPlayer;
+namespace ColorMC.Gui.MusicPlayer.Players;
 
 /// <summary>
 /// OpenAl输出
@@ -11,8 +13,8 @@ namespace ColorMC.Gui.MusicPlayer;
 public class OpenALPlayer : IPlayer
 {
     private readonly uint _alSource;
-    private readonly IntPtr _device;
-    private readonly IntPtr _context;
+    private readonly unsafe Device* _device;
+    private readonly unsafe Context* _context;
     private readonly AL al;
     private readonly ALContext alc;
 
@@ -33,11 +35,19 @@ public class OpenALPlayer : IPlayer
         {
             string deviceName = alc.GetContextProperty(null, GetContextString.DeviceSpecifier);
 
-            _device = new(alc.OpenDevice(deviceName));
-            _context = new(alc.CreateContext((Device*)_device, null));
+            _device = alc.OpenDevice(deviceName);
+            _context = alc.CreateContext(_device, null);
             alc.MakeContextCurrent(_context);
 
             _alSource = al.GenSource();
+
+            // 检查是否支持 AL_EXT_FLOAT32 扩展
+            if (!al.IsExtensionPresent("AL_EXT_FLOAT32"))
+            {
+                alc.DestroyContext(_context);
+                alc.CloseDevice(_device);
+                throw new Exception("AL_EXT_FLOAT32 extension not supported");
+            }
         }
 
         CheckALError();
@@ -50,8 +60,8 @@ public class OpenALPlayer : IPlayer
         unsafe
         {
             alc.MakeContextCurrent(null);
-            alc.DestroyContext((Context*)_context);
-            alc.CloseDevice((Device*)_device);
+            alc.DestroyContext(_context);
+            alc.CloseDevice(_device);
         }
     }
 
@@ -92,31 +102,17 @@ public class OpenALPlayer : IPlayer
         }
     }
 
-    public void Write(int numChannels, int bitsPerSample, byte[] buff, int length, int sampleRate)
+    public void Write(SoundPack pack)
     {
-        BufferFormat format;
+        FloatBufferFormat format;
 
-        if (numChannels == 1)
+        if (pack.Channel == 1)
         {
-            if (bitsPerSample == 8)
-                format = BufferFormat.Mono8;
-            else if (bitsPerSample == 16)
-                format = BufferFormat.Mono16;
-            else
-            {
-                return;
-            }
+            format = FloatBufferFormat.Mono;
         }
-        else if (numChannels == 2)
+        else if (pack.Channel == 2)
         {
-            if (bitsPerSample == 8)
-                format = BufferFormat.Stereo8;
-            else if (bitsPerSample == 16)
-                format = BufferFormat.Stereo16;
-            else
-            {
-                return;
-            }
+            format = FloatBufferFormat.Stereo;
         }
         else
         {
@@ -126,9 +122,9 @@ public class OpenALPlayer : IPlayer
         unsafe
         {
             var alBuffer = al.GenBuffer();
-            fixed (void* ptr = buff)
+            fixed (void* ptr = pack.Buff)
             {
-                al.BufferData(alBuffer, format, ptr, length, sampleRate);
+                al.BufferData(alBuffer, format, ptr, pack.Length * 4, pack.SampleRate);
             }
             al.SourceQueueBuffers(_alSource, 1, &alBuffer);
             al.GetSourceProperty(_alSource, GetSourceInteger.SourceState, out int state);
