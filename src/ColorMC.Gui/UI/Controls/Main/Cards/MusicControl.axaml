@@ -22,11 +22,14 @@
                 IsVisible="{Binding HaveMusicImage}" />
             <StackPanel Margin="15" IsVisible="{Binding !HaveMusicImage}">
                 <DockPanel Margin="0,0,0,5">
+                    <DockPanel.Styles>
+                        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                            <Setter Property="Background" Value="Transparent" />
+                        </Style>
+                    </DockPanel.Styles>
                     <Button
                         Width="30"
                         Height="30"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
                         Background="Transparent"
                         BorderThickness="0"
                         Command="{Binding MusicPause}"
@@ -64,6 +67,11 @@
             </StackPanel>
             <StackPanel Margin="15" IsVisible="{Binding HaveMusicImage}">
                 <DockPanel Margin="0,0,0,5">
+                    <DockPanel.Styles>
+                        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                            <Setter Property="Background" Value="Transparent" />
+                        </Style>
+                    </DockPanel.Styles>
                     <Button
                         Width="30"
                         Height="30"

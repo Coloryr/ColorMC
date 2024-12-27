@@ -192,9 +192,13 @@ public partial class SettingModel
     }
 
     [RelayCommand]
-    public void MusicStart()
+    public async Task MusicStart()
     {
-        _ = BaseBinding.MusicStart();
+        if (string.IsNullOrWhiteSpace(Music))
+        {
+            return;
+        }
+        await BaseBinding.MusicStart(Music!, Loop, SlowVolume, Volume);
     }
 
     [RelayCommand]

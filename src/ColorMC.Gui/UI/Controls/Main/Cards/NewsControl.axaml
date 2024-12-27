@@ -35,7 +35,7 @@
                         HorizontalAlignment="Right"
                         Background="Transparent"
                         BorderThickness="0"
-                        Command="{Binding LoadNews}"
+                        Command="{Binding GetNews}"
                         CornerRadius="5"
                         IsVisible="{Binding !IsLoadNews}">
                         <svg:SvgControl Fill="White" Path="/Resource/Icon/reload.svg" />

@@ -90,7 +90,8 @@ public class FlacFile : IDecoder
             Length = sampleLen,
             Buff = samples,
             Channel = meta.NumChannels,
-            SampleRate = meta.SampleRate
+            SampleRate = meta.SampleRate,
+            Time = (float)meta.BlockSize / meta.SampleRate
         };
     }
 
@@ -143,15 +144,18 @@ public class FlacFile : IDecoder
         }
         var vorbisCommen = VorbisCommen;
         var info = new MusicInfo();
-        if (vorbisCommen.Vorbis.TryGetValue("Title", out var temp1))
+        if (vorbisCommen.Vorbis.TryGetValue("Title", out var temp1)
+            || vorbisCommen.Vorbis.TryGetValue("TITLE", out temp1))
         {
             info.Title = temp1;
         }
-        if (vorbisCommen.Vorbis.TryGetValue("Artist", out temp1))
+        if (vorbisCommen.Vorbis.TryGetValue("Artist", out temp1)
+            || vorbisCommen.Vorbis.TryGetValue("ARTIST", out temp1))
         {
             info.Auther = temp1;
         }
-        if (vorbisCommen.Vorbis.TryGetValue("Album", out temp1))
+        if (vorbisCommen.Vorbis.TryGetValue("Album", out temp1)
+            || vorbisCommen.Vorbis.TryGetValue("ALBUM", out temp1))
         {
             info.Album = temp1;
         }

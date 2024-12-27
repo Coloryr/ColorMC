@@ -81,14 +81,14 @@ public static class GameManager
     /// 强制停止游戏实例
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static void StopGame(GameSettingObj obj)
+    public static void KillGame(GameSettingObj obj)
     {
         ColorMCCore.KillGame(obj.UUID);
     }
 
-    public static void StartGame(GameSettingObj obj)
+    public static void StartGame(string uuid)
     {
-        RunGames.Add(obj.UUID);
+        RunGames.Add(uuid);
     }
 
     public static void ClearGameLog(string uuid)

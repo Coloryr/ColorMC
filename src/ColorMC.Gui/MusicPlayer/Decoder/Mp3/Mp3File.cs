@@ -62,7 +62,7 @@ public class Mp3File : IDecoder
         {
             Buff = _output.Buffer,
             Length = _output.GetBufferLength(),
-            Time = header.GetMsPerFrame(),
+            Time = header.GetSecPerFrame(),
             SampleRate = OutputFrequency,
             Channel = OutputChannels
         };
@@ -76,7 +76,7 @@ public class Mp3File : IDecoder
         var frame = _bitstream.ReadFrame();
         while (frame != null)
         {
-            duration += frame.GetMsPerFrame();
+            duration += frame.GetSecPerFrame();
             _bitstream.CloseFrame();
             frame = _bitstream.ReadFrame();
         }

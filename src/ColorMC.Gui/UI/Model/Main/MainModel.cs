@@ -158,13 +158,13 @@ public partial class MainModel : TopModel, IMainTop
         }
     }
 
-    public async void LoadDone()
+    public void LoadDone()
     {
         LoadGameItem();
         LoadUser();
-
         LoadMotd();
-        _ = LoadNews();
+        LoadNews();
+        LoadMusic();
 
         var config = GuiConfigUtils.Config;
         if (config.Live2D?.LowFps == true)
@@ -174,19 +174,6 @@ public partial class MainModel : TopModel, IMainTop
         if (config?.CheckUpdate == true)
         {
             CheckUpdate();
-        }
-
-        var res = await BaseBinding.LoadMusic();
-        if (!res.Res)
-        {
-            if (!string.IsNullOrWhiteSpace(res.Message))
-            {
-                Model.Show(res.Message);
-            }
-        }
-        else
-        {
-            SetMusicInfo(res.Message, res.MusicInfo);
         }
     }
 

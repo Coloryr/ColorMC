@@ -34,7 +34,7 @@ public class SdlPlayer : IPlayer
             var spec = new AudioSpec()
             {
                 Channels = 2,
-                Freq = 192000,
+                Freq = 48000,
                 Format = Sdl.AudioF32Sys
             };
 
@@ -133,7 +133,7 @@ public class SdlPlayer : IPlayer
                 break;
         }
 
-        _tickCount = (int)(audioSpec.Freq * 0.01 * audioSpec.Channels * bps1);
+        _tickCount = (int)(audioSpec.Freq * 0.1 * audioSpec.Channels * bps1);
     }
 
     private byte[] AudioCov(float[] input, int length)
@@ -184,7 +184,7 @@ public class SdlPlayer : IPlayer
         uint size = _sdl.GetQueuedAudioSize(_deviceId);
         while (size > _tickCount)
         {
-            Thread.Sleep(5);
+            Thread.Sleep(1);
             size = _sdl.GetQueuedAudioSize(_deviceId);
         }
     }

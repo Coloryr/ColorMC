@@ -86,7 +86,7 @@ public class MainFlyout
                     }),
                     new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text13"), run, ()=>
                     {
-                        GameManager.StopGame(obj.Obj);
+                        GameManager.KillGame(obj.Obj);
                     })
                 ]
             },

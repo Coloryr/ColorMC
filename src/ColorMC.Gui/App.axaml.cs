@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform;
@@ -169,7 +170,7 @@ public partial class App : Application
     public static void Hide()
     {
         IsHide = true;
-        Media.Stop();
+        Media.PlayState = PlayState.Stop;
         WindowManager.Hide();
     }
 

@@ -669,10 +669,10 @@ public static class TestItem
 
         Media.Init();
         //16
-        //Media.PlayMusic("F:\\music\\9-tie\\Naked Blue - 9-tie.flac", false, 100);
+        Media.PlayMusic("F:\\music\\Famishin\\リフレイン ~Piano Version~ - Famishin.flac", false, 100);
 
         //24
-        Media.PlayMusic("F:\\music\\777☆SISTERS\\Departures -あしたの歌- - 777☆SISTERS.flac", false ,100);
+        //Media.PlayMusic("F:\\music\\777☆SISTERS\\Departures -あしたの歌- - 777☆SISTERS.flac", false ,100);
     }
 
     public static void Item40()

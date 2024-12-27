@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Animation;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -57,8 +58,48 @@ public static class Media
     /// </summary>
     public static bool Loop { get; set; }
 
+    private static PlayState _playState;
+
+    public static PlayState PlayState 
+    {
+        get
+        {
+            return _playState;
+        } 
+        set
+        {
+            if (_playState == value)
+            {
+                return;
+            }
+            _playState = value;
+            if (_playState == PlayState.Run)
+            {
+                s_player?.Play();
+            }
+            else if (_playState == PlayState.Pause)
+            {
+                s_player?.Pause();
+            }
+            else if (_playState == PlayState.Stop)
+            {
+                s_cancel.Cancel();
+                s_player?.Stop();
+            }
+        }
+    }
+
     public static TimeSpan NowTime { get; private set; } = TimeSpan.Zero;
     public static TimeSpan MusicTime { get; private set; } = TimeSpan.Zero;
+
+    private static readonly Thread s_thread = new(Run)
+    { 
+        Name = "ColorMC Music"
+    };
+    private static readonly Semaphore s_semaphore = new(0, 2);
+    private static IDecoder decoder;
+    private static bool s_isClose;
+    private static bool s_isUrl;
 
     /// <summary>
     /// 初始化播放器
@@ -82,6 +123,8 @@ public static class Media
         }
 
         App.OnClose += Close;
+
+        s_thread.Start();
     }
 
     /// <summary>
@@ -89,7 +132,8 @@ public static class Media
     /// </summary>
     public static async void Close()
     {
-        Stop();
+        s_isClose = true;
+        PlayState = PlayState.Stop;
 
         await Task.Run(() =>
         {
@@ -102,35 +146,62 @@ public static class Media
         s_player?.Close();
     }
 
-    /// <summary>
-    /// 暂停
-    /// </summary>
-    public static void Pause()
+    private static void Run()
     {
-        s_player?.Pause();
+        while (!s_isClose)
+        {
+            s_semaphore.WaitOne();
+            try
+            {
+                Decoding = true;
+                int count = 0;
+                PlayState = PlayState.Run;
+                while (true)
+                {
+                    if (s_cancel.IsCancellationRequested)
+                        break;
+                    var frame = decoder.DecodeFrame();
+                    if (frame == null || frame.Length <= 0 || s_cancel.IsCancellationRequested)
+                    {
+                        break;
+                    }
+
+                    s_player?.Write(frame);
+
+                    NowTime += TimeSpan.FromSeconds(frame.Time);
+
+                    count++;
+                }
+                s_player?.WaitDone();
+                PlayState = PlayState.Stop;
+                decoder.Dispose();
+                Decoding = false;
+                if (Loop)
+                {
+                    Task.Run(() =>
+                    {
+                        if (s_isUrl)
+                        {
+                            _ = PlayUrl(s_musicFile);
+                        }
+                        else
+                        {
+                            _ = Play(s_musicFile);
+                        }
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                PlayState = PlayState.Stop;
+                Logs.Error(App.Lang("MediaPlayer.Error1"), e);
+            }
+        }
     }
 
-    /// <summary>
-    /// 播放
-    /// </summary>
-    public static void Play()
+    private static async Task<MusicPlayRes> Play(Stream stream, MediaType type)
     {
-        s_player?.Play();
-    }
-
-    /// <summary>
-    /// 停止
-    /// </summary>
-    public static void Stop()
-    {
-        s_cancel.Cancel();
-
-        s_player?.Stop();
-    }
-
-    private static async Task<MusicPlayRes> Play(Stream stream, bool isurl, MediaType type)
-    {
-        Stop();
+        PlayState = PlayState.Stop;
 
         await Task.Run(() =>
         {
@@ -142,7 +213,7 @@ public static class Media
 
         s_cancel = new();
 
-        IDecoder decoder = type switch
+        decoder = type switch
         {
             MediaType.Wav => new WavFile(stream),
             MediaType.Mp3 => new Mp3File(stream),
@@ -160,52 +231,7 @@ public static class Media
         MusicTime = TimeSpan.FromSeconds(decoder.GetTimeCount());
         NowTime = TimeSpan.Zero;
 
-        _ = Task.Run(() =>
-        {
-            try
-            {
-                Decoding = true;
-                int count = 0;
-                Play();
-                while (true)
-                {
-                    if (s_cancel.IsCancellationRequested)
-                        break;
-                    var frame = decoder.DecodeFrame();
-                    if (frame == null || frame.Length <= 0 || s_cancel.IsCancellationRequested)
-                    {
-                        break;
-                    }
-
-                    s_player?.Write(frame);
-
-                    NowTime += TimeSpan.FromMilliseconds(frame.Time);
-
-                    count++;
-                }
-                decoder.Dispose();
-                Decoding = false;
-                if (Loop)
-                {
-                    s_player?.WaitDone();
-                    Task.Run(() =>
-                    {
-                        if (isurl)
-                        {
-                            _ = PlayUrl(s_musicFile);
-                        }
-                        else
-                        {
-                            _ = Play(s_musicFile);
-                        }
-                    });
-                }
-            }
-            catch (Exception e)
-            {
-                Logs.Error(App.Lang("MediaPlayer.Error1"), e);
-            }
-        }, s_cancel.Token);
+        s_semaphore.Release();
 
         return new MusicPlayRes()
         {
@@ -219,7 +245,8 @@ public static class Media
         var reader = File.OpenRead(file);
         MediaType type = TestMediaType(reader);
         reader.Seek(0, SeekOrigin.Begin);
-        return await Play(reader, false, type);
+        s_isUrl = false;
+        return await Play(reader, type);
     }
 
     private static MediaType TestMediaType(Stream stream)
@@ -268,8 +295,8 @@ public static class Media
 
         MediaType type = TestMediaType(stream);
         stream.Seek(0, SeekOrigin.Begin);
-
-        return await Play(res.Content.ReadAsStream(), true, type);
+        s_isUrl = true;
+        return await Play(res.Content.ReadAsStream(), type);
     }
 
     /// <summary>

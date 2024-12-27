@@ -343,10 +343,10 @@ public class Mp3Header
     }
 
     /// <summary>
-    /// Returns ms/frame.
+    /// Returns s/frame.
     /// </summary>
     /// <returns></returns>
-    public float GetMsPerFrame()
+    public float GetSecPerFrame()
     {
         if (Vbr)
         {
@@ -356,7 +356,7 @@ public class Mp3Header
         }
         else
         {
-            return MsPerFrameTable[(int)Layer - 1, (int)SampleFrequency];
+            return MsPerFrameTable[(int)Layer - 1, (int)SampleFrequency] * 1000;
         }
     }
 
@@ -368,7 +368,7 @@ public class Mp3Header
     {
         if (Vbr)
         {
-            return (int)(_vbrBytes * 8 / (GetMsPerFrame() * _vbrFrames)) * 1000;
+            return (int)(_vbrBytes * 8 / (GetSecPerFrame() * _vbrFrames)) * 1000;
         }
         else
         {

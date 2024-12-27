@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
@@ -325,15 +326,15 @@ public static class GameBinding
     /// 启动多个实例
     /// </summary>
     /// <param name="model"></param>
-    /// <param name="obj"></param>
+    /// <param name="objs"></param>
     /// <returns></returns>
-    public static async Task<GameLaunchListRes> Launch(BaseModel model, ICollection<GameSettingObj> obj)
+    public static async Task<GameLaunchListRes> Launch(BaseModel model, ICollection<GameSettingObj> objs)
     {
         if (SystemInfo.Os == OsType.Android)
         {
             return new();
         }
-        var list = obj.Where(item => !GameManager.IsGameRun(item))
+        var list = objs.Where(item => !GameManager.IsGameRun(item))
             .ToList();
 
         if (list.Count == 0)
@@ -352,15 +353,15 @@ public static class GameBinding
 
         s_launchCancel = new();
 
-        foreach (var item in list)
-        {
-            GameManager.ClearGameLog(item.UUID);
-        }
-
         var port = LaunchSocketUtils.Port;
 
         //锁定账户
         UserBinding.AddLockUser(user);
+        foreach (var item in list)
+        {
+            GameManager.ClearGameLog(item.UUID);
+            GameManager.StartGame(item.UUID);
+        }
 
         var state1 = LaunchState.End;
         var arg = MakeArg(user, model, port);
@@ -381,7 +382,7 @@ public static class GameBinding
 
         var res1 = await Task.Run(async () =>
         {
-            return await obj.StartGameAsync(arg, s_launchCancel.Token);
+            return await objs.StartGameAsync(arg, s_launchCancel.Token);
         });
 
         model.Title1 = "";
@@ -390,12 +391,16 @@ public static class GameBinding
         if (s_launchCancel.IsCancellationRequested)
         {
             UserBinding.UnLockUser(user);
+            foreach (var item in list)
+            {
+                GameManager.GameExit(item.UUID);
+            }
             return new() { User = user };
         }
 
         if (GuiConfigUtils.Config.ServerCustom.RunPause)
         {
-            Media.Pause();
+            Media.PlayState = PlayState.Pause;
         }
 
         var list1 = new Dictionary<string, LaunchState>();
@@ -409,7 +414,6 @@ public static class GameBinding
 
                 WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text2"));
 
-                GameManager.StartGame(item.Key);
                 GameCount.LaunchDone(item.Key);
                 GameStateUpdate(item.Key);
 
@@ -446,7 +450,8 @@ public static class GameBinding
                     list1.Add(item.Key.UUID, LaunchState.End);
                 }
 
-                GameCount.LaunchError(item.Key);
+                GameManager.GameExit(item.Key.UUID);
+                GameCount.LaunchError(item.Key.UUID);
             }
         }
 
@@ -504,7 +509,7 @@ public static class GameBinding
         s_launchCancel = new();
 
         GameManager.ClearGameLog(obj.UUID);
-        GameManager.StartGame(obj);
+        GameManager.StartGame(obj.UUID);
 
         var port = LaunchSocketUtils.Port;
 
@@ -566,6 +571,7 @@ public static class GameBinding
         if (s_launchCancel.IsCancellationRequested)
         {
             UserBinding.UnLockUser(user);
+            GameManager.GameExit(obj.UUID);
             return new() { Res = true };
         }
 
@@ -573,7 +579,7 @@ public static class GameBinding
         {
             if (GuiConfigUtils.Config.ServerCustom.RunPause)
             {
-                Media.Pause();
+                Media.PlayState = PlayState.Pause;
             }
 
             obj.LaunchData.LastTime = DateTime.Now;
@@ -603,7 +609,8 @@ public static class GameBinding
         }
         else
         {
-            GameCount.LaunchError(obj);
+            GameCount.LaunchError(obj.UUID);
+            GameManager.GameExit(obj.UUID);
             UserBinding.UnLockUser(user);
         }
 

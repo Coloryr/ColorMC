@@ -36,7 +36,7 @@ public static class PathBinding
     private static readonly string[] JSON = ["*.json"];
     private static readonly string[] MODPACK = ["*.zip", "*.mrpack"];
     private static readonly string[] PICFILE = ["*.png", "*.jpg", "*.bmp"];
-    private static readonly string[] AUDIO = ["*.mp3", "*.wav"];
+    private static readonly string[] AUDIO = ["*.mp3", "*.wav", "*.flac"];
     private static readonly string[] MODEL = ["*.model3.json"];
     private static readonly string[] HEADFILE = ["*.png"];
     private static readonly string[] ZIPFILE = ["*.zip"];

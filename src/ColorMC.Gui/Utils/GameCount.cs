@@ -335,13 +335,12 @@ public static class GameCount
     /// 启动失败
     /// </summary>
     /// <param name="game">游戏实例</param>
-    public static void LaunchError(GameSettingObj game)
+    public static void LaunchError(string uuid)
     {
         if (Count == null)
         {
             return;
         }
-        var uuid = game.UUID;
         lock (Count)
         {
             Count.LaunchCount++;

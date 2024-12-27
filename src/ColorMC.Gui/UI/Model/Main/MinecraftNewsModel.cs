@@ -23,7 +23,7 @@ public partial class MainModel
     private Bitmap? _newsImage;
 
     [RelayCommand]
-    public async Task LoadNews()
+    public async Task GetNews()
     {
         IsHaveNews = true;
         IsLoadNews = true;
@@ -52,6 +52,11 @@ public partial class MainModel
         {
             IsHaveNews = false;
         }
+    }
+
+    private async void LoadNews()
+    {
+        await GetNews();
     }
 
     private async Task<Bitmap?> GetImage(string url)

@@ -237,7 +237,7 @@ public partial class GameLogModel : GameModel
     [RelayCommand]
     public void Stop()
     {
-        GameManager.StopGame(Obj);
+        GameManager.KillGame(Obj);
         GameBinding.CancelLaunch();
         IsGameRun = false;
     }

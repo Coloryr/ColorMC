@@ -194,21 +194,7 @@ public partial class MainModel
         IsNotGame = GameBinding.IsNotGame;
 
         var config = GuiConfigUtils.Config.ServerCustom;
-        if (config?.PlayMusic == true)
-        {
-            Model.Title = "ColorMC " + App.Lang("MainWindow.Info33");
-            MusicDisplay = true;
-
-            DispatcherTimer.Run(() =>
-            {
-                MusicNow = BaseBinding.GetMusicNow();
-                return MusicDisplay;
-            }, TimeSpan.FromMilliseconds(500));
-        }
-        else
-        {
-            MusicDisplay = false;
-        }
+        
 
         if (config?.LockGame == true)
         {

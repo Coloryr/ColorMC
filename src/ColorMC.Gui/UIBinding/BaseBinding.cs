@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -217,34 +218,10 @@ public static class BaseBinding
     /// <summary>
     /// 播放音乐
     /// </summary>
-    public static async Task<MusicPlayRes> MusicStart()
+    public static async Task<MusicPlayRes> MusicStart(string file, bool loop, bool slow, int volume)
     {
-        var config = GuiConfigUtils.Config.ServerCustom;
-        if (config == null)
-        {
-            return new();
-        }
-        var file = config.Music;
-        if (file == null)
-        {
-            return new();
-        }
-
-        Media.Loop = config.MusicLoop;
-        return await Media.PlayMusic(file, config.SlowVolume, config.Volume);
-    }
-
-    /// <summary>
-    /// 启动后音乐播放
-    /// </summary>
-    public static async Task<MusicPlayRes> LoadMusic()
-    {
-        if (GuiConfigUtils.Config.ServerCustom.PlayMusic)
-        {
-            return await MusicStart();
-        }
-
-        return new();
+        Media.Loop = loop;
+        return await Media.PlayMusic(file, slow, volume);
     }
 
     /// <summary>
@@ -252,7 +229,7 @@ public static class BaseBinding
     /// </summary>
     public static void MusicStop()
     {
-        Media.Stop();
+        Media.PlayState = PlayState.Stop;
     }
 
     /// <summary>
@@ -260,7 +237,7 @@ public static class BaseBinding
     /// </summary>
     public static void MusicPlay()
     {
-        Media.Play();
+        Media.PlayState = PlayState.Run;
     }
 
     /// <summary>
@@ -268,7 +245,7 @@ public static class BaseBinding
     /// </summary>
     public static void MusicPause()
     {
-        Media.Pause();
+        Media.PlayState = PlayState.Pause;
     }
 
     /// <summary>
@@ -395,14 +372,19 @@ public static class BaseBinding
         return FrpLaunch.StartFrp(item1, model);
     }
 
-    public static string GetMusicNow()
+    public static (PlayState, string) GetMusicNow()
     {
-        return $"{(int)Media.NowTime.TotalMinutes:00}:{Media.NowTime.Seconds:00}" +
-            $"/{(int)Media.MusicTime.TotalMinutes:00}:{Media.MusicTime.Seconds:00}";
+        return (Media.PlayState, $"{(int)Media.NowTime.TotalMinutes:00}:{Media.NowTime.Seconds:00}" +
+            $"/{(int)Media.MusicTime.TotalMinutes:00}:{Media.MusicTime.Seconds:00}");
     }
 
     public static void ClearWindowSetting()
     {
         WindowManager.Reset();
+    }
+
+    public static PlayState GetPlayState()
+    {
+        return Media.PlayState;
     }
 }

@@ -9,11 +9,14 @@
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     x:DataType="model:MainModel"
     mc:Ignorable="d">
-    <Border HorizontalAlignment="Stretch" Classes="t2">
+    <Border Classes="t2">
         <Border.Background>
             <ImageBrush Source="resm:ColorMC.Gui.Resource.Pic.update1.png" Stretch="UniformToFill" />
         </Border.Background>
-        <Border Background="#55000000" BorderThickness="0">
+        <Border
+            Background="#55000000"
+            BorderThickness="0"
+            CornerRadius="5">
             <StackPanel Margin="15">
                 <TextBlock
                     Margin="0,0,0,5"
