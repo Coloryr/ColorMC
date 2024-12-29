@@ -129,6 +129,14 @@ public record ServerCustomSetting
     /// 登录模型实例
     /// </summary>
     public List<LockLoginSetting> LockLogins { get; set; }
+    /// <summary>
+    /// 管理员方式启动
+    /// </summary>
+    public bool AdminLaunch { get; set; }
+    /// <summary>
+    /// 游戏管理员方式启动
+    /// </summary>
+    public bool GameAdminLaunch { get; set; }
 }
 
 /// <summary>

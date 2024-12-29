@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
@@ -1000,5 +1001,14 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         ThemeManager.Init();
+    }
+
+    public static void SetAdmin(bool adminLaunch, bool gameAdminLaunch)
+    {
+        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom.AdminLaunch = adminLaunch;
+        GuiConfigUtils.Config.ServerCustom.GameAdminLaunch = gameAdminLaunch;
+
+        GuiConfigUtils.Save();
     }
 }

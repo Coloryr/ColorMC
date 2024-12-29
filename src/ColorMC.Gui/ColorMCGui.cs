@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -68,22 +69,30 @@ public static class ColorMCGui
 
         Console.WriteLine($"RunDir: {RunDir}");
 
-        if (args.Length > 0)
-        {
-            if (args[0] == "-game" && args.Length < 2)
-            {
-                return;
-            }
-            else
-            {
-                BaseBinding.SetLaunch(args[1..]);
-            }
-        }
-
         SystemInfo.Init();
 
         try
         {
+            var builder = BuildAvaloniaApp();
+
+            if (GuiConfigUtils.Config.ServerCustom.AdminLaunch && !ProcessUtils.IsRunAsAdmin())
+            {
+                ProcessUtils.LaunchAdmin(args);
+                return;
+            }
+
+            if (args.Length > 0)
+            {
+                if (args[0] == "-game" && args.Length < 2)
+                {
+                    return;
+                }
+                else
+                {
+                    BaseBinding.SetLaunch(args[1..]);
+                }
+            }
+
             if (IsLock(out var port))
             {
                 LaunchSocketUtils.SendMessage(port).Wait();
@@ -93,8 +102,7 @@ public static class ColorMCGui
             s_arg.Local = RunDir;
             ColorMCCore.Init(s_arg);
 
-            BuildAvaloniaApp()
-                 .StartWithClassicDesktopLifetime(args);
+            builder.StartWithClassicDesktopLifetime(args);
         }
         catch (Exception e)
         {

@@ -128,7 +128,7 @@ public static class Launch
     /// <param name="cmd">命令</param>
     /// <param name="env"></param>
     /// <param name="runsame">是否不等待结束</param>
-    private static void CmdRun(this GameSettingObj obj, string cmd, Dictionary<string, string> env, bool runsame)
+    private static void CmdRun(this GameSettingObj obj, string cmd, Dictionary<string, string> env, bool runsame, bool admin)
     {
         var args = cmd.Split('\n');
         var name = args[0].Trim();
@@ -174,7 +174,7 @@ public static class Launch
                 p.Dispose();
             };
         }
-        p.Start();
+        ProcessUtils.Launch(p, admin);
         p.BeginOutputReadLine();
         p.BeginErrorReadLine();
         if (!runsame)
@@ -238,7 +238,7 @@ public static class Launch
         var game = VersionPath.GetVersion(obj.Version)!;
         if (game.Arguments == null)
         {
-            return V1JvmArg.ToList();
+            return [.. V1JvmArg];
         }
 
         var arg = new List<string>();
@@ -1633,7 +1633,7 @@ public static class Launch
                     stopwatch.Start();
                     larg.Update2?.Invoke(obj, LaunchState.LaunchPre);
                     start = ReplaceArg(obj, path!, arg, start);
-                    obj.CmdRun(start, env, prerun);
+                    obj.CmdRun(start, env, prerun, larg.Admin);
                     stopwatch.Stop();
                     string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                         obj.Name, stopwatch.Elapsed.ToString());
@@ -1731,9 +1731,17 @@ public static class Launch
                 ColorMCCore.OnGameExit(obj, larg.Auth, process.ExitCode);
                 process.Dispose();
             };
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
+
+            if (!ProcessUtils.Launch(process, larg.Admin))
+            {
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+            }
+            else
+            {
+                ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Game.Info2"));
+            }
+
             handel = new DesktopGameHandel(process, obj.UUID);
         }
 
@@ -1775,7 +1783,7 @@ public static class Launch
                     stopwatch.Start();
                     larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
                     start = ReplaceArg(obj, path!, arg, start);
-                    obj.CmdRun(start, env, false);
+                    obj.CmdRun(start, env, false, larg.Admin);
                     stopwatch.Stop();
                     ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
                         obj.Name, stopwatch.Elapsed.ToString()));

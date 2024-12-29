@@ -365,6 +365,7 @@ public static class GameBinding
 
         var state1 = LaunchState.End;
         var arg = MakeArg(user, model, port);
+        arg.Admin = GuiConfigUtils.Config.ServerCustom.GameAdminLaunch;
 
         //设置自动加入服务器
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
@@ -520,6 +521,7 @@ public static class GameBinding
         string? temp = null;
         var arg = MakeArg(user, model, port);
         arg.World = world;
+        arg.Admin = GuiConfigUtils.Config.ServerCustom.GameAdminLaunch;
         //设置自动加入服务器
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
             !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))

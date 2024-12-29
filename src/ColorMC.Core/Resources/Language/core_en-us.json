@@ -120,7 +120,7 @@
   "Core.Game.Error18": "Game instance：failed to fetch icons",
   "Core.Game.Error19": "Error reading instance：",
   "Core.Game.Error20": "The game instance name conflict, if auto-modify is allowed",
-  "Core.Game.Info": "{0} Members",
+  "Core.Game.Info1": "{0} Members",
   "Core.Zip.Info1": "Whether the illegal name {0}\nwas replaced with a valid name while extracting the file",
   "Core.ServerPack.Info1": "Downloading retrieval server instance",
   "Core.ServerPack.Info2": "Comparing server instance files",

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,6 +63,10 @@ public partial class SettingModel
     private bool _enableUI;
     [ObservableProperty]
     private bool _loop;
+    [ObservableProperty]
+    private bool _adminLaunch;
+    [ObservableProperty]
+    private bool _gameAdminLaunch;
 
     [ObservableProperty]
     private int _game = -1;
@@ -69,6 +74,22 @@ public partial class SettingModel
     private int _volume;
 
     private bool _serverLoad = true;
+
+    partial void OnGameAdminLaunchChanged(bool value)
+    {
+        if (_serverLoad)
+            return;
+
+        SetAdmin();
+    }
+
+    partial void OnAdminLaunchChanged(bool value)
+    {
+        if (_serverLoad)
+            return;
+
+        SetAdmin();
+    }
 
     partial void OnLoopChanged(bool value)
     {
@@ -310,6 +331,8 @@ public partial class SettingModel
             RunPause = config.RunPause;
             SlowVolume = config.SlowVolume;
             Loop = config.MusicLoop;
+            AdminLaunch = config.AdminLaunch;
+            GameAdminLaunch = config.GameAdminLaunch;
 
             MotdFontColor = ColorManager.MotdColor.ToColor();
             MotdBackColor = ColorManager.MotdBackColor.ToColor();
@@ -373,5 +396,10 @@ public partial class SettingModel
             return;
 
         ConfigBinding.SetLockGame(EnableOneGame, Game == -1 ? null : _uuids[Game]);
+    }
+
+    private void SetAdmin()
+    {
+        ConfigBinding.SetAdmin(AdminLaunch, GameAdminLaunch);
     }
 }

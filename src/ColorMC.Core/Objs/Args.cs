@@ -90,6 +90,10 @@ public record GameLaunchArg
     /// 自动加入的服务器
     /// </summary>
     public ServerObj? Server;
+    /// <summary>
+    /// 是否以管理员方式启动
+    /// </summary>
+    public bool Admin;
 
     public ColorMCCore.Request? Request;
     public ColorMCCore.LaunchP? Pre;
