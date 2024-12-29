@@ -1505,6 +1505,12 @@ public static class Launch
             return null;
         }
 
+        if (!File.Exists(path))
+        {
+            throw new LaunchException(LaunchState.JavaError,
+                LanguageHelper.Get("Core.Launch.Error13"));
+        }
+
         //准备Jvm参数
         larg.Update2?.Invoke(obj, LaunchState.JvmPrepare);
         var arg = await obj.MakeArgAsync(new GameMakeArg

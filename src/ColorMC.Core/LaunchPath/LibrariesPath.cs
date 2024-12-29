@@ -206,25 +206,39 @@ public static class LibrariesPath
             }
         }
 
-        var output = new List<string>();
+        var output = new Dictionary<LibVersionObj, string>();
 
         if (obj.Loader == Loaders.Custom && obj.CustomLoader?.OffLib == true)
         {
-            output.AddRange(loaderList.Values);
-            output.AddRange(gameList.Values);
+            foreach (var item in loaderList)
+            {
+                output.AddOrUpdate(item.Key, item.Value);
+            }
+            foreach (var item in gameList)
+            {
+                output.AddOrUpdate(item.Key, item.Value);
+            }
         }
         else
         {
-            output.AddRange(gameList.Values);
-            output.AddRange(loaderList.Values);
+            foreach (var item in gameList)
+            {
+                output.AddOrUpdate(item.Key, item.Value);
+            }
+            foreach (var item in loaderList)
+            {
+                output.AddOrUpdate(item.Key, item.Value);
+            }
         }
+
+        var output1 = output.Values.ToList();
 
         //游戏核心
         if (obj.Loader != Loaders.NeoForge)
         {
-            output.Add(GetGameFile(obj.Version));
+            output1.Add(GetGameFile(obj.Version));
         }
 
-        return output;
+        return output1;
     }
 }
