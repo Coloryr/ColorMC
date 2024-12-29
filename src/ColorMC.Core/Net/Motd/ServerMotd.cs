@@ -1,8 +1,12 @@
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using Ae.Dns.Client;
+using Ae.Dns.Protocol;
+using Ae.Dns.Protocol.Enums;
+using Ae.Dns.Protocol.Records;
 using ColorMC.Core.Objs.MinecraftAPI;
-using Heijden.Dns.Portable;
-using Heijden.DNS;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Motd;
@@ -120,19 +124,71 @@ public static class ServerMotd
             {
                 tcp.Close();
                 tcp.Dispose();
-                var data = await new Resolver().Query("_minecraft._tcp." + ip, QType.SRV);
-                if (data.Answers?.FirstOrDefault()?.RECORD is RecordSRV result)
+                IPAddress? selectDns = null;
+                var list = NetworkInterface.GetAllNetworkInterfaces();
+                foreach (var adapter in list.Where(item=>item.OperationalStatus is OperationalStatus.Up && item.NetworkInterfaceType is NetworkInterfaceType.Wireless80211 or NetworkInterfaceType.Ethernet && item.Speed > 0))
                 {
+                    if (selectDns != null)
+                    {
+                        break;
+                    }
+                    IPInterfaceProperties properties = adapter.GetIPProperties();
+
+                    if (properties.GatewayAddresses.Count > 0 &&
+                        !properties.GatewayAddresses[0].Address.ToString().StartsWith("127."))
+                    {
+                        foreach (IPAddress dnsAddress in properties.DnsAddresses)
+                        {
+                            selectDns = dnsAddress;
+                            break;
+                        }
+                    }
+                }
+                if (selectDns == null)
+                {
+                    info.State = StateType.Error;
+
+                    return info;
+                }
+                using var s_dnsClient = new DnsUdpClient(selectDns);
+                var data = await s_dnsClient.Query(DnsQueryFactory.CreateQuery("_minecraft._tcp." + ip, DnsQueryType.SRV), CancellationToken.None);
+                if (data.Answers?.FirstOrDefault() is { } result)
+                {
+                    var result1 = result.Resource as DnsUnknownResource;
                     tcp = new TcpClient()
                     {
                         ReceiveTimeout = 5000,
                         SendTimeout = 5000
                     };
-                    tcp.Connect(ip = result.TARGET[..^1], port = result.PORT);
+                    var rawData = result1!.Raw.ToArray();
+                    int offset = 4;
+                    port = (ushort)((rawData[offset] << 8) | rawData[offset + 1]);
+                    offset += 2;
+
+                    var targetBuilder = new StringBuilder();
+                    while (offset < rawData.Length)
+                    {
+                        byte length = rawData[offset];
+                        offset++;
+
+                        if (length == 0)
+                        {
+                            break;
+                        }
+
+                        targetBuilder.Append(Encoding.ASCII.GetString(rawData, offset, length))
+                            .Append('.');
+                        offset += length;
+                    }
+
+                    ip = targetBuilder.ToString();
+                    ip = ip[..^1];
+
+                    tcp.Connect(ip, port);
                 }
                 else
                 {
-                    info.State = StateType.BAD_CONNECT;
+                    info.State = StateType.ConnectFail;
                     info.Message = ex.Message;
                     return info;
                 }
@@ -185,7 +241,7 @@ public static class ServerMotd
         }
         catch (Exception ex)
         {
-            info.State = StateType.EXCEPTION;
+            info.State = StateType.Error;
             info.Message = ex.Message;
         }
 

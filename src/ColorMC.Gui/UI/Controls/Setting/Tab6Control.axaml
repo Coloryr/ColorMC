@@ -39,8 +39,8 @@
                             <ToggleSwitch
                                 Margin="0,0,20,0"
                                 IsChecked="{Binding EnableMotd}"
-                                OffContent="{setting:Localize SettingWindow.Tab6.Text1}"
-                                OnContent="{setting:Localize SettingWindow.Tab6.Text1}" />
+                                OffContent="{setting:Localize SettingWindow.Tab6.Text38}"
+                                OnContent="{setting:Localize SettingWindow.Tab6.Text38}" />
                             <ToggleSwitch
                                 IsChecked="{Binding EnableJoin}"
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text4}"

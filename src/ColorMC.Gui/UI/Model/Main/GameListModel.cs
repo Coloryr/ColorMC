@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -194,7 +192,7 @@ public partial class MainModel
         IsNotGame = GameBinding.IsNotGame;
 
         var config = GuiConfigUtils.Config.ServerCustom;
-        
+
 
         if (config?.LockGame == true)
         {

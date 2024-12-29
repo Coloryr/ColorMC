@@ -35,14 +35,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Heijden.Dns.Portable" Version="2.0.19" />
         <PackageReference Include="HtmlAgilityPack" Version="1.11.71" />
         <PackageReference Include="Jint" Version="4.1.0" />
         <PackageReference Include="K4os.Compression.LZ4.Streams" Version="1.3.8" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="SharpZipLib" Version="1.4.2" />
-        <PackageReference Include="System.Private.Uri" Version="4.3.2" />
-        <PackageReference Include="Tomlyn" Version="0.17.0" />
+        <PackageReference Include="Tomlyn" Version="0.18.0" />
 		<PackageReference Include="Ae.Dns.Client" Version="3.0.0" />
 		<PackageReference Include="Ae.Dns.Protocol" Version="3.0.0" />
     </ItemGroup>

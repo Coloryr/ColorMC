@@ -105,7 +105,7 @@ public partial class ServerMotdControl : UserControl
         {
             return ServerMotd.GetServerInfo(ip, port);
         });
-        if (motd.State == StateType.GOOD)
+        if (motd.State == StateType.Ok)
         {
             Grid2.IsVisible = false;
             using var stream = new MemoryStream(motd.FaviconByteArray);

@@ -143,7 +143,7 @@ public partial class SettingModel
         SetIP();
     }
 
-    partial void OnIPChanged(string value)
+    partial void OnServerIPChanged(string value)
     {
         SetIP();
     }

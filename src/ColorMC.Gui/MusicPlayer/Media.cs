@@ -60,12 +60,12 @@ public static class Media
 
     private static PlayState _playState;
 
-    public static PlayState PlayState 
+    public static PlayState PlayState
     {
         get
         {
             return _playState;
-        } 
+        }
         set
         {
             if (_playState == value)
@@ -93,7 +93,7 @@ public static class Media
     public static TimeSpan MusicTime { get; private set; } = TimeSpan.Zero;
 
     private static readonly Thread s_thread = new(Run)
-    { 
+    {
         Name = "ColorMC Music"
     };
     private static readonly Semaphore s_semaphore = new(0, 2);

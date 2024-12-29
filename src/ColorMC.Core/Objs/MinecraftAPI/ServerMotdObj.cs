@@ -5,10 +5,10 @@ namespace ColorMC.Core.Objs.MinecraftAPI;
 
 public enum StateType
 {
-    GOOD,
-    NO_RESPONSE,
-    BAD_CONNECT,
-    EXCEPTION
+    Ok,
+    NoData,
+    ConnectFail,
+    Error
 }
 
 public class Chat
