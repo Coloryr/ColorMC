@@ -88,39 +88,39 @@ public partial class AddControl : BaseUserControl
         {
             if (model.OptifineDisplay == true)
             {
-                ThemeManager.CrossFade300.Start(null, OptifineDisplay);
-                ThemeManager.CrossFade300.Start(ScrollViewer1, null);
+                ThemeManager.CrossFade.Start(null, OptifineDisplay);
+                ThemeManager.CrossFade.Start(ScrollViewer1, null);
             }
             else
             {
-                ThemeManager.CrossFade300.Start(OptifineDisplay, null);
-                ThemeManager.CrossFade300.Start(null, ScrollViewer1);
+                ThemeManager.CrossFade.Start(OptifineDisplay, null);
+                ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
         else if (e.PropertyName == "ModDownloadDisplay")
         {
             if (model.ModDownloadDisplay == true)
             {
-                ThemeManager.CrossFade300.Start(null, ModDownloadDisplay);
-                ThemeManager.CrossFade300.Start(ScrollViewer1, null);
+                ThemeManager.CrossFade.Start(null, ModDownloadDisplay);
+                ThemeManager.CrossFade.Start(ScrollViewer1, null);
             }
             else
             {
-                ThemeManager.CrossFade300.Start(ModDownloadDisplay, null);
-                ThemeManager.CrossFade300.Start(null, ScrollViewer1);
+                ThemeManager.CrossFade.Start(ModDownloadDisplay, null);
+                ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
         else if (e.PropertyName == "VersionDisplay")
         {
             if (model.VersionDisplay == true)
             {
-                ThemeManager.CrossFade300.Start(null, VersionDisplay);
-                ThemeManager.CrossFade300.Start(ScrollViewer1, null);
+                ThemeManager.CrossFade.Start(null, VersionDisplay);
+                ThemeManager.CrossFade.Start(ScrollViewer1, null);
             }
             else
             {
-                ThemeManager.CrossFade300.Start(VersionDisplay, null);
-                ThemeManager.CrossFade300.Start(null, ScrollViewer1);
+                ThemeManager.CrossFade.Start(VersionDisplay, null);
+                ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
         else if (e.PropertyName == "ScrollToHome")

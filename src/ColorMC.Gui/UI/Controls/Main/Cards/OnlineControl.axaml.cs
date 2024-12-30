@@ -22,7 +22,7 @@ public partial class OnlineControl : UserControl
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    CardAnimation.Make().RunAsync(this);
+                    CardAnimation.Start(this);
                 });
             }
         }

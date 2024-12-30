@@ -44,6 +44,11 @@ public partial class MainModel : TopModel, IMainTop
     private bool _render = true;
 
     [ObservableProperty]
+    private bool _cardNews;
+    [ObservableProperty]
+    private bool _haveCard = true;
+
+    [ObservableProperty]
     private string _helloText;
 
     [ObservableProperty]
@@ -174,6 +179,31 @@ public partial class MainModel : TopModel, IMainTop
         if (config?.CheckUpdate == true)
         {
             CheckUpdate();
+        }
+
+        LoadCard();
+    }
+
+    private void LoadCard()
+    {
+        var config = GuiConfigUtils.Config.Card;
+        CardNews = config.News;
+        if (!config.Online)
+        {
+            IsOnlineMode = false;
+        }
+        if (!config.Last)
+        {
+            HaveLast = false;
+        }
+
+        if (!CardNews && !IsOnlineMode && !HaveLast && !HaveUpdate)
+        {
+            HaveCard = false;
+        }
+        else
+        {
+            HaveCard = true;
         }
     }
 

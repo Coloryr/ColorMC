@@ -669,9 +669,10 @@ public static class ConfigBinding
     /// 设置动画样式
     /// </summary>
     /// <param name="value"></param>
-    public static void SetStyle(int value, bool value1)
+    public static void SetStyle(int value, bool value1, bool value2)
     {
         GuiConfigUtils.Config.Style ??= GuiConfigUtils.MakeStyleSettingConfig();
+        GuiConfigUtils.Config.Style.EnableAm = value2;
         GuiConfigUtils.Config.Style.AmTime = value;
         GuiConfigUtils.Config.Style.AmFade = value1;
         GuiConfigUtils.Save();
@@ -1010,5 +1011,16 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.GameAdminLaunch = gameAdminLaunch;
 
         GuiConfigUtils.Save();
+    }
+
+    public static void SetCard(bool cardNews, bool cardLast, bool cardOnline)
+    {
+        GuiConfigUtils.Config.Card ??= new();
+        GuiConfigUtils.Config.Card.News = cardNews;
+        GuiConfigUtils.Config.Card.Last = cardLast;
+        GuiConfigUtils.Config.Card.Online = cardOnline;
+
+        GuiConfigUtils.Save();
+        WindowManager.MainWindow?.LoadDone();
     }
 }

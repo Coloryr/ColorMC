@@ -8,6 +8,7 @@ using Avalonia.Animation.Easings;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Animations;
 
@@ -34,8 +35,25 @@ public class SelfPageSlideY(TimeSpan duration) : IPageTransition
     public bool Fade { get; set; }
 
     /// <inheritdoc />
-    public virtual async Task Start(Visual? from, Visual? to, bool forward, CancellationToken cancellationToken)
+    public async Task Start(Visual? from, Visual? to, bool forward, CancellationToken cancellationToken)
     {
+        if (!GuiConfigUtils.Config.Style.EnableAm)
+        {
+            if (from != null)
+            {
+                from.RenderTransform = new TranslateTransform();
+                from.IsVisible = false;
+                from.Opacity = 0;
+            }
+            if (to != null)
+            {
+                to.RenderTransform = new TranslateTransform();
+                to.IsVisible = true;
+                to.Opacity = 1;
+            }
+            return;
+        }
+
         if (cancellationToken.IsCancellationRequested)
         {
             return;

@@ -11,7 +11,7 @@ public partial class GameGroupControl : UserControl
     {
         InitializeComponent();
 
-        Expander_Head.ContentTransition = ThemeManager.CrossFade300;
+        Expander_Head.ContentTransition = ThemeManager.CrossFade;
 
         PointerEntered += GameGroupControl_PointerEntered;
         PointerExited += GameGroupControl_PointerExited;

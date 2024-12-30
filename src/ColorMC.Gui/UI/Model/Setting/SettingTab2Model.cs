@@ -65,6 +65,14 @@ public partial class SettingModel
     private bool _enableLive2D;
     [ObservableProperty]
     private bool _lowFps;
+    [ObservableProperty]
+    private bool _enableAm;
+    [ObservableProperty]
+    private bool _cardNews;
+    [ObservableProperty]
+    private bool _cardLast;
+    [ObservableProperty]
+    private bool _cardOnline;
 
     [ObservableProperty]
     private bool _isHead1;
@@ -108,6 +116,8 @@ public partial class SettingModel
     [ObservableProperty]
     private string _live2DCoreState;
 
+    private bool _load = true;
+
     public string IconHead
     {
         get
@@ -123,7 +133,20 @@ public partial class SettingModel
         }
     }
 
-    private bool _load = true;
+    partial void OnCardLastChanged(bool value)
+    {
+        SetCard();
+    }
+
+    partial void OnCardNewsChanged(bool value)
+    {
+        SetCard();
+    }
+
+    partial void OnCardOnlineChanged(bool value)
+    {
+        SetCard();
+    }
 
     partial void OnIsHead1Changed(bool value)
     {
@@ -197,20 +220,19 @@ public partial class SettingModel
         await SetPic();
     }
 
+    partial void OnEnableAmChanged(bool value)
+    {
+        SetStyle();
+    }
+
     partial void OnAmFadeChanged(bool value)
     {
-        if (_load)
-            return;
-
-        ConfigBinding.SetStyle(AmTime, AmFade);
+        SetStyle();
     }
 
     partial void OnAmTimeChanged(int value)
     {
-        if (_load)
-            return;
-
-        ConfigBinding.SetStyle(AmTime, AmFade);
+        SetStyle();
     }
 
     partial void OnL2dWidthChanged(int value)
@@ -559,6 +581,11 @@ public partial class SettingModel
 
             AmTime = con.Style.AmTime;
             AmFade = con.Style.AmFade;
+            EnableAm = con.Style.EnableAm;
+
+            CardNews = con.Card.News;
+            CardLast = con.Card.Last;
+            CardOnline = con.Card.Online;
 
             Live2DModel = con.Live2D.Model;
             L2dHeight = con.Live2D.Height;
@@ -661,5 +688,21 @@ public partial class SettingModel
             return;
 
         ConfigBinding.SetLogColor(WarnColor.ToString(), ErrorColor.ToString(), DebugColor.ToString());
+    }
+
+    private void SetStyle()
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetStyle(AmTime, AmFade, EnableAm);
+    }
+
+    private void SetCard()
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetCard(CardNews, CardLast, CardOnline);
     }
 }

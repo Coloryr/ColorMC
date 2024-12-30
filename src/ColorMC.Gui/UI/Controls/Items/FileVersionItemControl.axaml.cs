@@ -10,6 +10,7 @@ using Avalonia.Styling;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
@@ -30,10 +31,13 @@ public partial class FileVersionItemControl : UserControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        Dispatcher.UIThread.Post(() =>
+        if (GuiConfigUtils.Config.Style.EnableAm)
         {
-            ItemAnimation.Make().RunAsync(this);
-        });
+            Dispatcher.UIThread.Post(() =>
+            {
+                ItemAnimation.Make().RunAsync(this);
+            });
+        }
     }
 
     private void FileItemControl_PointerMoved(object? sender, PointerEventArgs e)

@@ -106,6 +106,11 @@ public static class GuiConfigUtils
                 Config.LogColor = MakeLogColorConfig();
                 save = true;
             }
+            if (Config.Card == null)
+            {
+                Config.Card = MakeCardConfig();
+                save = true;
+            }
 
             if (save)
             {
@@ -145,6 +150,16 @@ public static class GuiConfigUtils
         });
     }
 
+    public static CardSetting MakeCardConfig()
+    {
+        return new CardSetting()
+        {
+            Last = true,
+            News = true,
+            Online = true
+        };
+    }
+
     public static HeadSetting MakeHeadSettingConfig()
     {
         return new()
@@ -159,7 +174,8 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            AmTime = 700,
+            EnableAm = true,
+            AmTime = 500,
             AmFade = true
         };
     }

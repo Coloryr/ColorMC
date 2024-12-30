@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Styling;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Animations;
 
@@ -118,6 +119,22 @@ public class SelfCrossFade : IPageTransition
     /// <inheritdoc cref="Start(Visual, Visual, CancellationToken)" />
     public async Task Start(Visual? from, Visual? to, CancellationToken cancellationToken)
     {
+        if (!GuiConfigUtils.Config.Style.EnableAm)
+        {
+            if (from != null)
+            {
+                from.Opacity = 0f;
+                from.IsVisible = false;
+            }
+
+            if (to != null)
+            {
+                to.Opacity = 1f;
+                to.IsVisible = true;
+            }
+            return;
+        }
+
         if (cancellationToken.IsCancellationRequested)
         {
             return;

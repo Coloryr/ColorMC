@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
+using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Styling;
 using ColorMC.Gui.Utils;
@@ -10,13 +11,11 @@ namespace ColorMC.Gui.UI.Animations;
 
 public static class CardAnimation
 {
-    public static Animation Make()
+    private static Animation s_animation = new()
     {
-        return new Animation
-        {
-            FillMode = FillMode.Forward,
-            Easing = new CircularEaseInOut(),
-            Children =
+        FillMode = FillMode.Forward,
+        Easing = new CircularEaseInOut(),
+        Children =
             {
                 new KeyFrame
                 {
@@ -65,7 +64,16 @@ public static class CardAnimation
                     Cue = new Cue(1d)
                 }
             },
-            Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime)
-        };
+        Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime)
+    };
+
+    public static void Start(Control control)
+    {
+        if (!GuiConfigUtils.Config.Style.EnableAm)
+        {
+            return;
+        }
+
+        s_animation.RunAsync(control);
     }
 }

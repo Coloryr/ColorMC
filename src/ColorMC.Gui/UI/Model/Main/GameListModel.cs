@@ -291,7 +291,10 @@ public partial class MainModel
             }
             if (last != null && LastGameName == null)
             {
-                HaveLast = true;
+                if (GuiConfigUtils.Config.Card.Last)
+                {
+                    HaveLast = true;
+                }
                 LastGameName = string.Format(App.Lang("MainWindow.Text26"), last.Name);
                 var file = last.Obj.GetIconFile();
                 if (File.Exists(file))
@@ -339,12 +342,12 @@ public partial class MainModel
 
         if (Game != null)
         {
-            Game.IsSelect = false;
+            Game.Unselect();
         }
         Game = obj;
         if (Game != null)
         {
-            Game.IsSelect = true;
+            Game.Select();
         }
     }
 

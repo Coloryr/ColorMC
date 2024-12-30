@@ -16,6 +16,10 @@ public record StyleSetting
     /// 过度淡化
     /// </summary>
     public bool AmFade { get; set; }
+    /// <summary>
+    /// 是否启用动画
+    /// </summary>
+    public bool EnableAm { get; set; }
 }
 
 /// <summary>
@@ -227,6 +231,13 @@ public record LogColorSetting
     public string Debug { get; set; }
 }
 
+public record CardSetting
+{
+    public bool News { get; set; }
+    public bool Online { get; set; }
+    public bool Last { get; set; }
+}
+
 /// <summary>
 /// Gui配置文件
 /// </summary>
@@ -281,6 +292,10 @@ public record GuiConfigObj
     /// 日志着色
     /// </summary>
     public LogColorSetting LogColor { get; set; }
+    /// <summary>
+    /// 卡片展示设置
+    /// </summary>
+    public CardSetting Card { get; set; }
 
     /// <summary>
     /// 主题色类型

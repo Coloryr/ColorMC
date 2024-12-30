@@ -11,6 +11,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
@@ -35,15 +36,18 @@ public partial class GameControl : UserControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        Dispatcher.UIThread.Post(() =>
+        if (GuiConfigUtils.Config.Style.EnableAm)
         {
-            ItemAnimation.Make().RunAsync(this);
-        });
+            Dispatcher.UIThread.Post(() =>
+            {
+                ItemAnimation.Make().RunAsync(this);
+            });
+        }
     }
 
     private void GameModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "IsDrop" && DataContext is GameItemModel model)
+        if (e.PropertyName == nameof(GameItemModel.IsDrop) && DataContext is GameItemModel model)
         {
             if (model.IsDrop == true)
             {
@@ -60,6 +64,10 @@ public partial class GameControl : UserControl
     {
         if (DataContext is GameItemModel model)
         {
+            if (model.OneGame)
+            {
+                return;
+            }
             model.IsOver = false;
         }
     }
@@ -68,7 +76,11 @@ public partial class GameControl : UserControl
     {
         if (DataContext is GameItemModel model)
         {
-            model.IsOver = true;
+            if (!model.OneGame)
+            {
+                model.IsOver = true;
+            }
+            
             model.SetTips();
         }
     }

@@ -13,7 +13,10 @@
         <Border.Background>
             <ImageBrush Source="resm:ColorMC.Gui.Resource.Pic.pic1.png" Stretch="UniformToFill" />
         </Border.Background>
-        <Border Background="#77000000" BorderThickness="0">
+        <Border
+            Background="#55000000"
+            BorderThickness="0"
+            CornerRadius="5">
             <Border.Styles>
                 <Style Selector="Button#User">
                     <Setter Property="Background" />

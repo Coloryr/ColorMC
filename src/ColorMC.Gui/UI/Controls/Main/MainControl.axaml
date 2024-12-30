@@ -132,6 +132,7 @@
                         </StackPanel>
                     </DockPanel>
                     <ScrollViewer
+                        Name="RightViewer"
                         Margin="0,10,0,0"
                         VerticalAlignment="Top"
                         DockPanel.Dock="Right"
@@ -141,7 +142,7 @@
                             Width="200"
                             Margin="0,0,20,10">
                             <StackPanel Name="RightSide">
-                                <cards:NewsControl Margin="0,0,0,10" />
+                                <cards:NewsControl Margin="0,0,0,10" IsVisible="{Binding CardNews}" />
                                 <cards:MusicControl Margin="0,0,0,10" IsVisible="{Binding MusicDisplay}" />
                                 <cards:UpdateControl Margin="0,0,0,10" IsVisible="{Binding HaveUpdate}" />
                                 <cards:OnlineControl Margin="0,0,0,10" IsVisible="{Binding IsOnlineMode}" />
@@ -149,18 +150,18 @@
                             </StackPanel>
                         </Decorator>
                     </ScrollViewer>
-                    <ScrollViewer Margin="0,10,0,0" VerticalAlignment="Top">
-                        <DockPanel Name="ContentOut">
+                    <ScrollViewer Margin="0,10,0,0">
+                        <DockPanel Name="ContentOut" Margin="0,0,10,0">
                             <StackPanel
                                 Name="ContentTop"
-                                Margin="10,0,10,0"
+                                Margin="10,0,0,0"
                                 DockPanel.Dock="Top" />
                             <views:ServerMotdControl
-                                Margin="10,0,10,10"
+                                Margin="10,0,0,10"
                                 DockPanel.Dock="Top"
                                 IPPort="{Binding Server}"
                                 IsVisible="{Binding MotdDisplay}" />
-                            <Decorator Name="Content1" Margin="10,0,10,10" />
+                            <Decorator Name="Content1" Margin="10,0,0,10" />
                         </DockPanel>
                     </ScrollViewer>
                 </DockPanel>

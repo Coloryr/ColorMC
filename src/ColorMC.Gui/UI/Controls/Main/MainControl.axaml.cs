@@ -23,8 +23,6 @@ public partial class MainControl : BaseUserControl
 {
     public const string DialogName = "MainCon";
 
-    public readonly SelfPageSlideX SidePageSlide300 = new(TimeSpan.FromMilliseconds(300));
-
     private MainOneGameControl? _oneGame;
     private MainEmptyControl? _emptyGame;
     private MainGamesControl? _games;
@@ -210,7 +208,7 @@ public partial class MainControl : BaseUserControl
             Start.Child = con1;
             Start.IsVisible = true;
             await con1.Start();
-            await ThemeManager.CrossFade300.Start(Start, MainView, CancellationToken.None);
+            await ThemeManager.CrossFade.Start(Start, MainView, CancellationToken.None);
             Start.IsVisible = false;
         }
 
@@ -331,6 +329,33 @@ public partial class MainControl : BaseUserControl
         {
             SwitchView();
         }
+        else if (e.PropertyName == nameof(MainModel.HaveCard))
+        {
+            if (DataContext is MainModel model)
+            {
+                if (!model.HaveCard)
+                {
+                    if (!model.MinMode)
+                    {
+                        model.SideDisplay = false;
+                    }
+                    ContentOut.Margin = new(0, 0, 20, 0);
+                }
+                else
+                {
+                    if (!model.MinMode)
+                    {
+                        model.SideDisplay = true;
+                        ContentOut.Margin = new(0, 0, 10, 0);
+                    }
+                    else
+                    {
+                        model.SideDisplay = false;
+                        ContentOut.Margin = new(0, 0, 20, 0);
+                    }
+                }
+            }
+        }
         else if (e.PropertyName == TopModel.MinModeName)
         {
             if (DataContext is MainModel model)
@@ -349,9 +374,9 @@ public partial class MainControl : BaseUserControl
 
                     Right.Child = null;
                     ContentTop.Children.Add(RightSide);
-                    model.SideDisplay = false;
 
-                    ContentOut.Margin = new(0, 0, 10, 0);
+                    model.SideDisplay = false;
+                    ContentOut.Margin = new(0, 0, 20, 0);
                 }
                 else
                 {
@@ -367,9 +392,17 @@ public partial class MainControl : BaseUserControl
 
                     ContentTop.Children.Remove(RightSide);
                     Right.Child = RightSide;
-                    model.SideDisplay = true;
 
-                    ContentOut.Margin = new(0);
+                    if (!model.HaveCard)
+                    {
+                        model.SideDisplay = false;
+                        ContentOut.Margin = new(0, 0, 20, 0);
+                    }
+                    else
+                    {
+                        model.SideDisplay = true;
+                        ContentOut.Margin = new(0, 0, 10, 0);
+                    }
                 }
             }
         }

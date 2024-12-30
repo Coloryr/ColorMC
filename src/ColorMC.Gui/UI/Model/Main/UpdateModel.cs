@@ -63,7 +63,7 @@ public partial class MainModel
     private async void CheckUpdate()
     {
 #if DEBUG
-        HaveUpdate = true;
+        HaveUpdate = false;
 #else
         var data = await UpdateUtils.Check();
         if (!data.Item1)
@@ -73,6 +73,7 @@ public partial class MainModel
         HaveUpdate = true;
         _isNewUpdate = data.Item2 || ColorMCGui.IsAot || ColorMCGui.IsMin;
         _updateStr = data.Item3!;
+        LoadCard();
 #endif
     }
 }

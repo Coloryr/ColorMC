@@ -64,13 +64,13 @@ public partial class AddModPackControl : BaseUserControl
         {
             if ((DataContext as AddModPackControlModel)!.Display)
             {
-                ThemeManager.CrossFade300.Start(null, ModPackFiles);
-                ThemeManager.CrossFade300.Start(ScrollViewer1, null);
+                ThemeManager.CrossFade.Start(null, ModPackFiles);
+                ThemeManager.CrossFade.Start(ScrollViewer1, null);
             }
             else
             {
-                ThemeManager.CrossFade300.Start(ModPackFiles, null);
-                ThemeManager.CrossFade300.Start(null, ScrollViewer1);
+                ThemeManager.CrossFade.Start(ModPackFiles, null);
+                ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
     }

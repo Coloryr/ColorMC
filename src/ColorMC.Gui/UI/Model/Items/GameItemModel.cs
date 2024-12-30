@@ -118,12 +118,16 @@ public partial class GameItemModel : GameModel
     {
         if (value)
         {
-            IsSelect = true;
+            IsSelect = false;
         }
     }
 
     partial void OnIsLaunchChanged(bool value)
     {
+        if (OneGame)
+        {
+            return;
+        }
         if (value)
         {
             IsLaunching = true;
@@ -203,6 +207,26 @@ public partial class GameItemModel : GameModel
     public void EditGame()
     {
         WindowManager.ShowGameEdit(Obj);
+    }
+
+    public void Select()
+    {
+        if (OneGame)
+        {
+            return;
+        }
+
+        IsSelect = true;
+    }
+
+    public void Unselect()
+    {
+        if (OneGame)
+        {
+            return;
+        }
+
+        IsSelect = false;
     }
 
     public void LoadIcon()

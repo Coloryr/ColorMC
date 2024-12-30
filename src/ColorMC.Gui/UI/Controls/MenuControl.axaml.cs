@@ -131,12 +131,12 @@ public partial class BaseMenuControl : UserControl
         if (!dir)
         {
             Content2.Child = control;
-            _ = ThemeManager.PageSlide500.Start(Content1, Content2, dir1, token);
+            _ = ThemeManager.SelfPageSlideY.Start(Content1, Content2, dir1, token);
         }
         else
         {
             Content1.Child = control;
-            _ = ThemeManager.PageSlide500.Start(Content2, Content1, dir1, token);
+            _ = ThemeManager.SelfPageSlideY.Start(Content2, Content1, dir1, token);
         }
     }
 }

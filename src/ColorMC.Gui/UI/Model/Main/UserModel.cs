@@ -39,7 +39,10 @@ public partial class MainModel
         }
         else
         {
-            IsOnlineMode = user.AuthType == AuthType.OAuth;
+            if (GuiConfigUtils.Config.Card.Online)
+            {
+                IsOnlineMode = user.AuthType == AuthType.OAuth;
+            }
 
             UserId = user.UserName;
 

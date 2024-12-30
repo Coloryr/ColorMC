@@ -112,7 +112,7 @@ public partial class Live2dControl : UserControl
         {
             return;
         }
-        await ThemeManager.CrossFade300.Start(null, Border1, _cancel.Token);
+        await ThemeManager.CrossFade.Start(null, Border1, _cancel.Token);
         if (_cancel.Token.IsCancellationRequested)
         {
             return;
@@ -122,6 +122,6 @@ public partial class Live2dControl : UserControl
         {
             return;
         }
-        await ThemeManager.CrossFade300.Start(Border1, null, _cancel.Token);
+        await ThemeManager.CrossFade.Start(Border1, null, _cancel.Token);
     }
 }
