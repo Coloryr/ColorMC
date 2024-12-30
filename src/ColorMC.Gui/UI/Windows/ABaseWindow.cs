@@ -141,6 +141,11 @@ public abstract class ABaseWindow : Window
                     newX = Math.Min(0, screenBounds.Right - newWidth);
                 }
 
+                //if (newY < 20)
+                //{
+                //    newY = 20;
+                //}
+
                 if (newWidth < MinWidth)
                 {
                     newWidth = DefaultWidth;
@@ -150,8 +155,7 @@ public abstract class ABaseWindow : Window
                     newHeight = DefaultHeight;
                 }
 
-                //Avalonia bug
-                Position = new(newX - 1, newY - 31);
+                Position = new(newX, newY);
                 Width = newWidth;
                 Height = newHeight;
             }
