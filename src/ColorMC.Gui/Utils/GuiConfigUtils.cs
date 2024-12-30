@@ -224,6 +224,7 @@ public static class GuiConfigUtils
             Head = MakeHeadSettingConfig(),
             LogColor = MakeLogColorConfig(),
             Input = new(),
+            Card = MakeCardConfig(),
             CheckUpdate = true
         };
     }
