@@ -39,9 +39,13 @@ public partial class GameItemModel : GameModel
     private bool _isOver;
     [ObservableProperty]
     private bool _isNew;
+    [ObservableProperty]
+    private bool _isCheck;
 
     [ObservableProperty]
     private bool _buttonShow;
+    [ObservableProperty]
+    private bool _showCheck;
 
     [ObservableProperty]
     private bool _isDisplay = true;
@@ -158,8 +162,11 @@ public partial class GameItemModel : GameModel
 
     partial void OnIsOverChanged(bool value)
     {
-        StarVis = (value || IsStar) && !IsNew;
-        ButtonShow = value || IsSelect;
+        if (!ShowCheck)
+        {
+            StarVis = (value || IsStar) && !IsNew;
+            ButtonShow = value || IsSelect;
+        }
     }
 
     partial void OnIsSelectChanged(bool value)
@@ -182,6 +189,10 @@ public partial class GameItemModel : GameModel
     [RelayCommand]
     public void DoStar()
     {
+        if (ShowCheck)
+        {
+            return;
+        }
         _top?.DoStar(this);
         IsOver = false;
     }
@@ -189,12 +200,20 @@ public partial class GameItemModel : GameModel
     [RelayCommand]
     public void AddGame()
     {
+        if (ShowCheck)
+        {
+            return;
+        }
         WindowManager.ShowAddGame(_group);
     }
 
     [RelayCommand]
     public void Launch()
     {
+        if (ShowCheck)
+        {
+            return;
+        }
         if (IsLaunch)
         {
             return;
@@ -207,6 +226,18 @@ public partial class GameItemModel : GameModel
     public void EditGame()
     {
         WindowManager.ShowGameEdit(Obj);
+    }
+
+    public void StartCheck()
+    {
+        IsSelect = false;
+        IsCheck = false;
+        ShowCheck = true;
+    }
+
+    public void StopCheck()
+    {
+        ShowCheck = false;
     }
 
     public void Select()
@@ -267,6 +298,10 @@ public partial class GameItemModel : GameModel
 
     public async void Move(TopLevel? top, PointerEventArgs e)
     {
+        if (ShowCheck)
+        {
+            return;
+        }
         var dragData = new DataObject();
         dragData.Set(BaseBinding.DrapType, Obj.UUID);
         IsDrop = true;

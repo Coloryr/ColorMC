@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Main;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -15,10 +16,41 @@ public partial class GameGroupControl : UserControl
 
         PointerEntered += GameGroupControl_PointerEntered;
         PointerExited += GameGroupControl_PointerExited;
+        PointerPressed += GameGroupControl_PointerPressed;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    private void GameGroupControl_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var temp = e.GetCurrentPoint(this).Properties;
+        if (temp.IsRightButtonPressed)
+        {
+            if (DataContext is GameGroupModel model)
+            {
+                if (model.Top.IsMut)
+                {
+                    Flyout1(this, model);
+                }
+                else
+                {
+                    Flyout(this, model);
+                }
+            }
+            e.Handled = true;
+        }
+    }
+
+    private static void Flyout(Control con, GameGroupModel model)
+    {
+        _ = new MainFlyout1(con, model);
+    }
+
+    private static void Flyout1(Control con, GameGroupModel model)
+    {
+        _ = new MainFlyout2(con, model, model.Top);
     }
 
     private void GameGroupControl_PointerExited(object? sender, PointerEventArgs e)

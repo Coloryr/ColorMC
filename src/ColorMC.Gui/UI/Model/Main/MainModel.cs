@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
-public partial class MainModel : TopModel, IMainTop
+public partial class MainModel : TopModel, IMutTop
 {
     public const string SwitchView = "SwitchView";
 

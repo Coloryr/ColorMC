@@ -22,6 +22,7 @@
             BorderThickness="0"
             Command="{Binding AddGame}"
             CornerRadius="5"
+            IsHitTestVisible="{Binding !ShowCheck}"
             IsVisible="{Binding IsNew, FallbackValue=False}">
             <StackPanel Margin="5">
                 <svg:SvgControl
@@ -34,6 +35,7 @@
         <Button
             Background="Transparent"
             BorderThickness="0"
+            IsHitTestVisible="{Binding !ShowCheck}"
             IsVisible="{Binding !IsNew, FallbackValue=True}">
             <StackPanel Margin="5">
                 <Panel>
@@ -74,8 +76,7 @@
                         CornerRadius="20"
                         IsEnabled="{Binding !OneGame}"
                         IsVisible="{Binding ButtonShow}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text12}"
-                        >
+                        ToolTip.Tip="{setting:Localize ToolTip.Text12}">
                         <svg:SvgControl Path="/Resource/Icon/edit.svg" />
                     </Button>
                     <Button
@@ -90,8 +91,7 @@
                         CornerRadius="20"
                         IsEnabled="{Binding !IsLaunching}"
                         IsVisible="{Binding ButtonShow}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text11}"
-                        >
+                        ToolTip.Tip="{setting:Localize ToolTip.Text11}">
                         <svg:SvgControl Path="/Resource/Icon/launch.svg" />
                     </Button>
                 </Panel>
@@ -104,7 +104,7 @@
                     TextWrapping="{Binding Wrap}" />
             </StackPanel>
         </Button>
-        <Decorator>
+        <Decorator IsEnabled="{Binding !ShowCheck}">
             <Decorator.Styles>
                 <Style Selector="Button">
                     <Setter Property="Background" Value="Transparent" />
@@ -126,6 +126,16 @@
                 IsVisible="{Binding StarVis}">
                 <svg:SvgControl Path="{Binding Star}" />
             </Button>
+        </Decorator>
+        <Decorator IsVisible="{Binding !IsNew}">
+            <CheckBox
+                Margin="0,-5,0,0"
+                Padding="0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                IsChecked="{Binding IsCheck}"
+                IsHitTestVisible="False"
+                IsVisible="{Binding ShowCheck}" />
         </Decorator>
     </Panel>
 </UserControl>

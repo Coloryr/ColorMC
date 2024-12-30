@@ -137,6 +137,12 @@ public partial class GameControl : UserControl
             {
                 return;
             }
+            if (model.ShowCheck)
+            {
+                e.Handled = true;
+                model.IsCheck = !model.IsCheck;
+                return;
+            }
             var select = model.IsSelect;
             model.SetSelect();
 

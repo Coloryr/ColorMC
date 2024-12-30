@@ -28,21 +28,22 @@ public partial class GameGroupModel : TopModel
     [ObservableProperty]
     private bool _expander = true;
 
-    private readonly IMainTop _top;
+    public readonly IMutTop Top;
+
     private readonly Dictionary<string, GameItemModel> _items = [];
     private readonly GameItemModel _addItem;
 
-    public GameGroupModel(BaseModel model, IMainTop top, string key, string name,
+    public GameGroupModel(BaseModel model, IMutTop top, string key, string name,
         List<GameSettingObj> list) : base(model)
     {
-        _top = top;
+        Top = top;
         Header = name;
         Key = key;
         GameList.Clear();
         _items.Clear();
         foreach (var item in list)
         {
-            var model1 = new GameItemModel(Model, _top, item);
+            var model1 = new GameItemModel(Model, Top, item);
             _items.Add(item.UUID, model1);
         }
         _addItem = new(Model, Key == InstancesPath.DefaultGroup ? null : Key);
@@ -107,7 +108,7 @@ public partial class GameGroupModel : TopModel
         {
             return;
         }
-        _top.Launch(_items.Values);
+        Top.Launch(_items.Values);
     }
 
     public bool DropIn(IDataObject data)
@@ -123,7 +124,7 @@ public partial class GameGroupModel : TopModel
             return;
         }
 
-        var game = _top.GetGame(c);
+        var game = Top.GetGame(c);
         if (game == null)
         {
             return;
@@ -196,7 +197,7 @@ public partial class GameGroupModel : TopModel
 
         foreach (var item in ins)
         {
-            var model1 = new GameItemModel(Model, _top, item);
+            var model1 = new GameItemModel(Model, Top, item);
             _items.Add(item.UUID, model1);
         }
 
@@ -300,5 +301,13 @@ public partial class GameGroupModel : TopModel
         }
 
         return false;
+    }
+
+    public void MutAll()
+    {
+        foreach (var item in GameList)
+        {
+            item.IsCheck = true;
+        }
     }
 }

@@ -60,6 +60,8 @@ public partial class MainModel
     [ObservableProperty]
     private Bitmap? _gameImage;
 
+    public bool IsMut { get; private set; }
+
     partial void OnGameSearchTextChanged(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -132,6 +134,133 @@ public partial class MainModel
         HaveLast = false;
     }
 
+    public void StartMut()
+    {
+        if (IsMut)
+        {
+            return;
+        }
+        IsMut = true;
+        foreach (var item in GameGroups)
+        {
+            item.Expander = true;
+            foreach (var item1 in item.GameList)
+            {
+                item1.StartCheck();
+            }
+        }
+    }
+
+    public void StartMut(GameGroupModel model)
+    {
+        StartMut();
+        foreach (var item in model.GameList)
+        {
+            item.IsCheck = true;
+        }
+    }
+
+    public List<GameItemModel> GetMut()
+    {
+        var list = new List<GameItemModel>();
+        foreach (var item in GameGroups)
+        {
+            foreach (var item1 in item.GameList)
+            {
+                if (item1.IsCheck && !item1.IsNew)
+                {
+                    list.Add(item1);
+                }
+            }
+        }
+        return list;
+    }
+    public List<GameItemModel> EndMut()
+    {
+        if (!IsMut)
+        {
+            return [];
+        }
+        var list = new List<GameItemModel>();
+        IsMut = false;
+        foreach (var item in GameGroups)
+        {
+            foreach (var item1 in item.GameList)
+            {
+                item1.StopCheck();
+                if (item1.IsCheck && !item1.IsNew)
+                {
+                    list.Add(item1);
+                }
+            }
+        }
+        return list;
+    }
+
+    public void MutEdit()
+    {
+        var list = EndMut();
+        foreach (var item in list)
+        {
+            WindowManager.ShowGameEdit(item.Obj);
+        }
+    }
+
+    public async void MutDelete()
+    {
+        var list = EndMut();
+        if (list.Count == 0)
+        {
+            return;
+        }
+
+        var res = await Model.ShowWait(string.Format(App.Lang("MainWindow.Info42"), list.Count));
+        if (!res)
+        {
+            return;
+        }
+        Model.Progress(App.Lang("GameEditWindow.Tab1.Info11"));
+        foreach (var item in list)
+        {
+            await GameBinding.DeleteGame(item.Obj, Model.ShowWait);
+        }
+        Model.ProgressClose();
+        Model.InputClose();
+    }
+
+    public void MutLaunch()
+    {
+        var list = EndMut();
+        if (list.Count == 0)
+        {
+            return;
+        }
+
+        Launch(list);
+    }
+
+    public async void MutEditGroup()
+    {
+        var list = EndMut();
+        if (list.Count == 0)
+        {
+            return;
+        }
+
+        await SetGroup(null);
+        DialogHost.Close(MainControl.DialogName);
+
+        if (_isCancel)
+        {
+            return;
+        }
+
+        foreach (var item in list)
+        {
+            GameBinding.MoveGameGroup(item.Obj, GroupItem);
+        }
+    }
+
     public void IconChange(string uuid)
     {
         foreach (var item in GameGroups)
@@ -152,14 +281,14 @@ public partial class MainModel
         GameSearchText = "";
     }
 
-    public Task<(bool, string?)> Set(GameItemModel obj)
+    private Task<(bool, string?)> SetGroup(GameItemModel? obj)
     {
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
 
         DialogHost.Show(this, MainControl.DialogName);
 
-        GroupItem = obj.Obj.GroupName;
+        GroupItem = obj?.Obj.GroupName;
 
         return Task.Run(() =>
         {
@@ -170,7 +299,7 @@ public partial class MainModel
 
     public async void EditGroup(GameItemModel obj)
     {
-        await Set(obj);
+        await SetGroup(obj);
         DialogHost.Close(MainControl.DialogName);
 
         if (_isCancel)
