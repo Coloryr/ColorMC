@@ -301,6 +301,7 @@
                             IsEnabled="{Binding !AdminLaunch}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text41}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text41}" />
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab6.Text42}" />
                     </StackPanel>
                 </Border>
             </StackPanel>
