@@ -310,4 +310,13 @@ public partial class GameGroupModel : TopModel
             item.IsCheck = true;
         }
     }
+
+    public void SetMinMode(bool minMode)
+    {
+        MinMode = minMode;
+        foreach (var item in _items.Values)
+        {
+            item.MinMode = minMode;
+        }
+    }
 }

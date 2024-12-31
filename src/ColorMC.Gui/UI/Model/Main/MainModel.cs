@@ -126,11 +126,7 @@ public partial class MainModel : TopModel, IMutTop
     {
         foreach (var item in GameGroups)
         {
-            item.MinMode = MinMode;
-            foreach (var item1 in item.GameList)
-            {
-                item1.MinMode = MinMode;
-            }
+            item.SetMinMode(MinMode);
         }
     }
 

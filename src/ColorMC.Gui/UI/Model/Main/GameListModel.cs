@@ -322,7 +322,6 @@ public partial class MainModel
 
         var config = GuiConfigUtils.Config.ServerCustom;
 
-
         if (config?.LockGame == true)
         {
             GameGroups.Clear();
@@ -442,6 +441,7 @@ public partial class MainModel
         }
 
         OnPropertyChanged(SwitchView);
+        MinModeChange();
     }
 
     public void Select(string? uuid)
