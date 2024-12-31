@@ -13,6 +13,16 @@ public abstract partial class TopModel(BaseModel model) : ObservableObject
     [ObservableProperty]
     private bool _minMode;
 
+    partial void OnMinModeChanged(bool value)
+    {
+        MinModeChange();
+    }
+
+    protected virtual void MinModeChange()
+    { 
+        
+    }
+
     public virtual void WidthChange(int index, double width)
     {
         if (width < 470)

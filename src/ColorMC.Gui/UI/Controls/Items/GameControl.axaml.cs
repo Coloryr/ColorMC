@@ -80,7 +80,7 @@ public partial class GameControl : UserControl
             {
                 model.IsOver = true;
             }
-            
+
             model.SetTips();
         }
     }

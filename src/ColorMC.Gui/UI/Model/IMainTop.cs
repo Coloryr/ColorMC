@@ -12,7 +12,7 @@ public interface IMainTop
     void Select(GameItemModel? model);
     void EditGroup(GameItemModel model);
     void DoStar(GameItemModel model);
-
+    void SearchClose();
     GameItemModel? GetGame(string uuid);
 }
 
@@ -21,6 +21,7 @@ public interface IMutTop : IMainTop
     bool IsMut { get; }
     void StartMut();
     void StartMut(GameGroupModel model);
+    List<GameItemModel> EndMut();
     List<GameItemModel> GetMut();
     void MutLaunch();
     void MutEdit();

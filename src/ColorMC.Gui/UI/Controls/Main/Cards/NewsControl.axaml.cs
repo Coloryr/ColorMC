@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Animations;
-using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Main.Cards;
 

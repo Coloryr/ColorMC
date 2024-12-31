@@ -126,7 +126,7 @@ public static class ServerMotd
                 tcp.Dispose();
                 IPAddress? selectDns = null;
                 var list = NetworkInterface.GetAllNetworkInterfaces();
-                foreach (var adapter in list.Where(item=>item.OperationalStatus is OperationalStatus.Up && item.NetworkInterfaceType is NetworkInterfaceType.Wireless80211 or NetworkInterfaceType.Ethernet && item.Speed > 0))
+                foreach (var adapter in list.Where(item => item.OperationalStatus is OperationalStatus.Up && item.NetworkInterfaceType is NetworkInterfaceType.Wireless80211 or NetworkInterfaceType.Ethernet && item.Speed > 0))
                 {
                     if (selectDns != null)
                     {

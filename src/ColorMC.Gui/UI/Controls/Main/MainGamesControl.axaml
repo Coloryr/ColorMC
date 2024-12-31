@@ -12,15 +12,14 @@
     x:DataType="model:MainModel"
     mc:Ignorable="d">
     <Panel>
-        <Decorator Name="ScrollViewer1" VerticalAlignment="Top">
-            <ItemsControl ItemsSource="{Binding GameGroups}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <views2:GameGroupControl Margin="0,0,0,10" DataContext="{Binding}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Decorator>
+        <ItemsControl ItemsSource="{Binding GameGroups}">
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <views2:GameGroupControl Margin="0,0,0,10" DataContext="{Binding}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <Border
             Margin="10"
             Padding="10"

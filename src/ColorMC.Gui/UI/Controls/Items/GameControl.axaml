@@ -7,108 +7,198 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    Width="80"
     VerticalAlignment="Top"
     x:DataType="model:GameItemModel"
     IsVisible="{Binding IsDisplay}"
     ToolTip.Tip="{Binding Tips}"
     mc:Ignorable="d">
     <Panel Background="Transparent">
-        <Button
-            Width="68"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Background="Transparent"
-            BorderThickness="0"
-            Command="{Binding AddGame}"
-            CornerRadius="5"
-            IsHitTestVisible="{Binding !ShowCheck}"
-            IsVisible="{Binding IsNew, FallbackValue=False}">
-            <StackPanel Margin="5">
-                <svg:SvgControl
-                    Width="65"
-                    Height="65"
-                    Path="/Resource/Icon/add1.svg" />
-                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text8}" />
-            </StackPanel>
-        </Button>
-        <Button
-            Background="Transparent"
-            BorderThickness="0"
-            IsHitTestVisible="{Binding !ShowCheck}"
-            IsVisible="{Binding !IsNew, FallbackValue=True}">
-            <StackPanel Margin="5">
-                <Panel>
-                    <Border
-                        Width="70"
-                        Height="70"
-                        VerticalAlignment="Center"
-                        CornerRadius="5">
-                        <Border.Background>
-                            <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
-                        </Border.Background>
-                    </Border>
-                    <Image
-                        Width="30"
-                        Height="30"
+        <Panel Width="80" IsVisible="{Binding !MinMode, FallbackValue=false}">
+            <Button
+                Width="68"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{Binding AddGame}"
+                CornerRadius="5"
+                IsHitTestVisible="{Binding !ShowCheck}"
+                IsVisible="{Binding IsNew, FallbackValue=False}">
+                <StackPanel Margin="5">
+                    <svg:SvgControl
+                        Width="65"
+                        Height="65"
+                        Path="/Resource/Icon/add1.svg" />
+                    <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text8}" />
+                </StackPanel>
+            </Button>
+            <Button
+                Background="Transparent"
+                BorderThickness="0"
+                IsHitTestVisible="{Binding !ShowCheck}"
+                IsVisible="{Binding !IsNew, FallbackValue=True}">
+                <StackPanel Margin="5">
+                    <Panel>
+                        <Border
+                            Width="70"
+                            Height="70"
+                            VerticalAlignment="Center"
+                            CornerRadius="5">
+                            <Border.Background>
+                                <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <Image
+                            Width="30"
+                            Height="30"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding IsLaunch}"
+                            Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
+                            Stretch="UniformToFill" />
+                        <Image
+                            Width="30"
+                            Height="30"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding IsLoad}"
+                            Source="resm:ColorMC.Gui.Resource.Pic.load.png"
+                            Stretch="UniformToFill" />
+                        <Button
+                            Width="31"
+                            Height="31"
+                            Margin="34,0,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            BorderThickness="0"
+                            ClipToBounds="False"
+                            Command="{Binding EditGame}"
+                            CornerRadius="20"
+                            IsEnabled="{Binding !OneGame}"
+                            IsVisible="{Binding ButtonShow}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text12}">
+                            <svg:SvgControl Path="/Resource/Icon/edit.svg" />
+                        </Button>
+                        <Button
+                            Width="31"
+                            Height="31"
+                            Margin="0,0,34,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            BorderThickness="0"
+                            ClipToBounds="False"
+                            Command="{Binding Launch}"
+                            CornerRadius="20"
+                            IsEnabled="{Binding !IsLaunching}"
+                            IsVisible="{Binding ButtonShow}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text11}">
+                            <svg:SvgControl Path="/Resource/Icon/launch.svg" />
+                        </Button>
+                    </Panel>
+                    <TextBlock
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsVisible="{Binding IsLaunch}"
-                        Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
-                        Stretch="UniformToFill" />
-                    <Image
-                        Width="30"
-                        Height="30"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsVisible="{Binding IsLoad}"
-                        Source="resm:ColorMC.Gui.Resource.Pic.load.png"
-                        Stretch="UniformToFill" />
-                    <Button
-                        Width="31"
-                        Height="31"
-                        Margin="34,0,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        BorderThickness="0"
-                        ClipToBounds="False"
-                        Command="{Binding EditGame}"
-                        CornerRadius="20"
-                        IsEnabled="{Binding !OneGame}"
-                        IsVisible="{Binding ButtonShow}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text12}">
-                        <svg:SvgControl Path="/Resource/Icon/edit.svg" />
-                    </Button>
-                    <Button
-                        Width="31"
-                        Height="31"
-                        Margin="0,0,34,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        BorderThickness="0"
-                        ClipToBounds="False"
-                        Command="{Binding Launch}"
-                        CornerRadius="20"
-                        IsEnabled="{Binding !IsLaunching}"
-                        IsVisible="{Binding ButtonShow}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text11}">
-                        <svg:SvgControl Path="/Resource/Icon/launch.svg" />
-                    </Button>
-                </Panel>
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="13"
-                    Text="{Binding Name, FallbackValue=1234}"
-                    TextAlignment="Center"
-                    TextTrimming="{Binding Trim}"
-                    TextWrapping="{Binding Wrap}" />
-            </StackPanel>
-        </Button>
+                        FontSize="13"
+                        Text="{Binding Name, FallbackValue=1234}"
+                        TextAlignment="Center"
+                        TextTrimming="{Binding Trim}"
+                        TextWrapping="{Binding Wrap}" />
+                </StackPanel>
+            </Button>
+        </Panel>
+        <Panel IsVisible="{Binding MinMode, FallbackValue=true}">
+            <Button
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{Binding AddGame}"
+                CornerRadius="5"
+                IsHitTestVisible="{Binding !ShowCheck}"
+                IsVisible="{Binding IsNew, FallbackValue=false}">
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <svg:SvgControl
+                        Width="65"
+                        Height="65"
+                        Path="/Resource/Icon/add1.svg" />
+                    <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text8}" />
+                </StackPanel>
+            </Button>
+            <Button
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                Background="Transparent"
+                BorderThickness="0"
+                IsHitTestVisible="{Binding !ShowCheck}"
+                IsVisible="{Binding !IsNew, FallbackValue=True}">
+                <DockPanel Margin="5">
+                    <Panel>
+                        <Border
+                            Width="70"
+                            Height="70"
+                            VerticalAlignment="Center"
+                            CornerRadius="5">
+                            <Border.Background>
+                                <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <Image
+                            Width="30"
+                            Height="30"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding IsLaunch}"
+                            Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
+                            Stretch="UniformToFill" />
+                        <Image
+                            Width="30"
+                            Height="30"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding IsLoad}"
+                            Source="resm:ColorMC.Gui.Resource.Pic.load.png"
+                            Stretch="UniformToFill" />
+                    </Panel>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="13"
+                            Text="{Binding Name, FallbackValue=1234}"
+                            TextAlignment="Center"
+                            TextTrimming="{Binding Trim}"
+                            TextWrapping="{Binding Wrap}" />
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <Button
+                                Width="80"
+                                Height="35"
+                                Classes="top"
+                                Command="{Binding EditGame}"
+                                Content="{setting:Localize MainWindow.Text33}"
+                                IsEnabled="{Binding !OneGame}"
+                                IsVisible="{Binding ButtonShow}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text12}" />
+                            <Button
+                                Width="80"
+                                Height="35"
+                                Classes="top"
+                                Command="{Binding Launch}"
+                                Content="{setting:Localize MainWindow.Text32}"
+                                IsEnabled="{Binding !IsLaunching}"
+                                IsVisible="{Binding ButtonShow}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text11}" />
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
+            </Button>
+        </Panel>
         <Decorator IsEnabled="{Binding !ShowCheck}">
             <Decorator.Styles>
                 <Style Selector="Button">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="BorderThickness" Value="0" />
                     <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
                         <Setter Property="Background" Value="Transparent" />
                         <Setter Property="BorderBrush" Value="Transparent" />
@@ -116,10 +206,12 @@
                 </Style>
             </Decorator.Styles>
             <Button
-                Width="15"
-                Height="15"
+                Width="20"
+                Height="20"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Background="Transparent"
+                BorderThickness="0"
                 ClipToBounds="False"
                 Command="{Binding DoStar}"
                 CornerRadius="20"

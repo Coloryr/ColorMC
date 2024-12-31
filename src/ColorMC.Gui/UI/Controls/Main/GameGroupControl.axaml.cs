@@ -26,7 +26,16 @@ public partial class GameGroupControl : UserControl
     private void GameGroupControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var temp = e.GetCurrentPoint(this).Properties;
-        if (temp.IsRightButtonPressed)
+        if (temp.IsLeftButtonPressed)
+        {
+            if (DataContext is GameGroupModel model)
+            {
+                model.Top.EndMut();
+                model.Top.SearchClose();
+                model.Top.Select(null);
+            }
+        }
+        else if (temp.IsRightButtonPressed)
         {
             if (DataContext is GameGroupModel model)
             {

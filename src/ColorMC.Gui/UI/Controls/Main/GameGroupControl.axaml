@@ -2,6 +2,7 @@
     x:Class="ColorMC.Gui.UI.Controls.Main.GameGroupControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cov="clr-namespace:ColorMC.Gui.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
@@ -12,6 +13,9 @@
     d:DesignWidth="800"
     x:DataType="model:GameGroupModel"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <cov:MinModeToPanelTemplateConverter x:Key="MinModeToPanelTemplateConverter" />
+    </UserControl.Resources>
     <Border Classes="t2">
         <Panel>
             <Expander
@@ -50,9 +54,7 @@
                         Background="Transparent"
                         ItemsSource="{Binding GameList}">
                         <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel />
-                            </ItemsPanelTemplate>
+                            <Binding Converter="{StaticResource MinModeToPanelTemplateConverter}" Path="MinMode" />
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -84,8 +86,7 @@
                 BorderThickness="0"
                 Command="{Binding LaunchAll}"
                 IsVisible="{Binding !IsPhone}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text132}"
-                >
+                ToolTip.Tip="{setting:Localize ToolTip.Text132}">
                 <svg:SvgControl Path="/Resource/Icon/launch.svg" />
             </Button>
         </Panel>

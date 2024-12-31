@@ -122,6 +122,18 @@ public partial class MainModel : TopModel, IMutTop
         WindowManager.ShowNews();
     }
 
+    protected override void MinModeChange()
+    {
+        foreach (var item in GameGroups)
+        {
+            item.MinMode = MinMode;
+            foreach (var item1 in item.GameList)
+            {
+                item1.MinMode = MinMode;
+            }
+        }
+    }
+
     public void HelloClick()
     {
         _helloClick++;

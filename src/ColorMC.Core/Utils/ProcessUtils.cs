@@ -101,7 +101,7 @@ public static class ProcessUtils
             p.StartInfo.FileName = "pkexec";
             p.StartInfo.UseShellExecute = true;
         }
-        foreach(var item in args)
+        foreach (var item in args)
         {
             p.StartInfo.ArgumentList.Add(item);
         }
