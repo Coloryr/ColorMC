@@ -76,7 +76,14 @@ public static class ColorMCGui
 
             if (GuiConfigUtils.Config.ServerCustom.AdminLaunch && !ProcessUtils.IsRunAsAdmin())
             {
-                ProcessUtils.LaunchAdmin(args);
+                try
+                {
+                    ProcessUtils.LaunchAdmin(args);
+                }
+                catch
+                { 
+                    
+                }
                 return;
             }
 
