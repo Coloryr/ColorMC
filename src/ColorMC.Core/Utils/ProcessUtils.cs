@@ -23,6 +23,7 @@ public static class ProcessUtils
             {
                 return true;
             }
+            return false;
 
             // 检查当前用户是否属于 sudo 组
             var process = new Process
