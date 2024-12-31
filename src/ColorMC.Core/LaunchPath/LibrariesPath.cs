@@ -216,7 +216,11 @@ public static class LibrariesPath
             }
             foreach (var item in gameList)
             {
-                output.AddOrUpdate(item.Key, item.Value);
+                if (output.ContainsKey(item.Key))
+                {
+                    continue;
+                }
+                output.Add(item.Key, item.Value);
             }
         }
         else
