@@ -91,7 +91,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <svg:SvgControl Path="/Resource/Icon/book.svg" />
                                             <TextBlock
-                                                Margin="-3,0,0,5"
+                                                Margin="0,0,0,5"
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
                                                 Text="{setting:Localize MainWindow.Text29}" />
