@@ -36,12 +36,6 @@ More Languages: [English](docs/README_EN.md)
 在[Releases](https://github.com/Coloryr/ColorMC/releases)或者[Actions](https://github.com/Coloryr/ColorMC/actions)里面下载构建好的压缩包/安装包  
 解压(zip)\安装(msi,deb,pkg)\或直接运行(appimage)即可
 
-Windows下，可以使用winget安装
-```
-winget install colormc
-```
-默认安装在`C:\Program Files\ColorMC`
-
 ## 启动
 
 - 安装完成后启动  
