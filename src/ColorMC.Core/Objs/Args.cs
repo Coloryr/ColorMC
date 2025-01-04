@@ -128,6 +128,7 @@ public record GameMakeArg
     public ServerObj? Server;
 
     public int? Mixinport;
+    public bool CheckLocal;
 }
 
 /// <summary>
