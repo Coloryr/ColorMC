@@ -37,7 +37,7 @@ public class MainFlyout
                     new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text6"), true, ()=>
                     {
                         WindowManager.ShowGameEdit(obj.Obj, GameEditWindowType.World);
-                    }),
+                    })
                 ]
             },
             new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text1"), true, ()=>
@@ -64,6 +64,7 @@ public class MainFlyout
                     {
                         WindowManager.ShowGameExport(obj.Obj);
                     }),
+                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text23"), true, obj.ExportCmd),
                 ]
             },
             new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text17"), true, null)

@@ -566,6 +566,8 @@ public static class GameBinding
             return null;
         });
 
+        arg.Update2?.Invoke(obj, LaunchState.End);
+
         model.ProgressClose();
         model.Title1 = "";
         FuntionUtils.RunGC();
@@ -2673,5 +2675,76 @@ public static class GameBinding
     {
         var file = Path.GetFullPath($"{obj.GetModsPath()}/{mod.File}");
         PathHelper.Delete(file);
+    }
+
+    public static async void ExportCmd(GameSettingObj obj, BaseModel model)
+    {
+        var top = TopLevel.GetTopLevel(WindowManager.FindRoot(WindowManager.MainWindow).ICon);
+        if (top == null)
+        {
+            model.Show(App.Lang("MainWindow.Error10"));
+            return;
+        }
+        var res = await UserBinding.GetLaunchUser(model);
+        if (res.User is not { } user)
+        {
+            model.Show(App.Lang("GameBinding.Error3"));
+            return;
+        }
+        var arg = MakeArg(user, model, -1);
+
+        var res1 = await obj.CreateGameCmd(arg);
+        if (!res1.Res)
+        {
+            model.Show(res1.Message!);
+            return;
+        }
+
+        string[] args;
+
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            var str = new StringBuilder();
+            foreach (var item in res1.Envs)
+            {
+                str.AppendLine($"$env:{item.Key} = '{item.Value}'");
+            }
+
+            str.Append("Set-Location -Path ")
+                .AppendLine($"'{res1.Dir}'")
+                .Append($"& '{res1.Java.Replace("javaw.exe", "java.exe")}'");
+
+            foreach (var item in res1.Args)
+            {
+                str.Append($" '{item}'");
+            }
+
+            args = [".ps1", "game.ps1", str.ToString()];
+        }
+        else
+        {
+            var str = new StringBuilder();
+            str.AppendLine("#!/bin/sh");
+            str.AppendLine($"cd '{res1.Dir}' || exit 1");
+            foreach (var item in res1.Envs)
+            {
+                str.AppendLine($"export {item.Key}='{item.Value}'");
+            }
+
+            str.Append($"'{res1.Java}'");
+
+            foreach (var item in res1.Args)
+            {
+                str.Append($" '{item}'");
+            }
+
+            args = [".sh", "game.sh", str.ToString()];
+        }
+
+        var res2 = await PathBinding.SaveFile(top, FileType.Cmd, args);
+        if (res2 == false)
+        {
+            model.Show(App.Lang("MainWindow.Error10"));
+        }
     }
 }

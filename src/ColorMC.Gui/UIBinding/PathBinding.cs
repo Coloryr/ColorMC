@@ -289,9 +289,9 @@ public static class PathBinding
                 try
                 {
                     var name = file.GetPath();
-                    PathHelper.WriteText(file.GetPath()!,
+                    PathHelper.WriteText(name!,
                     JsonConvert.SerializeObject(AuthDatabase.Auths.Values, Formatting.Indented));
-
+                    OpenFileWithExplorer(name!);
                     return true;
                 }
                 catch (Exception e)
@@ -309,6 +309,7 @@ public static class PathBinding
                 {
                     await GameBinding.ExportWorld((arg![0] as WorldObj)!,
                         file.GetPath());
+                    OpenFileWithExplorer(file.GetPath()!);
                     return true;
                 }
                 catch (Exception e)
@@ -330,6 +331,7 @@ public static class PathBinding
                     {
                         PathHelper.WriteBytes(name!, data1);
                     }
+                    OpenFileWithExplorer(name!);
                     return true;
                 }
                 catch (Exception e)
@@ -349,6 +351,7 @@ public static class PathBinding
                     if (name == null)
                         return false;
                     await File.WriteAllTextAsync(name, arg![0] as string);
+                    OpenFileWithExplorer(name);
                     return true;
                 }
                 catch (Exception e)
@@ -368,11 +371,32 @@ public static class PathBinding
                     if (name == null)
                         return false;
                     await File.WriteAllTextAsync(name, JsonConvert.SerializeObject(arg![1]));
+                    OpenFileWithExplorer(name);
                     return true;
                 }
                 catch (Exception e)
                 {
                     Logs.Error(App.Lang("PathBinding.Errro4"), e);
+                    return false;
+                }
+            case FileType.Cmd:
+                file = await SaveFile(top,
+                    App.Lang("MainWindow.Flyouts.Text23"), (string)arg![0], (string)arg![1]);
+                if (file == null)
+                    break;
+
+                try
+                {
+                    var name = file.GetPath();
+                    if (name == null)
+                        return false;
+                    await File.WriteAllTextAsync(name, (string)arg![2]);
+                    OpenFileWithExplorer(name);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.Lang("PathBinding.Errro6"), e);
                     return false;
                 }
         }

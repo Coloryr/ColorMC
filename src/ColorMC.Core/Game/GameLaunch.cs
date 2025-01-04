@@ -1322,6 +1322,169 @@ public static class Launch
         return list;
     }
 
+    public static async Task<CreateCmdRes> CreateGameCmd(this GameSettingObj obj, GameLaunchArg larg)
+    {
+        //版本号检测
+        if (string.IsNullOrWhiteSpace(obj.Version)
+            || (obj.Loader is not (Loaders.Normal or Loaders.Custom) && string.IsNullOrWhiteSpace(obj.LoaderVersion))
+            || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
+        {
+            return new() { Message = LanguageHelper.Get("Core.Launch.Error7") };
+        }
+
+        //登录账户
+        larg.Update2?.Invoke(obj, LaunchState.Login);
+        var res1 = await larg.Auth.RefreshTokenAsync();
+        if (res1.LoginState != LoginState.Done)
+        {
+            if (larg.Auth.AuthType == AuthType.OAuth
+                && !string.IsNullOrWhiteSpace(larg.Auth.UUID)
+                && larg.Loginfail != null
+                && await larg.Loginfail(larg.Auth) == true)
+            {
+                larg.Auth = new()
+                {
+                    UserName = larg.Auth.UserName,
+                    UUID = larg.Auth.UUID,
+                    AuthType = AuthType.Offline
+                };
+            }
+            else
+            {
+                larg.Update2?.Invoke(obj, LaunchState.LoginFail);
+                if (res1.Ex != null)
+                    return new() { Message = res1.Message! };
+
+                return new() { Message = res1.Message! };
+            }
+        }
+        else
+        {
+            larg.Auth = res1.Auth!;
+            larg.Auth.Save();
+        }
+
+        if (obj.ModPackType == SourceType.ColorMC && !string.IsNullOrWhiteSpace(obj.ServerUrl))
+        {
+            var pack = await obj.ServerPackCheckAsync(new ServerPackCheckArg
+            {
+                State = larg.State,
+                Select = larg.Select
+            });
+            if (pack == false)
+            {
+                if (larg.Request == null)
+                {
+                    return new() { Message =
+                         string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name) };
+                }
+                var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
+                if (!res2)
+                {
+                    return new() { Message = LanguageHelper.Get("Core.Launch.Error8") };
+                }
+            }
+        }
+
+        larg.Update2?.Invoke(obj, LaunchState.Check);
+
+        var path = obj.JvmLocal;
+        JavaInfo? jvm = null;
+        var game = VersionPath.GetVersion(obj.Version)!;
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            if (JvmPath.Jvms.Count == 0)
+            {
+                var list1 = await JavaHelper.FindJava();
+                list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
+            }
+            var jv = game.JavaVersion.majorVersion;
+            jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
+            if (jvm == null)
+            {
+                larg.Update2?.Invoke(obj, LaunchState.JavaError);
+                larg.Nojava?.Invoke(jv);
+                return new() { Message = string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv) };
+            }
+
+            path = jvm.GetPath();
+        }
+
+        if (!File.Exists(path))
+        {
+            return new() { Message = LanguageHelper.Get("Core.Launch.Error13") };
+        }
+
+        //准备Jvm参数
+        larg.Update2?.Invoke(obj, LaunchState.JvmPrepare);
+        var arg = await obj.MakeArgAsync(new GameMakeArg
+        {
+            Jvm = jvm!,
+            Login = larg.Auth,
+            World = larg.World,
+            Server = larg.Server,
+            Mixinport = larg.Mixinport
+        });
+
+        //自定义启动参数
+        var env = new Dictionary<string, string>();
+        string envstr;
+        if (obj.JvmArg?.JvmEnv is { } str)
+        {
+            envstr = str;
+        }
+        else if (ConfigUtils.Config.DefaultJvmArg.JvmEnv is { } str1)
+        {
+            envstr = str1;
+        }
+        else
+        {
+            envstr = "";
+        }
+
+        if (!string.IsNullOrWhiteSpace(envstr))
+        {
+            var list1 = envstr.Split('\n');
+            foreach (var item in list1)
+            {
+                var item1 = item.Trim();
+                var index = item1.IndexOf('=');
+                string key, value;
+                if (index == -1)
+                {
+                    key = item1;
+                    value = "";
+                }
+                else if (index + 1 == item1.Length)
+                {
+                    key = item1[..^1];
+                    value = "";
+                }
+                else
+                {
+                    key = item1[..index];
+                    value = item1[(index + 1)..];
+                }
+
+                if (!env.TryAdd(key, value))
+                {
+                    env[key] = value;
+                }
+            }
+        }
+
+        larg.Update2?.Invoke(obj, LaunchState.End);
+
+        return new CreateCmdRes()
+        {
+            Res = true,
+            Args = arg,
+            Dir = obj.GetGamePath(),
+            Java = path,
+            Envs = env
+        };
+    }
+
     /// <summary>
     /// 启动游戏
     /// </summary>

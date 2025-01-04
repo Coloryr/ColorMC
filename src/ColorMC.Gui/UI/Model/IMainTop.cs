@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 
@@ -14,6 +15,7 @@ public interface IMainTop
     void DoStar(GameItemModel model);
     void SearchClose();
     GameItemModel? GetGame(string uuid);
+    void ExportCmd(GameSettingObj obj);
 }
 
 public interface IMutTop : IMainTop

@@ -438,6 +438,11 @@ public partial class GameItemModel : GameModel
             string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
     }
 
+    public void ExportCmd()
+    {
+        _top?.ExportCmd(Obj);
+    }
+
     public override void Close()
     {
 
