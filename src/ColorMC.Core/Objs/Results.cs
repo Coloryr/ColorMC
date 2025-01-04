@@ -303,3 +303,13 @@ public record MMCToColorMCRes
     public GameSettingObj Game;
     public string Icon;
 }
+
+public record CreateCmdRes
+{
+    public bool Res;
+    public string? Message;
+    public string Java;
+    public string Dir;
+    public List<string> Args;
+    public Dictionary<string, string> Envs;
+}

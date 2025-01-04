@@ -117,7 +117,7 @@ public enum FileType
     ModPack = 0, Mod, World, Shaderpack, Resourcepack, DataPacks, Schematic,
     Java, Game, Config, AuthConfig, Pic, Optifne, Skin, Music,
     Text, Live2D, Icon, Head, JavaZip, Live2DCore, Loader, InputConfig,
-    User
+    User, Cmd
 }
 
 /// <summary>

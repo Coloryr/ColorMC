@@ -215,6 +215,11 @@ public partial class MainModel : TopModel, IMutTop
         }
     }
 
+    public void ExportCmd(GameSettingObj obj)
+    {
+        GameBinding.ExportCmd(obj, Model);
+    }
+
     public override void Close()
     {
         GroupList.Clear();
