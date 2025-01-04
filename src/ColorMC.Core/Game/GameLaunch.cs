@@ -786,7 +786,7 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="enableasm">是否添加注入</param>
     /// <returns>classpath</returns>
-    private static async Task<string> MakeClassPathAsync(this GameSettingObj obj, bool enableasm)
+    private static async Task<string> MakeClassPathAsync(this GameSettingObj obj, bool enableasm, bool checklocal)
     {
         var libraries = await obj.GetLibsAsync();
         var classpath = new StringBuilder();
@@ -811,7 +811,7 @@ public static class Launch
                     .Replace(GAME_BASE_DIR, dir2)
                     .Trim();
                 path = Path.GetFullPath(path);
-                if (File.Exists(path))
+                if (!checklocal || File.Exists(path))
                 {
                     libraries.Add(path);
                 }
@@ -951,7 +951,7 @@ public static class Launch
     {
         var list = new List<string>();
         var jvmarg = await obj.MakeJvmArgAsync(arg.Login, arg.Jvm, arg.Mixinport);
-        var classpath = await obj.MakeClassPathAsync(arg.Mixinport > 0);
+        var classpath = await obj.MakeClassPathAsync(arg.Mixinport > 0, arg.CheckLocal);
         var gamearg = obj.MakeGameArg(arg.World, arg.Server);
         obj.ReplaceAll(arg.Login, jvmarg, classpath);
         obj.ReplaceAll(arg.Login, gamearg, classpath);
@@ -1173,7 +1173,8 @@ public static class Launch
                     Login = larg.Auth,
                     World = larg.World,
                     Server = larg.Server,
-                    Mixinport = larg.Mixinport
+                    Mixinport = larg.Mixinport,
+                    CheckLocal = true
                 });
                 ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
                 bool hidenext = false;
@@ -1700,7 +1701,8 @@ public static class Launch
             Login = larg.Auth,
             World = larg.World,
             Server = larg.Server,
-            Mixinport = larg.Mixinport
+            Mixinport = larg.Mixinport,
+            CheckLocal = true
         });
         ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
         bool hidenext = false;
