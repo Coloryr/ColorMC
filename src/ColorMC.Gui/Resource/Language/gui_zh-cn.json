@@ -89,6 +89,7 @@
 	"MainWindow.Info40": "启动器更新日志",
 	"MainWindow.Info41": "是否要使用当前账户启动该分组的所有实例",
 	"MainWindow.Info42": "是否删除选中的 {0} 个实例",
+	"MainWindow.Info43": "正在导出实例启动参数",
 	"MainWindow.Error1": "启动器更新日志获取失败",
 	"MainWindow.Error2": "启动器更新运行出错，已回到旧版本",
 	"MainWindow.Error3": "请输入名字",

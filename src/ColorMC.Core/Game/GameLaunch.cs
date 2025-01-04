@@ -1388,6 +1388,24 @@ public static class Launch
 
         larg.Update2?.Invoke(obj, LaunchState.Check);
 
+        //检查游戏文件
+        var res = await obj.CheckGameFileAsync(CancellationToken.None);
+        var res3 = await larg.Auth.CheckLoginCoreAsync();
+
+        if (res3 != null)
+        {
+            res.Add(res3);
+        }
+
+        if (obj.GetModFast() && obj.Loader == Loaders.Normal && larg.Request != null)
+        {
+            var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
+            if (!res2)
+            {
+                return new() { Message = LanguageHelper.Get("Core.Launch.Error8") };
+            }
+        }
+
         var path = obj.JvmLocal;
         JavaInfo? jvm = null;
         var game = VersionPath.GetVersion(obj.Version)!;
