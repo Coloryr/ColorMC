@@ -2692,7 +2692,35 @@ public static class GameBinding
             return;
         }
         var arg = MakeArg(user, model, -1);
-
+        
+        arg.Update2 = (obj, state) =>
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (state == LaunchState.End)
+                {
+                    model.ProgressClose();
+                }
+                model.ProgressUpdate(App.Lang(state switch
+                {
+                    LaunchState.Login => "MainWindow.Info8",
+                    LaunchState.Check => "MainWindow.Info9",
+                    LaunchState.CheckVersion => "MainWindow.Info10",
+                    LaunchState.CheckLib => "MainWindow.Info11",
+                    LaunchState.CheckAssets => "MainWindow.Info12",
+                    LaunchState.CheckLoader => "MainWindow.Info13",
+                    LaunchState.CheckLoginCore => "MainWindow.Info14",
+                    LaunchState.CheckMods => "MainWindow.Info17",
+                    LaunchState.Download => "MainWindow.Info15",
+                    LaunchState.JvmPrepare => "MainWindow.Info16",
+                    LaunchState.LaunchPre => "MainWindow.Info31",
+                    LaunchState.LaunchPost => "MainWindow.Info32",
+                    LaunchState.InstallForge => "MainWindow.Info38",
+                    _ => ""
+                }));
+            });
+        };
+        model.Progress(App.Lang("MainWindow.Info43"));
         var res1 = await obj.CreateGameCmd(arg);
         if (!res1.Res)
         {
