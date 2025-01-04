@@ -821,7 +821,7 @@ public static class Launch
         //添加lib路径到classpath
         foreach (var item in libraries)
         {
-            if (File.Exists(item))
+            if (!checklocal || File.Exists(item))
             {
                 classpath.Append($"{item}{sep}");
                 ColorMCCore.OnGameLog(obj, $"    {item}");
