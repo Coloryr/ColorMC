@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
 
@@ -68,7 +69,10 @@ public partial class Tab4Control : UserControl
             return;
         }
 
-        var items = DataGrid1.SelectedItems;
-        _ = new GameEditFlyout1(control, items, model);
+        Dispatcher.UIThread.Post(() =>
+        {
+            var items = DataGrid1.SelectedItems;
+            _ = new GameEditFlyout1(control, items, model);
+        });
     }
 }

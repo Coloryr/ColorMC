@@ -27,7 +27,7 @@ public partial class SettingModel
     public string[] LoginList { get; init; } = LanguageBinding.GetLockLoginType();
 
     [ObservableProperty]
-    private LockLoginModel? _lockSelect;
+    private LockLoginModel _lockSelect;
 
     [ObservableProperty]
     private Color _motdFontColor;

@@ -111,11 +111,6 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
     [ObservableProperty]
     private bool _loadMoreMod;
     /// <summary>
-    /// 启用翻页
-    /// </summary>
-    [ObservableProperty]
-    private bool _enablePage;
-    /// <summary>
     /// 是否选择了项目
     /// </summary>
     [ObservableProperty]
@@ -137,6 +132,10 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
     private bool _isUpgrade;
     [ObservableProperty]
     private bool _emptyOptifineDisplay;
+    [ObservableProperty]
+    private bool _nextPage;
+    [ObservableProperty]
+    private bool _nextPageDisplay;
 
     /// <summary>
     /// 下载类型
@@ -167,7 +166,11 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
     /// 文件列表页数
     /// </summary>
     [ObservableProperty]
-    private int _pageDownload;
+    private int? _pageDownload;
+    [ObservableProperty]
+    private int _maxPage;
+    [ObservableProperty]
+    private int _maxPageDownload;
 
     /// <summary>
     /// 游戏版本
@@ -245,7 +248,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
     /// <summary>
     /// 上一个下载ID
     /// </summary>
-    private string _lastId;
+    private string? _lastId;
 
     /// <summary>
     /// 是否已经显示
@@ -292,6 +295,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         {
             Model.PushBack(back: () =>
             {
+                _lastId = null;
                 VersionDisplay = false;
             });
         }
@@ -383,7 +387,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
     /// 文件列表页数修改
     /// </summary>
     /// <param name="value"></param>
-    partial void OnPageDownloadChanged(int value)
+    partial void OnPageDownloadChanged(int? value)
     {
         if (!Display || _load)
         {
@@ -468,10 +472,21 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         else
         {
             //其他搜索源
-            var data = await WebBinding.GetList(_now, type,
+            var res = await WebBinding.GetList(_now, type,
                 GameVersion, Name, Page ?? 0,
                 SortType, Categorie < 0 ? "" :
                     _categories[Categorie], Obj.Loader);
+
+            var data = res.List;
+
+            MaxPage = res.Count / 20;
+            var page = 0;
+            if (type == SourceType.Modrinth)
+            {
+                page = Page ?? 0;
+            }
+
+            NextPage = (MaxPage - Page) > 0;
 
             if (data == null)
             {
@@ -484,20 +499,32 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
 
             if (_now == FileType.Mod)
             {
-                foreach (var item in data)
+                int b = 0;
+                for (int a = page * 50; a < data.Count; a++, b++)
                 {
+                    if (b >= 50)
+                    {
+                        break;
+                    }
+                    var item = data[a];
+                    item.Add = this;
                     if (Obj.Mods.ContainsKey(item.ID))
                     {
                         item.IsDownload = true;
                     }
-                    item.Add = this;
                     DisplayList.Add(item);
                 }
             }
             else
             {
-                foreach (var item in data)
+                int b = 0;
+                for (int a = page * 50; a < data.Count; a++, b++)
                 {
+                    if (b >= 50)
+                    {
+                        break;
+                    }
+                    var item = data[a];
                     item.Add = this;
                     DisplayList.Add(item);
                 }
@@ -918,7 +945,12 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
             }
         });
 
-        LoadFile(pid);
+        _lastId = pid;
+
+        _load = true;
+        PageDownload = 0;
+        LoadFile();
+        _load = false;
     }
 
     /// <summary>
@@ -933,9 +965,12 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         }
 
         _lastType = SourceType.McMod;
-        _lastId = "";
+        _lastId = null;
 
+        _load = true;
+        PageDownload = 0;
         LoadFile();
+        _load = false;
     }
 
     /// <summary>
@@ -1160,11 +1195,10 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
     /// 加载文件列表
     /// </summary>
     /// <param name="id">项目ID</param>
-    private async void LoadFile(string? id = null)
+    private async void LoadFile()
     {
         FileList.Clear();
 
-        List<FileVersionItemModel>? list = null;
         var type = _sourceTypeList[DownloadSource];
         if (type == SourceType.McMod)
         {
@@ -1179,23 +1213,22 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                         return;
                     }
                     _lastType = type = res.Index == 0 ? SourceType.CurseForge : SourceType.Modrinth;
-                    _lastId = id = type == SourceType.CurseForge ? obj1.CurseforgeId : obj1.ModrinthId;
+                    _lastId = type == SourceType.CurseForge ? obj1.CurseforgeId : obj1.ModrinthId;
                 }
                 else if (obj1.CurseforgeId != null)
                 {
-                    _lastId = id = obj1.CurseforgeId;
+                    _lastId = obj1.CurseforgeId;
                     _lastType = type = SourceType.CurseForge;
                 }
                 else if (obj1.ModrinthId != null)
                 {
-                    _lastId = id = obj1.ModrinthId;
+                    _lastId = obj1.ModrinthId;
                     _lastType = type = SourceType.Modrinth;
                 }
             }
             else
             {
                 type = _lastType;
-                id = _lastId;
             }
         }
 
@@ -1206,21 +1239,28 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         }
 
         VersionDisplay = true;
+        var page = 0;
+        List<FileVersionItemModel>? list = null;
         Model.Progress(App.Lang("AddWindow.Info3"));
         if (type == SourceType.CurseForge)
         {
-            EnablePage = true;
-            list = await WebBinding.GetFileList(type, id ??
-                (_last!.Data as CurseForgeObjList.DataObj)!.Id.ToString(), PageDownload,
+            var res = await WebBinding.GetFileList(type, _lastId ??
+                (_last!.Data as CurseForgeObjList.DataObj)!.Id.ToString(), PageDownload ?? 0,
                 GameVersionDownload, Obj.Loader, _now);
+            list = res.List;
+            MaxPageDownload = res.Count / 50;
         }
         else if (type == SourceType.Modrinth)
         {
-            EnablePage = false;
-            list = await WebBinding.GetFileList(type, id ??
-                (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, PageDownload,
+            var res = await WebBinding.GetFileList(type, _lastId ??
+                (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, 0,
                 GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
+            list = res.List;
+            MaxPageDownload = res.Count / 50;
+            page = PageDownload ?? 0;
         }
+
+        NextPageDisplay = (MaxPageDownload - PageDownload) > 0;
 
         if (list == null)
         {
@@ -1231,8 +1271,14 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
 
         if (_now == FileType.Mod)
         {
-            foreach (var item in list)
+            int b = 0;
+            for (int a = page * 50; a < list.Count; a++, b++)
             {
+                if (b >= 50)
+                {
+                    break;
+                }
+                var item = list[a];
                 item.Add = this;
                 if (Obj.Mods.TryGetValue(item.ID, out var value)
                     && value.FileId == item.ID1)
@@ -1244,8 +1290,14 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         }
         else
         {
-            foreach (var item in list)
+            int b = 0;
+            for (int a = page * 50; a < list.Count; a++, b++)
             {
+                if (b >= 50)
+                {
+                    break;
+                }
+                var item = list[a];
                 item.Add = this;
                 FileList.Add(item);
             }
@@ -1318,7 +1370,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
     /// </summary>
     public void Reload()
     {
-        if (EnablePage)
+        if (VersionDisplay)
         {
             Refresh1();
         }

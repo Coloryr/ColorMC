@@ -44,13 +44,15 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     [ObservableProperty]
     private int? _page1 = 0;
     [ObservableProperty]
+    private int _maxPage;
+    [ObservableProperty]
+    private int _maxPage1;
+    [ObservableProperty]
     private string? _gameVersion;
     [ObservableProperty]
     private string? _gameVersion1;
     [ObservableProperty]
     private string? _text;
-    [ObservableProperty]
-    private bool _pageEnable1 = true;
     [ObservableProperty]
     private bool _enable1 = true;
     [ObservableProperty]
@@ -63,6 +65,10 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     private bool _sourceLoad;
     [ObservableProperty]
     private bool _emptyVersionDisplay;
+    [ObservableProperty]
+    private bool _enableNextPage;
+    [ObservableProperty]
+    private bool _enableNextPage1;
 
     private bool _keep = false;
 
@@ -350,6 +356,11 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
     public async void Install(FileVersionItemModel data)
     {
+        if (data.IsDownload)
+        {
+            return;
+        }
+
         var select = _last;
         string? group = WindowManager.AddGameWindow?.GetGroup();
         if (data.SourceType == SourceType.CurseForge)
@@ -445,9 +456,20 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
 
         Model.Progress(App.Lang("AddModPackWindow.Info2"));
-        var data = await WebBinding.GetModPackList((SourceType)Source,
+        var res = await WebBinding.GetModPackList((SourceType)Source,
             GameVersion, Text, Page ?? 0, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
+
+        MaxPage = res.Count / 20;
+        var page = 0;
+        if (Source == 1)
+        {
+            page = Page ?? 0;
+        }
+
+        EnableNextPage = (MaxPage - Page) > 0;
+
+        var data = res.List;
 
         if (data == null)
         {
@@ -457,11 +479,19 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
 
         DisplayList.Clear();
-        foreach (var item in data)
+
+        int b = 0;
+        for (int a = page * 50; a < data.Count; a++, b++)
         {
+            if (b >= 50)
+            {
+                break;
+            }
+            var item = data[a];
             item.Add = this;
             DisplayList.Add(item);
         }
+
         OnPropertyChanged(nameof(DisplayList));
 
         _last = null;
@@ -480,20 +510,27 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         FileList.Clear();
         Model.Progress(App.Lang("AddModPackWindow.Info3"));
         List<FileVersionItemModel>? list = null;
+        var page = 0;
         if (Source == 0)
         {
-            PageEnable1 = true;
-            list = await WebBinding.GetFileList((SourceType)Source,
+            var res = await WebBinding.GetFileList((SourceType)Source,
                 (_last!.Data as CurseForgeObjList.DataObj)!.Id.ToString(), Page1 ?? 0,
                 GameVersion1, Loaders.Normal);
+            list = res.List;
+            MaxPage1 = res.Count / 50;
         }
         else if (Source == 1)
         {
-            PageEnable1 = false;
-            list = await WebBinding.GetFileList((SourceType)Source,
+            var res = await WebBinding.GetFileList((SourceType)Source,
                 (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, Page1 ?? 0,
                 GameVersion1, Loaders.Normal);
+            list = res.List;
+            MaxPage1 = res.Count / 50;
+            page = Page1 ?? 0;
         }
+
+        EnableNextPage1 = (MaxPage1 - Page1) > 0;
+
         if (list == null)
         {
             Model.Show(App.Lang("AddModPackWindow.Error3"));
@@ -501,9 +538,21 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
             return;
         }
 
-        foreach (var item in list)
+        int b = 0;
+        for (int a = page * 50; a < list.Count; a++, b++)
         {
+            if (b >= 50)
+            {
+                break;
+            }
+            var item = list[a];
             item.Add = this;
+            var games = GameBinding.GetGames();
+            if (games.Any(item1 => item1.ModPack && item1.ModPackType == (SourceType)Source
+            && item1.PID == item.ID && item1.FID == item.ID1))
+            {
+                item.IsDownload = true;
+            }
             FileList.Add(item);
         }
 

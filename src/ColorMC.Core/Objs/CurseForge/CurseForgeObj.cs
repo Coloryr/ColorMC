@@ -120,15 +120,17 @@ public record CurseForgeObjList
         //public bool isAvailable { get; set; }
         //public long thumbsUpCount { get; set; }
     }
-    //public record Pagination
-    //{
-    //    public int index { get; set; }
-    //    public int pageSize { get; set; }
-    //    public int resultCount { get; set; }
-    //    public int totalCount { get; set; }
-    //}
+    public record PaginationObj
+    {
+        //public int index { get; set; }
+        //public int pageSize { get; set; }
+        //public int resultCount { get; set; }
+        [JsonProperty("totalCount")]
+        public int TotalCount { get; set; }
+    }
 
     [JsonProperty("data")]
     public List<DataObj> Data { get; set; }
-    //public Pagination pagination { get; set; }
+    [JsonProperty("pagination")]
+    public PaginationObj Pagination { get; set; }
 }

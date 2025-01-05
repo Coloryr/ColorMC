@@ -48,7 +48,7 @@ public static class WebBinding
     /// <param name="sort"></param>
     /// <param name="categoryId"></param>
     /// <returns></returns>
-    public static async Task<List<FileItemModel>?> GetModPackList(SourceType type, string? version,
+    public static async Task<ModPackListRes> GetModPackList(SourceType type, string? version,
         string? filter, int page, int sort, string categoryId)
     {
         version ??= "";
@@ -75,7 +75,7 @@ public static class WebBinding
                 }, categoryId: categoryId);
             if (list == null)
             {
-                return null;
+                return new();
             }
             var list1 = new List<FileItemModel>();
             list.Data.ForEach(item =>
@@ -83,14 +83,18 @@ public static class WebBinding
                 list1.Add(new(item, FileType.ModPack));
             });
 
-            return list1;
+            return new() 
+            {
+                List = list1,
+                Count = list.Pagination.TotalCount
+            };
         }
         else if (type == SourceType.Modrinth)
         {
             var list = await ModrinthAPI.GetModPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId);
             if (list == null)
             {
-                return null;
+                return new();
             }
             var list1 = new List<FileItemModel>();
             list.Hits.ForEach(item =>
@@ -98,10 +102,14 @@ public static class WebBinding
                 list1.Add(new(item, FileType.ModPack));
             });
 
-            return list1;
+            return new()
+            {
+                List = list1,
+                Count = list.Hits.Count
+            };
         }
 
-        return null;
+        return new();
     }
 
     /// <summary>
@@ -114,14 +122,14 @@ public static class WebBinding
     /// <param name="loader"></param>
     /// <param name="type1"></param>
     /// <returns></returns>
-    public static async Task<List<FileVersionItemModel>?> GetFileList(SourceType type, string id,
+    public static async Task<FileListRes> GetFileList(SourceType type, string id,
         int page, string? mc, Loaders loader, FileType type1 = FileType.ModPack)
     {
         if (type == SourceType.CurseForge)
         {
             var list = await CurseForgeAPI.GetCurseForgeFiles(id, mc, page, type1 == FileType.Mod ? loader : Loaders.Normal);
             if (list == null)
-                return null;
+                return new();
 
             var list1 = new List<FileVersionItemModel>();
             list.Data.ForEach(item =>
@@ -129,13 +137,17 @@ public static class WebBinding
                 list1.Add(new(item, type1));
             });
 
-            return list1;
+            return new()
+            {
+                List = list1,
+                Count = list.Pagination.TotalCount
+            };
         }
         else if (type == SourceType.Modrinth)
         {
             var list = await ModrinthAPI.GetFileVersions(id, mc, loader);
             if (list == null)
-                return null;
+                return new();
 
             var list1 = new List<FileVersionItemModel>();
             list.ForEach(item =>
@@ -143,10 +155,14 @@ public static class WebBinding
                 list1.Add(new(item, type1));
             });
 
-            return list1;
+            return new()
+            {
+                List = list1,
+                Count = list.Count
+            };
         }
 
-        return null;
+        return new();
     }
 
     /// <summary>
@@ -191,7 +207,7 @@ public static class WebBinding
     /// <param name="categoryId"></param>
     /// <param name="loader"></param>
     /// <returns></returns>
-    public static async Task<List<FileItemModel>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
+    public static async Task<ModPackListRes> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
     {
         version ??= "";
         filter ??= "";
@@ -292,7 +308,7 @@ public static class WebBinding
                 _ => null
             };
             if (list == null)
-                return null;
+                return new();
             var list1 = new List<FileItemModel>();
             var modlist = new List<string>();
             list.Data.ForEach(item =>
@@ -309,7 +325,11 @@ public static class WebBinding
                 });
             });
 
-            return list1;
+            return new() 
+            {
+                List = list1,
+                Count = list.Pagination.TotalCount
+            };
         }
         else if (type == SourceType.Modrinth)
         {
@@ -322,7 +342,7 @@ public static class WebBinding
                 _ => null
             };
             if (list == null)
-                return null;
+                return new();
             var list1 = new List<FileItemModel>();
             var modlist = new List<string>();
             list.Hits.ForEach(item =>
@@ -339,10 +359,14 @@ public static class WebBinding
                 });
             });
 
-            return list1;
+            return new() 
+            {
+                List = list1,
+                Count = list.Hits.Count
+            };
         }
 
-        return null;
+        return new();
     }
 
     /// <summary>
@@ -715,8 +739,10 @@ public static class WebBinding
 
                 var type1 = DownloadItemHelper.TestSourceType(item.PID, item.FID);
 
-                var list1 = await GetFileList(type1, item.PID, 0,
+                var res = await GetFileList(type1, item.PID, 0,
                    game.Version, game.Loader, FileType.Mod);
+                var list1 = res.List;
+
                 if (list1 == null || list1.Count == 0
                 || list1[0].ID1 == item.FID)
                 {

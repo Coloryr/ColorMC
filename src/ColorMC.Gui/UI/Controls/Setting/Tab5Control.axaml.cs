@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Setting;
 
@@ -32,6 +33,9 @@ public partial class Tab5Control : UserControl
         {
             return;
         }
-        _ = new SettingFlyout1(control, model, DataGrid1.SelectedItems);
+        Dispatcher.UIThread.Post(() =>
+        {
+            _ = new SettingFlyout1(control, model, DataGrid1.SelectedItems);
+        });
     }
 }
