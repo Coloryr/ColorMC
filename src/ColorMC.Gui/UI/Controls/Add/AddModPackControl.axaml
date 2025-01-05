@@ -87,6 +87,7 @@
                                     Height="30"
                                     Margin="0,0,10,0"
                                     FormatString="N0"
+                                    Maximum="{Binding MaxPage}"
                                     Minimum="0"
                                     Value="{Binding Page}" />
                                 <Button
@@ -96,14 +97,13 @@
                                     Classes="top"
                                     Command="{Binding Reload}"
                                     Content="{setting:Localize AddModPackWindow.Text8}"
-                                    ToolTip.Tip="{setting:Localize ToolTip.Text75}"
-                                     />
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text75}" />
                             </StackPanel>
                         </panel:WrapPanelWithStretch>
                     </StackPanel>
                 </Border>
                 <Panel>
-                    <StackPanel>
+                    <StackPanel IsVisible="{Binding !EmptyDisplay}">
                         <ItemsControl
                             Margin="0,0,0,5"
                             HorizontalAlignment="Stretch"
@@ -122,7 +122,7 @@
                             Classes="top"
                             Command="{Binding Next}"
                             Content="{setting:Localize AddModPackWindow.Text14}"
-                            IsVisible="{Binding !EmptyDisplay}" />
+                            IsVisible="{Binding EnableNextPage}" />
                     </StackPanel>
                     <Border
                         Margin="10,5,10,10"
@@ -147,8 +147,8 @@
                     DockPanel.Dock="Top">
                     <panel:WrapPanelWithStretch
                         Margin="15,15,5,5"
-                        RightMax="{Binding MinMode}"
-                        DockPanel.Dock="Top">
+                        DockPanel.Dock="Top"
+                        RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="190" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                             <ComboBox
@@ -165,7 +165,7 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 FormatString="N0"
-                                IsEnabled="{Binding PageEnable1}"
+                                Maximum="{Binding MaxPage1}"
                                 Minimum="0"
                                 Value="{Binding Page1}" />
                         </DockPanel>
@@ -180,8 +180,7 @@
                                 Classes="top"
                                 Command="{Binding Search}"
                                 Content="{setting:Localize AddModPackWindow.Text10}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text77}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text77}" />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -189,13 +188,12 @@
                                 Classes="top"
                                 Command="{Binding Download}"
                                 Content="{setting:Localize AddModPackWindow.Text12}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text91}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text91}" />
                         </StackPanel>
                     </panel:WrapPanelWithStretch>
                 </Border>
                 <Panel>
-                    <StackPanel>
+                    <StackPanel IsVisible="{Binding !EmptyVersionDisplay}">
                         <ItemsControl
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
@@ -213,7 +211,7 @@
                             Classes="top"
                             Command="{Binding NextVersion}"
                             Content="{setting:Localize AddModPackWindow.Text14}"
-                            IsVisible="{Binding !EmptyVersionDisplay}" />
+                            IsVisible="{Binding EnableNextPage1}" />
                     </StackPanel>
                     <Border
                         Margin="10,5,10,10"

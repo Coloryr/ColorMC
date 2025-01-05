@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Setting;
 
@@ -43,7 +44,11 @@ public partial class Tab8Control : UserControl
         {
             return;
         }
-        _ = new SettingFlyout2(control, model, model.InputItem);
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            _ = new SettingFlyout2(control, model, model.InputItem);
+        });
     }
 
     private void Flyout1(Control control)
@@ -52,6 +57,10 @@ public partial class Tab8Control : UserControl
         {
             return;
         }
-        _ = new SettingFlyout2(control, model, model.InputAxisItem);
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            _ = new SettingFlyout2(control, model, model.InputAxisItem);
+        });
     }
 }

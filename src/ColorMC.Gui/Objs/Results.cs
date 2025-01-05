@@ -64,3 +64,15 @@ public record MusicPlayRes
     public string? Message;
     public MusicInfo? MusicInfo;
 }
+
+public record FileListRes
+{
+    public List<FileVersionItemModel>? List;
+    public int Count;
+}
+
+public record ModPackListRes
+{
+    public List<FileItemModel>? List;
+    public int Count;
+}

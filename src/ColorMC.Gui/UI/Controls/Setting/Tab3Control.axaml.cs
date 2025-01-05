@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Setting;
 
@@ -31,6 +32,10 @@ public partial class Tab3Control : UserControl
         {
             return;
         }
-        _ = new SettingFlyout3(control, model, model.DnsItem);
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            _ = new SettingFlyout3(control, model, model.DnsItem);
+        });
     }
 }
