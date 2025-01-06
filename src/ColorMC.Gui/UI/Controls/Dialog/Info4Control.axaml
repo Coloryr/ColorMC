@@ -25,6 +25,15 @@
                 Height="35"
                 Margin="10,0,10,0"
                 Classes="top"
+                Command="{Binding Choise}"
+                Content="{Binding ChoiseText}"
+                IsEnabled="{Binding ChoiseVisiable}"
+                IsVisible="{Binding ChoiseVisiable}" />
+            <Button
+                Width="100"
+                Height="35"
+                Margin="10,0,10,0"
+                Classes="top"
                 Command="{Binding Confirm}"
                 Content="{setting:Localize Button.Confirm}"
                 IsEnabled="{Binding Enable}"

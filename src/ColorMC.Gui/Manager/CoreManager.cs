@@ -62,7 +62,7 @@ public static class CoreManager
         {
             Dispatcher.UIThread.Post(() =>
             {
-                WindowManager.ShowGameLog(obj);
+                WindowManager.ShowGameLog(obj, code);
                 WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text3"));
             });
         }

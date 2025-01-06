@@ -8,6 +8,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 public partial class Info4Model(string? name) : ObservableObject
 {
     public Action<bool>? Call;
+    public Action? ChoiseCall;
 
     [ObservableProperty]
     private string _text;
@@ -17,6 +18,17 @@ public partial class Info4Model(string? name) : ObservableObject
     private bool _cancelVisable;
     [ObservableProperty]
     private bool _enableVisable = true;
+
+    [ObservableProperty]
+    private string _choiseText;
+    [ObservableProperty]
+    private bool _choiseVisiable;
+
+    [RelayCommand]
+    public void Choise()
+    {
+        ChoiseCall?.Invoke();
+    }
 
     [RelayCommand]
     public void Cancel()

@@ -19,7 +19,7 @@
             DockPanel.Dock="Top">
             <WrapPanel Margin="15,15,15,5">
                 <panel:WrapPanelWithStretch
-                    Margin="0,0,0,10"
+                    Margin="0,0,0,5"
                     HorizontalAlignment="Left"
                     RightMax="{Binding MinMode}">
                     <ToggleSwitch
@@ -45,7 +45,7 @@
                         ItemsSource="{Binding FileList}"
                         SelectedItem="{Binding File}" />
                 </panel:WrapPanelWithStretch>
-                <WrapPanel Margin="0,0,0,-10">
+                <WrapPanel Margin="0,0,0,-5">
                     <Button
                         Width="100"
                         Height="35"
@@ -55,8 +55,7 @@
                         Command="{Binding Launch}"
                         Content="{setting:Localize GameLogWindow.Text4}"
                         IsEnabled="{Binding !IsGameRun}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text44}"
-                         />
+                        ToolTip.Tip="{setting:Localize ToolTip.Text44}" />
                     <Button
                         Width="100"
                         Height="35"
@@ -66,8 +65,7 @@
                         Command="{Binding Stop}"
                         Content="{setting:Localize GameLogWindow.Text3}"
                         IsEnabled="{Binding IsGameRun}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text44}"
-                         />
+                        ToolTip.Tip="{setting:Localize ToolTip.Text44}" />
                     <Button
                         Width="100"
                         Height="35"
@@ -75,8 +73,7 @@
                         VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding Load1}"
-                        Content="{setting:Localize GameLogWindow.Text6}"
-                         />
+                        Content="{setting:Localize GameLogWindow.Text6}" />
                     <Button
                         Width="100"
                         Height="35"
@@ -84,8 +81,7 @@
                         VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding Search}"
-                        Content="{setting:Localize GameLogWindow.Text7}"
-                         />
+                        Content="{setting:Localize GameLogWindow.Text7}" />
                     <Button
                         Width="100"
                         Height="35"
@@ -93,11 +89,10 @@
                         VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding Push}"
-                        Content="{setting:Localize GameLogWindow.Text8}"
-                         />
+                        Content="{setting:Localize GameLogWindow.Text8}" />
                 </WrapPanel>
                 <WrapPanel
-                    Margin="0,0,0,10"
+                    Margin="0,0,0,5"
                     IsEnabled="{Binding !IsFile}"
                     IsVisible="{Binding !IsFile}">
                     <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameLogWindow.Text9}" />
@@ -123,9 +118,9 @@
                         IsChecked="{Binding EnableNone}" />
                 </WrapPanel>
                 <panel:WrapPanelWithStretch
-                    RightMax="{Binding MinMode}"
                     IsEnabled="{Binding !IsFile}"
-                    IsVisible="{Binding !IsFile}">
+                    IsVisible="{Binding !IsFile}"
+                    RightMax="{Binding MinMode}">
                     <DockPanel MinWidth="230" Margin="0,0,10,10">
                         <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameLogWindow.Text15}" />
                         <ComboBox

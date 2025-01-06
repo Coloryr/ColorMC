@@ -1901,24 +1901,86 @@ public static class Launch
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
 
-            process.OutputDataReceived += (a, b) =>
-            {
-                ColorMCCore.OnGameLog(obj, b.Data);
-            };
-            process.ErrorDataReceived += (a, b) =>
-            {
-                ColorMCCore.OnGameLog(obj, b.Data);
-            };
             process.Exited += (a, b) =>
             {
                 ColorMCCore.OnGameExit(obj, larg.Auth, process.ExitCode);
                 process.Dispose();
             };
 
+            //if(obj.Encoding == 0)
+            //{
+            //    process.OutputDataReceived += (a, b) =>
+            //    {
+            //        ColorMCCore.OnGameLog(obj, b.Data);
+            //    };
+            //    process.ErrorDataReceived += (a, b) =>
+            //    {
+            //        ColorMCCore.OnGameLog(obj, b.Data);
+            //    };
+            //}
+
             if (!ProcessUtils.Launch(process, larg.Admin))
             {
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
+                //if (obj.Encoding == 1)
+                //{
+
+                //}
+                //else
+                //{
+                //    process.BeginOutputReadLine();
+                //    process.BeginErrorReadLine();
+                //}
+
+                Encoding? encoding = null;
+                if (obj.Encoding == 1)
+                {
+                    try
+                    {
+                        encoding = Encoding.GetEncoding("gbk");
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                else
+                {
+                    encoding = Encoding.UTF8;
+                }
+                new Thread(() =>
+                {
+                    bool stop = false;
+                    using var reader = new StreamReader(process.StandardOutput.BaseStream, encoding!);
+                    process.Exited += (a, b) =>
+                    {
+                        stop = true;
+                    };
+                    while (!stop)
+                    {
+                        var output = reader.ReadLine();
+                        ColorMCCore.OnGameLog(obj, output);
+                    }
+                })
+                {
+                    Name = "ColorMC-Game:" + obj.UUID + ":T1"
+                }.Start();
+                new Thread(() =>
+                {
+                    bool stop = false;
+                    using var reader = new StreamReader(process.StandardError.BaseStream, encoding!);
+                    process.Exited += (a, b) =>
+                    {
+                        stop = true;
+                    };
+                    while (!stop)
+                    {
+                        var output = reader.ReadLine();
+                        ColorMCCore.OnGameLog(obj, output);
+                    }
+                })
+                {
+                    Name = "ColorMC-Game:" + obj.UUID + ":T2"
+                }.Start();
             }
             else
             {

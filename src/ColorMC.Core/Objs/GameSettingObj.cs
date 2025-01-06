@@ -184,6 +184,10 @@ public partial record GameSettingObj
     /// 自定义模组加载器
     /// </summary>
     public CustomLoader? CustomLoader { get; set; }
+    /// <summary>
+    /// 日志编码
+    /// </summary>
+    public int Encoding { get; set; }
 
     /// <summary>
     /// Mod信息

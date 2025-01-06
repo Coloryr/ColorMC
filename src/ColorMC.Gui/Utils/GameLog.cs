@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using ColorMC.Gui.Objs;
 
@@ -18,7 +19,7 @@ public partial class GameLog
     private static readonly Regex s_regex = MyRegex();
     private static readonly Regex s_regex1 = MyRegex1();
 
-    public List<GameLogItemObj> Logs { get; init; } = [];
+    public ConcurrentBag<GameLogItemObj> Logs { get; init; } = [];
 
     public void Clear()
     {

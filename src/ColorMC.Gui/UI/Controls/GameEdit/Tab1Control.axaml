@@ -192,7 +192,6 @@
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,5">
                         <CheckBox
-                            Name="CheckBox1"
                             Margin="0,0,5,0"
                             Content="{setting:Localize GameEditWindow.Tab1.Text3}"
                             IsChecked="{Binding ModPack}" />
@@ -225,6 +224,29 @@
                                 IsEnabled="{Binding ModPack}"
                                 Text="{Binding FID}"
                                 Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
+                        </DockPanel>
+                    </panel:WrapPanelWithStretch>
+                </StackPanel>
+            </Border>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Fill="{setting:Theme FontColor}"
+                            Path="/Resource/Icon/GameEdit/svg7.svg"
+                            Stroke="{setting:Theme FontColor}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab1.Text18}" />
+                    </StackPanel>
+                    <panel:WrapPanelWithStretch Margin="0,10,0,0" RightMax="{Binding MinMode}">
+                        <DockPanel MinWidth="260">
+                            <TextBlock Width="100" Text="{setting:Localize GameEditWindow.Tab1.Text19}" />
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding EncodingList}"
+                                SelectedIndex="{Binding Encoding}" />
                         </DockPanel>
                     </panel:WrapPanelWithStretch>
                 </StackPanel>

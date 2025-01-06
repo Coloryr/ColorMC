@@ -523,17 +523,19 @@ public static class WindowManager
         }
     }
 
-    public static void ShowGameLog(GameSettingObj obj)
+    public static void ShowGameLog(GameSettingObj obj, int code = 0)
     {
         if (GameLogWindows.TryGetValue(obj.UUID, out var value))
         {
             value.Window.TopActivate();
+            value.GameCrash(code);
         }
         else
         {
             var con = new GameLogControl(obj);
             GameLogWindows.Add(obj.UUID, con);
             AWindow(con);
+            con.GameCrash(code);
         }
     }
 

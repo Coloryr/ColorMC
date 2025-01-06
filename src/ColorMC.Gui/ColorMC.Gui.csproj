@@ -66,6 +66,7 @@
     <None Remove="Resource\Icon\GameEdit\svg4.svg" />
     <None Remove="Resource\Icon\GameEdit\svg5.svg" />
     <None Remove="Resource\Icon\GameEdit\svg6.svg" />
+    <None Remove="Resource\Icon\GameEdit\svg7.svg" />
     <None Remove="Resource\Icon\GameExport\item1.svg" />
     <None Remove="Resource\Icon\GameExport\item2.svg" />
     <None Remove="Resource\Icon\GameExport\item3.svg" />
@@ -214,6 +215,7 @@
     <AvaloniaResource Include="Resource\Icon\GameEdit\svg4.svg" />
     <AvaloniaResource Include="Resource\Icon\GameEdit\svg5.svg" />
     <AvaloniaResource Include="Resource\Icon\GameEdit\svg6.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\svg7.svg" />
     <AvaloniaResource Include="Resource\Icon\GameExport\item1.svg" />
     <AvaloniaResource Include="Resource\Icon\GameExport\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\GameExport\item3.svg" />

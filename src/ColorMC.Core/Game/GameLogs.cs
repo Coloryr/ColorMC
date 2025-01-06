@@ -26,11 +26,44 @@ public static class GameLogs
             var list1 = Directory.GetFiles(path);
             foreach (var item in list1)
             {
-                list.Add(item.Replace(path, ""));
+                list.Add(item.Replace(path, "logs/"));
+            }
+        }
+
+        path = Path.GetFullPath(obj.GetGameCrashReports() + "/");
+        if (Directory.Exists(path))
+        {
+            var list1 = Directory.GetFiles(path);
+            foreach (var item in list1)
+            {
+                list.Add(item.Replace(path, "crash-reports/"));
             }
         }
 
         return list;
+    }
+
+    public static string? GetLastCrash(this GameSettingObj obj)
+    {
+        var path = Path.GetFullPath(obj.GetGameCrashReports() + "/");
+        if (!Directory.Exists(path))
+        {
+            return null;
+        }
+
+        var list = new DirectoryInfo(path).GetFiles();
+
+        var file = list.OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
+        if (file != null)
+        {
+            var time = file.LastWriteTime - DateTime.Now;
+            if (time.TotalSeconds < 5)
+            {
+                return file.FullName.Replace(path, "crash-reports/");
+            }
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -43,13 +76,13 @@ public static class GameLogs
     {
         try
         {
-            var path = Path.GetFullPath(obj.GetLogPath() + "/" + file);
+            var path = Path.GetFullPath(obj.GetGamePath() + "/" + file);
             if (!File.Exists(path))
             {
                 return null;
             }
 
-            if (path.EndsWith(".log"))
+            if (path.EndsWith(".log") || path.EndsWith(".txt"))
             {
                 return PathHelper.ReadText(path);
             }
@@ -60,9 +93,16 @@ public static class GameLogs
                 using var decompressor = new GZipStream(compressedFileStream, CompressionMode.Decompress);
                 using var output = new MemoryStream();
                 decompressor.CopyTo(output);
-                if (SystemInfo.Os == OsType.Windows)
+                if (obj.Encoding == 1)
                 {
-                    return Encoding.GetEncoding("GBK").GetString(output.ToArray());
+                    try
+                    {
+                        return Encoding.GetEncoding("gbk").GetString(output.ToArray());
+                    }
+                    catch
+                    { 
+                        
+                    }
                 }
                 return Encoding.UTF8.GetString(output.ToArray());
             }

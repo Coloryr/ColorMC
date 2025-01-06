@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Animation;
 using Avalonia.Controls;
@@ -386,5 +388,18 @@ public static class BaseBinding
     public static PlayState GetPlayState()
     {
         return Media.PlayState;
+    }
+
+    public static string[] GetEncoding()
+    {
+        try
+        {
+            _ = Encoding.GetEncoding("gbk");
+            return ["UTF-8", "GBK"];
+        }
+        catch
+        {
+            return ["UTF-8"];
+        }
     }
 }

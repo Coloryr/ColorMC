@@ -80,8 +80,12 @@ public partial class ErrorModel : TopModel
             {
                 return;
             }
-            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), null);
-            await BaseBinding.CopyTextClipboard(top, url!);
+            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
+            {
+                await BaseBinding.CopyTextClipboard(top, url);
+                Model.Notify(App.Lang("GameLogWindow.Info7"));
+            });
+            await BaseBinding.CopyTextClipboard(top, url);
             Model.Notify(App.Lang("GameLogWindow.Info7"));
         }
     }

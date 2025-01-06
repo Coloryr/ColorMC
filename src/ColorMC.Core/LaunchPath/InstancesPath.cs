@@ -37,6 +37,7 @@ public static class InstancesPath
     public const string Name23 = "temp";
     public const string Name24 = "cache";
     public const string Name25 = "loader.jar";
+    public const string Name26 = "crash-reports";
     public const string DefaultGroup = " ";
 
     /// <summary>
@@ -579,6 +580,11 @@ public static class InstancesPath
     public static string GetGameLoaderFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name25}");
+    }
+
+    public static string GetGameCrashReports(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name26}");
     }
 
     /// <summary>

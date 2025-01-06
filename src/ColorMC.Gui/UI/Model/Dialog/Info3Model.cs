@@ -8,6 +8,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 public partial class Info3Model(string? name) : ObservableObject
 {
     public Action? Call;
+    public Action? ChoiseCall;
 
     public bool IsCancel;
 
@@ -34,6 +35,17 @@ public partial class Info3Model(string? name) : ObservableObject
     private bool _valueVisable;
     [ObservableProperty]
     private char _password;
+
+    [ObservableProperty]
+    private bool _choiseVisible;
+    [ObservableProperty]
+    private string _choiseText;
+
+    [RelayCommand]
+    public void Choise()
+    {
+        ChoiseCall?.Invoke();
+    }
 
     [RelayCommand]
     public void Cancel()
