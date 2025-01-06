@@ -59,8 +59,6 @@ public partial class GameLogModel : GameModel
     private bool _enableDebug;
     [ObservableProperty]
     private bool _isFile;
-    [ObservableProperty]
-    private bool _isShow;
 
     public string Temp { get; private set; } = "";
 
@@ -96,7 +94,6 @@ public partial class GameLogModel : GameModel
         _enableWarn = _setting.Log.EnableWarn;
         _isAuto = _setting.Log.Auto;
         _isWordWrap = _setting.Log.WordWrap;
-        _isShow = _setting.Log.Show;
     }
 
     async partial void OnFileChanged(string? value)
@@ -131,12 +128,6 @@ public partial class GameLogModel : GameModel
     partial void OnSelectCategoryChanged(string? value)
     {
         LoadLast1();
-    }
-
-    partial void OnIsShowChanged(bool value)
-    {
-        _setting.Log.Show = value;
-        GameGuiSetting.WriteConfig(Obj, _setting);
     }
 
     partial void OnIsAutoChanged(bool value)
@@ -466,6 +457,10 @@ public partial class GameLogModel : GameModel
 
     public void GameCrash(int code)
     {
+        if (code == 0)
+        {
+            return;
+        }
         Dispatcher.UIThread.Post(() =>
         {
             Dispatcher.UIThread.Post(() =>
@@ -499,6 +494,7 @@ public partial class GameLogModel : GameModel
                 });
             });
         });
+        Load1();
         var item = GameBinding.GetLastCrash(Obj);
         File = item;
         if (File != null)

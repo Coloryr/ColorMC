@@ -64,8 +64,21 @@ public partial class GameEditModel
     private bool _isLoad;
     [ObservableProperty]
     private bool _gameVersionEmpty;
+    [ObservableProperty]
+    private bool _logAutoShow;
 
     private bool _gameLoad;
+
+    partial void OnLogAutoShowChanged(bool value)
+    {
+        if (_gameLoad)
+        {
+            return;
+        }
+
+        _obj.LogAutoShow = value;
+        _obj.Save();
+    }
 
     partial void OnEncodingChanged(int value)
     {
@@ -770,6 +783,7 @@ public partial class GameEditModel
 
         GameVersionEmpty = string.IsNullOrWhiteSpace(GameVersion);
 
+        LogAutoShow = _obj.LogAutoShow;
         Encoding = _obj.Encoding;
         Group = _obj.GroupName;
         FID = _obj.FID;

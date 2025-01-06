@@ -12,10 +12,6 @@ public record GameLogSettingObj
     /// 自动下拉
     /// </summary>
     public bool Auto { get; set; }
-    /// <summary>
-    /// 游戏打开时显示
-    /// </summary>
-    public bool Show { get; set; }
 
     public bool EnableNone { get; set; }
     public bool EnableInfo { get; set; }
