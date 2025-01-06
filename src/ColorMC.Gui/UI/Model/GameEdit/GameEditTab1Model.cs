@@ -17,6 +17,7 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class GameEditModel
 {
+    public string[] EncodingList { get; init; } = BaseBinding.GetEncoding();
     public ObservableCollection<string> GameVersionList { get; init; } = [];
     public ObservableCollection<string> LoaderVersionList { get; init; } = [];
     public ObservableCollection<string> GroupList { get; init; } = [];
@@ -46,6 +47,8 @@ public partial class GameEditModel
     private int _loaderType = -1;
     [ObservableProperty]
     private int _lang = -1;
+    [ObservableProperty]
+    private int _encoding = 0;
 
     [ObservableProperty]
     private bool _modPack;
@@ -63,6 +66,17 @@ public partial class GameEditModel
     private bool _gameVersionEmpty;
 
     private bool _gameLoad;
+
+    partial void OnEncodingChanged(int value)
+    {
+        if (_gameLoad)
+        {
+            return;
+        }
+
+        _obj.Encoding = value;
+        _obj.Save();
+    }
 
     partial void OnIsLoadChanged(bool value)
     {
@@ -756,6 +770,7 @@ public partial class GameEditModel
 
         GameVersionEmpty = string.IsNullOrWhiteSpace(GameVersion);
 
+        Encoding = _obj.Encoding;
         Group = _obj.GroupName;
         FID = _obj.FID;
         PID = _obj.PID;

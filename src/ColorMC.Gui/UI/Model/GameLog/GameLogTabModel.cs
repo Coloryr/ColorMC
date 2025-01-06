@@ -220,7 +220,11 @@ public partial class GameLogModel : GameModel
             {
                 return;
             }
-            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), null);
+            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () => 
+            {
+                await BaseBinding.CopyTextClipboard(top, url);
+                Model.Notify(App.Lang("GameLogWindow.Info7"));
+            });
             await BaseBinding.CopyTextClipboard(top, url);
             Model.Notify(App.Lang("GameLogWindow.Info7"));
         }
@@ -458,5 +462,49 @@ public partial class GameLogModel : GameModel
             level |= LogLevel.Debug;
         }
         return level;
+    }
+
+    public void GameCrash(int code)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                Model.ShowChoise(string.Format(App.Lang("GameLogWindow.Info9"), code), App.Lang("GameLogWindow.Text8"), async () =>
+                {
+                    Model.ShowClose();
+                    Model.Progress(App.Lang("GameLogWindow.Info6"));
+                    var url = await WebBinding.PushMclo(Text.Text);
+                    Model.ProgressClose();
+                    if (url == null)
+                    {
+                        Model.Show(App.Lang("GameLogWindow.Error1"));
+                        return;
+                    }
+                    else
+                    {
+                        var top = Model.GetTopLevel();
+                        if (top == null)
+                        {
+                            return;
+                        }
+                        Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
+                        {
+                            await BaseBinding.CopyTextClipboard(top, url);
+                            Model.Notify(App.Lang("GameLogWindow.Info7"));
+                        });
+                        await BaseBinding.CopyTextClipboard(top, url);
+                        Model.Notify(App.Lang("GameLogWindow.Info7"));
+                    }
+                });
+            });
+        });
+        var item = GameBinding.GetLastCrash(Obj);
+        File = item;
+        if (File != null)
+        {
+            IsAuto = false;
+            OnPropertyChanged(NameTop);
+        }
     }
 }

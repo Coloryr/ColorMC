@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -196,5 +197,10 @@ public partial class GameLogControl : BaseUserControl
     {
         Title = string.Format(App.Lang("GameLogWindow.Title"), _obj.Name);
         Window.SetTitle(Title);
+    }
+
+    public void GameCrash(int code)
+    {
+        (DataContext as GameLogModel)?.GameCrash(code);
     }
 }

@@ -2775,4 +2775,9 @@ public static class GameBinding
             model.Show(App.Lang("MainWindow.Error10"));
         }
     }
+
+    public static string? GetLastCrash(GameSettingObj obj)
+    {
+        return obj.GetLastCrash();
+    }
 }

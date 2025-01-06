@@ -366,6 +366,7 @@ public partial class BaseModel : ObservableObject
         _info3.Watermark1 = title;
 
         _info3.Call = null;
+        _info3.ChoiseVisible = false;
 
         DClose();
         Work();
@@ -397,6 +398,7 @@ public partial class BaseModel : ObservableObject
         _info3.Password = '\0';
 
         _info3.Call = null;
+        _info3.ChoiseVisible = false;
 
         DClose();
         Work();
@@ -419,6 +421,7 @@ public partial class BaseModel : ObservableObject
         _info3.TextReadonly = lock1;
         _info3.Call = null;
         _info3.IsCancel = true;
+        _info3.ChoiseVisible = false;
 
         if (lock1)
         {
@@ -479,6 +482,8 @@ public partial class BaseModel : ObservableObject
 
         _info3.IsCancel = true;
 
+        _info3.ChoiseVisible = false;
+
         DClose();
         Work();
         await DialogHost.Show(_info3, Name);
@@ -511,6 +516,8 @@ public partial class BaseModel : ObservableObject
 
         _info3.IsCancel = true;
 
+        _info3.ChoiseVisible = false;
+
         if (cancel != null)
         {
             _info3.ConfirmEnable = false;
@@ -537,9 +544,8 @@ public partial class BaseModel : ObservableObject
     /// 打开一个对话框，显示一个只读内容
     /// </summary>
     /// <param name="title"></param>
-    /// <param name="title1"></param>
     /// <param name="cancel"></param>
-    public void ShowReadInfoOne(string title, Action? cancel)
+    public void ShowReadInfoOne(string title, string choiseText, Action? choise)
     {
         _info3.TextReadonly = true;
         _info3.Text1 = title;
@@ -553,20 +559,9 @@ public partial class BaseModel : ObservableObject
 
         _info3.IsCancel = true;
 
-        if (cancel != null)
-        {
-            _info3.Call = cancel;
-
-            _info3.CancelEnable = true;
-            _info3.CancelVisible = true;
-
-            _info3.Password = '\0';
-        }
-        else
-        {
-            _info3.Call = null;
-            _info3.CancelVisible = false;
-        }
+        _info3.ChoiseCall = choise;
+        _info3.ChoiseText = choiseText;
+        _info3.ChoiseVisible = true;
 
         DClose();
         DialogHost.Show(_info3, Name);
@@ -584,6 +579,7 @@ public partial class BaseModel : ObservableObject
         _info4.Enable = true;
         _info4.Text = data;
         _info4.CancelVisable = true;
+        _info4.ChoiseVisiable = false;
 
         _info4.Call = (res) =>
         {
@@ -607,6 +603,7 @@ public partial class BaseModel : ObservableObject
         _info4.Text = data;
         _info4.CancelVisable = true;
         _info4.EnableVisable = false;
+        _info4.ChoiseVisiable = false;
 
         _info4.Call = (res) =>
         {
@@ -629,6 +626,7 @@ public partial class BaseModel : ObservableObject
         _info4.CancelVisable = false;
         _info4.Call = null;
         _info4.Text = data;
+        _info4.ChoiseVisiable = false;
 
         DClose();
         DialogHost.Show(_info4, Name);
@@ -640,11 +638,27 @@ public partial class BaseModel : ObservableObject
         _info4.Enable = true;
         _info4.CancelVisable = false;
         _info4.Text = data;
+        _info4.ChoiseVisiable = false;
 
         _info4.Call = (res) =>
         {
             action.Invoke();
         };
+
+        DClose();
+        DialogHost.Show(_info4, Name);
+    }
+
+    public void ShowChoise(string data, string choise, Action action)
+    {
+        _info4.EnableVisable = true;
+        _info4.Enable = true;
+        _info4.CancelVisable = false;
+        _info4.Call = null;
+        _info4.Text = data;
+        _info4.ChoiseVisiable = true;
+        _info4.ChoiseText = choise;
+        _info4.ChoiseCall = action;
 
         DClose();
         DialogHost.Show(_info4, Name);
