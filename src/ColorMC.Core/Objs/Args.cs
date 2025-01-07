@@ -304,7 +304,7 @@ public record InstallModPackZipArg
     /// <summary>
     /// 压缩包位置
     /// </summary>
-    public required string Zip;
+    public required Stream Zip;
     /// <summary>
     /// 覆盖的游戏实例名
     /// </summary>

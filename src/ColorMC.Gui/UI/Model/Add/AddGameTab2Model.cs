@@ -32,11 +32,13 @@ public partial class AddGameModel
     /// 压缩包路径修改
     /// </summary>
     /// <param name="value"></param>
-    partial void OnZipLocalChanged(string? value)
+    async partial void OnZipLocalChanged(string? value)
     {
         if (value != null && Type == null)
         {
-            var res = GameBinding.CheckType(value);
+            Model.Progress(App.Lang("AddGameWindow.Tab2.Info8"));
+            var res = await GameBinding.CheckType(value);
+            Model.ProgressClose();
             if (res == null)
             {
                 Model.Show(App.Lang("AddGameWindow.Tab2.Error4"));
