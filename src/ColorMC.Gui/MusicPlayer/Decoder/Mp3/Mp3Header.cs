@@ -352,11 +352,11 @@ public class Mp3Header
         {
             double tpf = VbrTimePerFrameTable[(int)Layer] / Frequency;
             if (Version == VersionType.Mpeg2LSF || Version == VersionType.Mpeg25LSF) tpf /= 2;
-            return (float)(tpf * 1000);
+            return (float)tpf;
         }
         else
         {
-            return MsPerFrameTable[(int)Layer - 1, (int)SampleFrequency] * 1000;
+            return MsPerFrameTable[(int)Layer - 1, (int)SampleFrequency];
         }
     }
 

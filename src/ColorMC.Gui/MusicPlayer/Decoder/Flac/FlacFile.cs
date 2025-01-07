@@ -29,6 +29,17 @@ public class FlacFile : IDecoder
         }
     }
 
+    public void Reset()
+    {
+        _flacStream.Reset();
+        FlacInfoBlock? first;
+        do
+        {
+            first = _flacStream.DecodeInfo();
+        }
+        while (first != null);
+    }
+
     public SoundPack? DecodeFrame()
     {
         var meta = new FlacSoundBlock(_flacStream);

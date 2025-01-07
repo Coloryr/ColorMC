@@ -41,6 +41,12 @@ public class WavFile : IDecoder
         DecodeInfo();
     }
 
+    public void Reset()
+    {
+        _stream.Seek(12, SeekOrigin.Begin);
+        DecodeInfo();
+    }
+
     public SoundPack? DecodeFrame()
     {
         if (_dataSize <= 0)

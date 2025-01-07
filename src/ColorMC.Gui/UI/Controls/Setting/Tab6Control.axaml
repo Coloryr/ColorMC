@@ -199,6 +199,7 @@
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text22}"
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text22}" />
                             <ToggleSwitch
+                                Margin="0,0,10,0"
                                 IsChecked="{Binding Loop}"
                                 IsEnabled="{Binding EnableMusic}"
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text37}"

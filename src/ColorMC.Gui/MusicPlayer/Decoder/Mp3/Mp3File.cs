@@ -43,6 +43,13 @@ public class Mp3File : IDecoder
         }
     }
 
+    public void Reset()
+    {
+        _bitstream.CloseFrame();
+        _bitstream.Reset();
+        LoadInfo();
+    }
+
     /// <summary>
     /// Decodes one frame from an MPEG audio bitstream.
     /// </summary>
@@ -62,7 +69,7 @@ public class Mp3File : IDecoder
         {
             Buff = _output.Buffer,
             Length = _output.GetBufferLength(),
-            Time = header.GetSecPerFrame(),
+            Time = header.GetSecPerFrame() / 1000,
             SampleRate = OutputFrequency,
             Channel = OutputChannels
         };
