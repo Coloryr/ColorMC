@@ -9,4 +9,5 @@ public interface IDecoder : IDisposable
     SoundPack? DecodeFrame();
     double GetTimeCount();
     MusicInfo? GetInfo();
+    void Reset();
 }

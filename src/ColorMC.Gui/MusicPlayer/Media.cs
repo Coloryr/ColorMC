@@ -23,11 +23,6 @@ namespace ColorMC.Gui.MusicPlayer;
 public static class Media
 {
     /// <summary>
-    /// 音乐路径
-    /// </summary>
-    private static string s_musicFile;
-
-    /// <summary>
     /// 输出流
     /// </summary>
     private static IPlayer? s_player;
@@ -99,27 +94,34 @@ public static class Media
     private static readonly Semaphore s_semaphore = new(0, 2);
     private static IDecoder decoder;
     private static bool s_isClose;
-    private static bool s_isUrl;
 
     /// <summary>
     /// 初始化播放器
     /// </summary>
     public static void Init()
     {
-        if (SystemInfo.Os != OsType.MacOS)
+        try
         {
-            if (SdlUtils.SdlInit)
+            if (SystemInfo.Os != OsType.MacOS)
             {
-                s_player = new SdlPlayer(SdlUtils.Sdl);
+                if (SdlUtils.SdlInit)
+                {
+                    s_player = new SdlPlayer(SdlUtils.Sdl);
+                }
+                else
+                {
+                    s_player = new OpenALPlayer();
+                }
             }
             else
             {
-                return;
+                s_player = new OpenALPlayer();
             }
         }
-        else
+        catch
         {
-            s_player = new OpenALPlayer();
+            s_player = null;
+            return;
         }
 
         App.OnClose += Close;
@@ -154,6 +156,7 @@ public static class Media
             try
             {
                 Decoding = true;
+            Play:
                 int count = 0;
                 PlayState = PlayState.Run;
                 while (true)
@@ -173,23 +176,15 @@ public static class Media
                     count++;
                 }
                 s_player?.WaitDone();
+                if (Loop)
+                {
+                    NowTime = TimeSpan.Zero;
+                    decoder.Reset();
+                    goto Play;
+                }
                 PlayState = PlayState.Stop;
                 decoder.Dispose();
                 Decoding = false;
-                if (Loop)
-                {
-                    Task.Run(() =>
-                    {
-                        if (s_isUrl)
-                        {
-                            _ = PlayUrl(s_musicFile);
-                        }
-                        else
-                        {
-                            _ = Play(s_musicFile);
-                        }
-                    });
-                }
             }
             catch (Exception e)
             {
@@ -245,7 +240,6 @@ public static class Media
         var reader = File.OpenRead(file);
         MediaType type = TestMediaType(reader);
         reader.Seek(0, SeekOrigin.Begin);
-        s_isUrl = false;
         return await Play(reader, type);
     }
 
@@ -280,23 +274,22 @@ public static class Media
     /// <returns></returns>
     private static async Task<MusicPlayRes> PlayUrl(string url)
     {
-        Stream stream;
+        Stream stream = new MemoryStream();
         var res = await CoreHttpClient.DownloadClient.GetAsync(url);
         if (res.StatusCode == HttpStatusCode.Redirect)
         {
             var url1 = res.Headers.Location;
             res = await CoreHttpClient.DownloadClient.GetAsync(url1);
-            stream = new BufferedStream(res.Content.ReadAsStream());
+            await res.Content.ReadAsStream().CopyToAsync(stream);
         }
         else
         {
-            stream = new BufferedStream(res.Content.ReadAsStream());
+            await res.Content.ReadAsStream().CopyToAsync(stream);
         }
 
         MediaType type = TestMediaType(stream);
         stream.Seek(0, SeekOrigin.Begin);
-        s_isUrl = true;
-        return await Play(res.Content.ReadAsStream(), type);
+        return await Play(stream, type);
     }
 
     /// <summary>
@@ -318,29 +311,23 @@ public static class Media
         var file1 = Path.GetFileName(file);
         var res = new MusicPlayRes();
 
-        s_musicFile = file;
-
         bool play = false;
         Volume = 0;
 
         try
         {
-            if (file.StartsWith("http://") || file.StartsWith("https://"))
+            if (file.StartsWith("http"))
             {
-                await PlayUrl(file);
-                play = true;
+                res = await PlayUrl(file);
             }
-            else
+            else if (File.Exists(file))
             {
-                file = Path.GetFullPath(file);
-                if (File.Exists(file))
-                {
-                    res = await Play(file);
-                    if (res.Res)
-                    {
-                        play = true;
-                    }
-                }
+                res = await Play(file);
+            }
+
+            if (res.Res)
+            {
+                play = true;
             }
         }
         catch (Exception e)

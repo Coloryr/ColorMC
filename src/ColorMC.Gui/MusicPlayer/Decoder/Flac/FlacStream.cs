@@ -16,6 +16,12 @@ public partial class FlacStream
         Seek(0);
     }
 
+    public void Reset()
+    {
+        Seek(0);
+        _stream.Seek(4, SeekOrigin.Begin);
+    }
+
     public bool CheckHead()
     {
         var temp = new byte[4];
@@ -49,6 +55,9 @@ public partial class FlacStream
             case BlockType.PADDING:
                 _stream.Seek(size, SeekOrigin.Current);
                 break;
+            default:
+                _stream.Seek(size, SeekOrigin.Current);
+                return new EmptyBlock(last, type, size);
         }
 
         return null;
