@@ -1981,12 +1981,22 @@ public static class GameBinding
     /// </summary>
     /// <param name="local"></param>
     /// <returns></returns>
-    public static PackType? CheckType(string local)
+    public static async Task<PackType?> CheckType(string local)
     {
         Stream? stream = null;
         try
         {
-            stream = PathHelper.OpenRead(local);
+            if (local.StartsWith("http"))
+            {
+                using var st = await CoreHttpClient.DownloadClient.GetStreamAsync(local);
+                var memoryStream = new MemoryStream();
+                await st.CopyToAsync(memoryStream);
+                stream = memoryStream;
+            }
+            else
+            {
+                stream = PathHelper.OpenRead(local);
+            }
 
             if (stream == null)
             {
@@ -2018,7 +2028,10 @@ public static class GameBinding
                     {
                         return PackType.CurseForge;
                     }
-                    else if (item.Name.Contains(".minecraft/"))
+                }
+                foreach (ZipEntry item in zFile)
+                {
+                    if (item.Name.StartsWith(".minecraft/"))
                     {
                         return PackType.ZipPack;
                     }

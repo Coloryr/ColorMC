@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.OtherLaunch;
@@ -127,15 +128,33 @@ public static class AddGameHelper
     {
         GameSettingObj? game = null;
         bool import = false;
+        Stream? st = null;
         try
         {
+            if (arg.Dir.StartsWith("http"))
+            {
+                using var st1 = await CoreHttpClient.DownloadClient.GetStreamAsync(arg.Dir);
+                var memoryStream = new MemoryStream();
+                await st1.CopyToAsync(memoryStream);
+                st = memoryStream;
+            }
+            else
+            {
+                st = PathHelper.OpenRead(arg.Dir);
+            }
+
+            if (st == null)
+            {
+                return new();
+            }
+
             switch (arg.Type)
             {
                 //ColorMC格式
                 case PackType.ColorMC:
                     {
                         arg.Update2?.Invoke(CoreRunState.Read);
-                        using var zFile = new ZipFile(arg.Dir);
+                        using var zFile = new ZipFile(st);
                         using var stream1 = new MemoryStream();
                         bool find = false;
                         foreach (ZipEntry e in zFile)
@@ -193,7 +212,7 @@ public static class AddGameHelper
                 case PackType.CurseForge:
                     var res1 = await ModPackHelper.InstallCurseForgeModPackAsync(new InstallModPackZipArg
                     {
-                        Zip = arg.Dir,
+                        Zip = st,
                         Name = arg.Name,
                         Group = arg.Group,
                         Request = arg.Request,
@@ -210,7 +229,7 @@ public static class AddGameHelper
                 case PackType.Modrinth:
                     var res2 = await ModPackHelper.InstallModrinthModPackAsync(new InstallModPackZipArg
                     {
-                        Zip = arg.Dir,
+                        Zip = st,
                         Name = arg.Name,
                         Group = arg.Group,
                         Request = arg.Request,
@@ -228,7 +247,7 @@ public static class AddGameHelper
                 case PackType.MMC:
                     {
                         arg.Update2?.Invoke(CoreRunState.Read);
-                        using var zFile = new ZipFile(arg.Dir);
+                        using var zFile = new ZipFile(st);
                         using var stream1 = new MemoryStream();
                         using var stream2 = new MemoryStream();
                         bool find = false;
@@ -315,7 +334,7 @@ public static class AddGameHelper
                 case PackType.HMCL:
                     {
                         arg.Update2?.Invoke(CoreRunState.Read);
-                        using var zFile = new ZipFile(arg.Dir);
+                        using var zFile = new ZipFile(st);
                         using var stream1 = new MemoryStream();
                         using var stream2 = new MemoryStream();
                         bool find = false;
@@ -408,7 +427,6 @@ public static class AddGameHelper
                 case PackType.ZipPack:
                     {
                         arg.Update2?.Invoke(CoreRunState.Read);
-                        using var stream4 = PathHelper.OpenRead(arg.Dir);
                         if (string.IsNullOrWhiteSpace(arg.Name))
                         {
                             arg.Name = Path.GetFileName(arg.Dir);
@@ -429,7 +447,7 @@ public static class AddGameHelper
 
                         if (game != null)
                         {
-                            await new ZipUtils(ZipUpdate: arg.Zip).UnzipAsync(game.GetGamePath(), arg.Dir, stream4!);
+                            await new ZipUtils(ZipUpdate: arg.Zip).UnzipAsync(game.GetGamePath(), arg.Dir, st!);
                             arg.Update2?.Invoke(CoreRunState.End);
                             import = true;
 
@@ -476,6 +494,11 @@ public static class AddGameHelper
         catch (Exception e)
         {
             ColorMCCore.OnError(LanguageHelper.Get("Core.Pack.Error2"), e, false);
+        }
+        finally
+        {
+            st?.Close();
+            st?.Dispose();
         }
         if (!import && game != null)
         {
