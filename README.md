@@ -7,14 +7,14 @@
 
 一个全平台Minecraft PC启动器
 
-使用.NET8作为运行环境，XAML作为前端语言，C#作为后端语言
+使用.NET8作为运行环境，XAML作为前端语言，使用MVVM模式，C#作为后端语言
 
 QQ交流群: 571239090
 
-More Languages: [English](docs/README_EN.md)
+More Languages: [English](README_EN.md)
 
 [用户手册](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md) -
-[更新日志](./log.md) -
+[更新日志](log.md) -
 [加入多语言翻译](https://crowdin.com/project/colormc)(帮帮忙)
 
 ## 窗口截图 🪟
@@ -25,7 +25,7 @@ More Languages: [English](docs/README_EN.md)
 ![](/docs/images/GIF.gif)  
 
 ## 支持平台
-- Linux(提供deb pkg rpm)
+- Linux(提供deb pkg rpm，同时可以在[星火商店](https://www.spark-app.store/)或者[AUR](https://aur.archlinux.org/)上安装)
 - Windows
 - macOs
 
@@ -33,31 +33,34 @@ More Languages: [English](docs/README_EN.md)
 由于Linux发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以需要自行解决，我只在自己的虚拟机内测试启动，若有驱动兼容性问题不在我的考虑范围内**
 
 ## 安装 
-在[Releases](https://github.com/Coloryr/ColorMC/releases)或者[Actions](https://github.com/Coloryr/ColorMC/actions)里面下载构建好的压缩包/安装包  
+在[Releases-正式发布版](https://github.com/Coloryr/ColorMC/releases)或者[Actions-测试版](https://github.com/Coloryr/ColorMC/actions)里面下载构建好的压缩包/安装包  
 解压(zip)\安装(msi,deb,pkg)\或直接运行(appimage)即可
 
 ## 启动
 
 - 安装完成后启动  
 在Windows/MacOS下解压后双击启动  
-Linux下可以双击启动，也可以
+Linux下安装后可以双击启动，也可以控制台输入指令
 ```
-ColorMC.Launcher
+$ ColorMC.Launcher
 ```
 
 - 从源码启动（需要安装.NET8 SDK）
 ```
-git clone https://github.com/Coloryr/ColorMC.git
-cd ColorMC/src/ColorMC.Launcher
-dotnet run
+$ git clone https://github.com/Coloryr/ColorMC.git
+$ cd ColorMC/src/ColorMC.Launcher
+$ dotnet run
 ```
 
 ## 从源码构建
 
-- 构建`windows`的二进制文件  
+你可以从源码构建ColorMC并运行  
+构建完成后可以在`built_out`文件夹获取所有二进制文件
+
+### 构建`windows`的二进制文件  
 **需要在Windows系统中构建，并安装git与dotnet-8-sdk**
 
-```cmd
+```
 git clone https://github.com/Coloryr/ColorMC.git
 cd ColorMC
 
@@ -68,69 +71,67 @@ cd ColorMC
 .\build\build-windows.cmd
 ```
 
-- 构建`linux`的二进制文件  
+### 构建`linux`的二进制文件  
 **需要在Linux系统中构建，并安装git与dotnet-8-sdk**
-```bash
-git clone https://github.com/Coloryr/ColorMC.git
-cd ColorMC
-chmod a+x ./build/update.sh
-chmod a+x ./build/build-linux.sh
-
-# 更新源码
-./build/update.sh
-
-# 构建
-./build/build-linux.sh
+```
+$ git clone https://github.com/Coloryr/ColorMC.git
+$ cd ColorMC
+$ chmod a+x ./build/update.sh
+$ chmod a+x ./build/build-linux.sh
+```
+更新源码
+```
+$ ./build/update.sh
+```
+构建
+```
+$ ./build/build-linux.sh
 ```
 
-打包Ubuntu镜像  
+### 打包Linux相关安装镜像
+
+- 打包Ubuntu镜像  
 **需要在Ubuntu系统中操作**
-```bash
-chmod a+x ./build/build-ubuntu.sh
-
-./build/build-ubuntu.sh
 ```
-
-打包rpm镜像  
+$ chmod a+x ./build/build-ubuntu.sh
+$ ./build/build-ubuntu.sh
+```
+- 打包rpm镜像  
 **需要在Ubuntu系统中操作**
-```bash
-chmod a+x ./build/build-rpm.sh
-
-./build/build-rpm.sh
 ```
-
-打包Arch镜像  
+$ chmod a+x ./build/build-rpm.sh
+$ ./build/build-rpm.sh
+```
+- 打包Arch镜像  
 **需要在Arch系统中操作**
-```bash
-chmod a+x ./build/build-arch.sh
-
-./build/build-arch.sh
+```
+$ chmod a+x ./build/build-arch.sh
+$ ./build/build-arch.sh
 ```
 
-- 构建`macos`的二进制文件  
+### 构建`macos`的二进制文件  
 **需要在Ubuntu系统或MacOS系统中构建，并安装git与dotnet-8-sdk**
-```bash
-git clone https://github.com/Coloryr/ColorMC.git
-cd ColorMC
-chmod a+x ./build/update.sh
-chmod a+x ./build/build-macos.sh
-
-# 更新源码
-./build/update.sh
-
-# 构建
-./build/build-macos.sh
 ```
-
-此时可以在`built_out`文件夹获取所有二进制文件
+$ git clone https://github.com/Coloryr/ColorMC.git
+$ cd ColorMC
+$ chmod a+x ./build/update.sh
+$ chmod a+x ./build/build-macos.sh
+```
+更新源码
+```
+$ ./build/update.sh
+```
+构建
+```
+$ ./build/build-macos.sh
+```
 
 ## 二次开发
 
 首先克隆代码
 ```
-git clone https://github.com/Coloryr/ColorMC.git
-
-git submodule update --init --recursive
+$ git clone https://github.com/Coloryr/ColorMC.git
+$ git submodule update --init --recursive
 ```
 
 `./src/ColorMC.sln`为根工程
@@ -158,18 +159,19 @@ git submodule update --init --recursive
 | CommunityToolkit.Mvvm | MVVM工具          | [GitHub](https://github.com/CommunityToolkit/dotnet)           |
 | Svg.Skia              | Svg图像显示         | [GitHub](https://github.com/wieslawsoltes/Svg.Skia)            |
 | SkiaSharp             | Skia图像库         | [GitHub](https://github.com/mono/SkiaSharp)                    |
-| Silk.NET              | 高性能底层库接口        | [GitHub](https://github.com/dotnet/Silk.NET)                   |
-| Heijden.Dns           | DNS解析           | [GitHub](https://github.com/softlion/Heijden.Dns)              |
-| HtmlAgilityPack       | HTML解析器         | [官网](https://html-agility-pack.net/)                           |
+| Silk.NET              | 高性能底层库接口        | [GitHub](https://github.com/dotnet/Silk.NET)                   |              |
+| HtmlAgilityPack       | HTML解析器         | [GitHub](https://github.com/zzzprojects/html-agility-pack)                           |
 | Jint                  | JS解析执行器         | [GitHub](https://github.com/sebastienros/jint)                 |
 | DotNetty              | 异步通信框架          | [GitHub](https://github.com/Azure/DotNetty)                    |
-| Newtonsoft.Json       | JSON解析器         | [官网](https://www.newtonsoft.com/json)                          |
+| Newtonsoft.Json       | JSON解析器         | [GitHub](https://github.com/JamesNK/Newtonsoft.Json)                          |
 | SharpZipLib           | 压缩包处理           | [GitHub](https://github.com/icsharpcode/SharpZipLib)           |
 | Tomlyn                | TOML解析器         | [GitHub](https://github.com/xoofx/Tomlyn)                      |
 | ForgeWrapper          | Forge启动器        | [GitHub](https://github.com/Coloryr/ForgeWrapper)              |
 | Live2DCSharpSDK       | Live2d渲染框架      | [GitHub](https://github.com/coloryr/Live2DCSharpSDK)           |
 | OptifineWrapper       | Optifine启动器     | [GitHub](https://github.com/coloryr/OptifineWrapper)           |
 | ColorMCASM            | 用于ColorMC与游戏内通信 | [GitHub](https://github.com/Coloryr/ColorMCASM)                |
+| K4os.Compression.LZ4  | LZ4解压缩           | [GitHub](https://github.com/MiloszKrajewski/K4os.Compression.LZ4)  |
+| Ae.Dns                | DNS客户端           | [GitHub](https://github.com/alanedwardes/Ae.Dns)  |
 
 ## 开源协议
 Apache 2.0  
