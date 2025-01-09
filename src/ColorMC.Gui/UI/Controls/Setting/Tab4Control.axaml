@@ -260,7 +260,10 @@
                             Margin="0,0,10,0"
                             Content="{setting:Localize SettingWindow.Tab4.Text20}"
                             IsChecked="{Binding PreRun}" />
-                        <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text25}" IsChecked="{Binding PreRunSame}" />
+                        <CheckBox
+                            Content="{setting:Localize SettingWindow.Tab4.Text25}"
+                            IsChecked="{Binding PreRunSame}"
+                            IsEnabled="{Binding PreRun}" />
                     </StackPanel>
                     <TextBox
                         Height="100"
