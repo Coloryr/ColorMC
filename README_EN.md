@@ -13,7 +13,11 @@ Built with .NET8, UI use the XAML with MVVM, and C# as the backend language.
 
 QQ Group: 571239090
 
-More Languages: [Chinese](README_EN.md)
+More Languages: 
+[简体中文](README_EN.md)
+[Svenska](README_SW.md)
+[Русский](README_RU.md)
+[Français](README_FR.md)
 
 [User Manual](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md) -  
 [Changelog](log.md) -  

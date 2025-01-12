@@ -11,7 +11,11 @@
 
 QQ交流群: 571239090
 
-More Languages: [English](README_EN.md)
+更多语言: 
+[English](README_EN.md)
+[Svenska](README_SW.md)
+[Русский](README_RU.md)
+[Français](README_FR.md)
 
 [用户手册](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md) -
 [更新日志](log.md) -
