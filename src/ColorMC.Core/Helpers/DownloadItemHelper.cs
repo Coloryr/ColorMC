@@ -19,6 +19,12 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class DownloadItemHelper
 {
+    /// <summary>
+    /// 检测下载源
+    /// </summary>
+    /// <param name="pid"></param>
+    /// <param name="fid"></param>
+    /// <returns></returns>
     public static SourceType TestSourceType(string? pid, string? fid)
     {
         return FuntionUtils.CheckNotNumber(pid) || FuntionUtils.CheckNotNumber(fid)
@@ -50,7 +56,7 @@ public static class DownloadItemHelper
             Name = "log4j2-xml",
             Url = obj.Logging.Client.File.Url,
             Local = Path.GetFullPath($"{VersionPath.BaseDir}/log4j2-xml"),
-            SHA1 = obj.Logging.Client.File.Sha1
+            Sha1 = obj.Logging.Client.File.Sha1
         };
     }
 
@@ -67,7 +73,7 @@ public static class DownloadItemHelper
             Name = name,
             Url = UrlHelper.DownloadAssets(hash, CoreHttpClient.Source),
             Local = Path.GetFullPath($"{AssetsPath.ObjectsDir}/{hash[..2]}/{hash}"),
-            SHA1 = hash
+            Sha1 = hash
         };
     }
 
@@ -84,7 +90,7 @@ public static class DownloadItemHelper
         {
             Url = CoreHttpClient.Source == SourceLocal.Offical ? game.Downloads.client.url
                 : UrlHelper.DownloadGame(mc, CoreHttpClient.Source),
-            SHA1 = game.Downloads.client.sha1,
+            Sha1 = game.Downloads.client.sha1,
             Local = file,
             Name = $"{mc}.jar"
         };
@@ -259,7 +265,7 @@ public static class DownloadItemHelper
                 {
                     Name = item1.Name,
                     Local = local,
-                    SHA1 = item1!.Downloads.Artifact.Sha1
+                    Sha1 = item1!.Downloads.Artifact.Sha1
                 };
                 if (!list.TryAdd(item1.Name, temp))
                 {
@@ -277,7 +283,7 @@ public static class DownloadItemHelper
                         CoreHttpClient.Source),
                     Name = item1.Name,
                     Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.Downloads.Artifact.Path}"),
-                    SHA1 = item1.Downloads.Artifact.Sha1
+                    Sha1 = item1.Downloads.Artifact.Sha1
                 };
                 if (!list.TryAdd(item1.Name, item2))
                 {
@@ -415,7 +421,7 @@ public static class DownloadItemHelper
                     Name = item1.Name,
                     Url = UrlHelper.DownloadLibraries(item1.Downloads.Artifact.Url, CoreHttpClient.Source),
                     Local = file,
-                    SHA1 = item1.Downloads.Artifact.Sha1
+                    Sha1 = item1.Downloads.Artifact.Sha1
                 };
                 list.Add(obj);
 
@@ -460,7 +466,7 @@ public static class DownloadItemHelper
                         Name = item1.Name + "-native" + SystemInfo.Os,
                         Url = UrlHelper.DownloadLibraries(lib.Url, CoreHttpClient.Source),
                         Local = $"{LibrariesPath.BaseDir}/{lib.Path}",
-                        SHA1 = lib.Sha1,
+                        Sha1 = lib.Sha1,
                         Later = (test) => GameHelper.UnpackNative(obj.Id, test)
                     };
 
@@ -982,7 +988,7 @@ public static class DownloadItemHelper
                     {
                         Name = item.Name,
                         Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}"),
-                        SHA1 = item.Downloads.Artifact.Sha1,
+                        Sha1 = item.Downloads.Artifact.Sha1,
                         Url = item.Downloads.Artifact.Url
                     });
                 }
@@ -1040,7 +1046,7 @@ public static class DownloadItemHelper
                     {
                         Name = item.Name,
                         Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}"),
-                        SHA1 = item.Downloads.Artifact.Sha1,
+                        Sha1 = item.Downloads.Artifact.Sha1,
                         Url = item.Downloads.Artifact.Url
                     });
                 }

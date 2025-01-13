@@ -841,7 +841,7 @@ public static class GameBinding
 
         list1.ForEach(item =>
         {
-            var obj1 = obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
+            var obj1 = obj.Mods.Values.FirstOrDefault(a => a.Sha1 == item.Sha1);
             list.Add(new ModDisplayModel(item, obj1, edit));
         });
         return list;
@@ -856,6 +856,11 @@ public static class GameBinding
     {
         try
         {
+            if (!File.Exists(obj.Local))
+            {
+                return new() { Message = App.Lang("GameBinding.Error15") };
+            }
+
             if (obj.Disable)
             {
                 obj.Enable();
@@ -1447,7 +1452,7 @@ public static class GameBinding
             File = data.FileName,
             Name = data.DisplayName,
             Url = data.DownloadUrl,
-            SHA1 = data.Hashes.Where(a => a.Algo == 1)
+            Sha1 = data.Hashes.Where(a => a.Algo == 1)
                 .Select(a => a.Value).FirstOrDefault()
         };
         if (!obj.Mods.TryAdd(obj1.ModId, obj1))
@@ -1478,7 +1483,7 @@ public static class GameBinding
             File = file.Filename,
             Name = data.Name,
             Url = file.Url,
-            SHA1 = file.Hashes.Sha1
+            Sha1 = file.Hashes.Sha1
         };
         if (!obj.Mods.TryAdd(obj1.ModId, obj1))
         {
@@ -2154,7 +2159,7 @@ public static class GameBinding
                     Url = item.Url,
                     Name = item.File,
                     Local = game.GetGamePath() + "/" + item.Path + "/" + item.File,
-                    SHA1 = item.SHA1
+                    Sha1 = item.Sha1
                 });
             }
 
@@ -2478,10 +2483,10 @@ public static class GameBinding
                             item.Name, item.ModId, StringHelper.MakeString(item.Author),
                             Path.GetFileName(item.Local), item.Disable, item.CoreMod,
                             item.Sha1, StringHelper.MakeString(item.Loaders)));
-                        if (obj.Mods.Values.FirstOrDefault(item => item.SHA1 == item.SHA1) is { } item1)
+                        if (obj.Mods.Values.FirstOrDefault(item => item.Sha1 == item.Sha1) is { } item1)
                         {
                             info.AppendLine(string.Format(App.Lang("GameBinding.Info11"),
-                                item1.Type.GetName(), item1.ModId, item1.FileId));
+                                DownloadItemHelper.TestSourceType(item1.ModId, item1.FileId), item1.ModId, item1.FileId));
                         }
                     }
                 }

@@ -99,7 +99,7 @@ public static class ServerPack
                     {
                         Name = item.File,
                         Local = Path.GetFullPath(path + item.File),
-                        SHA256 = item.Sha256,
+                        Sha256 = item.Sha256,
                         Url = obj.Game.ServerUrl + item.Url
                     });
                 }
@@ -109,7 +109,7 @@ public static class ServerPack
                     {
                         Name = item.File,
                         Local = Path.GetFullPath(path + item.File),
-                        SHA256 = item.Sha256,
+                        Sha256 = item.Sha256,
                         Url = UrlHelper.MakeDownloadUrl(item.Source, item.Projcet!, item.FileId!, item.File),
                     });
                 }
@@ -140,7 +140,7 @@ public static class ServerPack
                 {
                     Name = item.File,
                     Local = Path.GetFullPath(path + item.File),
-                    SHA256 = item.Sha256,
+                    Sha256 = item.Sha256,
                     Url = obj.Game.ServerUrl + item.Url
                 });
             }
@@ -160,7 +160,7 @@ public static class ServerPack
                     {
                         Name = item.FileName,
                         Local = Path.GetFullPath(path1 + "/" + item.FileName),
-                        SHA256 = item.Sha256,
+                        Sha256 = item.Sha256,
                         Url = obj.Game.ServerUrl + item.Url,
                         Overwrite = true,
                         Later = (stream) =>
@@ -182,7 +182,7 @@ public static class ServerPack
                     {
                         Name = item.Group + item.FileName,
                         Local = Path.GetFullPath(path + "/" + item.Group + item.FileName),
-                        SHA256 = item.Sha256,
+                        Sha256 = item.Sha256,
                         Overwrite = true,
                         Url = obj.Game.ServerUrl + item.Url
                     });

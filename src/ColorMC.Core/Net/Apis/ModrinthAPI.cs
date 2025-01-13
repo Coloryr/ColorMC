@@ -37,12 +37,12 @@ public static class ModrinthAPI
         {
             var list = new List<MFacetsObj>
             {
-                ModrinthHelper.BuildProjectType(new() { type2 })
+                ModrinthHelper.BuildProjectType([type2])
             };
 
             if (!string.IsNullOrWhiteSpace(version))
             {
-                list.Add(ModrinthHelper.BuildVersions(new() { version }));
+                list.Add(ModrinthHelper.BuildVersions([version]));
             }
 
             var list1 = new List<string>();

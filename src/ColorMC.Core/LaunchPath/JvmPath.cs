@@ -105,7 +105,7 @@ public static class JvmPath
         var item = new DownloadItemObj()
         {
             Name = name,
-            SHA256 = sha256,
+            Sha256 = sha256,
             Local = DownloadManager.DownloadDir + "/" + name,
             Url = url
         };

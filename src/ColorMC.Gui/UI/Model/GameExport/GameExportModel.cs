@@ -173,7 +173,7 @@ public partial class GameExportModel : MenuModel
             var info = new FileInfo(item.Local);
             using var stream = PathHelper.OpenRead(item.Local)!;
             var sha512 = await HashHelper.GenSha512Async(stream);
-            var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
+            var item1 = Obj.Mods.Values.FirstOrDefault(a => a.Sha1 == item.Sha1);
             if (item1 != null)
             {
                 obj1 = new ModExportModel(Model, item1.ModId, item1.FileId)
@@ -181,7 +181,7 @@ public partial class GameExportModel : MenuModel
                     Type = Type,
                     Obj = item,
                     Obj1 = item1,
-                    Sha1 = item1.SHA1!,
+                    Sha1 = item1.Sha1!,
                     Sha512 = sha512,
                     Url = item1.Url,
                     FileSize = info.Length
@@ -304,14 +304,14 @@ public partial class GameExportModel : MenuModel
 
             var sha1 = await HashHelper.GenSha1Async(stream);
             stream.Seek(0, SeekOrigin.Begin);
-            var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == sha1);
+            var item1 = Obj.Mods.Values.FirstOrDefault(a => a.Sha1 == sha1);
             if (item1 != null)
             {
                 var obj1 = new ModExport1Model()
                 {
                     Path = path1,
                     Type = Type,
-                    Sha1 = item1.SHA1!,
+                    Sha1 = item1.Sha1!,
                     Sha512 = await HashHelper.GenSha512Async(stream),
                     Url = item1.Url,
                     FileSize = item.Length

@@ -94,7 +94,7 @@ public static class ModrinthHelper
             Name = data.Name,
             Url = file.Url,
             Local = Path.GetFullPath(obj.GetModsPath() + "/" + file.Filename),
-            SHA1 = file.Hashes.Sha1
+            Sha1 = file.Hashes.Sha1
         };
     }
 
@@ -111,7 +111,7 @@ public static class ModrinthHelper
             Url = data.Downloads[0],
             Name = data.Path,
             Local = obj.GetGamePath() + "/" + data.Path,
-            SHA1 = data.Hashes.Sha1
+            Sha1 = data.Hashes.Sha1
         };
     }
 
@@ -131,7 +131,7 @@ public static class ModrinthHelper
             File = file.Filename,
             Name = data.Name,
             Url = file.Url,
-            SHA1 = file.Hashes.Sha1
+            Sha1 = file.Hashes.Sha1
         };
     }
 
@@ -230,7 +230,7 @@ public static class ModrinthHelper
                     Path = item.Path[..item.Path.IndexOf('/')],
                     Name = item.Path,
                     File = item.Path,
-                    SHA1 = item11.SHA1!,
+                    Sha1 = item11.Sha1!,
                     ModId = modid,
                     FileId = fileid,
                     Url = url
@@ -263,7 +263,7 @@ public static class ModrinthHelper
 
         await Parallel.ForEachAsync(list, async (item, cancel) =>
         {
-            if (mods1.Any(item1 => item.Sha1 == item1.SHA1) && !cov)
+            if (mods1.Any(item1 => item.Sha1 == item1.Sha1) && !cov)
             {
                 return;
             }
@@ -279,7 +279,7 @@ public static class ModrinthHelper
                 Path = "mods",
                 Name = data.Files[0].Filename,
                 File = Path.GetFileName(item.Local),
-                SHA1 = item.Sha1,
+                Sha1 = item.Sha1,
                 Url = data.Files[0].Url,
                 ModId = data.ProjectId,
                 FileId = data.Id

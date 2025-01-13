@@ -1226,6 +1226,7 @@
 	"GameBinding.Error12": "服务器实例下载发生错误",
 	"GameBinding.Error13": "自定义加载器检测错误",
 	"GameBinding.Error14": "模组启用/禁用失败 {0}",
+	"GameBinding.Error15": "模组文件不存在",
 	"WindowManager.Info1": "你正在使用自定义启动器界面\nColorMC不会对自定义代码产生的问题负责",
 	"WindowManager.Error1": "自定义UI加载失败",
 	"WebBinding.Error1": "模组更新检查失败",
