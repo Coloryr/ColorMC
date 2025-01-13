@@ -105,7 +105,7 @@ public static class LocalMaven
                     Name = name,
                     Url = item2.Url,
                     Local = $"{LibrariesPath.BaseDir}/{item2.Local}",
-                    SHA1 = item2.SHA1
+                    Sha1 = item2.SHA1
                 };
             }
         }
@@ -131,11 +131,11 @@ public static class LocalMaven
                         Name = name,
                         Url = url,
                         Local = $"{LibrariesPath.BaseDir}/{dir}",
-                        SHA1 = await res.Content.ReadAsStringAsync()
+                        Sha1 = await res.Content.ReadAsStringAsync()
                     };
 
                     maven.Have = true;
-                    maven.SHA1 = item3.SHA1;
+                    maven.SHA1 = item3.Sha1;
                     maven.Url = item3.Url;
                     maven.Local = dir;
                 }

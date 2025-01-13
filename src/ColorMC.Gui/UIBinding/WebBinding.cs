@@ -478,42 +478,40 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="list"></param>
     /// <returns></returns>
-    public static async Task<bool> DownloadMod(GameSettingObj obj, ICollection<DownloadModItemArg> list)
+    public static async Task<bool> DownloadMod(GameSettingObj obj,  ICollection<DownloadModArg> list)
     {
-        foreach (var item in list)
-        {
-            PathHelper.Delete(item.Local);
-        }
-
         var list1 = new List<DownloadItemObj>();
+        var setting = GameGuiSetting.ReadConfig(obj);
         foreach (var item in list)
         {
             item.Item.Later = (s) =>
             {
-                obj.AddModInfo(item.Info);
+                obj.AddModInfo(item.Info); 
+                if (item.Old is { } old)
+                {
+                    PathHelper.Delete(item.Old.Local);
+                }
             };
-            list1.Add(item.Item);
-        }
-        return await DownloadManager.StartAsync(list1);
-    }
 
-    /// <summary>
-    /// 下载模组
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="list"></param>
-    /// <returns></returns>
-    public static async Task<bool> DownloadMod(GameSettingObj obj, ICollection<DownloadModArg> list)
-    {
-        var list1 = new List<DownloadItemObj>();
-        foreach (var item in list)
-        {
-            item.Item.Later = (s) =>
+            if (item.Old is { } old && item.Item.Sha1 != null)
             {
-                obj.AddModInfo(item.Info);
-            };
+                if (setting.ModName.TryGetValue(old.Sha1, out var value))
+                {
+                    setting.ModName[item.Item.Sha1] = value;
+                    setting.ModName.Remove(old.Sha1);
+                }
+
+                if (item.Old.Disable)
+                {
+                    item.Item.Local = Path.ChangeExtension(item.Item.Local, Mods.Name3);
+                    item.Info.File = Path.ChangeExtension(item.Info.File, Mods.Name3);
+                }
+            }
+            
             list1.Add(item.Item);
         }
+
+        GameGuiSetting.WriteConfig(obj, setting);
         return await DownloadManager.StartAsync(list1);
     }
 
@@ -540,7 +538,7 @@ public static class WebBinding
                     Name = data.DisplayName,
                     Url = data.DownloadUrl,
                     Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.FileName),
-                    SHA1 = data.Hashes.Where(a => a.Algo == 1)
+                    Sha1 = data.Hashes.Where(a => a.Algo == 1)
                         .Select(a => a.Value).FirstOrDefault(),
                     Overwrite = true
                 };
@@ -558,7 +556,7 @@ public static class WebBinding
                     Name = data.DisplayName,
                     Url = data.DownloadUrl,
                     Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + data.FileName),
-                    SHA1 = data.Hashes.Where(a => a.Algo == 1)
+                    Sha1 = data.Hashes.Where(a => a.Algo == 1)
                         .Select(a => a.Value).FirstOrDefault(),
                     Overwrite = true
                 }]);
@@ -568,7 +566,7 @@ public static class WebBinding
                     Name = data.DisplayName,
                     Url = data.DownloadUrl,
                     Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + data.FileName),
-                    SHA1 = data.Hashes.Where(a => a.Algo == 1)
+                    Sha1 = data.Hashes.Where(a => a.Algo == 1)
                         .Select(a => a.Value).FirstOrDefault(),
                     Overwrite = true
                 }]);
@@ -600,7 +598,7 @@ public static class WebBinding
                     Name = data.Name,
                     Url = file.Url,
                     Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + file.Filename),
-                    SHA1 = file.Hashes.Sha1,
+                    Sha1 = file.Hashes.Sha1,
                     Overwrite = true
                 }]),
             FileType.Shaderpack => await DownloadManager.StartAsync([new()
@@ -608,7 +606,7 @@ public static class WebBinding
                     Name = data.Name,
                     Url = file.Url,
                     Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + file.Filename),
-                    SHA1 = file.Hashes.Sha1,
+                    Sha1 = file.Hashes.Sha1,
                     Overwrite = true
                 }]),
             _ => false,
@@ -635,7 +633,7 @@ public static class WebBinding
             Name = data.DisplayName,
             Url = data.DownloadUrl,
             Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + data.FileName),
-            SHA1 = data.Hashes.Where(a => a.Algo == 1)
+            Sha1 = data.Hashes.Where(a => a.Algo == 1)
                 .Select(a => a.Value).FirstOrDefault(),
             Overwrite = true
         }]);
@@ -661,7 +659,7 @@ public static class WebBinding
             Name = data.Name,
             Url = file.Url,
             Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + file.Filename),
-            SHA1 = file.Hashes.Sha1,
+            Sha1 = file.Hashes.Sha1,
             Overwrite = true
         }]);
     }
@@ -780,7 +778,7 @@ public static class WebBinding
                     }
                 }
 
-                list.Add(new(item.Local, item.Name, version, items, false));
+                list.Add(new(item.Obj, item.Name, version, items));
             }
             catch (Exception e)
             {

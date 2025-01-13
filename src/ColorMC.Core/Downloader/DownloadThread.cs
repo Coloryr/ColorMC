@@ -144,10 +144,10 @@ internal class DownloadThread
     /// <returns>是否完整</returns>
     private bool CheckFile(DownloadItemObj item)
     {
-        if (!string.IsNullOrWhiteSpace(item.MD5))
+        if (!string.IsNullOrWhiteSpace(item.Md5))
         {
             using var stream2 = PathHelper.OpenRead(item.Local)!;
-            if (HashHelper.GenMd5(stream2) == item.MD5)
+            if (HashHelper.GenMd5(stream2) == item.Md5)
             {
                 item.State = DownloadItemState.Action;
                 item.Update(_index);
@@ -160,10 +160,10 @@ internal class DownloadThread
                 return true;
             }
         }
-        if (!string.IsNullOrWhiteSpace(item.SHA1))
+        if (!string.IsNullOrWhiteSpace(item.Sha1))
         {
             using var stream2 = PathHelper.OpenRead(item.Local)!;
-            if (HashHelper.GenSha1(stream2) == item.SHA1)
+            if (HashHelper.GenSha1(stream2) == item.Sha1)
             {
                 item.State = DownloadItemState.Action;
                 item.Update(_index);
@@ -176,10 +176,10 @@ internal class DownloadThread
                 return true;
             }
         }
-        if (!string.IsNullOrWhiteSpace(item.SHA256))
+        if (!string.IsNullOrWhiteSpace(item.Sha256))
         {
             using var stream2 = PathHelper.OpenRead(item.Local)!;
-            if (HashHelper.GenSha256(stream2) == item.SHA256)
+            if (HashHelper.GenSha256(stream2) == item.Sha256)
             {
                 item.State = DownloadItemState.Action;
                 item.Update(_index);
@@ -307,10 +307,10 @@ internal class DownloadThread
                     //检查文件
                     if (ConfigUtils.Config.Http.CheckFile)
                     {
-                        if (!string.IsNullOrWhiteSpace(item.MD5))
+                        if (!string.IsNullOrWhiteSpace(item.Md5))
                         {
                             stream.Seek(0, SeekOrigin.Begin);
-                            if (HashHelper.GenMd5(stream) != item.MD5)
+                            if (HashHelper.GenMd5(stream) != item.Md5)
                             {
                                 item.State = DownloadItemState.Error;
                                 item.Update(_index);
@@ -318,10 +318,10 @@ internal class DownloadThread
                                 break;
                             }
                         }
-                        if (!string.IsNullOrWhiteSpace(item.SHA1))
+                        if (!string.IsNullOrWhiteSpace(item.Sha1))
                         {
                             stream.Seek(0, SeekOrigin.Begin);
-                            if (HashHelper.GenSha1(stream) != item.SHA1)
+                            if (HashHelper.GenSha1(stream) != item.Sha1)
                             {
                                 item.State = DownloadItemState.Error;
                                 item.Update(_index);
@@ -329,10 +329,10 @@ internal class DownloadThread
                                 break;
                             }
                         }
-                        if (!string.IsNullOrWhiteSpace(item.SHA256))
+                        if (!string.IsNullOrWhiteSpace(item.Sha256))
                         {
                             stream.Seek(0, SeekOrigin.Begin);
-                            if (HashHelper.GenSha256(stream) != item.SHA256)
+                            if (HashHelper.GenSha256(stream) != item.Sha256)
                             {
                                 item.State = DownloadItemState.Error;
                                 item.Update(_index);

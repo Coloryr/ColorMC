@@ -40,7 +40,7 @@ public static class CurseForgeHelper
             Url = data.DownloadUrl,
             Name = data.DisplayName,
             Local = path + "/" + data.FileName,
-            SHA1 = data.Hashes.Where(a => a.Algo == 1)
+            Sha1 = data.Hashes.Where(a => a.Algo == 1)
                     .Select(a => a.Value).FirstOrDefault()
         };
     }
@@ -60,7 +60,7 @@ public static class CurseForgeHelper
             Path = path,
             Name = data.DisplayName,
             File = data.FileName,
-            SHA1 = data.Hashes.Where(a => a.Algo == 1)
+            Sha1 = data.Hashes.Where(a => a.Algo == 1)
                     .Select(a => a.Value).FirstOrDefault(),
             ModId = data.ModId.ToString(),
             FileId = data.Id.ToString(),
