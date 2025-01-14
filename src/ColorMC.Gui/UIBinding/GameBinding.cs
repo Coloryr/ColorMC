@@ -13,6 +13,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Chunk;
+using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -56,6 +57,8 @@ public static class GameBinding
     /// 停止启动游戏
     /// </summary>
     private static CancellationTokenSource s_launchCancel = new();
+
+    private static bool s_notDisplayMem;
 
     /// <summary>
     /// 获取游戏实例列表
@@ -494,6 +497,51 @@ public static class GameBinding
             {
                 Message = App.Lang("BaseBinding.Error3")
             };
+        }
+
+        var count = obj.ReadModFast();
+
+        if (count > 0 && obj.Loader == Loaders.Normal)
+        {
+            var res2 = await model.ShowWait(string.Format(App.Lang("GameBinding.Info19"), obj.Name));
+            if (!res2)
+            {
+                return new() { };
+            }
+        }
+
+        if (!s_notDisplayMem && count > 150)
+        {
+            var mem = obj.JvmArg?.MaxMemory ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory;
+            if (mem <= 4096)
+            {
+                bool launch = false;
+                await model.ShowChoiseCancelWait(App.Lang("GameBinding.Info20"), App.Lang("GameBinding.Info21"), () =>
+                {
+                    model.ShowClose();
+                    if (obj.JvmArg?.MaxMemory != null)
+                    {
+                        WindowManager.ShowGameEdit(obj, GameEditWindowType.Arg);
+                    }
+                    else
+                    {
+                        WindowManager.ShowSetting(SettingType.Arg);
+                    }
+                }, (data) => 
+                {
+                    launch = data;
+                });
+                if (!launch)
+                {
+                    return new();
+                }
+
+                var res3 = await model.ShowWait(App.Lang("GameBinding.Info22"));
+                if (res3 == true)
+                {
+                    s_notDisplayMem = true;
+                }
+            }
         }
 
         var res = await UserBinding.GetLaunchUser(model);

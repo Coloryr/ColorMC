@@ -664,6 +664,21 @@ public partial class BaseModel : ObservableObject
         DialogHost.Show(_info4, Name);
     }
 
+    public async Task ShowChoiseCancelWait(string data, string choise, Action action, Action<bool> cancel)
+    {
+        _info4.EnableVisable = true;
+        _info4.Enable = true;
+        _info4.CancelVisable = true;
+        _info4.Call = cancel;
+        _info4.Text = data;
+        _info4.ChoiseVisiable = true;
+        _info4.ChoiseText = choise;
+        _info4.ChoiseCall = action;
+
+        DClose();
+        await DialogHost.Show(_info4, Name);
+    }
+
     public async Task<(bool Cancel, int Index, string? Item)>
         ShowCombo(string title, IEnumerable<string> data1)
     {

@@ -97,7 +97,11 @@ public partial class NetFrpModel
                 IP = temp[0],
                 Port = ushort.Parse(temp[1])
             };
-            await GameBinding.Launch(Model, item2);
+            var res = await GameBinding.Launch(Model, item2);
+            if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
+            {
+                Model.Show(res.Message!);
+            }
         }
         catch (Exception e)
         {

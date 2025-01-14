@@ -238,7 +238,7 @@ public partial class GameEditModel
         }
 
         var res = await GameBinding.Launch(Model, world.World.Game, world.World, GuiConfigUtils.Config.CloseBeforeLaunch);
-        if (!res.Res)
+        if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
         {
             Model.Show(res.Message!);
         }

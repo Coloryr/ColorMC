@@ -140,7 +140,6 @@
   "Core.Launch.Info10": "游戏实例 {0} 启动前执行信息错误",
   "Core.Launch.Info11": "游戏实例 {0} 启动后执行信息错误",
   "Core.Launch.Info12": "是否下载缺失的运行库文件",
-  "Core.Launch.Info13": "游戏实例 {0} 添加了Mod，但是没有使用Mod加载器，是否要继续启动",
   "Core.Launch.Info14": "游戏实例 {0} 服务器实例检查 {1}",
   "Core.Launch.Info15": "游戏实例 {0} 服务器实例检查错误，是否继续启动",
   "Core.Launch.Info16": "游戏实例 {0} 服务器实例检查错误",

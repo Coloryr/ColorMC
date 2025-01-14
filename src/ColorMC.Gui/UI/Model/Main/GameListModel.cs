@@ -522,7 +522,7 @@ public partial class MainModel
                     WindowManager.ShowUser(relogin: true);
                 }
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(res.Message))
             {
                 Model.Show(res.Message!);
             }
