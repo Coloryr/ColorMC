@@ -79,7 +79,7 @@ public partial class SettingControl : MenuControl
 
     public override void Opened()
     {
-        (DataContext as SettingModel)!.LoadUISetting();
+        (DataContext as SettingModel)?.Load();
     }
 
     public override TopModel GenModel(BaseModel model)

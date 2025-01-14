@@ -81,8 +81,8 @@ public static class ColorMCGui
                     ProcessUtils.LaunchAdmin(args);
                 }
                 catch
-                { 
-                    
+                {
+
                 }
                 return;
             }

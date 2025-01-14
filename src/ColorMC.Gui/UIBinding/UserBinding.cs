@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -25,7 +24,6 @@ public static class UserBinding
     public static event Action? UserEdit;
 
     private static readonly List<UserKeyObj> s_lockUser = [];
-    private static bool s_notDisplayUserLock;
 
     /// <summary>
     /// Ìí¼ÓÕË»§
@@ -374,7 +372,7 @@ public static class UserBinding
             }
         }
 
-        if (IsLock(login) && !s_notDisplayUserLock)
+        if (IsLock(login) && GuiConfigUtils.Config.LaunchCheck.CheckUser)
         {
             var res = await model.ShowWait(App.Lang("GameBinding.Error1"));
             if (!res)
@@ -382,14 +380,12 @@ public static class UserBinding
                 return new() { Message = App.Lang("GameBinding.Error5") };
             }
 
-            Dispatcher.UIThread.Post(async () =>
+            res = await model.ShowWait(App.Lang("GameBinding.Info18"));
+            if (res)
             {
-                var res1 = await model.ShowWait(App.Lang("GameBinding.Info18"));
-                if (res1)
-                {
-                    s_notDisplayUserLock = true;
-                }
-            });
+                GuiConfigUtils.Config.LaunchCheck.CheckUser = false;
+                GuiConfigUtils.Save();
+            }
         }
 
         return new() { User = login };

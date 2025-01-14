@@ -19,8 +19,8 @@ public abstract partial class TopModel(BaseModel model) : ObservableObject
     }
 
     protected virtual void MinModeChange()
-    { 
-        
+    {
+
     }
 
     public virtual void WidthChange(int index, double width)

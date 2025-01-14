@@ -100,8 +100,8 @@ public static class GameLogs
                         return Encoding.GetEncoding("gbk").GetString(output.ToArray());
                     }
                     catch
-                    { 
-                        
+                    {
+
                     }
                 }
                 return Encoding.UTF8.GetString(output.ToArray());

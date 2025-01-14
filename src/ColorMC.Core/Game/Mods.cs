@@ -158,7 +158,7 @@ public static class Mods
 
         var info = mod.Game.Mods.Values.FirstOrDefault(item => item.Sha1 == mod.Sha1);
         if (info != null)
-        { 
+        {
             info.File = Path.ChangeExtension(info.File, Name3);
             mod.Game.SaveModInfo();
         }
