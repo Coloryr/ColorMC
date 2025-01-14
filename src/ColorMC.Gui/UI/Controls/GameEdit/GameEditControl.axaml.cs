@@ -138,6 +138,9 @@ public partial class GameEditControl : MenuControl
             case GameEditWindowType.World:
                 model.NowView = 3;
                 break;
+            case GameEditWindowType.Arg:
+                model.NowView = 1;
+                break;
         }
     }
 

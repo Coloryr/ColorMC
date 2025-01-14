@@ -256,8 +256,8 @@ public static class Mods
     /// 检查有无mod存在
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>是否存在</returns>
-    public static bool GetModFast(this GameSettingObj obj)
+    /// <returns>模组数量</returns>
+    public static int ReadModFast(this GameSettingObj obj)
     {
         string dir = obj.GetModsPath();
 
@@ -265,18 +265,19 @@ public static class Mods
         if (!info.Exists)
         {
             info.Create();
-            return false;
+            return 0;
         }
         var files = info.GetFiles();
+        int a = 0;
         foreach (var item in files)
         {
             if (item.Name.EndsWith(Name2))
             {
-                return true;
+                a++;
             }
         }
 
-        return false;
+        return a;
     }
 
     /// <summary>

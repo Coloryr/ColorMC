@@ -1095,16 +1095,6 @@ public static class Launch
                     res.Add(res3);
                 }
 
-                if (obj.GetModFast() && obj.Loader == Loaders.Normal && larg.Request != null)
-                {
-                    var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
-                    if (!res2)
-                    {
-                        throw new LaunchException(LaunchState.Cancel,
-                                LanguageHelper.Get("Core.Launch.Error8"));
-                    }
-                }
-
                 //下载缺失的文件
                 if (!res.IsEmpty)
                 {
@@ -1398,15 +1388,6 @@ public static class Launch
             res.Add(res3);
         }
 
-        if (obj.GetModFast() && obj.Loader == Loaders.Normal && larg.Request != null)
-        {
-            var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
-            if (!res2)
-            {
-                return new() { Message = LanguageHelper.Get("Core.Launch.Error8") };
-            }
-        }
-
         var path = obj.JvmLocal;
         JavaInfo? jvm = null;
         var game = VersionPath.GetVersion(obj.Version)!;
@@ -1615,16 +1596,6 @@ public static class Launch
         if (res3 != null)
         {
             res.Add(res3);
-        }
-
-        if (obj.GetModFast() && obj.Loader == Loaders.Normal && larg.Request != null)
-        {
-            var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
-            if (!res2)
-            {
-                throw new LaunchException(LaunchState.Cancel,
-                        LanguageHelper.Get("Core.Launch.Error8"));
-            }
         }
 
         //下载缺失的文件
