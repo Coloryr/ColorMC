@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using Avalonia.Input;
 using Avalonia.Media;

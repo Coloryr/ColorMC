@@ -1022,4 +1022,14 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
         WindowManager.MainWindow?.LoadDone();
     }
+
+    public static void SetCheck(bool user, bool loader, bool memory)
+    {
+        GuiConfigUtils.Config.LaunchCheck ??= new();
+        GuiConfigUtils.Config.LaunchCheck.CheckUser = user;
+        GuiConfigUtils.Config.LaunchCheck.CheckLoader = loader;
+        GuiConfigUtils.Config.LaunchCheck.CheckMemory = memory;
+
+        GuiConfigUtils.Save();
+    }
 }

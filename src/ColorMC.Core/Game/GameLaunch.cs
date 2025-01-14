@@ -1366,8 +1366,11 @@ public static class Launch
             {
                 if (larg.Request == null)
                 {
-                    return new() { Message =
-                         string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name) };
+                    return new()
+                    {
+                        Message =
+                         string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name)
+                    };
                 }
                 var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
                 if (!res2)

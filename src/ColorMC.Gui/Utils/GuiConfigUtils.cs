@@ -111,6 +111,11 @@ public static class GuiConfigUtils
                 Config.Card = MakeCardConfig();
                 save = true;
             }
+            if (Config.LaunchCheck == null)
+            {
+                Config.LaunchCheck = MakeLaunchCheckConfig();
+                save = true;
+            }
 
             if (save)
             {
@@ -148,6 +153,16 @@ public static class GuiConfigUtils
             File = s_local,
             Obj = Config
         });
+    }
+
+    public static LaunchCheckSetting MakeLaunchCheckConfig()
+    {
+        return new()
+        {
+            CheckLoader = true,
+            CheckMemory = true,
+            CheckUser = true
+        };
     }
 
     public static CardSetting MakeCardConfig()
@@ -225,6 +240,7 @@ public static class GuiConfigUtils
             LogColor = MakeLogColorConfig(),
             Input = new(),
             Card = MakeCardConfig(),
+            LaunchCheck = MakeLaunchCheckConfig(),
             CheckUpdate = true
         };
     }

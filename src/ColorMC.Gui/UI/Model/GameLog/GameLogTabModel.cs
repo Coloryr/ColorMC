@@ -211,7 +211,7 @@ public partial class GameLogModel : GameModel
             {
                 return;
             }
-            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () => 
+            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
             {
                 await BaseBinding.CopyTextClipboard(top, url);
                 Model.Notify(App.Lang("GameLogWindow.Info7"));

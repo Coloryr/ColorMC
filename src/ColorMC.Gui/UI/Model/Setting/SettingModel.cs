@@ -1,5 +1,8 @@
-﻿using ColorMC.Core.Objs;
+﻿using System.Timers;
+using Avalonia.Threading;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Hook;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 
@@ -11,6 +14,8 @@ public partial class SettingModel : MenuModel
     public bool IsInputEnable { get; }
 
     private readonly string _name;
+
+    private readonly Timer _timer;
 
     public SettingModel(BaseModel model) : base(model)
     {
@@ -25,6 +30,10 @@ public partial class SettingModel : MenuModel
         {
             IsInputEnable = true;
         }
+
+        _timer = new Timer(1000);
+        _timer.Elapsed += Timer_Elapsed;
+        _timer.AutoReset = true;
 
         if (!SdlUtils.SdlInit)
         {
@@ -175,8 +184,24 @@ public partial class SettingModel : MenuModel
         ]);
     }
 
+    public void Load()
+    {
+        _timer.Start();
+        LoadUISetting();
+    }
+
+    private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            Memory = string.Format(App.Lang("SettingWindow.Tab4.Text29"), HookUtils.GetMemorySize(), HookUtils.GetFreeSize());
+        });
+    }
+
     public override void Close()
     {
+        _timer.Stop();
+        _timer.Dispose();
         FontList.Clear();
         JavaList.Clear();
         _uuids.Clear();

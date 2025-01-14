@@ -83,7 +83,7 @@ public static class WebBinding
                 list1.Add(new(item, FileType.ModPack));
             });
 
-            return new() 
+            return new()
             {
                 List = list1,
                 Count = list.Pagination.TotalCount
@@ -325,7 +325,7 @@ public static class WebBinding
                 });
             });
 
-            return new() 
+            return new()
             {
                 List = list1,
                 Count = list.Pagination.TotalCount
@@ -359,7 +359,7 @@ public static class WebBinding
                 });
             });
 
-            return new() 
+            return new()
             {
                 List = list1,
                 Count = list.Hits.Count
@@ -478,7 +478,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="list"></param>
     /// <returns></returns>
-    public static async Task<bool> DownloadMod(GameSettingObj obj,  ICollection<DownloadModArg> list)
+    public static async Task<bool> DownloadMod(GameSettingObj obj, ICollection<DownloadModArg> list)
     {
         var list1 = new List<DownloadItemObj>();
         var setting = GameGuiSetting.ReadConfig(obj);
@@ -486,7 +486,7 @@ public static class WebBinding
         {
             item.Item.Later = (s) =>
             {
-                obj.AddModInfo(item.Info); 
+                obj.AddModInfo(item.Info);
                 if (item.Old is { } old)
                 {
                     PathHelper.Delete(item.Old.Local);
@@ -507,7 +507,7 @@ public static class WebBinding
                     item.Info.File = Path.ChangeExtension(item.Info.File, Mods.Name3);
                 }
             }
-            
+
             list1.Add(item.Item);
         }
 

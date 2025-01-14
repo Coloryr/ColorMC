@@ -30,6 +30,10 @@ public class MainFlyout
                     {
                         WindowManager.ShowGameEdit(obj.Obj);
                     }),
+                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text24"), true, ()=>
+                    {
+                        WindowManager.ShowGameEdit(obj.Obj, GameEditWindowType.Arg);
+                    }),
                     new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text4"), true, ()=>
                     {
                         WindowManager.ShowGameEdit(obj.Obj, GameEditWindowType.Mod);

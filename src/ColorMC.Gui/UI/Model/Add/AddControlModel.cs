@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Game;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Modrinth;
@@ -998,7 +998,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         }
 
         ModInfoObj? mod = null;
-        if (_now == FileType.Mod && Obj.Mods.TryGetValue(data.ID, out  mod))
+        if (_now == FileType.Mod && Obj.Mods.TryGetValue(data.ID, out mod))
         {
             var res1 = await Model.ShowWait(App.Lang("AddWindow.Info15"));
             if (!res1)
