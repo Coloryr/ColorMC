@@ -520,7 +520,7 @@ public static class AddGameHelper
         {
             Url = file.Url,
             Name = file.Filename,
-            SHA1 = file.Hashes.Sha1,
+            Sha1 = file.Hashes.Sha1,
             Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.Filename),
         };
 

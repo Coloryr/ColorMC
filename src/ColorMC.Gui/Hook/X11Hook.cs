@@ -8,7 +8,7 @@ using X11;
 
 namespace ColorMC.Gui.Hook;
 
-internal partial class X11Hook
+internal partial class X11Native
 {
     // X11 相关的常量和函数声明
     public const int PropModeReplace = 0;

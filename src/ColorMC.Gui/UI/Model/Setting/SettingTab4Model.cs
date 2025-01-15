@@ -55,6 +55,12 @@ public partial class SettingModel
     private bool _customGc;
     [ObservableProperty]
     private bool _preRunSame;
+    [ObservableProperty]
+    private bool _checkUser;
+    [ObservableProperty]
+    private bool _checkLoader;
+    [ObservableProperty]
+    private bool _checkMemory;
 
     [ObservableProperty]
     private GCType _gC;
@@ -68,7 +74,25 @@ public partial class SettingModel
     [ObservableProperty]
     private uint? _height;
 
+    [ObservableProperty]
+    private string _memory;
+
     private bool _argLoad = true;
+
+    partial void OnCheckUserChanged(bool value)
+    {
+        SetCheck();
+    }
+
+    partial void OnCheckLoaderChanged(bool value)
+    {
+        SetCheck();
+    }
+
+    partial void OnCheckMemoryChanged(bool value)
+    {
+        SetCheck();
+    }
 
     partial void OnSafeLog4jChanged(bool value)
     {
@@ -233,6 +257,7 @@ public partial class SettingModel
             CheckAssetsSha1 = con.GameCheck.CheckAssetsSha1;
             CheckLibSha1 = con.GameCheck.CheckLibSha1;
             CheckModSha1 = con.GameCheck.CheckModSha1;
+
             PostRun = con.DefaultJvmArg.LaunchPost;
             PreRun = con.DefaultJvmArg.LaunchPre;
             SafeLog4j = con.SafeLog4j;
@@ -242,8 +267,20 @@ public partial class SettingModel
         if (config1 is { } con1)
         {
             CloseBefore = con1.CloseBeforeLaunch;
+
+            CheckUser = con1.LaunchCheck.CheckUser;
+            CheckLoader = con1.LaunchCheck.CheckLoader;
+            CheckMemory = con1.LaunchCheck.CheckMemory;
         }
         _argLoad = false;
+    }
+
+    private void SetCheck()
+    {
+        if (_argLoad)
+            return;
+
+        ConfigBinding.SetCheck(CheckUser, CheckLoader, CheckMemory);
     }
 
     private void SetMemory()

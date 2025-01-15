@@ -19,6 +19,11 @@ public static class Mods
 {
     private static readonly char[] s_separator = ['\n'];
 
+    public const string Name1 = ".zip";
+    public const string Name2 = ".jar";
+    public const string Name3 = ".disable";
+    public const string Name4 = ".disabled";
+
     /// <summary>
     /// 获取Mod列表
     /// </summary>
@@ -48,57 +53,11 @@ public static class Mods
         await Parallel.ForEachAsync(files, async (item, cancel) =>
 #endif
         {
-            if (item.Extension is not (".zip" or ".jar" or ".disable" or ".disabled"))
+            var mod = await ReadMod(item, sha256);
+            if (mod != null)
             {
-                return;
-            }
-
-            var sha1 = "";
-            bool add = false;
-            try
-            {
-                using var filestream = PathHelper.OpenRead(item.FullName)!;
-                sha1 = HashHelper.GenSha1(filestream);
-                filestream.Seek(0, SeekOrigin.Begin);
-
-                using var zFile = new ZipFile(filestream);
-                var mod = await ReadModAsync(zFile);
-                if (mod != null)
-                {
-                    mod.Local = Path.GetFullPath(item.FullName);
-                    mod.Disable = item.Extension is ".disable" or ".disabled";
-                    mod.Sha1 = sha1;
-                    mod.Game = obj;
-                    mod.Name ??= "";
-                    mod.ModId ??= "";
-                    list.Add(mod);
-                    add = true;
-                    if (sha256)
-                    {
-                        filestream.Seek(0, SeekOrigin.Begin);
-                        mod.Sha256 = HashHelper.GenSha256(filestream);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.Get("Core.Game.Error1"), e);
-            }
-            finally
-            {
-                if (!add)
-                {
-                    list.Add(new()
-                    {
-                        ModId = "",
-                        Name = "",
-                        Local = Path.GetFullPath(item.FullName),
-                        Disable = item.Extension is ".disable" or ".disabled",
-                        ReadFail = true,
-                        Sha1 = sha1,
-                        Game = obj
-                    });
-                }
+                mod.Game = obj;
+                list.Add(mod);
             }
         });
 
@@ -109,22 +68,100 @@ public static class Mods
         return list1;
     }
 
+    private static async Task<ModObj?> ReadMod(FileInfo item, bool sha256)
+    {
+        if (item.Extension is not (Name1 or Name2 or Name3 or Name4))
+        {
+            return null;
+        }
+
+        var sha1 = "";
+        try
+        {
+            using var filestream = PathHelper.OpenRead(item.FullName)!;
+            sha1 = HashHelper.GenSha1(filestream);
+            filestream.Seek(0, SeekOrigin.Begin);
+
+            using var zFile = new ZipFile(filestream);
+            var mod = await ReadModAsync(zFile);
+            if (mod != null)
+            {
+                mod.Local = Path.GetFullPath(item.FullName);
+                mod.Disable = item.Extension is Name3 or Name4;
+                mod.Sha1 = sha1;
+                mod.Name ??= "";
+                mod.ModId ??= "";
+                if (sha256)
+                {
+                    filestream.Seek(0, SeekOrigin.Begin);
+                    mod.Sha256 = HashHelper.GenSha256(filestream);
+                }
+
+                return mod;
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Game.Error1"), e);
+        }
+        return new()
+        {
+            ModId = "",
+            Name = "",
+            Local = Path.GetFullPath(item.FullName),
+            Disable = item.Extension is Name3 or Name4,
+            ReadFail = true,
+            Sha1 = sha1
+        };
+    }
+
+    /// <summary>
+    /// 根据模组信息读模组
+    /// </summary>
+    /// <param name="obj"></param>
+    public static async Task<ModObj?> ReadMod(this GameSettingObj obj, ModInfoObj? mod)
+    {
+        if (mod == null)
+        {
+            return null;
+        }
+        var file = Path.GetFullPath(obj.GetModsPath() + mod.File);
+        if (File.Exists(file))
+        {
+            var info = new FileInfo(file);
+            var mod1 = await ReadMod(info, false);
+            if (mod1 != null)
+            {
+                mod1.Game = obj;
+            }
+            return mod1;
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// 禁用Mod
     /// </summary>
     /// <param name="mod">游戏Mod</param>
     public static void Disable(this ModObj mod)
     {
-        if (mod.Disable)
+        if (mod.Disable || !File.Exists(mod.Local))
         {
             return;
         }
 
         var file = new FileInfo(mod.Local);
         mod.Disable = true;
-        mod.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name
-            .Replace(".jar", ".disable")}");
+        mod.Local = Path.ChangeExtension(mod.Local, Name3);
         PathHelper.MoveFile(file.FullName, mod.Local);
+
+        var info = mod.Game.Mods.Values.FirstOrDefault(item => item.Sha1 == mod.Sha1);
+        if (info != null)
+        {
+            info.File = Path.ChangeExtension(info.File, Name3);
+            mod.Game.SaveModInfo();
+        }
     }
 
     /// <summary>
@@ -133,16 +170,22 @@ public static class Mods
     /// <param name="mod">游戏Mod</param>
     public static void Enable(this ModObj mod)
     {
-        if (!mod.Disable)
+        if (!mod.Disable || !File.Exists(mod.Local))
         {
             return;
         }
 
         var file = new FileInfo(mod.Local);
         mod.Disable = false;
-        mod.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name
-            .Replace(".disable", ".jar")}");
+        mod.Local = Path.ChangeExtension(mod.Local, Name2);
         PathHelper.MoveFile(file.FullName, mod.Local);
+
+        var info = mod.Game.Mods.Values.FirstOrDefault(item => item.Sha1 == mod.Sha1);
+        if (info != null)
+        {
+            info.File = Path.ChangeExtension(info.File, Name2);
+            mod.Game.SaveModInfo();
+        }
     }
 
     /// <summary>
@@ -213,8 +256,8 @@ public static class Mods
     /// 检查有无mod存在
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>是否存在</returns>
-    public static bool GetModFast(this GameSettingObj obj)
+    /// <returns>模组数量</returns>
+    public static int ReadModFast(this GameSettingObj obj)
     {
         string dir = obj.GetModsPath();
 
@@ -222,18 +265,19 @@ public static class Mods
         if (!info.Exists)
         {
             info.Create();
-            return false;
+            return 0;
         }
         var files = info.GetFiles();
+        int a = 0;
         foreach (var item in files)
         {
-            if (item.Name.EndsWith(".jar"))
+            if (item.Name.EndsWith(Name2))
             {
-                return true;
+                a++;
             }
         }
 
-        return false;
+        return a;
     }
 
     /// <summary>
@@ -357,7 +401,7 @@ public static class Mods
         obj.InJar ??= [];
         foreach (ZipEntry item3 in zFile)
         {
-            if (item3.Name.EndsWith(".jar") && item3.Name.StartsWith("META-INF/jarjar/"))
+            if (item3.Name.EndsWith(Name2) && item3.Name.StartsWith("META-INF/jarjar/"))
             {
                 using var filestream = zFile.GetInputStream(item3);
                 using var stream2 = new MemoryStream();

@@ -178,7 +178,7 @@ public static class CheckHelpers
         if (sha1)
         {
             using var data = PathHelper.OpenRead(obj.Local)!;
-            return HashHelper.GenSha1(data) != obj.SHA1;
+            return HashHelper.GenSha1(data) != obj.Sha1;
         }
 
         return false;
@@ -463,7 +463,7 @@ public static class CheckHelpers
                         {
                             if (shas.TryGetValue(item1.FullName, out var sha1))
                             {
-                                if (sha1 != item.SHA1)
+                                if (sha1 != item.Sha1)
                                 {
                                     continue;
                                 }
@@ -473,7 +473,7 @@ public static class CheckHelpers
                                 using var file = PathHelper.OpenRead(item1.FullName)!;
                                 sha1 = HashHelper.GenSha1(file);
                                 shas.TryAdd(item1.FullName, sha1);
-                                if (sha1 != item.SHA1)
+                                if (sha1 != item.Sha1)
                                 {
                                     continue;
                                 }
@@ -512,7 +512,7 @@ public static class CheckHelpers
                         Url = item.Url,
                         Name = item.Name,
                         Local = path,
-                        SHA1 = item.SHA1
+                        Sha1 = item.Sha1
                     });
                 }
             }, cancel));
@@ -684,7 +684,7 @@ public static class CheckHelpers
                 list.Add(item);
                 return;
             }
-            if (item.SHA1 == null)
+            if (item.Sha1 == null)
             {
                 return;
             }
@@ -696,7 +696,7 @@ public static class CheckHelpers
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
             var sha1 = await HashHelper.GenSha1Async(stream);
-            if (item.SHA1 != sha1)
+            if (item.Sha1 != sha1)
             {
                 list.Add(item);
             }
@@ -803,7 +803,7 @@ public static class CheckHelpers
                 using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
                     FileShare.Read);
                 var sha1 = await HashHelper.GenSha1Async(stream);
-                if (!string.IsNullOrWhiteSpace(item.SHA1) && item.SHA1 != sha1)
+                if (!string.IsNullOrWhiteSpace(item.Sha1) && item.Sha1 != sha1)
                 {
                     list.Add(item);
                     return;

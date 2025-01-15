@@ -13,6 +13,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Chunk;
+using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -496,6 +497,63 @@ public static class GameBinding
             };
         }
 
+        var count = obj.ReadModFast();
+
+        if (count > 0)
+        {
+            if (GuiConfigUtils.Config.LaunchCheck.CheckLoader && obj.Loader == Loaders.Normal)
+            {
+                var res2 = await model.ShowWait(string.Format(App.Lang("GameBinding.Info19"), obj.Name));
+                if (!res2)
+                {
+                    return new() { };
+                }
+
+                res2 = await model.ShowWait(App.Lang("GameBinding.Info23"));
+                if (res2 == true)
+                {
+                    GuiConfigUtils.Config.LaunchCheck.CheckLoader = false;
+                    GuiConfigUtils.Save();
+                }
+            }
+
+            if (GuiConfigUtils.Config.LaunchCheck.CheckMemory && obj.Loader != Loaders.Normal)
+            {
+                var mem = obj.JvmArg?.MaxMemory ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory;
+                if ((mem <= 4096 && count > 150)
+                    || (mem <= 8192 && count > 300))
+                {
+                    bool launch = false;
+                    await model.ShowChoiseCancelWait(App.Lang("GameBinding.Info20"), App.Lang("GameBinding.Info21"), () =>
+                    {
+                        model.ShowClose();
+                        if (obj.JvmArg?.MaxMemory != null)
+                        {
+                            WindowManager.ShowGameEdit(obj, GameEditWindowType.Arg);
+                        }
+                        else
+                        {
+                            WindowManager.ShowSetting(SettingType.Arg);
+                        }
+                    }, (data) =>
+                    {
+                        launch = data;
+                    });
+                    if (!launch)
+                    {
+                        return new();
+                    }
+
+                    var res3 = await model.ShowWait(App.Lang("GameBinding.Info22"));
+                    if (res3 == true)
+                    {
+                        GuiConfigUtils.Config.LaunchCheck.CheckMemory = false;
+                        GuiConfigUtils.Save();
+                    }
+                }
+            }
+        }
+
         var res = await UserBinding.GetLaunchUser(model);
         if (res.User is not { } user)
         {
@@ -841,7 +899,7 @@ public static class GameBinding
 
         list1.ForEach(item =>
         {
-            var obj1 = obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
+            var obj1 = obj.Mods.Values.FirstOrDefault(a => a.Sha1 == item.Sha1);
             list.Add(new ModDisplayModel(item, obj1, edit));
         });
         return list;
@@ -856,6 +914,11 @@ public static class GameBinding
     {
         try
         {
+            if (!File.Exists(obj.Local))
+            {
+                return new() { Message = App.Lang("GameBinding.Error15") };
+            }
+
             if (obj.Disable)
             {
                 obj.Enable();
@@ -1447,7 +1510,7 @@ public static class GameBinding
             File = data.FileName,
             Name = data.DisplayName,
             Url = data.DownloadUrl,
-            SHA1 = data.Hashes.Where(a => a.Algo == 1)
+            Sha1 = data.Hashes.Where(a => a.Algo == 1)
                 .Select(a => a.Value).FirstOrDefault()
         };
         if (!obj.Mods.TryAdd(obj1.ModId, obj1))
@@ -1478,7 +1541,7 @@ public static class GameBinding
             File = file.Filename,
             Name = data.Name,
             Url = file.Url,
-            SHA1 = file.Hashes.Sha1
+            Sha1 = file.Hashes.Sha1
         };
         if (!obj.Mods.TryAdd(obj1.ModId, obj1))
         {
@@ -2154,7 +2217,7 @@ public static class GameBinding
                     Url = item.Url,
                     Name = item.File,
                     Local = game.GetGamePath() + "/" + item.Path + "/" + item.File,
-                    SHA1 = item.SHA1
+                    Sha1 = item.Sha1
                 });
             }
 
@@ -2478,10 +2541,10 @@ public static class GameBinding
                             item.Name, item.ModId, StringHelper.MakeString(item.Author),
                             Path.GetFileName(item.Local), item.Disable, item.CoreMod,
                             item.Sha1, StringHelper.MakeString(item.Loaders)));
-                        if (obj.Mods.Values.FirstOrDefault(item => item.SHA1 == item.SHA1) is { } item1)
+                        if (obj.Mods.Values.FirstOrDefault(item => item.Sha1 == item.Sha1) is { } item1)
                         {
                             info.AppendLine(string.Format(App.Lang("GameBinding.Info11"),
-                                item1.Type.GetName(), item1.ModId, item1.FileId));
+                                DownloadItemHelper.TestSourceType(item1.ModId, item1.FileId), item1.ModId, item1.FileId));
                         }
                     }
                 }
@@ -2571,18 +2634,7 @@ public static class GameBinding
             try
             {
                 var conf = obj.Window;
-                if (SystemInfo.Os == OsType.Windows)
-                {
-                    Win32Native.Win32.WaitWindowDisplay(pr);
-                }
-                else if (SystemInfo.Os == OsType.Linux)
-                {
-                    X11Hook.WaitWindowDisplay(pr);
-                }
-                else if (SystemInfo.Os == OsType.MacOS)
-                {
-                    return;
-                }
+                HookUtils.WaitWindowDisplay(pr);
 
                 if (pr.HasExited)
                 {
@@ -2605,71 +2657,63 @@ public static class GameBinding
                     }
                 }
 
-                if (SystemInfo.Os == OsType.MacOS)
+                //修改窗口标题
+
+                if (SystemInfo.Os == OsType.MacOS
+                || string.IsNullOrWhiteSpace(conf?.GameTitle))
                 {
                     return;
                 }
 
-                //修改窗口标题
-                if (!string.IsNullOrWhiteSpace(conf?.GameTitle))
+                var ran = new Random();
+                int i = 0;
+                var list = new List<string>();
+                var list1 = conf.GameTitle.Split('\n');
+
+                foreach (var item in list1)
                 {
-                    var ran = new Random();
-                    int i = 0;
-                    var list = new List<string>();
-                    var list1 = conf.GameTitle.Split('\n');
-
-                    foreach (var item in list1)
+                    var temp = item.Trim();
+                    if (string.IsNullOrWhiteSpace(temp))
                     {
-                        var temp = item.Trim();
-                        if (string.IsNullOrWhiteSpace(temp))
-                        {
-                            continue;
-                        }
-
-                        list.Add(temp);
-                    }
-                    if (list.Count == 0)
-                    {
-                        return;
+                        continue;
                     }
 
-                    Thread.Sleep(1000);
-
-                    do
-                    {
-                        string title1 = "";
-                        if (conf.RandomTitle)
-                        {
-                            title1 = list[ran.Next(list.Count)];
-                        }
-                        else
-                        {
-                            i++;
-                            if (i >= list.Count)
-                            {
-                                i = 0;
-                            }
-                            title1 = list[i];
-                        }
-
-                        if (SystemInfo.Os == OsType.Windows)
-                        {
-                            Win32Native.Win32.SetTitle(pr, title1);
-                        }
-                        else if (SystemInfo.Os == OsType.Linux)
-                        {
-                            X11Hook.SetTitle(pr, title1);
-                        }
-
-                        if (!conf.CycTitle || conf.TitleDelay <= 0 || pr.HasExited)
-                        {
-                            break;
-                        }
-
-                        Thread.Sleep(conf.TitleDelay);
-                    }
-                    while (!ColorMCGui.IsClose && !handel.IsExit);
+                    list.Add(temp);
                 }
+                if (list.Count == 0)
+                {
+                    return;
+                }
+
+                Thread.Sleep(1000);
+
+                do
+                {
+                    string title1 = "";
+                    if (conf.RandomTitle)
+                    {
+                        title1 = list[ran.Next(list.Count)];
+                    }
+                    else
+                    {
+                        i++;
+                        if (i >= list.Count)
+                        {
+                            i = 0;
+                        }
+                        title1 = list[i];
+                    }
+
+                    HookUtils.SetTitle(pr, title1);
+
+                    if (!conf.CycTitle || conf.TitleDelay <= 0 || pr.HasExited)
+                    {
+                        break;
+                    }
+
+                    Thread.Sleep(conf.TitleDelay);
+                }
+                while (!ColorMCGui.IsClose && !handel.IsExit);
             }
             catch
             {
@@ -2704,7 +2748,7 @@ public static class GameBinding
             return;
         }
         var arg = MakeArg(user, model, -1);
-        
+
         arg.Update2 = (obj, state) =>
         {
             Dispatcher.UIThread.Post(() =>

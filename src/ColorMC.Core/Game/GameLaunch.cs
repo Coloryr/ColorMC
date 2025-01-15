@@ -1095,16 +1095,6 @@ public static class Launch
                     res.Add(res3);
                 }
 
-                if (obj.GetModFast() && obj.Loader == Loaders.Normal && larg.Request != null)
-                {
-                    var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
-                    if (!res2)
-                    {
-                        throw new LaunchException(LaunchState.Cancel,
-                                LanguageHelper.Get("Core.Launch.Error8"));
-                    }
-                }
-
                 //下载缺失的文件
                 if (!res.IsEmpty)
                 {
@@ -1376,8 +1366,11 @@ public static class Launch
             {
                 if (larg.Request == null)
                 {
-                    return new() { Message =
-                         string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name) };
+                    return new()
+                    {
+                        Message =
+                         string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name)
+                    };
                 }
                 var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
                 if (!res2)
@@ -1396,15 +1389,6 @@ public static class Launch
         if (res3 != null)
         {
             res.Add(res3);
-        }
-
-        if (obj.GetModFast() && obj.Loader == Loaders.Normal && larg.Request != null)
-        {
-            var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
-            if (!res2)
-            {
-                return new() { Message = LanguageHelper.Get("Core.Launch.Error8") };
-            }
         }
 
         var path = obj.JvmLocal;
@@ -1615,16 +1599,6 @@ public static class Launch
         if (res3 != null)
         {
             res.Add(res3);
-        }
-
-        if (obj.GetModFast() && obj.Loader == Loaders.Normal && larg.Request != null)
-        {
-            var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info13"), obj.Name));
-            if (!res2)
-            {
-                throw new LaunchException(LaunchState.Cancel,
-                        LanguageHelper.Get("Core.Launch.Error8"));
-            }
         }
 
         //下载缺失的文件

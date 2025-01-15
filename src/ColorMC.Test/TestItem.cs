@@ -60,7 +60,7 @@ public static class TestItem
     {
         var list = ModPackHelper.InstallCurseForgeModPackAsync(new InstallModPackZipArg
         {
-            Zip = "H:\\ColonyVenture-1.13.zip",
+            Zip = File.OpenRead("H:\\ColonyVenture-1.13.zip"),
             Request = Program.Download,
             Overwirte = (_) => Task.FromResult(true)
         }).Result;

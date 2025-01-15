@@ -4,6 +4,25 @@ using ColorMC.Core.Objs;
 namespace ColorMC.Gui.Objs;
 
 /// <summary>
+/// 启动前检测
+/// </summary>
+public record LaunchCheckSetting
+{
+    /// <summary>
+    /// 检测账户锁定
+    /// </summary>
+    public bool CheckUser { get; set; }
+    /// <summary>
+    /// 检测加载器
+    /// </summary>
+    public bool CheckLoader { get; set; }
+    /// <summary>
+    /// 检测内存大小
+    /// </summary>
+    public bool CheckMemory { get; set; }
+}
+
+/// <summary>
 /// 样式设置
 /// </summary>
 public record StyleSetting
@@ -355,6 +374,10 @@ public record GuiConfigObj
     /// 手柄绑定
     /// </summary>
     public InputSetting Input { get; set; }
+    /// <summary>
+    /// 启动前检测
+    /// </summary>
+    public LaunchCheckSetting LaunchCheck { get; set; }
     /// <summary>
     /// 服务器云同步密钥
     /// </summary>

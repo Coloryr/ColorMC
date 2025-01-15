@@ -122,7 +122,7 @@ public static class SakuraFrpApi
         {
             Name = $"SakuraFrp {data1.title}",
             Local = FrpLaunch.GetSakuraFrpLocal(data.frpc.ver),
-            MD5 = data1.hash,
+            Md5 = data1.hash,
             Url = data1.url
         };
     }

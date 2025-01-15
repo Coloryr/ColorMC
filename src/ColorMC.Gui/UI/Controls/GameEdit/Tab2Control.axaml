@@ -115,33 +115,9 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text24}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,10,10" RightMax="{Binding MinMode}">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text22}" />
-                        <ComboBox
-                            MinWidth="200"
-                            HorizontalAlignment="Stretch"
-                            IsEnabled="{Binding EnableJvmName}"
-                            ItemsSource="{Binding JvmList}"
-                            SelectedItem="{Binding JvmName}" />
-                    </panel:WrapPanelWithStretch>
+                    <TextBlock Margin="0,0,0,5" Text="{Binding Memory}" />
                     <!--  Jvm内存  -->
-                    <DockPanel Margin="0,0,10,10" IsEnabled="{Binding !Phone}">
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,-3,-2"
-                            VerticalAlignment="Center"
-                            Classes="top"
-                            Command="{Binding OpenJava}"
-                            Content="{setting:Localize Button.Select}"
-                            DockPanel.Dock="Right"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text7}" />
-                        <TextBox
-                            Margin="0,0,10,0"
-                            Text="{Binding JvmLocal}"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
-                    </DockPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" RightMax="{Binding MinMode}">
+                    <panel:WrapPanelWithStretch Margin="0,0,0,0" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text4}" />
                             <NumericUpDown
@@ -161,6 +137,31 @@
                                 Value="{Binding MaxMem}" />
                         </DockPanel>
                     </panel:WrapPanelWithStretch>
+                    <panel:WrapPanelWithStretch Margin="0,0,10,10" RightMax="{Binding MinMode}">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text22}" />
+                        <ComboBox
+                            MinWidth="200"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="{Binding EnableJvmName}"
+                            ItemsSource="{Binding JvmList}"
+                            SelectedItem="{Binding JvmName}" />
+                    </panel:WrapPanelWithStretch>
+                    <DockPanel Margin="0,0,10,0" IsEnabled="{Binding !Phone}">
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-2,-3,-2"
+                            VerticalAlignment="Center"
+                            Classes="top"
+                            Command="{Binding OpenJava}"
+                            Content="{setting:Localize Button.Select}"
+                            DockPanel.Dock="Right"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text7}" />
+                        <TextBox
+                            Margin="0,0,10,0"
+                            Text="{Binding JvmLocal}"
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
+                    </DockPanel>
                 </StackPanel>
             </Border>
             <!--  执行程序  -->

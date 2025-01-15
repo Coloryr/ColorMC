@@ -66,7 +66,7 @@ public static class ModPackHelper
         {
             Url = file.Url,
             Name = file.Filename,
-            SHA1 = file.Hashes.Sha1,
+            Sha1 = file.Hashes.Sha1,
             Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.Filename),
         };
 
@@ -308,7 +308,7 @@ public static class ModPackHelper
                     {
                         temp2[a] = null;
                         if (item.FileId != item1.FileId
-                            || item.SHA1 != item1.SHA1)
+                            || item.Sha1 != item1.Sha1)
                         {
                             addlist.Add(item1);
                             removelist.Add(item);
@@ -338,7 +338,7 @@ public static class ModPackHelper
 
             foreach (var item in addlist)
             {
-                list1.Add(list.List!.First(a => a.SHA1 == item.SHA1));
+                list1.Add(list.List!.First(a => a.Sha1 == item.Sha1));
                 arg.Game.Mods.Add(item.ModId, item);
             }
         }
@@ -683,7 +683,7 @@ public static class ModPackHelper
 
             foreach (var item in addlist)
             {
-                var item11 = list.First(a => a.SHA1 == item.Hashes.Sha1);
+                var item11 = list.First(a => a.Sha1 == item.Hashes.Sha1);
                 list1.Add(item11);
                 var url = item.Downloads.FirstOrDefault(a => a.StartsWith($"{UrlHelper.ModrinthDownload}data/"));
                 if (url != null)
@@ -697,7 +697,7 @@ public static class ModPackHelper
                         Path = item.Path[..item.Path.IndexOf('/')],
                         Name = item.Path,
                         File = item.Path,
-                        SHA1 = item11.SHA1!,
+                        Sha1 = item11.Sha1!,
                         ModId = modid,
                         FileId = fileid,
                         Url = url
@@ -725,7 +725,7 @@ public static class ModPackHelper
                     {
                         temp2[a] = null;
                         if (item.FileId != item1.FileId
-                            || item.SHA1 != item1.SHA1)
+                            || item.Sha1 != item1.Sha1)
                         {
                             addlist.Add(item1);
                             removelist.Add(item);
@@ -751,7 +751,7 @@ public static class ModPackHelper
 
             foreach (var item in addlist)
             {
-                list1.Add(list.First(a => a.SHA1 == item.SHA1));
+                list1.Add(list.First(a => a.Sha1 == item.Sha1));
                 arg.Game.Mods.Add(item.ModId, item);
             }
         }

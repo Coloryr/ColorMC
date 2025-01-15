@@ -56,7 +56,7 @@ public static class AuthlibHelper
     {
         return new()
         {
-            SHA256 = obj.Checksums.Sha256,
+            Sha256 = obj.Checksums.Sha256,
             Url = UrlHelper.DownloadAuthlibInjector(obj, CoreHttpClient.Source),
             Name = $"moe.yushi:authlibinjector:{obj.Version}",
             Local = $"{LibrariesPath.BaseDir}/moe/yushi/authlibinjector/" +
@@ -85,7 +85,7 @@ public static class AuthlibHelper
             var item = BuildNide8Item(obj!["jarVersion"]!.ToString());
             NowNide8Injector = item.Local;
 
-            item.SHA1 = sha1;
+            item.Sha1 = sha1;
             if (!File.Exists(NowNide8Injector))
             {
                 return new MakeDownloadItemRes

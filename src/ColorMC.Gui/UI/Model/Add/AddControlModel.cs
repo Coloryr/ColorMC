@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -15,6 +16,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -654,11 +656,11 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
         if (DownloadModList.Any(item => item is ModUpgradeModel))
         {
             var list = DownloadModList.Where(item => item is ModUpgradeModel && item.Download)
-                .Select(item => new DownloadModItemArg()
+                .Select(item => new DownloadModArg()
                 {
                     Info = item.Items[item.SelectVersion].Info,
                     Item = item.Items[item.SelectVersion].Item,
-                    Local = (item as ModUpgradeModel)!.Local
+                    Old = (item as ModUpgradeModel)!.Obj
                 }).ToList();
 
             res = await WebBinding.DownloadMod(Obj, list);
@@ -995,16 +997,13 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
             return;
         }
 
-        if (_now == FileType.Mod && Obj.Mods.TryGetValue(data.ID, out var mod))
+        ModInfoObj? mod = null;
+        if (_now == FileType.Mod && Obj.Mods.TryGetValue(data.ID, out mod))
         {
             var res1 = await Model.ShowWait(App.Lang("AddWindow.Info15"));
             if (!res1)
             {
                 return;
-            }
-            if (mod.Path == "mods")
-            {
-                GameBinding.DeleteMod(Obj, mod);
             }
         }
 
@@ -1077,6 +1076,7 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                     IsDownload = false;
                     return;
                 }
+
                 if (list.List!.Count == 0)
                 {
                     res = await WebBinding.DownloadMod(Obj, new List<DownloadModArg>()
@@ -1084,7 +1084,8 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                         new()
                         {
                             Item = list.Item!,
-                            Info = list.Info!
+                            Info = list.Info!,
+                            Old = await Obj.ReadMod(mod)
                         }
                     });
                     IsDownload = false;
@@ -1097,7 +1098,8 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
                     _modsave = new()
                     {
                         Item = list.Item!,
-                        Info = list.Info!
+                        Info = list.Info!,
+                        Old = await Obj.ReadMod(mod)
                     };
                     OpenModDownloadDisplay();
                     _modList.ForEach(item =>

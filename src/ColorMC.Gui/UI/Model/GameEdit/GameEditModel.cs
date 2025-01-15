@@ -1,5 +1,8 @@
-﻿using ColorMC.Core.Objs;
+﻿using System.Timers;
+using Avalonia.Threading;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Hook;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 
@@ -13,6 +16,8 @@ public partial class GameEditModel : MenuModel
 
     private readonly string _useName;
 
+    private readonly Timer _timer;
+
     public GameEditModel(BaseModel model, GameSettingObj obj) : base(model)
     {
         _useName = ToString() + ":" + obj.UUID;
@@ -22,6 +27,10 @@ public partial class GameEditModel : MenuModel
         {
             Phone = true;
         }
+
+        _timer = new Timer(1000);
+        _timer.Elapsed += Timer_Elapsed;
+        _timer.AutoReset = true;
 
         _setting = GameGuiSetting.ReadConfig(_obj);
         _displayModText = _setting.Mod.EnableText;
@@ -308,6 +317,11 @@ public partial class GameEditModel : MenuModel
         ]);
     }
 
+    public void Load()
+    {
+        _timer.Start();
+    }
+
     private void PackState(CoreRunState state)
     {
         if (state == CoreRunState.Read)
@@ -333,8 +347,18 @@ public partial class GameEditModel : MenuModel
         }
     }
 
+    private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            Memory = string.Format(App.Lang("SettingWindow.Tab4.Text29"), HookUtils.GetMemorySize(), HookUtils.GetFreeSize());
+        });
+    }
+
     public override void Close()
     {
+        _timer.Stop();
+        _timer.Dispose();
         _configLoad = true;
         _gameLoad = true;
         GameVersionList.Clear();

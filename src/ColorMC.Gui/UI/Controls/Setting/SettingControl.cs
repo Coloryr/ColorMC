@@ -71,12 +71,15 @@ public partial class SettingControl : MenuControl
             case SettingType.Net:
                 model.NowView = 1;
                 break;
+            case SettingType.Arg:
+                model.NowView = 2;
+                break;
         }
     }
 
     public override void Opened()
     {
-        (DataContext as SettingModel)!.LoadUISetting();
+        (DataContext as SettingModel)?.Load();
     }
 
     public override TopModel GenModel(BaseModel model)

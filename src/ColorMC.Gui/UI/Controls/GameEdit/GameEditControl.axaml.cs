@@ -74,6 +74,11 @@ public partial class GameEditControl : MenuControl
         WindowManager.GameEditWindows.Remove(_obj.UUID);
     }
 
+    public override void Opened()
+    {
+        (DataContext as GameEditModel)?.Load();
+    }
+
     public override TopModel GenModel(BaseModel model)
     {
         return new GameEditModel(model, _obj);
@@ -137,6 +142,9 @@ public partial class GameEditControl : MenuControl
                 break;
             case GameEditWindowType.World:
                 model.NowView = 3;
+                break;
+            case GameEditWindowType.Arg:
+                model.NowView = 1;
                 break;
         }
     }

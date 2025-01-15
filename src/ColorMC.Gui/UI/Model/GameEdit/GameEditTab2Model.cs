@@ -88,6 +88,9 @@ public partial class GameEditModel
     [ObservableProperty]
     private bool _preRunSame;
 
+    [ObservableProperty]
+    private string _memory;
+
     private bool _configLoad;
 
     partial void OnCycTitleChanged(bool value)

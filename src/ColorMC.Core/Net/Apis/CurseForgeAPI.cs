@@ -345,7 +345,7 @@ public static class CurseForgeAPI
         {
             mc ??= "";
             string temp = $"{UrlHelper.CurseForge}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}";
-            if (loader != Loaders.Normal)
+            if (loader is not (Loaders.Normal or Loaders.Custom))
             {
                 temp += $"&modLoaderType={Loader(loader)}";
             }

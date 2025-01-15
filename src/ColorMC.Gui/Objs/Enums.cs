@@ -16,7 +16,11 @@ public enum SettingType
     /// <summary>
     /// 网络设置
     /// </summary>
-    Net
+    Net,
+    /// <summary>
+    /// 启动参数
+    /// </summary>
+    Arg
 }
 
 /// <summary>
@@ -35,7 +39,11 @@ public enum GameEditWindowType
     /// <summary>
     /// 世界设置
     /// </summary>
-    World
+    World,
+    /// <summary>
+    /// 启动参数
+    /// </summary>
+    Arg
 }
 
 /// <summary>

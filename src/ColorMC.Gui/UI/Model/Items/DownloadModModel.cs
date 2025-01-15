@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -44,7 +45,7 @@ public partial class FileModVersionModel : SelectItemModel
     }
 }
 
-public partial class ModUpgradeModel(string local, string name, List<string> version, List<DownloadModArg> items, bool opt) : FileModVersionModel(name, version, items, opt)
+public partial class ModUpgradeModel(ModObj obj, string name, List<string> version, List<DownloadModArg> items) : FileModVersionModel(name, version, items, false)
 {
-    public string Local = local;
+    public ModObj Obj => obj;
 }

@@ -211,7 +211,7 @@ public partial class GameLogModel : GameModel
             {
                 return;
             }
-            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () => 
+            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
             {
                 await BaseBinding.CopyTextClipboard(top, url);
                 Model.Notify(App.Lang("GameLogWindow.Info7"));
@@ -246,7 +246,7 @@ public partial class GameLogModel : GameModel
         IsGameRun = true;
 
         var res = await GameBinding.Launch(Model, Obj, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
-        if (!res.Res)
+        if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
         {
             Model.Show(res.Message!);
         }
