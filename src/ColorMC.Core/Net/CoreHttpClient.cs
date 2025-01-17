@@ -74,13 +74,13 @@ public static class CoreHttpClient
             //Dns
             if (dns.Enable)
             {
-                if (dns.DnsType is DnsType.DnsOver or DnsType.DnsOverHttpsWithUdp)
-                {
-                    foreach (var item in dns.Dns)
-                    {
-                        _dnsClients.Add(new DnsUdpClient(IPAddress.Parse(item)));
-                    }
-                }
+                //if (dns.DnsType is DnsType.DnsOver or DnsType.DnsOverHttpsWithUdp)
+                //{
+                //foreach (var item in dns.Dns)
+                //{
+                //    _dnsClients.Add(new DnsUdpClient(IPAddress.Parse(item)));
+                //}
+                //}
                 if (dns.DnsType is DnsType.DnsOverHttps or DnsType.DnsOverHttpsWithUdp)
                 {
                     foreach (var item in dns.Https)
@@ -105,7 +105,6 @@ public static class CoreHttpClient
                     dnsClient = _dnsClients[0];
                 }
             }
-
 
             if (dnsClient != null)
             {

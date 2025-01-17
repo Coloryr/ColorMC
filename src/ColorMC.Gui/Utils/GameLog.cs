@@ -99,6 +99,8 @@ public partial class GameLog
             }
         }
 
+        list.Reverse();
+
         return list;
     }
 
