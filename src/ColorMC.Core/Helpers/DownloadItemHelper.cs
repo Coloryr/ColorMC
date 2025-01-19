@@ -311,11 +311,13 @@ public static class DownloadItemHelper
                 BuildNeoForgeInstaller(mc, version) :
                 BuildForgeInstaller(mc, version));
         }
-        if (!universal)
+        if (!universal && !neo)
         {
-            list.Add("universal", neo ?
-                BuildNeoForgeUniversal(mc, version) :
-                BuildForgeUniversal(mc, version));
+            //list.Add("universal", neo ?
+            //    BuildNeoForgeUniversal(mc, version) :
+            //    BuildForgeUniversal(mc, version));
+
+            list.Add("universal", BuildForgeUniversal(mc, version));
         }
         if (v2 && !CheckHelpers.IsGameVersion117(mc) && !launcher)
         {
