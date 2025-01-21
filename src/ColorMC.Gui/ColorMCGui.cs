@@ -118,16 +118,19 @@ public static class ColorMCGui
             }
             PathBinding.OpenFileWithExplorer(Logs.Crash("Gui Crash", e));
             App.Close();
+            throw new GuiException();
         }
-
-        s_lock.Close();
-        s_lock.Dispose();
+        finally
+        {
+            s_lock.Close();
+            s_lock.Dispose();
+        }
     }
 
     public static void Close()
     {
         IsClose = true;
-        App.Close();
+        App.Exit();
     }
 
     public static void Reboot()
@@ -140,7 +143,7 @@ public static class ColorMCGui
             Thread.Sleep(500);
             Process.Start($"{(SystemInfo.Os == OsType.Windows ?
                     "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");
-            App.Close();
+            App.Exit();
         }
     }
 

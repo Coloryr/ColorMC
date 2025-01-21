@@ -152,13 +152,18 @@ public partial class App : Application
         s_language.Load(reader.ReadToEnd());
     }
 
+    public static void Exit()
+    {
+        Close();
+        Environment.Exit(0);
+    }
+
     public static void Close()
     {
         OnClose?.Invoke();
         WindowManager.CloseAllWindow();
         ColorMCCore.Close();
         (Life as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
-        Environment.Exit(Environment.ExitCode);
     }
 
     public static void Show()

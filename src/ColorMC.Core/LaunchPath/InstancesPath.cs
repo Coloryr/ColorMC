@@ -626,7 +626,7 @@ public static class InstancesPath
             var value = s_installGames.Values.FirstOrDefault(item => item.DirName == game.Name);
             if (value != null
                 && s_installGames.Remove(value.UUID, out var temp)
-                && !await Remove(temp, arg.Request))
+                && !await Remove(temp))
             {
                 return null;
             }
@@ -989,10 +989,9 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="request">操作请求</param>
     /// <returns>是否成功删除</returns>
-    public static async Task<bool> Remove(this GameSettingObj obj, ColorMCCore.Request? request)
+    public static async Task<bool> Remove(this GameSettingObj obj)
     {
         obj.RemoveFromGroup();
-        PathHelper.Delete(obj.GetGameJsonFile());
         return await PathHelper.MoveToTrash(obj.GetBasePath());
     }
 

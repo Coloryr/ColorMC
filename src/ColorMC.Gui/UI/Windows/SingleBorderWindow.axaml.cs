@@ -44,7 +44,7 @@ public partial class SingleBorderWindow : ABaseWindow
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
         Win.Closed();
-        App.Close();
+        App.Exit();
     }
 
     private void OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)

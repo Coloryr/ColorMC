@@ -1511,7 +1511,7 @@ public static class GameBinding
             Name = data.DisplayName,
             Url = data.DownloadUrl,
             Sha1 = data.Hashes.Where(a => a.Algo == 1)
-                .Select(a => a.Value).FirstOrDefault()
+                .Select(a => a.Value).FirstOrDefault()!
         };
         if (!obj.Mods.TryAdd(obj1.ModId, obj1))
         {
@@ -2266,10 +2266,9 @@ public static class GameBinding
     /// <param name="obj"></param>
     /// <param name="request"></param>
     /// <returns></returns>
-    public static async Task<bool> DeleteGame(GameSettingObj obj,
-        ColorMCCore.Request request)
+    public static async Task<bool> DeleteGame(GameSettingObj obj)
     {
-        var res = await obj.Remove(request);
+        var res = await obj.Remove();
         if (res)
         {
             WindowManager.CloseGameWindow(obj);
@@ -2346,7 +2345,7 @@ public static class GameBinding
                 model.ProgressClose();
                 model.ShowOk(App.Lang("GameBinding.Error10"), async () =>
                 {
-                    await game.Remove(model.ShowWait);
+                    await game.Remove();
                 });
 
                 return new();

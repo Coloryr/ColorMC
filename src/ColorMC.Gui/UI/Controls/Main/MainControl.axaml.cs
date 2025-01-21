@@ -193,7 +193,7 @@ public partial class MainControl : BaseUserControl
     {
         WindowManager.MainWindow = null;
 
-        App.Close();
+        App.Exit();
     }
 
     public override async void Opened()
