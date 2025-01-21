@@ -77,7 +77,6 @@ public static class Program
     private static string _inputDir;
 
     private static bool _isDll;
-    private static bool _isError;
 #endif
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
@@ -162,19 +161,18 @@ public static class Program
             MainCall(args);
 #endif
         }
-        catch (Exception e)
+        catch
         {
-            Console.WriteLine(e);
 #if !DEBUG
             if (_isDll)
             {
-                _isError = true;
                 File.Delete($"{_loadDir}/ColorMC.Gui.dll");
                 File.Delete($"{_loadDir}/ColorMC.Gui.pdb");
                 File.Delete($"{_loadDir}/ColorMC.Core.dll");
                 File.Delete($"{_loadDir}/ColorMC.Core.pdb");
 
-                GuiLoad.Run(args, _isError);
+                GuiLoad.Load();
+                GuiLoad.Run(args, true);
             }
 #endif
         }

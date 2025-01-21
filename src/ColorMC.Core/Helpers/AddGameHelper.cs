@@ -502,7 +502,7 @@ public static class AddGameHelper
         }
         if (!import && game != null)
         {
-            await game.Remove(arg.Request);
+            await game.Remove();
         }
         arg.Update2?.Invoke(CoreRunState.End);
         return new GameRes { State = import, Game = game };

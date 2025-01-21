@@ -85,7 +85,7 @@ public abstract class ABaseWindow : Window
                     WindowManager.ShowSetting(SettingType.Normal);
                     break;
                 case Key.Q:
-                    App.Close();
+                    App.Exit();
                     break;
                 case Key.M:
                     WindowState = WindowState.Minimized;

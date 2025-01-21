@@ -650,7 +650,7 @@ public partial class GameEditModel
             return;
 
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info11"));
-        var res1 = await GameBinding.DeleteGame(_obj, Model.ShowWait);
+        var res1 = await GameBinding.DeleteGame(_obj);
         Model.ProgressClose();
         if (!res1)
         {

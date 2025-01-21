@@ -35,6 +35,6 @@ public partial class SingleWindow : ABaseWindow
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
         Win.Closed();
-        App.Close();
+        App.Exit();
     }
 }

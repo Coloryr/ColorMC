@@ -152,6 +152,7 @@ public static class Logs
             $"{date.Hour}_{date.Minute}_{date.Second}_crash.log";
 
         PathHelper.WriteText(file, text);
+        Console.WriteLine(text);
 
         return file;
     }
