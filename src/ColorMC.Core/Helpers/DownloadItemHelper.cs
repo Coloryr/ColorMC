@@ -19,6 +19,11 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class DownloadItemHelper
 {
+    public const string Name1 = "installer";
+    public const string Name2 = "universal";
+    public const string Name3 = "client";
+    public const string Name4 = "launcher";
+
     /// <summary>
     /// 检测下载源
     /// </summary>
@@ -39,9 +44,9 @@ public static class DownloadItemHelper
     {
         return new()
         {
-            Name = "mcaselector-2.4.1",
-            Local = Path.GetFullPath($"{ToolPath.BaseDir}/mcaselector-2.4.1.jar"),
-            Url = "https://github.com/Querz/mcaselector/releases/download/2.4.1/mcaselector-2.4.1.jar"
+            Name = "mcaselector-2.4.2",
+            Local = Path.GetFullPath($"{ToolPath.BaseDir}/mcaselector-2.4.2.jar"),
+            Url = "https://github.com/Querz/mcaselector/releases/download/2.4.2/mcaselector-2.4.2.jar"
         };
     }
     /// <summary>
@@ -149,7 +154,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeInstaller(string mc, string version)
     {
-        return BuildForgeItem(mc, version, "installer");
+        return BuildForgeItem(mc, version, Name1);
     }
 
     /// <summary>
@@ -160,7 +165,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildNeoForgeInstaller(string mc, string version)
     {
-        return BuildNeoForgeItem(mc, version, "installer");
+        return BuildNeoForgeItem(mc, version, Name1);
     }
 
     /// <summary>
@@ -171,7 +176,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeUniversal(string mc, string version)
     {
-        return BuildForgeItem(mc, version, "universal");
+        return BuildForgeItem(mc, version, Name2);
     }
 
     /// <summary>
@@ -182,7 +187,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildNeoForgeClient(string mc, string version)
     {
-        return BuildNeoForgeItem(mc, version, "client");
+        return BuildNeoForgeItem(mc, version, Name3);
     }
 
     /// <summary>
@@ -193,7 +198,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeClient(string mc, string version)
     {
-        return BuildForgeItem(mc, version, "client");
+        return BuildForgeItem(mc, version, Name3);
     }
 
     /// <summary>
@@ -204,7 +209,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildNeoForgeUniversal(string mc, string version)
     {
-        return BuildNeoForgeItem(mc, version, "universal");
+        return BuildNeoForgeItem(mc, version, Name2);
     }
     /// <summary>
     /// 创建NeoForge下载项目
@@ -214,22 +219,23 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeLauncher(string mc, string version)
     {
-        var item = BuildForgeItem(mc, version, "launcher");
-        var name = $"forge-{mc}-{version}-launcher";
+        var item = BuildForgeItem(mc, version, Name4);
+        var name = $"forge-{mc}-{version}-{Name4}";
         item.Url = UrlHelper.DownloadForgeJar(mc, version, SourceLocal.Offical) + name + ".jar";
 
         return item;
     }
+
     /// <summary>
     /// 创建NeoForge下载项目
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj BuildNeoForgeLauncher(string mc, string version)
-    {
-        return BuildNeoForgeItem(mc, version, "launcher");
-    }
+    //public static DownloadItemObj BuildNeoForgeLauncher(string mc, string version)
+    //{
+    //    return BuildNeoForgeItem(mc, version, "launcher");
+    //}
 
     /// <summary>
     /// 构建Forge运行库下载项目列表
@@ -291,15 +297,15 @@ public static class DownloadItemHelper
                 }
             }
 
-            if (item1.Name.EndsWith("universal"))
+            if (item1.Name.EndsWith(Name2))
             {
                 universal = true;
             }
-            else if (item1.Name.EndsWith("installer"))
+            else if (item1.Name.EndsWith(Name1))
             {
                 installer = true;
             }
-            else if (item1.Name.EndsWith("launcher"))
+            else if (item1.Name.EndsWith(Name4))
             {
                 launcher = true;
             }
@@ -307,21 +313,26 @@ public static class DownloadItemHelper
 
         if (!installer && install)
         {
-            list.Add("installer", neo ?
+            list.Add(Name1, neo ?
                 BuildNeoForgeInstaller(mc, version) :
                 BuildForgeInstaller(mc, version));
         }
         if (!universal)
         {
-            list.Add("universal", neo ?
-                BuildNeoForgeUniversal(mc, version) :
-                BuildForgeUniversal(mc, version));
+            if (!neo || !CheckHelpers.IsGameVersion1202(mc))
+            {
+                list.Add(Name2, neo ?
+                    BuildNeoForgeUniversal(mc, version) :
+                    BuildForgeUniversal(mc, version));
+            }
         }
         if (v2 && !CheckHelpers.IsGameVersion117(mc) && !launcher)
         {
-            list.Add("launcher", neo ?
-                BuildNeoForgeLauncher(mc, version) :
-                BuildForgeLauncher(mc, version));
+            //list.Add(Name4, neo ?
+            //    BuildNeoForgeLauncher(mc, version) :
+            //    BuildForgeLauncher(mc, version));
+
+            list.Add(Name4, BuildForgeLauncher(mc, version));
         }
 
         return list.Values;

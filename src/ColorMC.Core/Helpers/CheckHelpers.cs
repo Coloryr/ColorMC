@@ -132,8 +132,15 @@ public static class CheckHelpers
     /// <returns>是否为1.17以上版本</returns>
     public static bool IsGameVersion117(string version)
     {
-        var version1 = new Version(version);
-        return version1.Minor >= 17;
+        try
+        {
+            var version1 = new Version(version);
+            return version1.Minor >= 17;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     /// <summary>
@@ -143,8 +150,15 @@ public static class CheckHelpers
     /// <returns>是否是1.20以上版本</returns>
     public static bool IsGameVersion120(string version)
     {
-        var version1 = new Version(version);
-        return version1.Minor >= 20;
+        try
+        {
+            var version1 = new Version(version);
+            return version1.Minor >= 20;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     /// <summary>
@@ -154,12 +168,19 @@ public static class CheckHelpers
     /// <returns>是否是1.20.2以上版本</returns>
     public static bool IsGameVersion1202(string version)
     {
-        Version version1 = new(version);
-        if (version1.Minor > 20)
+        try
         {
-            return true;
+            var version1 = new Version(version);
+            if (version1.Minor > 20)
+            {
+                return true;
+            }
+            return version1.Minor >= 20 && version1.Build >= 2;
         }
-        return version1.Minor >= 20 && version1.Build >= 2;
+        catch
+        {
+            return false;
+        }
     }
 
     /// <summary>

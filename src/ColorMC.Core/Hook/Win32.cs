@@ -35,7 +35,7 @@ public static partial class Win32
     public static bool MoveToTrash(string dir)
     {
         // 设置SHFILEOPSTRUCT结构体
-        SHFILEOPSTRUCT fileOp = new SHFILEOPSTRUCT
+        var fileOp = new SHFILEOPSTRUCT
         {
             wFunc = FO_DELETE,
             pFrom = dir + '\0' + '\0', // 双重终止符
