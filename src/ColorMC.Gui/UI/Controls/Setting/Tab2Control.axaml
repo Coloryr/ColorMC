@@ -676,13 +676,13 @@
                         <ToggleSwitch
                             Margin="0,0,10,10"
                             VerticalAlignment="Center"
-                            IsChecked="{Binding CardLast}"
+                            IsChecked="{Binding CardOnline}"
                             OffContent="{setting:Localize SettingWindow.Tab2.Text66}"
                             OnContent="{setting:Localize SettingWindow.Tab2.Text66}" />
                         <ToggleSwitch
                             Margin="0,0,10,10"
                             VerticalAlignment="Center"
-                            IsChecked="{Binding CardOnline}"
+                            IsChecked="{Binding CardLast}"
                             OffContent="{setting:Localize SettingWindow.Tab2.Text67}"
                             OnContent="{setting:Localize SettingWindow.Tab2.Text67}" />
                     </WrapPanel>
