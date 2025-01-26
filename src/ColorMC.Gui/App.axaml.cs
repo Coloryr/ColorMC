@@ -94,11 +94,12 @@ public partial class App : Application
             };
         }
 
+        CoreManager.Init();
+        ThemeManager.Init();
         JoystickConfig.Init(ColorMCGui.RunDir);
         FrpConfig.Init(ColorMCGui.RunDir);
         FrpLaunch.Init(ColorMCGui.RunDir);
-        CoreManager.Init();
-        ThemeManager.Init();
+        CollectUtils.Init(ColorMCGui.RunDir);
         ImageManager.Init(ColorMCGui.RunDir);
         WindowManager.Init(ColorMCGui.RunDir);
         GameCount.Init(ColorMCGui.RunDir);

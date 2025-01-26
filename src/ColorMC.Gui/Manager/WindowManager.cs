@@ -17,6 +17,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
+using ColorMC.Gui.UI.Controls.Collect;
 using ColorMC.Gui.UI.Controls.Count;
 using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
@@ -58,6 +59,7 @@ public static class WindowManager
     public static CountControl? CountWindow { get; set; }
     public static NetFrpControl? NetFrpWindow { get; set; }
     public static MinecraftNewsControl? NewsWindow { get; set; }
+    public static CollectControl? CollectWindow { get; set; }
 
     public static Dictionary<string, GameEditControl> GameEditWindows { get; } = [];
     public static Dictionary<string, GameConfigEditControl> GameConfigEditWindows { get; } = [];
@@ -520,6 +522,19 @@ public static class WindowManager
             var con = new ServerPackControl(obj);
             ServerPackWindows.Add(obj.UUID, con);
             AWindow(con);
+        }
+    }
+
+    public static void ShowCollect()
+    {
+        if (CollectWindow != null)
+        {
+            CollectWindow.Window.TopActivate();
+        }
+        else
+        {
+            CollectWindow = new();
+            AWindow(CollectWindow);
         }
     }
 

@@ -68,6 +68,12 @@ public partial class MainModel : TopModel, IMutTop
     }
 
     [RelayCommand]
+    public void OpenCollect()
+    {
+        WindowManager.ShowCollect();
+    }
+
+    [RelayCommand]
     public void ShowCount()
     {
         WindowManager.ShowCount();

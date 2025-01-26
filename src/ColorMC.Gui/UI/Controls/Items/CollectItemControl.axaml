@@ -1,0 +1,66 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.CollectItemControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="clr-namespace:ColorMC.Gui.Manager"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    x:DataType="model:CollectItemModel"
+    mc:Ignorable="d">
+    <Border
+        Margin="10,5,10,5"
+        Background="{setting:Theme ItemBG}"
+        BoxShadow="{Binding Border}"
+        CornerRadius="5">
+        <Panel Margin="15">
+            <CheckBox IsChecked="{Binding IsSelect}" />
+            <Border
+                Width="90"
+                Height="90"
+                Margin="50,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                CornerRadius="5">
+                <Border.Background>
+                    <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadIcon}}" Stretch="UniformToFill" />
+                </Border.Background>
+            </Border>
+            <DockPanel Margin="155,0,0,0">
+                <TextBlock
+                    DockPanel.Dock="Top"
+                    FontSize="16"
+                    Foreground="{setting:Theme MainColor}"
+                    Text="{Binding Name, FallbackValue=1234}" />
+                <TextBlock
+                    DockPanel.Dock="Top"
+                    Foreground="#FF9A9A9A"
+                    Text="{Binding Type, FallbackValue=Type}" />
+                <TextBlock
+                    Margin="0,0,30,0"
+                    MaxLines="2"
+                    Text="{Binding Source, FallbackValue=Source}" />
+            </DockPanel>
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Button
+                    Width="35"
+                    Height="35"
+                    Margin="-2,-8,-3,3"
+                    Classes="top"
+                    Command="{Binding OpenWeb}">
+                    <svg:SvgControl Path="/Resource/Icon/Item/web.svg" />
+                </Button>
+                <Button
+                    Width="35"
+                    Height="35"
+                    Margin="-2,-3,-3,-2"
+                    Classes="top"
+                    Command="{Binding Install}">
+                    <svg:SvgControl Path="/Resource/Icon/Item/download.svg" />
+                </Button>
+            </StackPanel>
+        </Panel>
+    </Border>
+</UserControl>

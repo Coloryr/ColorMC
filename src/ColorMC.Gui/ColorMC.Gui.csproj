@@ -44,6 +44,7 @@
     <None Remove="Resource\Icon\AddMenu\item7.svg" />
     <None Remove="Resource\Icon\AddMenu\svg1.svg" />
     <None Remove="Resource\Icon\book.svg" />
+    <None Remove="Resource\Icon\collection.svg" />
     <None Remove="Resource\Icon\count.svg" />
     <None Remove="Resource\Icon\down.svg" />
     <None Remove="Resource\Icon\edit.svg" />
@@ -312,6 +313,7 @@
     <AvaloniaResource Include="Resource\Icon\Setting\svg9.svg" />
     <AvaloniaResource Include="Resource\Icon\skin.svg" />
     <AvaloniaResource Include="Resource\Icon\pause.svg" />
+    <AvaloniaResource Include="Resource\Icon\collection.svg" />
     <EmbeddedResource Include="Resource\Pic\update.png" />
     <EmbeddedResource Include="Resource\Pic\1.png" />
     <EmbeddedResource Include="Resource\Pic\2.png" />

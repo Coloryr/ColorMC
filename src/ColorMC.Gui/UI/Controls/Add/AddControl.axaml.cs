@@ -20,12 +20,14 @@ public partial class AddControl : BaseUserControl
         InitializeComponent();
     }
 
-    public AddControl(GameSettingObj obj) : this()
+    public AddControl(GameSettingObj obj)
     {
+        InitializeComponent();
+
         _obj = obj;
 
         Title = string.Format(App.Lang("AddWindow.Title"), obj.Name);
-        UseName = (ToString() ?? "GameSettingObj") + ":" + obj.UUID;
+        UseName = (ToString() ?? "AddControl") + ":" + obj.UUID;
 
         VersionDisplay.PointerPressed += VersionDisplay_PointerPressed;
         OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
