@@ -151,7 +151,11 @@ public static class Program
 #else
 
 #if !AOT
-            Load();
+            if (!Load())
+            {
+                LoadError(args);
+                return;
+            }
 #else
             GuiLoad.Load();
 #endif
@@ -166,13 +170,7 @@ public static class Program
 #if !DEBUG
             if (_isDll)
             {
-                File.Delete($"{_loadDir}/ColorMC.Gui.dll");
-                File.Delete($"{_loadDir}/ColorMC.Gui.pdb");
-                File.Delete($"{_loadDir}/ColorMC.Core.dll");
-                File.Delete($"{_loadDir}/ColorMC.Core.pdb");
-
-                GuiLoad.Load();
-                GuiLoad.Run(args, true);
+                LoadError(args);
             }
 #endif
         }
@@ -184,6 +182,17 @@ public static class Program
         return Gui.ColorMCGui.BuildAvaloniaApp();
     }
 #else
+    private static void LoadError(string[] args)
+    {
+        File.Delete($"{_loadDir}/ColorMC.Gui.dll");
+        File.Delete($"{_loadDir}/ColorMC.Gui.pdb");
+        File.Delete($"{_loadDir}/ColorMC.Core.dll");
+        File.Delete($"{_loadDir}/ColorMC.Core.pdb");
+
+        GuiLoad.Load();
+        GuiLoad.Run(args, true);
+
+    }
 #if !AOT
     private static bool NotHaveDll()
     {
@@ -193,78 +202,72 @@ public static class Program
             && File.Exists($"{_loadDir}/ColorMC.Gui.pdb");
     }
 
-    private static void Load()
+    private static bool Load()
     {
         if (!NotHaveDll())
         {
             GuiLoad.Load();
+            return true;
         }
-        else
+        try
         {
-            try
+            var context = new AssemblyLoadContext("ColorMC", true);
             {
-                var context = new AssemblyLoadContext("ColorMC", true);
-                {
-                    using var file = File.OpenRead($"{_loadDir}/ColorMC.Core.dll");
-                    using var file1 = File.OpenRead($"{_loadDir}/ColorMC.Core.pdb");
-                    context.LoadFromStream(file, file1);
-                }
-                {
-                    using var file = File.OpenRead($"{_loadDir}/ColorMC.Gui.dll");
-                    using var file1 = File.OpenRead($"{_loadDir}/ColorMC.Gui.pdb");
-                    context.LoadFromStream(file, file1);
-                }
-
-                var item = context.Assemblies
-                                    .Where(x => x.GetName().Name == "ColorMC.Core")
-                                    .ToList()[0];
-
-                var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Core.ColorMCCore").ToList()[0];
-
-                var temp = mis.GetField("Version");
-                var version = temp?.GetValue(null) as string;
-                if (version?.StartsWith(TopVersion) != true)
-                {
-                    context.Unload();
-                    GuiLoad.Load();
-
-                    File.Delete($"{_loadDir}/ColorMC.Gui.dll");
-                    File.Delete($"{_loadDir}/ColorMC.Gui.pdb");
-                    File.Delete($"{_loadDir}/ColorMC.Core.dll");
-                    File.Delete($"{_loadDir}/ColorMC.Core.pdb");
-
-                    return;
-                }
-
-                var item1 = context.Assemblies
-                               .Where(x => x.GetName().Name == "ColorMC.Gui")
-                               .ToList()[0];
-
-                var mis1 = item1.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ColorMCGui").ToList()[0];
-
-                MainCall = (Delegate.CreateDelegate(typeof(IN),
-                        mis1.GetMethod("Main")!) as IN)!;
-
-                BuildApp = (Delegate.CreateDelegate(typeof(IN1),
-                        mis1.GetMethod("BuildAvaloniaApp")!) as IN1)!;
-
-                SetBaseSha1 = (Delegate.CreateDelegate(typeof(IN),
-                        mis1.GetMethod("SetBaseSha1")!) as IN)!;
-
-                SetRuntimeState = (Delegate.CreateDelegate(typeof(IN2),
-                       mis1.GetMethod("SetRuntimeState")!) as IN2)!;
-
-                SetInputDir = (Delegate.CreateDelegate(typeof(IN3),
-                       mis1.GetMethod("SetInputDir")!) as IN3)!;
-
-                _isDll = true;
+                using var file = File.OpenRead($"{_loadDir}/ColorMC.Core.dll");
+                using var file1 = File.OpenRead($"{_loadDir}/ColorMC.Core.pdb");
+                context.LoadFromStream(file, file1);
             }
-            catch
             {
-                _isError = true;
-                GuiLoad.Load();
+                using var file = File.OpenRead($"{_loadDir}/ColorMC.Gui.dll");
+                using var file1 = File.OpenRead($"{_loadDir}/ColorMC.Gui.pdb");
+                context.LoadFromStream(file, file1);
             }
+
+            var item = context.Assemblies
+                                .Where(x => x.GetName().Name == "ColorMC.Core")
+                                .ToList()[0];
+
+            var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Core.ColorMCCore").ToList()[0];
+
+            var temp = mis.GetField("Version");
+            var version = temp?.GetValue(null) as string;
+            if (version?.StartsWith(TopVersion) != true)
+            {
+                context.Unload();
+                Console.WriteLine("Main version error");
+                return false;
+            }
+
+            var item1 = context.Assemblies
+                           .Where(x => x.GetName().Name == "ColorMC.Gui")
+                           .ToList()[0];
+
+            var mis1 = item1.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ColorMCGui").ToList()[0];
+
+            MainCall = (Delegate.CreateDelegate(typeof(IN),
+                    mis1.GetMethod("Main")!) as IN)!;
+
+            BuildApp = (Delegate.CreateDelegate(typeof(IN1),
+                    mis1.GetMethod("BuildAvaloniaApp")!) as IN1)!;
+
+            SetBaseSha1 = (Delegate.CreateDelegate(typeof(IN),
+                    mis1.GetMethod("SetBaseSha1")!) as IN)!;
+
+            SetRuntimeState = (Delegate.CreateDelegate(typeof(IN2),
+                   mis1.GetMethod("SetRuntimeState")!) as IN2)!;
+
+            SetInputDir = (Delegate.CreateDelegate(typeof(IN3),
+                   mis1.GetMethod("SetInputDir")!) as IN3)!;
+
+            _isDll = true;
+            return true;
         }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return false;
     }
 #endif
 
