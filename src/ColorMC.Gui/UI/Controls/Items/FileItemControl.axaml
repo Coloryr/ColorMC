@@ -82,7 +82,6 @@
                     Foreground="{setting:Theme FontColor}"
                     IsVisible="{Binding IsDownload, FallbackValue=true}"
                     Text="{setting:Localize Text.Downloaded}" />
-
             </Panel>
             <Border Classes="t4" IsVisible="{Binding NowDownload, FallbackValue=false}">
                 <StackPanel VerticalAlignment="Center">
@@ -94,6 +93,29 @@
                         IsIndeterminate="{Binding NowDownload}" />
                 </StackPanel>
             </Border>
+            <Decorator IsEnabled="{Binding ShowStar}">
+                <Decorator.Styles>
+                    <Style Selector="Button">
+                        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                        </Style>
+                    </Style>
+                </Decorator.Styles>
+                <Button
+                    Width="20"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ClipToBounds="False"
+                    Command="{Binding DoStar}"
+                    CornerRadius="20"
+                    IsVisible="{Binding StarVis}">
+                    <svg:SvgControl Path="{Binding Star}" />
+                </Button>
+            </Decorator>
         </Panel>
     </Border>
 </UserControl>

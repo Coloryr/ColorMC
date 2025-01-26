@@ -5,6 +5,8 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -12,6 +14,8 @@ namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
 {
+    public ICollectWindow Add { get; set; }
+
     public string Name => Obj.Name;
     public string Type => Obj.FileType.GetName();
     public string Source => Obj.Source.GetName();
@@ -19,6 +23,9 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
     public Task<Bitmap?> Image => GetImage();
 
     private Bitmap? _img;
+
+    [ObservableProperty]
+    private bool _isCheck;
 
     public readonly CollectItemObj Obj = obj;
 
@@ -29,19 +36,19 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
 
     [RelayCommand]
     public void OpenWeb()
-    { 
-    
+    {
+        BaseBinding.OpenUrl(Obj.Url);
     }
 
     [RelayCommand]
     public void Install()
-    { 
-        
+    {
+        Add?.Install(this);
     }
 
     private async Task<Bitmap?> GetImage()
     {
-        if (_img != null)
+        if (_img != null || Obj.Icon == null)
         {
             return _img;
         }
@@ -59,5 +66,10 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
         }
 
         return null;
+    }
+
+    public void SetSelect()
+    {
+        Add?.SetSelect(this);
     }
 }

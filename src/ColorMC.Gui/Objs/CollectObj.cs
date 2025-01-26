@@ -29,13 +29,13 @@ public record CollectItemObj
     /// </summary>
     public string Pid { get; set; }
     /// <summary>
-    /// 文件ID
-    /// </summary>
-    public string Fid { get; set; }
-    /// <summary>
     /// 图标
     /// </summary>
-    public string Icon { get; set; }
+    public string? Icon { get; set; }
+    /// <summary>
+    /// 网址
+    /// </summary>
+    public string Url { get; set; }
 }
 
 public record CollectObj

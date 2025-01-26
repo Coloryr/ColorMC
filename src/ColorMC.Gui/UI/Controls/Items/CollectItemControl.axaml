@@ -16,11 +16,11 @@
         BoxShadow="{Binding Border}"
         CornerRadius="5">
         <Panel Margin="15">
-            <CheckBox IsChecked="{Binding IsSelect}" />
+            <CheckBox IsChecked="{Binding IsCheck}" />
             <Border
-                Width="90"
-                Height="90"
-                Margin="50,0,0,0"
+                Width="60"
+                Height="60"
+                Margin="40,0,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 CornerRadius="5">
@@ -28,22 +28,18 @@
                     <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadIcon}}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
-            <DockPanel Margin="155,0,0,0">
+            <StackPanel Margin="110,0,40,0">
                 <TextBlock
-                    DockPanel.Dock="Top"
                     FontSize="16"
                     Foreground="{setting:Theme MainColor}"
                     Text="{Binding Name, FallbackValue=1234}" />
-                <TextBlock
-                    DockPanel.Dock="Top"
-                    Foreground="#FF9A9A9A"
-                    Text="{Binding Type, FallbackValue=Type}" />
-                <TextBlock
-                    Margin="0,0,30,0"
-                    MaxLines="2"
-                    Text="{Binding Source, FallbackValue=Source}" />
-            </DockPanel>
-            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
+                <TextBlock Foreground="#FF9A9A9A" Text="{Binding Source, FallbackValue=Source}" />
+                <TextBlock Text="{Binding Type, FallbackValue=Type}" />
+            </StackPanel>
+            <StackPanel
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                IsVisible="{Binding EnableButton}">
                 <Button
                     Width="35"
                     Height="35"

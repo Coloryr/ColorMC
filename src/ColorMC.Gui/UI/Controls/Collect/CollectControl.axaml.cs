@@ -18,6 +18,11 @@ public partial class CollectControl : BaseUserControl
         UseName = ToString() ?? "GameSettingObj";
     }
 
+    public override void Closed()
+    {
+        WindowManager.CollectWindow = null;
+    }
+
     public override TopModel GenModel(BaseModel model)
     {
         return new CollectModel(model);

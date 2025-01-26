@@ -6,8 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Collect;
 using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Utils;
@@ -69,15 +72,64 @@ public static class CollectUtils
                     item.Value.Remove(item1);
                     continue;
                 }
-                if (s_itemUse.ContainsKey(item1))
+                if (s_itemUse.TryGetValue(item1, out int value))
                 {
-                    s_itemUse[item1]++;
+                    s_itemUse[item1] = ++value;
                 }
                 else
                 {
                     s_itemUse[item1] = 1;
                 }
             }
+        }
+
+        Save();
+    }
+
+    public static void RemoveItem(CollectItemObj obj)
+    {
+        string? uuid = null;
+        foreach (var item in Collect.Items)
+        {
+            if (item.Value.Source == obj.Source && item.Value.Pid == obj.Pid)
+            {
+                uuid = item.Key;
+                break;
+            }
+        }
+        if (uuid == null)
+        {
+            return;
+        }
+
+        if (WindowManager.CollectWindow is { } window
+            && window.DataContext is CollectModel model1)
+        {
+            if (string.IsNullOrWhiteSpace(model1.Group))
+            {
+                Collect.Items.Remove(uuid);
+            }
+            else if (Collect.Groups.TryGetValue(model1.Group, out var gourp))
+            {
+                gourp.Remove(uuid);
+                if (s_itemUse.TryGetValue(uuid, out var use))
+                {
+                    if (use == 1)
+                    {
+                        Collect.Items.Remove(uuid);
+                    }
+                    else
+                    {
+                        s_itemUse[uuid] = use - 1;
+                    }
+                }
+            }
+
+            model1.Update();
+        }
+        else
+        {
+            Collect.Items.Remove(uuid);
         }
 
         Save();
@@ -95,10 +147,46 @@ public static class CollectUtils
         Save();
     }
 
-    public static void AddItem(CollectItemObj item)
+    public static void AddItem(CollectItemObj obj)
     {
-        item.UUID = NewUUID();
-        Collect.Items.Add(item.UUID, item);
+        string? uuid = null;
+        foreach (var item in Collect.Items)
+        {
+            if (item.Value.Source == obj.Source && item.Value.Pid == obj.Pid)
+            {
+                uuid = item.Key;
+                break;
+            }
+        }
+        if (uuid != null)
+        {
+            return;
+        }
+
+        uuid = obj.UUID = NewUUID();
+        Collect.Items.Add(obj.UUID, obj);
+
+        if (WindowManager.CollectWindow is { } window
+            && window.DataContext is CollectModel model1)
+        {
+            if (!string.IsNullOrWhiteSpace(model1.Group)
+                && Collect.Groups.TryGetValue(model1.Group, out var gourp))
+            {
+                gourp.Add(uuid);
+                if (s_itemUse.TryGetValue(uuid, out int value))
+                {
+                    s_itemUse[uuid] = ++value;
+                }
+                else
+                {
+                    s_itemUse[uuid] = 1;
+                }
+            }
+
+            model1.Update();
+        }
+
+        Save();
     }
 
     private static string NewUUID()
@@ -107,7 +195,7 @@ public static class CollectUtils
         do
         {
             uuid = FuntionUtils.NewUUID();
-        } while (!Collect.Items.Any(item => item.Key == uuid));
+        } while (Collect.Items.Any(item => item.Key == uuid));
 
         return uuid;
     }
@@ -202,5 +290,10 @@ public static class CollectUtils
         Collect.Shaderpack = shaderpack;
 
         Save();
+    }
+
+    public static bool IsStar(SourceType type, string pid)
+    {
+        return Collect.Items.Values.Any(item => item.Source == type && item.Pid == pid);
     }
 }

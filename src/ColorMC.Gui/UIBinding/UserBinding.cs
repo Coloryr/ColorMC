@@ -267,7 +267,7 @@ public static class UserBinding
                 WebBinding.OpenWeb(WebType.EditSkin);
                 break;
             case AuthType.Nide8:
-                BaseBinding.OpUrl($"https://login.mc-user.com:233/{obj.Text1}/skin");
+                BaseBinding.OpenUrl($"https://login.mc-user.com:233/{obj.Text1}/skin");
                 break;
             //case AuthType.AuthlibInjector:
             //BaseBinding.OpUrl($"https://login.mc-user.com:233/{obj.Text1}/skin");
@@ -276,7 +276,7 @@ public static class UserBinding
                 WebBinding.OpenWeb(WebType.LittleSkinEditSkin);
                 break;
             case AuthType.SelfLittleSkin:
-                BaseBinding.OpUrl($"{obj.Text1}/user/closet");
+                BaseBinding.OpenUrl($"{obj.Text1}/user/closet");
                 break;
         }
     }

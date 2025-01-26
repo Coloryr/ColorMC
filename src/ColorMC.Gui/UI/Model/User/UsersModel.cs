@@ -693,7 +693,7 @@ public partial class UsersControlModel : TopModel
                 _cancel = true;
                 UserBinding.OAuthCancel();
             });
-        BaseBinding.OpUrl($"{url}?otc={code}");
+        BaseBinding.OpenUrl($"{url}?otc={code}");
         var top = Model.GetTopLevel();
         if (top == null)
         {

@@ -12,11 +12,11 @@ public class UrlFlyout
         [
             new FlyoutMenuObj(App.Lang("NetFrpWindow.Tab1.Text14"), url != null, ()=>
             {
-                BaseBinding.OpUrl(url);
+                BaseBinding.OpenUrl(url);
             }),
             new FlyoutMenuObj(App.Lang("AddWindow.Text13"), url1 != null, ()=>
             {
-                BaseBinding.OpUrl(url1);
+                BaseBinding.OpenUrl(url1);
             })
         ], con);
     }
