@@ -85,6 +85,22 @@
                                         Height="35"
                                         Margin="0,0,5,0"
                                         VerticalAlignment="Top"
+                                        Command="{Binding OpenCollect}"
+                                        CornerRadius="5"
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text133}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <svg:SvgControl Path="/Resource/Icon/collection.svg" />
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                VerticalAlignment="Bottom"
+                                                FontSize="14"
+                                                Text="{setting:Localize MainWindow.Text34}" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button
+                                        Height="35"
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Top"
                                         Command="{Binding OpenGuide}"
                                         CornerRadius="5"
                                         ToolTip.Tip="{setting:Localize ToolTip.Text70}">
