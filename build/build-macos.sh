@@ -100,7 +100,21 @@ build_osx_min()
     echo "$zip_name build done"
 }
 
+build_sdl_arm64()
+{
+    git clone https://github.com/libsdl-org/SDL.git
+    cd SDL
+    mkdir build
+    cd build
+    ../configure
+    make
+
+    
+}
+
 build_osx osx-x64 x86_64
 build_osx osx-arm64 aarch64
 build_osx_min osx-x64 x86_64
 build_osx_min osx-arm64 aarch64
+
+build_sdl_arm64
