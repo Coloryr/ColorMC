@@ -36,6 +36,8 @@ public static class ImageManager
     public static event Action? PicUpdate;
     public static event Action? SkinChange;
 
+    public static readonly string[] Stars = ["/Resource/Icon/Item/star.svg", "/Resource/Icon/Item/star_1.svg"];
+
     public static string Local { get; private set; }
 
     public static void Init(string dir)

@@ -21,7 +21,7 @@ public partial class NewsItemModel(MinecraftNewObj.ArticleObj item) : Observable
 
     public void OpenUrl()
     {
-        BaseBinding.OpUrl("https://www.minecraft.net" + item.ArticleUrl);
+        BaseBinding.OpenUrl("https://www.minecraft.net" + item.ArticleUrl);
     }
 
     private async Task<Bitmap?> GetImage()

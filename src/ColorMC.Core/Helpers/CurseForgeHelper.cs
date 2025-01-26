@@ -61,7 +61,7 @@ public static class CurseForgeHelper
             Name = data.DisplayName,
             File = data.FileName,
             Sha1 = data.Hashes.Where(a => a.Algo == 1)
-                    .Select(a => a.Value).FirstOrDefault(),
+                    .Select(a => a.Value).FirstOrDefault()!,
             ModId = data.ModId.ToString(),
             FileId = data.Id.ToString(),
             Url = data.DownloadUrl

@@ -24,13 +24,21 @@ public partial class FileItemModel : SelectItemModel
 
     private Bitmap? _img;
 
-    public string? Name { get; init; }
-    public string? Summary { get; init; }
-    public string? Author { get; init; }
-    public long? DownloadCount { get; init; }
-    public DateTime? ModifiedDate { get; init; }
+    public string Name { get; init; }
+    public string Summary { get; init; }
+    public string Author { get; init; }
+    public long DownloadCount { get; init; }
+    public DateTime ModifiedDate { get; init; }
     public bool IsModPack { get; init; }
     public bool HaveDownload { get; init; }
+    public bool ShowStar { get; init; }
+
+    [ObservableProperty]
+    private string _star = ImageManager.Stars[1];
+    [ObservableProperty]
+    private bool _isStar;
+    [ObservableProperty]
+    private bool _starVis;
 
     [ObservableProperty]
     private bool _isDownload = false;
@@ -72,6 +80,12 @@ public partial class FileItemModel : SelectItemModel
 
         HaveDownload = true;
         IsModPack = type == FileType.ModPack;
+
+        ShowStar = type is FileType.ModPack or FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
+        if (ShowStar)
+        {
+            IsStar = BaseBinding.IsStar(SourceType, data.Id.ToString());
+        }
     }
 
     public FileItemModel(ModrinthSearchObj.HitObj data, FileType type)
@@ -91,6 +105,12 @@ public partial class FileItemModel : SelectItemModel
 
         HaveDownload = true;
         IsModPack = type == FileType.ModPack;
+
+        ShowStar = type is FileType.ModPack or FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
+        if (ShowStar)
+        {
+            IsStar = BaseBinding.IsStar(SourceType, data.ProjectId);
+        }
     }
 
     public FileItemModel(McModSearchItemObj data, FileType type)
@@ -111,6 +131,12 @@ public partial class FileItemModel : SelectItemModel
         IsModPack = type == FileType.ModPack;
     }
 
+    partial void OnIsStarChanged(bool value)
+    {
+        Star = ImageManager.Stars[value ? 0 : 1];
+        StarVis = (value || Top);
+    }
+
     protected override void IsSelectChanged(bool value)
     {
         EnableButton = Top || IsSelect;
@@ -118,7 +144,22 @@ public partial class FileItemModel : SelectItemModel
 
     partial void OnTopChanged(bool value)
     {
+        if (ShowStar)
+        {
+            StarVis = (value || IsStar);
+        }
+
         EnableButton = Top || IsSelect;
+    }
+
+    [RelayCommand]
+    public void DoStar()
+    {
+        if (!ShowStar)
+        {
+            return;
+        }
+        IsStar = BaseBinding.SetStart(this);
     }
 
     [RelayCommand]
@@ -126,7 +167,7 @@ public partial class FileItemModel : SelectItemModel
     {
         if (Url != null)
         {
-            BaseBinding.OpUrl(Url);
+            BaseBinding.OpenUrl(Url);
         }
     }
 

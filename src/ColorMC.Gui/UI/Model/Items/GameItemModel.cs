@@ -23,8 +23,6 @@ namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class GameItemModel : GameModel
 {
-    private static readonly string[] s_star = ["/Resource/Icon/Item/star.svg", "/Resource/Icon/Item/star_1.svg"];
-
     [ObservableProperty]
     private bool _isSelect;
     [ObservableProperty]
@@ -64,7 +62,7 @@ public partial class GameItemModel : GameModel
     public string UUID => Obj.UUID;
 
     [ObservableProperty]
-    private string _star = s_star[1];
+    private string _star = ImageManager.Stars[1];
     [ObservableProperty]
     private bool _isStar;
     [ObservableProperty]
@@ -114,7 +112,7 @@ public partial class GameItemModel : GameModel
 
     partial void OnIsStarChanged(bool value)
     {
-        Star = s_star[value ? 0 : 1];
+        Star = ImageManager.Stars[value ? 0 : 1];
         StarVis = (value || IsOver) && !IsNew;
     }
 

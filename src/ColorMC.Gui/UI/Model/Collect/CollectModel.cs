@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Collect;
 
-public partial class CollectModel : TopModel
+public partial class CollectModel : TopModel, ICollectWindow
 {
     public ObservableCollection<CollectItemModel> CollectList { get; init; } = [];
     public ObservableCollection<string> Groups { get; init; } = [];
@@ -37,6 +38,8 @@ public partial class CollectModel : TopModel
     [ObservableProperty]
     private string _group;
 
+    private CollectItemModel? _select;
+
     private readonly string _useName;
 
     public CollectModel(BaseModel model) : base(model)
@@ -57,32 +60,36 @@ public partial class CollectModel : TopModel
             Groups.Add(item.Key);
         }
 
-        foreach (var item in conf.Items)
-        {
-            _list.Add(new(item.Value));
-        }
-
+        LoadItems();
         Load();
     }
 
     partial void OnModpackChanged(bool value)
     {
         CollectUtils.Setting(Modpack, Mod, Resourcepack, Shaderpack);
+
+        Load();
     }
 
     partial void OnModChanged(bool value)
     {
         CollectUtils.Setting(Modpack, Mod, Resourcepack, Shaderpack);
+
+        Load();
     }
 
     partial void OnResourcepackChanged(bool value)
     {
         CollectUtils.Setting(Modpack, Mod, Resourcepack, Shaderpack);
+
+        Load();
     }
 
     partial void OnShaderpackChanged(bool value)
     {
         CollectUtils.Setting(Modpack, Mod, Resourcepack, Shaderpack);
+
+        Load();
     }
 
     partial void OnGroupChanged(string value)
@@ -176,6 +183,16 @@ public partial class CollectModel : TopModel
     }
 
 
+    private void LoadItems()
+    {
+        foreach (var item in CollectUtils.Collect.Items)
+        {
+            var model = new CollectItemModel(item.Value);
+            model.Add = this;
+            _list.Add(model);
+        }
+    }
+
     public override void Close()
     {
         CollectList.Clear();
@@ -185,5 +202,27 @@ public partial class CollectModel : TopModel
         }
 
         _list.Clear();
+    }
+
+    public void Update()
+    {
+        Close();
+        LoadItems();
+        Load();
+    }
+
+    public void SetSelect(CollectItemModel item)
+    {
+        if (_select != null)
+        {
+            _select.IsSelect = false;
+        }
+        _select = item;
+        item.IsSelect = true;
+    }
+
+    public void Install(CollectItemModel item)
+    {
+        
     }
 }

@@ -795,7 +795,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     public static void OpenMcmod(ModDisplayModel obj)
     {
-        BaseBinding.OpUrl($"https://search.mcmod.cn/s?key={obj.Name}");
+        BaseBinding.OpenUrl($"https://search.mcmod.cn/s?key={obj.Name}");
     }
 
     /// <summary>
@@ -829,7 +829,7 @@ public static class WebBinding
     /// <param name="type"></param>
     public static void OpenWeb(WebType type)
     {
-        BaseBinding.OpUrl(type switch
+        BaseBinding.OpenUrl(type switch
         {
             WebType.Guide => "https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/README.md",
             WebType.Guide1 => "https://gitee.com/Coloryr/ColorMC_Pic/blob/master/guide/README.md",
@@ -1676,13 +1676,13 @@ public static class WebBinding
         switch (type)
         {
             case AuthType.OAuth:
-                BaseBinding.OpUrl("https://www.minecraft.net/zh-hans/login");
+                BaseBinding.OpenUrl("https://www.minecraft.net/zh-hans/login");
                 break;
             case AuthType.Nide8:
-                BaseBinding.OpUrl($"https://login.mc-user.com:233/{name}/loginreg");
+                BaseBinding.OpenUrl($"https://login.mc-user.com:233/{name}/loginreg");
                 break;
             case AuthType.LittleSkin:
-                BaseBinding.OpUrl("https://littleskin.cn/auth/register");
+                BaseBinding.OpenUrl("https://littleskin.cn/auth/register");
                 break;
         }
     }

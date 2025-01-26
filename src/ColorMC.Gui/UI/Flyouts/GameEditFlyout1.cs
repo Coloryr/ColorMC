@@ -79,7 +79,7 @@ public class GameEditFlyout1
             new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text4"), single
                 && ! string.IsNullOrWhiteSpace(obj ?.Url), () =>
                 {
-                    BaseBinding.OpUrl(obj !.Url);
+                    BaseBinding.OpenUrl(obj !.Url);
                 }),
             new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text5"), single
                 && ! string.IsNullOrWhiteSpace(obj ?.PID) && ! string.IsNullOrWhiteSpace(obj ?.FID), () =>

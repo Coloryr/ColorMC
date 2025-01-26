@@ -15,7 +15,7 @@
     <ScrollViewer>
         <DockPanel Margin="10">
             <Border
-                Margin="10,0,10,10"
+                Margin="10,0,10,5"
                 Classes="t2"
                 DockPanel.Dock="Top">
                 <StackPanel Margin="15">
@@ -49,10 +49,22 @@
                             Content="{setting:Localize CollectWindow.Text4}" />
                     </panel:WrapPanelWithStretch>
                     <WrapPanel Margin="0,0,0,-5">
-                        <CheckBox Margin="0,0,10,0" Content="{setting:Localize CollectWindow.Text6}" />
-                        <CheckBox Margin="0,0,10,0" Content="{setting:Localize GameEditWindow.Tabs.Text4}" />
-                        <CheckBox Margin="0,0,10,0" Content="{setting:Localize GameEditWindow.Tabs.Text6}" />
-                        <CheckBox Margin="0,0,10,0" Content="{setting:Localize GameEditWindow.Tabs.Text11}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize CollectWindow.Text6}"
+                            IsChecked="{Binding Modpack}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize GameEditWindow.Tabs.Text4}"
+                            IsChecked="{Binding Mod}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize GameEditWindow.Tabs.Text6}"
+                            IsChecked="{Binding Resourcepack}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize GameEditWindow.Tabs.Text11}"
+                            IsChecked="{Binding Shaderpack}" />
                     </WrapPanel>
                 </StackPanel>
             </Border>
@@ -68,7 +80,7 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <Border
-                    Margin="10,0,10,10"
+                    Margin="10,5,10,10"
                     Classes="t1"
                     IsVisible="{Binding EmptyDisplay}">
                     <TextBlock

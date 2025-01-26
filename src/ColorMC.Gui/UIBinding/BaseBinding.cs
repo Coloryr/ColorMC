@@ -15,6 +15,8 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Frp;
@@ -22,6 +24,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Collect;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Zip;
@@ -119,7 +122,7 @@ public static class BaseBinding
     /// 在浏览器打开网址
     /// </summary>
     /// <param name="url">网址</param>
-    public static void OpUrl(string? url)
+    public static void OpenUrl(string? url)
     {
         url = url?.Replace(" ", "%20");
         switch (SystemInfo.Os)
@@ -400,5 +403,45 @@ public static class BaseBinding
         {
             return ["UTF-8"];
         }
+    }
+
+    public static bool SetStart(FileItemModel model)
+    {
+        var obj = new CollectItemObj()
+        {
+            Icon = model.Logo,
+            Url = model.Url,
+            FileType = model.FileType,
+            Source = model.SourceType,
+            Name = model.Name
+        };
+
+        if (model.SourceType == SourceType.CurseForge)
+        {
+            var obj1 = (model.Data as CurseForgeObjList.DataObj)!;
+            obj.Pid = obj1.Id.ToString();
+
+        }
+        else if (model.SourceType == SourceType.Modrinth)
+        {
+            var obj1 = (model.Data as ModrinthSearchObj.HitObj)!;
+            obj.Pid = obj1.ProjectId;
+        }
+
+        if (model.IsStar)
+        {
+            CollectUtils.RemoveItem(obj);
+            return false;
+        }
+        else
+        {
+            CollectUtils.AddItem(obj);
+            return true;
+        }
+    }
+
+    public static bool IsStar(SourceType type, string pid)
+    {
+        return CollectUtils.IsStar(type, pid);
     }
 }
