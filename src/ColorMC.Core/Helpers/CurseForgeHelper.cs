@@ -31,7 +31,7 @@ public static class CurseForgeHelper
     /// <param name="data">CurseForge数据</param>
     /// <param name="path">下载路径</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.DataObj data, string path)
+    public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.DataObj data, GameSettingObj obj)
     {
         data.FixDownloadUrl();
 
@@ -39,7 +39,7 @@ public static class CurseForgeHelper
         {
             Url = data.DownloadUrl,
             Name = data.DisplayName,
-            Local = path + "/" + data.FileName,
+            Local = Path.GetFullPath(obj.GetModsPath() + "/" + data.FileName),
             Sha1 = data.Hashes.Where(a => a.Algo == 1)
                     .Select(a => a.Value).FirstOrDefault()
         };
@@ -51,13 +51,13 @@ public static class CurseForgeHelper
     /// <param name="data">CurseForge数据</param>
     /// <param name="path">路径名字</param>
     /// <returns>Mod信息</returns>
-    public static ModInfoObj MakeModInfo(this CurseForgeModObj.DataObj data, string path)
+    public static ModInfoObj MakeModInfo(this CurseForgeModObj.DataObj data, string name)
     {
         data.FixDownloadUrl();
 
         return new ModInfoObj()
         {
-            Path = path,
+            Path = name,
             Name = data.DisplayName,
             File = data.FileName,
             Sha1 = data.Hashes.Where(a => a.Algo == 1)
@@ -201,7 +201,7 @@ public static class CurseForgeHelper
             await Parallel.ForEachAsync(res1, async (item, cancel) =>
             {
                 var path = await GetItemPathAsync(arg.Game, item);
-                var item1 = item.MakeModDownloadObj(path.File);
+                var item1 = item.MakeModDownloadObj(arg.Game);
                 list.Add(item1);
                 var modid = item.ModId.ToString();
                 mods.TryRemove(modid, out _);
@@ -243,7 +243,7 @@ public static class CurseForgeHelper
 
                 var path = await GetItemPathAsync(arg.Game, res.Data);
 
-                list.Add(res.Data.MakeModDownloadObj(path.File));
+                list.Add(res.Data.MakeModDownloadObj(arg.Game));
                 var modid = res.Data.ModId.ToString();
                 arg.Game.Mods.Remove(modid);
                 arg.Game.Mods.Add(modid, res.Data.MakeModInfo(path.Name));

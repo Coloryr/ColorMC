@@ -11,4 +11,6 @@ public interface ICollectWindow
 {
     public void SetSelect(CollectItemModel item);
     public void Install(CollectItemModel item);
+    public void Install();
+    public bool HaveSelect();
 }

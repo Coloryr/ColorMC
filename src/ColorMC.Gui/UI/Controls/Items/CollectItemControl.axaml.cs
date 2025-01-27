@@ -1,7 +1,6 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.Items;
@@ -19,9 +18,28 @@ public partial class CollectItemControl : UserControl
 
     private void CollectItemControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is CollectItemModel model)
+        if (DataContext is not CollectItemModel model)
         {
-            model.SetSelect();
+            return;
+        }
+
+        model.SetSelect();
+
+        void OpenFlyout()
+        {
+            _ = new CollectFlyout((sender as Control)!, model);
+            e.Handled = true;
+        }
+
+        var ev = e.GetCurrentPoint(this);
+        if (ev.Properties.IsRightButtonPressed)
+        {
+            model.IsCheck = true;
+            OpenFlyout();
+        }
+        else
+        {
+            LongPressed.Pressed(OpenFlyout);
         }
     }
 

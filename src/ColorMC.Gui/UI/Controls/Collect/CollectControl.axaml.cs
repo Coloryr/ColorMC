@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -25,7 +26,27 @@ public partial class CollectControl : BaseUserControl
 
     public override TopModel GenModel(BaseModel model)
     {
-        return new CollectModel(model);
+        var model1 = new CollectModel(model);
+        model1.PropertyChanged += Model1_PropertyChanged;
+        return model1;
+    }
+
+    private void Model1_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (sender is CollectModel model &&
+            e.PropertyName == nameof(CollectModel.IsDownload))
+        {
+            if (model.IsDownload == true)
+            {
+                ThemeManager.CrossFade.Start(null, DownloadDisplay);
+                ThemeManager.CrossFade.Start(ItemsView, null);
+            }
+            else
+            {
+                ThemeManager.CrossFade.Start(DownloadDisplay, null);
+                ThemeManager.CrossFade.Start(null, ItemsView);
+            }
+        }
     }
 
     public override Bitmap GetIcon()

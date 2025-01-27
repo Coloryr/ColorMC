@@ -13,84 +13,113 @@
     x:DataType="model:CollectModel"
     mc:Ignorable="d">
     <ScrollViewer>
-        <DockPanel Margin="10">
-            <Border
-                Margin="10,0,10,5"
-                Classes="t2"
-                DockPanel.Dock="Top">
-                <StackPanel Margin="15">
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
-                        <DockPanel MinWidth="230" Margin="0,0,5,0">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CollectWindow.Text1}" />
-                            <ComboBox
-                                Height="30"
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding Groups}"
-                                SelectedItem="{Binding Group}" />
-                        </DockPanel>
+        <Panel>
+            <DockPanel Name="ItemsView" Margin="10">
+                <Border
+                    Margin="10,0,10,5"
+                    Classes="t2"
+                    DockPanel.Dock="Top">
+                    <StackPanel Margin="15">
+                        <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                            <DockPanel MinWidth="230" Margin="0,0,5,0">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize CollectWindow.Text1}" />
+                                <ComboBox
+                                    Height="30"
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding Groups}"
+                                    SelectedItem="{Binding Group}" />
+                            </DockPanel>
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Classes="top"
+                                Command="{Binding AddGroup}"
+                                Content="{setting:Localize CollectWindow.Text2}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Classes="top"
+                                Command="{Binding DeleteGroup}"
+                                Content="{setting:Localize CollectWindow.Text3}"
+                                IsEnabled="{Binding GroupDelete}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Classes="top"
+                                Command="{Binding ClearGroup}"
+                                Content="{setting:Localize CollectWindow.Text4}" />
+                        </panel:WrapPanelWithStretch>
+                        <WrapPanel Margin="0,0,0,-5">
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize GameEditWindow.Tabs.Text4}"
+                                IsChecked="{Binding Mod}" />
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize GameEditWindow.Tabs.Text6}"
+                                IsChecked="{Binding Resourcepack}" />
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize GameEditWindow.Tabs.Text11}"
+                                IsChecked="{Binding Shaderpack}" />
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+                <Panel>
+                    <ItemsControl
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{Binding CollectList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <item:CollectItemControl DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Border
+                        Margin="10,5,10,10"
+                        Classes="t1"
+                        IsVisible="{Binding EmptyDisplay}">
+                        <TextBlock
+                            Margin="20,0,20,0"
+                            FontSize="20"
+                            Text="{setting:Localize CollectWindow.Info5}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </Border>
+                </Panel>
+            </DockPanel>
+            <DockPanel
+                Name="DownloadDisplay"
+                Margin="10"
+                IsVisible="False">
+                <Border
+                    Margin="10,0,10,5"
+                    Classes="t2"
+                    DockPanel.Dock="Top">
+                    <WrapPanel Margin="15,15,5,15" DockPanel.Dock="Top">
+                        <TextBlock Margin="0,0,20,0" Text="{setting:Localize CollectWindow.Info8}" />
                         <Button
                             Width="100"
                             Height="35"
+                            Margin="-2,-3,3,-3"
                             Classes="top"
-                            Command="{Binding AddGroup}"
-                            Content="{setting:Localize CollectWindow.Text2}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Classes="top"
-                            Command="{Binding DeleteGroup}"
-                            Content="{setting:Localize CollectWindow.Text3}"
-                            IsEnabled="{Binding GroupDelete}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Classes="top"
-                            Command="{Binding ClearGroup}"
-                            Content="{setting:Localize CollectWindow.Text4}" />
-                    </panel:WrapPanelWithStretch>
-                    <WrapPanel Margin="0,0,0,-5">
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize CollectWindow.Text6}"
-                            IsChecked="{Binding Modpack}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize GameEditWindow.Tabs.Text4}"
-                            IsChecked="{Binding Mod}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize GameEditWindow.Tabs.Text6}"
-                            IsChecked="{Binding Resourcepack}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize GameEditWindow.Tabs.Text11}"
-                            IsChecked="{Binding Shaderpack}" />
+                            Command="{Binding DownloadAll}"
+                            Content="{setting:Localize AddWindow.Text6}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text79}" />
                     </WrapPanel>
-                </StackPanel>
-            </Border>
-            <Panel>
+                </Border>
                 <ItemsControl
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    ItemsSource="{Binding CollectList}">
+                    ItemsSource="{Binding DownloadList}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <item:CollectItemControl DataContext="{Binding}" />
+                            <item:FileModVersionControl DataContext="{Binding}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <Border
-                    Margin="10,5,10,10"
-                    Classes="t1"
-                    IsVisible="{Binding EmptyDisplay}">
-                    <TextBlock
-                        Margin="20,0,20,0"
-                        FontSize="20"
-                        Text="{setting:Localize CollectWindow.Info5}"
-                        TextAlignment="Center"
-                        TextWrapping="Wrap" />
-                </Border>
-            </Panel>
-        </DockPanel>
+            </DockPanel>
+        </Panel>
     </ScrollViewer>
 </UserControl>

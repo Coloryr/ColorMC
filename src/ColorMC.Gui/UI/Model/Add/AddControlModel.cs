@@ -257,7 +257,6 @@ public partial class AddControlModel : GameModel, IAddOptifineWindow
     /// </summary>
     public bool Display { get; set; }
 
-    private readonly bool _collect;
     private readonly string _useName;
 
     public AddControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)

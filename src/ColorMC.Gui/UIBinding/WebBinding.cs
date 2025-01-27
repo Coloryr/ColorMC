@@ -382,8 +382,6 @@ public static class WebBinding
             return new();
         }
 
-        string path = obj.GetModsPath();
-
         var res = new Dictionary<string, FileModVersionModel>();
         if (data.Dependencies != null && data.Dependencies.Count > 0)
         {
@@ -404,7 +402,7 @@ public static class WebBinding
                     version.Add(item2.DisplayName);
                     items.Add(new()
                     {
-                        Item = item2.MakeModDownloadObj(path),
+                        Item = item2.MakeModDownloadObj(obj),
                         Info = item2.MakeModInfo(InstancesPath.Name11)
                     });
                 }
@@ -414,7 +412,7 @@ public static class WebBinding
 
         return new()
         {
-            Item = data.MakeModDownloadObj(path),
+            Item = data.MakeModDownloadObj(obj),
             Info = data.MakeModInfo(InstancesPath.Name11),
             List = [.. res.Values]
         };
@@ -452,7 +450,7 @@ public static class WebBinding
                     items.Add(new()
                     {
                         Item = item2.MakeModDownloadObj(obj),
-                        Info = item2.MakeModInfo()
+                        Info = item2.MakeModInfo(InstancesPath.Name11)
                     });
                 }
                 res.Add(item1.ModId, new(item1.Name, version, items, false));
@@ -462,7 +460,7 @@ public static class WebBinding
         return new()
         {
             Item = data.MakeModDownloadObj(obj),
-            Info = data.MakeModInfo(),
+            Info = data.MakeModInfo(InstancesPath.Name11),
             List = [.. res.Values]
         };
     }
@@ -763,7 +761,7 @@ public static class WebBinding
                         version.Add(data.DisplayName);
                         items.Add(new()
                         {
-                            Item = data.MakeModDownloadObj(path),
+                            Item = data.MakeModDownloadObj(game),
                             Info = data.MakeModInfo(InstancesPath.Name11)
                         });
                     }
@@ -773,7 +771,7 @@ public static class WebBinding
                         items.Add(new()
                         {
                             Item = data1.MakeModDownloadObj(game),
-                            Info = data1.MakeModInfo()
+                            Info = data1.MakeModInfo(InstancesPath.Name11)
                         });
                     }
                 }

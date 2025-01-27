@@ -265,7 +265,7 @@ public static class ModPackHelper
 
                 var path1 = await CurseForgeHelper.GetItemPathAsync(arg.Game, res.Data);
                 var modid = res.Data.ModId.ToString();
-                var item1 = res.Data.MakeModDownloadObj(path1.File);
+                var item1 = res.Data.MakeModDownloadObj(arg.Game);
                 list1.Add(item1);
                 if (path1.FileType == FileType.Mod)
                 {

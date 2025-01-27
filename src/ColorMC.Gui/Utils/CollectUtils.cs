@@ -217,7 +217,6 @@ public static class CollectUtils
             Items = [],
             Groups = [],
             Mod = true,
-            ModPack = true,
             ResourcePack = true,
             Shaderpack = true
         };
@@ -282,9 +281,8 @@ public static class CollectUtils
         Save();
     }
 
-    public static void Setting(bool modpack, bool mod, bool resourcepack, bool shaderpack)
+    public static void Setting(bool mod, bool resourcepack, bool shaderpack)
     {
-        Collect.ModPack = modpack;
         Collect.Mod = mod;
         Collect.ResourcePack = resourcepack;
         Collect.Shaderpack = shaderpack;
