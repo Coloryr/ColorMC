@@ -81,7 +81,7 @@ public partial class FileItemModel : SelectItemModel
         HaveDownload = true;
         IsModPack = type == FileType.ModPack;
 
-        ShowStar = type is FileType.ModPack or FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
+        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
         if (ShowStar)
         {
             IsStar = BaseBinding.IsStar(SourceType, data.Id.ToString());
@@ -106,7 +106,7 @@ public partial class FileItemModel : SelectItemModel
         HaveDownload = true;
         IsModPack = type == FileType.ModPack;
 
-        ShowStar = type is FileType.ModPack or FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
+        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
         if (ShowStar)
         {
             IsStar = BaseBinding.IsStar(SourceType, data.ProjectId);

@@ -43,7 +43,6 @@ public record CollectObj
     public Dictionary<string, CollectItemObj> Items { get; set; }
     public Dictionary<string, List<string>> Groups { get; set; }
 
-    public bool ModPack { get; set; }
     public bool Mod { get; set; }
     public bool ResourcePack { get; set; }
     public bool Shaderpack { get; set; }

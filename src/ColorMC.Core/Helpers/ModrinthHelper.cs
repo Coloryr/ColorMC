@@ -120,12 +120,12 @@ public static class ModrinthHelper
     /// </summary>
     /// <param name="data">数据</param>
     /// <returns>Mod信息</returns>
-    public static ModInfoObj MakeModInfo(this ModrinthVersionObj data)
+    public static ModInfoObj MakeModInfo(this ModrinthVersionObj data, string name)
     {
         var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
         return new ModInfoObj()
         {
-            Path = "mods",
+            Path = name,
             FileId = data.Id.ToString(),
             ModId = data.ProjectId,
             File = file.Filename,
