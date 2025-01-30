@@ -1,7 +1,4 @@
 using System.ComponentModel;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;

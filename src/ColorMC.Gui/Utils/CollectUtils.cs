@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -348,7 +345,7 @@ public static class CollectUtils
                 }
             }
         }
-        else if(Collect.Groups.TryGetValue(group, out var group1))
+        else if (Collect.Groups.TryGetValue(group, out var group1))
         {
             foreach (var item in list)
             {
