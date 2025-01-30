@@ -9,6 +9,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.UI.Model.User;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SkiaSharp;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -18,6 +19,8 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// </summary>
 public partial class UserDisplayModel(UsersControlModel top, LoginObj Obj) : SelectItemModel
 {
+    public const double DefaultWidth = 350;
+
     /// <summary>
     /// 用户名
     /// </summary>
@@ -38,6 +41,9 @@ public partial class UserDisplayModel(UsersControlModel top, LoginObj Obj) : Sel
     /// 附加信息
     /// </summary>
     public string Text2 => Obj.Text2;
+
+    [ObservableProperty]
+    private double _width = DefaultWidth;
 
     public AuthType AuthType => Obj.AuthType;
 
@@ -72,6 +78,18 @@ public partial class UserDisplayModel(UsersControlModel top, LoginObj Obj) : Sel
         }
 
         return null;
+    }
+
+    public void SetMin(bool mode)
+    {
+        if (mode)
+        {
+            Width = double.NaN;
+        }
+        else
+        {
+            Width = DefaultWidth;
+        }
     }
 
     public void Select()

@@ -11,6 +11,7 @@
     x:DataType="model:UserDisplayModel"
     mc:Ignorable="d">
     <Border
+        Width="{Binding Width}"
         Margin="10,5,10,5"
         Background="{setting:Theme ItemBG}"
         BoxShadow="{Binding Border}"
@@ -29,7 +30,6 @@
                 </Border>
                 <DockPanel Margin="60,0,0,0">
                     <TextBlock
-                        Width="240"
                         DockPanel.Dock="Top"
                         FontSize="16"
                         Foreground="{setting:Theme MainColor}"
@@ -39,7 +39,7 @@
                         DockPanel.Dock="Top"
                         Foreground="#FF9A9A9A"
                         Text="{Binding Type, FallbackValue=Type}" />
-                    <TextBlock Width="240" Text="{Binding UUID, FallbackValue=UUID}" />
+                    <TextBlock Text="{Binding UUID, FallbackValue=UUID}" TextTrimming="CharacterEllipsis" />
                 </DockPanel>
             </Panel>
         </Panel>

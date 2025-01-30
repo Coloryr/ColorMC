@@ -14,6 +14,12 @@ public partial class CollectItemControl : UserControl
         PointerEntered += CollectItemControl_PointerEntered;
         PointerExited += CollectItemControl_PointerExited;
         PointerPressed += CollectItemControl_PointerPressed;
+        PointerReleased += CollectItemControl_PointerReleased;
+    }
+
+    private void CollectItemControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        LongPressed.Cancel();
     }
 
     private void CollectItemControl_PointerPressed(object? sender, PointerPressedEventArgs e)

@@ -14,6 +14,8 @@ namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
 {
+    public const int DefaultWidth = 350;
+
     public ICollectWindow Add { get; set; }
 
     public string Name => Obj.Name;
@@ -26,13 +28,10 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
 
     [ObservableProperty]
     private bool _isCheck;
+    [ObservableProperty]
+    private double _width = DefaultWidth;
 
     public readonly CollectItemObj Obj = obj;
-
-    public void Close()
-    {
-        _img?.Dispose();
-    }
 
     [RelayCommand]
     public void OpenWeb()
@@ -66,6 +65,23 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
         }
 
         return null;
+    }
+
+    public void SetMin(bool min)
+    {
+        if (min)
+        {
+            Width = double.NaN;
+        }
+        else
+        {
+            Width = DefaultWidth;
+        }
+    }
+
+    public void Close()
+    {
+        _img?.Dispose();
     }
 
     public void SetSelect()

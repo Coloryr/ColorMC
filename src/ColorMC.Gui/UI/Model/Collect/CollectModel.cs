@@ -54,8 +54,7 @@ public partial class CollectModel : TopModel, ICollectWindow
     private string _group;
 
     private CollectItemModel? _select;
-    private ChoiseObj? _choise;
-
+    private GameSettingObj? _choise;
 
     private readonly string _useName;
 
@@ -117,19 +116,11 @@ public partial class CollectModel : TopModel, ICollectWindow
         }
 
         var list = new List<DownloadItemObj>();
-        var list1 = new List<GameSettingObj>() { _choise.Game };
-        if (_choise.IsGroup)
+        if (GameBinding.GetGame(_choise.UUID) == null)
         {
-            if (GameBinding.GetGameGroups().TryGetValue(_choise.Group, out var group))
-            {
-                list1 = group;
-            }
-            else
-            {
-                Model.Show(App.Lang("CollectWindow.Error2"));
-                Model.BackClick();
-                return;
-            }
+            Model.Show(App.Lang("CollectWindow.Error2"));
+            Model.BackClick();
+            return;
         }
 
         foreach (var item in DownloadList)
@@ -139,16 +130,13 @@ public partial class CollectModel : TopModel, ICollectWindow
                 continue;
             }
 
-            foreach (var item1 in list1)
+            var download = item.FileItems[item.SelectVersion];
+            var item2 = await WebBinding.MakeDownload(_choise, download, Model);
+            if (item2 == null)
             {
-                var download = item.FileItems[item.SelectVersion];
-                var item2 = await MakeDownload(item1, download);
-                if (item2 == null)
-                {
-                    continue;
-                }
-                list.Add(item2);
+                continue;
             }
+            list.Add(item2);
         }
 
         Model.Progress(App.Lang("CollectWindow.Info10"));
@@ -162,140 +150,6 @@ public partial class CollectModel : TopModel, ICollectWindow
         {
             Model.Notify(App.Lang("CollectWindow.Info11"));
         }
-    }
-
-    private async Task<DownloadItemObj?> MakeDownload(GameSettingObj obj, FileVersionItemModel model)
-    {
-        ModInfoObj? mod = null;
-        if (model.FileType == FileType.Mod && obj.Mods.TryGetValue(model.ID, out mod))
-        {
-            var res1 = await Model.ShowWait(App.Lang("AddWindow.Info15"));
-            if (!res1)
-            {
-                return null;
-            }
-        }
-
-        if (model.FileType == FileType.Mod)
-        {
-            try
-            {
-                var setting = GameGuiSetting.ReadConfig(obj);
-                DownloadModArg? arg = null;
-                if (model.SourceType == SourceType.CurseForge)
-                {
-                    var data = (model.Data as CurseForgeModObj.DataObj)!;
-                    arg = new DownloadModArg()
-                    {
-                        Item = data.MakeModDownloadObj(obj),
-                        Info = data.MakeModInfo(InstancesPath.Name11),
-                        Old = await obj.ReadMod(mod)
-                    };
-                }
-                else
-                {
-                    var data = (model.Data as ModrinthVersionObj)!;
-                    arg = new DownloadModArg()
-                    {
-                        Item = data.MakeModDownloadObj(obj),
-                        Info = data.MakeModInfo(InstancesPath.Name11),
-                        Old = await obj.ReadMod(mod)
-                    };
-                }
-
-                arg.Item.Later = (s) =>
-                {
-                    obj.AddModInfo(arg.Info);
-                    if (arg.Old is { } old)
-                    {
-                        PathHelper.Delete(arg.Old.Local);
-                    }
-                };
-
-                if (arg.Old is { } old && arg.Item.Sha1 != null)
-                {
-                    if (setting.ModName.TryGetValue(old.Sha1, out var value))
-                    {
-                        setting.ModName[arg.Item.Sha1] = value;
-                        setting.ModName.Remove(old.Sha1);
-                    }
-
-                    if (arg.Old.Disable)
-                    {
-                        arg.Item.Local = Path.ChangeExtension(arg.Item.Local, Mods.Name3);
-                        arg.Info.File = Path.ChangeExtension(arg.Info.File, Mods.Name3);
-                    }
-                }
-
-                GameGuiSetting.WriteConfig(obj, setting);
-
-                return arg.Item;
-            }
-            catch (Exception e)
-            {
-                Logs.Error(App.Lang("AddWindow.Error8"), e);
-            }
-        }
-        else if (model.FileType == FileType.Shaderpack)
-        {
-            if (model.SourceType == SourceType.CurseForge)
-            {
-                var data = (model.Data as CurseForgeModObj.DataObj)!;
-                return new()
-                {
-                    Name = data.DisplayName,
-                    Url = data.DownloadUrl,
-                    Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + data.FileName),
-                    Sha1 = data.Hashes.Where(a => a.Algo == 1)
-                        .Select(a => a.Value).FirstOrDefault(),
-                    Overwrite = true
-                };
-            }
-            else
-            {
-                var data = (model.Data as ModrinthVersionObj)!;
-                var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
-                return new()
-                {
-                    Name = data.Name,
-                    Url = file.Url,
-                    Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + file.Filename),
-                    Sha1 = file.Hashes.Sha1,
-                    Overwrite = true
-                };
-            }
-        }
-        else if (model.FileType == FileType.Resourcepack)
-        {
-            if (model.SourceType == SourceType.CurseForge)
-            {
-                var data = (model.Data as CurseForgeModObj.DataObj)!;
-                return new()
-                {
-                    Name = data.DisplayName,
-                    Url = data.DownloadUrl,
-                    Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + data.FileName),
-                    Sha1 = data.Hashes.Where(a => a.Algo == 1)
-                        .Select(a => a.Value).FirstOrDefault(),
-                    Overwrite = true
-                };
-            }
-            else
-            {
-                var data = (model.Data as ModrinthVersionObj)!;
-                var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
-                return new()
-                {
-                    Name = data.Name,
-                    Url = file.Url,
-                    Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + file.Filename),
-                    Sha1 = file.Hashes.Sha1,
-                    Overwrite = true
-                };
-            }
-        }
-
-        return null;
     }
 
     [RelayCommand]
@@ -338,6 +192,7 @@ public partial class CollectModel : TopModel, ICollectWindow
             {
                 CollectUtils.Clear();
                 Close();
+                EmptyDisplay = true;
             }
         }
         else
@@ -351,6 +206,63 @@ public partial class CollectModel : TopModel, ICollectWindow
         }
     }
 
+    [RelayCommand]
+    public async Task InstallSelect()
+    {
+        if (!HaveSelect())
+        {
+            return;
+        }
+
+        var items = new List<string>();
+        var items1 = new List<GameSettingObj>();
+
+        foreach (var item in GameBinding.GetGameGroups())
+        {
+            foreach (var item1 in item.Value)
+            {
+                items1.Add(item1);
+                items.Add(item1.Name);
+            }
+        }
+
+        var res = await Model.ShowCombo(App.Lang("CollectWindow.Info6"), items);
+        if (res.Cancel)
+        {
+            return;
+        }
+
+        _choise = items1[res.Index];
+
+        Model.Progress(App.Lang("CollectWindow.Info9"));
+
+        DownloadList.Clear();
+
+        foreach (var item in CollectList)
+        {
+            if (item.IsCheck)
+            {
+                var item1 = await WebBinding.GetFileList(item.Obj.Source, item.Obj.Pid, 0, _choise.Version, _choise.Loader, item.Obj.FileType);
+                if (item1.Count == 0)
+                {
+                    continue;
+                }
+                var model1 = new FileModVersionModel(item.Name, item1.List!);
+
+                DownloadList.Add(model1);
+            }
+        }
+
+        Model.ProgressClose();
+        Model.PushBack(() =>
+        {
+            DownloadList.Clear();
+            IsDownload = false;
+            _choise = null;
+        });
+        IsDownload = true;
+    }
+
     private void Load()
     {
         CollectList.Clear();
@@ -359,6 +271,28 @@ public partial class CollectModel : TopModel, ICollectWindow
         {
             foreach (var item in _list.Values)
             {
+                if (item.Obj.FileType == FileType.Mod && Mod)
+                {
+                    CollectList.Add(item);
+                }
+                else if (item.Obj.FileType == FileType.Resourcepack && Resourcepack)
+                {
+                    CollectList.Add(item);
+                }
+                else if (item.Obj.FileType == FileType.Shaderpack && Shaderpack)
+                {
+                    CollectList.Add(item);
+                }
+            }
+        }
+        else if(CollectUtils.Collect.Groups.TryGetValue(Group, out var group))
+        {
+            foreach (var uuid in group)
+            {
+                if (!_list.TryGetValue(uuid, out var item))
+                {
+                    continue;
+                }
                 if (item.Obj.FileType == FileType.Mod && Mod)
                 {
                     CollectList.Add(item);
@@ -385,6 +319,14 @@ public partial class CollectModel : TopModel, ICollectWindow
             {
                 Add = this
             });
+        }
+    }
+
+    protected override void MinModeChange()
+    {
+        foreach (var item in _list)
+        {
+            item.Value.SetMin(MinMode);
         }
     }
 
@@ -449,7 +391,7 @@ public partial class CollectModel : TopModel, ICollectWindow
         item.IsSelect = true;
     }
 
-    public void Install(CollectItemModel model)
+    public async void Install(CollectItemModel model)
     {
         foreach (var item in CollectList)
         {
@@ -457,88 +399,76 @@ public partial class CollectModel : TopModel, ICollectWindow
         }
 
         model.IsCheck = true;
-        Install();
+        await InstallSelect();
     }
 
-    private record ChoiseObj
+    public bool HaveSelect()
     {
-        public bool IsGroup;
-        public GameSettingObj Game;
-        public string Group;
+        return CollectList.Any(item => item.IsCheck);
     }
 
-    public async void Install()
+    public bool HaveGroup()
+    {
+        return !string.IsNullOrWhiteSpace(Group);
+    }
+
+    public async void DeleteSelect()
     {
         if (!HaveSelect())
         {
             return;
         }
 
-        var items = new List<string>();
-        var items1 = new List<ChoiseObj>();
-
-        foreach (var item in GameBinding.GetGameGroups())
-        {
-            items1.Add(new()
-            { 
-                IsGroup = true,
-                Group = item.Key
-            });
-
-            items.Add(string.Format(App.Lang("CollectWindow.Info7"), item.Key));
-
-            foreach (var item1 in item.Value)
-            {
-                items1.Add(new()
-                {
-                    IsGroup = false,
-                    Game = item1
-                });
-
-                items.Add(item1.Name);
-            }
-        }
-
-        var res = await Model.ShowCombo(App.Lang("CollectWindow.Info6"), items);
-        if (res.Cancel)
+        var res = await Model.ShowWait(App.Lang("CollectWindow.Info12"));
+        if (!res)
         {
             return;
         }
 
-        _choise = items1[res.Index];
-
-        Model.Progress(App.Lang("CollectWindow.Info9"));
-
-        DownloadList.Clear();
+        var list = new List<string>();
 
         foreach (var item in CollectList)
         {
             if (item.IsCheck)
             {
-                var item1 = _choise.IsGroup ? await WebBinding.GetFileList(item.Obj.Source, item.Obj.Pid, 0, null, Loaders.Normal, item.Obj.FileType)
-                : await WebBinding.GetFileList(item.Obj.Source, item.Obj.Pid, 0, _choise.Game.Version, _choise.Game.Loader, item.Obj.FileType);
-                if (item1.Count == 0)
-                {
-                    continue;
-                }
-                var model1 = new FileModVersionModel(item.Name, item1.List!);
-                
-                DownloadList.Add(model1);
+                list.Add(item.Obj.UUID);
             }
         }
 
-        Model.ProgressClose();
-        Model.PushBack(() =>
-        {
-            DownloadList.Clear();
-            IsDownload = false;
-            _choise = null;
-        });
-        IsDownload = true;
+        CollectUtils.RemoveItem(Group, list);
     }
 
-    public bool HaveSelect()
+    public async void GroupSelect()
     {
-        return CollectList.Any(item => item.IsCheck);
+        if (!HaveSelect())
+        {
+            return;
+        }
+
+        var list = new List<string>(CollectUtils.Collect.Groups.Keys);
+        list.Remove(Group);
+
+        var res = await Model.ShowCombo(App.Lang("CollectWindow.Info13"), list);
+        if (res.Cancel)
+        {
+            return;
+        }
+
+        list.Clear();
+
+        foreach (var item in CollectList)
+        {
+            if (item.IsCheck)
+            {
+                list.Add(item.Obj.UUID);
+            }
+        }
+
+        CollectUtils.AddItem(Group, list);
+    }
+
+    public async void Install()
+    {
+        await InstallSelect();
     }
 }

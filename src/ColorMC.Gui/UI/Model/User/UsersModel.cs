@@ -778,4 +778,12 @@ public partial class UsersControlModel : TopModel
     {
         Model.BackClick();
     }
+
+    protected override void MinModeChange()
+    {
+        foreach (var item in UserList)
+        {
+            item.SetMin(MinMode);
+        }
+    }
 }

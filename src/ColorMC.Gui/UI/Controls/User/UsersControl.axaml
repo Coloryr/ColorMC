@@ -2,6 +2,7 @@
     x:Class="ColorMC.Gui.UI.Controls.User.UsersControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cov="clr-namespace:ColorMC.Gui.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:items="clr-namespace:ColorMC.Gui.UI.Controls.Items"
@@ -14,6 +15,9 @@
     x:DataType="model:UsersControlModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <cov:MinModeToPanelTemplateConverter x:Key="MinModeToPanelTemplateConverter" />
+    </UserControl.Resources>
     <Panel>
         <dialog:DialogHost
             Background="{setting:Theme ButtonBG}"
@@ -54,9 +58,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Disabled">
                     <ItemsControl ItemsSource="{Binding UserList}">
                         <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel />
-                            </ItemsPanelTemplate>
+                            <Binding Converter="{StaticResource MinModeToPanelTemplateConverter}" Path="MinMode" />
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

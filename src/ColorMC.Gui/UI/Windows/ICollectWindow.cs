@@ -9,8 +9,11 @@ namespace ColorMC.Gui.UI.Windows;
 
 public interface ICollectWindow
 {
-    public void SetSelect(CollectItemModel item);
-    public void Install(CollectItemModel item);
-    public void Install();
-    public bool HaveSelect();
+    void SetSelect(CollectItemModel item);
+    void Install(CollectItemModel item);
+    void Install();
+    bool HaveSelect();
+    void DeleteSelect();
+    void GroupSelect();
+    bool HaveGroup();
 }

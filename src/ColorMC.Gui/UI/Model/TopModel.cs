@@ -25,7 +25,7 @@ public abstract partial class TopModel(BaseModel model) : ObservableObject
 
     public virtual void WidthChange(int index, double width)
     {
-        if (width < 470)
+        if (width < 500)
         {
             MinMode = true;
         }

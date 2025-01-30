@@ -23,6 +23,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Frp;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.Utils;
@@ -1700,5 +1701,145 @@ public static class WebBinding
             Logs.Error(App.Lang("WebBinding.Error3"), e);
             return null;
         }
+    }
+
+    /// <summary>
+    /// 创建下载项目
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public static async Task<DownloadItemObj?> MakeDownload(GameSettingObj obj, FileVersionItemModel model, BaseModel model1)
+    {
+        ModInfoObj? mod = null;
+        if (model.FileType == FileType.Mod && obj.Mods.TryGetValue(model.ID, out mod))
+        {
+            var res1 = await model1.ShowWait(App.Lang("AddWindow.Info15"));
+            if (!res1)
+            {
+                return null;
+            }
+        }
+
+        if (model.FileType == FileType.Mod)
+        {
+            try
+            {
+                var setting = GameGuiSetting.ReadConfig(obj);
+                DownloadModArg? arg = null;
+                if (model.SourceType == SourceType.CurseForge)
+                {
+                    var data = (model.Data as CurseForgeModObj.DataObj)!;
+                    arg = new DownloadModArg()
+                    {
+                        Item = data.MakeModDownloadObj(obj),
+                        Info = data.MakeModInfo(InstancesPath.Name11),
+                        Old = await obj.ReadMod(mod)
+                    };
+                }
+                else
+                {
+                    var data = (model.Data as ModrinthVersionObj)!;
+                    arg = new DownloadModArg()
+                    {
+                        Item = data.MakeModDownloadObj(obj),
+                        Info = data.MakeModInfo(InstancesPath.Name11),
+                        Old = await obj.ReadMod(mod)
+                    };
+                }
+
+                arg.Item.Later = (s) =>
+                {
+                    obj.AddModInfo(arg.Info);
+                    if (arg.Old is { } old)
+                    {
+                        PathHelper.Delete(arg.Old.Local);
+                    }
+                };
+
+                if (arg.Old is { } old && arg.Item.Sha1 != null)
+                {
+                    if (setting.ModName.TryGetValue(old.Sha1, out var value))
+                    {
+                        setting.ModName[arg.Item.Sha1] = value;
+                        setting.ModName.Remove(old.Sha1);
+                    }
+
+                    if (arg.Old.Disable)
+                    {
+                        arg.Item.Local = Path.ChangeExtension(arg.Item.Local, Mods.Name3);
+                        arg.Info.File = Path.ChangeExtension(arg.Info.File, Mods.Name3);
+                    }
+                }
+
+                GameGuiSetting.WriteConfig(obj, setting);
+
+                return arg.Item;
+            }
+            catch (Exception e)
+            {
+                Logs.Error(App.Lang("AddWindow.Error8"), e);
+            }
+        }
+        else if (model.FileType == FileType.Shaderpack)
+        {
+            if (model.SourceType == SourceType.CurseForge)
+            {
+                var data = (model.Data as CurseForgeModObj.DataObj)!;
+                return new()
+                {
+                    Name = data.DisplayName,
+                    Url = data.DownloadUrl,
+                    Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + data.FileName),
+                    Sha1 = data.Hashes.Where(a => a.Algo == 1)
+                        .Select(a => a.Value).FirstOrDefault(),
+                    Overwrite = true
+                };
+            }
+            else
+            {
+                var data = (model.Data as ModrinthVersionObj)!;
+                var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
+                return new()
+                {
+                    Name = data.Name,
+                    Url = file.Url,
+                    Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + file.Filename),
+                    Sha1 = file.Hashes.Sha1,
+                    Overwrite = true
+                };
+            }
+        }
+        else if (model.FileType == FileType.Resourcepack)
+        {
+            if (model.SourceType == SourceType.CurseForge)
+            {
+                var data = (model.Data as CurseForgeModObj.DataObj)!;
+                return new()
+                {
+                    Name = data.DisplayName,
+                    Url = data.DownloadUrl,
+                    Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + data.FileName),
+                    Sha1 = data.Hashes.Where(a => a.Algo == 1)
+                        .Select(a => a.Value).FirstOrDefault(),
+                    Overwrite = true
+                };
+            }
+            else
+            {
+                var data = (model.Data as ModrinthVersionObj)!;
+                var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
+                return new()
+                {
+                    Name = data.Name,
+                    Url = file.Url,
+                    Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + file.Filename),
+                    Sha1 = file.Hashes.Sha1,
+                    Overwrite = true
+                };
+            }
+        }
+
+        return null;
     }
 }
