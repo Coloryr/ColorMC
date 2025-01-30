@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using ColorMC.Core.LaunchPath;
 using System.Threading.Tasks;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Core.Helpers;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ColorMC.Core.Game;
-using System.IO;
-using ColorMC.Core.Utils;
-using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Downloader;
 
 namespace ColorMC.Gui.UI.Model.Collect;
 
@@ -285,7 +275,7 @@ public partial class CollectModel : TopModel, ICollectWindow
                 }
             }
         }
-        else if(CollectUtils.Collect.Groups.TryGetValue(Group, out var group))
+        else if (CollectUtils.Collect.Groups.TryGetValue(Group, out var group))
         {
             foreach (var uuid in group)
             {
@@ -367,7 +357,7 @@ public partial class CollectModel : TopModel, ICollectWindow
         foreach (var item in newlist)
         {
             _list.Add(item.UUID, new(item)
-            { 
+            {
                 Add = this
             });
         }
