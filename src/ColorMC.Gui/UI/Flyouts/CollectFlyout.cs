@@ -16,10 +16,8 @@ public class CollectFlyout
             {
                 BaseBinding.OpenUrl(model.Obj.Url);
             }),
-            //new FlyoutMenuObj(App.Lang("AddWindow.Text13"), url1 != null, ()=>
-            //{
-            //    BaseBinding.OpenUrl(url1);
-            //})
+            new FlyoutMenuObj(App.Lang("CollectFlyout.Text2"), model.Add.HaveSelect(), model.Add.DeleteSelect),
+            new FlyoutMenuObj(App.Lang("CollectFlyout.Text3"), model.Add.HaveGroup(), model.Add.GroupSelect),
         ], con);
     }
 }

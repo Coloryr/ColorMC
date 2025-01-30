@@ -442,6 +442,6 @@ public static class BaseBinding
 
     public static bool IsStar(SourceType type, string pid)
     {
-        return CollectUtils.IsStar(type, pid);
+        return CollectUtils.IsCollect(type, pid);
     }
 }

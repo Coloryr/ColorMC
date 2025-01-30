@@ -2,6 +2,7 @@
     x:Class="ColorMC.Gui.UI.Controls.Collect.CollectControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cov="clr-namespace:ColorMC.Gui.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -12,6 +13,9 @@
     d:DesignWidth="800"
     x:DataType="model:CollectModel"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <cov:MinModeToPanelTemplateConverter x:Key="MinModeToPanelTemplateConverter" />
+    </UserControl.Resources>
     <ScrollViewer>
         <Panel>
             <DockPanel Name="ItemsView" Margin="10">
@@ -48,6 +52,12 @@
                                 Classes="top"
                                 Command="{Binding ClearGroup}"
                                 Content="{setting:Localize CollectWindow.Text4}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Classes="top"
+                                Command="{Binding InstallSelect}"
+                                Content="{setting:Localize CollectWindow.Text6}" />
                         </panel:WrapPanelWithStretch>
                         <WrapPanel Margin="0,0,0,-5">
                             <CheckBox
@@ -70,6 +80,9 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         ItemsSource="{Binding CollectList}">
+                        <ItemsControl.ItemsPanel>
+                            <Binding Converter="{StaticResource MinModeToPanelTemplateConverter}" Path="MinMode" />
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <item:CollectItemControl DataContext="{Binding}" />
@@ -105,8 +118,8 @@
                             Margin="-2,-3,3,-3"
                             Classes="top"
                             Command="{Binding DownloadAll}"
-                            Content="{setting:Localize AddWindow.Text6}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text79}" />
+                            Content="{setting:Localize AddModPackWindow.Text12}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text80}" />
                     </WrapPanel>
                 </Border>
                 <ItemsControl

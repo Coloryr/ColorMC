@@ -11,6 +11,7 @@
     x:DataType="model:CollectItemModel"
     mc:Ignorable="d">
     <Border
+        Width="{Binding Width}"
         Margin="10,5,10,5"
         Background="{setting:Theme ItemBG}"
         BoxShadow="{Binding Border}"
@@ -32,7 +33,8 @@
                 <TextBlock
                     FontSize="16"
                     Foreground="{setting:Theme MainColor}"
-                    Text="{Binding Name, FallbackValue=1234}" />
+                    Text="{Binding Name, FallbackValue=1234}"
+                    TextTrimming="CharacterEllipsis" />
                 <TextBlock Foreground="#FF9A9A9A" Text="{Binding Source, FallbackValue=Source}" />
                 <TextBlock Text="{Binding Type, FallbackValue=Type}" />
             </StackPanel>
