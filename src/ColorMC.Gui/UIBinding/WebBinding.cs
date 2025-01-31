@@ -176,22 +176,22 @@ public static class WebBinding
         return type switch
         {
             FileType.Mod =>
-                [
-                    SourceType.CurseForge,
-                    SourceType.Modrinth,
-                    SourceType.McMod
-                ],
+            [
+                SourceType.CurseForge,
+                SourceType.Modrinth,
+                SourceType.McMod
+            ],
             FileType.DataPacks
             or FileType.Resourcepack
             or FileType.Shaderpack =>
-                [
-                    SourceType.CurseForge,
-                    SourceType.Modrinth,
-                ],
+            [
+                SourceType.CurseForge,
+                SourceType.Modrinth,
+            ],
             FileType.World =>
-                [
-                    SourceType.CurseForge,
-                ],
+            [
+                SourceType.CurseForge,
+            ],
             _ => [],
         };
     }

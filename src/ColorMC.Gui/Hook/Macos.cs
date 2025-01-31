@@ -5,6 +5,10 @@ namespace ColorMC.Gui.Hook;
 
 internal static class Macos
 {
+    /// <summary>
+    /// 获取所有内存大小
+    /// </summary>
+    /// <returns></returns>
     public static ulong GetTotalMemory()
     {
         var process = new Process
@@ -35,6 +39,10 @@ internal static class Macos
         return 0;
     }
 
+    /// <summary>
+    /// 获取剩余内存大小
+    /// </summary>
+    /// <returns></returns>
     public static ulong GetFreeMemory()
     {
         var process = new Process

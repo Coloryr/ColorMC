@@ -13,7 +13,6 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Frp;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
@@ -97,8 +96,8 @@ public partial class App : Application
         CoreManager.Init();
         ThemeManager.Init();
         JoystickConfig.Init(ColorMCGui.RunDir);
-        FrpConfig.Init(ColorMCGui.RunDir);
-        FrpLaunch.Init(ColorMCGui.RunDir);
+        FrpConfigUtils.Init(ColorMCGui.RunDir);
+        FrpLaunchUtils.Init(ColorMCGui.RunDir);
         CollectUtils.Init(ColorMCGui.RunDir);
         ImageManager.Init(ColorMCGui.RunDir);
         WindowManager.Init(ColorMCGui.RunDir);

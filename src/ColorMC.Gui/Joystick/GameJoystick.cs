@@ -17,34 +17,70 @@ namespace ColorMC.Gui.Joystick;
 
 public class GameJoystick
 {
+    /// <summary>
+    /// 现有的游戏手柄操作储存
+    /// </summary>
     public static readonly Dictionary<string, GameJoystick> NowGameJoystick = [];
 
+    /// <summary>
+    /// 底层操作接口
+    /// </summary>
     private readonly INative _implementation;
+    /// <summary>
+    /// 最大的遥感值
+    /// </summary>
     private readonly short[] _lastAxisMax = new short[10];
+    /// <summary>
+    /// 保存的按键值
+    /// </summary>
     private readonly Dictionary<InputKeyObj, bool> _lastKeyState = [];
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     private readonly GameSettingObj _obj;
-
+    /// <summary>
+    /// 当前指针的位置
+    /// </summary>
     private double _cursorNowX, _cursorNowY;
+    /// <summary>
+    /// 选择的手柄
+    /// </summary>
     private nint _gameController;
+    /// <summary>
+    /// 手柄ID
+    /// </summary>
     private int _joystickID, _controlIndex;
+    /// <summary>
+    /// 启用的手柄配置
+    /// </summary>
     private string? _configUUID;
+    /// <summary>
+    /// 游戏是否退出
+    /// </summary>
     private bool _isExit;
+    /// <summary>
+    /// 是否为鼠标指针模式
+    /// </summary>
+    private bool _mouseMode = true;
 
-    public bool MouseMode { get; set; } = true;
-
-    public static void SetMouse(string uuid, bool temp)
+    /// <summary>
+    /// 设置鼠标显示
+    /// </summary>
+    /// <param name="uuid">游戏UUID</param>
+    /// <param name="show">是否显示鼠标指针</param>
+    public static void SetMouse(string uuid, bool show)
     {
         if (NowGameJoystick.TryGetValue(uuid, out var value))
         {
-            value.MouseMode = !temp;
+            value._mouseMode = !show;
         }
     }
 
     /// <summary>
     /// 开始处理手柄操作
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="handel"></param>
+    /// <param name="obj">游戏储存</param>
+    /// <param name="handel">游戏操作句柄</param>
     public static void Start(GameSettingObj obj, IGameHandel handel)
     {
         if (NowGameJoystick.Remove(obj.UUID, out var value))
@@ -54,14 +90,24 @@ public class GameJoystick
         NowGameJoystick.Add(obj.UUID, new(obj, handel));
     }
 
+    /// <summary>
+    /// 游戏手柄操作
+    /// </summary>
+    /// <param name="obj">游戏储存</param>
+    /// <param name="handel">游戏操作句柄</param>
     private GameJoystick(GameSettingObj obj, IGameHandel handel)
     {
-        ColorMCCore.GameExit += GameExit;
-
+        //目前只支持windows
         if (SystemInfo.Os == OsType.Windows)
         {
             _implementation = new Win32Native();
         }
+        else
+        {
+            return;
+        }
+
+        ColorMCCore.GameExit += GameExit;
 
         _implementation!.AddHook(handel.Handel);
 
@@ -69,10 +115,7 @@ public class GameJoystick
         _controlIndex = 0;
         _configUUID = GuiConfigUtils.Config.Input.NowConfig;
 
-        unsafe
-        {
-            _gameController = new(JoystickInput.Open(_controlIndex));
-        }
+        _gameController = JoystickInput.Open(_controlIndex);
 
         if (_gameController != nint.Zero)
         {
@@ -80,6 +123,7 @@ public class GameJoystick
             _joystickID = JoystickInput.GetJoystickID(_gameController);
         }
 
+        //开始发送鼠标指针
         new Thread(() =>
         {
             while (!_isExit)
@@ -94,6 +138,12 @@ public class GameJoystick
         }).Start();
     }
 
+    /// <summary>
+    /// 游戏退出处理
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="arg2"></param>
+    /// <param name="arg3"></param>
     private void GameExit(GameSettingObj obj, LoginObj arg2, int arg3)
     {
         if (obj.UUID == _obj.UUID)
@@ -102,13 +152,24 @@ public class GameJoystick
         }
     }
 
-    public void Stop()
+    /// <summary>
+    /// 停止游戏手柄处理
+    /// </summary>
+    private void Stop()
     {
-        _isExit = true;
-        ColorMCCore.GameExit -= GameExit;
-        _implementation.Stop();
+        if (_implementation != null)
+        {
+            _isExit = true;
+            ColorMCCore.GameExit -= GameExit;
+            _implementation.Stop();
+        }
     }
 
+    /// <summary>
+    /// 添加按键状态
+    /// </summary>
+    /// <param name="obj">按键</param>
+    /// <param name="down">是否按下</param>
     private void CheckKeyAndSend(InputKeyObj obj, bool down)
     {
         if (_lastKeyState.TryGetValue(obj, out var state))
@@ -116,16 +177,20 @@ public class GameJoystick
             if (state != down)
             {
                 _lastKeyState[obj] = down;
-                _implementation.SendKey(obj, down, MouseMode);
+                _implementation.SendKey(obj, down, _mouseMode);
             }
         }
         else
         {
             _lastKeyState.Add(obj, down);
-            _implementation.SendKey(obj, down, MouseMode);
+            _implementation.SendKey(obj, down, _mouseMode);
         }
     }
 
+    /// <summary>
+    /// 处理SDL事件
+    /// </summary>
+    /// <param name="sdlEvent"></param>
     private void Event(Event sdlEvent)
     {
         if (!GuiConfigUtils.Config.Input.Enable
@@ -137,6 +202,7 @@ public class GameJoystick
         }
 
         var type = (EventType)sdlEvent.Type;
+        //摇杆事件
         if (type == EventType.Controlleraxismotion)
         {
             var axisEvent = sdlEvent.Caxis;
@@ -144,9 +210,9 @@ public class GameJoystick
 
             var axis = (GameControllerAxis)axisEvent.Axis;
 
-            var axisFixValue = axisValue / config.DownRate * (MouseMode ? config.CursorRate : config.RotateRate);
-            var deathSize = MouseMode ? config.CursorDeath : config.RotateDeath;
-            var choiseAxis = MouseMode ? config.CursorAxis : config.RotateAxis;
+            var axisFixValue = axisValue / config.DownRate * (_mouseMode ? config.CursorRate : config.RotateRate);
+            var deathSize = _mouseMode ? config.CursorDeath : config.RotateDeath;
+            var choiseAxis = _mouseMode ? config.CursorAxis : config.RotateAxis;
             //左摇杆
             if (choiseAxis == 0)
             {
@@ -201,7 +267,7 @@ public class GameJoystick
             }
 
             bool skip = false;
-            if (MouseMode)
+            if (_mouseMode)
             {
                 if (choiseAxis == 0 && axis is GameControllerAxis.Leftx
                         or GameControllerAxis.Lefty)
@@ -262,6 +328,7 @@ public class GameJoystick
                 }
             }
         }
+        //手柄按键按下
         else if (type == EventType.Controllerbuttondown)
         {
             var button = sdlEvent.Cbutton.Button;
@@ -284,6 +351,7 @@ public class GameJoystick
                 }
             }
         }
+        //手柄按键松开
         else if (type == EventType.Controllerbuttonup)
         {
             var button = sdlEvent.Cbutton.Button;
@@ -297,34 +365,48 @@ public class GameJoystick
         }
     }
 
+    /// <summary>
+    /// 设置手柄映射配置
+    /// </summary>
+    /// <param name="model">配置</param>
     public void ChangeConfig(JoystickSettingModel model)
     {
         if (_isExit)
         {
             return;
         }
-        if (_gameController != nint.Zero)
-        {
-            JoystickInput.Close(_gameController);
-            _gameController = nint.Zero;
-            _joystickID = 0;
-        }
 
-        _controlIndex = model.ControlIndex;
         _configUUID = model.GetUUID();
 
-        unsafe
+        //切换手柄
+        if (_controlIndex != model.ControlIndex)
         {
-            _gameController = new(JoystickInput.Open(_controlIndex));
-        }
+            //关闭旧的手柄
+            if (_gameController != nint.Zero)
+            {
+                JoystickInput.Close(_gameController);
+                _gameController = nint.Zero;
+                _joystickID = 0;
+            }
 
-        if (_gameController != nint.Zero)
-        {
-            _joystickID = JoystickInput.GetJoystickID(_gameController);
+
+            _controlIndex = model.ControlIndex;
+
+            //切换新的手柄
+            _gameController = JoystickInput.Open(_controlIndex);
+
+            if (_gameController != nint.Zero)
+            {
+                _joystickID = JoystickInput.GetJoystickID(_gameController);
+            }
         }
     }
 
-    public JoystickSettingModel MakeConfig()
+    /// <summary>
+    /// 创建显示模型
+    /// </summary>
+    /// <returns>显示用模型</returns>
+    public JoystickSettingModel MakeModel()
     {
         return new JoystickSettingModel(_controlIndex, _configUUID);
     }

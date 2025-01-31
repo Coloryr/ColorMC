@@ -10,10 +10,19 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Joystick;
 
+/// <summary>
+/// 手柄绑定配置文件
+/// </summary>
 public static class JoystickConfig
 {
+    /// <summary>
+    /// 配置文件列表
+    /// </summary>
     public static readonly Dictionary<string, InputControlObj> Configs = [];
 
+    /// <summary>
+    /// 配置存储路径
+    /// </summary>
     private static string s_local;
 
     /// <summary>
@@ -91,6 +100,10 @@ public static class JoystickConfig
         }
     }
 
+    /// <summary>
+    /// 创建一个默认的配置
+    /// </summary>
+    /// <returns>手柄配置</returns>
     public static InputControlObj MakeInputControl()
     {
         return new()
@@ -110,17 +123,17 @@ public static class JoystickConfig
             },
             AxisKeys = new()
             {
-                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                { GenUUID(), new()
                     { InputKey = 1, Start = -4000, End = -32768, BackCancel = false, Key = Key.W } },
-                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                { GenUUID(), new()
                     { InputKey = 1, Start = 4000, End = 32767, BackCancel = false, Key = Key.S } },
-                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                { GenUUID(), new()
                     { InputKey = 0, Start = -4000, End = -32768, BackCancel = false, Key = Key.A } },
-                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                { GenUUID(), new()
                     { InputKey = 0, Start = 4000, End = 32767, BackCancel = false, Key = Key.D } },
-                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                { GenUUID(), new()
                     { InputKey = 5, Start = 2000, End = 32767, BackCancel = false, MouseButton = MouseButton.Right } },
-                { Guid.NewGuid().ToString().ToLower()[..8], new()
+                { GenUUID(), new()
                     { InputKey = 4, Start = 2000, End = 32767, BackCancel = false, Key = Key.LeftCtrl } },
             },
             CursorAxis = 0,
@@ -136,10 +149,19 @@ public static class JoystickConfig
         };
     }
 
+    private static string GenUUID()
+    {
+        return Guid.NewGuid().ToString().ToLower()[..8];
+    }
+
+    /// <summary>
+    /// 删除配置
+    /// </summary>
+    /// <param name="obj">手柄配置</param>
     public static void Remove(InputControlObj obj)
     {
         Configs.Remove(obj.UUID);
 
-        PathHelper.Delete(s_local + "/" + obj.UUID + ".json");
+        PathHelper.Delete(Path.GetFullPath(s_local + "/" + obj.UUID + ".json"));
     }
 }

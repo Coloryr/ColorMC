@@ -6,8 +6,8 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Frp;
 using ColorMC.Gui.Objs.Frp;
+using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
@@ -106,13 +106,13 @@ public static class OpenFrpApi
         return (new()
         {
             Name = $"OpenFrp {data1}",
-            Local = FrpLaunch.GetOpenFrpLocal(data.data.latest_full, true) + data1,
+            Local = FrpLaunchUtils.GetOpenFrpLocal(data.data.latest_full, true) + data1,
             Url = data.data.source[0].value + data.data.latest + data1,
             Later = (stream) =>
             {
                 Unzip(stream, data.data.latest_full, data1);
             }
-        }, FrpLaunch.GetOpenFrpLocal(data.data.latest_full));
+        }, FrpLaunchUtils.GetOpenFrpLocal(data.data.latest_full));
     }
 
     private static void Unzip(Stream stream, string version, string file)
@@ -129,7 +129,7 @@ public static class OpenFrpApi
                     continue;
                 }
 
-                using var filestream = PathHelper.OpenWrite(FrpLaunch.GetOpenFrpLocal(version), true);
+                using var filestream = PathHelper.OpenWrite(FrpLaunchUtils.GetOpenFrpLocal(version), true);
                 tarArchive.CopyEntryContents(filestream);
 
                 break;
@@ -148,7 +148,7 @@ public static class OpenFrpApi
                     continue;
                 }
 
-                PathHelper.WriteBytes(FrpLaunch.GetOpenFrpLocal(version), s.GetInputStream(item));
+                PathHelper.WriteBytes(FrpLaunchUtils.GetOpenFrpLocal(version), s.GetInputStream(item));
                 break;
             }
         }

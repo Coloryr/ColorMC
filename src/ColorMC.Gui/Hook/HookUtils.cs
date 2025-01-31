@@ -6,6 +6,10 @@ namespace ColorMC.Gui.Hook;
 
 public static class HookUtils
 {
+    /// <summary>
+    /// 获取内存大小
+    /// </summary>
+    /// <returns>内存大小MB</returns>
     public static ulong GetMemorySize()
     {
         if (SystemInfo.Os == OsType.Windows)
@@ -18,12 +22,16 @@ public static class HookUtils
         }
         else if (SystemInfo.Os == OsType.MacOS)
         {
-            return Macos.GetTotalMemory() / 1024;
+            return Macos.GetTotalMemory() / 1024 / 1024;
         }
 
         return 0;
     }
 
+    /// <summary>
+    /// 获取剩余内存大小
+    /// </summary>
+    /// <returns>内存大小MB</returns>
     public static ulong GetFreeSize()
     {
         if (SystemInfo.Os == OsType.Windows)
@@ -36,12 +44,16 @@ public static class HookUtils
         }
         else if (SystemInfo.Os == OsType.MacOS)
         {
-            return Macos.GetFreeMemory() / 1024;
+            return Macos.GetFreeMemory() / 1024 / 1024;
         }
 
         return 0;
     }
 
+    /// <summary>
+    /// 等待窗口就绪
+    /// </summary>
+    /// <param name="pr">游戏进程</param>
     public static void WaitWindowDisplay(Process pr)
     {
         if (SystemInfo.Os == OsType.Windows)
@@ -50,10 +62,15 @@ public static class HookUtils
         }
         else if (SystemInfo.Os == OsType.Linux)
         {
-            X11Native.WaitWindowDisplay(pr);
+            X11Hook.WaitWindowDisplay(pr);
         }
     }
 
+    /// <summary>
+    /// 设置窗口标题
+    /// </summary>
+    /// <param name="pr">游戏进程</param>
+    /// <param name="title">需要设置的标题</param>
     public static void SetTitle(Process pr, string title)
     {
         if (SystemInfo.Os == OsType.Windows)
@@ -62,7 +79,7 @@ public static class HookUtils
         }
         else if (SystemInfo.Os == OsType.Linux)
         {
-            X11Native.SetTitle(pr, title);
+            X11Hook.SetTitle(pr, title);
         }
     }
 }

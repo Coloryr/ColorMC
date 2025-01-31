@@ -5,7 +5,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Frp;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
@@ -65,7 +64,7 @@ public static class ConfigBinding
     /// <returns></returns>
     public static bool LoadFrpConfig(string local)
     {
-        return FrpConfig.Load(local, true);
+        return FrpConfigUtils.Load(local, true);
     }
 
     /// <summary>
@@ -705,9 +704,9 @@ public static class ConfigBinding
     /// <param name="key"></param>
     public static void SetFrpKeySakura(string key)
     {
-        FrpConfig.Config.SakuraFrp ??= new();
-        FrpConfig.Config.SakuraFrp.Key = key;
-        FrpConfig.Save();
+        FrpConfigUtils.Config.SakuraFrp ??= new();
+        FrpConfigUtils.Config.SakuraFrp.Key = key;
+        FrpConfigUtils.Save();
     }
 
     /// <summary>
@@ -716,9 +715,9 @@ public static class ConfigBinding
     /// <param name="key"></param>
     public static void SetFrpKeyOpenFrp(string key)
     {
-        FrpConfig.Config.OpenFrp ??= new();
-        FrpConfig.Config.OpenFrp.Key = key;
-        FrpConfig.Save();
+        FrpConfigUtils.Config.OpenFrp ??= new();
+        FrpConfigUtils.Config.OpenFrp.Key = key;
+        FrpConfigUtils.Save();
     }
 
     /// <summary>

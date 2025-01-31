@@ -11,11 +11,13 @@ namespace ColorMC.Gui.UI.Animations;
 
 public static class CardAnimation
 {
-    private static Animation s_animation = new()
-    {
-        FillMode = FillMode.Forward,
-        Easing = new CircularEaseInOut(),
-        Children =
+    private static Animation Make()
+    { 
+        return new Animation()
+        {
+            FillMode = FillMode.Forward,
+            Easing = new CircularEaseInOut(),
+            Children =
             {
                 new KeyFrame
                 {
@@ -64,8 +66,9 @@ public static class CardAnimation
                     Cue = new Cue(1d)
                 }
             },
-        Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime)
-    };
+            Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime)
+        };
+    }
 
     public static void Start(Control control)
     {
@@ -74,6 +77,6 @@ public static class CardAnimation
             return;
         }
 
-        s_animation.RunAsync(control);
+        Make().RunAsync(control);
     }
 }

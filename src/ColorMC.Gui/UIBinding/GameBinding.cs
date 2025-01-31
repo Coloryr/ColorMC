@@ -395,7 +395,7 @@ public static class GameBinding
             UserBinding.UnLockUser(user);
             foreach (var item in list)
             {
-                GameManager.GameExit(item.UUID);
+                GameManager.GameExit(item);
             }
             return new() { User = user };
         }
@@ -452,7 +452,7 @@ public static class GameBinding
                     list1.Add(item.Key.UUID, LaunchState.End);
                 }
 
-                GameManager.GameExit(item.Key.UUID);
+                GameManager.GameExit(item.Key);
                 GameCount.LaunchError(item.Key.UUID);
             }
         }
@@ -633,7 +633,7 @@ public static class GameBinding
         if (s_launchCancel.IsCancellationRequested)
         {
             UserBinding.UnLockUser(user);
-            GameManager.GameExit(obj.UUID);
+            GameManager.GameExit(obj);
             return new() { Res = true };
         }
 
@@ -671,7 +671,7 @@ public static class GameBinding
         else
         {
             GameCount.LaunchError(obj.UUID);
-            GameManager.GameExit(obj.UUID);
+            GameManager.GameExit(obj);
             UserBinding.UnLockUser(user);
         }
 

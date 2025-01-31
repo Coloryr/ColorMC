@@ -6,12 +6,21 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
 
-namespace ColorMC.Gui.Frp;
+namespace ColorMC.Gui.Utils;
 
-public static class FrpConfig
+/// <summary>
+/// Frp配置文件管理
+/// </summary>
+public static class FrpConfigUtils
 {
+    /// <summary>
+    /// Frp映射相关配置文件
+    /// </summary>
     public static FrpConfigObj Config { get; set; }
 
+    /// <summary>
+    /// 配置文件存储路径
+    /// </summary>
     private static string s_local;
 
     /// <summary>
@@ -29,6 +38,7 @@ public static class FrpConfig
     /// 加载配置文件
     /// </summary>
     /// <param name="local">路径</param>
+    /// <param name="exit">加载失败后直接返回</param>
     /// <returns>是否加载成功</returns>
     public static bool Load(string local, bool exit)
     {
@@ -111,6 +121,10 @@ public static class FrpConfig
         });
     }
 
+    /// <summary>
+    /// 创建一个默认的Frp配置文件
+    /// </summary>
+    /// <returns>Frp配置</returns>
     public static FrpConfigObj MakeDefaultConfig()
     {
         return new()
