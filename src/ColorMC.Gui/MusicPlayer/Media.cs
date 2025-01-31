@@ -102,21 +102,21 @@ public static class Media
     {
         try
         {
-            if (SystemInfo.Os != OsType.MacOS)
-            {
+            // if (SystemInfo.Os != OsType.MacOS)
+            // {
                 if (SdlUtils.SdlInit)
                 {
                     s_player = new SdlPlayer(SdlUtils.Sdl);
                 }
-                else
-                {
-                    s_player = new OpenALPlayer();
-                }
-            }
-            else
-            {
-                s_player = new OpenALPlayer();
-            }
+                // else
+                // {
+                //     s_player = new OpenALPlayer();
+                // }
+            // }
+            // else
+            // {
+            //     s_player = new OpenALPlayer();
+            // }
         }
         catch
         {
