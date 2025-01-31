@@ -2,6 +2,7 @@
 
 version=""
 main_version=""
+replace_sdl="false"
 
 for line in `cat ./build/version`
 do
@@ -12,6 +13,17 @@ for line in `cat ./build/main_version`
 do
     main_version=$line
 done
+
+build_sdl_arm64()
+{
+    git clone https://github.com/libsdl-org/SDL.git
+    cd SDL
+    mkdir build
+    cd build
+    ../configure
+    make -j8
+    cd ../../
+}
 
 build_osx()
 {    
@@ -48,7 +60,17 @@ build_osx()
 
     chmod a+x $dir/ColorMC.Launcher
 
+    if [$1 = 'aarch64'] && [replace_sdl = 'true'] ;then
+        build_sdl_arm64
+    fi
+
     cd ./src/build_out/$1-dotnet
+
+    if [$1 = 'aarch64'] && [replace_sdl = 'true'] ;then
+        rm libSDL2-2.0.dylib
+        cp ../../../SDL/build/build/.libs/libSDL2-2.0.0.dylib libSDL2-2.0.dylib
+    fi
+
     codesign --force --deep --sign - ColorMC.app
     zip -r $zip_name ./ColorMC.app
     mv $zip_name ../../../build_out/$zip_name
@@ -92,7 +114,17 @@ build_osx_min()
 
     chmod a+x $dir/ColorMC.Launcher
 
+    if [$1 = 'aarch64'] && [replace_sdl = 'true'] ;then
+        build_sdl_arm64
+    fi
+
     cd ./src/build_out/$1-min
+
+    if [$1 = 'aarch64'] && [replace_sdl = 'true'] ;then
+        rm libSDL2-2.0.dylib
+        cp ../../../SDL/build/build/.libs/libSDL2-2.0.0.dylib libSDL2-2.0.dylib
+    fi
+
     zip -r $zip_name ./ColorMC.app
     mv $zip_name ../../../build_out/$zip_name
     cd ../../../
@@ -100,21 +132,7 @@ build_osx_min()
     echo "$zip_name build done"
 }
 
-build_sdl_arm64()
-{
-    git clone https://github.com/libsdl-org/SDL.git
-    cd SDL
-    mkdir build
-    cd build
-    ../configure
-    make
-
-    
-}
-
 build_osx osx-x64 x86_64
 build_osx osx-arm64 aarch64
 build_osx_min osx-x64 x86_64
 build_osx_min osx-arm64 aarch64
-
-build_sdl_arm64
