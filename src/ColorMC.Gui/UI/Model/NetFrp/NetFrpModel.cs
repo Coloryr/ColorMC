@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Frp;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
@@ -56,7 +56,7 @@ public partial class NetFrpModel : MenuModel
     {
         _isLoadSakura = true;
 
-        if (FrpConfig.Config.SakuraFrp is { } con)
+        if (FrpConfigUtils.Config.SakuraFrp is { } con)
         {
             KeySakura = con.Key;
         }
@@ -65,7 +65,7 @@ public partial class NetFrpModel : MenuModel
 
         _isLoadOpenFrp = true;
 
-        if (FrpConfig.Config.OpenFrp is { } con1)
+        if (FrpConfigUtils.Config.OpenFrp is { } con1)
         {
             KeyOpenFrp = con1.Key;
         }

@@ -6,6 +6,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.Manager;
 
+/// <summary>
+/// 游戏实例管理器
+/// </summary>
 public static class GameManager
 {
     /// <summary>
@@ -17,12 +20,21 @@ public static class GameManager
     /// </summary>
     public static readonly Dictionary<string, GameLog> GameLogs = [];
 
+    /// <summary>
+    /// 游戏实例是否标星
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns>是否被标星</returns>
     public static bool IsStar(GameSettingObj game)
     {
         var config = GameGuiSetting.ReadConfig(game);
         return config.IsStar;
     }
 
+    /// <summary>
+    /// 标星游戏实例
+    /// </summary>
+    /// <param name="game">游戏实例</param>
     public static void AddStar(GameSettingObj game)
     {
         var config = GameGuiSetting.ReadConfig(game);
@@ -30,6 +42,10 @@ public static class GameManager
         GameGuiSetting.WriteConfig(game, config);
     }
 
+    /// <summary>
+    /// 取消标星
+    /// </summary>
+    /// <param name="game">游戏实例</param>
     public static void RemoveStar(GameSettingObj game)
     {
         var config = GameGuiSetting.ReadConfig(game);
@@ -72,9 +88,13 @@ public static class GameManager
         }
     }
 
-    public static void GameExit(string uuid)
+    /// <summary>
+    /// 游戏退出
+    /// </summary>
+    /// <param name="uuid">游戏实例</param>
+    public static void GameExit(GameSettingObj obj)
     {
-        RunGames.Remove(uuid);
+        RunGames.Remove(obj.UUID);
     }
 
     /// <summary>
@@ -86,9 +106,9 @@ public static class GameManager
         ColorMCCore.KillGame(obj.UUID);
     }
 
-    public static void StartGame(string uuid)
+    public static void StartGame(GameSettingObj obj)
     {
-        RunGames.Add(uuid);
+        RunGames.Add(obj.UUID);
     }
 
     public static void ClearGameLog(string uuid)

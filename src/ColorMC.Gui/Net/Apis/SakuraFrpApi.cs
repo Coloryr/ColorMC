@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Frp;
 using ColorMC.Gui.Objs.Frp;
+using ColorMC.Gui.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Net.Apis;
@@ -121,7 +121,7 @@ public static class SakuraFrpApi
         return new()
         {
             Name = $"SakuraFrp {data1.title}",
-            Local = FrpLaunch.GetSakuraFrpLocal(data.frpc.ver),
+            Local = FrpLaunchUtils.GetSakuraFrpLocal(data.frpc.ver),
             Md5 = data1.hash,
             Url = data1.url
         };

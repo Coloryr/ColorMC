@@ -12,9 +12,9 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
-namespace ColorMC.Gui.Frp;
+namespace ColorMC.Gui.Utils;
 
-public static class FrpLaunch
+public static class FrpLaunchUtils
 {
     public const string Name1 = "frp";
     public const string Name2 = "0.51.0-sakura-9.2";

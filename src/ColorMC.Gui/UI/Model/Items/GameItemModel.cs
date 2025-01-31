@@ -364,7 +364,7 @@ public partial class GameItemModel : GameModel
     {
         if (GameJoystick.NowGameJoystick.TryGetValue(Obj.UUID, out var value))
         {
-            var model = value.MakeConfig();
+            var model = value.MakeModel();
             model.TopCancel = () => { DialogHost.Close("MainCon"); };
             model.TopConfirm = () =>
             {

@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using ColorMC.Gui.Frp;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -68,7 +68,7 @@ public partial class NetFrpModel
     {
         _isLoadSakura = true;
 
-        if (FrpConfig.Config.SakuraFrp is { } con)
+        if (FrpConfigUtils.Config.SakuraFrp is { } con)
         {
             KeySakura = con.Key;
         }

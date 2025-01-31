@@ -19,7 +19,6 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Frp;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
@@ -372,7 +371,7 @@ public static class BaseBinding
     /// <returns></returns>
     public static Task<FrpLaunchRes> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
     {
-        return FrpLaunch.StartFrp(item1, model);
+        return FrpLaunchUtils.StartFrp(item1, model);
     }
 
     public static (PlayState, string) GetMusicNow()

@@ -7,6 +7,9 @@ using Thread = System.Threading.Thread;
 
 namespace ColorMC.Gui.Joystick;
 
+/// <summary>
+/// 手柄输入操作
+/// </summary>
 public static class JoystickInput
 {
     private static bool _isRun;
@@ -113,8 +116,8 @@ public static class JoystickInput
     /// <summary>
     /// 获取手柄编号
     /// </summary>
-    /// <param name="ptr"></param>
-    /// <returns></returns>
+    /// <param name="ptr">手柄</param>
+    /// <returns>编号</returns>
     public static unsafe int GetJoystickID(nint ptr)
     {
         var instanceID = _sdl.GameControllerGetJoystick((GameController*)ptr);

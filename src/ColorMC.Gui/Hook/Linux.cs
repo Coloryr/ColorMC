@@ -5,6 +5,10 @@ namespace ColorMC.Gui.Hook;
 
 internal static class Linux
 {
+    /// <summary>
+    /// 获取内存大小
+    /// </summary>
+    /// <returns></returns>
     public static ulong GetTotalMemory()
     {
         const string memInfoPath = "/proc/meminfo";
@@ -27,6 +31,10 @@ internal static class Linux
         return 0;
     }
 
+    /// <summary>
+    /// 获取剩余内存大小
+    /// </summary>
+    /// <returns></returns>
     public static ulong GetFreeMemory()
     {
         const string memInfoPath = "/proc/meminfo";

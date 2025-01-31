@@ -12,14 +12,6 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Animations;
 
-/// <summary>
-/// Transitions between two pages by sliding them horizontally or vertically.
-/// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="SelfPageSlideY"/> class.
-/// </remarks>
-/// <param name="duration">The duration of the animation.</param>
-/// <param name="orientation">The axis on which the animation should occur</param>
 public class SelfPageSlideY(TimeSpan duration) : IPageTransition
 {
     /// <summary>
@@ -279,18 +271,6 @@ public class SelfPageSlideY(TimeSpan duration) : IPageTransition
         }
     }
 
-    /// <summary>
-    /// Gets the common visual parent of the two control.
-    /// </summary>
-    /// <param name="from">The from control.</param>
-    /// <param name="to">The to control.</param>
-    /// <returns>The common parent.</returns>
-    /// <exception cref="ArgumentException">
-    /// The two controls do not share a common parent.
-    /// </exception>
-    /// <remarks>
-    /// Any one of the parameters may be null, but not both.
-    /// </remarks>
     protected static Visual GetVisualParent(Visual? from, Visual? to)
     {
         var p1 = (from ?? to)!.GetVisualParent();

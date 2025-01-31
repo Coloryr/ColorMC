@@ -13,14 +13,31 @@ namespace ColorMC.Gui.Manager;
 /// </summary>
 public static class ColorManager
 {
+    /// <summary>
+    /// Motd文字颜色
+    /// </summary>
     public static IBrush MotdColor { get; private set; } = Brush.Parse("#FFFFFFFF");
+    /// <summary>
+    /// Motd背景色
+    /// </summary>
     public static IBrush MotdBackColor { get; private set; } = Brush.Parse("#FF000000");
 
+    /// <summary>
+    /// 日志警告颜色
+    /// </summary>
     public static IBrush WarnColor { get; private set; } = Brush.Parse("#8B8B00");
+    /// <summary>
+    /// 日志错误颜色
+    /// </summary>
     public static IBrush ErrorColor { get; private set; } = Brushes.Red;
+    /// <summary>
+    /// 日志调试颜色
+    /// </summary>
     public static IBrush DebugColor { get; private set; } = Brushes.Gray;
 
-
+    /// <summary>
+    /// 绑定UI的颜色更新器列表
+    /// </summary>
     private static readonly Dictionary<string, List<WeakReference<IObserver<IBrush>>>> s_colorList = [];
 
     /// <summary>
@@ -45,6 +62,12 @@ public static class ColorManager
         }
     }
 
+    /// <summary>
+    /// 添加UI颜色绑定
+    /// </summary>
+    /// <param name="key">颜色键</param>
+    /// <param name="observer">更新器</param>
+    /// <returns></returns>
     public static IDisposable Add(string key, IObserver<IBrush> observer)
     {
         if (s_colorList.TryGetValue(key, out var list))
@@ -61,6 +84,9 @@ public static class ColorManager
         return new UnsubscribeColor(list, observer);
     }
 
+    /// <summary>
+    /// 刷新UI颜色设置
+    /// </summary>
     public static void Reload()
     {
         foreach (var item in s_colorList)
@@ -76,6 +102,9 @@ public static class ColorManager
         }
     }
 
+    /// <summary>
+    /// 清理UI颜色绑定器
+    /// </summary>
     public static void Remove()
     {
         foreach (var item in s_colorList.Values)
@@ -90,6 +119,11 @@ public static class ColorManager
         }
     }
 
+    /// <summary>
+    /// 获取颜色
+    /// </summary>
+    /// <param name="level"></param>
+    /// <returns></returns>
     public static IBrush GetColor(LogLevel level)
     {
         return level switch
@@ -102,6 +136,11 @@ public static class ColorManager
         };
     }
 
+    /// <summary>
+    /// 获取颜色
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
     private static IBrush GetColor(string key)
     {
         if (key == "Motd")

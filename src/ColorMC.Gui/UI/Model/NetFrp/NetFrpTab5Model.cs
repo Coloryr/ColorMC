@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using ColorMC.Gui.Frp;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -71,7 +71,7 @@ public partial class NetFrpModel
     {
         _isLoadOpenFrp = true;
 
-        if (FrpConfig.Config.OpenFrp is { } con)
+        if (FrpConfigUtils.Config.OpenFrp is { } con)
         {
             KeyOpenFrp = con.Key;
         }

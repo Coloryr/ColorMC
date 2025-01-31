@@ -27,6 +27,9 @@ public record InputAxisObj : InputKeyObj
     }
 }
 
+/// <summary>
+/// 手柄配置
+/// </summary>
 public record InputControlObj
 {
     public string Name { get; set; }
