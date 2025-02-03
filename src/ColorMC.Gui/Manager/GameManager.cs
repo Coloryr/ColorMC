@@ -106,32 +106,46 @@ public static class GameManager
         ColorMCCore.KillGame(obj.UUID);
     }
 
+    /// <summary>
+    /// 游戏实例启动
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static void StartGame(GameSettingObj obj)
     {
         RunGames.Add(obj.UUID);
     }
 
-    public static void ClearGameLog(string uuid)
+    /// <summary>
+    /// 清理游戏日志
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    public static void ClearGameLog(GameSettingObj obj)
     {
-        if (WindowManager.GameLogWindows.TryGetValue(uuid, out var win))
+        if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var win))
         {
             win.ClearLog();
         }
 
         //清空日志
-        if (GameLogs.TryGetValue(uuid, out GameLog? value))
+        if (GameLogs.TryGetValue(obj.UUID, out GameLog? value))
         {
             value.Clear();
         }
         else
         {
-            GameLogs.Add(uuid, new());
+            GameLogs.Add(obj.UUID, new());
         }
     }
 
-    public static List<GameLogItemObj>? GetGameLog(string uuid, LogLevel level)
+    /// <summary>
+    /// 获取游戏日志
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="level">日志等级</param>
+    /// <returns>日志列表</returns>
+    public static List<GameLogItemObj>? GetGameLog(GameSettingObj obj, LogLevel level)
     {
-        if (GameLogs.TryGetValue(uuid, out var data))
+        if (GameLogs.TryGetValue(obj.UUID, out var data))
         {
             return data.GetLog(level);
         }

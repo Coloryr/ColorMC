@@ -20,26 +20,69 @@ using SkiaSharp;
 
 namespace ColorMC.Gui.Manager;
 
+/// <summary>
+/// 图片缓存
+/// </summary>
 public static class ImageManager
 {
+    /// <summary>
+    /// 游戏图标图片
+    /// </summary>
     public static Bitmap GameIcon { get; private set; }
+    /// <summary>
+    /// 加载图标图片
+    /// </summary>
     public static Bitmap LoadIcon { get; private set; }
+    /// <summary>
+    /// 窗口图标
+    /// </summary>
     public static WindowIcon WindowIcon { get; private set; }
 
+    /// <summary>
+    /// 背景图片
+    /// </summary>
     public static Bitmap? BackBitmap { get; private set; }
+    /// <summary>
+    /// 皮肤图片
+    /// </summary>
     public static SKBitmap? SkinBitmap { get; private set; }
+    /// <summary>
+    /// 披风图片
+    /// </summary>
     public static SKBitmap? CapeBitmap { get; private set; }
+    /// <summary>
+    /// 头像图片
+    /// </summary>
     public static Bitmap? HeadBitmap { get; private set; }
 
+    /// <summary>
+    /// 游戏实例图标
+    /// </summary>
     private static readonly Dictionary<string, Bitmap> s_gameIcon = [];
 
+    /// <summary>
+    /// 背景图片更新
+    /// </summary>
     public static event Action? PicUpdate;
+    /// <summary>
+    /// 皮肤更新
+    /// </summary>
     public static event Action? SkinChange;
 
+    /// <summary>
+    /// 星标SVG
+    /// </summary>
     public static readonly string[] Stars = ["/Resource/Icon/Item/star.svg", "/Resource/Icon/Item/star_1.svg"];
 
+    /// <summary>
+    /// 运行路径
+    /// </summary>
     public static string Local { get; private set; }
 
+    /// <summary>
+    /// 初始化图片缓存
+    /// </summary>
+    /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
         {
