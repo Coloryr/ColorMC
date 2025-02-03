@@ -63,7 +63,7 @@ public static class ImageManager
     /// <summary>
     /// 背景图片更新
     /// </summary>
-    public static event Action? PicUpdate;
+    public static event Action? BGUpdate;
     /// <summary>
     /// 皮肤更新
     /// </summary>
@@ -104,6 +104,11 @@ public static class ImageManager
         Directory.CreateDirectory(Local);
     }
 
+    /// <summary>
+    /// 生成皮肤头像
+    /// </summary>
+    /// <param name="file">皮肤</param>
+    /// <param name="file1">披风</param>
     public static void LoadSkinHead(string? file, string? file1)
     {
         if (file == null || !File.Exists(file))
@@ -120,10 +125,9 @@ public static class ImageManager
                 SkinBitmap = SKBitmap.Decode(file);
                 using var data = config.Type switch
                 {
-                    HeadType.Head2D => Skin2DHead.MakeHeadImage(SkinBitmap),
                     HeadType.Head3D_A => Skin3DHeadA.MakeHeadImage(SkinBitmap),
                     HeadType.Head3D_B => Skin3DHeadB.MakeHeadImage(SkinBitmap),
-                    _ => throw new IndexOutOfRangeException()
+                    _ => Skin2DHead.MakeHeadImage(SkinBitmap)
                 };
                 HeadBitmap = new Bitmap(data);
                 old?.Dispose();
@@ -149,6 +153,9 @@ public static class ImageManager
         OnSkinLoad();
     }
 
+    /// <summary>
+    /// 重新获取皮肤头像
+    /// </summary>
     public static void ReloadSkinHead()
     {
         if (SkinBitmap == null)
@@ -159,16 +166,18 @@ public static class ImageManager
         var config = GuiConfigUtils.Config.Head;
         using var data = config.Type switch
         {
-            HeadType.Head2D => Skin2DHead.MakeHeadImage(SkinBitmap),
             HeadType.Head3D_A => Skin3DHeadA.MakeHeadImage(SkinBitmap),
             HeadType.Head3D_B => Skin3DHeadB.MakeHeadImage(SkinBitmap),
-            _ => throw new IndexOutOfRangeException()
+            _ => Skin2DHead.MakeHeadImage(SkinBitmap)
         };
         HeadBitmap = new Bitmap(data);
         old?.Dispose();
         OnSkinLoad();
     }
 
+    /// <summary>
+    /// 设置默认头像
+    /// </summary>
     public static void SetDefaultHead()
     {
         RemoveSkin();
@@ -176,6 +185,9 @@ public static class ImageManager
         OnSkinLoad();
     }
 
+    /// <summary>
+    /// 删除背景图
+    /// </summary>
     public static void RemoveImage()
     {
         var image = BackBitmap;
@@ -184,6 +196,10 @@ public static class ImageManager
         image?.Dispose();
     }
 
+    /// <summary>
+    /// 加载背景图
+    /// </summary>
+    /// <returns></returns>
     public static async Task LoadBGImage()
     {
         var config = GuiConfigUtils.Config;
@@ -205,6 +221,9 @@ public static class ImageManager
         FuntionUtils.RunGC();
     }
 
+    /// <summary>
+    /// 删除皮肤图片
+    /// </summary>
     public static void RemoveSkin()
     {
         SkinBitmap?.Dispose();
@@ -216,6 +235,11 @@ public static class ImageManager
         CapeBitmap = null;
     }
 
+    /// <summary>
+    /// 重载游戏实例图标
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>图标</returns>
     public static Bitmap? ReloadImage(GameSettingObj obj)
     {
         s_gameIcon.Remove(obj.UUID, out var temp);
@@ -226,6 +250,11 @@ public static class ImageManager
         return GetGameIcon(obj);
     }
 
+    /// <summary>
+    /// 获取游戏实例图标
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>图标</returns>
     public static Bitmap? GetGameIcon(GameSettingObj obj)
     {
         if (s_gameIcon.TryGetValue(obj.UUID, out var image))
@@ -244,24 +273,20 @@ public static class ImageManager
         return null;
     }
 
+    /// <summary>
+    /// 通知背景图修改
+    /// </summary>
     public static void OnPicUpdate()
     {
-        PicUpdate?.Invoke();
+        BGUpdate?.Invoke();
     }
 
+    /// <summary>
+    /// 通知皮肤修改
+    /// </summary>
     public static void OnSkinLoad()
     {
         SkinChange?.Invoke();
-    }
-
-    public static Bitmap? Open(string file)
-    {
-        if (!File.Exists(file))
-        {
-            return null;
-        }
-
-        return new Bitmap(file);
     }
 
     /// <summary>
@@ -275,6 +300,7 @@ public static class ImageManager
         {
             Directory.CreateDirectory(Local);
         }
+        //存在缓存
         var sha1 = HashHelper.GenSha256(url);
         if (File.Exists(Local + sha1))
         {
@@ -284,9 +310,11 @@ public static class ImageManager
         {
             try
             {
+                //从网络读取图片
                 var data1 = await CoreHttpClient.GetStreamAsync(url);
                 if (data1.State)
                 {
+                    //压缩图片
                     if (zoom)
                     {
                         using var image1 = SKBitmap.Decode(data1.Stream!);
@@ -351,6 +379,7 @@ public static class ImageManager
                 {
                     return null;
                 }
+                //是否需要限制图片大小或者高斯模糊
                 if (value > 0 || (lim != 100 && lim > 0))
                 {
                     var image = SKBitmap.Decode(stream1);
@@ -363,6 +392,7 @@ public static class ImageManager
                         image = img1;
                     }
 
+                    //进行高斯模糊
                     if (value > 0)
                     {
                         var image1 = new SKBitmap(image.Width, image.Height);

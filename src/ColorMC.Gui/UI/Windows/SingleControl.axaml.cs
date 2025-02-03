@@ -47,7 +47,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         PointerPressed += AllControl_PointerPressed;
         PointerReleased += AllControl_PointerReleased;
 
-        ImageManager.PicUpdate += PicUpdate;
+        ImageManager.BGUpdate += PicUpdate;
 
         PicUpdate();
     }

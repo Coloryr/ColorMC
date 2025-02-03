@@ -42,10 +42,19 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Manager;
 
+/// <summary>
+/// 窗口管理
+/// </summary>
 public static class WindowManager
 {
+    /// <summary>
+    /// 上一个窗口
+    /// </summary>
     public static Window? LastWindow { get; set; }
 
+    /// <summary>
+    /// 单窗口
+    /// </summary>
     public static SingleControl? AllWindow { get; set; }
     public static DownloadControl? DownloadWindow { get; set; }
     public static UsersControl? UserWindow { get; set; }

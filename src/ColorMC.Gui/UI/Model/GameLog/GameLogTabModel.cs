@@ -377,7 +377,7 @@ public partial class GameLogModel : GameModel
         Categorys.Clear();
         Categorys.Add("");
 
-        if (GameManager.GetGameLog(Obj.UUID, BuildLevel()) is { } text)
+        if (GameManager.GetGameLog(Obj, BuildLevel()) is { } text)
         {
             _logs = text;
             var builder = new StringBuilder();
