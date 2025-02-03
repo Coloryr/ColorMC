@@ -8,8 +8,17 @@ namespace ColorMC.Gui.Manager;
 /// </summary>
 public static class LangMananger
 {
+    /// <summary>
+    /// 存储的本地化翻译
+    /// </summary>
     private static readonly Dictionary<string, List<WeakReference<IObserver<string>>>> s_langList = [];
 
+    /// <summary>
+    /// 添加一个本地化获取UI绑定
+    /// </summary>
+    /// <param name="key">键</param>
+    /// <param name="observer">UI更新器</param>
+    /// <returns></returns>
     public static IDisposable Add(string key, IObserver<string> observer)
     {
         if (s_langList.TryGetValue(key, out var list))
@@ -41,6 +50,9 @@ public static class LangMananger
         }
     }
 
+    /// <summary>
+    /// 更新UI本地化
+    /// </summary>
     public static void Reload()
     {
         foreach (var item in s_langList)
@@ -56,6 +68,9 @@ public static class LangMananger
         }
     }
 
+    /// <summary>
+    /// 清理UI绑定器
+    /// </summary>
     public static void Remove()
     {
         foreach (var item in s_langList.Values)

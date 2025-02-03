@@ -14,8 +14,14 @@ using ColorMC.Gui.UI.Model;
 
 namespace ColorMC.Gui.UI.Controls;
 
+/// <summary>
+/// 自定义标题栏
+/// </summary>
 public partial class HeadControl : UserControl
 {
+    /// <summary>
+    /// 菜单按钮
+    /// </summary>
     private class ButtonBack
     {
         private readonly IBrush _color;
@@ -70,6 +76,7 @@ public partial class HeadControl : UserControl
         DataContextChanged += HeadControl_DataContextChanged;
 
         var time = DateTime.Now;
+        //macos风格
         if ((time.Day == 1 && time.Month == 4) ? SystemInfo.Os != OsType.MacOS : SystemInfo.Os == OsType.MacOS)
         {
             StackPanel2.HorizontalAlignment = HorizontalAlignment.Center;
@@ -191,6 +198,7 @@ public partial class HeadControl : UserControl
                 }
             });
         }
+        //Windows风格
         else
         {
             _buttonMin = new Button()

@@ -16,6 +16,7 @@ using ColorMC.Gui.Utils;
 using SkiaSharp;
 using System.IO.Compression;
 using System.Net;
+using System.Security.Authentication;
 using CoreHttpClient = ColorMC.Core.Net.CoreHttpClient;
 
 namespace ColorMC.Test;
@@ -685,5 +686,46 @@ public static class TestItem
 
         //24
         Media.PlayMusic("F:\\music\\777☆SISTERS\\Departures -あしたの歌- - 777☆SISTERS.flac", false, 100);
+    }
+
+    public static async void Item41()
+    {
+        var handler = new HttpClientHandler
+        {
+            //SslProtocols = SslProtocols.Tls13,
+
+            //ServerCertificateCustomValidationCallback = 
+            //    (message, cert, chain, errors) => 
+            //    {
+            //        return true;
+            //    } // 仅用于开发，生产中请进行适当的验证
+        };
+
+        using var client = new HttpClient(handler);
+
+        //client.DefaultRequestVersion = HttpVersion.Version11;
+        //client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
+
+        try
+        {
+            var response = await client.GetStringAsync("https://mc1.coloryr.com:8081/");
+            Console.WriteLine(response);
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine($"Request error: {e.Message}");
+            if (e.InnerException != null)
+            {
+                Console.WriteLine($"Inner exception: {e.InnerException.Message}");
+                if (e.InnerException.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception's inner exception: {e.InnerException.InnerException.Message}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"General error: {ex.Message}");
+        }
     }
 }

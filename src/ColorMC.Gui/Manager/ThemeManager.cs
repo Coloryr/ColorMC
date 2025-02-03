@@ -14,15 +14,23 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.Manager;
 
+/// <summary>
+/// 样式管理
+/// </summary>
 public static class ThemeManager
 {
+    /// <summary>
+    /// 主题色
+    /// </summary>
     public const string MainColorStr = "#FF5ABED6";
 
+    //UI更新器
     private static readonly Dictionary<string, List<WeakReference<IObserver<IBrush>>>> s_colorList = [];
     private static readonly Dictionary<string, List<WeakReference<IObserver<Thickness>>>> s_thinkList = [];
     private static readonly Dictionary<string, List<WeakReference<IObserver<object?>>>> s_styleList = [];
     private static readonly List<WeakReference<IObserver<FontFamily>>> s_fontList = [];
 
+    //主题
     private static readonly ThemeObj s_light;
     private static readonly ThemeObj s_dark;
 
@@ -30,10 +38,13 @@ public static class ThemeManager
 
     private static readonly double s_fontTitleSize = 17;
 
+    /// <summary>
+    /// 当前主题
+    /// </summary>
     public static ThemeObj NowThemeColor { get; private set; }
 
+    //阴影
     private static BoxShadows s_buttonShadow;
-
     public static readonly BoxShadows BorderShadows = new(BoxShadow.Parse("0 0 3 1 #1A000000"), [BoxShadow.Parse("0 0 5 -1 #1A000000")]);
     public static BoxShadows BorderSelecrShadows { get; private set; }
 
@@ -52,8 +63,14 @@ public static class ThemeManager
         Dispatcher.UIThread.Invoke(Reload);
     }
 
+    /// <summary>
+    /// 当前样式
+    /// </summary>
     public static PlatformThemeVariant NowTheme { get; private set; }
 
+    /// <summary>
+    /// 初始化主题
+    /// </summary>
     public static void Init()
     {
         switch (GuiConfigUtils.Config.ColorType)
@@ -91,6 +108,9 @@ public static class ThemeManager
         LoadPageSlide();
     }
 
+    /// <summary>
+    /// 加载动画效果
+    /// </summary>
     public static void LoadPageSlide()
     {
         var style = GuiConfigUtils.Config.Style;
@@ -98,6 +118,9 @@ public static class ThemeManager
         SelfPageSlideY.Fade = style.AmFade;
     }
 
+    /// <summary>
+    /// 加载主题颜色
+    /// </summary>
     private static void LoadColor()
     {
         NowThemeColor.MainColor = Brush.Parse(GuiConfigUtils.Config.ColorMain);
@@ -119,6 +142,9 @@ public static class ThemeManager
         });
     }
 
+    /// <summary>
+    /// 加载字体
+    /// </summary>
     private static void LoadFont()
     {
         if (!GuiConfigUtils.Config.FontDefault
@@ -134,6 +160,11 @@ public static class ThemeManager
         }
     }
 
+    /// <summary>
+    /// 获取颜色
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
     public static IBrush GetColor(string key)
     {
         if (key == nameof(ThemeObj.WindowBG))
@@ -175,7 +206,7 @@ public static class ThemeManager
         {
             return NowThemeColor.ItemBG;
         }
-        else if (key == "MainGroupBG")
+        else if (key == nameof(ThemeObj.MainGroupBG))
         {
             if (ImageManager.BackBitmap != null)
             {
@@ -272,6 +303,11 @@ public static class ThemeManager
         return Brushes.Transparent;
     }
 
+    /// <summary>
+    /// 获取样式
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
     private static object? GetStyle(string key)
     {
         if (key == "FontTitle")
@@ -285,6 +321,11 @@ public static class ThemeManager
         return null;
     }
 
+    /// <summary>
+    /// 添加UI字体绑定
+    /// </summary>
+    /// <param name="observer"></param>
+    /// <returns></returns>
     public static IDisposable AddFont(IObserver<FontFamily> observer)
     {
         s_fontList.Add(new WeakReference<IObserver<FontFamily>>(observer));
@@ -292,6 +333,12 @@ public static class ThemeManager
         return new UnsubscribeFont(s_fontList, observer);
     }
 
+    /// <summary>
+    /// 添加UI样式绑定
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="observer"></param>
+    /// <returns></returns>
     public static IDisposable AddStyle(string key, IObserver<object?> observer)
     {
         if (s_styleList.TryGetValue(key, out var list))
@@ -308,6 +355,11 @@ public static class ThemeManager
         return new UnsubscribeStyle(list, observer);
     }
 
+    /// <summary>
+    /// 添加UI边框绑定
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
     private static Thickness GetThick(string key)
     {
         if (key == "Border")
@@ -318,6 +370,12 @@ public static class ThemeManager
         return new(0);
     }
 
+    /// <summary>
+    /// 添加UI颜色绑定
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="observer"></param>
+    /// <returns></returns>
     public static IDisposable Add(string key, IObserver<IBrush> observer)
     {
         if (s_colorList.TryGetValue(key, out var list))
@@ -334,6 +392,12 @@ public static class ThemeManager
         return new UnsubscribeColor(list, observer);
     }
 
+    /// <summary>
+    /// 添加UI边框绑定
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="observer"></param>
+    /// <returns></returns>
     public static IDisposable Add(string key, IObserver<Thickness> observer)
     {
         if (s_thinkList.TryGetValue(key, out var list))
@@ -350,6 +414,9 @@ public static class ThemeManager
         return new UnsubscribeThick(list, observer);
     }
 
+    /// <summary>
+    /// 清理UI绑定
+    /// </summary>
     public static void Remove()
     {
         ColorManager.Remove();
@@ -395,6 +462,9 @@ public static class ThemeManager
         }
     }
 
+    /// <summary>
+    /// 重载所有样式
+    /// </summary>
     private static void Reload()
     {
         foreach (var item in s_colorList)
