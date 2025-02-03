@@ -360,8 +360,8 @@ public static class GameBinding
         UserBinding.AddLockUser(user);
         foreach (var item in list)
         {
-            GameManager.ClearGameLog(item.UUID);
-            GameManager.StartGame(item.UUID);
+            GameManager.ClearGameLog(item);
+            GameManager.StartGame(item);
         }
 
         var state1 = LaunchState.End;
@@ -567,8 +567,8 @@ public static class GameBinding
 
         s_launchCancel = new();
 
-        GameManager.ClearGameLog(obj.UUID);
-        GameManager.StartGame(obj.UUID);
+        GameManager.ClearGameLog(obj);
+        GameManager.StartGame(obj);
 
         var port = LaunchSocketUtils.Port;
 

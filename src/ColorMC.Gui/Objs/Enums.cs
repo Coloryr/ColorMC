@@ -149,6 +149,9 @@ public enum HeadType
     Head2D, Head3D_A, Head3D_B
 }
 
+/// <summary>
+/// 日志等级
+/// </summary>
 public enum LogLevel : int
 {
     Base = 0b00000000,
