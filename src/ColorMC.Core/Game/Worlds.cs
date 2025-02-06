@@ -142,7 +142,7 @@ public static class Worlds
     /// <returns>位置</returns>
     public static string GetWorldDataPacksPath(this WorldObj world)
     {
-        return Path.Combine(world.Local, Names.NameGameDatapack);
+        return Path.Combine(world.Local, Names.NameGameDatapackDir);
     }
 
     /// <summary>

@@ -493,7 +493,7 @@ public static partial class CheckHelpers
                     }
 
                     var item = node.Value;
-                    if (item.Path != "mods")
+                    if (item.Path != Names.NameGameModDir)
                     {
                         node = node.Next;
                         array.Remove(item);
@@ -782,7 +782,7 @@ public static partial class CheckHelpers
                 {
                     Url = UrlHelper.DownloadFabric(item.Url + name, CoreHttpClient.Source),
                     Name = item.Name,
-                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}")
+                    Local = Path.Combine(LibrariesPath.BaseDir, name)
                 });
                 continue;
             }

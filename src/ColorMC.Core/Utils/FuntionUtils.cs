@@ -75,7 +75,7 @@ public static class FuntionUtils
     /// </summary>
     /// <param name="input">名字</param>
     /// <returns>路径</returns>
-    public static string VersionNameToPath(string input)
+    public static string VersionNameToPath(string dir, string input)
     {
         var arg = input.Split(':');
         var arg1 = arg[0].Split('.');
@@ -86,11 +86,11 @@ public static class FuntionUtils
         }
         if (arg.Length > 3)
         {
-            path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}-{arg[3]}.jar";
+            path += $"{dir}/{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}-{arg[3]}.jar";
         }
         else
         {
-            path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}.jar";
+            path += $"{dir}/{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}.jar";
         }
 
         return path;

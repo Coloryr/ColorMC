@@ -13,12 +13,6 @@ namespace ColorMC.Core.Helpers;
 
 public static class AddGameHelper
 {
-    public const string Name1 = "mmc-pack.json";
-    public const string Name2 = "instance.cfg";
-    public const string Name3 = "mcbbs.packmeta";
-    public const string Name4 = "manifest.json";
-    public const string Name5 = "overrides";
-
     /// <summary>
     /// 导入文件夹
     /// </summary>
@@ -40,10 +34,10 @@ public static class AddGameHelper
         {
             try
             {
-                var mmc = JsonConvert.DeserializeObject<MMCObj>(PathHelper.ReadText(Path.Combine(arg.Local, Name1))!);
+                var mmc = JsonConvert.DeserializeObject<MMCObj>(PathHelper.ReadText(Path.Combine(arg.Local, Names.NameMMCJsonFile))!);
                 if (mmc != null)
                 {
-                    var mmc1 = PathHelper.ReadText(Path.Combine(arg.Local, Name2))!;
+                    var mmc1 = PathHelper.ReadText(Path.Combine(arg.Local, Names.NameMMCCfgFile))!;
                     var res = mmc.ToColorMC(mmc1);
                     game = res.Game;
                     game.Icon = res.Icon + ".png";
@@ -221,7 +215,7 @@ public static class AddGameHelper
                 string path = "";
                 foreach (ZipEntry e in zFile)
                 {
-                    if (e.IsFile && !find && e.Name.EndsWith(Name1))
+                    if (e.IsFile && !find && e.Name.EndsWith(Names.NameMMCJsonFile))
                     {
                         using var stream = zFile.GetInputStream(e);
                         await stream.CopyToAsync(stream1);
@@ -229,7 +223,7 @@ public static class AddGameHelper
                         find = true;
                     }
 
-                    if (e.IsFile && !find1 && e.Name.EndsWith(Name2))
+                    if (e.IsFile && !find1 && e.Name.EndsWith(Names.NameMMCCfgFile))
                     {
                         using var stream = zFile.GetInputStream(e);
                         await stream.CopyToAsync(stream2);
@@ -309,14 +303,14 @@ public static class AddGameHelper
                 bool find1 = false;
                 foreach (ZipEntry e in zFile)
                 {
-                    if (e.IsFile && e.Name == Name3)
+                    if (e.IsFile && e.Name == Names.NameHMCLFile)
                     {
                         using var stream = zFile.GetInputStream(e);
                         await stream.CopyToAsync(stream1);
                         find = true;
                     }
 
-                    if (e.IsFile && e.Name == Name4)
+                    if (e.IsFile && e.Name == Names.NameManifestFile)
                     {
                         using var stream = zFile.GetInputStream(e);
                         await stream.CopyToAsync(stream2);
@@ -364,7 +358,7 @@ public static class AddGameHelper
                     return false;
                 }
 
-                string overrides = Name5;
+                string overrides = Names.NameOverrideDir;
 
                 if (find1)
                 {
