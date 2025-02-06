@@ -18,17 +18,16 @@ public partial class ServerPackControl : MenuControl
     private Tab3Control _tab3;
     private Tab4Control _tab4;
 
-    public ServerPackControl()
+    public ServerPackControl() : base(WindowManager.GetUseName<ServerPackControl>())
     {
-        UseName = ToString() ?? "ServerPackControl";
+
     }
 
-    public ServerPackControl(GameSettingObj obj) : this()
+    public ServerPackControl(GameSettingObj obj) : base(WindowManager.GetUseName<ServerPackControl>(obj))
     {
         _obj = obj;
         Title = string.Format(App.Lang("ServerPackWindow.Title"),
            _obj.Name);
-        UseName += ":" + obj.UUID;
     }
 
     public override void Opened()

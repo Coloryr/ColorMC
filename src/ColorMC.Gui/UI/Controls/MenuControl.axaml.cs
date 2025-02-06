@@ -20,7 +20,7 @@ public abstract partial class MenuControl : BaseUserControl
 
     private int _now = -1;
 
-    public MenuControl()
+    public MenuControl(string usename) : base(usename)
     {
         _control = new();
         _sideControl = new();

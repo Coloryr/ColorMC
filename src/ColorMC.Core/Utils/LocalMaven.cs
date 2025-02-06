@@ -20,10 +20,9 @@ public static class LocalMaven
     /// <summary>
     /// 初始化本地缓存
     /// </summary>
-    /// <param name="dir"></param>
-    public static void Init(string dir)
+    public static void Init()
     {
-        s_local = dir + Name1;
+        s_local = Path.Combine(ColorMCCore.BaseDir, Name1);
 
         if (File.Exists(s_local))
         {

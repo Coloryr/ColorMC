@@ -13,16 +13,11 @@ using Tomlyn.Model;
 namespace ColorMC.Core.Game;
 
 /// <summary>
-/// 游戏Mod相关操作
+/// 游戏模组相关操作
 /// </summary>
 public static class Mods
 {
     private static readonly char[] s_separator = ['\n'];
-
-    public const string Name1 = ".zip";
-    public const string Name2 = ".jar";
-    public const string Name3 = ".disable";
-    public const string Name4 = ".disabled";
 
     /// <summary>
     /// 获取Mod列表
@@ -32,15 +27,14 @@ public static class Mods
     /// <returns>Mod列表</returns>
     public static async Task<List<ModObj>> GetModsAsync(this GameSettingObj obj, bool sha256 = false)
     {
-        var list = new ConcurrentBag<ModObj>();
         var dir = obj.GetModsPath();
-
         var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
             info.Create();
-            return [.. list];
+            return [];
         }
+        var list = new ConcurrentBag<ModObj>();
         var files = info.GetFiles();
 
         //多线程同时检查
@@ -68,9 +62,15 @@ public static class Mods
         return list1;
     }
 
+    /// <summary>
+    /// 读取模组
+    /// </summary>
+    /// <param name="item">文件</param>
+    /// <param name="sha256">是否获取sha256</param>
+    /// <returns>模组信息</returns>
     private static async Task<ModObj?> ReadMod(FileInfo item, bool sha256)
     {
-        if (item.Extension is not (Name1 or Name2 or Name3 or Name4))
+        if (item.Extension is not (Names.NameZipExt or Names.NameJarExt or Names.NameDisableExt or Names.NameDisabledExt))
         {
             return null;
         }
@@ -86,8 +86,8 @@ public static class Mods
             var mod = await ReadModAsync(zFile);
             if (mod != null)
             {
-                mod.Local = Path.GetFullPath(item.FullName);
-                mod.Disable = item.Extension is Name3 or Name4;
+                mod.Local = item.FullName;
+                mod.Disable = item.Extension is Names.NameDisableExt or Names.NameDisabledExt;
                 mod.Sha1 = sha1;
                 mod.Name ??= "";
                 mod.ModId ??= "";
@@ -108,24 +108,26 @@ public static class Mods
         {
             ModId = "",
             Name = "",
-            Local = Path.GetFullPath(item.FullName),
-            Disable = item.Extension is Name3 or Name4,
+            Local = item.FullName,
+            Disable = item.Extension is Names.NameDisableExt or Names.NameDisabledExt,
             ReadFail = true,
             Sha1 = sha1
         };
     }
 
     /// <summary>
-    /// 根据模组信息读模组
+    /// 根据模组在线信息读模组
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="mod">模组在线信息</param>
+    /// <returns>模组信息</returns>
     public static async Task<ModObj?> ReadMod(this GameSettingObj obj, ModInfoObj? mod)
     {
         if (mod == null)
         {
             return null;
         }
-        var file = Path.GetFullPath(obj.GetModsPath() + mod.File);
+        var file = Path.Combine(obj.GetModsPath(), mod.File);
         if (File.Exists(file))
         {
             var info = new FileInfo(file);
@@ -141,9 +143,9 @@ public static class Mods
     }
 
     /// <summary>
-    /// 禁用Mod
+    /// 禁用模组
     /// </summary>
-    /// <param name="mod">游戏Mod</param>
+    /// <param name="mod">游戏模组</param>
     public static void Disable(this ModObj mod)
     {
         if (mod.Disable || !File.Exists(mod.Local))
@@ -153,21 +155,21 @@ public static class Mods
 
         var file = new FileInfo(mod.Local);
         mod.Disable = true;
-        mod.Local = Path.ChangeExtension(mod.Local, Name3);
+        mod.Local = Path.ChangeExtension(mod.Local, Names.NameDisableExt);
         PathHelper.MoveFile(file.FullName, mod.Local);
 
         var info = mod.Game.Mods.Values.FirstOrDefault(item => item.Sha1 == mod.Sha1);
         if (info != null)
         {
-            info.File = Path.ChangeExtension(info.File, Name3);
+            info.File = Path.ChangeExtension(info.File, Names.NameDisableExt);
             mod.Game.SaveModInfo();
         }
     }
 
     /// <summary>
-    /// 启用Mod
+    /// 启用模组
     /// </summary>
-    /// <param name="mod">游戏Mod</param>
+    /// <param name="mod">游戏模组</param>
     public static void Enable(this ModObj mod)
     {
         if (!mod.Disable || !File.Exists(mod.Local))
@@ -177,28 +179,28 @@ public static class Mods
 
         var file = new FileInfo(mod.Local);
         mod.Disable = false;
-        mod.Local = Path.ChangeExtension(mod.Local, Name2);
+        mod.Local = Path.ChangeExtension(mod.Local, Names.NameJarExt);
         PathHelper.MoveFile(file.FullName, mod.Local);
 
         var info = mod.Game.Mods.Values.FirstOrDefault(item => item.Sha1 == mod.Sha1);
         if (info != null)
         {
-            info.File = Path.ChangeExtension(info.File, Name2);
+            info.File = Path.ChangeExtension(info.File, Names.NameJarExt);
             mod.Game.SaveModInfo();
         }
     }
 
     /// <summary>
-    /// 删除Mod
+    /// 删除模组
     /// </summary>
-    /// <param name="mod">游戏Mod</param>
+    /// <param name="mod">游戏模组</param>
     public static void Delete(this ModObj mod)
     {
         PathHelper.Delete(mod.Local);
     }
 
     /// <summary>
-    /// 导入Mod
+    /// 导入模组
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
@@ -213,8 +215,7 @@ public static class Mods
         var ok = true;
         await Task.Run(() => Parallel.ForEach(file, async (item) =>
         {
-            var name = Path.GetFileName(item);
-            var local = Path.GetFullPath(path + "/" + name);
+            var local = Path.Combine(path, Path.GetFileName(item));
 
             await Task.Run(() =>
             {
@@ -238,7 +239,7 @@ public static class Mods
     }
 
     /// <summary>
-    /// 添加Mod信息
+    /// 添加模组信息
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="info">信息</param>
@@ -253,11 +254,11 @@ public static class Mods
     }
 
     /// <summary>
-    /// 检查有无mod存在
+    /// 检查模组数量
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>模组数量</returns>
-    public static int ReadModFast(this GameSettingObj obj)
+    public static int ReadModCountFast(this GameSettingObj obj)
     {
         string dir = obj.GetModsPath();
 
@@ -271,124 +272,13 @@ public static class Mods
         int a = 0;
         foreach (var item in files)
         {
-            if (item.Name.EndsWith(Name2))
+            if (item.Name.EndsWith(Names.NameJarExt))
             {
                 a++;
             }
         }
 
         return a;
-    }
-
-    /// <summary>
-    /// 作者分割
-    /// </summary>
-    /// <param name="obj">作者名</param>
-    /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this string obj)
-    {
-        var list = new List<string>();
-        if (obj == null)
-        {
-            return list;
-        }
-        foreach (var item in obj.Split(","))
-        {
-            list.Add(item.Trim());
-        }
-        return list;
-    }
-
-    /// <summary>
-    /// 作者分割
-    /// </summary>
-    /// <param name="array">数据</param>
-    /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this JArray array)
-    {
-        var list = new List<string>();
-        foreach (var item in array)
-        {
-            if (item is JObject obj && obj.ContainsKey("name"))
-            {
-                list.Add(item["name"]!.ToString());
-            }
-            else
-            {
-                list.Add(item!.ToString());
-            }
-        }
-
-        return list;
-    }
-
-    /// <summary>
-    /// 作者分割
-    /// </summary>
-    /// <param name="array">数据</param>
-    /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this JObject array)
-    {
-        var list = new List<string>();
-        foreach (var item in array)
-        {
-            list.Add(item.Key.ToString());
-        }
-
-        return list;
-    }
-
-    /// <summary>
-    /// 找到指定数据
-    /// </summary>
-    /// <param name="obj">数据</param>
-    /// <param name="key">键名</param>
-    /// <returns>数据</returns>
-    private static JToken? FindKey(this JObject obj, string key)
-    {
-        foreach (var item in obj)
-        {
-            if (item.Key == key)
-            {
-                return obj;
-            }
-
-            if (item.Value is JObject obj1
-                && FindKey(obj1, key) is { } obj2)
-            {
-                return obj2;
-            }
-            else if (item.Value is JArray arry
-                && FindKey(arry, key) is { } obj3)
-            {
-                return obj3;
-            }
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// 找到指定数据
-    /// </summary>
-    /// <param name="obj">数据</param>
-    /// <param name="key">键名</param>
-    /// <returns>数据</returns>
-    private static JToken? FindKey(this JArray obj, string key)
-    {
-        foreach (var item in obj)
-        {
-            if (item is JObject obj1)
-            {
-                var data = FindKey(obj1, key);
-                if (data != null)
-                {
-                    return data;
-                }
-            }
-        }
-
-        return null;
     }
 
     /// <summary>
@@ -401,7 +291,7 @@ public static class Mods
         obj.InJar ??= [];
         foreach (ZipEntry item3 in zFile)
         {
-            if (item3.Name.EndsWith(Name2) && item3.Name.StartsWith("META-INF/jarjar/"))
+            if (item3.Name.EndsWith(Names.NameJarExt) && item3.Name.StartsWith("META-INF/jarjar/"))
             {
                 using var filestream = zFile.GetInputStream(item3);
                 using var stream2 = new MemoryStream();
@@ -929,5 +819,116 @@ public static class Mods
 
             return new JArray() { token };
         }
+    }
+
+    /// <summary>
+    /// 作者分割
+    /// </summary>
+    /// <param name="obj">作者名</param>
+    /// <returns>整理好的作者名</returns>
+    private static List<string> ToStringList(this string obj)
+    {
+        var list = new List<string>();
+        if (obj == null)
+        {
+            return list;
+        }
+        foreach (var item in obj.Split(","))
+        {
+            list.Add(item.Trim());
+        }
+        return list;
+    }
+
+    /// <summary>
+    /// 作者分割
+    /// </summary>
+    /// <param name="array">数据</param>
+    /// <returns>整理好的作者名</returns>
+    private static List<string> ToStringList(this JArray array)
+    {
+        var list = new List<string>();
+        foreach (var item in array)
+        {
+            if (item is JObject obj && obj.ContainsKey("name"))
+            {
+                list.Add(item["name"]!.ToString());
+            }
+            else
+            {
+                list.Add(item!.ToString());
+            }
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// 作者分割
+    /// </summary>
+    /// <param name="array">数据</param>
+    /// <returns>整理好的作者名</returns>
+    private static List<string> ToStringList(this JObject array)
+    {
+        var list = new List<string>();
+        foreach (var item in array)
+        {
+            list.Add(item.Key.ToString());
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// 找到指定数据
+    /// </summary>
+    /// <param name="obj">数据</param>
+    /// <param name="key">键名</param>
+    /// <returns>数据</returns>
+    private static JToken? FindKey(this JObject obj, string key)
+    {
+        foreach (var item in obj)
+        {
+            if (item.Key == key)
+            {
+                return obj;
+            }
+
+            if (item.Value is JObject obj1
+                && FindKey(obj1, key) is { } obj2)
+            {
+                return obj2;
+            }
+            else if (item.Value is JArray arry
+                && FindKey(arry, key) is { } obj3)
+            {
+                return obj3;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 找到指定数据
+    /// </summary>
+    /// <param name="obj">数据</param>
+    /// <param name="key">键名</param>
+    /// <returns>数据</returns>
+    private static JToken? FindKey(this JArray obj, string key)
+    {
+        foreach (var item in obj)
+        {
+            if (item is JObject obj1)
+            {
+                var data = FindKey(obj1, key);
+                if (data != null)
+                {
+                    return data;
+                }
+            }
+        }
+
+        return null;
     }
 }

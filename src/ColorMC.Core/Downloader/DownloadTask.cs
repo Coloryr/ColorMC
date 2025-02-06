@@ -24,6 +24,9 @@ internal class DownloadTask
     /// 总下载数量
     /// </summary>
     private readonly int _allSize;
+    /// <summary>
+    /// 下载时GUI返回参数
+    /// </summary>
     private readonly DownloadArg _arg;
     /// <summary>
     /// 已下载数量
@@ -43,7 +46,7 @@ internal class DownloadTask
     /// 下载任务
     /// </summary>
     /// <param name="list">下载项目列表</param>
-    /// <param name="arg">下载参数</param>
+    /// <param name="arg">GUI下载参数</param>
     public DownloadTask(ICollection<DownloadItemObj> list, DownloadArg arg)
     {
         var names = new List<string>();

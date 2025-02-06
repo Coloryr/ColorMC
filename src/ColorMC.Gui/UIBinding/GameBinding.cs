@@ -416,7 +416,7 @@ public static class GameBinding
 
                 WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text2"));
 
-                GameCount.LaunchDone(item.Key);
+                GameCountUtils.LaunchDone(item.Key);
                 GameStateUpdate(item.Key);
 
                 if (pr is DesktopGameHandel handel)
@@ -453,7 +453,7 @@ public static class GameBinding
                 }
 
                 GameManager.GameExit(item.Key);
-                GameCount.LaunchError(item.Key.UUID);
+                GameCountUtils.LaunchError(item.Key.UUID);
             }
         }
 
@@ -497,7 +497,7 @@ public static class GameBinding
             };
         }
 
-        var count = obj.ReadModFast();
+        var count = obj.ReadModCountFast();
 
         if (count > 0)
         {
@@ -649,7 +649,7 @@ public static class GameBinding
 
             WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text2"));
 
-            GameCount.LaunchDone(obj);
+            GameCountUtils.LaunchDone(obj);
             GameStateUpdate(obj);
 
             if (pr is DesktopGameHandel handel)
@@ -670,7 +670,7 @@ public static class GameBinding
         }
         else
         {
-            GameCount.LaunchError(obj.UUID);
+            GameCountUtils.LaunchError(obj.UUID);
             GameManager.GameExit(obj);
             UserBinding.UnLockUser(user);
         }
@@ -2028,7 +2028,7 @@ public static class GameBinding
                         continue;
                     var file1 = file.ToLower();
                     if (File.Exists(file) &&
-                        (file1.EndsWith(Schematic.Name1) || file1.EndsWith(Schematic.Name2)))
+                        (file1.EndsWith(Names.NameLitematicExt) || file1.EndsWith(Names.NameSchematicExt)))
                     {
                         list1.Add(file);
                     }

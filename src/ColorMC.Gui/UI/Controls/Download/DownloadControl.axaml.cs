@@ -9,12 +9,11 @@ namespace ColorMC.Gui.UI.Controls.Download;
 
 public partial class DownloadControl : BaseUserControl
 {
-    public DownloadControl()
+    public DownloadControl() : base(WindowManager.GetUseName<DownloadControl>())
     {
         InitializeComponent();
 
         Title = App.Lang("DownloadWindow.Title");
-        UseName = ToString() ?? "DownloadControl";
     }
 
     public override void Closed()

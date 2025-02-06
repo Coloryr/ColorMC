@@ -7,13 +7,11 @@ namespace ColorMC.CustomGui;
 
 public partial class UIControl : BaseUserControl
 {
-    public UIControl()
+    public UIControl() : base(WindowManager.GetUseName<UIControl>())
     {
         InitializeComponent();
 
         Title = "服务器客户端"; //窗口标题
-
-        UseName = ToString() ?? "UIControl"; //这个必须要有
     }
 
     public override Bitmap GetIcon()

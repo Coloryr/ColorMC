@@ -29,7 +29,7 @@ public static class ModPackHelper
         {
             Url = arg.Data.DownloadUrl,
             Name = arg.Data.FileName,
-            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + arg.Data.FileName),
+            Local = Path.Combine(DownloadManager.DownloadDir, arg.Data.FileName),
         };
 
         var res = await DownloadManager.StartAsync([item]);
@@ -67,7 +67,7 @@ public static class ModPackHelper
             Url = file.Url,
             Name = file.Filename,
             Sha1 = file.Hashes.Sha1,
-            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.Filename),
+            Local = Path.Combine(DownloadManager.DownloadDir, file.Filename),
         };
 
         var res = await DownloadManager.StartAsync([item]);
@@ -166,8 +166,7 @@ public static class ModPackHelper
             if (e.IsFile && e.Name.StartsWith(info.Overrides + "/"))
             {
                 using var stream = zFile.GetInputStream(e);
-                string file = Path.GetFullPath(arg.Game.GetGamePath() +
-                    e.Name[info.Overrides.Length..]);
+                string file = Path.Combine(arg.Game.GetGamePath(), e.Name[info.Overrides.Length..]);
                 FileInfo info2 = new(file);
                 info2.Directory?.Create();
                 using FileStream stream2 = new(file, FileMode.Create,
@@ -246,7 +245,7 @@ public static class ModPackHelper
             {
                 if (arg.Game.Mods.Remove(item.ProjectID.ToString(), out var mod))
                 {
-                    PathHelper.Delete(Path.GetFullPath($"{path}/{mod.Path}/{mod.File}"));
+                    PathHelper.Delete(Path.Combine(path, mod.Path, mod.File));
                 }
             }
 
@@ -328,7 +327,7 @@ public static class ModPackHelper
 
             foreach (var item in removelist)
             {
-                var local = Path.GetFullPath($"{path}/{item.Path}/{item.File}");
+                var local = Path.Combine(path, item.Path, item.File);
                 if (File.Exists(local))
                 {
                     PathHelper.Delete(local);
@@ -474,8 +473,7 @@ public static class ModPackHelper
             if (e.IsFile && e.Name.StartsWith(info.Overrides + "/"))
             {
                 using var stream = zFile.GetInputStream(e);
-                string file = Path.GetFullPath(game.GetGamePath() +
-                    e.Name[info.Overrides.Length..]);
+                string file = Path.Combine(game.GetGamePath(), e.Name[info.Overrides.Length..]);
                 FileInfo info2 = new(file);
                 info2.Directory?.Create();
                 using FileStream stream2 = new(file, FileMode.Create,
@@ -587,8 +585,7 @@ public static class ModPackHelper
             if (e.IsFile && e.Name.StartsWith("overrides/"))
             {
                 using var stream = zFile.GetInputStream(e);
-                string file = Path.GetFullPath(arg.Game.GetGamePath() +
-                    e.Name[length..]);
+                string file = Path.Combine(arg.Game.GetGamePath(), e.Name[length..]);
                 FileInfo info2 = new(file);
                 info2.Directory?.Create();
                 using FileStream stream2 = new(file, FileMode.Create,
@@ -671,7 +668,7 @@ public static class ModPackHelper
 
             foreach (var item in removelist)
             {
-                PathHelper.Delete(Path.GetFullPath($"{path}/{item.Path}"));
+                PathHelper.Delete(Path.Combine(path, item.Path));
 
                 var url = item.Downloads.FirstOrDefault(a => a.StartsWith($"{UrlHelper.ModrinthDownload}data/"));
                 if (url is { })

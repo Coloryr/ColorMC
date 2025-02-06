@@ -7,12 +7,11 @@ namespace ColorMC.Gui.UI.Controls.Count;
 
 public partial class CountControl : BaseUserControl
 {
-    public CountControl()
+    public CountControl() : base(WindowManager.GetUseName<CountControl>())
     {
         InitializeComponent();
 
         Title = App.Lang("CountWindow.Title");
-        UseName = ToString() ?? "CountControl";
     }
 
     public override void Closed()

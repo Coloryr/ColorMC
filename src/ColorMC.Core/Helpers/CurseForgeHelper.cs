@@ -39,7 +39,7 @@ public static class CurseForgeHelper
         {
             Url = data.DownloadUrl,
             Name = data.DisplayName,
-            Local = Path.GetFullPath(obj.GetModsPath() + "/" + data.FileName),
+            Local = Path.Combine(obj.GetModsPath(), data.FileName),
             Sha1 = data.Hashes.Where(a => a.Algo == 1)
                     .Select(a => a.Value).FirstOrDefault()
         };

@@ -31,13 +31,13 @@ public static class DataPack
     /// <returns>数据包列表</returns>
     public static List<DataPackObj> GetDataPacks(this WorldObj world)
     {
-        var list = new List<DataPackObj>();
-
         var path = world.GetWorldDataPacksPath();
         if (!Directory.Exists(path))
         {
-            return list;
+            return [];
         }
+
+        var list = new List<DataPackObj>();
 
         //查找数据包的NBT
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
@@ -59,32 +59,34 @@ public static class DataPack
         Parallel.ForEach(files, (item) =>
 #endif
         {
-            if (item.EndsWith(".zip"))
+            if (!item.EndsWith(".zip"))
             {
-                try
+                return;
+            }
+
+            try
+            {
+                using var file = PathHelper.OpenRead(item)!;
+                using var zip = new ZipFile(file);
+                var ent = zip.GetEntry(Names.NamePackMetaFile);
+                if (ent == null)
                 {
-                    using var file = PathHelper.OpenRead(item)!;
-                    using var zip = new ZipFile(file);
-                    var ent = zip.GetEntry("pack.mcmeta");
-                    if (ent == null)
-                    {
-                        return;
-                    }
-                    using var stream = new MemoryStream();
-                    using var stream1 = zip.GetInputStream(ent);
-                    stream1.CopyTo(stream);
-                    var data = JObject.Parse(Encoding.UTF8.GetString(stream.ToArray()));
-                    var pack = CheckPack(item, ens, dis, data);
-                    if (pack != null)
-                    {
-                        pack.World = world;
-                        list.Add(pack);
-                    }
+                    return;
                 }
-                catch (Exception e)
+                using var stream = new MemoryStream();
+                using var stream1 = zip.GetInputStream(ent);
+                stream1.CopyTo(stream);
+                var data = JObject.Parse(Encoding.UTF8.GetString(stream.ToArray()));
+                var pack = CheckPack(item, ens, dis, data);
+                if (pack != null)
                 {
-                    Logs.Error(string.Format(LanguageHelper.Get("Core.DataPack.Error1"), item), e);
+                    pack.World = world;
+                    list.Add(pack);
                 }
+            }
+            catch (Exception e)
+            {
+                Logs.Error(string.Format(LanguageHelper.Get("Core.DataPack.Error1"), item), e);
             }
         });
 
@@ -101,7 +103,7 @@ public static class DataPack
         {
             try
             {
-                var file = Path.GetFullPath(item + "/pack.mcmeta");
+                var file = Path.Combine(item, Names.NamePackMetaFile);
                 if (!File.Exists(file))
                 {
                     return;
@@ -193,7 +195,7 @@ public static class DataPack
             }
         }
 
-        world.Nbt.Save(Path.GetFullPath(world.Local + "/level.dat"));
+        world.Nbt.Save(Path.Combine(world.Local, Names.NameLevelFile));
 
         return true;
     }
@@ -253,7 +255,7 @@ public static class DataPack
                     }
                 }
 
-                world.Nbt.Save(Path.GetFullPath(world.Local + "/level.dat"));
+                world.Nbt.Save(Path.Combine(world.Local, Names.NameLevelFile));
             }
             catch (Exception e)
             {

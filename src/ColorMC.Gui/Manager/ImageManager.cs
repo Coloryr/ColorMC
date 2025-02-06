@@ -25,6 +25,8 @@ namespace ColorMC.Gui.Manager;
 /// </summary>
 public static class ImageManager
 {
+    public const string Name1 = "image";
+
     /// <summary>
     /// 游戏图标图片
     /// </summary>
@@ -77,13 +79,14 @@ public static class ImageManager
     /// <summary>
     /// 运行路径
     /// </summary>
-    public static string Local { get; private set; }
+    private static string s_local;
+
+    public static string GetImagePath() => s_local;
 
     /// <summary>
     /// 初始化图片缓存
     /// </summary>
-    /// <param name="dir">运行路径</param>
-    public static void Init(string dir)
+    public static void Init()
     {
         {
             using var asset = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
@@ -99,9 +102,9 @@ public static class ImageManager
             LoadIcon = new(asset1!);
         }
 
-        Local = dir + "image/";
+        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
 
-        Directory.CreateDirectory(Local);
+        Directory.CreateDirectory(s_local);
     }
 
     /// <summary>
@@ -296,15 +299,15 @@ public static class ImageManager
     /// <returns>位图</returns>
     public static async Task<Bitmap?> Load(string url, bool zoom)
     {
-        if (!Directory.Exists(Local))
+        if (!Directory.Exists(s_local))
         {
-            Directory.CreateDirectory(Local);
+            Directory.CreateDirectory(s_local);
         }
         //存在缓存
         var sha1 = HashHelper.GenSha256(url);
-        if (File.Exists(Local + sha1))
+        if (File.Exists(s_local + sha1))
         {
-            return new Bitmap(Local + sha1);
+            return new Bitmap(s_local + sha1);
         }
         else
         {
@@ -320,13 +323,13 @@ public static class ImageManager
                         using var image1 = SKBitmap.Decode(data1.Stream!);
                         using var image2 = ImageUtils.Resize(image1, 100, 100);
                         using var data = image2.Encode(SKEncodedImageFormat.Png, 100);
-                        PathHelper.WriteBytes(Local + sha1, data.AsStream());
-                        return new Bitmap(Local + sha1);
+                        PathHelper.WriteBytes(s_local + sha1, data.AsStream());
+                        return new Bitmap(s_local + sha1);
                     }
                     else
                     {
-                        PathHelper.WriteBytes(Local + sha1, data1.Stream!);
-                        return new Bitmap(Local + sha1);
+                        PathHelper.WriteBytes(s_local + sha1, data1.Stream!);
+                        return new Bitmap(s_local + sha1);
                     }
                 }
 
@@ -367,7 +370,7 @@ public static class ImageManager
                 }
                 else if (SystemInfo.Os == OsType.Android)
                 {
-                    file = ColorMCGui.RunDir + "BG";
+                    file = Path.Combine(ColorMCGui.RunDir, "BG");
                     stream1 = PathHelper.OpenRead(file);
                 }
                 else

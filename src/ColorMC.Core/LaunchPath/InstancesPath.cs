@@ -38,6 +38,7 @@ public static class InstancesPath
     public const string Name24 = "cache";
     public const string Name25 = "loader.jar";
     public const string Name26 = "crash-reports";
+
     public const string DefaultGroup = " ";
 
     /// <summary>
@@ -86,7 +87,7 @@ public static class InstancesPath
         while (string.IsNullOrWhiteSpace(obj.UUID)
             || s_installGames.ContainsKey(obj.UUID))
         {
-            obj.UUID = Guid.NewGuid().ToString();
+            obj.UUID = FuntionUtils.NewUUID();
             obj.Save();
         }
         s_installGames.Add(obj.UUID, obj);
@@ -181,7 +182,7 @@ public static class InstancesPath
     {
         s_init = true;
 
-        s_baseDir = Path.GetFullPath(dir + "/" + Name);
+        s_baseDir = Path.Combine(dir, Name);
 
         Directory.CreateDirectory(s_baseDir);
 
@@ -210,7 +211,7 @@ public static class InstancesPath
     /// <param name="dir">游戏路径</param>
     private static void LoadInstance(string dir)
     {
-        var file = Path.GetFullPath(dir + "/" + Name1);
+        var file = Path.Combine(dir, Name1);
         if (!File.Exists(file))
         {
             return;
@@ -334,7 +335,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetBasePath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}");
+        return Path.Combine(s_baseDir, obj.DirName);
     }
 
     /// <summary>
@@ -344,7 +345,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetGamePath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}");
+        return Path.Combine(s_baseDir, obj.DirName, Name2);
     }
 
     /// <summary>
@@ -354,7 +355,7 @@ public static class InstancesPath
     /// <returns>文件路径</returns>
     public static string GetGameJsonFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name1}");
+        return Path.Combine(s_baseDir, obj.DirName, Name1);
     }
 
     /// <summary>
@@ -364,7 +365,7 @@ public static class InstancesPath
     /// <returns>文件路径</returns>
     public static string GetModPackJsonFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name4}");
+        return Path.Combine(s_baseDir, obj.DirName, Name4);
     }
 
     /// <summary>
@@ -374,7 +375,7 @@ public static class InstancesPath
     /// <returns>文件路径</returns>
     public static string GetOptionsFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name5}");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name5);
     }
 
     /// <summary>
@@ -384,7 +385,7 @@ public static class InstancesPath
     /// <returns>文件路径</returns>
     public static string GetServersFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name6}");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name6);
     }
 
     /// <summary>
@@ -394,7 +395,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetScreenshotsPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name7}/");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name7);
     }
 
     /// <summary>
@@ -404,7 +405,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetResourcepacksPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name8}/");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name8);
     }
 
     /// <summary>
@@ -414,7 +415,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetShaderpacksPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name9}/");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name9);
     }
 
     /// <summary>
@@ -429,7 +430,7 @@ public static class InstancesPath
             obj.Icon = Name10;
             obj.Save();
         }
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{obj.Icon}");
+        return Path.Combine(s_baseDir, obj.DirName, obj.Icon);
     }
 
     /// <summary>
@@ -439,7 +440,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetModsPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name11}/");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name11);
     }
 
     /// <summary>
@@ -449,7 +450,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetSavesPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name12}/");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name12);
     }
 
     /// <summary>
@@ -459,7 +460,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetSchematicsPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name16}/");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name16);
     }
 
     /// <summary>
@@ -469,7 +470,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetWorldBackupPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name18}/");
+        return Path.Combine(s_baseDir, obj.DirName, Name18);
     }
 
     /// <summary>
@@ -479,7 +480,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetConfigPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name13}/");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name13);
     }
 
     /// <summary>
@@ -489,7 +490,7 @@ public static class InstancesPath
     /// <returns>文件路径</returns>
     public static string GetModInfoJsonFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name14}");
+        return Path.Combine(s_baseDir, obj.DirName, Name14);
     }
 
     /// <summary>
@@ -499,7 +500,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetLogPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name15}");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name15);
     }
 
     /// <summary>
@@ -509,7 +510,7 @@ public static class InstancesPath
     /// <returns>路径</returns>
     public static string GetRemoveWorldPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name17}/{Name12}");
+        return Path.Combine(s_baseDir, obj.DirName, Name17, Name12);
     }
 
     /// <summary>
@@ -519,7 +520,7 @@ public static class InstancesPath
     /// <returns>文件路径</returns>
     public static string GetServerPackFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name19}");
+        return Path.Combine(s_baseDir, obj.DirName, Name19);
     }
 
     /// <summary>
@@ -529,7 +530,7 @@ public static class InstancesPath
     /// <returns>文件路径</returns>
     public static string GetServerPackOldFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name20}");
+        return Path.Combine(s_baseDir, obj.DirName, Name20);
     }
 
     /// <summary>
@@ -539,7 +540,7 @@ public static class InstancesPath
     /// <returns></returns>
     public static string GetLaunchFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name21}");
+        return Path.Combine(s_baseDir, obj.DirName, Name21);
     }
 
     /// <summary>
@@ -549,7 +550,7 @@ public static class InstancesPath
     /// <returns></returns>
     public static string GetLog4jFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name22}");
+        return Path.Combine(s_baseDir, obj.DirName, Name22);
     }
 
     /// <summary>
@@ -559,7 +560,7 @@ public static class InstancesPath
     /// <returns></returns>
     public static string GetGameTempPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name23}");
+        return Path.Combine(s_baseDir, obj.DirName, Name23);
     }
 
     /// <summary>
@@ -569,7 +570,7 @@ public static class InstancesPath
     /// <returns></returns>
     public static string GetGameCachePath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name24}");
+        return Path.Combine(s_baseDir, obj.DirName, Name24);
     }
 
     /// <summary>
@@ -579,12 +580,17 @@ public static class InstancesPath
     /// <returns></returns>
     public static string GetGameLoaderFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name25}");
+        return Path.Combine(s_baseDir, obj.DirName, Name25);
     }
 
+    /// <summary>
+    /// 获取崩溃日志路径
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static string GetGameCrashReports(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{s_baseDir}/{obj.DirName}/{Name2}/{Name26}");
+        return Path.Combine(s_baseDir, obj.DirName, Name2, Name26);
     }
 
     /// <summary>

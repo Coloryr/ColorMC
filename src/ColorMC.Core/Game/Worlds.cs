@@ -17,9 +17,6 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Worlds
 {
-    private const string Name1 = "datapacks";
-    private const string Name2 = "colormc.info.json";
-
     /// <summary>
     /// 获取世界列表
     /// </summary>
@@ -28,7 +25,6 @@ public static class Worlds
     public static async Task<List<WorldObj>> GetWorldsAsync(this GameSettingObj game)
     {
         var dir = game.GetSavesPath();
-
         var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
@@ -55,9 +51,9 @@ public static class Worlds
     /// <param name="world">世界储存</param>
     public static void Remove(this WorldObj world)
     {
-        string dir = Path.GetFullPath(world.Game.GetRemoveWorldPath());
+        string dir = world.Game.GetRemoveWorldPath();
         Directory.CreateDirectory(dir);
-        Directory.Move(world.Local, Path.GetFullPath(dir + "/" + world.LevelName));
+        Directory.Move(world.Local, Path.Combine(dir, world.LevelName));
     }
 
     /// <summary>
@@ -71,7 +67,7 @@ public static class Worlds
     {
         var dir = obj.GetSavesPath();
         var info = new FileInfo(name);
-        dir = Path.GetFullPath(dir + "/" + info.Name[..^info.Extension.Length] + "/");
+        dir = Path.Combine(dir, info.Name[..^info.Extension.Length]);
         Directory.CreateDirectory(dir);
         try
         {
@@ -80,9 +76,9 @@ public static class Worlds
             var find = false;
             foreach (ZipEntry e in zFile)
             {
-                if (e.IsFile && e.Name.EndsWith("level.dat"))
+                if (e.IsFile && e.Name.EndsWith(Names.NameLevelFile))
                 {
-                    dir1 = e.Name.Replace("level.dat", "");
+                    dir1 = e.Name.Replace(Names.NameLevelFile, "");
                     find = true;
                     break;
                 }
@@ -98,7 +94,7 @@ public static class Worlds
                 if (e.IsFile)
                 {
                     using var stream = zFile.GetInputStream(e);
-                    var file1 = Path.GetFullPath(dir + e.Name[dir1.Length..]);
+                    var file1 = Path.Combine(dir, e.Name[dir1.Length..]);
                     await PathHelper.WriteBytesAsync(file1, stream);
                 }
             }
@@ -146,7 +142,7 @@ public static class Worlds
     /// <returns>位置</returns>
     public static string GetWorldDataPacksPath(this WorldObj world)
     {
-        return Path.GetFullPath($"{world.Local}/{Name1}");
+        return Path.Combine(world.Local, Names.NameGameDatapack);
     }
 
     /// <summary>
@@ -160,7 +156,7 @@ public static class Worlds
         var path = game.GetWorldBackupPath();
         Directory.CreateDirectory(path);
 
-        var file = Path.GetFullPath(path + "/" + world.LevelName + "_" + DateTime.Now
+        var file = Path.Combine(path, world.LevelName + "_" + DateTime.Now
             .ToString("yyyy_MM_dd_HH_mm_ss") + ".zip");
 
         await new ZipUtils().ZipFileAsync(world.Local, file);
@@ -170,7 +166,7 @@ public static class Worlds
         var data1 = Encoding.UTF8.GetBytes(data);
         using var stream = new ZipFileStream(data1);
         s.BeginUpdate();
-        s.Add(stream, Name2);
+        s.Add(stream, Names.NameColorMcInfoFile);
         s.CommitUpdate();
     }
 
@@ -190,7 +186,7 @@ public static class Worlds
         ZipEntry theEntry;
         while ((theEntry = s.GetNextEntry()) != null)
         {
-            if (theEntry.Name == Name2)
+            if (theEntry.Name == Names.NameColorMcInfoFile)
             {
                 await s.CopyToAsync(stream1);
                 res = true;
@@ -224,7 +220,7 @@ public static class Worlds
         }
         else
         {
-            local = Path.GetFullPath(obj.GetSavesPath() + "/" + name);
+            local = Path.Combine(obj.GetSavesPath(), name);
         }
 
         try
@@ -247,7 +243,7 @@ public static class Worlds
     /// <returns>世界储存</returns>
     private static async Task<WorldObj?> ReadWorld(DirectoryInfo dir)
     {
-        var file = Path.GetFullPath(dir.FullName + "/level.dat");
+        var file = Path.Combine(dir.FullName, Names.NameLevelFile);
         if (!File.Exists(file))
         {
             return null;
@@ -274,9 +270,9 @@ public static class Worlds
             obj.Difficulty = tag1.TryGet<NbtByte>("Difficulty")!.Value;
             obj.LevelName = tag1.TryGet<NbtString>("LevelName")!.Value;
 
-            obj.Local = Path.GetFullPath(dir.FullName);
+            obj.Local = dir.FullName;
 
-            var icon = dir.GetFiles().Where(a => a.Name == "icon.png").FirstOrDefault();
+            var icon = dir.GetFiles().Where(a => a.Name == InstancesPath.Name10).FirstOrDefault();
             if (icon != null)
             {
                 obj.Icon = icon.FullName;
@@ -292,7 +288,7 @@ public static class Worlds
         return new()
         {
             Broken = true,
-            Local = Path.GetFullPath(dir.FullName)
+            Local = dir.FullName
         };
     }
 }

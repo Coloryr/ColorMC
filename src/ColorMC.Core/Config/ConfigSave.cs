@@ -28,13 +28,13 @@ public static class ConfigSave
     /// <summary>
     /// 初始化
     /// </summary>
-    public static void Init()
+    internal static void Init()
     {
         ColorMCCore.Stop += Stop;
 
         t_thread = new(Run)
         {
-            Name = "ColorMC_Save"
+            Name = "ColorMC Config Save"
         };
         s_run = true;
         t_thread.Start();

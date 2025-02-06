@@ -2,6 +2,10 @@
 
 public static class LanGameHelper
 {
+    public const string IPv4 = "224.0.2.60";
+    public const string IPv6 = "FF75:230::60";
+    public const int Port = 4445;
+
     /// <summary>
     /// 获取Motd信息
     /// </summary>

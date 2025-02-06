@@ -471,10 +471,6 @@ public partial class SettingModel
             return;
 
         Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
-        if (SystemInfo.Os == OsType.Android)
-        {
-            await PathBinding.CopyBG(Pic!);
-        }
         await ConfigBinding.SetBackPic(EnableBG, Pic, PicEffect);
         Model.ProgressClose();
 

@@ -13,9 +13,6 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Schematic
 {
-    public const string Name1 = ".litematic";
-    public const string Name2 = ".schematic";
-
     /// <summary>
     /// 读取结构文件
     /// </summary>
@@ -42,11 +39,11 @@ public static class Schematic
 #endif
         {
             var info = new FileInfo(item);
-            if (info.Extension.Equals(Name1, StringComparison.OrdinalIgnoreCase))
+            if (info.Extension.Equals(Names.NameLitematicExt, StringComparison.OrdinalIgnoreCase))
             {
                 list.Add(await ReadLitematicAsync(item));
             }
-            else if (info.Extension.Equals(Name2, StringComparison.OrdinalIgnoreCase))
+            else if (info.Extension.Equals(Names.NameSchematicExt, StringComparison.OrdinalIgnoreCase))
             {
                 list.Add(await ReadSchematicAsync(item));
             }
@@ -84,8 +81,7 @@ public static class Schematic
 
         Parallel.ForEach(file, (item) =>
         {
-            var name = Path.GetFileName(item);
-            var path1 = Path.GetFullPath(path + "/" + name);
+            var path1 = Path.Combine(path, Path.GetFileName(item));
             if (File.Exists(path1))
             {
                 return;

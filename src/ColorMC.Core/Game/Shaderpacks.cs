@@ -20,7 +20,6 @@ public static class Shaderpacks
     public static async Task<List<ShaderpackObj>> GetShaderpacksAsync(this GameSettingObj game)
     {
         var dir = game.GetShaderpacksPath();
-
         var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
@@ -28,7 +27,6 @@ public static class Shaderpacks
         }
 
         var list = new ConcurrentBag<ShaderpackObj>();
-
         await Task.Run(() =>
         {
             Parallel.ForEach(info.GetFiles(), (item) =>
@@ -39,7 +37,7 @@ public static class Shaderpacks
                 }
                 var obj1 = new ShaderpackObj()
                 {
-                    Local = Path.GetFullPath(item.FullName),
+                    Local = item.FullName,
                     Name = Path.GetFileName(item.FullName)
                 };
                 list.Add(obj1);
@@ -75,8 +73,7 @@ public static class Shaderpacks
 
         foreach (var item in file)
         {
-            var name = Path.GetFileName(item);
-            var name1 = Path.GetFullPath(dir + "/" + name);
+            var name1 = Path.Combine(dir, Path.GetFileName(item));
 
             await Task.Run(() =>
             {

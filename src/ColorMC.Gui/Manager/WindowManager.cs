@@ -47,6 +47,8 @@ namespace ColorMC.Gui.Manager;
 /// </summary>
 public static class WindowManager
 {
+    public const string Name1 = "window.json";
+
     /// <summary>
     /// 上一个窗口
     /// </summary>
@@ -56,28 +58,91 @@ public static class WindowManager
     /// 单窗口
     /// </summary>
     public static SingleControl? AllWindow { get; set; }
+    /// <summary>
+    /// 下载窗口
+    /// </summary>
     public static DownloadControl? DownloadWindow { get; set; }
+    /// <summary>
+    /// 用户窗口
+    /// </summary>
     public static UsersControl? UserWindow { get; set; }
+    /// <summary>
+    /// 主窗口
+    /// </summary>
     public static MainControl? MainWindow { get; set; }
+    /// <summary>
+    /// 添加游戏实例窗口
+    /// </summary>
     public static AddGameControl? AddGameWindow { get; set; }
+    /// <summary>
+    /// 自定义启动窗口
+    /// </summary>
     public static UIAssembly? CustomWindow { get; set; }
+    /// <summary>
+    /// 下载整合包窗口
+    /// </summary>
     public static AddModPackControl? AddModPackWindow { get; set; }
+    /// <summary>
+    /// 设置窗口
+    /// </summary>
     public static SettingControl? SettingWindow { get; set; }
+    /// <summary>
+    /// 皮肤查看窗口
+    /// </summary>
     public static SkinControl? SkinWindow { get; set; }
+    /// <summary>
+    /// 下载JAVA窗口
+    /// </summary>
     public static AddJavaControl? AddJavaWindow { get; set; }
+    /// <summary>
+    /// 启动统计窗口
+    /// </summary>
     public static CountControl? CountWindow { get; set; }
+    /// <summary>
+    /// 映射窗口
+    /// </summary>
     public static NetFrpControl? NetFrpWindow { get; set; }
+    /// <summary>
+    /// 新闻窗口
+    /// </summary>
     public static MinecraftNewsControl? NewsWindow { get; set; }
+    /// <summary>
+    /// 收藏窗口
+    /// </summary>
     public static CollectControl? CollectWindow { get; set; }
 
+    /// <summary>
+    /// 游戏实例编辑窗口
+    /// </summary>
     public static Dictionary<string, GameEditControl> GameEditWindows { get; } = [];
+    /// <summary>
+    /// 游戏实例配置修改窗口
+    /// </summary>
     public static Dictionary<string, GameConfigEditControl> GameConfigEditWindows { get; } = [];
+    /// <summary>
+    /// 游戏实例添加资源窗口
+    /// </summary>
     public static Dictionary<string, AddControl> GameAddWindows { get; } = [];
+    /// <summary>
+    /// 游戏实例生成服务器整合包窗口
+    /// </summary>
     public static Dictionary<string, ServerPackControl> ServerPackWindows { get; } = [];
+    /// <summary>
+    /// 游戏实例日志窗口
+    /// </summary>
     public static Dictionary<string, GameLogControl> GameLogWindows { get; } = [];
+    /// <summary>
+    /// 游戏实例导出窗口
+    /// </summary>
     public static Dictionary<string, GameExportControl> GameExportWindows { get; } = [];
+    /// <summary>
+    /// 游戏实例云存档窗口
+    /// </summary>
     public static Dictionary<string, GameCloudControl> GameCloudWindows { get; } = [];
 
+    /// <summary>
+    /// 窗口透明选项
+    /// </summary>
     private static readonly WindowTransparencyLevel[] WindowTran =
     [
         WindowTransparencyLevel.None,
@@ -87,19 +152,26 @@ public static class WindowManager
         WindowTransparencyLevel.Mica
     ];
 
+    /// <summary>
+    /// 窗口位置信息
+    /// </summary>
     private static Dictionary<string, WindowStateObj> s_WindowState;
 
     private static string s_file;
 
-    public static void Init(string path)
+    /// <summary>
+    /// 初始化窗口位置信息
+    /// </summary>
+    public static void Init()
     {
-        s_file = Path.GetFullPath(path + "/window.json");
+        s_file = Path.Combine(ColorMCGui.RunDir, Name1);
         LoadState();
         if (s_WindowState == null)
         {
             s_WindowState = [];
             SaveState();
         }
+        //单窗口模式
         if (ConfigBinding.WindowMode())
         {
             if (SystemInfo.Os == OsType.Android)
@@ -123,17 +195,23 @@ public static class WindowManager
             }
         }
 
+        //长按取消处理
         InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>
         {
             LongPressed.Released();
         }, handledEventsToo: true);
 
+        //显示自定义窗口
         if (!ShowCustom())
         {
+            //显示主窗口
             ShowMain();
         }
     }
 
+    /// <summary>
+    /// 加载窗口位置文件
+    /// </summary>
     private static void LoadState()
     {
         if (File.Exists(s_file))
@@ -155,11 +233,14 @@ public static class WindowManager
             }
             catch (Exception e)
             {
-                Logs.Error("", e);
+                Logs.Error(App.Lang("App.Error3"), e);
             }
         }
     }
 
+    /// <summary>
+    /// 保存窗口状态
+    /// </summary>
     private static void SaveState()
     {
         ConfigSave.AddItem(new()
@@ -170,6 +251,11 @@ public static class WindowManager
         });
     }
 
+    /// <summary>
+    /// 获取窗口状态
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static WindowStateObj? GetWindowState(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -873,5 +959,15 @@ public static class WindowManager
     {
         s_WindowState.Clear();
         SaveState();
+    }
+
+    public static string GetUseName<T>() where T : BaseUserControl
+    {
+        return typeof(T).FullName ?? typeof(T).Name;
+    }
+
+    public static string GetUseName<T>(GameSettingObj obj) where T : BaseUserControl
+    {
+        return typeof(T).FullName ?? typeof(T).Name + ":" + obj.UUID;
     }
 }

@@ -95,20 +95,23 @@ public partial class App : Application
 
         CoreManager.Init();
         ThemeManager.Init();
-        JoystickConfig.Init(ColorMCGui.RunDir);
-        FrpConfigUtils.Init(ColorMCGui.RunDir);
-        FrpLaunchUtils.Init(ColorMCGui.RunDir);
-        CollectUtils.Init(ColorMCGui.RunDir);
-        ImageManager.Init(ColorMCGui.RunDir);
-        WindowManager.Init(ColorMCGui.RunDir);
-        GameCount.Init(ColorMCGui.RunDir);
+        ImageManager.Init();
+        WindowManager.Init();
+
+        JoystickConfig.Init();
+
+        FrpConfigUtils.Init();
+        FrpLaunchUtils.Init();
+        CollectUtils.Init();
+        GameCountUtils.Init();
+        ToolUtils.Init();
         //if (SystemInfo.Os != OsType.MacOS)
-        {
-            SdlUtils.Init();
-        }
+        //{
+        SdlUtils.Init();
+        //}
         Media.Init();
         UpdateUtils.Init();
-        GameCloudUtils.Init(ColorMCGui.RunDir);
+        GameCloudUtils.Init();
 
         if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {

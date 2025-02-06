@@ -14,6 +14,8 @@ namespace ColorMC.Gui.Utils;
 
 public static class CollectUtils
 {
+    public const string Name1 = "collect.json";
+
     private static string s_local;
 
     /// <summary>
@@ -23,9 +25,9 @@ public static class CollectUtils
 
     private static readonly Dictionary<string, int> s_itemUse = [];
 
-    public static void Init(string dir)
+    public static void Init()
     {
-        s_local = dir + "collect.json";
+        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
 
         Load(s_local);
     }

@@ -10,12 +10,11 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddModPackControl : BaseUserControl
 {
-    public AddModPackControl()
+    public AddModPackControl() : base(WindowManager.GetUseName<AddModPackControl>())
     {
         InitializeComponent();
 
         Title = App.Lang("AddModPackWindow.Title");
-        UseName = ToString() ?? "AddModPackControl";
 
         ModPackFiles.PointerPressed += ModPackFiles_PointerPressed;
     }

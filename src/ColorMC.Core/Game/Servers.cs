@@ -19,12 +19,13 @@ public static class Servers
     /// <returns>服务器列表</returns>
     public static async Task<List<ServerInfoObj>> GetServerInfosAsync(this GameSettingObj game)
     {
-        var list = new List<ServerInfoObj>();
         var file = game.GetServersFile();
         if (!File.Exists(file))
         {
             return [];
         }
+
+        var list = new List<ServerInfoObj>();
 
         try
         {

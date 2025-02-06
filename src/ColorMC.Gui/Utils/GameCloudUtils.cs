@@ -27,7 +27,7 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class GameCloudUtils
 {
-    public const string Name = "cloud.json";
+    public const string Name1 = "cloud.json";
 
     private static string s_server;
     private static string s_serverkey;
@@ -45,8 +45,7 @@ public static class GameCloudUtils
     /// <summary>
     /// 初始化云同步
     /// </summary>
-    /// <param name="dir">运行路径</param>
-    public static void Init(string dir)
+    public static void Init()
     {
         var handler = new HttpClientHandler();
         _client = new HttpClient(handler)
@@ -54,7 +53,7 @@ public static class GameCloudUtils
             Timeout = Timeout.InfiniteTimeSpan
         };
 
-        s_file = Path.GetFullPath(dir + "/" + Name);
+        s_file = Path.Combine(ColorMCGui.RunDir, Name1);
 
         if (File.Exists(s_file))
         {
@@ -99,7 +98,7 @@ public static class GameCloudUtils
     {
         ConfigSave.AddItem(new()
         {
-            Name = Name,
+            Name = Name1,
             File = s_file,
             Obj = s_datas
         });

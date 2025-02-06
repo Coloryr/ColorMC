@@ -26,12 +26,11 @@ public partial class MainControl : BaseUserControl
     private MainEmptyControl? _emptyGame;
     private MainGamesControl? _games;
 
-    public MainControl()
+    public MainControl() : base(WindowManager.GetUseName<MainControl>())
     {
         InitializeComponent();
 
         Title = "ColorMC";
-        UseName = ToString() ?? "MainControl";
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);

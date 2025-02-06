@@ -21,15 +21,14 @@ public static class Resourcepacks
     /// <returns>材质包列表</returns>
     public static async Task<List<ResourcepackObj>> GetResourcepacksAsync(this GameSettingObj game, bool sha256)
     {
-        var list = new List<ResourcepackObj>();
         var dir = game.GetResourcepacksPath();
-
         var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
             info.Create();
-            return list;
+            return [];
         }
+        var list = new List<ResourcepackObj>();
         var files = info.GetFiles();
 #if false
         await Parallel.ForEachAsync(files, new ParallelOptions()
@@ -42,7 +41,7 @@ public static class Resourcepacks
         {
             using var stream = PathHelper.OpenRead(item.FullName)!;
             string sha1 = HashHelper.GenSha1(stream);
-            if (item.Extension is not (".zip" or ".disable"))
+            if (item.Extension is not Names.NameZipExt)
             {
                 return;
             }
@@ -52,7 +51,7 @@ public static class Resourcepacks
                 var obj = await ReadResourcepackAsync(stream, cancel);
                 if (obj != null)
                 {
-                    obj.Local = Path.GetFullPath(item.FullName);
+                    obj.Local = item.FullName;
                     obj.Sha1 = sha1;
                     if (sha256)
                     {
@@ -66,7 +65,7 @@ public static class Resourcepacks
                     list.Add(new()
                     {
                         Sha1 = sha1,
-                        Local = Path.GetFullPath(item.FullName),
+                        Local = item.FullName,
                         Broken = true
                     });
                 }
@@ -96,8 +95,7 @@ public static class Resourcepacks
         var ok = true;
         await Parallel.ForEachAsync(file, async (item, cancel) =>
         {
-            var name = Path.GetFileName(item);
-            var local = Path.GetFullPath(path + "/" + name);
+            var local = Path.Combine(path, Path.GetFileName(item));
 
             await Task.Run(() =>
             {
@@ -133,7 +131,7 @@ public static class Resourcepacks
     private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream file, CancellationToken cancel)
     {
         using var zFile = new ZipFile(file);
-        var item1 = zFile.GetEntry("pack.mcmeta");
+        var item1 = zFile.GetEntry(Names.NamePackMetaFile);
         if (item1 == null)
         {
             return null;
@@ -168,7 +166,7 @@ public static class Resourcepacks
                 }
             }
         }
-        item1 = zFile.GetEntry("pack.png");
+        item1 = zFile.GetEntry(Names.NamePackIconFile);
         if (item1 != null)
         {
             using var stream2 = zFile.GetInputStream(item1);

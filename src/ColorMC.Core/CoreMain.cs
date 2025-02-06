@@ -14,8 +14,8 @@ namespace ColorMC.Core;
 
 public static class ColorMCCore
 {
-    public const int VersionNum = 34;
-    public const string TopVersion = "A34";
+    public const int VersionNum = 35;
+    public const string TopVersion = "A35";
     public const string DateVersion = "20250120";
 
     /// <summary>
@@ -220,8 +220,8 @@ public static class ColorMCCore
         Directory.CreateDirectory(BaseDir);
 
         LanguageHelper.Load(LanguageType.zh_cn);
-        Logs.Init(BaseDir);
-        ConfigUtils.Init(BaseDir);
+        Logs.Init();
+        ConfigUtils.Init();
         CoreHttpClient.Init();
 
         Logs.Info(LanguageHelper.Get("Core.Info1"));
@@ -235,10 +235,9 @@ public static class ColorMCCore
     public static void Init1()
     {
         ConfigSave.Init();
-        JvmPath.Init(BaseDir);
-        LocalMaven.Init(BaseDir);
-        ToolPath.Init(BaseDir);
-        DownloadManager.Init(BaseDir);
+        JvmPath.Init();
+        LocalMaven.Init();
+        DownloadManager.Init();
         AuthDatabase.Init();
         MinecraftPath.Init(BaseDir);
 

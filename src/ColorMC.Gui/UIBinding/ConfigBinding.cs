@@ -130,7 +130,17 @@ public static class ConfigBinding
     {
         GuiConfigUtils.Config.EnableBG = en;
         GuiConfigUtils.Config.BackEffect = data;
-        GuiConfigUtils.Config.BackImage = dir;
+
+        if (SystemInfo.Os == OsType.Android)
+        {
+            var bg = await PathBinding.CopyBG(dir!);
+            GuiConfigUtils.Config.BackImage = bg;
+        }
+        else
+        {
+            GuiConfigUtils.Config.BackImage = dir;
+        }
+
         GuiConfigUtils.Save();
 
         await ImageManager.LoadBGImage();

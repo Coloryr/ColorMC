@@ -10,9 +10,6 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class GameLang
 {
-    public const string Name1 = "minecraft/lang/";
-    public const string Name2 = "lang";
-
     /// <summary>
     /// 获取语言列表
     /// </summary>
@@ -37,7 +34,7 @@ public static class GameLang
         if (obj != null)
         {
 #if false
-            Parallel.ForEach(obj.objects, new()
+            Parallel.ForEach(obj.Objects, new()
             {
                 MaxDegreeOfParallelism = 1
             }, (item) =>
@@ -45,21 +42,23 @@ public static class GameLang
             Parallel.ForEach(obj.Objects, (item) =>
 #endif
             {
-                if (!item.Key.StartsWith(Name1) || AssetsPath.ReadAsset(item.Value.Hash) is not { } str)
+                if (!item.Key.StartsWith(Names.NameLangKey1) || AssetsPath.ReadAsset(item.Value.Hash) is not { } str)
                 {
                     return;
                 }
 
                 try
                 {
+                    //json格式
                     if (str.StartsWith('{'))
                     {
                         var data = JsonConvert.DeserializeObject<LangObj>(str)!;
-                        list.Add(item.Key.Replace(Name1, "").Replace(".json", ""),
+                        list.Add(item.Key.Replace(Names.NameLangKey1, "").Replace(".json", ""),
                                 data.Name + "-" + data.Region);
                     }
                     else
                     {
+                        //key: value格式
                         var temp1 = str.Split("\n");
                         string? name = null, region = null;
                         foreach (var item1 in temp1)
@@ -78,7 +77,7 @@ public static class GameLang
                             }
                         }
 
-                        list.Add(item.Key.Replace(Name1, "").Replace(".lang", ""),
+                        list.Add(item.Key.Replace(Names.NameLangKey1, "").Replace(".lang", ""),
                                    (name ?? "") + "-" + (region ?? ""));
                     }
                 }
@@ -89,6 +88,7 @@ public static class GameLang
             });
         }
 
+        //添加默认的语言选择
         list.TryAdd("zh_cn", "简体中文-中国大陆");
         list.TryAdd("en_us", "English-United States");
 
@@ -111,13 +111,13 @@ public static class GameLang
             {
                 try
                 {
-                    if (item.Key.StartsWith(Name1) && item.Key.Contains(key)
+                    if (item.Key.StartsWith(Names.NameLangKey1) && item.Key.Contains(key)
                         && AssetsPath.ReadAsset(item.Value.Hash) is { } str)
                     {
                         var data = JsonConvert.DeserializeObject<LangObj>(str)!;
                         return new LangRes
                         {
-                            Key = item.Key.Replace(Name1, "").Replace(".json", ""),
+                            Key = item.Key.Replace(Names.NameLangKey1, "").Replace(".json", ""),
                             Name = data.Name + "-" + data.Region
                         };
                     }

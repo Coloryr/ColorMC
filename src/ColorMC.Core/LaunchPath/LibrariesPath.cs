@@ -34,7 +34,7 @@ public static class LibrariesPath
     /// <returns>路径</returns>
     public static string GetNativeDir(string version)
     {
-        var dir = Path.GetFullPath($"{NativeDir}/{version}");
+        var dir = Path.Combine(NativeDir, version);
         Directory.CreateDirectory(dir);
         return dir;
     }
@@ -67,7 +67,7 @@ public static class LibrariesPath
     /// <returns></returns>
     public static string GetOptiFineLib(string mc, string version)
     {
-        return Path.GetFullPath($"{BaseDir}/optifine/installer/OptiFine-{mc}-{version}.jar");
+        return Path.Combine(BaseDir, "optifine", "installer", $"OptiFine-{mc}-{version}.jar");
     }
 
     /// <summary>
@@ -177,7 +177,7 @@ public static class LibrariesPath
             var fabric = obj.GetFabricObj()!;
             foreach (var item in fabric.Libraries)
             {
-                var name = PathHelper.NameToPath(item.Name);
+                var name = FuntionUtils.VersionNameToPath(item.Name);
                 loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name),
                     Path.GetFullPath($"{BaseDir}/{name}"));
             }
@@ -187,7 +187,7 @@ public static class LibrariesPath
             var quilt = obj.GetQuiltObj()!;
             foreach (var item in quilt.Libraries)
             {
-                var name = PathHelper.NameToPath(item.Name);
+                var name = FuntionUtils.VersionNameToPath(item.Name);
                 loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name),
                     Path.GetFullPath($"{BaseDir}/{name}"));
             }

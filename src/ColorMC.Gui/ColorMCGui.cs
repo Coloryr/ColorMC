@@ -19,6 +19,8 @@ namespace ColorMC.Gui;
 
 public static class ColorMCGui
 {
+    public const string LockFile = "lock";
+
     private static readonly CoreInitArg s_arg = new()
     {
         Local = "",
@@ -159,7 +161,7 @@ public static class ColorMCGui
 
         s_arg.Local = RunDir;
         ColorMCCore.Init(s_arg);
-        GuiConfigUtils.Init(RunDir);
+        GuiConfigUtils.Init();
     }
 
     public static void SetRuntimeState(bool aot, bool min)
@@ -192,7 +194,7 @@ public static class ColorMCGui
             SystemInfo.Init();
         }
 
-        GuiConfigUtils.Init(RunDir);
+        GuiConfigUtils.Init();
 
         var builder = AppBuilder.Configure<App>()
             .With(new FontManagerOptions
@@ -306,7 +308,7 @@ public static class ColorMCGui
 
     private static bool IsLock(out int port)
     {
-        var name = RunDir + "lock";
+        var name = Path.Combine(RunDir, LockFile);
         port = -1;
         if (File.Exists(name))
         {
@@ -330,7 +332,7 @@ public static class ColorMCGui
     public static void StartLock()
     {
         LaunchSocketUtils.Init().Wait();
-        string name = RunDir + "lock";
+        string name = Path.Combine(RunDir, LockFile);
         s_lock = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         var data = BitConverter.GetBytes(LaunchSocketUtils.Port);
         s_lock.Write(data);

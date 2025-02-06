@@ -7,12 +7,11 @@ namespace ColorMC.Gui.UI.Controls.News;
 
 public partial class MinecraftNewsControl : BaseUserControl
 {
-    public MinecraftNewsControl()
+    public MinecraftNewsControl() : base(WindowManager.GetUseName<MinecraftNewsControl>())
     {
         InitializeComponent();
 
         Title = App.Lang("NewsWindow.Title");
-        UseName = ToString() ?? "MinecraftNewsControl";
     }
 
     public override void Opened()

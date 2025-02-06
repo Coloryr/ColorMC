@@ -3,7 +3,7 @@
 namespace ColorMC.Core.Objs;
 
 /// <summary>
-/// Mod信息
+/// 模组在线信息
 /// </summary>
 public record ModInfoObj
 {

@@ -16,10 +16,9 @@ public partial class NetFrpControl : MenuControl
     private NetFrpTab4Control _tab4;
     private NetFrpTab5Control _tab5;
 
-    public NetFrpControl()
+    public NetFrpControl() : base(WindowManager.GetUseName<NetFrpControl>())
     {
         Title = App.Lang("NetFrpWindow.Title");
-        UseName = ToString() ?? "NetFrpControl";
     }
 
     public override void Closed()
