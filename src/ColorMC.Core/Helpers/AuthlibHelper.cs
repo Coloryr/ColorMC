@@ -44,7 +44,7 @@ public static class AuthlibHelper
         {
             Url = UrlHelper.Nide8Jar,
             Name = $"com.nide8.login2:nide8auth:{version}",
-            Local = $"{LibrariesPath.BaseDir}/com/nide8/login2/nide8auth/{version}/nide8auth-{version}.jar",
+            Local = Path.Combine(LibrariesPath.BaseDir, "com", "nide8", "login2", "nide8auth", version, $"nide8auth-{version}.jar"),
         };
     }
     /// <summary>
@@ -59,8 +59,7 @@ public static class AuthlibHelper
             Sha256 = obj.Checksums.Sha256,
             Url = UrlHelper.DownloadAuthlibInjector(obj, CoreHttpClient.Source),
             Name = $"moe.yushi:authlibinjector:{obj.Version}",
-            Local = $"{LibrariesPath.BaseDir}/moe/yushi/authlibinjector/" +
-            $"{obj.Version}/authlib-injector-{obj.Version}.jar",
+            Local = Path.Combine(LibrariesPath.BaseDir, "moe", "yushi", "authlibinjector", obj.Version, $"authlib-injector-{obj.Version}.jar"),
         };
     }
 

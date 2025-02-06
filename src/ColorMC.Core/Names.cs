@@ -9,14 +9,20 @@ namespace ColorMC.Core;
 public static class Names
 {
     public const string NameDownloadDir = "download";
+    public const string NameOverrideDir = "overrides";
 
     public const string NameGameLogDir = "logs";
     public const string NameGameCrashLogDir = "crash-reports";
-    public const string NameGameDatapack = "datapacks";
+    public const string NameGameDatapackDir = "datapacks";
+    public const string NameGameModDir = "mods";
 
     public const string NameConfigFile = "config.json";
     public const string NameShaFile = "sha1";
     public const string NameColorMcInfoFile = "colormc.info.json";
+    public const string NameMMCJsonFile = "mmc-pack.json";
+    public const string NameMMCCfgFile = "instance.cfg";
+    public const string NameHMCLFile = "mcbbs.packmeta";
+    public const string NameManifestFile = "manifest.json";
 
     public const string NameLevelFile = "level.dat";
     public const string NamePackMetaFile = "pack.mcmeta";
